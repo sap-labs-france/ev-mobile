@@ -1,0 +1,62 @@
+{
+  "name": "Charge-Angels",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "@babel/runtime": "^7.0.0",
+    "babel-eslint": "7.2.3",
+    "babel-jest": "23.6.0",
+    "babel-preset-react-native-stage-0": "^1.0.1",
+    "eslint": "4.4.1",
+    "eslint-plugin-flowtype": "2.35.0",
+    "eslint-plugin-import": "2.7.0",
+    "eslint-plugin-jsx-a11y": "6.0.2",
+    "eslint-plugin-prettier": "2.1.2",
+    "eslint-plugin-react": "7.1.0",
+    "eslint-plugin-react-native": "3.0.1",
+    "flow-bin": "0.52.0",
+    "flow-typed": "2.1.5",
+    "jest": "23.6.0",
+    "jest-expo": "19.0.5",
+    "metro-react-native-babel-preset": "0.46.0",
+    "prettier": "1.5.3",
+    "react-test-renderer": "16.5.0",
+    "schedule": "^0.4.0"
+  },
+  "scripts": {
+    "postinstall": "remotedev-debugger",
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "test": "jest && flow && eslint .",
+    "precommit": "yarn test"
+  },
+  "jest": {
+    "preset": "react-native",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(react-native|lottie-react-native|expo|react-native-maps|react-native-svg|react-native-branch|native-base-shoutem-theme|react-native-easy-grid|react-native-drawer|react-native-vector-icons|react-native-keyboard-aware-scroll-view|react-native-swiper|react-navigation|native-base|@expo|react-native-scrollable-tab-view|react-native-simple-modal|react-native-iphone-x-helper)/)"
+    ]
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "color": "^3.0.0",
+    "install": "^0.12.1",
+    "jest-cli": "^23.6.0",
+    "lodash": "^4.17.11",
+    "moment": "^2.22.2",
+    "native-base": "^2.8.0",
+    "npm": "^6.4.1",
+    "react": "^16.5.2",
+    "react-grecaptcha": "^1.2.5",
+    "react-native": "^0.57.1",
+    "react-native-calendars": "^1.20.0",
+    "react-native-carousel-view": "^0.5.1",
+    "react-native-easy-grid": "^0.2.0",
+    "react-native-form-validator": "^0.2.0",
+    "react-native-htmlview": "^0.13.0",
+    "react-native-i18n": "^2.0.15",
+    "react-native-modalbox": "^1.6.0",
+    "react-native-vector-icons": "^5.0.0",
+    "react-navigation": "^2.16.0"
+  }
+}
