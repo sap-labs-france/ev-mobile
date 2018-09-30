@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions, Platform } from "react";
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 
 module.exports = StyleSheet.create({
   header: {

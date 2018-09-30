@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions, Platform } from "react";
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 const primary = require("../../theme/variables/commonColor").brandPrimary;
 
 const deviceHeight = Dimensions.get("window").height;

@@ -2,7 +2,6 @@ import axios from "axios";
 import jwt from 'react-native-pure-jwt'
 import Configuration from "../config/Configuration";
 
-
 // const centralRestServerServiceBaseURL = 'https://192.168.1.130';
 const centralRestServerServiceBaseURL = "https://sap-charge-angels-rest-server.cfapps.eu10.hana.ondemand.com";
 const centralRestServerServiceAuthURL = centralRestServerServiceBaseURL + "/client/auth";
