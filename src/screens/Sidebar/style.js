@@ -1,10 +1,7 @@
-const React = require("react-native");
-
-const { Platform } = React;
-
+import { StyleSheet, Platform } from "react";
 const primary = require("../../theme/variables/commonColor").brandPrimary;
 
-export default {
+export default StyleSheet.create({
   links: {
     paddingTop: Platform.OS === "android" ? 8 : 10,
     paddingBottom: Platform.OS === "android" ? 8 : 10,
@@ -39,4 +36,4 @@ export default {
     width: 40,
     borderRadius: Platform.OS === "android" ? 40 : 20
   }
-};
+});

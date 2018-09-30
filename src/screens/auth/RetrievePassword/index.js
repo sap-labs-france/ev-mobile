@@ -1,4 +1,3 @@
-// @flow
 import React from "react";
 import { Image, ImageBackground } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
@@ -49,7 +48,7 @@ class RetrievePassword extends React.Component {
         <ImageBackground source={require("../../../../assets/bg-signup.png")} style={styles.background}>
           <Content contentContainerStyle={styles.content}>
             <View style={styles.container}>
-              <Image source={require("../../../../assets/sap.gif")} style={styles.logo} />
+              <Image source={require("../../../../assets/logo-low.gif")} style={styles.logo} />
             </View>
             <View style={styles.container}>
               <Form style={styles.form}>
@@ -123,16 +122,21 @@ class RetrievePassword extends React.Component {
       } catch (error) {
         // Login failed
         this.setState({loading: false});
-        // Show error
-        switch (error.request.status) {
-          // Unknown Email
-          case 500:
-          case 550:
-            Message.showError(I18n.t("authentication.wrongEmail"));
-            break;
-          default:
-            // Other common Error
-            Utils.handleHttpUnexpectedError(error.request);
+        // Check request?
+        if (error.request) {
+          // Show error
+          switch (error.request.status) {
+            // Unknown Email
+            case 500:
+            case 550:
+              Message.showError(I18n.t("authentication.wrongEmail"));
+              break;
+            default:
+              // Other common Error
+              Utils.handleHttpUnexpectedError(error.request);
+          }
+        } else {
+          Message.showError(I18n.t("general.unexpectedError"));
         }
       }
     }

@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from "react";
 import { Platform, ProgressViewIOS, ProgressBarAndroid } from "react-native";
 import color from "color";

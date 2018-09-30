@@ -101,7 +101,7 @@ class SignUp extends React.Component {
         <ImageBackground source={require("../../../../assets/bg-signup.png")} style={styles.background}>
           <Content contentContainerStyle={styles.content}>
             <View style={styles.containerLogo}>
-              <Image source={require("../../../../assets/sap.gif")} style={styles.logo} />
+              <Image source={require("../../../../assets/logo-low.gif")} style={styles.logo} />
             </View>
             <View style={styles.container}>
               <Form style={styles.form}>
@@ -251,19 +251,23 @@ class SignUp extends React.Component {
         // Register
         let result = await CentralServerProvider.register(
           name, firstName, email, { password, repeatPassword }, eula);
+        console.log(result);
         // Reset
         this.setState({loading: false});
         // Show
         Message.showSuccess(I18n.t("authentication.registerSuccess"));
         // Back to login
         this.props.navigation.goBack();
-        console.log(result);
       } catch (error) {
         // Reset
         this.setState({loading: false});
-        console.log(error.request.status);
-        // Other common Error
-        Utils.handleHttpUnexpectedError(error.request);
+        // Check request?
+        if (error.request) {
+          // Other common Error
+          Utils.handleHttpUnexpectedError(error.request);
+        } else {
+          Message.showError(I18n.t("general.unexpectedError"));
+        }
       }
     }
   }

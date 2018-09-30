@@ -3,9 +3,10 @@ import { ScrollView, BackHandler } from "react-native";
 import { Spinner, Container } from "native-base";
 import HTMLView from "react-native-htmlview";
 import styles from "./styles";
-
 import CentralServerProvider from "../../../provider/CentralServerProvider";
 import I18n from "../../../I18n/I18n";
+import Message from "../../../utils/Message";
+import Utils from "../../../utils/Utils";
 
 export default class Eula extends React.Component {
   constructor(props) {
@@ -31,10 +32,18 @@ export default class Eula extends React.Component {
 		const { I18nLocal } = this.state;
 		try {
       let result = await CentralServerProvider.getEndUserLicenseAgreement(I18nLocal);
-      this.setState({loading: false});
-      this.setState({eulaTextHtml: result.text});
+      this.setState({
+        loading: false, 
+        eulaTextHtml: result.text
+      });
 		} catch (error) {
-			console.log(error);
+      // Check request?
+      if (error.request) {
+        // Other common Error
+        Utils.handleHttpUnexpectedError(error.request);
+      } else {
+        Message.showError(I18n.t("general.unexpectedError"));
+      }
 		}
   }
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { Image, ImageBackground } from "react-native";
+import { NavigationActions, StackActions } from "react-navigation";
 import {
   Container,
   Content,
@@ -72,7 +73,7 @@ class Login extends React.Component {
         <ImageBackground source={require("../../../../assets/bg.png")} style={styles.background}>
          <Content contentContainerStyle={styles.content}>
             <View style={styles.container}>
-              <Image source={require("../../../../assets/sap.gif")} style={styles.logo} />
+              <Image source={require("../../../../assets/logo-low.gif")} style={styles.logo} />
             </View>
             <View style={styles.container}>
               <Form style={styles.form}>
@@ -175,45 +176,48 @@ class Login extends React.Component {
         await CentralServerProvider.login(email, password, eula);
         // Login Success
         this.setState({loading: false});
-        // Show
-        Message.showSuccess(I18n.t("authentication.loginSuccess"));
         // Navigate to sites
-        // return this.props.navigation.dispatch(
-        //   NavigationActions.reset({
-        //     index: 0,
-        //     actions: [NavigationActions.navigate({ routeName: "Walkthrough" })]
-        //   })
-        // );
+        return this.props.navigation.dispatch(
+          StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: "DrawerNavigation" })]
+          })
+        );
 
       } catch (error) {
         // Login failed
         this.setState({loading: false});
-        // Show error
-        switch (error.request.status) {
-          // Unknown Email
-          case 500:
-          case 550:
-            Message.showError(I18n.t("authentication.wrongEmailOrPassword"));
-            break;
-          // Account is locked
-          case 570:
-            Message.showError(I18n.t("authentication.accountLocked"));
-            break;
-            // Account not Active
-          case 580:
-            Message.showError(I18n.t("authentication.accountNotActive"));
-            break;
-          // Account Pending
-          case 590:
-            Message.showError(I18n.t("authentication.accountPending"));
-            break;
-          // Eula no accepted
-          case 520:
-            Message.showError(I18n.t("authentication.eulaNotAccepted"));
-            break;
-          default:
-            // Other common Error
-            Utils.handleHttpUnexpectedError(error.request);
+        // Check request?
+        if (error.request) {
+          // Show error
+          switch (error.request.status) {
+            // Unknown Email
+            case 500:
+            case 550:
+              Message.showError(I18n.t("authentication.wrongEmailOrPassword"));
+              break;
+            // Account is locked
+            case 570:
+              Message.showError(I18n.t("authentication.accountLocked"));
+              break;
+              // Account not Active
+            case 580:
+              Message.showError(I18n.t("authentication.accountNotActive"));
+              break;
+            // Account Pending
+            case 590:
+              Message.showError(I18n.t("authentication.accountPending"));
+              break;
+            // Eula no accepted
+            case 520:
+              Message.showError(I18n.t("authentication.eulaNotAccepted"));
+              break;
+            default:
+              // Other common Error
+              Utils.handleHttpUnexpectedError(error.request);
+          }
+        } else {
+          Message.showError(I18n.t("general.unexpectedError"));
         }
       }
     }

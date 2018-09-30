@@ -7,30 +7,33 @@ import Eula from "./screens/auth/Eula/";
 import RetrievePassword from "./screens/auth/RetrievePassword";
 import SignUp from "./screens/auth/SignUp";
 import Sidebar from "./screens/Sidebar";
+import Sites from "./screens/Sites";
+import SiteAreas from "./screens/SiteAreas";
 
 // Drawer Menu Navigation
-const Drawer = DrawerNavigator(
+const DrawerNavigation = DrawerNavigator(
   {
-    SignUp: { screen: SignUp }
+    Sites: { screen: Sites },
+    SiteAreas: { screen: SiteAreas }
   },
   {
-    initialRouteName: "SignUp",
+    initialRouteName: "SiteAreas",
     contentComponent: props => <Sidebar {...props} />
   }
 );
 
 // Stack Navigation
-const App = StackNavigator(
+const AppNavigation = StackNavigator(
   {
     Login: { screen: Login },
     Eula: { screen: Eula },
     SignUp: { screen: SignUp },
     RetrievePassword: { screen: RetrievePassword },
-    Drawer: { screen: Drawer }
+    DrawerNavigation: { screen: DrawerNavigation }
   },
   {
     index: 0,
-    initialRouteName: "Login",
+    initialRouteName: "DrawerNavigation",
     headerMode: "none"
   }
 );
@@ -38,5 +41,5 @@ const App = StackNavigator(
 export default () =>
   <Root>
     <StatusBar hidden />
-    <App />
+    <AppNavigation />
   </Root>;

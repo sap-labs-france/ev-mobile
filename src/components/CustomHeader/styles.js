@@ -1,6 +1,4 @@
-const React = require("react-native");
-
-const { StyleSheet, Dimensions, Platform } = React;
+import { StyleSheet, Dimensions, Platform } from "react";
 
 module.exports = StyleSheet.create({
   header: {
