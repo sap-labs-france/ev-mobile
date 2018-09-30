@@ -33,14 +33,9 @@ class Sites extends Component {
     });
   }
 
-  async componentDidMount() {
-    // Check if user is still authenticated and toke is valid?
-    if (CentralServerProvider.isAuthenticated()) {
-      console.log('====================================');
-      console.log("Yes");
-      console.log('====================================');
-    }
-    await this.getSites();
+  componentDidMount() {
+    // Get the sites
+    this.getSites();
   }
 
   getSites = async () => {

@@ -37,9 +37,8 @@ class SiteAreas extends Component {
   }
 
   componentDidMount() {
-    const { siteID } = this.state;
     // Get Site Areas
-    this.getSitesAreas(siteID);
+    this.getSitesAreas(this.state.siteID);
   }
 
   getSitesAreas = async (siteID) => {

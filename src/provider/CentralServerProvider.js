@@ -1,7 +1,7 @@
 import axios from "axios";
-import { jwt } from 'react-native-pure-jwt'
 import Configuration from "../config/Configuration";
 import Constants from "../utils/Constants";
+// const jwt = require('jsonwebtoken');
 
 // const centralRestServerServiceBaseURL = 'https://192.168.1.130';
 const centralRestServerServiceBaseURL = "https://sap-charge-angels-rest-server.cfapps.eu10.hana.ondemand.com";
@@ -11,25 +11,21 @@ let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5MmU5NjlmODlkOGUwN2
 
 export default class CentralServerProvider {
   static async isAuthenticated() {
-    try {
-      console.log('====================================');
-      console.log(jwt);
-      console.log('====================================');
-      let result = await jwt.verify(
-        token, // the token
-        Configuration.getJWTSecretKey(), // the secret
-        { alg: 'hs256' }
-      );
+    // try {
+    //   console.log('====================================');
+    //   console.log(jwt);
+    //   console.log('====================================');
+    //   let result = await jwt.verify(token, Configuration.getJWTSecretKey());
 
-      console.log('====================================');
-      console.log(result);
-      console.log('====================================');
+    //   console.log('====================================');
+    //   console.log(result);
+    //   console.log('====================================');
 
-    } catch (error) {
-      console.log('====================================');
-      console.log(error);
-      console.log('====================================');      
-    }
+    // } catch (error) {
+    //   console.log('====================================');
+    //   console.log(error);
+    //   console.log('====================================');      
+    // }
   }
 
   static async resetPassword(email) {
