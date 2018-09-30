@@ -1,11 +1,12 @@
 const React = require("react-native");
 const { Dimensions, Platform } = React;
 const commonColor = require("../../theme/variables/commonColor");
+import { StyleSheet } from 'react-native';
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 
-export default {
+export default StyleSheet.create({
   background: {
     flex: 1,
     width: null,
@@ -86,7 +87,7 @@ export default {
     opacity: 0.9,
     fontWeight: "bold",
     color: "#fff",
-    fontSize: Platform.OS === "android" ? 12 : 12,
+    fontSize: 14,
   },
   inputGroup: {
     flexDirection: "row",
@@ -110,4 +111,4 @@ export default {
     fontWeight: "bold",
     color: "#EFF"
   }
-};
+});

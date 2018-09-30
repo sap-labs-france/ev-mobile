@@ -1,6 +1,5 @@
 import React from "react";
 import { Image, ImageBackground } from "react-native";
-import ValidationComponent from 'react-native-form-validator';
 import {
   Container,
   Content,
@@ -16,6 +15,7 @@ import {
   CheckBox,
   Body,
   ListItem,
+  Footer,
   Spinner
 } from "native-base";
 import CentralServerProvider from "../../../provider/CentralServerProvider";
@@ -24,7 +24,35 @@ import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
 import styles from "../styles";
 
-class Login extends ValidationComponent {
+const formValidationDef = {
+  email: {
+    presence: {
+      allowEmpty: false,
+      message: "^" + I18n.t("general.required")
+    },
+    email: {
+      message: "^" + I18n.t("general.email")
+    }
+  },
+  password: {
+    presence: {
+      allowEmpty: false,
+      message: "^" + I18n.t("general.required")
+    }
+  },
+  eula: {
+    equality: {
+      attribute: "ghost",
+      message: "^" + I18n.t("login.eulaNotAccepted"),
+      comparator: function(v1, v2) {
+        // True if EULA is checked
+        return v1;
+      }
+    }
+  }
+};
+
+class Login extends React.Component {
   constructor(props) {
     super(props);
 
@@ -66,7 +94,7 @@ class Login extends ValidationComponent {
                     secureTextEntry={false}
                   />
                 </Item>
-                {this.isFieldInError('email') && this.getErrorsInField('email').map((errorMessage, index) => <Text style={styles.formErrorText} key={"email-" + index}>{errorMessage}</Text>) }
+                {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
                 <Item inlineLabel rounded style={styles.inputGroup}>
                   <Icon active name="unlock" style={styles.icon} />
@@ -86,7 +114,7 @@ class Login extends ValidationComponent {
                     secureTextEntry={true}
                   />
                 </Item>
-                {this.isFieldInError('password') && this.getErrorsInField('password').map((errorMessage, index) => <Text style={styles.formErrorText} key={"password-" + index}>{errorMessage}</Text>) }
+                {this.state.errorPassword && this.state.errorPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
                 <ListItem style={styles.listItemEulaCheckbox}>
                   <CheckBox ref="eula" checked={eula} 
@@ -97,6 +125,9 @@ class Login extends ValidationComponent {
                     </Text>
                   </Body>
      			      </ListItem>
+                <View>
+                  {this.state.errorEula && this.state.errorEula.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
+                </View>
                 {loading ?
                   <Spinner style={styles.spinner} color="white" />
                   :
@@ -108,46 +139,33 @@ class Login extends ValidationComponent {
                     </Text>
                   </Button>
                 }
-                <View style={styles.linksContainer}>
-                   <Left>
-                     <Button small transparent style={styles.linksButtonLeft}
-                       onPress={() => navigation.navigate("SignUp")}
-                     >
-                       <Text style={styles.helpButton}>{I18n.t("login.newUser")}</Text>
-                     </Button>
-                   </Left>
-                   <Right>
-                     <Button small transparent style={styles.linksButtonRight}
-                       onPress={() => navigation.navigate("RetrievePassword")}
-                     >
-                       <Text style={styles.helpButton}>{I18n.t("login.forgotYourPassword")}</Text>
-                     </Button>
-                   </Right>
-                 </View>
               </Form>
             </View>
           </Content>
+          <Footer>
+            <Left>
+              <Button small transparent style={styles.linksButtonLeft}
+                onPress={() => navigation.navigate("SignUp")}>
+                <Text style={styles.helpButton}>{I18n.t("login.newUser")}</Text>
+              </Button>
+            </Left>
+            <Right>
+              <Button small transparent style={styles.linksButtonRight}
+                onPress={() => navigation.navigate("RetrievePassword")}>
+                <Text style={styles.helpButton}>{I18n.t("login.forgotYourPassword")}</Text>
+              </Button>
+            </Right>
+          </Footer>
         </ImageBackground>
       </Container>
     );
   }
 
   login = async () => {
-    // Check Form
-    this.validate({
-      email: { email: true, required: true },
-      password: { required: true }
-    });
-    // Refresh view
-    this.forceUpdate();
-    // Check EULA
-    if (this.isFormValid() && !this.state.eula) {
-      // Show error
-      Message.showError(I18n.t("login.eulaNotAccepted"));
-      return;
-    }
+    // Check field
+    const formIsValid = Utils.validateInput(this, formValidationDef);
     // Ok?
-    if (this.isFormValid()) {
+    if (formIsValid) {
       // Login
       const { password, email, eula } = this.state;
       try {

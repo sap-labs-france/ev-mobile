@@ -2,18 +2,16 @@
   "general": {
     "cannotConnectBackend": "Cannot connect to the backend!",
     "unexpectedError": "Unexpected error occurred in the backend!",
-    "numbers": "The field '{0}' must be a valid number.",
-    "email": "The field '{0}' must be a valid email address.",
-    "required": "The field '{0}' is mandatory.",
-    "date": "The field '{0}' must be a valid date ({1}).",
-    "minlength": "The field '{0}' length must be greater than {1}.",
-    "maxlength": "The field '{0}' length must be lower than {1}."
+    "numbers": "Enter a valid number",
+    "email": "Enter a valid email address",
+    "required": "Field is mandatory"
   },
   "login": {
     "signIn": "Sign In",
     "logOut": "Log Out",
     "loginSuccess": "Logged in successfully",
     "wrongEmailOrPassword": "Wrong email or password!",
+    "wrongEmail": "Wrong email!",
     "accountLocked": "Account locked",
     "accountNotActive": "Account is not active",
     "accountPending": "Account is pending, check your e-mail",
@@ -65,15 +63,7 @@
     "password": "Password",
     "repeatPassword": "Repeat password",
     "signUp": "Sign Up",
-    "onlyAlpha": "Only alpha characters",
-    "errors": {
-      "lowerCase": "Lower case is required",
-      "upperCase": "Upper case is required",
-      "number": "Number is required",
-      "specialCharacter": "A special character is required",
-      "minimumLength": "Must be 8 characters or more",
-      "required": "Required",
-      "passwordNotMatch": "Password does not match"
-    }
+		"passwordRule": "Must contain 1 letter lowercase and uppercase, 1 number, 1 special char and 8 chars long",
+    "passwordNotMatch": "Password does not match"
   }
 }

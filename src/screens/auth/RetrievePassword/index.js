@@ -1,7 +1,6 @@
 // @flow
 import React from "react";
 import { Image, ImageBackground } from "react-native";
-import ValidationComponent from 'react-native-form-validator';
 import { NavigationActions, StackActions } from "react-navigation";
 import {
   Container,
@@ -22,7 +21,19 @@ import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
 import styles from "../styles";
 
-class RetrievePassword extends ValidationComponent {
+const formValidationDef = {
+  email: {
+    presence: {
+      allowEmpty: false,
+      message: "^" + I18n.t("general.required")
+    },
+    email: {
+      message: "^" + I18n.t("general.email")
+    }
+  }
+};
+
+class RetrievePassword extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -60,7 +71,7 @@ class RetrievePassword extends ValidationComponent {
                     secureTextEntry={false}
                   />
                 </Item>
-                {this.isFieldInError('email') && this.getErrorsInField('email').map((errorMessage, index) => <Text style={styles.formErrorText} key={"email-" + index}>{errorMessage}</Text>) }
+                {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
                 {loading ?
                   <Spinner style={styles.spinner} color="white" />
@@ -87,14 +98,10 @@ class RetrievePassword extends ValidationComponent {
   }
 
   resetPassword = async () => {
-    // Check Form
-    this.validate({
-      email: { email: true, required: true }
-    });
-    // Refresh view
-    this.forceUpdate();
+    // Check field
+    const formIsValid = Utils.validateInput(this, formValidationDef);
     // Ok?
-    if (this.isFormValid()) {
+    if (formIsValid) {
       // Login
       const { email } = this.state;
       try {
@@ -121,7 +128,7 @@ class RetrievePassword extends ValidationComponent {
           // Unknown Email
           case 500:
           case 550:
-            Message.showError(I18n.t("login.wrongEmailOrPassword"));
+            Message.showError(I18n.t("login.wrongEmail"));
             break;
           default:
             // Other common Error

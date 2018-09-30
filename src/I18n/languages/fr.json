@@ -2,18 +2,16 @@
   "general": {
     "cannotConnectBackend": "Cannot connect to the backend !",
     "unexpectedError": "Erreur serveur inattendue !",
-    "numbers": "Le champ '{0}' doit être un nombre valide.",
-    "email": "Le champ '{0}' doit être une adresse email valide.",
-    "required": "Le champ '{0}' est obligatoire.",
-    "date": "Le champ '{0}' doit correspondre à une date valide ({1}).",
-    "minlength": "Le nombre de caractère du champ '{0}' doit être supérieur à {1}.",
-    "maxlength": "Le nombre de caractère du champ '{0}' doit être inférieur à {1}."
+    "numbers": "Entrez un nombre valide",
+    "email": "Entrez une adresse email valide",
+    "required": "Le champ est obligatoire"
   },
   "login": {
     "signIn": "Se connecter",
     "logOut": "Se déconnecter",
     "loginSuccess": "Connexion réussie",
     "wrongEmailOrPassword": "Mauvais email ou mot de passe !",
+    "wrongEmail": "Email inconnu !",
     "accountLocked": "Votre compte est bloqué",
     "accountNotActive": "Votre compte est inactif",
     "accountPending": "Compte en attente de confirmation, vérifiez vos e-mail",
@@ -65,15 +63,7 @@
     "password": "Mot de passe",
     "repeatPassword": "Répétez mot de passe",
     "signUp": "S'enregistrer",
-    "onlyAlpha": "Lettres seulement autorisées",
-    "errors": {
-      "lowerCase": "Minuscule obligatoire",
-      "upperCase": "Majuscule obligatoire",
-      "number": "Chiffre obligatoire",
-      "specialCharacter": "Caractère spécial obligatoire",
-      "minimumLength": "8 caractères minimums obligatoires",
-      "required": "Obligatoire",
-      "passwordNotMatch": "Les mots de passes ne correspondent pas"
-    }
+		"passwordRule": "Doit contenir 1 char. minuscule et majuscule, 1 nombre, 1 char. spécial et une longueur de 8",
+    "passwordNotMatch": "Les mots de passes ne correspondent pas"
   }
 }
