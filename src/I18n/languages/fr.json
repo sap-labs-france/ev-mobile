@@ -4,9 +4,18 @@
     "unexpectedError": "Erreur serveur inattendue !",
     "numbers": "Entrez un nombre valide",
     "email": "Entrez une adresse email valide",
-    "required": "Le champ est obligatoire"
+    "required": "Le champ est obligatoire",
+    "tempIndicator": "C",
+    "componentExamples": "Exemples de Composants",
+    "usageExamples": "Exemples d'utilisation",
+    "apiTesting": "API Testing",
+    "themeSettings": "Réglage des thèmes",
+    "deviceDetails": "Détails du périphérique",
+    "noItems": "Aucun",
+    "search": "Search",
+    "cancel": "Annuler"
   },
-  "login": {
+  "authentication": {
     "signIn": "Se connecter",
     "logOut": "Se déconnecter",
     "loginSuccess": "Connexion réussie",
@@ -28,32 +37,12 @@
     "required": "Obligatoire",
     "acceptEula": "J'accepte les ",
     "eula": "conditions d'utilisation",
-    "loginLogoutExampleTitle": "Connexion / Déconnexion Redux + Sagas Exemple",
-    "progressiveImageComponent": "Composant Image Progressive",
-    "cannot_connect_backend": "Impossible de se connecter au serveur!",
-    "api": "Mon Dieu!  Une API pour vous!",
-    "locale": "I18n Paramètres régionaux",
-    "rnVectorIcons": "RN icônes vectorielles",
     "loginWithFacebook": "Se connecter avec Facebook",
-    "rni18n": "RN i18n",
-    "igniteGenerated": "Ignite Générer des Écrans",
     "username": "Nom d'utilisateur",
-    "cancel": "Annuler",
     "welcome": "Bienvenue",
     "login": "S'identifier",
-    "tempIndicator": "C",
-    "componentExamples": "Exemples de Composants",
-    "usageExamples": "Exemples d'utilisation",
-    "apiTesting": "API Testing",
-    "themeSettings": "Réglage des thèmes",
-    "deviceDetails": "Détails du périphérique",
-    "noItems": "Aucun"
-  },
-  "toastTextButton": {
-    "okay": "Ok"
-  },
-  "signUp": {
     "invalidEmail": "Email invalide",
+		"registerSuccess": "Votre compte a été créé avec succès ! Vérifiez vos emails",
     "registerToChargeAngels":"Enregistrez-vous sur Charge-Angels©",
     "haveAlreadyAccount": "Avez-vous déjà un compte?",
     "create": "Créer",
@@ -65,5 +54,8 @@
     "signUp": "S'enregistrer",
 		"passwordRule": "Doit contenir 1 char. minuscule et majuscule, 1 nombre, 1 char. spécial et une longueur de 8",
     "passwordNotMatch": "Les mots de passes ne correspondent pas"
+  },
+  "toastTextButton": {
+    "okay": "Ok"
   }
 }

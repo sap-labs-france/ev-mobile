@@ -1,4 +1,3 @@
-// @flow
 import React from "react";
 import { Image, ImageBackground } from "react-native";
 import {
@@ -14,12 +13,13 @@ import {
   ListItem,
   CheckBox,
   Body,
-  Footer
+  Footer,
+  Spinner
 } from "native-base";
 import CentralServerProvider from "../../../provider/CentralServerProvider";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
-import Constants from "../../../utils/Constants";
+import Message from "../../../utils/Message";
 import styles from "../styles";
 
 const formValidationDef = {
@@ -49,9 +49,13 @@ const formValidationDef = {
       allowEmpty: false,
       message: "^" + I18n.t("general.required")
     },
-    format: {
-      pattern: /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/,
-      message: "^" + I18n.t("signUp.passwordRule")
+    equality: {
+      attribute: "ghost",
+      message: "^" + I18n.t("authentication.passwordRule"),
+      comparator: function(password, ghost) {
+        // True if EULA is checked
+        return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(password);
+      }
     }
   },
   repeatPassword: {
@@ -61,45 +65,18 @@ const formValidationDef = {
     },
     equality: {
       attribute: "password",
-      message: "^" + I18n.t("signUp.passwordNotMatch")
+      message: "^" + I18n.t("authentication.passwordNotMatch")
     }
   },
   eula: {
     equality: {
       attribute: "ghost",
-      message: "^" + I18n.t("login.eulaNotAccepted"),
-      comparator: function(v1, v2) {
+      message: "^" + I18n.t("authentication.eulaNotAccepted"),
+      comparator: function(eula, ghost) {
         // True if EULA is checked
-        return v1;
+        return eula;
       }
     }
-  }
-};
-
-const checkPassword = value => {
-  if (value && !/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(value)) {
-    // Check lower case
-    if (!/(?=.*[a-z])/.test(value)) {
-      return I18n.t("signUp.errors.lowerCase");
-    }
-    // Check upper case
-    if (!/(?=.*[A-Z])/.test(value)) {
-      return I18n.t("signUp.errors.upperCase");
-    }
-    // Check number
-    if (!/(?=.*[0-9])/.test(value)) {
-      return I18n.t("signUp.errors.number");
-    }
-    // Check special character
-    if (!/(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])/.test(value)) {
-      return I18n.t("signUp.errors.specialCharacter");
-    }
-    // Check length
-    if (!/(?=.{8,})/.test(value)) {
-      return I18n.t("signUp.errors.minimumLength");
-    }
-  } else {
-    return undefined;
   }
 };
 
@@ -117,29 +94,15 @@ class SignUp extends React.Component {
     };
   }
 
-  // signUp = async () => {
-  //   // TODO: Test and see back end side
-  //   const { name, firstname, email, passwords, eula } = this.state;
-  //   try {
-  //     let result = await CentralServerProvider.register(name, firstname, email, passwords, eula);
-  //     this.props.navigation.goBack();
-  //     console.log(result);
-  //   } catch (error) {
-  //     console.log(error.request.status);
-  //     // Other common Error
-	// 			Utils.handleHttpUnexpectedError(error.request);
-  //   }
-  // }
-
   render() {
     const { eula, loading } = this.state;
     return (
       <Container>
         <ImageBackground source={require("../../../../assets/bg-signup.png")} style={styles.background}>
           <Content contentContainerStyle={styles.content}>
-            {/* <View style={styles.containerLogo}>
+            <View style={styles.containerLogo}>
               <Image source={require("../../../../assets/sap.gif")} style={styles.logo} />
-            </View> */}
+            </View>
             <View style={styles.container}>
               <Form style={styles.form}>
                 <Item inlineLabel rounded style={styles.inputGroup}>
@@ -149,7 +112,7 @@ class SignUp extends React.Component {
                     type="text"
                     ref="name"
                     returnKeyType={"next"}
-                    placeholder={I18n.t("signUp.name")}
+                    placeholder={I18n.t("authentication.name")}
                     placeholderTextColor="#FFF"
                     style={styles.input}
                     autoCapitalize="none"
@@ -168,7 +131,7 @@ class SignUp extends React.Component {
                     type="text"
                     ref="firstName"
                     returnKeyType={"next"}
-                    placeholder={I18n.t("signUp.firstName")}
+                    placeholder={I18n.t("authentication.firstName")}
                     placeholderTextColor="#FFF"
                     style={styles.input}
                     autoCapitalize="none"
@@ -187,7 +150,7 @@ class SignUp extends React.Component {
                     type="email"
                     ref="email"
                     returnKeyType={"next"}
-                    placeholder={I18n.t("login.email")}
+                    placeholder={I18n.t("authentication.email")}
                     placeholderTextColor="#FFF"
                     style={styles.input}
                     autoCapitalize="none"
@@ -207,7 +170,7 @@ class SignUp extends React.Component {
                     type="password"
                     ref="password"
                     returnKeyType={"next"}
-                    placeholder={I18n.t("signUp.password")}
+                    placeholder={I18n.t("authentication.password")}
                     placeholderTextColor="#FFF"
                     style={styles.input}
                     autoCapitalize="none"
@@ -227,7 +190,7 @@ class SignUp extends React.Component {
                     type="password"
                     ref="repeatPassword"
                     returnKeyType={"next"}
-                    placeholder={I18n.t("signUp.repeatPassword")}
+                    placeholder={I18n.t("authentication.repeatPassword")}
                     placeholderTextColor="#FFF"
                     style={styles.input}
                     autoCapitalize="none"
@@ -244,8 +207,8 @@ class SignUp extends React.Component {
                   <CheckBox ref="eula" checked={eula} 
                     onPress={() => this.setState({eula: !eula})} />
                   <Body>
-                    <Text style={styles.eulaText}>{I18n.t("login.acceptEula")}
-                      <Text onPress={()=>this.props.navigation.navigate("Eula")} style={styles.eulaLink}>{I18n.t("login.eula")}</Text>
+                    <Text style={styles.eulaText}>{I18n.t("authentication.acceptEula")}
+                      <Text onPress={()=>this.props.navigation.navigate("Eula")} style={styles.eulaLink}>{I18n.t("authentication.eula")}</Text>
                     </Text>
                   </Body>
      			      </ListItem>
@@ -259,7 +222,7 @@ class SignUp extends React.Component {
                     style={styles.button} onPress={this.signUp} 
                   >
                     <Text style={styles.buttonText}>
-                      {I18n.t("signUp.signUp")}
+                      {I18n.t("authentication.signUp")}
                     </Text>
                   </Button>
                 }
@@ -268,7 +231,7 @@ class SignUp extends React.Component {
           </Content>
           <Footer>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Text style={styles.helpButtons}>{I18n.t("signUp.haveAlreadyAccount")}</Text>
+              <Text style={styles.helpButtons}>{I18n.t("authentication.haveAlreadyAccount")}</Text>
             </Button>
           </Footer>
         </ImageBackground>
@@ -276,14 +239,32 @@ class SignUp extends React.Component {
     );
   }
 
-  signUp = () => {
+  signUp = async () => {
     // Check field
     const formIsValid = Utils.validateInput(this, formValidationDef);
     // Ok?
     if (formIsValid) {
-      console.log('====================================');
-      console.log("OK");
-      console.log('====================================');
+      const { name, firstName, email, password, repeatPassword, eula } = this.state;
+      try {
+        // Loading
+        this.setState({loading: true});
+        // Register
+        let result = await CentralServerProvider.register(
+          name, firstName, email, { password, repeatPassword }, eula);
+        // Reset
+        this.setState({loading: false});
+        // Show
+        Message.showSuccess(I18n.t("authentication.registerSuccess"));
+        // Back to login
+        this.props.navigation.goBack();
+        console.log(result);
+      } catch (error) {
+        // Reset
+        this.setState({loading: false});
+        console.log(error.request.status);
+        // Other common Error
+        Utils.handleHttpUnexpectedError(error.request);
+      }
     }
   }
 }

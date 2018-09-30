@@ -60,7 +60,7 @@ class RetrievePassword extends React.Component {
                     type="email"
                     ref="email"
                     returnKeyType={"next"}
-                    placeholder={I18n.t("login.email")}
+                    placeholder={I18n.t("authentication.email")}
                     placeholderTextColor="#FFF"
                     style={styles.input}
                     autoCapitalize="none"
@@ -80,7 +80,7 @@ class RetrievePassword extends React.Component {
                     style={styles.button} onPress={this.resetPassword} 
                   >
                     <Text style={styles.buttonText}>
-                      {I18n.t("login.retrievePassword")}
+                      {I18n.t("authentication.retrievePassword")}
                     </Text>
                   </Button>
                 }
@@ -89,7 +89,7 @@ class RetrievePassword extends React.Component {
           </Content>
           <Footer>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Text style={styles.helpButtons}>{I18n.t("login.backLogin")}</Text>
+              <Text style={styles.helpButtons}>{I18n.t("authentication.backLogin")}</Text>
             </Button>
           </Footer>
         </ImageBackground>
@@ -111,7 +111,7 @@ class RetrievePassword extends React.Component {
         // Login Success
         this.setState({loading: false});
         // Show
-        Message.showSuccess(I18n.t("login.resetSuccess"));
+        Message.showSuccess(I18n.t("authentication.resetSuccess"));
         // Navigate
         return this.props.navigation.dispatch(
           StackActions.reset({
@@ -128,7 +128,7 @@ class RetrievePassword extends React.Component {
           // Unknown Email
           case 500:
           case 550:
-            Message.showError(I18n.t("login.wrongEmail"));
+            Message.showError(I18n.t("authentication.wrongEmail"));
             break;
           default:
             // Other common Error

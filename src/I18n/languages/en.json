@@ -4,9 +4,18 @@
     "unexpectedError": "Unexpected error occurred in the backend!",
     "numbers": "Enter a valid number",
     "email": "Enter a valid email address",
-    "required": "Field is mandatory"
+    "required": "Field is mandatory",
+    "tempIndicator": "F",
+    "componentExamples": "Component Examples",
+    "usageExamples": "Usage Examples",
+    "apiTesting": "API Testing",
+    "themeSettings": "Theme Settings",
+    "deviceDetails": "Device Details",
+    "noItems": "No Items",
+    "search": "Search",
+    "cancel": "Cancel"
   },
-  "login": {
+	"authentication": {
     "signIn": "Sign In",
     "logOut": "Log Out",
     "loginSuccess": "Logged in successfully",
@@ -28,32 +37,12 @@
     "required": "Required",
     "acceptEula": "I accept the ",
     "eula": "End-User License Agreement",
-    "loginLogoutExampleTitle": "Login/Logout Redux + Sagas Example",
-    "progressiveImageComponent": "Progressive Image Component",
-    "api": "API",
-    "locale": "I18n Locale",
-    "rnVectorIcons": "RN Vector Icons",
     "loginWithFacebook": "Login with Facebook",
-    "rni18n": "RN i18n",
-    "igniteGenerated": "Ignite Generate Screens",
     "username": "Username",
-    "cancel": "Cancel",
     "welcome": "Welcome",
     "login": "Login",
-    "tempIndicator": "F",
-    "componentExamples": "Component Examples",
-    "usageExamples": "Usage Examples",
-    "apiTesting": "API Testing",
-    "themeSettings": "Theme Settings",
-    "deviceDetails": "Device Details",
-    "noItems": "No Items",
-    "search": "Search"
-  },
-  "toastTextButton": {
-    "okay": "Okay"
-  },
-  "signUp": {
     "invalidEmail": "Invalid email address",
+		"registerSuccess": "Your account has been created with success! Check your email",
     "registerToChargeAngels": "Register to Charge-Angels©",
     "haveAlreadyAccount": "Already have an account?",
     "create": "Create",
@@ -65,5 +54,8 @@
     "signUp": "Sign Up",
 		"passwordRule": "Must contain 1 letter lowercase and uppercase, 1 number, 1 special char and 8 chars long",
     "passwordNotMatch": "Password does not match"
+  },
+  "toastTextButton": {
+    "okay": "Ok"
   }
 }

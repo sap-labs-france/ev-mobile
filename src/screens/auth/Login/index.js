@@ -43,7 +43,7 @@ const formValidationDef = {
   eula: {
     equality: {
       attribute: "ghost",
-      message: "^" + I18n.t("login.eulaNotAccepted"),
+      message: "^" + I18n.t("authentication.eulaNotAccepted"),
       comparator: function(v1, v2) {
         // True if EULA is checked
         return v1;
@@ -83,7 +83,7 @@ class Login extends React.Component {
                     type="email"
                     ref="email"
                     returnKeyType={"next"}
-                    placeholder={I18n.t("login.email")}
+                    placeholder={I18n.t("authentication.email")}
                     placeholderTextColor="#FFF"
                     style={styles.input}
                     autoCapitalize="none"
@@ -103,7 +103,7 @@ class Login extends React.Component {
                     type="password"
                     ref="password"
                     returnKeyType={"next"}
-                    placeholder={I18n.t("login.password")}
+                    placeholder={I18n.t("authentication.password")}
                     placeholderTextColor="#FFF"
                     style={styles.input}
                     autoCapitalize="none"
@@ -120,8 +120,8 @@ class Login extends React.Component {
                   <CheckBox ref="eula" checked={eula} 
                     onPress={() => this.setState({eula: !eula})} />
                   <Body>
-                    <Text style={styles.eulaText}>{I18n.t("login.acceptEula")}
-                      <Text onPress={()=>this.props.navigation.navigate("Eula")} style={styles.eulaLink}>{I18n.t("login.eula")}</Text>
+                    <Text style={styles.eulaText}>{I18n.t("authentication.acceptEula")}
+                      <Text onPress={()=>this.props.navigation.navigate("Eula")} style={styles.eulaLink}>{I18n.t("authentication.eula")}</Text>
                     </Text>
                   </Body>
      			      </ListItem>
@@ -135,7 +135,7 @@ class Login extends React.Component {
                     style={styles.button} onPress={this.login} 
                   >
                     <Text style={styles.buttonText}>
-                      {I18n.t("login.login")}
+                      {I18n.t("authentication.login")}
                     </Text>
                   </Button>
                 }
@@ -146,13 +146,13 @@ class Login extends React.Component {
             <Left>
               <Button small transparent style={styles.linksButtonLeft}
                 onPress={() => navigation.navigate("SignUp")}>
-                <Text style={styles.helpButton}>{I18n.t("login.newUser")}</Text>
+                <Text style={styles.helpButton}>{I18n.t("authentication.newUser")}</Text>
               </Button>
             </Left>
             <Right>
               <Button small transparent style={styles.linksButtonRight}
                 onPress={() => navigation.navigate("RetrievePassword")}>
-                <Text style={styles.helpButton}>{I18n.t("login.forgotYourPassword")}</Text>
+                <Text style={styles.helpButton}>{I18n.t("authentication.forgotYourPassword")}</Text>
               </Button>
             </Right>
           </Footer>
@@ -169,13 +169,14 @@ class Login extends React.Component {
       // Login
       const { password, email, eula } = this.state;
       try {
+        // Loading
         this.setState({loading: true});
         // Login
         await CentralServerProvider.login(email, password, eula);
         // Login Success
         this.setState({loading: false});
         // Show
-        Message.showSuccess(I18n.t("login.loginSuccess"));
+        Message.showSuccess(I18n.t("authentication.loginSuccess"));
         // Navigate to sites
         // return this.props.navigation.dispatch(
         //   NavigationActions.reset({
@@ -192,23 +193,23 @@ class Login extends React.Component {
           // Unknown Email
           case 500:
           case 550:
-            Message.showError(I18n.t("login.wrongEmailOrPassword"));
+            Message.showError(I18n.t("authentication.wrongEmailOrPassword"));
             break;
           // Account is locked
           case 570:
-            Message.showError(I18n.t("login.accountLocked"));
+            Message.showError(I18n.t("authentication.accountLocked"));
             break;
             // Account not Active
           case 580:
-            Message.showError(I18n.t("login.accountNotActive"));
+            Message.showError(I18n.t("authentication.accountNotActive"));
             break;
           // Account Pending
           case 590:
-            Message.showError(I18n.t("login.accountPending"));
+            Message.showError(I18n.t("authentication.accountPending"));
             break;
           // Eula no accepted
           case 520:
-            Message.showError(I18n.t("login.eulaNotAccepted"));
+            Message.showError(I18n.t("authentication.eulaNotAccepted"));
             break;
           default:
             // Other common Error
