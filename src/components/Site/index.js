@@ -16,7 +16,7 @@ class SiteComponent extends Component {
     return (
       <TouchableOpacity
         style={{ flexDirection: "row" }}
-        onPress={() => navigation.navigate("SitesAreas", {siteID: item.id})}
+        onPress={() => navigation.navigate("SiteAreas", { siteID: item.id })}
       >
         <View style={styles.newsContent}>
           <Grid>

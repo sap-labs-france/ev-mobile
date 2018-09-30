@@ -9,7 +9,6 @@ import {
 class ChargerComponent extends Component {
 
   _renderItem({item}) {
-    console.log(item);
     return (
       <ListItem>
         <Text>{item.id}</Text>

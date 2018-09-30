@@ -33,16 +33,17 @@ class Sites extends Component {
     });
   }
 
-  componentDidMount() {
-    // if (CentralServerProvider.isAuthenticated()) {
-    //   console.log('====================================');
-    //   console.log("Yes");
-    //   console.log('====================================');
-    // }
-    this.handleSitesList();
+  async componentDidMount() {
+    // Check if user is still authenticated and toke is valid?
+    if (CentralServerProvider.isAuthenticated()) {
+      console.log('====================================');
+      console.log("Yes");
+      console.log('====================================');
+    }
+    await this.getSites();
   }
 
-  handleSitesList = async () => {
+  getSites = async () => {
     try {
       let sites = await CentralServerProvider.getSites();
       // Fill each sites to dataSites array
@@ -52,6 +53,10 @@ class Sites extends Component {
       });
       console.log(sites.result);
     } catch (error) {
+      // Stop
+      this.setState({
+        loading: false
+      });
       // Other common Error
       Utils.handleHttpUnexpectedError(error.request);
     }
@@ -85,12 +90,11 @@ class Sites extends Component {
         </Header>
 
         <Content showsVerticalScrollIndicator={false} style={{ backgroundColor: "black" }}>
-          {loading && (
+          {loading ?
             <Container>
               <Spinner color="white" style={{flex: 1}} />
             </Container>
-          )}
-          {!loading && (
+          :
             <View>
               <FlatList
                 data={this.state.dataSites}
@@ -98,7 +102,7 @@ class Sites extends Component {
                 keyExtractor={item => item.id}
               />
             </View>
-          )}
+          }
         </Content>
       </Container>
     );

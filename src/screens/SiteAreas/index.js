@@ -31,7 +31,7 @@ class SiteAreas extends Component {
     // Init State
     this.state = {
       loading: true,
-      siteID: "5abeba9e4bae1457eb565e66",
+      siteID: this.props.navigation.state.params.siteID,
       siteAreas: []
     };
   }
@@ -45,7 +45,8 @@ class SiteAreas extends Component {
   getSitesAreas = async (siteID) => {
     try {
       // Get Site Areas
-      let siteAreas = await CentralServerProvider.getSiteAreas(siteID);
+      let siteAreas = await CentralServerProvider.getSiteAreas(
+        { SiteID: siteID, WithChargeBoxes: true });
       // Set result
       this.setState({
         loading: false,
@@ -53,6 +54,10 @@ class SiteAreas extends Component {
       });
       console.log(siteAreas.result);
     } catch (error) {
+      // Stop
+      this.setState({
+        loading: false
+      });
       // Other common Error
       Utils.handleHttpUnexpectedError(error.request);
     }

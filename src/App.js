@@ -17,7 +17,7 @@ const DrawerNavigation = DrawerNavigator(
     SiteAreas: { screen: SiteAreas }
   },
   {
-    initialRouteName: "SiteAreas",
+    initialRouteName: "Sites",
     contentComponent: props => <Sidebar {...props} />
   }
 );
@@ -33,7 +33,7 @@ const AppNavigation = StackNavigator(
   },
   {
     index: 0,
-    initialRouteName: "DrawerNavigation",
+    initialRouteName: "Login",
     headerMode: "none"
   }
 );
