@@ -94,12 +94,12 @@ export default StyleSheet.create({
     borderWidth: 0,
     borderColor: "transparent"
   },
-  input: {  
+  input: {
     paddingLeft: 10,
     color: "#fff"
   },
   icon: {
-    width: 40,
+    width: 50,
     color: "#fff"
   },
   otherLinkText: {

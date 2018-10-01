@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   newsContent: {
@@ -15,7 +15,6 @@ export default StyleSheet.create({
     color: "#fff",
     alignSelf: "flex-start",
     fontWeight: "bold",
-    marginRight: 200
   },
   newsLink: {
     color: "#fff",

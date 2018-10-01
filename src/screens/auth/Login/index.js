@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageBackground } from "react-native";
+import { Image, ImageBackground, Keyboard} from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import {
   Container,
@@ -54,6 +54,10 @@ const formValidationDef = {
 };
 
 class Login extends React.Component {
+
+  passwordInput;
+  eulaCheckBox;
+
   constructor(props) {
     super(props);
 
@@ -68,7 +72,7 @@ class Login extends React.Component {
   render() {
     const navigation = this.props.navigation;
     const { eula, loading } = this.state;
-    return(
+    return (
       <Container>
         <ImageBackground source={require("../../../../assets/bg.png")} style={styles.background}>
          <Content contentContainerStyle={styles.content}>
@@ -82,10 +86,10 @@ class Login extends React.Component {
                   <Input
                     name="email"
                     type="email"
-                    ref="email"
-                    returnKeyType={"next"}
+                    returnKeyType= "next"
                     placeholder={I18n.t("authentication.email")}
                     placeholderTextColor="#FFF"
+                    onSubmitEditing={() => this.passwordInput._root.focus()}
                     style={styles.input}
                     autoCapitalize="none"
                     blurOnSubmit={false}
@@ -102,8 +106,9 @@ class Login extends React.Component {
                   <Input
                     name="password"
                     type="password"
-                    ref="password"
-                    returnKeyType={"next"}
+                    returnKeyType="go"
+                    ref={(ref)=>(this.passwordInput = ref)}
+                    onSubmitEditing={()=>Keyboard.dismiss()}
                     placeholder={I18n.t("authentication.password")}
                     placeholderTextColor="#FFF"
                     style={styles.input}
@@ -118,7 +123,7 @@ class Login extends React.Component {
                 {this.state.errorPassword && this.state.errorPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
                 <ListItem style={styles.listItemEulaCheckbox}>
-                  <CheckBox ref="eula" checked={eula} 
+                  <CheckBox checked={eula}
                     onPress={() => this.setState({eula: !eula})} />
                   <Body>
                     <Text style={styles.eulaText}>{I18n.t("authentication.acceptEula")}
@@ -133,7 +138,7 @@ class Login extends React.Component {
                   <Spinner style={styles.spinner} color="white" />
                   :
                   <Button rounded primary block large
-                    style={styles.button} onPress={this.login} 
+                    style={styles.button} onPress={this.login}
                   >
                     <Text style={styles.buttonText}>
                       {I18n.t("authentication.login")}

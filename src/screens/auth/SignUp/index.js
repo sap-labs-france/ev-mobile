@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageBackground } from "react-native";
+import { Image, ImageBackground, Keyboard } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import {
   Container,
@@ -82,6 +82,12 @@ const formValidationDef = {
 };
 
 class SignUp extends React.Component {
+
+  firstNameInput;
+  emailInput;
+  passwordInput;
+  repeatPasswordInput;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -111,7 +117,7 @@ class SignUp extends React.Component {
                   <Input
                     name="name"
                     type="text"
-                    ref="name"
+                    onSubmitEditing={()=>(this.firstNameInput._root.focus())}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.name")}
                     placeholderTextColor="#FFF"
@@ -130,7 +136,8 @@ class SignUp extends React.Component {
                   <Input
                     name="firstName"
                     type="text"
-                    ref="firstName"
+                    ref={(ref)=>(this.firstNameInput = ref)}
+                    onSubmitEditing={()=>this.emailInput._root.focus()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.firstName")}
                     placeholderTextColor="#FFF"
@@ -149,7 +156,8 @@ class SignUp extends React.Component {
                   <Input
                     name="email"
                     type="email"
-                    ref="email"
+                    ref={(ref)=>(this.emailInput = ref)}
+                    onSubmitEditing={()=>this.passwordInput._root.focus()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.email")}
                     placeholderTextColor="#FFF"
@@ -169,7 +177,8 @@ class SignUp extends React.Component {
                   <Input
                     name="password"
                     type="password"
-                    ref="password"
+                    ref={(ref)=>(this.passwordInput = ref)}
+                    onSubmitEditing={()=>this.repeatPasswordInput._root.focus()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.password")}
                     placeholderTextColor="#FFF"
@@ -183,13 +192,14 @@ class SignUp extends React.Component {
                   />
                 </Item>
                 {this.state.errorPassword && this.state.errorPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
- 
+
                 <Item inlineLabel rounded style={styles.inputGroup}>
                   <Icon active name="unlock" style={styles.icon} />
                   <Input
                     name="repeatPassword"
                     type="password"
-                    ref="repeatPassword"
+                    ref={(ref)=>(this.repeatPasswordInput = ref)}
+                    onSubmitEditing={()=>Keyboard.dismiss()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.repeatPassword")}
                     placeholderTextColor="#FFF"
@@ -203,7 +213,7 @@ class SignUp extends React.Component {
                   />
                 </Item>
                 {this.state.errorRepeatPassword && this.state.errorRepeatPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
- 
+
                 <ListItem style={styles.listItemEulaCheckbox}>
                   <CheckBox ref="eula" checked={eula} 
                     onPress={() => this.setState({eula: !eula})} />

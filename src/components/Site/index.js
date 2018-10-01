@@ -21,7 +21,7 @@ class SiteComponent extends Component {
         <View style={styles.newsContent}>
           <Grid>
             <Col>
-              <Text numberOfLines={2} style={styles.newsHeader}>
+              <Text style={styles.newsHeader}>
                 {item.name}
               </Text>
             </Col>
