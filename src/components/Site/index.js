@@ -29,7 +29,7 @@ class SiteComponent extends Component {
               <Icon style={{alignSelf: "flex-end"}} active name="arrow-forward"/>
             </Col>
           </Grid>
-          <Grid style={{ marginTop: 25 }}>
+          <Grid style={{ marginTop: 10 }}>
             <Col>
               <Text style={styles.newsLink}>{item.address.city}</Text>
             </Col>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageBackground, Keyboard} from "react-native";
+import { Image, ImageBackground, Keyboard, Platform } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import {
   Container,
@@ -78,6 +78,18 @@ class Login extends React.Component {
          <Content contentContainerStyle={styles.content}>
             <View style={styles.container}>
               <Image source={require("../../../../assets/logo-low.gif")} style={styles.logo} />
+            </View>
+            <View style={{alignSelf: "center"}}>
+              <Button
+                light
+                small
+                transparent
+                onPress={() => this.skip()}
+              >
+                <Text style={([styles.helpBtns])}>
+                  Debug
+                </Text>
+              </Button>
             </View>
             <View style={styles.container}>
               <Form style={styles.form}>
@@ -165,6 +177,10 @@ class Login extends React.Component {
         </ImageBackground>
       </Container>
     );
+  }
+
+  skip = () => {
+    this.props.navigation.navigate("Sites");
   }
 
   login = async () => {

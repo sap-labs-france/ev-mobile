@@ -215,7 +215,7 @@ class SignUp extends React.Component {
                 {this.state.errorRepeatPassword && this.state.errorRepeatPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
                 <ListItem style={styles.listItemEulaCheckbox}>
-                  <CheckBox ref="eula" checked={eula} 
+                  <CheckBox checked={eula}
                     onPress={() => this.setState({eula: !eula})} />
                   <Body>
                     <Text style={styles.eulaText}>{I18n.t("authentication.acceptEula")}
@@ -230,7 +230,7 @@ class SignUp extends React.Component {
                   <Spinner style={styles.spinner} color="white" />
                   :
                   <Button rounded primary block large
-                    style={styles.button} onPress={this.signUp} 
+                    style={styles.button} onPress={this.signUp}
                   >
                     <Text style={styles.buttonText}>
                       {I18n.t("authentication.signUp")}

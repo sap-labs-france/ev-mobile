@@ -25,6 +25,11 @@ export default StyleSheet.create({
     alignSelf: "center",
     flexGrow: 1
   },
+  helpBtns: {
+    opacity: 0.9,
+    fontWeight: "bold",
+    color: "#fff",
+  },
   container: {
     flex: 1,
     flexDirection: "row",
@@ -34,7 +39,7 @@ export default StyleSheet.create({
   logo: {
     flex: 1,
     resizeMode: "contain",
-    height: deviceHeight / 6,
+    height: deviceHeight / 4,
     alignSelf: "center"
   },
   form: {
