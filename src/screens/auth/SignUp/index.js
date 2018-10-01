@@ -1,5 +1,6 @@
 import React from "react";
 import { Image, ImageBackground } from "react-native";
+import { NavigationActions, StackActions } from "react-navigation";
 import {
   Container,
   Content,
@@ -256,8 +257,13 @@ class SignUp extends React.Component {
         this.setState({loading: false});
         // Show
         Message.showSuccess(I18n.t("authentication.registerSuccess"));
-        // Back to login
-        this.props.navigation.goBack();
+        // Navigate
+        return this.props.navigation.dispatch(
+          StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: "Login" })]
+          })
+        );
       } catch (error) {
         // Reset
         this.setState({loading: false});
