@@ -7,16 +7,21 @@ import {
   Badge
 } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
+import openMap from "react-native-open-maps";
 
 import styles from "./styles";
 
 class SiteComponent extends Component {
 
+  _siteLocation(address) {
+    openMap({ latitude: address.latitude, longitude: address.longitude, zoom: 18});
+  }
+
   render() {
     const { item, navigation } = this.props;
     return (
       <TouchableOpacity
-        style={{ flexDirection: "row" }}
+        style={styles.buttonItem}
         onPress={() => navigation.navigate("SiteAreas", { siteID: item.id })}
       >
         <View style={styles.content}>
@@ -26,7 +31,7 @@ class SiteComponent extends Component {
             </Col>
             <Col style={styles.pinIconColumn}>
               <TouchableOpacity>
-                <Icon style={styles.pinIcon} name="pin" />
+                <Icon style={styles.pinIcon} onPress={()=>this._siteLocation(item.address)} name="pin" />
               </TouchableOpacity>
             </Col>
             <Col>

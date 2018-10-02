@@ -52,9 +52,11 @@
     "react-native-calendars": "^1.20.0",
     "react-native-carousel-view": "^0.5.1",
     "react-native-easy-grid": "^0.2.0",
+    "react-native-google-maps-directions": "^2.0.0",
     "react-native-htmlview": "^0.13.0",
     "react-native-i18n": "^2.0.15",
     "react-native-modalbox": "^1.6.0",
+    "react-native-open-maps": "^0.3.2",
     "react-native-vector-icons": "^5.0.0",
     "react-navigation": "^2.16.0",
     "validate.js": "^0.12.0"

@@ -1,6 +1,9 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
+  buttonItem: {
+    flexDirection: "row"
+  },
   content: {
     flexDirection: "column",
     paddingTop: 20,
