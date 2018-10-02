@@ -1,6 +1,6 @@
 import React from "react";
 import { StatusBar } from "react-native";
-import { StackNavigator, DrawerNavigator } from "react-navigation";
+import { createStackNavigator, createDrawerNavigator } from "react-navigation";
 import { Root } from "native-base";
 import Login from "./screens/auth/Login";
 import Eula from "./screens/auth/Eula/";
@@ -11,7 +11,7 @@ import Sites from "./screens/Sites";
 import SiteAreas from "./screens/SiteAreas";
 
 // Drawer Menu Navigation
-const DrawerNavigation = DrawerNavigator(
+const DrawerNavigation = createDrawerNavigator(
   {
     Sites: { screen: Sites },
     SiteAreas: { screen: SiteAreas }
@@ -23,7 +23,7 @@ const DrawerNavigation = DrawerNavigator(
 );
 
 // Stack Navigation
-const AppNavigation = StackNavigator(
+const AppNavigation = createStackNavigator(
   {
     Login: { screen: Login },
     Eula: { screen: Eula },

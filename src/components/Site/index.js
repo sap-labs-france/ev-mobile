@@ -18,24 +18,24 @@ class SiteComponent extends Component {
         style={{ flexDirection: "row" }}
         onPress={() => navigation.navigate("SiteAreas", { siteID: item.id })}
       >
-        <View style={styles.newsContent}>
+        <View style={styles.content}>
           <Grid>
             <Col>
-              <Text style={styles.newsHeader}>
+              <Text style={styles.siteName}>
                 {item.name}
               </Text>
             </Col>
             <Col>
-              <Icon style={{alignSelf: "flex-end"}} active name="arrow-forward"/>
+              <Icon style={styles.icon} active name="arrow-forward"/>
             </Col>
           </Grid>
           <Grid style={{ marginTop: 10 }}>
             <Col>
-              <Text style={styles.newsLink}>{item.address.city}</Text>
+              <Text>Available chargers: <Text style={styles.numberChargers}>700</Text></Text>
             </Col>
             <Col>
-              <TouchableOpacity style={styles.newsTypeView} onPress={() => navigation.navigate("Channel")}>
-                <Text style={styles.newsTypeText}>{item.address.department}</Text>
+              <TouchableOpacity>
+                <Text style={styles.city} >{item.address.city}</Text>
               </TouchableOpacity>
             </Col>
           </Grid>
