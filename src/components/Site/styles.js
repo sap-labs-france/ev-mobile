@@ -11,26 +11,39 @@ export default StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: "#ddd"
   },
+  siteNameColumn: {
+    width: 210
+  },
   siteName: {
     color: "#fff",
     alignSelf: "flex-start",
     fontWeight: "bold",
-    width: 200,
-    height: 35
+    height: 25
   },
-  icon: {
-    alignSelf: "flex-end"
+  arrowIcon: {
+    alignSelf: "flex-end",
+  },
+  detailsGrid: {
+    marginTop: 10
+  },
+  pinIconColumn: {
+    width: 15
+  },
+  pinIcon: {
+    fontSize: 23
+  },
+  freeChargersColumn: {
+    width: 120
+  },
+  freeChargersText: {
+    alignSelf: "flex-start",
+  },
+  badge: {
+    fontWeight: "bold",
+    height: 23
   },
   numberChargers: {
-    color: "#46f939",
-    fontSize: 15,
-    alignSelf: "flex-start",
-    fontWeight: "bold"
-  },
-  city: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#fff",
-    alignSelf: "flex-end",
-    fontSize: 12
+    color: "#fff",
+    fontSize: 10,
   }
 });

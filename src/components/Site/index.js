@@ -3,7 +3,8 @@ import { TouchableOpacity } from "react-native";
 import {
   Text,
   View,
-  Icon
+  Icon,
+  Badge
 } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
 
@@ -20,23 +21,26 @@ class SiteComponent extends Component {
       >
         <View style={styles.content}>
           <Grid>
-            <Col>
-              <Text style={styles.siteName}>
-                {item.name}
-              </Text>
+            <Col style={styles.siteNameColumn}>
+              <Text style={styles.siteName}>{item.name}</Text>
+            </Col>
+            <Col style={styles.pinIconColumn}>
+              <TouchableOpacity>
+                <Icon style={styles.pinIcon} name="pin" />
+              </TouchableOpacity>
             </Col>
             <Col>
-              <Icon style={styles.icon} active name="arrow-forward"/>
+              <Icon style={styles.arrowIcon} active name="arrow-forward"/>
             </Col>
           </Grid>
-          <Grid style={{ marginTop: 10 }}>
-            <Col>
-              <Text>Available chargers: <Text style={styles.numberChargers}>700</Text></Text>
+          <Grid style={styles.detailsGrid}>
+            <Col style={styles.freeChargersColumn}>
+              <Text style={styles.freeChargersText}>Free chargers:</Text>
             </Col>
             <Col>
-              <TouchableOpacity>
-                <Text style={styles.city} >{item.address.city}</Text>
-              </TouchableOpacity>
+              <Badge success style={styles.badge}>
+                <Text>9000</Text>
+              </Badge>
             </Col>
           </Grid>
         </View>

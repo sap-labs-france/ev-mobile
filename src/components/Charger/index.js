@@ -5,6 +5,7 @@ import {
   View,
   ListItem
 } from "native-base";
+import styles from "./styles";
 
 class ChargerComponent extends Component {
 
@@ -19,7 +20,7 @@ class ChargerComponent extends Component {
   render() {
     let { items } = this.props;
     return (
-      <View style={{paddingBottom: 25}}>
+      <View style={styles.container}>
           <FlatList data={items} renderItem={this._renderItem} keyExtractor={item => item.id}/>
       </View>
     );

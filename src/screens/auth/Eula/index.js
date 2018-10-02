@@ -33,7 +33,7 @@ export default class Eula extends React.Component {
 		try {
       let result = await CentralServerProvider.getEndUserLicenseAgreement(I18nLocal);
       this.setState({
-        loading: false, 
+        loading: false,
         eulaTextHtml: result.text
       });
 		} catch (error) {
@@ -57,7 +57,7 @@ export default class Eula extends React.Component {
     return (
       <Container>
         {loading && (
-          <Spinner style={styles.spinner} color="black" />
+          <Spinner style={styles.spinner} color="white" />
         )}
         {!loading && (
           <ScrollView style={styles.container}>
