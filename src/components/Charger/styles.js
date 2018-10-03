@@ -1,8 +1,12 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from "react-native";
+
+const deviceWidth = Dimensions.get("window").width;
 
 export default StyleSheet.create({
   container: {
     paddingBottom: 25,
-    paddingLeft: 10
+  },
+  chargerName: {
+    alignSelf: "center"
   }
 });
