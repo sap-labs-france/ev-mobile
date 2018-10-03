@@ -39,7 +39,7 @@ export default StyleSheet.create({
   logo: {
     flex: 1,
     resizeMode: "contain",
-    height: deviceHeight / 4,
+    height: deviceHeight / 6,
     alignSelf: "center"
   },
   form: {

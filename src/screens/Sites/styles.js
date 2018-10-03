@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 const primary = require("../../theme/variables/commonColor").brandPrimary;
 
 export default StyleSheet.create({

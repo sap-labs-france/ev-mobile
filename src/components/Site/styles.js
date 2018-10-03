@@ -1,4 +1,6 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform, Dimensions } from "react-native";
+
+const deviceWidth = Dimensions.get("window").width;
 
 export default StyleSheet.create({
   buttonItem: {
@@ -15,7 +17,7 @@ export default StyleSheet.create({
     borderTopColor: "#ddd"
   },
   siteNameColumn: {
-    width: 210
+    width: Platform.OS === "ios" ? deviceWidth - 150 : deviceWidth - 190
   },
   siteName: {
     color: "#fff",
