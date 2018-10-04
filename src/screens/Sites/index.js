@@ -41,7 +41,7 @@ class Sites extends Component {
   getSites = async () => {
     try {
       let sites = await CentralServerProvider.getSites(
-        {WithAvailableChargers : true});
+        { WithAvailableChargers: true, WithChargeBoxes: true });
       // Fill each sites to dataSites array
       this.setState({
         dataSites: sites.result,
