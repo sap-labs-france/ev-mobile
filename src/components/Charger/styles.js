@@ -4,7 +4,8 @@ const deviceWidth = Dimensions.get("window").width;
 
 export default StyleSheet.create({
   container: {
-    paddingBottom: 25,
+    paddingBottom: 35,
+    paddingLeft: 5
   },
   chargerName: {
     alignSelf: "center"

@@ -49,6 +49,6 @@ export default StyleSheet.create({
   },
   numberChargers: {
     color: "#fff",
-    fontSize: 10,
+    fontSize: 10
   }
 });

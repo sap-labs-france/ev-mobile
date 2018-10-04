@@ -11,32 +11,25 @@ class ChargerComponent extends Component {
   _renderItem({item}) {
     return (
       <ListItem>
-        <Grid>
-          <Row style={styles.chargerName}>
-            <Text>{item.id}</Text>
+        <Grid style={{backgroundColor: "pink"}}>
+          <Row style={{backgroundColor: "green"}} >
+            <Text>{item.id} - <Text style={{fontStyle: "italic"}}>Brand</Text></Text>
           </Row>
           <Row>
-            <Col>
-              <Badge style={{alignSelf: "flex-start", marginLeft: 10, marginBottom: 5}} success>
+            <Col style={{marginLeft: 15, backgroundColor: "purple"}}>
+              <Badge style={{alignSelf: "flex-start", marginBottom: 5, marginTop: 10}} success>
                 <Text>A</Text>
               </Badge>
-              <Text style={{alignSelf: "flex-start", fontSize: 13}}>Available</Text>
+              <Text style={{fontSize: 10, alignSelf: "flex-start"}}>Type 3</Text>
             </Col>
-            <Col>
+            <Col style={{marginRight: 15, backgroundColor: "tomato"}}>
               <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse" duration={3000}>
-                <Badge style={{alignSelf: "flex-end", marginRight: 13, marginBottom: 5}} danger>
+                <Badge style={{alignSelf: "flex-end", marginBottom: 5, marginTop: 10}} danger>
                     <Text>B</Text>
                 </Badge>
               </Animatable.View>
-              <Text style={{alignSelf: "flex-end", fontSize: 13}}>Occupied</Text>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Text style={{fontSize: 13, alignSelf: "flex-end"}}>Brand |</Text>
-            </Col>
-            <Col>
-              <Text style={{fontSize: 13, alignSelf: "flex-start"}}>Type</Text>
+              <Text style={{fontSize: 10, alignSelf: "flex-end"}}>50.2 Kw</Text>
+              <Text style={{fontSize: 10, alignSelf: "flex-end"}}>Type 2</Text>
             </Col>
           </Row>
         </Grid>

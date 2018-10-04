@@ -44,7 +44,7 @@ class SiteComponent extends Component {
             </Col>
             <Col>
               <Badge success style={styles.badge}>
-                <Text>9000</Text>
+                <Text>{item.availableChargers}</Text>
               </Badge>
             </Col>
           </Grid>
