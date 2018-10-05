@@ -10,10 +10,11 @@ class ChargerComponent extends Component {
 
   nextChar = (c) => {
     let i = (parseInt(c, 36) + 1 ) % 36;
-    return (!i * 10 + i).toString(36);
+    return (!i * 10 + i).toString(36).toUpperCase();
   }
 
-  _renderConnector({item}) {
+  _renderConnector = ({item}) => {
+    let alpha = "Z";
     return (
       <Row style={{backgroundColor: "##BDB76B", marginLeft: 15, marginRight: 15}}>
         <Col style={{backgroundColor: "#FFA07A"}}>
@@ -22,20 +23,22 @@ class ChargerComponent extends Component {
               <Row style={{marginTop: 10, alignSelf: "flex-start", backgroundColor: "#6495ED"}}>
                 {item.status === "Available" ?
                   <Badge success>
-                    <Text>A</Text>
+                    <Text>{this.nextChar(alpha)}</Text>
                   </Badge>
                 : item.status === "Occupied" && item.currentConsumption === 0 ?
                   <Badge danger>
-                    <Text>A</Text>
+                    <Text>{this.nextChar(alpha)}</Text>
                   </Badge>
                 : item.status === "Occupied" && item.currentConsumption !== 0 ?
                   <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse" duration={1000}>
                     <Badge danger>
-                      <Text>A</Text>
+                      <Text>{this.nextChar(alpha)}</Text>
                     </Badge>
                   </Animatable.View>
                 :
-                  undefined
+                  <Badge danger>
+                    <Text>{this.nextChar(alpha)}</Text>
+                  </Badge>
                 }
                 <Row style={{backgroundColor: "#A52A2A"}}>
                   <Col style={{backgroundColor: "#8A2BE2"}}>
@@ -60,20 +63,22 @@ class ChargerComponent extends Component {
                 </Row>
                 {item.status === "Available" ?
                   <Badge success>
-                    <Text>B</Text>
+                    <Text>{this.nextChar(alpha)}</Text>
                   </Badge>
                 : item.status === "Occupied" && item.currentConsumption === 0 ?
                   <Badge danger>
-                    <Text>B</Text>
+                    <Text>{this.nextChar(alpha)}</Text>
                   </Badge>
                 : item.status === "Occupied" && item.currentConsumption !== 0 ?
                   <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse" duration={1000}>
                     <Badge danger>
-                      <Text>B</Text>
+                      <Text>{this.nextChar(alpha)}</Text>
                     </Badge>
                   </Animatable.View>
                 :
-                  undefined
+                  <Badge danger>
+                    <Text>{this.nextChar(alpha)}</Text>
+                  </Badge>
                 }
               </Row>
               <Row style={{alignSelf: "flex-end", backgroundColor: "#008B8B"}}>
