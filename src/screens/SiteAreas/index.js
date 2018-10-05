@@ -23,6 +23,7 @@ import SiteAreaComponent from "../../components/SiteArea";
 import ChargerComponent from "../../components/Charger";
 import Utils from "../../utils/Utils";
 import styles from "./styles";
+import PTRView from "react-native-pull-to-refresh";
 
 class SiteAreas extends Component {
 
@@ -62,6 +63,10 @@ class SiteAreas extends Component {
     }
   }
 
+  _onRefresh = async () => {
+    return await this.getSitesAreas(this.state.siteID);
+  }
+
   _renderItem({item}) {
     return (
       <List>
@@ -98,26 +103,27 @@ class SiteAreas extends Component {
             </Button>
           </Body>
         </Header>
-
-        <Content
-          showsVerticalScrollIndicator={false}
-          style={{ backgroundColor: "black" }}
-        >
-          {this.state.loading && (
-            <Container>
-              <Spinner color="white" style={{flex: 1}} />
-            </Container>
-          )}
-          {!this.state.loading && (
-            <View>
-              <FlatList
-                data={this.state.siteAreas}
-                renderItem={this._renderItem}
-                keyExtractor={item => item.id}
-              />
-            </View>
-          )}
-        </Content>
+        <PTRView onRefresh={this._onRefresh} delay={15} offset={95}>
+          <Content
+            showsVerticalScrollIndicator={false}
+            style={{ backgroundColor: "black" }}
+          >
+            {this.state.loading && (
+              <Container>
+                <Spinner color="white" style={{flex: 1}} />
+              </Container>
+            )}
+            {!this.state.loading && (
+              <View>
+                <FlatList
+                  data={this.state.siteAreas}
+                  renderItem={this._renderItem}
+                  keyExtractor={item => item.id}
+                />
+              </View>
+            )}
+          </Content>
+        </PTRView>
       </Container>
     );
   }

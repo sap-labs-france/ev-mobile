@@ -17,6 +17,8 @@ import CentralServerProvider from "../../provider/CentralServerProvider";
 import SiteComponent from "../../components/Site";
 import styles from "./styles";
 
+import PTRView from "react-native-pull-to-refresh";
+
 class Sites extends Component {
   constructor(props) {
     super(props);
@@ -58,6 +60,10 @@ class Sites extends Component {
     }
   }
 
+  _refresh = async () => {
+    return await this.getSites();
+  }
+
   _renderItem = ({item}) => {
     return (
       <SiteComponent item={item} navigation={this.props.navigation}  />
@@ -85,21 +91,23 @@ class Sites extends Component {
           </Right>
         </Header>
 
-        <Content showsVerticalScrollIndicator={false} style={{ backgroundColor: "black" }}>
-          {loading ?
-            <Container>
-              <Spinner color="white" style={{flex: 1}} />
-            </Container>
-          :
-            <View>
-              <FlatList
-                data={this.state.dataSites}
-                renderItem={this._renderItem}
-                keyExtractor={item => item.id}
-              />
-            </View>
-          }
-        </Content>
+        <PTRView onRefresh={this._refresh} delay={15} offset={90}>
+          <Content showsVerticalScrollIndicator={false} style={{ backgroundColor: "black" }}>
+            {loading ?
+              <Container>
+                <Spinner color="white" style={{flex: 1}} />
+              </Container>
+            :
+              <View>
+                <FlatList
+                  data={this.state.dataSites}
+                  renderItem={this._renderItem}
+                  keyExtractor={item => item.id}
+                />
+              </View>
+            }
+          </Content>
+        </PTRView>
       </Container>
     );
   }

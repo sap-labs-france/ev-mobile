@@ -7,7 +7,7 @@ import {
 
 import styles from "./styles";
 
-class SiteAreaComponent extends Component {
+class  SiteAreaComponent extends Component {
 
   render() {
     const { item } = this.props;
