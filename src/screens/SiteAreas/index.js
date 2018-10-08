@@ -18,7 +18,7 @@ import {
   List
 } from "native-base";
 
-import CentralServerProvider from "../../provider/CentralServerProvider";
+import ProviderFactory from "../../provider/ProviderFactory";
 import SiteAreaComponent from "../../components/SiteArea";
 import ChargerComponent from "../../components/Charger";
 import Utils from "../../utils/Utils";
@@ -45,7 +45,7 @@ class SiteAreas extends Component {
   getSitesAreas = async (siteID) => {
     try {
       // Get Site Areas
-      let siteAreas = await CentralServerProvider.getSiteAreas(
+      let siteAreas = await ProviderFactory.getProvider().getSiteAreas(
         { SiteID: siteID, WithChargeBoxes: true });
       // Set result
       this.setState({
@@ -59,7 +59,7 @@ class SiteAreas extends Component {
         loading: false
       });
       // Other common Error
-      Utils.handleHttpUnexpectedError(error.request);
+      Utils.handleHttpUnexpectedError(error);
     }
   }
 

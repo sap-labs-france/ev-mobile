@@ -1,7 +1,8 @@
 {
   "general": {
     "cannotConnectBackend": "Cannot connect to the backend!",
-    "unexpectedError": "Unexpected error occurred in the backend!",
+    "unexpectedErrorBackend": "Unexpected error occurred in the backend!",
+    "unexpectedError": "Unexpected error occurred!",
     "numbers": "Enter a valid number",
     "email": "Enter a valid email address",
     "required": "Field is mandatory",

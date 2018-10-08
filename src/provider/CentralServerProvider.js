@@ -8,10 +8,10 @@ const centralRestServerServiceBaseURL = "https://sap-charge-angels-rest-server.c
 const centralRestServerServiceAuthURL = centralRestServerServiceBaseURL + "/client/auth";
 const centralRestServerServiceSecuredURL = centralRestServerServiceBaseURL + "/client/api";
 // Paste the tokken below
-let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViM2EyODkxYzA4ZWQyNzc0NzkzYzQ5ZSIsInJvbGUiOiJBIiwibmFtZSI6IkZBQklBTk8iLCJ0YWdJRHMiOlsiOUM3MDlGMTYiXSwiZmlyc3ROYW1lIjoiTGlhbSIsImxvY2FsZSI6ImVuX1VTIiwibGFuZ3VhZ2UiOiJlbiIsImF1dGhzIjpbeyJBdXRoT2JqZWN0IjoiVXNlcnMiLCJBdXRoRmllbGRWYWx1ZSI6eyJBY3Rpb24iOlsiTGlzdCJdfX0seyJBdXRoT2JqZWN0IjoiVXNlciIsIkF1dGhGaWVsZFZhbHVlIjp7IlVzZXJJRCI6IioiLCJBY3Rpb24iOlsiQ3JlYXRlIiwiUmVhZCIsIlVwZGF0ZSIsIkRlbGV0ZSIsIkxvZ291dCIsIlVubG9ja0Nvbm5lY3RvciJdfX0seyJBdXRoT2JqZWN0IjoiQ29tcGFuaWVzIiwiQXV0aEZpZWxkVmFsdWUiOnsiQWN0aW9uIjpbIkxpc3QiXX19LHsiQXV0aE9iamVjdCI6IkNvbXBhbnkiLCJBdXRoRmllbGRWYWx1ZSI6eyJDb21wYW55SUQiOiIqIiwiQWN0aW9uIjpbIkNyZWF0ZSIsIlJlYWQiLCJVcGRhdGUiLCJEZWxldGUiXX19LHsiQXV0aE9iamVjdCI6IlNpdGVzIiwiQXV0aEZpZWxkVmFsdWUiOnsiQWN0aW9uIjpbIkxpc3QiXX19LHsiQXV0aE9iamVjdCI6IlNpdGUiLCJBdXRoRmllbGRWYWx1ZSI6eyJTaXRlSUQiOiIqIiwiQWN0aW9uIjpbIkNyZWF0ZSIsIlJlYWQiLCJVcGRhdGUiLCJEZWxldGUiXX19LHsiQXV0aE9iamVjdCI6IlZlaGljbGVNYW51ZmFjdHVyZXJzIiwiQXV0aEZpZWxkVmFsdWUiOnsiQWN0aW9uIjpbIkxpc3QiXX19LHsiQXV0aE9iamVjdCI6IlZlaGljbGVNYW51ZmFjdHVyZXIiLCJBdXRoRmllbGRWYWx1ZSI6eyJWZWhpY2xlTWFudWZhY3R1cmVySUQiOiIqIiwiQWN0aW9uIjpbIkNyZWF0ZSIsIlJlYWQiLCJVcGRhdGUiLCJEZWxldGUiXX19LHsiQXV0aE9iamVjdCI6IlZlaGljbGVzIiwiQXV0aEZpZWxkVmFsdWUiOnsiQWN0aW9uIjpbIkxpc3QiXX19LHsiQXV0aE9iamVjdCI6IlZlaGljbGUiLCJBdXRoRmllbGRWYWx1ZSI6eyJWZWhpY2xlSUQiOiIqIiwiQWN0aW9uIjpbIkNyZWF0ZSIsIlJlYWQiLCJVcGRhdGUiLCJEZWxldGUiXX19LHsiQXV0aE9iamVjdCI6IlNpdGVBcmVhcyIsIkF1dGhGaWVsZFZhbHVlIjp7IkFjdGlvbiI6WyJMaXN0Il19fSx7IkF1dGhPYmplY3QiOiJTaXRlQXJlYSIsIkF1dGhGaWVsZFZhbHVlIjp7IlNpdGVBcmVhSUQiOiIqIiwiQWN0aW9uIjpbIkNyZWF0ZSIsIlJlYWQiLCJVcGRhdGUiLCJEZWxldGUiXX19LHsiQXV0aE9iamVjdCI6IkNoYXJnaW5nU3RhdGlvbnMiLCJBdXRoRmllbGRWYWx1ZSI6eyJBY3Rpb24iOlsiTGlzdCJdfX0seyJBdXRoT2JqZWN0IjoiQ2hhcmdpbmdTdGF0aW9uIiwiQXV0aEZpZWxkVmFsdWUiOnsiQ2hhcmdpbmdTdGF0aW9uSUQiOiIqIiwiQWN0aW9uIjpbIkNyZWF0ZSIsIlJlYWQiLCJVcGRhdGUiLCJEZWxldGUiLCJSZXNldCIsIkNsZWFyQ2FjaGUiLCJHZXRDb25maWd1cmF0aW9uIiwiQ2hhbmdlQ29uZmlndXJhdGlvbiIsIlN0YXJ0VHJhbnNhY3Rpb24iLCJTdG9wVHJhbnNhY3Rpb24iLCJVbmxvY2tDb25uZWN0b3IiLCJBdXRob3JpemUiXX19LHsiQXV0aE9iamVjdCI6IlRyYW5zYWN0aW9ucyIsIkF1dGhGaWVsZFZhbHVlIjp7IkFjdGlvbiI6WyJMaXN0Il19fSx7IkF1dGhPYmplY3QiOiJUcmFuc2FjdGlvbiIsIkF1dGhGaWVsZFZhbHVlIjp7IlVzZXJJRCI6IioiLCJBY3Rpb24iOlsiUmVhZCIsIlVwZGF0ZSIsIkRlbGV0ZSIsIlJlZnVuZFRyYW5zYWN0aW9uIl19fSx7IkF1dGhPYmplY3QiOiJMb2dnaW5ncyIsIkF1dGhGaWVsZFZhbHVlIjp7IkFjdGlvbiI6WyJMaXN0Il19fSx7IkF1dGhPYmplY3QiOiJMb2dnaW5nIiwiQXV0aEZpZWxkVmFsdWUiOnsiTG9nSUQiOiIqIiwiQWN0aW9uIjpbIlJlYWQiXX19LHsiQXV0aE9iamVjdCI6IlByaWNpbmciLCJBdXRoRmllbGRWYWx1ZSI6eyJBY3Rpb24iOlsiUmVhZCIsIlVwZGF0ZSJdfX1dLCJpYXQiOjE1Mzg3MjQ4NDEsImV4cCI6MTUzODc2ODA0MX0.cb_CTfW0m5cQ5kgBLQwqQkP9mewVuamNV6UawnkHks4";
+let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5MmU5NjlmODlkOGUwN2EyYjE2YTc4ZiIsInJvbGUiOiJBIiwibmFtZSI6IkZBQklBTk8iLCJ0YWdJRHMiOlsiRjNDMEI0REQiXSwiZmlyc3ROYW1lIjoiU2VyZ2lvIiwibG9jYWxlIjoiZW5fVVMiLCJsYW5ndWFnZSI6ImVuIiwiYXV0aHMiOlt7IkF1dGhPYmplY3QiOiJVc2VycyIsIkF1dGhGaWVsZFZhbHVlIjp7IkFjdGlvbiI6WyJMaXN0Il19fSx7IkF1dGhPYmplY3QiOiJVc2VyIiwiQXV0aEZpZWxkVmFsdWUiOnsiVXNlcklEIjoiKiIsIkFjdGlvbiI6WyJDcmVhdGUiLCJSZWFkIiwiVXBkYXRlIiwiRGVsZXRlIiwiTG9nb3V0IiwiVW5sb2NrQ29ubmVjdG9yIl19fSx7IkF1dGhPYmplY3QiOiJDb21wYW5pZXMiLCJBdXRoRmllbGRWYWx1ZSI6eyJBY3Rpb24iOlsiTGlzdCJdfX0seyJBdXRoT2JqZWN0IjoiQ29tcGFueSIsIkF1dGhGaWVsZFZhbHVlIjp7IkNvbXBhbnlJRCI6IioiLCJBY3Rpb24iOlsiQ3JlYXRlIiwiUmVhZCIsIlVwZGF0ZSIsIkRlbGV0ZSJdfX0seyJBdXRoT2JqZWN0IjoiU2l0ZXMiLCJBdXRoRmllbGRWYWx1ZSI6eyJBY3Rpb24iOlsiTGlzdCJdfX0seyJBdXRoT2JqZWN0IjoiU2l0ZSIsIkF1dGhGaWVsZFZhbHVlIjp7IlNpdGVJRCI6IioiLCJBY3Rpb24iOlsiQ3JlYXRlIiwiUmVhZCIsIlVwZGF0ZSIsIkRlbGV0ZSJdfX0seyJBdXRoT2JqZWN0IjoiVmVoaWNsZU1hbnVmYWN0dXJlcnMiLCJBdXRoRmllbGRWYWx1ZSI6eyJBY3Rpb24iOlsiTGlzdCJdfX0seyJBdXRoT2JqZWN0IjoiVmVoaWNsZU1hbnVmYWN0dXJlciIsIkF1dGhGaWVsZFZhbHVlIjp7IlZlaGljbGVNYW51ZmFjdHVyZXJJRCI6IioiLCJBY3Rpb24iOlsiQ3JlYXRlIiwiUmVhZCIsIlVwZGF0ZSIsIkRlbGV0ZSJdfX0seyJBdXRoT2JqZWN0IjoiVmVoaWNsZXMiLCJBdXRoRmllbGRWYWx1ZSI6eyJBY3Rpb24iOlsiTGlzdCJdfX0seyJBdXRoT2JqZWN0IjoiVmVoaWNsZSIsIkF1dGhGaWVsZFZhbHVlIjp7IlZlaGljbGVJRCI6IioiLCJBY3Rpb24iOlsiQ3JlYXRlIiwiUmVhZCIsIlVwZGF0ZSIsIkRlbGV0ZSJdfX0seyJBdXRoT2JqZWN0IjoiU2l0ZUFyZWFzIiwiQXV0aEZpZWxkVmFsdWUiOnsiQWN0aW9uIjpbIkxpc3QiXX19LHsiQXV0aE9iamVjdCI6IlNpdGVBcmVhIiwiQXV0aEZpZWxkVmFsdWUiOnsiU2l0ZUFyZWFJRCI6IioiLCJBY3Rpb24iOlsiQ3JlYXRlIiwiUmVhZCIsIlVwZGF0ZSIsIkRlbGV0ZSJdfX0seyJBdXRoT2JqZWN0IjoiQ2hhcmdpbmdTdGF0aW9ucyIsIkF1dGhGaWVsZFZhbHVlIjp7IkFjdGlvbiI6WyJMaXN0Il19fSx7IkF1dGhPYmplY3QiOiJDaGFyZ2luZ1N0YXRpb24iLCJBdXRoRmllbGRWYWx1ZSI6eyJDaGFyZ2luZ1N0YXRpb25JRCI6IioiLCJBY3Rpb24iOlsiQ3JlYXRlIiwiUmVhZCIsIlVwZGF0ZSIsIkRlbGV0ZSIsIlJlc2V0IiwiQ2xlYXJDYWNoZSIsIkdldENvbmZpZ3VyYXRpb24iLCJDaGFuZ2VDb25maWd1cmF0aW9uIiwiU3RhcnRUcmFuc2FjdGlvbiIsIlN0b3BUcmFuc2FjdGlvbiIsIlVubG9ja0Nvbm5lY3RvciIsIkF1dGhvcml6ZSJdfX0seyJBdXRoT2JqZWN0IjoiVHJhbnNhY3Rpb25zIiwiQXV0aEZpZWxkVmFsdWUiOnsiQWN0aW9uIjpbIkxpc3QiXX19LHsiQXV0aE9iamVjdCI6IlRyYW5zYWN0aW9uIiwiQXV0aEZpZWxkVmFsdWUiOnsiVXNlcklEIjoiKiIsIkFjdGlvbiI6WyJSZWFkIiwiVXBkYXRlIiwiRGVsZXRlIiwiUmVmdW5kVHJhbnNhY3Rpb24iXX19LHsiQXV0aE9iamVjdCI6IkxvZ2dpbmdzIiwiQXV0aEZpZWxkVmFsdWUiOnsiQWN0aW9uIjpbIkxpc3QiXX19LHsiQXV0aE9iamVjdCI6IkxvZ2dpbmciLCJBdXRoRmllbGRWYWx1ZSI6eyJMb2dJRCI6IioiLCJBY3Rpb24iOlsiUmVhZCJdfX0seyJBdXRoT2JqZWN0IjoiUHJpY2luZyIsIkF1dGhGaWVsZFZhbHVlIjp7IkFjdGlvbiI6WyJSZWFkIiwiVXBkYXRlIl19fV0sImlhdCI6MTUzOTAwMTk0MCwiZXhwIjoxNTM5MDQ1MTQwfQ.EaCDhe532gtF-Gy4AmA6eWuedAJ0qrq6LqSbn9O8OKY";
 
 export default class CentralServerProvider {
-  static async isAuthenticated() {
+  async isAuthenticated() {
     // try {
     //   console.log('====================================');
     //   console.log(jwt);
@@ -29,77 +29,75 @@ export default class CentralServerProvider {
     // }
   }
 
-  static async resetPassword(email) {
+  async resetPassword(email) {
     // Call
     let result = await axios.post(`${centralRestServerServiceAuthURL}/Reset`,
       { email },
-      { headers: CentralServerProvider._builHeaders() }
+      { headers: this._builHeaders() }
     );
   }
 
-  static async login(email, password, eula) {
+  async login(email, password, eula) {
     // Call
     let result = await axios.post(`${centralRestServerServiceAuthURL}/Login`,
       { email, password, "acceptEula": eula },
-      { headers: CentralServerProvider._builHeaders() }
+      { headers: this._builHeaders() }
     );
     // Keep the token
-    // Log the tokken to copy it
-    console.log(result.data.token);
-    // token = result.data.token;
+    token = result.data.token;
   }
 
-  static async register(name, firstName, email, passwords, eula) {
+  async register(name, firstName, email, passwords, eula) {
     let result = await axios.post(`${centralRestServerServiceAuthURL}/RegisterUser`,
       { name, firstName, email, passwords, "acceptEula": eula },
-      { headers: CentralServerProvider._builHeaders() }
+      { headers: this._builHeaders() }
     );
     return result.data;
   }
 
-  static async getChargers(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+  async getChargers(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     // Build Paging
-    CentralServerProvider._buildPaging(paging, params);
+    this._buildPaging(paging, params);
     // Build Ordering
-    CentralServerProvider._buildOrdering(ordering, params);
+    this._buildOrdering(ordering, params);
     // Call
     let result = await axios.get(`${centralRestServerServiceSecuredURL}/ChargingStations`, {
-      headers: CentralServerProvider._builSecuredHeaders(),
+      headers: this._builSecuredHeaders(),
       params
     });
     return result.data;
   }
 
-  static async getSites(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+  async getSites(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     // Build Paging
-    CentralServerProvider._buildPaging(paging, params);
+    this._buildPaging(paging, params);
     // Build Ordering
-    CentralServerProvider._buildOrdering(ordering, params);
+    this._buildOrdering(ordering, params);
     // Call
     let result = await axios.get(`${centralRestServerServiceSecuredURL}/Sites`, {
-      headers: CentralServerProvider._builSecuredHeaders(),
+      headers: this._builSecuredHeaders(),
       params
     });
     return result.data;
   }
 
-  static async getSiteAreas(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+  async getSiteAreas(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     // Call
     let result = await axios.get(`${centralRestServerServiceSecuredURL}/SiteAreas`, {
-      headers: CentralServerProvider._builSecuredHeaders(),
+      headers: this._builSecuredHeaders(),
       params
     });
     return result.data;
   }
 
-  static async getEndUserLicenseAgreement(language) {
+  async getEndUserLicenseAgreement(language) {
     let result = await axios.get(`${centralRestServerServiceAuthURL}/EndUserLicenseAgreement?Language=${language}`, {
-      headers: CentralServerProvider._builHeaders()
+      headers: this._builHeaders()
     });
     return result.data;
   }
 
-  static _buildPaging(paging, queryString) {
+  _buildPaging(paging, queryString) {
     // Check
     if (paging) {
       // Limit
@@ -113,7 +111,7 @@ export default class CentralServerProvider {
     }
   }
 
-  static _buildOrdering(ordering, queryString) {
+  _buildOrdering(ordering, queryString) {
     // Check
     if (ordering && ordering.length) {
       if (!queryString.SortFields) {
@@ -128,14 +126,14 @@ export default class CentralServerProvider {
     }
   }
 
-  static _builHeaders() {
+  _builHeaders() {
     return {
       "Accept": "application/json",
       "Content-Type": "application/json"
     };
   }
 
-  static _builSecuredHeaders() {
+  _builSecuredHeaders() {
     return {
       "Accept": "application/json",
       "Content-Type": "application/json",

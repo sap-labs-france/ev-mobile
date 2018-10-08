@@ -1,7 +1,8 @@
 {
   "general": {
     "cannotConnectBackend": "Cannot connect to the backend !",
-    "unexpectedError": "Erreur serveur inattendue !",
+    "unexpectedErrorBackend": "Erreur serveur inattendue !",
+    "unexpectedError": "Erreur inattendue !",
     "numbers": "Entrez un nombre valide",
     "email": "Entrez une adresse email valide",
     "required": "Le champ est obligatoire",

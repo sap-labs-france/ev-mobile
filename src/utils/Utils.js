@@ -4,17 +4,25 @@ import validate from 'validate.js'
 
 export default class Utils {
 
-    static handleHttpUnexpectedError(request) {
-        switch (request.status) {
-            // Backend not available
-            case 0:
-                Message.showError(I18n.t("general.cannotConnectBackend"));
-                break;
-                // Other errors
-            default:
-                Message.showError(I18n.t("general.unexpectedError"));
-                break;
+    static handleHttpUnexpectedError(error) {
+        if (error.request) {
+            // Status?
+            switch (error.request.status) {
+                // Backend not available
+                case 0:
+                    Message.showError(I18n.t("general.cannotConnectBackend"));
+                    break;
+                    // Other errors
+                default:
+                    Message.showError(I18n.t("general.unexpectedErrorBackend"));
+                    break;
+            }
+        } else {
+            // Error in code
+            Message.showError(I18n.t("general.unexpectedError"));
         }
+        // Log in console
+        console.log(error);
     }
 
     static capitalizeFirstLetter(string) {

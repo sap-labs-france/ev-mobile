@@ -13,10 +13,9 @@ import {
   View
 } from "native-base";
 import Utils from "../../utils/Utils";
-import CentralServerProvider from "../../provider/CentralServerProvider";
+import ProviderFactory from "../../provider/ProviderFactory";
 import SiteComponent from "../../components/Site";
 import styles from "./styles";
-
 import PTRView from "react-native-pull-to-refresh";
 
 class Sites extends Component {
@@ -42,13 +41,14 @@ class Sites extends Component {
 
   getSites = async () => {
     try {
-      let sites = await CentralServerProvider.getSites(
+      // Get the Sites
+      let sites = await ProviderFactory.getProvider().getSites(
         { WithAvailableChargers: true, WithChargeBoxes: true });
       // Fill each sites to dataSites array
       this.setState({
         dataSites: sites.result,
         loading: false
-      });
+      }); 
       console.log(sites.result);
     } catch (error) {
       // Stop
@@ -56,7 +56,7 @@ class Sites extends Component {
         loading: false
       });
       // Other common Error
-      Utils.handleHttpUnexpectedError(error.request);
+      Utils.handleHttpUnexpectedError(error);
     }
   }
 
