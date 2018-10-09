@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, FlatList } from "react-native";
+import { Image, FlatList, ScrollView, RefreshControl } from "react-native";
 import {
   Container,
   Header,
@@ -16,7 +16,6 @@ import Utils from "../../utils/Utils";
 import ProviderFactory from "../../provider/ProviderFactory";
 import SiteComponent from "../../components/Site";
 import styles from "./styles";
-import PTRView from "react-native-pull-to-refresh";
 
 class Sites extends Component {
   constructor(props) {
@@ -30,7 +29,8 @@ class Sites extends Component {
   componentWillMount() {
     this.setState({
       dataSites: [],
-      loading: true
+      loading: true,
+      refreshing: false
     });
   }
 
@@ -60,8 +60,10 @@ class Sites extends Component {
     }
   }
 
-  _refresh = async () => {
-    return await this.getSites();
+  _onRefresh = async () => {
+    this.setState({refreshing: true});
+    await this.getSites();
+    this.setState({refreshing: false});
   }
 
   _renderItem = ({item}) => {
@@ -91,7 +93,9 @@ class Sites extends Component {
           </Right>
         </Header>
 
-        <PTRView onRefresh={this._refresh} delay={15} offset={90}>
+        <ScrollView refreshControl={
+          <RefreshControl onRefresh={this._onRefresh} refreshing={this.state.refreshing} />
+        }>
           <Content showsVerticalScrollIndicator={false} style={{ backgroundColor: "black" }}>
             {loading ?
               <Container>
@@ -107,7 +111,7 @@ class Sites extends Component {
               </View>
             }
           </Content>
-        </PTRView>
+        </ScrollView>
       </Container>
     );
   }

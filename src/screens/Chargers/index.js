@@ -3,7 +3,9 @@ import {
   Image,
   Platform,
   Dimensions,
-  FlatList
+  FlatList,
+  ScrollView,
+  RefreshControl
 } from "react-native";
 
 import {
@@ -19,11 +21,9 @@ import {
 } from "native-base";
 
 import ProviderFactory from "../../provider/ProviderFactory";
-import SiteAreaComponent from "../../components/SiteArea";
 import ChargerComponent from "../../components/Charger";
 import Utils from "../../utils/Utils";
 import styles from "./styles";
-import PTRView from "react-native-pull-to-refresh";
 
 class Chargers extends Component {
 
@@ -32,6 +32,7 @@ class Chargers extends Component {
     // Init State
     this.state = {
       loading: true,
+      refreshing: false,
       siteID: this.props.navigation.state.params.siteID,
       chargers: []
     };
@@ -64,7 +65,9 @@ class Chargers extends Component {
   }
 
   _onRefresh = async () => {
-    return await this.getChargers(this.state.siteID);
+    this.setState({refreshing: true});
+    await this.getChargers(this.state.siteID);
+    this.setState({refreshing: false});
   }
 
   _renderItem({item}) {
@@ -102,27 +105,30 @@ class Chargers extends Component {
             </Button>
           </Body>
         </Header>
-        <PTRView onRefresh={this._onRefresh} delay={15} offset={95}>
-          <Content
-            showsVerticalScrollIndicator={false}
-            style={{ backgroundColor: "black" }}
-          >
-            {this.state.loading && (
-              <Container>
-                <Spinner color="white" style={{flex: 1}} />
-              </Container>
-            )}
-            {!this.state.loading && (
-              <View>
-                <FlatList
-                  data={this.state.chargers}
-                  renderItem={this._renderItem}
-                  keyExtractor={item => item.id}
-                />
-              </View>
-            )}
-          </Content>
-        </PTRView>
+
+          <ScrollView refreshControl={
+            <RefreshControl onRefresh={this._onRefresh} refreshing={this.state.refreshing} />
+          }>
+            <Content
+              showsVerticalScrollIndicator={false}
+              style={{ backgroundColor: "black" }}
+            >
+              {this.state.loading && (
+                <Container>
+                  <Spinner color="white" style={{flex: 1}} />
+                </Container>
+              )}
+              {!this.state.loading && (
+                <View>
+                  <FlatList
+                    data={this.state.chargers}
+                    renderItem={this._renderItem}
+                    keyExtractor={item => item.id}
+                  />
+                </View>
+              )}
+            </Content>
+          </ScrollView>
       </Container>
     );
   }
