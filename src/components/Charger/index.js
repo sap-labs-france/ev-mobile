@@ -13,8 +13,8 @@ class ChargerComponent extends Component {
     let alpha = String.fromCharCode(65 + index);
     if (index % 2 === 0) {
       return (
-        <View style={{flexDirection: "row",}}>
-          <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+        <View style={styles.connectorContainer}>
+          <View style={styles.connectorStatus}>
             {item.status === "Available" && item.currentConsumption === 0 ?
               <Animatable.View>
                 <Badge success>
@@ -40,37 +40,43 @@ class ChargerComponent extends Component {
                 </Badge>
               </Animatable.View>
             }
-            <Text style={{fontSize: 10}}>Type ?</Text>
-            <Text style={{fontSize: 10}}>{Math.trunc(item.power / 1000)} kW Max</Text>
+            <Text style={styles.connectorTextInfo}>Type ?</Text>
+            <Text style={styles.connectorTextInfo}>{Math.trunc(item.power / 1000)} kWMax</Text>
           </View>
-          <View style={{flexDirection: "column", width: 100, justifyContent: "center", alignItems: "center"}}>
+          <View style={styles.status}>
             { item.currentConsumption !== 0  && item.status === "Occupied" ?
-              <Text style={{fontWeight: "bold"}}>{(item.currentConsumption / 1000).toFixed(2)} kWh</Text>
+              <Text style={styles.statusText}>{(item.currentConsumption / 1000).toFixed(2)} kWh</Text>
             : item.currentConsumption === 0 && item.status === "Occupied" ?
-              <Text style={{fontWeight: "bold"}}>{item.status}</Text>
+              <Text style={styles.statusText}>{item.status}</Text>
             : item.currentConsumption === 0 && item.status === "Available" ?
-              <Text style={{fontWeight: "bold"}}>{item.status}</Text>
+              <Text style={styles.statusText}>{item.status}</Text>
             :
-              <Text style={{fontWeight: "bold"}}>{item.status}</Text>
+              <Text style={styles.statusText}>{item.status}</Text>
             }
+            {item.errorCode !== "NoError" && (
+              <Text style={styles.connectorErrorCodeText}>{item.errorCode}</Text>
+            )}
           </View>
         </View>
       );
     }
     return (
-      <View style={{flexDirection: "row"}}>
-        <View style={{flexDirection: "column", width: 100, justifyContent: "center", alignItems: "center"}}>
+      <View style={styles.connectorContainer}>
+        <View style={styles.status}>
           { item.currentConsumption !== 0  && item.status === "Occupied" ?
-            <Text style={{fontWeight: "bold"}}>{(item.currentConsumption / 1000).toFixed(2)} kWh</Text>
-          : item.currentConsumption === 0 && item.status === "Occupied" ?
-            <Text style={{fontWeight: "bold"}}>{item.status}</Text>
-          : item.currentConsumption === 0 && item.status === "Available" ?
-            <Text style={{fontWeight: "bold"}}>{item.status}</Text>
-          :
-            <Text style={{fontWeight: "bold"}}>{item.status}</Text>
+              <Text style={styles.statusText}>{(item.currentConsumption / 1000).toFixed(2)} kWh</Text>
+            : item.currentConsumption === 0 && item.status === "Occupied" ?
+              <Text style={styles.statusText}>{item.status}</Text>
+            : item.currentConsumption === 0 && item.status === "Available" ?
+              <Text style={styles.statusText}>{item.status}</Text>
+            :
+              <Text style={styles.statusText}>{item.status}</Text>
           }
+          {item.errorCode !== "NoError" && (
+              <Text style={styles.connectorErrorCodeText}>{item.errorCode}</Text>
+          )}
         </View>
-        <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+        <View style={styles.connectorStatus}>
           {item.status === "Available" && item.currentConsumption === 0 ?
             <Animatable.View>
               <Badge success>
@@ -96,8 +102,8 @@ class ChargerComponent extends Component {
               </Badge>
             </Animatable.View>
           }
-          <Text style={{fontSize: 10}}>Type ?</Text>
-          <Text style={{fontSize: 10}}>{Math.trunc(item.power / 1000)} kW Max</Text>
+          <Text style={styles.connectorTextInfo}>Type ?</Text>
+          <Text style={styles.connectorTextInfo}>{Math.trunc(item.power / 1000)} kWMax</Text>
         </View>
       </View>
     );
@@ -111,10 +117,10 @@ class ChargerComponent extends Component {
             <Text>{items.id}</Text>
             <Text>{/*items.siteArea.name*/}Site Area</Text>
         </ListItem>
-        <FlatList style={{flexDirection: "row", flex: 1, justifyContent: "space-between", marginLeft: 20, marginRight: 20, flexWrap: "wrap", borderBottomWidth: 1, borderBottomColor: "#FFFFFF", paddingBottom: 15}}
+        <FlatList style={styles.listContainer}
           data={items.connectors}
           renderItem={this._renderItem}
-          keyExtractor={(connector, index)=> connector.connectorId.toString()}
+          keyExtractor={(connector, index) => connector.connectorId.toString()}
         />
       </View>
     );
