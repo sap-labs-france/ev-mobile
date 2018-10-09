@@ -8,13 +8,13 @@ import RetrievePassword from "./screens/auth/RetrievePassword";
 import SignUp from "./screens/auth/SignUp";
 import Sidebar from "./screens/Sidebar";
 import Sites from "./screens/Sites";
-import SiteAreas from "./screens/SiteAreas";
+import Chargers from "./screens/Chargers";
 
 // Drawer Menu Navigation
 const DrawerNavigation = createDrawerNavigator(
   {
     Sites: { screen: Sites },
-    SiteAreas: { screen: SiteAreas }
+    Chargers: { screen: Chargers }
   },
   {
     initialRouteName: "Sites",

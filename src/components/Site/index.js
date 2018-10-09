@@ -22,7 +22,7 @@ class SiteComponent extends Component {
     return (
       <TouchableOpacity
         style={styles.buttonItem}
-        onPress={() => navigation.navigate("SiteAreas", { siteID: item.id })}
+        onPress={() => navigation.navigate("Chargers", { siteID: item.id })}
       >
         <View style={styles.content}>
           <Grid>

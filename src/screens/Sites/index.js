@@ -48,7 +48,7 @@ class Sites extends Component {
       this.setState({
         dataSites: sites.result,
         loading: false
-      }); 
+      });
       console.log(sites.result);
     } catch (error) {
       // Stop

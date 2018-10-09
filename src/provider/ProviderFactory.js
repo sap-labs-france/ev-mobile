@@ -2,7 +2,7 @@
 import CentralServerProvider from './CentralServerProvider';
 import CentralServerProviderMock from './CentralServerProviderMock';
 
-const MOCK_DATA = true;
+const MOCK_DATA = false;
 
 export default class ProviderFactory {
   static getProvider() {

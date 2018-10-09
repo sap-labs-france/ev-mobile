@@ -25,7 +25,7 @@ import Utils from "../../utils/Utils";
 import styles from "./styles";
 import PTRView from "react-native-pull-to-refresh";
 
-class SiteAreas extends Component {
+class Chargers extends Component {
 
   constructor(props) {
     super(props);
@@ -33,26 +33,26 @@ class SiteAreas extends Component {
     this.state = {
       loading: true,
       siteID: this.props.navigation.state.params.siteID,
-      siteAreas: []
+      chargers: []
     };
   }
 
   componentDidMount() {
     // Get Site Areas
-    this.getSitesAreas(this.state.siteID);
+    this.getChargers(this.state.siteID);
   }
 
-  getSitesAreas = async (siteID) => {
+  getChargers = async (siteID) => {
     try {
-      // Get Site Areas
-      let siteAreas = await ProviderFactory.getProvider().getSiteAreas(
-        { SiteID: siteID, WithChargeBoxes: true });
+      // Get Chargers NOT IMPLEMENTED WITH MOCK
+      let chargers = await ProviderFactory.getProvider().getChargers(
+        { SiteID: siteID, WithSiteArea: true });
       // Set result
       this.setState({
         loading: false,
-        siteAreas: siteAreas.result
+        chargers: chargers.result
       });
-      console.log(siteAreas.result);
+      console.log(chargers.result);
     } catch (error) {
       // Stop
       this.setState({
@@ -64,14 +64,13 @@ class SiteAreas extends Component {
   }
 
   _onRefresh = async () => {
-    return await this.getSitesAreas(this.state.siteID);
+    return await this.getChargers(this.state.siteID);
   }
 
   _renderItem({item}) {
     return (
       <List>
-        <SiteAreaComponent item={item} />
-        <ChargerComponent items={item.chargeBoxes} />
+        <ChargerComponent items={item} />
       </List>
     );
   }
@@ -116,7 +115,7 @@ class SiteAreas extends Component {
             {!this.state.loading && (
               <View>
                 <FlatList
-                  data={this.state.siteAreas}
+                  data={this.state.chargers}
                   renderItem={this._renderItem}
                   keyExtractor={item => item.id}
                 />
@@ -129,4 +128,4 @@ class SiteAreas extends Component {
   }
 }
 
-export default SiteAreas;
+export default Chargers;

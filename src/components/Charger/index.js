@@ -9,24 +9,9 @@ import styles from "./styles";
 const deviceWidth = Dimensions.get("window").width;
 class ChargerComponent extends Component {
 
-  _renderConnector = ({item, index}) => {
-    let alpha = String.fromCharCode(65 + index);
-    return (
-      undefined
-    );
-  }
-
   _renderItem = ({item, index}) => {
     return (
-      <ListItem>
-          <View style={{backgroundColor: "#87CEEB", flex: 1}}>
-            {/* Title */}
-            <View style={{backgroundColor: "#DDA0DD", paddingBottom: 5}}>
-              <Text>{item.id} - <Text style={{fontStyle: "italic"}}>{item.chargePointVendor}</Text></Text>
-            </View>
-          </View>
-            {/* <FlatList style={{flexDirection: "row"}} data={item.connectors} renderItem={this._renderConnector} keyExtractor={(connector, index) => connector.connectorId.toString()} /> */}
-      </ListItem>
+      undefined
     );
   }
 
@@ -34,7 +19,13 @@ class ChargerComponent extends Component {
     let { items } = this.props;
     return (
       <View style={styles.container}>
-        <FlatList data={items} renderItem={this._renderItem} keyExtractor={(item, index) => item.id}/>
+        <ListItem style={{backgroundColor: "transparent", paddingBottom: 5, justifyContent: "space-between"}} itemDivider>
+            <Text>{items.id}</Text>
+            <Text>{/*items.siteArea.name*/}Site Area</Text>
+        </ListItem>
+        <ListItem style={{justifyContent: "center", alignItems: "center"}}>
+          <Text>Charger Connectors Page</Text>
+        </ListItem>
       </View>
     );
   }
