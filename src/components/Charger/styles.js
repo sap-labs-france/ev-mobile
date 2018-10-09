@@ -4,7 +4,7 @@ const deviceWidth = Dimensions.get("window").width;
 
 export default StyleSheet.create({
   container: {
-    paddingBottom: 35,
+    paddingBottom: 5,
     paddingLeft: 5
   },
   chargerName: {
