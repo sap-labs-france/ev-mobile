@@ -19,7 +19,7 @@ import {
   Footer,
   Spinner
 } from "native-base";
-import CentralServerProvider from "../../../provider/CentralServerProvider";
+import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
@@ -194,7 +194,7 @@ class Login extends React.Component {
         // Loading
         this.setState({loading: true});
         // Login
-        await CentralServerProvider.login(email, password, eula);
+        await ProviderFactory.getProvider().login(email, password, eula);
         // Login Success
         this.setState({loading: false});
         // Navigate to sites

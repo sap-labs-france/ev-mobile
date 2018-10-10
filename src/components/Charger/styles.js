@@ -11,32 +11,38 @@ export default StyleSheet.create({
     flexDirection: "row",
     flex: 1,
     justifyContent: "space-between",
+    alignItems: "center",
     marginLeft: 20,
     marginRight: 20,
     flexWrap: "wrap",
-    borderBottomWidth: 1,
-    borderBottomColor: "#FFFFFF",
-    paddingBottom: 15
+    paddingTop: 10
   },
   connectorContainer: {
-    flexDirection: "row"
+    flexDirection: "row",
+    paddingTop: 15
   },
   connectorStatus: {
     flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  connectorTextInfoType: {
+    fontSize: 10,
+    paddingTop: 5
   },
   connectorTextInfo: {
-    fontSize: 10
+    fontSize: 10,
   },
   connectorErrorCodeText: {
-    fontSize: 7
+    fontSize: 9
   },
   status: {
     flexDirection: "column",
     width: 100,
-    justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    paddingTop: 5,
+    paddingBottom: 10
   },
   statusText: {
     fontWeight: "bold"

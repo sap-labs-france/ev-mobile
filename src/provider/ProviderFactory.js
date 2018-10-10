@@ -1,8 +1,8 @@
 
-import CentralServerProvider from './CentralServerProvider';
-import CentralServerProviderMock from './CentralServerProviderMock';
+import CentralServerProvider from "./CentralServerProvider";
+import CentralServerProviderMock from "./CentralServerProviderMock";
 
-const MOCK_DATA = false;
+const MOCK_DATA = true;
 
 export default class ProviderFactory {
   static getProvider() {

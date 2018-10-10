@@ -609,6 +609,42 @@ const CHARGERS = {
                     "errorCode": "NoError",
                     "power": 22170,
                     "activeTransactionID": 0
+                },
+                {
+                    "connectorId": 3,
+                    "currentConsumption": 321456,
+                    "totalConsumption": 0,
+                    "status": "Occupied",
+                    "errorCode": "NoError",
+                    "power": 22170,
+                    "activeTransactionID": 0
+                },
+                {
+                    "connectorId": 4,
+                    "currentConsumption": 2130,
+                    "totalConsumption": 0,
+                    "status": "Occupied",
+                    "errorCode": "NoError",
+                    "power": 22170,
+                    "activeTransactionID": 0
+                },
+                {
+                    "connectorId": 5,
+                    "currentConsumption": 0,
+                    "totalConsumption": 0,
+                    "status": "Available",
+                    "errorCode": "NoError",
+                    "power": 22170,
+                    "activeTransactionID": 0
+                },
+                {
+                    "connectorId": 6,
+                    "currentConsumption": 10099,
+                    "totalConsumption": 0,
+                    "status": "Occupied",
+                    "errorCode": "NoError",
+                    "power": 22170,
+                    "activeTransactionID": 0
                 }
             ],
             "lastChangedBy": "admin last",
