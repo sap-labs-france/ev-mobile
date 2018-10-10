@@ -1,6 +1,5 @@
 
 export default {
-
     // Toast
     TOAST_DURATION_MILLIS: 3000,
     TOAST_DEFAULT_STYLE: {
@@ -10,8 +9,6 @@ export default {
     TOAST_FONT_SIZE: 13,
 
     // Paging
-    DEFAULT_LIMIT: 100,
-    DEFAULT_SKIP: 0,
-    DEFAULT_PAGING: { limit: this.DEFAULT_LIMIT, skip: this.DEFAULT_SKIP },
+    DEFAULT_PAGING: { limit: 5, skip: 0 },
     DEFAULT_ORDERING: []
 };
