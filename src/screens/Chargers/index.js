@@ -32,10 +32,11 @@ class Chargers extends Component {
     // Init State
     this.state = {
       loading: true,
+      loadingMore: false,
       refreshing: false,
       siteID: this.props.navigation.state.params.siteID,
-      limit: 10,
-      skip: 0,
+      limit: 4,
+      count: 0,
       chargers: []
     };
   }
@@ -46,16 +47,18 @@ class Chargers extends Component {
   }
 
   getChargers = async (siteID) => {
+    const { limit, skip } = this.state;
     try {
       // Get Chargers
       let chargers = await ProviderFactory.getProvider().getChargers(
-        { SiteID: siteID, WithSiteArea: true }, { limit: 20, skip: 0 });
-      // Set result
-      this.setState({
-        loading: false,
-        chargers: chargers.result
-      });
-      console.log(chargers.result);
+        { SiteID: siteID, WithSiteArea: true }, { limit, skip });
+        // Set result
+        this.setState({
+          loading: false,
+          chargers: [...chargers.result],
+          count: chargers.count
+        });
+        console.log(chargers.result);
     } catch (error) {
       // Stop
       this.setState({
@@ -66,9 +69,16 @@ class Chargers extends Component {
     }
   }
 
-  _onRefresh = async () => {
-    this.setState({refreshing: true});
-    await this.getChargers(this.state.siteID);
+  _onEndScroll = () => {
+    const { limit, siteID, count } = this.state;
+    if (count >= limit) {
+      this.setState({limit: limit + 2, loadingMore: true}, () => this.getChargers(siteID));
+      this.setState({loadingMore: false});
+    }
+  }
+
+  _onRefresh = () => {
+    this.setState({refreshing: true}, () => this.getChargers(this.state.siteID));
     this.setState({refreshing: false});
   }
 
@@ -108,29 +118,31 @@ class Chargers extends Component {
           </Body>
         </Header>
 
-          <ScrollView refreshControl={
-            <RefreshControl onRefresh={this._onRefresh} refreshing={this.state.refreshing} />
-          }>
-            <Content
-              showsVerticalScrollIndicator={false}
-              style={{ backgroundColor: "black" }}
-            >
-              {this.state.loading && (
-                <Container>
-                  <Spinner color="white" style={{flex: 1}} />
-                </Container>
-              )}
-              {!this.state.loading && (
-                <View>
-                  <FlatList
-                    data={this.state.chargers}
-                    renderItem={this._renderItem}
-                    keyExtractor={item => item.id}
-                  />
-                </View>
-              )}
-            </Content>
-          </ScrollView>
+        <View style={{flex: 1}}>
+          {this.state.loading && (
+            <Container>
+              <Spinner color="white" style={{flex: 1}} />
+            </Container>
+          )}
+          {!this.state.loading && (
+            <View>
+              <FlatList
+                data={this.state.chargers}
+                renderItem={this._renderItem}
+                keyExtractor={item => item.id}
+                refreshControl={
+                  <RefreshControl onRefresh={this._onRefresh} refreshing={this.state.refreshing} />
+                }
+                showsVerticalScrollIndicator={true}
+                indicatorStyle={"white"}
+                alwaysBounceVertical
+                style={{ backgroundColor: "black"}}
+                onEndReached={this._onEndScroll}
+                onEndReachedThreshold={0}
+              />
+            </View>
+          )}
+        </View>
       </Container>
     );
   }

@@ -62,9 +62,7 @@ class ChargerComponent extends Component {
                   </View>
                 </View>
               </View>
-            : item.currentConsumption === 0 && item.status === "Occupied" ?
-              <Text style={styles.statusText}>{item.status}</Text>
-            : item.currentConsumption === 0 && item.status === "Available" ?
+            : item.currentConsumption === 0 ?
               <View style={{width: deviceWidth / 4.8}}>
                 <Text style={styles.statusText}>{item.status}</Text>
                 <View style={{flexDirection: "row", justifyContent: "space-between"}}>
@@ -73,8 +71,8 @@ class ChargerComponent extends Component {
                     <Text style={{fontSize: 10, textAlign: "center"}}>{item.type === "T2" ? "Type 2" : item.type === "CCS" ? "CCS" : item.type === "C" ? "Type C" : "Unknown"}</Text>
                   </View>
                   <View style={{flexDirection: "column"}}>
-                    <Text style={{fontWeight: "bold", fontSize: 27}}>{Math.trunc(item.power / 1000)}</Text>
-                    <Text style={{fontSize: 10}}>kWMax</Text>
+                    <Text style={{fontWeight: "bold", fontSize: 27, textAlign: "center"}}>{Math.trunc(item.power / 1000)}</Text>
+                    <Text style={{fontSize: 10, textAlign: "center"}}>kWMax</Text>
                   </View>
                 </View>
               </View>
@@ -105,9 +103,7 @@ class ChargerComponent extends Component {
                 </View>
               </View>
             </View>
-          : item.currentConsumption === 0 && item.status === "Occupied" ?
-            <Text style={styles.statusText}>{item.status}</Text>
-          : item.currentConsumption === 0 && item.status === "Available" ?
+          : item.currentConsumption === 0 ?
             <View style={{width: deviceWidth / 4.8}}>
               <Text style={styles.statusText}>{item.status}</Text>
               <View style={{flexDirection: "row", justifyContent: "space-between"}}>
@@ -116,8 +112,8 @@ class ChargerComponent extends Component {
                   <Text style={{fontSize: 10, textAlign: "center"}}>{item.type === "T2" ? "Type 2" : item.type === "CCS" ? "CCS" : item.type === "C" ? "Type C" : "Unknown"}</Text>
                 </View>
                 <View style={{flexDirection: "column"}}>
-                  <Text style={{fontWeight: "bold", fontSize: 27}}>{Math.trunc(item.power / 1000)}</Text>
-                  <Text style={{fontSize: 10}}>kWMax</Text>
+                  <Text style={{fontWeight: "bold", fontSize: 27, textAlign: "center"}}>{Math.trunc(item.power / 1000)}</Text>
+                  <Text style={{fontSize: 10, textAlign: "center"}}>kWMax</Text>
                 </View>
               </View>
             </View>
