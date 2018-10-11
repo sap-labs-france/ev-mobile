@@ -34,6 +34,8 @@ class Chargers extends Component {
       loading: true,
       refreshing: false,
       siteID: this.props.navigation.state.params.siteID,
+      limit: 10,
+      skip: 0,
       chargers: []
     };
   }
@@ -45,9 +47,9 @@ class Chargers extends Component {
 
   getChargers = async (siteID) => {
     try {
-      // Get Chargers NOT IMPLEMENTED WITH MOCK
+      // Get Chargers
       let chargers = await ProviderFactory.getProvider().getChargers(
-        { SiteID: siteID, WithSiteArea: true });
+        { SiteID: siteID, WithSiteArea: true }, { limit: 20, skip: 0 });
       // Set result
       this.setState({
         loading: false,

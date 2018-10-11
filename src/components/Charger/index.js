@@ -6,12 +6,12 @@ import * as Animatable from "react-native-animatable";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import styles from "./styles";
 
-const deviceWidth = Dimensions.get("window").width;
-
 const type2 = require("../../../assets/connectorType/type2.gif");
 const combo = require("../../../assets/connectorType/combo_ccs.gif");
 const chademo = require("../../../assets/connectorType/chademo.gif");
 const noConnector = require("../../../assets/connectorType/no-connector.gif");
+
+const deviceWidth = Dimensions.get("window").width;
 
 class ChargerComponent extends Component {
 
@@ -46,32 +46,35 @@ class ChargerComponent extends Component {
                 </Badge>
               </Animatable.View>
             }
-            <Text style={styles.connectorTextInfoType}>Type ?</Text>
           </View>
           <View style={styles.status}>
             { item.currentConsumption !== 0  && item.status === "Occupied" ?
-              <View style={{justifyContent: "center", alignItems: "center"}}>
+              <View style={{width: deviceWidth / 4.4}}>
                 <Text style={styles.statusText}>{item.status}</Text>
-                <View style={{flexDirection: "row"}}>
-                  <View style={{flexDirection: "row", width: 60}}>
-                    <Text style={{fontWeight: "bold", fontSize: 17, textAlign: "center"}}>{(item.currentConsumption / 1000).toFixed(2)} <Text style={{fontWeight: "normal", fontSize: 10}}>kW(Instant)</Text></Text>
+                <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                  <View style={{flexDirection: "column"}}>
+                    <Text style={{fontWeight: "bold", fontSize: 27, textAlign: "center"}}>{Math.trunc(item.currentConsumption / 1000) === 0 ? (item.currentConsumption / 1000).toFixed(1) : Math.trunc(item.currentConsumption / 1000)}</Text>
+                    <Text style={{fontWeight: "normal", fontSize: 10}}>kW(Instant)</Text>
                   </View>
-                  <View style={{flexDirection: "row", width: 36}}>
-                    <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 17}}>{Math.trunc(item.power / 1000)} <Text style={{fontWeight: "normal", fontSize: 10}}>kWMax</Text></Text>
+                  <View style={{flexDirection: "column"}}>
+                    <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 27}}>{Math.trunc(item.power / 1000)}</Text>
+                    <Text style={{fontWeight: "normal", fontSize: 10}}>kWMax</Text>
                   </View>
                 </View>
               </View>
             : item.currentConsumption === 0 && item.status === "Occupied" ?
               <Text style={styles.statusText}>{item.status}</Text>
             : item.currentConsumption === 0 && item.status === "Available" ?
-              <View style={{justifyContent: "center", alignItems: "center"}}>
+              <View style={{width: deviceWidth / 4.8}}>
                 <Text style={styles.statusText}>{item.status}</Text>
-                <View style={{flexDirection: "row"}}>
-                  <View style={{flexDirection: "row", width: 36}}>
-                    <Image source={type2} style={{width: 35, height: 35}} />
+                <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                  <View style={{flexDirection: "column"}}>
+                    <Image source={item.type === "T2" ? type2 : item.type === "CCS" ? combo : item.type === "C" ? chademo : noConnector} style={{width: 35, height: 35}} />
+                    <Text style={{fontSize: 10, textAlign: "center"}}>{item.type === "T2" ? "Type 2" : item.type === "CCS" ? "CCS" : item.type === "C" ? "Type C" : "Unknown"}</Text>
                   </View>
-                  <View style={{flexDirection: "row", width: 36}}>
-                    <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 17}}>{Math.trunc(item.power / 1000)} <Text style={{fontWeight: "normal", fontSize: 10}}>kWMax</Text></Text>
+                  <View style={{flexDirection: "column"}}>
+                    <Text style={{fontWeight: "bold", fontSize: 27}}>{Math.trunc(item.power / 1000)}</Text>
+                    <Text style={{fontSize: 10}}>kWMax</Text>
                   </View>
                 </View>
               </View>
@@ -89,28 +92,32 @@ class ChargerComponent extends Component {
       <View style={styles.connectorContainer}>
         <View style={styles.status}>
           { item.currentConsumption !== 0  && item.status === "Occupied" ?
-            <View style={{justifyContent: "center", alignItems: "center"}}>
+            <View style={{width: deviceWidth / 4.4}}>
               <Text style={styles.statusText}>{item.status}</Text>
-              <View style={{flexDirection: "row"}}>
-                <View style={{flexDirection: "row", width: 60}}>
-                  <Text style={{fontWeight: "bold", fontSize: 17, textAlign: "center"}}>{(item.currentConsumption / 1000).toFixed(2)} <Text style={{fontWeight: "normal", fontSize: 10}}>kW(Instant)</Text></Text>
+              <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                <View style={{flexDirection: "column"}}>
+                  <Text style={{fontWeight: "bold", fontSize: 27, textAlign: "center"}}>{Math.trunc(item.currentConsumption / 1000) === 0 ? (item.currentConsumption / 1000).toFixed(1) : Math.trunc(item.currentConsumption / 1000)}</Text>
+                  <Text style={{fontWeight: "normal", fontSize: 10}}>kW(Instant)</Text>
                 </View>
-                <View style={{flexDirection: "row", width: 36}}>
-                  <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 17}}>{Math.trunc(item.power / 1000)} <Text style={{fontWeight: "normal", fontSize: 10}}>kWMax</Text></Text>
+                <View style={{flexDirection: "column"}}>
+                  <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 27}}>{Math.trunc(item.power / 1000)}</Text>
+                  <Text style={{fontWeight: "normal", fontSize: 10}}>kWMax</Text>
                 </View>
               </View>
             </View>
           : item.currentConsumption === 0 && item.status === "Occupied" ?
             <Text style={styles.statusText}>{item.status}</Text>
           : item.currentConsumption === 0 && item.status === "Available" ?
-            <View style={{justifyContent: "center", alignItems: "center"}}>
+            <View style={{width: deviceWidth / 4.8}}>
               <Text style={styles.statusText}>{item.status}</Text>
-              <View style={{flexDirection: "row"}}>
-                <View style={{flexDirection: "row", width: 36}}>
-                  <Image source={type2} style={{width: 35, height: 35}} />
+              <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                <View style={{flexDirection: "column"}}>
+                  <Image source={item.type === "T2" ? type2 : item.type === "CCS" ? combo : item.type === "C" ? chademo : noConnector} style={{width: 35, height: 35}} />
+                  <Text style={{fontSize: 10, textAlign: "center"}}>{item.type === "T2" ? "Type 2" : item.type === "CCS" ? "CCS" : item.type === "C" ? "Type C" : "Unknown"}</Text>
                 </View>
-                <View style={{flexDirection: "row", width: 36}}>
-                  <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 17}}>{Math.trunc(item.power / 1000)} <Text style={{fontWeight: "normal", fontSize: 10}}>kWMax</Text></Text>
+                <View style={{flexDirection: "column"}}>
+                  <Text style={{fontWeight: "bold", fontSize: 27}}>{Math.trunc(item.power / 1000)}</Text>
+                  <Text style={{fontSize: 10}}>kWMax</Text>
                 </View>
               </View>
             </View>
@@ -147,7 +154,6 @@ class ChargerComponent extends Component {
               </Badge>
             </Animatable.View>
           }
-          <Text style={styles.connectorTextInfoType}>Type ?</Text>
         </View>
       </View>
     );
@@ -158,8 +164,8 @@ class ChargerComponent extends Component {
     return (
       <View style={styles.container}>
         <ListItem style={{backgroundColor: "transparent", paddingBottom: 7, borderBottomColor: "#FFFFFF", borderBottomWidth: 1, flexDirection: "row", justifyContent: "space-between"}} itemDivider>
-          <View style={{backgroundColor: "#008080", flexDirection: "row"}}>
-            <Text>{items.id}{/*items.siteArea.name*/} - Site Area</Text>
+          <View style={{flexDirection: "row"}}>
+            <Text style={{fontSize: 18, fontWeight: "bold"}}>{items.id} - {items.siteArea.name}</Text>
           </View>
           <Icon style={{color: "#32CD32", fontSize: 20}} type="FontAwesome" name="heartbeat" />
         </ListItem>

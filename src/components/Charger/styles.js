@@ -23,7 +23,6 @@ export default StyleSheet.create({
   },
   connectorStatus: {
     flexDirection: "column",
-    alignItems: "center",
     paddingLeft: 10,
     paddingRight: 10
   },
@@ -41,10 +40,11 @@ export default StyleSheet.create({
     flexDirection: "column",
     width: 100,
     alignItems: "center",
-    paddingTop: 5,
     paddingBottom: 10
   },
   statusText: {
-    fontWeight: "bold"
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 18
   }
 });

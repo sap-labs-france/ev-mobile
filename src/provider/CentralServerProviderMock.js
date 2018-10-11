@@ -599,7 +599,8 @@ const CHARGERS = {
                     "status": "Available",
                     "errorCode": "NoError",
                     "power": 22170,
-                    "activeTransactionID": 0
+                    "activeTransactionID": 0,
+                    "type": "Type2"
                 },
                 {
                     "connectorId": 2,
@@ -608,7 +609,8 @@ const CHARGERS = {
                     "status": "Available",
                     "errorCode": "NoError",
                     "power": 22170,
-                    "activeTransactionID": 0
+                    "activeTransactionID": 0,
+                    "type": "Chademo"
                 },
                 {
                     "connectorId": 3,
@@ -617,7 +619,8 @@ const CHARGERS = {
                     "status": "Occupied",
                     "errorCode": "NoError",
                     "power": 22170,
-                    "activeTransactionID": 0
+                    "activeTransactionID": 0,
+                    "type": "ComboCcs"
                 },
                 {
                     "connectorId": 4,
@@ -626,7 +629,7 @@ const CHARGERS = {
                     "status": "Occupied",
                     "errorCode": "NoError",
                     "power": 22170,
-                    "activeTransactionID": 0
+                    "activeTransactionID": 0,
                 },
                 {
                     "connectorId": 5,

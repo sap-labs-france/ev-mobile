@@ -9,6 +9,7 @@ export default {
     TOAST_FONT_SIZE: 13,
 
     // Paging
-    DEFAULT_PAGING: { limit: 5, skip: 0 },
+    DEFAULT_PAGING: { limit: 10, skip: 0 },
+    PAGING_SIZE: 10,
     DEFAULT_ORDERING: []
 };
