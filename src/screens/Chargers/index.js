@@ -82,6 +82,16 @@ class Chargers extends Component {
     this.setState({refreshing: false});
   }
 
+  footerList = () => {
+    const { limit, count } = this.state;
+    if (limit <= count) {
+      return (
+        <Spinner color="white" />
+      );
+    }
+    return null;
+  }
+
   _renderItem({item}) {
     return (
       <List>
@@ -139,6 +149,7 @@ class Chargers extends Component {
                 style={{ backgroundColor: "black"}}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={0}
+                ListFooterComponent={this.footerList}
               />
             </View>
           )}
