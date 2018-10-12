@@ -32,7 +32,7 @@ class Chargers extends Component {
       loading: true,
       refreshing: false,
       siteID: this.props.navigation.state.params.siteID,
-      limit: 4,
+      limit: 5,
       count: 0,
       chargers: []
     };

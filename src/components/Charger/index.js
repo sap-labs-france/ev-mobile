@@ -53,11 +53,11 @@ class ChargerComponent extends Component {
                 <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                   <View style={{flexDirection: "column"}}>
                     <Text style={{fontWeight: "bold", fontSize: 27, textAlign: "center"}}>{Math.trunc(item.currentConsumption / 1000) === 0 ? (item.currentConsumption / 1000).toFixed(1) : Math.trunc(item.currentConsumption / 1000)}</Text>
-                    <Text style={{fontWeight: "normal", fontSize: 8}}>kW(Instant)</Text>
+                    <Text style={{fontSize: 8}}>kW(Instant)</Text>
                   </View>
                   <View style={{flexDirection: "column"}}>
                     <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 27}}>{Math.trunc(item.power / 1000)}</Text>
-                    <Text style={{fontWeight: "normal", fontSize: 9}}>kWMax</Text>
+                    <Text style={{fontSize: 9}}>kWMax</Text>
                   </View>
                 </View>
               </View>
@@ -67,11 +67,17 @@ class ChargerComponent extends Component {
                 <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                   <View style={{flexDirection: "column"}}>
                     <Image source={item.type === "T2" ? type2 : item.type === "CCS" ? combo : item.type === "C" ? chademo : noConnector} style={{width: 35, height: 35}} />
-                    <Text style={{fontSize: 10, textAlign: "center"}}>{item.type === "T2" ? "Type 2" : item.type === "CCS" ? "CCS" : item.type === "C" ? "Type C" : "Unknown"}</Text>
+                  </View>
+                  <View style={{flexDirection: "column", width: deviceWidth / 11}}>
+                    <Text style={{fontWeight: "bold", fontSize: 27, textAlign: "center"}}>{Math.trunc(item.power / 1000)}</Text>
+                  </View>
+                </View>
+                <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                  <View style={{flexDirection: "column"}}>
+                    <Text style={{fontSize: 10.5, textAlign: "center"}}>{item.type === "T2" ? "Type 2" : item.type === "CCS" ? "CCS" : item.type === "C" ? "Type C" : "Unknown"}</Text>
                   </View>
                   <View style={{flexDirection: "column"}}>
-                    <Text style={{fontWeight: "bold", fontSize: 27, textAlign: "center"}}>{Math.trunc(item.power / 1000)}</Text>
-                    <Text style={{fontSize: 10, textAlign: "center"}}>kWMax</Text>
+                    <Text style={{fontSize: 9.5, textAlign: "center"}}>kWMax</Text>
                   </View>
                 </View>
               </View>
@@ -94,11 +100,11 @@ class ChargerComponent extends Component {
               <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                 <View style={{flexDirection: "column"}}>
                   <Text style={{fontWeight: "bold", fontSize: 27, textAlign: "center"}}>{Math.trunc(item.currentConsumption / 1000) === 0 ? (item.currentConsumption / 1000).toFixed(1) : Math.trunc(item.currentConsumption / 1000)}</Text>
-                  <Text style={{fontWeight: "normal", fontSize: 8}}>kW(Instant)</Text>
+                  <Text style={{fontSize: 8}}>kW(Instant)</Text>
                 </View>
                 <View style={{flexDirection: "column"}}>
                   <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 27}}>{Math.trunc(item.power / 1000)}</Text>
-                  <Text style={{fontWeight: "normal", fontSize: 9}}>kWMax</Text>
+                  <Text style={{fontSize: 9, textAlign: "center"}}>kWMax</Text>
                 </View>
               </View>
             </View>
@@ -108,11 +114,17 @@ class ChargerComponent extends Component {
               <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                 <View style={{flexDirection: "column"}}>
                   <Image source={item.type === "T2" ? type2 : item.type === "CCS" ? combo : item.type === "C" ? chademo : noConnector} style={{width: 35, height: 35}} />
-                  <Text style={{fontSize: 10, textAlign: "center"}}>{item.type === "T2" ? "Type 2" : item.type === "CCS" ? "CCS" : item.type === "C" ? "Type C" : "Unknown"}</Text>
+                </View>
+                <View style={{flexDirection: "column", width: deviceWidth / 11}}>
+                  <Text style={{fontWeight: "bold", fontSize: 27, textAlign: "center"}}>{Math.trunc(item.power / 1000)}</Text>
+                </View>
+              </View>
+              <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                <View style={{flexDirection: "column"}}>
+                  <Text style={{fontSize: 10.5, textAlign: "center"}}>{item.type === "T2" ? "Type 2" : item.type === "CCS" ? "CCS" : item.type === "C" ? "Type C" : "Unknown"}</Text>
                 </View>
                 <View style={{flexDirection: "column"}}>
-                  <Text style={{fontWeight: "bold", fontSize: 27, textAlign: "center"}}>{Math.trunc(item.power / 1000)}</Text>
-                  <Text style={{fontSize: 10, textAlign: "center"}}>kWMax</Text>
+                  <Text style={{fontSize: 9.5, textAlign: "center"}}>kWMax</Text>
                 </View>
               </View>
             </View>
