@@ -33,7 +33,9 @@ class Chargers extends Component {
       refreshing: false,
       siteID: this.props.navigation.state.params.siteID,
       limit: 5,
+      skip: 0,
       count: 0,
+      scrolling: false,
       chargers: []
     };
   }
@@ -55,7 +57,7 @@ class Chargers extends Component {
           chargers: [...chargers.result],
           count: chargers.count
         });
-        console.log(chargers.result);
+        console.log("Data stored: ", this.state.chargers);
     } catch (error) {
       // Stop
       this.setState({
@@ -67,9 +69,14 @@ class Chargers extends Component {
   }
 
   _onEndScroll = () => {
-    const { limit, siteID, count } = this.state;
-    if (count >= limit) {
-      this.setState({limit: limit + 5}, () => this.getChargers(siteID));
+    const { siteID, scrolling, skip, count } = this.state;
+    if (scrolling && skip <= count) {
+      this.setState({scrolling: false, skip: this.state.skip + 5}, async () => {
+        let data = this.state.chargers;
+        await this.getChargers(siteID);
+        let newData = data.concat(this.state.chargers);
+        this.setState({chargers: newData});
+      });
     }
   }
 
@@ -79,8 +86,8 @@ class Chargers extends Component {
   }
 
   footerList = () => {
-    const { limit, count } = this.state;
-    if (limit <= count) {
+    const { skip, count, limit } = this.state;
+    if (skip <= count && limit <= count) {
       return (
         <Spinner color="white" />
       );
@@ -143,8 +150,9 @@ class Chargers extends Component {
                 alwaysBounceVertical
                 style={{ backgroundColor: "black"}}
                 onEndReached={this._onEndScroll}
-                onEndReachedThreshold={0}
+                onEndReachedThreshold={0.25}
                 ListFooterComponent={this.footerList}
+                onScroll={()=>this.setState({scrolling: true})}
               />
             </View>
           )}

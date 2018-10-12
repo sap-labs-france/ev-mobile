@@ -47,10 +47,6 @@ export default StyleSheet.create({
   badge: {
     justifyContent: "center"
   },
-  connectorTextInfoType: {
-    fontSize: 10,
-    paddingTop: 5
-  },
   connectorTextInfo: {
     fontSize: 10,
   },
@@ -64,9 +60,51 @@ export default StyleSheet.create({
     alignItems: "center",
     paddingBottom: 10
   },
+  statusDetailsContainer: {
+    width: deviceWidth / 4.4
+  },
   statusText: {
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 17
+  },
+  rowSpaceBetween: {
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  column: {
+    flexDirection: "column"
+  },
+  energy: {
+    fontWeight: "bold",
+    fontSize: 27,
+    textAlign: "center"
+  },
+  currentConsumptionUnity: {
+    fontSize: 8
+  },
+  maxEnergy: {
+    fontSize: 9,
+    textAlign: "center"
+  },
+  statusDetailsContainerNoConsumption : {
+    width: deviceWidth / 4.8
+  },
+  sizeConnectorImage: {
+    width: deviceWidth / 10.7,
+    height: deviceWidth / 10.7
+  },
+  maxPowerContainer: {
+    flexDirection: "column",
+    width: deviceWidth / 11
+  },
+  power: {
+    fontWeight: "bold",
+    fontSize: 26,
+    textAlign: "center"
+  },
+  connectorType: {
+    fontSize: 10.5,
+    textAlign: "center"
   }
 });
