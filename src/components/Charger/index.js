@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { FlatList, SectionList, Dimensions, Image } from "react-native";
+import { FlatList, Dimensions, Image } from "react-native";
 import { Text, View, ListItem, Badge, Icon } from "native-base";
 
 import * as Animatable from "react-native-animatable";
-import { Grid, Col, Row } from "react-native-easy-grid";
 import styles from "./styles";
 
 const type2 = require("../../../assets/connectorType/type2.gif");
@@ -23,25 +22,25 @@ class ChargerComponent extends Component {
           <View style={styles.connectorStatus}>
             {item.status === "Available" && item.currentConsumption === 0 ?
               <Animatable.View>
-                <Badge style={{justifyContent: "center"}} success>
+                <Badge style={styles.badge} success>
                   <Text>{alpha}</Text>
                 </Badge>
               </Animatable.View>
             : item.status === "Occupied" && item.currentConsumption === 0 ?
               <Animatable.View>
-                <Badge style={{justifyContent: "center"}} danger>
+                <Badge style={styles.badge} danger>
                   <Text>{alpha}</Text>
                 </Badge>
               </Animatable.View>
             : item.status === "Occupied" && item.currentConsumption !== 0 ?
               <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
-                <Badge style={{justifyContent: "center"}} danger>
+                <Badge style={styles.badge} danger>
                   <Text>{alpha}</Text>
                 </Badge>
               </Animatable.View>
             :
               <Animatable.View>
-                <Badge style={{justifyContent: "center"}} danger>
+                <Badge style={styles.badge} danger>
                   <Text>{alpha}</Text>
                 </Badge>
               </Animatable.View>
@@ -54,11 +53,11 @@ class ChargerComponent extends Component {
                 <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                   <View style={{flexDirection: "column"}}>
                     <Text style={{fontWeight: "bold", fontSize: 27, textAlign: "center"}}>{Math.trunc(item.currentConsumption / 1000) === 0 ? (item.currentConsumption / 1000).toFixed(1) : Math.trunc(item.currentConsumption / 1000)}</Text>
-                    <Text style={{fontWeight: "normal", fontSize: 10}}>kW(Instant)</Text>
+                    <Text style={{fontWeight: "normal", fontSize: 8}}>kW(Instant)</Text>
                   </View>
                   <View style={{flexDirection: "column"}}>
                     <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 27}}>{Math.trunc(item.power / 1000)}</Text>
-                    <Text style={{fontWeight: "normal", fontSize: 10}}>kWMax</Text>
+                    <Text style={{fontWeight: "normal", fontSize: 9}}>kWMax</Text>
                   </View>
                 </View>
               </View>
@@ -95,11 +94,11 @@ class ChargerComponent extends Component {
               <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                 <View style={{flexDirection: "column"}}>
                   <Text style={{fontWeight: "bold", fontSize: 27, textAlign: "center"}}>{Math.trunc(item.currentConsumption / 1000) === 0 ? (item.currentConsumption / 1000).toFixed(1) : Math.trunc(item.currentConsumption / 1000)}</Text>
-                  <Text style={{fontWeight: "normal", fontSize: 10}}>kW(Instant)</Text>
+                  <Text style={{fontWeight: "normal", fontSize: 8}}>kW(Instant)</Text>
                 </View>
                 <View style={{flexDirection: "column"}}>
                   <Text style={{textAlign: "center", fontWeight: "bold", fontSize: 27}}>{Math.trunc(item.power / 1000)}</Text>
-                  <Text style={{fontWeight: "normal", fontSize: 10}}>kWMax</Text>
+                  <Text style={{fontWeight: "normal", fontSize: 9}}>kWMax</Text>
                 </View>
               </View>
             </View>
@@ -127,25 +126,25 @@ class ChargerComponent extends Component {
         <View style={styles.connectorStatus}>
           {item.status === "Available" && item.currentConsumption === 0 ?
             <Animatable.View>
-              <Badge style={{justifyContent: "center"}} success>
+              <Badge style={styles.badge} success>
                 <Text>{alpha}</Text>
               </Badge>
             </Animatable.View>
           : item.status === "Occupied" && item.currentConsumption === 0 ?
             <Animatable.View>
-              <Badge style={{justifyContent: "center"}} danger>
+              <Badge style={styles.badge} danger>
                 <Text>{alpha}</Text>
               </Badge>
             </Animatable.View>
           : item.status === "Occupied" && item.currentConsumption !== 0 ?
             <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
-              <Badge style={{justifyContent: "center"}} danger>
+              <Badge style={styles.badge} danger>
                 <Text>{alpha}</Text>
               </Badge>
             </Animatable.View>
           :
             <Animatable.View>
-              <Badge style={{justifyContent: "center"}} danger>
+              <Badge style={styles.badge} danger>
                 <Text>{alpha}</Text>
               </Badge>
             </Animatable.View>
@@ -159,11 +158,9 @@ class ChargerComponent extends Component {
     let { items } = this.props;
     return (
       <View style={styles.container}>
-        <ListItem style={{backgroundColor: "transparent", paddingBottom: 7, borderBottomColor: "#FFFFFF", borderBottomWidth: 1, flexDirection: "row", justifyContent: "space-between"}} itemDivider>
-          <View style={{flexDirection: "row"}}>
-            <Text style={{fontSize: 18, fontWeight: "bold"}}>{items.id} - {items.siteArea.name}</Text>
-          </View>
-          <Icon style={{color: "#32CD32", fontSize: 20}} type="FontAwesome" name="heartbeat" />
+        <ListItem style={styles.listDividerContainer} itemDivider>
+          <Text style={styles.chargerName}>{items.id} | <Text style={styles.siteAreaName}>{items.siteArea.name}</Text></Text>
+          <Icon style={styles.heartbeatIcon} type="FontAwesome" name="heartbeat" />
         </ListItem>
         <FlatList style={styles.listContainer}
           data={items.connectors}

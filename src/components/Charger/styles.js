@@ -4,8 +4,26 @@ const deviceWidth = Dimensions.get("window").width;
 
 export default StyleSheet.create({
   container: {
-    paddingBottom: 5,
-    paddingLeft: 5
+    paddingBottom: 5
+  },
+  listDividerContainer: {
+    backgroundColor: "transparent",
+    paddingBottom: 7,
+    borderBottomColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  chargerName: {
+    fontWeight: "bold"
+  },
+  siteAreaName: {
+    fontStyle: "italic",
+    fontSize: 14
+  },
+  heartbeatIcon: {
+    color: "#32CD32",
+    fontSize: 20
   },
   listContainer: {
     flexDirection: "row",
@@ -26,6 +44,9 @@ export default StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10
   },
+  badge: {
+    justifyContent: "center"
+  },
   connectorTextInfoType: {
     fontSize: 10,
     paddingTop: 5
@@ -34,7 +55,8 @@ export default StyleSheet.create({
     fontSize: 10,
   },
   connectorErrorCodeText: {
-    fontSize: 9
+    fontSize: 9,
+    color: "#FF0000"
   },
   status: {
     flexDirection: "column",

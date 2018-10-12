@@ -4,14 +4,12 @@ import {
   Platform,
   Dimensions,
   FlatList,
-  ScrollView,
   RefreshControl
 } from "react-native";
 
 import {
   Container,
   Header,
-  Content,
   Button,
   Icon,
   Body,
@@ -32,7 +30,6 @@ class Chargers extends Component {
     // Init State
     this.state = {
       loading: true,
-      loadingMore: false,
       refreshing: false,
       siteID: this.props.navigation.state.params.siteID,
       limit: 4,
@@ -72,8 +69,7 @@ class Chargers extends Component {
   _onEndScroll = () => {
     const { limit, siteID, count } = this.state;
     if (count >= limit) {
-      this.setState({limit: limit + 2, loadingMore: true}, () => this.getChargers(siteID));
-      this.setState({loadingMore: false});
+      this.setState({limit: limit + 5}, () => this.getChargers(siteID));
     }
   }
 
@@ -143,7 +139,6 @@ class Chargers extends Component {
                 refreshControl={
                   <RefreshControl onRefresh={this._onRefresh} refreshing={this.state.refreshing} />
                 }
-                showsVerticalScrollIndicator={true}
                 indicatorStyle={"white"}
                 alwaysBounceVertical
                 style={{ backgroundColor: "black"}}
