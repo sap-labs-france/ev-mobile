@@ -1,54 +1,62 @@
-import { StyleSheet, Platform, Dimensions } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 const deviceWidth = Dimensions.get("window").width;
 
 export default StyleSheet.create({
-  buttonItem: {
-    flexDirection: "row"
-  },
-  content: {
+  siteContainer: {
     flexDirection: "column",
-    paddingTop: 20,
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 20,
     flex: 1,
+    height: deviceWidth / 3.8,
     borderTopWidth: 1,
-    borderTopColor: "#ddd"
+    borderTopColor: "#D3D3D3"
   },
-  siteNameColumn: {
-    width: Platform.OS === "ios" ? deviceWidth - 150 : deviceWidth - 190
+  mainContent: {
+    flexDirection: "row",
+    marginLeft: 10
+  },
+  columnSiteName: {
+    flexDirection: "column",
+    width: deviceWidth / 1.38,
+    justifyContent: "center"
   },
   siteName: {
-    color: "#fff",
-    alignSelf: "flex-start",
-    fontWeight: "bold",
-    height: 25
+    fontSize: 18,
+    fontWeight: "bold"
   },
-  arrowIcon: {
-    alignSelf: "flex-end",
-  },
-  detailsGrid: {
-    marginTop: 10
-  },
-  pinIconColumn: {
-    width: 15
+  columnPinIcon: {
+    flexDirection: "column",
+    flex: 1,
+    justifyContent: "center"
   },
   pinIcon: {
-    fontSize: 23
+    fontSize: 26,
+    alignSelf: "flex-start"
   },
-  freeChargersColumn: {
-    width: 120
+  columnArrowIcon: {
+    flexDirection: "column",
+    justifyContent: "center"
+  },
+  detailsContent: {
+    flexDirection: "row",
+    flex: 1
+  },
+  columnFreeChargers: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 20
   },
   freeChargersText: {
-    alignSelf: "flex-start",
+    fontSize: 16
   },
-  badge: {
+  columnNumberChargers: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingLeft: 20
+  },
+  badgeNumber: {
     fontWeight: "bold",
     height: 23
-  },
-  numberChargers: {
-    color: "#fff",
-    fontSize: 10
   }
 });

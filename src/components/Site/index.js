@@ -6,10 +6,10 @@ import {
   Icon,
   Badge
 } from "native-base";
-import { Grid, Col } from "react-native-easy-grid";
 import openMap from "react-native-open-maps";
 
 import styles from "./styles";
+
 
 class SiteComponent extends Component {
 
@@ -21,33 +21,30 @@ class SiteComponent extends Component {
     const { item, navigation } = this.props;
     return (
       <TouchableOpacity
-        style={styles.buttonItem}
         onPress={() => navigation.navigate("Chargers", { siteID: item.id })}
       >
-        <View style={styles.content}>
-          <Grid>
-            <Col style={styles.siteNameColumn}>
+        <View style={styles.siteContainer}>
+          <View style={styles.mainContent}>
+            <View style={styles.columnSiteName}>
               <Text style={styles.siteName}>{item.name}</Text>
-            </Col>
-            <Col style={styles.pinIconColumn}>
-              <TouchableOpacity>
-                <Icon style={styles.pinIcon} onPress={()=>this._siteLocation(item.address)} name="pin" />
-              </TouchableOpacity>
-            </Col>
-            <Col>
-              <Icon style={styles.arrowIcon} active name="arrow-forward"/>
-            </Col>
-          </Grid>
-          <Grid style={styles.detailsGrid}>
-            <Col style={styles.freeChargersColumn}>
+            </View>
+            <View style={styles.columnPinIcon}>
+              <Icon style={styles.pinIcon} onPress={()=>this._siteLocation(item.address)} name="pin" />
+            </View>
+            <View style={styles.columnArrowIcon}>
+              <Icon name="arrow-forward"/>
+            </View>
+          </View>
+          <View style={styles.detailsContent}>
+            <View style={styles.columnFreeChargers}>
               <Text style={styles.freeChargersText}>Free chargers:</Text>
-            </Col>
-            <Col>
-              <Badge success style={styles.badge}>
+            </View>
+            <View style={styles.columnNumberChargers}>
+              <Badge success style={styles.badgeNumber}>
                 <Text>{item.availableChargers}</Text>
               </Badge>
-            </Col>
-          </Grid>
+            </View>
+          </View>
         </View>
       </TouchableOpacity>
     );

@@ -22,6 +22,7 @@ import ProviderFactory from "../../provider/ProviderFactory";
 import ChargerComponent from "../../components/Charger";
 import Utils from "../../utils/Utils";
 import styles from "./styles";
+import * as Animatable from "react-native-animatable";
 
 class Chargers extends Component {
 
@@ -71,7 +72,7 @@ class Chargers extends Component {
   _onEndScroll = () => {
     const { siteID, scrolling, skip, count } = this.state;
     if (scrolling && skip <= count) {
-      this.setState({scrolling: false, skip: this.state.skip + 5}, async () => {
+      this.setState({skip: this.state.skip + 5}, async () => {
         let data = this.state.chargers;
         await this.getChargers(siteID);
         let newData = data.concat(this.state.chargers);
@@ -138,23 +139,22 @@ class Chargers extends Component {
             </Container>
           )}
           {!this.state.loading && (
-            <View>
-              <FlatList
-                data={this.state.chargers}
-                renderItem={this._renderItem}
-                keyExtractor={item => item.id}
-                refreshControl={
-                  <RefreshControl onRefresh={this._onRefresh} refreshing={this.state.refreshing} />
-                }
-                indicatorStyle={"white"}
-                alwaysBounceVertical
-                style={{ backgroundColor: "black"}}
-                onEndReached={this._onEndScroll}
-                onEndReachedThreshold={0.25}
-                ListFooterComponent={this.footerList}
-                onScroll={()=>this.setState({scrolling: true})}
-              />
-            </View>
+            <FlatList
+              data={this.state.chargers}
+              renderItem={this._renderItem}
+              keyExtractor={item => item.id}
+              refreshControl={
+                <RefreshControl onRefresh={this._onRefresh} refreshing={this.state.refreshing} />
+              }
+              indicatorStyle={"white"}
+              alwaysBounceVertical
+              style={{ backgroundColor: "black"}}
+              onEndReached={this._onEndScroll}
+              onEndReachedThreshold={0.25}
+              ListFooterComponent={this.footerList}
+              onScroll={()=>this.setState({scrolling: true})}
+              onScrollEndDrag={()=>this.setState({scrolling: false})}
+            />
           )}
         </View>
       </Container>
