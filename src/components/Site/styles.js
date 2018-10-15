@@ -7,6 +7,8 @@ export default StyleSheet.create({
     flexDirection: "column",
     flex: 1,
     height: deviceWidth / 3.8,
+    paddingTop: 15,
+    paddingBottom: 15,
     borderTopWidth: 1,
     borderTopColor: "#D3D3D3"
   },

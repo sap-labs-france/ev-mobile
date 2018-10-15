@@ -36,8 +36,9 @@ class Chargers extends Component {
       limit: 5,
       skip: 0,
       count: 0,
-      scrolling: false,
-      chargers: []
+      newDataStoredFirstTime: false,
+      chargers: [],
+      newData: []
     };
   }
 
@@ -55,10 +56,14 @@ class Chargers extends Component {
         // Set result
         this.setState({
           loading: false,
-          chargers: [...chargers.result],
+          newData: chargers.result,
           count: chargers.count
+        }, () => {
+          if (!this.state.newDataStoredFirstTime) {
+            this.setState({chargers: this.state.newData, newDataStoredFirstTime: true});
+          }
         });
-        console.log("Data stored: ", this.state.chargers);
+        console.log("Data stored: ", this.state.newData);
     } catch (error) {
       // Stop
       this.setState({
@@ -70,13 +75,11 @@ class Chargers extends Component {
   }
 
   _onEndScroll = () => {
-    const { siteID, scrolling, skip, count } = this.state;
-    if (scrolling && skip <= count) {
+    const { siteID, skip, count } = this.state;
+    if (skip <= count) {
       this.setState({skip: this.state.skip + 5}, async () => {
-        let data = this.state.chargers;
         await this.getChargers(siteID);
-        let newData = data.concat(this.state.chargers);
-        this.setState({chargers: newData});
+        this.setState({chargers: [...this.state.chargers, ...this.state.newData]});
       });
     }
   }
@@ -150,10 +153,8 @@ class Chargers extends Component {
               alwaysBounceVertical
               style={{ backgroundColor: "black"}}
               onEndReached={this._onEndScroll}
-              onEndReachedThreshold={0.25}
+              onEndReachedThreshold={0.5}
               ListFooterComponent={this.footerList}
-              onScroll={()=>this.setState({scrolling: true})}
-              onScrollEndDrag={()=>this.setState({scrolling: false})}
             />
           )}
         </View>
