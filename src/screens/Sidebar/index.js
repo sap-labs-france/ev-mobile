@@ -10,7 +10,6 @@ import {
   Thumbnail,
   View
 } from "native-base";
-import {Grid, Col} from "react-native-easy-grid";
 import styles from "./style";
 
 const resetAction = StackActions.reset({
@@ -27,19 +26,9 @@ class SideBar extends Component {
     const navigation = this.props.navigation;
     return (
       <Container>
-        <ImageBackground
-          source={require("../../../assets/sidebar-transparent.png")}
-          style={styles.background}
-        >
+        <ImageBackground style={styles.background} source={require("../../../assets/sidebar-transparent.png")}>
           <Content style={styles.drawerContent}>
-            <ListItem
-              button
-              onPress={() => {
-                navigation.navigate("Sites");
-              }}
-              iconLeft
-              style={styles.links}
-            >
+            <ListItem style={styles.links} button iconLeft onPress={() => navigation.navigate("Sites")}>
               <Icon name="ios-grid-outline" />
               <Text style={styles.linkText}>Sites</Text>
             </ListItem>
@@ -68,39 +57,19 @@ class SideBar extends Component {
           </Content>
           <View style={styles.logoutContainer}>
             <View style={styles.logoutbtn} foregroundColor={"white"}>
-              <Grid>
-                <Col>
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.dispatch(resetAction);
-                    }}
-                    style={{
-                      alignSelf: "flex-start",
-                      backgroundColor: "transparent"
-                    }}
-                  >
-                    <Text style={{fontWeight: "bold", color: "#fff"}}>
-                      LOG OUT
-                    </Text>
-                    <Text note style={{color: "#fff"}}>
-                      Kumar Sanket
-                    </Text>
+              <View style={styles.gridLogoutContainer}>
+                <View style={styles.columnAccount}>
+                  <TouchableOpacity style={styles.buttonLogout} onPress={() => navigation.dispatch(resetAction)}>
+                    <Text style={styles.logout}>LOG OUT</Text>
+                    <Text note style={styles.name}>Kumar Sanket</Text>
                   </TouchableOpacity>
-                </Col>
-                <Col>
-                  <TouchableOpacity
-                    style={{alignSelf: "flex-end"}}
-                    onPress={() => {
-                      navigation.navigate("Profile");
-                    }}
-                  >
-                    <Thumbnail
-                      source={require("../../../assets/no-photo.png")}
-                      style={styles.profilePic}
-                    />
+                </View>
+                <View style={styles.columnThumbnail}>
+                  <TouchableOpacity style={styles.buttonThumbnail} onPress={() => navigation.navigate("Profile")}>
+                    <Thumbnail style={styles.profilePic} source={require("../../../assets/no-photo.png")} />
                   </TouchableOpacity>
-                </Col>
-              </Grid>
+                </View>
+              </View>
             </View>
           </View>
         </ImageBackground>

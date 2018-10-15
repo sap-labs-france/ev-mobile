@@ -21,7 +21,33 @@ export default StyleSheet.create({
     paddingTop: 30,
     flexDirection: "row",
     borderTopWidth: 1,
-    borderTopColor: "#fff"
+    borderTopColor: "#FFFFFF"
+  },
+  gridLogoutContainer: {
+    flexDirection: "row",
+    flex: 1
+  },
+  columnAccount: {
+    flexDirection: "column",
+    flex: 1
+  },
+  buttonLogout: {
+    alignSelf: "flex-start",
+    backgroundColor: "transparent"
+  },
+  logout: {
+    fontWeight: "bold",
+    color: "#FFFFFF"
+  },
+  name: {
+    color: "#FFFFFF"
+  },
+  columnThumbnail: {
+    flexDirection: "column",
+    flex: 1
+  },
+  buttonThumbnail: {
+    alignSelf: "flex-end"
   },
   background: {
     flex: 1,
