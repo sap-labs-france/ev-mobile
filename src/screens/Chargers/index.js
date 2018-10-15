@@ -33,7 +33,7 @@ class Chargers extends Component {
       loading: true,
       refreshing: false,
       siteID: this.props.navigation.state.params.siteID,
-      limit: 5,
+      limit: 10,
       skip: 0,
       count: 0,
       newDataStoredFirstTime: false,
@@ -77,7 +77,7 @@ class Chargers extends Component {
   _onEndScroll = () => {
     const { siteID, skip, count } = this.state;
     if (skip <= count) {
-      this.setState({skip: this.state.skip + 5}, async () => {
+      this.setState({skip: this.state.skip + 10}, async () => {
         await this.getChargers(siteID);
         this.setState({chargers: [...this.state.chargers, ...this.state.newData]});
       });
