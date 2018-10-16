@@ -16,7 +16,7 @@ class ConnectorComponent extends Component {
     const { index, item, alpha, nav } = this.props;
     if (index % 2 === 0) {
       return (
-        <TouchableOpacity onPress={()=>nav.navigate(undefined)}>
+        <TouchableOpacity onPress={()=>nav.navigate("ConnectorDetails")}>
           <Animatable.View animation="slideInLeft" iterationCount={1}>
             <View style={styles.connectorContainer}>
               <View style={styles.connectorStatus}>
