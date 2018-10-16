@@ -15,7 +15,8 @@ import {
   Body,
   View,
   Spinner,
-  List
+  List,
+  TabHeading
 } from "native-base";
 
 import ProviderFactory from "../../provider/ProviderFactory";
@@ -37,6 +38,7 @@ class Chargers extends Component {
       skip: 0,
       count: 0,
       newDataStoredFirstTime: false,
+      keepDataToRefresh: [],
       chargers: [],
       newData: []
     };
@@ -57,10 +59,11 @@ class Chargers extends Component {
         this.setState({
           loading: false,
           newData: chargers.result,
-          count: chargers.count
+          count: chargers.count,
+          refreshing: false
         }, () => {
           if (!this.state.newDataStoredFirstTime) {
-            this.setState({chargers: this.state.newData, newDataStoredFirstTime: true});
+            this.setState({chargers: this.state.newData, newDataStoredFirstTime: true, keepDataToRefresh: this.state.newData});
           }
         });
         console.log("Data stored: ", this.state.newData);
@@ -85,8 +88,7 @@ class Chargers extends Component {
   }
 
   _onRefresh = () => {
-    this.setState({refreshing: true}, () => this.getChargers(this.state.siteID));
-    this.setState({refreshing: false});
+    this.setState({refreshing: true, skip: 0, chargers: this.state.keepDataToRefresh }, () => this.getChargers(this.state.siteID));
   }
 
   footerList = () => {
