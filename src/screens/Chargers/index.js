@@ -22,7 +22,7 @@ import ProviderFactory from "../../provider/ProviderFactory";
 import ChargerComponent from "../../components/Charger";
 import Utils from "../../utils/Utils";
 import styles from "./styles";
-import * as Animatable from "react-native-animatable";
+
 
 class Chargers extends Component {
 
@@ -99,10 +99,10 @@ class Chargers extends Component {
     return null;
   }
 
-  _renderItem({item}) {
+  _renderItem = ({item}, navigation) => {
     return (
       <List>
-        <ChargerComponent items={item} />
+        <ChargerComponent items={item} nav={navigation} />
       </List>
     );
   }
@@ -110,7 +110,6 @@ class Chargers extends Component {
   render() {
     let d = Dimensions.get("window");
     const { height, width } = d;
-
     return (
       <Container>
         <Header
@@ -144,7 +143,7 @@ class Chargers extends Component {
           {!this.state.loading && (
             <FlatList
               data={this.state.chargers}
-              renderItem={this._renderItem}
+              renderItem={item => this._renderItem(item, this.props.navigation)}
               keyExtractor={item => item.id}
               refreshControl={
                 <RefreshControl onRefresh={this._onRefresh} refreshing={this.state.refreshing} />

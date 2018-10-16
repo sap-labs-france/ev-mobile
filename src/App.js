@@ -9,6 +9,7 @@ import SignUp from "./screens/auth/SignUp";
 import Sidebar from "./screens/Sidebar";
 import Sites from "./screens/Sites";
 import Chargers from "./screens/Chargers";
+import ConnectorComponent from "./components/Connector";
 
 // Drawer Menu Navigation
 const DrawerNavigation = createDrawerNavigator(
@@ -29,7 +30,8 @@ const AppNavigation = createStackNavigator(
     Eula: { screen: Eula },
     SignUp: { screen: SignUp },
     RetrievePassword: { screen: RetrievePassword },
-    DrawerNavigation: { screen: DrawerNavigation }
+    DrawerNavigation: { screen: DrawerNavigation },
+    Connector: { screen: ConnectorComponent }
   },
   {
     index: 0,
