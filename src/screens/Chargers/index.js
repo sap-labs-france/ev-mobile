@@ -152,7 +152,6 @@ class Chargers extends Component {
               }
               indicatorStyle={"white"}
               alwaysBounceVertical
-              style={{ backgroundColor: "black"}}
               onEndReached={this._onEndScroll}
               onEndReachedThreshold={0.5}
               ListFooterComponent={this.footerList}

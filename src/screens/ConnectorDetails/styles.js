@@ -1,10 +1,15 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
+
 const primary = require("../../theme/variables/commonColor").brandPrimary;
 
 export default StyleSheet.create({
-  imageHeader: {
-    height: 25,
-    width: 95,
-    resizeMode: "contain"
+  headerIcons: {
+    fontSize: 30,
+    backgroundColor: "transparent"
+  },
+  profilePic: {
+    height: 40,
+    width: 40,
+    borderRadius: Platform.OS === "android" ? 40 : 20
   }
 });

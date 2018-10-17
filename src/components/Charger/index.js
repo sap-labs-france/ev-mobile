@@ -8,10 +8,10 @@ import styles from "./styles";
 
 class ChargerComponent extends Component {
 
-  _renderItem = ({item, index}, navigation) => {
+  _renderItem = ({item, index}, navigation, items) => {
     let alpha = String.fromCharCode(65 + index);
     return (
-      <ConnectorComponent alpha={alpha} index={index} item={item} nav={navigation} />
+      <ConnectorComponent alpha={alpha} index={index} item={item} nav={navigation} charger={items} />
     );
   }
 
@@ -27,7 +27,7 @@ class ChargerComponent extends Component {
         </ListItem>
         <FlatList style={styles.listContainer}
           data={items.connectors}
-          renderItem={item => this._renderItem(item, nav)}
+          renderItem={item => this._renderItem(item, nav, items)}
           keyExtractor={(connector, index) => connector.connectorId.toString()}
         />
       </View>
