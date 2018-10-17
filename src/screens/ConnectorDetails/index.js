@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Text, TouchableOpacity, Alert, Dimensions } from "react-native";
-import { Container, Header, Left, Right, Body, Button, Icon, View, Title, Badge, Thumbnail } from "native-base";
+import { TouchableOpacity, Alert, Dimensions, Text as RNText } from "react-native";
+import { Container, Header, Left, Right, Body, Button, Icon, View, Title, Badge, Thumbnail, Text } from "native-base";
 
 import * as Animatable from "react-native-animatable";
 import styles from "./styles";
@@ -66,11 +66,11 @@ class ConnectorDetails extends Component {
           <View style={{marginTop: 15}}>
             {connector.activeTransactionID === 0 ?
               <Button block success onPress={this.onStartTransaction}>
-                <Text style={{color: "#FFFFFF", fontWeight: "bold"}}>START TRANSACTION</Text>
+                <Text style={{fontWeight: "bold"}}>START TRANSACTION</Text>
               </Button>
             :
               <Button block danger onPress={this.onStopTransaction}>
-                <Text style={{color: "#FFFFFF", fontWeight: "bold"}}>STOP TRANSACTION</Text>
+                <Text style={{fontWeight: "bold"}}>STOP TRANSACTION</Text>
               </Button>
             }
           </View>
@@ -80,25 +80,25 @@ class ConnectorDetails extends Component {
                 {connector.status === "Available" && connector.currentConsumption === 0 ?
                   <Animatable.View>
                     <Badge style={{justifyContent: "center", height: deviceHeight / 16.6, width: deviceWidth / 9.3, alignItems: "center"}} success>
-                      <Text style={{color: "#FFFFFF", fontSize: 30}}>{alpha}</Text>
+                      <RNText style={{fontSize: 30, color: "#FFFFFF"}}>{alpha}</RNText>
                     </Badge>
                   </Animatable.View>
                 : connector.status === "Occupied" && connector.currentConsumption === 0 ?
                   <Animatable.View>
                     <Badge style={{justifyContent: "center", height: deviceHeight / 16.6, width: deviceWidth / 9.3, alignItems: "center"}} danger>
-                      <Text style={{color: "#FFFFFF", fontSize: 30}}>{alpha}</Text>
+                      <RNText style={{fontSize: 30, color: "#FFFFFF"}}>{alpha}</RNText>
                     </Badge>
                   </Animatable.View>
                 : connector.status === "Occupied" && connector.currentConsumption !== 0 ?
                   <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
                     <Badge style={{justifyContent: "center", height: deviceHeight / 16.6, width: deviceWidth / 9.3, alignItems: "center"}} danger>
-                      <Text style={{color: "#FFFFFF", fontSize: 30}}>{alpha}</Text>
+                      <RNText style={{fontSize: 30, color: "#FFFFFF"}}>{alpha}</RNText>
                     </Badge>
                   </Animatable.View>
                 :
                   <Animatable.View>
                     <Badge style={{justifyContent: "center", height: deviceHeight / 16.6, width: deviceWidth / 9.3, alignItems: "center"}} danger>
-                      <Text style={{color: "#FFFFFF", fontSize: 30}}>{alpha}</Text>
+                      <RNText style={{fontSize: 30, color: "#FFFFFF"}}>{alpha}</RNText>
                     </Badge>
                   </Animatable.View>
                 }
