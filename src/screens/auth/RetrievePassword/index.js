@@ -57,7 +57,6 @@ class RetrievePassword extends React.Component {
                   <Input
                     name="email"
                     type="email"
-                    ref="email"
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.email")}
                     placeholderTextColor="#FFF"
@@ -76,7 +75,7 @@ class RetrievePassword extends React.Component {
                   <Spinner style={styles.spinner} color="white" />
                   :
                   <Button rounded primary block large
-                    style={styles.button} onPress={this.resetPassword} 
+                    style={styles.button} onPress={this.resetPassword}
                   >
                     <Text style={styles.buttonText}>
                       {I18n.t("authentication.retrievePassword")}
@@ -88,7 +87,7 @@ class RetrievePassword extends React.Component {
           </Content>
           <Footer>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Text style={styles.helpButtons}>{I18n.t("authentication.backLogin")}</Text>
+              <Text style={styles.helpBtns}>{I18n.t("authentication.backLogin")}</Text>
             </Button>
           </Footer>
         </ImageBackground>

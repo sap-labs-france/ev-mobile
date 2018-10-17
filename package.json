@@ -4,6 +4,7 @@
   "private": true,
   "devDependencies": {
     "@babel/runtime": "^7.0.0",
+    "@types/react-native": "^0.57.6",
     "babel-eslint": "7.2.3",
     "babel-jest": "23.6.0",
     "babel-preset-react-native-stage-0": "^1.0.1",

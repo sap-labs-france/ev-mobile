@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import { TouchableOpacity } from "react-native";
-import {
-  Text,
-  View,
-  Icon,
-  Badge
-} from "native-base";
+import { Text, View, Icon, Badge } from "native-base";
 import openMap from "react-native-open-maps";
 
 import styles from "./styles";
@@ -29,7 +24,9 @@ class SiteComponent extends Component {
               <Text style={styles.siteName}>{item.name}</Text>
             </View>
             <View style={styles.columnPinIcon}>
-              <Icon style={styles.pinIcon} onPress={()=>this._siteLocation(item.address)} name="pin" />
+              <TouchableOpacity onPress={()=>this._siteLocation(item.address)}>
+                <Icon style={styles.pinIcon} name="pin" />
+              </TouchableOpacity>
             </View>
             <View style={styles.columnArrowIcon}>
               <Icon name="arrow-forward"/>

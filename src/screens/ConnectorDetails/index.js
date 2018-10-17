@@ -6,6 +6,7 @@ import * as Animatable from "react-native-animatable";
 import styles from "./styles";
 
 const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get("window").height;
 
 class ConnectorDetails extends Component {
 
@@ -43,6 +44,8 @@ class ConnectorDetails extends Component {
   }
 
   render() {
+    console.log(deviceWidth);
+    console.log(deviceHeight);
     const navigation = this.props.navigation;
     const { charger, connector, alpha } = this.state;
     console.log(charger);
@@ -71,30 +74,30 @@ class ConnectorDetails extends Component {
               </Button>
             }
           </View>
-          <View style={{flexDirection: "column", marginTop: 50, backgroundColor: "#008B8B",}}>
+          <View style={{flexDirection: "column", marginTop: 50, backgroundColor: "#008B8B"}}>
             <View style={{flexDirection: "row", backgroundColor: "#9400D3"}}>
-              <View style={{flexDirection: "column", backgroundColor: "#808080", height: 55, width: 60, justifyContent: "center", alignItems: "center"}}>
+              <View style={{flexDirection: "column", backgroundColor: "#808080", height: deviceHeight / 12.1, width: deviceWidth / 6.2, justifyContent: "center", alignItems: "center"}}>
                 {connector.status === "Available" && connector.currentConsumption === 0 ?
                   <Animatable.View>
-                    <Badge style={{justifyContent: "center", height: 40, width: 40, alignItems: "center"}} success>
+                    <Badge style={{justifyContent: "center", height: deviceHeight / 16.6, width: deviceWidth / 9.3, alignItems: "center"}} success>
                       <Text style={{color: "#FFFFFF", fontSize: 30}}>{alpha}</Text>
                     </Badge>
                   </Animatable.View>
                 : connector.status === "Occupied" && connector.currentConsumption === 0 ?
                   <Animatable.View>
-                    <Badge style={{justifyContent: "center", height: 40, width: 40, alignItems: "center"}} danger>
+                    <Badge style={{justifyContent: "center", height: deviceHeight / 16.6, width: deviceWidth / 9.3, alignItems: "center"}} danger>
                       <Text style={{color: "#FFFFFF", fontSize: 30}}>{alpha}</Text>
                     </Badge>
                   </Animatable.View>
                 : connector.status === "Occupied" && connector.currentConsumption !== 0 ?
                   <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
-                    <Badge style={{justifyContent: "center", height: 40, width: 40, alignItems: "center"}} danger>
+                    <Badge style={{justifyContent: "center", height: deviceHeight / 16.6, width: deviceWidth / 9.3, alignItems: "center"}} danger>
                       <Text style={{color: "#FFFFFF", fontSize: 30}}>{alpha}</Text>
                     </Badge>
                   </Animatable.View>
                 :
                   <Animatable.View>
-                    <Badge style={{justifyContent: "center", height: 40, width: 40, alignItems: "center"}} danger>
+                    <Badge style={{justifyContent: "center", height: deviceHeight / 16.6, width: deviceWidth / 9.3, alignItems: "center"}} danger>
                       <Text style={{color: "#FFFFFF", fontSize: 30}}>{alpha}</Text>
                     </Badge>
                   </Animatable.View>
@@ -106,7 +109,7 @@ class ConnectorDetails extends Component {
             </View>
             <TouchableOpacity>
               <View style={{flexDirection: "row", backgroundColor: "#9400D3"}}>
-                <View style={{flexDirection: "column", backgroundColor: "#808080", height: 55, width: 60, justifyContent: "center", alignItems: "center"}}>
+                <View style={{flexDirection: "column", backgroundColor: "#808080", height: deviceHeight / 12.1, width: deviceWidth / 6.2, justifyContent: "center", alignItems: "center"}}>
                     <Thumbnail style={styles.profilePic} source={require("../../../assets/no-photo.png")} />
                 </View>
                 <View style={{flexDirection: "column", flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#DAA520"}}>
@@ -115,7 +118,7 @@ class ConnectorDetails extends Component {
               </View>
             </TouchableOpacity>
             <View style={{flexDirection: "row", backgroundColor: "#9400D3"}}>
-              <View style={{flexDirection: "column", backgroundColor: "#808080", height: 55, width: 60, justifyContent: "center", alignItems: "center"}}>
+              <View style={{flexDirection: "column", backgroundColor: "#808080", height: deviceHeight / 12.1, width: deviceWidth / 6.2, justifyContent: "center", alignItems: "center"}}>
                 <Icon type="MaterialIcons" name="trending-up" style={{fontSize: 37}} />
               </View>
               <View style={{flexDirection: "column", flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#DAA520"}}>
@@ -125,7 +128,7 @@ class ConnectorDetails extends Component {
               </View>
             </View>
             <View style={{flexDirection: "row", backgroundColor: "#9400D3"}}>
-              <View style={{flexDirection: "column", backgroundColor: "#808080", height: 55, width: 60, justifyContent: "center", alignItems: "center"}}>
+              <View style={{flexDirection: "column", backgroundColor: "#808080", height: deviceHeight / 12.1, width: deviceWidth / 6.2, justifyContent: "center", alignItems: "center"}}>
                 <Icon type="Ionicons" name="time" style={{fontSize: 37}} />
               </View>
               <View style={{flexDirection: "column", flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#DAA520"}}>

@@ -1,8 +1,7 @@
 import { Dimensions, Platform, StyleSheet } from "react-native";
-const commonColor = require("../../theme/variables/commonColor");
+const commonColor = require("../../../theme/variables/commonColor");
 
 const deviceHeight = Dimensions.get("window").height;
-const deviceWidth = Dimensions.get("window").width;
 
 export default StyleSheet.create({
   background: {
@@ -40,12 +39,14 @@ export default StyleSheet.create({
     flex: 1,
     resizeMode: "contain",
     height: deviceHeight / 6,
-    alignSelf: "center"
+    alignSelf: "center",
+    marginTop: 20
   },
   form: {
     flex: 1,
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
+    marginTop: 30
   },
   formErrorText: {
     fontSize: Platform.OS === "android" ? 12 : 15,
@@ -76,25 +77,6 @@ export default StyleSheet.create({
     fontSize: 14,
     textDecorationLine: "underline",
   },
-  linksContainer: {
-    paddingTop: deviceHeight < 600 ? 5 : Platform.OS === "android" ? 10 : 15,
-    flexDirection: "row"
-  },
-  linksButtonLeft: {
-    alignSelf: "flex-start"
-  },
-  linksButtonRight: {
-    alignSelf: "flex-end"
-  },
-  linksButtonCenter: {
-    alignSelf: "center"
-  },
-  helpButton: {
-    opacity: 0.9,
-    fontWeight: "bold",
-    color: "#fff",
-    fontSize: 14,
-  },
   inputGroup: {
     flexDirection: "row",
     backgroundColor: "rgba(255,255,255,0.3)",
@@ -109,12 +91,5 @@ export default StyleSheet.create({
   icon: {
     width: 50,
     color: "#fff"
-  },
-  otherLinkText: {
-    alignSelf: "center",
-    opacity: 0.8,
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "#EFF"
   }
 });
