@@ -110,7 +110,7 @@ class ConnectorDetails extends Component {
             <TouchableOpacity>
               <View style={{flexDirection: "row", backgroundColor: "#9400D3"}}>
                 <View style={{flexDirection: "column", backgroundColor: "#808080", height: deviceHeight / 12.1, width: deviceWidth / 6.2, justifyContent: "center", alignItems: "center"}}>
-                    <Thumbnail style={styles.profilePic} source={require("../../../assets/no-photo.png")} />
+                    <Thumbnail style={styles.profilePic} source={require("../../../assets/no-user.png")} />
                 </View>
                 <View style={{flexDirection: "column", flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#DAA520"}}>
                   <Text style={{fontSize: 18, fontWeight: "bold", color: "#FFFFFF"}}>-</Text>

@@ -48,7 +48,7 @@ export default StyleSheet.create({
     paddingRight: 20
   },
   formErrorText: {
-    fontSize: Platform.OS === "android" ? 12 : 15,
+    fontSize: 12,
     color: commonColor.brandDanger,
     textAlign: "right",
     top: -10
@@ -70,10 +70,10 @@ export default StyleSheet.create({
     margin: 10
   },
   eulaText: {
-    fontSize: 14
+    fontSize: 12
   },
   eulaLink: {
-    fontSize: 14,
+    fontSize: 12,
     textDecorationLine: "underline",
   },
   linksContainer: {

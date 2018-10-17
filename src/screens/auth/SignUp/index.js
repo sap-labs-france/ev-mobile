@@ -228,7 +228,7 @@ class SignUp extends React.Component {
               </View>
             </Content>
             <Footer>
-              <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Button small transparent onPress={() => this.props.navigation.goBack()}>
                 <Text style={styles.helpBtns}>{I18n.t("authentication.haveAlreadyAccount")}</Text>
               </Button>
             </Footer>
