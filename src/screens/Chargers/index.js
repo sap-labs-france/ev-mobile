@@ -15,8 +15,7 @@ import {
   Body,
   View,
   Spinner,
-  List,
-  TabHeading
+  List
 } from "native-base";
 
 import ProviderFactory from "../../provider/ProviderFactory";

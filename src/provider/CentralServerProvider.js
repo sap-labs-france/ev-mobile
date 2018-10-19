@@ -68,6 +68,19 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  async getCharger(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+    // Build Paging
+    this._buildPaging(paging, params);
+    // Build Ordering
+    this._buildOrdering(ordering, params);
+    // Call
+    let result = await axios.get(`${centralRestServerServiceSecuredURL}/ChargingStation`, {
+      headers: this._builSecuredHeaders(),
+      params
+    });
+    return result.data;
+  }
+
   async getSites(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     // Build Paging
     this._buildPaging(paging, params);
