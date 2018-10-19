@@ -58,8 +58,7 @@ class Chargers extends Component {
         this.setState({
           loading: false,
           newData: chargers.result,
-          count: chargers.count,
-          refreshing: false
+          count: chargers.count
         }, () => {
           if (!this.state.newDataStoredFirstTime) {
             this.setState({chargers: this.state.newData, newDataStoredFirstTime: true, keepDataToRefresh: this.state.newData});
@@ -74,6 +73,9 @@ class Chargers extends Component {
       // Other common Error
       Utils.handleHttpUnexpectedError(error);
     }
+    this.setState({
+      refreshing: false
+    });
   }
 
   _onEndScroll = () => {

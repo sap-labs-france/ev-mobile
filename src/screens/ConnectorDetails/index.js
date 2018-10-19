@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableOpacity, Alert, Dimensions, Text as RNText, ScrollView, RefreshControl } from "react-native";
+import { TouchableOpacity, Alert, Dimensions, Text as RNText, ScrollView, RefreshControl, ImageBackground } from "react-native";
 import { Container, Button, Icon, View, Badge, Thumbnail, Text, Footer, FooterTab } from "native-base";
 
 import ProviderFactory from "../../provider/ProviderFactory";
@@ -10,6 +10,8 @@ import styles from "./styles";
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
+
+const caen = require("../../../assets/Sites/caen.jpeg");
 
 class ConnectorDetails extends Component {
 
@@ -28,18 +30,18 @@ class ConnectorDetails extends Component {
     try {
       let charger = await ProviderFactory.getProvider().getCharger(
         {ID: chargerId});
-      this.setState({
-        refreshing: false
-      });
       console.log(charger);
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error);
     }
+    this.setState({
+      refreshing: false
+    });
   }
 
   onRefresh = () => {
-    this.setState({refreshing: true}, () => this.getCharger(this.state.charger.id));
+    this.setState({refreshing: true}, async () => await this.getCharger(this.state.charger.id));
   }
 
   onStartTransaction = () => {
@@ -78,41 +80,44 @@ class ConnectorDetails extends Component {
     // console.log(charger);
     return (
       <Container>
-        <View style={{flexDirection: "row"}}>
-          <View style={{flexDirection: "column"}}>
-            <Button transparent onPress={() => navigation.goBack()}>
-              <Icon active name="arrow-back" style={styles.headerIcons} />
-            </Button>
-          </View>
-          <View style={{flexDirection: "column", alignItems: "center", justifyContent: "center", width: 265, paddingTop: 7}}>
-            <Text style={{fontSize: 20, fontWeight: "bold"}}>{charger.id}</Text>
-            <Text style={{fontWeight: "bold", fontSize: 13}}>Connector {alpha}</Text>
-          </View>
+        <View style={{borderColor: "#FFFFFF", borderBottomWidth: 5}}>
+          <ImageBackground source={caen} style={{width: deviceWidth, height: deviceHeight / 5}}>
+            <View style={{flexDirection: "row"}}>
+              <View style={{flexDirection: "column"}}>
+                <Button transparent onPress={() => navigation.goBack()}>
+                  <Icon active name="arrow-back" style={styles.headerIcons} />
+                </Button>
+              </View>
+              <View style={{flexDirection: "column", alignItems: "center", justifyContent: "center", width: 265, paddingTop: 7}}>
+                <Text style={{fontSize: 20, fontWeight: "bold"}}>{charger.id}</Text>
+                <Text style={{fontWeight: "bold", fontSize: 13}}>Connector {alpha}</Text>
+              </View>
+            </View>
+            <View style={{justifyContent: "center", alignItems: "center", marginTop: 10}}>
+              <TouchableOpacity onPress={() => connector.activeTransactionID === 0 ? this.onStartTransaction() : this.onStopTransaction()}>
+                {connector.activeTransactionID === 0 ?
+                  <View style={{borderBottomEndRadius: 80, borderBottomStartRadius: 80, width: 120, height: 120, backgroundColor: "#FFFFFF", justifyContent: "center", alignItems: "center", marginTop: 15}}>
+                    <View style={{borderRadius: 75, width: 110, height: 110, backgroundColor: "#5cb85c", justifyContent: "center", alignItems: "center"}}>
+                      <Icon style={{fontSize: 70}} type="MaterialIcons" name="play-arrow" />
+                    </View>
+                  </View>
+                :
+                  <View style={{borderBottomEndRadius: 80, borderBottomStartRadius: 80, width: 130, height: 130, backgroundColor: "#FFFFFF", justifyContent: "center", alignItems: "center", marginTop: 15}}>
+                    <View style={{borderRadius: 75, width: 120, height: 120, backgroundColor: "#d9534f", justifyContent: "center", alignItems: "center"}}>
+                      <Icon style={{fontSize: 70}} type="MaterialIcons" name="stop" />
+                    </View>
+                  </View>
+                }
+              </TouchableOpacity>
+            </View>
+          </ImageBackground>
         </View>
-        <View style={{flex: 1}}>
-          <View style={{justifyContent: "center", alignItems: "center"}}>
-            <TouchableOpacity onPress={() => connector.activeTransactionID === 0 ? this.onStartTransaction() : this.onStopTransaction()}>
-              {connector.activeTransactionID === 0 ?
-                <View style={{borderRadius: 80, width: 120, height: 120, backgroundColor: "white", justifyContent: "center", alignItems: "center", marginTop: 15}}>
-                  <View style={{borderRadius: 75, width: 110, height: 110, backgroundColor: "#5cb85c", justifyContent: "center", alignItems: "center"}}>
-                    <Icon style={{fontSize: 70}} type="MaterialIcons" name="play-arrow" />
-                  </View>
-                </View>
-              :
-                <View style={{borderRadius: 80, width: 130, height: 130, backgroundColor: "white", justifyContent: "center", alignItems: "center", marginTop: 15}}>
-                  <View style={{borderRadius: 75, width: 120, height: 120, backgroundColor: "#d9534f", justifyContent: "center", alignItems: "center"}}>
-                    <Icon style={{fontSize: 70}} type="MaterialIcons" name="stop" />
-                  </View>
-                </View>
-              }
-            </TouchableOpacity>
-          </View>
           <ScrollView refreshControl={
             <RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />
           }>
-            <View style={{flexDirection: "column", paddingTop: 30}}>
-              <View style={{flexDirection: "row"}}>
-                <View style={{flexDirection: "column", height: deviceHeight / 12.1, width: deviceWidth / 6.8, justifyContent: "center", alignItems: "center"}}>
+            <View style={{flexDirection: "column", flex: 1, alignItems: "center", marginTop: 80}}>
+              <View style={{flexDirection: "row", justifyContent: "space-between", height: 120}}>
+                <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center", width: deviceWidth / 2}}>
                   {connector.status === "Available" && connector.currentConsumption === 0 ?
                     <Animatable.View>
                       <Badge style={{justifyContent: "center", height: deviceHeight / 16.6, width: deviceWidth / 9.3, alignItems: "center", borderRadius: 30}} success>
@@ -138,57 +143,50 @@ class ConnectorDetails extends Component {
                       </Badge>
                     </Animatable.View>
                   }
+                  <Text style={{fontSize: 20, fontWeight: "bold", paddingTop: 10}}>{connector.status}</Text>
                 </View>
-                <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center", width: deviceWidth / 1.41}}>
-                  <Text style={{fontSize: 18, fontWeight: "bold"}}>{connector.status}</Text>
-                </View>
+                <TouchableOpacity style={{flexDirection: "column", justifyContent: "center", alignItems: "center", flex: 1}}>
+                  {connector.status === "Available" ?
+                    <Thumbnail style={styles.profilePic} source={require("../../../assets/no-user.png")} />
+                  :
+                    <Thumbnail style={styles.profilePic} source={require("../../../assets/no-photo.png")} />
+                  }
+                  <Text style={{fontSize: 25, fontWeight: "bold", paddingTop: 10}}>-</Text>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity>
-                <View style={{flexDirection: "row"}}>
-                  <View style={{flexDirection: "column", height: deviceHeight / 12.1, width: deviceWidth / 6.8, justifyContent: "center", alignItems: "center"}}>
-                    {connector.status === "Available" ?
-                      <Thumbnail style={styles.profilePic} source={require("../../../assets/no-user.png")} />
-                    :
-                      <Thumbnail style={styles.profilePic} source={require("../../../assets/no-photo.png")} />
-                    }
-                  </View>
-                  <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center", width: deviceWidth / 1.41}}>
-                    <Text style={{fontSize: 18, fontWeight: "bold"}}>-</Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-              <View style={{flexDirection: "row"}}>
-                <View style={{flexDirection: "column", height: deviceHeight / 12.1, width: deviceWidth / 6.8, justifyContent: "center", alignItems: "center"}}>
+              <View style={{flexDirection: "row", justifyContent: "space-between", height: 120}}>
+                <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center", width: deviceWidth / 2}}>
                   <Icon type="FontAwesome" name="bolt" style={{fontSize: 37}} />
+                  {(connector.currentConsumption / 1000).toFixed(1) === 0.0 || connector.currentConsumption === 0 ?
+                    <Text style={{fontSize: 25, fontWeight: "bold", paddingTop: 10}}>-</Text>
+                  :
+                    <View style={{justifyContent: "center", alignItems: "center"}}>
+                      <Text style={{fontWeight: "bold", fontSize: 25, paddingTop: 10}}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
+                      <Text style={{fontSize: 12}}>kW Instant</Text>
+                    </View>
+                  }
                 </View>
-                <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center", width: deviceWidth / 1.41}}>
-                  <Text style={{fontSize: 18, fontWeight: "bold"}}>
-                    {(connector.currentConsumption / 1000).toFixed(1) === 0.0 || connector.currentConsumption === 0 ? "-" : (connector.currentConsumption / 1000).toFixed(1) + " kW Instant"}
-                  </Text>
-                </View>
-              </View>
-              <View style={{flexDirection: "row"}}>
-                <View style={{flexDirection: "column", height: deviceHeight / 12.1, width: deviceWidth / 6.8, justifyContent: "center", alignItems: "center"}}>
-                  <Icon type="MaterialIcons" name="trending-up" style={{fontSize: 37}} />
-                </View>
-                <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center", width: deviceWidth / 1.41}}>
-                  <Text style={{fontSize: 18, fontWeight: "bold"}}>
-                    {connector.totalConsumption !== 0 ? (connector.totalConsumption / 1000).toFixed(2) + " kW Total" : "-"}
-                  </Text>
-                </View>
-              </View>
-              <View style={{flexDirection: "row"}}>
-                <View style={{flexDirection: "column", height: deviceHeight / 12.1, width: deviceWidth / 6.8, justifyContent: "center", alignItems: "center"}}>
+                <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center", flex: 1}}>
                   <Icon type="Ionicons" name="time" style={{fontSize: 37}} />
+                  <Text style={{fontSize: 25, fontWeight: "bold", paddingTop: 10}}>- : - : -</Text>
                 </View>
-                <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center", width: deviceWidth / 1.41}}>
-                  <Text style={{fontSize: 18, fontWeight: "bold"}}>- : - : -</Text>
+              </View>
+              <View style={{flexDirection: "row", justifyContent: "space-between", height: 120}}>
+                <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center", width: deviceWidth / 2}}>
+                  <Icon style={{fontSize: 37}} type="MaterialIcons" name="trending-up" />
+                  {(connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
+                    <Text style={{fontSize: 25, fontWeight: "bold", paddingTop: 10}}>-</Text>
+                  :
+                    <View style={{justifyContent: "center", alignItems: "center"}}>
+                      <Text style={{fontWeight: "bold", fontSize: 25, paddingTop: 10}}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
+                      <Text style={{fontSize: 12}}>Energy consumed</Text>
+                    </View>
+                  }
                 </View>
               </View>
             </View>
           </ScrollView>
-        </View>
-        <Footer>
+        <Footer style={{paddingTop: 5}}>
           <FooterTab>
             <Button vertical active={this.state.index === 1 ? true : false} onPress={()=>this._handleFooterTab(1)}>
               <Icon active={this.state.index === 1 ? true : false} type="Feather" name="zap"/>
