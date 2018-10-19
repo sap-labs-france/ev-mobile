@@ -10,7 +10,8 @@ export default StyleSheet.create({
     borderBottomColor: "#FFFFFF",
     borderBottomWidth: 1,
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    flexWrap: "wrap"
   },
   chargerName: {
     fontWeight: "bold"

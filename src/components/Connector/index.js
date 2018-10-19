@@ -23,25 +23,25 @@ class ConnectorComponent extends Component {
                 {item.status === "Available" && item.currentConsumption === 0 ?
                   <Animatable.View>
                     <Badge style={styles.badge} success>
-                      <Text>{alpha}</Text>
+                      <Text style={styles.badgeText}>{alpha}</Text>
                     </Badge>
                   </Animatable.View>
                 : item.status === "Occupied" && item.currentConsumption === 0 ?
                   <Animatable.View>
                     <Badge style={styles.badge} danger>
-                      <Text>{alpha}</Text>
+                      <Text style={styles.badgeText}>{alpha}</Text>
                     </Badge>
                   </Animatable.View>
                 : item.status === "Occupied" && item.currentConsumption !== 0 ?
                   <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
                     <Badge style={styles.badge} danger>
-                      <Text>{alpha}</Text>
+                      <Text style={styles.badgeText}>{alpha}</Text>
                     </Badge>
                   </Animatable.View>
                 :
                   <Animatable.View>
                     <Badge style={styles.badge} danger>
-                      <Text>{alpha}</Text>
+                      <Text style={styles.badgeText}>{alpha}</Text>
                     </Badge>
                   </Animatable.View>
                 }
@@ -143,25 +143,25 @@ class ConnectorComponent extends Component {
               {item.status === "Available" && item.currentConsumption === 0 ?
                 <Animatable.View>
                   <Badge style={styles.badge} success>
-                    <Text>{alpha}</Text>
+                    <Text style={styles.badgeText}>{alpha}</Text>
                   </Badge>
                 </Animatable.View>
               : item.status === "Occupied" && item.currentConsumption === 0 ?
                 <Animatable.View>
                   <Badge style={styles.badge} danger>
-                    <Text>{alpha}</Text>
+                    <Text style={styles.badgeText}>{alpha}</Text>
                   </Badge>
                 </Animatable.View>
               : item.status === "Occupied" && item.currentConsumption !== 0 ?
                 <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
                   <Badge style={styles.badge} danger>
-                    <Text>{alpha}</Text>
+                    <Text style={styles.badgeText}>{alpha}</Text>
                   </Badge>
                 </Animatable.View>
               :
                 <Animatable.View>
                   <Badge style={styles.badge} danger>
-                    <Text>{alpha}</Text>
+                    <Text style={styles.badgeText}>{alpha}</Text>
                   </Badge>
                 </Animatable.View>
               }

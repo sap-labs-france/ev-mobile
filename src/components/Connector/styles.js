@@ -13,7 +13,15 @@ export default StyleSheet.create({
     paddingRight: 10
   },
   badge: {
-    justifyContent: "center"
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    height: 35,
+    width: 35
+  },
+  badgeText:{
+    fontSize: 17,
+    fontWeight: "bold"
   },
   connectorTextInfo: {
     fontSize: 10,
