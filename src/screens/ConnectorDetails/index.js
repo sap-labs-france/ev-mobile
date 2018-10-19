@@ -8,9 +8,6 @@ import Utils from "../../utils/Utils";
 import * as Animatable from "react-native-animatable";
 import styles from "./styles";
 
-const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get("window").height;
-
 const caen = require("../../../assets/Sites/caen.jpeg");
 
 class ConnectorDetails extends Component {
@@ -73,38 +70,36 @@ class ConnectorDetails extends Component {
   }
 
   render() {
-    // console.log(deviceWidth);
-    // console.log(deviceHeight);
     const navigation = this.props.navigation;
     const { charger, connector, alpha } = this.state;
     // console.log(charger);
     return (
       <Container>
-        <View style={{flexDirection: "row"}}>
-          <View style={{flexDirection: "column"}}>
+        <View style={styles.header}>
+          <View style={styles.arrowIconColumn}>
             <Button transparent onPress={() => navigation.goBack()}>
               <Icon active name="arrow-back" style={styles.headerIcons} />
             </Button>
           </View>
-          <View style={{flexDirection: "column", alignItems: "center", justifyContent: "center", width: 265, paddingTop: 7}}>
-            <Text style={{fontSize: 20, fontWeight: "bold"}}>{charger.id}</Text>
-            <Text style={{fontWeight: "bold", fontSize: 13}}>Connector {alpha}</Text>
+          <View style={styles.chargerNameColumn}>
+            <Text style={styles.chargerName}>{charger.id}</Text>
+            <Text style={styles.connectorName}>Connector {alpha}</Text>
           </View>
         </View>
-        <View style={{borderColor: "#FFFFFF", borderBottomWidth: 3, paddingTop: 10}}>
-          <ImageBackground source={caen} style={{width: deviceWidth, height: deviceHeight / 4.3}}>
-            <View style={{justifyContent: "center", alignItems: "center", marginTop: 95}}>
+        <View style={styles.backgroundContainer}>
+          <ImageBackground style={styles.backgroundImage} source={caen}>
+            <View style={styles.transactionContainer}>
               <TouchableOpacity onPress={() => connector.activeTransactionID === 0 ? this.onStartTransaction() : this.onStopTransaction()}>
                 {connector.activeTransactionID === 0 ?
-                  <View style={{borderRadius: 62.5, borderStyle: "solid", width: 125, height: 125, backgroundColor: "#FFFFFF", justifyContent: "center", alignItems: "center", marginTop: 15}}>
-                    <View style={{borderRadius: 60, borderStyle: "solid", width: 120, height: 120, backgroundColor: "#5cb85c", justifyContent: "center", alignItems: "center"}}>
-                      <Icon style={{fontSize: 70}} type="MaterialIcons" name="play-arrow" />
+                  <View style={styles.outerCircle}>
+                    <View style={styles.innerCircleStartTransaction}>
+                      <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
                     </View>
                   </View>
                 :
-                  <View style={{borderRadius: 62.5, borderStyle: "solid", width: 125, height: 125, backgroundColor: "#FFFFFF", justifyContent: "center", alignItems: "center", marginTop: 15}}>
-                    <View style={{borderRadius: 60, borderStyle: "solid", width: 120, height: 120, backgroundColor: "#d9534f", justifyContent: "center", alignItems: "center"}}>
-                      <Icon style={{fontSize: 70}} type="MaterialIcons" name="stop" />
+                  <View style={styles.outerCircle}>
+                    <View style={styles.innerCircleStopTransaction}>
+                      <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="stop" />
                     </View>
                   </View>
                 }
@@ -114,84 +109,86 @@ class ConnectorDetails extends Component {
         </View>
           <ScrollView refreshControl={
             <RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />
-          } style={{marginTop: 55}}>
-            <View style={{flexDirection: "column", flex: 1, alignItems: "center"}}>
-              <View style={{flexDirection: "row", justifyContent: "space-between", height: 110}}>
-                <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center", width: deviceWidth / 2}}>
+          }
+          style={styles.scrollViewContainer}
+          >
+            <View style={styles.content}>
+              <View style={styles.rowContainer}>
+                <View style={styles.columnContainer}>
                   {connector.status === "Available" && connector.currentConsumption === 0 ?
                     <Animatable.View>
-                      <Badge style={{justifyContent: "center", height: deviceHeight / 16.6, width: deviceWidth / 9.3, alignItems: "center", borderRadius: 50}} success>
-                        <RNText style={{fontSize: 30, color: "#FFFFFF"}}>{alpha}</RNText>
+                      <Badge style={styles.badgeContainer} success>
+                        <RNText style={styles.badgeText}>{alpha}</RNText>
                       </Badge>
                     </Animatable.View>
                   : connector.status === "Occupied" && connector.currentConsumption === 0 ?
                     <Animatable.View>
-                      <Badge style={{justifyContent: "center", height: deviceHeight / 16.6, width: deviceWidth / 9.3, alignItems: "center", borderRadius: 50}} danger>
-                        <RNText style={{fontSize: 30, color: "#FFFFFF"}}>{alpha}</RNText>
+                      <Badge style={styles.badgeContainer} danger>
+                        <RNText style={styles.badgeText}>{alpha}</RNText>
                       </Badge>
                     </Animatable.View>
                   : connector.status === "Occupied" && connector.currentConsumption !== 0 ?
                     <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
-                      <Badge style={{justifyContent: "center", height: deviceHeight / 16.6, width: deviceWidth / 9.3, alignItems: "center", borderRadius: 50}} danger>
-                        <RNText style={{fontSize: 30, color: "#FFFFFF"}}>{alpha}</RNText>
+                      <Badge style={styles.badgeContainer} danger>
+                        <RNText style={styles.badgeText}>{alpha}</RNText>
                       </Badge>
                     </Animatable.View>
                   :
                     <Animatable.View>
-                      <Badge style={{justifyContent: "center", height: deviceHeight / 16.6, width: deviceWidth / 9.3, alignItems: "center", borderRadius: 50}} danger>
-                        <RNText style={{fontSize: 30, color: "#FFFFFF"}}>{alpha}</RNText>
+                      <Badge style={styles.badgeContainer} danger>
+                        <RNText style={styles.badgeText}>{alpha}</RNText>
                       </Badge>
                     </Animatable.View>
                   }
-                  <Text style={{fontSize: 20, fontWeight: "bold", paddingTop: 10}}>{connector.status}</Text>
+                  <Text style={styles.undefinedStatusText}>{connector.status}</Text>
                 </View>
                 <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center", flex: 1}}>
                   {connector.status === "Available" ?
                     <View>
                       <Thumbnail style={styles.profilePic} source={require("../../../assets/no-user.png")} />
-                      <Text style={{fontSize: 20, fontWeight: "bold", paddingTop: 10, alignSelf: "center"}}>-</Text>
+                      <Text style={styles.undefinedStatusText}>-</Text>
                     </View>
                   :
                     <TouchableOpacity>
                       <Thumbnail style={styles.profilePic} source={require("../../../assets/no-photo.png")} />
-                      <Text style={{fontSize: 20, fontWeight: "bold", paddingTop: 10}}>User</Text>
+                      <Text style={styles.undefinedStatusText}>User</Text>
                     </TouchableOpacity>
                   }
                 </View>
               </View>
-              <View style={{flexDirection: "row", justifyContent: "space-between", height: 110}}>
-                <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center", width: deviceWidth / 2}}>
+              <View style={styles.rowContainer}>
+                <View style={styles.columnContainer}>
                   <Icon type="FontAwesome" name="bolt" style={{fontSize: 37}} />
                   {(connector.currentConsumption / 1000).toFixed(1) === 0.0 || connector.currentConsumption === 0 ?
-                    <Text style={{fontSize: 20, fontWeight: "bold", paddingTop: 10}}>-</Text>
+                    <Text style={styles.undefinedStatusText}>-</Text>
                   :
-                    <View style={{justifyContent: "center", alignItems: "center"}}>
+                    <View style={styles.currentConsumptionContainer}>
                       <Text style={{fontWeight: "bold", fontSize: 25, paddingTop: 10}}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
                       <Text style={{fontSize: 12}}>kW Instant</Text>
                     </View>
                   }
                 </View>
-                <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center", flex: 1}}>
+                <View style={styles.timerContainer}>
                   <Icon type="Ionicons" name="time" style={{fontSize: 37}} />
-                  <Text style={{fontSize: 20, fontWeight: "bold", paddingTop: 10}}>- : - : -</Text>
+                  <Text style={styles.undefinedStatusText}>- : - : -</Text>
                 </View>
               </View>
-              <View style={{flexDirection: "row", justifyContent: "space-between", height: 110}}>
-                <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center", width: deviceWidth / 2}}>
+              <View style={styles.rowContainer}>
+                <View style={styles.columnContainer}>
                   <Icon style={{fontSize: 37}} type="MaterialIcons" name="trending-up" />
                   {(connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
-                    <Text style={{fontSize: 20, fontWeight: "bold", paddingTop: 10}}>-</Text>
+                    <Text style={styles.undefinedStatusText}>-</Text>
                   :
-                    <View style={{justifyContent: "center", alignItems: "center"}}>
-                      <Text style={{fontWeight: "bold", fontSize: 25, paddingTop: 10}}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
-                      <Text style={{fontSize: 12}}>Energy consumed</Text>
+                    <View style={styles.energyConsumedContainer}>
+                      <Text style={styles.energyConsumedNumber}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
+                      <Text style={styles.energyConsumedText}>Energy consumed</Text>
                     </View>
                   }
                 </View>
               </View>
             </View>
           </ScrollView>
-        <Footer style={{paddingTop: 5}}>
+        <Footer style={styles.footerContainer}>
           <FooterTab>
             <Button vertical active={this.state.index === 1 ? true : false} onPress={()=>this._handleFooterTab(1)}>
               <Icon active={this.state.index === 1 ? true : false} type="Feather" name="zap"/>
