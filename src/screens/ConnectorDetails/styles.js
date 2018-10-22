@@ -107,6 +107,23 @@ export default StyleSheet.create({
     paddingTop: 10,
     alignSelf: "center"
   },
+  userInfoContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1
+  },
+  currentConsumptionText: {
+    fontWeight: "bold",
+    fontSize: 25,
+    paddingTop: 10
+  },
+  kWText: {
+    fontSize: 12
+  },
+  iconSize: {
+    fontSize: 37
+  },
   currentConsumptionContainer: {
     justifyContent: "center",
     alignItems: "center"

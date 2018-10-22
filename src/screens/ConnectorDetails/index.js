@@ -72,7 +72,6 @@ class ConnectorDetails extends Component {
   render() {
     const navigation = this.props.navigation;
     const { charger, connector, alpha } = this.state;
-    // console.log(charger);
     return (
       <Container>
         <View style={styles.header}>
@@ -142,7 +141,7 @@ class ConnectorDetails extends Component {
                   }
                   <Text style={styles.undefinedStatusText}>{connector.status}</Text>
                 </View>
-                <View style={{flexDirection: "column", justifyContent: "center", alignItems: "center", flex: 1}}>
+                <View style={styles.userInfoContainer}>
                   {connector.status === "Available" ?
                     <View>
                       <Thumbnail style={styles.profilePic} source={require("../../../assets/no-user.png")} />
@@ -158,30 +157,30 @@ class ConnectorDetails extends Component {
               </View>
               <View style={styles.rowContainer}>
                 <View style={styles.columnContainer}>
-                  <Icon type="FontAwesome" name="bolt" style={{fontSize: 37}} />
+                  <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
                   {(connector.currentConsumption / 1000).toFixed(1) === 0.0 || connector.currentConsumption === 0 ?
                     <Text style={styles.undefinedStatusText}>-</Text>
                   :
                     <View style={styles.currentConsumptionContainer}>
-                      <Text style={{fontWeight: "bold", fontSize: 25, paddingTop: 10}}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
-                      <Text style={{fontSize: 12}}>kW Instant</Text>
+                      <Text style={styles.currentConsumptionText}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
+                      <Text style={styles.kWText}>kW Instant</Text>
                     </View>
                   }
                 </View>
                 <View style={styles.timerContainer}>
-                  <Icon type="Ionicons" name="time" style={{fontSize: 37}} />
+                  <Icon type="Ionicons" name="time" style={styles.iconSize} />
                   <Text style={styles.undefinedStatusText}>- : - : -</Text>
                 </View>
               </View>
               <View style={styles.rowContainer}>
                 <View style={styles.columnContainer}>
-                  <Icon style={{fontSize: 37}} type="MaterialIcons" name="trending-up" />
+                  <Icon style={styles.iconSize} type="MaterialIcons" name="trending-up" />
                   {(connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
                     <Text style={styles.undefinedStatusText}>-</Text>
                   :
                     <View style={styles.energyConsumedContainer}>
                       <Text style={styles.energyConsumedNumber}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
-                      <Text style={styles.energyConsumedText}>Energy consumed</Text>
+                      <Text style={styles.energyConsumedText}>kW consumed</Text>
                     </View>
                   }
                 </View>
