@@ -157,6 +157,6 @@ export default StyleSheet.create({
     borderRadius: Platform.OS === "android" ? 40 : 20
   },
   footerContainer: {
-    paddingTop: 5
+    backgroundColor: "#111111"
   }
 });
