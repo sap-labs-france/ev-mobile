@@ -110,6 +110,33 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  async startTransaction(chargeBoxID, tagID, connectorID) {
+    let result = await axios.post(`${centralRestServerServiceSecuredURL}/ChargingStationStartTransaction`,
+      {
+        chargeBoxID,
+        "args": {
+          tagID,
+          connectorID
+        }
+      },
+      { headers: this._builSecuredHeaders() }
+    );
+    console.log(result);
+  }
+
+  async stopTransaction(chargeBoxID, transactionId) {
+    let result = await axios.post(`${centralRestServerServiceSecuredURL}/ChargingStationStopTransaction`,
+      {
+        chargeBoxID,
+        "args": {
+          transactionId
+        }
+      },
+      { headers: this._builSecuredHeaders() }
+    );
+    console.log(result);
+  }
+
   _buildPaging(paging, queryString) {
     // Check
     if (paging) {

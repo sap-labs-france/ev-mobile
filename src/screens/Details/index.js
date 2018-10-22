@@ -30,8 +30,8 @@ class ConnectorDetails extends Component {
       "Start Transaction",
       `Do you really want to start a new session on the charging station ${charger.id} ?`,
       [
-        {text: "Yes", onPress: () => console.log("Yes button clicked")},
-        {text: "No", onPress: () => console.log("No button clicked")}
+        {text: "Yes", onPress: () => this.startTransaction()},
+        {text: "No"}
       ]
     );
   }
@@ -42,10 +42,30 @@ class ConnectorDetails extends Component {
       "Stop Transaction",
       `Do you really want to stop the session of the charging station ${charger.id} ?`,
       [
-        {text: "Yes", onPress: () => console.log("Yes button clicked")},
-        {text: "No", onPress: () => console.log("No button clicked")}
+        {text: "Yes", onPress: () => this.stopTransaction()},
+        {text: "No"}
       ]
     );
+  }
+
+  startTransaction = async () => {
+    const { charger, connector } = this.state;
+    try {
+      let result = await ProviderFactory.getProvider().startTransaction(charger.id, "9C709F16", connector.connectorId);
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error);
+    }
+  }
+
+  stopTransaction = async () => {
+    const { charger, connector } = this.state;
+    try {
+      let result = await ProviderFactory.getProvider().stopTransaction(charger.id, connector.activeTransactionID);
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error);
+    }
   }
 
   render() {
@@ -55,7 +75,7 @@ class ConnectorDetails extends Component {
       <Container>
         <View style={styles.header}>
           <View style={styles.arrowIconColumn}>
-            <Button transparent onPress={() => navigation.goBack()}>
+            <Button transparent onPress={() => navigation.navigate("Chargers")}>
               <Icon active name="arrow-back" style={styles.headerIcons} />
             </Button>
           </View>
