@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { Image, FlatList, ScrollView, RefreshControl } from "react-native";
+import { Image, FlatList, RefreshControl } from "react-native";
 import {
   Container,
   Header,
-  Content,
   Spinner,
   Left,
   Right,
@@ -56,8 +55,7 @@ class Sites extends Component {
       this.setState({
         newData: sites.result,
         count: sites.count,
-        loading: false,
-        refreshing: false
+        loading: false
       }, () => {
         if (!this.state.newDataStoredFirstTime) {
           this.setState({sites: this.state.newData, newDataStoredFirstTime: true, keepDataToRefresh: this.state.newData});
@@ -72,6 +70,7 @@ class Sites extends Component {
       // Other common Error
       Utils.handleHttpUnexpectedError(error);
     }
+    this.setState({refreshing: false});
   }
 
   _onRefresh = async () => {
