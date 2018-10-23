@@ -79,8 +79,8 @@ class Chargers extends Component {
   }
 
   _onEndScroll = () => {
-    const { siteID, skip, count } = this.state;
-    if (skip <= count) {
+    const { siteID, chargers, count } = this.state;
+    if (chargers.length < count) {
       this.setState({skip: this.state.skip + 10}, async () => {
         await this.getChargers(siteID);
         this.setState({chargers: [...this.state.chargers, ...this.state.newData]});
@@ -93,8 +93,8 @@ class Chargers extends Component {
   }
 
   footerList = () => {
-    const { skip, count, limit } = this.state;
-    if (skip <= count && limit <= count) {
+    const { chargers, count } = this.state;
+    if (chargers.length < count) {
       return (
         <Spinner color="white" />
       );

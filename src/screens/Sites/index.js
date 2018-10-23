@@ -78,8 +78,8 @@ class Sites extends Component {
   }
 
   _onEndScroll = () => {
-    const { skip, count } = this.state;
-    if (skip <= count) {
+    const { sites, count } = this.state;
+    if (sites.length < count) {
       this.setState({skip: this.state.skip + 10}, async () => {
         await this.getSites();
         this.setState({sites: [...this.state.sites, ...this.state.newData]});
@@ -88,8 +88,8 @@ class Sites extends Component {
   }
 
   footerList = () => {
-    const { skip, count, limit } = this.state;
-    if (skip <= count && limit <= count) {
+    const { sites, count } = this.state;
+    if (sites.length < count) {
       return (
         <Spinner color="white" />
       );
