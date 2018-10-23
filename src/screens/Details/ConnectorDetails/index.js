@@ -1,18 +1,15 @@
 import React, { Component } from "react";
 import { TouchableOpacity, Alert, Text as RNText, ScrollView, ImageBackground } from "react-native";
-import { Container, Button, Icon, View, Badge, Thumbnail, Text, Footer, FooterTab } from "native-base";
-import { TabNavigator } from "react-navigation";
+import { Container, Button, Icon, View, Badge, Thumbnail, Text } from "native-base";
 
-import ProviderFactory from "../../provider/ProviderFactory";
-import Utils from "../../utils/Utils";
+import ProviderFactory from "../../../provider/ProviderFactory";
+import Utils from "../../../utils/Utils";
 
 import * as Animatable from "react-native-animatable";
 import styles from "./styles";
 
-const caen = require("../../../assets/Sites/caen.jpeg");
-const noUser = require("../../../assets/no-user.png");
-const noPhoto = require("../../../assets/no-photo.png");
-
+const caen = require("../../../../assets/Sites/caen.jpeg");
+const noPhoto = require("../../../../assets/no-photo.png");
 
 class ConnectorDetails extends Component {
 
@@ -52,7 +49,7 @@ class ConnectorDetails extends Component {
   startTransaction = async () => {
     const { charger, connector } = this.state;
     try {
-      let result = await ProviderFactory.getProvider().startTransaction(charger.id, "9C709F16", connector.connectorId);
+      let result = await ProviderFactory.getProvider().startTransaction(charger.id, connector.connectorId);
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error);
@@ -188,42 +185,4 @@ class ConnectorDetails extends Component {
   }
 }
 
-class ChargerDetails extends Component {
-
-  render() {
-    return (
-      <Container>
-        <View style={{justifyContent: "center", alignItems: "center", flex: 1}}>
-          <Text>Not implemented yet</Text>
-        </View>
-      </Container>
-    );
-  }
-}
-
-const Details = TabNavigator({
-  ConnectorDetails: { screen: ConnectorDetails },
-  ChargerDetails: { screen: ChargerDetails }
-},
-{
-  tabBarPosition: "bottom",
-  swipeEnabled: false,
-  tabBarComponent: props => {
-    return (
-      <Footer style={styles.footerContainer}>
-        <FooterTab>
-          <Button vertical active={props.navigationState.index === 0} onPress={()=>props.navigation.navigate("ConnectorDetails")}>
-            <Icon type="Feather" name="zap"/>
-            <Text>Connector</Text>
-          </Button>
-          <Button vertical active={props.navigationState.index === 1} onPress={()=>props.navigation.navigate("ChargerDetails")}>
-            <Icon type="MaterialIcons" name="info" />
-            <Text>Information</Text>
-          </Button>
-        </FooterTab>
-      </Footer>
-    );
-  }
-});
-
-export default Details;
+export default ConnectorDetails;

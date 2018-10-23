@@ -1,6 +1,6 @@
 import { StyleSheet, Platform, Dimensions } from "react-native";
 
-const primary = require("../../theme/variables/commonColor").brandPrimary;
+const primary = require("../../../theme/variables/commonColor").brandPrimary;
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 
@@ -155,8 +155,5 @@ export default StyleSheet.create({
     height: 45,
     width: 45,
     borderRadius: Platform.OS === "android" ? 40 : 20
-  },
-  footerContainer: {
-    backgroundColor: "#111111"
   }
 });
