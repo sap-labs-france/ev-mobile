@@ -21,14 +21,21 @@ class Sites extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSites: [],
-      loading: true
+      sites: [],
+      newData: [],
+      keepDataToRefresh: [],
+      newDataStoredFirstTime: false,
+      loading: true,
+      refreshing: false,
+      skip: 0,
+      limit: 10,
+      count: 0,
     };
   }
 
   componentWillMount() {
     this.setState({
-      dataSites: [],
+      sites: [],
       loading: true,
       refreshing: false
     });
@@ -40,16 +47,23 @@ class Sites extends Component {
   }
 
   getSites = async () => {
+    const { limit, skip } = this.state;
     try {
       // Get the Sites
       let sites = await ProviderFactory.getProvider().getSites(
-        { WithAvailableChargers: true, WithChargeBoxes: true });
-      // Fill each sites to dataSites array
+        { WithAvailableChargers: true, WithChargeBoxes: true }, { limit, skip });
+      // Fill each sites to sites[]
       this.setState({
-        dataSites: sites.result,
-        loading: false
+        newData: sites.result,
+        count: sites.count,
+        loading: false,
+        refreshing: false
+      }, () => {
+        if (!this.state.newDataStoredFirstTime) {
+          this.setState({sites: this.state.newData, newDataStoredFirstTime: true, keepDataToRefresh: this.state.newData});
+        }
       });
-      console.log(sites.result);
+      console.log(this.state.sites);
     } catch (error) {
       // Stop
       this.setState({
@@ -61,14 +75,32 @@ class Sites extends Component {
   }
 
   _onRefresh = async () => {
-    this.setState({refreshing: true});
-    await this.getSites();
-    this.setState({refreshing: false});
+    this.setState({refreshing: true}, async () => await this.getSites());
+  }
+
+  _onEndScroll = () => {
+    const { skip, count } = this.state;
+    if (skip <= count) {
+      this.setState({skip: this.state.skip + 10}, async () => {
+        await this.getSites();
+        this.setState({sites: [...this.state.sites, ...this.state.newData]});
+      });
+    }
+  }
+
+  footerList = () => {
+    const { skip, count, limit } = this.state;
+    if (skip <= count && limit <= count) {
+      return (
+        <Spinner color="white" />
+      );
+    }
+    return null;
   }
 
   _renderItem = ({item}) => {
     return (
-      <SiteComponent item={item} navigation={this.props.navigation}  />
+      <SiteComponent item={item} navigation={this.props.navigation} />
     );
   };
 
@@ -93,25 +125,23 @@ class Sites extends Component {
           </Right>
         </Header>
 
-        <ScrollView refreshControl={
-          <RefreshControl onRefresh={this._onRefresh} refreshing={this.state.refreshing} />
-        }>
-          <Content showsVerticalScrollIndicator={false} style={{ backgroundColor: "black" }}>
-            {loading ?
-              <Container>
-                <Spinner color="white" style={{flex: 1}} />
-              </Container>
-            :
-              <View>
-                <FlatList
-                  data={this.state.dataSites}
-                  renderItem={this._renderItem}
-                  keyExtractor={item => item.id}
-                />
-              </View>
-            }
-          </Content>
-        </ScrollView>
+        <View style={{flex: 1}}>
+          {loading ?
+            <Spinner color="white" style={{flex: 1}} />
+          :
+            <FlatList
+              data={this.state.sites}
+              renderItem={this._renderItem}
+              keyExtractor={item => item.id}
+              refreshControl={
+                <RefreshControl onRefresh={this._onRefresh} refreshing={this.state.refreshing} />
+              }
+              onEndReached={this._onEndScroll}
+              onEndReachedThreshold={0.5}
+              ListFooterComponent={this.footerList}
+            />
+          }
+        </View>
       </Container>
     );
   }
