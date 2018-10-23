@@ -9,7 +9,9 @@ export default StyleSheet.create({
     flexDirection: "row"
   },
   arrowIconColumn: {
-    flexDirection: "column"
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center"
   },
   chargerNameColumn: {
     flexDirection: "column",
@@ -26,13 +28,11 @@ export default StyleSheet.create({
     fontWeight: "bold",
     fontSize: 13
   },
-  backgroundContainer: {
-    borderColor: "#FFFFFF",
-    borderBottomWidth: 3,
+  detailsContainer: {
     paddingTop: 10
   },
   outerCircle: {
-    borderRadius: 62.5,
+    borderRadius: (deviceWidth / 3 + deviceHeight / 5.3) / 2,
     borderStyle: "solid",
     width: deviceWidth / 3,
     height: deviceHeight / 5.3,
@@ -42,7 +42,7 @@ export default StyleSheet.create({
     marginTop: 15
   },
   innerCircleStartTransaction: {
-    borderRadius: 60,
+    borderRadius: (deviceWidth / 3 - 5 + deviceHeight / 5.3 - 5) / 2,
     borderStyle: "solid",
     width: deviceWidth / 3 - 5,
     height: deviceHeight / 5.3 - 5,
@@ -54,7 +54,7 @@ export default StyleSheet.create({
     fontSize: 70
   },
   innerCircleStopTransaction: {
-    borderRadius: 60,
+    borderRadius: (deviceWidth / 3 - 5 + deviceHeight / 5.3 - 5) / 2,
     borderStyle: "solid",
     width: deviceWidth / 3 - 5,
     height: deviceHeight / 5.3 - 5,
@@ -72,7 +72,7 @@ export default StyleSheet.create({
     marginTop: 95
   },
   scrollViewContainer: {
-    marginTop: 55
+    marginTop: 65
   },
   content: {
     flexDirection: "column",

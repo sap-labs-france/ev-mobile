@@ -13,6 +13,7 @@ const caen = require("../../../assets/Sites/caen.jpeg");
 const noUser = require("../../../assets/no-user.png");
 const noPhoto = require("../../../assets/no-photo.png");
 
+
 class ConnectorDetails extends Component {
 
   constructor(props) {
@@ -84,7 +85,7 @@ class ConnectorDetails extends Component {
             <Text style={styles.connectorName}>Connector {alpha}</Text>
           </View>
         </View>
-        <View style={styles.backgroundContainer}>
+        <View style={styles.detailsContainer}>
           <ImageBackground style={styles.backgroundImage} source={caen}>
             <View style={styles.transactionContainer}>
               <TouchableOpacity onPress={() => connector.activeTransactionID === 0 ? this.onStartTransaction() : this.onStopTransaction()}>
@@ -104,84 +105,84 @@ class ConnectorDetails extends Component {
               </TouchableOpacity>
             </View>
           </ImageBackground>
-        </View>
-        <ScrollView style={styles.scrollViewContainer}>
-          <Animatable.View style={styles.content} animation="fadeIn" delay={100}>
-            <View style={styles.rowContainer}>
-              <View style={styles.columnContainer}>
-                {connector.status === "Available" && connector.currentConsumption === 0 ?
+          <ScrollView style={styles.scrollViewContainer}>
+            <Animatable.View style={styles.content} animation="fadeIn" delay={100}>
+              <View style={styles.rowContainer}>
+                <View style={styles.columnContainer}>
+                  {connector.status === "Available" && connector.currentConsumption === 0 ?
+                    <Animatable.View>
+                      <Badge style={styles.badgeContainer} success>
+                        <RNText style={styles.badgeText}>{alpha}</RNText>
+                      </Badge>
+                    </Animatable.View>
+                  : connector.status === "Occupied" && connector.currentConsumption === 0 ?
                   <Animatable.View>
-                    <Badge style={styles.badgeContainer} success>
-                      <RNText style={styles.badgeText}>{alpha}</RNText>
-                    </Badge>
-                  </Animatable.View>
-                : connector.status === "Occupied" && connector.currentConsumption === 0 ?
-                  <Animatable.View>
-                    <Badge style={styles.badgeContainer} danger>
-                      <RNText style={styles.badgeText}>{alpha}</RNText>
-                    </Badge>
-                  </Animatable.View>
-                : connector.status === "Occupied" && connector.currentConsumption !== 0 ?
+                      <Badge style={styles.badgeContainer} danger>
+                        <RNText style={styles.badgeText}>{alpha}</RNText>
+                      </Badge>
+                    </Animatable.View>
+                  : connector.status === "Occupied" && connector.currentConsumption !== 0 ?
                   <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate">
-                    <Badge style={styles.badgeContainer} danger>
-                      <RNText style={styles.badgeText}>{alpha}</RNText>
-                    </Badge>
-                  </Animatable.View>
-                :
+                      <Badge style={styles.badgeContainer} danger>
+                        <RNText style={styles.badgeText}>{alpha}</RNText>
+                      </Badge>
+                    </Animatable.View>
+                  :
                   <Animatable.View>
-                    <Badge style={styles.badgeContainer} danger>
-                      <RNText style={styles.badgeText}>{alpha}</RNText>
-                    </Badge>
-                  </Animatable.View>
-                }
-                <Text style={styles.undefinedStatusText}>{connector.status}</Text>
-              </View>
-              <View style={styles.userInfoContainer}>
-                {connector.status === "Available" ?
-                  <View>
-                    <Thumbnail style={styles.profilePic} source={noUser} />
-                    <Text style={styles.undefinedStatusText}>-</Text>
-                  </View>
-                :
+                      <Badge style={styles.badgeContainer} danger>
+                        <RNText style={styles.badgeText}>{alpha}</RNText>
+                      </Badge>
+                    </Animatable.View>
+                  }
+                  <Text style={styles.undefinedStatusText}>{connector.status}</Text>
+                </View>
+                <View style={styles.userInfoContainer}>
+                  {connector.status === "Available" ?
+                    <View>
+                      <Thumbnail style={styles.profilePic} source={noPhoto} />
+                      <Text style={styles.undefinedStatusText}>-</Text>
+                    </View>
+                  :
                   <TouchableOpacity>
-                    <Thumbnail style={styles.profilePic} source={noPhoto} />
-                    <Text style={styles.undefinedStatusText}>User</Text>
-                  </TouchableOpacity>
-                }
+                      <Thumbnail style={styles.profilePic} source={noPhoto} />
+                      <Text style={styles.undefinedStatusText}>User</Text>
+                    </TouchableOpacity>
+                  }
+                </View>
               </View>
-            </View>
-            <View style={styles.rowContainer}>
-              <View style={styles.columnContainer}>
-                <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
-                {(connector.currentConsumption / 1000).toFixed(1) === 0.0 || connector.currentConsumption === 0 ?
-                  <Text style={styles.undefinedStatusText}>-</Text>
-                :
-                  <View style={styles.currentConsumptionContainer}>
-                    <Text style={styles.currentConsumptionText}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
-                    <Text style={styles.kWText}>kW Instant</Text>
-                  </View>
-                }
+              <View style={styles.rowContainer}>
+                <View style={styles.columnContainer}>
+                  <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
+                  {(connector.currentConsumption / 1000).toFixed(1) === 0.0 || connector.currentConsumption === 0 ?
+                    <Text style={styles.undefinedStatusText}>-</Text>
+                    :
+                    <View style={styles.currentConsumptionContainer}>
+                      <Text style={styles.currentConsumptionText}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
+                      <Text style={styles.kWText}>kW Instant</Text>
+                    </View>
+                  }
+                </View>
+                <View style={styles.timerContainer}>
+                  <Icon type="Ionicons" name="time" style={styles.iconSize} />
+                  <Text style={styles.undefinedStatusText}>- : - : -</Text>
+                </View>
               </View>
-              <View style={styles.timerContainer}>
-                <Icon type="Ionicons" name="time" style={styles.iconSize} />
-                <Text style={styles.undefinedStatusText}>- : - : -</Text>
+              <View style={styles.rowContainer}>
+                <View style={styles.columnContainer}>
+                  <Icon style={styles.iconSize} type="MaterialIcons" name="trending-up" />
+                  {(connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
+                    <Text style={styles.undefinedStatusText}>-</Text>
+                    :
+                    <View style={styles.energyConsumedContainer}>
+                      <Text style={styles.energyConsumedNumber}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
+                      <Text style={styles.energyConsumedText}>kW consumed</Text>
+                    </View>
+                  }
+                </View>
               </View>
-            </View>
-            <View style={styles.rowContainer}>
-              <View style={styles.columnContainer}>
-                <Icon style={styles.iconSize} type="MaterialIcons" name="trending-up" />
-                {(connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
-                  <Text style={styles.undefinedStatusText}>-</Text>
-                :
-                  <View style={styles.energyConsumedContainer}>
-                    <Text style={styles.energyConsumedNumber}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
-                    <Text style={styles.energyConsumedText}>kW consumed</Text>
-                  </View>
-                }
-              </View>
-            </View>
-          </Animatable.View>
-        </ScrollView>
+            </Animatable.View>
+          </ScrollView>
+        </View>
       </Container>
     );
   }

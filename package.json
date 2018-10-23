@@ -44,6 +44,7 @@
     "color": "^3.0.0",
     "install": "^0.12.1",
     "jest-cli": "^23.6.0",
+    "jwt-decode": "^2.2.0",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "native-base": "^2.8.0",
