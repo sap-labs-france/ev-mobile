@@ -6,6 +6,7 @@ import ProviderFactory from "../../../provider/ProviderFactory";
 import Utils from "../../../utils/Utils";
 
 import * as Animatable from "react-native-animatable";
+import Orientation from "react-native-orientation";
 import styles from "./styles";
 
 const caen = require("../../../../assets/Sites/caen.jpeg");
@@ -20,6 +21,14 @@ class ConnectorDetails extends Component {
       connector: this.props.navigation.state.params.connector,
       alpha: this.props.navigation.state.params.alpha
     };
+  }
+
+  componentDidMount() {
+    Orientation.lockToPortrait();
+  }
+
+  componentWillUnmount() {
+    Orientation.unlockAllOrientations();
   }
 
   onStartTransaction = () => {
