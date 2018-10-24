@@ -16,7 +16,7 @@ class ConnectorComponent extends Component {
     const { index, item, alpha, nav, charger } = this.props;
     if (index % 2 === 0) {
       return (
-        <TouchableOpacity onPress={()=>nav.navigate("ConnectorDetails", {charger, connector: item, alpha})}>
+        <TouchableOpacity onPress={()=>nav.navigate("Details", {charger, connector: item, alpha})}>
           <Animatable.View animation="slideInLeft" iterationCount={1}>
             <View style={styles.connectorContainer}>
               <View style={styles.connectorStatus}>
@@ -94,7 +94,7 @@ class ConnectorComponent extends Component {
       );
     }
     return (
-      <TouchableOpacity onPress={()=>nav.navigate("ConnectorDetails", {charger, connector: item, alpha})}>
+      <TouchableOpacity onPress={()=>nav.navigate("Details", {charger, connector: item, alpha})}>
         <Animatable.View animation="slideInRight" iterationCount={1}>
           <View style={styles.connectorContainer}>
             <View style={styles.status}>

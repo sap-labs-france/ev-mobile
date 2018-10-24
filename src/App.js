@@ -9,7 +9,7 @@ import SignUp from "./screens/auth/SignUp";
 import Sidebar from "./screens/Sidebar";
 import Sites from "./screens/Sites";
 import Chargers from "./screens/Chargers";
-import Details from "./screens/Details/TabNavigator";
+import TabDetails from "./screens/Details/TabNavigator";
 
 // Drawer Menu Navigation
 const DrawerNavigation = createDrawerNavigator(
@@ -31,7 +31,7 @@ const AppNavigation = createStackNavigator(
     SignUp: { screen: SignUp },
     RetrievePassword: { screen: RetrievePassword },
     DrawerNavigation: { screen: DrawerNavigation },
-    Details: { screen: Details }
+    Details: { screen: TabDetails }
   },
   {
     index: 0,
