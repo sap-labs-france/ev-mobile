@@ -54,8 +54,7 @@ class Sites extends Component {
       // Fill each sites to sites[]
       this.setState({
         newData: sites.result,
-        count: sites.count,
-        loading: false
+        count: sites.count
       }, () => {
         if (!this.state.newDataStoredFirstTime) {
           this.setState({sites: this.state.newData, newDataStoredFirstTime: true, keepDataToRefresh: this.state.newData});
@@ -63,14 +62,13 @@ class Sites extends Component {
       });
       console.log(this.state.sites);
     } catch (error) {
-      // Stop
-      this.setState({
-        loading: false
-      });
       // Other common Error
-      Utils.handleHttpUnexpectedError(error);
+      Utils.handleHttpUnexpectedError(error, this.props);
     }
-    this.setState({refreshing: false});
+    this.setState({
+      refreshing: false,
+      loading: false
+    });
   }
 
   _onRefresh = async () => {

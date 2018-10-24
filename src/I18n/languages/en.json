@@ -3,6 +3,7 @@
     "cannotConnectBackend": "Cannot connect to the backend!",
     "unexpectedErrorBackend": "Unexpected error occurred in the backend!",
     "unexpectedError": "Unexpected error occurred!",
+    "sessionExpired": "Session expired",
     "numbers": "Enter a valid number",
     "email": "Enter a valid email address",
     "required": "Field is mandatory",

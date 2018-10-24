@@ -3,7 +3,7 @@ import { ScrollView, BackHandler } from "react-native";
 import { Spinner, Container } from "native-base";
 import HTMLView from "react-native-htmlview";
 import styles from "./styles";
-import CentralServerProvider from "../../../provider/CentralServerProvider";
+import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Message from "../../../utils/Message";
 import Utils from "../../../utils/Utils";
@@ -31,7 +31,7 @@ export default class Eula extends React.Component {
   endUserLicenseAgreement = async () => {
 		const { I18nLocal } = this.state;
 		try {
-      let result = await CentralServerProvider.getEndUserLicenseAgreement(I18nLocal);
+      let result = await ProviderFactory.getProvider().getEndUserLicenseAgreement(I18nLocal);
       this.setState({
         loading: false,
         eulaTextHtml: result.text

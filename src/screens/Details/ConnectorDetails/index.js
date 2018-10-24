@@ -52,7 +52,7 @@ class ConnectorDetails extends Component {
       let result = await ProviderFactory.getProvider().startTransaction(charger.id, connector.connectorId);
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error);
+      Utils.handleHttpUnexpectedError(error, this.props);
     }
   }
 
@@ -62,7 +62,7 @@ class ConnectorDetails extends Component {
       let result = await ProviderFactory.getProvider().stopTransaction(charger.id, connector.activeTransactionID);
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error);
+      Utils.handleHttpUnexpectedError(error, this.props);
     }
   }
 

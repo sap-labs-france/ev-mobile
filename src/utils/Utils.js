@@ -1,10 +1,10 @@
 import Message from "./Message";
 import I18n from "../I18n/I18n";
-import validate from 'validate.js'
+import validate from "validate.js";
 
 export default class Utils {
 
-    static handleHttpUnexpectedError(error) {
+    static handleHttpUnexpectedError(error, props) {
         if (error.request) {
             // Status?
             switch (error.request.status) {
@@ -12,7 +12,11 @@ export default class Utils {
                 case 0:
                     Message.showError(I18n.t("general.cannotConnectBackend"));
                     break;
-                    // Other errors
+                case 401:
+                    Message.showError(I18n.t("general.sessionExpired"));
+                    props.navigation.navigate("Login");
+                    break;
+                // Other errors
                 default:
                     Message.showError(I18n.t("general.unexpectedErrorBackend"));
                     break;

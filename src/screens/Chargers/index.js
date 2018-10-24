@@ -56,7 +56,6 @@ class Chargers extends Component {
         { SiteID: siteID, WithSiteArea: true }, { limit, skip });
         // Set result
         this.setState({
-          loading: false,
           newData: chargers.result,
           count: chargers.count
         }, () => {
@@ -66,15 +65,12 @@ class Chargers extends Component {
         });
         console.log("Data stored: ", this.state.newData);
     } catch (error) {
-      // Stop
-      this.setState({
-        loading: false
-      });
       // Other common Error
-      Utils.handleHttpUnexpectedError(error);
+      Utils.handleHttpUnexpectedError(error, this.props);
     }
     this.setState({
-      refreshing: false
+      refreshing: false,
+      loading: false
     });
   }
 
