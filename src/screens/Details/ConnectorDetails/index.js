@@ -6,7 +6,6 @@ import ProviderFactory from "../../../provider/ProviderFactory";
 import Utils from "../../../utils/Utils";
 
 import * as Animatable from "react-native-animatable";
-import Orientation from "react-native-orientation";
 import styles from "./styles";
 
 const caen = require("../../../../assets/Sites/caen.jpeg");
@@ -21,14 +20,6 @@ class ConnectorDetails extends Component {
       connector: this.props.navigation.state.params.connector,
       alpha: this.props.navigation.state.params.alpha
     };
-  }
-
-  componentDidMount() {
-    Orientation.lockToPortrait();
-  }
-
-  componentWillUnmount() {
-    Orientation.unlockAllOrientations();
   }
 
   onStartTransaction = () => {
@@ -58,7 +49,7 @@ class ConnectorDetails extends Component {
   startTransaction = async () => {
     const { charger, connector } = this.state;
     try {
-      let result = await ProviderFactory.getProvider().startTransaction(charger.id, connector.connectorId);
+      await ProviderFactory.getProvider().startTransaction(charger.id, connector.connectorId);
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -68,7 +59,7 @@ class ConnectorDetails extends Component {
   stopTransaction = async () => {
     const { charger, connector } = this.state;
     try {
-      let result = await ProviderFactory.getProvider().stopTransaction(charger.id, connector.activeTransactionID);
+      await ProviderFactory.getProvider().stopTransaction(charger.id, connector.activeTransactionID);
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
