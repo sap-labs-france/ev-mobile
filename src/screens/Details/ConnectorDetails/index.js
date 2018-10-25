@@ -69,6 +69,7 @@ class ConnectorDetails extends Component {
   render() {
     const navigation = this.props.navigation;
     const { charger, connector, alpha } = this.state;
+    console.log(charger);
     return (
       <Container>
         <View style={styles.header}>
@@ -131,7 +132,11 @@ class ConnectorDetails extends Component {
                       </Badge>
                     </Animatable.View>
                   }
-                  <Text style={styles.undefinedStatusText}>{connector.status}</Text>
+                  {connector.status === "Faulted" ?
+                    <Text style={styles.faultedText}>{connector.info}</Text>
+                  :
+                    <Text style={styles.connectorStatus}>{connector.status}</Text>
+                  }
                 </View>
                 <View style={styles.userInfoContainer}>
                   {connector.status === "Available" ?

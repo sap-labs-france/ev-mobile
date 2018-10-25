@@ -101,6 +101,12 @@ export default StyleSheet.create({
     fontSize: 30,
     color: "#FFFFFF"
   },
+  connectorStatus: {
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingTop: 10,
+    alignSelf: "center"
+  },
   undefinedStatusText: {
     fontSize: 20,
     fontWeight: "bold",
@@ -145,6 +151,16 @@ export default StyleSheet.create({
   },
   energyConsumedText: {
     fontSize: 12
+  },
+  faultedContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1
+  },
+  faultedText: {
+    fontSize: 12,
+    fontWeight: "bold"
   },
   headerIcons: {
     fontSize: 30,
