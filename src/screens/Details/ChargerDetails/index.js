@@ -27,21 +27,21 @@ class ChargerDetails extends Component {
             <View style={styles.rowContainer}>
                 <View style={styles.columnContainer}>
                   <Text style={styles.titleHeader}>Vendor</Text>
-                  <Text style={styles.infoContent}>{charger.chargePointVendor ? charger.chargePointVendor : "Unknown"}</Text>
+                  <Text style={styles.infoContent}>{charger.chargePointVendor ? charger.chargePointVendor : "-"}</Text>
                 </View>
                 <View style={styles.columnContainer}>
                   <Text style={styles.titleHeader}>Model</Text>
-                  <Text style={styles.infoContent}>{charger.chargePointModel ? charger.chargePointModel : "Unknown"}</Text>
+                  <Text style={styles.infoContent}>{charger.chargePointModel ? charger.chargePointModel : "-"}</Text>
                 </View>
             </View>
             <View style={styles.rowContainer}>
                 <View style={styles.columnContainer}>
                   <Text style={styles.titleHeader}>OCPP Version</Text>
-                  <Text style={styles.infoContent}>{charger.ocppVersion ? charger.ocppVersion : "Unknown"}</Text>
+                  <Text style={styles.infoContent}>{charger.ocppVersion ? charger.ocppVersion : "-"}</Text>
                 </View>
                 <View style={styles.columnContainer}>
                   <Text style={styles.titleHeader}>Firmware Version</Text>
-                  <Text style={styles.infoContent}>{charger.firmwareVersion ? charger.firmwareVersion : "Unknown"}</Text>
+                  <Text style={styles.infoContent}>{charger.firmwareVersion ? charger.firmwareVersion : "-"}</Text>
                 </View>
             </View>
           </View>

@@ -120,7 +120,7 @@ class TabDetails extends Component {
   }
 
   isGraphTabActive = () => {
-    if (this.props.navigationState.index === 1) {
+    if (this.props.navigationState.index === 2) {
       Orientation.unlockAllOrientations();
       Orientation.lockToLandscape();
     } else {
@@ -137,13 +137,13 @@ class TabDetails extends Component {
             <Icon type="Feather" name="zap"/>
             <Text>Connector</Text>
           </Button>
-          <Button vertical active={this.props.navigationState.index === 1} onPress={()=>this.props.navigation.navigate("GraphDetails")}>
-            <Icon type="MaterialIcons" name="timeline" />
-            <Text>Graph</Text>
-          </Button>
-          <Button vertical active={this.props.navigationState.index === 2} onPress={()=>this.props.navigation.navigate("ChargerDetails")}>
+          <Button vertical active={this.props.navigationState.index === 1} onPress={()=>this.props.navigation.navigate("ChargerDetails")}>
             <Icon type="MaterialIcons" name="info" />
             <Text>Informations</Text>
+          </Button>
+          <Button vertical active={this.props.navigationState.index === 2} onPress={()=>this.props.navigation.navigate("GraphDetails")}>
+            <Icon type="MaterialIcons" name="timeline" />
+            <Text>Graph</Text>
           </Button>
         </FooterTab>
       </Footer>
@@ -154,8 +154,8 @@ class TabDetails extends Component {
 const Details = TabNavigator(
   {
     ConnectorDetails: { screen: ConnectorDetails },
-    GraphDetails: { screen: GraphDetails },
-    ChargerDetails: { screen: ChargerDetails }
+    ChargerDetails: { screen: ChargerDetails },
+    GraphDetails: { screen: GraphDetails }
   },
   {
     tabBarPosition: "bottom",
