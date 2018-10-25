@@ -7,6 +7,7 @@ import Utils from "../../../utils/Utils";
 
 import * as Animatable from "react-native-animatable";
 import styles from "./styles";
+import headerStyles from "../TabNavigator/styles";
 
 const caen = require("../../../../assets/Sites/caen.jpeg");
 const noPhoto = require("../../../../assets/no-photo.png");
@@ -72,38 +73,38 @@ class ConnectorDetails extends Component {
     console.log(charger);
     return (
       <Container>
-        <View style={styles.header}>
-          <View style={styles.arrowIconColumn}>
+        <View style={headerStyles.header}>
+          <View style={headerStyles.arrowIconColumn}>
             <Button transparent onPress={() => navigation.navigate("Chargers")}>
-              <Icon active name="arrow-back" style={styles.headerIcons} />
+              <Icon active name="arrow-back" style={headerStyles.headerIcons} />
             </Button>
           </View>
-          <View style={styles.chargerNameColumn}>
-            <Text style={styles.chargerName}>{charger.id}</Text>
-            <Text style={styles.connectorName}>Connector {alpha}</Text>
+          <View style={headerStyles.chargerNameColumn}>
+            <Text style={headerStyles.chargerName}>{charger.id}</Text>
+            <Text style={headerStyles.connectorName}>Connector {alpha}</Text>
           </View>
         </View>
-        <View style={styles.detailsContainer}>
-          <ImageBackground style={styles.backgroundImage} source={caen}>
-            <View style={styles.transactionContainer}>
+        <View style={headerStyles.detailsContainer}>
+          <ImageBackground style={headerStyles.backgroundImage} source={caen}>
+            <View style={headerStyles.transactionContainer}>
               <TouchableOpacity onPress={() => connector.activeTransactionID === 0 ? this.onStartTransaction() : this.onStopTransaction()}>
                 {connector.activeTransactionID === 0 ?
-                  <View style={styles.outerCircle}>
-                    <View style={styles.innerCircleStartTransaction}>
-                      <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
+                  <View style={headerStyles.outerCircle}>
+                    <View style={headerStyles.innerCircleStartTransaction}>
+                      <Icon style={headerStyles.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
                     </View>
                   </View>
                 :
-                  <View style={styles.outerCircle}>
-                    <View style={styles.innerCircleStopTransaction}>
-                      <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="stop" />
+                  <View style={headerStyles.outerCircle}>
+                    <View style={headerStyles.innerCircleStopTransaction}>
+                      <Icon style={headerStyles.startStopTransactionIcon} type="MaterialIcons" name="stop" />
                     </View>
                   </View>
                 }
               </TouchableOpacity>
             </View>
           </ImageBackground>
-          <ScrollView style={styles.scrollViewContainer}>
+          <ScrollView style={headerStyles.scrollViewContainer}>
             <Animatable.View style={styles.content} animation="fadeIn" delay={100}>
               <View style={styles.rowContainer}>
                 <View style={styles.columnContainer}>
