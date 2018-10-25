@@ -5,6 +5,9 @@ const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 
 export default StyleSheet.create({
+  scrollViewContainer: {
+    marginTop: 65
+  },
   content: {
     flexDirection: "column",
     flex: 1,
@@ -90,8 +93,10 @@ export default StyleSheet.create({
     flex: 1
   },
   faultedText: {
-    fontSize: 12,
-    fontWeight: "bold"
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingTop: 10,
+    alignSelf: "center"
   },
   headerIcons: {
     fontSize: 30,

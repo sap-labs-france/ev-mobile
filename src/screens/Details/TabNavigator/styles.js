@@ -75,9 +75,6 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  scrollViewContainer: {
-    marginTop: 65
-  },
   footerContainer: {
     backgroundColor: "#111111"
   }
