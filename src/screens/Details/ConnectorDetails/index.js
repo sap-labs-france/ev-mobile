@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { TouchableOpacity, Text as RNText, ScrollView } from "react-native";
+import { TouchableOpacity, Text as RNText, ScrollView, RefreshControl } from "react-native";
 import { Container, Icon, View, Badge, Thumbnail, Text } from "native-base";
 
-import { Header } from "../TabNavigator";
-
 import * as Animatable from "react-native-animatable";
+
+import { Header } from "../TabNavigator";
+import ProviderFactory from "../../../provider/ProviderFactory";
+import Utils from "../../../utils/Utils";
 import styles from "./styles";
 
 const noPhoto = require("../../../../assets/no-photo.png");
@@ -16,18 +18,44 @@ class ConnectorDetails extends Component {
     this.state = {
       charger: this.props.navigation.state.params.charger,
       connector: this.props.navigation.state.params.connector,
-      alpha: this.props.navigation.state.params.alpha
+      alpha: this.props.navigation.state.params.alpha,
+      refreshing: false
     };
+  }
+
+  getCharger = async (chargerId) => {
+    try {
+      let result = await ProviderFactory.getProvider().getCharger(
+        { ID: chargerId }
+      );
+      return result;
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
+  _onRefresh = () => {
+    this.setState({refreshing: true}, async () => {
+      let result = await this.getCharger(this.state.charger.id);
+      console.log("Stored: ", result);
+      this.setState({
+        refreshing: false,
+        charger: result,
+        connector: result.connectors[String.fromCharCode(this.state.alpha.charCodeAt() - 17)]
+      });
+    });
   }
 
   render() {
     const navigation = this.props.navigation;
-    const { charger, connector, alpha } = this.state;
-    console.log(charger);
+    const { charger, connector, alpha, refreshing } = this.state;
     return (
       <Container>
         <Header charger={charger} connector={connector} alpha={alpha} navigation={navigation} />
-        <ScrollView style={styles.scrollViewContainer}>
+        <ScrollView style={styles.scrollViewContainer} refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={this._onRefresh} />
+        }>
           <Animatable.View style={styles.content} animation="fadeIn" delay={100}>
             <View style={styles.rowContainer}>
               <View style={styles.columnContainer}>
