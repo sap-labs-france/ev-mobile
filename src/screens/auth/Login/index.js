@@ -184,7 +184,9 @@ class Login extends React.Component {
   componentWillMount() {
     Orientation.getOrientation((error, orientation) => {
       if (orientation === "LANDSCAPE") {
+        Orientation.unlockAllOrientations();
         Orientation.lockToPortrait();
+        Orientation.unlockAllOrientations();
       }
     });
   }

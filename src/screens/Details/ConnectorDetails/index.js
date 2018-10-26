@@ -28,7 +28,7 @@ class ConnectorDetails extends Component {
       let result = await ProviderFactory.getProvider().getCharger(
         { ID: chargerId }
       );
-      return result;
+      return (result);
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
