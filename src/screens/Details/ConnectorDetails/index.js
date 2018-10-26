@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { TouchableOpacity, Alert, Text as RNText, ScrollView, ImageBackground } from "react-native";
-import { Container, Button, Icon, View, Badge, Thumbnail, Text } from "native-base";
+import { TouchableOpacity, Text as RNText, ScrollView } from "react-native";
+import { Container, Icon, View, Badge, Thumbnail, Text } from "native-base";
 
 import { Header } from "../TabNavigator";
 

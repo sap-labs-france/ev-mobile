@@ -3,7 +3,6 @@ import { Image, ImageBackground, Keyboard, ScrollView } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import {
   Container,
-  Content,
   Text,
   Form,
   Item,
@@ -19,6 +18,9 @@ import {
   Footer,
   Spinner
 } from "native-base";
+
+import Orientation from "react-native-orientation";
+
 import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
@@ -179,8 +181,22 @@ class Login extends React.Component {
     );
   }
 
+  componentWillMount() {
+    Orientation.getOrientation((error, orientation) => {
+      if (orientation === "LANDSCAPE") {
+        Orientation.lockToPortrait();
+      }
+    });
+  }
+
   skip = () => {
-    this.props.navigation.navigate("Sites");
+    // Navigate to sites
+    return this.props.navigation.dispatch(
+      StackActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: "DrawerNavigation" })]
+      })
+    );
   }
 
   login = async () => {

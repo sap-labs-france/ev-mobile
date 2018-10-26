@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { ImageBackground, TouchableOpacity, ScrollView } from "react-native";
-import { Container, View, Text, Button, Icon } from "native-base";
+import { ScrollView } from "react-native";
+import { Container, View, Text } from "native-base";
 
 import { Header } from "../TabNavigator";
 import styles from "./styles";
