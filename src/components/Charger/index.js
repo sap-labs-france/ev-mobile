@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { FlatList } from "react-native";
+import { FlatList, Dimensions } from "react-native";
 import { Text, View, ListItem, Icon } from "native-base";
 
 import * as Animatable from "react-native-animatable";
 import ConnectorComponent from "../Connector";
 import styles from "./styles";
+
+const deviceHeight = Dimensions.get("window").height;
 
 class ChargerComponent extends Component {
 
@@ -17,6 +19,7 @@ class ChargerComponent extends Component {
 
   render() {
     const { items, nav } = this.props;
+    console.log(deviceHeight);
     return (
       <View style={styles.container}>
         <ListItem style={styles.listDividerContainer} itemDivider>

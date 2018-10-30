@@ -29,12 +29,10 @@ class GraphDetails extends Component {
     let yAxis = [];
     let yMin = connector.currentConsumption - 10000 <= 0 ? 1000 : connector.currentConsumption - 5000;
     let yMax = connector.currentConsumption - 10000 <= 0 ? 8000 : connector.currentConsumption + 2000;
-    console.log("yMin :", yMin);
-    console.log("yMax :", yMax);
     for (var i = yMin; i <= yMax; i = i + 1 * 1000) {
       yAxis.push((Math.round(i / 1000) + "000").toString());
     }
-    this.setState({yCagegory: yAxis}, () => console.log(this.state.yCagegory));
+    this.setState({yCagegory: yAxis});
   }
 
   render() {

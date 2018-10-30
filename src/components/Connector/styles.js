@@ -1,27 +1,28 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get("window").height;
 
 export default StyleSheet.create({
   connectorContainer: {
     flexDirection: "row",
-    paddingTop: 15
+    marginTop: 5
   },
   connectorStatus: {
     flexDirection: "column",
-    paddingLeft: 10,
-    paddingRight: 10
+    justifyContent: "center"
   },
   badge: {
     justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 50,
-    height: 35,
-    width: 35
+    borderRadius: 60,
+    height: deviceHeight / 14.7,
+    width: deviceWidth / 8.3
   },
   badgeText:{
-    fontSize: 17,
-    fontWeight: "bold"
+    fontSize: 27,
+    fontWeight: "bold",
+    marginBottom: -5,
+    paddingTop: 10
   },
   connectorTextInfo: {
     fontSize: 10,
@@ -32,51 +33,57 @@ export default StyleSheet.create({
   },
   status: {
     flexDirection: "column",
-    width: 100,
+    width: deviceWidth / 3.4,
     alignItems: "center",
-    paddingBottom: 10
+    justifyContent: "center",
+    marginLeft: 5,
+    marginRight: 5
   },
   statusDetailsContainer: {
-    width: deviceWidth / 4.4
+    width: deviceWidth / 3.1
   },
   statusText: {
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: 17
+    fontSize: 22
   },
   rowSpaceBetween: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-evenly"
   },
   column: {
-    flexDirection: "column"
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center"
   },
   energy: {
     fontWeight: "bold",
-    fontSize: 27,
+    fontSize: 35,
     textAlign: "center"
   },
   currentConsumptionUnity: {
-    fontSize: 8
+    marginTop: -3,
+    fontSize: 10.5
   },
   maxEnergy: {
-    fontSize: 9,
-    textAlign: "center"
+    fontSize: 10.5,
+    textAlign: "center",
+    marginTop: -3,
   },
   statusDetailsContainerNoConsumption : {
-    width: deviceWidth / 4.8
+    width: deviceWidth / 3.1
   },
   sizeConnectorImage: {
-    width: deviceWidth / 10.7,
-    height: deviceWidth / 10.7
+    height: 35,
+    width: 40,
+    marginTop: 5
   },
   maxPowerContainer: {
-    flexDirection: "column",
-    width: deviceWidth / 11
+    flexDirection: "column"
   },
   power: {
     fontWeight: "bold",
-    fontSize: 26,
+    fontSize: 35,
     textAlign: "center"
   },
   connectorType: {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, TouchableOpacity } from "react-native";
+import { Image, TouchableOpacity, Dimensions } from "react-native";
 import { Text, View, Badge } from "native-base";
 
 import * as Animatable from "react-native-animatable";
@@ -49,40 +49,34 @@ class ConnectorComponent extends Component {
               <View style={styles.status}>
                 { item.currentConsumption !== 0  && item.status === "Occupied" ?
                   <View style={styles.statusDetailsContainer}>
-                    <Text style={styles.statusText}>{item.status}</Text>
+                    <Text style={styles.statusText} numberOfLines={1}>{item.status}</Text>
                     <View style={styles.rowSpaceBetween}>
                       <View style={styles.column}>
                         <Text style={styles.energy}>{Math.trunc(item.currentConsumption / 1000) === 0 ? (item.currentConsumption / 1000).toFixed(1) : Math.trunc(item.currentConsumption / 1000)}</Text>
                         <Text style={styles.currentConsumptionUnity}>kW(Instant)</Text>
                       </View>
                       <View style={styles.column}>
-                        <Text style={styles.energy}>{Math.trunc(item.power / 1000)}</Text>
-                        <Text style={styles.maxEnergy}>kWMax</Text>
+                        <Text style={styles.energy}>{Math.round(item.totalConsumption / 1000)}</Text>
+                        <Text style={styles.maxEnergy}>Total kW</Text>
                       </View>
                     </View>
                   </View>
                 : item.currentConsumption === 0 ?
                   <View style={styles.statusDetailsContainerNoConsumption}>
-                    <Text style={styles.statusText}>{item.status}</Text>
+                    <Text style={styles.statusText} numberOfLines={1}>{item.status}</Text>
                     <View style={styles.rowSpaceBetween}>
                       <View style={styles.column}>
                         <Image style={styles.sizeConnectorImage} source={item.type === "T2" ? type2 : item.type === "CCS" ? combo : item.type === "C" ? chademo : noConnector} />
-                      </View>
-                      <View style={styles.maxPowerContainer}>
-                        <Text style={styles.power}>{Math.trunc(item.power / 1000)}</Text>
-                      </View>
-                    </View>
-                    <View style={styles.rowSpaceBetween}>
-                      <View style={styles.column}>
                         <Text style={styles.connectorType}>{item.type === "T2" ? "Type 2" : item.type === "CCS" ? "CCS" : item.type === "C" ? "Type C" : "Unknown"}</Text>
                       </View>
                       <View style={styles.column}>
+                        <Text style={styles.power}>{Math.trunc(item.power / 1000)}</Text>
                         <Text style={styles.maxEnergy}>kWMax</Text>
                       </View>
                     </View>
                   </View>
                 :
-                  <Text style={styles.statusText}>{item.status}</Text>
+                  <Text style={styles.statusText} numberOfLines={1}>{item.status}</Text>
                 }
                 {item.errorCode !== "NoError" && (
                   <Text style={styles.connectorErrorCodeText}>{item.errorCode}</Text>
@@ -100,40 +94,34 @@ class ConnectorComponent extends Component {
             <View style={styles.status}>
               { item.currentConsumption !== 0  && item.status === "Occupied" ?
                 <View style={styles.statusDetailsContainer}>
-                  <Text style={styles.statusText}>{item.status}</Text>
+                  <Text style={styles.statusText} numberOfLines={1}>{item.status}</Text>
                   <View style={styles.rowSpaceBetween}>
                     <View style={styles.column}>
                       <Text style={styles.energy}>{Math.trunc(item.currentConsumption / 1000) === 0 ? (item.currentConsumption / 1000).toFixed(1) : Math.trunc(item.currentConsumption / 1000)}</Text>
                       <Text style={styles.currentConsumptionUnity}>kW(Instant)</Text>
                     </View>
                     <View style={styles.column}>
-                      <Text style={styles.energy}>{Math.trunc(item.power / 1000)}</Text>
-                      <Text style={styles.maxEnergy}>kWMax</Text>
+                      <Text style={styles.energy}>{Math.round(item.totalConsumption / 1000)}</Text>
+                      <Text style={styles.maxEnergy}>Total kW</Text>
                     </View>
                   </View>
                 </View>
               : item.currentConsumption === 0 ?
                 <View style={styles.statusDetailsContainerNoConsumption}>
-                  <Text style={styles.statusText}>{item.status}</Text>
+                  <Text style={styles.statusText} numberOfLines={1}>{item.status}</Text>
                   <View style={styles.rowSpaceBetween}>
+                    <View style={styles.column}>
+                      <Text style={styles.power}>{Math.trunc(item.power / 1000)}</Text>
+                      <Text style={styles.maxEnergy}>kWMax</Text>
+                    </View>
                     <View style={styles.column}>
                       <Image style={styles.sizeConnectorImage} source={item.type === "T2" ? type2 : item.type === "CCS" ? combo : item.type === "C" ? chademo : noConnector} />
-                    </View>
-                    <View style={styles.maxPowerContainer}>
-                      <Text style={styles.power}>{Math.trunc(item.power / 1000)}</Text>
-                    </View>
-                  </View>
-                  <View style={styles.rowSpaceBetween}>
-                    <View style={styles.column}>
                       <Text style={styles.connectorType}>{item.type === "T2" ? "Type 2" : item.type === "CCS" ? "CCS" : item.type === "C" ? "Type C" : "Unknown"}</Text>
-                    </View>
-                    <View style={styles.column}>
-                      <Text style={styles.maxEnergy}>kWMax</Text>
                     </View>
                   </View>
                 </View>
               :
-                <Text style={styles.statusText}>{item.status}</Text>
+                <Text style={styles.statusText} numberOfLines={1}>{item.status}</Text>
               }
               {item.errorCode !== "NoError" && (
                 <Text style={styles.connectorErrorCodeText}>{item.errorCode}</Text>

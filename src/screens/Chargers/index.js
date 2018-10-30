@@ -37,7 +37,6 @@ class Chargers extends Component {
       skip: 0,
       count: 0,
       newDataStoredFirstTime: false,
-      keepDataToRefresh: [],
       chargers: [],
       newData: []
     };
@@ -60,7 +59,7 @@ class Chargers extends Component {
           count: chargers.count
         }, () => {
           if (!this.state.newDataStoredFirstTime) {
-            this.setState({chargers: this.state.newData, newDataStoredFirstTime: true, keepDataToRefresh: this.state.newData});
+            this.setState({chargers: this.state.newData, newDataStoredFirstTime: true});
           }
         });
         console.log("Data stored: ", this.state.newData);
@@ -85,7 +84,7 @@ class Chargers extends Component {
   }
 
   _onRefresh = () => {
-    this.setState({refreshing: true, skip: 0, chargers: this.state.keepDataToRefresh }, () => this.getChargers(this.state.siteID));
+    this.setState({refreshing: true, skip: 0, newData: [], newDataStoredFirstTime: false}, async () => await this.getChargers(this.state.siteID));
   }
 
   footerList = () => {

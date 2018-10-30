@@ -1,6 +1,12 @@
 import Message from "./Message";
 import I18n from "../I18n/I18n";
 import validate from "validate.js";
+import { NavigationActions, StackActions } from "react-navigation";
+
+const resetAction = StackActions.reset({
+    index: 0,
+    actions: [NavigationActions.navigate({routeName: "Login"})]
+});
 
 export default class Utils {
 
@@ -14,8 +20,7 @@ export default class Utils {
                     break;
                 case 401:
                     Message.showError(I18n.t("general.sessionExpired"));
-                    props.navigation.navigate("Login");
-                    break;
+                    return props.navigation.dispatch(resetAction);
                 // Other errors
                 default:
                     Message.showError(I18n.t("general.unexpectedErrorBackend"));

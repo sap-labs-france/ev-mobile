@@ -14,7 +14,8 @@ export default StyleSheet.create({
     flexWrap: "wrap"
   },
   chargerName: {
-    fontWeight: "bold"
+    fontWeight: "bold",
+    fontSize: 20
   },
   siteAreaName: {
     fontStyle: "italic",
