@@ -23,6 +23,16 @@ class ConnectorDetails extends Component {
     };
   }
 
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      this._timerRefresh();
+    }, 10000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
   getCharger = async (chargerId) => {
     try {
       let result = await ProviderFactory.getProvider().getCharger(
@@ -33,6 +43,14 @@ class ConnectorDetails extends Component {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
     }
+  }
+
+  _timerRefresh = async () => {
+    let result = await this.getCharger(this.state.charger.id);
+    this.setState({
+      charger: result,
+      connector: result.connectors[String.fromCharCode(this.state.alpha.charCodeAt() - 17)]
+    }, () => console.log("Refreshed: ", this.state.charger));
   }
 
   _onRefresh = () => {
