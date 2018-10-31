@@ -32,6 +32,7 @@ class Chargers extends Component {
     this.state = {
       loading: true,
       refreshing: false,
+      timer: 0,
       siteID: this.props.navigation.state.params.siteID,
       limit: 10,
       skip: 0,
@@ -43,8 +44,16 @@ class Chargers extends Component {
   }
 
   componentDidMount() {
-    // Get Site Areas
+    // Get chargers first time
     this.getChargers(this.state.siteID);
+    // Refresh every minutes
+    this.timer = setInterval(() => {
+      this._timerRefresh();
+    }, 10000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
   }
 
   getChargers = async (siteID) => {
@@ -83,8 +92,52 @@ class Chargers extends Component {
     }
   }
 
-  _onRefresh = () => {
-    this.setState({refreshing: true, skip: 0, newData: [], newDataStoredFirstTime: false}, async () => await this.getChargers(this.state.siteID));
+  _timerRefresh = async () => {
+    if (this.state.refreshing !== true) {
+      if (this.state.limit !== 0 && this.state.skip !== 0) {
+        this.setState(
+          {
+            limit: this.state.skip === 0 ? 10 : 0,
+            skip: 0,
+            newDataStoredFirstTime: false,
+            newData: []
+          },
+          async () => {
+            await this.getChargers(this.state.siteID);
+          }
+        );
+      } else {
+        this.setState({
+          newDataStoredFirstTime: false,
+          newData: []
+        }, async () => {
+          await this.getChargers(this.state.siteID);
+        });
+      }
+    }
+  }
+
+  _onRefresh = async () => {
+    if (this.state.limit !== 0 && this.state.skip !== 0) {
+      this.setState(
+      {
+        refreshing: true,
+        limit: this.state.skip === 0 ? 10 : 0,
+        skip: 0,
+        newDataStoredFirstTime: false,
+        newData: []
+      },
+      async () => {
+        await this.getChargers(this.state.siteID);
+      });
+    } else {
+      this.setState({
+        newDataStoredFirstTime: false,
+        newData: []
+      }, async () => {
+        await this.getChargers(this.state.siteID);
+      });
+    }
   }
 
   footerList = () => {
@@ -147,9 +200,8 @@ class Chargers extends Component {
                 <RefreshControl onRefresh={this._onRefresh} refreshing={this.state.refreshing} />
               }
               indicatorStyle={"white"}
-              alwaysBounceVertical
               onEndReached={this._onEndScroll}
-              onEndReachedThreshold={0.5}
+              onEndReachedThreshold={0.4}
               ListFooterComponent={this.footerList}
             />
           )}

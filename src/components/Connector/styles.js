@@ -18,7 +18,7 @@ export default StyleSheet.create({
     height: deviceHeight / 14.7,
     width: deviceWidth / 8.3
   },
-  badgeText:{
+  badgeText: {
     fontSize: 27,
     fontWeight: "bold",
     marginBottom: -5,
