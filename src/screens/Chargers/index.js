@@ -49,7 +49,7 @@ class Chargers extends Component {
     // Refresh every minutes
     this.timer = setInterval(() => {
       this._timerRefresh();
-    }, 10000);
+    }, 60000);
   }
 
   componentWillUnmount() {

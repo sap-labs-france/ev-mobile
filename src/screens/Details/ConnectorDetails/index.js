@@ -26,7 +26,7 @@ class ConnectorDetails extends Component {
   componentDidMount() {
     this.timer = setInterval(() => {
       this._timerRefresh();
-    }, 10000);
+    }, 60000);
   }
 
   componentWillUnmount() {
