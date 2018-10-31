@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
@@ -21,7 +21,7 @@ export default StyleSheet.create({
   badgeText: {
     fontSize: 27,
     fontWeight: "bold",
-    marginBottom: -5,
+    marginBottom: Platform.OS === "android" ? -2 : -5,
     paddingTop: 10
   },
   connectorTextInfo: {
