@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "StrapFlatApp-tvOS.app"
-               BlueprintName = "StrapFlatApp-tvOS"
-               ReferencedContainer = "container:StrapFlatApp.xcodeproj">
+               BuildableName = "Charge_Angels-tvOS.app"
+               BlueprintName = "Charge_Angels-tvOS"
+               ReferencedContainer = "container:Charge_Angels.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "StrapFlatApp-tvOSTests.xctest"
-               BlueprintName = "StrapFlatApp-tvOSTests"
-               ReferencedContainer = "container:StrapFlatApp.xcodeproj">
+               BuildableName = "Charge_Angels-tvOSTests.xctest"
+               BlueprintName = "Charge_Angels-tvOSTests"
+               ReferencedContainer = "container:Charge_Angels.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "StrapFlatApp-tvOSTests.xctest"
-               BlueprintName = "StrapFlatApp-tvOSTests"
-               ReferencedContainer = "container:StrapFlatApp.xcodeproj">
+               BuildableName = "Charge_Angels-tvOSTests.xctest"
+               BlueprintName = "Charge_Angels-tvOSTests"
+               ReferencedContainer = "container:Charge_Angels.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "StrapFlatApp-tvOS.app"
-            BlueprintName = "StrapFlatApp-tvOS"
-            ReferencedContainer = "container:StrapFlatApp.xcodeproj">
+            BuildableName = "Charge_Angels-tvOS.app"
+            BlueprintName = "Charge_Angels-tvOS"
+            ReferencedContainer = "container:Charge_Angels.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -94,9 +94,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "StrapFlatApp-tvOS.app"
-            BlueprintName = "StrapFlatApp-tvOS"
-            ReferencedContainer = "container:StrapFlatApp.xcodeproj">
+            BuildableName = "Charge_Angels-tvOS.app"
+            BlueprintName = "Charge_Angels-tvOS"
+            ReferencedContainer = "container:Charge_Angels.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -113,9 +113,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "StrapFlatApp-tvOS.app"
-            BlueprintName = "StrapFlatApp-tvOS"
-            ReferencedContainer = "container:StrapFlatApp.xcodeproj">
+            BuildableName = "Charge_Angels-tvOS.app"
+            BlueprintName = "Charge_Angels-tvOS"
+            ReferencedContainer = "container:Charge_Angels.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

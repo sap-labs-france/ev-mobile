@@ -23,21 +23,20 @@ import ChargerComponent from "../../components/Charger";
 import Utils from "../../utils/Utils";
 import styles from "./styles";
 
-
 class Chargers extends Component {
 
   constructor(props) {
     super(props);
     // Init State
     this.state = {
+      siteID: this.props.navigation.state.params.siteID,
       loading: true,
       refreshing: false,
-      timer: 0,
-      siteID: this.props.navigation.state.params.siteID,
+      newDataStoredFirstTime: false,
       limit: 10,
       skip: 0,
       count: 0,
-      newDataStoredFirstTime: false,
+      timer: 0,
       chargers: [],
       newData: []
     };
