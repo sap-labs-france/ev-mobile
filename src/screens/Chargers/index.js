@@ -200,7 +200,7 @@ class Chargers extends Component {
               }
               indicatorStyle={"white"}
               onEndReached={this._onEndScroll}
-              onEndReachedThreshold={0.4}
+              onEndReachedThreshold={1}
               ListFooterComponent={this.footerList}
             />
           )}

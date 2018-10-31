@@ -32,7 +32,7 @@ class SideBar extends Component {
             <View style={{borderColor: "#FFFFFF", borderBottomWidth: 1, paddingBottom: 30}}>
               <Image source={require("../../../assets/logo-low.gif")} style={{flex: 1, resizeMode: "contain", height: deviceHeight / 6, alignSelf: "center"}} />
             </View>
-            <ListItem style={[styles.links, {paddingTop: 30}]} button iconLeft onPress={() => navigation.navigate("Sites")}>
+            <ListItem style={[styles.links, {marginTop: 30}]} button iconLeft onPress={() => navigation.navigate("Sites")}>
               <Icon name="ios-grid-outline" />
               <Text style={styles.linkText}>Sites</Text>
             </ListItem>

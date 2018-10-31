@@ -18,6 +18,9 @@ const DrawerNavigation = createDrawerNavigator(
     Chargers: { screen: Chargers }
   },
   {
+    navigationOptions: {
+      swipeEnabled: true,
+    },
     initialRouteName: "Sites",
     contentComponent: props => <Sidebar {...props} />
   }
