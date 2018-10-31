@@ -5,6 +5,7 @@ import { TabNavigator } from "react-navigation";
 import Orientation from "react-native-orientation";
 
 import ProviderFactory from "../../../provider/ProviderFactory";
+import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 
 import ConnectorDetails from "../ConnectorDetails";
@@ -76,7 +77,7 @@ export class Header extends Component {
           </View>
           <View style={styles.chargerNameColumn}>
             <Text style={styles.chargerName}>{charger.id}</Text>
-            <Text style={styles.connectorName}>Connector {alpha}</Text>
+            <Text style={styles.connectorName}>{I18n.t("details.connector")} {alpha}</Text>
           </View>
         </View>
         <View style={styles.detailsContainer}>
@@ -135,15 +136,15 @@ class TabDetails extends Component {
         <FooterTab>
           <Button vertical active={this.props.navigationState.index === 0} onPress={()=>this.props.navigation.navigate("ConnectorDetails")}>
             <Icon type="Feather" name="zap"/>
-            <Text>Connector</Text>
+            <Text>{I18n.t("details.connector")}</Text>
           </Button>
           <Button vertical active={this.props.navigationState.index === 1} onPress={()=>this.props.navigation.navigate("ChargerDetails")}>
             <Icon type="MaterialIcons" name="info" />
-            <Text>Informations</Text>
+            <Text>{I18n.t("details.informations")}</Text>
           </Button>
           <Button vertical active={this.props.navigationState.index === 2} onPress={()=>this.props.navigation.navigate("GraphDetails")}>
             <Icon type="MaterialIcons" name="timeline" />
-            <Text>Graph</Text>
+            <Text>{I18n.t("details.graph")}</Text>
           </Button>
         </FooterTab>
       </Footer>

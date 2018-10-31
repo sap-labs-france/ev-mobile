@@ -90,7 +90,7 @@ class ConnectorComponent extends Component {
                   </View>
                 }
                 {item.errorCode !== "NoError" && (
-                  <Text style={styles.connectorErrorCodeText}>{item.errorCode}</Text>
+                  <Text style={styles.connectorErrorCodeText}>{I18n.t("connector.faulted")}</Text>
                 )}
               </View>
             </View>

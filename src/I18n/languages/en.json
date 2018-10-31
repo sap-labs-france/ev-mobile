@@ -45,6 +45,18 @@
   "connector": {
     "occupied": "Occupied",
     "charging": "Charging",
-    "available": "Available"
+    "available": "Available",
+    "faulted": "Faulted"
+  },
+  "details": {
+    "connector": "Connector",
+    "informations": "Informations",
+    "graph": "Graph",
+    "consumed": "kW consumed",
+    "instant": "kW instant",
+    "vendor": "Vendor",
+    "model": "Model",
+    "ocppVersion": "OCPP Version",
+    "firmwareVersion": "Firmware Version"
   }
 }

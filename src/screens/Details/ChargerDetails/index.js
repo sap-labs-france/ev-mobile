@@ -3,6 +3,8 @@ import { ScrollView } from "react-native";
 import { Container, View, Text } from "native-base";
 
 import { Header } from "../TabNavigator";
+import I18n from "../../../I18n/I18n";
+
 import styles from "./styles";
 
 class ChargerDetails extends Component {
@@ -26,21 +28,21 @@ class ChargerDetails extends Component {
           <View style={styles.content}>
             <View style={styles.rowContainer}>
                 <View style={styles.columnContainer}>
-                  <Text style={styles.titleHeader}>Vendor</Text>
+                  <Text style={styles.titleHeader}>{I18n.t("details.vendor")}</Text>
                   <Text style={styles.infoContent}>{charger.chargePointVendor ? charger.chargePointVendor : "-"}</Text>
                 </View>
                 <View style={styles.columnContainer}>
-                  <Text style={styles.titleHeader}>Model</Text>
+                  <Text style={styles.titleHeader}>{I18n.t("details.model")}</Text>
                   <Text style={styles.infoContent}>{charger.chargePointModel ? charger.chargePointModel : "-"}</Text>
                 </View>
             </View>
             <View style={styles.rowContainer}>
                 <View style={styles.columnContainer}>
-                  <Text style={styles.titleHeader}>OCPP Version</Text>
+                  <Text style={styles.titleHeader}>{I18n.t("details.ocppVersion")}</Text>
                   <Text style={styles.infoContent}>{charger.ocppVersion ? charger.ocppVersion : "-"}</Text>
                 </View>
                 <View style={styles.columnContainer}>
-                  <Text style={styles.titleHeader}>Firmware Version</Text>
+                  <Text style={styles.titleHeader}>{I18n.t("details.firmwareVersion")}</Text>
                   <Text style={styles.infoContent}>{charger.firmwareVersion ? charger.firmwareVersion : "-"}</Text>
                 </View>
             </View>

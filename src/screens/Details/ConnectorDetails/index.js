@@ -6,6 +6,7 @@ import * as Animatable from "react-native-animatable";
 
 import { Header } from "../TabNavigator";
 import ProviderFactory from "../../../provider/ProviderFactory";
+import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import styles from "./styles";
 
@@ -84,19 +85,19 @@ class ConnectorDetails extends Component {
                     </Badge>
                   </Animatable.View>
                 : connector.status === "Occupied" && connector.currentConsumption === 0 ?
-                <Animatable.View>
+                  <Animatable.View>
                     <Badge style={styles.badgeContainer} danger>
                       <RNText style={styles.badgeText}>{alpha}</RNText>
                     </Badge>
                   </Animatable.View>
                 : connector.status === "Occupied" && connector.currentConsumption !== 0 ?
-                <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate">
+                  <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate">
                     <Badge style={styles.badgeContainer} danger>
                       <RNText style={styles.badgeText}>{alpha}</RNText>
                     </Badge>
                   </Animatable.View>
                 :
-                <Animatable.View>
+                  <Animatable.View>
                     <Badge style={styles.badgeContainer} danger>
                       <RNText style={styles.badgeText}>{alpha}</RNText>
                     </Badge>
@@ -105,7 +106,15 @@ class ConnectorDetails extends Component {
                 {connector.status === "Faulted" ?
                   <Text style={styles.faultedText}>{connector.info}</Text>
                 :
-                  <Text style={styles.connectorStatus}>{connector.status}</Text>
+                  <Text style={styles.connectorStatus}>
+                    {connector.status === "Available" ?
+                      I18n.t("connector.available")
+                    : connector.status === "Occupied" ?
+                      I18n.t("connector.occupied")
+                    :
+                      I18n.t("connector.charging")
+                    }
+                  </Text>
                 }
               </View>
               <View style={styles.userInfoContainer}>
@@ -115,7 +124,7 @@ class ConnectorDetails extends Component {
                     <Text style={styles.undefinedStatusText}>-</Text>
                   </View>
                 :
-                <TouchableOpacity>
+                  <TouchableOpacity>
                     <Thumbnail style={styles.profilePic} source={noPhoto} />
                     <Text style={styles.undefinedStatusText}>User</Text>
                   </TouchableOpacity>
@@ -130,7 +139,7 @@ class ConnectorDetails extends Component {
                   :
                   <View style={styles.currentConsumptionContainer}>
                     <Text style={styles.currentConsumptionText}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
-                    <Text style={styles.kWText}>kW Instant</Text>
+                    <Text style={styles.kWText}>{I18n.t("details.instant")}</Text>
                   </View>
                 }
               </View>
@@ -147,7 +156,7 @@ class ConnectorDetails extends Component {
                   :
                   <View style={styles.energyConsumedContainer}>
                     <Text style={styles.energyConsumedNumber}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
-                    <Text style={styles.energyConsumedText}>kW consumed</Text>
+                    <Text style={styles.energyConsumedText}>{I18n.t("details.consumed")}</Text>
                   </View>
                 }
               </View>
