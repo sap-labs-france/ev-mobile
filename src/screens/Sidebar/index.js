@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ImageBackground, TouchableOpacity } from "react-native";
+import { ImageBackground, TouchableOpacity, Image, Dimensions } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import {
   Container,
@@ -12,6 +12,7 @@ import {
 } from "native-base";
 import styles from "./style";
 
+const deviceHeight = Dimensions.get("window").height;
 const resetAction = StackActions.reset({
   index: 0,
   actions: [NavigationActions.navigate({routeName: "Login"})]
@@ -28,29 +29,18 @@ class SideBar extends Component {
       <Container>
         <ImageBackground style={styles.background} source={require("../../../assets/sidebar-transparent.png")}>
           <Content style={styles.drawerContent}>
-            <ListItem style={styles.links} button iconLeft onPress={() => navigation.navigate("Sites")}>
+            <View style={{borderColor: "#FFFFFF", borderBottomWidth: 1, paddingBottom: 30}}>
+              <Image source={require("../../../assets/logo-low.gif")} style={{flex: 1, resizeMode: "contain", height: deviceHeight / 6, alignSelf: "center"}} />
+            </View>
+            <ListItem style={[styles.links, {paddingTop: 30}]} button iconLeft onPress={() => navigation.navigate("Sites")}>
               <Icon name="ios-grid-outline" />
               <Text style={styles.linkText}>Sites</Text>
             </ListItem>
-            {/* <ListItem
-              button
-              onPress={() => {
-                navigation.navigate("Settings");
-              }}
-              iconLeft
-              style={styles.links}
-            >
+            {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={styles.links}>
               <Icon name="ios-settings-outline" />
               <Text style={styles.linkText}>SETTINGS</Text>
-            </ListItem>
-            <ListItem
-              button
-              onPress={() => {
-                navigation.navigate("Feedback");
-              }}
-              iconLeft
-              style={styles.links}
-            >
+            </ListItem> */}
+            {/* <ListItem button onPress={() => navigation.navigate("Feedback")} iconLeft style={styles.links}>
               <Icon name="ios-paper-outline" />
               <Text style={styles.linkText}>FEEDBACK</Text>
             </ListItem> */}

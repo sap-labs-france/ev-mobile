@@ -1,4 +1,4 @@
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from "react-native";
 
 const primary = require("../../theme/variables/commonColor").brandPrimary;
 
@@ -6,7 +6,7 @@ export default StyleSheet.create({
   links: {
     paddingTop: Platform.OS === "android" ? 8 : 10,
     paddingBottom: Platform.OS === "android" ? 8 : 10,
-    paddingLeft: Platform.OS === "android" ? 0 : 10,
+    paddingLeft: Platform.OS === "android" ? 10 : 10,
     borderBottomWidth: Platform.OS === "android" ? 0 : 0,
     borderBottomColor: "transparent"
   },
