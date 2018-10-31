@@ -1,23 +1,7 @@
 import React from "react";
 import { Image, ImageBackground, Keyboard, ScrollView } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
-import {
-  Container,
-  Text,
-  Form,
-  Item,
-  Input,
-  Button,
-  Icon,
-  View,
-  Left,
-  Right,
-  CheckBox,
-  Body,
-  ListItem,
-  Footer,
-  Spinner
-} from "native-base";
+import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, ListItem, Footer, Spinner } from "native-base";
 
 import Orientation from "react-native-orientation";
 

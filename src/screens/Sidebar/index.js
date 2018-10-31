@@ -28,7 +28,7 @@ class SideBar extends Component {
             </View>
             <ListItem style={[styles.links, {marginTop: 30}]} button iconLeft onPress={() => navigation.navigate("Sites")}>
               <Icon name="ios-grid-outline" />
-              <Text style={styles.linkText}>Sites</Text>
+              <Text style={styles.linkText}>{I18n.t("sidebar.sites")}</Text>
             </ListItem>
             {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={styles.links}>
               <Icon name="ios-settings-outline" />

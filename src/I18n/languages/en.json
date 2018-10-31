@@ -8,6 +8,9 @@
     "email": "Enter a valid email address",
     "required": "Field is mandatory"
   },
+  "sidebar": {
+    "sites": "Sites"
+  },
 	"authentication": {
     "logOut": "LOG OUT",
     "wrongEmailOrPassword": "Wrong email or password!",
@@ -35,5 +38,13 @@
     "signUp": "Sign Up",
 		"passwordRule": "Must contain 1 letter lowercase and uppercase, 1 number, 1 special char and 8 chars long",
     "passwordNotMatch": "Password does not match"
+  },
+  "sites": {
+    "freeChargers": "Free chargers:"
+  },
+  "connector": {
+    "occupied": "Occupied",
+    "charging": "Charging",
+    "available": "Available"
   }
 }

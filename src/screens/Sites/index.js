@@ -1,16 +1,7 @@
 import React, { Component } from "react";
 import { Image, FlatList, RefreshControl } from "react-native";
-import {
-  Container,
-  Header,
-  Spinner,
-  Left,
-  Right,
-  Body,
-  Button,
-  Icon,
-  View
-} from "native-base";
+import { Container, Header, Spinner, Left, Right, Body, Button, Icon, View } from "native-base";
+
 import Utils from "../../utils/Utils";
 import ProviderFactory from "../../provider/ProviderFactory";
 import SiteComponent from "../../components/Site";

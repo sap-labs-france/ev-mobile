@@ -3,8 +3,8 @@ import { TouchableOpacity } from "react-native";
 import { Text, View, Icon, Badge } from "native-base";
 import openMap from "react-native-open-maps";
 
+import I18n from "../../I18n/I18n";
 import styles from "./styles";
-
 
 class SiteComponent extends Component {
 
@@ -34,7 +34,7 @@ class SiteComponent extends Component {
           </View>
           <View style={styles.detailsContent}>
             <View style={styles.columnFreeChargers}>
-              <Text style={styles.freeChargersText}>Free chargers:</Text>
+              <Text style={styles.freeChargersText}>{I18n.t("sites.freeChargers")}</Text>
             </View>
             <View style={styles.columnNumberChargers}>
               <Badge success style={styles.badgeNumber}>

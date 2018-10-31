@@ -8,6 +8,9 @@
     "email": "Entrez une adresse email valide",
     "required": "Le champ est obligatoire"
   },
+  "sidebar": {
+    "sites": "Sites"
+  },
   "authentication": {
     "logOut": "Se déconnecter",
     "wrongEmailOrPassword": "Mauvais email ou mot de passe !",
@@ -35,5 +38,13 @@
     "signUp": "S'enregistrer",
 		"passwordRule": "Doit contenir 1 char. minuscule et majuscule, 1 nombre, 1 char. spécial et une longueur de 8",
     "passwordNotMatch": "Les mots de passes ne correspondent pas"
+  },
+  "sites": {
+    "freeChargers": "Chargeurs disponibles:"
+  },
+  "connector": {
+    "occupied": "Occupé",
+    "charging": "En charge",
+    "available": "Disponible"
   }
 }
