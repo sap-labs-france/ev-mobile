@@ -6,21 +6,10 @@
     "sessionExpired": "Session expirée",
     "numbers": "Entrez un nombre valide",
     "email": "Entrez une adresse email valide",
-    "required": "Le champ est obligatoire",
-    "tempIndicator": "C",
-    "componentExamples": "Exemples de Composants",
-    "usageExamples": "Exemples d'utilisation",
-    "apiTesting": "API Testing",
-    "themeSettings": "Réglage des thèmes",
-    "deviceDetails": "Détails du périphérique",
-    "noItems": "Aucun",
-    "search": "Search",
-    "cancel": "Annuler"
+    "required": "Le champ est obligatoire"
   },
   "authentication": {
-    "signIn": "Se connecter",
     "logOut": "Se déconnecter",
-    "loginSuccess": "Connexion réussie",
     "wrongEmailOrPassword": "Mauvais email ou mot de passe !",
     "wrongEmail": "Email inconnu !",
     "accountLocked": "Votre compte est bloqué",
@@ -28,26 +17,16 @@
     "accountPending": "Compte en attente de confirmation, vérifiez vos e-mail",
     "resetSuccess": "Mot de passe réinitialisé avec succès, vérifiez vos e-mail",
     "eulaNotAccepted": "Vous devez accepter les conditions d'utilisation",
-    "inputsEmpty": "Les champs email et mot de passe sont obligatoires",
     "newUser": "Nouvel Utilisateur ?",
     "forgotYourPassword": "Mot de passe oublié?",
     "retrievePassword": "Récupérez Mot de passe",
-    "password": "Mot de passe",
     "backLogin": "Se Connecter",
-    "email": "Email",
-    "invalidEmail": "Email invalide",
     "required": "Obligatoire",
     "acceptEula": "J'accepte les ",
     "eula": "conditions d'utilisation",
-    "loginWithFacebook": "Se connecter avec Facebook",
-    "username": "Nom d'utilisateur",
-    "welcome": "Bienvenue",
     "login": "S'identifier",
-    "invalidEmail": "Email invalide",
 		"registerSuccess": "Votre compte a été créé avec succès ! Vérifiez vos emails",
-    "registerToChargeAngels":"Enregistrez-vous sur Charge-Angels©",
     "haveAlreadyAccount": "Avez-vous déjà un compte?",
-    "create": "Créer",
     "name": "Nom",
     "firstName": "Prénom",
     "email": "Email",
@@ -56,8 +35,5 @@
     "signUp": "S'enregistrer",
 		"passwordRule": "Doit contenir 1 char. minuscule et majuscule, 1 nombre, 1 char. spécial et une longueur de 8",
     "passwordNotMatch": "Les mots de passes ne correspondent pas"
-  },
-  "toastTextButton": {
-    "okay": "Ok"
   }
 }

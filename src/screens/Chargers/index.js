@@ -1,22 +1,6 @@
 import React, { Component } from "react";
-import {
-  Image,
-  Platform,
-  Dimensions,
-  FlatList,
-  RefreshControl
-} from "react-native";
-
-import {
-  Container,
-  Header,
-  Button,
-  Icon,
-  Body,
-  View,
-  Spinner,
-  List
-} from "native-base";
+import { Image, Platform, Dimensions, FlatList, RefreshControl } from "react-native";
+import { Container, Header, Button, Icon, Body, View, Spinner, List } from "native-base";
 
 import ProviderFactory from "../../provider/ProviderFactory";
 import ChargerComponent from "../../components/Charger";
@@ -200,7 +184,7 @@ class Chargers extends Component {
               }
               indicatorStyle={"white"}
               onEndReached={this._onEndScroll}
-              onEndReachedThreshold={1}
+              onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1 }
               ListFooterComponent={this.footerList}
             />
           )}

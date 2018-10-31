@@ -72,7 +72,26 @@ class Sites extends Component {
   }
 
   _onRefresh = async () => {
-    this.setState({refreshing: true, newData: [], newDataStoredFirstTime: false}, async () => await this.getSites());
+    if (this.state.limit !== 0 && this.state.skip !== 0) {
+      this.setState(
+      {
+        refreshing: true,
+        limit: this.state.skip === 0 ? 10 : 0,
+        skip: 0,
+        newDataStoredFirstTime: false,
+        newData: []
+      },
+      async () => {
+        await this.getSites();
+      });
+    } else {
+      this.setState({
+        newDataStoredFirstTime: false,
+        newData: []
+      }, async () => {
+        await this.getSites();
+      });
+    }
   }
 
   _onEndScroll = () => {

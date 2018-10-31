@@ -56,7 +56,8 @@ export default StyleSheet.create({
     backgroundColor: primary
   },
   drawerContent: {
-    paddingTop: Platform.OS === "android" ? 20 : 30
+    paddingTop: Platform.OS === "android" ? 20 : 30,
+    flex: 1
   },
   profilePic: {
     height: 40,

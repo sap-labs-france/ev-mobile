@@ -1,15 +1,9 @@
 import React, { Component } from "react";
 import { ImageBackground, TouchableOpacity, Image, Dimensions } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
-import {
-  Container,
-  Content,
-  Text,
-  Icon,
-  ListItem,
-  Thumbnail,
-  View
-} from "native-base";
+import { Container, Content, Text, Icon, ListItem, Thumbnail, View } from "native-base";
+
+import I18n from "../../I18n/I18n";
 import styles from "./style";
 
 const deviceHeight = Dimensions.get("window").height;
@@ -50,7 +44,7 @@ class SideBar extends Component {
               <View style={styles.gridLogoutContainer}>
                 <View style={styles.columnAccount}>
                   <TouchableOpacity style={styles.buttonLogout} onPress={() => navigation.dispatch(resetAction)}>
-                    <Text style={styles.logout}>LOG OUT</Text>
+                    <Text style={styles.logout}>{I18n.t("authentication.logOut")}</Text>
                     <Text note style={styles.name}>Kumar Sanket</Text>
                   </TouchableOpacity>
                 </View>
