@@ -71,12 +71,10 @@ class RetrievePassword extends React.Component {
                 </Item>
                 {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
-                {loading ?
+                { loading ?
                   <Spinner style={styles.spinner} color="white" />
-                  :
-                  <Button rounded primary block large
-                    style={styles.button} onPress={this.resetPassword}
-                  >
+                :
+                  <Button rounded primary block large style={styles.button} onPress={this.resetPassword}>
                     <Text style={styles.buttonText}>
                       {I18n.t("authentication.retrievePassword")}
                     </Text>

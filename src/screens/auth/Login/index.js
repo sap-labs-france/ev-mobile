@@ -66,15 +66,8 @@ class Login extends React.Component {
               <Image source={require("../../../../assets/logo-low.gif")} style={styles.logo} />
             </View>
             <View style={{alignSelf: "center"}}>
-              <Button
-                light
-                small
-                transparent
-                onPress={() => this.skip()}
-              >
-                <Text style={([styles.helpBtns])}>
-                  Debug
-                </Text>
+              <Button light small transparent onPress={() => this.skip()}>
+                <Text style={styles.helpBtns}>Debug</Text>
               </Button>
             </View>
             <View style={styles.container}>
@@ -121,8 +114,7 @@ class Login extends React.Component {
                 {this.state.errorPassword && this.state.errorPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
                 <ListItem style={styles.listItemEulaCheckbox}>
-                  <CheckBox checked={eula}
-                    onPress={() => this.setState({eula: !eula})} />
+                  <CheckBox checked={eula} onPress={() => this.setState({eula: !eula})} />
                   <Body>
                     <Text style={styles.eulaText}>{I18n.t("authentication.acceptEula")}
                       <Text onPress={()=>this.props.navigation.navigate("Eula")} style={styles.eulaLink}>{I18n.t("authentication.eula")}</Text>
@@ -132,29 +124,23 @@ class Login extends React.Component {
                 <View>
                   {this.state.errorEula && this.state.errorEula.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
                 </View>
-                {loading ?
+                { loading ?
                   <Spinner style={styles.spinner} color="white" />
-                  :
-                  <Button rounded primary block large
-                    style={styles.button} onPress={this.login}
-                  >
-                    <Text style={styles.buttonText}>
-                      {I18n.t("authentication.login")}
-                    </Text>
+                :
+                  <Button rounded primary block large style={styles.button} onPress={this.login}>
+                    <Text style={styles.buttonText}>{I18n.t("authentication.login")}</Text>
                   </Button>
                 }
               </Form>
             </View>
             <Footer>
               <Left>
-                <Button small transparent style={styles.linksButtonLeft}
-                  onPress={() => navigation.navigate("SignUp")}>
+                <Button small transparent style={styles.linksButtonLeft} onPress={() => navigation.navigate("SignUp")}>
                   <Text style={styles.helpButton}>{I18n.t("authentication.newUser")}</Text>
                 </Button>
               </Left>
               <Right>
-                <Button small transparent style={styles.linksButtonRight}
-                  onPress={() => navigation.navigate("RetrievePassword")}>
+                <Button small transparent style={styles.linksButtonRight} onPress={() => navigation.navigate("RetrievePassword")}>
                   <Text style={styles.helpButton}>{I18n.t("authentication.forgotYourPassword")}</Text>
                 </Button>
               </Right>

@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Dimensions } from "react-native"
-import { Container, View, Text } from "native-base";
+import { Container } from "native-base";
 
 import { VictoryChart, VictoryTheme, VictoryArea, VictoryAxis } from "victory-native";
 
-const deviceWidth = Dimensions.get("window").width;
+import styles from "./styles";
+
 const deviceHeight = Dimensions.get("window").height;
 
 class GraphDetails extends Component {
@@ -39,9 +40,9 @@ class GraphDetails extends Component {
     console.log(this.state.connector);
     return (
       <Container>
-       <VictoryChart theme={VictoryTheme.material} width={deviceHeight} padding={{ top: 20, bottom: 80, left: 70, right: 20 }} >
+       <VictoryChart theme={VictoryTheme.material} width={deviceHeight} padding={styles.padding} >
           <VictoryArea
-            style={{ data: { fill: "#FFFFFF", fillOpacity: 0.6, stroke: "#c43a31", strokeWidth: 3 }}}
+            style={{ data: styles.data}}
             domain={{ x: [0, 8], y: [0, 8] }}
             categories={{
               x: ["13h10", "13h20", "13h30", "13h40", "13h50", "14h00", "14h10", "14h20"],
@@ -61,18 +62,8 @@ class GraphDetails extends Component {
             x="time"
             y="charge"
           />
-          <VictoryAxis
-            label="Time"
-            style={{
-              axisLabel: { padding: 35, fill: "#FFFFFF", fontWeight: "bold", fontSize: 15 }
-            }}
-          />
-          <VictoryAxis dependentAxis
-            label="Charge in Watt(s)"
-            style={{
-              axisLabel: { padding: 55, fill: "#FFFFFF", fontWeight: "bold", fontSize: 15 }
-            }}
-          />
+          <VictoryAxis label="Time" style={{axisLabel: styles.xAxisLabel}} />
+          <VictoryAxis dependentAxis label="Charge in Watt(s)" style={{ axisLabel: styles.yAxisLabel}} />
        </VictoryChart>
       </Container>
     );

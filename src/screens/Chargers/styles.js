@@ -117,9 +117,17 @@ export default StyleSheet.create({
     paddingRight: 0,
     elevation: 0
   },
+  body: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: Platform.OS === "ios" && (deviceHeight === 812 || deviceWidth === 812) ? 20 : 0
+  },
   headerIcons: {
     fontSize: 30,
     backgroundColor: "transparent"
+  },
+  content: {
+    flex: 1
   },
   headerContainer: {
     flex: 1,
@@ -198,5 +206,8 @@ export default StyleSheet.create({
     height: 25,
     width: 95,
     resizeMode: "contain"
+  },
+  spinner: {
+    flex: 1
   }
 });

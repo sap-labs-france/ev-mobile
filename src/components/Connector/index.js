@@ -53,8 +53,10 @@ class ConnectorComponent extends Component {
                     <Text style={styles.statusText} numberOfLines={1}>
                     { item.status === "Occupied" ?
                       I18n.t("connector.occupied")
-                    :
+                    : item.status === "Charging" ?
                       I18n.t("connector.charging")
+                    :
+                      item.status
                     }
                     </Text>
                     <View style={styles.rowSpaceBetween}>
@@ -71,10 +73,12 @@ class ConnectorComponent extends Component {
                 :
                   <View style={styles.statusDetailsContainerNoConsumption}>
                     <Text style={styles.statusText} numberOfLines={1}>
-                      {item.status !== "Occupied" ?
+                      { item.status === "Available" ?
                         I18n.t("connector.available")
-                      :
+                      : item.status === "Occupied" ?
                         I18n.t("connector.occupied")
+                      :
+                        item.status
                       }
                     </Text>
                     <View style={styles.rowSpaceBetween}>
@@ -103,13 +107,15 @@ class ConnectorComponent extends Component {
         <Animatable.View animation="slideInRight" iterationCount={1}>
           <View style={styles.connectorContainer}>
             <View style={styles.status}>
-              { item.currentConsumption !== 0 ?
-                <View style={styles.statusDetailsContainer}>
-                  <Text style={styles.statusText} numberOfLines={1}>
+            { item.currentConsumption !== 0 ?
+              <View style={styles.statusDetailsContainer}>
+                <Text style={styles.statusText} numberOfLines={1}>
                   { item.status === "Occupied" ?
                     I18n.t("connector.occupied")
-                  :
+                  : item.status === "Charging" ?
                     I18n.t("connector.charging")
+                  :
+                    item.status
                   }
                   </Text>
                   <View style={styles.rowSpaceBetween}>
@@ -126,10 +132,12 @@ class ConnectorComponent extends Component {
               :
                 <View style={styles.statusDetailsContainerNoConsumption}>
                   <Text style={styles.statusText} numberOfLines={1}>
-                    {item.status !== "Occupied" ?
+                    { item.status === "Available" ?
                       I18n.t("connector.available")
-                    :
+                    : item.status === "Occupied" ?
                       I18n.t("connector.occupied")
+                    :
+                      item.status
                     }
                   </Text>
                   <View style={styles.rowSpaceBetween}>
@@ -161,7 +169,7 @@ class ConnectorComponent extends Component {
                     <Text style={styles.badgeText}>{alpha}</Text>
                   </Badge>
                 </Animatable.View>
-              : item.status === "Occupied" && item.currentConsumption !== 0 ?
+              : (item.status === "Occupied" || item.status === "Charging") && item.currentConsumption !== 0 ?
                 <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
                   <Badge style={styles.badge} danger>
                     <Text style={styles.badgeText}>{alpha}</Text>

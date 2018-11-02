@@ -142,22 +142,10 @@ class Chargers extends Component {
   }
 
   render() {
-    let d = Dimensions.get("window");
-    const { height, width } = d;
     return (
       <Container>
-        <Header
-          style={[
-            styles.headerStyle,
-            this.state.open ? styles.headerModalStyle : styles.headerStyle
-          ]}
-        >
-          <Body
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginTop: Platform.OS === "ios" && (height === 812 || width === 812) ? 20 : 0
-              }}>
+        <Header style={[styles.headerStyle, this.state.open ? styles.headerModalStyle : styles.headerStyle]}>
+          <Body style={styles.body}>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
               <Icon active name="arrow-back" style={styles.headerIcons} />
             </Button>
@@ -168,13 +156,10 @@ class Chargers extends Component {
           </Body>
         </Header>
 
-        <View style={{flex: 1}}>
-          {this.state.loading && (
-            <Container>
-              <Spinner color="white" style={{flex: 1}} />
-            </Container>
-          )}
-          {!this.state.loading && (
+        <View style={styles.content}>
+          { this.state.loading ?
+            <Spinner color="white" style={styles.spinner} />
+          :
             <FlatList
               data={this.state.chargers}
               renderItem={item => this._renderItem(item, this.props.navigation)}
@@ -187,7 +172,7 @@ class Chargers extends Component {
               onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1 }
               ListFooterComponent={this.footerList}
             />
-          )}
+          }
         </View>
       </Container>
     );

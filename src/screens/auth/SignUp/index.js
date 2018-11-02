@@ -213,12 +213,10 @@ class SignUp extends React.Component {
                   <View>
                     {this.state.errorEula && this.state.errorEula.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
                   </View>
-                  {loading ?
+                  { loading ?
                     <Spinner style={styles.spinner} color="white" />
-                    :
-                    <Button rounded primary block large
-                      style={styles.button} onPress={this.signUp}
-                    >
+                  :
+                    <Button rounded primary block large style={styles.button} onPress={this.signUp}>
                       <Text style={styles.buttonText}>
                         {I18n.t("authentication.signUp")}
                       </Text>

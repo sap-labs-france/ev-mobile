@@ -132,9 +132,9 @@ class Sites extends Component {
           </Right>
         </Header>
 
-        <View style={{flex: 1}}>
+        <View style={styles.content}>
           {loading ?
-            <Spinner color="white" style={{flex: 1}} />
+            <Spinner color="white" style={styles.spinner} />
           :
             <FlatList
               data={this.state.sites}

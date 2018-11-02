@@ -44,5 +44,11 @@ export default StyleSheet.create({
     height: 25,
     width: 95,
     resizeMode: "contain"
+  },
+  content: {
+    flex: 1
+  },
+  spinner: {
+    flex: 1
   }
 });
