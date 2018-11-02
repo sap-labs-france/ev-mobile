@@ -21,19 +21,19 @@ class ConnectorComponent extends Component {
           <Animatable.View animation="slideInLeft" iterationCount={1}>
             <View style={styles.connectorContainer}>
               <View style={styles.connectorStatus}>
-                {item.status === "Available" && item.currentConsumption === 0 ?
+                { item.status === "Available" && item.currentConsumption === 0 ?
                   <Animatable.View>
                     <Badge style={styles.badge} success>
                       <Text style={styles.badgeText}>{alpha}</Text>
                     </Badge>
                   </Animatable.View>
-                : item.status === "Occupied" && item.currentConsumption === 0 ?
+                : (item.status === "Occupied" || item.status === "SuspendedEV") && item.currentConsumption === 0 ?
                   <Animatable.View>
                     <Badge style={styles.badge} danger>
                       <Text style={styles.badgeText}>{alpha}</Text>
                     </Badge>
                   </Animatable.View>
-                : (item.status === "Occupied" || item.status === "Charging") && item.currentConsumption !== 0 ?
+                : item.currentConsumption !== 0 ?
                   <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
                     <Badge style={styles.badge} danger>
                       <Text style={styles.badgeText}>{alpha}</Text>
@@ -51,13 +51,15 @@ class ConnectorComponent extends Component {
                 { item.currentConsumption !== 0 ?
                   <View style={styles.statusDetailsContainer}>
                     <Text style={styles.statusText} numberOfLines={1}>
-                    { item.status === "Occupied" ?
-                      I18n.t("connector.occupied")
-                    : item.status === "Charging" ?
-                      I18n.t("connector.charging")
-                    :
-                      item.status
-                    }
+                      { item.status === "Occupied" ?
+                        I18n.t("connector.occupied")
+                      : item.status === "SuspendedEV" ?
+                        I18n.t("connector.suspendedEV")
+                      : item.status === "Charging" ?
+                        I18n.t("connector.charging")
+                      :
+                        item.status
+                      }
                     </Text>
                     <View style={styles.rowSpaceBetween}>
                       <View style={styles.column}>
@@ -77,6 +79,8 @@ class ConnectorComponent extends Component {
                         I18n.t("connector.available")
                       : item.status === "Occupied" ?
                         I18n.t("connector.occupied")
+                      : item.status === "SuspendedEV" ?
+                        I18n.t("connector.suspendedEV")
                       :
                         item.status
                       }
@@ -112,6 +116,8 @@ class ConnectorComponent extends Component {
                 <Text style={styles.statusText} numberOfLines={1}>
                   { item.status === "Occupied" ?
                     I18n.t("connector.occupied")
+                  : item.status === "SuspendedEV" ?
+                    I18n.t("connector.suspendedEV")
                   : item.status === "Charging" ?
                     I18n.t("connector.charging")
                   :
@@ -136,6 +142,8 @@ class ConnectorComponent extends Component {
                       I18n.t("connector.available")
                     : item.status === "Occupied" ?
                       I18n.t("connector.occupied")
+                    : item.status === "SuspendedEV" ?
+                      I18n.t("connector.suspendedEV")
                     :
                       item.status
                     }
@@ -157,19 +165,19 @@ class ConnectorComponent extends Component {
                 )}
               </View>
             <View style={styles.connectorStatus}>
-              {item.status === "Available" && item.currentConsumption === 0 ?
+              { item.status === "Available" && item.currentConsumption === 0 ?
                 <Animatable.View>
                   <Badge style={styles.badge} success>
                     <Text style={styles.badgeText}>{alpha}</Text>
                   </Badge>
                 </Animatable.View>
-              : item.status === "Occupied" && item.currentConsumption === 0 ?
+              : (item.status === "Occupied" || item.status === "SuspendedEV") && item.currentConsumption === 0 ?
                 <Animatable.View>
                   <Badge style={styles.badge} danger>
                     <Text style={styles.badgeText}>{alpha}</Text>
                   </Badge>
                 </Animatable.View>
-              : (item.status === "Occupied" || item.status === "Charging") && item.currentConsumption !== 0 ?
+              : item.currentConsumption !== 0 ?
                 <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
                   <Badge style={styles.badge} danger>
                     <Text style={styles.badgeText}>{alpha}</Text>

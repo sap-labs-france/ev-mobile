@@ -84,13 +84,13 @@ class ConnectorDetails extends Component {
                       <RNText style={styles.badgeText}>{alpha}</RNText>
                     </Badge>
                   </Animatable.View>
-                : connector.status === "Occupied" && connector.currentConsumption === 0 ?
+                : (connector.status === "Occupied" || connector.status === "SuspendedEV") && connector.currentConsumption === 0 ?
                   <Animatable.View>
                     <Badge style={styles.badgeContainer} danger>
                       <RNText style={styles.badgeText}>{alpha}</RNText>
                     </Badge>
                   </Animatable.View>
-                : (connector.status === "Occupied" || connector.status === "Charging") && connector.currentConsumption !== 0 ?
+                : connector.currentConsumption !== 0 ?
                   <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
                     <Badge style={styles.badgeContainer} danger>
                       <RNText style={styles.badgeText}>{alpha}</RNText>
@@ -107,12 +107,14 @@ class ConnectorDetails extends Component {
                   <Text style={styles.faultedText}>{connector.info}</Text>
                 :
                   <Text style={styles.connectorStatus}>
-                    {connector.status === "Available" ?
+                    { connector.status === "Available" ?
                       I18n.t("connector.available")
                     : connector.status === "Occupied" ?
                       I18n.t("connector.occupied")
                     : connector.status === "Charging" ?
                       I18n.t("connector.charging")
+                    : connector.status === "SuspendedEV" ?
+                      I18n.t("connector.suspendedEV")
                     :
                       connector.status
                     }

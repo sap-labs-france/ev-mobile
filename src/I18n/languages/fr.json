@@ -46,12 +46,17 @@
     "occupied": "Occupé",
     "charging": "En charge",
     "available": "Disponible",
+    "suspendedEV": "VE Suspendu",
     "faulted": "Erreur"
   },
   "details": {
     "connector": "Connecteur",
     "informations": "Informations",
     "graph": "Graphique",
+    "startTransaction": "Démarrer transaction",
+    "stopTransaction": "Stopper transaction",
+    "startTransactionMessage": "Voulez-vous vraiment démarrer une nouvelle session sur la borne ",
+    "stopTransactionMessage": "Voulez-vous vraiment arrêter la session sur la borne ",
     "consumed": "kW consommé(s)",
     "instant": "kW instantané(s)",
     "vendor": "Vendeur",

@@ -96,7 +96,8 @@ export default StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     paddingTop: 10,
-    alignSelf: "center"
+    alignSelf: "center",
+    color: "#FF0000"
   },
   headerIcons: {
     fontSize: 30,

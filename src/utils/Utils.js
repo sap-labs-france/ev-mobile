@@ -2,11 +2,13 @@ import Message from "./Message";
 import I18n from "../I18n/I18n";
 import validate from "validate.js";
 import { NavigationActions, StackActions } from "react-navigation";
+import { object } from "prop-types";
 
 const resetAction = StackActions.reset({
     index: 0,
     actions: [NavigationActions.navigate({routeName: "Login"})]
 });
+var jwtDecode = require("jwt-decode");
 
 export default class Utils {
 
@@ -70,5 +72,10 @@ export default class Utils {
         screen.setState(errorState);
         // Return
         return formValid;
+    }
+
+    static getTokenProperty(token, obj) {
+        let decodedToken = jwtDecode(token);
+        return decodedToken[obj];
     }
 }

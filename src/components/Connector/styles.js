@@ -45,7 +45,7 @@ export default StyleSheet.create({
   statusText: {
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: 22
+    fontSize: 20
   },
   rowSpaceBetween: {
     flexDirection: "row",

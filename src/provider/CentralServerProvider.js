@@ -1,5 +1,6 @@
 import axios from "axios";
 import Constants from "../utils/Constants";
+import Utils from "../utils/Utils";
 // const jwt = require('jsonwebtoken');
 
 // const centralRestServerServiceBaseURL = 'https://192.168.1.130';
@@ -113,11 +114,12 @@ export default class CentralServerProvider {
   }
 
   async startTransaction(chargeBoxID, connectorID) {
+    let getTagId = Utils.getTokenProperty(token, "tagIDs");
     let result = await axios.post(`${centralRestServerServiceSecuredURL}/ChargingStationStartTransaction`,
       {
         chargeBoxID,
         "args": {
-          "tagID": this._getTagID(),
+          "tagID": getTagId[0],
           connectorID
         }
       },
@@ -139,9 +141,14 @@ export default class CentralServerProvider {
     console.log(result.data);
   }
 
-  _getTagID() {
+  _isAdmin() {
     let decodedToken = jwtDecode(token);
-    return decodedToken.tagIDs[0];
+    let getRole = decodedToken.role;
+
+    if (getRole === "A") {
+        return true;
+    }
+    return false;
   }
 
   _buildPaging(paging, queryString) {

@@ -20,7 +20,7 @@ class ChargerComponent extends Component {
     return (
       <View style={styles.container}>
         <ListItem style={styles.listDividerContainer} itemDivider>
-          <Text style={styles.chargerName}>{items.id} | <Text style={styles.siteAreaName}>{items.siteArea.name}</Text></Text>
+          <Text style={styles.chargerName}>{items.id} {/*| <Text style={styles.siteAreaName}>{items.siteArea.name}</Text>*/}</Text>
           <Animatable.Text animation="pulse" easing="ease-in" iterationCount="infinite">
             <Icon style={styles.heartbeatIcon} type="FontAwesome" name="heartbeat" />
           </Animatable.Text>

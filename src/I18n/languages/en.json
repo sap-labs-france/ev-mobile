@@ -46,12 +46,17 @@
     "occupied": "Occupied",
     "charging": "Charging",
     "available": "Available",
+    "suspendedEV": "Suspended EV",
     "faulted": "Faulted"
   },
   "details": {
     "connector": "Connector",
     "informations": "Informations",
     "graph": "Graph",
+    "startTransaction": "Start transaction",
+    "stopTransaction": "Stop transaction",
+    "startTransactionMessage": "Do you really want to start a new session on the charging station ",
+    "stopTransactionMessage": "Do you really want to stop the session of the charging station ",
     "consumed": "kW consumed",
     "instant": "kW instant",
     "vendor": "Vendor",

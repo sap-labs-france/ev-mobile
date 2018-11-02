@@ -24,8 +24,8 @@ export class Header extends Component {
   onStartTransaction = () => {
     const { charger } = this.props;
     Alert.alert(
-      "Start Transaction",
-      `Do you really want to start a new session on the charging station ${charger.id} ?`,
+      `${I18n.t("details.startTransaction")}`,
+      `${I18n.t("details.startTransactionMessage")} ${charger.id} ?`,
       [
         {text: "Yes", onPress: () => this.startTransaction()},
         {text: "No"}
@@ -36,8 +36,8 @@ export class Header extends Component {
   onStopTransaction = () => {
     const { charger } = this.props;
     Alert.alert(
-      "Stop Transaction",
-      `Do you really want to stop the session of the charging station ${charger.id} ?`,
+      `${I18n.t("details.stopTransaction")}`,
+      `${I18n.t("details.stopTransactionMessage")} ${charger.id} ?`,
       [
         {text: "Yes", onPress: () => this.stopTransaction()},
         {text: "No"}
@@ -82,23 +82,25 @@ export class Header extends Component {
         </View>
         <View style={styles.detailsContainer}>
           <ImageBackground style={styles.backgroundImage} source={caen}>
-            <View style={styles.transactionContainer}>
-              <TouchableOpacity onPress={() => connector.activeTransactionID === 0 ? this.onStartTransaction() : this.onStopTransaction()}>
-                {connector.activeTransactionID === 0 ?
-                  <View style={styles.outerCircle}>
-                    <View style={styles.innerCircleStartTransaction}>
-                      <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
+            {ProviderFactory.getProvider()._isAdmin() && (
+              <View style={styles.transactionContainer}>
+                <TouchableOpacity onPress={() => connector.activeTransactionID === 0 ? this.onStartTransaction() : this.onStopTransaction()}>
+                  {connector.activeTransactionID === 0 ?
+                    <View style={styles.outerCircle}>
+                      <View style={styles.innerCircleStartTransaction}>
+                        <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
+                      </View>
                     </View>
-                  </View>
-                :
-                  <View style={styles.outerCircle}>
-                    <View style={styles.innerCircleStopTransaction}>
-                      <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="stop" />
+                  :
+                    <View style={styles.outerCircle}>
+                      <View style={styles.innerCircleStopTransaction}>
+                        <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="stop" />
+                      </View>
                     </View>
-                  </View>
-                }
-              </TouchableOpacity>
-            </View>
+                  }
+                </TouchableOpacity>
+              </View>
+            )}
           </ImageBackground>
         </View>
       </View>
@@ -117,7 +119,7 @@ class TabDetails extends Component {
   }
 
   componentWillUnmount() {
-    Orientation.unlockAllOrientations();
+    Orientation.lockToPortrait();
   }
 
   isGraphTabActive = () => {
