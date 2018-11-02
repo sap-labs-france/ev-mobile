@@ -133,18 +133,22 @@ class TabDetails extends Component {
   }
 
   render() {
+    const navigation = this.props.navigation;
+    const state = this.props.navigationState;
     return (
       <Footer style={styles.footerContainer}>
         <FooterTab>
-          <Button vertical active={this.props.navigationState.index === 0} onPress={()=>this.props.navigation.navigate("ConnectorDetails")}>
+          <Button vertical active={state.index === 0} onPress={()=>navigation.navigate("ConnectorDetails")}>
             <Icon type="Feather" name="zap"/>
             <Text>{I18n.t("details.connector")}</Text>
           </Button>
-          <Button vertical active={this.props.navigationState.index === 1} onPress={()=>this.props.navigation.navigate("ChargerDetails")}>
-            <Icon type="MaterialIcons" name="info" />
-            <Text>{I18n.t("details.informations")}</Text>
-          </Button>
-          <Button vertical active={this.props.navigationState.index === 2} onPress={()=>this.props.navigation.navigate("GraphDetails")}>
+          { ProviderFactory.getProvider()._isAdmin() && (
+            <Button vertical active={state.index === 1} onPress={()=>navigation.navigate("ChargerDetails")}>
+              <Icon type="MaterialIcons" name="info" />
+              <Text>{I18n.t("details.informations")}</Text>
+            </Button>
+          )}
+          <Button vertical active={ProviderFactory.getProvider()._isAdmin() ? state.index === 2 : state.index === 1} onPress={()=>navigation.navigate("GraphDetails")}>
             <Icon type="MaterialIcons" name="timeline" />
             <Text>{I18n.t("details.graph")}</Text>
           </Button>

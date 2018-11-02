@@ -27,7 +27,7 @@ class ConnectorDetails extends Component {
   componentDidMount() {
     this.timer = setInterval(() => {
       this._timerRefresh();
-    }, 60000);
+    }, 30000);
   }
 
   componentWillUnmount() {
@@ -138,9 +138,9 @@ class ConnectorDetails extends Component {
             <View style={styles.rowContainer}>
               <View style={styles.columnContainer}>
                 <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
-                {(connector.currentConsumption / 1000).toFixed(1) === 0.0 || connector.currentConsumption === 0 ?
+                { (connector.currentConsumption / 1000).toFixed(1) === 0.0 || connector.currentConsumption === 0 ?
                   <Text style={styles.undefinedStatusText}>-</Text>
-                  :
+                :
                   <View style={styles.currentConsumptionContainer}>
                     <Text style={styles.currentConsumptionText}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
                     <Text style={styles.kWText}>{I18n.t("details.instant")}</Text>
@@ -155,9 +155,9 @@ class ConnectorDetails extends Component {
             <View style={styles.rowContainer}>
               <View style={styles.columnContainer}>
                 <Icon style={styles.iconSize} type="MaterialIcons" name="trending-up" />
-                {(connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
+                { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
                   <Text style={styles.undefinedStatusText}>-</Text>
-                  :
+                :
                   <View style={styles.energyConsumedContainer}>
                     <Text style={styles.energyConsumedNumber}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
                     <Text style={styles.energyConsumedText}>{I18n.t("details.consumed")}</Text>
