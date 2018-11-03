@@ -1,23 +1,6 @@
-import React, {
-  Component
-} from "react";
-import {
-  Image,
-  FlatList,
-  RefreshControl
-} from "react-native";
-import {
-  Container,
-  Header,
-  Spinner,
-  Left,
-  Right,
-  Body,
-  Button,
-  Icon,
-  View
-} from "native-base";
-
+import React, { Component } from "react";
+import { Image, FlatList, RefreshControl } from "react-native";
+import { Container, Header, Spinner, Left, Right, Body, Button, Icon, View } from "native-base";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import ProviderFactory from "../../provider/ProviderFactory";
@@ -37,23 +20,15 @@ class Sites extends Component {
     };
   }
 
-  componentWillMount() {
-    // this.setState({
-    //   sites: [],
-    //   loading: true,
-    //   refreshing: false
-    // });
-  }
-
   async componentDidMount() {
     // Get the sites
     const sites = await this.getSites(this.state.skip, this.state.limit);
     // Add sites
-    this.setState((prevState, props) => ({
+    this.setState({
       sites: sites.result,
       count: sites.count,
       loading: false
-    }));
+    });
   }
 
   getSites = async (skip, limit) => {
@@ -76,9 +51,9 @@ class Sites extends Component {
     // Refresh All
     let sites = await this.getSites(0, (skip + limit));
     // Add sites
-    this.setState((prevState, props) => ({
+    this.setState({
       sites: sites.result
-    }));
+    });
   }
 
   _onEndScroll = async () => {

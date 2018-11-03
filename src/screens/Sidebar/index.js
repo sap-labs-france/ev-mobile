@@ -2,19 +2,26 @@ import React, { Component } from "react";
 import { ImageBackground, TouchableOpacity, Image, Dimensions } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Content, Text, Icon, ListItem, Thumbnail, View } from "native-base";
+import ProviderFactory from "../../provider/ProviderFactory";
 
 import I18n from "../../I18n/I18n";
 import styles from "./style";
 
 const deviceHeight = Dimensions.get("window").height;
-const resetAction = StackActions.reset({
-  index: 0,
-  actions: [NavigationActions.navigate({routeName: "Login"})]
-});
 
 class SideBar extends Component {
   constructor(props) {
     super(props);
+  }
+
+  async logoff() {
+    // Logoff
+    await ProviderFactory.getProvider().logoff();
+    // Back to login
+    this.props.navigation.dispatch(StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({routeName: "Login"})]
+    }));
   }
 
   render() {
@@ -43,7 +50,7 @@ class SideBar extends Component {
             <View style={styles.logoutbtn} foregroundColor={"white"}>
               <View style={styles.gridLogoutContainer}>
                 <View style={styles.columnAccount}>
-                  <TouchableOpacity style={styles.buttonLogout} onPress={() => navigation.dispatch(resetAction)}>
+                  <TouchableOpacity style={styles.buttonLogout} onPress={() => this.logoff()}>
                     <Text style={styles.logout}>{I18n.t("authentication.logOut")}</Text>
                     <Text note style={styles.name}>Kumar Sanket</Text>
                   </TouchableOpacity>

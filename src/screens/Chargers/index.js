@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, Platform, Dimensions, FlatList, RefreshControl } from "react-native";
+import { Image, Platform, FlatList, RefreshControl } from "react-native";
 import { Container, Header, Button, Icon, Body, View, Spinner, List } from "native-base";
 
 import ProviderFactory from "../../provider/ProviderFactory";

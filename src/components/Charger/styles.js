@@ -2,7 +2,8 @@ import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   container: {
-    paddingBottom: 5
+    paddingBottom: 5,
+    backgroundColor: "rgba(255,255,255,0.2)"
   },
   listDividerContainer: {
     backgroundColor: "transparent",
@@ -15,7 +16,7 @@ export default StyleSheet.create({
   },
   chargerName: {
     fontWeight: "bold",
-    fontSize: 20
+    fontSize: 24
   },
   siteAreaName: {
     fontStyle: "italic",

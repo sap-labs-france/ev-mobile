@@ -1,7 +1,6 @@
 import axios from "axios";
 import Constants from "../utils/Constants";
-import Utils from "../utils/Utils";
-// const jwt = require('jsonwebtoken');
+import SInfo from 'react-native-sensitive-info';
 
 // const centralRestServerServiceBaseURL = 'https://192.168.1.130';
 const centralRestServerServiceBaseURL = "https://sap-charge-angels-rest-server.cfapps.eu10.hana.ondemand.com";
@@ -10,33 +9,54 @@ const centralRestServerServiceSecuredURL = centralRestServerServiceBaseURL + "/c
 var jwtDecode = require("jwt-decode");
 
 // Paste the tokken below
-let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU5MmU5NjlmODlkOGUwN2EyYjE2YTc4ZiIsInJvbGUiOiJBIiwibmFtZSI6IkZBQklBTk8iLCJ0YWdJRHMiOlsiRjNDMEI0REQiXSwiZmlyc3ROYW1lIjoiU2VyZ2lvIiwibG9jYWxlIjoiZW5fVVMiLCJsYW5ndWFnZSI6ImVuIiwiYXV0aHMiOlt7IkF1dGhPYmplY3QiOiJVc2VycyIsIkF1dGhGaWVsZFZhbHVlIjp7IkFjdGlvbiI6WyJMaXN0Il19fSx7IkF1dGhPYmplY3QiOiJVc2VyIiwiQXV0aEZpZWxkVmFsdWUiOnsiVXNlcklEIjoiKiIsIkFjdGlvbiI6WyJDcmVhdGUiLCJSZWFkIiwiVXBkYXRlIiwiRGVsZXRlIiwiTG9nb3V0IiwiVW5sb2NrQ29ubmVjdG9yIl19fSx7IkF1dGhPYmplY3QiOiJDb21wYW5pZXMiLCJBdXRoRmllbGRWYWx1ZSI6eyJBY3Rpb24iOlsiTGlzdCJdfX0seyJBdXRoT2JqZWN0IjoiQ29tcGFueSIsIkF1dGhGaWVsZFZhbHVlIjp7IkNvbXBhbnlJRCI6IioiLCJBY3Rpb24iOlsiQ3JlYXRlIiwiUmVhZCIsIlVwZGF0ZSIsIkRlbGV0ZSJdfX0seyJBdXRoT2JqZWN0IjoiU2l0ZXMiLCJBdXRoRmllbGRWYWx1ZSI6eyJBY3Rpb24iOlsiTGlzdCJdfX0seyJBdXRoT2JqZWN0IjoiU2l0ZSIsIkF1dGhGaWVsZFZhbHVlIjp7IlNpdGVJRCI6IioiLCJBY3Rpb24iOlsiQ3JlYXRlIiwiUmVhZCIsIlVwZGF0ZSIsIkRlbGV0ZSJdfX0seyJBdXRoT2JqZWN0IjoiVmVoaWNsZU1hbnVmYWN0dXJlcnMiLCJBdXRoRmllbGRWYWx1ZSI6eyJBY3Rpb24iOlsiTGlzdCJdfX0seyJBdXRoT2JqZWN0IjoiVmVoaWNsZU1hbnVmYWN0dXJlciIsIkF1dGhGaWVsZFZhbHVlIjp7IlZlaGljbGVNYW51ZmFjdHVyZXJJRCI6IioiLCJBY3Rpb24iOlsiQ3JlYXRlIiwiUmVhZCIsIlVwZGF0ZSIsIkRlbGV0ZSJdfX0seyJBdXRoT2JqZWN0IjoiVmVoaWNsZXMiLCJBdXRoRmllbGRWYWx1ZSI6eyJBY3Rpb24iOlsiTGlzdCJdfX0seyJBdXRoT2JqZWN0IjoiVmVoaWNsZSIsIkF1dGhGaWVsZFZhbHVlIjp7IlZlaGljbGVJRCI6IioiLCJBY3Rpb24iOlsiQ3JlYXRlIiwiUmVhZCIsIlVwZGF0ZSIsIkRlbGV0ZSJdfX0seyJBdXRoT2JqZWN0IjoiU2l0ZUFyZWFzIiwiQXV0aEZpZWxkVmFsdWUiOnsiQWN0aW9uIjpbIkxpc3QiXX19LHsiQXV0aE9iamVjdCI6IlNpdGVBcmVhIiwiQXV0aEZpZWxkVmFsdWUiOnsiU2l0ZUFyZWFJRCI6IioiLCJBY3Rpb24iOlsiQ3JlYXRlIiwiUmVhZCIsIlVwZGF0ZSIsIkRlbGV0ZSJdfX0seyJBdXRoT2JqZWN0IjoiQ2hhcmdpbmdTdGF0aW9ucyIsIkF1dGhGaWVsZFZhbHVlIjp7IkFjdGlvbiI6WyJMaXN0Il19fSx7IkF1dGhPYmplY3QiOiJDaGFyZ2luZ1N0YXRpb24iLCJBdXRoRmllbGRWYWx1ZSI6eyJDaGFyZ2luZ1N0YXRpb25JRCI6IioiLCJBY3Rpb24iOlsiQ3JlYXRlIiwiUmVhZCIsIlVwZGF0ZSIsIkRlbGV0ZSIsIlJlc2V0IiwiQ2xlYXJDYWNoZSIsIkdldENvbmZpZ3VyYXRpb24iLCJDaGFuZ2VDb25maWd1cmF0aW9uIiwiU3RhcnRUcmFuc2FjdGlvbiIsIlN0b3BUcmFuc2FjdGlvbiIsIlVubG9ja0Nvbm5lY3RvciIsIkF1dGhvcml6ZSJdfX0seyJBdXRoT2JqZWN0IjoiVHJhbnNhY3Rpb25zIiwiQXV0aEZpZWxkVmFsdWUiOnsiQWN0aW9uIjpbIkxpc3QiXX19LHsiQXV0aE9iamVjdCI6IlRyYW5zYWN0aW9uIiwiQXV0aEZpZWxkVmFsdWUiOnsiVXNlcklEIjoiKiIsIkFjdGlvbiI6WyJSZWFkIiwiVXBkYXRlIiwiRGVsZXRlIiwiUmVmdW5kVHJhbnNhY3Rpb24iXX19LHsiQXV0aE9iamVjdCI6IkxvZ2dpbmdzIiwiQXV0aEZpZWxkVmFsdWUiOnsiQWN0aW9uIjpbIkxpc3QiXX19LHsiQXV0aE9iamVjdCI6IkxvZ2dpbmciLCJBdXRoRmllbGRWYWx1ZSI6eyJMb2dJRCI6IioiLCJBY3Rpb24iOlsiUmVhZCJdfX0seyJBdXRoT2JqZWN0IjoiUHJpY2luZyIsIkF1dGhGaWVsZFZhbHVlIjp7IkFjdGlvbiI6WyJSZWFkIiwiVXBkYXRlIl19fSx7IkF1dGhPYmplY3QiOiJUZW5hbnRzIiwiQXV0aEZpZWxkVmFsdWUiOnsiQWN0aW9uIjpbXX19LHsiQXV0aE9iamVjdCI6IlRlbmFudCIsIkF1dGhGaWVsZFZhbHVlIjp7IlRlbmFudElEIjoiKiIsIkFjdGlvbiI6W119fV0sImlhdCI6MTU0MTIzNzQ4NiwiZXhwIjoxNTQxMjgwNjg2fQ.ycjmYzXtKS3QKmRnp31ScE4mQRNZpT36fMqmidwAdvE";
+let _token;
+let _decodedToken;
+
 
 export default class CentralServerProvider {
+
+  getDecodedToken() {
+    return _decodedToken;
+  }
+
   async isAuthenticated() {
-    // try {
-    //   console.log('====================================');
-    //   console.log(jwt);
-    //   console.log('====================================');
-    //   let result = await jwt.verify(token, Configuration.getJWTSecretKey());
+    // Get stored data
+    const email = await SInfo.getItem(Constants.KEY_EMAIL, {});
+    const password = await SInfo.getItem(Constants.KEY_PASSWORD, {});
+    const token = await SInfo.getItem(Constants.KEY_TOKEN, {});
 
-    //   console.log('====================================');
-    //   console.log(result);
-    //   console.log('====================================');
-
-    // } catch (error) {
-    //   console.log('====================================');
-    //   console.log(error);
-    //   console.log('====================================');
-    // }
+    // Email and Password are mandatory
+    if (!email || !password) {
+      return false;
+    }
+    // Check Token
+    if (token) {
+      // Decode the token
+      const decodedToken = jwtDecode(token);
+      // Check if expired
+      if (decodedToken.exp < (Date.now() / 1000)) {
+        // Expired
+        return false;
+      }
+      // Keep
+      _token = token;
+      _decodedToken = decodedToken;
+      // Ok 
+      return true; 
+    }
   }
 
   async resetPassword(email) {
     // Call
-    let result = await axios.post(`${centralRestServerServiceAuthURL}/Reset`,
+    await axios.post(`${centralRestServerServiceAuthURL}/Reset`,
       { email },
       { headers: this._builHeaders() }
     );
+  }
+
+  async logoff() {
+    // Clear the token
+    await SInfo.setItem(Constants.KEY_TOKEN, "", {});
   }
 
   async login(email, password, eula) {
@@ -45,9 +65,13 @@ export default class CentralServerProvider {
       { email, password, "acceptEula": eula },
       { headers: this._builHeaders() }
     );
-    console.log(result.data.token);
+    // Store User/Password
+    SInfo.setItem(Constants.KEY_EMAIL, email, {});
+    SInfo.setItem(Constants.KEY_PASSWORD, password, {});
+    SInfo.setItem(Constants.KEY_TOKEN, result.data.token, {});
     // Keep the token
-    token = result.data.token;
+    _token = result.data.token;
+    _decodedToken = jwtDecode(_token);
   }
 
   async register(name, firstName, email, passwords, eula) {
@@ -114,18 +138,18 @@ export default class CentralServerProvider {
   }
 
   async startTransaction(chargeBoxID, connectorID) {
-    let getTagId = Utils.getTokenProperty(token, "tagIDs");
     let result = await axios.post(`${centralRestServerServiceSecuredURL}/ChargingStationStartTransaction`,
       {
         chargeBoxID,
         "args": {
-          "tagID": getTagId[0],
+          "tagID": _decodedToken.tagIDs[0],
           connectorID
         }
       },
       { headers: this._builSecuredHeaders() }
     );
     console.log(result.data);
+    return result.data;
   }
 
   async stopTransaction(chargeBoxID, transactionId) {
@@ -139,16 +163,11 @@ export default class CentralServerProvider {
       { headers: this._builSecuredHeaders() }
     );
     console.log(result.data);
+    return result.data;
   }
 
   _isAdmin() {
-    let decodedToken = jwtDecode(token);
-    let getRole = decodedToken.role;
-
-    if (getRole === "A") {
-        return true;
-    }
-    return false;
+    return  (_decodedToken.role === Constants.ROLE_ADMIN);
   }
 
   _buildPaging(paging, queryString) {
@@ -191,7 +210,7 @@ export default class CentralServerProvider {
     return {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      "Authorization": "Bearer " + token,
+      "Authorization": "Bearer " + _token,
     };
   }
 }

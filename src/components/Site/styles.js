@@ -10,7 +10,8 @@ export default StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 15,
     borderTopWidth: 1,
-    borderTopColor: "#D3D3D3"
+    borderTopColor: "#D3D3D3",
+    backgroundColor: "rgba(255,255,255,0.2)",
   },
   mainContent: {
     flexDirection: "row",

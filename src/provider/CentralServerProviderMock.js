@@ -5,15 +5,12 @@ export default class CentralServerProviderMock {
   async isAuthenticated() {}
 
   async resetPassword(email) {
-    throw new Error('Not implemented in class CentralServerProviderMock');
   }
 
   async login(email, password, eula) {
-    throw new Error('Not implemented in class CentralServerProviderMock');
   }
 
   async register(name, firstName, email, passwords, eula) {
-    throw new Error('Not implemented in class CentralServerProviderMock');
   }
 
   async getChargers(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
@@ -53,10 +50,6 @@ export default class CentralServerProviderMock {
     let pagedData = {
       count: 0
     };
-    console.log('skip');
-    console.log(paging.skip);
-    console.log('limit');
-    console.log(paging.limit);
     // Cut the collection
     pagedData.result = data.slice(paging.skip, paging.skip+paging.limit);
     pagedData.count = data.length;
