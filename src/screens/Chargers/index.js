@@ -5,6 +5,7 @@ import { Container, Header, Button, Icon, Body, View, Spinner, List } from "nati
 import ProviderFactory from "../../provider/ProviderFactory";
 import ChargerComponent from "../../components/Charger";
 import Utils from "../../utils/Utils";
+import Constants from "../../utils/Constants";
 import styles from "./styles";
 
 class Chargers extends Component {
@@ -14,118 +15,79 @@ class Chargers extends Component {
     // Init State
     this.state = {
       siteID: this.props.navigation.state.params.siteID,
+      chargers: [],
       loading: true,
       refreshing: false,
-      newDataStoredFirstTime: false,
-      limit: 10,
       skip: 0,
-      count: 0,
-      timer: 0,
-      chargers: [],
-      newData: []
+      limit: Constants.PAGING_SIZE,
+      count: 0
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // Get chargers first time
-    this.getChargers(this.state.siteID);
+    const chargers = await this.getChargers(this.state.skip, this.state.limit, this.state.siteID);
+    // Add chargers
+    this.setState((prevState, props) => ({
+      chargers: chargers.result,
+      count: chargers.count,
+      loading: false
+    }));
     // Refresh every minutes
-    this.timer = setInterval(() => {
-      this._timerRefresh();
-    }, 30000);
+    // this.timer = setInterval(() => {
+    //   this._onRefresh();
+    // }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
   }
 
   componentWillUnmount() {
-    clearInterval(this.timer);
+    // Stop the timer
+    if(this.timer) {
+      clearInterval(this.timer);
+    }
   }
 
-  getChargers = async (siteID) => {
-    const { limit, skip } = this.state;
+  getChargers = async (skip, limit, siteID) => {
+    let chargers = [];
     try {
       // Get Chargers
-      let chargers = await ProviderFactory.getProvider().getChargers(
-        { SiteID: siteID, WithSiteArea: true }, { limit, skip });
-        // Set result
-        this.setState({
-          newData: chargers.result,
-          count: chargers.count
-        }, () => {
-          if (!this.state.newDataStoredFirstTime) {
-            this.setState({chargers: this.state.newData, newDataStoredFirstTime: true});
-          }
-        });
-        console.log("Data stored: ", this.state.newData);
+      chargers = await ProviderFactory.getProvider().getChargers(
+        { SiteID: siteID, WithSiteArea: true }, { skip, limit });
+      console.log(chargers);
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
     }
-    this.setState({
-      refreshing: false,
-      loading: false
-    });
+    return chargers;
   }
 
-  _onEndScroll = () => {
-    const { siteID, chargers, count } = this.state;
-    if (chargers.length < count) {
-      this.setState({skip: this.state.skip + 10}, async () => {
-        await this.getChargers(siteID);
-        this.setState({chargers: [...this.state.chargers, ...this.state.newData]});
-      });
-    }
-  }
-
-  _timerRefresh = async () => {
-    if (this.state.refreshing !== true) {
-      if (this.state.limit !== 0 && this.state.skip !== 0) {
-        this.setState(
-          {
-            limit: this.state.skip === 0 ? 10 : 0,
-            skip: 0,
-            newDataStoredFirstTime: false,
-            newData: []
-          },
-          async () => {
-            await this.getChargers(this.state.siteID);
-          }
-        );
-      } else {
-        this.setState({
-          newDataStoredFirstTime: false,
-          newData: []
-        }, async () => {
-          await this.getChargers(this.state.siteID);
-        });
-      }
+  _onEndScroll = async () => {
+    const { count, skip, limit } = this.state;
+    // No reached the end?
+    if ((skip + limit) < count) {
+      // No: get next sites
+      let chargers = await this.getChargers(skip + Constants.PAGING_SIZE, limit, this.state.siteID);
+      // Add sites
+      this.setState((prevState, props) => ({
+        chargers: [...prevState.chargers, ...chargers.result],
+        skip: prevState.skip + Constants.PAGING_SIZE,
+        refreshing: false
+      }));
     }
   }
 
   _onRefresh = async () => {
-    if (this.state.limit !== 0 && this.state.skip !== 0) {
-      this.setState(
-      {
-        refreshing: true,
-        limit: this.state.skip === 0 ? 10 : 0,
-        skip: 0,
-        newDataStoredFirstTime: false,
-        newData: []
-      },
-      async () => {
-        await this.getChargers(this.state.siteID);
-      });
-    } else {
-      this.setState({
-        newDataStoredFirstTime: false,
-        newData: []
-      }, async () => {
-        await this.getChargers(this.state.siteID);
-      });
-    }
+    const { skip, limit } = this.state;
+    // Refresh All
+    let chargers = await this.getChargers(0, (skip + limit), this.state.siteID);
+    // Add sites
+    this.setState((prevState, props) => ({
+      chargers: chargers.result
+    }));
   }
 
-  footerList = () => {
-    const { chargers, count } = this.state;
-    if (chargers.length < count) {
+  _footerList = () => {
+    const { skip, count, limit } = this.state;
+    if ((skip + limit) < count) {
       return (
         <Spinner color="white" />
       );
@@ -170,7 +132,7 @@ class Chargers extends Component {
               indicatorStyle={"white"}
               onEndReached={this._onEndScroll}
               onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1 }
-              ListFooterComponent={this.footerList}
+              ListFooterComponent={this._footerList}
             />
           }
         </View>

@@ -1,6 +1,22 @@
-import React, { Component } from "react";
-import { Image, FlatList, RefreshControl } from "react-native";
-import { Container, Header, Spinner, Left, Right, Body, Button, Icon, View } from "native-base";
+import React, {
+  Component
+} from "react";
+import {
+  Image,
+  FlatList,
+  RefreshControl
+} from "react-native";
+import {
+  Container,
+  Header,
+  Spinner,
+  Left,
+  Right,
+  Body,
+  Button,
+  Icon,
+  View
+} from "native-base";
 
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
@@ -22,19 +38,19 @@ class Sites extends Component {
   }
 
   componentWillMount() {
-    this.setState({
-      sites: [],
-      loading: true,
-      refreshing: false
-    });
+    // this.setState({
+    //   sites: [],
+    //   loading: true,
+    //   refreshing: false
+    // });
   }
 
   async componentDidMount() {
     // Get the sites
-    let sites = await this.getSites(this.state.skip, this.state.limit);
+    const sites = await this.getSites(this.state.skip, this.state.limit);
     // Add sites
     this.setState((prevState, props) => ({
-      sites: Object.assign(prevState.sites, sites.result),
+      sites: sites.result,
       count: sites.count,
       loading: false
     }));
@@ -53,12 +69,12 @@ class Sites extends Component {
     }
     // Return
     return sites;
-}
+  }
 
   _onRefresh = async () => {
     const { skip, limit } = this.state;
     // Refresh All
-    let sites = await this.getSites(0, skip+limit);
+    let sites = await this.getSites(0, (skip + limit));
     // Add sites
     this.setState((prevState, props) => ({
       sites: sites.result
@@ -68,7 +84,7 @@ class Sites extends Component {
   _onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
-    if (skip+limit < count) {
+    if ((skip + limit) < count) {
       // No: get next sites
       let sites = await this.getSites(skip + Constants.PAGING_SIZE, limit);
       // Add sites
@@ -82,7 +98,7 @@ class Sites extends Component {
 
   _footerList = () => {
     const { skip, count, limit } = this.state;
-    if (skip+limit < count) {
+    if ((skip + limit) < count) {
       return (
         <Spinner color="white" />
       );
@@ -91,7 +107,7 @@ class Sites extends Component {
   }
 
   _renderItem = ({item}) => {
-    return (
+    return ( 
       <SiteComponent item={item} navigation={this.props.navigation} />
     );
   };

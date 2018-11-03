@@ -1,5 +1,6 @@
 import Constants from "../utils/Constants";
 
+const NETWORK_LATENCY_MILLIS = 500;
 export default class CentralServerProviderMock {
   async isAuthenticated() {}
 
@@ -18,23 +19,22 @@ export default class CentralServerProviderMock {
   async getChargers(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     // Return a promise
     return new Promise((resolve) => {
-      // Filter provided?
-      if (params.SiteID) {
-        let chargersFiltered = {
-          count: 0
-        };
-        // Filter the list
-        chargersFiltered.result = CHARGERS.result.filter((charger) => charger.siteArea.siteID === params.SiteID);
-        // Set the Count
-        if (chargersFiltered.result) {
-          chargersFiltered.count = chargersFiltered.result.length;
+      setTimeout(()=> {
+        // Filter provided?
+        if (params.SiteID) {
+          // Filter the list
+          let chargersFiltered = CHARGERS.filter((charger) => charger.siteArea.siteID === params.SiteID);
+          // Get them all
+          let pagedChargersFiltered = this.applyPaging(chargersFiltered, paging);
+          // Send mock data
+          resolve(pagedChargersFiltered);
+        } else {
+          // Get them all
+          let pagedChargers = this.applyPaging(CHARGERS, paging);
+          // Send mock data
+          resolve(pagedChargers);
         }
-        // Send mock data
-        resolve(chargersFiltered);
-      } else {
-        // Send mock data
-        resolve(CHARGERS);
-      }
+      }, NETWORK_LATENCY_MILLIS);
     });
   }
 
@@ -45,7 +45,7 @@ export default class CentralServerProviderMock {
         let pagedSites = this.applyPaging(SITES, paging);
         // Send mock data
         resolve(pagedSites);
-      }, 1500);
+      }, NETWORK_LATENCY_MILLIS);
     });
   }
 
