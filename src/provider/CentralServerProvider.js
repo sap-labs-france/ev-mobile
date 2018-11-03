@@ -13,41 +13,47 @@ let _token;
 let _decodedToken;
 let _initialized;
 export default class CentralServerProvider {
-
-  getDecodedToken() {
-    return _decodedToken;
-  }
-
   async initialize() {
     // Only once
     if (!_initialized) {
+      // Get stored data
+      _email = await SInfo.getItem(Constants.KEY_EMAIL, {});
+      _password = await SInfo.getItem(Constants.KEY_PASSWORD, {});
+      _token = await SInfo.getItem(Constants.KEY_TOKEN, {});
+      // Check Token
+      if (_token) {
+        // Decode the token
+        _decodedToken = jwtDecode(_token);
+      }
       // Ok
       _initialized = true;
-      // Get stored data
-      const email = await SInfo.getItem(Constants.KEY_EMAIL, {});
-      const password = await SInfo.getItem(Constants.KEY_PASSWORD, {});
-      const token = await SInfo.getItem(Constants.KEY_TOKEN, {});
-  
-      // Email and Password are mandatory
-      if (!email || !password) {
+    }
+  }
+
+  async isAuthenticated() {
+    // Init?
+    await this.initialize();
+    // Email and Password are mandatory
+    if (!_email || !_password) {
+      return false;
+    }
+    // Check Token
+    if (_decodedToken) {
+      // Check if expired
+      if (_decodedToken.exp < (Date.now() / 1000)) {
+        // Expired
         return false;
       }
-      // Check Token
-      if (token) {
-        // Decode the token
-        const decodedToken = jwtDecode(token);
-        // Check if expired
-        if (decodedToken.exp < (Date.now() / 1000)) {
-          // Expired
-          return false;
-        }
-        // Keep
-        _token = token;
-        _decodedToken = decodedToken;
-        // Ok 
-        return true; 
-      }
+      // Ok 
+      return true; 
     }
+  }
+
+  async getDecodedToken() {
+    // Init?
+    await this.initialize();
+    // Return
+    return _decodedToken;
   }
 
   async resetPassword(email) {
