@@ -3,6 +3,7 @@ import { Image, FlatList, RefreshControl } from "react-native";
 import { Container, Header, Spinner, Left, Right, Body, Button, Icon, View } from "native-base";
 
 import Utils from "../../utils/Utils";
+import Constants from "../../utils/Constants";
 import ProviderFactory from "../../provider/ProviderFactory";
 import SiteComponent from "../../components/Site";
 import styles from "./styles";
@@ -12,14 +13,11 @@ class Sites extends Component {
     super(props);
     this.state = {
       sites: [],
-      newData: [],
-      keepDataToRefresh: [],
-      newDataStoredFirstTime: false,
       loading: true,
       refreshing: false,
       skip: 0,
-      limit: 10,
-      count: 0,
+      limit: Constants.PAGING_SIZE,
+      count: 0
     };
   }
 
@@ -31,73 +29,60 @@ class Sites extends Component {
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // Get the sites
-    this.getSites();
+    let sites = await this.getSites(this.state.skip, this.state.limit);
+    // Add sites
+    this.setState((prevState, props) => ({
+      sites: Object.assign(prevState.sites, sites.result),
+      count: sites.count,
+      loading: false
+    }));
   }
 
-  getSites = async () => {
-    const { limit, skip } = this.state;
+  getSites = async (skip, limit) => {
+    let sites = [];
     try {
       // Get the Sites
-      let sites = await ProviderFactory.getProvider().getSites(
-        { WithAvailableChargers: true, WithChargeBoxes: true }, { limit, skip });
-      // Fill each sites to sites[]
-      this.setState({
-        newData: sites.result,
-        count: sites.count
-      }, () => {
-        if (!this.state.newDataStoredFirstTime) {
-          this.setState({sites: this.state.newData, newDataStoredFirstTime: true, keepDataToRefresh: this.state.newData});
-        }
-      });
-      console.log(this.state.sites);
+      sites = await ProviderFactory.getProvider().getSites(
+        { WithAvailableChargers: true, WithChargeBoxes: true }, { skip, limit });
+      console.log(sites);
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
     }
-    this.setState({
-      refreshing: false,
-      loading: false
-    });
-  }
+    // Return
+    return sites;
+}
 
   _onRefresh = async () => {
-    if (this.state.limit !== 0 && this.state.skip !== 0) {
-      this.setState(
-      {
-        refreshing: true,
-        limit: this.state.skip === 0 ? 10 : 0,
-        skip: 0,
-        newDataStoredFirstTime: false,
-        newData: []
-      },
-      async () => {
-        await this.getSites();
-      });
-    } else {
-      this.setState({
-        newDataStoredFirstTime: false,
-        newData: []
-      }, async () => {
-        await this.getSites();
-      });
+    const { skip, limit } = this.state;
+    // Refresh All
+    let sites = await this.getSites(0, skip+limit);
+    // Add sites
+    this.setState((prevState, props) => ({
+      sites: sites.result
+    }));
+  }
+
+  _onEndScroll = async () => {
+    const { count, skip, limit } = this.state;
+    // No reached the end?
+    if (skip+limit < count) {
+      // No: get next sites
+      let sites = await this.getSites(skip + Constants.PAGING_SIZE, limit);
+      // Add sites
+      this.setState((prevState, props) => ({
+        sites: [...prevState.sites, ...sites.result],
+        skip: prevState.skip + Constants.PAGING_SIZE,
+        refreshing: false
+      }));
     }
   }
 
-  _onEndScroll = () => {
-    const { sites, count } = this.state;
-    if (sites.length < count) {
-      this.setState({skip: this.state.skip + 10}, async () => {
-        await this.getSites();
-        this.setState({sites: [...this.state.sites, ...this.state.newData]});
-      });
-    }
-  }
-
-  footerList = () => {
-    const { sites, count } = this.state;
-    if (sites.length < count) {
+  _footerList = () => {
+    const { skip, count, limit } = this.state;
+    if (skip+limit < count) {
       return (
         <Spinner color="white" />
       );
@@ -145,7 +130,7 @@ class Sites extends Component {
               }
               onEndReached={this._onEndScroll}
               onEndReachedThreshold={0.5}
-              ListFooterComponent={this.footerList}
+              ListFooterComponent={this._footerList}
             />
           }
         </View>
