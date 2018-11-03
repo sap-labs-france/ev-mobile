@@ -38,13 +38,13 @@ const AppNavigation = createStackNavigator(
   },
   {
     index: 0,
-    initialRouteName: "Login",
+    initialRouteName: "DrawerNavigation",
     headerMode: "none"
   }
 );
 
 export default () =>
   <Root>
-    <StatusBar hidden />
-    <AppNavigation />
+    <StatusBar hidden/>
+    <AppNavigation/>
   </Root>;

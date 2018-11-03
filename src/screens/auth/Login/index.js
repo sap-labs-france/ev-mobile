@@ -58,18 +58,7 @@ class Login extends React.Component {
   async componentDidMount() {
     Orientation.unlockAllOrientations();
     Orientation.lockToPortrait();
-    // Check if user's connection is valid
-    let authenticated = await ProviderFactory.getProvider().isAuthenticated();
-    if (authenticated) {
-      // Navigate to sites
-      return this.props.navigation.dispatch(
-        StackActions.reset({
-          index: 0,
-          actions: [NavigationActions.navigate({ routeName: "DrawerNavigation" })]
-        })
-      );
-    }
-    // Check stored data
+    // Check
     const email = await SInfo.getItem(Constants.KEY_EMAIL, {});
     if (email) {
       this.setState({
@@ -148,6 +137,7 @@ class Login extends React.Component {
   render() {
     const navigation = this.props.navigation;
     const { eula, loading } = this.state;
+    // Render
     return (
       <Container>
         <ImageBackground source={require("../../../../assets/bg.png")} style={styles.background}>

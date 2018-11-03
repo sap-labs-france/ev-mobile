@@ -11,42 +11,48 @@ var jwtDecode = require("jwt-decode");
 // Paste the tokken below
 let _token;
 let _decodedToken;
-
-
+let _initialized;
 export default class CentralServerProvider {
 
   getDecodedToken() {
     return _decodedToken;
   }
 
-  async isAuthenticated() {
-    // Get stored data
-    const email = await SInfo.getItem(Constants.KEY_EMAIL, {});
-    const password = await SInfo.getItem(Constants.KEY_PASSWORD, {});
-    const token = await SInfo.getItem(Constants.KEY_TOKEN, {});
-
-    // Email and Password are mandatory
-    if (!email || !password) {
-      return false;
-    }
-    // Check Token
-    if (token) {
-      // Decode the token
-      const decodedToken = jwtDecode(token);
-      // Check if expired
-      if (decodedToken.exp < (Date.now() / 1000)) {
-        // Expired
+  async initialize() {
+    // Only once
+    if (!_initialized) {
+      // Ok
+      _initialized = true;
+      // Get stored data
+      const email = await SInfo.getItem(Constants.KEY_EMAIL, {});
+      const password = await SInfo.getItem(Constants.KEY_PASSWORD, {});
+      const token = await SInfo.getItem(Constants.KEY_TOKEN, {});
+  
+      // Email and Password are mandatory
+      if (!email || !password) {
         return false;
       }
-      // Keep
-      _token = token;
-      _decodedToken = decodedToken;
-      // Ok 
-      return true; 
+      // Check Token
+      if (token) {
+        // Decode the token
+        const decodedToken = jwtDecode(token);
+        // Check if expired
+        if (decodedToken.exp < (Date.now() / 1000)) {
+          // Expired
+          return false;
+        }
+        // Keep
+        _token = token;
+        _decodedToken = decodedToken;
+        // Ok 
+        return true; 
+      }
     }
   }
 
   async resetPassword(email) {
+    // Init?
+    await this.initialize();
     // Call
     await axios.post(`${centralRestServerServiceAuthURL}/Reset`,
       { email },
@@ -55,6 +61,8 @@ export default class CentralServerProvider {
   }
 
   async logoff() {
+    // Init?
+    await this.initialize();
     // Clear the token
     await SInfo.setItem(Constants.KEY_TOKEN, "", {});
   }
@@ -72,6 +80,7 @@ export default class CentralServerProvider {
     // Keep the token
     _token = result.data.token;
     _decodedToken = jwtDecode(_token);
+    _initialized = true;
   }
 
   async register(name, firstName, email, passwords, eula) {
@@ -83,6 +92,8 @@ export default class CentralServerProvider {
   }
 
   async getChargers(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+    // Init?
+    await this.initialize();
     // Build Paging
     this._buildPaging(paging, params);
     // Build Ordering
@@ -96,6 +107,8 @@ export default class CentralServerProvider {
   }
 
   async getCharger(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+    // Init?
+    await this.initialize();
     // Build Paging
     this._buildPaging(paging, params);
     // Build Ordering
@@ -109,6 +122,8 @@ export default class CentralServerProvider {
   }
 
   async getSites(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+    // Init?
+    await this.initialize();
     // Build Paging
     this._buildPaging(paging, params);
     // Build Ordering
@@ -122,6 +137,8 @@ export default class CentralServerProvider {
   }
 
   async getSiteAreas(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+    // Init?
+    await this.initialize();
     // Call
     let result = await axios.get(`${centralRestServerServiceSecuredURL}/SiteAreas`, {
       headers: this._builSecuredHeaders(),
@@ -131,6 +148,7 @@ export default class CentralServerProvider {
   }
 
   async getEndUserLicenseAgreement(language) {
+    // Call
     let result = await axios.get(`${centralRestServerServiceAuthURL}/EndUserLicenseAgreement?Language=${language}`, {
       headers: this._builHeaders()
     });
@@ -138,6 +156,9 @@ export default class CentralServerProvider {
   }
 
   async startTransaction(chargeBoxID, connectorID) {
+    // Init?
+    await this.initialize();
+    // Call
     let result = await axios.post(`${centralRestServerServiceSecuredURL}/ChargingStationStartTransaction`,
       {
         chargeBoxID,
@@ -153,6 +174,9 @@ export default class CentralServerProvider {
   }
 
   async stopTransaction(chargeBoxID, transactionId) {
+    // Init?
+    await this.initialize();
+    // Call
     let result = await axios.post(`${centralRestServerServiceSecuredURL}/ChargingStationStopTransaction`,
       {
         chargeBoxID,
@@ -166,7 +190,10 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  _isAdmin() {
+  async _isAdmin() {
+    // Init?
+    await this.initialize();
+    // Check
     return  (_decodedToken.role === Constants.ROLE_ADMIN);
   }
 

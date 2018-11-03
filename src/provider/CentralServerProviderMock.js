@@ -2,7 +2,9 @@ import Constants from "../utils/Constants";
 
 const NETWORK_LATENCY_MILLIS = 500;
 export default class CentralServerProviderMock {
-  async isAuthenticated() {}
+  async isAuthenticated() {
+    return true;
+  }
 
   async resetPassword(email) {
   }
