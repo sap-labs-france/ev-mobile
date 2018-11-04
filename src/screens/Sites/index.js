@@ -104,7 +104,7 @@ class Sites extends Component {
           </Body>
           <Right>
             <Button transparent>
-              <Icon active name="options" />
+              {/* <Icon active name="options" /> */}
             </Button>
           </Right>
         </Header>

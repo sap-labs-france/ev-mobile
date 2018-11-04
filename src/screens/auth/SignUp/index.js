@@ -87,6 +87,44 @@ class SignUp extends React.Component {
     };
   }
 
+  signUp = async () => {
+    // Check field
+    const formIsValid = Utils.validateInput(this, formValidationDef);
+    // Ok?
+    if (formIsValid) {
+      const { name, firstName, email, password, repeatPassword, eula } = this.state;
+      try {
+        // Loading
+        this.setState({loading: true});
+        // Register
+        let result = await _provider.register(
+          name, firstName, email, { password, repeatPassword }, eula);
+        console.log(result);
+        // Reset
+        this.setState({loading: false});
+        // Show
+        Message.showSuccess(I18n.t("authentication.registerSuccess"));
+        // Navigate
+        return this.props.navigation.dispatch(
+          StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: "Login" })]
+          })
+        );
+      } catch (error) {
+        // Reset
+        this.setState({loading: false});
+        // Check request?
+        if (error.request) {
+          // Other common Error
+          Utils.handleHttpUnexpectedError(error.request);
+        } else {
+          Message.showError(I18n.t("general.unexpectedError"));
+        }
+      }
+    }
+  }
+
   render() {
     const { eula, loading } = this.state;
     return (
@@ -234,44 +272,6 @@ class SignUp extends React.Component {
         </ImageBackground>
       </Container>
     );
-  }
-
-  signUp = async () => {
-    // Check field
-    const formIsValid = Utils.validateInput(this, formValidationDef);
-    // Ok?
-    if (formIsValid) {
-      const { name, firstName, email, password, repeatPassword, eula } = this.state;
-      try {
-        // Loading
-        this.setState({loading: true});
-        // Register
-        let result = await _provider.register(
-          name, firstName, email, { password, repeatPassword }, eula);
-        console.log(result);
-        // Reset
-        this.setState({loading: false});
-        // Show
-        Message.showSuccess(I18n.t("authentication.registerSuccess"));
-        // Navigate
-        return this.props.navigation.dispatch(
-          StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: "Login" })]
-          })
-        );
-      } catch (error) {
-        // Reset
-        this.setState({loading: false});
-        // Check request?
-        if (error.request) {
-          // Other common Error
-          Utils.handleHttpUnexpectedError(error.request);
-        } else {
-          Message.showError(I18n.t("general.unexpectedError"));
-        }
-      }
-    }
   }
 }
 

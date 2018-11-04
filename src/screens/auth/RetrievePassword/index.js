@@ -30,6 +30,52 @@ class RetrievePassword extends React.Component {
     };
   }
 
+  resetPassword = async () => {
+    // Check field
+    const formIsValid = Utils.validateInput(this, formValidationDef);
+    // Ok?
+    if (formIsValid) {
+      // Login
+      const { email } = this.state;
+      try {
+        this.setState({loading: true});
+        // Login
+        await _provider.resetPassword(email);
+        // Login Success
+        this.setState({loading: false});
+        // Show
+        Message.showSuccess(I18n.t("authentication.resetSuccess"));
+        // Navigate
+        return this.props.navigation.dispatch(
+          StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: "Login" })]
+          })
+        );
+
+      } catch (error) {
+        // Login failed
+        this.setState({loading: false});
+        // Check request?
+        if (error.request) {
+          // Show error
+          switch (error.request.status) {
+            // Unknown Email
+            case 500:
+            case 550:
+              Message.showError(I18n.t("authentication.wrongEmail"));
+              break;
+            default:
+              // Other common Error
+              Utils.handleHttpUnexpectedError(error.request);
+          }
+        } else {
+          Message.showError(I18n.t("general.unexpectedError"));
+        }
+      }
+    }
+  }
+
   render() {
     const { loading } = this.state;
     return (
@@ -80,52 +126,6 @@ class RetrievePassword extends React.Component {
         </ImageBackground>
       </Container>
     );
-  }
-
-  resetPassword = async () => {
-    // Check field
-    const formIsValid = Utils.validateInput(this, formValidationDef);
-    // Ok?
-    if (formIsValid) {
-      // Login
-      const { email } = this.state;
-      try {
-        this.setState({loading: true});
-        // Login
-        await _provider.resetPassword(email);
-        // Login Success
-        this.setState({loading: false});
-        // Show
-        Message.showSuccess(I18n.t("authentication.resetSuccess"));
-        // Navigate
-        return this.props.navigation.dispatch(
-          StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: "Login" })]
-          })
-        );
-
-      } catch (error) {
-        // Login failed
-        this.setState({loading: false});
-        // Check request?
-        if (error.request) {
-          // Show error
-          switch (error.request.status) {
-            // Unknown Email
-            case 500:
-            case 550:
-              Message.showError(I18n.t("authentication.wrongEmail"));
-              break;
-            default:
-              // Other common Error
-              Utils.handleHttpUnexpectedError(error.request);
-          }
-        } else {
-          Message.showError(I18n.t("general.unexpectedError"));
-        }
-      }
-    }
   }
 }
 

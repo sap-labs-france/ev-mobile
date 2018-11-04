@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Image, Platform, FlatList, RefreshControl } from "react-native";
-import { Container, Header, Button, Icon, Body, View, Spinner, List } from "native-base";
+import { Container, Header, Button, Icon, Body, Left, Right, View, Spinner, List } from "native-base";
 import ProviderFactory from "../../provider/ProviderFactory";
 import ChargerComponent from "../../components/Charger";
 import Utils from "../../utils/Utils";
@@ -106,16 +106,20 @@ class Chargers extends Component {
   render() {
     return (
       <Container>
-        <Header style={[styles.headerStyle, this.state.open ? styles.headerModalStyle : styles.headerStyle]}>
-          <Body style={styles.body}>
+        <Header>
+          <Left>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon active name="arrow-back" style={styles.headerIcons} />
+              <Icon active name="arrow-back" />
             </Button>
+          </Left>
+          <Body>
             <Image source={require("../../../assets/logo-low.gif")} style={styles.imageHeader} />
-            <Button transparent>
-              <Icon name="options" style={styles.headerIcons} />
-            </Button>
           </Body>
+          <Right>
+            <Button transparent>
+              {/* <Icon active name="options" /> */}
+            </Button>
+          </Right>
         </Header>
 
         <View style={styles.content}>

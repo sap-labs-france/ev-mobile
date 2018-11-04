@@ -25,7 +25,7 @@ class SideBar extends Component {
     });
   }
 
-  async logoff() {
+  async _logoff() {
     // Logoff
     await _provider.logoff();
     // Back to login
@@ -33,6 +33,13 @@ class SideBar extends Component {
       index: 0,
       actions: [NavigationActions.navigate({routeName: "Login"})]
     }));
+  }
+
+  _navigateTo = (screen) => {
+    // Navigate
+    this.props.navigation.navigate(screen);
+    // Close
+    this.props.navigation.closeDrawer();
   }
 
   render() {
@@ -43,9 +50,9 @@ class SideBar extends Component {
         <ImageBackground style={styles.background} source={require("../../../assets/sidebar-transparent.png")}>
           <Content style={styles.drawerContent}>
             <View style={{borderColor: "#FFFFFF", borderBottomWidth: 1, paddingBottom: 30}}>
-              <Image source={require("../../../assets/logo-low.gif")} style={{flex: 1, resizeMode: "contain", height: deviceHeight / 6, alignSelf: "center"}} />
+              <Image source={require("../../../assets/logo-low.gif")} style={{flex: 1, resizeMode: "contain", height: deviceHeight / 8, alignSelf: "center"}} />
             </View>
-            <ListItem style={[styles.links, {marginTop: 30}]} button iconLeft onPress={() => navigation.navigate("Sites")}>
+            <ListItem style={[styles.links, {marginTop: 30}]} button iconLeft onPress={() => this._navigateTo("Sites")}>
               <Icon name="ios-grid-outline" />
               <Text style={styles.linkText}>{I18n.t("sidebar.sites")}</Text>
             </ListItem>
@@ -62,7 +69,7 @@ class SideBar extends Component {
             <View style={styles.logoutbtn} foregroundColor={"white"}>
               <View style={styles.gridLogoutContainer}>
                 <View style={styles.columnAccount}>
-                  <TouchableOpacity style={styles.buttonLogout} onPress={() => this.logoff()}>
+                  <TouchableOpacity style={styles.buttonLogout} onPress={() => this._logoff()}>
                     <Text style={styles.logout}>{I18n.t("authentication.logOut")}</Text>
                     <Text note style={styles.name}>{userName}</Text>
                   </TouchableOpacity>
