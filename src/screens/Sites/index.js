@@ -7,6 +7,7 @@ import ProviderFactory from "../../provider/ProviderFactory";
 import SiteComponent from "../../components/Site";
 import styles from "./styles";
 
+const _provider = ProviderFactory.getProvider();
 class Sites extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +36,7 @@ class Sites extends Component {
     let sites = [];
     try {
       // Get the Sites
-      sites = await ProviderFactory.getProvider().getSites(
+      sites = await _provider.getSites(
         { WithAvailableChargers: true, WithChargeBoxes: true }, { skip, limit });
       console.log(sites);
     } catch (error) {

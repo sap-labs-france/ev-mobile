@@ -2,16 +2,15 @@ import React from "react";
 import { Image, ImageBackground, Keyboard, ScrollView } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, ListItem, Footer, Spinner } from "native-base";
-import SInfo from 'react-native-sensitive-info';
 import Orientation from "react-native-orientation";
 
 import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
-import Constants from "../../../utils/Constants";
 import Message from "../../../utils/Message";
 import styles from "../styles";
 
+const _provider = ProviderFactory.getProvider();
 const formValidationDef = {
   email: {
     presence: {
@@ -51,24 +50,26 @@ class Login extends React.Component {
       eula: false,
       password: "",
       email: "",
-      loading: false
+      loading: false,
+      display: false
     };
   }
 
   async componentDidMount() {
     Orientation.unlockAllOrientations();
     Orientation.lockToPortrait();
-    // Check
-    const email = await SInfo.getItem(Constants.KEY_EMAIL, {});
-    if (email) {
+    // Check if user is authenticated
+    if (await _provider.isUserAuthenticated()) {
+      // Navigate
+      this._navigateToSites();
+    } else {
+      // Set default email/password
+      const email = await _provider.getUserEmail();
+      const password = await _provider.getUserPassword();
       this.setState({
-        email: email
-      });
-    }
-    const password = await SInfo.getItem(Constants.KEY_PASSWORD, {});
-    if (password) {
-      this.setState({
-        password: password
+        email: email,
+        password: password,
+        display: true
       });
     }
   }
@@ -84,17 +85,11 @@ class Login extends React.Component {
         // Loading
         this.setState({loading: true});
         // Login
-        await ProviderFactory.getProvider().login(email, password, eula);
+        await _provider.login(email, password, eula);
         // Login Success
         this.setState({loading: false});
-        // Navigate to sites
-        return this.props.navigation.dispatch(
-          StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: "DrawerNavigation" })]
-          })
-        );
-
+        // Navigate
+        this._navigateToSites();
       } catch (error) {
         // Login failed
         this.setState({loading: false});
@@ -134,9 +129,23 @@ class Login extends React.Component {
     }
   }
 
+  _navigateToSites() {
+    // Navigate to sites
+    return this.props.navigation.dispatch(
+      StackActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: "DrawerNavigation" })]
+      })
+    );
+  }
+
   render() {
     const navigation = this.props.navigation;
-    const { eula, loading } = this.state;
+    const { display, eula, loading } = this.state;
+    // Do not display?
+    if (!display) {
+      return (<View style={styles.nodisplay}/>);  
+    }
     // Render
     return (
       <Container>

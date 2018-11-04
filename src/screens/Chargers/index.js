@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import { Image, Platform, FlatList, RefreshControl } from "react-native";
 import { Container, Header, Button, Icon, Body, View, Spinner, List } from "native-base";
-
 import ProviderFactory from "../../provider/ProviderFactory";
 import ChargerComponent from "../../components/Charger";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import styles from "./styles";
 
-class Chargers extends Component {
+const _provider = ProviderFactory.getProvider();
 
+class Chargers extends Component {
   constructor(props) {
     super(props);
     // Init State
@@ -50,7 +50,7 @@ class Chargers extends Component {
     let chargers = [];
     try {
       // Get Chargers
-      chargers = await ProviderFactory.getProvider().getChargers(
+      chargers = await _provider.getChargers(
         { SiteID: siteID, WithSiteArea: true }, { skip, limit });
       console.log(chargers);
     } catch (error) {

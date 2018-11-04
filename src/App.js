@@ -38,7 +38,7 @@ const AppNavigation = createStackNavigator(
   },
   {
     index: 0,
-    initialRouteName: "DrawerNavigation",
+    initialRouteName: "Login",
     headerMode: "none"
   }
 );

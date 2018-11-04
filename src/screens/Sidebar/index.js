@@ -3,11 +3,11 @@ import { ImageBackground, TouchableOpacity, Image, Dimensions } from "react-nati
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Content, Text, Icon, ListItem, Thumbnail, View } from "native-base";
 import ProviderFactory from "../../provider/ProviderFactory";
-
 import I18n from "../../I18n/I18n";
 import styles from "./style";
 
 const deviceHeight = Dimensions.get("window").height;
+const _provider = ProviderFactory.getProvider();
 
 class SideBar extends Component {
   constructor(props) {
@@ -18,8 +18,7 @@ class SideBar extends Component {
 
   async componentDidMount() {
     // Logoff
-    const userInfo = await ProviderFactory.getProvider().getUserInfo();
-    console.log(userInfo);
+    const userInfo = await _provider.getUserInfo();
     // Add sites
     this.setState({
       userName: `${userInfo.name} ${userInfo.firstName}`
@@ -28,7 +27,7 @@ class SideBar extends Component {
 
   async logoff() {
     // Logoff
-    await ProviderFactory.getProvider().logoff();
+    await _provider.logoff();
     // Back to login
     this.props.navigation.dispatch(StackActions.reset({
       index: 0,

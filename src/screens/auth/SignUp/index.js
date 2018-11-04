@@ -2,13 +2,13 @@ import React from "react";
 import { Image, ImageBackground, Keyboard, ScrollView } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Content, Form, Text, Button, Icon, Item, Input, View, ListItem, CheckBox, Body, Footer, Spinner, Left, Right } from "native-base";
-
-import CentralServerProvider from "../../../provider/CentralServerProvider";
+import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
 import styles from "./styles";
 
+const _provider = ProviderFactory.getProvider();
 const formValidationDef = {
   name: {
     presence: {
@@ -246,7 +246,7 @@ class SignUp extends React.Component {
         // Loading
         this.setState({loading: true});
         // Register
-        let result = await CentralServerProvider.register(
+        let result = await _provider.register(
           name, firstName, email, { password, repeatPassword }, eula);
         console.log(result);
         // Reset

@@ -20,6 +20,8 @@ export default class CentralServerProvider {
       _email = await SInfo.getItem(Constants.KEY_EMAIL, {});
       _password = await SInfo.getItem(Constants.KEY_PASSWORD, {});
       _token = await SInfo.getItem(Constants.KEY_TOKEN, {});
+      console.log('_token');
+      console.log(_token);
       // Check Token
       if (_token) {
         // Decode the token
@@ -30,7 +32,7 @@ export default class CentralServerProvider {
     }
   }
 
-  async isAuthenticated() {
+  async isUserAuthenticated() {
     // Init?
     await this.initialize();
     // Email and Password are mandatory
@@ -47,6 +49,22 @@ export default class CentralServerProvider {
       // Ok 
       return true; 
     }
+    // No
+    return false;
+  }
+
+  async getUserEmail() {
+    // Init?
+    await this.initialize();
+    // Return
+    return _email;
+  }
+
+  async getUserPassword() {
+    // Init?
+    await this.initialize();
+    // Return
+    return _password;
   }
 
   async getUserInfo() {
@@ -67,10 +85,15 @@ export default class CentralServerProvider {
   }
 
   async logoff() {
-    // Init?
-    await this.initialize();
     // Clear the token
-    await SInfo.setItem(Constants.KEY_TOKEN, "", {});
+    await SInfo.deleteItem(Constants.KEY_TOKEN, {});
+    // Clear local data
+    _email = null;
+    _password = null;
+    _token = null;
+    _decodedToken = null;
+    // Reload
+    _initialized = false;
   }
 
   async login(email, password, eula) {
@@ -79,7 +102,7 @@ export default class CentralServerProvider {
       { email, password, "acceptEula": eula },
       { headers: this._builHeaders() }
     );
-    // Store User/Password
+    // Store User/Password/Toke
     SInfo.setItem(Constants.KEY_EMAIL, email, {});
     SInfo.setItem(Constants.KEY_PASSWORD, password, {});
     SInfo.setItem(Constants.KEY_TOKEN, result.data.token, {});

@@ -1,25 +1,14 @@
 import React from "react";
 import { Image, ImageBackground } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
-import {
-  Container,
-  Content,
-  Text,
-  Form,
-  Item,
-  Input,
-  Button,
-  Icon,
-  View,
-  Spinner,
-  Footer
-} from "native-base";
-import CentralServerProvider from "../../../provider/CentralServerProvider";
+import { Container, Content, Text, Form, Item, Input, Button, Icon, View, Spinner, Footer } from "native-base";
+import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
 import styles from "../styles";
 
+const _provider = ProviderFactory.getProvider();
 const formValidationDef = {
   email: {
     presence: {
@@ -103,7 +92,7 @@ class RetrievePassword extends React.Component {
       try {
         this.setState({loading: true});
         // Login
-        await CentralServerProvider.resetPassword(email);
+        await _provider.resetPassword(email);
         // Login Success
         this.setState({loading: false});
         // Show

@@ -5,6 +5,12 @@ const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 
 export default StyleSheet.create({
+  nodisplay: {
+    flex: 1,
+    width: null,
+    height: deviceHeight,
+    backgroundColor: "black"
+  },
   background: {
     flex: 1,
     width: null,
