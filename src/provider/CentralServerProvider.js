@@ -49,7 +49,7 @@ export default class CentralServerProvider {
     }
   }
 
-  async getDecodedToken() {
+  async getUserInfo() {
     // Init?
     await this.initialize();
     // Return

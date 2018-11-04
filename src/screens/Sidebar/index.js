@@ -12,6 +12,18 @@ const deviceHeight = Dimensions.get("window").height;
 class SideBar extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+    }
+  }
+
+  async componentDidMount() {
+    // Logoff
+    const userInfo = await ProviderFactory.getProvider().getUserInfo();
+    console.log(userInfo);
+    // Add sites
+    this.setState({
+      userName: `${userInfo.name} ${userInfo.firstName}`
+    });
   }
 
   async logoff() {
@@ -26,6 +38,7 @@ class SideBar extends Component {
 
   render() {
     const navigation = this.props.navigation;
+    const { userName } = this.state;
     return (
       <Container>
         <ImageBackground style={styles.background} source={require("../../../assets/sidebar-transparent.png")}>
@@ -52,7 +65,7 @@ class SideBar extends Component {
                 <View style={styles.columnAccount}>
                   <TouchableOpacity style={styles.buttonLogout} onPress={() => this.logoff()}>
                     <Text style={styles.logout}>{I18n.t("authentication.logOut")}</Text>
-                    <Text note style={styles.name}>Kumar Sanket</Text>
+                    <Text note style={styles.name}>{userName}</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={styles.columnThumbnail}>
