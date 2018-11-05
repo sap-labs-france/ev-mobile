@@ -68,13 +68,13 @@ export default StyleSheet.create({
   maxEnergy: {
     fontSize: 10.5,
     textAlign: "center",
-    marginTop: -3,
+    marginTop: 0.3,
   },
   statusDetailsContainerNoConsumption : {
     width: deviceWidth / 3.1
   },
   sizeConnectorImage: {
-    height: 35,
+    height: 37,
     width: 40,
     marginTop: 5
   },
