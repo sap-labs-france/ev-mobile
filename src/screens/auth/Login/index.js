@@ -144,7 +144,7 @@ class Login extends React.Component {
     const { display, eula, loading } = this.state;
     // Do not display?
     if (!display) {
-      return (<View style={styles.nodisplay}/>);  
+      return (<View style={styles.nodisplay}/>);
     }
     // Render
     return (

@@ -14,8 +14,7 @@ import TabDetails from "./screens/Details/TabNavigator";
 // Drawer Menu Navigation
 const DrawerNavigation = createDrawerNavigator(
   {
-    Sites: { screen: Sites },
-    Chargers: { screen: Chargers }
+    Sites: { screen: Sites }
   },
   {
     navigationOptions: {
@@ -34,6 +33,7 @@ const AppNavigation = createStackNavigator(
     SignUp: { screen: SignUp },
     RetrievePassword: { screen: RetrievePassword },
     DrawerNavigation: { screen: DrawerNavigation },
+    Chargers: { screen: Chargers },
     Details: { screen: TabDetails }
   },
   {

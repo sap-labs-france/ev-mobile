@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Image, Platform, FlatList, RefreshControl } from "react-native";
 import { Container, Header, Button, Icon, Body, Left, Right, View, Spinner, List } from "native-base";
+
 import ProviderFactory from "../../provider/ProviderFactory";
 import ChargerComponent from "../../components/Charger";
 import Utils from "../../utils/Utils";
@@ -41,7 +42,7 @@ class Chargers extends Component {
 
   componentWillUnmount() {
     // Stop the timer
-    if(this.timer) {
+    if (this.timer) {
       clearInterval(this.timer);
     }
   }

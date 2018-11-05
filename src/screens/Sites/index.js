@@ -83,7 +83,7 @@ class Sites extends Component {
   }
 
   _renderItem = ({item}) => {
-    return ( 
+    return (
       <SiteComponent item={item} navigation={this.props.navigation} />
     );
   };
@@ -102,11 +102,11 @@ class Sites extends Component {
           <Body>
             <Image source={require("../../../assets/logo-low.gif")} style={styles.imageHeader} />
           </Body>
-          <Right>
-            <Button transparent>
-              {/* <Icon active name="options" /> */}
+          <Right />
+            {/* <Button transparent>
+              <Icon active name="options" />
             </Button>
-          </Right>
+          </Right> */}
         </Header>
 
         <View style={styles.content}>
