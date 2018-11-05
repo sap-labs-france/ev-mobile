@@ -46,8 +46,8 @@ export default class CentralServerProvider {
         // Expired
         return false;
       }
-      // Ok 
-      return true; 
+      // Ok
+      return true;
     }
     // No
     return false;
@@ -216,6 +216,19 @@ export default class CentralServerProvider {
       { headers: this._builSecuredHeaders() }
     );
     console.log(result.data);
+    return result.data;
+  }
+
+  async getUserImage(params = {}) {
+    // Init?
+    await this.initialize();
+    // Call
+    let result = await axios.get(`${centralRestServerServiceSecuredURL}/UserImage`,
+      {
+        headers: this._builSecuredHeaders(),
+        params
+      }
+    );
     return result.data;
   }
 

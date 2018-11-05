@@ -11,9 +11,6 @@ export default StyleSheet.create({
     borderBottomWidth: Platform.OS === "android" ? 0 : 0,
     borderBottomColor: "transparent"
   },
-  spaceTop: {
-    marginTop: 30
-  },
   linkText: {
     paddingLeft: 15
   },

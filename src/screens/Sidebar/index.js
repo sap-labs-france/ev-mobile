@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { ImageBackground, TouchableOpacity, Image, Dimensions } from "react-native";
+import { ImageBackground, TouchableOpacity, Image } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Content, Text, Icon, ListItem, Thumbnail, View } from "native-base";
+
 import ProviderFactory from "../../provider/ProviderFactory";
 import I18n from "../../I18n/I18n";
+import Utils from "../../utils/Utils";
 import styles from "./style";
 
 const _provider = ProviderFactory.getProvider();
@@ -12,6 +14,9 @@ class SideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userName: "",
+      userID: "",
+      userImage: ""
     };
   }
 
@@ -20,8 +25,28 @@ class SideBar extends Component {
     const userInfo = await _provider.getUserInfo();
     // Add sites
     this.setState({
-      userName: `${userInfo.name} ${userInfo.firstName}`
+      userName: `${userInfo.name} ${userInfo.firstName}`,
+      userID: `${userInfo.id}`
+    }, async () => {
+      await this._getUserImage();
     });
+  }
+
+  async _getUserImage() {
+    const { userID } = this.state;
+    let userImage;
+    try {
+      userImage = await _provider.getUserImage(
+        { ID: userID }
+      );
+      console.log(userImage);
+      if (userImage.image) {
+        this.setState({userImage: userImage.image});
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
   }
 
   async _logoff() {
@@ -43,15 +68,15 @@ class SideBar extends Component {
 
   render() {
     const navigation = this.props.navigation;
-    const { userName } = this.state;
+    const { userName, userImage } = this.state;
     return (
       <Container>
         <ImageBackground style={styles.background} source={require("../../../assets/sidebar-transparent.png")}>
           <Content style={styles.drawerContent}>
             <View style={styles.logoContainer}>
-              <Image source={require("../../../assets/logo-low.gif")} style={{}} />
+              <Image source={require("../../../assets/logo-low.gif")} style={styles.logo} />
             </View>
-            <ListItem style={[styles.links, styles.spaceTop]} button iconLeft onPress={() => this._navigateTo("Sites")}>
+            <ListItem style={styles.links} button iconLeft onPress={() => this._navigateTo("Sites")}>
               <Icon name="ios-grid-outline" />
               <Text style={styles.linkText}>{I18n.t("sidebar.sites")}</Text>
             </ListItem>
@@ -74,9 +99,15 @@ class SideBar extends Component {
                   </TouchableOpacity>
                 </View>
                 <View style={styles.columnThumbnail}>
+                {userImage ?
+                  <TouchableOpacity style={styles.buttonThumbnail} onPress={() => navigation.navigate("Profile")}>
+                    <Thumbnail style={styles.profilePic} source={{uri: userImage}} />
+                  </TouchableOpacity>
+                :
                   <TouchableOpacity style={styles.buttonThumbnail} onPress={() => navigation.navigate("Profile")}>
                     <Thumbnail style={styles.profilePic} source={require("../../../assets/no-photo.png")} />
                   </TouchableOpacity>
+                }
                 </View>
               </View>
             </View>
