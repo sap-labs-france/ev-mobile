@@ -6,14 +6,13 @@ import ProviderFactory from "../../provider/ProviderFactory";
 import I18n from "../../I18n/I18n";
 import styles from "./style";
 
-const deviceHeight = Dimensions.get("window").height;
 const _provider = ProviderFactory.getProvider();
 
 class SideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-    }
+    };
   }
 
   async componentDidMount() {
@@ -49,10 +48,10 @@ class SideBar extends Component {
       <Container>
         <ImageBackground style={styles.background} source={require("../../../assets/sidebar-transparent.png")}>
           <Content style={styles.drawerContent}>
-            <View style={{borderColor: "#FFFFFF", borderBottomWidth: 1, paddingBottom: 30}}>
-              <Image source={require("../../../assets/logo-low.gif")} style={{flex: 1, resizeMode: "contain", height: deviceHeight / 8, alignSelf: "center"}} />
+            <View style={styles.logoContainer}>
+              <Image source={require("../../../assets/logo-low.gif")} style={{}} />
             </View>
-            <ListItem style={[styles.links, {marginTop: 30}]} button iconLeft onPress={() => this._navigateTo("Sites")}>
+            <ListItem style={[styles.links, styles.spaceTop]} button iconLeft onPress={() => this._navigateTo("Sites")}>
               <Icon name="ios-grid-outline" />
               <Text style={styles.linkText}>{I18n.t("sidebar.sites")}</Text>
             </ListItem>

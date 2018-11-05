@@ -1,6 +1,7 @@
-import { Platform, StyleSheet } from "react-native";
+import { Platform, StyleSheet, Dimensions } from "react-native";
 
 const primary = require("../../theme/variables/commonColor").brandPrimary;
+const deviceHeight = Dimensions.get("window").height;
 
 export default StyleSheet.create({
   links: {
@@ -9,6 +10,9 @@ export default StyleSheet.create({
     paddingLeft: Platform.OS === "android" ? 10 : 10,
     borderBottomWidth: Platform.OS === "android" ? 0 : 0,
     borderBottomColor: "transparent"
+  },
+  spaceTop: {
+    marginTop: 30
   },
   linkText: {
     paddingLeft: 15
@@ -63,5 +67,16 @@ export default StyleSheet.create({
     height: 40,
     width: 40,
     borderRadius: Platform.OS === "android" ? 40 : 20
+  },
+  logoContainer: {
+    borderColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    paddingBottom: 30
+  },
+  logo: {
+    flex: 1,
+    resizeMode: "contain",
+    height: deviceHeight / 8,
+    alignSelf: "center"
   }
 });

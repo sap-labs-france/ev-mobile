@@ -1,6 +1,6 @@
 import axios from "axios";
 import Constants from "../utils/Constants";
-import SInfo from 'react-native-sensitive-info';
+import SInfo from "react-native-sensitive-info";
 
 // const centralRestServerServiceBaseURL = 'https://192.168.1.130';
 const centralRestServerServiceBaseURL = "https://sap-charge-angels-rest-server.cfapps.eu10.hana.ondemand.com";
@@ -20,7 +20,7 @@ export default class CentralServerProvider {
       _email = await SInfo.getItem(Constants.KEY_EMAIL, {});
       _password = await SInfo.getItem(Constants.KEY_PASSWORD, {});
       _token = await SInfo.getItem(Constants.KEY_TOKEN, {});
-      console.log('_token');
+      console.log("_token");
       console.log(_token);
       // Check Token
       if (_token) {
