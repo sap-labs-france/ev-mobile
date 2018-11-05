@@ -35,9 +35,9 @@ class Chargers extends Component {
       loading: false
     }));
     // Refresh every minutes
-    // this.timer = setInterval(() => {
-    //   this._onRefresh();
-    // }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
+    this.timer = setInterval(() => {
+      this._onRefresh();
+    }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
   }
 
   componentWillUnmount() {

@@ -21,7 +21,7 @@ export default StyleSheet.create({
   badgeText: {
     fontSize: 27,
     fontWeight: "bold",
-    marginBottom: Platform.OS === "android" ? -2 : -5,
+    marginBottom: Platform.OS === "android" ? -3.5 : -5,
     paddingTop: 10
   },
   connectorTextInfo: {

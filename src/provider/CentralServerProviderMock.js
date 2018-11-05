@@ -82,6 +82,10 @@ export default class CentralServerProviderMock {
     });
   }
 
+  async _isAdmin() {
+    return true;
+  }
+
   async getEndUserLicenseAgreement(language) {
     throw new Error('Not implemented in class CentralServerProviderMock');
   }

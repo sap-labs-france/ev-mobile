@@ -13,16 +13,26 @@ import ChargerDetails from "../ChargerDetails";
 import GraphDetails from "../GraphDetails";
 import styles from "./styles";
 
-const caen = require("../../../../assets/Sites/caen.jpeg");
+const _provider = ProviderFactory.getProvider();
 
 export class Header extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      charger: this.props.navigation.state.params.charger,
+      connector: this.props.navigation.state.params.connector,
+      alpha: this.props.navigation.state.params.alpha,
+      siteImage: undefined
+    };
+  }
+
+  componentDidMount() {
+    this.getSiteImage();
   }
 
   onStartTransaction = () => {
-    const { charger } = this.props;
+    const { charger } = this.state;
     Alert.alert(
       `${I18n.t("details.startTransaction")}`,
       `${I18n.t("details.startTransactionMessage")} ${charger.id} ?`,
@@ -34,7 +44,7 @@ export class Header extends Component {
   }
 
   onStopTransaction = () => {
-    const { charger } = this.props;
+    const { charger } = this.state;
     Alert.alert(
       `${I18n.t("details.stopTransaction")}`,
       `${I18n.t("details.stopTransactionMessage")} ${charger.id} ?`,
@@ -46,9 +56,9 @@ export class Header extends Component {
   }
 
   startTransaction = async () => {
-    const { charger, connector } = this.props;
+    const { charger, connector } = this.state;
     try {
-      await ProviderFactory.getProvider().startTransaction(charger.id, connector.connectorId);
+      await _provider.startTransaction(charger.id, connector.connectorId);
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -56,9 +66,24 @@ export class Header extends Component {
   }
 
   stopTransaction = async () => {
-    const { charger, connector } = this.props;
+    const { charger, connector } = this.state;
     try {
-      await ProviderFactory.getProvider().stopTransaction(charger.id, connector.activeTransactionID);
+      await _provider.stopTransaction(charger.id, connector.activeTransactionID);
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
+  getSiteImage = async () => {
+    const { charger } = this.state;
+    try {
+      let result = await _provider.getSiteImage(
+        { ID: charger.siteArea.siteID }
+      );
+      this.setState({
+        siteImage: result.image
+      });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -66,7 +91,8 @@ export class Header extends Component {
   }
 
   render() {
-    const { charger, connector, alpha, navigation } = this.props;
+    const { charger, connector, alpha, siteImage } = this.state;
+    const { navigation } = this.props;
     return (
       <View>
         <View style={styles.header}>
@@ -81,8 +107,8 @@ export class Header extends Component {
           </View>
         </View>
         <View style={styles.detailsContainer}>
-          <ImageBackground style={styles.backgroundImage} source={caen}>
-            {ProviderFactory.getProvider()._isAdmin() && (
+          { _provider._isAdmin() && (
+            <ImageBackground style={styles.backgroundImage} source={{uri: siteImage}}>
               <View style={styles.transactionContainer}>
                 <TouchableOpacity onPress={() => connector.activeTransactionID === 0 ? this.onStartTransaction() : this.onStopTransaction()}>
                   {connector.activeTransactionID === 0 ?
@@ -100,8 +126,8 @@ export class Header extends Component {
                   }
                 </TouchableOpacity>
               </View>
-            )}
-          </ImageBackground>
+            </ImageBackground>
+          )}
         </View>
       </View>
     );
@@ -142,13 +168,13 @@ class TabDetails extends Component {
             <Icon type="Feather" name="zap"/>
             <Text>{I18n.t("details.connector")}</Text>
           </Button>
-          { ProviderFactory.getProvider()._isAdmin() && (
+          { _provider._isAdmin() && (
             <Button vertical active={state.index === 1} onPress={()=>navigation.navigate("ChargerDetails")}>
               <Icon type="MaterialIcons" name="info" />
               <Text>{I18n.t("details.informations")}</Text>
             </Button>
           )}
-          <Button vertical active={ProviderFactory.getProvider()._isAdmin() ? state.index === 2 : state.index === 1} onPress={()=>navigation.navigate("GraphDetails")}>
+          <Button vertical active={_provider._isAdmin() ? state.index === 2 : state.index === 1} onPress={()=>navigation.navigate("GraphDetails")}>
             <Icon type="MaterialIcons" name="timeline" />
             <Text>{I18n.t("details.graph")}</Text>
           </Button>

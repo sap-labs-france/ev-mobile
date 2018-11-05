@@ -232,6 +232,19 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  async getSiteImage(params = {}) {
+    // Init?
+    await this.initialize();
+    // Call
+    let result = await axios.get(`${centralRestServerServiceSecuredURL}/SiteImage`,
+      {
+        headers: this._builSecuredHeaders(),
+        params
+      }
+    );
+    return result.data;
+  }
+
   async _isAdmin() {
     // Init?
     await this.initialize();

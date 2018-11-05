@@ -9,8 +9,10 @@ import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import styles from "./styles";
+import Constants from "../../../utils/Constants";
 
 const noPhoto = require("../../../../assets/no-photo.png");
+const _provider = ProviderFactory.getProvider();
 
 class ConnectorDetails extends Component {
 
@@ -31,12 +33,14 @@ class ConnectorDetails extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.timer);
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
   }
 
   getCharger = async (chargerId) => {
     try {
-      let result = await ProviderFactory.getProvider().getCharger(
+      let result = await _provider.getCharger(
         { ID: chargerId }
       );
       return (result);

@@ -39,7 +39,6 @@ class SideBar extends Component {
       userImage = await _provider.getUserImage(
         { ID: userID }
       );
-      console.log(userImage);
       if (userImage.image) {
         this.setState({userImage: userImage.image});
       }
