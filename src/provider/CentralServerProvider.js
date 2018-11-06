@@ -219,6 +219,19 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  async getTransaction(params = {}) {
+    // Init?
+    await this.initialize();
+    // Call
+    let result = await axios.get(`${centralRestServerServiceSecuredURL}/Transaction`,
+      {
+        headers: this._builSecuredHeaders(),
+        params
+      }
+    );
+    return result.data;
+  }
+
   async getUserImage(params = {}) {
     // Init?
     await this.initialize();

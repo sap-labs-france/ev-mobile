@@ -47,6 +47,17 @@ export default StyleSheet.create({
     paddingTop: 10,
     alignSelf: "center"
   },
+  statusText: {
+    fontSize: 17,
+    fontWeight: "bold",
+    paddingTop: 10,
+    alignSelf: "center"
+  },
+  tagIdText: {
+    fontSize: 13,
+    fontWeight: "bold",
+    alignSelf: "center"
+  },
   userInfoContainer: {
     flexDirection: "column",
     justifyContent: "center",
@@ -107,6 +118,7 @@ export default StyleSheet.create({
   profilePic: {
     height: 45,
     width: 45,
+    alignSelf: "center",
     borderRadius: Platform.OS === "android" ? 40 : 20
   }
 });

@@ -22,11 +22,27 @@ class ConnectorDetails extends Component {
       charger: this.props.navigation.state.params.charger,
       connector: this.props.navigation.state.params.connector,
       alpha: this.props.navigation.state.params.alpha,
+      user: {},
+      userID: undefined,
+      tagID: undefined,
+      timestamp: undefined,
+      userImage: undefined,
       refreshing: false
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    if (this.state.connector.activeTransactionID) {
+      const result = await this._getTransaction();
+      this.setState({
+        user: result.user,
+        tagID: result.tagID,
+        timestamp: result.timestamp,
+        userID: result.user.id
+      }, async () => {
+          await this._getUserImage();
+      });
+    }
     this.timer = setInterval(() => {
       this._timerRefresh();
     }, 30000);
@@ -38,7 +54,7 @@ class ConnectorDetails extends Component {
     }
   }
 
-  getCharger = async (chargerId) => {
+  _getCharger = async (chargerId) => {
     try {
       let result = await _provider.getCharger(
         { ID: chargerId }
@@ -50,8 +66,38 @@ class ConnectorDetails extends Component {
     }
   }
 
+  _getTransaction = async () => {
+  const { connector } = this.state;
+    try {
+      let result = await _provider.getTransaction(
+        { ID: connector.activeTransactionID }
+      );
+      console.log("Transaction :", result);
+      return result;
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
+  _getUserImage = async () => {
+    const { userID } = this.state;
+    let userImage;
+    try {
+      userImage = await _provider.getUserImage(
+        { ID: userID }
+      );
+      if (userImage.image) {
+        this.setState({userImage: userImage.image});
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
   _timerRefresh = async () => {
-    let result = await this.getCharger(this.state.charger.id);
+    let result = await this._getCharger(this.state.charger.id);
     this.setState({
       charger: result,
       connector: result.connectors[String.fromCharCode(this.state.alpha.charCodeAt() - 17)]
@@ -60,7 +106,7 @@ class ConnectorDetails extends Component {
 
   _onRefresh = () => {
     this.setState({refreshing: true}, async () => {
-      let result = await this.getCharger(this.state.charger.id);
+      let result = await this._getCharger(this.state.charger.id);
       console.log("Stored: ", result);
       this.setState({
         refreshing: false,
@@ -72,7 +118,7 @@ class ConnectorDetails extends Component {
 
   render() {
     const navigation = this.props.navigation;
-    const { charger, connector, alpha, refreshing } = this.state;
+    const { charger, connector, alpha, refreshing, user, tagID, userImage, timestamp } = this.state;
     return (
       <Container>
         <Header charger={charger} connector={connector} alpha={alpha} navigation={navigation} />
@@ -132,10 +178,13 @@ class ConnectorDetails extends Component {
                     <Text style={styles.undefinedStatusText}>-</Text>
                   </View>
                 :
-                  <TouchableOpacity>
-                    <Thumbnail style={styles.profilePic} source={noPhoto} />
-                    <Text style={styles.undefinedStatusText}>User</Text>
-                  </TouchableOpacity>
+                  <View>
+                    <Thumbnail style={styles.profilePic} source={userImage ? {uri: userImage} : noPhoto} />
+                    <Text style={styles.statusText}>{`${user.name} ${user.firstName}`}</Text>
+                    {_provider._isAdmin() && (
+                      <Text style={styles.tagIdText}>({tagID})</Text>
+                    )}
+                  </View>
                 }
               </View>
             </View>
