@@ -13,11 +13,23 @@ const noConnector = require("../../../assets/connectorType/no-connector.gif");
 
 class ConnectorComponent extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      index: this.props.index,
+      item: this.props.item,
+      alpha: this.props.alpha,
+      navigation: this.props.nav,
+      charger: this.props.charger,
+      siteImage: this.props.sitePicture
+    };
+  }
+
   render() {
-    const { index, item, alpha, nav, charger } = this.props;
+    const { index, item, alpha, navigation, charger, siteImage } = this.state;
     if (index % 2 === 0) {
       return (
-        <TouchableOpacity onPress={()=>nav.navigate("Details", {charger, connector: item, alpha})}>
+        <TouchableOpacity onPress={()=>navigation.navigate("Details", {charger, alpha, siteImage, connector: item})}>
           <Animatable.View animation="slideInLeft" iterationCount={1}>
             <View style={styles.connectorContainer}>
               <View style={styles.connectorStatus}>
@@ -107,7 +119,7 @@ class ConnectorComponent extends Component {
       );
     }
     return (
-      <TouchableOpacity onPress={()=>nav.navigate("Details", {charger, connector: item, alpha})}>
+      <TouchableOpacity onPress={()=>navigation.navigate("Details", {charger, alpha, siteImage, connector: item})}>
         <Animatable.View animation="slideInRight" iterationCount={1}>
           <View style={styles.connectorContainer}>
             <View style={styles.status}>

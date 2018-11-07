@@ -35,7 +35,9 @@ class ConnectorDetails extends Component {
   }
 
   async componentDidMount() {
+    // Is their a transaction ?
     if (this.state.connector.activeTransactionID) {
+      // Yes, get and set the transaction informations
       const result = await this._getTransaction();
       this.setState({
         user: result.user,
@@ -46,19 +48,21 @@ class ConnectorDetails extends Component {
           await this._getUserImage();
       });
     }
-    this.timer = setInterval(() => {
-      this._timerRefresh();
-    }, 30000);
+    // Is their a timestamp ?
     if (this.state.timestamp) {
+      // Yes: Get date
       const timeNow = new Date();
+      // Get elapsed time
       let hours = this.formatTimer(Math.abs(timeNow.getHours() - this.state.timestamp.getHours()));
       let minutes = this.formatTimer(Math.abs(timeNow.getMinutes() - this.state.timestamp.getMinutes()));
       let seconds = this.formatTimer(Math.abs(timeNow.getSeconds() - this.state.timestamp.getSeconds()));
+      // Set elapsed time
       this.setState({
-        hours: 0,
-        minutes: 59,
-        seconds: 50
+        hours,
+        minutes,
+        seconds
       }, () => {
+        // Start timer
         this.elapsedTime = setInterval(() => {
           this.setState({
             seconds: this.formatTimer(++this.state.seconds)
@@ -67,9 +71,14 @@ class ConnectorDetails extends Component {
         }, 1000);
       });
     }
+    // Refresh every minutes
+    this.timer = setInterval(() => {
+      this._timerRefresh();
+    }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
   }
 
   componentWillUnmount() {
+    // Clear interval if it exists
     if (this.timer) {
       clearInterval(this.timer);
     }
@@ -121,15 +130,17 @@ class ConnectorDetails extends Component {
   }
 
   formatTimer = (val) => {
+    // Put 0 next to the digit if lower than 10
     let valString = val + "";
+
     if (valString.length < 2) {
       return "0" + valString;
-    } else {
-      return valString;
     }
+    return valString;
   };
 
   _userChargingElapsedTime = () => {
+    // Set new elapsed time
     this.setState({
       seconds: this.formatTimer(this.state.seconds % 60),
       minutes: this.state.seconds % 60 === 0 ? this.formatTimer(++this.state.minutes % 60) : this.formatTimer(this.state.minutes),
@@ -221,8 +232,12 @@ class ConnectorDetails extends Component {
                 :
                   <View>
                     <Thumbnail style={styles.profilePic} source={userImage ? {uri: userImage} : noPhoto} />
-                    <Text style={styles.statusText}>{`${user.name} ${user.firstName}`}</Text>
-                    {_provider._isAdmin() && (
+                    {user.name && user.firstName ?
+                      <Text style={styles.statusText}>{`${user.name} ${user.firstName}`}</Text>
+                    :
+                    <Text style={styles.statusText}>Unknown user</Text>
+                    }
+                    {_provider._isAdmin() && tagID && (
                       <Text style={styles.tagIdText}>({tagID})</Text>
                     )}
                   </View>

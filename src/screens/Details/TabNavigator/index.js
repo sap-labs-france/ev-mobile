@@ -21,14 +21,10 @@ export class Header extends Component {
     super(props);
     this.state = {
       charger: this.props.navigation.state.params.charger,
+      siteImage: this.props.navigation.state.params.siteImage,
       connector: this.props.navigation.state.params.connector,
-      alpha: this.props.navigation.state.params.alpha,
-      siteImage: undefined
+      alpha: this.props.navigation.state.params.alpha
     };
-  }
-
-  componentDidMount() {
-    this.getSiteImage();
   }
 
   onStartTransaction = () => {
@@ -69,21 +65,6 @@ export class Header extends Component {
     const { charger, connector } = this.state;
     try {
       await _provider.stopTransaction(charger.id, connector.activeTransactionID);
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
-    }
-  }
-
-  getSiteImage = async () => {
-    const { charger } = this.state;
-    try {
-      let result = await _provider.getSiteImage(
-        { ID: charger.siteArea.siteID }
-      );
-      this.setState({
-        siteImage: result.image
-      });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);

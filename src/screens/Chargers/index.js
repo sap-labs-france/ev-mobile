@@ -17,6 +17,7 @@ class Chargers extends Component {
     this.state = {
       siteID: this.props.navigation.state.params.siteID,
       chargers: [],
+      siteImage: undefined,
       loading: true,
       refreshing: false,
       skip: 0,
@@ -27,7 +28,8 @@ class Chargers extends Component {
 
   async componentDidMount() {
     // Get chargers first time
-    const chargers = await this.getChargers(this.state.skip, this.state.limit, this.state.siteID);
+    const chargers = await this._getChargers(this.state.skip, this.state.limit, this.state.siteID);
+    await this._getSiteImage();
     // Add chargers
     this.setState((prevState, props) => ({
       chargers: chargers.result,
@@ -47,7 +49,7 @@ class Chargers extends Component {
     }
   }
 
-  getChargers = async (skip, limit, siteID) => {
+  _getChargers = async (skip, limit, siteID) => {
     let chargers = [];
     try {
       // Get Chargers
@@ -61,12 +63,24 @@ class Chargers extends Component {
     return chargers;
   }
 
+  _getSiteImage = async () => {
+    try {
+      let result = await _provider.getSiteImage(
+        { ID: this.state.siteID }
+      );
+      this.setState({siteImage: result.image});
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
   _onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
     if ((skip + limit) < count) {
       // No: get next sites
-      let chargers = await this.getChargers(skip + Constants.PAGING_SIZE, limit, this.state.siteID);
+      let chargers = await this._getChargers(skip + Constants.PAGING_SIZE, limit, this.state.siteID);
       // Add sites
       this.setState((prevState, props) => ({
         chargers: [...prevState.chargers, ...chargers.result],
@@ -79,7 +93,7 @@ class Chargers extends Component {
   _onRefresh = async () => {
     const { skip, limit } = this.state;
     // Refresh All
-    let chargers = await this.getChargers(0, (skip + limit), this.state.siteID);
+    let chargers = await this._getChargers(0, (skip + limit), this.state.siteID);
     // Add sites
     this.setState((prevState, props) => ({
       chargers: chargers.result
@@ -96,10 +110,10 @@ class Chargers extends Component {
     return null;
   }
 
-  _renderItem = ({item}, navigation) => {
+  _renderItem = ({item}, navigation, siteImage) => {
     return (
       <List>
-        <ChargerComponent items={item} nav={navigation} />
+        <ChargerComponent items={item} nav={navigation} sitePicture={siteImage} />
       </List>
     );
   }
@@ -129,7 +143,7 @@ class Chargers extends Component {
           :
             <FlatList
               data={this.state.chargers}
-              renderItem={item => this._renderItem(item, this.props.navigation)}
+              renderItem={item => this._renderItem(item, this.props.navigation, this.state.siteImage)}
               keyExtractor={item => item.id}
               refreshControl={
                 <RefreshControl onRefresh={this._onRefresh} refreshing={this.state.refreshing} />
