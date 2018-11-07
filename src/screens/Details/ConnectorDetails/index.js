@@ -51,17 +51,17 @@ class ConnectorDetails extends Component {
     }, 30000);
     if (this.state.timestamp) {
       const timeNow = new Date();
-      let hours = this.format(Math.abs(timeNow.getHours() - this.state.timestamp.getHours()));
-      let minutes = this.format(Math.abs(timeNow.getMinutes() - this.state.timestamp.getMinutes()));
-      let seconds = this.format(Math.abs(timeNow.getSeconds() - this.state.timestamp.getSeconds()));
+      let hours = this.formatTimer(Math.abs(timeNow.getHours() - this.state.timestamp.getHours()));
+      let minutes = this.formatTimer(Math.abs(timeNow.getMinutes() - this.state.timestamp.getMinutes()));
+      let seconds = this.formatTimer(Math.abs(timeNow.getSeconds() - this.state.timestamp.getSeconds()));
       this.setState({
-        hours,
-        minutes,
-        seconds
+        hours: 0,
+        minutes: 59,
+        seconds: 50
       }, () => {
         this.elapsedTime = setInterval(() => {
           this.setState({
-            seconds: this.format(++this.state.seconds)
+            seconds: this.formatTimer(++this.state.seconds)
           });
           this._userChargingElapsedTime();
         }, 1000);
@@ -120,7 +120,7 @@ class ConnectorDetails extends Component {
     }
   }
 
-  format = (val) => {
+  formatTimer = (val) => {
     let valString = val + "";
     if (valString.length < 2) {
       return "0" + valString;
@@ -131,9 +131,9 @@ class ConnectorDetails extends Component {
 
   _userChargingElapsedTime = () => {
     this.setState({
-      seconds: this.format(this.state.seconds % 60),
-      minutes: this.state.seconds % 60 === 0 ? this.format(++this.state.minutes) : this.format(this.state.minutes),
-      hours: this.state.minutes % 60 === 0 ? this.format(++this.state.hours) : this.format(this.state.hours)
+      seconds: this.formatTimer(this.state.seconds % 60),
+      minutes: this.state.seconds % 60 === 0 ? this.formatTimer(++this.state.minutes % 60) : this.formatTimer(this.state.minutes),
+      hours: this.state.minutes % 60 === 0 && this.state.seconds % 60 === 0 ? this.formatTimer(++this.state.hours % 60) : this.formatTimer(this.state.hours)
     });
   }
 
@@ -159,7 +159,7 @@ class ConnectorDetails extends Component {
 
   render() {
     const navigation = this.props.navigation;
-    const { charger, connector, alpha, refreshing, user, tagID, userImage, timestamp} = this.state;
+    const { charger, connector, alpha, refreshing, user, tagID, userImage, timestamp, hours, minutes, seconds} = this.state;
     return (
       <Container>
         <Header charger={charger} connector={connector} alpha={alpha} navigation={navigation} />
@@ -244,7 +244,7 @@ class ConnectorDetails extends Component {
               <View style={styles.timerContainer}>
                 <Icon type="Ionicons" name="time" style={styles.iconSize} />
                 {timestamp ?
-                  <Text style={styles.undefinedStatusText}>{`${this.state.hours}:${this.state.minutes}:${this.state.seconds}`}</Text>
+                  <Text style={styles.undefinedStatusText}>{`${hours}:${minutes}:${seconds}`}</Text>
                 :
                   <Text style={styles.undefinedStatusText}>- : - : -</Text>
                 }
