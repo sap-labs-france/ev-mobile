@@ -26,6 +26,9 @@ class ConnectorDetails extends Component {
       userID: undefined,
       tagID: undefined,
       timestamp: undefined,
+      seconds: undefined,
+      minutes: undefined,
+      hours: undefined,
       userImage: undefined,
       refreshing: false
     };
@@ -37,7 +40,7 @@ class ConnectorDetails extends Component {
       this.setState({
         user: result.user,
         tagID: result.tagID,
-        timestamp: result.timestamp,
+        timestamp: new Date(result.timestamp),
         userID: result.user.id
       }, async () => {
           await this._getUserImage();
@@ -46,11 +49,32 @@ class ConnectorDetails extends Component {
     this.timer = setInterval(() => {
       this._timerRefresh();
     }, 30000);
+    if (this.state.timestamp) {
+      const timeNow = new Date();
+      let hours = this.format(Math.abs(timeNow.getHours() - this.state.timestamp.getHours()));
+      let minutes = this.format(Math.abs(timeNow.getMinutes() - this.state.timestamp.getMinutes()));
+      let seconds = this.format(Math.abs(timeNow.getSeconds() - this.state.timestamp.getSeconds()));
+      this.setState({
+        hours,
+        minutes,
+        seconds
+      }, () => {
+        this.elapsedTime = setInterval(() => {
+          this.setState({
+            seconds: this.format(++this.state.seconds)
+          });
+          this._userChargingElapsedTime();
+        }, 1000);
+      });
+    }
   }
 
   componentWillUnmount() {
     if (this.timer) {
       clearInterval(this.timer);
+    }
+    if (this.elapsedTime) {
+      clearInterval(this.elapsedTime);
     }
   }
 
@@ -96,6 +120,23 @@ class ConnectorDetails extends Component {
     }
   }
 
+  format = (val) => {
+    let valString = val + "";
+    if (valString.length < 2) {
+      return "0" + valString;
+    } else {
+      return valString;
+    }
+  };
+
+  _userChargingElapsedTime = () => {
+    this.setState({
+      seconds: this.format(this.state.seconds % 60),
+      minutes: this.state.seconds % 60 === 0 ? this.format(++this.state.minutes) : this.format(this.state.minutes),
+      hours: this.state.minutes % 60 === 0 ? this.format(++this.state.hours) : this.format(this.state.hours)
+    });
+  }
+
   _timerRefresh = async () => {
     let result = await this._getCharger(this.state.charger.id);
     this.setState({
@@ -118,7 +159,7 @@ class ConnectorDetails extends Component {
 
   render() {
     const navigation = this.props.navigation;
-    const { charger, connector, alpha, refreshing, user, tagID, userImage, timestamp } = this.state;
+    const { charger, connector, alpha, refreshing, user, tagID, userImage, timestamp} = this.state;
     return (
       <Container>
         <Header charger={charger} connector={connector} alpha={alpha} navigation={navigation} />
@@ -202,7 +243,11 @@ class ConnectorDetails extends Component {
               </View>
               <View style={styles.timerContainer}>
                 <Icon type="Ionicons" name="time" style={styles.iconSize} />
-                <Text style={styles.undefinedStatusText}>- : - : -</Text>
+                {timestamp ?
+                  <Text style={styles.undefinedStatusText}>{`${this.state.hours}:${this.state.minutes}:${this.state.seconds}`}</Text>
+                :
+                  <Text style={styles.undefinedStatusText}>- : - : -</Text>
+                }
               </View>
             </View>
             <View style={styles.rowContainer}>
