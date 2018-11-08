@@ -4,12 +4,8 @@ import { Text, View, ListItem, Icon } from "native-base";
 
 import * as Animatable from "react-native-animatable";
 
-import ProviderFactory from "../../provider/ProviderFactory";
 import ConnectorComponent from "../Connector";
-import Utils from "../../utils/Utils";
 import styles from "./styles";
-
-const _provider = ProviderFactory.getProvider();
 
 class ChargerComponent extends Component {
 

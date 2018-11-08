@@ -29,13 +29,8 @@ class Chargers extends Component {
   async componentDidMount() {
     // Get chargers first time
     const chargers = await this._getChargers(this.state.skip, this.state.limit, this.state.siteID);
+    await this._setChargers(chargers);
     await this._getSiteImage();
-    // Add chargers
-    this.setState((prevState, props) => ({
-      chargers: chargers.result,
-      count: chargers.count,
-      loading: false
-    }));
     // Refresh every minutes
     this.timer = setInterval(() => {
       this._onRefresh();
@@ -61,6 +56,15 @@ class Chargers extends Component {
       Utils.handleHttpUnexpectedError(error, this.props);
     }
     return chargers;
+  }
+
+  _setChargers = (chargers) => {
+    // Add chargers
+    this.setState((prevState, props) => ({
+      chargers: chargers.result,
+      count: chargers.count,
+      loading: false
+    }));
   }
 
   _getSiteImage = async () => {

@@ -36,8 +36,8 @@ class ConnectorDetails extends Component {
 
   async componentDidMount() {
     await this._isAdmin();
-    await this._setTransaction();
-    await this._setUserImage();
+    await this._getTransaction();
+    await this._getUserImage();
     await this._setElipsedTime();
     // Start timer
     this.elapsedTime = setInterval(() => {
@@ -69,7 +69,7 @@ class ConnectorDetails extends Component {
      });
   }
 
-  _setCharger = async (chargerId) => {
+  _getCharger = async (chargerId) => {
     try {
       let result = await _provider.getCharger(
         { ID: chargerId }
@@ -85,7 +85,7 @@ class ConnectorDetails extends Component {
     }
   }
 
-  _setTransaction = async () => {
+  _getTransaction = async () => {
     const { connector } = this.state;
     try {
       // Is their a transaction and are you Admin ?
@@ -107,7 +107,7 @@ class ConnectorDetails extends Component {
     }
   }
 
-  _setUserImage = async () => {
+  _getUserImage = async () => {
     try {
       if (this.state.user.id) {
         let userImage = await _provider.getUserImage(
@@ -161,17 +161,17 @@ class ConnectorDetails extends Component {
   }
 
   _timerRefresh = async () => {
-    await this._setCharger(this.state.charger.id);
-    await this._setTransaction();
-    await this._setUserImage();
+    await this._getCharger(this.state.charger.id);
+    await this._getTransaction();
+    await this._getUserImage();
     console.log("Refreshed");
   }
 
   _onRefresh = () => {
     this.setState({refreshing: true}, async () => {
-      await this._setCharger(this.state.charger.id);
-      await this._setTransaction();
-      await this._setUserImage();
+      await this._getCharger(this.state.charger.id);
+      await this._getTransaction();
+      await this._getUserImage();
     });
   }
 
