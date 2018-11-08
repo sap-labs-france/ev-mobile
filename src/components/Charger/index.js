@@ -25,7 +25,6 @@ class ChargerComponent extends Component {
   _renderItem = ({item, index}) => {
     let alpha = String.fromCharCode(65 + index);
     const { navigation, charger, siteImage } = this.state;
-    // console.log("Site Image", this.state.siteImage);
     return (
       <ConnectorComponent alpha={alpha} index={index} item={item} nav={navigation} charger={charger} sitePicture={siteImage} />
     );

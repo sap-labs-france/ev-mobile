@@ -60,58 +60,59 @@ class ConnectorComponent extends Component {
                 }
               </View>
               <View style={styles.status}>
-                { item.currentConsumption !== 0 ?
-                  <View style={styles.statusDetailsContainer}>
-                    <Text style={styles.statusText} numberOfLines={1}>
-                      { item.status === "Occupied" ?
-                        I18n.t("connector.occupied")
-                      : item.status === "SuspendedEV" ?
-                        I18n.t("connector.suspendedEV")
-                      : item.status === "Charging" ?
-                        I18n.t("connector.charging")
-                      :
-                        item.status
-                      }
+              { item.currentConsumption !== 0 ?
+                <View style={styles.statusDetailsContainer}>
+                  <Text style={styles.statusText} numberOfLines={1}>
+                    {item.status === "Faulted" ?
+                      I18n.t("connector.faulted")
+                    : item.status === "Occupied" ?
+                      I18n.t("connector.occupied")
+                    : item.status === "SuspendedEV" ?
+                      I18n.t("connector.suspendedEV")
+                    : item.status === "Charging" ?
+                      I18n.t("connector.charging")
+                    :
+                      item.status
+                    }
                     </Text>
-                    <View style={styles.rowSpaceBetween}>
-                      <View style={styles.column}>
-                        <Text style={styles.energy}>{Math.trunc(item.currentConsumption / 1000) === 0 ? (item.currentConsumption / 1000).toFixed(1) : Math.trunc(item.currentConsumption / 1000)}</Text>
-                        <Text style={styles.currentConsumptionUnity} numberOfLines={1}>kW(Instant)</Text>
-                      </View>
-                      <View style={styles.column}>
-                        <Text style={styles.energy}>{Math.round(item.totalConsumption / 1000)}</Text>
-                        <Text style={styles.maxEnergy} numberOfLines={1}>Total kW</Text>
-                      </View>
+                  <View style={styles.rowSpaceBetween}>
+                    <View style={styles.column}>
+                      <Text style={styles.energy}>{Math.trunc(item.currentConsumption / 1000) === 0 ? (item.currentConsumption / 1000).toFixed(1) : Math.trunc(item.currentConsumption / 1000)}</Text>
+                      <Text style={styles.currentConsumptionUnity} numberOfLines={1}>kW(Instant)</Text>
+                    </View>
+                    <View style={styles.column}>
+                      <Text style={styles.energy}>{Math.round(item.totalConsumption / 1000)}</Text>
+                      <Text style={styles.maxEnergy} numberOfLines={1}>Total kW</Text>
                     </View>
                   </View>
-                :
-                  <View style={styles.statusDetailsContainerNoConsumption}>
-                    <Text style={styles.statusText} numberOfLines={1}>
-                      { item.status === "Available" ?
-                        I18n.t("connector.available")
-                      : item.status === "Occupied" ?
-                        I18n.t("connector.occupied")
-                      : item.status === "SuspendedEV" ?
-                        I18n.t("connector.suspendedEV")
-                      :
-                        item.status
-                      }
-                    </Text>
-                    <View style={styles.rowSpaceBetween}>
-                      <View style={styles.column}>
-                        <Image style={styles.sizeConnectorImage} source={item.type === "T2" ? type2 : item.type === "CCS" ? combo : item.type === "C" ? chademo : noConnector} />
-                        <Text style={styles.connectorType}>{item.type === "T2" ? "Type 2" : item.type === "CCS" ? "CCS" : item.type === "C" ? "Type C" : "Unknown"}</Text>
-                      </View>
-                      <View style={styles.column}>
-                        <Text style={styles.power}>{Math.trunc(item.power / 1000)}</Text>
-                        <Text style={styles.maxEnergy} numberOfLines={1}>kWMax</Text>
-                      </View>
+                </View>
+              :
+                <View style={styles.statusDetailsContainerNoConsumption}>
+                  <Text style={styles.statusText} numberOfLines={1}>
+                    {item.status === "Faulted" ?
+                      I18n.t("connector.faulted")
+                    : item.status === "Available" ?
+                      I18n.t("connector.available")
+                    : item.status === "Occupied" ?
+                      I18n.t("connector.occupied")
+                    : item.status === "SuspendedEV" ?
+                      I18n.t("connector.suspendedEV")
+                    :
+                      item.status
+                    }
+                  </Text>
+                  <View style={styles.rowSpaceBetween}>
+                    <View style={styles.column}>
+                      <Image style={styles.sizeConnectorImage} source={item.type === "T2" ? type2 : item.type === "CCS" ? combo : item.type === "C" ? chademo : noConnector} />
+                      <Text style={styles.connectorType}>{item.type === "T2" ? "Type 2" : item.type === "CCS" ? "CCS" : item.type === "C" ? "Type C" : "Unknown"}</Text>
+                    </View>
+                    <View style={styles.column}>
+                      <Text style={styles.power}>{Math.trunc(item.power / 1000)}</Text>
+                      <Text style={styles.maxEnergy} numberOfLines={1}>kWMax</Text>
                     </View>
                   </View>
-                }
-                {item.errorCode !== "NoError" && (
-                  <Text style={styles.connectorErrorCodeText}>{I18n.t("connector.faulted")}</Text>
-                )}
+                </View>
+              }
               </View>
             </View>
           </Animatable.View>
@@ -126,7 +127,9 @@ class ConnectorComponent extends Component {
             { item.currentConsumption !== 0 ?
               <View style={styles.statusDetailsContainer}>
                 <Text style={styles.statusText} numberOfLines={1}>
-                  { item.status === "Occupied" ?
+                  {item.status === "Faulted" ?
+                    I18n.t("connector.faulted")
+                  : item.status === "Occupied" ?
                     I18n.t("connector.occupied")
                   : item.status === "SuspendedEV" ?
                     I18n.t("connector.suspendedEV")
@@ -150,7 +153,9 @@ class ConnectorComponent extends Component {
               :
                 <View style={styles.statusDetailsContainerNoConsumption}>
                   <Text style={styles.statusText} numberOfLines={1}>
-                    { item.status === "Available" ?
+                    {item.status === "Faulted" ?
+                      I18n.t("connector.faulted")
+                    : item.status === "Available" ?
                       I18n.t("connector.available")
                     : item.status === "Occupied" ?
                       I18n.t("connector.occupied")
@@ -172,9 +177,6 @@ class ConnectorComponent extends Component {
                   </View>
                 </View>
                 }
-                {item.errorCode !== "NoError" && (
-                  <Text style={styles.connectorErrorCodeText}>{item.errorCode}</Text>
-                )}
               </View>
             <View style={styles.connectorStatus}>
               { item.status === "Available" && item.currentConsumption === 0 ?

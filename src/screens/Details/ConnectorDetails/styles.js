@@ -41,6 +41,13 @@ export default StyleSheet.create({
     fontSize: 30,
     color: "#FFFFFF"
   },
+  faultedText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingTop: 10,
+    alignSelf: "center",
+    color: "#FF0000"
+  },
   connectorStatus: {
     fontSize: 20,
     fontWeight: "bold",

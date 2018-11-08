@@ -20,10 +20,10 @@ export class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      charger: this.props.navigation.state.params.charger,
+      charger: this.props.charger,
+      connector: this.props.connector,
+      alpha: this.props.alpha,
       siteImage: this.props.navigation.state.params.siteImage,
-      connector: this.props.navigation.state.params.connector,
-      alpha: this.props.navigation.state.params.alpha,
       isAdmin: false
     };
   }

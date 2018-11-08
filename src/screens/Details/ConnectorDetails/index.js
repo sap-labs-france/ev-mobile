@@ -23,36 +23,107 @@ class ConnectorDetails extends Component {
       connector: this.props.navigation.state.params.connector,
       alpha: this.props.navigation.state.params.alpha,
       user: {},
-      userID: undefined,
       tagID: undefined,
       timestamp: undefined,
       seconds: undefined,
       minutes: undefined,
       hours: undefined,
-      userImage: undefined,
+      userImage: "",
       refreshing: false,
       isAdmin: false
     };
   }
 
   async componentDidMount() {
-    // Is Admin ?
-    this.setState({
-      isAdmin: await _provider._isAdmin()
-    });
-    // Is their a transaction ?
-    if (this.state.connector.activeTransactionID && this.state.isAdmin) {
-      // Yes, get and set the transaction informations
-      const result = await this._getTransaction();
+    await this._isAdmin();
+    await this._setTransaction();
+    await this._setUserImage();
+    await this._setElipsedTime();
+    // Start timer
+    this.elapsedTime = setInterval(() => {
       this.setState({
-        user: result.user,
-        tagID: result.tagID,
-        timestamp: new Date(result.timestamp),
-        userID: result.user.id
-      }, async () => {
-          await this._getUserImage();
+        seconds: this.formatTimer(++this.state.seconds)
       });
+      this._userChargingElapsedTime();
+    }, 1000);
+    // Refresh every minutes
+    this.timer = setInterval(() => {
+      this._timerRefresh();
+    }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
+  }
+
+  async componentWillUnmount() {
+    // Clear interval if it exists
+    if (this.timer) {
+      clearInterval(this.timer);
     }
+    if (this.elapsedTime) {
+      clearInterval(this.elapsedTime);
+    }
+  }
+
+  _isAdmin = async () => {
+     let result = await _provider._isAdmin();
+     this.setState({
+      isAdmin: result
+     });
+  }
+
+  _setCharger = async (chargerId) => {
+    try {
+      let result = await _provider.getCharger(
+        { ID: chargerId }
+      );
+      this.setState({
+        refreshing: false,
+        charger: result,
+        connector: result.connectors[String.fromCharCode(this.state.alpha.charCodeAt() - 17)]
+      });
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
+  _setTransaction = async () => {
+    const { connector } = this.state;
+    try {
+      // Is their a transaction and are you Admin ?
+      if (this.state.connector.activeTransactionID && this.state.isAdmin) {
+        // Yes: Set data
+        let result = await _provider.getTransaction(
+          { ID: connector.activeTransactionID }
+        );
+        console.log("Transaction :", result);
+        this.setState({
+          user: result.user,
+          tagID: result.tagID,
+          timestamp: new Date(result.timestamp)
+        });
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
+  _setUserImage = async () => {
+    try {
+      if (this.state.user.id) {
+        let userImage = await _provider.getUserImage(
+          { ID: this.state.user.id }
+        );
+        if (userImage) {
+          this.setState({userImage: userImage.image});
+        }
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
+  _setElipsedTime = async () => {
     // Is their a timestamp ?
     if (this.state.timestamp && this.state.isAdmin) {
       // Yes: Get date
@@ -66,71 +137,7 @@ class ConnectorDetails extends Component {
         hours,
         minutes,
         seconds
-      }, () => {
-        // Start timer
-        this.elapsedTime = setInterval(() => {
-          this.setState({
-            seconds: this.formatTimer(++this.state.seconds)
-          });
-          this._userChargingElapsedTime();
-        }, 1000);
       });
-    }
-    // Refresh every minutes
-    this.timer = setInterval(() => {
-      this._timerRefresh();
-    }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
-  }
-
-  componentWillUnmount() {
-    // Clear interval if it exists
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
-    if (this.elapsedTime) {
-      clearInterval(this.elapsedTime);
-    }
-  }
-
-  _getCharger = async (chargerId) => {
-    try {
-      let result = await _provider.getCharger(
-        { ID: chargerId }
-      );
-      return (result);
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
-    }
-  }
-
-  _getTransaction = async () => {
-  const { connector } = this.state;
-    try {
-      let result = await _provider.getTransaction(
-        { ID: connector.activeTransactionID }
-      );
-      console.log("Transaction :", result);
-      return result;
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
-    }
-  }
-
-  _getUserImage = async () => {
-    const { userID } = this.state;
-    let userImage;
-    try {
-      userImage = await _provider.getUserImage(
-        { ID: userID }
-      );
-      if (userImage.image) {
-        this.setState({userImage: userImage.image});
-      }
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
     }
   }
 
@@ -154,27 +161,23 @@ class ConnectorDetails extends Component {
   }
 
   _timerRefresh = async () => {
-    let result = await this._getCharger(this.state.charger.id);
-    this.setState({
-      charger: result,
-      connector: result.connectors[String.fromCharCode(this.state.alpha.charCodeAt() - 17)]
-    }, () => console.log("Refreshed: ", this.state.charger));
+    await this._setCharger(this.state.charger.id);
+    await this._setTransaction();
+    await this._setUserImage();
+    console.log("Refreshed");
   }
 
   _onRefresh = () => {
     this.setState({refreshing: true}, async () => {
-      let result = await this._getCharger(this.state.charger.id);
-      console.log("Stored: ", result);
-      this.setState({
-        refreshing: false,
-        charger: result,
-        connector: result.connectors[String.fromCharCode(this.state.alpha.charCodeAt() - 17)]
-      });
+      await this._setCharger(this.state.charger.id);
+      await this._setTransaction();
+      await this._setUserImage();
     });
   }
 
   renderAdmin = () => {
     const { connector, alpha, refreshing, user, tagID, userImage, timestamp, hours, minutes, seconds } = this.state;
+    const userPicture = !userImage ? noPhoto : {uri: userImage};
     return (
       <ScrollView style={styles.scrollViewContainer} refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={this._onRefresh} />
@@ -233,7 +236,7 @@ class ConnectorDetails extends Component {
                 </View>
               :
                 <View>
-                  <Thumbnail style={styles.profilePic} source={userImage ? {uri: userImage} : noPhoto} />
+                  <Thumbnail style={styles.profilePic} source={userPicture} />
                   {user.name && user.firstName ?
                     <Text style={styles.statusText}>{`${user.name} ${user.firstName}`}</Text>
                   :
