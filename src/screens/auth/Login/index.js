@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, ImageBackground, Keyboard, ScrollView } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
-import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, ListItem, Footer, Spinner } from "native-base";
+import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, ListItem, Footer, Spinner, TabHeading } from "native-base";
 import Orientation from "react-native-orientation";
 
 import ProviderFactory from "../../../provider/ProviderFactory";
@@ -64,11 +64,9 @@ class Login extends React.Component {
       this._navigateToSites();
     } else {
       // Set default email/password
-      const email = await _provider.getUserEmail();
-      const password = await _provider.getUserPassword();
       this.setState({
-        email: email,
-        password: password,
+        email: this.state.email,
+        password: this.state.password,
         display: true
       });
     }
@@ -139,6 +137,18 @@ class Login extends React.Component {
     );
   }
 
+  _fillEmailInputOnPress = (email) => {
+    this.setState({
+      email
+    });
+  }
+
+  _fillPasswordInputOnPress = (password) => {
+    this.setState({
+      password
+    });
+  }
+
   render() {
     const navigation = this.props.navigation;
     const { display, eula, loading } = this.state;
@@ -172,7 +182,7 @@ class Login extends React.Component {
                     keyboardType={"email-address"}
                     onChangeText={(text) => this.setState({email: text})}
                     secureTextEntry={false}
-                    value={this.state.email}
+                    onKeyPress={(email) => this._fillEmailInputOnPress(email)}
                   />
                 </Item>
                 {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
@@ -194,7 +204,7 @@ class Login extends React.Component {
                     keyboardType={"default"}
                     onChangeText={(text) => this.setState({password: text})}
                     secureTextEntry={true}
-                    value={this.state.password}
+                    onKeyPress={(password) => this._fillPasswordInputOnPress(password)}
                   />
                 </Item>
                 {this.state.errorPassword && this.state.errorPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }

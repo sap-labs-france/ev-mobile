@@ -23,8 +23,15 @@ export class Header extends Component {
       charger: this.props.navigation.state.params.charger,
       siteImage: this.props.navigation.state.params.siteImage,
       connector: this.props.navigation.state.params.connector,
-      alpha: this.props.navigation.state.params.alpha
+      alpha: this.props.navigation.state.params.alpha,
+      isAdmin: false
     };
+  }
+
+  async componentDidMount() {
+    this.setState({
+      isAdmin: await _provider._isAdmin()
+    })
   }
 
   onStartTransaction = () => {
@@ -88,27 +95,27 @@ export class Header extends Component {
           </View>
         </View>
         <View style={styles.detailsContainer}>
-          { _provider._isAdmin() && (
-            <ImageBackground style={styles.backgroundImage} source={{uri: siteImage}}>
-              <View style={styles.transactionContainer}>
-                <TouchableOpacity onPress={() => connector.activeTransactionID === 0 ? this.onStartTransaction() : this.onStopTransaction()}>
-                  {connector.activeTransactionID === 0 ?
-                    <View style={styles.outerCircle}>
-                      <View style={styles.innerCircleStartTransaction}>
-                        <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
-                      </View>
+          <ImageBackground style={styles.backgroundImage} source={{uri: siteImage}}>
+          {this.state.isAdmin && (
+            <View style={styles.transactionContainer}>
+              <TouchableOpacity onPress={() => connector.activeTransactionID === 0 ? this.onStartTransaction() : this.onStopTransaction()}>
+                {connector.activeTransactionID === 0 ?
+                  <View style={styles.outerCircle}>
+                    <View style={styles.innerCircleStartTransaction}>
+                      <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
                     </View>
-                  :
-                    <View style={styles.outerCircle}>
-                      <View style={styles.innerCircleStopTransaction}>
-                        <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="stop" />
-                      </View>
+                  </View>
+                :
+                  <View style={styles.outerCircle}>
+                    <View style={styles.innerCircleStopTransaction}>
+                      <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="stop" />
                     </View>
-                  }
-                </TouchableOpacity>
-              </View>
-            </ImageBackground>
+                  </View>
+                }
+              </TouchableOpacity>
+            </View>
           )}
+          </ImageBackground>
         </View>
       </View>
     );
@@ -119,6 +126,15 @@ class TabDetails extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      isAdmin: false
+    };
+  }
+
+  async componentDidMount() {
+    this.setState({
+      isAdmin: await _provider._isAdmin()
+    });
   }
 
   componentDidUpdate() {
@@ -149,13 +165,13 @@ class TabDetails extends Component {
             <Icon type="Feather" name="zap"/>
             <Text>{I18n.t("details.connector")}</Text>
           </Button>
-          { _provider._isAdmin() && (
+          { this.state.isAdmin && (
             <Button vertical active={state.index === 1} onPress={()=>navigation.navigate("ChargerDetails")}>
               <Icon type="MaterialIcons" name="info" />
               <Text>{I18n.t("details.informations")}</Text>
             </Button>
           )}
-          <Button vertical active={_provider._isAdmin() ? state.index === 2 : state.index === 1} onPress={()=>navigation.navigate("GraphDetails")}>
+          <Button vertical active={this.state.isAdmin ? state.index === 2 : state.index === 1} onPress={()=>navigation.navigate("GraphDetails")}>
             <Icon type="MaterialIcons" name="timeline" />
             <Text>{I18n.t("details.graph")}</Text>
           </Button>

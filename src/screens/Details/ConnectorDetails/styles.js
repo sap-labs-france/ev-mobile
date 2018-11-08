@@ -24,6 +24,12 @@ export default StyleSheet.create({
     alignItems: "center",
     width: deviceWidth / 2
   },
+  secondColumnContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1
+  },
   badgeContainer: {
     justifyContent: "center",
     height: deviceHeight / 16.6,
@@ -58,12 +64,6 @@ export default StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center"
   },
-  userInfoContainer: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1
-  },
   currentConsumptionText: {
     fontWeight: "bold",
     fontSize: 25,
@@ -79,12 +79,6 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  timerContainer: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1
-  },
   energyConsumedContainer: {
     justifyContent: "center",
     alignItems: "center"
@@ -96,19 +90,6 @@ export default StyleSheet.create({
   },
   energyConsumedText: {
     fontSize: 12
-  },
-  faultedContainer: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1
-  },
-  faultedText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    paddingTop: 10,
-    alignSelf: "center",
-    color: "#FF0000"
   },
   headerIcons: {
     fontSize: 30,

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableOpacity, Text as RNText, ScrollView, RefreshControl } from "react-native";
+import { Text as RNText, ScrollView, RefreshControl } from "react-native";
 import { Container, Icon, View, Badge, Thumbnail, Text } from "native-base";
 
 import * as Animatable from "react-native-animatable";
@@ -30,13 +30,18 @@ class ConnectorDetails extends Component {
       minutes: undefined,
       hours: undefined,
       userImage: undefined,
-      refreshing: false
+      refreshing: false,
+      isAdmin: false
     };
   }
 
   async componentDidMount() {
+    // Is Admin ?
+    this.setState({
+      isAdmin: await _provider._isAdmin()
+    });
     // Is their a transaction ?
-    if (this.state.connector.activeTransactionID) {
+    if (this.state.connector.activeTransactionID && this.state.isAdmin) {
       // Yes, get and set the transaction informations
       const result = await this._getTransaction();
       this.setState({
@@ -49,7 +54,7 @@ class ConnectorDetails extends Component {
       });
     }
     // Is their a timestamp ?
-    if (this.state.timestamp) {
+    if (this.state.timestamp && this.state.isAdmin) {
       // Yes: Get date
       const timeNow = new Date();
       // Get elapsed time
@@ -168,118 +173,219 @@ class ConnectorDetails extends Component {
     });
   }
 
+  renderAdmin = () => {
+    const { connector, alpha, refreshing, user, tagID, userImage, timestamp, hours, minutes, seconds } = this.state;
+    return (
+      <ScrollView style={styles.scrollViewContainer} refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={this._onRefresh} />
+      }>
+        <Animatable.View style={styles.content} animation="fadeIn" delay={100}>
+          <View style={styles.rowContainer}>
+            <View style={styles.columnContainer}>
+              { connector.status === "Available" && connector.currentConsumption === 0 ?
+                <Animatable.View>
+                  <Badge style={styles.badgeContainer} success>
+                    <RNText style={styles.badgeText}>{alpha}</RNText>
+                  </Badge>
+                </Animatable.View>
+              : (connector.status === "Occupied" || connector.status === "SuspendedEV") && connector.currentConsumption === 0 ?
+                <Animatable.View>
+                  <Badge style={styles.badgeContainer} danger>
+                    <RNText style={styles.badgeText}>{alpha}</RNText>
+                  </Badge>
+                </Animatable.View>
+              : connector.currentConsumption !== 0 ?
+                <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
+                  <Badge style={styles.badgeContainer} danger>
+                    <RNText style={styles.badgeText}>{alpha}</RNText>
+                  </Badge>
+                </Animatable.View>
+              :
+                <Animatable.View>
+                  <Badge style={styles.badgeContainer} danger>
+                    <RNText style={styles.badgeText}>{alpha}</RNText>
+                  </Badge>
+                </Animatable.View>
+              }
+              {connector.status === "Faulted" ?
+                <Text style={styles.faultedText}>{connector.info}</Text>
+              :
+                <Text style={styles.connectorStatus}>
+                  { connector.status === "Available" ?
+                    I18n.t("connector.available")
+                  : connector.status === "Occupied" ?
+                    I18n.t("connector.occupied")
+                  : connector.status === "Charging" ?
+                    I18n.t("connector.charging")
+                  : connector.status === "SuspendedEV" ?
+                    I18n.t("connector.suspendedEV")
+                  :
+                    connector.status
+                  }
+                </Text>
+              }
+            </View>
+            <View style={styles.columnContainer}>
+              {connector.status === "Available" ?
+                <View>
+                  <Thumbnail style={styles.profilePic} source={noPhoto} />
+                  <Text style={styles.undefinedStatusText}>-</Text>
+                </View>
+              :
+                <View>
+                  <Thumbnail style={styles.profilePic} source={userImage ? {uri: userImage} : noPhoto} />
+                  {user.name && user.firstName ?
+                    <Text style={styles.statusText}>{`${user.name} ${user.firstName}`}</Text>
+                  :
+                    <Text style={styles.statusText}>Unknown user</Text>
+                  }
+                  {tagID && (
+                    <Text style={styles.tagIdText}>({tagID})</Text>
+                  )}
+                </View>
+              }
+            </View>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.columnContainer}>
+              <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
+              { (connector.currentConsumption / 1000).toFixed(1) === 0.0 || connector.currentConsumption === 0 ?
+                <Text style={styles.undefinedStatusText}>-</Text>
+              :
+                <View style={styles.currentConsumptionContainer}>
+                  <Text style={styles.currentConsumptionText}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
+                  <Text style={styles.kWText}>{I18n.t("details.instant")}</Text>
+                </View>
+              }
+            </View>
+            <View style={styles.columnContainer}>
+              <Icon type="Ionicons" name="time" style={styles.iconSize} />
+              {timestamp ?
+                <Text style={styles.undefinedStatusText}>{`${hours}:${minutes}:${seconds}`}</Text>
+              :
+                <Text style={styles.undefinedStatusText}>- : - : -</Text>
+              }
+            </View>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.columnContainer}>
+              <Icon style={styles.iconSize} type="MaterialIcons" name="trending-up" />
+              { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
+                <Text style={styles.undefinedStatusText}>-</Text>
+              :
+                <View style={styles.energyConsumedContainer}>
+                  <Text style={styles.energyConsumedNumber}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
+                  <Text style={styles.energyConsumedText}>{I18n.t("details.consumed")}</Text>
+                </View>
+              }
+            </View>
+          </View>
+        </Animatable.View>
+      </ScrollView>
+    );
+  }
+
+  renderBasic = () => {
+    const { connector, alpha, refreshing, timestamp, hours, minutes, seconds } = this.state;
+    return (
+      <ScrollView style={styles.scrollViewContainer} refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={this._onRefresh} />
+      }>
+        <Animatable.View style={styles.content} animation="fadeIn" delay={100}>
+          <View style={styles.rowContainer}>
+            <View style={styles.columnContainer}>
+              { connector.status === "Available" && connector.currentConsumption === 0 ?
+                <Animatable.View>
+                  <Badge style={styles.badgeContainer} success>
+                    <RNText style={styles.badgeText}>{alpha}</RNText>
+                  </Badge>
+                </Animatable.View>
+              : (connector.status === "Occupied" || connector.status === "SuspendedEV") && connector.currentConsumption === 0 ?
+                <Animatable.View>
+                  <Badge style={styles.badgeContainer} danger>
+                    <RNText style={styles.badgeText}>{alpha}</RNText>
+                  </Badge>
+                </Animatable.View>
+              : connector.currentConsumption !== 0 ?
+                <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
+                  <Badge style={styles.badgeContainer} danger>
+                    <RNText style={styles.badgeText}>{alpha}</RNText>
+                  </Badge>
+                </Animatable.View>
+              :
+                <Animatable.View>
+                  <Badge style={styles.badgeContainer} danger>
+                    <RNText style={styles.badgeText}>{alpha}</RNText>
+                  </Badge>
+                </Animatable.View>
+              }
+              {connector.status === "Faulted" ?
+                <Text style={styles.faultedText}>{connector.info}</Text>
+              :
+                <Text style={styles.connectorStatus}>
+                  { connector.status === "Available" ?
+                    I18n.t("connector.available")
+                  : connector.status === "Occupied" ?
+                    I18n.t("connector.occupied")
+                  : connector.status === "Charging" ?
+                    I18n.t("connector.charging")
+                  : connector.status === "SuspendedEV" ?
+                    I18n.t("connector.suspendedEV")
+                  :
+                    connector.status
+                  }
+                </Text>
+              }
+            </View>
+            <View style={styles.columnContainer}>
+              <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
+              { (connector.currentConsumption / 1000).toFixed(1) === 0.0 || connector.currentConsumption === 0 ?
+                <Text style={styles.undefinedStatusText}>-</Text>
+              :
+                <View style={styles.currentConsumptionContainer}>
+                  <Text style={styles.currentConsumptionText}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
+                  <Text style={styles.kWText}>{I18n.t("details.instant")}</Text>
+                </View>
+              }
+            </View>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.columnContainer}>
+              <Icon type="Ionicons" name="time" style={styles.iconSize} />
+              {timestamp ?
+                <Text style={styles.undefinedStatusText}>{`${hours}:${minutes}:${seconds}`}</Text>
+              :
+                <Text style={styles.undefinedStatusText}>- : - : -</Text>
+              }
+            </View>
+            <View style={styles.columnContainer}>
+              <Icon style={styles.iconSize} type="MaterialIcons" name="trending-up" />
+              { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
+                <Text style={styles.undefinedStatusText}>-</Text>
+                :
+                <View style={styles.energyConsumedContainer}>
+                  <Text style={styles.energyConsumedNumber}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
+                  <Text style={styles.energyConsumedText}>{I18n.t("details.consumed")}</Text>
+                </View>
+              }
+            </View>
+          </View>
+        </Animatable.View>
+      </ScrollView>
+    );
+  }
+
   render() {
     const navigation = this.props.navigation;
-    const { charger, connector, alpha, refreshing, user, tagID, userImage, timestamp, hours, minutes, seconds} = this.state;
+    const { charger, connector, alpha } = this.state;
     return (
       <Container>
         <Header charger={charger} connector={connector} alpha={alpha} navigation={navigation} />
-        <ScrollView style={styles.scrollViewContainer} refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={this._onRefresh} />
-        }>
-          <Animatable.View style={styles.content} animation="fadeIn" delay={100}>
-            <View style={styles.rowContainer}>
-              <View style={styles.columnContainer}>
-                { connector.status === "Available" && connector.currentConsumption === 0 ?
-                  <Animatable.View>
-                    <Badge style={styles.badgeContainer} success>
-                      <RNText style={styles.badgeText}>{alpha}</RNText>
-                    </Badge>
-                  </Animatable.View>
-                : (connector.status === "Occupied" || connector.status === "SuspendedEV") && connector.currentConsumption === 0 ?
-                  <Animatable.View>
-                    <Badge style={styles.badgeContainer} danger>
-                      <RNText style={styles.badgeText}>{alpha}</RNText>
-                    </Badge>
-                  </Animatable.View>
-                : connector.currentConsumption !== 0 ?
-                  <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
-                    <Badge style={styles.badgeContainer} danger>
-                      <RNText style={styles.badgeText}>{alpha}</RNText>
-                    </Badge>
-                  </Animatable.View>
-                :
-                  <Animatable.View>
-                    <Badge style={styles.badgeContainer} danger>
-                      <RNText style={styles.badgeText}>{alpha}</RNText>
-                    </Badge>
-                  </Animatable.View>
-                }
-                {connector.status === "Faulted" ?
-                  <Text style={styles.faultedText}>{connector.info}</Text>
-                :
-                  <Text style={styles.connectorStatus}>
-                    { connector.status === "Available" ?
-                      I18n.t("connector.available")
-                    : connector.status === "Occupied" ?
-                      I18n.t("connector.occupied")
-                    : connector.status === "Charging" ?
-                      I18n.t("connector.charging")
-                    : connector.status === "SuspendedEV" ?
-                      I18n.t("connector.suspendedEV")
-                    :
-                      connector.status
-                    }
-                  </Text>
-                }
-              </View>
-              <View style={styles.userInfoContainer}>
-                {connector.status === "Available" ?
-                  <View>
-                    <Thumbnail style={styles.profilePic} source={noPhoto} />
-                    <Text style={styles.undefinedStatusText}>-</Text>
-                  </View>
-                :
-                  <View>
-                    <Thumbnail style={styles.profilePic} source={userImage ? {uri: userImage} : noPhoto} />
-                    {user.name && user.firstName ?
-                      <Text style={styles.statusText}>{`${user.name} ${user.firstName}`}</Text>
-                    :
-                    <Text style={styles.statusText}>Unknown user</Text>
-                    }
-                    {_provider._isAdmin() && tagID && (
-                      <Text style={styles.tagIdText}>({tagID})</Text>
-                    )}
-                  </View>
-                }
-              </View>
-            </View>
-            <View style={styles.rowContainer}>
-              <View style={styles.columnContainer}>
-                <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
-                { (connector.currentConsumption / 1000).toFixed(1) === 0.0 || connector.currentConsumption === 0 ?
-                  <Text style={styles.undefinedStatusText}>-</Text>
-                :
-                  <View style={styles.currentConsumptionContainer}>
-                    <Text style={styles.currentConsumptionText}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
-                    <Text style={styles.kWText}>{I18n.t("details.instant")}</Text>
-                  </View>
-                }
-              </View>
-              <View style={styles.timerContainer}>
-                <Icon type="Ionicons" name="time" style={styles.iconSize} />
-                {timestamp ?
-                  <Text style={styles.undefinedStatusText}>{`${hours}:${minutes}:${seconds}`}</Text>
-                :
-                  <Text style={styles.undefinedStatusText}>- : - : -</Text>
-                }
-              </View>
-            </View>
-            <View style={styles.rowContainer}>
-              <View style={styles.columnContainer}>
-                <Icon style={styles.iconSize} type="MaterialIcons" name="trending-up" />
-                { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
-                  <Text style={styles.undefinedStatusText}>-</Text>
-                :
-                  <View style={styles.energyConsumedContainer}>
-                    <Text style={styles.energyConsumedNumber}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
-                    <Text style={styles.energyConsumedText}>{I18n.t("details.consumed")}</Text>
-                  </View>
-                }
-              </View>
-            </View>
-          </Animatable.View>
-        </ScrollView>
+        { this.state.isAdmin ?
+          this.renderAdmin()
+        :
+          this.renderBasic()
+        }
       </Container>
     );
   }
