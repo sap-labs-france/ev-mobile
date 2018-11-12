@@ -20,14 +20,13 @@ export class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      siteImage: undefined,
+      siteImage: this.props.navigation.state.params.siteImage,
       isAdmin: false,
       isAuthorisedStopTransaction: false
     };
   }
 
   async componentDidMount() {
-    await this._getSiteImage();
     await this._isAdmin();
     await this._isAuthorizedStopTransaction();
   }
@@ -91,20 +90,6 @@ export class Header extends Component {
       this.setState({
         isAuthorisedStopTransaction: isAuthorised.IsAuthorized
       });
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
-    }
-  }
-
-  _getSiteImage = async () => {
-    try {
-      let result = await _provider.getSiteImage(
-        { ID: this.props.charger.siteArea.siteID }
-      );
-      if (result) {
-        this.setState({siteImage: result.image}, () => console.log("SiteID", this.props.charger.siteArea.siteID));
-      }
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);

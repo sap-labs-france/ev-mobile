@@ -17,6 +17,7 @@ class Chargers extends Component {
     this.state = {
       siteID: this.props.navigation.state.params.siteID,
       chargers: [],
+      siteImage: "",
       loading: true,
       refreshing: false,
       skip: 0,
@@ -28,6 +29,7 @@ class Chargers extends Component {
   async componentDidMount() {
     // Get chargers first time
     const chargers = await this._getChargers(this.state.skip, this.state.limit, this.state.siteID);
+    await this._getSiteImage();
      // Add chargers
      this.setState((prevState, props) => ({
       chargers: chargers.result,
@@ -59,6 +61,20 @@ class Chargers extends Component {
       Utils.handleHttpUnexpectedError(error, this.props);
     }
     return chargers;
+  }
+
+  _getSiteImage = async () => {
+    try {
+      let result = await _provider.getSiteImage(
+        { ID: this.state.siteID }
+      );
+      if (result) {
+        this.setState({siteImage: result.image});
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
   }
 
   _onEndScroll = async () => {
@@ -99,7 +115,7 @@ class Chargers extends Component {
   _renderItem = ({item}, navigation) => {
     return (
       <List>
-        <ChargerComponent items={item} nav={navigation} />
+        <ChargerComponent items={item} nav={navigation} sitePicture={this.state.siteImage} />
       </List>
     );
   }

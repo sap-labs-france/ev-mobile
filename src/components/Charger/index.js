@@ -29,15 +29,15 @@ class ChargerComponent extends Component {
       }
   };
 
-  _renderItem = ({item, index}, charger, navigation) => {
+  _renderItem = ({item, index}, charger, navigation, siteImage) => {
     let alpha = String.fromCharCode(65 + index);
     return (
-      <ConnectorComponent alpha={alpha} index={index} item={item} nav={navigation} charger={charger} />
+      <ConnectorComponent alpha={alpha} index={index} item={item} nav={navigation} charger={charger} sitePicture={siteImage} />
     );
   }
 
   render() {
-    const {  items, nav } = this.props;
+    const {  items, nav, sitePicture } = this.props;
     const { isChargerDead } = this.state;
     return (
       <View style={styles.container}>
@@ -53,7 +53,7 @@ class ChargerComponent extends Component {
         </ListItem>
         <FlatList style={styles.listContainer}
           data={items.connectors}
-          renderItem={item => this._renderItem(item, items, nav)}
+          renderItem={item => this._renderItem(item, items, nav, sitePicture)}
           keyExtractor={(connector, index) => connector.connectorId.toString()}
         />
       </View>
