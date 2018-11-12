@@ -26,6 +26,10 @@ export default StyleSheet.create({
     color: "#32CD32",
     fontSize: 20
   },
+  deadHeartbeatIcon: {
+    color: "#D9534F",
+    fontSize: 20
+  },
   listContainer: {
     flexDirection: "row",
     flex: 1,

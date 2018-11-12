@@ -3,7 +3,7 @@ import Constants from "../utils/Constants";
 import SInfo from "react-native-sensitive-info";
 
 // const centralRestServerServiceBaseURL = 'https://192.168.1.130';
-const centralRestServerServiceBaseURL = "https://sap-charge-angels-rest-server.cfapps.eu10.hana.ondemand.com";
+const centralRestServerServiceBaseURL = "https://sap-ev-rest-server.cfapps.eu10.hana.ondemand.com";
 const centralRestServerServiceAuthURL = centralRestServerServiceBaseURL + "/client/auth";
 const centralRestServerServiceSecuredURL = centralRestServerServiceBaseURL + "/client/api";
 var jwtDecode = require("jwt-decode");
@@ -12,6 +12,9 @@ var jwtDecode = require("jwt-decode");
 let _token;
 let _decodedToken;
 let _initialized;
+let _email;
+let _password;
+
 export default class CentralServerProvider {
   async initialize() {
     // Only once
@@ -78,10 +81,11 @@ export default class CentralServerProvider {
     // Init?
     await this.initialize();
     // Call
-    await axios.post(`${centralRestServerServiceAuthURL}/Reset`,
-      { email },
-      { headers: this._builHeaders() }
-    );
+    await axios.post(`${centralRestServerServiceAuthURL}/Reset`, {
+      email
+    }, {
+      headers: this._builHeaders()
+    });
   }
 
   async logoff() {
@@ -98,10 +102,14 @@ export default class CentralServerProvider {
 
   async login(email, password, eula) {
     // Call
-    let result = await axios.post(`${centralRestServerServiceAuthURL}/Login`,
-      { email, password, "acceptEula": eula },
-      { headers: this._builHeaders() }
-    );
+    let result = await axios.post(`${centralRestServerServiceAuthURL}/Login`, {
+      email,
+      password,
+      "acceptEula": eula,
+      tenant: "slf"
+    }, {
+      headers: this._builHeaders()
+    });
     // Store User/Password/Toke
     SInfo.setItem(Constants.KEY_EMAIL, email, {});
     SInfo.setItem(Constants.KEY_PASSWORD, password, {});
@@ -113,10 +121,15 @@ export default class CentralServerProvider {
   }
 
   async register(name, firstName, email, passwords, eula) {
-    let result = await axios.post(`${centralRestServerServiceAuthURL}/RegisterUser`,
-      { name, firstName, email, passwords, "acceptEula": eula },
-      { headers: this._builHeaders() }
-    );
+    let result = await axios.post(`${centralRestServerServiceAuthURL}/RegisterUser`, {
+      name,
+      firstName,
+      email,
+      passwords,
+      "acceptEula": eula
+    }, {
+      headers: this._builHeaders()
+    });
     return result.data;
   }
 
@@ -188,16 +201,15 @@ export default class CentralServerProvider {
     // Init?
     await this.initialize();
     // Call
-    let result = await axios.post(`${centralRestServerServiceSecuredURL}/ChargingStationStartTransaction`,
-      {
-        chargeBoxID,
-        "args": {
-          "tagID": _decodedToken.tagIDs[0],
-          connectorID
-        }
-      },
-      { headers: this._builSecuredHeaders() }
-    );
+    let result = await axios.post(`${centralRestServerServiceSecuredURL}/ChargingStationStartTransaction`, {
+      chargeBoxID,
+      "args": {
+        "tagID": _decodedToken.tagIDs[0],
+        connectorID
+      }
+    }, {
+      headers: this._builSecuredHeaders()
+    });
     console.log(result.data);
     return result.data;
   }
@@ -206,15 +218,14 @@ export default class CentralServerProvider {
     // Init?
     await this.initialize();
     // Call
-    let result = await axios.post(`${centralRestServerServiceSecuredURL}/ChargingStationStopTransaction`,
-      {
-        chargeBoxID,
-        "args": {
-          transactionId
-        }
-      },
-      { headers: this._builSecuredHeaders() }
-    );
+    let result = await axios.post(`${centralRestServerServiceSecuredURL}/ChargingStationStopTransaction`, {
+      chargeBoxID,
+      "args": {
+        transactionId
+      }
+    }, {
+      headers: this._builSecuredHeaders()
+    });
     console.log(result.data);
     return result.data;
   }
@@ -223,12 +234,10 @@ export default class CentralServerProvider {
     // Init?
     await this.initialize();
     // Call
-    let result = await axios.get(`${centralRestServerServiceSecuredURL}/Transaction`,
-      {
-        headers: this._builSecuredHeaders(),
-        params
-      }
-    );
+    let result = await axios.get(`${centralRestServerServiceSecuredURL}/Transaction`, {
+      headers: this._builSecuredHeaders(),
+      params
+    });
     return result.data;
   }
 
@@ -236,12 +245,10 @@ export default class CentralServerProvider {
     // Init?
     await this.initialize();
     // Call
-    let result = await axios.get(`${centralRestServerServiceSecuredURL}/UserImage`,
-      {
-        headers: this._builSecuredHeaders(),
-        params
-      }
-    );
+    let result = await axios.get(`${centralRestServerServiceSecuredURL}/UserImage`, {
+      headers: this._builSecuredHeaders(),
+      params
+    });
     return result.data;
   }
 
@@ -249,12 +256,21 @@ export default class CentralServerProvider {
     // Init?
     await this.initialize();
     // Call
-    let result = await axios.get(`${centralRestServerServiceSecuredURL}/SiteImage`,
-      {
-        headers: this._builSecuredHeaders(),
-        params
-      }
-    );
+    let result = await axios.get(`${centralRestServerServiceSecuredURL}/SiteImage`, {
+      headers: this._builSecuredHeaders(),
+      params
+    });
+    return result.data;
+  }
+
+  async isAuthorizedStopTransaction(params = {}) {
+    // Init ?
+    await this.initialize();
+    // Call
+    let result = await axios.get(`${centralRestServerServiceSecuredURL}/IsAuthorized`, {
+      headers: this._builSecuredHeaders(),
+      params
+    });
     return result.data;
   }
 
@@ -262,7 +278,7 @@ export default class CentralServerProvider {
     // Init?
     await this.initialize();
     // Check
-    return  (_decodedToken.role === Constants.ROLE_ADMIN);
+    return (_decodedToken.role === Constants.ROLE_ADMIN);
   }
 
   _buildPaging(paging, queryString) {

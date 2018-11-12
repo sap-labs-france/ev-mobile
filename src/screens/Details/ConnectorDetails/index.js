@@ -25,9 +25,9 @@ class ConnectorDetails extends Component {
       user: {},
       tagID: undefined,
       timestamp: undefined,
-      seconds: undefined,
-      minutes: undefined,
-      hours: undefined,
+      seconds: "00",
+      minutes: "00",
+      hours: "00",
       userImage: "",
       refreshing: false,
       isAdmin: false
@@ -79,6 +79,7 @@ class ConnectorDetails extends Component {
         charger: result,
         connector: result.connectors[String.fromCharCode(this.state.alpha.charCodeAt() - 17)]
       });
+      console.log("Connector refreshed", this.state.connector);
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -123,7 +124,7 @@ class ConnectorDetails extends Component {
     }
   }
 
-  _setElipsedTime = async () => {
+  _setElipsedTime = () => {
     // Is their a timestamp ?
     if (this.state.timestamp && this.state.isAdmin) {
       // Yes: Get date
@@ -161,17 +162,18 @@ class ConnectorDetails extends Component {
   }
 
   _timerRefresh = async () => {
+    await this._getUserImage();
     await this._getCharger(this.state.charger.id);
     await this._getTransaction();
-    await this._getUserImage();
-    console.log("Refreshed");
+    console.log("Auto Refreshed");
   }
 
   _onRefresh = () => {
     this.setState({refreshing: true}, async () => {
+      await this._getUserImage();
       await this._getCharger(this.state.charger.id);
       await this._getTransaction();
-      await this._getUserImage();
+      console.log("Refreshed");
     });
   }
 
@@ -211,7 +213,7 @@ class ConnectorDetails extends Component {
                 </Animatable.View>
               }
               {connector.status === "Faulted" ?
-                <Text style={styles.faultedText}>{connector.info}</Text>
+                <Text style={styles.faultedText}>{connector.info ? connector.info : connector.status}</Text>
               :
                 <Text style={styles.connectorStatus}>
                   { connector.status === "Available" ?
@@ -323,7 +325,7 @@ class ConnectorDetails extends Component {
                 </Animatable.View>
               }
               {connector.status === "Faulted" ?
-                <Text style={styles.faultedText}>{connector.info}</Text>
+                <Text style={styles.faultedText}>{connector.info ? connector.info : connector.status}</Text>
               :
                 <Text style={styles.connectorStatus}>
                   { connector.status === "Available" ?

@@ -12,33 +12,48 @@ class ChargerComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      charger: this.props.items,
-      navigation: this.props.nav,
-      siteImage: this.props.sitePicture
+      isChargerDead: true,
+      timeNow: new Date()
     };
   }
 
-  _renderItem = ({item, index}) => {
+  isChargerDead = (lastHeartbeat) => {
+    if (!lastHeartbeat) {
+      this.setState({isChargerDead: true});
+    }
+      let minutesNow = this.state.timeNow.getMinutes();
+      let lastHeartbeatMinutes = new Date(lastHeartbeat).getMinutes();
+      let elipsedMinute = minutesNow - lastHeartbeatMinutes;
+      if (elipsedMinute > 5) {
+        this.setState({isChargerDead: false});
+      }
+  };
+
+  _renderItem = ({item, index}, charger, navigation) => {
     let alpha = String.fromCharCode(65 + index);
-    const { navigation, charger, siteImage } = this.state;
     return (
-      <ConnectorComponent alpha={alpha} index={index} item={item} nav={navigation} charger={charger} sitePicture={siteImage} />
+      <ConnectorComponent alpha={alpha} index={index} item={item} nav={navigation} charger={charger} />
     );
   }
 
   render() {
-    const { charger } = this.state;
+    const {  items, nav } = this.props;
+    const { isChargerDead } = this.state;
     return (
       <View style={styles.container}>
         <ListItem style={styles.listDividerContainer} itemDivider>
-          <Text style={styles.chargerName}>{charger.id} {/*| <Text style={styles.siteAreaName}>{charger.siteArea.name}</Text>*/}</Text>
-          <Animatable.Text animation="pulse" easing="ease-in" iterationCount="infinite">
-            <Icon style={styles.heartbeatIcon} type="FontAwesome" name="heartbeat" />
-          </Animatable.Text>
+          <Text style={styles.chargerName}>{items.id} {/*| <Text style={styles.siteAreaName}>{items.siteArea.name}</Text>*/}</Text>
+          { !isChargerDead ?
+            <Animatable.Text animation="pulse" easing="ease-in" iterationCount="infinite">
+              <Icon style={styles.heartbeatIcon} type="FontAwesome" name="heartbeat" />
+            </Animatable.Text>
+          :
+            <Icon style={styles.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
+          }
         </ListItem>
         <FlatList style={styles.listContainer}
-          data={charger.connectors}
-          renderItem={item => this._renderItem(item)}
+          data={items.connectors}
+          renderItem={item => this._renderItem(item, items, nav)}
           keyExtractor={(connector, index) => connector.connectorId.toString()}
         />
       </View>

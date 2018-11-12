@@ -20,22 +20,27 @@ export class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      charger: this.props.charger,
-      connector: this.props.connector,
-      alpha: this.props.alpha,
-      siteImage: this.props.navigation.state.params.siteImage,
-      isAdmin: false
+      siteImage: undefined,
+      isAdmin: false,
+      isAuthorisedStopTransaction: false
     };
   }
 
   async componentDidMount() {
-    this.setState({
-      isAdmin: await _provider._isAdmin()
-    })
+    await this._getSiteImage();
+    await this._isAdmin();
+    await this._isAuthorizedStopTransaction();
   }
 
+  _isAdmin = async () => {
+    let result = await _provider._isAdmin();
+    this.setState({
+     isAdmin: result
+    });
+ }
+
   onStartTransaction = () => {
-    const { charger } = this.state;
+    const { charger } = this.props;
     Alert.alert(
       `${I18n.t("details.startTransaction")}`,
       `${I18n.t("details.startTransactionMessage")} ${charger.id} ?`,
@@ -47,7 +52,7 @@ export class Header extends Component {
   }
 
   onStopTransaction = () => {
-    const { charger } = this.state;
+    const { charger } = this.props;
     Alert.alert(
       `${I18n.t("details.stopTransaction")}`,
       `${I18n.t("details.stopTransactionMessage")} ${charger.id} ?`,
@@ -59,7 +64,7 @@ export class Header extends Component {
   }
 
   startTransaction = async () => {
-    const { charger, connector } = this.state;
+    const { charger, connector } = this.props;
     try {
       await _provider.startTransaction(charger.id, connector.connectorId);
     } catch (error) {
@@ -69,7 +74,7 @@ export class Header extends Component {
   }
 
   stopTransaction = async () => {
-    const { charger, connector } = this.state;
+    const { charger, connector } = this.props;
     try {
       await _provider.stopTransaction(charger.id, connector.activeTransactionID);
     } catch (error) {
@@ -78,9 +83,37 @@ export class Header extends Component {
     }
   }
 
+  _isAuthorizedStopTransaction = async () => {
+    try {
+      let isAuthorised = await _provider.isAuthorizedStopTransaction(
+        { Action: "StopTransaction", Arg1: this.props.charger.id, Arg2: this.props.connector.activeTransactionID }
+      );
+      this.setState({
+        isAuthorisedStopTransaction: isAuthorised.IsAuthorized
+      });
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
+  _getSiteImage = async () => {
+    try {
+      let result = await _provider.getSiteImage(
+        { ID: this.props.charger.siteArea.siteID }
+      );
+      if (result) {
+        this.setState({siteImage: result.image}, () => console.log("SiteID", this.props.charger.siteArea.siteID));
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
   render() {
-    const { charger, connector, alpha, siteImage } = this.state;
-    const { navigation } = this.props;
+    const { charger, connector, alpha, navigation } = this.props;
+    const { isAuthorisedStopTransaction, siteImage } = this.state;
     return (
       <View>
         <View style={styles.header}>
@@ -98,21 +131,23 @@ export class Header extends Component {
           <ImageBackground style={styles.backgroundImage} source={{uri: siteImage}}>
           {this.state.isAdmin && (
             <View style={styles.transactionContainer}>
-              <TouchableOpacity onPress={() => connector.activeTransactionID === 0 ? this.onStartTransaction() : this.onStopTransaction()}>
-                {connector.activeTransactionID === 0 ?
+              {connector.activeTransactionID === 0 ?
+                <TouchableOpacity onPress={() => this.onStartTransaction()}>
                   <View style={styles.outerCircle}>
                     <View style={styles.innerCircleStartTransaction}>
                       <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
                     </View>
                   </View>
-                :
+                </TouchableOpacity>
+              :
+                <TouchableOpacity disabled={!isAuthorisedStopTransaction} onPress={() => this.onStopTransaction()}>
                   <View style={styles.outerCircle}>
                     <View style={styles.innerCircleStopTransaction}>
                       <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="stop" />
                     </View>
                   </View>
-                }
-              </TouchableOpacity>
+                </TouchableOpacity>
+              }
             </View>
           )}
           </ImageBackground>
@@ -132,9 +167,7 @@ class TabDetails extends Component {
   }
 
   async componentDidMount() {
-    this.setState({
-      isAdmin: await _provider._isAdmin()
-    });
+    await this._isAdmin();
   }
 
   componentDidUpdate() {
@@ -144,6 +177,13 @@ class TabDetails extends Component {
   componentWillUnmount() {
     Orientation.lockToPortrait();
   }
+
+  _isAdmin = async () => {
+    let result = await _provider._isAdmin();
+    this.setState({
+     isAdmin: result
+    });
+ }
 
   isGraphTabActive = () => {
     if (this.props.navigationState.index === 2) {

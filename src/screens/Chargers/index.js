@@ -17,7 +17,6 @@ class Chargers extends Component {
     this.state = {
       siteID: this.props.navigation.state.params.siteID,
       chargers: [],
-      siteImage: undefined,
       loading: true,
       refreshing: false,
       skip: 0,
@@ -29,8 +28,12 @@ class Chargers extends Component {
   async componentDidMount() {
     // Get chargers first time
     const chargers = await this._getChargers(this.state.skip, this.state.limit, this.state.siteID);
-    await this._setChargers(chargers);
-    await this._getSiteImage();
+     // Add chargers
+     this.setState((prevState, props) => ({
+      chargers: chargers.result,
+      count: chargers.count,
+      loading: false
+    }));
     // Refresh every minutes
     this.timer = setInterval(() => {
       this._onRefresh();
@@ -56,27 +59,6 @@ class Chargers extends Component {
       Utils.handleHttpUnexpectedError(error, this.props);
     }
     return chargers;
-  }
-
-  _setChargers = (chargers) => {
-    // Add chargers
-    this.setState((prevState, props) => ({
-      chargers: chargers.result,
-      count: chargers.count,
-      loading: false
-    }));
-  }
-
-  _getSiteImage = async () => {
-    try {
-      let result = await _provider.getSiteImage(
-        { ID: this.state.siteID }
-      );
-      this.setState({siteImage: result.image});
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
-    }
   }
 
   _onEndScroll = async () => {
@@ -114,10 +96,10 @@ class Chargers extends Component {
     return null;
   }
 
-  _renderItem = ({item}, navigation, siteImage) => {
+  _renderItem = ({item}, navigation) => {
     return (
       <List>
-        <ChargerComponent items={item} nav={navigation} sitePicture={siteImage} />
+        <ChargerComponent items={item} nav={navigation} />
       </List>
     );
   }
@@ -147,7 +129,7 @@ class Chargers extends Component {
           :
             <FlatList
               data={this.state.chargers}
-              renderItem={item => this._renderItem(item, this.props.navigation, this.state.siteImage)}
+              renderItem={item => this._renderItem(item, this.props.navigation)}
               keyExtractor={item => item.id}
               refreshControl={
                 <RefreshControl onRefresh={this._onRefresh} refreshing={this.state.refreshing} />
