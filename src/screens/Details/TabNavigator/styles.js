@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
@@ -47,8 +47,8 @@ export default StyleSheet.create({
   outerCircle: {
     borderRadius: (deviceWidth / 3 + deviceHeight / 5.3) / 2,
     borderStyle: "solid",
-    width: deviceWidth / 3,
-    height: deviceHeight / 5.3,
+    width: Platform.OS === "ios" ? deviceWidth / 3 : deviceWidth / 2.93,
+    height: Platform.OS === "ios" ? deviceHeight / 5.3 : deviceHeight / 5.72,
     backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
@@ -57,8 +57,8 @@ export default StyleSheet.create({
   innerCircleStartTransaction: {
     borderRadius: (deviceWidth / 3 - 5 + deviceHeight / 5.3 - 5) / 2,
     borderStyle: "solid",
-    width: deviceWidth / 3 - 5,
-    height: deviceHeight / 5.3 - 5,
+    width: Platform.OS === "ios" ? deviceWidth / 3 - 5 : deviceWidth / 2.93 - 5,
+    height: Platform.OS === "ios" ? deviceHeight / 5.3 - 5 : deviceHeight / 5.72 - 5,
     backgroundColor: "#5cb85c",
     justifyContent: "center",
     alignItems: "center"
@@ -69,8 +69,8 @@ export default StyleSheet.create({
   innerCircleStopTransaction: {
     borderRadius: (deviceWidth / 3 - 5 + deviceHeight / 5.3 - 5) / 2,
     borderStyle: "solid",
-    width: deviceWidth / 3 - 5,
-    height: deviceHeight / 5.3 - 5,
+    width: Platform.OS === "ios" ? deviceWidth / 3 - 5 : deviceWidth / 2.93 - 5,
+    height: Platform.OS === "ios" ? deviceHeight / 5.3 - 5 : deviceHeight / 5.72 - 5,
     backgroundColor: "#d9534f",
     justifyContent: "center",
     alignItems: "center"

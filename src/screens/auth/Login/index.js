@@ -182,7 +182,7 @@ class Login extends React.Component {
                     keyboardType={"email-address"}
                     onChangeText={(text) => this.setState({email: text})}
                     secureTextEntry={false}
-                    onKeyPress={(email) => this._fillEmailInputOnPress(email)}
+                    onChange={(email) => this._fillEmailInputOnPress(email)}
                   />
                 </Item>
                 {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
@@ -204,7 +204,7 @@ class Login extends React.Component {
                     keyboardType={"default"}
                     onChangeText={(text) => this.setState({password: text})}
                     secureTextEntry={true}
-                    onKeyPress={(password) => this._fillPasswordInputOnPress(password)}
+                    onChange={(password) => this._fillPasswordInputOnPress(password)}
                   />
                 </Item>
                 {this.state.errorPassword && this.state.errorPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
