@@ -98,7 +98,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.charge_angels"
+        applicationId "com.e_mobility"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -137,9 +137,9 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-sensitive-info')
     compile project(':react-native-vector-icons')
     compile project(':react-native-svg')
+    compile project(':react-native-sensitive-info')
     compile project(':react-native-orientation')
     compile project(':react-native-i18n')
     implementation fileTree(dir: "libs", include: ["*.jar"])
