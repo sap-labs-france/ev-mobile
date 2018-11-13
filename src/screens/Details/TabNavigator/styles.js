@@ -39,6 +39,9 @@ export default StyleSheet.create({
     width: deviceWidth,
     height: deviceHeight / 4.3
   },
+  spinner: {
+    marginTop: 120
+  },
   transactionContainer: {
     justifyContent: "center",
     alignItems: "center",

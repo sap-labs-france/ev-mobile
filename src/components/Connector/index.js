@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, TouchableOpacity, Dimensions } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import { Text, View, Badge } from "native-base";
 
 import * as Animatable from "react-native-animatable";
@@ -11,15 +11,10 @@ const combo = require("../../../assets/connectorType/combo_ccs.gif");
 const chademo = require("../../../assets/connectorType/chademo.gif");
 const noConnector = require("../../../assets/connectorType/no-connector.gif");
 
-const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get("window").height;
-
 class ConnectorComponent extends Component {
 
   render() {
     const { index, item, alpha, nav, charger, sitePicture } = this.props;
-    console.log("Heigth", deviceHeight);
-    console.log("Width", deviceWidth);
     if (index % 2 === 0) {
       return (
         <TouchableOpacity onPress={()=>nav.navigate("Details", {charger, alpha, siteImage: sitePicture, connector: item})}>

@@ -12,22 +12,10 @@ class ChargerComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isChargerDead: true,
+      isChargerDead: false,
       timeNow: new Date()
     };
   }
-
-  isChargerDead = (lastHeartbeat) => {
-    if (!lastHeartbeat) {
-      this.setState({isChargerDead: true});
-    }
-      let minutesNow = this.state.timeNow.getMinutes();
-      let lastHeartbeatMinutes = new Date(lastHeartbeat).getMinutes();
-      let elipsedMinute = minutesNow - lastHeartbeatMinutes;
-      if (elipsedMinute > 5) {
-        this.setState({isChargerDead: false});
-      }
-  };
 
   _renderItem = ({item, index}, charger, navigation, siteImage) => {
     let alpha = String.fromCharCode(65 + index);

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { TouchableOpacity, ImageBackground, Alert } from "react-native";
-import { Button, Icon, Text, Footer, FooterTab, View } from "native-base";
+import { Button, Icon, Text, Footer, FooterTab, View, Spinner } from "native-base";
 import { TabNavigator } from "react-navigation";
 import Orientation from "react-native-orientation";
 
@@ -12,6 +12,7 @@ import ConnectorDetails from "../ConnectorDetails";
 import ChargerDetails from "../ChargerDetails";
 import GraphDetails from "../GraphDetails";
 import styles from "./styles";
+import Message from "../../../utils/Message";
 
 const _provider = ProviderFactory.getProvider();
 
@@ -22,7 +23,8 @@ export class Header extends Component {
     this.state = {
       siteImage: this.props.navigation.state.params.siteImage,
       isAdmin: false,
-      isAuthorisedStopTransaction: false
+      isAuthorisedStopTransaction: false,
+      loadingTransaction: false
     };
   }
 
@@ -64,22 +66,36 @@ export class Header extends Component {
 
   startTransaction = async () => {
     const { charger, connector } = this.props;
+    this.setState({loadingTransaction: true});
     try {
-      await _provider.startTransaction(charger.id, connector.connectorId);
+      let status = await _provider.startTransaction(charger.id, connector.connectorId);
+      if (status.status && status.status === "Accepted") {
+        Message.showSuccess("Accepted");
+      } else {
+        Message.showError("Denied");
+      }
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
     }
+    this.setState({loadingTransaction: false});
   }
 
   stopTransaction = async () => {
     const { charger, connector } = this.props;
+    this.setState({loadingTransaction: true});
     try {
-      await _provider.stopTransaction(charger.id, connector.activeTransactionID);
+      let status = await _provider.stopTransaction(charger.id, connector.activeTransactionID);
+      if (status.status && status.status === "Accepted") {
+        Message.showSuccess("Accepted");
+      } else {
+        Message.showError("Denied");
+      }
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
     }
+    this.setState({loadingTransaction: false});
   }
 
   _isAuthorizedStopTransaction = async () => {
@@ -98,7 +114,7 @@ export class Header extends Component {
 
   render() {
     const { charger, connector, alpha, navigation } = this.props;
-    const { isAuthorisedStopTransaction, siteImage } = this.state;
+    const { isAuthorisedStopTransaction, siteImage, loadingTransaction } = this.state;
     return (
       <View>
         <View style={styles.header}>
@@ -114,27 +130,33 @@ export class Header extends Component {
         </View>
         <View style={styles.detailsContainer}>
           <ImageBackground style={styles.backgroundImage} source={{uri: siteImage}}>
-          {this.state.isAdmin && (
-            <View style={styles.transactionContainer}>
-              {connector.activeTransactionID === 0 ?
-                <TouchableOpacity onPress={() => this.onStartTransaction()}>
-                  <View style={styles.outerCircle}>
-                    <View style={styles.innerCircleStartTransaction}>
-                      <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              :
-                <TouchableOpacity disabled={!isAuthorisedStopTransaction} onPress={() => this.onStopTransaction()}>
-                  <View style={styles.outerCircle}>
-                    <View style={styles.innerCircleStopTransaction}>
-                      <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="stop" />
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              }
+          { loadingTransaction ?
+            <Spinner color="white" style={styles.spinner} />
+          :
+            <View>
+              {this.state.isAdmin && (
+                <View style={styles.transactionContainer}>
+                  {connector.activeTransactionID === 0 ?
+                    <TouchableOpacity onPress={() => this.onStartTransaction()}>
+                      <View style={styles.outerCircle}>
+                        <View style={styles.innerCircleStartTransaction}>
+                          <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  :
+                    <TouchableOpacity disabled={!isAuthorisedStopTransaction} onPress={() => this.onStopTransaction()}>
+                      <View style={styles.outerCircle}>
+                        <View style={styles.innerCircleStopTransaction}>
+                          <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="stop" />
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  }
+                </View>
+              )}
             </View>
-          )}
+          }
           </ImageBackground>
         </View>
       </View>
