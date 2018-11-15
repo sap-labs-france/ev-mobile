@@ -4,9 +4,15 @@ const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 
 export default StyleSheet.create({
-  connectorContainer: {
+  rightConnectorContainer: {
     flexDirection: "row",
-    marginTop: 5
+    marginTop: 5,
+    borderColor: "#FFFFFF",
+    borderRightWidth: 1
+  },
+  leftConnectorContainer: {
+    flexDirection: "row",
+    marginTop: 5,
   },
   connectorStatus: {
     flexDirection: "column",

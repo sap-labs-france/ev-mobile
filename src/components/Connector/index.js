@@ -19,7 +19,7 @@ class ConnectorComponent extends Component {
       return (
         <TouchableOpacity onPress={()=>nav.navigate("Details", {charger, alpha, siteImage: sitePicture, connector: item})}>
           <Animatable.View animation="slideInLeft" iterationCount={1}>
-            <View style={styles.connectorContainer}>
+            <View style={styles.rightConnectorContainer}>
               <View style={styles.connectorStatus}>
                 { item.status === "Available" && item.currentConsumption === 0 ?
                   <Animatable.View>
@@ -110,7 +110,7 @@ class ConnectorComponent extends Component {
     return (
       <TouchableOpacity onPress={()=>nav.navigate("Details", {charger, alpha, siteImage: sitePicture, connector: item})}>
         <Animatable.View animation="slideInRight" iterationCount={1}>
-          <View style={styles.connectorContainer}>
+          <View style={styles.leftConnectorContainer}>
             <View style={styles.status}>
             { item.currentConsumption !== 0 ?
               <View style={styles.statusDetailsContainer}>
