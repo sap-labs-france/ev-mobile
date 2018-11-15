@@ -6,7 +6,9 @@
     "sessionExpired": "Session expirée",
     "numbers": "Entrez un nombre valide",
     "email": "Entrez une adresse email valide",
-    "required": "Le champ est obligatoire"
+    "required": "Le champ est obligatoire",
+    "yes": "Oui",
+    "no": "Non"
   },
   "sidebar": {
     "sites": "Sites"
@@ -57,11 +59,15 @@
     "stopTransaction": "Stopper transaction",
     "startTransactionMessage": "Voulez-vous vraiment démarrer une nouvelle session sur la borne ",
     "stopTransactionMessage": "Voulez-vous vraiment arrêter la session sur la borne ",
+    "accepted": "Accepted",
+    "denied": "Denied",
     "consumed": "kW consommé(s)",
     "instant": "kW instantané(s)",
     "vendor": "Vendeur",
     "model": "Modèle",
     "ocppVersion": "Version OCPP",
-    "firmwareVersion": "Version Firmware"
+    "firmwareVersion": "Version Firmware",
+    "time": "Temps",
+    "chargeInWatts": "Charge en Watt(s)"
   }
 }

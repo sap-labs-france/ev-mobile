@@ -6,7 +6,9 @@
     "sessionExpired": "Session expired",
     "numbers": "Enter a valid number",
     "email": "Enter a valid email address",
-    "required": "Field is mandatory"
+    "required": "Field is mandatory",
+    "yes": "Yes",
+    "no": "No"
   },
   "sidebar": {
     "sites": "Sites"
@@ -57,11 +59,15 @@
     "stopTransaction": "Stop transaction",
     "startTransactionMessage": "Do you really want to start a new session on the charging station ",
     "stopTransactionMessage": "Do you really want to stop the session of the charging station ",
+    "accepted": "Accepted",
+    "denied": "Denied",
     "consumed": "kW consumed",
     "instant": "kW instant",
     "vendor": "Vendor",
     "model": "Model",
     "ocppVersion": "OCPP Version",
-    "firmwareVersion": "Firmware Version"
+    "firmwareVersion": "Firmware Version",
+    "time": "Time",
+    "chargeInWatts": "Charge in Watt(s)"
   }
 }

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Dimensions } from "react-native"
+import { Dimensions } from "react-native";
 import { Container } from "native-base";
 
 import { VictoryChart, VictoryTheme, VictoryArea, VictoryAxis } from "victory-native";
 
+import I18n from "../../../I18n/I18n";
 import styles from "./styles";
 
 const deviceHeight = Dimensions.get("window").height;
@@ -37,7 +38,6 @@ class GraphDetails extends Component {
   }
 
   render() {
-    console.log(this.state.connector);
     return (
       <Container>
        <VictoryChart theme={VictoryTheme.material} width={deviceHeight} padding={styles.padding} >
@@ -62,8 +62,8 @@ class GraphDetails extends Component {
             x="time"
             y="charge"
           />
-          <VictoryAxis label="Time" style={{axisLabel: styles.xAxisLabel}} />
-          <VictoryAxis dependentAxis label="Charge in Watt(s)" style={{ axisLabel: styles.yAxisLabel}} />
+          <VictoryAxis label={I18n.t("details.time")} style={{axisLabel: styles.xAxisLabel}} />
+          <VictoryAxis dependentAxis label={I18n.t("details.chargeInWatts")} style={{ axisLabel: styles.yAxisLabel}} />
        </VictoryChart>
       </Container>
     );

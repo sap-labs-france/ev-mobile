@@ -46,8 +46,8 @@ export class Header extends Component {
       `${I18n.t("details.startTransaction")}`,
       `${I18n.t("details.startTransactionMessage")} ${charger.id} ?`,
       [
-        {text: "Yes", onPress: () => this.startTransaction()},
-        {text: "No"}
+        {text: I18n.t("general.yes"), onPress: () => this.startTransaction()},
+        {text: I18n.t("general.no")}
       ]
     );
   }
@@ -58,8 +58,8 @@ export class Header extends Component {
       `${I18n.t("details.stopTransaction")}`,
       `${I18n.t("details.stopTransactionMessage")} ${charger.id} ?`,
       [
-        {text: "Yes", onPress: () => this.stopTransaction()},
-        {text: "No"}
+        {text: I18n.t("general.yes"), onPress: () => this.stopTransaction()},
+        {text: I18n.t("general.no")}
       ]
     );
   }
@@ -70,9 +70,9 @@ export class Header extends Component {
     try {
       let status = await _provider.startTransaction(charger.id, connector.connectorId);
       if (status.status && status.status === "Accepted") {
-        Message.showSuccess("Accepted");
+        Message.showSuccess(I18n.t("details.accepted"));
       } else {
-        Message.showError("Denied");
+        Message.showError(I18n.t("details.denied"));
       }
     } catch (error) {
       // Other common Error
@@ -87,9 +87,9 @@ export class Header extends Component {
     try {
       let status = await _provider.stopTransaction(charger.id, connector.activeTransactionID);
       if (status.status && status.status === "Accepted") {
-        Message.showSuccess("Accepted");
+        Message.showSuccess(I18n.t("details.accepted"));
       } else {
-        Message.showError("Denied");
+        Message.showError(I18n.t("details.denied"));
       }
     } catch (error) {
       // Other common Error
