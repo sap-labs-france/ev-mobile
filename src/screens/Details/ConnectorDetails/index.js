@@ -28,6 +28,7 @@ class ConnectorDetails extends Component {
       seconds: "00",
       minutes: "00",
       hours: "00",
+      price: "0",
       userImage: "",
       refreshing: false,
       isAdmin: false
@@ -37,6 +38,7 @@ class ConnectorDetails extends Component {
   async componentDidMount() {
     await this._isAdmin();
     await this._getTransaction();
+    await this._getPrice();
     await this._getUserImage();
     await this._setElipsedTime();
     // Start timer
@@ -118,6 +120,19 @@ class ConnectorDetails extends Component {
           this.setState({userImage: userImage.image});
         }
       }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
+  _getPrice = async () => {
+    try {
+      let price = await _provider.getPrice();
+      this.setState({
+        price
+      });
+      console.log(this.state.price);
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);

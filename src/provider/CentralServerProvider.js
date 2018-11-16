@@ -274,6 +274,16 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  async getPrice() {
+    // Init ?
+    await this.initialize();
+    // Call
+    let result = await axios.get(`${centralRestServerServiceSecuredURL}/Pricing`, {
+      headers: this._builSecuredHeaders()
+    });
+    return result.data;
+  }
+
   async _isAdmin() {
     // Init?
     await this.initialize();

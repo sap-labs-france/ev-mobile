@@ -13,8 +13,28 @@ class ChargerComponent extends Component {
     super(props);
     this.state = {
       isChargerDead: false,
-      timeNow: new Date()
+      minutesNow: new Date().getMinutes()
     };
+  }
+
+  componentDidMount() {
+    const { items } = this.props;
+    const { minutesNow } = this.state;
+    // Check if charger is dead
+    this.isHeartbeat(items, minutesNow);
+
+  }
+
+  isHeartbeat = (charger, minutesNow) => {
+    let getLastHeartbeatMinutes = new Date(charger.lastHeartBeat).getMinutes();
+    // Is last heartbeat has been received after 5 minutes ago ?
+    if ((minutesNow - getLastHeartbeatMinutes) > 5) {
+      // Yes: Charger is dead
+      this.setState({isChargerDead: true});
+    } else {
+      // No: It doesn't
+      this.setState({isChargerDead: false});
+    }
   }
 
   _renderItem = ({item, index}, charger, navigation, siteImage) => {
