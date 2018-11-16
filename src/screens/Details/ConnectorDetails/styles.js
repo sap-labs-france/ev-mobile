@@ -54,7 +54,7 @@ export default StyleSheet.create({
     paddingTop: 10,
     alignSelf: "center"
   },
-  undefinedStatusText: {
+  data: {
     fontSize: 20,
     fontWeight: "bold",
     paddingTop: 10,

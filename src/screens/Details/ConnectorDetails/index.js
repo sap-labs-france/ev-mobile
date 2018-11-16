@@ -28,7 +28,7 @@ class ConnectorDetails extends Component {
       seconds: "00",
       minutes: "00",
       hours: "00",
-      price: "0",
+      price: 0,
       userImage: "",
       refreshing: false,
       isAdmin: false
@@ -43,9 +43,6 @@ class ConnectorDetails extends Component {
     await this._setElipsedTime();
     // Start timer
     this.elapsedTime = setInterval(() => {
-      this.setState({
-        seconds: this.formatTimer(++this.state.seconds)
-      });
       this._userChargingElapsedTime();
     }, 1000);
     // Refresh every minutes
@@ -131,9 +128,9 @@ class ConnectorDetails extends Component {
       if (this.state.isAdmin) {
         let price = await _provider.getPrice();
         this.setState({
-          price
+          price: price.priceKWH
         });
-        console.log(this.state.price);
+        console.log(price);
       }
     } catch (error) {
       // Other common Error
@@ -172,7 +169,7 @@ class ConnectorDetails extends Component {
   _userChargingElapsedTime = () => {
     // Set new elapsed time
     this.setState({
-      seconds: this.formatTimer(this.state.seconds % 60),
+      seconds: this.formatTimer(++this.state.seconds % 60),
       minutes: this.state.seconds % 60 === 0 ? this.formatTimer(++this.state.minutes % 60) : this.formatTimer(this.state.minutes),
       hours: this.state.minutes % 60 === 0 && this.state.seconds % 60 === 0 ? this.formatTimer(++this.state.hours % 60) : this.formatTimer(this.state.hours)
     });
@@ -195,7 +192,7 @@ class ConnectorDetails extends Component {
   }
 
   renderAdmin = () => {
-    const { connector, alpha, refreshing, user, tagID, userImage, timestamp, hours, minutes, seconds } = this.state;
+    const { connector, alpha, refreshing, user, tagID, userImage, timestamp, hours, minutes, seconds, price } = this.state;
     const userPicture = !userImage ? noPhoto : {uri: userImage};
     return (
       <ScrollView style={styles.scrollViewContainer} refreshControl={
@@ -248,31 +245,22 @@ class ConnectorDetails extends Component {
               }
             </View>
             <View style={styles.columnContainer}>
-              {connector.status === "Available" ?
-                <View>
-                  <Thumbnail style={styles.profilePic} source={noPhoto} />
-                  <Text style={styles.undefinedStatusText}>-</Text>
-                </View>
+              <Thumbnail style={styles.profilePic} source={userPicture ? userPicture : noPhoto} />
+              { user.name && user.firstName ?
+                <Text style={styles.statusText}>{`${user.name} ${user.firstName}`}</Text>
               :
-                <View>
-                  <Thumbnail style={styles.profilePic} source={userPicture} />
-                  {user.name && user.firstName ?
-                    <Text style={styles.statusText}>{`${user.name} ${user.firstName}`}</Text>
-                  :
-                    <Text style={styles.statusText}>Unknown user</Text>
-                  }
-                  {tagID && (
-                    <Text style={styles.tagIdText}>({tagID})</Text>
-                  )}
-                </View>
+                <Text style={styles.statusText}>-</Text>
               }
+              { tagID && (
+                <Text style={styles.tagIdText}>({tagID})</Text>
+              )}
             </View>
           </View>
           <View style={styles.rowContainer}>
             <View style={styles.columnContainer}>
               <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
               { (connector.currentConsumption / 1000).toFixed(1) === 0.0 || connector.currentConsumption === 0 ?
-                <Text style={styles.undefinedStatusText}>-</Text>
+                <Text style={styles.data}>-</Text>
               :
                 <View style={styles.currentConsumptionContainer}>
                   <Text style={styles.currentConsumptionText}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
@@ -283,9 +271,9 @@ class ConnectorDetails extends Component {
             <View style={styles.columnContainer}>
               <Icon type="Ionicons" name="time" style={styles.iconSize} />
               {timestamp ?
-                <Text style={styles.undefinedStatusText}>{`${hours}:${minutes}:${seconds}`}</Text>
+                <Text style={styles.data}>{`${hours}:${minutes}:${seconds}`}</Text>
               :
-                <Text style={styles.undefinedStatusText}>- : - : -</Text>
+                <Text style={styles.data}>- : - : -</Text>
               }
             </View>
           </View>
@@ -293,12 +281,20 @@ class ConnectorDetails extends Component {
             <View style={styles.columnContainer}>
               <Icon style={styles.iconSize} type="MaterialIcons" name="trending-up" />
               { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
-                <Text style={styles.undefinedStatusText}>-</Text>
+                <Text style={styles.data}>-</Text>
               :
                 <View style={styles.energyConsumedContainer}>
                   <Text style={styles.energyConsumedNumber}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
                   <Text style={styles.energyConsumedText}>{I18n.t("details.consumed")}</Text>
                 </View>
+              }
+            </View>
+            <View style={styles.columnContainer}>
+              <Icon type="MaterialIcons" name="euro-symbol" style={styles.iconSize} />
+              {connector.totalConsumption ?
+                <Text style={styles.data}>{(price * (connector.totalConsumption / 1000)).toFixed(2)}</Text>
+              :
+                <Text style={styles.data}>-</Text>
               }
             </View>
           </View>
@@ -362,7 +358,7 @@ class ConnectorDetails extends Component {
             <View style={styles.columnContainer}>
               <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
               { (connector.currentConsumption / 1000).toFixed(1) === 0.0 || connector.currentConsumption === 0 ?
-                <Text style={styles.undefinedStatusText}>-</Text>
+                <Text style={styles.data}>-</Text>
               :
                 <View style={styles.currentConsumptionContainer}>
                   <Text style={styles.currentConsumptionText}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
@@ -375,15 +371,15 @@ class ConnectorDetails extends Component {
             <View style={styles.columnContainer}>
               <Icon type="Ionicons" name="time" style={styles.iconSize} />
               {timestamp ?
-                <Text style={styles.undefinedStatusText}>{`${hours}:${minutes}:${seconds}`}</Text>
+                <Text style={styles.data}>{`${hours}:${minutes}:${seconds}`}</Text>
               :
-                <Text style={styles.undefinedStatusText}>- : - : -</Text>
+                <Text style={styles.data}>- : - : -</Text>
               }
             </View>
             <View style={styles.columnContainer}>
               <Icon style={styles.iconSize} type="MaterialIcons" name="trending-up" />
               { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
-                <Text style={styles.undefinedStatusText}>-</Text>
+                <Text style={styles.data}>-</Text>
                 :
                 <View style={styles.energyConsumedContainer}>
                   <Text style={styles.energyConsumedNumber}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
