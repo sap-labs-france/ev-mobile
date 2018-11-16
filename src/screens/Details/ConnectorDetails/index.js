@@ -78,7 +78,7 @@ class ConnectorDetails extends Component {
         charger: result,
         connector: result.connectors[String.fromCharCode(this.state.alpha.charCodeAt() - 17)]
       });
-      console.log("Connector refreshed", this.state.connector);
+      console.log(this.state.connector);
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -94,12 +94,12 @@ class ConnectorDetails extends Component {
         let result = await _provider.getTransaction(
           { ID: connector.activeTransactionID }
         );
-        console.log("Transaction :", result);
         this.setState({
           user: result.user,
           tagID: result.tagID,
           timestamp: new Date(result.timestamp)
         });
+        console.log(result);
       }
     } catch (error) {
       // Other common Error
@@ -143,15 +143,11 @@ class ConnectorDetails extends Component {
     if (this.state.timestamp && this.state.isAdmin) {
       // Yes: Get date
       const timeNow = new Date();
-      // Get elapsed time
-      let hours = this.formatTimer(Math.abs(timeNow.getHours() - this.state.timestamp.getHours()));
-      let minutes = this.formatTimer(Math.abs(timeNow.getMinutes() - this.state.timestamp.getMinutes()));
-      let seconds = this.formatTimer(Math.abs(timeNow.getSeconds() - this.state.timestamp.getSeconds()));
       // Set elapsed time
       this.setState({
-        hours,
-        minutes,
-        seconds
+        hours: this.formatTimer(Math.abs(timeNow.getHours() - this.state.timestamp.getHours())),
+        minutes: this.formatTimer(Math.abs(timeNow.getMinutes() - this.state.timestamp.getMinutes())),
+        seconds: this.formatTimer(Math.abs(timeNow.getSeconds() - this.state.timestamp.getSeconds()))
       });
     }
   }
@@ -176,18 +172,16 @@ class ConnectorDetails extends Component {
   }
 
   _timerRefresh = async () => {
+    await this._getTransaction();
     await this._getUserImage();
     await this._getCharger(this.state.charger.id);
-    await this._getTransaction();
-    console.log("Auto Refreshed");
   }
 
   _onRefresh = () => {
     this.setState({refreshing: true}, async () => {
+      await this._getTransaction();
       await this._getUserImage();
       await this._getCharger(this.state.charger.id);
-      await this._getTransaction();
-      console.log("Refreshed");
     });
   }
 
