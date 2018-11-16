@@ -1,12 +1,15 @@
 import React from "react";
 import { ScrollView, BackHandler } from "react-native";
 import { Spinner, Container } from "native-base";
+
 import HTMLView from "react-native-htmlview";
+
 import styles from "./styles";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
-import Message from "../../../utils/Message";
 import Utils from "../../../utils/Utils";
+
+const _provider = ProviderFactory.getProvider();
 
 export default class Eula extends React.Component {
   constructor(props) {
@@ -31,20 +34,17 @@ export default class Eula extends React.Component {
   endUserLicenseAgreement = async () => {
 		const { I18nLocal } = this.state;
 		try {
-      let result = await ProviderFactory.getProvider().getEndUserLicenseAgreement(I18nLocal);
+      let result = await _provider.getEndUserLicenseAgreement({
+        Language: I18nLocal
+      });
       this.setState({
         loading: false,
         eulaTextHtml: result.text
       });
 		} catch (error) {
-      // Check request?
-      if (error.request) {
-        // Other common Error
-        Utils.handleHttpUnexpectedError(error.request);
-      } else {
-        Message.showError(I18n.t("general.unexpectedError"));
-      }
-		}
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
   }
 
   handleBackButtonClick() {

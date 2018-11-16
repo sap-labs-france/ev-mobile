@@ -128,11 +128,13 @@ class ConnectorDetails extends Component {
 
   _getPrice = async () => {
     try {
-      let price = await _provider.getPrice();
-      this.setState({
-        price
-      });
-      console.log(this.state.price);
+      if (this.state.isAdmin) {
+        let price = await _provider.getPrice();
+        this.setState({
+          price
+        });
+        console.log(this.state.price);
+      }
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);

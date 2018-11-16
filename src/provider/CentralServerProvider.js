@@ -15,7 +15,7 @@ let _initialized;
 let _email;
 let _password;
 
-export default class CentralServerProvider {
+export default class  CentralServerProvider {
   async initialize() {
     // Only once
     if (!_initialized) {
@@ -189,10 +189,11 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  async getEndUserLicenseAgreement(language) {
+  async getEndUserLicenseAgreement(params = {}) {
     // Call
-    let result = await axios.get(`${centralRestServerServiceAuthURL}/EndUserLicenseAgreement?Language=${language}`, {
-      headers: this._builHeaders()
+    let result = await axios.get(`${centralRestServerServiceAuthURL}/EndUserLicenseAgreement`, {
+      headers: this._builHeaders(),
+      params
     });
     return result.data;
   }
@@ -323,7 +324,8 @@ export default class CentralServerProvider {
   _builHeaders() {
     return {
       "Accept": "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Tenant": "slf"
     };
   }
 

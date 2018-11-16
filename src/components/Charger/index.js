@@ -27,7 +27,7 @@ class ChargerComponent extends Component {
 
   isHeartbeat = (charger, minutesNow) => {
     let getLastHeartbeatMinutes = new Date(charger.lastHeartBeat).getMinutes();
-    // Is last heartbeat has been received after 5 minutes ago ?
+    // Is last heartbeat has been received more than 5 minutes ago ?
     if ((minutesNow - getLastHeartbeatMinutes) > 5) {
       // Yes: Charger is dead
       this.setState({isChargerDead: true});
