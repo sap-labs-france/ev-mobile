@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageBackground } from "react-native";
+import { Image, ImageBackground, Linking } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Content, Text, Form, Item, Input, Button, Icon, View, Spinner, Footer } from "native-base";
 import ProviderFactory from "../../../provider/ProviderFactory";

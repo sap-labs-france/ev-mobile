@@ -1548,10 +1548,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.e-Mobility";
 				PRODUCT_NAME = e_Mobility;
-				PROVISIONING_PROFILE = "93bc4cb0-d00d-4434-8c92-ca266a705dd6";
-				PROVISIONING_PROFILE_SPECIFIER = "e-Mobility Appstore test";
+				PROVISIONING_PROFILE = "889d0a30-dfcc-41d9-8646-8cb947af9334";
+				PROVISIONING_PROFILE_SPECIFIER = "e-Mobility";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1579,10 +1579,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.e-Mobility";
 				PRODUCT_NAME = e_Mobility;
-				PROVISIONING_PROFILE = "93bc4cb0-d00d-4434-8c92-ca266a705dd6";
-				PROVISIONING_PROFILE_SPECIFIER = "e-Mobility Appstore test";
+				PROVISIONING_PROFILE = "889d0a30-dfcc-41d9-8646-8cb947af9334";
+				PROVISIONING_PROFILE_SPECIFIER = "e-Mobility";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

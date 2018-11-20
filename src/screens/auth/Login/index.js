@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageBackground, Keyboard, ScrollView } from "react-native";
+import { Image, ImageBackground, Keyboard, ScrollView, Linking } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, ListItem, Footer, Spinner, TabHeading } from "native-base";
 import Orientation from "react-native-orientation";
@@ -231,12 +231,12 @@ class Login extends React.Component {
             </View>
             <Footer>
               <Left>
-                <Button small transparent style={styles.linksButtonLeft} onPress={() => navigation.navigate("SignUp")}>
+                <Button small transparent style={styles.linksButtonLeft} onPress={ async () => await Linking.openURL("https://slf.ev.cfapps.eu10.hana.ondemand.com/#/register")}>
                   <Text style={styles.helpButton}>{I18n.t("authentication.newUser")}</Text>
                 </Button>
               </Left>
               <Right>
-                <Button small transparent style={styles.linksButtonRight} onPress={() => navigation.navigate("RetrievePassword")}>
+              <Button small transparent style={styles.linksButtonRight} onPress={ async () => await Linking.openURL("https://slf.ev.cfapps.eu10.hana.ondemand.com/#/reset-password")}>
                   <Text style={styles.helpButton}>{I18n.t("authentication.forgotYourPassword")}</Text>
                 </Button>
               </Right>
