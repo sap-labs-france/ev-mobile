@@ -4,10 +4,13 @@ import { Container } from "native-base";
 
 import { VictoryChart, VictoryTheme, VictoryArea, VictoryAxis } from "victory-native";
 
+import ProviderFactory from "../../../provider/ProviderFactory";
+import Utils from "../../../utils/Utils";
 import I18n from "../../../I18n/I18n";
 import styles from "./styles";
 
 const deviceHeight = Dimensions.get("window").height;
+const _provider = ProviderFactory.getProvider();
 
 class GraphDetails extends Component {
 
@@ -17,13 +20,34 @@ class GraphDetails extends Component {
       charger: this.props.navigation.state.params.charger,
       connector: this.props.navigation.state.params.connector,
       alpha: this.props.navigation.state.params.alpha,
+      values: [],
       xCategory: [],
       yCagegory: []
     };
   }
 
-  componentDidMount() {
-    this._fillYAxis();
+  async componentDidMount() {
+    await this.getChargingStationConsumption();
+    await this._fillYAxis();
+    await this._fillXAxis();
+  }
+
+  getChargingStationConsumption = async () => {
+    const { connector } = this.state;
+    if (connector.activeTransactionID) {
+      try {
+        let result = await _provider.getChargingStationConsumption({
+          TransactionId: this.state.connector.activeTransactionID
+        });
+        this.setState({
+          values: result.values
+        });
+        console.log(result);
+      } catch (error) {
+        // Other common Error
+        Utils.handleHttpUnexpectedError(error, this.props);
+      }
+    }
   }
 
   _fillYAxis = () => {
@@ -37,6 +61,41 @@ class GraphDetails extends Component {
     this.setState({yCagegory: yAxis});
   }
 
+  _fillXAxis = async () => {
+    let xAxis = [];
+    let index = 10;
+    do {
+      xAxis = this._takeDataEveryX(index);
+      index += 10;
+    } while (xAxis.length > 8);
+    this.setState({
+      xCategory: xAxis
+    });
+    console.log(xAxis);
+  }
+
+  _takeDataEveryX = (value) => {
+    let xAxis = [];
+    this.state.values.forEach((element) => {
+      if (new Date(element.date).getMinutes() % value === 0) {
+        xAxis.push(new Date(element.date).getHours() + ":" + (new Date(element.date).getMinutes() < 10 ? "0" + new Date(element.date).getMinutes() : new Date(element.date).getMinutes()));
+      }
+    });
+    return (xAxis);
+  }
+
+  _closestMaxNumber = (minNumber, maxNumber, number) => {
+    if ((number >= minNumber || number <= maxNumber) && (maxNumber - minNumber) > 0) {
+      let differenceMaxNumber = maxNumber - number;
+      let differenceMinNumber = number - minNumber;
+      if (differenceMaxNumber <= differenceMinNumber) {
+        return maxNumber;
+      } else {
+        return minNumber;
+      }
+    }
+  }
+
   render() {
     return (
       <Container>
@@ -45,7 +104,7 @@ class GraphDetails extends Component {
             style={{ data: styles.data}}
             domain={{ x: [0, 8], y: [0, 8] }}
             categories={{
-              x: ["13h10", "13h20", "13h30", "13h40", "13h50", "14h00", "14h10", "14h20"],
+              x: this.state.xCategory,
               y: this.state.yCagegory
             }}
             data={[

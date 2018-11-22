@@ -100,6 +100,20 @@ export default class  CentralServerProvider {
     _initialized = false;
   }
 
+  async reAuthenticate() {
+    // Authenticated ?
+    let isUserAuthenticated =  await this.isUserAuthenticated();
+    // Not authenticated ?
+    if (!isUserAuthenticated) {
+      // User not authenticated: email and password registered ?
+      if (_email && _password) {
+        // Yes: Log user
+        await this.login(_email, _password, true);
+        console.log("ReAuthenticated NEW TOKEN: ", _token);
+      }
+    }
+  }
+
   async login(email, password, eula) {
     // Call
     let result = await axios.post(`${centralRestServerServiceAuthURL}/Login`, {
@@ -281,6 +295,17 @@ export default class  CentralServerProvider {
     // Call
     let result = await axios.get(`${centralRestServerServiceSecuredURL}/Pricing`, {
       headers: this._builSecuredHeaders()
+    });
+    return result.data;
+  }
+
+  async getChargingStationConsumption(params = {}) {
+    // Init ?
+    await this.initialize();
+    // Call
+    let result = await axios.get(`${centralRestServerServiceSecuredURL}/ChargingStationConsumptionFromTransaction`, {
+      headers: this._builSecuredHeaders(),
+      params
     });
     return result.data;
   }

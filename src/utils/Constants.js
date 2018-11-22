@@ -17,9 +17,9 @@ export default {
   ROLE_DEMO: "D",
 
   // Keystore
-  KEY_EMAIL: 'email',
-  KEY_PASSWORD: 'password',
-  KEY_TOKEN: 'token',
+  KEY_EMAIL: "email",
+  KEY_PASSWORD: "password",
+  KEY_TOKEN: "token",
 
   // Paging
   DEFAULT_PAGING: {

@@ -120,9 +120,7 @@ class Login extends React.Component {
               // Other common Error
               Utils.handleHttpUnexpectedError(error.request);
           }
-        } else {
-          Message.showError(I18n.t("general.unexpectedError"));
-        }
+        } ``
       }
     }
   }

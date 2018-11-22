@@ -2,8 +2,10 @@ import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   container: {
-    paddingBottom: 5,
-    backgroundColor: "rgba(255,255,255,0.2)"
+    paddingBottom: 15,
+    marginBottom: 20,
+    backgroundColor: "rgba(255,255,255,0.2)",
+    borderRadius: 15
   },
   listDividerContainer: {
     backgroundColor: "transparent",
