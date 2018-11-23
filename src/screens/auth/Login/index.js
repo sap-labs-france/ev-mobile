@@ -39,7 +39,7 @@ const formValidationDef = {
   }
 };
 
-const buttons = ["Charge at home", "SAP Labs", "Cancel"];
+const buttons = ["Charge@Home", "SAP Labs France", "Cancel"];
 
 class Login extends React.Component {
   passwordInput;
@@ -52,6 +52,7 @@ class Login extends React.Component {
       eula: false,
       password: "",
       email: "",
+      tenant: "slf",
       clicked: "Choose a scenario",
       loading: false,
       display: false
@@ -81,12 +82,12 @@ class Login extends React.Component {
     // Ok?
     if (formIsValid) {
       // Login
-      const { password, email, eula } = this.state;
+      const { password, email, eula, tenant } = this.state;
       try {
         // Loading
         this.setState({loading: true});
         // Login
-        await _provider.login(email, password, eula);
+        await _provider.login(email, password, eula, tenant);
         // Login Success
         this.setState({loading: false});
         // Navigate
@@ -152,7 +153,7 @@ class Login extends React.Component {
 
   render() {
     const navigation = this.props.navigation;
-    const { display, eula, loading } = this.state;
+    const { display, eula, loading, clicked } = this.state;
     // Do not display?
     if (!display) {
       return (<View style={styles.nodisplay}/>);
@@ -173,7 +174,7 @@ class Login extends React.Component {
                   ActionSheet.show(
                     {
                       options: buttons,
-                      cancelButtonIndex: 2,
+                      cancelButtonIndex: buttons.indexOf("Cancel"),
                       title: "Choose a scenario"
                     },
                     buttonIndex => {
@@ -239,7 +240,7 @@ class Login extends React.Component {
                 { loading ?
                   <Spinner style={styles.spinner} color="white" />
                 :
-                  <Button rounded primary block large style={styles.button} onPress={this.login} disabled={this.state.clicked === "Choose a scenario"}>
+                  <Button rounded primary block large style={styles.button} onPress={clicked !== "Choose a scenario" ? this.login : null} disabled={clicked === "Choose a scenario"}>
                     <Text style={styles.buttonText}>{I18n.t("authentication.login")}</Text>
                   </Button>
                 }

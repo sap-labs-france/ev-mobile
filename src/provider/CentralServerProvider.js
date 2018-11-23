@@ -14,6 +14,7 @@ let _decodedToken;
 let _initialized;
 let _email;
 let _password;
+let _tenant;
 
 export default class  CentralServerProvider {
   async initialize() {
@@ -23,7 +24,7 @@ export default class  CentralServerProvider {
       _email = await SInfo.getItem(Constants.KEY_EMAIL, {});
       _password = await SInfo.getItem(Constants.KEY_PASSWORD, {});
       _token = await SInfo.getItem(Constants.KEY_TOKEN, {});
-      console.log("_token");
+      _tenant = await SInfo.getItem(Constants.KEY_TENANT, {});
       console.log(_token);
       // Check Token
       if (_token) {
@@ -39,7 +40,7 @@ export default class  CentralServerProvider {
     // Init?
     await this.initialize();
     // Email and Password are mandatory
-    if (!_email || !_password) {
+    if (!_email || !_password || !_tenant) {
       return false;
     }
     // Check Token
@@ -89,11 +90,13 @@ export default class  CentralServerProvider {
   }
 
   async logoff() {
-    // Clear the token
+    // Clear the token and tenant
     await SInfo.deleteItem(Constants.KEY_TOKEN, {});
+    await SInfo.deleteItem(Constants.KEY_TENANT, {});
     // Clear local data
     _email = null;
     _password = null;
+    _tenant = null;
     _token = null;
     _decodedToken = null;
     // Reload
@@ -105,22 +108,22 @@ export default class  CentralServerProvider {
     let isUserAuthenticated =  await this.isUserAuthenticated();
     // Not authenticated ?
     if (!isUserAuthenticated) {
-      // User not authenticated: email and password registered ?
-      if (_email && _password) {
+      // User not authenticated: email, password and tenant registered ?
+      if (_email && _password && _tenant) {
         // Yes: Log user
-        await this.login(_email, _password, true);
+        await this.login(_email, _password, true, _tenant);
         console.log("ReAuthenticated NEW TOKEN: ", _token);
       }
     }
   }
 
-  async login(email, password, eula) {
+  async login(email, password, eula, tenant) {
     // Call
     let result = await axios.post(`${centralRestServerServiceAuthURL}/Login`, {
       email,
       password,
       "acceptEula": eula,
-      tenant: "slf"
+      tenant
     }, {
       headers: this._builHeaders()
     });
@@ -128,6 +131,7 @@ export default class  CentralServerProvider {
     SInfo.setItem(Constants.KEY_EMAIL, email, {});
     SInfo.setItem(Constants.KEY_PASSWORD, password, {});
     SInfo.setItem(Constants.KEY_TOKEN, result.data.token, {});
+    SInfo.setItem(Constants.KEY_TENANT, tenant, {});
     // Keep the token
     _token = result.data.token;
     _decodedToken = jwtDecode(_token);

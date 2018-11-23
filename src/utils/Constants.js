@@ -20,6 +20,7 @@ export default {
   KEY_EMAIL: "email",
   KEY_PASSWORD: "password",
   KEY_TOKEN: "token",
+  KEY_TENANT: "tenant",
 
   // Paging
   DEFAULT_PAGING: {
