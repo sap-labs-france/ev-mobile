@@ -21,6 +21,7 @@ class GraphDetails extends Component {
       connector: this.props.navigation.state.params.connector,
       alpha: this.props.navigation.state.params.alpha,
       values: [],
+      dataToDisplay: [],
       xCategory: [new Date().getHours() + ":" + new Date().getMinutes()],
       yCagegory: ["1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000"]
     };
@@ -32,6 +33,7 @@ class GraphDetails extends Component {
       await this.getChargingStationConsumption();
       await this._fillXAxis();
       await this._fillYAxis();
+      await this._fillData();
     }
   }
 
@@ -55,10 +57,17 @@ class GraphDetails extends Component {
   _fillYAxis = () => {
     const { connector } = this.state;
     let yAxis = [];
-    let yMin = connector.currentConsumption - 10000 <= 0 ? 1000 : connector.currentConsumption - 5000;
-    let yMax = connector.currentConsumption - 10000 <= 0 ? 8000 : connector.currentConsumption + 2000;
-    for (var i = yMin; i <= yMax; i = i + 1 * 1000) {
-      yAxis.push((Math.round(i / 1000) + "000").toString());
+    let maxPower = connector.power;
+    let index = 0;
+    let chargerValuesByX = 500;
+
+    while (index < maxPower) {
+      if (yAxis.length > 8) {
+        yAxis = [];
+        chargerValuesByX += 500;
+        index = chargerValuesByX;
+      }
+      yAxis.push((index += chargerValuesByX).toString());
     }
     this.setState({yCagegory: yAxis});
   }
@@ -85,6 +94,26 @@ class GraphDetails extends Component {
       }
     });
     return (xAxis);
+  }
+
+  _fillData = () => {
+    const { values, xCategory } = this.state;
+    let data = [];
+    let found = 0;
+    for (let index = 0; index < values.length && xCategory[found]; index++) {
+      const hours = new Date(values[index].date).getHours();
+      const minutes = (new Date(values[index].date).getMinutes() < 10 ? "0" + new Date(values[index].date).getMinutes() : new Date(values[index].date).getMinutes());
+      const time = `${hours}:${minutes}`;
+      if (time === xCategory[found]) {
+          data.push({
+          time,
+          charge: (values[index].value).toString()
+        });
+        found++;
+      }
+    }
+    console.log(data);
+    // this.setState({dataToDisplay: data});
   }
 
   render() {
