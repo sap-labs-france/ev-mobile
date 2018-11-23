@@ -112,7 +112,7 @@ class GraphDetails extends Component {
         found++;
       }
     }
-    console.log(data);
+    console.log("Chart Data: ", data);
     // this.setState({dataToDisplay: data});
   }
 

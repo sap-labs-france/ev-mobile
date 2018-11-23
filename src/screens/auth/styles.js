@@ -40,10 +40,9 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignSelf: "center",
-    flexGrow: 2
+    marginTop: -60
   },
   logo: {
-    flex: 1,
     resizeMode: "contain",
     height: deviceHeight / 6,
     alignSelf: "center"
@@ -52,6 +51,16 @@ export default StyleSheet.create({
     flex: 1,
     paddingLeft: 20,
     paddingRight: 20
+  },
+  buttonActionsheet: {
+    alignSelf: "center",
+    justifyContent: "center",
+    width: deviceWidth / 1.87,
+    marginBottom: 15,
+    backgroundColor: "rgba(255,255,255,0.30)"
+  },
+  textActionsheet: {
+    color: "#FFFFFF"
   },
   formErrorText: {
     fontSize: 12,

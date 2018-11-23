@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, ImageBackground, Keyboard, ScrollView, Linking } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
-import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, ListItem, Footer, Spinner, TabHeading } from "native-base";
+import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, ListItem, Footer, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
 
 import ProviderFactory from "../../../provider/ProviderFactory";
@@ -39,6 +39,8 @@ const formValidationDef = {
   }
 };
 
+const buttons = ["Charge at home", "SAP Labs", "Cancel"];
+
 class Login extends React.Component {
   passwordInput;
   eulaCheckBox;
@@ -50,6 +52,7 @@ class Login extends React.Component {
       eula: false,
       password: "",
       email: "",
+      clicked: "Choose a scenario",
       loading: false,
       display: false
     };
@@ -120,7 +123,7 @@ class Login extends React.Component {
               // Other common Error
               Utils.handleHttpUnexpectedError(error.request);
           }
-        } ``
+        }
       }
     }
   }
@@ -164,6 +167,21 @@ class Login extends React.Component {
             </View>
             <View style={styles.container}>
               <Form style={styles.form}>
+              <Button
+                style={styles.buttonActionsheet}
+                onPress={() =>
+                  ActionSheet.show(
+                    {
+                      options: buttons,
+                      cancelButtonIndex: 2,
+                      title: "Choose a scenario"
+                    },
+                    buttonIndex => {
+                      this.setState({ clicked: buttons[buttonIndex] === "Cancel" ? this.state.clicked : buttons[buttonIndex]});
+                    }
+                  )}>
+                  <Text style={styles.textActionsheet}>{this.state.clicked}</Text>
+                </Button>
                 <Item inlineLabel rounded style={styles.inputGroup}>
                   <Icon active name="mail" style={styles.icon} />
                   <Input
@@ -221,7 +239,7 @@ class Login extends React.Component {
                 { loading ?
                   <Spinner style={styles.spinner} color="white" />
                 :
-                  <Button rounded primary block large style={styles.button} onPress={this.login}>
+                  <Button rounded primary block large style={styles.button} onPress={this.login} disabled={this.state.clicked === "Choose a scenario"}>
                     <Text style={styles.buttonText}>{I18n.t("authentication.login")}</Text>
                   </Button>
                 }
