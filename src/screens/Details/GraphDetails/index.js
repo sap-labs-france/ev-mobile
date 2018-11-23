@@ -21,32 +21,34 @@ class GraphDetails extends Component {
       connector: this.props.navigation.state.params.connector,
       alpha: this.props.navigation.state.params.alpha,
       values: [],
-      xCategory: [],
-      yCagegory: []
+      xCategory: [new Date().getHours() + ":" + new Date().getMinutes()],
+      yCagegory: ["1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000"]
     };
   }
 
   async componentDidMount() {
-    await this.getChargingStationConsumption();
-    await this._fillYAxis();
-    await this._fillXAxis();
+    const { connector } = this.state;
+    if (connector.activeTransactionID) {
+      await this.getChargingStationConsumption();
+      await this._fillXAxis();
+      await this._fillYAxis();
+    }
   }
 
   getChargingStationConsumption = async () => {
-    const { connector } = this.state;
-    if (connector.activeTransactionID) {
-      try {
-        let result = await _provider.getChargingStationConsumption({
-          TransactionId: this.state.connector.activeTransactionID
-        });
+    try {
+      let result = await _provider.getChargingStationConsumption({
+        TransactionId: this.state.connector.activeTransactionID
+      });
+      if (result) {
         this.setState({
-          values: result.values
+          values: result.values.length >= 450 ? result.values.slice(result.values.length - 450) : result.values
         });
-        console.log(result);
-      } catch (error) {
-        // Other common Error
-        Utils.handleHttpUnexpectedError(error, this.props);
       }
+      console.log(result);
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
     }
   }
 
@@ -62,38 +64,27 @@ class GraphDetails extends Component {
   }
 
   _fillXAxis = async () => {
+    const { values } = this.state;
     let xAxis = [];
-    let index = 10;
+    let index = values.length;
+    let takeDatabyX = 1;
+
     do {
-      xAxis = this._takeDataEveryX(index);
-      index += 10;
+      xAxis = this._takeDataByX(takeDatabyX);
+      index -= 3;
+      takeDatabyX += 3;
     } while (xAxis.length > 8);
-    this.setState({
-      xCategory: xAxis
-    });
-    console.log(xAxis);
+    this.setState({xCategory: xAxis});
   }
 
-  _takeDataEveryX = (value) => {
+  _takeDataByX = (number) => {
     let xAxis = [];
     this.state.values.forEach((element) => {
-      if (new Date(element.date).getMinutes() % value === 0) {
+      if (new Date(element.date).getMinutes() % number === 0) {
         xAxis.push(new Date(element.date).getHours() + ":" + (new Date(element.date).getMinutes() < 10 ? "0" + new Date(element.date).getMinutes() : new Date(element.date).getMinutes()));
       }
     });
     return (xAxis);
-  }
-
-  _closestMaxNumber = (minNumber, maxNumber, number) => {
-    if ((number >= minNumber || number <= maxNumber) && (maxNumber - minNumber) > 0) {
-      let differenceMaxNumber = maxNumber - number;
-      let differenceMinNumber = number - minNumber;
-      if (differenceMaxNumber <= differenceMinNumber) {
-        return maxNumber;
-      } else {
-        return minNumber;
-      }
-    }
   }
 
   render() {
