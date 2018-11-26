@@ -55,7 +55,7 @@ export default StyleSheet.create({
     alignSelf: "center"
   },
   data: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: "bold",
     paddingTop: 10,
     alignSelf: "center"
@@ -70,11 +70,6 @@ export default StyleSheet.create({
     fontSize: 13,
     fontWeight: "bold",
     alignSelf: "center"
-  },
-  currentConsumptionText: {
-    fontWeight: "bold",
-    fontSize: 25,
-    paddingTop: 10
   },
   kWText: {
     fontSize: 12

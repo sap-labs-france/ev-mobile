@@ -216,13 +216,13 @@ class ConnectorDetails extends Component {
               : connector.status === "Finishing" || connector.status === "Preparing" ?
                 <Animatable.View>
                   <Badge style={styles.badgeContainer} warning>
-                    <Text style={styles.badgeText}>{alpha}</Text>
+                    <RNText style={styles.badgeText}>{alpha}</RNText>
                   </Badge>
                 </Animatable.View>
               :
                 <Animatable.View>
                   <Badge style={styles.badgeContainer} danger>
-                    <Text style={styles.badgeText}>{alpha}</Text>
+                    <RNText style={styles.badgeText}>{alpha}</RNText>
                   </Badge>
                 </Animatable.View>
               }
@@ -269,17 +269,30 @@ class ConnectorDetails extends Component {
                 <Text style={styles.data}>-</Text>
               :
                 <View style={styles.currentConsumptionContainer}>
-                  <Text style={styles.currentConsumptionText}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
+                  <Text style={styles.data}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
                   <Text style={styles.kWText}>{I18n.t("details.instant")}</Text>
                 </View>
               }
             </View>
             <View style={styles.columnContainer}>
-              <Icon type="Ionicons" name="time" style={styles.iconSize} />
-              {timestamp ?
-                <Text style={styles.data}>{`${hours}:${minutes}:${seconds}`}</Text>
+              { connector.currentStateOfCharge ?
+                <View>
+                  <Icon type="Feather" name="battery-charging" style={styles.iconSize} />
+                  { connector.currentConsumption ?
+                    <Text style={styles.data}>{connector.currentStateOfCharge} %</Text>
+                  :
+                    <Text style={styles.data}>- %</Text>
+                  }
+                </View>
               :
-                <Text style={styles.data}>- : - : -</Text>
+                <View style={styles.columnContainer}>
+                  <Icon type="Ionicons" name="time" style={styles.iconSize} />
+                  {timestamp ?
+                    <Text style={styles.data}>{`${hours}:${minutes}:${seconds}`}</Text>
+                  :
+                    <Text style={styles.data}>- : - : -</Text>
+                  }
+                </View>
               }
             </View>
           </View>
