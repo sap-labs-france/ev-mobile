@@ -39,6 +39,12 @@ class ConnectorComponent extends Component {
                       <Text style={styles.badgeText}>{alpha}</Text>
                     </Badge>
                   </Animatable.View>
+                : item.status === "Finishing" || item.status === "Preparing" ?
+                  <Animatable.View>
+                    <Badge style={styles.badge} warning>
+                      <Text style={styles.badgeText}>{alpha}</Text>
+                    </Badge>
+                  </Animatable.View>
                 :
                   <Animatable.View>
                     <Badge style={styles.badge} danger>
@@ -59,10 +65,14 @@ class ConnectorComponent extends Component {
                       I18n.t("connector.suspendedEV")
                     : item.status === "Charging" ?
                       I18n.t("connector.charging")
+                    : item.status === "Finishing" ?
+                      I18n.t("connector.finishing")
+                    : item.status === "Preparing" ?
+                      I18n.t("connector.preparing")
                     :
                       item.status
                     }
-                    </Text>
+                  </Text>
                   <View style={styles.rowSpaceBetween}>
                     <View style={styles.column}>
                       <Text style={styles.energy}>{Math.trunc(item.currentConsumption / 1000) === 0 ? (item.currentConsumption / 1000).toFixed(1) : Math.trunc(item.currentConsumption / 1000)}</Text>
@@ -85,6 +95,10 @@ class ConnectorComponent extends Component {
                       I18n.t("connector.occupied")
                     : item.status === "SuspendedEV" ?
                       I18n.t("connector.suspendedEV")
+                    : item.status === "Finishing" ?
+                      I18n.t("connector.finishing")
+                    : item.status === "Preparing" ?
+                      I18n.t("connector.preparing")
                     :
                       item.status
                     }
@@ -114,18 +128,22 @@ class ConnectorComponent extends Component {
             <View style={styles.status}>
             { item.currentConsumption !== 0 ?
               <View style={styles.statusDetailsContainer}>
-                <Text style={styles.statusText} numberOfLines={1}>
-                  {item.status === "Faulted" ?
-                    I18n.t("connector.faulted")
-                  : item.status === "Occupied" ?
-                    I18n.t("connector.occupied")
-                  : item.status === "SuspendedEV" ?
-                    I18n.t("connector.suspendedEV")
-                  : item.status === "Charging" ?
-                    I18n.t("connector.charging")
-                  :
-                    item.status
-                  }
+                  <Text style={styles.statusText} numberOfLines={1}>
+                    {item.status === "Faulted" ?
+                      I18n.t("connector.faulted")
+                    : item.status === "Occupied" ?
+                      I18n.t("connector.occupied")
+                    : item.status === "SuspendedEV" ?
+                      I18n.t("connector.suspendedEV")
+                    : item.status === "Charging" ?
+                      I18n.t("connector.charging")
+                    : item.status === "Finishing" ?
+                      I18n.t("connector.finishing")
+                    : item.status === "Preparing" ?
+                      I18n.t("connector.preparing")
+                    :
+                      item.status
+                    }
                   </Text>
                   <View style={styles.rowSpaceBetween}>
                     <View style={styles.column}>
@@ -149,6 +167,10 @@ class ConnectorComponent extends Component {
                       I18n.t("connector.occupied")
                     : item.status === "SuspendedEV" ?
                       I18n.t("connector.suspendedEV")
+                    : item.status === "Finishing" ?
+                      I18n.t("connector.finishing")
+                    : item.status === "Preparing" ?
+                      I18n.t("connector.preparing")
                     :
                       item.status
                     }
@@ -182,6 +204,12 @@ class ConnectorComponent extends Component {
               : item.currentConsumption !== 0 ?
                 <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
                   <Badge style={styles.badge} danger>
+                    <Text style={styles.badgeText}>{alpha}</Text>
+                  </Badge>
+                </Animatable.View>
+              : item.status === "Finishing" || item.status === "Preparing" ?
+                <Animatable.View>
+                  <Badge style={styles.badge} warning>
                     <Text style={styles.badgeText}>{alpha}</Text>
                   </Badge>
                 </Animatable.View>

@@ -49,7 +49,9 @@
     "charging": "Charging",
     "available": "Available",
     "suspendedEV": "Suspended EV",
-    "faulted": "Faulted"
+    "faulted": "Faulted",
+    "preparing": "Preparing",
+    "finishing": "Finishing"
   },
   "details": {
     "connector": "Connector",

@@ -213,10 +213,16 @@ class ConnectorDetails extends Component {
                     <RNText style={styles.badgeText}>{alpha}</RNText>
                   </Badge>
                 </Animatable.View>
+              : connector.status === "Finishing" || connector.status === "Preparing" ?
+                <Animatable.View>
+                  <Badge style={styles.badgeContainer} warning>
+                    <Text style={styles.badgeText}>{alpha}</Text>
+                  </Badge>
+                </Animatable.View>
               :
                 <Animatable.View>
                   <Badge style={styles.badgeContainer} danger>
-                    <RNText style={styles.badgeText}>{alpha}</RNText>
+                    <Text style={styles.badgeText}>{alpha}</Text>
                   </Badge>
                 </Animatable.View>
               }
@@ -232,6 +238,10 @@ class ConnectorDetails extends Component {
                     I18n.t("connector.charging")
                   : connector.status === "SuspendedEV" ?
                     I18n.t("connector.suspendedEV")
+                  : connector.status === "Finishing" ?
+                    I18n.t("connector.finishing")
+                  : connector.status === "Preparing" ?
+                    I18n.t("connector.preparing")
                   :
                     connector.status
                   }
@@ -242,6 +252,8 @@ class ConnectorDetails extends Component {
               <Thumbnail style={styles.profilePic} source={userPicture ? userPicture : noPhoto} />
               { user.name && user.firstName ?
                 <Text style={styles.statusText}>{`${user.name} ${user.firstName}`}</Text>
+              : user.name ?
+                <Text style={styles.statusText}>{`${user.name}`}</Text>
               :
                 <Text style={styles.statusText}>-</Text>
               }

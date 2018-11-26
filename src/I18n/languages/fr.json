@@ -49,7 +49,9 @@
     "charging": "En charge",
     "available": "Disponible",
     "suspendedEV": "VE Suspendu",
-    "faulted": "Erreur"
+    "faulted": "Erreur",
+    "preparing": "Préparation",
+    "finishing": "Finalisation"
   },
   "details": {
     "connector": "Connecteur",

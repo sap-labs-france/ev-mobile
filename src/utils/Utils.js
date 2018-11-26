@@ -23,7 +23,6 @@ export default class Utils {
           try {
             console.log("Trying to Authenticate");
             await _provider.reAuthenticate();
-            console.log("Authenticated");
           } catch (errorLogin) {
             Message.showError("reAutentication failed");
             console.log(errorLogin);

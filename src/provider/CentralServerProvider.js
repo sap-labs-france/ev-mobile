@@ -106,6 +106,10 @@ export default class  CentralServerProvider {
   async reAuthenticate() {
     // Authenticated ?
     let isUserAuthenticated =  await this.isUserAuthenticated();
+    console.log("isUserAuth ?", isUserAuthenticated);
+    console.log("email: ", _email);
+    console.log("password: ", _password);
+    console.log("tenant", _tenant);
     // Not authenticated ?
     if (!isUserAuthenticated) {
       // User not authenticated: email, password and tenant registered ?
@@ -127,14 +131,16 @@ export default class  CentralServerProvider {
     }, {
       headers: this._builHeaders()
     });
-    // Store User/Password/Toke
+    console.log("Tenant login", tenant);
+    // Store User/Password/Token/tenant
     SInfo.setItem(Constants.KEY_EMAIL, email, {});
     SInfo.setItem(Constants.KEY_PASSWORD, password, {});
     SInfo.setItem(Constants.KEY_TOKEN, result.data.token, {});
     SInfo.setItem(Constants.KEY_TENANT, tenant, {});
-    // Keep the token
+    // Keep the token and tenant
     _token = result.data.token;
     _decodedToken = jwtDecode(_token);
+    _tenant = tenant;
     _initialized = true;
   }
 

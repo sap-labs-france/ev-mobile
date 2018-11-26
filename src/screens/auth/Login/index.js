@@ -52,7 +52,7 @@ class Login extends React.Component {
       eula: false,
       password: "",
       email: "",
-      tenant: "slf",
+      tenant: "",
       clicked: "Choose a scenario",
       loading: false,
       display: false
@@ -138,6 +138,13 @@ class Login extends React.Component {
       })
     );
   }
+  _setTenant = (buttonIndex) => {
+    if (buttonIndex === 0) {
+      this.setState({tenant: "slfcah"});
+    } else if (buttonIndex === 1) {
+      this.setState({tenant: "slf"});
+    }
+  }
 
   _fillEmailInputOnPress = (email) => {
     this.setState({
@@ -178,6 +185,7 @@ class Login extends React.Component {
                       title: "Choose a scenario"
                     },
                     buttonIndex => {
+                      this._setTenant(buttonIndex);
                       this.setState({ clicked: buttons[buttonIndex] === "Cancel" ? this.state.clicked : buttons[buttonIndex]});
                     }
                   )}>
