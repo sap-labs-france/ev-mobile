@@ -39,7 +39,8 @@
     "repeatPassword": "Répétez mot de passe",
     "signUp": "S'enregistrer",
 		"passwordRule": "Doit contenir 1 char. minuscule et majuscule, 1 nombre, 1 char. spécial et une longueur de 8",
-    "passwordNotMatch": "Les mots de passes ne correspondent pas"
+    "passwordNotMatch": "Les mots de passes ne correspondent pas",
+    "location": "Choisir emplacement"
   },
   "sites": {
     "freeChargers": "Chargeurs disponibles:"

@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageBackground, Keyboard, ScrollView } from "react-native";
+import { Image, ImageBackground, Keyboard, ScrollView, KeyboardAvoidingView } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Content, Form, Text, Button, Icon, Item, Input, View, ListItem, CheckBox, Body, Footer, Spinner, Left, Right } from "native-base";
 import ProviderFactory from "../../../provider/ProviderFactory";
@@ -135,7 +135,7 @@ class SignUp extends React.Component {
               <View style={styles.containerLogo}>
                 <Image source={require("../../../../assets/logo-low.gif")} style={styles.logo} />
               </View>
-              <View style={styles.container}>
+              <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <Form style={styles.form}>
                   <Item inlineLabel rounded style={styles.inputGroup}>
                     <Icon active name="person" style={styles.icon}/>
@@ -261,7 +261,7 @@ class SignUp extends React.Component {
                     </Button>
                   }
                 </Form>
-              </View>
+              </KeyboardAvoidingView>
             </Content>
             <Footer>
               <Button small transparent onPress={() => this.props.navigation.goBack()}>

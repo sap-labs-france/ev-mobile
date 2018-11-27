@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageBackground, Linking } from "react-native";
+import { Image, ImageBackground, Linking, KeyboardAvoidingView } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Content, Text, Form, Item, Input, Button, Icon, View, Spinner, Footer } from "native-base";
 import ProviderFactory from "../../../provider/ProviderFactory";
@@ -85,7 +85,7 @@ class RetrievePassword extends React.Component {
             <View style={styles.container}>
               <Image source={require("../../../../assets/logo-low.gif")} style={styles.logo} />
             </View>
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container} behavior="padding">
               <Form style={styles.form}>
                 <Item inlineLabel rounded style={styles.inputGroup}>
                   <Icon active name="mail" style={styles.icon} />
@@ -116,7 +116,7 @@ class RetrievePassword extends React.Component {
                   </Button>
                 }
               </Form>
-            </View>
+            </KeyboardAvoidingView>
           </Content>
           <Footer>
             <Button transparent onPress={() => this.props.navigation.goBack()}>

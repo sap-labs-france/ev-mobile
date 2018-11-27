@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageBackground, Keyboard, ScrollView, Linking } from "react-native";
+import { Image, ImageBackground, Keyboard, ScrollView, Linking, KeyboardAvoidingView } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, ListItem, Footer, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
@@ -53,7 +53,7 @@ class Login extends React.Component {
       password: "",
       email: "",
       tenant: "",
-      tenantTitle: "Choose a location",
+      tenantTitle: I18n.t("authentication.location"),
       loading: false,
       display: false
     };
@@ -169,7 +169,7 @@ class Login extends React.Component {
             <View style={styles.container}>
               <Image source={require("../../../../assets/logo-low.gif")} style={styles.logo} />
             </View>
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container} behavior="padding">
               <Form style={styles.form}>
                 <Button
                   style={styles.buttonActionsheet}
@@ -178,7 +178,7 @@ class Login extends React.Component {
                       {
                         options: locations,
                         cancelButtonIndex: locations.indexOf("Cancel"),
-                        title: "Choose a location"
+                        title: I18n.t("authentication.location")
                       },
                       buttonIndex => {
                         this._setTenant(buttonIndex);
@@ -243,12 +243,12 @@ class Login extends React.Component {
                 { loading ?
                   <Spinner style={styles.spinner} color="white" />
                 :
-                  <Button rounded primary block large style={styles.button} disabled={tenantTitle === "Choose a location"} onPress={tenantTitle !== "Choose a location" ? this.login : null}>
+                  <Button rounded primary block large style={styles.button} disabled={tenantTitle === I18n.t("authentication.location")} onPress={tenantTitle !== I18n.t("authentication.location") ? this.login : null}>
                     <Text style={styles.buttonText}>{I18n.t("authentication.login")}</Text>
                   </Button>
                 }
               </Form>
-            </View>
+            </KeyboardAvoidingView>
             <Footer>
               <Left>
                 <Button small transparent style={styles.linksButtonLeft} disabled={!this.state.tenant} onPress={ async () => await Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/register`)}>
