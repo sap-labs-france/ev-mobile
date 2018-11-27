@@ -108,7 +108,6 @@ export default class  CentralServerProvider {
     let isUserAuthenticated =  await this.isUserAuthenticated();
     console.log("isUserAuth ?", isUserAuthenticated);
     console.log("email: ", _email);
-    console.log("password: ", _password);
     console.log("tenant", _tenant);
     // Not authenticated ?
     if (!isUserAuthenticated) {

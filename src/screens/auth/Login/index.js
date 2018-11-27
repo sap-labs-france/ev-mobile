@@ -39,7 +39,7 @@ const formValidationDef = {
   }
 };
 
-const buttons = ["Charge@Home", "SAP Labs France", "Cancel"];
+const locations = ["Charge@Home", "SAP Labs France", "Cancel"];
 
 class Login extends React.Component {
   passwordInput;
@@ -53,7 +53,7 @@ class Login extends React.Component {
       password: "",
       email: "",
       tenant: "",
-      clicked: "Choose a scenario",
+      tenantTitle: "Choose a scenario",
       loading: false,
       display: false
     };
@@ -68,13 +68,7 @@ class Login extends React.Component {
       this._navigateToSites();
     } else {
       // Set default email/password
-      const email = await _provider.getUserEmail();
-      const password = await _provider.getUserPassword();
-      this.setState({
-        email: email,
-        password: password,
-        display: true
-      });
+      await this._setDefaultInputs();
     }
   }
 
@@ -140,12 +134,24 @@ class Login extends React.Component {
       })
     );
   }
+
+  _setDefaultInputs = async () => {
+    const email = await _provider.getUserEmail();
+    const password = await _provider.getUserPassword();
+    this.setState({
+      email,
+      password,
+      display: true
+    });
+  }
+
   _setTenant = (buttonIndex) => {
     if (buttonIndex === 0) {
       this.setState({tenant: "slfcah"});
     } else if (buttonIndex === 1) {
       this.setState({tenant: "slf"});
     }
+    this.setState({tenantTitle: locations[buttonIndex] === "Cancel" ? this.state.tenantTitle : locations[buttonIndex]});
   }
 
   render() {
@@ -170,16 +176,15 @@ class Login extends React.Component {
                 onPress={() =>
                   ActionSheet.show(
                     {
-                      options: buttons,
-                      cancelButtonIndex: buttons.indexOf("Cancel"),
+                      options: locations,
+                      cancelButtonIndex: locations.indexOf("Cancel"),
                       title: "Choose a location"
                     },
                     buttonIndex => {
                       this._setTenant(buttonIndex);
-                      this.setState({ clicked: buttons[buttonIndex] === "Cancel" ? this.state.clicked : buttons[buttonIndex]});
                     }
                   )}>
-                  <Text style={styles.textActionsheet}>{this.state.clicked}</Text>
+                  <Text style={styles.textActionsheet}>{this.state.tenantTitle}</Text>
                 </Button>
                 <Item inlineLabel rounded style={styles.inputGroup}>
                   <Icon active name="mail" style={styles.icon} />
