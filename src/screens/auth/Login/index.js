@@ -68,9 +68,11 @@ class Login extends React.Component {
       this._navigateToSites();
     } else {
       // Set default email/password
+      const email = await _provider.getUserEmail();
+      const password = await _provider.getUserPassword();
       this.setState({
-        email: this.state.email,
-        password: this.state.password,
+        email: email,
+        password: password,
         display: true
       });
     }
@@ -146,18 +148,6 @@ class Login extends React.Component {
     }
   }
 
-  _fillEmailInputOnPress = (email) => {
-    this.setState({
-      email
-    });
-  }
-
-  _fillPasswordInputOnPress = (password) => {
-    this.setState({
-      password
-    });
-  }
-
   render() {
     const navigation = this.props.navigation;
     const { display, eula, loading, clicked } = this.state;
@@ -182,7 +172,7 @@ class Login extends React.Component {
                     {
                       options: buttons,
                       cancelButtonIndex: buttons.indexOf("Cancel"),
-                      title: "Choose a scenario"
+                      title: "Choose a location"
                     },
                     buttonIndex => {
                       this._setTenant(buttonIndex);
@@ -205,9 +195,9 @@ class Login extends React.Component {
                     blurOnSubmit={false}
                     autoCorrect={false}
                     keyboardType={"email-address"}
-                    onChangeText={(text) => this.setState({email: text})}
                     secureTextEntry={false}
-                    onChange={(email) => this._fillEmailInputOnPress(email)}
+                    onChangeText={(text) => this.setState({email: text})}
+                    value={this.state.email}
                   />
                 </Item>
                 {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
@@ -227,9 +217,9 @@ class Login extends React.Component {
                     blurOnSubmit={false}
                     autoCorrect={false}
                     keyboardType={"default"}
-                    onChangeText={(text) => this.setState({password: text})}
                     secureTextEntry={true}
-                    onChange={(password) => this._fillPasswordInputOnPress(password)}
+                    onChangeText={(text) => this.setState({password: text})}
+                    value={this.state.password}
                   />
                 </Item>
                 {this.state.errorPassword && this.state.errorPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
@@ -256,12 +246,12 @@ class Login extends React.Component {
             </View>
             <Footer>
               <Left>
-                <Button small transparent style={styles.linksButtonLeft} onPress={ async () => await Linking.openURL("https://slf.ev.cfapps.eu10.hana.ondemand.com/#/register")}>
+                <Button small transparent style={styles.linksButtonLeft} disabled={!this.state.tenant} onPress={ async () => await Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/register`)}>
                   <Text style={styles.helpButton}>{I18n.t("authentication.newUser")}</Text>
                 </Button>
               </Left>
               <Right>
-              <Button small transparent style={styles.linksButtonRight} onPress={ async () => await Linking.openURL("https://slf.ev.cfapps.eu10.hana.ondemand.com/#/reset-password")}>
+              <Button small transparent style={styles.linksButtonRight} disabled={!this.state.tenant} onPress={ async () => await Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/reset-password`)}>
                   <Text style={styles.helpButton}>{I18n.t("authentication.forgotYourPassword")}</Text>
                 </Button>
               </Right>
