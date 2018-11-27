@@ -20,7 +20,7 @@ export default StyleSheet.create({
   },
   badge: {
     justifyContent: "center",
-    borderRadius: 60,
+    borderRadius: 150,
     height: Platform.OS === "ios" ? deviceHeight / 14.7 : deviceHeight / 16.2,
     width: Platform.OS === "ios" ? deviceWidth / 8.3 : deviceWidth / 7.9
   },

@@ -23,14 +23,12 @@ export class Header extends Component {
     this.state = {
       siteImage: this.props.navigation.state.params.siteImage,
       isAdmin: false,
-      isAuthorisedStopTransaction: false,
       loadingTransaction: false
     };
   }
 
   async componentDidMount() {
     await this._isAdmin();
-    await this._isAuthorizedStopTransaction();
   }
 
   _isAdmin = async () => {
@@ -52,16 +50,27 @@ export class Header extends Component {
     );
   }
 
-  onStopTransaction = () => {
+  onStopTransaction = async () => {
     const { charger } = this.props;
-    Alert.alert(
-      `${I18n.t("details.stopTransaction")}`,
-      `${I18n.t("details.stopTransactionMessage")} ${charger.id} ?`,
-      [
-        {text: I18n.t("general.yes"), onPress: () => this.stopTransaction()},
-        {text: I18n.t("general.no")}
-      ]
-    );
+    const isAuthorised = await this._isAuthorizedStopTransaction();
+    if (!isAuthorised) {
+      Alert.alert(
+        `${I18n.t("details.notAuthorisedTitle")}`,
+        `${I18n.t("details.notAuthorised")}`,
+        [
+          {text: "Okay"},
+        ]
+      );
+    } else {
+      Alert.alert(
+        `${I18n.t("details.stopTransaction")}`,
+        `${I18n.t("details.stopTransactionMessage")} ${charger.id} ?`,
+        [
+          {text: I18n.t("general.yes"), onPress: () => this.stopTransaction()},
+          {text: I18n.t("general.no")}
+        ]
+      );
+    }
   }
 
   startTransaction = async () => {
@@ -103,9 +112,9 @@ export class Header extends Component {
       let isAuthorised = await _provider.isAuthorizedStopTransaction(
         { Action: "StopTransaction", Arg1: this.props.charger.id, Arg2: this.props.connector.activeTransactionID }
       );
-      this.setState({
-        isAuthorisedStopTransaction: isAuthorised.IsAuthorized
-      });
+      if (isAuthorised) {
+        return isAuthorised.IsAuthorized;
+      }
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -114,7 +123,7 @@ export class Header extends Component {
 
   render() {
     const { charger, connector, alpha, navigation } = this.props;
-    const { isAuthorisedStopTransaction, siteImage, loadingTransaction } = this.state;
+    const { siteImage, loadingTransaction } = this.state;
     return (
       <View>
         <View style={styles.header}>
@@ -129,7 +138,7 @@ export class Header extends Component {
           </View>
         </View>
         <View style={styles.detailsContainer}>
-          <ImageBackground style={styles.backgroundImage} source={{uri: siteImage}}>
+          <ImageBackground style={styles.backgroundImage} source={siteImage ? {uri: siteImage} : undefined}>
           { loadingTransaction ?
             <Spinner color="white" style={styles.spinner} />
           :
@@ -145,7 +154,7 @@ export class Header extends Component {
                       </View>
                     </TouchableOpacity>
                   :
-                    <TouchableOpacity disabled={!isAuthorisedStopTransaction} onPress={() => this.onStopTransaction()}>
+                    <TouchableOpacity onPress={() => this.onStopTransaction()}>
                       <View style={styles.outerCircle}>
                         <View style={styles.innerCircleStopTransaction}>
                           <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="stop" />

@@ -61,6 +61,8 @@
     "stopTransaction": "Stopper transaction",
     "startTransactionMessage": "Voulez-vous vraiment démarrer une nouvelle session sur la borne ",
     "stopTransactionMessage": "Voulez-vous vraiment arrêter la session sur la borne ",
+    "notAuthorisedTitle": "Non autorisé",
+    "notAuthorised": "Vous n'êtes pas autorisés à arrêter la transaction.",
     "accepted": "Accepted",
     "denied": "Denied",
     "consumed": "kW consommé(s)",

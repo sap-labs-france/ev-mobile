@@ -28,7 +28,7 @@ class ConnectorDetails extends Component {
       seconds: "00",
       minutes: "00",
       hours: "00",
-      price: 0,
+      price: 0.1243,
       userImage: "",
       refreshing: false,
       isAdmin: false
@@ -127,9 +127,11 @@ class ConnectorDetails extends Component {
     try {
       if (this.state.isAdmin) {
         let price = await _provider.getPrice();
-        this.setState({
-          price: price.priceKWH
-        });
+        if (price) {
+          this.setState({
+            price: price.priceKWH
+          });
+        }
         console.log(price);
       }
     } catch (error) {
@@ -159,6 +161,7 @@ class ConnectorDetails extends Component {
     if (valString.length < 2) {
       return "0" + valString;
     }
+    // Return new digit
     return valString;
   };
 
@@ -250,10 +253,10 @@ class ConnectorDetails extends Component {
             </View>
             <View style={styles.columnContainer}>
               <Thumbnail style={styles.profilePic} source={userPicture ? userPicture : noPhoto} />
-              { user.name && user.firstName ?
-                <Text style={styles.statusText}>{`${user.name} ${user.firstName}`}</Text>
+              { (user.name && user.firstName) && (`${user.name} ${user.firstName}`).length < 19 ?
+                <Text style={styles.statusText}>{`${(user.name).toUpperCase()} ${user.firstName}`}</Text>
               : user.name ?
-                <Text style={styles.statusText}>{`${user.name}`}</Text>
+                <Text style={styles.statusText}>{`${(user.name).toUpperCase()}`}</Text>
               :
                 <Text style={styles.statusText}>-</Text>
               }
@@ -265,7 +268,7 @@ class ConnectorDetails extends Component {
           <View style={styles.rowContainer}>
             <View style={styles.columnContainer}>
               <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
-              { (connector.currentConsumption / 1000).toFixed(1) === 0.0 || connector.currentConsumption === 0 ?
+              { connector.currentConsumption === 0.0 ?
                 <Text style={styles.data}>-</Text>
               :
                 <View style={styles.currentConsumptionContainer}>

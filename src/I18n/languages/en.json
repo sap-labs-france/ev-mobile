@@ -61,6 +61,8 @@
     "stopTransaction": "Stop transaction",
     "startTransactionMessage": "Do you really want to start a new session on the charging station ",
     "stopTransactionMessage": "Do you really want to stop the session of the charging station ",
+    "notAuthorisedTitle": "Not Authorised",
+    "notAuthorised": "You are not authorized to stop the transaction.",
     "accepted": "Accepted",
     "denied": "Denied",
     "consumed": "kW consumed",

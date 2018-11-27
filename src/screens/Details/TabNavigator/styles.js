@@ -48,7 +48,7 @@ export default StyleSheet.create({
     marginTop: 95
   },
   outerCircle: {
-    borderRadius: (deviceWidth / 3 + deviceHeight / 5.3) / 2,
+    borderRadius: 150,
     borderStyle: "solid",
     width: Platform.OS === "ios" ? deviceWidth / 3 : deviceWidth / 2.93,
     height: Platform.OS === "ios" ? deviceHeight / 5.3 : deviceHeight / 5.72,
@@ -58,7 +58,7 @@ export default StyleSheet.create({
     marginTop: 15
   },
   innerCircleStartTransaction: {
-    borderRadius: (deviceWidth / 3 - 5 + deviceHeight / 5.3 - 5) / 2,
+    borderRadius: 150,
     borderStyle: "solid",
     width: Platform.OS === "ios" ? deviceWidth / 3 - 5 : deviceWidth / 2.93 - 5,
     height: Platform.OS === "ios" ? deviceHeight / 5.3 - 5 : deviceHeight / 5.72 - 5,
@@ -70,7 +70,7 @@ export default StyleSheet.create({
     fontSize: 70
   },
   innerCircleStopTransaction: {
-    borderRadius: (deviceWidth / 3 - 5 + deviceHeight / 5.3 - 5) / 2,
+    borderRadius: 150,
     borderStyle: "solid",
     width: Platform.OS === "ios" ? deviceWidth / 3 - 5 : deviceWidth / 2.93 - 5,
     height: Platform.OS === "ios" ? deviceHeight / 5.3 - 5 : deviceHeight / 5.72 - 5,
