@@ -21,7 +21,7 @@ export default StyleSheet.create({
   badge: {
     justifyContent: "center",
     borderRadius: 150,
-    height: Platform.OS === "ios" ? deviceHeight / 14.7 : deviceHeight / 16.2,
+    height: Platform.OS === "ios" ? deviceHeight / 14.7 : deviceHeight / 13.5,
     width: Platform.OS === "ios" ? deviceWidth / 8.3 : deviceWidth / 7.9
   },
   badgeText: {
@@ -51,7 +51,7 @@ export default StyleSheet.create({
   statusText: {
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: 20
+    fontSize: Platform.OS === "ios" ? 20 : 24
   },
   rowSpaceBetween: {
     flexDirection: "row",

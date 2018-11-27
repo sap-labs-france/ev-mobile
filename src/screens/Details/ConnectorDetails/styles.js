@@ -32,10 +32,10 @@ export default StyleSheet.create({
   },
   badgeContainer: {
     justifyContent: "center",
-    height: Platform.OS === "ios" ? deviceHeight / 16.6 : deviceHeight / 16.2,
+    height: Platform.OS === "ios" ? deviceHeight / 16.6 : deviceHeight / 13.8,
     width: Platform.OS === "ios" ? deviceWidth / 9.3 : deviceWidth / 7.9,
     alignItems: "center",
-    borderRadius: 50
+    borderRadius: 150
   },
   badgeText: {
     fontSize: 30,

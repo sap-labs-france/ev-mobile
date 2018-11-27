@@ -53,7 +53,7 @@ class Login extends React.Component {
       password: "",
       email: "",
       tenant: "",
-      tenantTitle: "Choose a scenario",
+      tenantTitle: "Choose a location",
       loading: false,
       display: false
     };
@@ -156,7 +156,7 @@ class Login extends React.Component {
 
   render() {
     const navigation = this.props.navigation;
-    const { display, eula, loading, clicked } = this.state;
+    const { display, eula, loading, tenantTitle } = this.state;
     // Do not display?
     if (!display) {
       return (<View style={styles.nodisplay}/>);
@@ -171,79 +171,79 @@ class Login extends React.Component {
             </View>
             <View style={styles.container}>
               <Form style={styles.form}>
-              <Button
-                style={styles.buttonActionsheet}
-                onPress={() =>
-                  ActionSheet.show(
-                    {
-                      options: locations,
-                      cancelButtonIndex: locations.indexOf("Cancel"),
-                      title: "Choose a location"
-                    },
-                    buttonIndex => {
-                      this._setTenant(buttonIndex);
-                    }
-                  )}>
-                  <Text style={styles.textActionsheet}>{this.state.tenantTitle}</Text>
-                </Button>
-                <Item inlineLabel rounded style={styles.inputGroup}>
-                  <Icon active name="mail" style={styles.icon} />
-                  <Input
-                    name="email"
-                    type="email"
-                    returnKeyType= "next"
-                    placeholder={I18n.t("authentication.email")}
-                    placeholderTextColor="#FFF"
-                    onSubmitEditing={() => this.passwordInput._root.focus()}
-                    style={styles.input}
-                    autoCapitalize="none"
-                    blurOnSubmit={false}
-                    autoCorrect={false}
-                    keyboardType={"email-address"}
-                    secureTextEntry={false}
-                    onChangeText={(text) => this.setState({email: text})}
-                    value={this.state.email}
-                  />
-                </Item>
-                {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
+                <Button
+                  style={styles.buttonActionsheet}
+                  onPress={() =>
+                    ActionSheet.show(
+                      {
+                        options: locations,
+                        cancelButtonIndex: locations.indexOf("Cancel"),
+                        title: "Choose a location"
+                      },
+                      buttonIndex => {
+                        this._setTenant(buttonIndex);
+                      }
+                    )}>
+                    <Text style={styles.textActionsheet}>{this.state.tenantTitle}</Text>
+                  </Button>
+                  <Item inlineLabel rounded style={styles.inputGroup}>
+                    <Icon active name="mail" style={styles.icon} />
+                    <Input
+                      name="email"
+                      type="email"
+                      returnKeyType= "next"
+                      placeholder={I18n.t("authentication.email")}
+                      placeholderTextColor="#FFF"
+                      onSubmitEditing={() => this.passwordInput._root.focus()}
+                      style={styles.input}
+                      autoCapitalize="none"
+                      blurOnSubmit={false}
+                      autoCorrect={false}
+                      keyboardType={"email-address"}
+                      secureTextEntry={false}
+                      onChangeText={(text) => this.setState({email: text})}
+                      value={this.state.email}
+                    />
+                  </Item>
+                  {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
-                <Item inlineLabel rounded style={styles.inputGroup}>
-                  <Icon active name="unlock" style={styles.icon} />
-                  <Input
-                    name="password"
-                    type="password"
-                    returnKeyType="go"
-                    ref={(ref)=>(this.passwordInput = ref)}
-                    onSubmitEditing={()=>Keyboard.dismiss()}
-                    placeholder={I18n.t("authentication.password")}
-                    placeholderTextColor="#FFF"
-                    style={styles.input}
-                    autoCapitalize="none"
-                    blurOnSubmit={false}
-                    autoCorrect={false}
-                    keyboardType={"default"}
-                    secureTextEntry={true}
-                    onChangeText={(text) => this.setState({password: text})}
-                    value={this.state.password}
-                  />
-                </Item>
-                {this.state.errorPassword && this.state.errorPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
+                  <Item inlineLabel rounded style={styles.inputGroup}>
+                    <Icon active name="unlock" style={styles.icon} />
+                    <Input
+                      name="password"
+                      type="password"
+                      returnKeyType="go"
+                      ref={(ref)=>(this.passwordInput = ref)}
+                      onSubmitEditing={()=>Keyboard.dismiss()}
+                      placeholder={I18n.t("authentication.password")}
+                      placeholderTextColor="#FFF"
+                      style={styles.input}
+                      autoCapitalize="none"
+                      blurOnSubmit={false}
+                      autoCorrect={false}
+                      keyboardType={"default"}
+                      secureTextEntry={true}
+                      onChangeText={(text) => this.setState({password: text})}
+                      value={this.state.password}
+                    />
+                  </Item>
+                  {this.state.errorPassword && this.state.errorPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
-                <ListItem style={styles.listItemEulaCheckbox}>
-                  <CheckBox checked={eula} onPress={() => this.setState({eula: !eula})} />
-                  <Body>
-                    <Text style={styles.eulaText}>{I18n.t("authentication.acceptEula")}
-                      <Text onPress={()=>this.props.navigation.navigate("Eula")} style={styles.eulaLink}>{I18n.t("authentication.eula")}</Text>
-                    </Text>
-                  </Body>
-                </ListItem>
-                <View>
-                  {this.state.errorEula && this.state.errorEula.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
-                </View>
+                  <ListItem style={styles.listItemEulaCheckbox}>
+                    <CheckBox checked={eula} onPress={() => this.setState({eula: !eula})} />
+                    <Body>
+                      <Text style={styles.eulaText}>{I18n.t("authentication.acceptEula")}
+                        <Text onPress={()=>this.props.navigation.navigate("Eula")} style={styles.eulaLink}>{I18n.t("authentication.eula")}</Text>
+                      </Text>
+                    </Body>
+                  </ListItem>
+                  <View>
+                    {this.state.errorEula && this.state.errorEula.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
+                  </View>
                 { loading ?
                   <Spinner style={styles.spinner} color="white" />
                 :
-                  <Button rounded primary block large style={styles.button} onPress={clicked !== "Choose a scenario" ? this.login : null} disabled={clicked === "Choose a scenario"}>
+                  <Button rounded primary block large style={styles.button} disabled={tenantTitle === "Choose a location"} onPress={tenantTitle !== "Choose a location" ? this.login : null}>
                     <Text style={styles.buttonText}>{I18n.t("authentication.login")}</Text>
                   </Button>
                 }

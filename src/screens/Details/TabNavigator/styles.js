@@ -45,13 +45,13 @@ export default StyleSheet.create({
   transactionContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 95
+    marginTop:  Platform.OS === "ios" ? 95 : 85
   },
   outerCircle: {
     borderRadius: 150,
     borderStyle: "solid",
     width: Platform.OS === "ios" ? deviceWidth / 3 : deviceWidth / 2.93,
-    height: Platform.OS === "ios" ? deviceHeight / 5.3 : deviceHeight / 5.72,
+    height: Platform.OS === "ios" ? deviceHeight / 5.3 : deviceHeight / 4.72,
     backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
@@ -61,8 +61,8 @@ export default StyleSheet.create({
     borderRadius: 150,
     borderStyle: "solid",
     width: Platform.OS === "ios" ? deviceWidth / 3 - 5 : deviceWidth / 2.93 - 5,
-    height: Platform.OS === "ios" ? deviceHeight / 5.3 - 5 : deviceHeight / 5.72 - 5,
-    backgroundColor: "#5cb85c",
+    height: Platform.OS === "ios" ? deviceHeight / 5.3 - 5 : deviceHeight / 4.72 - 5,
+    backgroundColor: "#5CB85C",
     justifyContent: "center",
     alignItems: "center"
   },
@@ -73,13 +73,13 @@ export default StyleSheet.create({
     borderRadius: 150,
     borderStyle: "solid",
     width: Platform.OS === "ios" ? deviceWidth / 3 - 5 : deviceWidth / 2.93 - 5,
-    height: Platform.OS === "ios" ? deviceHeight / 5.3 - 5 : deviceHeight / 5.72 - 5,
-    backgroundColor: "#d9534f",
+    height: Platform.OS === "ios" ? deviceHeight / 5.3 - 5 : deviceHeight / 4.72 - 5,
+    backgroundColor: "#D9534F",
     justifyContent: "center",
     alignItems: "center"
   },
   footerContainer: {
-    backgroundColor: "#111111"
+    backgroundColor: "#000000"
   }
 });
 
