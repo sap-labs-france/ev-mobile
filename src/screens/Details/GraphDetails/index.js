@@ -22,8 +22,7 @@ class GraphDetails extends Component {
       alpha: this.props.navigation.state.params.alpha,
       values: [],
       dataToDisplay: [],
-      xCategory: [new Date().getHours() + ":" + new Date().getMinutes()],
-      yCagegory: ["1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000"]
+      xCategory: []
     };
   }
 
@@ -31,9 +30,7 @@ class GraphDetails extends Component {
     const { connector } = this.state;
     if (connector.activeTransactionID) {
       await this.getChargingStationConsumption();
-      await this._fillXAxis();
-      await this._fillYAxis();
-      await this._fillData();
+      await this._fillAxis();
     }
   }
 
@@ -54,92 +51,63 @@ class GraphDetails extends Component {
     }
   }
 
-  _fillYAxis = () => {
-    const { connector } = this.state;
-    let yAxis = [];
-    let maxPower = connector.power;
-    let index = 0;
-    let chargerValuesByX = 500;
-
-    while (index < maxPower) {
-      if (yAxis.length > 8) {
-        yAxis = [];
-        chargerValuesByX += 500;
-        index = chargerValuesByX;
-      }
-      yAxis.push((index += chargerValuesByX).toString());
-    }
-    this.setState({yCagegory: yAxis});
-  }
-
-  _fillXAxis = async () => {
+  _fillAxis = async () => {
     const { values } = this.state;
-    let xAxis = [];
+    let axis = [];
+    let xAxisCategory = [];
     let index = values.length;
     let takeDatabyX = 1;
 
     do {
-      xAxis = this._takeDataByX(takeDatabyX);
+      axis = this._takeDataEveryXTimeAndSetAxis(takeDatabyX).axis;
+      xAxisCategory = this._takeDataEveryXTimeAndSetAxis(takeDatabyX).xAxisCategory;
       index -= 3;
       takeDatabyX += 3;
-    } while (xAxis.length > 8);
-    this.setState({xCategory: xAxis});
+    } while (axis.length > 8);
+    this.setState({dataToDisplay: axis, xCategory: xAxisCategory});
   }
 
-  _takeDataByX = (number) => {
-    let xAxis = [];
+  _takeDataEveryXTimeAndSetAxis = (number) => {
+    let xAxis;
+    let xAxisCategory = [];
+    let yAxis;
+    let axis = [];
+    let index = 1;
+
     this.state.values.forEach((element) => {
       if (new Date(element.date).getMinutes() % number === 0) {
-        xAxis.push(new Date(element.date).getHours() + ":" + (new Date(element.date).getMinutes() < 10 ? "0" + new Date(element.date).getMinutes() : new Date(element.date).getMinutes()));
+        xAxisCategory.push(new Date(element.date).getHours() + ":" + (new Date(element.date).getMinutes() < 10 ? "0" + new Date(element.date).getMinutes() : new Date(element.date).getMinutes()));
+        xAxis = index;
+        yAxis = element.value;
+        axis.push({x: xAxis, y: yAxis});
+        index++;
       }
     });
-    return (xAxis);
-  }
-
-  _fillData = () => {
-    const { values, xCategory } = this.state;
-    let data = [];
-    let found = 0;
-    for (let index = 0; index < values.length && xCategory[found]; index++) {
-      const hours = new Date(values[index].date).getHours();
-      const minutes = (new Date(values[index].date).getMinutes() < 10 ? "0" + new Date(values[index].date).getMinutes() : new Date(values[index].date).getMinutes());
-      const time = `${hours}:${minutes}`;
-      if (time === xCategory[found]) {
-          data.push({
-          time,
-          charge: (values[index].value).toString()
-        });
-        found++;
-      }
-    }
-    console.log("Chart Data: ", data);
-    // this.setState({dataToDisplay: data});
+    return {axis, xAxisCategory};
   }
 
   render() {
+    const { dataToDisplay, xCategory, connector } = this.state;
+    console.log("Data: ", dataToDisplay);
     return (
       <Container>
-       <VictoryChart theme={VictoryTheme.material} width={deviceHeight} padding={styles.padding} >
+       <VictoryChart theme={VictoryTheme.material} width={deviceHeight} padding={styles.padding}>
           <VictoryArea
             style={{ data: styles.data}}
-            domain={{ x: [0, 8], y: [0, 8] }}
+            domain={{y: [0, connector.power]}}
             categories={{
-              x: this.state.xCategory,
-              y: this.state.yCagegory
+              x: xCategory
             }}
             data={[
-              { time: 0, charge: 0 },
-              { time: 1, charge: 2 },
-              { time: 2, charge: 2 },
-              { time: 3, charge: 3 },
-              { time: 4, charge: 4 },
-              { time: 5, charge: 5 },
-              { time: 6, charge: 6 },
-              { time: 7, charge: 7 },
-              { time: 8, charge: 8 }
+              {x: 1, y: 7500},
+              {x: 2, y: 10860},
+              {x: 3, y: 10920},
+              {x: 4, y: 10920},
+              {x: 5, y: 10860},
+              {x: 6, y: 10920},
+              {x: 7, y: 10860},
+              {x: 8, y: 10860}
             ]}
-            x="time"
-            y="charge"
           />
           <VictoryAxis label={I18n.t("details.time")} style={{axisLabel: styles.xAxisLabel}} />
           <VictoryAxis dependentAxis label={I18n.t("details.chargeInWatts")} style={{ axisLabel: styles.yAxisLabel}} />

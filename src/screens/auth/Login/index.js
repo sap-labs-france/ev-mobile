@@ -256,7 +256,7 @@ class Login extends React.Component {
                 </Button>
               </Left>
               <Right>
-              <Button small transparent style={styles.linksButtonRight} disabled={!this.state.tenant} onPress={ async () => await Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/reset-password`)}>
+                <Button small transparent style={styles.linksButtonRight} disabled={!this.state.tenant} onPress={ async () => await Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/reset-password`)}>
                   <Text style={styles.helpButton}>{I18n.t("authentication.forgotYourPassword")}</Text>
                 </Button>
               </Right>
