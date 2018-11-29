@@ -1,9 +1,11 @@
 import React from "react";
-import { Image, ImageBackground, Keyboard, ScrollView, Linking, KeyboardAvoidingView } from "react-native";
+import { Image, ImageBackground, Keyboard, ScrollView, Linking, KeyboardAvoidingView, Dimensions, Text as TextRN } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, ListItem, Footer, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
 
+const deviceHeight = Dimensions.get("window").height;
+const deviceWidth = Dimensions.get("window").width;
 import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
@@ -157,6 +159,8 @@ class Login extends React.Component {
   render() {
     const navigation = this.props.navigation;
     const { display, eula, loading, tenantTitle } = this.state;
+    console.log("Height: ", deviceHeight);
+    console.log("Width: ", deviceWidth);
     // Do not display?
     if (!display) {
       return (<View style={styles.nodisplay}/>);
@@ -184,7 +188,7 @@ class Login extends React.Component {
                         this._setTenant(buttonIndex);
                       }
                     )}>
-                    <Text style={styles.textActionsheet}>{this.state.tenantTitle}</Text>
+                    <TextRN style={styles.textActionsheet}>{this.state.tenantTitle}</TextRN>
                   </Button>
                   <Item inlineLabel rounded style={styles.inputGroup}>
                     <Icon active name="mail" style={styles.icon} />
@@ -252,12 +256,12 @@ class Login extends React.Component {
             <Footer>
               <Left>
                 <Button small transparent style={styles.linksButtonLeft} disabled={!this.state.tenant} onPress={ async () => await Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/register`)}>
-                  <Text style={styles.helpButton}>{I18n.t("authentication.newUser")}</Text>
+                  <TextRN style={styles.helpButton}>{I18n.t("authentication.newUser")}</TextRN>
                 </Button>
               </Left>
               <Right>
                 <Button small transparent style={styles.linksButtonRight} disabled={!this.state.tenant} onPress={ async () => await Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/reset-password`)}>
-                  <Text style={styles.helpButton}>{I18n.t("authentication.forgotYourPassword")}</Text>
+                  <TextRN style={styles.helpButton}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
                 </Button>
               </Right>
             </Footer>

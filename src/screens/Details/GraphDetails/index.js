@@ -91,10 +91,9 @@ class GraphDetails extends Component {
     console.log("Data: ", dataToDisplay);
     return (
       <Container>
-       <VictoryChart theme={VictoryTheme.material} width={deviceHeight} padding={styles.padding}>
+       <VictoryChart theme={VictoryTheme.material} width={deviceHeight} padding={styles.padding} domain={{y: [0, connector.power]}}>
           <VictoryArea
             style={{ data: styles.data}}
-            domain={{y: [0, connector.power]}}
             categories={{
               x: xCategory
             }}

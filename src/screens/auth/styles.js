@@ -1,4 +1,5 @@
 import { Dimensions, Platform, StyleSheet } from "react-native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 const commonColor = require("../../theme/variables/commonColor");
 
 const deviceHeight = Dimensions.get("window").height;
@@ -8,13 +9,13 @@ export default StyleSheet.create({
   nodisplay: {
     flex: 1,
     width: null,
-    height: deviceHeight,
+    height: hp("100%"),
     backgroundColor: "black"
   },
   background: {
     flex: 1,
     width: null,
-    height: deviceHeight,
+    height: hp("100%"),
     backgroundColor: "rgba(0,0,0,0.1)"
   },
   content: {
@@ -40,55 +41,57 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignSelf: "center",
-    marginTop: -60
+    marginTop: -hp("9%")
   },
   logo: {
     resizeMode: "contain",
-    height: deviceHeight / 6,
+    height: hp("16.7%"),
     alignSelf: "center"
   },
   form: {
     flex: 1,
-    paddingLeft: 20,
-    paddingRight: 20
+    paddingLeft: wp("5.3%"),
+    paddingRight: wp("5.3%")
   },
   buttonActionsheet: {
     alignSelf: "center",
     justifyContent: "center",
-    width: deviceWidth / 1.87,
-    marginBottom: 15,
+    width: wp("54.5%"),
+    height: hp("5%"),
+    marginBottom: hp("2.25%"),
     backgroundColor: "rgba(255,255,255,0.30)"
   },
   textActionsheet: {
-    color: "#FFFFFF"
+    color: "#FFFFFF",
+    fontSize: hp("2.2%")
   },
   formErrorText: {
-    fontSize: 12,
+    fontSize: hp("1.8%"),
     color: commonColor.brandDanger,
     textAlign: "right",
-    top: -10
+    top: -hp("1.5%")
   },
   button: {
-    marginTop: 7,
-    height: 50,
-    fontSize: 16
+    marginTop: hp("1.5%"),
+    height: hp("7.4%"),
+    fontSize: hp("2.4%")
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: hp("2.4%"),
     textAlign: "center",
     fontWeight: "900"
   },
   listItemEulaCheckbox : {
     borderBottomWidth: 0,
     paddingTop: 0,
-    paddingBottom: 5,
-    margin: 10
+    paddingBottom: hp("0.8%"),
+    margin: hp("0.8")
   },
   eulaText: {
-    fontSize: 12
+    fontSize: hp("1.8%")
   },
   eulaLink: {
-    fontSize: 12,
+    fontSize: hp("1.8%"),
     textDecorationLine: "underline",
   },
   linksContainer: {
@@ -108,27 +111,30 @@ export default StyleSheet.create({
     opacity: 0.9,
     fontWeight: "bold",
     color: "#fff",
-    fontSize: 14,
+    fontSize: hp("2.1%"),
+    height: hp("2.6%")
   },
   inputGroup: {
     flexDirection: "row",
     backgroundColor: "rgba(255,255,255,0.3)",
-    marginBottom: 15,
+    marginBottom: hp("2.3%"),
     borderWidth: 0,
     borderColor: "transparent"
   },
   input: {
-    paddingLeft: 10,
-    color: "#fff"
+    color: "#fff",
+    fontSize: hp("2.8%"),
+    height: hp("5.2%")
   },
   icon: {
-    width: 50,
-    color: "#fff"
+    width: wp("13.5%"),
+    color: "#fff",
+    fontSize: hp("3.7%")
   },
   otherLinkText: {
     alignSelf: "center",
     opacity: 0.8,
-    fontSize: 14,
+    fontSize: hp("2.1%"),
     fontWeight: "bold",
     color: "#EFF"
   }
