@@ -1,25 +1,25 @@
-import { Platform, StyleSheet, Dimensions } from "react-native";
+import { Platform, StyleSheet } from "react-native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 const primary = require("../../theme/variables/commonColor").brandPrimary;
-const deviceHeight = Dimensions.get("window").height;
 
 export default StyleSheet.create({
   links: {
-    paddingTop: Platform.OS === "android" ? 8 : 10,
-    paddingBottom: Platform.OS === "android" ? 8 : 10,
-    paddingLeft: Platform.OS === "android" ? 10 : 10,
-    borderBottomWidth: Platform.OS === "android" ? 0 : 0,
+    paddingTop: Platform.OS === "android" ? hp("1.2%") : hp("1.5%"),
+    paddingBottom: Platform.OS === "android" ? hp("1.2%") : hp("1.5%"),
+    paddingLeft: wp("2.7%"),
+    borderBottomWidth: 0,
     borderBottomColor: "transparent"
   },
   linkText: {
-    paddingLeft: 15
+    paddingLeft: wp("4%")
   },
   logoutContainer: {
     padding: 30,
     paddingTop: 0
   },
   logoutbtn: {
-    paddingTop: 30,
+    paddingTop: hp("4.5%"),
     flexDirection: "row",
     borderTopWidth: 1,
     borderTopColor: "#FFFFFF"
@@ -57,23 +57,23 @@ export default StyleSheet.create({
     backgroundColor: primary
   },
   drawerContent: {
-    paddingTop: Platform.OS === "android" ? 20 : 30,
+    paddingTop: Platform.OS === "android" ? hp("3%") : hp("4.5%"),
     flex: 1
   },
   profilePic: {
-    height: 40,
-    width: 40,
+    height: hp("6%"),
+    width: wp("10.6%"),
     borderRadius: Platform.OS === "android" ? 40 : 20
   },
   logoContainer: {
     borderColor: "#FFFFFF",
     borderBottomWidth: 1,
-    paddingBottom: 30
+    paddingBottom: hp("4.5%")
   },
   logo: {
     flex: 1,
     resizeMode: "contain",
-    height: deviceHeight / 8,
+    height: hp("12.5%"),
     alignSelf: "center"
   }
 });

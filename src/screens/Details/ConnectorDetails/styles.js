@@ -1,12 +1,12 @@
 import { StyleSheet, Platform, Dimensions } from "react-native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 const primary = require("../../../theme/variables/commonColor").brandPrimary;
-const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get("window").height;
+const { width } = Dimensions.get("window");
 
 export default StyleSheet.create({
   scrollViewContainer: {
-    marginTop: 65
+    marginTop: hp("9.7%")
   },
   content: {
     flexDirection: "column",
@@ -16,13 +16,13 @@ export default StyleSheet.create({
   rowContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: deviceHeight / 6.05
+    height: hp("17%")
   },
   columnContainer: {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    width: deviceWidth / 2
+    width: wp("50%")
   },
   secondColumnContainer: {
     flexDirection: "column",
@@ -32,50 +32,50 @@ export default StyleSheet.create({
   },
   badgeContainer: {
     justifyContent: "center",
-    height: Platform.OS === "ios" ? deviceHeight / 16.6 : deviceHeight / 13.8,
-    width: Platform.OS === "ios" ? deviceWidth / 9.3 : deviceWidth / 7.9,
+    height: hp("8%"),
+    width: width > 500 ? wp("10.6%") : wp("13.2%"),
     alignItems: "center",
     borderRadius: 150
   },
   badgeText: {
-    fontSize: 30,
+    fontSize: hp("4.5%"),
     color: "#FFFFFF"
   },
   faultedText: {
-    fontSize: 20,
+    fontSize: hp("3%"),
     fontWeight: "bold",
-    paddingTop: 10,
+    paddingTop: hp("1.5%"),
     alignSelf: "center",
     color: "#FF0000"
   },
   connectorStatus: {
-    fontSize: 20,
+    fontSize: hp("3%"),
     fontWeight: "bold",
-    paddingTop: 10,
+    paddingTop: hp("1.5%"),
     alignSelf: "center"
   },
   data: {
-    fontSize: 25,
+    fontSize: hp("3.7%"),
     fontWeight: "bold",
-    paddingTop: 10,
+    paddingTop: hp("1.5%"),
     alignSelf: "center"
   },
   statusText: {
-    fontSize: 17,
+    fontSize: hp("2.5%"),
     fontWeight: "bold",
-    paddingTop: 10,
+    paddingTop: hp("1.5%"),
     alignSelf: "center"
   },
   tagIdText: {
-    fontSize: 13,
+    fontSize: hp("2%"),
     fontWeight: "bold",
     alignSelf: "center"
   },
   kWText: {
-    fontSize: 12
+    fontSize: hp("1.8%")
   },
   iconSize: {
-    fontSize: 37
+    fontSize: hp("5.5%")
   },
   currentConsumptionContainer: {
     justifyContent: "center",
@@ -87,20 +87,20 @@ export default StyleSheet.create({
   },
   energyConsumedNumber: {
     fontWeight: "bold",
-    fontSize: 25,
-    paddingTop: 10
+    fontSize: hp("3.7%"),
+    paddingTop: hp("1.5%")
   },
   energyConsumedText: {
-    fontSize: 12
+    fontSize: hp("1.8%")
   },
   headerIcons: {
-    fontSize: 30,
+    fontSize: hp("4.5%"),
     backgroundColor: "transparent",
     color: "#FFFFFF"
   },
   profilePic: {
-    height: 45,
-    width: 45,
+    height: hp("6.7%"),
+    width: wp("12%"),
     alignSelf: "center",
     borderRadius: Platform.OS === "android" ? 40 : 20
   }

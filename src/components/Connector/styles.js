@@ -1,18 +1,18 @@
-import { StyleSheet, Dimensions, Platform } from "react-native";
+import { StyleSheet, Platform, Dimensions } from "react-native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
-const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get("window").height;
+const { height } = Dimensions.get("window");
 
 export default StyleSheet.create({
   rightConnectorContainer: {
     flexDirection: "row",
-    marginTop: 5,
+    marginTop: hp("0.7%"),
     borderColor: "#FFFFFF",
     borderRightWidth: 1
   },
   leftConnectorContainer: {
     flexDirection: "row",
-    marginTop: 5,
+    marginTop: hp("0.7%"),
   },
   connectorStatus: {
     flexDirection: "column",
@@ -20,38 +20,39 @@ export default StyleSheet.create({
   },
   badge: {
     justifyContent: "center",
-    borderRadius: 150,
-    height: Platform.OS === "ios" ? deviceHeight / 14.7 : deviceHeight / 13.5,
-    width: Platform.OS === "ios" ? deviceWidth / 8.3 : deviceWidth / 7.9
+    borderRadius: 300,
+    height: height > 700 ? hp("8.7%") : hp("6.7"),
+    width: wp("12%")
   },
   badgeText: {
-    fontSize: 27,
+    fontSize: hp("4.1%"),
     fontWeight: "bold",
-    marginBottom: Platform.OS === "android" ? -3.5 : -5,
-    paddingTop: 10
+    color: "#FFFFFF",
+    textAlign: "center",
+    textAlignVertical: "center"
   },
   connectorTextInfo: {
-    fontSize: 10,
+    fontSize: hp("1.5%"),
   },
   connectorErrorCodeText: {
-    fontSize: 9,
+    fontSize: hp("1.3"),
     color: "#FF0000"
   },
   status: {
     flexDirection: "column",
-    width: deviceWidth / 3.4,
+    width: wp("30%"),
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: 5,
-    marginRight: 5
+    marginLeft: wp("1.3%"),
+    marginRight: wp("1.3%")
   },
   statusDetailsContainer: {
-    width: deviceWidth / 3.1
+    width: wp("32%")
   },
   statusText: {
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: Platform.OS === "ios" ? 20 : 24
+    fontSize: Platform.OS === "ios" ? hp("3%") : hp("3.6%")
   },
   rowSpaceBetween: {
     flexDirection: "row",
@@ -64,36 +65,33 @@ export default StyleSheet.create({
   },
   energy: {
     fontWeight: "bold",
-    fontSize: 35,
+    fontSize: hp("5.2%"),
     textAlign: "center"
   },
   currentConsumptionUnity: {
-    marginTop: -3,
-    fontSize: 10.5
+    marginTop: -hp("0.5"),
+    fontSize: hp("1.6%")
   },
   maxEnergy: {
-    fontSize: 10.5,
+    fontSize: hp("1.6%"),
     textAlign: "center",
-    marginTop: 0.3,
-  },
-  statusDetailsContainerNoConsumption : {
-    width: deviceWidth / 3.1
+    marginTop: hp("0.1%"),
   },
   sizeConnectorImage: {
-    height: 37,
-    width: 40,
-    marginTop: 5
+    height: hp("5.6%"),
+    width: wp("9.4%"),
+    marginTop: hp("0.7%")
   },
   maxPowerContainer: {
     flexDirection: "column"
   },
   power: {
     fontWeight: "bold",
-    fontSize: 35,
+    fontSize: hp("5.2%"),
     textAlign: "center"
   },
   connectorType: {
-    fontSize: 10.5,
+    fontSize: hp("1.6%"),
     textAlign: "center"
   }
 });

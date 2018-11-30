@@ -1,10 +1,12 @@
-import { Dimensions, Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
+
 const primary = require("../../theme/variables/commonColor").brandPrimary;
 
-const deviceHeight = Dimensions.get("window").height;
-const deviceWidth = Dimensions.get("window").width;
-
 export default StyleSheet.create({
+  header: {
+    height: hp("8%")
+  },
   container: {
     flex: 1,
     width: null,
@@ -14,8 +16,8 @@ export default StyleSheet.create({
     flex: 1
   },
   imageHeader: {
-    height: 25,
-    width: 95,
+    height: hp("3.8%"),
+    width: wp("25.3%"),
     resizeMode: "contain"
   },
   spinner: {

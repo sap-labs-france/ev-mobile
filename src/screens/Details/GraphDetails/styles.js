@@ -1,11 +1,11 @@
-import { Dimensions } from "react-native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 export default ({
   padding: {
-    top: 20,
-    bottom: 80,
-    left: 70,
-    right: 20
+    top: hp("3%"),
+    bottom: hp("12%"),
+    left: wp("26%"),
+    right: wp("7.6%")
   },
   data: {
     fill: "#FFFFFF",
@@ -14,15 +14,15 @@ export default ({
     strokeWidth: 3
   },
   xAxisLabel: {
-    padding: 35,
+    padding: wp("9.3%"),
     fill: "#FFFFFF",
     fontWeight: "bold",
-    fontSize: 15
+    fontSize: hp("2.2%")
   },
   yAxisLabel: {
-    padding: 55,
+    padding: hp("11.6%"),
     fill: "#FFFFFF",
     fontWeight: "bold",
-    fontSize: 15
+    fontSize: hp("2.2%")
   }
 });

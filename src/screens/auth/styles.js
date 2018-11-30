@@ -3,7 +3,6 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-nativ
 const commonColor = require("../../theme/variables/commonColor");
 
 const deviceHeight = Dimensions.get("window").height;
-const deviceWidth = Dimensions.get("window").width;
 
 export default StyleSheet.create({
   nodisplay: {
@@ -123,7 +122,7 @@ export default StyleSheet.create({
   },
   input: {
     color: "#fff",
-    fontSize: hp("2.8%"),
+    fontSize: hp("1.8%"),
     height: hp("5.2%")
   },
   icon: {

@@ -1,29 +1,28 @@
-import { StyleSheet, Dimensions } from "react-native";
-
-const deviceWidth = Dimensions.get("window").width;
+import { StyleSheet } from "react-native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 export default StyleSheet.create({
   siteContainer: {
     flexDirection: "column",
     flex: 1,
-    height: deviceWidth / 3.8,
-    paddingTop: 15,
-    paddingBottom: 15,
+    height: hp("18%"),
+    paddingTop: hp("2.3%"),
+    paddingBottom: hp("2.3%"),
     borderTopWidth: 1,
     borderTopColor: "#D3D3D3",
     backgroundColor: "rgba(255,255,255,0.2)",
   },
   mainContent: {
     flexDirection: "row",
-    marginLeft: 10
+    marginLeft: wp("2.6%")
   },
   columnSiteName: {
     flexDirection: "column",
-    width: deviceWidth / 1.38,
+    width: wp("72%"),
     justifyContent: "center"
   },
   siteName: {
-    fontSize: 18,
+    fontSize: hp("2.7%"),
     fontWeight: "bold"
   },
   columnPinIcon: {
@@ -32,7 +31,7 @@ export default StyleSheet.create({
     justifyContent: "center"
   },
   pinIcon: {
-    fontSize: 26,
+    fontSize: hp("4%"),
     alignSelf: "flex-start"
   },
   columnArrowIcon: {
@@ -47,19 +46,23 @@ export default StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: 20
+    marginLeft: hp("5%")
   },
   freeChargersText: {
-    fontSize: 16
+    fontSize: hp("2.4%")
   },
   columnNumberChargers: {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    paddingLeft: 20
+    paddingLeft: hp("5%")
   },
   badgeNumber: {
     fontWeight: "bold",
-    height: 23
+    height: hp("3.4%")
+  },
+  badgeText: {
+    fontSize: hp("2.4%"),
+    color: "#FFFFFF"
   }
 });

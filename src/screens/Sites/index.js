@@ -93,7 +93,7 @@ class Sites extends Component {
     const { loading } = this.state;
     return (
       <Container>
-        <Header>
+        <Header style={styles.header}>
           <Left>
             <Button transparent onPress={() => navigation.openDrawer()}>
               <Icon active name="menu" />

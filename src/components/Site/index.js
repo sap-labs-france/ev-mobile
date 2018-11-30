@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Text as TextRN } from "react-native";
 import { Text, View, Icon, Badge } from "native-base";
 import openMap from "react-native-open-maps";
 
@@ -38,7 +38,7 @@ class SiteComponent extends Component {
             </View>
             <View style={styles.columnNumberChargers}>
               <Badge success style={styles.badgeNumber}>
-                <Text>{item.availableChargers}</Text>
+                <TextRN style={styles.badgeText}>{item.availableChargers}</TextRN>
               </Badge>
             </View>
           </View>

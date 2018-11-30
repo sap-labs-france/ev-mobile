@@ -123,7 +123,7 @@ class Chargers extends Component {
   render() {
     return (
       <Container>
-        <Header>
+        <Header style={styles.header}>
           <Left>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
               <Icon active name="arrow-back" />

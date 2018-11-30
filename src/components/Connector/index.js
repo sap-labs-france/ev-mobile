@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, TouchableOpacity } from "react-native";
+import { Image, TouchableOpacity, Text as TextRN } from "react-native";
 import { Text, View, Badge } from "native-base";
 
 import * as Animatable from "react-native-animatable";
@@ -48,7 +48,7 @@ class ConnectorComponent extends Component {
             </View>
           </View>
         :
-          <View style={styles.statusDetailsContainerNoConsumption}>
+          <View style={styles.statusDetailsContainer}>
             <Text style={styles.statusText} numberOfLines={1}>
               {item.status === "Faulted" ?
                 I18n.t("connector.faulted")
@@ -89,31 +89,31 @@ class ConnectorComponent extends Component {
         { item.status === "Available" && item.currentConsumption === 0 ?
           <Animatable.View>
             <Badge style={styles.badge} success>
-              <Text style={styles.badgeText}>{alpha}</Text>
+              <TextRN style={styles.badgeText}>{alpha}</TextRN>
             </Badge>
           </Animatable.View>
         : (item.status === "Occupied" || item.status === "SuspendedEV") && item.currentConsumption === 0 ?
           <Animatable.View>
             <Badge style={styles.badge} danger>
-              <Text style={styles.badgeText}>{alpha}</Text>
+              <TextRN style={styles.badgeText}>{alpha}</TextRN>
             </Badge>
           </Animatable.View>
         : item.currentConsumption !== 0 ?
           <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
             <Badge style={styles.badge} danger>
-              <Text style={styles.badgeText}>{alpha}</Text>
+              <TextRN style={styles.badgeText}>{alpha}</TextRN>
             </Badge>
           </Animatable.View>
         : item.status === "Finishing" || item.status === "Preparing" ?
           <Animatable.View>
             <Badge style={styles.badge} warning>
-              <Text style={styles.badgeText}>{alpha}</Text>
+              <TextRN style={styles.badgeText}>{alpha}</TextRN>
             </Badge>
           </Animatable.View>
         :
           <Animatable.View>
             <Badge style={styles.badge} danger>
-              <Text style={styles.badgeText}>{alpha}</Text>
+              <TextRN style={styles.badgeText}>{alpha}</TextRN>
             </Badge>
           </Animatable.View>
         }

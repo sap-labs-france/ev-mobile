@@ -1,11 +1,11 @@
-import { StyleSheet, Dimensions, Platform } from "react-native";
+import { StyleSheet, Platform, Dimensions } from "react-native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
-const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get("window").height;
+const { height, width } = Dimensions.get("window");
 
 export default StyleSheet.create({
   header: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   arrowIconColumn: {
     flexDirection: "column",
@@ -13,7 +13,7 @@ export default StyleSheet.create({
     alignItems: "center"
   },
   headerIcons: {
-    fontSize: 30,
+    fontSize: height > 800 ? hp("2.5%") : hp("5.5"),
     backgroundColor: "transparent",
     color: "#FFFFFF"
   },
@@ -21,26 +21,27 @@ export default StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    width: deviceWidth / 1.41,
-    paddingTop: 7
+    width: wp("66.2%"),
+    paddingTop: hp("1%"),
+    marginLeft: wp("3.4%")
   },
   chargerName: {
-    fontSize: 20,
+    fontSize: hp("3%"),
     fontWeight: "bold"
   },
   connectorName: {
     fontWeight: "bold",
-    fontSize: 13
+    fontSize: hp("2%")
   },
   detailsContainer: {
-    paddingTop: 10
+    paddingTop: hp("1.5%")
   },
   backgroundImage: {
-    width: deviceWidth,
-    height: deviceHeight / 4.3
+    width: wp("100%"),
+    height: height > 800 ? hp("29%") : hp("22%")
   },
   spinner: {
-    marginTop: 120
+    marginTop: hp("18%")
   },
   transactionContainer: {
     justifyContent: "center",
@@ -50,30 +51,30 @@ export default StyleSheet.create({
   outerCircle: {
     borderRadius: 150,
     borderStyle: "solid",
-    width: Platform.OS === "ios" ? deviceWidth / 3 : deviceWidth / 2.93,
-    height: Platform.OS === "ios" ? deviceHeight / 5.3 : deviceHeight / 4.72,
+    width: width > 500 ? wp("30%") : wp("34%"),
+    height: height > 800 ? hp("23%") : hp("19%"),
     backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 15
+    marginTop: height > 800 ? hp("7.2%") : hp("0%")
   },
   innerCircleStartTransaction: {
     borderRadius: 150,
     borderStyle: "solid",
-    width: Platform.OS === "ios" ? deviceWidth / 3 - 5 : deviceWidth / 2.93 - 5,
-    height: Platform.OS === "ios" ? deviceHeight / 5.3 - 5 : deviceHeight / 4.72 - 5,
+    width: width > 500 ? wp("29%") : wp("33%"),
+    height: height > 800 ? hp("22%") : hp("18%"),
     backgroundColor: "#5CB85C",
     justifyContent: "center",
     alignItems: "center"
   },
   startStopTransactionIcon: {
-    fontSize: 70
+    fontSize: hp("10.4%")
   },
   innerCircleStopTransaction: {
-    borderRadius: 150,
+    borderRadius: 200,
     borderStyle: "solid",
-    width: Platform.OS === "ios" ? deviceWidth / 3 - 5 : deviceWidth / 2.93 - 5,
-    height: Platform.OS === "ios" ? deviceHeight / 5.3 - 5 : deviceHeight / 4.72 - 5,
+    width: width > 500 ? wp("29%") : wp("33%"),
+    height: height > 800 ? hp("22%") : hp("18%"),
     backgroundColor: "#D9534F",
     justifyContent: "center",
     alignItems: "center"

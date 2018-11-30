@@ -1,11 +1,9 @@
-import { StyleSheet, Dimensions } from "react-native";
-
-const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get("window").height;
+import { StyleSheet } from "react-native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 export default StyleSheet.create({
   scrollViewContainer: {
-    marginTop: 65
+    marginTop: hp("9.7%")
   },
   content: {
     flexDirection: "column",
@@ -15,22 +13,22 @@ export default StyleSheet.create({
   rowContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: deviceHeight / 6.05
+    height: hp("16.5%")
   },
   columnContainer: {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    width: deviceWidth / 2
+    width: wp("50%")
   },
   titleHeader: {
-    fontSize: 20,
+    fontSize: hp("3%"),
     fontWeight: "bold",
-    paddingTop: 10,
-    paddingBottom: 5,
+    paddingTop: hp("1.5%"),
+    paddingBottom: hp("0.7%"),
     alignSelf: "center"
   },
   infoContent: {
-    fontSize: 17
+    fontSize: hp("2.5%")
   }
 });
