@@ -1,11 +1,9 @@
 import React from "react";
-import { Image, ImageBackground, Keyboard, ScrollView, Linking, KeyboardAvoidingView, Dimensions, Text as TextRN } from "react-native";
+import { Image, ImageBackground, Keyboard, ScrollView, Linking, KeyboardAvoidingView, Text as TextRN } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, ListItem, Footer, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
 
-const deviceHeight = Dimensions.get("window").height;
-const deviceWidth = Dimensions.get("window").width;
 import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
@@ -201,8 +199,7 @@ class Login extends React.Component {
                     ActionSheet.show(
                       {
                         options: locations.map(location => location.name),
-                        title: I18n.t("authentication.location"),
-                        titleStyle: {color:"#F00"}
+                        title: I18n.t("authentication.location")
                       },
                       buttonIndex => {
                         this._setTenant(buttonIndex);
@@ -257,7 +254,7 @@ class Login extends React.Component {
                   <CheckBox checked={eula} onPress={() => this.setState({eula: !eula})} />
                   <Body>
                     <Text style={styles.eulaText}>{I18n.t("authentication.acceptEula")}
-                      <Text onPress={()=>this.props.navigation.navigate("Eula")} style={styles.eulaLink}>{I18n.t("authentication.eula")}</Text>
+                      <Text onPress={()=> navigation.navigate("Eula")} style={styles.eulaLink}>{I18n.t("authentication.eula")}</Text>
                     </Text>
                   </Body>
                 </ListItem>
