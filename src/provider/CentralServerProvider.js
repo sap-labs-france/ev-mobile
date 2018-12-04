@@ -36,6 +36,13 @@ export default class  CentralServerProvider {
     }
   }
 
+  getLocations() {
+    return [
+      { subdomain: "slf", name: "SAP Labs France"},
+      { subdomain: "slfcah", name: "Charge@Home"},
+    ]
+  }
+
   async isUserAuthenticated() {
     // Init?
     await this.initialize();

@@ -15,6 +15,7 @@
   },
   "authentication": {
     "logOut": "Se déconnecter",
+    "mustSelectLocation": "Selectionnez un Site",
     "wrongEmailOrPassword": "Mauvais email ou mot de passe !",
     "wrongEmail": "Email inconnu !",
     "accountLocked": "Votre compte est bloqué",
@@ -40,7 +41,7 @@
     "signUp": "S'enregistrer",
 		"passwordRule": "Doit contenir 1 char. minuscule et majuscule, 1 nombre, 1 char. spécial et une longueur de 8",
     "passwordNotMatch": "Les mots de passes ne correspondent pas",
-    "location": "Choisir emplacement"
+    "location": "Choisir Site"
   },
   "sites": {
     "freeChargers": "Chargeurs disponibles:"

@@ -22,11 +22,9 @@
     "metro-react-native-babel-preset": "0.46.0",
     "prettier": "1.5.3",
     "react-test-renderer": "16.5.0",
-    "remotedev-rn-debugger": "^0.8.3",
     "schedule": "^0.4.0"
   },
   "scripts": {
-    "postinstall": "remotedev-debugger",
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",

@@ -15,6 +15,7 @@
   },
 	"authentication": {
     "logOut": "LOG OUT",
+    "mustSelectLocation": "Select a Location",
     "wrongEmailOrPassword": "Wrong email or password!",
     "wrongEmail": "Wrong email!",
     "accountLocked": "Account locked",
@@ -40,7 +41,7 @@
     "signUp": "Sign Up",
 		"passwordRule": "Must contain 1 letter lowercase and uppercase, 1 number, 1 special char and 8 chars long",
     "passwordNotMatch": "Password does not match",
-    "location": "Choose location"
+    "location": "Choose Location"
   },
   "sites": {
     "freeChargers": "Free chargers:"

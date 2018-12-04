@@ -12,7 +12,7 @@ import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
 import styles from "../styles";
 
-const _provider = ProviderFactory.getProvider();
+const provider = ProviderFactory.getProvider();
 const formValidationDef = {
   email: {
     presence: {
@@ -41,7 +41,7 @@ const formValidationDef = {
   }
 };
 
-const locations = ["Charge@Home", "SAP Labs France", "Cancel"];
+const locations = provider.getLocations();
 
 class Login extends React.Component {
   passwordInput;
@@ -65,7 +65,7 @@ class Login extends React.Component {
     Orientation.unlockAllOrientations();
     Orientation.lockToPortrait();
     // Check if user is authenticated
-    if (await _provider.isUserAuthenticated()) {
+    if (await provider.isUserAuthenticated()) {
       // Navigate
       this._navigateToSites();
     } else {
@@ -85,7 +85,7 @@ class Login extends React.Component {
         // Loading
         this.setState({loading: true});
         // Login
-        await _provider.login(email, password, eula, tenant);
+        await provider.login(email, password, eula, tenant);
         // Login Success
         this.setState({loading: false});
         // Navigate
@@ -138,8 +138,8 @@ class Login extends React.Component {
   }
 
   _setDefaultInputs = async () => {
-    const email = await _provider.getUserEmail();
-    const password = await _provider.getUserPassword();
+    const email = await provider.getUserEmail();
+    const password = await provider.getUserPassword();
     this.setState({
       email,
       password,
@@ -148,19 +148,39 @@ class Login extends React.Component {
   }
 
   _setTenant = (buttonIndex) => {
-    if (buttonIndex === 0) {
-      this.setState({tenant: "slfcah"});
-    } else if (buttonIndex === 1) {
-      this.setState({tenant: "slf"});
+    // Provided?
+    if (buttonIndex !== undefined) {
+      // Set Tenant
+      this.setState({
+        tenant: locations[buttonIndex].subdomain,
+        tenantTitle: locations[buttonIndex].name
+      });
     }
-    this.setState({tenantTitle: locations[buttonIndex] === "Cancel" ? this.state.tenantTitle : locations[buttonIndex]});
+  }
+
+  _newUser = () => {
+    // Tenant selected?
+    if (this.state.tenant) {
+      Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/register`);
+    } else {
+      // Error
+      Message.showError(I18n.t("authentication.mustSelectLocation"));
+    }
+  }
+
+  _forgotPassword = () => {
+    // Tenant selected?
+    if (this.state.tenant) {
+      Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/reset-password`);
+    } else {
+      // Error
+      Message.showError(I18n.t("authentication.mustSelectLocation"));
+    }
   }
 
   render() {
     const navigation = this.props.navigation;
     const { display, eula, loading, tenantTitle } = this.state;
-    console.log("Height: ", deviceHeight);
-    console.log("Width: ", deviceWidth);
     // Do not display?
     if (!display) {
       return (<View style={styles.nodisplay}/>);
@@ -180,70 +200,70 @@ class Login extends React.Component {
                   onPress={() =>
                     ActionSheet.show(
                       {
-                        options: locations,
-                        cancelButtonIndex: locations.indexOf("Cancel"),
-                        title: I18n.t("authentication.location")
+                        options: locations.map(location => location.name),
+                        title: I18n.t("authentication.location"),
+                        titleStyle: {color:"#F00"}
                       },
                       buttonIndex => {
                         this._setTenant(buttonIndex);
                       }
                     )}>
-                    <TextRN style={styles.textActionsheet}>{this.state.tenantTitle}</TextRN>
-                  </Button>
-                  <Item inlineLabel rounded style={styles.inputGroup}>
-                    <Icon active name="mail" style={styles.icon} />
-                    <Input
-                      name="email"
-                      type="email"
-                      returnKeyType= "next"
-                      placeholder={I18n.t("authentication.email")}
-                      placeholderTextColor="#FFF"
-                      onSubmitEditing={() => this.passwordInput._root.focus()}
-                      style={styles.input}
-                      autoCapitalize="none"
-                      blurOnSubmit={false}
-                      autoCorrect={false}
-                      keyboardType={"email-address"}
-                      secureTextEntry={false}
-                      onChangeText={(text) => this.setState({email: text})}
-                      value={this.state.email}
-                    />
-                  </Item>
-                  {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
+                  <TextRN style={styles.textActionsheet}>{this.state.tenantTitle}</TextRN>
+                </Button>
+                <Item inlineLabel rounded style={styles.inputGroup}>
+                  <Icon active name="mail" style={styles.icon} />
+                  <Input
+                    name="email"
+                    type="email"
+                    returnKeyType= "next"
+                    placeholder={I18n.t("authentication.email")}
+                    placeholderTextColor="#FFF"
+                    onSubmitEditing={() => this.passwordInput._root.focus()}
+                    style={styles.input}
+                    autoCapitalize="none"
+                    blurOnSubmit={false}
+                    autoCorrect={false}
+                    keyboardType={"email-address"}
+                    secureTextEntry={false}
+                    onChangeText={(text) => this.setState({email: text})}
+                    value={this.state.email}
+                  />
+                </Item>
+                {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
-                  <Item inlineLabel rounded style={styles.inputGroup}>
-                    <Icon active name="unlock" style={styles.icon} />
-                    <Input
-                      name="password"
-                      type="password"
-                      returnKeyType="go"
-                      ref={(ref)=>(this.passwordInput = ref)}
-                      onSubmitEditing={()=>Keyboard.dismiss()}
-                      placeholder={I18n.t("authentication.password")}
-                      placeholderTextColor="#FFF"
-                      style={styles.input}
-                      autoCapitalize="none"
-                      blurOnSubmit={false}
-                      autoCorrect={false}
-                      keyboardType={"default"}
-                      secureTextEntry={true}
-                      onChangeText={(text) => this.setState({password: text})}
-                      value={this.state.password}
-                    />
-                  </Item>
-                  {this.state.errorPassword && this.state.errorPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
+                <Item inlineLabel rounded style={styles.inputGroup}>
+                  <Icon active name="unlock" style={styles.icon} />
+                  <Input
+                    name="password"
+                    type="password"
+                    returnKeyType="go"
+                    ref={(ref)=>(this.passwordInput = ref)}
+                    onSubmitEditing={()=>Keyboard.dismiss()}
+                    placeholder={I18n.t("authentication.password")}
+                    placeholderTextColor="#FFF"
+                    style={styles.input}
+                    autoCapitalize="none"
+                    blurOnSubmit={false}
+                    autoCorrect={false}
+                    keyboardType={"default"}
+                    secureTextEntry={true}
+                    onChangeText={(text) => this.setState({password: text})}
+                    value={this.state.password}
+                  />
+                </Item>
+                {this.state.errorPassword && this.state.errorPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
-                  <ListItem style={styles.listItemEulaCheckbox}>
-                    <CheckBox checked={eula} onPress={() => this.setState({eula: !eula})} />
-                    <Body>
-                      <Text style={styles.eulaText}>{I18n.t("authentication.acceptEula")}
-                        <Text onPress={()=>this.props.navigation.navigate("Eula")} style={styles.eulaLink}>{I18n.t("authentication.eula")}</Text>
-                      </Text>
-                    </Body>
-                  </ListItem>
-                  <View>
-                    {this.state.errorEula && this.state.errorEula.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
-                  </View>
+                <ListItem style={styles.listItemEulaCheckbox}>
+                  <CheckBox checked={eula} onPress={() => this.setState({eula: !eula})} />
+                  <Body>
+                    <Text style={styles.eulaText}>{I18n.t("authentication.acceptEula")}
+                      <Text onPress={()=>this.props.navigation.navigate("Eula")} style={styles.eulaLink}>{I18n.t("authentication.eula")}</Text>
+                    </Text>
+                  </Body>
+                </ListItem>
+                <View>
+                  {this.state.errorEula && this.state.errorEula.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
+                </View>
                 { loading ?
                   <Spinner style={styles.spinner} color="white" />
                 :
@@ -255,12 +275,12 @@ class Login extends React.Component {
             </KeyboardAvoidingView>
             <Footer>
               <Left>
-                <Button small transparent style={styles.linksButtonLeft} disabled={!this.state.tenant} onPress={ async () => await Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/register`)}>
+                <Button small transparent style={styles.linksButtonLeft} onPress={ () => this._newUser()}>
                   <TextRN style={styles.helpButton}>{I18n.t("authentication.newUser")}</TextRN>
                 </Button>
               </Left>
               <Right>
-                <Button small transparent style={styles.linksButtonRight} disabled={!this.state.tenant} onPress={ async () => await Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/reset-password`)}>
+                <Button small transparent style={styles.linksButtonRight} onPress={ () => this._forgotPassword()}>
                   <TextRN style={styles.helpButton}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
                 </Button>
               </Right>

@@ -34,7 +34,7 @@ export default StyleSheet.create({
   helpBtns: {
     opacity: 0.9,
     fontWeight: "bold",
-    color: "#fff",
+    color: commonColor.textColor,
   },
   container: {
     flex: 1,
@@ -55,17 +55,18 @@ export default StyleSheet.create({
   buttonActionsheet: {
     alignSelf: "center",
     justifyContent: "center",
-    width: wp("54.5%"),
-    height: hp("5%"),
+    borderRadius: 50,
+    width: wp("60%"),
+    height: hp("7%"),
     marginBottom: hp("2.25%"),
     backgroundColor: "rgba(255,255,255,0.30)"
   },
   textActionsheet: {
-    color: "#FFFFFF",
-    fontSize: hp("2.2%")
+    color: commonColor.textColor,
+    fontSize: hp("2.5%")
   },
   formErrorText: {
-    fontSize: hp("1.8%"),
+    fontSize: hp("2.2%"),
     color: commonColor.brandDanger,
     textAlign: "right",
     top: -hp("1.5%")
@@ -73,10 +74,9 @@ export default StyleSheet.create({
   button: {
     marginTop: hp("1.5%"),
     height: hp("7.4%"),
-    fontSize: hp("2.4%")
   },
   buttonText: {
-    fontSize: hp("2.4%"),
+    fontSize: hp("2.5%"),
     textAlign: "center",
     fontWeight: "900"
   },
@@ -87,10 +87,10 @@ export default StyleSheet.create({
     margin: hp("0.8")
   },
   eulaText: {
-    fontSize: hp("1.8%")
+    fontSize: hp("2.2%")
   },
   eulaLink: {
-    fontSize: hp("1.8%"),
+    fontSize: hp("2.2%"),
     textDecorationLine: "underline",
   },
   linksContainer: {
@@ -109,32 +109,34 @@ export default StyleSheet.create({
   helpButton: {
     opacity: 0.9,
     fontWeight: "bold",
-    color: "#fff",
-    fontSize: hp("2.1%"),
+    color: commonColor.textColor,
+    fontSize: hp("2.2%"),
     height: hp("2.6%")
   },
   inputGroup: {
     flexDirection: "row",
     backgroundColor: "rgba(255,255,255,0.3)",
-    marginBottom: hp("2.3%"),
+    marginBottom: hp("2%"),
+    padding: hp("1%"),
     borderWidth: 0,
     borderColor: "transparent"
   },
   input: {
-    color: "#fff",
-    fontSize: hp("1.8%"),
-    height: hp("5.2%")
+    color: commonColor.textColor,
+    fontSize: hp("2.2%"),
+    padding: hp("0%"),
+    height: hp("5%")
   },
   icon: {
     width: wp("13.5%"),
-    color: "#fff",
+    color: commonColor.textColor,
     fontSize: hp("3.7%")
   },
   otherLinkText: {
     alignSelf: "center",
     opacity: 0.8,
-    fontSize: hp("2.1%"),
+    fontSize: hp("2.2%"),
     fontWeight: "bold",
-    color: "#EFF"
+    color: commonColor.textColor
   }
 });

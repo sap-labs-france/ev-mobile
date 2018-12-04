@@ -236,7 +236,7 @@ module.exports = {
   tabTextColor: "#222222",
 
   // Text
-  textColor: "#000",
+  textColor: "#FFF",
   inverseTextColor: "#fff",
   noteFontSize: 14,
 
