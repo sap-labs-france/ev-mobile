@@ -56,14 +56,14 @@ export default StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     borderRadius: 50,
-    width: wp("60%"),
+    width: wp("70%"),
     height: hp("7%"),
     marginBottom: hp("2.25%"),
     backgroundColor: "rgba(255,255,255,0.30)"
   },
   textActionsheet: {
     color: commonColor.textColor,
-    fontSize: hp("2.5%")
+    fontSize: hp("2.2%")
   },
   formErrorText: {
     fontSize: hp("2.2%"),
