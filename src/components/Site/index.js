@@ -37,8 +37,8 @@ class SiteComponent extends Component {
               <Text style={styles.freeChargersText}>{I18n.t("sites.freeChargers")}</Text>
             </View>
             <View style={styles.columnNumberChargers}>
-              <Badge success style={styles.badgeNumber}>
-                <TextRN style={styles.badgeText}>{item.availableChargers}</TextRN>
+              <Badge success style={styles.badge}>
+                <Text style={styles.badgeText}>{item.availableChargers}</Text>
               </Badge>
             </View>
           </View>

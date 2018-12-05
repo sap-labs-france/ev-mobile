@@ -24,6 +24,7 @@ export default StyleSheet.create({
   },
   siteName: {
     fontSize: hp("2.7%"),
+    color: commonColor.textColor,
     fontWeight: "bold"
   },
   columnPinIcon: {
@@ -37,6 +38,7 @@ export default StyleSheet.create({
   },
   columnArrowIcon: {
     flexDirection: "column",
+    marginRight: wp("3%"),
     justifyContent: "center"
   },
   detailsContent: {
@@ -50,6 +52,7 @@ export default StyleSheet.create({
     marginLeft: hp("5%")
   },
   freeChargersText: {
+    color: commonColor.textColor,
     fontSize: hp("2.4%")
   },
   columnNumberChargers: {
@@ -58,12 +61,14 @@ export default StyleSheet.create({
     alignItems: "center",
     paddingLeft: hp("5%")
   },
-  badgeNumber: {
-    fontWeight: "bold",
-    height: hp("3.4%")
+  badge: {
+    height: hp("6%")
   },
   badgeText: {
-    fontSize: hp("2.4%"),
-    color: commonColor.textColor
+    fontSize: hp("5%"),
+    fontWeight: "bold",
+    marginTop: hp("-0.2%"),
+    padding: hp("2.5%"),
+    color: commonColor.textColor,
   }
 });
