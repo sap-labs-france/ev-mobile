@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import commonColor from "../../theme/variables/commonColor";
 
 export default StyleSheet.create({
   container: {
@@ -11,7 +12,7 @@ export default StyleSheet.create({
   listDividerContainer: {
     backgroundColor: "transparent",
     paddingBottom: hp("1.1"),
-    borderBottomColor: "#FFFFFF",
+    borderBottomColor: commonColor.textColor,
     borderBottomWidth: wp("0.3%"),
     flexDirection: "row",
     justifyContent: "space-between",
@@ -26,11 +27,11 @@ export default StyleSheet.create({
     fontSize: hp("2.1%")
   },
   heartbeatIcon: {
-    color: "#32CD32",
+    color: commonColor.brandSuccess,
     fontSize: hp("3%")
   },
   deadHeartbeatIcon: {
-    color: "#D9534F",
+    color: commonColor.brandDanger,
     fontSize: hp("3%")
   },
   listContainer: {

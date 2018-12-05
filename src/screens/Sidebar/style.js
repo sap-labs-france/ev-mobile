@@ -1,7 +1,6 @@
 import { Platform, StyleSheet } from "react-native";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
-
-const primary = require("../../theme/variables/commonColor").brandPrimary;
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import commonColor from "../../theme/variables/commonColor";
 
 export default StyleSheet.create({
   links: {
@@ -22,7 +21,7 @@ export default StyleSheet.create({
     paddingTop: hp("4.5%"),
     flexDirection: "row",
     borderTopWidth: 1,
-    borderTopColor: "#FFFFFF"
+    borderTopColor: commonColor.textColor
   },
   gridLogoutContainer: {
     flexDirection: "row",
@@ -38,10 +37,10 @@ export default StyleSheet.create({
   },
   logout: {
     fontWeight: "bold",
-    color: "#FFFFFF"
+    color: commonColor.textColor
   },
   name: {
-    color: "#FFFFFF"
+    color: commonColor.textColor
   },
   columnThumbnail: {
     flexDirection: "column",
@@ -54,7 +53,7 @@ export default StyleSheet.create({
     flex: 1,
     width: null,
     height: null,
-    backgroundColor: primary
+    backgroundColor: commonColor.brandPrimary
   },
   drawerContent: {
     paddingTop: Platform.OS === "android" ? hp("3%") : hp("4.5%"),
@@ -66,7 +65,7 @@ export default StyleSheet.create({
     borderRadius: Platform.OS === "android" ? 40 : 20
   },
   logoContainer: {
-    borderColor: "#FFFFFF",
+    borderColor: commonColor.textColor,
     borderBottomWidth: 1,
     paddingBottom: hp("4.5%")
   },

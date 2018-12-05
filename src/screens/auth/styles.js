@@ -1,6 +1,6 @@
 import { Dimensions, Platform, StyleSheet } from "react-native";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
-const commonColor = require("../../theme/variables/commonColor");
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import commonColor from "../../theme/variables/commonColor";
 
 const deviceHeight = Dimensions.get("window").height;
 

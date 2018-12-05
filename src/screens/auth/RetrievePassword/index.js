@@ -2,6 +2,7 @@ import React from "react";
 import { Image, ImageBackground, Linking, KeyboardAvoidingView } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Content, Text, Form, Item, Input, Button, Icon, View, Spinner, Footer } from "native-base";
+import commonColor from "../../../theme/variables/commonColor";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
@@ -94,7 +95,7 @@ class RetrievePassword extends React.Component {
                     type="email"
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.email")}
-                    placeholderTextColor="#FFF"
+                    placeholderTextColor={commonColor.textColor}
                     style={styles.input}
                     autoCapitalize="none"
                     blurOnSubmit={false}

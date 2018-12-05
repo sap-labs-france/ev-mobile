@@ -1,4 +1,5 @@
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import commonColor from "../../../theme/variables/commonColor";
 
 export default ({
   padding: {
@@ -8,20 +9,20 @@ export default ({
     right: wp("7.6%")
   },
   data: {
-    fill: "#FFFFFF",
+    fill: commonColor.textColor,
     fillOpacity: 0.6,
-    stroke: "#c43a31",
+    stroke: commonColor.brandDanger,
     strokeWidth: 3
   },
   xAxisLabel: {
     padding: wp("9.3%"),
-    fill: "#FFFFFF",
+    fill: commonColor.textColor,
     fontWeight: "bold",
     fontSize: hp("2.2%")
   },
   yAxisLabel: {
     padding: hp("11.6%"),
-    fill: "#FFFFFF",
+    fill: commonColor.textColor,
     fontWeight: "bold",
     fontSize: hp("2.2%")
   }

@@ -9,6 +9,7 @@ import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
 import styles from "../styles";
+import commonColor from "../../../theme/variables/commonColor";
 
 const provider = ProviderFactory.getProvider();
 const formValidationDef = {
@@ -214,7 +215,7 @@ class Login extends React.Component {
                     type="email"
                     returnKeyType= "next"
                     placeholder={I18n.t("authentication.email")}
-                    placeholderTextColor="#FFF"
+                    placeholderTextColor={commonColor.textColor}
                     onSubmitEditing={() => this.passwordInput._root.focus()}
                     style={styles.input}
                     autoCapitalize="none"
@@ -237,7 +238,7 @@ class Login extends React.Component {
                     ref={(ref)=>(this.passwordInput = ref)}
                     onSubmitEditing={()=>Keyboard.dismiss()}
                     placeholder={I18n.t("authentication.password")}
-                    placeholderTextColor="#FFF"
+                    placeholderTextColor={commonColor.textColor}
                     style={styles.input}
                     autoCapitalize="none"
                     blurOnSubmit={false}

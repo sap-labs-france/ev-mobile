@@ -1,5 +1,5 @@
-import { Dimensions, Platform, StyleSheet } from "react-native";
-const commonColor = require("../../../theme/variables/commonColor");
+import { Dimensions, StyleSheet } from "react-native";
+import commonColor from "../../../theme/variables/commonColor";
 
 const deviceHeight = Dimensions.get("window").height;
 
@@ -27,7 +27,7 @@ export default StyleSheet.create({
   helpBtns: {
     opacity: 0.9,
     fontWeight: "bold",
-    color: "#fff",
+    color: commonColor.textColor,
   },
   container: {
     flex: 1,
@@ -86,10 +86,10 @@ export default StyleSheet.create({
   },
   input: {
     paddingLeft: 10,
-    color: "#fff"
+    color: commonColor.textColor
   },
   icon: {
     width: 50,
-    color: "#fff"
+    color: commonColor.textColor
   }
 });

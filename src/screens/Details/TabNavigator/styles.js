@@ -1,5 +1,6 @@
 import { StyleSheet, Platform, Dimensions } from "react-native";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import commonColor from "../../../theme/variables/commonColor";
 
 const { height, width } = Dimensions.get("window");
 
@@ -15,7 +16,7 @@ export default StyleSheet.create({
   headerIcons: {
     fontSize: height > 800 ? hp("2.5%") : hp("5.5"),
     backgroundColor: "transparent",
-    color: "#FFFFFF"
+    color: commonColor.textColor
   },
   chargerNameColumn: {
     flexDirection: "column",
@@ -53,7 +54,7 @@ export default StyleSheet.create({
     borderStyle: "solid",
     width: width > 500 ? wp("30%") : wp("34%"),
     height: height > 800 ? hp("23%") : hp("19%"),
-    backgroundColor: "#FFFFFF",
+    backgroundColor: commonColor.textColor,
     justifyContent: "center",
     alignItems: "center",
     marginTop: height > 800 ? hp("7.2%") : hp("0%")
@@ -63,7 +64,7 @@ export default StyleSheet.create({
     borderStyle: "solid",
     width: width > 500 ? wp("29%") : wp("33%"),
     height: height > 800 ? hp("22%") : hp("18%"),
-    backgroundColor: "#5CB85C",
+    backgroundColor: commonColor.brandSuccess,
     justifyContent: "center",
     alignItems: "center"
   },
@@ -75,12 +76,12 @@ export default StyleSheet.create({
     borderStyle: "solid",
     width: width > 500 ? wp("29%") : wp("33%"),
     height: height > 800 ? hp("22%") : hp("18%"),
-    backgroundColor: "#D9534F",
+    backgroundColor: commonColor.brandDanger,
     justifyContent: "center",
     alignItems: "center"
   },
   footerContainer: {
-    backgroundColor: "#000000"
+    backgroundColor: commonColor.brandPrimary
   }
 });
 

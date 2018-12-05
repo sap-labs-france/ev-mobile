@@ -1,14 +1,13 @@
 import { StyleSheet } from "react-native";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
-
-const primary = require("../../theme/variables/commonColor").brandPrimary;
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import commonColor from "../../theme/variables/commonColor";
 
 export default StyleSheet.create({
   header: {
     height: hp("8%")
   },
   bg: {
-    backgroundColor: primary
+    backgroundColor: commonColor.brandPrimary
   },
   newsContent: {
     flexDirection: "column",
@@ -21,22 +20,22 @@ export default StyleSheet.create({
     borderTopColor: "#ddd"
   },
   newsHeader: {
-    color: "#fff",
+    color: commonColor.textColor,
     fontWeight: "bold"
   },
   newsLink: {
-    color: "#fff",
+    color: commonColor.textColor,
     fontSize: hp("1.8%"),
     alignSelf: "flex-start",
     fontWeight: "bold"
   },
   newsTypeView: {
     borderBottomWidth: 1,
-    borderBottomColor: "#fff",
+    borderBottomColor: commonColor.textColor,
     alignSelf: "flex-end"
   },
   newsTypeText: {
-    color: "#fff",
+    color: commonColor.textColor,
     fontSize: hp("1.8%"),
     fontWeight: "bold",
     paddingBottom: hp("0.7%")

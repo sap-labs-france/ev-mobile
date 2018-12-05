@@ -1,5 +1,6 @@
 import { StyleSheet, Platform, Dimensions } from "react-native";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import commonColor from "../../theme/variables/commonColor";
 
 const { height } = Dimensions.get("window");
 
@@ -7,7 +8,7 @@ export default StyleSheet.create({
   rightConnectorContainer: {
     flexDirection: "row",
     marginTop: hp("0.7%"),
-    borderColor: "#FFFFFF",
+    borderColor: commonColor.textColor,
     borderRightWidth: 1
   },
   leftConnectorContainer: {
@@ -27,7 +28,7 @@ export default StyleSheet.create({
   badgeText: {
     fontSize: hp("4.1%"),
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: commonColor.textColor,
     textAlign: "center",
     textAlignVertical: "center"
   },
@@ -36,7 +37,7 @@ export default StyleSheet.create({
   },
   connectorErrorCodeText: {
     fontSize: hp("1.3"),
-    color: "#FF0000"
+    color: commonColor.brandDanger
   },
   status: {
     flexDirection: "column",

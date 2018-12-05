@@ -1,7 +1,6 @@
 import { StyleSheet, Platform, Dimensions } from "react-native";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
-
-const primary = require("../../../theme/variables/commonColor").brandPrimary;
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import commonColor from "../../theme/variables/commonColor";
 const { width } = Dimensions.get("window");
 
 export default StyleSheet.create({
@@ -39,14 +38,14 @@ export default StyleSheet.create({
   },
   badgeText: {
     fontSize: hp("4.5%"),
-    color: "#FFFFFF"
+    color: commonColor.textColor
   },
   faultedText: {
     fontSize: hp("3%"),
     fontWeight: "bold",
     paddingTop: hp("1.5%"),
     alignSelf: "center",
-    color: "#FF0000"
+    color: commonColor.brandDanger
   },
   connectorStatus: {
     fontSize: hp("3%"),
@@ -96,7 +95,7 @@ export default StyleSheet.create({
   headerIcons: {
     fontSize: hp("4.5%"),
     backgroundColor: "transparent",
-    color: "#FFFFFF"
+    color: commonColor.textColor
   },
   profilePic: {
     height: hp("6.7%"),

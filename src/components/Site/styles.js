@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import commonColor from "../../theme/variables/commonColor";
 
 export default StyleSheet.create({
   siteContainer: {
@@ -63,6 +64,6 @@ export default StyleSheet.create({
   },
   badgeText: {
     fontSize: hp("2.4%"),
-    color: "#FFFFFF"
+    color: commonColor.textColor
   }
 });
