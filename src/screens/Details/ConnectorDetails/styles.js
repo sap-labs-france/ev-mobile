@@ -1,6 +1,6 @@
 import { StyleSheet, Platform, Dimensions } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import commonColor from "../../theme/variables/commonColor";
+import commonColor from "../../../theme/variables/commonColor";
 const { width } = Dimensions.get("window");
 
 export default StyleSheet.create({
