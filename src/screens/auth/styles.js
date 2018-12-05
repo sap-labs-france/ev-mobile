@@ -87,9 +87,11 @@ export default StyleSheet.create({
     margin: hp("0.8")
   },
   eulaText: {
+    color: commonColor.textColor,
     fontSize: hp("2.2%")
   },
   eulaLink: {
+    color: commonColor.textColor,
     fontSize: hp("2.2%"),
     textDecorationLine: "underline",
   },
