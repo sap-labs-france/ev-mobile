@@ -33,6 +33,8 @@ class ConnectorComponent extends Component {
         return I18n.t("connector.suspendedEV");
       case Constants.CONN_STATUS_UNAVAILABLE:
         return I18n.t("connector.unavailable");
+      default:
+      return I18n.t("connector.unknown");
     }
   }
 

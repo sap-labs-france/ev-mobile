@@ -56,7 +56,8 @@
     "faulted": "Faulted",
     "reserved": "Reserved",
     "preparing": "Preparing",
-    "finishing": "Finishing"
+    "finishing": "Finishing",
+    "unknown": "Unknown"
   },
   "details": {
     "connector": "Connector",
