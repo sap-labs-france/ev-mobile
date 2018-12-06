@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Image, TouchableOpacity, Text as TextRN } from "react-native";
 import { Text, View, Badge } from "native-base";
+import Constants from "../../utils/Constants";
 
 import * as Animatable from "react-native-animatable";
 import I18n from "../../I18n/I18n";
@@ -12,60 +13,49 @@ const chademo = require("../../../assets/connectorType/chademo.gif");
 const noConnector = require("../../../assets/connectorType/no-connector.gif");
 
 class ConnectorComponent extends Component {
+  _translateStatus = (status) => {
+    switch (status) {
+      case Constants.CONN_STATUS_AVAILABLE:
+        return I18n.t("connector.available");
+      case Constants.CONN_STATUS_CHARGING:
+        return I18n.t("connector.charging");
+      case Constants.CONN_STATUS_FAULTED:
+        return I18n.t("connector.faulted");
+      case Constants.CONN_STATUS_RESERVED:
+        return I18n.t("connector.reserved");
+      case Constants.CONN_STATUS_FINISHING:
+        return I18n.t("connector.finishing");
+      case Constants.CONN_STATUS_PREPARING:
+        return I18n.t("connector.preparing");
+      case Constants.CONN_STATUS_SUSPENDED_EVSE:
+        return I18n.t("connector.suspendedEVSE");
+      case Constants.CONN_STATUS_SUSPENDED_EV:
+        return I18n.t("connector.suspendedEV");
+      case Constants.CONN_STATUS_UNAVAILABLE:
+        return I18n.t("connector.unavailable");
+    }
+  }
 
   renderStatus  = () => {
     const { item } = this.props;
     return (
       <View style={styles.status}>
-        { item.currentConsumption !== 0 ?
-          <View style={styles.statusDetailsContainer}>
-            <Text style={styles.statusText} numberOfLines={1}>
-              {item.status === "Faulted" ?
-                I18n.t("connector.faulted")
-              : item.status === "Occupied" ?
-                I18n.t("connector.occupied")
-              : item.status === "SuspendedEV" ?
-                I18n.t("connector.suspendedEV")
-              : item.status === "Charging" ?
-                I18n.t("connector.charging")
-              : item.status === "Finishing" ?
-                I18n.t("connector.finishing")
-              : item.status === "Preparing" ?
-                I18n.t("connector.preparing")
-              :
-                item.status
-              }
-            </Text>
+        <View style={styles.statusDetailsContainer}>
+          <Text style={styles.statusText} numberOfLines={1}>
+            {this._translateStatus(item.status)}
+          </Text>
+          {item.currentConsumption > 0 ?
             <View style={styles.rowSpaceBetween}>
               <View style={styles.column}>
-                <Text style={styles.energy}>{Math.trunc(item.currentConsumption / 1000) === 0 ? (item.currentConsumption / 1000).toFixed(1) : Math.trunc(item.currentConsumption / 1000)}</Text>
-                <Text style={styles.currentConsumptionUnity} numberOfLines={1}>kW(Instant)</Text>
+                  <Text style={styles.energy}>{Math.trunc(item.currentConsumption / 1000) === 0 ? (item.currentConsumption / 1000).toFixed(1) : Math.trunc(item.currentConsumption / 1000)}</Text>
+                  <Text style={styles.currentConsumptionUnity} numberOfLines={1}>kW(Instant)</Text>
               </View>
               <View style={styles.column}>
                 <Text style={styles.energy}>{Math.round(item.totalConsumption / 1000)}</Text>
                 <Text style={styles.maxEnergy} numberOfLines={1}>Total kW</Text>
               </View>
             </View>
-          </View>
-        :
-          <View style={styles.statusDetailsContainer}>
-            <Text style={styles.statusText} numberOfLines={1}>
-              {item.status === "Faulted" ?
-                I18n.t("connector.faulted")
-              : item.status === "Available" ?
-                I18n.t("connector.available")
-              : item.status === "Occupied" ?
-                I18n.t("connector.occupied")
-              : item.status === "SuspendedEV" ?
-                I18n.t("connector.suspendedEV")
-              : item.status === "Finishing" ?
-                I18n.t("connector.finishing")
-              : item.status === "Preparing" ?
-                I18n.t("connector.preparing")
-              :
-                item.status
-              }
-            </Text>
+          :
             <View style={styles.rowSpaceBetween}>
               <View style={styles.column}>
                 <Image style={styles.sizeConnectorImage} source={item.type === "T2" ? type2 : item.type === "CCS" ? combo : item.type === "C" ? chademo : noConnector} />
@@ -76,8 +66,8 @@ class ConnectorComponent extends Component {
                 <Text style={styles.maxEnergy} numberOfLines={1}>kWMax</Text>
               </View>
             </View>
-          </View>
-        }
+          }
+        </View>
       </View>
     );
   }

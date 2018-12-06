@@ -28,5 +28,16 @@ export default {
     skip: 0
   },
   PAGING_SIZE: 10,
-  DEFAULT_ORDERING: []
+  DEFAULT_ORDERING: [],
+
+  CONN_STATUS_AVAILABLE: "Available",
+  CONN_STATUS_OCCUPIED: "Occupied",
+  CONN_STATUS_CHARGING: "Charging",
+  CONN_STATUS_FAULTED: "Faulted",
+  CONN_STATUS_RESERVED: "Reserved",
+  CONN_STATUS_FINISHING: "Finishing",
+  CONN_STATUS_PREPARING: "Preparing",
+  CONN_STATUS_SUSPENDED_EVSE: "SuspendedEVSE",
+  CONN_STATUS_SUSPENDED_EV:  "SuspendedEV",
+  CONN_STATUS_UNAVAILABLE: "Unavailable"
 };

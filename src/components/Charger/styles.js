@@ -19,6 +19,7 @@ export default StyleSheet.create({
     flexWrap: "wrap"
   },
   chargerName: {
+    color: commonColor.textColor,
     fontWeight: "bold",
     fontSize: hp("3.6%")
   },

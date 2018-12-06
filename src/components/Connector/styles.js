@@ -51,9 +51,9 @@ export default StyleSheet.create({
     width: wp("32%")
   },
   statusText: {
-    fontWeight: "bold",
+    color: commonColor.textColor,
     textAlign: "center",
-    fontSize: Platform.OS === "ios" ? hp("3%") : hp("3.6%")
+    fontSize: hp("3%")
   },
   rowSpaceBetween: {
     flexDirection: "row",
@@ -65,15 +65,18 @@ export default StyleSheet.create({
     alignItems: "center"
   },
   energy: {
+    color: commonColor.textColor,
     fontWeight: "bold",
     fontSize: hp("5.2%"),
     textAlign: "center"
   },
   currentConsumptionUnity: {
+    color: commonColor.textColor,
     marginTop: -hp("0.5"),
     fontSize: hp("1.6%")
   },
   maxEnergy: {
+    color: commonColor.textColor,
     fontSize: hp("1.6%"),
     textAlign: "center",
     marginTop: hp("0.1%"),
@@ -87,11 +90,13 @@ export default StyleSheet.create({
     flexDirection: "column"
   },
   power: {
+    color: commonColor.textColor,
     fontWeight: "bold",
     fontSize: hp("5.2%"),
     textAlign: "center"
   },
   connectorType: {
+    color: commonColor.textColor,
     fontSize: hp("1.6%"),
     textAlign: "center"
   }

@@ -50,8 +50,11 @@
     "occupied": "Occupé",
     "charging": "En charge",
     "available": "Disponible",
-    "suspendedEV": "VE Suspendu",
+    "unavailable": "Indisponible",
+    "suspendedEV": "Suspendu (VE)",
+    "suspendedEVSE": "Suspendu (EVSE)",
     "faulted": "Erreur",
+    "reserved": "Réservé",
     "preparing": "Préparation",
     "finishing": "Finalisation"
   },
