@@ -1,14 +1,15 @@
 import React, { Component } from "react";
-import { Image, TouchableOpacity, Text as TextRN } from "react-native";
-import { Text, View, Badge } from "native-base";
+import { Image, TouchableOpacity } from "react-native";
+import { Text, View } from "native-base";
 import Utils from "../../utils/Utils";
+import ConnectorStatusComponent from "../ConnectorStatus";
 
 import * as Animatable from "react-native-animatable";
 import I18n from "../../I18n/I18n";
 import styles from "./styles";
 
 class ConnectorComponent extends Component {
-  renderStatus = (item) => {
+  _renderConnectorDetails = (item) => {
     return (
       <View style={styles.status}>
         <View style={styles.statusDetailsContainer}>
@@ -44,45 +45,6 @@ class ConnectorComponent extends Component {
     );
   }
 
-  renderConnectorStatus = (item) => {
-    const connectorAlpha = String.fromCharCode(64 + item.connectorId);
-    return (
-      <View style={styles.connectorStatus}>
-        { item.status === "Available" && item.currentConsumption === 0 ?
-          <Animatable.View>
-            <Badge style={styles.badge} success>
-              <TextRN style={styles.badgeText}>{connectorAlpha}</TextRN>
-            </Badge>
-          </Animatable.View>
-        : (item.status === "Occupied" || item.status === "SuspendedEV") && item.currentConsumption === 0 ?
-          <Animatable.View>
-            <Badge style={styles.badge} danger>
-              <TextRN style={styles.badgeText}>{connectorAlpha}</TextRN>
-            </Badge>
-          </Animatable.View>
-        : item.currentConsumption !== 0 ?
-          <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
-            <Badge style={styles.badge} danger>
-              <TextRN style={styles.badgeText}>{connectorAlpha}</TextRN>
-            </Badge>
-          </Animatable.View>
-        : item.status === "Finishing" || item.status === "Preparing" ?
-          <Animatable.View>
-            <Badge style={styles.badge} warning>
-              <TextRN style={styles.badgeText}>{connectorAlpha}</TextRN>
-            </Badge>
-          </Animatable.View>
-        :
-          <Animatable.View>
-            <Badge style={styles.badge} danger>
-              <TextRN style={styles.badgeText}>{connectorAlpha}</TextRN>
-            </Badge>
-          </Animatable.View>
-        }
-      </View>
-    );
-  }
-
   render() {
     const { index, item, nav, charger, sitePicture } = this.props;
     const even = (index % 2 === 0);
@@ -90,18 +52,22 @@ class ConnectorComponent extends Component {
       <TouchableOpacity onPress={()=>nav.navigate("Details", {charger, index, siteImage: sitePicture, connector: item})}>
         <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1}>
           <View style={even ? styles.leftConnectorContainer : styles.rightConnectorContainer}>
-            <Text style={styles.statusText} numberOfLines={1}>
+            <Text style={styles.statusDescription} numberOfLines={1}>
               {Utils.translateConnectorStatus(item.status)}
             </Text>
             {even ?
               <View style={styles.leftStatusConnectorContainer}>
-                {this.renderConnectorStatus(item)}
-                {this.renderStatus(item)}
+                <View style={styles.statusConnectorLetter}>
+                  <ConnectorStatusComponent item={item}/>
+                </View>
+                {this._renderConnectorDetails(item)}
               </View>
             :
               <View style={styles.rightStatusConnectorContainer}>
-                {this.renderStatus(item)}
-                {this.renderConnectorStatus(item)}
+                {this._renderConnectorDetails(item)}
+                <View style={styles.statusConnectorLetter}>
+                  <ConnectorStatusComponent item={item}/>
+                </View>
               </View>
             }
           </View>

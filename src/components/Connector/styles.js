@@ -21,30 +21,6 @@ export default StyleSheet.create({
     flexDirection: "row",
     marginTop: hp("0.7%"),
   },
-  connectorStatus: {
-    flexDirection: "column",
-    justifyContent: "center"
-  },
-  badge: {
-    justifyContent: "center",
-    borderRadius: 300,
-    height: height > 700 ? hp("8.7%") : hp("6.7"),
-    width: wp("12%")
-  },
-  badgeText: {
-    fontSize: hp("4.1%"),
-    fontWeight: "bold",
-    color: commonColor.textColor,
-    textAlign: "center",
-    textAlignVertical: "center"
-  },
-  connectorTextInfo: {
-    fontSize: hp("1.5%"),
-  },
-  connectorErrorCodeText: {
-    fontSize: hp("1.3"),
-    color: commonColor.brandDanger
-  },
   status: {
     flexDirection: "column",
     width: wp("30%"),
@@ -56,7 +32,12 @@ export default StyleSheet.create({
   statusDetailsContainer: {
     width: wp("32%")
   },
-  statusText: {
+  statusConnectorLetter: {
+    marginTop: hp("-3%"),
+    flexDirection: "column",
+    justifyContent: "center"
+  },
+  statusDescription: {
     color: commonColor.textColor,
     textAlign: "center",
     fontSize: hp("3%")
@@ -93,8 +74,5 @@ export default StyleSheet.create({
     width: wp("9.4%"),
     marginTop: hp("0.3%"),
     marginBottom: hp("0.7%")
-  },
-  maxPowerContainer: {
-    flexDirection: "column"
   }
 });

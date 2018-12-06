@@ -102,11 +102,6 @@ class Sites extends Component {
           <Body>
             <Image source={require("../../../assets/logo-low.gif")} style={styles.imageHeader} />
           </Body>
-          <Right />
-            {/* <Button transparent>
-              <Icon active name="options" />
-            </Button>
-          </Right> */}
         </Header>
 
         <View style={styles.content}>
