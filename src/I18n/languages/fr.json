@@ -57,7 +57,10 @@
     "reserved": "Réservé",
     "preparing": "Préparation",
     "finishing": "Finalisation",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "type2": "Type 2",
+    "comboCCS": "Combo",
+    "chademo": "CHAdeMO"
   },
   "details": {
     "connector": "Connecteur",
@@ -71,8 +74,9 @@
     "notAuthorised": "Vous n'êtes pas autorisés à arrêter la transaction.",
     "accepted": "Accepted",
     "denied": "Denied",
-    "consumed": "kW consommé(s)",
-    "instant": "kW instantané(s)",
+    "total": "Total",
+    "maximum": "Maximum",
+    "instant": "Instantané",
     "vendor": "Vendeur",
     "model": "Modèle",
     "ocppVersion": "Version OCPP",

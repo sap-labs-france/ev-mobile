@@ -38,9 +38,8 @@ class ChargerComponent extends Component {
   }
 
   _renderItem = ({item, index}, charger, navigation, siteImage) => {
-    let alpha = String.fromCharCode(65 + index);
     return (
-      <ConnectorComponent alpha={alpha} index={index} item={item} nav={navigation} charger={charger} sitePicture={siteImage} />
+      <ConnectorComponent index={index} item={item} nav={navigation} charger={charger} sitePicture={siteImage} />
     );
   }
 

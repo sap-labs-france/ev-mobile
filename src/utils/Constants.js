@@ -39,5 +39,9 @@ export default {
   CONN_STATUS_PREPARING: "Preparing",
   CONN_STATUS_SUSPENDED_EVSE: "SuspendedEVSE",
   CONN_STATUS_SUSPENDED_EV:  "SuspendedEV",
-  CONN_STATUS_UNAVAILABLE: "Unavailable"
+  CONN_STATUS_UNAVAILABLE: "Unavailable",
+
+  CONN_TYPE_2: "T2",
+  CONN_TYPE_COMBO_CCS: "CCS",
+  CONN_TYPE_CHADEMO: "C"
 };

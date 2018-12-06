@@ -57,7 +57,10 @@
     "reserved": "Reserved",
     "preparing": "Preparing",
     "finishing": "Finishing",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "type2": "Type 2",
+    "comboCCS": "Combo",
+    "chademo": "CHAdeMO"
   },
   "details": {
     "connector": "Connector",
@@ -71,8 +74,9 @@
     "notAuthorised": "You are not authorized to stop the transaction.",
     "accepted": "Accepted",
     "denied": "Denied",
-    "consumed": "kW consumed",
-    "instant": "kW instant",
+    "total": "Total",
+    "maximum": "Maximum",
+    "instant": "Instant",
     "vendor": "Vendor",
     "model": "Model",
     "ocppVersion": "OCPP Version",

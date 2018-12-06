@@ -1,71 +1,41 @@
 import React, { Component } from "react";
 import { Image, TouchableOpacity, Text as TextRN } from "react-native";
 import { Text, View, Badge } from "native-base";
-import Constants from "../../utils/Constants";
+import Utils from "../../utils/Utils";
 
 import * as Animatable from "react-native-animatable";
 import I18n from "../../I18n/I18n";
 import styles from "./styles";
 
-const type2 = require("../../../assets/connectorType/type2.gif");
-const combo = require("../../../assets/connectorType/combo_ccs.gif");
-const chademo = require("../../../assets/connectorType/chademo.gif");
-const noConnector = require("../../../assets/connectorType/no-connector.gif");
-
 class ConnectorComponent extends Component {
-  _translateStatus = (status) => {
-    switch (status) {
-      case Constants.CONN_STATUS_AVAILABLE:
-        return I18n.t("connector.available");
-      case Constants.CONN_STATUS_CHARGING:
-        return I18n.t("connector.charging");
-      case Constants.CONN_STATUS_FAULTED:
-        return I18n.t("connector.faulted");
-      case Constants.CONN_STATUS_RESERVED:
-        return I18n.t("connector.reserved");
-      case Constants.CONN_STATUS_FINISHING:
-        return I18n.t("connector.finishing");
-      case Constants.CONN_STATUS_PREPARING:
-        return I18n.t("connector.preparing");
-      case Constants.CONN_STATUS_SUSPENDED_EVSE:
-        return I18n.t("connector.suspendedEVSE");
-      case Constants.CONN_STATUS_SUSPENDED_EV:
-        return I18n.t("connector.suspendedEV");
-      case Constants.CONN_STATUS_UNAVAILABLE:
-        return I18n.t("connector.unavailable");
-      default:
-      return I18n.t("connector.unknown");
-    }
-  }
-
-  renderStatus  = () => {
-    const { item } = this.props;
+  renderStatus = (item) => {
     return (
       <View style={styles.status}>
         <View style={styles.statusDetailsContainer}>
-          <Text style={styles.statusText} numberOfLines={1}>
-            {this._translateStatus(item.status)}
-          </Text>
-          {item.currentConsumption > 0 ?
+          {(item.activeTransactionID !== 0) ?
             <View style={styles.rowSpaceBetween}>
               <View style={styles.column}>
-                  <Text style={styles.energy}>{Math.trunc(item.currentConsumption / 1000) === 0 ? (item.currentConsumption / 1000).toFixed(1) : Math.trunc(item.currentConsumption / 1000)}</Text>
-                  <Text style={styles.currentConsumptionUnity} numberOfLines={1}>kW(Instant)</Text>
+                <Text style={styles.value}>{Math.trunc(item.currentConsumption / 1000) === 0 ? (item.currentConsumption > 0 ? (item.currentConsumption / 1000).toFixed(1) : 0) : Math.trunc(item.currentConsumption / 1000)}</Text>
+                <Text style={styles.label} numberOfLines={1}>{I18n.t("details.instant")}</Text>
+                <Text style={styles.subLabel} numberOfLines={1}>(kW)</Text>
               </View>
               <View style={styles.column}>
-                <Text style={styles.energy}>{Math.round(item.totalConsumption / 1000)}</Text>
-                <Text style={styles.maxEnergy} numberOfLines={1}>Total kW</Text>
+                <Text style={styles.value}>{Math.round(item.totalConsumption / 1000)}</Text>
+                <Text style={styles.label} numberOfLines={1}>{I18n.t("details.total")}</Text>
+                <Text style={styles.subLabel} numberOfLines={1}>(kW.h)</Text>
               </View>
             </View>
           :
             <View style={styles.rowSpaceBetween}>
               <View style={styles.column}>
-                <Image style={styles.sizeConnectorImage} source={item.type === "T2" ? type2 : item.type === "CCS" ? combo : item.type === "C" ? chademo : noConnector} />
-                <Text style={styles.connectorType}>{item.type === "T2" ? "Type 2" : item.type === "CCS" ? "CCS" : item.type === "C" ? "Type C" : "Unknown"}</Text>
+                <Image style={styles.sizeConnectorImage} source={Utils.getConnectorTypeImage(item.type)}/>
+                <Text style={styles.label}>{Utils.translateConnectorType(item.type)}</Text>
+                <Text style={styles.subLabel} numberOfLines={1}></Text>
               </View>
               <View style={styles.column}>
-                <Text style={styles.power}>{Math.trunc(item.power / 1000)}</Text>
-                <Text style={styles.maxEnergy} numberOfLines={1}>kWMax</Text>
+                <Text style={styles.value}>{Math.trunc(item.power / 1000)}</Text>
+                <Text style={styles.label} numberOfLines={1}>{I18n.t("details.maximum")}</Text>
+                <Text style={styles.subLabel} numberOfLines={1}>(kW)</Text>
               </View>
             </View>
           }
@@ -74,38 +44,38 @@ class ConnectorComponent extends Component {
     );
   }
 
-  renderConnectorStatus = () => {
-    const { item, alpha } = this.props;
+  renderConnectorStatus = (item) => {
+    const connectorAlpha = String.fromCharCode(64 + item.connectorId);
     return (
       <View style={styles.connectorStatus}>
         { item.status === "Available" && item.currentConsumption === 0 ?
           <Animatable.View>
             <Badge style={styles.badge} success>
-              <TextRN style={styles.badgeText}>{alpha}</TextRN>
+              <TextRN style={styles.badgeText}>{connectorAlpha}</TextRN>
             </Badge>
           </Animatable.View>
         : (item.status === "Occupied" || item.status === "SuspendedEV") && item.currentConsumption === 0 ?
           <Animatable.View>
             <Badge style={styles.badge} danger>
-              <TextRN style={styles.badgeText}>{alpha}</TextRN>
+              <TextRN style={styles.badgeText}>{connectorAlpha}</TextRN>
             </Badge>
           </Animatable.View>
         : item.currentConsumption !== 0 ?
           <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
             <Badge style={styles.badge} danger>
-              <TextRN style={styles.badgeText}>{alpha}</TextRN>
+              <TextRN style={styles.badgeText}>{connectorAlpha}</TextRN>
             </Badge>
           </Animatable.View>
         : item.status === "Finishing" || item.status === "Preparing" ?
           <Animatable.View>
             <Badge style={styles.badge} warning>
-              <TextRN style={styles.badgeText}>{alpha}</TextRN>
+              <TextRN style={styles.badgeText}>{connectorAlpha}</TextRN>
             </Badge>
           </Animatable.View>
         :
           <Animatable.View>
             <Badge style={styles.badge} danger>
-              <TextRN style={styles.badgeText}>{alpha}</TextRN>
+              <TextRN style={styles.badgeText}>{connectorAlpha}</TextRN>
             </Badge>
           </Animatable.View>
         }
@@ -114,25 +84,26 @@ class ConnectorComponent extends Component {
   }
 
   render() {
-    const { index, item, alpha, nav, charger, sitePicture } = this.props;
-    if (index % 2 === 0) {
-      return (
-        <TouchableOpacity onPress={()=>nav.navigate("Details", {charger, alpha, siteImage: sitePicture, connector: item})}>
-          <Animatable.View animation="slideInLeft" iterationCount={1}>
-            <View style={styles.rightConnectorContainer}>
-              {this.renderConnectorStatus()}
-              {this.renderStatus()}
-            </View>
-          </Animatable.View>
-        </TouchableOpacity>
-      );
-    }
+    const { index, item, nav, charger, sitePicture } = this.props;
+    const even = (index % 2 === 0);
     return (
-      <TouchableOpacity onPress={()=>nav.navigate("Details", {charger, alpha, siteImage: sitePicture, connector: item})}>
-        <Animatable.View animation="slideInRight" iterationCount={1}>
-          <View style={styles.leftConnectorContainer}>
-            {this.renderStatus()}
-            {this.renderConnectorStatus()}
+      <TouchableOpacity onPress={()=>nav.navigate("Details", {charger, index, siteImage: sitePicture, connector: item})}>
+        <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1}>
+          <View style={even ? styles.leftConnectorContainer : styles.rightConnectorContainer}>
+            <Text style={styles.statusText} numberOfLines={1}>
+              {Utils.translateConnectorStatus(item.status)}
+            </Text>
+            {even ?
+              <View style={styles.leftStatusConnectorContainer}>
+                {this.renderConnectorStatus(item)}
+                {this.renderStatus(item)}
+              </View>
+            :
+              <View style={styles.rightStatusConnectorContainer}>
+                {this.renderStatus(item)}
+                {this.renderConnectorStatus(item)}
+              </View>
+            }
           </View>
         </Animatable.View>
       </TouchableOpacity>
