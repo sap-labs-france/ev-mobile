@@ -49,13 +49,13 @@ class ChargerComponent extends Component {
     return (
       <View style={styles.container}>
         <ListItem style={styles.listDividerContainer} itemDivider>
-          <Text style={styles.chargerName}>{items.id} {/*| <Text style={styles.siteAreaName}>{items.siteArea.name}</Text>*/}</Text>
+          <Text style={styles.chargerName}>{items.id}</Text>
           { !isChargerDead ?
-            <Animatable.Text animation="pulse" easing="ease-in" iterationCount="infinite">
-              <Icon style={styles.heartbeatIcon} type="FontAwesome" name="heartbeat" />
-            </Animatable.Text>
+            <Icon style={styles.heartbeatIcon} type="FontAwesome" name="heartbeat" />
           :
-            <Icon style={styles.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
+            <Animatable.Text animation="pulse" easing="ease-in" iterationCount="infinite">
+              <Icon style={styles.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
+            </Animatable.Text>
           }
         </ListItem>
         <FlatList style={styles.listContainer}

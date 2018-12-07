@@ -16,7 +16,8 @@
 	"authentication": {
     "logOut": "LOG OUT",
     "mustSelectLocation": "Select a Location",
-    "wrongEmailOrPassword": "Wrong email or password!",
+    "wrongEmailOrPassword": "Wrong email or password",
+    "authenticationFailed": "Authentication Failed",
     "wrongEmail": "Wrong email!",
     "accountLocked": "Account locked",
     "accountNotActive": "Account is not active",

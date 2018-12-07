@@ -78,7 +78,6 @@ class ConnectorDetails extends Component {
         charger: result,
         connector: result.connectors[String.fromCharCode(this.state.alpha.charCodeAt() - 17)]
       });
-      console.log(this.state.connector);
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -99,7 +98,6 @@ class ConnectorDetails extends Component {
           tagID: result.tagID,
           timestamp: new Date(result.timestamp)
         });
-        console.log(result);
       }
     } catch (error) {
       // Other common Error
@@ -132,7 +130,6 @@ class ConnectorDetails extends Component {
             price: price.priceKWH
           });
         }
-        console.log(price);
       }
     } catch (error) {
       // Other common Error

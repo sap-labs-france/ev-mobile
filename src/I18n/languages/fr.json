@@ -16,7 +16,8 @@
   "authentication": {
     "logOut": "Se déconnecter",
     "mustSelectLocation": "Selectionnez un Site",
-    "wrongEmailOrPassword": "Mauvais email ou mot de passe !",
+    "wrongEmailOrPassword": "Mauvais email ou mot de passe",
+    "authenticationFailed": "Authentification Echouée",
     "wrongEmail": "Email inconnu !",
     "accountLocked": "Votre compte est bloqué",
     "accountNotActive": "Votre compte est inactif",

@@ -100,7 +100,7 @@ class SignUp extends React.Component {
         // Register
         let result = await _provider.register(
           name, firstName, email, { password, repeatPassword }, eula);
-        console.log(result);
+        (result);
         // Reset
         this.setState({loading: false});
         // Show

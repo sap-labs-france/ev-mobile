@@ -29,13 +29,14 @@ class Chargers extends Component {
   async componentDidMount() {
     // Get chargers first time
     const chargers = await this._getChargers(this.state.skip, this.state.limit, this.state.siteID);
-    await this._getSiteImage();
-     // Add chargers
-     this.setState((prevState, props) => ({
+    // Add chargers
+    this.setState((prevState, props) => ({
       chargers: chargers.result,
       count: chargers.count,
       loading: false
     }));
+    // Get the Site Image
+    this._getSiteImage();
     // Refresh every minutes
     this.timer = setInterval(() => {
       this._onRefresh();
@@ -55,7 +56,6 @@ class Chargers extends Component {
       // Get Chargers
       chargers = await _provider.getChargers(
         { SiteID: siteID, WithSiteArea: true }, { skip, limit });
-      console.log(chargers);
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);

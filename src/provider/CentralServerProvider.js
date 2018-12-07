@@ -25,7 +25,6 @@ export default class  CentralServerProvider {
       _password = await SInfo.getItem(Constants.KEY_PASSWORD, {});
       _token = await SInfo.getItem(Constants.KEY_TOKEN, {});
       _tenant = await SInfo.getItem(Constants.KEY_TENANT, {});
-      console.log(_token);
       // Check Token
       if (_token) {
         // Decode the token
@@ -112,17 +111,13 @@ export default class  CentralServerProvider {
 
   async reAuthenticate() {
     // Authenticated ?
-    let isUserAuthenticated =  await this.isUserAuthenticated();
-    console.log("isUserAuth ?", isUserAuthenticated);
-    console.log("email: ", _email);
-    console.log("tenant", _tenant);
+    let isUserAuthenticated = await this.isUserAuthenticated();
     // Not authenticated ?
     if (!isUserAuthenticated) {
       // User not authenticated: email, password and tenant registered ?
       if (_email && _password && _tenant) {
         // Yes: Log user
         await this.login(_email, _password, true, _tenant);
-        console.log("ReAuthenticated NEW TOKEN: ", _token);
       }
     }
   }
@@ -137,7 +132,6 @@ export default class  CentralServerProvider {
     }, {
       headers: this._builHeaders()
     });
-    console.log("Tenant login", tenant);
     // Store User/Password/Token/tenant
     SInfo.setItem(Constants.KEY_EMAIL, email, {});
     SInfo.setItem(Constants.KEY_PASSWORD, password, {});
@@ -241,7 +235,6 @@ export default class  CentralServerProvider {
     }, {
       headers: this._builSecuredHeaders()
     });
-    console.log(result.data);
     return result.data;
   }
 
@@ -257,7 +250,6 @@ export default class  CentralServerProvider {
     }, {
       headers: this._builSecuredHeaders()
     });
-    console.log(result.data);
     return result.data;
   }
 

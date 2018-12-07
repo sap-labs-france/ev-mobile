@@ -27,12 +27,9 @@ export default class Utils {
         // Not logged in
         case 401:
           try {
-            console.log("Trying to Authenticate");
             await _provider.reAuthenticate();
           } catch (errorLogin) {
-            Message.showError("reAutentication failed");
-            console.log(errorLogin);
-            console.log("Authentication failed");
+            Message.showError(I18n.t("general.authenticationFailed"));
           }
           break;
           // Other errors

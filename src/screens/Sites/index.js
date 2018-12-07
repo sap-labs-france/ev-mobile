@@ -38,7 +38,6 @@ class Sites extends Component {
       // Get the Sites
       sites = await _provider.getSites(
         { WithAvailableChargers: true, WithChargeBoxes: true }, { skip, limit });
-      console.log(sites);
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);

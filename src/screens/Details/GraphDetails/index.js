@@ -44,7 +44,6 @@ class GraphDetails extends Component {
           values: result.values.length >= 450 ? result.values.slice(result.values.length - 450) : result.values
         });
       }
-      console.log(result);
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -88,7 +87,6 @@ class GraphDetails extends Component {
 
   render() {
     const { dataToDisplay, xCategory, connector } = this.state;
-    console.log("Data: ", dataToDisplay);
     return (
       <Container>
        <VictoryChart theme={VictoryTheme.material} width={deviceHeight} padding={styles.padding} domain={{y: [0, connector.power]}}>

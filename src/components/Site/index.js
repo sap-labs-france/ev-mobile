@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableOpacity, Text as TextRN } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Text, View, Icon, Badge } from "native-base";
 import openMap from "react-native-open-maps";
 
