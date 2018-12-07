@@ -21,10 +21,13 @@ export class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      siteImage: this.props.navigation.state.params.siteImage,
+      siteID: this.props.navigation.state.params.siteID,
+      siteImage: "",
       isAdmin: false,
       loadingTransaction: false
     };
+    // Get the Site Image
+    this._getSiteImage();    
   }
 
   async componentDidMount() {
@@ -114,6 +117,20 @@ export class Header extends Component {
       );
       if (isAuthorised) {
         return isAuthorised.IsAuthorized;
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
+  _getSiteImage = async () => {
+    try {
+      let result = await _provider.getSiteImage(
+        { ID: this.state.siteID }
+      );
+      if (result) {
+        this.setState({siteImage: result.image});
       }
     } catch (error) {
       // Other common Error

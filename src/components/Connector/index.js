@@ -46,10 +46,10 @@ class ConnectorComponent extends Component {
   }
 
   render() {
-    const { index, item, nav, charger, sitePicture } = this.props;
+    const { index, item, nav, charger, siteID } = this.props;
     const even = (index % 2 === 0);
     return (
-      <TouchableOpacity onPress={()=>nav.navigate("Details", {charger, index, siteImage: sitePicture, connector: item})}>
+      <TouchableOpacity onPress={()=>nav.navigate("Details", {charger, index, siteID: siteID, connector: item})}>
         <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1}>
           <View style={even ? styles.leftConnectorContainer : styles.rightConnectorContainer}>
             <Text style={styles.statusDescription} numberOfLines={1}>
