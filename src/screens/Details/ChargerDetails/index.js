@@ -23,7 +23,7 @@ class ChargerDetails extends Component {
     const { charger, connector, alpha } = this.state;
     return (
       <Container>
-        <Header charger={charger} connector={connector} alpha={alpha} navigation={navigation} />
+        <Header charger={charger} connector={connector} navigation={navigation} />
         <ScrollView style={styles.scrollViewContainer}>
           <View style={styles.content}>
             <View style={styles.rowContainer}>

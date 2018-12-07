@@ -37,7 +37,7 @@ export class Header extends Component {
   _isAdmin = async () => {
     let result = await _provider._isAdmin();
     this.setState({
-     isAdmin: result
+      isAdmin: result
     });
  }
 

@@ -29,15 +29,17 @@ class ConnectorDetails extends Component {
       price: 0,
       userImage: null,
       refreshing: false,
-      isAdmin: _provider._isAdmin()
+      isAdmin: false
     };
   }
 
   async componentDidMount() {
     // Get Current Transaction
-    this._getTransaction();
+    await this._getTransaction();
     // Get the Price
-    this._getPrice();
+    await this._getPrice();
+    // Set Admin
+    await this._setIsAdmin()
     // Init
     this._refreshElapsedTime();
     // Refresh Charger Data
@@ -54,6 +56,14 @@ class ConnectorDetails extends Component {
     if (this.timerElapsedTime) {
       clearInterval(this.timerElapsedTime);
     }
+  }
+
+  _setIsAdmin = async () => {
+    // Set Admin
+    const isAdmin = await _provider._isAdmin();
+    this.setState({
+      isAdmin
+    });
   }
 
   _getCharger = async () => {
@@ -129,14 +139,10 @@ class ConnectorDetails extends Component {
 
   _getPrice = async () => {
     try {
-      if (this.state.isAdmin) {
-        let price = await _provider.getPrice();
-        if (price) {
-          this.setState({
-            price: price
-          });
-        }
-      }
+      let price = await _provider.getPrice();
+      this.setState({
+        price: price
+      });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -147,13 +153,24 @@ class ConnectorDetails extends Component {
     const { transaction } = this.state;
     // Is their a timestamp ?
     if (transaction && transaction.timestamp) {
-      // Yes: Get date
-      const timeNow = new Date();
+      // Diff
+      let diffSecs = (Date.now() - transaction.timestamp.getTime()) / 1000;
+      // Set Hours
+      const hours = Math.trunc(diffSecs / 3600);
+      diffSecs -= hours * 3600;
+      // Set Mins
+      let minutes = 0;
+      if (diffSecs > 0) {
+        minutes = Math.trunc(diffSecs / 60);
+        diffSecs -= minutes * 60;
+      }
+      // Set Secs
+      const seconds = Math.trunc(diffSecs);
       // Set elapsed time
       this.setState({
-        hours: this._formatTimer(Math.abs(timeNow.getHours() - transaction.timestamp.getHours())),
-        minutes: this._formatTimer(Math.abs(timeNow.getMinutes() - transaction.timestamp.getMinutes())),
-        seconds: this._formatTimer(Math.abs(timeNow.getSeconds() - transaction.timestamp.getSeconds()))
+        hours: this._formatTimer(hours),
+        minutes: this._formatTimer(minutes),
+        seconds: this._formatTimer(seconds)
       });
     }
   }
