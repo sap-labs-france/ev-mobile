@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import commonColor from "../../../theme/variables/commonColor";
 
 export default StyleSheet.create({
   scrollViewContainer: {
@@ -26,9 +27,11 @@ export default StyleSheet.create({
     fontWeight: "bold",
     paddingTop: hp("1.5%"),
     paddingBottom: hp("0.7%"),
+    color: commonColor.textColor,
     alignSelf: "center"
   },
   infoContent: {
+    color: commonColor.textColor,
     fontSize: hp("2.5%")
   }
 });

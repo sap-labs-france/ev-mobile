@@ -202,7 +202,7 @@ class ConnectorDetails extends Component {
                 <Thumbnail style={styles.profilePicture} source={userPicture ? userPicture : noPhoto} />
                 {transaction ?
                   <View>
-                    <Text style={styles.labelPicture}>{Utils.buildUserName(transaction.user)}</Text>
+                    <Text style={styles.labelUser}>{Utils.buildUserName(transaction.user)}</Text>
                     <Text style={styles.subLabel}>({transaction.tagID})</Text>
                   </View>
                 :

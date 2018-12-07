@@ -1,12 +1,15 @@
 import axios from "axios";
 import Constants from "../utils/Constants";
 import SInfo from "react-native-sensitive-info";
+const jwtDecode = require("jwt-decode");
 
 // const centralRestServerServiceBaseURL = 'https://192.168.1.130';
 const centralRestServerServiceBaseURL = "https://sap-ev-rest-server.cfapps.eu10.hana.ondemand.com";
 const centralRestServerServiceAuthURL = centralRestServerServiceBaseURL + "/client/auth";
 const centralRestServerServiceSecuredURL = centralRestServerServiceBaseURL + "/client/api";
-var jwtDecode = require("jwt-decode");
+
+// Debug
+const DEBUG = false;
 
 // Paste the tokken below
 let _token;
@@ -15,7 +18,6 @@ let _initialized;
 let _email;
 let _password;
 let _tenant;
-
 export default class  CentralServerProvider {
   async initialize() {
     // Only once

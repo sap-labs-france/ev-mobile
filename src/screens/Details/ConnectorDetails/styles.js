@@ -80,8 +80,8 @@ export default StyleSheet.create({
     backgroundColor: "transparent",
     color: commonColor.textColor
   },
-  labelPicture: {
-    fontSize: hp("3%"),
+  labelUser: {
+    fontSize: hp("2.5%"),
     color: commonColor.textColor,
     alignSelf: "center"
   },
