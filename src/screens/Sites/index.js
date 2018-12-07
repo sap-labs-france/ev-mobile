@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Image, FlatList, RefreshControl } from "react-native";
+import { Text, Image, FlatList, RefreshControl } from "react-native";
 import { Container, Header, Spinner, Left, Right, Body, Button, Icon, View } from "native-base";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import ProviderFactory from "../../provider/ProviderFactory";
 import SiteComponent from "../../components/Site";
 import styles from "./styles";
+import I18n from "../../I18n/I18n";
 
 const _provider = ProviderFactory.getProvider();
 class Sites extends Component {
@@ -83,7 +84,7 @@ class Sites extends Component {
 
   _renderItem = ({item}) => {
     return (
-      <SiteComponent item={item} navigation={this.props.navigation} />
+      <SiteComponent site={item} navigation={this.props.navigation} />
     );
   };
 
@@ -99,8 +100,11 @@ class Sites extends Component {
             </Button>
           </Left>
           <Body>
-            <Image source={require("../../../assets/logo-low.gif")} style={styles.imageHeader} />
+            <Text style={styles.titleHeader}>{I18n.t("sidebar.sites")}</Text>
           </Body>
+          <Right>
+            <Image source={require("../../../assets/logo-low.gif")} style={styles.imageHeader} />
+          </Right>
         </Header>
 
         <View style={styles.content}>

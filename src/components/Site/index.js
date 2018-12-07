@@ -13,18 +13,16 @@ class SiteComponent extends Component {
   }
 
   render() {
-    const { item, navigation } = this.props;
+    const { site, navigation } = this.props;
     return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Chargers", { siteID: item.id })}
-      >
+      <TouchableOpacity onPress={() => navigation.navigate("Chargers", { site: site })}>
         <View style={styles.siteContainer}>
           <View style={styles.mainContent}>
             <View style={styles.columnSiteName}>
-              <Text style={styles.siteName}>{item.name}</Text>
+              <Text style={styles.siteName}>{site.name}</Text>
             </View>
             <View style={styles.columnPinIcon}>
-              <TouchableOpacity onPress={()=>this._siteLocation(item.address)}>
+              <TouchableOpacity onPress={()=>this._siteLocation(site.address)}>
                 <Icon style={styles.pinIcon} name="pin" />
               </TouchableOpacity>
             </View>
@@ -38,7 +36,7 @@ class SiteComponent extends Component {
             </View>
             <View style={styles.columnNumberChargers}>
               <Badge success style={styles.badge}>
-                <Text style={styles.badgeText}>{item.availableChargers}</Text>
+                <Text style={styles.badgeText}>{site.availableChargers}</Text>
               </Badge>
             </View>
           </View>

@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
-
-const primary = require("../../theme/variables/commonColor").brandPrimary;
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import commonColor from "../../theme/variables/commonColor";
 
 export default StyleSheet.create({
   header: {
@@ -15,9 +14,16 @@ export default StyleSheet.create({
   content: {
     flex: 1
   },
+  titleHeader: {
+    color: commonColor.textColor,
+    fontSize: hp("2.5%"),
+    width: wp("75%"),
+    textAlign: "center",
+    fontWeight: "bold"
+  },
   imageHeader: {
-    height: hp("3.8%"),
-    width: wp("25.3%"),
+    height: hp("3.7%"),
+    width: wp("15%"),
     resizeMode: "contain"
   },
   spinner: {

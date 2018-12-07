@@ -2,13 +2,12 @@ import React, { Component } from "react";
 import { ScrollView } from "react-native";
 import { Container, View, Text } from "native-base";
 
-import { Header } from "../TabNavigator";
+import ChargerHeader from "../ChargerHeader";
 import I18n from "../../../I18n/I18n";
 
 import styles from "./styles";
 
 class ChargerDetails extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -20,10 +19,10 @@ class ChargerDetails extends Component {
 
   render() {
     const navigation = this.props.navigation;
-    const { charger, connector, alpha } = this.state;
+    const { charger, connector } = this.state;
     return (
       <Container>
-        <Header charger={charger} connector={connector} navigation={navigation} />
+        <ChargerHeader charger={charger} connector={connector} navigation={navigation} />
         <ScrollView style={styles.scrollViewContainer}>
           <View style={styles.content}>
             <View style={styles.rowContainer}>

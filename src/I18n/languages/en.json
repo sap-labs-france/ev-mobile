@@ -7,6 +7,7 @@
     "numbers": "Enter a valid number",
     "email": "Enter a valid email address",
     "required": "Field is mandatory",
+    "ok": "Ok",
     "yes": "Yes",
     "no": "No"
   },

@@ -6,43 +6,16 @@ export default StyleSheet.create({
   header: {
     height: hp("8%")
   },
-  bg: {
-    backgroundColor: commonColor.brandPrimary
-  },
-  newsContent: {
-    flexDirection: "column",
-    paddingTop: hp("3%"),
-    paddingLeft: wp("5%"),
-    paddingRight: wp("5%"),
-    paddingBottom: hp("3%"),
-    flex: 1,
-    borderTopWidth: 1,
-    borderTopColor: "#ddd"
-  },
-  newsHeader: {
+  titleHeader: {
     color: commonColor.textColor,
+    fontSize: hp("3.5%"),
+    width: wp("75%"),
+    textAlign: "center",
     fontWeight: "bold"
-  },
-  newsLink: {
-    color: commonColor.textColor,
-    fontSize: hp("1.8%"),
-    alignSelf: "flex-start",
-    fontWeight: "bold"
-  },
-  newsTypeView: {
-    borderBottomWidth: 1,
-    borderBottomColor: commonColor.textColor,
-    alignSelf: "flex-end"
-  },
-  newsTypeText: {
-    color: commonColor.textColor,
-    fontSize: hp("1.8%"),
-    fontWeight: "bold",
-    paddingBottom: hp("0.7%")
   },
   imageHeader: {
     height: hp("3.7%"),
-    width: wp("25%"),
+    width: wp("15%"),
     resizeMode: "contain"
   },
   content: {

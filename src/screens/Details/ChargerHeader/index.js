@@ -1,23 +1,15 @@
 import React, { Component } from "react";
 import { TouchableOpacity, ImageBackground, Alert } from "react-native";
-import { Button, Icon, Text, Footer, FooterTab, View, Spinner } from "native-base";
-import { TabNavigator } from "react-navigation";
-import Orientation from "react-native-orientation";
-
+import { Button, Icon, Text, View, Spinner } from "native-base";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
-
-import ConnectorDetails from "../ConnectorDetails";
-import ChargerDetails from "../ChargerDetails";
-import GraphDetails from "../GraphDetails";
 import styles from "./styles";
 import Message from "../../../utils/Message";
 
 const _provider = ProviderFactory.getProvider();
 
-export class Header extends Component {
-
+export class ChargerHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,13 +23,14 @@ export class Header extends Component {
   }
 
   async componentDidMount() {
-    await this._isAdmin();
+    // Init
+    await this._setIsAdmin();
   }
 
-  _isAdmin = async () => {
-    let result = await _provider._isAdmin();
+  _setIsAdmin = async () => {
+    const isAdmin = await _provider._isAdmin();
     this.setState({
-      isAdmin: result
+      isAdmin
     });
  }
 
@@ -47,7 +40,7 @@ export class Header extends Component {
       `${I18n.t("details.startTransaction")}`,
       `${I18n.t("details.startTransactionMessage")} ${charger.id} ?`,
       [
-        {text: I18n.t("general.yes"), onPress: () => this.startTransaction()},
+        {text: I18n.t("general.yes"), onPress: () => this._startTransaction()},
         {text: I18n.t("general.no")}
       ]
     );
@@ -55,13 +48,14 @@ export class Header extends Component {
 
   onStopTransaction = async () => {
     const { charger } = this.props;
+    // Check
     const isAuthorised = await this._isAuthorizedStopTransaction();
     if (!isAuthorised) {
       Alert.alert(
         `${I18n.t("details.notAuthorisedTitle")}`,
         `${I18n.t("details.notAuthorised")}`,
         [
-          {text: "Okay"},
+          {text: I18n.t("general.ok")},
         ]
       );
     } else {
@@ -69,18 +63,20 @@ export class Header extends Component {
         `${I18n.t("details.stopTransaction")}`,
         `${I18n.t("details.stopTransactionMessage")} ${charger.id} ?`,
         [
-          {text: I18n.t("general.yes"), onPress: () => this.stopTransaction()},
+          {text: I18n.t("general.yes"), onPress: () => this._stopTransaction()},
           {text: I18n.t("general.no")}
         ]
       );
     }
   }
 
-  startTransaction = async () => {
+  _startTransaction = async () => {
     const { charger, connector } = this.props;
     this.setState({loadingTransaction: true});
     try {
+      // Start the Transaction
       let status = await _provider.startTransaction(charger.id, connector.connectorId);
+      // Check
       if (status.status && status.status === "Accepted") {
         Message.showSuccess(I18n.t("details.accepted"));
       } else {
@@ -93,11 +89,13 @@ export class Header extends Component {
     this.setState({loadingTransaction: false});
   }
 
-  stopTransaction = async () => {
+  _stopTransaction = async () => {
     const { charger, connector } = this.props;
     this.setState({loadingTransaction: true});
     try {
+      // Stop the Transaction
       let status = await _provider.stopTransaction(charger.id, connector.activeTransactionID);
+      // Check
       if (status.status && status.status === "Accepted") {
         Message.showSuccess(I18n.t("details.accepted"));
       } else {
@@ -112,11 +110,11 @@ export class Header extends Component {
 
   _isAuthorizedStopTransaction = async () => {
     try {
-      let isAuthorised = await _provider.isAuthorizedStopTransaction(
+      let result = await _provider.isAuthorizedStopTransaction(
         { Action: "StopTransaction", Arg1: this.props.charger.id, Arg2: this.props.connector.activeTransactionID }
       );
-      if (isAuthorised) {
-        return isAuthorised.IsAuthorized;
+      if (result) {
+        return result.IsAuthorized;
       }
     } catch (error) {
       // Other common Error
@@ -152,7 +150,7 @@ export class Header extends Component {
           </View>
           <View style={styles.chargerNameColumn}>
             <Text style={styles.chargerName}>{charger.id}</Text>
-            <Text style={styles.connectorName}>{I18n.t("details.connector")} {connectorLetter}</Text>
+            <Text style={styles.connectorName}>({I18n.t("details.connector")} {connectorLetter})</Text>
           </View>
         </View>
         <View style={styles.detailsContainer}>
@@ -191,87 +189,4 @@ export class Header extends Component {
   }
 }
 
-class TabDetails extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      isAdmin: false
-    };
-  }
-
-  async componentDidMount() {
-    await this._isAdmin();
-  }
-
-  componentDidUpdate() {
-    this.isGraphTabActive();
-  }
-
-  componentWillUnmount() {
-    Orientation.lockToPortrait();
-  }
-
-  _isAdmin = async () => {
-    let result = await _provider._isAdmin();
-    this.setState({
-     isAdmin: result
-    });
- }
-
-  isGraphTabActive = () => {
-    if (this.props.navigationState.index === 2) {
-      Orientation.unlockAllOrientations();
-      Orientation.lockToLandscape();
-    } else {
-      Orientation.unlockAllOrientations();
-      Orientation.lockToPortrait();
-    }
-  }
-
-  render() {
-    const navigation = this.props.navigation;
-    const state = this.props.navigationState;
-    return (
-      <Footer style={styles.footerContainer}>
-        <FooterTab>
-          <Button vertical active={state.index === 0} onPress={()=>navigation.navigate("ConnectorDetails")}>
-            <Icon type="Feather" name="zap"/>
-            <Text>{I18n.t("details.connector")}</Text>
-          </Button>
-          { this.state.isAdmin && (
-            <Button vertical active={state.index === 1} onPress={()=>navigation.navigate("ChargerDetails")}>
-              <Icon type="MaterialIcons" name="info" />
-              <Text>{I18n.t("details.informations")}</Text>
-            </Button>
-          )}
-          <Button vertical active={this.state.isAdmin ? state.index === 2 : state.index === 1} onPress={()=>navigation.navigate("GraphDetails")}>
-            <Icon type="MaterialIcons" name="timeline" />
-            <Text>{I18n.t("details.graph")}</Text>
-          </Button>
-        </FooterTab>
-      </Footer>
-    );
-  }
-}
-
-const Details = TabNavigator(
-  {
-    ConnectorDetails: { screen: ConnectorDetails },
-    ChargerDetails: { screen: ChargerDetails },
-    GraphDetails: { screen: GraphDetails }
-  },
-  {
-    tabBarPosition: "bottom",
-    swipeEnabled: false,
-    initialRouteName: "ConnectorDetails",
-    animationEnabled: false,
-    tabBarComponent: props => {
-      return (
-        <TabDetails {...props} />
-      );
-    }
-  }
-);
-
-export default Details;
+export default ChargerHeader;

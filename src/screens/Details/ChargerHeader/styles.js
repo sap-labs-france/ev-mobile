@@ -14,7 +14,6 @@ export default StyleSheet.create({
     alignItems: "center"
   },
   headerIcons: {
-    fontSize: height > 800 ? hp("2.5%") : hp("5.5"),
     backgroundColor: "transparent",
     color: commonColor.textColor
   },
@@ -28,10 +27,12 @@ export default StyleSheet.create({
   },
   chargerName: {
     fontSize: hp("3%"),
+    color: commonColor.textColor,
     fontWeight: "bold"
   },
   connectorName: {
     fontWeight: "bold",
+    color: commonColor.textColor,
     fontSize: hp("2%")
   },
   detailsContainer: {
@@ -79,9 +80,6 @@ export default StyleSheet.create({
     backgroundColor: commonColor.brandDanger,
     justifyContent: "center",
     alignItems: "center"
-  },
-  footerContainer: {
-    backgroundColor: commonColor.brandPrimary
   }
 });
 

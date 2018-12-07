@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, Platform, FlatList, RefreshControl } from "react-native";
+import { Text, Image, Platform, FlatList, RefreshControl } from "react-native";
 import { Container, Header, Button, Icon, Body, Left, Right, View, Spinner, List } from "native-base";
 
 import ProviderFactory from "../../provider/ProviderFactory";
@@ -15,7 +15,7 @@ class Chargers extends Component {
     super(props);
     // Init State
     this.state = {
-      siteID: this.props.navigation.state.params.siteID,
+      site: this.props.navigation.state.params.site,
       chargers: [],
       loading: true,
       refreshing: false,
@@ -27,7 +27,7 @@ class Chargers extends Component {
 
   async componentDidMount() {
     // Get chargers first time
-    const chargers = await this._getChargers(this.state.skip, this.state.limit, this.state.siteID);
+    const chargers = await this._getChargers(this.state.skip, this.state.limit, this.state.site.id);
     // Add chargers
     this.setState((prevState, props) => ({
       chargers: chargers.result,
@@ -65,7 +65,7 @@ class Chargers extends Component {
     // No reached the end?
     if ((skip + limit) < count) {
       // No: get next sites
-      let chargers = await this._getChargers(skip + Constants.PAGING_SIZE, limit, this.state.siteID);
+      let chargers = await this._getChargers(skip + Constants.PAGING_SIZE, limit, this.state.site.id);
       // Add sites
       this.setState((prevState, props) => ({
         chargers: [...prevState.chargers, ...chargers.result],
@@ -78,7 +78,7 @@ class Chargers extends Component {
   _onRefresh = async () => {
     const { skip, limit } = this.state;
     // Refresh All
-    let chargers = await this._getChargers(0, (skip + limit), this.state.siteID);
+    let chargers = await this._getChargers(0, (skip + limit), this.state.site.id);
     // Add sites
     this.setState((prevState, props) => ({
       chargers: chargers.result
@@ -98,7 +98,7 @@ class Chargers extends Component {
   _renderItem = ({item}, navigation) => {
     return (
       <List>
-        <ChargerComponent items={item} nav={navigation} siteID={this.state.siteID} />
+        <ChargerComponent items={item} nav={navigation} siteID={this.state.site.id} />
       </List>
     );
   }
@@ -113,12 +113,10 @@ class Chargers extends Component {
             </Button>
           </Left>
           <Body>
-            <Image source={require("../../../assets/logo-low.gif")} style={styles.imageHeader} />
+            <Text style={styles.titleHeader}>{this.state.site.name}</Text>
           </Body>
           <Right>
-            <Button transparent>
-              {/* <Icon active name="options" /> */}
-            </Button>
+            <Image source={require("../../../assets/logo-low.gif")} style={styles.imageHeader} />
           </Right>
         </Header>
 

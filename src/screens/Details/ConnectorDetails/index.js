@@ -4,7 +4,7 @@ import { Container, Icon, View, Badge, Thumbnail, Text } from "native-base";
 
 import * as Animatable from "react-native-animatable";
 
-import { Header } from "../TabNavigator";
+import ChargerHeader from "../ChargerHeader";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import ConnectorStatusComponent from "../../../components/ConnectorStatus";
 import I18n from "../../../I18n/I18n";
@@ -205,7 +205,7 @@ class ConnectorDetails extends Component {
     const userPicture = !userImage ? noPhoto : {uri: userImage};
     return (
       <Container>
-        <Header charger={charger} connector={connector} navigation={navigation} />
+        <ChargerHeader charger={charger} connector={connector} navigation={navigation} />
         <ScrollView style={styles.scrollViewContainer} refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={this._onRefresh} />
         }>
@@ -231,7 +231,7 @@ class ConnectorDetails extends Component {
               <View style={styles.columnContainer}>
                 <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
                 { connector.currentConsumption === 0.0 ?
-                  <Text style={styles.label}>-</Text>
+                  <Text style={styles.labelValue}>-</Text>
                 :
                   <View style={styles.currentConsumptionContainer}>
                     <Text style={styles.labelValue}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
@@ -244,9 +244,9 @@ class ConnectorDetails extends Component {
                   <View>
                     <Icon type="Feather" name="battery-charging" style={styles.iconSize} />
                     { connector.currentConsumption ?
-                      <Text style={styles.label}>{connector.currentStateOfCharge} %</Text>
+                      <Text style={styles.labelValue}>{connector.currentStateOfCharge} %</Text>
                     :
-                      <Text style={styles.label}>- %</Text>
+                      <Text style={styles.labelValue}>- %</Text>
                     }
                   </View>
                 :
