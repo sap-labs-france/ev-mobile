@@ -118,7 +118,6 @@ class ConnectorDetails extends Component {
         let userImage = await _provider.getUserImage(
           { ID: user.id }
         );
-        console.log(userImage);
         // Set
         this.setState({userImage: userImage.image});
       }
@@ -132,8 +131,6 @@ class ConnectorDetails extends Component {
     try {
       if (this.state.isAdmin) {
         let price = await _provider.getPrice();
-        console.log(price);
-        
         if (price) {
           this.setState({
             price: price
