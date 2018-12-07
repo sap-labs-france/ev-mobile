@@ -13,7 +13,7 @@ import styles from "./styles";
 
 const _provider = ProviderFactory.getProvider();
 
-class Charger extends Component {
+class ChargerTabs extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -90,7 +90,7 @@ const ChargerNavigation = TabNavigator(
     animationEnabled: false,
     tabBarComponent: props => {
       return (
-        <Charger {...props} />
+        <ChargerTabs {...props} />
       );
     }
   }
