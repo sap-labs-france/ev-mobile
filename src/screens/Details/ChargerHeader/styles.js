@@ -1,8 +1,6 @@
-import { StyleSheet, Platform, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import commonColor from "../../../theme/variables/commonColor";
-
-const { height, width } = Dimensions.get("window");
 
 export default StyleSheet.create({
   header: {
@@ -17,30 +15,28 @@ export default StyleSheet.create({
     backgroundColor: "transparent",
     color: commonColor.textColor
   },
-  chargerNameColumn: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    width: wp("66.2%"),
-    paddingTop: hp("1%"),
-    marginLeft: wp("3.4%")
+  imageHeader: {
+    height: hp("3.7%"),
+    width: wp("15%"),
+    resizeMode: "contain"
   },
-  chargerName: {
-    fontSize: hp("3%"),
+  titleHeader: {
     color: commonColor.textColor,
+    fontSize: hp("2.5%"),
+    width: wp("75%"),
+    textAlign: "center",
     fontWeight: "bold"
   },
-  connectorName: {
+  subTitleHeader: {
     fontWeight: "bold",
     color: commonColor.textColor,
     fontSize: hp("2%")
   },
   detailsContainer: {
-    paddingTop: hp("1.5%")
   },
   backgroundImage: {
     width: wp("100%"),
-    height: height > 800 ? hp("29%") : hp("22%")
+    height: hp("25%")
   },
   spinner: {
     marginTop: hp("18%")
@@ -48,38 +44,32 @@ export default StyleSheet.create({
   transactionContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop:  Platform.OS === "ios" ? 95 : 85
+    marginTop: hp("20%")
   },
-  outerCircle: {
-    borderRadius: 150,
+  startTransaction: {
+    borderRadius: 50,
     borderStyle: "solid",
-    width: width > 500 ? wp("30%") : wp("34%"),
-    height: height > 800 ? hp("23%") : hp("19%"),
-    backgroundColor: commonColor.textColor,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: height > 800 ? hp("7.2%") : hp("0%")
-  },
-  innerCircleStartTransaction: {
-    borderRadius: 150,
-    borderStyle: "solid",
-    width: width > 500 ? wp("29%") : wp("33%"),
-    height: height > 800 ? hp("22%") : hp("18%"),
+    borderWidth: 2,
+    borderColor: commonColor.textColor,
+    width: wp("28%"),
+    height: wp("28%"),
     backgroundColor: commonColor.brandSuccess,
     justifyContent: "center",
     alignItems: "center"
   },
-  startStopTransactionIcon: {
-    fontSize: hp("10.4%")
-  },
-  innerCircleStopTransaction: {
-    borderRadius: 200,
+  stopTransaction: {
+    borderRadius: 50,
     borderStyle: "solid",
-    width: width > 500 ? wp("29%") : wp("33%"),
-    height: height > 800 ? hp("22%") : hp("18%"),
+    borderWidth: 2,
+    borderColor: commonColor.textColor,
+    width: wp("28%"),
+    height: wp("28%"),
     backgroundColor: commonColor.brandDanger,
     justifyContent: "center",
     alignItems: "center"
-  }
+  },
+  startStopTransactionIcon: {
+    fontSize: hp("10%")
+  },
 });
 

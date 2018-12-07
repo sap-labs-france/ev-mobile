@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { TouchableOpacity, ImageBackground, Alert } from "react-native";
-import { Button, Icon, Text, View, Spinner } from "native-base";
+import { TouchableOpacity, Image, ImageBackground, Alert } from "react-native";
+import { Button, Icon, Text, View, Spinner, Header, Body, Left, Right } from "native-base";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
@@ -142,44 +142,39 @@ export class ChargerHeader extends Component {
     const connectorLetter = String.fromCharCode(64 + connector.connectorId);
     return (
       <View>
-        <View style={styles.header}>
-          <View style={styles.arrowIconColumn}>
+        <Header style={styles.header}>
+          <Left>
             <Button transparent onPress={() => navigation.navigate("Chargers")}>
-              <Icon active name="arrow-back" style={styles.headerIcons} />
+              <Icon active name="arrow-back" />
             </Button>
-          </View>
-          <View style={styles.chargerNameColumn}>
-            <Text style={styles.chargerName}>{charger.id}</Text>
-            <Text style={styles.connectorName}>({I18n.t("details.connector")} {connectorLetter})</Text>
-          </View>
-        </View>
+          </Left>
+          <Body>
+            <Text style={styles.titleHeader}>{charger.id}</Text>
+            <Text style={styles.subTitleHeader}>({I18n.t("details.connector")} {connectorLetter})</Text>
+          </Body>
+          <Right>
+            <Image style={styles.imageHeader} source={require("../../../../assets/logo-low.gif")} />
+          </Right>
+        </Header>
         <View style={styles.detailsContainer}>
-          <ImageBackground style={styles.backgroundImage} source={siteImage ? {uri: siteImage} : undefined}>
+          <ImageBackground style={styles.backgroundImage} source={siteImage ? {uri: siteImage} : null}>
           { loadingTransaction ?
             <Spinner color="white" style={styles.spinner} />
           :
-            <View>
-              {this.state.isAdmin && (
-                <View style={styles.transactionContainer}>
-                  {connector.activeTransactionID === 0 ?
-                    <TouchableOpacity onPress={() => this.onStartTransaction()}>
-                      <View style={styles.outerCircle}>
-                        <View style={styles.innerCircleStartTransaction}>
-                          <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                  :
-                    <TouchableOpacity onPress={() => this.onStopTransaction()}>
-                      <View style={styles.outerCircle}>
-                        <View style={styles.innerCircleStopTransaction}>
-                          <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="stop" />
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                  }
-                </View>
-              )}
+            <View style={styles.transactionContainer}>
+              {connector.activeTransactionID === 0 ?
+                <TouchableOpacity onPress={() => this.onStartTransaction()}>
+                  <View style={styles.startTransaction}>
+                    <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
+                  </View>
+                </TouchableOpacity>
+              :
+                <TouchableOpacity onPress={() => this.onStopTransaction()}>
+                  <View style={styles.stopTransaction}>
+                    <Icon style={styles.startStopTransactionIcon} type="MaterialIcons" name="stop" />
+                  </View>
+                </TouchableOpacity>
+              }
             </View>
           }
           </ImageBackground>

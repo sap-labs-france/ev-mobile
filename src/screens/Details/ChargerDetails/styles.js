@@ -4,7 +4,7 @@ import commonColor from "../../../theme/variables/commonColor";
 
 export default StyleSheet.create({
   scrollViewContainer: {
-    marginTop: hp("9.7%")
+    marginTop: hp("5%")
   },
   content: {
     flexDirection: "column",
