@@ -22,56 +22,44 @@ class ConnectorDetails extends Component {
     this.state = {
       charger: this.props.navigation.state.params.charger,
       connector: this.props.navigation.state.params.connector,
-      user: {},
-      tagID: undefined,
-      timestamp: undefined,
+      transaction: null,
       seconds: "00",
       minutes: "00",
       hours: "00",
-      price: 0.1243,
-      userImage: "",
+      price: 0,
+      userImage: null,
       refreshing: false,
-      isAdmin: false
+      isAdmin: _provider._isAdmin()
     };
   }
 
   async componentDidMount() {
-    await this._isAdmin();
-    await this._getTransaction();
-    await this._getPrice();
-    await this._getUserImage();
-    await this._setElipsedTime();
-    // Start timer
-    this.elapsedTime = setInterval(() => {
-      this._userChargingElapsedTime();
-    }, 1000);
-    // Refresh every minutes
-    this.timer = setInterval(() => {
-      this._timerRefresh();
+    // Get Current Transaction
+    this._getTransaction();
+    // Get the Price
+    this._getPrice();
+    // Init
+    this._refreshElapsedTime();
+    // Refresh Charger Data
+    this.timerChargerData = setInterval(() => {
+      this._refreshChargerData();
     }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
   }
 
   async componentWillUnmount() {
     // Clear interval if it exists
-    if (this.timer) {
-      clearInterval(this.timer);
+    if (this.timerChargerData) {
+      clearInterval(this.timerChargerData);
     }
-    if (this.elapsedTime) {
-      clearInterval(this.elapsedTime);
+    if (this.timerElapsedTime) {
+      clearInterval(this.timerElapsedTime);
     }
   }
 
-  _isAdmin = async () => {
-     let result = await _provider._isAdmin();
-     this.setState({
-      isAdmin: result
-     });
-  }
-
-  _getCharger = async (chargerId) => {
+  _getCharger = async () => {
     try {
       let charger = await _provider.getCharger(
-        { ID: chargerId }
+        { ID: this.state.charger.id }
       );
       this.setState({
         refreshing: false,
@@ -87,16 +75,35 @@ class ConnectorDetails extends Component {
   _getTransaction = async () => {
     const { connector } = this.state;
     try {
-      // Is their a transaction and are you Admin ?
-      if (this.state.connector.activeTransactionID && this.state.isAdmin) {
+      // Is their a transaction?
+      if (this.state.connector.activeTransactionID) {
         // Yes: Set data
-        let result = await _provider.getTransaction(
+        let transaction = await _provider.getTransaction(
           { ID: connector.activeTransactionID }
         );
+        // Found?
+        if (transaction) {
+          // Convert
+          transaction.timestamp = new Date(transaction.timestamp);
+          // Start timer?
+          if (!this.timerElapsedTime) {
+            // Get user image
+            this._getUserImage();
+            // Start
+            this.timerElapsedTime = setInterval(() => {
+              this._refreshElapsedTime();
+            }, 1000);
+          }
+        } else {
+          // Check Timer
+          if (this.timerElapsedTime) {
+            // Clear it
+            clearInterval(this.timerElapsedTime);
+            this.timerElapsedTime = null;
+          }
+        }
         this.setState({
-          user: result.user,
-          tagID: result.tagID,
-          timestamp: new Date(result.timestamp)
+          transaction: transaction
         });
       }
     } catch (error) {
@@ -106,14 +113,14 @@ class ConnectorDetails extends Component {
   }
 
   _getUserImage = async () => {
+    const { transaction } = this.state;
     try {
-      if (this.state.user.id) {
+      if (transaction && transaction.user && transaction.user.id) {
         let userImage = await _provider.getUserImage(
-          { ID: this.state.user.id }
+          { ID: transaction.user.id }
         );
-        if (userImage) {
-          this.setState({userImage: userImage.image});
-        }
+        // Set
+        this.setState({userImage: userImage.image});
       }
     } catch (error) {
       // Other common Error
@@ -137,24 +144,24 @@ class ConnectorDetails extends Component {
     }
   }
 
-  _setElipsedTime = () => {
+  _refreshElapsedTime = () => {
+    const { transaction } = this.state;
     // Is their a timestamp ?
-    if (this.state.timestamp && this.state.isAdmin) {
+    if (transaction && transaction.timestamp) {
       // Yes: Get date
       const timeNow = new Date();
       // Set elapsed time
       this.setState({
-        hours: this.formatTimer(Math.abs(timeNow.getHours() - this.state.timestamp.getHours())),
-        minutes: this.formatTimer(Math.abs(timeNow.getMinutes() - this.state.timestamp.getMinutes())),
-        seconds: this.formatTimer(Math.abs(timeNow.getSeconds() - this.state.timestamp.getSeconds()))
+        hours: this._formatTimer(Math.abs(timeNow.getHours() - transaction.timestamp.getHours())),
+        minutes: this._formatTimer(Math.abs(timeNow.getMinutes() - transaction.timestamp.getMinutes())),
+        seconds: this._formatTimer(Math.abs(timeNow.getSeconds() - transaction.timestamp.getSeconds()))
       });
     }
   }
 
-  formatTimer = (val) => {
+  _formatTimer = (val) => {
     // Put 0 next to the digit if lower than 10
     let valString = val + "";
-
     if (valString.length < 2) {
       return "0" + valString;
     }
@@ -162,217 +169,107 @@ class ConnectorDetails extends Component {
     return valString;
   };
 
-  _userChargingElapsedTime = () => {
-    // Set new elapsed time
-    this.setState({
-      seconds: this.formatTimer(++this.state.seconds % 60),
-      minutes: this.state.seconds % 60 === 0 ? this.formatTimer(++this.state.minutes % 60) : this.formatTimer(this.state.minutes),
-      hours: this.state.minutes % 60 === 0 && this.state.seconds % 60 === 0 ? this.formatTimer(++this.state.hours % 60) : this.formatTimer(this.state.hours)
-    });
-  }
-
-  _timerRefresh = async () => {
+  _refreshChargerData = async () => {
+    // Read the charger
+    await this._getCharger();
+    // Read the transaction
     await this._getTransaction();
-    await this._getUserImage();
-    await this._getCharger(this.state.charger.id);
   }
 
   _onRefresh = () => {
     this.setState({refreshing: true}, async () => {
-      await this._getTransaction();
-      await this._getUserImage();
-      await this._getCharger(this.state.charger.id);
+      // Refresh
+      await this._refreshChargerData();
     });
-  }
-
-  renderAdmin = () => {
-    const { connector, refreshing, user, tagID, userImage, timestamp, hours, minutes, seconds, price } = this.state;
-    const userPicture = !userImage ? noPhoto : {uri: userImage};
-    return (
-      <ScrollView style={styles.scrollViewContainer} refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={this._onRefresh} />
-      }>
-        <Animatable.View style={styles.content} animation="fadeIn" delay={100}>
-          <View style={styles.rowContainer}>
-            <View style={styles.columnContainer}>
-              <ConnectorStatusComponent connector={connector}/>
-              <Text style={styles.label}>{Utils.translateConnectorStatus(connector.status)}</Text>
-            </View>
-            <View style={styles.columnContainer}>
-              <Thumbnail style={styles.profilePic} source={userPicture ? userPicture : noPhoto} />
-              { (user.name && user.firstName) && (`${user.name} ${user.firstName}`).length < 19 ?
-                <Text style={styles.label}>{`${(user.name).toUpperCase()} ${user.firstName}`}</Text>
-              : user.name ?
-                <Text style={styles.label}>{`${(user.name).toUpperCase()}`}</Text>
-              :
-                <Text style={styles.label}>-</Text>
-              }
-              { tagID && (
-                <Text style={styles.subLabel}>({tagID})</Text>
-              )}
-            </View>
-          </View>
-          <View style={styles.rowContainer}>
-            <View style={styles.columnContainer}>
-              <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
-              { connector.currentConsumption === 0.0 ?
-                <Text style={styles.label}>-</Text>
-              :
-                <View style={styles.currentConsumptionContainer}>
-                  <Text style={styles.label}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
-                  <Text style={styles.subLabel}>{I18n.t("details.instant")}</Text>
-                </View>
-              }
-            </View>
-            <View style={styles.columnContainer}>
-              { connector.currentStateOfCharge ?
-                <View>
-                  <Icon type="Feather" name="battery-charging" style={styles.iconSize} />
-                  { connector.currentConsumption ?
-                    <Text style={styles.label}>{connector.currentStateOfCharge} %</Text>
-                  :
-                    <Text style={styles.label}>- %</Text>
-                  }
-                </View>
-              :
-                <View style={styles.columnContainer}>
-                  <Icon type="Ionicons" name="time" style={styles.iconSize} />
-                  {timestamp ?
-                    <Text style={styles.label}>{`${hours}:${minutes}:${seconds}`}</Text>
-                  :
-                    <Text style={styles.label}>- : - : -</Text>
-                  }
-                </View>
-              }
-            </View>
-          </View>
-          <View style={styles.rowContainer}>
-            <View style={styles.columnContainer}>
-              <Icon style={styles.iconSize} type="MaterialIcons" name="trending-up" />
-              { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
-                <Text style={styles.label}>-</Text>
-              :
-                <View style={styles.energyConsumedContainer}>
-                  <Text style={styles.label}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
-                  <Text style={styles.subLabel}>{I18n.t("details.consumed")}</Text>
-                </View>
-              }
-            </View>
-            <View style={styles.columnContainer}>
-              <Icon type="MaterialIcons" name="euro-symbol" style={styles.iconSize} />
-              {connector.totalConsumption ?
-                <Text style={styles.label}>{(price * (connector.totalConsumption / 1000)).toFixed(2)}</Text>
-              :
-                <Text style={styles.label}>-</Text>
-              }
-            </View>
-          </View>
-        </Animatable.View>
-      </ScrollView>
-    );
-  }
-
-  renderBasic = () => {
-    const { connector, alpha, refreshing, timestamp, hours, minutes, seconds } = this.state;
-    return (
-      <ScrollView style={styles.scrollViewContainer} refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={this._onRefresh} />
-      }>
-        <Animatable.View style={styles.content} animation="fadeIn" delay={100}>
-          <View style={styles.rowContainer}>
-            <View style={styles.columnContainer}>
-              { connector.status === "Available" && connector.currentConsumption === 0 ?
-                <Animatable.View>
-                  <Badge style={styles.badgeContainer} success>
-                    <RNText style={styles.badgeText}>{alpha}</RNText>
-                  </Badge>
-                </Animatable.View>
-              : (connector.status === "Occupied" || connector.status === "SuspendedEV") && connector.currentConsumption === 0 ?
-                <Animatable.View>
-                  <Badge style={styles.badgeContainer} danger>
-                    <RNText style={styles.badgeText}>{alpha}</RNText>
-                  </Badge>
-                </Animatable.View>
-              : connector.currentConsumption !== 0 ?
-                <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
-                  <Badge style={styles.badgeContainer} danger>
-                    <RNText style={styles.badgeText}>{alpha}</RNText>
-                  </Badge>
-                </Animatable.View>
-              :
-                <Animatable.View>
-                  <Badge style={styles.badgeContainer} danger>
-                    <RNText style={styles.badgeText}>{alpha}</RNText>
-                  </Badge>
-                </Animatable.View>
-              }
-              {connector.status === "Faulted" ?
-                <Text style={styles.faultedText}>{connector.info ? connector.info : connector.status}</Text>
-              :
-                <Text style={styles.connectorStatus}>
-                  { connector.status === "Available" ?
-                    I18n.t("connector.available")
-                  : connector.status === "Occupied" ?
-                    I18n.t("connector.occupied")
-                  : connector.status === "Charging" ?
-                    I18n.t("connector.charging")
-                  : connector.status === "SuspendedEV" ?
-                    I18n.t("connector.suspendedEV")
-                  :
-                    connector.status
-                  }
-                </Text>
-              }
-            </View>
-            <View style={styles.columnContainer}>
-              <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
-              { (connector.currentConsumption / 1000).toFixed(1) === 0.0 || connector.currentConsumption === 0 ?
-                <Text style={styles.data}>-</Text>
-              :
-                <View style={styles.currentConsumptionContainer}>
-                  <Text style={styles.currentConsumptionText}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
-                  <Text style={styles.kWText}>{I18n.t("details.instant")}</Text>
-                </View>
-              }
-            </View>
-          </View>
-          <View style={styles.rowContainer}>
-            <View style={styles.columnContainer}>
-              <Icon type="Ionicons" name="time" style={styles.iconSize} />
-              {timestamp ?
-                <Text style={styles.data}>{`${hours}:${minutes}:${seconds}`}</Text>
-              :
-                <Text style={styles.data}>- : - : -</Text>
-              }
-            </View>
-            <View style={styles.columnContainer}>
-              <Icon style={styles.iconSize} type="MaterialIcons" name="trending-up" />
-              { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
-                <Text style={styles.data}>-</Text>
-                :
-                <View style={styles.energyConsumedContainer}>
-                  <Text style={styles.energyConsumedNumber}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
-                  <Text style={styles.energyConsumedText}>{I18n.t("details.consumed")}</Text>
-                </View>
-              }
-            </View>
-          </View>
-        </Animatable.View>
-      </ScrollView>
-    );
   }
 
   render() {
     const navigation = this.props.navigation;
-    const { charger, connector, alpha } = this.state;
+    const { charger, connector, refreshing, userImage, transaction, hours, minutes, seconds, price } = this.state;
+    const userPicture = !userImage ? noPhoto : {uri: userImage};
     return (
       <Container>
-        <Header charger={charger} connector={connector} alpha={alpha} navigation={navigation} />
-        { this.state.isAdmin ?
-          this.renderAdmin()
-        :
-          this.renderBasic()
-        }
+        <Header charger={charger} connector={connector} navigation={navigation} />
+        <ScrollView style={styles.scrollViewContainer} refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={this._onRefresh} />
+        }>
+          <Animatable.View style={styles.content} animation="fadeIn" delay={100}>
+            <View style={styles.rowContainer}>
+              <View style={styles.columnContainer}>
+                <ConnectorStatusComponent connector={connector}/>
+                <Text style={styles.label}>{Utils.translateConnectorStatus(connector.status)}</Text>
+              </View>
+              <View style={styles.columnContainer}>
+                <Thumbnail style={styles.profilePic} source={userPicture ? userPicture : noPhoto} />
+                { (transaction && transaction.user.name && transaction.user.firstName) && (`${transaction.user.name} ${transaction.user.firstName}`).length < 19 ?
+                  <Text style={styles.label}>{`${(transaction.user.name).toUpperCase()} ${transaction.user.firstName}`}</Text>
+                : transaction && transaction.user.name ?
+                  <Text style={styles.label}>{`${(transaction.user.name).toUpperCase()}`}</Text>
+                :
+                  <Text style={styles.label}>-</Text>
+                }
+                { transaction && transaction.tagID && (
+                  <Text style={styles.subLabel}>({transaction.tagID})</Text>
+                )}
+              </View>
+            </View>
+            <View style={styles.rowContainer}>
+              <View style={styles.columnContainer}>
+                <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
+                { connector.currentConsumption === 0.0 ?
+                  <Text style={styles.label}>-</Text>
+                :
+                  <View style={styles.currentConsumptionContainer}>
+                    <Text style={styles.label}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
+                    <Text style={styles.subLabel}>{I18n.t("details.instant")}</Text>
+                  </View>
+                }
+              </View>
+              <View style={styles.columnContainer}>
+                { connector.currentStateOfCharge ?
+                  <View>
+                    <Icon type="Feather" name="battery-charging" style={styles.iconSize} />
+                    { connector.currentConsumption ?
+                      <Text style={styles.label}>{connector.currentStateOfCharge} %</Text>
+                    :
+                      <Text style={styles.label}>- %</Text>
+                    }
+                  </View>
+                :
+                  <View style={styles.columnContainer}>
+                    <Icon type="Ionicons" name="time" style={styles.iconSize} />
+                    {transaction && transaction.timestamp ?
+                      <Text style={styles.label}>{`${hours}:${minutes}:${seconds}`}</Text>
+                    :
+                      <Text style={styles.label}>- : - : -</Text>
+                    }
+                  </View>
+                }
+              </View>
+            </View>
+            <View style={styles.rowContainer}>
+              <View style={styles.columnContainer}>
+                <Icon style={styles.iconSize} type="MaterialIcons" name="trending-up" />
+                { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
+                  <Text style={styles.label}>-</Text>
+                :
+                  <View style={styles.energyConsumedContainer}>
+                    <Text style={styles.label}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
+                    <Text style={styles.subLabel}>{I18n.t("details.consumed")}</Text>
+                  </View>
+                }
+              </View>
+              <View style={styles.columnContainer}>
+                <Icon type="MaterialIcons" name="euro-symbol" style={styles.iconSize} />
+                {connector.totalConsumption ?
+                  <Text style={styles.label}>{(price * (connector.totalConsumption / 1000)).toFixed(2)}</Text>
+                :
+                  <Text style={styles.label}>-</Text>
+                }
+              </View>
+            </View>
+          </Animatable.View>
+        </ScrollView>
       </Container>
     );
   }

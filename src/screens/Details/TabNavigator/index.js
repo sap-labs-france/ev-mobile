@@ -139,8 +139,9 @@ export class Header extends Component {
   }
 
   render() {
-    const { charger, connector, alpha, navigation } = this.props;
+    const { charger, connector, navigation } = this.props;
     const { siteImage, loadingTransaction } = this.state;
+    const connectorLetter = String.fromCharCode(64 + connector.connectorId);
     return (
       <View>
         <View style={styles.header}>
@@ -151,7 +152,7 @@ export class Header extends Component {
           </View>
           <View style={styles.chargerNameColumn}>
             <Text style={styles.chargerName}>{charger.id}</Text>
-            <Text style={styles.connectorName}>{I18n.t("details.connector")} {alpha}</Text>
+            <Text style={styles.connectorName}>{I18n.t("details.connector")} {connectorLetter}</Text>
           </View>
         </View>
         <View style={styles.detailsContainer}>
