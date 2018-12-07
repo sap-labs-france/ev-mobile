@@ -6,6 +6,7 @@ import * as Animatable from "react-native-animatable";
 
 import { Header } from "../TabNavigator";
 import ProviderFactory from "../../../provider/ProviderFactory";
+import ConnectorStatusComponent from "../../../components/ConnectorStatus";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import styles from "./styles";
@@ -21,7 +22,6 @@ class ConnectorDetails extends Component {
     this.state = {
       charger: this.props.navigation.state.params.charger,
       connector: this.props.navigation.state.params.connector,
-      alpha: this.props.navigation.state.params.alpha,
       user: {},
       tagID: undefined,
       timestamp: undefined,
@@ -70,13 +70,13 @@ class ConnectorDetails extends Component {
 
   _getCharger = async (chargerId) => {
     try {
-      let result = await _provider.getCharger(
+      let charger = await _provider.getCharger(
         { ID: chargerId }
       );
       this.setState({
         refreshing: false,
-        charger: result,
-        connector: result.connectors[String.fromCharCode(this.state.alpha.charCodeAt() - 17)]
+        charger: charger,
+        connector: charger.connectors[this.state.connector.connectorId - 1]
       });
     } catch (error) {
       // Other common Error
@@ -186,7 +186,7 @@ class ConnectorDetails extends Component {
   }
 
   renderAdmin = () => {
-    const { connector, alpha, refreshing, user, tagID, userImage, timestamp, hours, minutes, seconds, price } = this.state;
+    const { connector, refreshing, user, tagID, userImage, timestamp, hours, minutes, seconds, price } = this.state;
     const userPicture = !userImage ? noPhoto : {uri: userImage};
     return (
       <ScrollView style={styles.scrollViewContainer} refreshControl={
@@ -195,70 +195,20 @@ class ConnectorDetails extends Component {
         <Animatable.View style={styles.content} animation="fadeIn" delay={100}>
           <View style={styles.rowContainer}>
             <View style={styles.columnContainer}>
-              { connector.status === "Available" && connector.currentConsumption === 0 ?
-                <Animatable.View>
-                  <Badge style={styles.badgeContainer} success>
-                    <RNText style={styles.badgeText}>{alpha}</RNText>
-                  </Badge>
-                </Animatable.View>
-              : (connector.status === "Occupied" || connector.status === "SuspendedEV") && connector.currentConsumption === 0 ?
-                <Animatable.View>
-                  <Badge style={styles.badgeContainer} danger>
-                    <RNText style={styles.badgeText}>{alpha}</RNText>
-                  </Badge>
-                </Animatable.View>
-              : connector.currentConsumption !== 0 ?
-                <Animatable.View animation="fadeIn" iterationCount={"infinite"} direction="alternate-reverse">
-                  <Badge style={styles.badgeContainer} danger>
-                    <RNText style={styles.badgeText}>{alpha}</RNText>
-                  </Badge>
-                </Animatable.View>
-              : connector.status === "Finishing" || connector.status === "Preparing" ?
-                <Animatable.View>
-                  <Badge style={styles.badgeContainer} warning>
-                    <RNText style={styles.badgeText}>{alpha}</RNText>
-                  </Badge>
-                </Animatable.View>
-              :
-                <Animatable.View>
-                  <Badge style={styles.badgeContainer} danger>
-                    <RNText style={styles.badgeText}>{alpha}</RNText>
-                  </Badge>
-                </Animatable.View>
-              }
-              {connector.status === "Faulted" ?
-                <Text style={styles.faultedText}>{connector.info ? connector.info : connector.status}</Text>
-              :
-                <Text style={styles.connectorStatus}>
-                  { connector.status === "Available" ?
-                    I18n.t("connector.available")
-                  : connector.status === "Occupied" ?
-                    I18n.t("connector.occupied")
-                  : connector.status === "Charging" ?
-                    I18n.t("connector.charging")
-                  : connector.status === "SuspendedEV" ?
-                    I18n.t("connector.suspendedEV")
-                  : connector.status === "Finishing" ?
-                    I18n.t("connector.finishing")
-                  : connector.status === "Preparing" ?
-                    I18n.t("connector.preparing")
-                  :
-                    connector.status
-                  }
-                </Text>
-              }
+              <ConnectorStatusComponent connector={connector}/>
+              <Text style={styles.label}>{Utils.translateConnectorStatus(connector.status)}</Text>
             </View>
             <View style={styles.columnContainer}>
               <Thumbnail style={styles.profilePic} source={userPicture ? userPicture : noPhoto} />
               { (user.name && user.firstName) && (`${user.name} ${user.firstName}`).length < 19 ?
-                <Text style={styles.statusText}>{`${(user.name).toUpperCase()} ${user.firstName}`}</Text>
+                <Text style={styles.label}>{`${(user.name).toUpperCase()} ${user.firstName}`}</Text>
               : user.name ?
-                <Text style={styles.statusText}>{`${(user.name).toUpperCase()}`}</Text>
+                <Text style={styles.label}>{`${(user.name).toUpperCase()}`}</Text>
               :
-                <Text style={styles.statusText}>-</Text>
+                <Text style={styles.label}>-</Text>
               }
               { tagID && (
-                <Text style={styles.tagIdText}>({tagID})</Text>
+                <Text style={styles.subLabel}>({tagID})</Text>
               )}
             </View>
           </View>
@@ -266,11 +216,11 @@ class ConnectorDetails extends Component {
             <View style={styles.columnContainer}>
               <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
               { connector.currentConsumption === 0.0 ?
-                <Text style={styles.data}>-</Text>
+                <Text style={styles.label}>-</Text>
               :
                 <View style={styles.currentConsumptionContainer}>
-                  <Text style={styles.data}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
-                  <Text style={styles.kWText}>{I18n.t("details.instant")}</Text>
+                  <Text style={styles.label}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
+                  <Text style={styles.subLabel}>{I18n.t("details.instant")}</Text>
                 </View>
               }
             </View>
@@ -279,18 +229,18 @@ class ConnectorDetails extends Component {
                 <View>
                   <Icon type="Feather" name="battery-charging" style={styles.iconSize} />
                   { connector.currentConsumption ?
-                    <Text style={styles.data}>{connector.currentStateOfCharge} %</Text>
+                    <Text style={styles.label}>{connector.currentStateOfCharge} %</Text>
                   :
-                    <Text style={styles.data}>- %</Text>
+                    <Text style={styles.label}>- %</Text>
                   }
                 </View>
               :
                 <View style={styles.columnContainer}>
                   <Icon type="Ionicons" name="time" style={styles.iconSize} />
                   {timestamp ?
-                    <Text style={styles.data}>{`${hours}:${minutes}:${seconds}`}</Text>
+                    <Text style={styles.label}>{`${hours}:${minutes}:${seconds}`}</Text>
                   :
-                    <Text style={styles.data}>- : - : -</Text>
+                    <Text style={styles.label}>- : - : -</Text>
                   }
                 </View>
               }
@@ -300,20 +250,20 @@ class ConnectorDetails extends Component {
             <View style={styles.columnContainer}>
               <Icon style={styles.iconSize} type="MaterialIcons" name="trending-up" />
               { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
-                <Text style={styles.data}>-</Text>
+                <Text style={styles.label}>-</Text>
               :
                 <View style={styles.energyConsumedContainer}>
-                  <Text style={styles.energyConsumedNumber}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
-                  <Text style={styles.energyConsumedText}>{I18n.t("details.consumed")}</Text>
+                  <Text style={styles.label}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
+                  <Text style={styles.subLabel}>{I18n.t("details.consumed")}</Text>
                 </View>
               }
             </View>
             <View style={styles.columnContainer}>
               <Icon type="MaterialIcons" name="euro-symbol" style={styles.iconSize} />
               {connector.totalConsumption ?
-                <Text style={styles.data}>{(price * (connector.totalConsumption / 1000)).toFixed(2)}</Text>
+                <Text style={styles.label}>{(price * (connector.totalConsumption / 1000)).toFixed(2)}</Text>
               :
-                <Text style={styles.data}>-</Text>
+                <Text style={styles.label}>-</Text>
               }
             </View>
           </View>

@@ -7,8 +7,8 @@ import * as Animatable from "react-native-animatable";
 import styles from "./styles";
 
 class ConnectorStatusComponent extends Component {
-  _getStyleFromStatus(item) {
-    switch (item.status) {
+  _getStyleFromStatus(connector) {
+    switch (connector.status) {
       // Green
       case Constants.CONN_STATUS_AVAILABLE:
         return styles.statusGreen;
@@ -28,21 +28,21 @@ class ConnectorStatusComponent extends Component {
     }
   }
 
-  _getStatusAnimation(item) {
+  _getStatusAnimation(connector) {
     // First check
-    if (item.currentConsumption > 0) {
+    if (connector.currentConsumption > 0) {
       return "fadeIn";
     }
     return "";
   }
 
   render() {
-    const { item } = this.props;
-    const connectorLetter = String.fromCharCode(64 + item.connectorId);
+    const { connector } = this.props;
+    const connectorLetter = String.fromCharCode(64 + connector.connectorId);
     return (
       <View style={styles.connectorStatus}>
-        <Animatable.View animation={this._getStatusAnimation(item)} iterationCount={"infinite"} direction="alternate-reverse">
-          <View style={this._getStyleFromStatus(item)}>
+        <Animatable.View animation={this._getStatusAnimation(connector)} iterationCount={"infinite"} direction="alternate-reverse">
+          <View style={this._getStyleFromStatus(connector)}>
             <TextRN style={styles.statusLetter}>{connectorLetter}</TextRN>
           </View>
         </Animatable.View>

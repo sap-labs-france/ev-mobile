@@ -40,38 +40,17 @@ export default StyleSheet.create({
     fontSize: hp("4.5%"),
     color: commonColor.textColor
   },
-  faultedText: {
+  label: {
     fontSize: hp("3%"),
     fontWeight: "bold",
     paddingTop: hp("1.5%"),
-    alignSelf: "center",
-    color: commonColor.brandDanger
-  },
-  connectorStatus: {
-    fontSize: hp("3%"),
-    fontWeight: "bold",
-    paddingTop: hp("1.5%"),
+    color: commonColor.textColor,
     alignSelf: "center"
   },
-  data: {
-    fontSize: hp("3.7%"),
-    fontWeight: "bold",
-    paddingTop: hp("1.5%"),
-    alignSelf: "center"
-  },
-  statusText: {
-    fontSize: hp("2.5%"),
-    fontWeight: "bold",
-    paddingTop: hp("1.5%"),
-    alignSelf: "center"
-  },
-  tagIdText: {
+  subLabel: {
     fontSize: hp("2%"),
     fontWeight: "bold",
     alignSelf: "center"
-  },
-  kWText: {
-    fontSize: hp("1.8%")
   },
   iconSize: {
     fontSize: hp("5.5%")
@@ -88,9 +67,6 @@ export default StyleSheet.create({
     fontWeight: "bold",
     fontSize: hp("3.7%"),
     paddingTop: hp("1.5%")
-  },
-  energyConsumedText: {
-    fontSize: hp("1.8%")
   },
   headerIcons: {
     fontSize: hp("4.5%"),

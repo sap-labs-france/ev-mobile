@@ -58,7 +58,7 @@ class ConnectorComponent extends Component {
             {even ?
               <View style={styles.leftStatusConnectorContainer}>
                 <View style={styles.statusConnectorLetter}>
-                  <ConnectorStatusComponent item={item}/>
+                  <ConnectorStatusComponent connector={item}/>
                 </View>
                 {this._renderConnectorDetails(item)}
               </View>
@@ -66,7 +66,7 @@ class ConnectorComponent extends Component {
               <View style={styles.rightStatusConnectorContainer}>
                 {this._renderConnectorDetails(item)}
                 <View style={styles.statusConnectorLetter}>
-                  <ConnectorStatusComponent item={item}/>
+                  <ConnectorStatusComponent connector={item}/>
                 </View>
               </View>
             }
