@@ -4,14 +4,16 @@ import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, ListItem, Footer, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
 
-import ProviderFactory from "../../../provider/ProviderFactory";
+import providerFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
 import styles from "../styles";
 import commonColor from "../../../theme/variables/commonColor";
 
-const provider = ProviderFactory.getProvider();
+const _provider = providerFactory.getProvider();
+const _locations = _provider.getLocations();
+
 const formValidationDef = {
   email: {
     presence: {
@@ -40,8 +42,6 @@ const formValidationDef = {
   }
 };
 
-const locations = provider.getLocations();
-
 class Login extends React.Component {
   passwordInput;
   eulaCheckBox;
@@ -64,12 +64,21 @@ class Login extends React.Component {
     Orientation.unlockAllOrientations();
     Orientation.lockToPortrait();
     // Check if user is authenticated
-    if (await provider.isUserAuthenticated()) {
+    if (await _provider.isUserAuthenticated()) {
       // Navigate
       this._navigateToSites();
     } else {
-      // Set default email/password
-      await this._setDefaultInputs();
+      const email = await _provider.getUserEmail();
+      const password = await _provider.getUserPassword();
+      const tenant = await _provider.getTenant();
+      const location = _provider.getLocation(tenant);
+      this.setState({
+        email,
+        password,
+        tenant,
+        tenantTitle: (location ? location.name : this.state.tenantTitle),
+        display: true
+      });
     }
   }
 
@@ -84,7 +93,7 @@ class Login extends React.Component {
         // Loading
         this.setState({loading: true});
         // Login
-        await provider.login(email, password, eula, tenant);
+        await _provider.login(email, password, eula, tenant);
         // Login Success
         this.setState({loading: false});
         // Navigate
@@ -136,23 +145,13 @@ class Login extends React.Component {
     );
   }
 
-  _setDefaultInputs = async () => {
-    const email = await provider.getUserEmail();
-    const password = await provider.getUserPassword();
-    this.setState({
-      email,
-      password,
-      display: true
-    });
-  }
-
   _setTenant = (buttonIndex) => {
     // Provided?
     if (buttonIndex !== undefined) {
       // Set Tenant
       this.setState({
-        tenant: locations[buttonIndex].subdomain,
-        tenantTitle: locations[buttonIndex].name
+        tenant: _locations[buttonIndex].subdomain,
+        tenantTitle: _locations[buttonIndex].name
       });
     }
   }
@@ -199,7 +198,7 @@ class Login extends React.Component {
                   onPress={() =>
                     ActionSheet.show(
                       {
-                        options: locations.map(location => location.name),
+                        options: _locations.map(location => location.name),
                         title: I18n.t("authentication.location")
                       },
                       buttonIndex => {

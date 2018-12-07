@@ -88,7 +88,7 @@ class ConnectorDetails extends Component {
           // Start timer?
           if (!this.timerElapsedTime) {
             // Get user image
-            this._getUserImage();
+            this._getUserImage(transaction.user);
             // Start
             this.timerElapsedTime = setInterval(() => {
               this._refreshElapsedTime();
@@ -112,13 +112,13 @@ class ConnectorDetails extends Component {
     }
   }
 
-  _getUserImage = async () => {
-    const { transaction } = this.state;
+  _getUserImage = async (user) => {
     try {
-      if (transaction && transaction.user && transaction.user.id) {
+      if (user) {
         let userImage = await _provider.getUserImage(
-          { ID: transaction.user.id }
+          { ID: user.id }
         );
+        console.log(userImage);
         // Set
         this.setState({userImage: userImage.image});
       }
@@ -132,9 +132,11 @@ class ConnectorDetails extends Component {
     try {
       if (this.state.isAdmin) {
         let price = await _provider.getPrice();
+        console.log(price);
+        
         if (price) {
           this.setState({
-            price: price.priceKWH
+            price: price
           });
         }
       }
@@ -187,8 +189,6 @@ class ConnectorDetails extends Component {
     const navigation = this.props.navigation;
     const { charger, connector, refreshing, userImage, transaction, hours, minutes, seconds, price } = this.state;
     const userPicture = !userImage ? noPhoto : {uri: userImage};
-    console.log(transaction);
-    
     return (
       <Container>
         <Header charger={charger} connector={connector} navigation={navigation} />
@@ -204,14 +204,12 @@ class ConnectorDetails extends Component {
               <View style={styles.columnContainer}>
                 <Thumbnail style={styles.profilePicture} source={userPicture ? userPicture : noPhoto} />
                 {transaction ?
-                  <Text style={styles.label}>{Utils.buildUserName(transaction.user)}</Text>
+                  <View>
+                    <Text style={styles.labelPicture}>{Utils.buildUserName(transaction.user)}</Text>
+                    <Text style={styles.subLabel}>({transaction.tagID})</Text>
+                  </View>
                 :
                   <Text style={styles.label}>-</Text>
-                }
-                {transaction && transaction.tagID ?
-                  <Text style={styles.subLabel}>({transaction.tagID})</Text>
-                :
-                  <Text style={styles.subLabel}>-</Text>
                 }
               </View>
             </View>
@@ -263,8 +261,11 @@ class ConnectorDetails extends Component {
               </View>
               <View style={styles.columnContainer}>
                 <Icon type="MaterialIcons" name="euro-symbol" style={styles.iconSize} />
-                {connector.totalConsumption ?
-                  <Text style={styles.labelValue}>{(price * (connector.totalConsumption / 1000)).toFixed(2)}</Text>
+                {connector.totalConsumption && price ?
+                  <View>
+                    <Text style={styles.labelValue}>{(price.priceKWH * (connector.totalConsumption / 1000)).toFixed(2)}</Text>
+                    <Text style={styles.subLabel}>({price.priceUnit})</Text>
+                  </View>
                 :
                   <Text style={styles.labelValue}>-</Text>
                 }

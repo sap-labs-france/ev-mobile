@@ -80,11 +80,16 @@ export default StyleSheet.create({
     backgroundColor: "transparent",
     color: commonColor.textColor
   },
+  labelPicture: {
+    fontSize: hp("3%"),
+    color: commonColor.textColor,
+    alignSelf: "center"
+  },
   profilePicture: {
-    height: wp("12%"),
-    width: wp("12%"),
+    height: wp("15%"),
+    width: wp("15%"),
     alignSelf: "center",
-    marginTop: hp("3.5%"),
+    marginTop: hp("1%"),
     borderRadius: 50,
     borderWidth: 2,
     borderColor: commonColor.textColor

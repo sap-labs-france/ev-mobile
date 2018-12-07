@@ -35,6 +35,10 @@ export default class  CentralServerProvider {
     }
   }
 
+  getLocation(tenant) {
+    return this.getLocations().find((location) => location.subdomain === tenant);
+  }
+
   getLocations() {
     return [
       { subdomain: "slf", name: "SAP Labs France"},
@@ -77,6 +81,13 @@ export default class  CentralServerProvider {
     return _password;
   }
 
+  async getTenant() {
+    // Init?
+    await this.initialize();
+    // Return
+    return _tenant;
+  }
+
   async getUserInfo() {
     // Init?
     await this.initialize();
@@ -98,7 +109,6 @@ export default class  CentralServerProvider {
   async logoff() {
     // Clear the token and tenant
     await SInfo.deleteItem(Constants.KEY_TOKEN, {});
-    await SInfo.deleteItem(Constants.KEY_TENANT, {});
     // Clear local data
     _email = null;
     _password = null;
