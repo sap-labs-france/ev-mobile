@@ -187,6 +187,8 @@ class ConnectorDetails extends Component {
     const navigation = this.props.navigation;
     const { charger, connector, refreshing, userImage, transaction, hours, minutes, seconds, price } = this.state;
     const userPicture = !userImage ? noPhoto : {uri: userImage};
+    console.log(transaction);
+    
     return (
       <Container>
         <Header charger={charger} connector={connector} navigation={navigation} />
@@ -200,17 +202,17 @@ class ConnectorDetails extends Component {
                 <Text style={styles.label}>{Utils.translateConnectorStatus(connector.status)}</Text>
               </View>
               <View style={styles.columnContainer}>
-                <Thumbnail style={styles.profilePic} source={userPicture ? userPicture : noPhoto} />
-                { (transaction && transaction.user.name && transaction.user.firstName) && (`${transaction.user.name} ${transaction.user.firstName}`).length < 19 ?
-                  <Text style={styles.label}>{`${(transaction.user.name).toUpperCase()} ${transaction.user.firstName}`}</Text>
-                : transaction && transaction.user.name ?
-                  <Text style={styles.label}>{`${(transaction.user.name).toUpperCase()}`}</Text>
+                <Thumbnail style={styles.profilePicture} source={userPicture ? userPicture : noPhoto} />
+                {transaction ?
+                  <Text style={styles.label}>{Utils.buildUserName(transaction.user)}</Text>
                 :
                   <Text style={styles.label}>-</Text>
                 }
-                { transaction && transaction.tagID && (
+                {transaction && transaction.tagID ?
                   <Text style={styles.subLabel}>({transaction.tagID})</Text>
-                )}
+                :
+                  <Text style={styles.subLabel}>-</Text>
+                }
               </View>
             </View>
             <View style={styles.rowContainer}>
@@ -220,8 +222,8 @@ class ConnectorDetails extends Component {
                   <Text style={styles.label}>-</Text>
                 :
                   <View style={styles.currentConsumptionContainer}>
-                    <Text style={styles.label}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
-                    <Text style={styles.subLabel}>{I18n.t("details.instant")}</Text>
+                    <Text style={styles.labelValue}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
+                    <Text style={styles.subLabel}>{I18n.t("details.instant")} (kW)</Text>
                   </View>
                 }
               </View>
@@ -239,9 +241,9 @@ class ConnectorDetails extends Component {
                   <View style={styles.columnContainer}>
                     <Icon type="Ionicons" name="time" style={styles.iconSize} />
                     {transaction && transaction.timestamp ?
-                      <Text style={styles.label}>{`${hours}:${minutes}:${seconds}`}</Text>
+                      <Text style={styles.labelValue}>{`${hours}:${minutes}:${seconds}`}</Text>
                     :
-                      <Text style={styles.label}>- : - : -</Text>
+                      <Text style={styles.labelValue}>- : - : -</Text>
                     }
                   </View>
                 }
@@ -251,20 +253,20 @@ class ConnectorDetails extends Component {
               <View style={styles.columnContainer}>
                 <Icon style={styles.iconSize} type="MaterialIcons" name="trending-up" />
                 { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
-                  <Text style={styles.label}>-</Text>
+                  <Text style={styles.labelValue}>-</Text>
                 :
                   <View style={styles.energyConsumedContainer}>
-                    <Text style={styles.label}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
-                    <Text style={styles.subLabel}>{I18n.t("details.consumed")}</Text>
+                    <Text style={styles.labelValue}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
+                    <Text style={styles.subLabel}>{I18n.t("details.total")} (kW.h)</Text>
                   </View>
                 }
               </View>
               <View style={styles.columnContainer}>
                 <Icon type="MaterialIcons" name="euro-symbol" style={styles.iconSize} />
                 {connector.totalConsumption ?
-                  <Text style={styles.label}>{(price * (connector.totalConsumption / 1000)).toFixed(2)}</Text>
+                  <Text style={styles.labelValue}>{(price * (connector.totalConsumption / 1000)).toFixed(2)}</Text>
                 :
-                  <Text style={styles.label}>-</Text>
+                  <Text style={styles.labelValue}>-</Text>
                 }
               </View>
             </View>

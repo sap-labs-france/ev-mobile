@@ -42,14 +42,21 @@ export default StyleSheet.create({
   },
   label: {
     fontSize: hp("3%"),
+    paddingTop: hp("1%"),
+    color: commonColor.textColor,
+    alignSelf: "center"
+  },
+  labelValue: {
+    fontSize: hp("4%"),
     fontWeight: "bold",
-    paddingTop: hp("1.5%"),
     color: commonColor.textColor,
     alignSelf: "center"
   },
   subLabel: {
     fontSize: hp("2%"),
     fontWeight: "bold",
+    color: commonColor.textColor,
+    marginTop: hp("-0.75%"),
     alignSelf: "center"
   },
   iconSize: {
@@ -73,10 +80,13 @@ export default StyleSheet.create({
     backgroundColor: "transparent",
     color: commonColor.textColor
   },
-  profilePic: {
-    height: hp("6.7%"),
+  profilePicture: {
+    height: wp("12%"),
     width: wp("12%"),
     alignSelf: "center",
-    borderRadius: Platform.OS === "android" ? 40 : 20
+    marginTop: hp("3.5%"),
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: commonColor.textColor
   }
 });

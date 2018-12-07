@@ -43,6 +43,20 @@ export default class Utils {
     }
   }
 
+  static buildUserName(user) {
+    let userName = "-";
+    // User?
+    if (user) {
+      // Firstname provided?
+      if (user.name && user.firstName && `${user.name} ${user.firstName}`.length < 19) {
+        return `${user.name} ${user.firstName}`;
+      } else {
+        return `${user.name}`;
+      }
+    }
+    return userName;
+  }
+
   static capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
