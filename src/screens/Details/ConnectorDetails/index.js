@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Text as RNText, ScrollView, RefreshControl } from "react-native";
-import { Container, Icon, View, Badge, Thumbnail, Text } from "native-base";
+import { ScrollView, RefreshControl } from "react-native";
+import { Container, Icon, View, Thumbnail, Text } from "native-base";
 
 import * as Animatable from "react-native-animatable";
 
@@ -13,6 +13,7 @@ import styles from "./styles";
 import Constants from "../../../utils/Constants";
 
 const noPhoto = require("../../../../assets/no-photo.png");
+
 const _provider = ProviderFactory.getProvider();
 
 class ConnectorDetails extends Component {
@@ -202,7 +203,6 @@ class ConnectorDetails extends Component {
   render() {
     const navigation = this.props.navigation;
     const { charger, connector, refreshing, userImage, transaction, hours, minutes, seconds, price } = this.state;
-    const userPicture = !userImage ? noPhoto : {uri: userImage};
     return (
       <Container>
         <ChargerHeader charger={charger} connector={connector} navigation={navigation} />
@@ -216,7 +216,7 @@ class ConnectorDetails extends Component {
                 <Text style={styles.label}>{Utils.translateConnectorStatus(connector.status)}</Text>
               </View>
               <View style={styles.columnContainer}>
-                <Thumbnail style={styles.profilePicture} source={userPicture ? userPicture : noPhoto} />
+                <Thumbnail style={styles.profilePicture} source={userImage ? {uri: userImage} : noPhoto} />
                 {transaction ?
                   <View>
                     <Text style={styles.labelUser}>{Utils.buildUserName(transaction.user)}</Text>

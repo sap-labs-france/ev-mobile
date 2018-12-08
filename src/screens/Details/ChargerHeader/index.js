@@ -9,6 +9,8 @@ import Message from "../../../utils/Message";
 
 const _provider = ProviderFactory.getProvider();
 
+const noSite = require("../../../../assets/no-site.gif");
+
 export class ChargerHeader extends Component {
   constructor(props) {
     super(props);
@@ -157,7 +159,7 @@ export class ChargerHeader extends Component {
           </Right>
         </Header>
         <View style={styles.detailsContainer}>
-          <ImageBackground style={styles.backgroundImage} source={siteImage ? {uri: siteImage} : null}>
+          <ImageBackground style={styles.backgroundImage} source={siteImage ? {uri: siteImage} : noSite}>
           { loadingTransaction ?
             <Spinner color="white" style={styles.spinner} />
           :
