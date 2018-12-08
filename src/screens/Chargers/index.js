@@ -28,6 +28,9 @@ class Chargers extends Component {
   async componentDidMount() {
     // Get chargers first time
     const chargers = await this._getChargers(this.state.skip, this.state.limit, this.state.site.id);
+    // Add listeners
+    this.props.navigation.addListener('didFocus', this.componentDidFocus);
+    this.props.navigation.addListener('didBlur', this.componentDidBlur);
     // Add chargers
     this.setState((prevState, props) => ({
       chargers: chargers.result,
@@ -35,15 +38,35 @@ class Chargers extends Component {
       loading: false
     }));
     // Refresh every minutes
-    this.timer = setInterval(() => {
-      this._onRefresh();
+    this.refreshTimer = setInterval(() => {
+      this._refresh();
     }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
+  }
+
+  componentDidFocus = () => {
+    // Force Refresh
+    this._refresh();
+    // Stop the timer
+    if (!this.refreshTimer) {
+      // Refresh every minutes
+      this.refreshTimer = setInterval(() => {
+        this._refresh();
+      }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
+    }
+  }
+
+  componentDidBlur = () => {
+    // Stop the timer
+    if (this.refreshTimer) {
+      clearInterval(this.refreshTimer);
+      this.refreshTimer = null;
+    }
   }
 
   componentWillUnmount() {
     // Stop the timer
-    if (this.timer) {
-      clearInterval(this.timer);
+    if (this.refreshTimer) {
+      clearInterval(this.refreshTimer);
     }
   }
 
@@ -75,7 +98,7 @@ class Chargers extends Component {
     }
   }
 
-  _onRefresh = async () => {
+  _refresh = async () => {
     const { skip, limit } = this.state;
     // Refresh All
     let chargers = await this._getChargers(0, (skip + limit), this.state.site.id);
@@ -129,7 +152,7 @@ class Chargers extends Component {
               renderItem={item => this._renderItem(item, this.props.navigation)}
               keyExtractor={item => item.id}
               refreshControl={
-                <RefreshControl onRefresh={this._onRefresh} refreshing={this.state.refreshing} />
+                <RefreshControl onRefresh={this._refresh} refreshing={this.state.refreshing} />
               }
               indicatorStyle={"white"}
               onEndReached={this._onEndScroll}

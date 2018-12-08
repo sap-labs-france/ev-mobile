@@ -233,31 +233,18 @@ class ConnectorDetails extends Component {
                 { connector.currentConsumption === 0.0 ?
                   <Text style={styles.labelValue}>-</Text>
                 :
-                  <View style={styles.currentConsumptionContainer}>
+                  <View>
                     <Text style={styles.labelValue}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
                     <Text style={styles.subLabel}>{I18n.t("details.instant")} (kW)</Text>
                   </View>
                 }
               </View>
               <View style={styles.columnContainer}>
-                { connector.currentStateOfCharge ?
-                  <View>
-                    <Icon type="Feather" name="battery-charging" style={styles.iconSize} />
-                    { connector.currentConsumption ?
-                      <Text style={styles.labelValue}>{connector.currentStateOfCharge} %</Text>
-                    :
-                      <Text style={styles.labelValue}>- %</Text>
-                    }
-                  </View>
+                <Icon type="Ionicons" name="time" style={styles.iconSize} />
+                {transaction && transaction.timestamp ?
+                  <Text style={styles.labelValue}>{`${hours}:${minutes}:${seconds}`}</Text>
                 :
-                  <View style={styles.columnContainer}>
-                    <Icon type="Ionicons" name="time" style={styles.iconSize} />
-                    {transaction && transaction.timestamp ?
-                      <Text style={styles.labelValue}>{`${hours}:${minutes}:${seconds}`}</Text>
-                    :
-                      <Text style={styles.labelValue}>- : - : -</Text>
-                    }
-                  </View>
+                  <Text style={styles.labelValue}>- : - : -</Text>
                 }
               </View>
             </View>
@@ -267,21 +254,24 @@ class ConnectorDetails extends Component {
                 { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
                   <Text style={styles.labelValue}>-</Text>
                 :
-                  <View style={styles.energyConsumedContainer}>
+                  <View>
                     <Text style={styles.labelValue}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
                     <Text style={styles.subLabel}>{I18n.t("details.total")} (kW.h)</Text>
                   </View>
                 }
               </View>
               <View style={styles.columnContainer}>
-                <Icon type="MaterialIcons" name="euro-symbol" style={styles.iconSize} />
-                {connector.totalConsumption && price ?
+                <Icon type="Feather" name="battery-charging" style={styles.iconSize} />
+                { connector.currentStateOfCharge ?
                   <View>
-                    <Text style={styles.labelValue}>{(price.priceKWH * (connector.totalConsumption / 1000)).toFixed(2)}</Text>
-                    <Text style={styles.subLabel}>({price.priceUnit})</Text>
+                    <Text style={styles.labelValue}>{connector.currentStateOfCharge} %</Text>
+                    <Text style={styles.subLabel}>(%)</Text>
                   </View>
                 :
-                  <Text style={styles.labelValue}>-</Text>
+                  <View>
+                    <Text style={styles.labelValue}>-</Text>
+                    <Text style={styles.subLabel}>(%)</Text>
+                  </View>
                 }
               </View>
             </View>

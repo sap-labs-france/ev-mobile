@@ -37,6 +37,10 @@ export default class  CentralServerProvider {
     }
   }
 
+  debug(method) {
+    console.log( new Date().toISOString() + " - " + method);
+  }
+
   getLocation(tenant) {
     return this.getLocations().find((location) => location.subdomain === tenant);
   }
@@ -98,6 +102,7 @@ export default class  CentralServerProvider {
   }
 
   async resetPassword(email) {
+    this.debug("resetPassword");
     // Init?
     await this.initialize();
     // Call
@@ -109,6 +114,7 @@ export default class  CentralServerProvider {
   }
 
   async logoff() {
+    this.debug("logoff");
     // Clear the token and tenant
     await SInfo.deleteItem(Constants.KEY_TOKEN, {});
     // Clear local data
@@ -135,6 +141,7 @@ export default class  CentralServerProvider {
   }
 
   async login(email, password, eula, tenant) {
+    this.debug("login");
     // Call
     let result = await axios.post(`${centralRestServerServiceAuthURL}/Login`, {
       email,
@@ -157,6 +164,7 @@ export default class  CentralServerProvider {
   }
 
   async register(name, firstName, email, passwords, eula) {
+    this.debug("register");
     let result = await axios.post(`${centralRestServerServiceAuthURL}/RegisterUser`, {
       name,
       firstName,
@@ -170,6 +178,7 @@ export default class  CentralServerProvider {
   }
 
   async getChargers(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+    this.debug("getChargers");
     // Init?
     await this.initialize();
     // Build Paging
@@ -185,6 +194,7 @@ export default class  CentralServerProvider {
   }
 
   async getCharger(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+    this.debug("getCharger");
     // Init?
     await this.initialize();
     // Build Paging
@@ -200,6 +210,7 @@ export default class  CentralServerProvider {
   }
 
   async getSites(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+    this.debug("getSites");
     // Init?
     await this.initialize();
     // Build Paging
@@ -215,6 +226,7 @@ export default class  CentralServerProvider {
   }
 
   async getSiteAreas(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+    this.debug("getSiteAreas");
     // Init?
     await this.initialize();
     // Call
@@ -226,6 +238,7 @@ export default class  CentralServerProvider {
   }
 
   async getEndUserLicenseAgreement(params = {}) {
+    this.debug("getEndUserLicenseAgreement");
     // Call
     let result = await axios.get(`${centralRestServerServiceAuthURL}/EndUserLicenseAgreement`, {
       headers: this._builHeaders(),
@@ -235,6 +248,7 @@ export default class  CentralServerProvider {
   }
 
   async startTransaction(chargeBoxID, connectorID) {
+    this.debug("startTransaction");
     // Init?
     await this.initialize();
     // Call
@@ -251,6 +265,7 @@ export default class  CentralServerProvider {
   }
 
   async stopTransaction(chargeBoxID, transactionId) {
+    this.debug("stopTransaction");
     // Init?
     await this.initialize();
     // Call
@@ -266,6 +281,7 @@ export default class  CentralServerProvider {
   }
 
   async getTransaction(params = {}) {
+    this.debug("getTransaction");
     // Init?
     await this.initialize();
     // Call
@@ -277,6 +293,7 @@ export default class  CentralServerProvider {
   }
 
   async getUserImage(params = {}) {
+    this.debug("getUserImage");
     // Init?
     await this.initialize();
     // Call
@@ -288,6 +305,7 @@ export default class  CentralServerProvider {
   }
 
   async getSiteImage(params = {}) {
+    this.debug("getSiteImage");
     // Init?
     await this.initialize();
     // Call
@@ -299,6 +317,7 @@ export default class  CentralServerProvider {
   }
 
   async isAuthorizedStopTransaction(params = {}) {
+    this.debug("isAuthorizedStopTransaction");
     // Init ?
     await this.initialize();
     // Call
@@ -310,6 +329,7 @@ export default class  CentralServerProvider {
   }
 
   async getPrice() {
+    this.debug("getPrice");
     // Init ?
     await this.initialize();
     // Call
@@ -320,6 +340,7 @@ export default class  CentralServerProvider {
   }
 
   async getChargingStationConsumption(params = {}) {
+    this.debug("getChargingStationConsumption");
     // Init ?
     await this.initialize();
     // Call

@@ -9,6 +9,7 @@ export default {
 
   // Auto Refresh
   AUTO_REFRESH_PERIOD_MILLIS: 10000,
+  AUTO_REFRESH_CHART_PERIOD_MILLIS: 30000,
 
   // Roles
   ROLE_SUPER_ADMIN: "S",

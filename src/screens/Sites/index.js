@@ -31,6 +31,40 @@ class Sites extends Component {
       count: sites.count,
       loading: false
     });
+    // Refresh every minutes
+    this.refreshTimer = setInterval(() => {
+      this._refresh();
+    }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
+    // Add listeners
+    this.props.navigation.addListener('didFocus', this.componentDidFocus);
+    this.props.navigation.addListener('didBlur', this.componentDidBlur);
+  }
+
+  componentWillUnmount() {
+    // Stop the timer
+    if (this.refreshTimer) {
+      clearInterval(this.refreshTimer);
+    }
+  }
+
+  componentDidFocus = () => {
+    // Force Refresh
+    this._refresh();
+    // Stop the timer
+    if (!this.refreshTimer) {
+      // Refresh every minutes
+      this.refreshTimer = setInterval(() => {
+        this._refresh();
+      }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
+    }
+  }
+
+  componentDidBlur = () => {
+    // Stop the timer
+    if (this.refreshTimer) {
+      clearInterval(this.refreshTimer);
+      this.refreshTimer = null;
+    }
   }
 
   getSites = async (skip, limit) => {
@@ -47,7 +81,7 @@ class Sites extends Component {
     return sites;
   }
 
-  _onRefresh = async () => {
+  _refresh = async () => {
     const { skip, limit } = this.state;
     // Refresh All
     let sites = await this.getSites(0, (skip + limit));
@@ -116,7 +150,7 @@ class Sites extends Component {
               renderItem={this._renderItem}
               keyExtractor={item => item.id}
               refreshControl={
-                <RefreshControl onRefresh={this._onRefresh} refreshing={this.state.refreshing} />
+                <RefreshControl onRefresh={this._refresh} refreshing={this.state.refreshing} />
               }
               onEndReached={this._onEndScroll}
               onEndReachedThreshold={0.5}

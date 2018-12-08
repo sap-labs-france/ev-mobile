@@ -29,6 +29,7 @@ export default StyleSheet.create({
   },
   columnAccount: {
     flexDirection: "column",
+    flexGrow: 2,
     flex: 1
   },
   buttonLogout: {

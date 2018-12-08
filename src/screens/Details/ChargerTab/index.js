@@ -8,7 +8,7 @@ import I18n from "../../../I18n/I18n";
 
 import ConnectorDetails from "../ConnectorDetails";
 import ChargerDetails from "../ChargerDetails";
-import GraphDetails from "../GraphDetails";
+import ChartDetails from "../ChartDetails";
 import styles from "./styles";
 
 const _provider = ProviderFactory.getProvider();
@@ -67,7 +67,7 @@ class ChargerTabs extends Component {
               <Text>{I18n.t("details.informations")}</Text>
             </Button>
           )}
-          <Button vertical active={this.state.isAdmin ? state.index === 2 : state.index === 1} onPress={()=>navigation.navigate("GraphDetails")}>
+          <Button vertical active={this.state.isAdmin ? state.index === 2 : state.index === 1} onPress={()=>navigation.navigate("ChartDetails")}>
             <Icon type="MaterialIcons" name="timeline" />
             <Text>{I18n.t("details.graph")}</Text>
           </Button>
@@ -81,7 +81,7 @@ const ChargerNavigation = TabNavigator(
   {
     ConnectorDetails: { screen: ConnectorDetails },
     ChargerDetails: { screen: ChargerDetails },
-    GraphDetails: { screen: GraphDetails }
+    ChartDetails: { screen: ChartDetails }
   },
   {
     tabBarPosition: "bottom",

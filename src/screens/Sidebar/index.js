@@ -9,6 +9,7 @@ import Utils from "../../utils/Utils";
 import styles from "./style";
 
 const _provider = ProviderFactory.getProvider();
+const noPhoto = require("../../../assets/no-photo.png");
 
 class SideBar extends Component {
   constructor(props) {
@@ -34,13 +35,12 @@ class SideBar extends Component {
 
   async _getUserImage() {
     const { userID } = this.state;
-    let userImage;
     try {
-      userImage = await _provider.getUserImage(
+      const result = await _provider.getUserImage(
         { ID: userID }
       );
-      if (userImage.image) {
-        this.setState({userImage: userImage.image});
+      if (result) {
+        this.setState({userImage: result.image});
       }
     } catch (error) {
       // Other common Error
@@ -98,15 +98,9 @@ class SideBar extends Component {
                   </TouchableOpacity>
                 </View>
                 <View style={styles.columnThumbnail}>
-                {userImage ?
                   <TouchableOpacity style={styles.buttonThumbnail} onPress={() => navigation.navigate("Profile")}>
-                    <Thumbnail style={styles.profilePic} source={{uri: userImage}} />
+                    <Thumbnail style={styles.profilePic} source={(userImage ? {uri: userImage} : noPhoto)} />
                   </TouchableOpacity>
-                :
-                  <TouchableOpacity style={styles.buttonThumbnail} onPress={() => navigation.navigate("Profile")}>
-                    <Thumbnail style={styles.profilePic} source={require("../../../assets/no-photo.png")} />
-                  </TouchableOpacity>
-                }
                 </View>
               </View>
             </View>

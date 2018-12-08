@@ -100,6 +100,8 @@ export default class Utils {
         return I18n.t("connector.available");
       case Constants.CONN_STATUS_CHARGING:
         return I18n.t("connector.charging");
+      case Constants.CONN_STATUS_OCCUPIED:
+        return I18n.t("connector.occupied");
       case Constants.CONN_STATUS_FAULTED:
         return I18n.t("connector.faulted");
       case Constants.CONN_STATUS_RESERVED:
