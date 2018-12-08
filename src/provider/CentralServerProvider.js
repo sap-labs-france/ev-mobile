@@ -38,7 +38,9 @@ export default class  CentralServerProvider {
   }
 
   debug(method) {
-    console.log( new Date().toISOString() + " - " + method);
+    if (DEBUG) {
+      console.log( new Date().toISOString() + " - " + method);
+    }
   }
 
   getLocation(tenant) {
