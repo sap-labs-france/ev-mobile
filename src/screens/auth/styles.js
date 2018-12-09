@@ -87,6 +87,7 @@ export default StyleSheet.create({
     margin: hp("0.8")
   },
   eulaText: {
+    width: wp("80%"),
     color: commonColor.textColor,
     fontSize: hp("2.2%")
   },

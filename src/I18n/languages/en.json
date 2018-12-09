@@ -15,7 +15,7 @@
     "sites": "Sites"
   },
 	"authentication": {
-    "logOut": "LOG OUT",
+    "logOut": "Log Out",
     "mustSelectLocation": "Select a Location",
     "wrongEmailOrPassword": "Wrong email or password",
     "authenticationFailed": "Authentication Failed",
