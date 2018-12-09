@@ -1,4 +1,4 @@
-package com.e_mobility;
+package com.emobility;
 
 import android.app.Application;
 
