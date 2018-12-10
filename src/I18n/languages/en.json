@@ -83,7 +83,7 @@
     "model": "Model",
     "ocppVersion": "OCPP Version",
     "firmwareVersion": "Firmware Version",
-    "time": "Time",
-    "chargeInWatts": "Charge in Watt(s)"
+    "time": "Time (mins)",
+    "chargeInWatts": "Charge (Watt)"
   }
 }

@@ -15,13 +15,13 @@ export default ({
     strokeWidth: 3
   },
   xAxisLabel: {
-    padding: wp("9.3%"),
+    padding: wp("10%"),
     fill: commonColor.textColor,
     fontWeight: "bold",
     fontSize: hp("2.2%")
   },
   yAxisLabel: {
-    padding: hp("11.6%"),
+    padding: hp("10%"),
     fill: commonColor.textColor,
     fontWeight: "bold",
     fontSize: hp("2.2%")
