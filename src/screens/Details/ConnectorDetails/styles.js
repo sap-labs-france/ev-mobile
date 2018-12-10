@@ -47,16 +47,24 @@ export default StyleSheet.create({
     alignSelf: "center"
   },
   labelValue: {
+    fontSize: hp("5%"),
+    fontWeight: "bold",
+    color: commonColor.textColor,
+    alignSelf: "center",
+    marginTop: hp("-1%")
+  },
+  labelTimeValue: {
     fontSize: hp("4%"),
     fontWeight: "bold",
     color: commonColor.textColor,
-    alignSelf: "center"
+    alignSelf: "center",
+    marginTop: hp("-1%")
   },
   subLabel: {
     fontSize: hp("2%"),
     fontWeight: "bold",
     color: commonColor.textColor,
-    marginTop: hp("-0.75%"),
+    marginTop: hp("-1%"),
     alignSelf: "center"
   },
   iconSize: {

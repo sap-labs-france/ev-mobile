@@ -230,11 +230,11 @@ class ConnectorDetails extends Component {
             <View style={styles.rowContainer}>
               <View style={styles.columnContainer}>
                 <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
-                { connector.currentConsumption === 0.0 ?
+                { connector.activeTransactionID === 0 ?
                   <Text style={styles.labelValue}>-</Text>
                 :
                   <View>
-                    <Text style={styles.labelValue}>{(connector.currentConsumption / 1000).toFixed(1)}</Text>
+                    <Text style={styles.labelValue}>{(connector.currentConsumption / 1000) > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0}</Text>
                     <Text style={styles.subLabel}>{I18n.t("details.instant")} (kW)</Text>
                   </View>
                 }
@@ -242,7 +242,7 @@ class ConnectorDetails extends Component {
               <View style={styles.columnContainer}>
                 <Icon type="Ionicons" name="time" style={styles.iconSize} />
                 {transaction && transaction.timestamp ?
-                  <Text style={styles.labelValue}>{`${hours}:${minutes}:${seconds}`}</Text>
+                  <Text style={styles.labelTimeValue}>{`${hours}:${minutes}:${seconds}`}</Text>
                 :
                   <Text style={styles.labelValue}>- : - : -</Text>
                 }
@@ -270,7 +270,6 @@ class ConnectorDetails extends Component {
                 :
                   <View>
                     <Text style={styles.labelValue}>-</Text>
-                    <Text style={styles.subLabel}>(%)</Text>
                   </View>
                 }
               </View>
