@@ -105,7 +105,7 @@ class ChartDetails extends Component {
     const { maxChartValue } = this.state;
     return (
       <Container>
-        <VictoryChart theme={VictoryTheme.material} width={hp("100%")} height={wp("90%")} padding={styles.padding} domain={{y: [0, (maxChartValue)]}}>
+        <VictoryChart theme={VictoryTheme.material} width={hp("100%")} height={wp("90%")} padding={styles.padding} domain={{y: [0, (maxChartValue * 1.1)]}}>
           <VictoryArea
             style={{ data: { fill: "cyan", stroke: "cyan" } }}
             data={this.state.valuesToDisplay}
