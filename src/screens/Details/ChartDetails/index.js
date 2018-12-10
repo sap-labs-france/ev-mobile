@@ -22,7 +22,8 @@ class ChartDetails extends Component {
       charger: this.props.navigation.state.params.charger,
       connector: this.props.navigation.state.params.connector,
       values: null,
-      valuesToDisplay: emptyChart
+      valuesToDisplay: emptyChart,
+      maxChartValue: this.props.navigation.state.params.connector.power
     };
   }
 
@@ -57,7 +58,7 @@ class ChartDetails extends Component {
         // At least 2 values for the chart!!!
         if (result.values && result.values.length > 1) {
           // Convert
-          let firstDate;
+          let firstDate, maxFoundValue = 0;
           const valuesToDisplay = result.values.map((value, index) => { 
             let minutes;
             // Keep the date
@@ -68,12 +69,18 @@ class ChartDetails extends Component {
               // Compute the mins elapsed
               minutes = Math.trunc((new Date(value.date).getTime() - firstDate.getTime()) / (60 * 1000));
             }
+            // Check max
+            if ((value.value < this.state.connector.power) && (value.value > maxFoundValue)) {
+              // Set
+              maxFoundValue = value.value;
+            }
             return {x: minutes, y: value.value} 
           });
           // Set
           this.setState({
             values: result.values,
-            valuesToDisplay : valuesToDisplay
+            valuesToDisplay : valuesToDisplay,
+            maxChartValue: maxFoundValue
           });
         }
       } else {
@@ -84,7 +91,8 @@ class ChartDetails extends Component {
         // Clear
         this.setState({
           values: null,
-          valuesToDisplay: emptyChart
+          valuesToDisplay: emptyChart,
+          maxFoundValue: this.state.connector.power
         });
       }
     } catch (error) {
@@ -94,10 +102,10 @@ class ChartDetails extends Component {
   }
 
   render() {
-    const { dataToDisplay, xCategory, connector } = this.state;
+    const { maxChartValue } = this.state;
     return (
       <Container>
-        <VictoryChart theme={VictoryTheme.material} width={deviceHeight} padding={styles.padding} domain={{y: [0, (connector.power)]}}>
+        <VictoryChart theme={VictoryTheme.material} width={deviceHeight} padding={styles.padding} domain={{y: [0, (maxChartValue)]}}>
           <VictoryArea
             style={{ data: { fill: "cyan", stroke: "cyan" } }}
             data={this.state.valuesToDisplay}

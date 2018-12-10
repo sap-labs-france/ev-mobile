@@ -16,7 +16,7 @@ class ConnectorComponent extends Component {
           {(item.activeTransactionID !== 0) ?
             <View style={styles.rowSpaceBetween}>
               <View style={styles.column}>
-                <Text style={styles.value}>{Math.trunc(item.currentConsumption / 1000) === 0 ? (item.currentConsumption > 0 ? (item.currentConsumption / 1000).toFixed(1) : 0) : Math.trunc(item.currentConsumption / 1000)}</Text>
+                <Text style={styles.value}>{(item.currentConsumption / 1000) < 10 ? (item.currentConsumption > 0 ? (item.currentConsumption / 1000).toFixed(1) : 0) : Math.trunc(item.currentConsumption / 1000)}</Text>
                 <Text style={styles.label} numberOfLines={1}>{I18n.t("details.instant")}</Text>
                 <Text style={styles.subLabel} numberOfLines={1}>(kW)</Text>
               </View>
