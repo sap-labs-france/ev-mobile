@@ -216,11 +216,11 @@ class ConnectorDetails extends Component {
                 <Text style={styles.label}>{Utils.translateConnectorStatus(connector.status)}</Text>
               </View>
               <View style={styles.columnContainer}>
-                <Thumbnail style={styles.profilePicture} source={userImage ? {uri: userImage} : noPhoto} />
+                <Thumbnail style={styles.userPicture} source={userImage ? {uri: userImage} : noPhoto} />
                 {transaction ?
                   <View>
                     <Text style={styles.labelUser}>{Utils.buildUserName(transaction.user)}</Text>
-                    <Text style={styles.subLabel}>({transaction.tagID})</Text>
+                    <Text style={styles.subLabelUser}>({transaction.tagID})</Text>
                   </View>
                 :
                   <Text style={styles.label}>-</Text>

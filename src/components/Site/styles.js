@@ -67,7 +67,7 @@ export default StyleSheet.create({
   badgeText: {
     fontSize: hp("5%"),
     fontWeight: "bold",
-    marginTop: hp("-0.15%"),
+    // marginTop: hp("-0.15%"), // iOS
     padding: hp("2.5%"),
     color: commonColor.textColor,
   }

@@ -9,7 +9,8 @@ export default StyleSheet.create({
     color: commonColor.textColor,
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: hp("4.75%")
+    fontSize: hp("4.75%"),
+    marginTop: hp("0.5%") // iOS
   },
   statusGreen: {
     backgroundColor: commonColor.brandSuccess,

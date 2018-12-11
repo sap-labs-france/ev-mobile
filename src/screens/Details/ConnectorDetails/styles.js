@@ -51,7 +51,7 @@ export default StyleSheet.create({
     fontWeight: "bold",
     color: commonColor.textColor,
     alignSelf: "center",
-    marginTop: hp("-1%")
+    // marginTop: hp("1%") // iOS
   },
   labelTimeValue: {
     fontSize: hp("4%"),
@@ -93,12 +93,19 @@ export default StyleSheet.create({
     color: commonColor.textColor,
     alignSelf: "center"
   },
-  profilePicture: {
+  subLabelUser: {
+    fontSize: hp("2%"),
+    fontWeight: "bold",
+    color: commonColor.textColor,
+    // marginTop: hp("-1%"), // iOS
+    alignSelf: "center"
+  },
+  userPicture: {
     height: wp("15%"),
     width: wp("15%"),
     alignSelf: "center",
     marginTop: hp("1%"),
-    borderRadius: 50,
+    borderRadius: 30, // iOS
     borderWidth: 2,
     borderColor: commonColor.textColor
   }
