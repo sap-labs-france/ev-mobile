@@ -65,10 +65,20 @@ export default StyleSheet.create({
     width: wp("10.6%"),
     borderRadius: Platform.OS === "android" ? 40 : 20
   },
+  versionText: {
+    color: commonColor.textColor,
+    marginTop: hp("0.5%"),
+    alignSelf: "center"
+  },
+  versionDate: {
+    color: commonColor.textColor,
+    marginTop: hp("0%"),
+    alignSelf: "center"
+  },
   logoContainer: {
     borderColor: commonColor.textColor,
     borderBottomWidth: 1,
-    paddingBottom: hp("4.5%")
+    paddingBottom: hp("2%")
   },
   logo: {
     flex: 1,

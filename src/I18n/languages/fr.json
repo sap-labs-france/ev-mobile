@@ -9,7 +9,9 @@
     "required": "Le champ est obligatoire",
     "ok": "Ok",
     "yes": "Oui",
-    "no": "Non"
+    "no": "Non",
+    "version": "Version 0.31",
+    "date": "(11 Décembre)"
   },
   "sidebar": {
     "sites": "Sites"

@@ -74,6 +74,8 @@ class SideBar extends Component {
           <Content style={styles.drawerContent}>
             <View style={styles.logoContainer}>
               <Image source={require("../../../assets/logo-low.gif")} style={styles.logo} />
+              <Text style={styles.versionText}>{I18n.t("general.version")}</Text>
+              <Text style={styles.versionDate}>{I18n.t("general.date")}</Text>
             </View>
             <ListItem style={styles.links} button iconLeft onPress={() => this._navigateTo("Sites")}>
               <Icon name="ios-grid-outline" />
