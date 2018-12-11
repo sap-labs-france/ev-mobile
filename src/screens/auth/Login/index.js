@@ -251,7 +251,7 @@ class Login extends React.Component {
                 {this.state.errorPassword && this.state.errorPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
                 <ListItem style={styles.listItemEulaCheckbox}>
-                  <CheckBox checked={eula} onPress={() => this.setState({eula: !eula})} />
+                  <CheckBox style={styles.eulaCheckbox} checked={eula} onPress={() => this.setState({eula: !eula})} />
                   <Body>
                     <Text style={styles.eulaText}>{I18n.t("authentication.acceptEula")}
                       <Text onPress={()=> navigation.navigate("Eula")} style={styles.eulaLink}>{I18n.t("authentication.eula")}</Text>

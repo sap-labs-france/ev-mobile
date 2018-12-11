@@ -63,10 +63,10 @@ export default StyleSheet.create({
   },
   textActionsheet: {
     color: commonColor.textColor,
-    fontSize: hp("2.2%")
+    fontSize: hp("2.75%")
   },
   formErrorText: {
-    fontSize: hp("2.2%"),
+    fontSize: hp("2.75%"),
     color: commonColor.brandDanger,
     textAlign: "right",
     top: -hp("1.5%")
@@ -87,7 +87,7 @@ export default StyleSheet.create({
     margin: hp("0.8")
   },
   eulaText: {
-    width: wp("80%"),
+    // width: wp("80%"),
     color: commonColor.textColor,
     fontSize: hp("2.2%")
   },
@@ -114,7 +114,7 @@ export default StyleSheet.create({
     fontWeight: "bold",
     color: commonColor.textColor,
     fontSize: hp("2.2%"),
-    height: hp("2.6%")
+    height: hp("3%")
   },
   inputGroup: {
     flexDirection: "row",
@@ -126,9 +126,8 @@ export default StyleSheet.create({
   },
   input: {
     color: commonColor.textColor,
-    fontSize: hp("2.2%"),
-    padding: hp("0%"),
-    height: hp("5%")
+    fontSize: hp("2.75%"),
+    height: hp("4.5%")
   },
   icon: {
     width: wp("13.5%"),
@@ -138,7 +137,7 @@ export default StyleSheet.create({
   otherLinkText: {
     alignSelf: "center",
     opacity: 0.8,
-    fontSize: hp("2.2%"),
+    fontSize: hp("2.75%"),
     fontWeight: "bold",
     color: commonColor.textColor
   }
