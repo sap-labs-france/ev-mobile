@@ -128,7 +128,9 @@ export default StyleSheet.create({
   input: {
     color: commonColor.textColor,
     fontSize: hp("2.75%"),
-    height: hp("4.5%")
+    height: hp("4.5%"),
+    paddingTop: Platform.OS === "android" ? hp("-2%") : null,
+    marginTop: Platform.OS === "android" ? hp("2.5%") : null
   },
   icon: {
     width: wp("13.5%"),

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import commonColor from "../../theme/variables/commonColor";
 
@@ -10,7 +10,7 @@ export default StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     fontSize: hp("4.75%"),
-    marginTop: hp("0.5%") // iOS
+    marginTop: Platform.OS === "ios" ? hp("0.5%") : hp("0%")
   },
   statusGreen: {
     backgroundColor: commonColor.brandSuccess,

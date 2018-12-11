@@ -11,6 +11,7 @@ export default StyleSheet.create({
     borderBottomColor: "transparent"
   },
   linkText: {
+    color: commonColor.textColor,
     paddingLeft: wp("4%")
   },
   logoutContainer: {

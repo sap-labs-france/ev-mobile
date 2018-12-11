@@ -264,7 +264,7 @@ class ConnectorDetails extends Component {
                 <Icon type="Feather" name="battery-charging" style={styles.iconSize} />
                 { connector.currentStateOfCharge ?
                   <View>
-                    <Text style={styles.labelValue}>{connector.currentStateOfCharge} %</Text>
+                    <Text style={styles.labelValue}>{connector.currentStateOfCharge}</Text>
                     <Text style={styles.subLabel}>(%)</Text>
                   </View>
                 :
