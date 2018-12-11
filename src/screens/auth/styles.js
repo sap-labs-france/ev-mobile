@@ -66,9 +66,10 @@ export default StyleSheet.create({
     fontSize: hp("2.75%")
   },
   formErrorText: {
-    fontSize: hp("2.75%"),
+    fontSize: hp("2.2%"),
     color: commonColor.brandDanger,
-    textAlign: "right",
+    textAlign: "left",
+    width: wp("100%"),
     top: -hp("1.5%")
   },
   button: {
