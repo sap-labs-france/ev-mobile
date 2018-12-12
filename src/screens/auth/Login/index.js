@@ -62,6 +62,7 @@ class Login extends React.Component {
 
   async componentDidMount() {
     Orientation.unlockAllOrientations();
+    Orientation.lockToPortrait();
     // Check if user is authenticated
     if (await _provider.isUserAuthenticated()) {
       // Navigate
