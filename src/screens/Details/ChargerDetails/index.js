@@ -12,8 +12,7 @@ class ChargerDetails extends Component {
     super(props);
     this.state = {
       charger: this.props.navigation.state.params.charger,
-      connector: this.props.navigation.state.params.connector,
-      alpha: this.props.navigation.state.params.alpha
+      connector: this.props.navigation.state.params.connector
     };
   }
 
@@ -27,22 +26,22 @@ class ChargerDetails extends Component {
           <View style={styles.content}>
             <View style={styles.rowContainer}>
                 <View style={styles.columnContainer}>
-                  <Text style={styles.titleHeader}>{I18n.t("details.vendor")}</Text>
-                  <Text style={styles.infoContent}>{charger.chargePointVendor ? charger.chargePointVendor : "-"}</Text>
+                  <Text style={styles.label}>{I18n.t("details.vendor")}</Text>
+                  <Text style={styles.value}>{charger.chargePointVendor ? charger.chargePointVendor : "-"}</Text>
                 </View>
                 <View style={styles.columnContainer}>
-                  <Text style={styles.titleHeader}>{I18n.t("details.model")}</Text>
-                  <Text style={styles.infoContent}>{charger.chargePointModel ? charger.chargePointModel : "-"}</Text>
+                  <Text style={styles.label}>{I18n.t("details.model")}</Text>
+                  <Text style={styles.value}>{charger.chargePointModel ? charger.chargePointModel : "-"}</Text>
                 </View>
             </View>
             <View style={styles.rowContainer}>
                 <View style={styles.columnContainer}>
-                  <Text style={styles.titleHeader}>{I18n.t("details.ocppVersion")}</Text>
-                  <Text style={styles.infoContent}>{charger.ocppVersion ? charger.ocppVersion : "-"}</Text>
+                  <Text style={styles.label}>{I18n.t("details.ocppVersion")}</Text>
+                  <Text style={styles.value}>{charger.ocppVersion ? charger.ocppVersion : "-"}</Text>
                 </View>
                 <View style={styles.columnContainer}>
-                  <Text style={styles.titleHeader}>{I18n.t("details.firmwareVersion")}</Text>
-                  <Text style={styles.infoContent}>{charger.firmwareVersion ? charger.firmwareVersion : "-"}</Text>
+                  <Text style={styles.label}>{I18n.t("details.firmwareVersion")}</Text>
+                  <Text style={styles.value}>{charger.firmwareVersion ? charger.firmwareVersion : "-"}</Text>
                 </View>
             </View>
           </View>

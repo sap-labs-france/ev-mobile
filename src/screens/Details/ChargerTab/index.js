@@ -17,38 +17,14 @@ class ChargerTabs extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isAdmin: false
+      isAdmin: _provider.getSecurityProvider().isAdmin()
     };
   }
 
-  async componentDidMount() {
-    // Set Admin
-    await this._setIsAdmin();
-  }
-
-  componentDidUpdate() {
-    this.isGraphTabActive();
+  componentDidMount() {
   }
 
   componentWillUnmount() {
-    Orientation.lockToPortrait();
-  }
-
-  _setIsAdmin = async () => {
-    let result = await _provider.getSecurityProvider().isAdmin();
-    this.setState({
-     isAdmin: result
-    });
- }
-
-  isGraphTabActive = () => {
-    if (this.props.navigationState.index === 2) {
-      Orientation.unlockAllOrientations();
-      Orientation.lockToLandscape();
-    } else {
-      Orientation.unlockAllOrientations();
-      Orientation.lockToPortrait();
-    }
   }
 
   render() {
@@ -61,13 +37,11 @@ class ChargerTabs extends Component {
             <Icon type="Feather" name="zap"/>
             <Text>{I18n.t("details.connector")}</Text>
           </Button>
-          { this.state.isAdmin && (
-            <Button vertical active={state.index === 1} onPress={()=>navigation.navigate("ChargerDetails")}>
-              <Icon type="MaterialIcons" name="info" />
-              <Text>{I18n.t("details.informations")}</Text>
-            </Button>
-          )}
-          <Button vertical active={this.state.isAdmin ? state.index === 2 : state.index === 1} onPress={()=>navigation.navigate("ChartDetails")}>
+          <Button vertical active={state.index === 1} onPress={()=>navigation.navigate("ChargerDetails")}>
+            <Icon type="MaterialIcons" name="info" />
+            <Text>{I18n.t("details.informations")}</Text>
+          </Button>
+          <Button vertical active={state.index === 2} onPress={()=>navigation.navigate("ChartDetails")}>
             <Icon type="MaterialIcons" name="timeline" />
             <Text>{I18n.t("details.graph")}</Text>
           </Button>
@@ -84,10 +58,10 @@ const ChargerNavigation = TabNavigator(
     ChartDetails: { screen: ChartDetails }
   },
   {
-    tabBarPosition: "bottom",
-    swipeEnabled: false,
     initialRouteName: "ConnectorDetails",
-    animationEnabled: false,
+    tabBarPosition: "bottom",
+    swipeEnabled: true,
+    animationEnabled: true,
     tabBarComponent: props => {
       return (
         <ChargerTabs {...props} />

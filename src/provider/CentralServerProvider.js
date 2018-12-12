@@ -35,7 +35,7 @@ export default class  CentralServerProvider {
         _decodedToken = jwtDecode(_token);
         _securityProvider = new SecurityProvider(_decodedToken);
       }
-        // Ok
+      // Ok
       _initialized = true;
     }
   }
@@ -357,6 +357,7 @@ export default class  CentralServerProvider {
   }
 
   getSecurityProvider() {
+    // Return
     return _securityProvider;
   }
 

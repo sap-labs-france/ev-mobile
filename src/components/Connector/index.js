@@ -49,7 +49,7 @@ class ConnectorComponent extends Component {
     const { index, item, nav, charger, siteID } = this.props;
     const even = (index % 2 === 0);
     return (
-      <TouchableOpacity onPress={()=>nav.navigate("Charger", {charger, index, siteID: siteID, connector: item})}>
+      <TouchableOpacity onPress={()=>nav.navigate("Charger", {charger, index, siteID, connector: item})}>
         <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1}>
           <View style={even ? styles.leftConnectorContainer : styles.rightConnectorContainer}>
             <Text style={styles.statusDescription} numberOfLines={1}>

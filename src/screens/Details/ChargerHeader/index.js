@@ -17,24 +17,15 @@ export class ChargerHeader extends Component {
     this.state = {
       siteID: this.props.navigation.state.params.siteID,
       siteImage: "",
-      isAdmin: false,
+      isAdmin: _provider.getSecurityProvider().isAdmin(),
       loadingTransaction: false
     };
     // Get the Site Image
     this._getSiteImage();    
   }
 
-  async componentDidMount() {
-    // Init
-    await this._setIsAdmin();
+  componentDidMount() {
   }
-
-  _setIsAdmin = async () => {
-    const isAdmin = await _provider.getSecurityProvider().isAdmin();
-    this.setState({
-      isAdmin
-    });
- }
 
   onStartTransaction = () => {
     const { charger } = this.props;

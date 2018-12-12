@@ -96,8 +96,11 @@ class ChartDetails extends Component {
         });
       }
     } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
+      // Check if HTTP?
+      if (!error.request || error.request.status !== 560) {
+        // Other common Error
+        Utils.handleHttpUnexpectedError(error, this.props);
+      }
     }
   }
 
@@ -105,7 +108,7 @@ class ChartDetails extends Component {
     const { maxChartValue } = this.state;
     return (
       <Container>
-        <VictoryChart theme={VictoryTheme.material} width={hp("100%")} height={wp("90%")} padding={styles.padding} domain={{y: [0, (maxChartValue * 1.1)]}}>
+        <VictoryChart theme={VictoryTheme.material} width={wp("100%")} height={hp("90%")} padding={styles.padding} domain={{y: [0, (maxChartValue * 1.1)]}}>
           <VictoryArea
             style={{ data: { fill: "cyan", stroke: "cyan" } }}
             data={this.state.valuesToDisplay}

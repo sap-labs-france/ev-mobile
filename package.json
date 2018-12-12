@@ -46,6 +46,7 @@
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "native-base": "^2.8.1",
+    "node-authorization": "^1.0.6",
     "npm": "^6.4.1",
     "react": "^16.5.2",
     "react-native": "^0.57.1",

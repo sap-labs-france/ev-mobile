@@ -27,20 +27,15 @@ class ConnectorDetails extends Component {
       seconds: "00",
       minutes: "00",
       hours: "00",
-      price: 0,
       userImage: null,
       refreshing: false,
-      isAdmin: false
+      isAdmin: _provider.getSecurityProvider().isAdmin()
     };
   }
 
   async componentDidMount() {
     // Get Current Transaction
     await this._getTransaction();
-    // Get the Price
-    await this._getPrice();
-    // Set Admin
-    await this._setIsAdmin()
     // Init
     this._refreshElapsedTime();
     // Refresh Charger Data
@@ -59,21 +54,12 @@ class ConnectorDetails extends Component {
     }
   }
 
-  _setIsAdmin = async () => {
-    // Set Admin
-    const isAdmin = await _provider.getSecurityProvider().isAdmin();
-    this.setState({
-      isAdmin
-    });
-  }
-
   _getCharger = async () => {
     try {
       let charger = await _provider.getCharger(
         { ID: this.state.charger.id }
       );
       this.setState({
-        refreshing: false,
         charger: charger,
         connector: charger.connectors[this.state.connector.connectorId - 1]
       });
@@ -118,8 +104,11 @@ class ConnectorDetails extends Component {
         });
       }
     } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
+      // Check if HTTP?
+      if (!error.request || error.request.status !== 560) {
+        // Other common Error
+        Utils.handleHttpUnexpectedError(error, this.props);
+      }
     }
   }
 
@@ -132,18 +121,6 @@ class ConnectorDetails extends Component {
         // Set
         this.setState({userImage: userImage.image});
       }
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
-    }
-  }
-
-  _getPrice = async () => {
-    try {
-      let price = await _provider.getPrice();
-      this.setState({
-        price: price
-      });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -193,21 +170,24 @@ class ConnectorDetails extends Component {
     await this._getTransaction();
   }
 
-  _onRefresh = () => {
+  _refresh = () => {
+    // Show spinner
     this.setState({refreshing: true}, async () => {
       // Refresh
       await this._refreshChargerData();
+      // Hide spinner
+      this.setState({refreshing: false});
     });
   }
 
   render() {
     const navigation = this.props.navigation;
-    const { charger, connector, refreshing, userImage, transaction, hours, minutes, seconds, price } = this.state;
+    const { charger, connector, refreshing, userImage, transaction, hours, minutes, seconds } = this.state;
     return (
       <Container>
         <ChargerHeader charger={charger} connector={connector} navigation={navigation} />
         <ScrollView style={styles.scrollViewContainer} refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={this._onRefresh} />
+          <RefreshControl refreshing={refreshing} onRefresh={this._refresh} />
         }>
           <Animatable.View style={styles.content} animation="fadeIn" delay={100}>
             <View style={styles.rowContainer}>

@@ -1,8 +1,8 @@
 {
   "general": {
     "cannotConnectBackend": "Connection Lost",
-    "unexpectedErrorBackend": "Unexpected Error",
-    "unexpectedError": "Unexpected Error",
+    "unexpectedErrorBackend": "Backend Request Error",
+    "unexpectedError": "Application Error",
     "sessionExpired": "Session expired",
     "numbers": "Enter a valid number",
     "email": "Enter a valid email address",

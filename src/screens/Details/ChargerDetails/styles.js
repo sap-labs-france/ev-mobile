@@ -22,7 +22,7 @@ export default StyleSheet.create({
     alignItems: "center",
     width: wp("50%")
   },
-  titleHeader: {
+  label: {
     fontSize: hp("3%"),
     fontWeight: "bold",
     paddingTop: hp("1.5%"),
@@ -30,7 +30,7 @@ export default StyleSheet.create({
     color: commonColor.textColor,
     alignSelf: "center"
   },
-  infoContent: {
+  value: {
     color: commonColor.textColor,
     fontSize: hp("2.5%")
   }
