@@ -57,17 +57,13 @@ class ConnectorComponent extends Component {
             </Text>
             {even ?
               <View style={styles.leftStatusConnectorContainer}>
-                <View style={styles.statusConnectorLetter}>
-                  <ConnectorStatusComponent connector={item}/>
-                </View>
+                <ConnectorStatusComponent style={styles.statusConnectorLetter} connector={item}/>
                 {this._renderConnectorDetails(item)}
               </View>
             :
               <View style={styles.rightStatusConnectorContainer}>
                 {this._renderConnectorDetails(item)}
-                <View style={styles.statusConnectorLetter}>
-                  <ConnectorStatusComponent connector={item}/>
-                </View>
+                <ConnectorStatusComponent style={styles.statusConnectorLetter} connector={item}/>
               </View>
             }
           </View>

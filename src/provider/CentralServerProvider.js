@@ -1,5 +1,6 @@
 import axios from "axios";
 import Constants from "../utils/Constants";
+import SecurityProvider from "../security/SecurityProvider";
 import SInfo from "react-native-sensitive-info";
 const jwtDecode = require("jwt-decode");
 
@@ -18,6 +19,7 @@ let _initialized;
 let _email;
 let _password;
 let _tenant;
+let _securityProvider;
 export default class  CentralServerProvider {
   async initialize() {
     // Only once
@@ -31,8 +33,9 @@ export default class  CentralServerProvider {
       if (_token) {
         // Decode the token
         _decodedToken = jwtDecode(_token);
+        _securityProvider = new SecurityProvider(_decodedToken);
       }
-      // Ok
+        // Ok
       _initialized = true;
     }
   }
@@ -353,11 +356,8 @@ export default class  CentralServerProvider {
     return result.data;
   }
 
-  async _isAdmin() {
-    // Init?
-    await this.initialize();
-    // Check
-    return (_decodedToken.role === Constants.ROLE_ADMIN);
+  getSecurityProvider() {
+    return _securityProvider;
   }
 
   _buildPaging(paging, queryString) {

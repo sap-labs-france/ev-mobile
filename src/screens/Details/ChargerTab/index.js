@@ -35,7 +35,7 @@ class ChargerTabs extends Component {
   }
 
   _setIsAdmin = async () => {
-    let result = await _provider._isAdmin();
+    let result = await _provider.getSecurityProvider().isAdmin();
     this.setState({
      isAdmin: result
     });

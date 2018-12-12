@@ -30,7 +30,7 @@ export class ChargerHeader extends Component {
   }
 
   _setIsAdmin = async () => {
-    const isAdmin = await _provider._isAdmin();
+    const isAdmin = await _provider.getSecurityProvider().isAdmin();
     this.setState({
       isAdmin
     });

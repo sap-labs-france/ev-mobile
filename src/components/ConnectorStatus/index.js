@@ -40,12 +40,14 @@ class ConnectorStatusComponent extends Component {
     const { connector } = this.props;
     const connectorLetter = String.fromCharCode(64 + connector.connectorId);
     return (
-      <View style={styles.connectorStatus}>
-        <Animatable.View animation={this._getStatusAnimation(connector)} iterationCount={"infinite"} direction="alternate-reverse">
-          <View style={this._getStyleFromStatus(connector)}>
-            <TextRN style={styles.statusLetter}>{connectorLetter}</TextRN>
-          </View>
-        </Animatable.View>
+      <View style={this.props.style}>
+        <View style={styles.connectorStatus}>
+          <Animatable.View animation={this._getStatusAnimation(connector)} iterationCount={"infinite"} direction="alternate-reverse">
+            <View style={this._getStyleFromStatus(connector)}>
+              <TextRN style={styles.statusLetter}>{connectorLetter}</TextRN>
+            </View>
+          </Animatable.View>
+        </View>
       </View>
     );
   }
