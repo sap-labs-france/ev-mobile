@@ -29,22 +29,33 @@ class ConnectorDetails extends Component {
       hours: "00",
       userImage: null,
       refreshing: false,
-      isAdmin: _provider.getSecurityProvider().isAdmin()
+      isAdmin: false
     };
   }
 
   async componentDidMount() {
+    // Set
+    this.mounted = true;
+    // Set if Admin
+    const isAdmin = (await _provider.getSecurityProvider()).isAdmin();
+    this.setState({isAdmin});
     // Get Current Transaction
     await this._getTransaction();
     // Init
     this._refreshElapsedTime();
     // Refresh Charger Data
     this.timerChargerData = setInterval(() => {
-      this._refreshChargerData();
+      // Component Mounted?
+      if (this.mounted) {
+        // Refresh
+        this._refreshChargerData();
+      }
     }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
   }
 
   async componentWillUnmount() {
+    // Clear
+    this.mounted = false;
     // Clear interval if it exists
     if (this.timerChargerData) {
       clearInterval(this.timerChargerData);
@@ -88,7 +99,11 @@ class ConnectorDetails extends Component {
             this._getUserImage(transaction.user);
             // Start
             this.timerElapsedTime = setInterval(() => {
-              this._refreshElapsedTime();
+              // Component Mounted?
+              if (this.mounted) {
+                // Refresh
+                this._refreshElapsedTime();
+              }
             }, 1000);
           }
         } else {

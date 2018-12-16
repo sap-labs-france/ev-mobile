@@ -356,7 +356,9 @@ export default class  CentralServerProvider {
     return result.data;
   }
 
-  getSecurityProvider() {
+  async getSecurityProvider() {
+    // Init ?
+    await this.initialize();
     // Return
     return _securityProvider;
   }

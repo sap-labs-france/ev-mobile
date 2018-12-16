@@ -23,6 +23,8 @@ class Sites extends Component {
   }
 
   async componentDidMount() {
+    // Set
+    this.mounted = true;
     // Get the sites
     const sites = await this.getSites(this.state.skip, this.state.limit);
     // Add sites
@@ -33,14 +35,20 @@ class Sites extends Component {
     });
     // Refresh every minutes
     this.refreshTimer = setInterval(() => {
-      this._refresh();
+      // Component Mounted?
+      if (this.mounted) {
+        // Refresh
+        this._refresh();
+      }
     }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
     // Add listeners
-    this.props.navigation.addListener('didFocus', this.componentDidFocus);
-    this.props.navigation.addListener('didBlur', this.componentDidBlur);
+    this.props.navigation.addListener("didFocus", this.componentDidFocus);
+    this.props.navigation.addListener("didBlur", this.componentDidBlur);
   }
 
   componentWillUnmount() {
+    // Clear
+    this.mounted = false;
     // Stop the timer
     if (this.refreshTimer) {
       clearInterval(this.refreshTimer);
@@ -54,7 +62,11 @@ class Sites extends Component {
     if (!this.refreshTimer) {
       // Refresh every minutes
       this.refreshTimer = setInterval(() => {
-        this._refresh();
+        // Component Mounted?
+        if (this.mounted) {
+          // Refresh
+          this._refresh();
+        }
       }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
     }
   }

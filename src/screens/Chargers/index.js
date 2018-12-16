@@ -26,11 +26,13 @@ class Chargers extends Component {
   }
 
   async componentDidMount() {
+    // Set
+    this.mounted = true;
     // Get chargers first time
     const chargers = await this._getChargers(this.state.skip, this.state.limit, this.state.site.id);
     // Add listeners
-    this.props.navigation.addListener('didFocus', this.componentDidFocus);
-    this.props.navigation.addListener('didBlur', this.componentDidBlur);
+    this.props.navigation.addListener("didFocus", this.componentDidFocus);
+    this.props.navigation.addListener("didBlur", this.componentDidBlur);
     // Add chargers
     this.setState((prevState, props) => ({
       chargers: chargers.result,
@@ -39,7 +41,11 @@ class Chargers extends Component {
     }));
     // Refresh every minutes
     this.refreshTimer = setInterval(() => {
-      this._refresh();
+      // Component Mounted?
+      if (this.mounted) {
+        // Refresh
+        this._refresh();
+      }
     }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
   }
 
@@ -50,7 +56,11 @@ class Chargers extends Component {
     if (!this.refreshTimer) {
       // Refresh every minutes
       this.refreshTimer = setInterval(() => {
-        this._refresh();
+        // Component Mounted?
+        if (this.mounted) {
+          // Refresh
+          this._refresh();
+        }
       }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
     }
   }
@@ -64,6 +74,8 @@ class Chargers extends Component {
   }
 
   componentWillUnmount() {
+    // Clear
+    this.mounted = false;
     // Stop the timer
     if (this.refreshTimer) {
       clearInterval(this.refreshTimer);

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Dimensions } from "react-native";
 import { Container } from "native-base";
-
+import Orientation from "react-native-orientation";
 import { VictoryChart, VictoryTheme, VictoryArea, VictoryAxis } from "victory-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
@@ -15,7 +14,6 @@ const _provider = ProviderFactory.getProvider();
 const emptyChart = [{x:0, y:0}, {x:1, y:0}];
 
 class ChartDetails extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -28,11 +26,46 @@ class ChartDetails extends Component {
   }
 
   async componentDidMount() {
+    // Set
+    this.mounted = true;
+    // // Add listeners
+    // this.props.navigation.addListener("didFocus", this.componentDidFocus);
+    // this.props.navigation.addListener("didBlur", this.componentDidBlur);
     // Get the consumption
-    await this.getChargingStationConsumption();
+    this.getChargingStationConsumption();
   }
 
+  // _orientationDidChange = (orientation) => {
+  //   // Set Chart width
+  //   console.log("Orientation: " + orientation);
+  //   // Portrait?
+  //   if (orientation === "PORTRAIT") {
+  //     // Set Chart width
+  //     console.log("Portrait");
+  //   } else {
+  //     // Set Chart width
+  //     console.log("Landscape");
+  //   }
+  // }
+
+  // componentDidFocus = () => {
+  //   console.log("componentDidFocus");
+  //   Orientation.unlockAllOrientations();
+  //   // Listen to orientation changes
+  //   Orientation.addOrientationListener(this._orientationDidChange);    
+  // }
+
+  // componentDidBlur = () => {
+  //   console.log("componentDidBlur");
+  //   // Remove
+  //   Orientation.removeOrientationListener(this._orientationDidChange);
+  //   // Lock
+  //   Orientation.lockToPortrait();
+  // }
+
   async componentWillUnmount() {
+    // Clear
+    this.mounted = false;
     // Clear interval if it exists
     if (this.timerChartData) {
       clearInterval(this.timerChartData);
@@ -47,8 +80,11 @@ class ChartDetails extends Component {
         if (!this.timerChartData) {
           // Start refreshing Charger Data
           this.timerChartData = setInterval(() => {
-            // Refresh Consumption
-            this.getChargingStationConsumption();
+            // Component Mounted?
+            if (this.mounted) {
+              // Refresh Consumption
+              this.getChargingStationConsumption();
+            }
           }, Constants.AUTO_REFRESH_CHART_PERIOD_MILLIS);
         }
         // Get the consumption
@@ -108,7 +144,7 @@ class ChartDetails extends Component {
     const { maxChartValue } = this.state;
     return (
       <Container>
-        <VictoryChart theme={VictoryTheme.material} width={wp("100%")} height={hp("90%")} padding={styles.padding} domain={{y: [0, (maxChartValue * 1.1)]}}>
+        <VictoryChart theme={VictoryTheme.material} width={wp("100%")} height={hp("100%")} padding={styles.padding} domain={{y: [0, (maxChartValue * 1.1)]}}>
           <VictoryArea
             style={{ data: { fill: "cyan", stroke: "cyan" } }}
             data={this.state.valuesToDisplay}

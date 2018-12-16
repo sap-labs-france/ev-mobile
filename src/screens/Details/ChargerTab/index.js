@@ -17,11 +17,14 @@ class ChargerTabs extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isAdmin: _provider.getSecurityProvider().isAdmin()
+      isAdmin: false
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    // Set if Admin
+    const isAdmin = (await _provider.getSecurityProvider()).isAdmin();
+    this.setState({isAdmin});
   }
 
   componentWillUnmount() {
