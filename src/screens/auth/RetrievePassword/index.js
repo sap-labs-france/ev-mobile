@@ -121,7 +121,7 @@ class RetrievePassword extends React.Component {
           </Content>
           <Footer>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Text style={styles.helpBtns}>{I18n.t("authentication.backLogin")}</Text>
+              <Text style={styles.helpButton}>{I18n.t("authentication.backLogin")}</Text>
             </Button>
           </Footer>
         </ImageBackground>

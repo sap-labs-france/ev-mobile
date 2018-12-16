@@ -240,7 +240,7 @@ class SignUp extends React.Component {
                   </Item>
                   {this.state.errorRepeatPassword && this.state.errorRepeatPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
-                  <ListItem style={styles.listItemEulaCheckbox}>
+                  <ListItem style={styles.eulaContainer}>
                     <CheckBox checked={eula}
                       onPress={() => this.setState({eula: !eula})} />
                     <Body>
@@ -266,7 +266,7 @@ class SignUp extends React.Component {
             </Content>
             <Footer>
               <Button small transparent onPress={() => this.props.navigation.goBack()}>
-                <Text style={styles.helpBtns}>{I18n.t("authentication.haveAlreadyAccount")}</Text>
+                <Text style={styles.helpButton}>{I18n.t("authentication.haveAlreadyAccount")}</Text>
               </Button>
             </Footer>
           </ScrollView>

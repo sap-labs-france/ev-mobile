@@ -31,75 +31,58 @@ export default StyleSheet.create({
     alignSelf: "center",
     flexGrow: 1
   },
-  helpBtns: {
-    opacity: 0.9,
-    fontWeight: "bold",
-    color: commonColor.textColor,
-  },
   container: {
     flex: 1,
     flexDirection: "row",
     alignSelf: "center",
-    marginTop: -hp("9%")
+    marginTop: hp("-9%")
   },
   logo: {
     resizeMode: "contain",
-    height: hp("16.7%"),
+    height: hp("15%"),
     alignSelf: "center"
   },
   form: {
     flex: 1,
-    paddingLeft: wp("5.3%"),
-    paddingRight: wp("5.3%")
+    paddingLeft: wp("5%"),
+    paddingRight: wp("5%")
   },
-  buttonActionsheet: {
+  buttonLocation: {
     alignSelf: "center",
     justifyContent: "center",
-    borderRadius: 50,
-    width: wp("70%"),
-    height: hp("7%"),
     marginBottom: hp("2.25%"),
     backgroundColor: "rgba(255,255,255,0.30)"
   },
-  textActionsheet: {
-    color: commonColor.textColor,
-    fontSize: hp("2.75%")
+  textLocation: {
+    color: commonColor.textColor
+  },
+  inputGroup: {
+    backgroundColor: "rgba(255,255,255,0.3)",
+    marginBottom: hp("2%"),
+    borderWidth: 0,
+    borderColor: "transparent"
+  },
+  icon: {
+  },
+  input: {
   },
   formErrorText: {
-    fontSize: hp("2.2%"),
     color: commonColor.brandDanger,
     textAlign: "left",
-    width: wp("100%"),
     top: -hp("1.5%")
   },
-  button: {
-    marginTop: hp("1.5%"),
-    height: hp("7.4%"),
-  },
-  buttonText: {
-    fontSize: hp("2.5%"),
-    textAlign: "center",
-    fontWeight: "900"
-  },
-  listItemEulaCheckbox : {
+  eulaContainer : {
     borderBottomWidth: 0,
     paddingTop: 0,
     paddingBottom: hp("0.8%"),
     margin: hp("0.8")
   },
   eulaText: {
-    // width: wp("80%"),
     color: commonColor.textColor,
-    fontSize: hp("2.2%")
   },
   eulaLink: {
     color: commonColor.textColor,
-    fontSize: hp("2.2%"),
     textDecorationLine: "underline",
-  },
-  linksContainer: {
-    paddingTop: deviceHeight < 600 ? 5 : Platform.OS === "android" ? 10 : 15,
-    flexDirection: "row"
   },
   linksButtonLeft: {
     alignSelf: "flex-start"
@@ -107,41 +90,18 @@ export default StyleSheet.create({
   linksButtonRight: {
     alignSelf: "flex-end"
   },
-  linksButtonCenter: {
-    alignSelf: "center"
+  button: {
+    marginTop: hp("1.5%"),
+    backgroundColor: "rgba(255,255,255,0.3)"
+  },
+  buttonText: {
+    textAlign: "center",
+    fontWeight: "900"
   },
   helpButton: {
     opacity: 0.9,
     fontWeight: "bold",
     color: commonColor.textColor,
-    fontSize: hp("2.2%"),
     height: hp("3%")
   },
-  inputGroup: {
-    flexDirection: "row",
-    backgroundColor: "rgba(255,255,255,0.3)",
-    marginBottom: hp("2%"),
-    padding: hp("1%"),
-    borderWidth: 0,
-    borderColor: "transparent"
-  },
-  input: {
-    color: commonColor.textColor,
-    fontSize: hp("2.75%"),
-    height: hp("4.5%"),
-    paddingTop: Platform.OS === "android" ? hp("-2%") : null,
-    marginTop: Platform.OS === "android" ? hp("2.5%") : null
-  },
-  icon: {
-    width: wp("13.5%"),
-    color: commonColor.textColor,
-    fontSize: hp("3.7%")
-  },
-  otherLinkText: {
-    alignSelf: "center",
-    opacity: 0.8,
-    fontSize: hp("2.75%"),
-    fontWeight: "bold",
-    color: commonColor.textColor
-  }
 });

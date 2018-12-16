@@ -24,7 +24,7 @@ export default StyleSheet.create({
     alignSelf: "center",
     flexGrow: 1
   },
-  helpBtns: {
+  helpButton: {
     opacity: 0.9,
     fontWeight: "bold",
     color: commonColor.textColor,

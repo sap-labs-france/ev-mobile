@@ -193,8 +193,7 @@ class Login extends React.Component {
             </View>
             <KeyboardAvoidingView style={styles.container} behavior="padding">
               <Form style={styles.form}>
-                <Button
-                  style={styles.buttonActionsheet}
+                <Button rounded block style={styles.buttonLocation}
                   onPress={() =>
                     ActionSheet.show(
                       {
@@ -205,7 +204,7 @@ class Login extends React.Component {
                         this._setTenant(buttonIndex);
                       }
                     )}>
-                  <TextRN style={styles.textActionsheet}>{this.state.tenantTitle}</TextRN>
+                  <TextRN style={styles.textLocation}>{this.state.tenantTitle}</TextRN>
                 </Button>
                 <Item inlineLabel rounded style={styles.inputGroup}>
                   <Icon active name="mail" style={styles.icon} />
@@ -264,7 +263,8 @@ class Login extends React.Component {
                 { loading ?
                   <Spinner style={styles.spinner} color="white" />
                 :
-                  <Button rounded primary block large style={styles.button} disabled={tenantTitle === I18n.t("authentication.location")} onPress={tenantTitle !== I18n.t("authentication.location") ? this.login : null}>
+                  <Button rounded primary block style={styles.button} disabled={tenantTitle === I18n.t("authentication.location")} 
+                      onPress={tenantTitle !== I18n.t("authentication.location") ? this.login : null}>
                     <Text style={styles.buttonText}>{I18n.t("authentication.login")}</Text>
                   </Button>
                 }
