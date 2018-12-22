@@ -3,12 +3,13 @@ import { Image, ImageBackground, Keyboard, ScrollView, Linking, KeyboardAvoiding
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, ListItem, Footer, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
+import { ResponsiveComponent } from "react-native-responsive-ui";
 
 import providerFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
-import styles from "../styles";
+import computeStyleSheet from "../styles";
 import commonColor from "../../../theme/variables/commonColor";
 
 const _provider = providerFactory.getProvider();
@@ -22,6 +23,12 @@ const formValidationDef = {
     },
     email: {
       message: "^" + I18n.t("general.email")
+    }
+  },
+  tenant: {
+    presence: {
+      allowEmpty: false,
+      message: "^" + I18n.t("general.required")
     }
   },
   password: {
@@ -42,7 +49,7 @@ const formValidationDef = {
   }
 };
 
-class Login extends React.Component {
+class Login extends ResponsiveComponent {
   passwordInput;
   eulaCheckBox;
 
@@ -61,8 +68,8 @@ class Login extends React.Component {
   }
 
   async componentDidMount() {
+    // Unlock all
     Orientation.unlockAllOrientations();
-    Orientation.lockToPortrait();
     // Check if user is authenticated
     if (await _provider.isUserAuthenticated()) {
       // Navigate
@@ -176,24 +183,29 @@ class Login extends React.Component {
     }
   }
 
+  get style() {
+    return computeStyleSheet();
+  }
+
   render() {
+    const { style } = this;
     const navigation = this.props.navigation;
-    const { display, eula, loading, tenantTitle } = this.state;
+    const { display, eula, loading } = this.state;
     // Do not display?
     if (!display) {
-      return (<View style={styles.nodisplay}/>);
+      return (<View style={style.nodisplay}/>);
     }
     // Render
     return (
       <Container>
-        <ImageBackground source={require("../../../../assets/bg.png")} style={styles.background}>
-          <ScrollView contentContainerStyle={styles.content} bounces={false}>
-            <View style={styles.container}>
-              <Image source={require("../../../../assets/logo-low.gif")} style={styles.logo} />
+        <ImageBackground source={require("../../../../assets/bg.png")} style={style.background}>
+          <ScrollView contentContainerStyle={style.content} bounces={false}>
+            <View style={style.container}>
+              <Image source={require("../../../../assets/logo-low.gif")} style={style.logo} />
             </View>
-            <KeyboardAvoidingView style={styles.container} behavior="padding">
-              <Form style={styles.form}>
-                <Button rounded block style={styles.buttonLocation}
+            <KeyboardAvoidingView style={style.container} behavior="padding">
+              <Form style={style.form}>
+                <Button rounded block style={style.button}
                   onPress={() =>
                     ActionSheet.show(
                       {
@@ -204,10 +216,11 @@ class Login extends React.Component {
                         this._setTenant(buttonIndex);
                       }
                     )}>
-                  <TextRN style={styles.textLocation}>{this.state.tenantTitle}</TextRN>
+                  <TextRN style={style.buttonText}>{this.state.tenantTitle}</TextRN>
                 </Button>
-                <Item inlineLabel rounded style={styles.inputGroup}>
-                  <Icon active name="mail" style={styles.icon} />
+                {this.state.errorTenant && this.state.errorTenant.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
+                <Item inlineLabel rounded style={style.inputGroup}>
+                  <Icon active name="mail"/>
                   <Input
                     name="email"
                     type="email"
@@ -215,7 +228,7 @@ class Login extends React.Component {
                     placeholder={I18n.t("authentication.email")}
                     placeholderTextColor={commonColor.textColor}
                     onSubmitEditing={() => this.passwordInput._root.focus()}
-                    style={styles.input}
+                    style={style.input}
                     autoCapitalize="none"
                     blurOnSubmit={false}
                     autoCorrect={false}
@@ -225,10 +238,10 @@ class Login extends React.Component {
                     value={this.state.email}
                   />
                 </Item>
-                {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
+                {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
 
-                <Item inlineLabel rounded style={styles.inputGroup}>
-                  <Icon active name="unlock" style={styles.icon} />
+                <Item inlineLabel rounded style={style.inputGroup}>
+                  <Icon active name="unlock"/>
                   <Input
                     name="password"
                     type="password"
@@ -237,7 +250,7 @@ class Login extends React.Component {
                     onSubmitEditing={()=>Keyboard.dismiss()}
                     placeholder={I18n.t("authentication.password")}
                     placeholderTextColor={commonColor.textColor}
-                    style={styles.input}
+                    style={style.input}
                     autoCapitalize="none"
                     blurOnSubmit={false}
                     autoCorrect={false}
@@ -247,38 +260,37 @@ class Login extends React.Component {
                     value={this.state.password}
                   />
                 </Item>
-                {this.state.errorPassword && this.state.errorPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
+                {this.state.errorPassword && this.state.errorPassword.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
 
-                <ListItem style={styles.listItemEulaCheckbox}>
-                  <CheckBox style={styles.eulaCheckbox} checked={eula} onPress={() => this.setState({eula: !eula})} />
+                <Item style={style.eulaContainer}>
+                  <CheckBox style={style.eulaCheckbox} checked={eula} onPress={() => this.setState({eula: !eula})} />
                   <Body>
-                    <Text style={styles.eulaText}>{I18n.t("authentication.acceptEula")}
-                      <Text onPress={()=> navigation.navigate("Eula")} style={styles.eulaLink}>{I18n.t("authentication.eula")}</Text>
+                    <Text style={style.eulaText}>{I18n.t("authentication.acceptEula")}
+                      <Text onPress={()=> navigation.navigate("Eula")} style={style.eulaLink}>{I18n.t("authentication.eula")}</Text>
                     </Text>
                   </Body>
-                </ListItem>
+                </Item>
                 <View>
-                  {this.state.errorEula && this.state.errorEula.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
+                  {this.state.errorEula && this.state.errorEula.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
                 </View>
                 { loading ?
-                  <Spinner style={styles.spinner} color="white" />
+                  <Spinner style={style.spinner} color="white" />
                 :
-                  <Button rounded primary block style={styles.button} disabled={tenantTitle === I18n.t("authentication.location")} 
-                      onPress={tenantTitle !== I18n.t("authentication.location") ? this.login : null}>
-                    <Text style={styles.buttonText}>{I18n.t("authentication.login")}</Text>
+                  <Button rounded primary block style={style.button} onPress={this.login}>
+                    <TextRN style={style.buttonText}>{I18n.t("authentication.login")}</TextRN>
                   </Button>
                 }
               </Form>
             </KeyboardAvoidingView>
             <Footer>
               <Left>
-                <Button small transparent style={styles.linksButtonLeft} onPress={ () => this._newUser()}>
-                  <TextRN style={styles.helpButton}>{I18n.t("authentication.newUser")}</TextRN>
+                <Button small transparent style={style.linksButtonLeft} onPress={ () => this._newUser()}>
+                  <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
                 </Button>
               </Left>
               <Right>
-                <Button small transparent style={styles.linksButtonRight} onPress={ () => this._forgotPassword()}>
-                  <TextRN style={styles.helpButton}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
+                <Button small transparent style={style.linksButtonRight} onPress={ () => this._forgotPassword()}>
+                  <TextRN style={style.linksTextButton}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
                 </Button>
               </Right>
             </Footer>

@@ -7,7 +7,7 @@ import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
-import styles from "./styles";
+import styles from "../styles";
 
 const _provider = ProviderFactory.getProvider();
 const formValidationDef = {
@@ -139,7 +139,7 @@ class SignUp extends React.Component {
               <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <Form style={styles.form}>
                   <Item inlineLabel rounded style={styles.inputGroup}>
-                    <Icon active name="person" style={styles.icon}/>
+                    <Icon active name="person"/>
                     <Input
                       name="name"
                       type="text"
@@ -158,7 +158,7 @@ class SignUp extends React.Component {
                   {this.state.errorName && this.state.errorName.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
                   <Item inlineLabel rounded style={styles.inputGroup}>
-                    <Icon active name="person" style={styles.icon}/>
+                    <Icon active name="person"/>
                     <Input
                       name="firstName"
                       type="text"
@@ -178,7 +178,7 @@ class SignUp extends React.Component {
                   {this.state.errorFirstName && this.state.errorFirstName.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
                   <Item inlineLabel rounded style={styles.inputGroup}>
-                    <Icon active name="mail" style={styles.icon} />
+                    <Icon active name="mail"/>
                     <Input
                       name="email"
                       type="email"
@@ -199,7 +199,7 @@ class SignUp extends React.Component {
                   {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
                   <Item inlineLabel rounded style={styles.inputGroup}>
-                    <Icon active name="unlock" style={styles.icon} />
+                    <Icon active name="unlock"/>
                     <Input
                       name="password"
                       type="password"
@@ -220,7 +220,7 @@ class SignUp extends React.Component {
                   {this.state.errorPassword && this.state.errorPassword.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
 
                   <Item inlineLabel rounded style={styles.inputGroup}>
-                    <Icon active name="unlock" style={styles.icon} />
+                    <Icon active name="unlock"/>
                     <Input
                       name="repeatPassword"
                       type="password"

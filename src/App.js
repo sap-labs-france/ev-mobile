@@ -21,6 +21,7 @@ const DrawerNavigation = createDrawerNavigator(
       swipeEnabled: true,
     },
     initialRouteName: "Sites",
+    drawerPosition: "right",
     contentComponent: props => <Sidebar {...props} />
   }
 );

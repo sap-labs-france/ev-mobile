@@ -29,8 +29,8 @@ class ChartDetails extends Component {
     // Set
     this.mounted = true;
     // // Add listeners
-    // this.props.navigation.addListener("didFocus", this.componentDidFocus);
-    // this.props.navigation.addListener("didBlur", this.componentDidBlur);
+    this.props.navigation.addListener("didFocus", this.componentDidFocus);
+    this.props.navigation.addListener("didBlur", this.componentDidBlur);
     // Get the consumption
     this.getChargingStationConsumption();
   }
@@ -48,20 +48,23 @@ class ChartDetails extends Component {
   //   }
   // }
 
-  // componentDidFocus = () => {
-  //   console.log("componentDidFocus");
-  //   Orientation.unlockAllOrientations();
-  //   // Listen to orientation changes
-  //   Orientation.addOrientationListener(this._orientationDidChange);    
-  // }
+  componentDidFocus = () => {
+    // Switch to Landscape
+    Orientation.unlockAllOrientations();
+    Orientation.lockToLandscape();
+    // Listen to orientation changes
+    // Orientation.addOrientationListener(this._orientationDidChange);    
+  }
 
-  // componentDidBlur = () => {
-  //   console.log("componentDidBlur");
-  //   // Remove
-  //   Orientation.removeOrientationListener(this._orientationDidChange);
-  //   // Lock
-  //   Orientation.lockToPortrait();
-  // }
+  componentDidBlur = () => {
+    // Switch to Landscape
+    Orientation.unlockAllOrientations();
+    Orientation.lockToPortrait();
+    // // Remove
+    // Orientation.removeOrientationListener(this._orientationDidChange);
+    // Lock
+    Orientation.lockToPortrait();
+  }
 
   async componentWillUnmount() {
     // Clear
@@ -144,7 +147,7 @@ class ChartDetails extends Component {
     const { maxChartValue } = this.state;
     return (
       <Container>
-        <VictoryChart theme={VictoryTheme.material} width={wp("100%")} height={hp("100%")} padding={styles.padding} domain={{y: [0, (maxChartValue * 1.1)]}}>
+        <VictoryChart theme={VictoryTheme.material} width={hp("100%")} height={wp("90%")} padding={styles.padding} domain={{y: [0, (maxChartValue * 1.1)]}}>
           <VictoryArea
             style={{ data: { fill: "cyan", stroke: "cyan" } }}
             data={this.state.valuesToDisplay}

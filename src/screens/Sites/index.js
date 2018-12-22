@@ -1,15 +1,16 @@
-import React, { Component } from "react";
+import React from "react";
+import { ResponsiveComponent } from "react-native-responsive-ui";
 import { Text, Image, FlatList, RefreshControl } from "react-native";
 import { Container, Header, Spinner, Left, Right, Body, Button, Icon, View } from "native-base";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import ProviderFactory from "../../provider/ProviderFactory";
 import SiteComponent from "../../components/Site";
-import styles from "./styles";
 import I18n from "../../I18n/I18n";
+import computeStyleSheet from "./styles";
 
 const _provider = ProviderFactory.getProvider();
-class Sites extends Component {
+class Sites extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -134,28 +135,33 @@ class Sites extends Component {
     );
   };
 
+  get style() {
+    return computeStyleSheet();
+  }
+
   render() {
-    const navigation = this.props.navigation;
+    const { style } = this;
+    const { navigation } = this.props;
     const { loading } = this.state;
     return (
       <Container>
-        <Header style={styles.header}>
+        <Header style={style.header}>
           <Left>
+            <Image source={require("../../../assets/logo-low.gif")} style={style.imageHeader} />
+          </Left>
+          <Body>
+            <Text style={style.titleHeader}>{I18n.t("sidebar.sites")}</Text>
+          </Body>
+          <Right>
             <Button transparent onPress={() => navigation.openDrawer()}>
               <Icon active name="menu" />
             </Button>
-          </Left>
-          <Body>
-            <Text style={styles.titleHeader}>{I18n.t("sidebar.sites")}</Text>
-          </Body>
-          <Right>
-            <Image source={require("../../../assets/logo-low.gif")} style={styles.imageHeader} />
           </Right>
         </Header>
 
-        <View style={styles.content}>
+        <View style={style.content}>
           {loading ?
-            <Spinner color="white" style={styles.spinner} />
+            <Spinner color="white" style={style.spinner} />
           :
             <FlatList
               data={this.state.sites}

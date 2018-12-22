@@ -1,22 +1,20 @@
-import { StyleSheet } from "react-native";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import commonColor from "../../theme/variables/commonColor";
+import deepmerge from "deepmerge";
 
-export default StyleSheet.create({
+const commonStyles = {
   header: {
-    height: hp("8%")
+  },
+  imageHeader: {
+    width: 60,
+    resizeMode: "contain"
   },
   titleHeader: {
     color: commonColor.textColor,
-    fontSize: hp("3.5%"),
-    width: wp("75%"),
+    fontSize: 30,
+    width: "75%",
     textAlign: "center",
     fontWeight: "bold"
-  },
-  imageHeader: {
-    height: hp("3.7%"),
-    width: wp("15%"),
-    resizeMode: "contain"
   },
   content: {
     flex: 1
@@ -24,4 +22,23 @@ export default StyleSheet.create({
   spinner: {
     flex: 1
   }
-});
+};
+
+const portraitStyles = {
+};
+
+const landscapeStyles = {
+};
+
+export default function computeStyleSheet() {
+  return ResponsiveStyleSheet.select([
+    {
+      query: { orientation: "landscape" },
+      style: deepmerge(commonStyles, landscapeStyles)
+    },
+    {
+      query: { orientation: "portrait" },
+      style: deepmerge(commonStyles, portraitStyles)
+    }
+  ]);
+}

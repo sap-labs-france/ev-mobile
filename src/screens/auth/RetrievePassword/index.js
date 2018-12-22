@@ -89,7 +89,7 @@ class RetrievePassword extends React.Component {
             <KeyboardAvoidingView style={styles.container} behavior="padding">
               <Form style={styles.form}>
                 <Item inlineLabel rounded style={styles.inputGroup}>
-                  <Icon active name="mail" style={styles.icon} />
+                  <Icon active name="mail"/>
                   <Input
                     name="email"
                     type="email"

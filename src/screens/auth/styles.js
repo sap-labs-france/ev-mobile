@@ -1,20 +1,18 @@
-import { Dimensions, Platform, StyleSheet } from "react-native";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import commonColor from "../../theme/variables/commonColor";
+import deepmerge from "deepmerge";
 
-const deviceHeight = Dimensions.get("window").height;
-
-export default StyleSheet.create({
+const commonStyles = {
   nodisplay: {
     flex: 1,
-    width: null,
-    height: hp("100%"),
+    width: "100%",
+    height: "100%",
     backgroundColor: "black"
   },
   background: {
     flex: 1,
-    width: null,
-    height: hp("100%"),
+    width: "100%",
+    height: "100%",
     backgroundColor: "rgba(0,0,0,0.1)"
   },
   content: {
@@ -35,54 +33,54 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignSelf: "center",
-    marginTop: hp("-9%")
+    marginTop: -10
   },
   logo: {
     resizeMode: "contain",
-    height: hp("15%"),
+    height: "30%",
+    padding: 5,
     alignSelf: "center"
   },
   form: {
     flex: 1,
-    paddingLeft: wp("5%"),
-    paddingRight: wp("5%")
+    paddingLeft: 15,
+    paddingRight: 15
   },
-  buttonLocation: {
+  button: {
     alignSelf: "center",
-    justifyContent: "center",
-    marginBottom: hp("2.25%"),
+    marginBottom: 15,
     backgroundColor: "rgba(255,255,255,0.30)"
   },
-  textLocation: {
+  buttonText: {
     color: commonColor.textColor
   },
   inputGroup: {
     backgroundColor: "rgba(255,255,255,0.3)",
-    marginBottom: hp("2%"),
+    marginBottom: 15,
+    alignSelf: "center",
     borderWidth: 0,
     borderColor: "transparent"
-  },
-  icon: {
-  },
-  input: {
   },
   formErrorText: {
     color: commonColor.brandDanger,
     textAlign: "left",
-    top: -hp("1.5%")
+    top: -5
   },
   eulaContainer : {
+    alignSelf: "center",
     borderBottomWidth: 0,
     paddingTop: 0,
-    paddingBottom: hp("0.8%"),
-    margin: hp("0.8")
+    paddingBottom: 5,
+    margin: 5
   },
   eulaText: {
-    color: commonColor.textColor,
+    alignSelf: "flex-start",
+    marginLeft: 15,
+    color: commonColor.textColor
   },
   eulaLink: {
     color: commonColor.textColor,
-    textDecorationLine: "underline",
+    textDecorationLine: "underline"
   },
   linksButtonLeft: {
     alignSelf: "flex-start"
@@ -90,18 +88,53 @@ export default StyleSheet.create({
   linksButtonRight: {
     alignSelf: "flex-end"
   },
-  button: {
-    marginTop: hp("1.5%"),
-    backgroundColor: "rgba(255,255,255,0.3)"
-  },
-  buttonText: {
-    textAlign: "center",
-    fontWeight: "900"
-  },
-  helpButton: {
+  linksTextButton: {
     opacity: 0.9,
     fontWeight: "bold",
     color: commonColor.textColor,
-    height: hp("3%")
+    height: 5
+  }
+};
+
+const portraitStyles = {
+  formErrorText: {
+    marginLeft: "5%"
   },
-});
+  eulaContainer: {
+    width: "95%"
+  },
+  button: {
+    width: "95%"
+  },
+  inputGroup: {
+    width: "95%"
+  }
+};
+
+const landscapeStyles = {
+  formErrorText: {
+    marginLeft: "18%"
+  },
+  eulaContainer: {
+    width: "65%"
+  },
+  button: {
+    width: "65%"
+  },
+  inputGroup: {
+    width: "65%"
+  }
+};
+
+export default function computeStyleSheet() {
+  return ResponsiveStyleSheet.select([
+    {
+      query: { orientation: "landscape" },
+      style: deepmerge(commonStyles, landscapeStyles)
+    },
+    {
+      query: { orientation: "portrait" },
+      style: deepmerge(commonStyles, portraitStyles)
+    }
+  ]);
+}
