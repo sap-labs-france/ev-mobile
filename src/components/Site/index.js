@@ -1,7 +1,8 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
+import { Badge } from 'react-native-elements'
 import { TouchableOpacity, PixelRatio } from "react-native";
-import { Text, View, Icon, Badge } from "native-base";
+import { Text, View, Icon } from "native-base";
 import openMap from "react-native-open-maps";
 import computeStyleSheet from "./styles";
 
@@ -35,9 +36,7 @@ class SiteComponent extends ResponsiveComponent {
           </View>
           <View style={style.detailsContent}>
             <Text style={style.chargerText}>{I18n.t("sites.freeChargers")}</Text>
-            <Badge success style={style.badge}>
-              <Text style={style.badgeText}>{site.availableChargers}</Text>
-            </Badge>
+            <Badge containerStyle={style.badge} textStyle={style.badgeText} value={site.availableChargers}/>
           </View>
         </View>
       </TouchableOpacity>

@@ -135,26 +135,22 @@ class Sites extends ResponsiveComponent {
     );
   };
 
-  get style() {
-    return computeStyleSheet();
-  }
-
   render() {
-    const { style } = this;
+    const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading } = this.state;
     return (
       <Container>
         <Header style={style.header}>
           <Left>
-            <Image source={require("../../../assets/logo-low.gif")} style={style.imageHeader} />
+            <Image source={require("../../../assets/logo-low.gif")} style={style.logoHeader} />
           </Left>
           <Body>
             <Text style={style.titleHeader}>{I18n.t("sidebar.sites")}</Text>
           </Body>
           <Right>
             <Button transparent onPress={() => navigation.openDrawer()}>
-              <Icon active name="menu" />
+              <Icon active name="menu" style={style.iconHeader} />
             </Button>
           </Right>
         </Header>

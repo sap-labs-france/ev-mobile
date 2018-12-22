@@ -1,5 +1,5 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
-import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import { scale, moderateScale } from 'react-native-size-matters';
 import commonColor from "../../theme/variables/commonColor";
 import deepmerge from "deepmerge";
 

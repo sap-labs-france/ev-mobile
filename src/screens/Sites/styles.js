@@ -1,20 +1,24 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import commonColor from "../../theme/variables/commonColor";
+import { scale, moderateScale } from 'react-native-size-matters';
 import deepmerge from "deepmerge";
 
 const commonStyles = {
   header: {
   },
-  imageHeader: {
+  logoHeader: {
     width: 60,
     resizeMode: "contain"
   },
   titleHeader: {
     color: commonColor.textColor,
-    fontSize: 25,
+    fontSize: moderateScale(20),
     width: "75%",
     textAlign: "center",
     fontWeight: "bold"
+  },
+  iconHeader: {
+    fontSize: moderateScale(25)
   },
   content: {
     flex: 1

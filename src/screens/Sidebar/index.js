@@ -91,12 +91,12 @@ class SideBar extends Component {
             </ListItem> */}
           </Content>
           <View style={styles.logoutContainer}>
-            <View style={styles.logoutbtn} foregroundColor={"white"}>
+            <View style={styles.logoutButton} foregroundColor={"white"}>
               <View style={styles.gridLogoutContainer}>
                 <View style={styles.columnAccount}>
                   <TouchableOpacity style={styles.buttonLogout} onPress={() => this._logoff()}>
-                    <Text style={styles.logout}>{I18n.t("authentication.logOut")}</Text>
-                    <Text note style={styles.name}>{userName}</Text>
+                    <Text style={styles.logoutText}>{I18n.t("authentication.logOut")}</Text>
+                    <Text note style={styles.userName}>{userName}</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={styles.columnThumbnail}>

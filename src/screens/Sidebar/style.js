@@ -1,31 +1,62 @@
 import { Platform, StyleSheet } from "react-native";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import commonColor from "../../theme/variables/commonColor";
+import { scale, moderateScale } from 'react-native-size-matters';
 
 export default StyleSheet.create({
+  background: {
+    flex: 1,
+    backgroundColor: commonColor.brandPrimary
+  },
+  drawerContent: {
+    paddingTop: "3%",
+    flex: 1
+  },
+  logoContainer: {
+    borderColor: commonColor.textColor,
+    borderBottomWidth: 1,
+    padding: "5%"
+  },
+  logo: {
+    resizeMode: "contain",
+    width: scale(100),
+    height: scale(50),
+    alignSelf: "center",
+    margin: "0.5%",
+  },
+  versionText: {
+    color: commonColor.textColor,
+    fontSize: moderateScale(14),
+    margin: "0.5%",
+    alignSelf: "center"
+  },
+  versionDate: {
+    color: commonColor.textColor,
+    fontSize: moderateScale(14),
+    alignSelf: "center"
+  },
   links: {
-    paddingTop: Platform.OS === "android" ? hp("1.2%") : hp("1.5%"),
-    paddingBottom: Platform.OS === "android" ? hp("1.2%") : hp("1.5%"),
-    paddingLeft: wp("2.7%"),
+    padding: "2%",
     borderBottomWidth: 0,
     borderBottomColor: "transparent"
   },
   linkText: {
     color: commonColor.textColor,
-    paddingLeft: wp("4%")
+    fontSize: moderateScale(16),
+    paddingLeft: "4%"
   },
   logoutContainer: {
     padding: 30,
     paddingTop: 0
   },
-  logoutbtn: {
-    paddingTop: hp("4.5%"),
+  logoutButton: {
+    paddingTop: "4.5%",
     flexDirection: "row",
     borderTopWidth: 1,
     borderTopColor: commonColor.textColor
   },
   gridLogoutContainer: {
     flexDirection: "row",
+
     flex: 1
   },
   columnAccount: {
@@ -37,54 +68,25 @@ export default StyleSheet.create({
     alignSelf: "flex-start",
     backgroundColor: "transparent"
   },
-  logout: {
+  logoutText: {
     fontWeight: "bold",
+    fontSize: moderateScale(14),
     color: commonColor.textColor
   },
-  name: {
+  userName: {
+    fontSize: moderateScale(14),
     color: commonColor.textColor
   },
   columnThumbnail: {
-    flexDirection: "column",
-    flex: 1
+    flex: 1,
+    flexDirection: "column"
   },
   buttonThumbnail: {
     alignSelf: "flex-end"
   },
-  background: {
-    flex: 1,
-    width: null,
-    height: null,
-    backgroundColor: commonColor.brandPrimary
-  },
-  drawerContent: {
-    paddingTop: Platform.OS === "android" ? hp("3%") : hp("4.5%"),
-    flex: 1
-  },
   profilePic: {
-    height: hp("6%"),
-    width: wp("10.6%"),
-    borderRadius: Platform.OS === "android" ? 40 : 20
-  },
-  versionText: {
-    color: commonColor.textColor,
-    marginTop: hp("0.5%"),
-    alignSelf: "center"
-  },
-  versionDate: {
-    color: commonColor.textColor,
-    marginTop: hp("0%"),
-    alignSelf: "center"
-  },
-  logoContainer: {
-    borderColor: commonColor.textColor,
-    borderBottomWidth: 1,
-    paddingBottom: hp("2%")
-  },
-  logo: {
-    flex: 1,
-    resizeMode: "contain",
-    height: hp("12.5%"),
-    alignSelf: "center"
+    width: scale(35),
+    height: scale(35),
+    borderRadius: Platform.OS === "android" ? 40 : 30
   }
 });
