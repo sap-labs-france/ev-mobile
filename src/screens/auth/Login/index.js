@@ -219,7 +219,7 @@ class Login extends ResponsiveComponent {
                 </Button>
                 {this.state.errorTenant && this.state.errorTenant.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
                 <Item inlineLabel rounded style={style.inputGroup}>
-                  <Icon active name="mail"/>
+                  <Icon active name="mail" style={style.inputIcon}/>
                   <Input
                     name="email"
                     type="email"
@@ -240,7 +240,7 @@ class Login extends ResponsiveComponent {
                 {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
 
                 <Item inlineLabel rounded style={style.inputGroup}>
-                  <Icon active name="unlock"/>
+                  <Icon active name="unlock" style={style.inputIcon}/>
                   <Input
                     name="password"
                     type="password"

@@ -1,4 +1,5 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import commonColor from "../../theme/variables/commonColor";
 import deepmerge from "deepmerge";
 
@@ -29,19 +30,29 @@ const commonStyles = {
   logo: {
     resizeMode: "contain",
     alignSelf: "center",
-    flexGrow: 1
+    height: scale(150),
+    margin: 30
   },
   form: {
     paddingLeft: 15,
-    paddingRight: 15,
-    flexGrow: 2
+    paddingRight: 15
+  },
+  inputIcon: {
+    marginLeft: scale(5),
+    fontSize: moderateScale(14)
+  },
+  input: {
+    height: scale(35),
+    fontSize: moderateScale(14)
   },
   button: {
     alignSelf: "center",
     marginBottom: 15,
+    height: scale(30),
     backgroundColor: "rgba(255,255,255,0.30)"
   },
   buttonText: {
+    fontSize: moderateScale(14),
     color: commonColor.textColor
   },
   inputGroup: {
@@ -60,15 +71,17 @@ const commonStyles = {
     alignSelf: "center",
     borderBottomWidth: 0,
     paddingTop: 0,
-    paddingBottom: 5,
+    paddingBottom: 15,
     margin: 5
   },
   eulaText: {
     alignSelf: "flex-start",
-    marginLeft: 15,
+    fontSize: moderateScale(12),
+    marginLeft: scale(14),
     color: commonColor.textColor
   },
   eulaLink: {
+    fontSize: moderateScale(12),
     color: commonColor.textColor,
     textDecorationLine: "underline"
   },
@@ -83,6 +96,7 @@ const commonStyles = {
   },
   linksTextButton: {
     opacity: 0.9,
+    fontSize: moderateScale(12),
     fontWeight: "bold",
     color: commonColor.textColor
   }
@@ -90,7 +104,7 @@ const commonStyles = {
 
 const portraitStyles = {
   logo: {
-    height: "25%",
+    ght: "25%",
     width: "50%"
   },
   formErrorText: {
