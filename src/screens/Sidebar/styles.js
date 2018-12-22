@@ -1,8 +1,10 @@
-import { Platform, StyleSheet } from "react-native";
+import { Platform } from "react-native";
+import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import commonColor from "../../theme/variables/commonColor";
 import { scale, moderateScale } from 'react-native-size-matters';
+import deepmerge from "deepmerge";
 
-export default StyleSheet.create({
+const commonStyles = {
   background: {
     flex: 1,
     backgroundColor: commonColor.brandPrimary
@@ -89,4 +91,23 @@ export default StyleSheet.create({
     height: scale(35),
     borderRadius: Platform.OS === "android" ? 40 : 30
   }
-});
+};
+
+const portraitStyles = {
+};
+
+const landscapeStyles = {
+};
+
+export default function computeStyleSheet() {
+  return ResponsiveStyleSheet.select([
+    {
+      query: { orientation: "landscape" },
+      style: deepmerge(commonStyles, landscapeStyles)
+    },
+    {
+      query: { orientation: "portrait" },
+      style: deepmerge(commonStyles, portraitStyles)
+    }
+  ]);
+}

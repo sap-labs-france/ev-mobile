@@ -1,17 +1,17 @@
-import React, { Component } from "react";
+import React from "react";
+import { ResponsiveComponent } from "react-native-responsive-ui";
 import { ImageBackground, TouchableOpacity, Image } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Content, Text, Icon, ListItem, Thumbnail, View } from "native-base";
-
+import computeStyleSheet from "./styles";
 import ProviderFactory from "../../provider/ProviderFactory";
 import I18n from "../../I18n/I18n";
 import Utils from "../../utils/Utils";
-import styles from "./style";
 
 const _provider = ProviderFactory.getProvider();
 const noPhoto = require("../../../assets/no-photo.png");
 
-class SideBar extends Component {
+class SideBar extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -66,42 +66,43 @@ class SideBar extends Component {
   }
 
   render() {
+    const style = computeStyleSheet();
     const navigation = this.props.navigation;
     const { userName, userImage } = this.state;
     return (
       <Container>
-        <ImageBackground style={styles.background} source={require("../../../assets/sidebar-transparent.png")}>
-          <Content style={styles.drawerContent}>
-            <View style={styles.logoContainer}>
-              <Image source={require("../../../assets/logo-low.gif")} style={styles.logo} />
-              <Text style={styles.versionText}>{I18n.t("general.version")}</Text>
-              <Text style={styles.versionDate}>{I18n.t("general.date")}</Text>
+        <ImageBackground style={style.background} source={require("../../../assets/sidebar-transparent.png")}>
+          <Content style={style.drawerContent}>
+            <View style={style.logoContainer}>
+              <Image source={require("../../../assets/logo-low.gif")} style={style.logo} />
+              <Text style={style.versionText}>{I18n.t("general.version")}</Text>
+              <Text style={style.versionDate}>{I18n.t("general.date")}</Text>
             </View>
-            <ListItem style={styles.links} button iconLeft onPress={() => this._navigateTo("Sites")}>
+            <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Sites")}>
               <Icon name="ios-grid-outline" />
-              <Text style={styles.linkText}>{I18n.t("sidebar.sites")}</Text>
+              <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
             </ListItem>
-            {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={styles.links}>
+            {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
               <Icon name="ios-settings-outline" />
-              <Text style={styles.linkText}>SETTINGS</Text>
+              <Text style={style.linkText}>SETTINGS</Text>
             </ListItem> */}
-            {/* <ListItem button onPress={() => navigation.navigate("Feedback")} iconLeft style={styles.links}>
+            {/* <ListItem button onPress={() => navigation.navigate("Feedback")} iconLeft style={style.links}>
               <Icon name="ios-paper-outline" />
-              <Text style={styles.linkText}>FEEDBACK</Text>
+              <Text style={style.linkText}>FEEDBACK</Text>
             </ListItem> */}
           </Content>
-          <View style={styles.logoutContainer}>
-            <View style={styles.logoutButton} foregroundColor={"white"}>
-              <View style={styles.gridLogoutContainer}>
-                <View style={styles.columnAccount}>
-                  <TouchableOpacity style={styles.buttonLogout} onPress={() => this._logoff()}>
-                    <Text style={styles.logoutText}>{I18n.t("authentication.logOut")}</Text>
-                    <Text note style={styles.userName}>{userName}</Text>
+          <View style={style.logoutContainer}>
+            <View style={style.logoutButton} foregroundColor={"white"}>
+              <View style={style.gridLogoutContainer}>
+                <View style={style.columnAccount}>
+                  <TouchableOpacity style={style.buttonLogout} onPress={() => this._logoff()}>
+                    <Text style={style.logoutText}>{I18n.t("authentication.logOut")}</Text>
+                    <Text note style={style.userName}>{userName}</Text>
                   </TouchableOpacity>
                 </View>
-                <View style={styles.columnThumbnail}>
-                  <TouchableOpacity style={styles.buttonThumbnail} onPress={() => navigation.navigate("Profile")}>
-                    <Thumbnail style={styles.profilePic} source={(userImage ? {uri: userImage} : noPhoto)} />
+                <View style={style.columnThumbnail}>
+                  <TouchableOpacity style={style.buttonThumbnail} onPress={() => navigation.navigate("Profile")}>
+                    <Thumbnail style={style.profilePic} source={(userImage ? {uri: userImage} : noPhoto)} />
                   </TouchableOpacity>
                 </View>
               </View>
