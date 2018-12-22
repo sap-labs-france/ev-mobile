@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, ImageBackground, Keyboard, ScrollView, Linking, KeyboardAvoidingView, Text as TextRN } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
-import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, ListItem, Footer, Spinner, ActionSheet } from "native-base";
+import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, Footer, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 
@@ -200,9 +200,7 @@ class Login extends ResponsiveComponent {
       <Container>
         <ImageBackground source={require("../../../../assets/bg.png")} style={style.background}>
           <ScrollView contentContainerStyle={style.content} bounces={false}>
-            <View style={style.container}>
-              <Image source={require("../../../../assets/logo-low.gif")} style={style.logo} />
-            </View>
+            <Image source={require("../../../../assets/logo-low.gif")} style={style.logo} />
             <KeyboardAvoidingView style={style.container} behavior="padding">
               <Form style={style.form}>
                 <Button rounded block style={style.button}
@@ -274,7 +272,7 @@ class Login extends ResponsiveComponent {
                   {this.state.errorEula && this.state.errorEula.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
                 </View>
                 { loading ?
-                  <Spinner style={style.spinner} color="white" />
+                  <Spinner style={style.spinner}/>
                 :
                   <Button rounded primary block style={style.button} onPress={this.login}>
                     <TextRN style={style.buttonText}>{I18n.t("authentication.login")}</TextRN>

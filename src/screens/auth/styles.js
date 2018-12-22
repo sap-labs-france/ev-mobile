@@ -16,33 +16,20 @@ const commonStyles = {
     backgroundColor: "rgba(0,0,0,0.1)"
   },
   content: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-between"
-  },
-  spinner: {
-    flex: 1
-  },
-  containerLogo: {
-    flex: 1,
-    flexDirection: "row",
-    alignSelf: "center",
-    flexGrow: 1
+    alignItems: "center"
   },
   container: {
     flex: 1,
-    flexDirection: "row",
-    alignSelf: "center",
-    marginTop: -10
+    width: "100%",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "stretch"
   },
   logo: {
     resizeMode: "contain",
-    height: "30%",
-    padding: 5,
-    alignSelf: "center"
+    width: "50%",
   },
   form: {
-    flex: 1,
     paddingLeft: 15,
     paddingRight: 15
   },
@@ -82,6 +69,9 @@ const commonStyles = {
     color: commonColor.textColor,
     textDecorationLine: "underline"
   },
+  spinner: {
+    color: commonColor.brandDanger
+  },
   linksButtonLeft: {
     alignSelf: "flex-start"
   },
@@ -91,8 +81,7 @@ const commonStyles = {
   linksTextButton: {
     opacity: 0.9,
     fontWeight: "bold",
-    color: commonColor.textColor,
-    height: 5
+    color: commonColor.textColor
   }
 };
 

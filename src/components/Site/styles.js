@@ -14,34 +14,33 @@ const commonStyles = {
   },
   mainContent: {
     flexDirection: "row",
-    marginLeft: "3%",
     justifyContent: "space-between"
   },
   siteName: {
-    fontSize: 30,
+    fontSize: 20,
     color: commonColor.textColor,
     fontWeight: "bold"
   },
   icon: {
-    fontSize: 30
+    paddingTop: 5,
+    fontSize: 25
   },
   detailsContent: {
     flexDirection: "row",
-    marginLeft: "3%",
     justifyContent: "flex-start",
     alignItems: "center"
   },
   chargerText: {
     color: commonColor.textColor,
-    fontSize: 25
+    fontSize: 20
   },
   badge: {
-    height: 42,
+    height: 40,
     margin: 10
   },
   badgeText: {
-    padding: 15,
-    fontSize: 30,
+    padding: 11,
+    fontSize: 25,
     fontWeight: "bold",
     color: commonColor.textColor,
   }
