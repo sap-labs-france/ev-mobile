@@ -1,5 +1,5 @@
 import React from "react";
-import { StatusBar } from "react-native";
+import { StatusBar, Dimensions } from "react-native";
 import { createStackNavigator, createDrawerNavigator } from "react-navigation";
 import { Root } from "native-base";
 import Login from "./screens/auth/Login";
@@ -20,6 +20,7 @@ const DrawerNavigation = createDrawerNavigator(
     navigationOptions: {
       swipeEnabled: true,
     },
+    drawerWidth: Dimensions.get('window').width / 1.5,
     initialRouteName: "Sites",
     drawerPosition: "right",
     contentComponent: props => <Sidebar {...props} />
