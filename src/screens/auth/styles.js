@@ -16,22 +16,25 @@ const commonStyles = {
     backgroundColor: "rgba(0,0,0,0.1)"
   },
   content: {
-    alignItems: "center"
+    height: "100%",
+    width: "100%"
   },
   container: {
     flex: 1,
     width: "100%",
     flexDirection: "column",
-    justifyContent: "flex-start",
+    justifyContent: "space-evenly",
     alignItems: "stretch"
   },
   logo: {
     resizeMode: "contain",
-    width: "50%",
+    alignSelf: "center",
+    flexGrow: 1
   },
   form: {
     paddingLeft: 15,
-    paddingRight: 15
+    paddingRight: 15,
+    flexGrow: 2
   },
   button: {
     alignSelf: "center",
@@ -86,6 +89,10 @@ const commonStyles = {
 };
 
 const portraitStyles = {
+  logo: {
+    height: "25%",
+    width: "50%"
+  },
   formErrorText: {
     marginLeft: "5%"
   },
@@ -101,6 +108,10 @@ const portraitStyles = {
 };
 
 const landscapeStyles = {
+  logo: {
+    height: "15%",
+    width: "25%"
+  },
   formErrorText: {
     marginLeft: "18%"
   },

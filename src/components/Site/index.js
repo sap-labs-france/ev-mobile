@@ -1,11 +1,14 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, PixelRatio } from "react-native";
 import { Text, View, Icon, Badge } from "native-base";
 import openMap from "react-native-open-maps";
 import computeStyleSheet from "./styles";
 
 import I18n from "../../I18n/I18n";
+
+console.log(PixelRatio.getFontScale());
+
 
 class SiteComponent extends ResponsiveComponent {
 
@@ -24,10 +27,10 @@ class SiteComponent extends ResponsiveComponent {
       <TouchableOpacity onPress={() => navigation.navigate("Chargers", { site: site })}>
         <View style={style.siteContainer}>
           <View style={style.mainContent}>
-            <Text style={style.siteName}>{site.name}</Text>
             <TouchableOpacity onPress={()=>this._siteLocation(site.address)}>
               <Icon style={style.icon} name="pin" />
             </TouchableOpacity>
+            <Text style={style.siteName}>{site.name}</Text>
             <Icon style={style.icon} name="arrow-forward"/>
           </View>
           <View style={style.detailsContent}>

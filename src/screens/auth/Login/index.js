@@ -3,7 +3,7 @@ import { Image, ImageBackground, Keyboard, ScrollView, Linking, KeyboardAvoiding
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, Footer, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
-import { ResponsiveComponent } from "react-native-responsive-ui";
+import { ResponsiveComponent, MediaQuery } from "react-native-responsive-ui";
 
 import providerFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
@@ -199,9 +199,10 @@ class Login extends ResponsiveComponent {
     return (
       <Container>
         <ImageBackground source={require("../../../../assets/bg.png")} style={style.background}>
-          <ScrollView contentContainerStyle={style.content} bounces={false}>
-            <Image source={require("../../../../assets/logo-low.gif")} style={style.logo} />
             <KeyboardAvoidingView style={style.container} behavior="padding">
+              <MediaQuery minHeight={450} >
+                <Image source={require("../../../../assets/logo-low.gif")} style={style.logo} />
+              </MediaQuery>
               <Form style={style.form}>
                 <Button rounded block style={style.button}
                   onPress={() =>
@@ -292,7 +293,6 @@ class Login extends ResponsiveComponent {
                 </Button>
               </Right>
             </Footer>
-          </ScrollView>
         </ImageBackground>
       </Container>
     );

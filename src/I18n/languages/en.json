@@ -6,12 +6,12 @@
     "sessionExpired": "Session expired",
     "numbers": "Enter a valid number",
     "email": "Enter a valid email address",
-    "required": "Field is mandatory",
+    "required": "Mandatory field",
     "ok": "Ok",
     "yes": "Yes",
     "no": "No",
-    "version": "Version 0.32",
-    "date": "(12th December)"
+    "version": "Version 0.33",
+    "date": "(22th December)"
   },
   "sidebar": {
     "sites": "Sites"
