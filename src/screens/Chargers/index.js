@@ -1,16 +1,16 @@
 import React, { Component } from "react";
-import { Text, Image, Platform, FlatList, RefreshControl } from "react-native";
-import { Container, Header, Button, Icon, Body, Left, Right, View, Spinner, List } from "native-base";
-
+import { Text, Platform, FlatList, RefreshControl } from "react-native";
+import { Container, Header, Button, Icon, Body, Left, Right, View, Spinner, List, Title } from "native-base";
+import { ResponsiveComponent } from "react-native-responsive-ui";
 import ProviderFactory from "../../provider/ProviderFactory";
 import ChargerComponent from "../../components/Charger";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
-import styles from "./styles";
+import computeStyleSheet from "./styles";
 
 const _provider = ProviderFactory.getProvider();
 
-class Chargers extends Component {
+class Chargers extends ResponsiveComponent {
   constructor(props) {
     super(props);
     // Init State
@@ -139,25 +139,28 @@ class Chargers extends Component {
   }
 
   render() {
+    const style = computeStyleSheet();
+    const { navigation } = this.props;
     return (
       <Container>
-        <Header style={styles.header}>
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon active name="arrow-back" />
+        <Header style={style.header}>
+          <Left style={style.leftHeader}>
+            <Button transparent onPress={() => navigation.goBack()}>
+              <Icon active name="arrow-back" style={style.iconHeader} />
             </Button>
           </Left>
-          <Body>
-            <Text style={styles.titleHeader}>{this.state.site.name}</Text>
+          <Body style={style.bodyHeader}>
+            <Title style={style.titleHeader}>{this.state.site.name}</Title>
           </Body>
-          <Right>
-            <Image source={require("../../../assets/logo-low.gif")} style={styles.imageHeader} />
+          <Right style={style.rightHeader}>
+            <Button transparent onPress={() => navigation.openDrawer()}>
+              <Icon active name="menu" style={style.iconHeader} />
+            </Button>
           </Right>
         </Header>
-
-        <View style={styles.content}>
+        <View style={style.content}>
           { this.state.loading ?
-            <Spinner color="white" style={styles.spinner} />
+            <Spinner color="white" style={style.spinner} />
           :
             <FlatList
               data={this.state.chargers}

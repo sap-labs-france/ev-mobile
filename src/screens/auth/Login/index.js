@@ -183,12 +183,8 @@ class Login extends ResponsiveComponent {
     }
   }
 
-  get style() {
-    return computeStyleSheet();
-  }
-
   render() {
-    const { style } = this;
+    const style = computeStyleSheet();
     const navigation = this.props.navigation;
     const { display, eula, loading } = this.state;
     // Do not display?

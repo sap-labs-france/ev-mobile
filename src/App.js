@@ -14,7 +14,8 @@ import ChargerNavigation from "./screens/Details/ChargerTab";
 // Drawer Menu Navigation
 const DrawerNavigation = createDrawerNavigator(
   {
-    Sites: { screen: Sites }
+    Sites: { screen: Sites },
+    Chargers: { screen: Chargers }
   },
   {
     navigationOptions: {

@@ -1,7 +1,7 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import { Text, Image, FlatList, RefreshControl } from "react-native";
-import { Container, Header, Spinner, Left, Right, Body, Button, Icon, View } from "native-base";
+import { Image, FlatList, RefreshControl } from "react-native";
+import { Container, Header, Spinner, Left, Right, Body, Title, Button, Icon, View } from "native-base";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import ProviderFactory from "../../provider/ProviderFactory";
@@ -142,13 +142,13 @@ class Sites extends ResponsiveComponent {
     return (
       <Container>
         <Header style={style.header}>
-          <Left>
+          <Left style={style.leftHeader}>
             <Image source={require("../../../assets/logo-low.gif")} style={style.logoHeader} />
           </Left>
-          <Body>
-            <Text style={style.titleHeader}>{I18n.t("sidebar.sites")}</Text>
+          <Body style={style.bodyHeader}>
+            <Title style={style.titleHeader}>{I18n.t("sidebar.sites")}</Title>
           </Body>
-          <Right>
+          <Right style={style.rightHeader}>
             <Button transparent onPress={() => navigation.openDrawer()}>
               <Icon active name="menu" style={style.iconHeader} />
             </Button>

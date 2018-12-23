@@ -17,12 +17,8 @@ class SiteComponent extends ResponsiveComponent {
     openMap({ latitude: address.latitude, longitude: address.longitude, zoom: 18});
   }
 
-  get style() {
-    return computeStyleSheet();
-  }
-
   render() {
-    const { style } = this;
+    const style = computeStyleSheet();
     const { site, navigation } = this.props;
     return (
       <TouchableOpacity onPress={() => navigation.navigate("Chargers", { site: site })}>
