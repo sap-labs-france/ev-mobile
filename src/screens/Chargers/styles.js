@@ -1,11 +1,11 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import commonColor from "../../theme/variables/commonColor";
-import { moderateScale, scale } from 'react-native-size-matters';
+import { scale } from 'react-native-size-matters';
 import deepmerge from "deepmerge";
 
 const commonStyles = {
   header: {
-    height: scale(30)
+    height: scale(40)
   },
   leftHeader: {
     flex: 0
@@ -18,11 +18,11 @@ const commonStyles = {
   },
   titleHeader: {
     color: commonColor.textColor,
-    fontSize: moderateScale(20),
+    fontSize: scale(17),
     fontWeight: "bold"
   },
   iconHeader: {
-    fontSize: moderateScale(25)
+    fontSize: scale(25)
   },
   container: {
     flex: 1,

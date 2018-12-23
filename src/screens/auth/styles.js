@@ -1,5 +1,5 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
-import { scale, moderateScale } from 'react-native-size-matters';
+import { scale } from 'react-native-size-matters';
 import commonColor from "../../theme/variables/commonColor";
 import deepmerge from "deepmerge";
 
@@ -39,11 +39,11 @@ const commonStyles = {
   },
   inputIcon: {
     marginLeft: scale(5),
-    fontSize: moderateScale(14)
+    fontSize: scale(14)
   },
   input: {
     height: scale(35),
-    fontSize: moderateScale(14)
+    fontSize: scale(14)
   },
   button: {
     alignSelf: "center",
@@ -52,7 +52,7 @@ const commonStyles = {
     backgroundColor: "rgba(255,255,255,0.30)"
   },
   buttonText: {
-    fontSize: moderateScale(14),
+    fontSize: scale(14),
     color: commonColor.textColor
   },
   inputGroup: {
@@ -76,12 +76,12 @@ const commonStyles = {
   },
   eulaText: {
     alignSelf: "flex-start",
-    fontSize: moderateScale(12),
+    fontSize: scale(12),
     marginLeft: scale(14),
     color: commonColor.textColor
   },
   eulaLink: {
-    fontSize: moderateScale(12),
+    fontSize: scale(12),
     color: commonColor.textColor,
     textDecorationLine: "underline"
   },
@@ -96,7 +96,7 @@ const commonStyles = {
   },
   linksTextButton: {
     opacity: 0.9,
-    fontSize: moderateScale(12),
+    fontSize: scale(12),
     fontWeight: "bold",
     color: commonColor.textColor
   }

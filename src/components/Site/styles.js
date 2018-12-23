@@ -1,7 +1,7 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
-import { scale, moderateScale } from 'react-native-size-matters';
+import { scale } from 'react-native-size-matters';
 
 const commonStyles = {
   siteContainer: {
@@ -18,13 +18,13 @@ const commonStyles = {
     justifyContent: "space-between"
   },
   siteName: {
-    fontSize: moderateScale(20),
+    fontSize: scale(20),
     color: commonColor.textColor,
     fontWeight: "bold"
   },
   icon: {
     paddingTop: 5,
-    fontSize: moderateScale(25)
+    fontSize: scale(25)
   },
   detailsContent: {
     flexDirection: "row",
@@ -33,14 +33,14 @@ const commonStyles = {
   },
   chargerText: {
     color: commonColor.textColor,
-    fontSize: moderateScale(20)
+    fontSize: scale(20)
   },
   badge: {
     margin: scale(10),
     backgroundColor: commonColor.brandSecondary
   },
   badgeText: {
-    fontSize: moderateScale(25),
+    fontSize: scale(25),
     marginTop: -2,
     marginLeft: -2,
     fontWeight: "bold",

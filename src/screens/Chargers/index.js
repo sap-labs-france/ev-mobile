@@ -133,7 +133,7 @@ class Chargers extends ResponsiveComponent {
   _renderItem = ({item}, navigation) => {
     return (
       <List>
-        <ChargerComponent items={item} nav={navigation} siteID={this.state.site.id} />
+        <ChargerComponent charger={item} navigation={navigation} siteID={this.state.site.id} />
       </List>
     );
   }

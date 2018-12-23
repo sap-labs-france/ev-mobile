@@ -15,9 +15,9 @@ class ChargerComponent extends ResponsiveComponent {
   }
 
   componentDidMount() {
-    const { items } = this.props;
+    const { charger } = this.props;
     // Check if charger is dead
-    this._checkHeartbeat(items);
+    this._checkHeartbeat(charger);
   }
 
   _checkHeartbeat = (charger, minutesNow) => {
@@ -32,33 +32,33 @@ class ChargerComponent extends ResponsiveComponent {
     }
   }
 
-  _renderItem = ({item, index}, charger, navigation, siteID) => {
-    return (
-      <ConnectorComponent index={index} item={item} nav={navigation} charger={charger} siteID={siteID} />
-    );
-  }
-
   render() {
     const style = computeStyleSheet();
-    const { items, nav, siteID } = this.props;
+    const { charger, navigation, siteID } = this.props;
     const { isChargerDead } = this.state;
     return (
       <View style={style.container}>
         <View style={style.chargerContainer}>
-          <Text style={style.chargerName}>{items.id}</Text>
+          <Text style={style.chargerName}>{charger.id}</Text>
           { isChargerDead ?
-            <Animatable.Text animation="fadeIn" easing="ease-in-out" useNativeDriver="true" duration="1000" iterationCount="infinite" direction="alternate-reverse">
+            <Animatable.Text animation="fadeIn" easing="ease-in-out" duration="1000" iterationCount="infinite" direction="alternate-reverse">
               <Icon style={style.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
             </Animatable.Text>
           :
             <Icon style={style.heartbeatIcon} type="FontAwesome" name="heartbeat" />
           }
         </View>
-        <FlatList style={style.connectorsContainer}
-          data={items.connectors}
-          renderItem={item => this._renderItem(item, items, nav, siteID)}
-          keyExtractor={(connector, index) => connector.connectorId.toString()}
-        />
+        <View style={style.connectorsContainer}>
+          {
+            charger.connectors.map((connector, index) => {
+              return (<ConnectorComponent
+                key={`${charger.id}~${connector.connectorId}` } 
+                index={index} connector={connector} 
+                navigation={navigation} charger={charger} 
+                siteID={siteID} />);
+            })
+          }
+        </View>
       </View>
     );
   }

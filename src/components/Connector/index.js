@@ -1,69 +1,68 @@
-import React, { Component } from "react";
+import React from "react";
 import { Image, TouchableOpacity } from "react-native";
 import { Text, View } from "native-base";
+import { ResponsiveComponent } from "react-native-responsive-ui";
 import Utils from "../../utils/Utils";
 import ConnectorStatusComponent from "../ConnectorStatus";
-
 import * as Animatable from "react-native-animatable";
 import I18n from "../../I18n/I18n";
-import styles from "./styles";
+import computeStyleSheet from "./styles";
 
-class ConnectorComponent extends Component {
-  _renderConnectorDetails = (item) => {
+class ConnectorComponent extends ResponsiveComponent {
+  _renderConnectorDetails = (connector, style) => {
     return (
-      <View style={styles.status}>
-        <View style={styles.statusDetailsContainer}>
-          {(item.activeTransactionID !== 0) ?
-            <View style={styles.rowSpaceBetween}>
-              <View style={styles.column}>
-                <Text style={styles.value}>{(item.currentConsumption / 1000) < 10 ? (item.currentConsumption > 0 ? (item.currentConsumption / 1000).toFixed(1) : 0) : Math.trunc(item.currentConsumption / 1000)}</Text>
-                <Text style={styles.label} numberOfLines={1}>{I18n.t("details.instant")}</Text>
-                <Text style={styles.subLabel} numberOfLines={1}>(kW)</Text>
-              </View>
-              <View style={styles.column}>
-                <Text style={styles.value}>{Math.round(item.totalConsumption / 1000)}</Text>
-                <Text style={styles.label} numberOfLines={1}>{I18n.t("details.total")}</Text>
-                <Text style={styles.subLabel} numberOfLines={1}>(kW.h)</Text>
-              </View>
+      <View style={style.statusConnectorDetailsContainer}>
+        {(connector.activeTransactionID !== 0) ?
+          <View style={style.statusConnectorDetails}>
+            <View style={style.statusConnectorDetail}>
+              <Text style={style.value}>{(connector.currentConsumption / 1000) < 10 ? (connector.currentConsumption > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0) : Math.trunc(connector.currentConsumption / 1000)}</Text>
+              <Text style={style.label} numberOfLines={1}>{I18n.t("details.instant")}</Text>
+              <Text style={style.subLabel} numberOfLines={1}>(kW)</Text>
             </View>
-          :
-            <View style={styles.rowSpaceBetween}>
-              <View style={styles.column}>
-                <Image style={styles.sizeConnectorImage} source={Utils.getConnectorTypeImage(item.type)}/>
-                <Text style={styles.label}>{Utils.translateConnectorType(item.type)}</Text>
-                <Text style={styles.subLabel} numberOfLines={1}></Text>
-              </View>
-              <View style={styles.column}>
-                <Text style={styles.value}>{Math.trunc(item.power / 1000)}</Text>
-                <Text style={styles.label} numberOfLines={1}>{I18n.t("details.maximum")}</Text>
-                <Text style={styles.subLabel} numberOfLines={1}>(kW)</Text>
-              </View>
+            <View style={style.statusConnectorDetail}>
+              <Text style={style.value}>{Math.round(connector.totalConsumption / 1000)}</Text>
+              <Text style={style.label} numberOfLines={1}>{I18n.t("details.total")}</Text>
+              <Text style={style.subLabel} numberOfLines={1}>(kW.h)</Text>
             </View>
-          }
-        </View>
+          </View>
+        :
+          <View style={style.statusConnectorDetails}>
+            <View style={style.statusConnectorDetail}>
+              <Image style={style.sizeConnectorImage} source={Utils.getConnectorTypeImage(connector.type)}/>
+              <Text style={style.labelImage}>{Utils.translateConnectorType(connector.type)}</Text>
+              <Text style={style.subLabel} numberOfLines={1}></Text>
+            </View>
+            <View style={style.statusConnectorDetail}>
+              <Text style={style.value}>{Math.trunc(connector.power / 1000)}</Text>
+              <Text style={style.label} numberOfLines={1}>{I18n.t("details.maximum")}</Text>
+              <Text style={style.subLabel} numberOfLines={1}>(kW)</Text>
+            </View>
+          </View>
+        }
       </View>
     );
   }
 
   render() {
-    const { index, item, nav, charger, siteID } = this.props;
+    const style = computeStyleSheet();
+    const { index, connector, navigation, charger, siteID } = this.props;
     const even = (index % 2 === 0);
     return (
-      <TouchableOpacity onPress={()=>nav.navigate("Charger", {charger, index, siteID, connector: item})}>
-        <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1}>
-          <View style={even ? styles.leftConnectorContainer : styles.rightConnectorContainer}>
-            <Text style={styles.statusDescription} numberOfLines={1}>
-              {Utils.translateConnectorStatus(item.status)}
+      <TouchableOpacity style={style.statusConnectorContainer} onPress={()=>navigation.navigate("Charger", {charger, index, siteID, connector: connector})}>
+        <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1} >
+          <View style={even ? style.leftConnectorContainer : style.rightConnectorContainer}>
+            <Text style={style.statusDescription} numberOfLines={1}>
+              {Utils.translateConnectorStatus(connector.status)}
             </Text>
             {even ?
-              <View style={styles.leftStatusConnectorContainer}>
-                <ConnectorStatusComponent style={styles.statusConnectorLetter} connector={item}/>
-                {this._renderConnectorDetails(item)}
+              <View style={style.statusConnectorDetailContainer}>
+                <ConnectorStatusComponent style={style.statusConnectorDetailLetter} connector={connector}/>
+                {this._renderConnectorDetails(connector, style)}
               </View>
             :
-              <View style={styles.rightStatusConnectorContainer}>
-                {this._renderConnectorDetails(item)}
-                <ConnectorStatusComponent style={styles.statusConnectorLetter} connector={item}/>
+              <View style={style.statusConnectorDetailContainer}>
+                {this._renderConnectorDetails(connector, style)}
+                <ConnectorStatusComponent style={style.statusConnectorDetailLetter} connector={connector}/>
               </View>
             }
           </View>

@@ -1,7 +1,7 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
-import { scale, moderateScale } from 'react-native-size-matters';
+import { scale } from 'react-native-size-matters';
 
 const commonStyles = {
   container: {
@@ -24,25 +24,22 @@ const commonStyles = {
   },
   chargerName: {
     color: commonColor.textColor,
-    fontSize: moderateScale(20),
+    fontSize: scale(20),
     fontWeight: "bold"
   },
   heartbeatIcon: {
     color: commonColor.brandSuccess,
-    fontSize: moderateScale(20)
+    fontSize: scale(18)
   },
   deadHeartbeatIcon: {
     color: commonColor.brandDanger,
-    fontSize: moderateScale(20)
+    fontSize: scale(18)
   },
   connectorsContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
-    marginLeft: "2%",
-    marginRight: "2%",
-    flexWrap: "wrap",
-    paddingTop: "1%"
+    flexWrap: "wrap"
   }
 };
 

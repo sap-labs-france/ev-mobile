@@ -1,7 +1,7 @@
 import { Platform } from "react-native";
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import commonColor from "../../theme/variables/commonColor";
-import { scale, moderateScale } from 'react-native-size-matters';
+import { scale } from 'react-native-size-matters';
 import deepmerge from "deepmerge";
 
 const commonStyles = {
@@ -27,13 +27,13 @@ const commonStyles = {
   },
   versionText: {
     color: commonColor.textColor,
-    fontSize: moderateScale(14),
+    fontSize: scale(14),
     margin: "0.5%",
     alignSelf: "center"
   },
   versionDate: {
     color: commonColor.textColor,
-    fontSize: moderateScale(14),
+    fontSize: scale(14),
     alignSelf: "center"
   },
   links: {
@@ -43,7 +43,7 @@ const commonStyles = {
   },
   linkText: {
     color: commonColor.textColor,
-    fontSize: moderateScale(16),
+    fontSize: scale(16),
     paddingLeft: "4%"
   },
   logoutContainer: {
@@ -72,11 +72,11 @@ const commonStyles = {
   },
   logoutText: {
     fontWeight: "bold",
-    fontSize: moderateScale(14),
+    fontSize: scale(14),
     color: commonColor.textColor
   },
   userName: {
-    fontSize: moderateScale(14),
+    fontSize: scale(14),
     color: commonColor.textColor
   },
   columnThumbnail: {
@@ -87,9 +87,9 @@ const commonStyles = {
     alignSelf: "flex-end"
   },
   profilePic: {
-    width: scale(35),
-    height: scale(35),
-    borderRadius: Platform.OS === "android" ? 40 : 30
+    width: scale(40),
+    height: scale(40),
+    borderRadius: scale(20)
   }
 };
 

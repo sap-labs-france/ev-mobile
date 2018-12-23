@@ -1,33 +1,51 @@
-import { Platform, StyleSheet } from "react-native";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { Platform } from 'react-native';
+import { ResponsiveStyleSheet } from "react-native-responsive-ui";
+import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
+import { scale } from 'react-native-size-matters';
 
-export default StyleSheet.create({
-  connectorStatus: {
-  },
+const commonStyles = {
   statusLetter: {
     color: commonColor.textColor,
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: hp("4.75%"),
-    marginTop: Platform.OS === "ios" ? hp("0.5%") : hp("0%")
+    fontSize: scale(27)
   },
   statusGreen: {
     backgroundColor: commonColor.brandSuccess,
-    width: wp("12%"),
-    height: wp("12%"),
-    borderRadius: 50
+    width: scale(40),
+    height: scale(40),
+    borderRadius: scale(20)
   },
   statusRed: {
     backgroundColor: commonColor.brandDanger,
-    width: wp("12%"),
-    height: wp("12%"),
+    width: scale(40),
+    height: scale(40),
     borderRadius: 50
   },
   statusOrange: {
     backgroundColor: commonColor.brandWarning,
-    width: wp("12%"),
-    height: wp("12%"),
+    width: scale(40),
+    height: scale(40),
     borderRadius: 50
   }
-});
+};
+
+const portraitStyles = {
+};
+
+const landscapeStyles = {
+};
+
+export default function computeStyleSheet() {
+  return ResponsiveStyleSheet.select([
+    {
+      query: { orientation: "landscape" },
+      style: deepmerge(commonStyles, landscapeStyles)
+    },
+    {
+      query: { orientation: "portrait" },
+      style: deepmerge(commonStyles, portraitStyles)
+    }
+  ]);
+}
