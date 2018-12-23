@@ -1,4 +1,5 @@
 import { Platform } from "react-native";
+import { scale } from 'react-native-size-matters';
 
 import variable from "./../variables/platform";
 
@@ -11,7 +12,7 @@ export default (variables = variable) => {
 				"NativeBase.Text": {
 					color: variables.tabBarActiveTextColor,
 					fontSize: variables.tabBarTextSize,
-					lineHeight: 16,
+					lineHeight: scale(16),
 				},
 				"NativeBase.Icon": {
 					color: variables.tabBarActiveTextColor,
@@ -36,9 +37,9 @@ export default (variables = variable) => {
 			".badge": {
 				"NativeBase.Badge": {
 					"NativeBase.Text": {
-						fontSize: 11,
+						fontSize: scale(11),
 						fontWeight: platform === "ios" ? "600" : undefined,
-						lineHeight: 14,
+						lineHeight: scale(14),
 					},
 					top: -3,
 					alignSelf: "center",
@@ -54,20 +55,22 @@ export default (variables = variable) => {
 			},
 			"NativeBase.Icon": {
 				color: variables.tabBarTextColor,
+				fontSize: variables.tabBarTextSize
 			},
 			"NativeBase.IconNB": {
 				color: variables.tabBarTextColor,
+				fontSize: variables.tabBarTextSize
 			},
 			"NativeBase.Text": {
 				color: variables.tabBarTextColor,
 				fontSize: variables.tabBarTextSize,
-				lineHeight: 16,
+				lineHeight: scale(16),
 			},
 		},
 		backgroundColor: Platform.OS === "android" ? variables.tabActiveBgColor : undefined,
 		flexDirection: "row",
 		justifyContent: "space-between",
-		flex: 1,
+    flex: 1,
 		alignSelf: "stretch",
 	};
 

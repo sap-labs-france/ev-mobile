@@ -1,5 +1,6 @@
 import { Toast } from "native-base";
 import Constants from "./Constants";
+import { scale } from 'react-native-size-matters';
 
 export default class Message {
 
@@ -27,10 +28,14 @@ export default class Message {
     // Show
     Toast.show({
       text: message,
-      duration: Constants.TOAST_DURATION_MILLIS,
+      textStyle: {
+        fontSize: scale(15),
+        color: "white",
+        textAlign: "center"
+      },
+      duration: 3000,
       type: type,
-      position: "top",
-      textStyle: Constants.TOAST_DEFAULT_STYLE
+      position: "top"
     });
   }
 }

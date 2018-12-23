@@ -17,7 +17,7 @@ const commonStyles = {
     flex: 0
   },
   logoHeader: {
-    width: scale(40),
+    width: scale(45),
     resizeMode: "contain"
   },
   titleHeader: {

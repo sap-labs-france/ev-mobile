@@ -1,4 +1,5 @@
 import color from "color";
+import { scale } from 'react-native-size-matters';
 
 import { Platform, Dimensions, PixelRatio } from "react-native";
 
@@ -125,11 +126,12 @@ module.exports = {
 
   // Footer
   footerHeight: 55,
+  // footerHeight: scale(40),
   footerDefaultBg: "transparent",
 
   // FooterTab
-  tabBarTextColor: "#8bb3f4",
-  tabBarTextSize: platform === "ios" ? 14 : 11,
+  tabBarTextColor: "#888",
+  tabBarTextSize: platform === "ios" ? scale(14) : scale(11),
   activeTab: platform === "ios" ? "#007aff" : "#fff",
   sTabBarActiveTextColor: "#007aff",
   tabBarActiveTextColor: "#fff",

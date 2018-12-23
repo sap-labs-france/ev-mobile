@@ -1,34 +1,39 @@
-import React, { Component } from "react";
-import { ScrollView, RefreshControl } from "react-native";
-import { Container, Icon, View, Thumbnail, Text } from "native-base";
-
+import React from "react";
+import { ScrollView, RefreshControl, TouchableOpacity, Image, Alert } from "react-native";
+import { Container, Spinner, Icon, View, Thumbnail, Text } from "native-base";
+import { ResponsiveComponent } from "react-native-responsive-ui";
 import * as Animatable from "react-native-animatable";
-
 import ChargerHeader from "../ChargerHeader";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import ConnectorStatusComponent from "../../../components/ConnectorStatus";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
-import styles from "./styles";
+import computeStyleSheet from "./styles";
 import Constants from "../../../utils/Constants";
+import Message from "../../../utils/Message";
 
 const noPhoto = require("../../../../assets/no-photo.png");
+const noSite = require("../../../../assets/no-site.gif");
 
 const _provider = ProviderFactory.getProvider();
 
-class ConnectorDetails extends Component {
+class ConnectorDetails extends ResponsiveComponent {
 
   constructor(props) {
     super(props);
     this.state = {
       charger: this.props.navigation.state.params.charger,
       connector: this.props.navigation.state.params.connector,
+      siteID: this.props.navigation.state.params.siteID,
+      siteImage: null,
       transaction: null,
       seconds: "00",
       minutes: "00",
       hours: "00",
       userImage: null,
       refreshing: false,
+      firstLoad: true,
+      loadingTransaction: false,
       isAdmin: false
     };
   }
@@ -39,6 +44,8 @@ class ConnectorDetails extends Component {
     // Set if Admin
     const isAdmin = (await _provider.getSecurityProvider()).isAdmin();
     this.setState({isAdmin});
+    // Get the Site Image
+    this._getSiteImage();    
     // Get Current Transaction
     await this._getTransaction();
     // Init
@@ -51,6 +58,10 @@ class ConnectorDetails extends Component {
         this._refreshChargerData();
       }
     }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
+    // Ok
+    this.setState({
+      firstLoad: false
+    })
   }
 
   async componentWillUnmount() {
@@ -62,6 +73,94 @@ class ConnectorDetails extends Component {
     }
     if (this.timerElapsedTime) {
       clearInterval(this.timerElapsedTime);
+    }
+  }
+
+  onStartTransaction = () => {
+    const { charger } = this.state;
+    Alert.alert(
+      `${I18n.t("details.startTransaction")}`,
+      `${I18n.t("details.startTransactionMessage")} ${charger.id} ?`,
+      [
+        {text: I18n.t("general.yes"), onPress: () => this._startTransaction()},
+        {text: I18n.t("general.no")}
+      ]
+    );
+  }
+
+  _startTransaction = async () => {
+    const { charger, connector } = this.state;
+    this.setState({loadingTransaction: true});
+    try {
+      // Start the Transaction
+      let status = await _provider.startTransaction(charger.id, connector.connectorId);
+      // Check
+      if (status.status && status.status === "Accepted") {
+        Message.showSuccess(I18n.t("details.accepted"));
+      } else {
+        Message.showError(I18n.t("details.denied"));
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+    this.setState({loadingTransaction: false});
+  }
+
+  onStopTransaction = async () => {
+    const { charger } = this.state;
+    // Check
+    const isAuthorised = await this._isAuthorizedStopTransaction();
+    if (!isAuthorised) {
+      Alert.alert(
+        `${I18n.t("details.notAuthorisedTitle")}`,
+        `${I18n.t("details.notAuthorised")}`,
+        [
+          {text: I18n.t("general.ok")},
+        ]
+      );
+    } else {
+      Alert.alert(
+        `${I18n.t("details.stopTransaction")}`,
+        `${I18n.t("details.stopTransactionMessage")} ${charger.id} ?`,
+        [
+          {text: I18n.t("general.yes"), onPress: () => this._stopTransaction()},
+          {text: I18n.t("general.no")}
+        ]
+      );
+    }
+  }
+
+  _stopTransaction = async () => {
+    const { charger, connector } = this.state;
+    this.setState({loadingTransaction: true});
+    try {
+      // Stop the Transaction
+      let status = await _provider.stopTransaction(charger.id, connector.activeTransactionID);
+      // Check
+      if (status.status && status.status === "Accepted") {
+        Message.showSuccess(I18n.t("details.accepted"));
+      } else {
+        Message.showError(I18n.t("details.denied"));
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+    this.setState({loadingTransaction: false});
+  }
+
+  _isAuthorizedStopTransaction = async () => {
+    try {
+      let result = await _provider.isAuthorizedStopTransaction(
+        { Action: "StopTransaction", Arg1: this.props.charger.id, Arg2: this.props.connector.activeTransactionID }
+      );
+      if (result) {
+        return result.IsAuthorized;
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
     }
   }
 
@@ -195,81 +294,122 @@ class ConnectorDetails extends Component {
     });
   }
 
+  _getSiteImage = async () => {
+    try {
+      let result = await _provider.getSiteImage(
+        { ID: this.state.siteID }
+      );
+      if (result) {
+        this.setState({siteImage: result.image});
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
   render() {
+    const style = computeStyleSheet();
     const navigation = this.props.navigation;
-    const { charger, connector, refreshing, userImage, transaction, hours, minutes, seconds } = this.state;
+    const { firstLoad, siteImage, loadingTransaction, charger, connector, refreshing, userImage, transaction, hours, minutes, seconds } = this.state;
     return (
       <Container>
         <ChargerHeader charger={charger} connector={connector} navigation={navigation} />
-        <ScrollView style={styles.scrollViewContainer} refreshControl={
+        <ScrollView style={style.scrollViewContainer} refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={this._refresh} />
         }>
-          <Animatable.View style={styles.content} animation="fadeIn" delay={100}>
-            <View style={styles.rowContainer}>
-              <View style={styles.columnContainer}>
-                <ConnectorStatusComponent connector={connector}/>
-                <Text style={styles.label}>{Utils.translateConnectorStatus(connector.status)}</Text>
-              </View>
-              <View style={styles.columnContainer}>
-                <Thumbnail style={styles.userPicture} source={userImage ? {uri: userImage} : noPhoto} />
-                {transaction ?
-                  <View>
-                    <Text style={styles.labelUser}>{Utils.buildUserName(transaction.user)}</Text>
-                    <Text style={styles.subLabelUser}>({transaction.tagID})</Text>
-                  </View>
+          <View style={style.detailsContainer}>
+            <Image style={style.backgroundImage} source={siteImage ? {uri: siteImage} : noSite}/>
+            { loadingTransaction ?
+              <Spinner color="white" style={style.spinner} />
+            :
+              <View style={style.transactionContainer}>
+                {connector.activeTransactionID === 0 ?
+                  <TouchableOpacity onPress={() => this.onStartTransaction()}>
+                    <View style={style.startTransaction}>
+                      <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
+                    </View>
+                  </TouchableOpacity>
                 :
-                  <Text style={styles.label}>-</Text>
+                  <TouchableOpacity onPress={() => this.onStopTransaction()}>
+                    <View style={style.stopTransaction}>
+                      <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="stop" />
+                    </View>
+                  </TouchableOpacity>
                 }
+              </View>
+            }
+          </View>
+          {firstLoad ?
+            <Spinner color="white" style={style.spinner} />
+          :
+            <View style={style.content}>
+              <View style={style.rowContainer}>
+                <View style={style.columnContainer}>
+                  <ConnectorStatusComponent connector={connector}/>
+                  <Text style={style.label}>{Utils.translateConnectorStatus(connector.status)}</Text>
+                </View>
+                <View style={style.columnContainer}>
+                  <Thumbnail style={style.userPicture} source={userImage ? {uri: userImage} : noPhoto} />
+                  {transaction ?
+                    <View>
+                      <Text style={style.labelUser}>{Utils.buildUserName(transaction.user)}</Text>
+                      <Text style={style.subLabelUser}>({transaction.tagID})</Text>
+                    </View>
+                  :
+                    <Text style={style.label}>-</Text>
+                  }
+                </View>
+              </View>
+              <View style={style.rowContainer}>
+                <View style={style.columnContainer}>
+                  <Icon type="FontAwesome" name="bolt" style={style.icon} />
+                  { connector.activeTransactionID === 0 ?
+                    <Text style={style.labelValue}>-</Text>
+                  :
+                    <View>
+                      <Text style={style.labelValue}>{(connector.currentConsumption / 1000) > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0}</Text>
+                      <Text style={style.subLabel}>{I18n.t("details.instant")} (kW)</Text>
+                    </View>
+                  }
+                </View>
+                <View style={style.columnContainer}>
+                  <Icon type="Ionicons" name="time" style={style.icon} />
+                  {transaction && transaction.timestamp ?
+                    <Text style={style.labelTimeValue}>{`${hours}:${minutes}:${seconds}`}</Text>
+                  :
+                    <Text style={style.labelValue}>- : - : -</Text>
+                  }
+                </View>
+              </View>
+              <View style={style.rowContainer}>
+                <View style={style.columnContainer}>
+                  <Icon style={style.icon} type="MaterialIcons" name="trending-up" />
+                  { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
+                    <Text style={style.labelValue}>-</Text>
+                  :
+                    <View>
+                      <Text style={style.labelValue}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
+                      <Text style={style.subLabel}>{I18n.t("details.total")} (kW.h)</Text>
+                    </View>
+                  }
+                </View>
+                <View style={style.columnContainer}>
+                  <Icon type="Feather" name="battery-charging" style={style.icon} />
+                  { connector.currentStateOfCharge ?
+                    <View>
+                      <Text style={style.labelValue}>{connector.currentStateOfCharge}</Text>
+                      <Text style={style.subLabel}>(%)</Text>
+                    </View>
+                  :
+                    <View>
+                      <Text style={style.labelValue}>-</Text>
+                    </View>
+                  }
+                </View>
               </View>
             </View>
-            <View style={styles.rowContainer}>
-              <View style={styles.columnContainer}>
-                <Icon type="FontAwesome" name="bolt" style={styles.iconSize} />
-                { connector.activeTransactionID === 0 ?
-                  <Text style={styles.labelValue}>-</Text>
-                :
-                  <View>
-                    <Text style={styles.labelValue}>{(connector.currentConsumption / 1000) > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0}</Text>
-                    <Text style={styles.subLabel}>{I18n.t("details.instant")} (kW)</Text>
-                  </View>
-                }
-              </View>
-              <View style={styles.columnContainer}>
-                <Icon type="Ionicons" name="time" style={styles.iconSize} />
-                {transaction && transaction.timestamp ?
-                  <Text style={styles.labelTimeValue}>{`${hours}:${minutes}:${seconds}`}</Text>
-                :
-                  <Text style={styles.labelValue}>- : - : -</Text>
-                }
-              </View>
-            </View>
-            <View style={styles.rowContainer}>
-              <View style={styles.columnContainer}>
-                <Icon style={styles.iconSize} type="MaterialIcons" name="trending-up" />
-                { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
-                  <Text style={styles.labelValue}>-</Text>
-                :
-                  <View>
-                    <Text style={styles.labelValue}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
-                    <Text style={styles.subLabel}>{I18n.t("details.total")} (kW.h)</Text>
-                  </View>
-                }
-              </View>
-              <View style={styles.columnContainer}>
-                <Icon type="Feather" name="battery-charging" style={styles.iconSize} />
-                { connector.currentStateOfCharge ?
-                  <View>
-                    <Text style={styles.labelValue}>{connector.currentStateOfCharge}</Text>
-                    <Text style={styles.subLabel}>(%)</Text>
-                  </View>
-                :
-                  <View>
-                    <Text style={styles.labelValue}>-</Text>
-                  </View>
-                }
-              </View>
-            </View>
-          </Animatable.View>
+          }
         </ScrollView>
       </Container>
     );

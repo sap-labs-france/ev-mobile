@@ -1,19 +1,17 @@
-import React, { Component } from "react";
-import { Button, Icon, Text, Footer, FooterTab } from "native-base";
+import React from "react";
+import { Button, Icon, Text, FooterTab, Footer } from "native-base";
 import { TabNavigator } from "react-navigation";
-import Orientation from "react-native-orientation";
-
+import { ResponsiveComponent } from "react-native-responsive-ui";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
-
 import ConnectorDetails from "../ConnectorDetails";
 import ChargerDetails from "../ChargerDetails";
 import ChartDetails from "../ChartDetails";
-import styles from "./styles";
+import computeStyleSheet from "./styles";
 
 const _provider = ProviderFactory.getProvider();
 
-class ChargerTabs extends Component {
+class ChargerTabs extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,10 +29,11 @@ class ChargerTabs extends Component {
   }
 
   render() {
+    const style = computeStyleSheet();
     const navigation = this.props.navigation;
     const state = this.props.navigationState;
     return (
-      <Footer style={styles.footerContainer}>
+      <Footer style={style.footerContainer}>
         <FooterTab>
           <Button vertical active={state.index === 0} onPress={()=>navigation.navigate("ConnectorDetails")}>
             <Icon type="Feather" name="zap"/>

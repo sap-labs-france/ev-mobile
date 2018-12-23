@@ -1,112 +1,127 @@
-import { StyleSheet, Platform, Dimensions } from "react-native";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { ResponsiveStyleSheet } from "react-native-responsive-ui";
+import deepmerge from "deepmerge";
 import commonColor from "../../../theme/variables/commonColor";
-const { width } = Dimensions.get("window");
+import { scale } from 'react-native-size-matters';
 
-export default StyleSheet.create({
+const commonStyles = {
+  backgroundImage: {
+    width: "100%",
+    height: scale(125)
+  },
+  spinner: {
+    // marginTop: hp("18%")
+  },
+  transactionContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  startTransaction: {
+    borderRadius: scale(50),
+    borderStyle: "solid",
+    borderWidth: 2,
+    borderColor: commonColor.textColor,
+    width: scale(100),
+    height: scale(100),
+    backgroundColor: commonColor.brandSuccess,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: scale(-50)
+  },
+  stopTransaction: {
+    borderRadius: scale(50),
+    borderStyle: "solid",
+    borderWidth: 2,
+    borderColor: commonColor.textColor,
+    width: scale(100),
+    height: scale(100),
+    backgroundColor: commonColor.brandDanger,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: scale(-50)
+  },
+  startStopTransactionIcon: {
+    fontSize: scale(75)
+  },
   scrollViewContainer: {
-    marginTop: hp("5%")
   },
   content: {
-    flexDirection: "column",
     flex: 1,
-    alignItems: "center"
+    flexDirection: "column",
+    justifyContent: "space-between"
   },
   rowContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: hp("17%")
+    height: scale(90)
   },
   columnContainer: {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    width: wp("50%")
-  },
-  secondColumnContainer: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1
-  },
-  badgeContainer: {
-    justifyContent: "center",
-    height: hp("8%"),
-    width: width > 500 ? wp("10.6%") : wp("13.2%"),
-    alignItems: "center",
-    borderRadius: 150
-  },
-  badgeText: {
-    fontSize: hp("4.5%"),
-    color: commonColor.textColor
+    width: "50%"
   },
   label: {
-    fontSize: hp("3%"),
-    paddingTop: hp("1%"),
+    fontSize: scale(15),
     color: commonColor.textColor,
     alignSelf: "center"
   },
   labelValue: {
-    fontSize: hp("5%"),
+    fontSize: scale(15),
     fontWeight: "bold",
     color: commonColor.textColor,
-    alignSelf: "center",
-    // marginTop: hp("1%") // iOS
-  },
-  labelTimeValue: {
-    fontSize: hp("4%"),
-    fontWeight: "bold",
-    color: commonColor.textColor,
-    alignSelf: "center",
-    marginTop: hp("-1%")
-  },
-  subLabel: {
-    fontSize: hp("2%"),
-    fontWeight: "bold",
-    color: commonColor.textColor,
-    marginTop: hp("-1%"),
     alignSelf: "center"
   },
-  iconSize: {
-    fontSize: hp("5.5%")
-  },
-  currentConsumptionContainer: {
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  energyConsumedContainer: {
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  energyConsumedNumber: {
+  labelTimeValue: {
+    fontSize: scale(15),
     fontWeight: "bold",
-    fontSize: hp("3.7%"),
-    paddingTop: hp("1.5%")
+    color: commonColor.textColor,
+    alignSelf: "center"
   },
-  headerIcons: {
-    fontSize: hp("4.5%"),
-    backgroundColor: "transparent",
-    color: commonColor.textColor
+  subLabel: {
+    fontSize: scale(10),
+    fontWeight: "bold",
+    color: commonColor.textColor,
+    alignSelf: "center"
+  },
+  icon: {
+    fontSize: scale(30),
   },
   labelUser: {
-    fontSize: hp("2.5%"),
+    fontSize: scale(10),
     color: commonColor.textColor,
     alignSelf: "center"
   },
   subLabelUser: {
-    fontSize: hp("2%"),
+    fontSize: scale(10),
     fontWeight: "bold",
     color: commonColor.textColor,
-    // marginTop: hp("-1%"), // iOS
     alignSelf: "center"
   },
   userPicture: {
-    height: wp("15%"),
-    width: wp("15%"),
+    height: scale(40),
+    width: scale(40),
     alignSelf: "center",
-    marginTop: hp("1%"),
-    borderRadius: 30, // iOS
+    borderRadius: scale(20),
     borderWidth: 2,
     borderColor: commonColor.textColor
   }
-});
+};
+
+const portraitStyles = {
+};
+
+const landscapeStyles = {
+};
+
+export default function computeStyleSheet() {
+  return ResponsiveStyleSheet.select([
+    {
+      query: { orientation: "landscape" },
+      style: deepmerge(commonStyles, landscapeStyles)
+    },
+    {
+      query: { orientation: "portrait" },
+      style: deepmerge(commonStyles, portraitStyles)
+    }
+  ]);
+}

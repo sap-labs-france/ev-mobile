@@ -8,10 +8,13 @@ const commonStyles = {
     flex: 1,
     flexDirection: "column",
     height: "20%",
-    padding: "2%",
+    paddingTop: "2%",
+    paddingBottom: "2%",
+    paddingLeft: "4%",
+    paddingRight: "4%",
     borderTopWidth: 1,
     borderTopColor: "#D3D3D3",
-    backgroundColor: "rgba(255,255,255,0.2)",
+    backgroundColor: "rgba(255,255,255,0.2)"
   },
   mainContent: {
     flexDirection: "row",

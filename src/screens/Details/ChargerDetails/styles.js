@@ -1,37 +1,55 @@
-import { StyleSheet } from "react-native";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { ResponsiveStyleSheet } from "react-native-responsive-ui";
+import deepmerge from "deepmerge";
 import commonColor from "../../../theme/variables/commonColor";
+import { scale } from 'react-native-size-matters';
 
-export default StyleSheet.create({
+const commonStyles = {
   scrollViewContainer: {
-    marginTop: hp("5%")
-  },
-  content: {
-    flexDirection: "column",
     flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
     alignItems: "center"
   },
   rowContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    height: hp("16.5%")
+    justifyContent: "space-evenly",
+    width: "100%",
+    padding: "5%"
   },
   columnContainer: {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    width: wp("50%")
+    width: "50%"
   },
   label: {
-    fontSize: hp("3%"),
+    fontSize: scale(15),
     fontWeight: "bold",
-    paddingTop: hp("1.5%"),
-    paddingBottom: hp("0.7%"),
     color: commonColor.textColor,
     alignSelf: "center"
   },
   value: {
-    color: commonColor.textColor,
-    fontSize: hp("2.5%")
+    fontSize: scale(15),
+    color: commonColor.textColor
   }
-});
+};
+
+const portraitStyles = {
+};
+
+const landscapeStyles = {
+};
+
+export default function computeStyleSheet() {
+  return ResponsiveStyleSheet.select([
+    {
+      query: { orientation: "landscape" },
+      style: deepmerge(commonStyles, landscapeStyles)
+    },
+    {
+      query: { orientation: "portrait" },
+      style: deepmerge(commonStyles, portraitStyles)
+    }
+  ]);
+}
+

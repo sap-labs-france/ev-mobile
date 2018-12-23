@@ -1,4 +1,5 @@
 import variable from "./../variables/platform";
+import { scale } from 'react-native-size-matters';
 
 export default (variables = variable) => {
   const platform = variables.platform;
@@ -18,18 +19,22 @@ export default (variables = variable) => {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 10,
-    minHeight: 30,
+    padding: scale(5),
+    minHeight: scale(20),
     "NativeBase.Text": {
       color: variables.brandDanger,
       flex: 1
     },
     "NativeBase.Button": {
       backgroundColor: "transparent",
-      height: 30,
+      marginTop: scale(5),
+      height: scale(30),
+      verticalAlign: "center",
       elevation: 0,
       "NativeBase.Text": {
-        fontSize: 14
+        paddingTop: scale(5),
+        height: scale(15),
+        fontSize: scale(12)
       }
     }
   };

@@ -1,75 +1,55 @@
-import { StyleSheet } from "react-native";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { ResponsiveStyleSheet } from "react-native-responsive-ui";
+import deepmerge from "deepmerge";
 import commonColor from "../../../theme/variables/commonColor";
+import { scale } from 'react-native-size-matters';
 
-export default StyleSheet.create({
+const commonStyles = {
   header: {
-    flexDirection: "row",
+    height: scale(40)
   },
-  arrowIconColumn: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center"
+  leftHeader: {
+    flex: 0
   },
-  headerIcons: {
-    backgroundColor: "transparent",
-    color: commonColor.textColor
+  bodyHeader: {
+    flex: 1
   },
-  imageHeader: {
-    height: hp("3.7%"),
-    width: wp("15%"),
-    resizeMode: "contain"
+  rightHeader: {
+    flex: 0
   },
   titleHeader: {
     color: commonColor.textColor,
-    fontSize: hp("2.5%"),
-    width: wp("75%"),
-    textAlign: "center",
+    fontSize: scale(15),
     fontWeight: "bold"
   },
   subTitleHeader: {
     fontWeight: "bold",
     color: commonColor.textColor,
-    fontSize: hp("2%")
+    fontSize: scale(10),
+    marginTop: scale(-2)
+  },
+  iconHeader: {
+    fontSize: scale(25)
   },
   detailsContainer: {
-  },
-  backgroundImage: {
-    width: wp("100%"),
-    height: hp("25%")
-  },
-  spinner: {
-    marginTop: hp("18%")
-  },
-  transactionContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: hp("20%")
-  },
-  startTransaction: {
-    borderRadius: 50,
-    borderStyle: "solid",
-    borderWidth: 2,
-    borderColor: commonColor.textColor,
-    width: wp("28%"),
-    height: wp("28%"),
-    backgroundColor: commonColor.brandSuccess,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  stopTransaction: {
-    borderRadius: 50,
-    borderStyle: "solid",
-    borderWidth: 2,
-    borderColor: commonColor.textColor,
-    width: wp("28%"),
-    height: wp("28%"),
-    backgroundColor: commonColor.brandDanger,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  startStopTransactionIcon: {
-    fontSize: hp("10%")
-  },
-});
+  }
+};
+
+const portraitStyles = {
+};
+
+const landscapeStyles = {
+};
+
+export default function computeStyleSheet() {
+  return ResponsiveStyleSheet.select([
+    {
+      query: { orientation: "landscape" },
+      style: deepmerge(commonStyles, landscapeStyles)
+    },
+    {
+      query: { orientation: "portrait" },
+      style: deepmerge(commonStyles, portraitStyles)
+    }
+  ]);
+}
 

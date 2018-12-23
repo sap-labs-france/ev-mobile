@@ -9,13 +9,15 @@ import SignUp from "./screens/auth/SignUp";
 import Sidebar from "./screens/Sidebar";
 import Sites from "./screens/Sites";
 import Chargers from "./screens/Chargers";
+import ChargerHeader from "./screens/Details/ChargerHeader";
 import ChargerNavigation from "./screens/Details/ChargerTab";
 
 // Drawer Menu Navigation
 const DrawerNavigation = createDrawerNavigator(
   {
     Sites: { screen: Sites },
-    Chargers: { screen: Chargers }
+    Chargers: { screen: Chargers },
+    ChargerHeader: { screen: ChargerHeader }
   },
   {
     navigationOptions: {

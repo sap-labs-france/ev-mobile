@@ -1,4 +1,5 @@
 import color from "color";
+import { scale } from 'react-native-size-matters';
 
 import { Platform, Dimensions, PixelRatio } from "react-native";
 
@@ -122,7 +123,7 @@ export default {
   },
 
   // Footer
-  footerHeight: 55,
+  footerHeight: scale(55),
   footerDefaultBg: "transparent",
 
   // FooterTab

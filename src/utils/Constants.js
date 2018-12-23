@@ -1,12 +1,4 @@
 export default {
-  // Toast
-  TOAST_DURATION_MILLIS: 3000,
-  TOAST_DEFAULT_STYLE: {
-    color: "white",
-    textAlign: "center"
-  },
-  TOAST_FONT_SIZE: 13,
-
   // Auto Refresh
   AUTO_REFRESH_PERIOD_MILLIS: 10000,
   AUTO_REFRESH_CHART_PERIOD_MILLIS: 30000,
