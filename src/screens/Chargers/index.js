@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Text, Platform, FlatList, RefreshControl } from "react-native";
+import React from "react";
+import { Platform, FlatList, RefreshControl } from "react-native";
 import { Container, Header, Button, Icon, Body, Left, Right, View, Spinner, List, Title } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import ProviderFactory from "../../provider/ProviderFactory";

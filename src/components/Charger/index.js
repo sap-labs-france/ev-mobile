@@ -1,39 +1,34 @@
-import React, { Component } from "react";
+import React from "react";
 import { FlatList } from "react-native";
-import { Text, View, ListItem, Icon } from "native-base";
-
+import { Text, View, Icon } from "native-base";
+import { ResponsiveComponent } from "react-native-responsive-ui";
+import computeStyleSheet from "./styles";
 import * as Animatable from "react-native-animatable";
-
 import ConnectorComponent from "../Connector";
-import styles from "./styles";
 
-class ChargerComponent extends Component {
-
+class ChargerComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isChargerDead: false,
-      minutesNow: new Date().getMinutes()
+      isChargerDead: false
     };
   }
 
   componentDidMount() {
     const { items } = this.props;
-    const { minutesNow } = this.state;
     // Check if charger is dead
-    this.isHeartbeat(items, minutesNow);
-
+    this._checkHeartbeat(items);
   }
 
-  isHeartbeat = (charger, minutesNow) => {
-    let getLastHeartbeatMinutes = new Date(charger.lastHeartBeat).getMinutes();
+  _checkHeartbeat = (charger, minutesNow) => {
+    let lastHeartbeatMinutes = new Date(charger.lastHeartBeat).getMinutes();
     // Is last heartbeat has been sent more than 5 minutes ago ?
-    if ((minutesNow - getLastHeartbeatMinutes) > 5) {
+    if ((new Date().getMinutes() - lastHeartbeatMinutes) > 5) {
       // Yes: Charger is dead
-      this.setState({isChargerDead: true});
+      this.setState({ isChargerDead: true });
     } else {
       // No: It doesn't
-      this.setState({isChargerDead: false});
+      this.setState({ isChargerDead: false });
     }
   }
 
@@ -44,21 +39,22 @@ class ChargerComponent extends Component {
   }
 
   render() {
-    const {  items, nav, siteID } = this.props;
+    const style = computeStyleSheet();
+    const { items, nav, siteID } = this.props;
     const { isChargerDead } = this.state;
     return (
-      <View style={styles.container}>
-        <ListItem style={styles.listDividerContainer} itemDivider>
-          <Text style={styles.chargerName}>{items.id}</Text>
-          { !isChargerDead ?
-            <Icon style={styles.heartbeatIcon} type="FontAwesome" name="heartbeat" />
-          :
-            <Animatable.Text animation="pulse" easing="ease-in" iterationCount="infinite">
-              <Icon style={styles.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
+      <View style={style.container}>
+        <View style={style.chargerContainer}>
+          <Text style={style.chargerName}>{items.id}</Text>
+          { isChargerDead ?
+            <Animatable.Text animation="fadeIn" easing="ease-in-out" useNativeDriver="true" duration="1000" iterationCount="infinite" direction="alternate-reverse">
+              <Icon style={style.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
             </Animatable.Text>
+          :
+            <Icon style={style.heartbeatIcon} type="FontAwesome" name="heartbeat" />
           }
-        </ListItem>
-        <FlatList style={styles.listContainer}
+        </View>
+        <FlatList style={style.connectorsContainer}
           data={items.connectors}
           renderItem={item => this._renderItem(item, items, nav, siteID)}
           keyExtractor={(connector, index) => connector.connectorId.toString()}

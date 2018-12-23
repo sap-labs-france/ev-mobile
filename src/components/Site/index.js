@@ -1,15 +1,11 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import { Badge } from 'react-native-elements'
-import { TouchableOpacity, PixelRatio } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Text, View, Icon } from "native-base";
 import openMap from "react-native-open-maps";
 import computeStyleSheet from "./styles";
-
 import I18n from "../../I18n/I18n";
-
-console.log(PixelRatio.getFontScale());
-
 
 class SiteComponent extends ResponsiveComponent {
 

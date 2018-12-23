@@ -1,48 +1,66 @@
-import { StyleSheet } from "react-native";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { ResponsiveStyleSheet } from "react-native-responsive-ui";
+import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
+import { scale, moderateScale } from 'react-native-size-matters';
 
-export default StyleSheet.create({
+const commonStyles = {
   container: {
-    paddingBottom: hp("2.3%"),
-    marginBottom: hp("3%"),
+    flex: 1,
+    flexDirection: "column",
+    padding: "1%",
+    marginBottom: scale(10),
     backgroundColor: "rgba(255,255,255,0.2)",
     borderRadius: 15
   },
-  listDividerContainer: {
-    backgroundColor: "transparent",
-    paddingBottom: hp("1.1"),
-    borderBottomColor: commonColor.textColor,
-    borderBottomWidth: wp("0.3%"),
+  chargerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    flexWrap: "wrap"
+    alignItems: "center",
+    backgroundColor: "transparent",
+    padding: "1%",
+    marginTop: "-1%",
+    borderBottomColor: commonColor.textColor,
+    borderBottomWidth: 1,
   },
   chargerName: {
     color: commonColor.textColor,
-    fontWeight: "bold",
-    fontSize: hp("3.6%")
-  },
-  siteAreaName: {
-    fontStyle: "italic",
-    fontSize: hp("2.1%")
+    fontSize: moderateScale(20),
+    fontWeight: "bold"
   },
   heartbeatIcon: {
     color: commonColor.brandSuccess,
-    fontSize: hp("3%")
+    fontSize: moderateScale(20)
   },
   deadHeartbeatIcon: {
     color: commonColor.brandDanger,
-    fontSize: hp("3%")
+    fontSize: moderateScale(20)
   },
-  listContainer: {
+  connectorsContainer: {
     flexDirection: "row",
-    flex: 1,
     justifyContent: "space-between",
     alignItems: "center",
-    marginLeft: wp("5%"),
-    marginRight: wp("5%"),
+    marginLeft: "2%",
+    marginRight: "2%",
     flexWrap: "wrap",
-    paddingTop: hp("1.5%")
+    paddingTop: "1%"
   }
-});
+};
+
+const portraitStyles = {
+};
+
+const landscapeStyles = {
+};
+
+export default function computeStyleSheet() {
+  return ResponsiveStyleSheet.select([
+    {
+      query: { orientation: "landscape" },
+      style: deepmerge(commonStyles, landscapeStyles)
+    },
+    {
+      query: { orientation: "portrait" },
+      style: deepmerge(commonStyles, portraitStyles)
+    }
+  ]);
+}
