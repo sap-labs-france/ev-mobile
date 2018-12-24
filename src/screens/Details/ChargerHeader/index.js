@@ -29,9 +29,9 @@ export class ChargerHeader extends ResponsiveComponent {
             <Text style={style.subTitleHeader}>({I18n.t("details.connector")} {connectorLetter})</Text>
           </Body>
           <Right style={style.rightHeader}>
-            <Button transparent onPress={() => navigation.openDrawer()}>
+            {/* <Button transparent onPress={() => navigation.openDrawer()}>
               <Icon active name="menu" style={style.iconHeader} />
-            </Button>
+            </Button> */}
           </Right>
         </Header>
       </View>

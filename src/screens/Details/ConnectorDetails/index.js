@@ -2,7 +2,6 @@ import React from "react";
 import { ScrollView, RefreshControl, TouchableOpacity, Image, Alert } from "react-native";
 import { Container, Spinner, Icon, View, Thumbnail, Text } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import * as Animatable from "react-native-animatable";
 import ChargerHeader from "../ChargerHeader";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import ConnectorStatusComponent from "../../../components/ConnectorStatus";

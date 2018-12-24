@@ -1,29 +1,34 @@
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { ResponsiveStyleSheet } from "react-native-responsive-ui";
+import deepmerge from "deepmerge";
 import commonColor from "../../../theme/variables/commonColor";
+import { scale } from 'react-native-size-matters';
 
-export default ({
-  padding: {
-    top: hp("3%"),
-    bottom: hp("12%"),
-    left: wp("26%"),
-    right: wp("7.6%")
+const commonStyles = {
+  container: {
+    flex: 1,
+    backgroundColor: "#F5FCFF",
+    padding: 20
   },
-  data: {
-    fill: commonColor.textColor,
-    fillOpacity: 0.6,
-    stroke: commonColor.brandDanger,
-    strokeWidth: 3
-  },
-  xAxisLabel: {
-    padding: wp("10%"),
-    fill: commonColor.textColor,
-    fontWeight: "bold",
-    fontSize: hp("2.2%")
-  },
-  yAxisLabel: {
-    padding: hp("10%"),
-    fill: commonColor.textColor,
-    fontWeight: "bold",
-    fontSize: hp("2.2%")
+  chart: {
+    height: "100%"
   }
-});
+};
+
+const portraitStyles = {
+};
+
+const landscapeStyles = {
+};
+
+export default function computeStyleSheet() {
+  return ResponsiveStyleSheet.select([
+    {
+      query: { orientation: "landscape" },
+      style: deepmerge(commonStyles, landscapeStyles)
+    },
+    {
+      query: { orientation: "portrait" },
+      style: deepmerge(commonStyles, portraitStyles)
+    }
+  ]);
+}
