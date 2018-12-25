@@ -8,15 +8,12 @@ import Utils from "../../../utils/Utils";
 import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./styles";
 import { scale } from 'react-native-size-matters';
+import commonColor from "../../../theme/variables/commonColor";
 
 import { LineChart } from "react-native-charts-wrapper";
 
-const greenBlue = "rgb(26, 182, 151)";
-const petrel = "rgb(59, 145, 153)";
-const redBlue = "rgb(255, 145, 153)";
-const orange = "rgb(255, 182, 151)";
-const blue = "rgb(151, 182, 250)";
-const violet = "rgb(153, 145, 250)";
+const fillGreen = "rgb(26, 182, 151)";
+const fillRed = "rgb(255, 145, 153)";
 const EMPTY_CHART = [{ x:0, y:0 }];
 
 const _provider = ProviderFactory.getProvider();
@@ -143,38 +140,23 @@ class ChartDetails extends ResponsiveComponent {
               dataSets: [
                 {
                   values: consumptions,
-                  label: I18n.t("details.consumption"),
+                  label: I18n.t("details.instantPower"),
                   config: {
                     mode: "CUBIC_BEZIER",
                     drawValues: false,
                     lineWidth: 2,
                     drawCircles: false,
-                    circleColor: processColor(petrel),
+                    circleColor: processColor(commonColor.brandDanger),
                     drawCircleHole: false,
                     circleRadius: 5,
                     highlightColor: processColor("white"),
-                    color: processColor(petrel),
+                    color: processColor(commonColor.brandDanger),
                     drawFilled: true,
+                    fillAlpha: 65,
+                    fillColor: processColor(fillRed),
                     valueTextSize: scale(15)
                   }
                 },
-                // {
-                //   values: cumulated,
-                //   label: I18n.t("details.cumulated"),
-                //   config: {
-                //     mode: "CUBIC_BEZIER",
-                //     drawValues: false,
-                //     lineWidth: 2,
-                //     drawCircles: false,
-                //     circleColor: processColor(redBlue),
-                //     drawCircleHole: false,
-                //     circleRadius: 5,
-                //     highlightColor: processColor("white"),
-                //     color: processColor(redBlue),
-                //     drawFilled: true,
-                //     valueTextSize: scale(15)
-                //   }
-                // },
                 {
                   values: stateOfCharge,
                   label: I18n.t("details.battery"),
@@ -184,12 +166,14 @@ class ChartDetails extends ResponsiveComponent {
                     drawValues: false,
                     lineWidth: 2,
                     drawCircles: false,
-                    circleColor: processColor(blue),
+                    circleColor: processColor(commonColor.brandSuccess),
                     drawCircleHole: false,
                     circleRadius: 5,
                     highlightColor: processColor("white"),
-                    color: processColor(blue),
+                    color: processColor(commonColor.brandSuccess),
                     drawFilled: true,
+                    fillAlpha: 65,
+                    fillColor: processColor(fillGreen),
                     valueTextSize: scale(15)
                   }
                 }
@@ -225,12 +209,13 @@ class ChartDetails extends ResponsiveComponent {
             yAxis={{
               left: {
                 enabled: true,
-                textColor: processColor(greenBlue),
+                valueFormatter: "# W",
+                textColor: processColor(commonColor.brandDanger),
                 limitLines: [{
                   limit: 50000,
                   label: I18n.t("details.connectorMax"),
                   valueTextColor: processColor("white"),
-                  lineColor: processColor(greenBlue),
+                  lineColor: processColor(commonColor.brandDanger),
                   lineDashPhase: 2,
                   lineWidth: 2,
                   lineDashLengths: [10,20]
@@ -239,12 +224,12 @@ class ChartDetails extends ResponsiveComponent {
               right: {
                 enabled: true,
                 valueFormatter: "percent",
-                textColor: processColor(violet)
+                textColor: processColor(commonColor.brandSuccess)
               }
             }}
             autoScaleMinMaxEnabled={true}
             animation={{
-              durationX: 0,
+              durationX: 1500,
               durationY: 1500,
               easingY: "EaseInOutQuart"
             }}
@@ -253,8 +238,8 @@ class ChartDetails extends ResponsiveComponent {
             touchEnabled={true}
             dragEnabled={false}
             scaleEnabled={true}
-            scaleXEnabled={false}
-            scaleYEnabled={false}
+            scaleXEnabled={true}
+            scaleYEnabled={true}
             pinchZoom={true}
             doubleTapToZoomEnabled={false}
             dragDecelerationEnabled={true}

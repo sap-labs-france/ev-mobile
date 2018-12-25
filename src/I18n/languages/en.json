@@ -87,9 +87,9 @@
     "firmwareVersion": "Firmware Version",
     "time": "Time (mins)",
     "chargeInWatts": "Charge (Watt)",
-    "consumption": "Consumption (W)",
+    "instantPower": "Instant Power (W)",
     "cumulated": "Cumulated (W.h)",
-    "battery": "Battery (%)",
+    "battery": "Battery Level (%)",
     "connectorMax": "Connector Max (W)"
   }
 }
