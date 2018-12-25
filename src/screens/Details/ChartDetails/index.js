@@ -157,7 +157,7 @@ class ChartDetails extends ResponsiveComponent {
                   config: {
                     mode: "CUBIC_BEZIER",
                     drawValues: false,
-                    lineWidth: 3,
+                    lineWidth: 2,
                     drawCircles: false,
                     circleColor: processColor(petrel),
                     drawCircleHole: false,
@@ -181,7 +181,7 @@ class ChartDetails extends ResponsiveComponent {
                   config: {
                     mode: "CUBIC_BEZIER",
                     drawValues: false,
-                    lineWidth: 3,
+                    lineWidth: 2,
                     drawCircles: false,
                     circleColor: processColor(redBlue),
                     drawCircleHole: false,
@@ -206,7 +206,7 @@ class ChartDetails extends ResponsiveComponent {
                     axisDependency: "RIGHT",
                     mode: "CUBIC_BEZIER",
                     drawValues: false,
-                    lineWidth: 3,
+                    lineWidth: 2,
                     drawCircles: false,
                     circleColor: processColor(blue),
                     drawCircleHole: false,
@@ -226,9 +226,12 @@ class ChartDetails extends ResponsiveComponent {
                 }
               ]
             }}
-            chartDescription={{ text: "Charge" }}
+            chartDescription={{ text: "" }}
+            noDataText={"NO DATA"}
+            backgroundColor={"black"}
             legend={{
-              enabled: true
+              enabled: true,
+              textColor: processColor("white"),
             }}
             marker={{
               enabled: true,
@@ -237,6 +240,7 @@ class ChartDetails extends ResponsiveComponent {
             }}
             xAxis={{
               enabled: true,
+              labelRotationAngle: -45,
               granularity: 1,
               drawLabels: true,
               position: "BOTTOM",
@@ -247,15 +251,17 @@ class ChartDetails extends ResponsiveComponent {
               valueFormatter: "date",
               valueFormatterPattern: "HH:mm",
               textSize: scale(8),
-              textColor: processColor("gray")
+              textColor: processColor("white")
             }}
             yAxis={{
               left: {
                 enabled: true,
+                textColor: processColor(greenBlue),
                 limitLines: [{
                   limit: 50000,
                   label: "Connector Max",
-                  lineColor: processColor("red"),
+                  valueTextColor: processColor("white"),
+                  lineColor: processColor(greenBlue),
                   lineDashPhase: 2,
                   lineWidth: 2,
                   lineDashLengths: [10,20]
@@ -264,10 +270,12 @@ class ChartDetails extends ResponsiveComponent {
               right: {
                 enabled: true,
                 valueFormatter: "percent",
+                textColor: processColor(violet),
                 limitLines: [{
                   limit: 100,
                   label: "Battery Max",
-                  lineColor: processColor("red"),
+                  valueTextColor: processColor("white"),
+                  lineColor: processColor(violet),
                   lineDashPhase: 2,
                   lineWidth: 2,
                   lineDashLengths: [10,20]

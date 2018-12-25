@@ -6,8 +6,7 @@ import { scale } from 'react-native-size-matters';
 const commonStyles = {
   container: {
     flex: 1,
-    backgroundColor: "#F5FCFF",
-    padding: 20
+    backgroundColor: "#000"
   },
   chart: {
     height: "100%"
