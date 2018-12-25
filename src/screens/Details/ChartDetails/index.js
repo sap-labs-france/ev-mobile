@@ -34,17 +34,8 @@ class ChartDetails extends ResponsiveComponent {
   async componentDidMount() {
     // Set
     this.mounted = true;
-    // Add listeners
-    this.props.navigation.addListener("didFocus", this.componentDidFocus);
-    this.props.navigation.addListener("didBlur", this.componentDidBlur);
     // Get the consumption
     this.getChargingStationConsumption();
-  }
-
-  componentDidFocus = () => {
-  }
-
-  componentDidBlur = () => {
   }
 
   async componentWillUnmount() {
@@ -59,7 +50,7 @@ class ChartDetails extends ResponsiveComponent {
   getChargingStationConsumption = async () => {
     try {
       // Active Transaction?
-      // if (this.state.connector.activeTransactionID) {
+      if (this.state.connector.activeTransactionID) {
         // Clear interval if it exists
         if (!this.timerChartData) {
           // Start refreshing Charger Data
@@ -72,27 +63,19 @@ class ChartDetails extends ResponsiveComponent {
           }, Constants.AUTO_REFRESH_CHART_PERIOD_MILLIS);
         }
         // Get the consumption
-        // let result = await _provider.getChargingStationConsumption({
-        //   TransactionId: this.state.connector.activeTransactionID
-        // });
-        let result = this.getData();
+        let result = await _provider.getChargingStationConsumption({
+          TransactionId: this.state.connector.activeTransactionID
+        });
         // At least 2 values for the chart!!!
         if (result.values && result.values.length > 1) {
           // Convert
-          let firstDate, minutes, consumptions = [], stateOfCharge = [];
+          let consumptions = [], stateOfCharge = [];
           for (let index = 0; index < result.values.length; index++) {
             const value = result.values[index];
-            // Keep the date
-            if (index === 0) {
-              firstDate = new Date(value.date);
-              minutes = 0;
-            } else {
-              // Compute the mins elapsed
-              minutes = Math.trunc((new Date(value.date).getTime() - firstDate.getTime()) / (60 * 1000));
-            }
+            const date = new Date(value.date).getTime();
             // Add
-            consumptions.push({x: new Date(value.date).getTime(), y: value.value}); 
-            stateOfCharge.push({x: new Date(value.date).getTime(), y: value.stateOfCharge}); 
+            consumptions.push({x: date, y: value.value}); 
+            stateOfCharge.push({x: date, y: value.stateOfCharge}); 
           }
           // Set
           this.setState({
@@ -101,18 +84,18 @@ class ChartDetails extends ResponsiveComponent {
             stateOfCharge
           });
         }
-      // } else {
-      //   // Clear interval
-      //   if (this.timerChartData) {
-      //     clearInterval(this.timerChartData);
-      //   }
-      //   // Clear
-      //   this.setState({
-      //     values: null,
-      //     consumptions: EMPTY_CHART,
-      //     stateOfCharge: EMPTY_CHART
-      //   });
-      // }
+      } else {
+        // Clear interval
+        if (this.timerChartData) {
+          clearInterval(this.timerChartData);
+        }
+        // Clear
+        this.setState({
+          values: null,
+          consumptions: EMPTY_CHART,
+          stateOfCharge: EMPTY_CHART
+        });
+      }
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== 560) {
