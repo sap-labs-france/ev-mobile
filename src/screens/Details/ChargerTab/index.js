@@ -39,13 +39,13 @@ class ChargerTabs extends ResponsiveComponent {
             <Icon type="Feather" name="zap"/>
             <Text>{I18n.t("details.connector")}</Text>
           </Button>
-          <Button vertical active={state.index === 1} onPress={()=>navigation.navigate("ChargerDetails")}>
-            <Icon type="MaterialIcons" name="info" />
-            <Text>{I18n.t("details.informations")}</Text>
-          </Button>
-          <Button vertical active={state.index === 2} onPress={()=>navigation.navigate("ChartDetails")}>
+          <Button vertical active={state.index === 1} onPress={()=>navigation.navigate("ChartDetails")}>
             <Icon type="MaterialIcons" name="timeline" />
             <Text>{I18n.t("details.graph")}</Text>
+          </Button>
+          <Button vertical active={state.index === 2} onPress={()=>navigation.navigate("ChargerDetails")}>
+            <Icon type="MaterialIcons" name="info" />
+            <Text>{I18n.t("details.informations")}</Text>
           </Button>
         </FooterTab>
       </Footer>
@@ -56,13 +56,13 @@ class ChargerTabs extends ResponsiveComponent {
 const ChargerNavigation = TabNavigator(
   {
     ConnectorDetails: { screen: ConnectorDetails },
-    ChargerDetails: { screen: ChargerDetails },
-    ChartDetails: { screen: ChartDetails }
+    ChartDetails: { screen: ChartDetails },
+    ChargerDetails: { screen: ChargerDetails }
   },
   {
     initialRouteName: "ConnectorDetails",
     tabBarPosition: "bottom",
-    swipeEnabled: true,
+    swipeEnabled: false,
     animationEnabled: true,
     tabBarComponent: props => {
       return (

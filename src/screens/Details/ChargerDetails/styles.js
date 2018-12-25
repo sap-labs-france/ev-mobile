@@ -10,26 +10,19 @@ const commonStyles = {
     justifyContent: "flex-start",
     alignItems: "center"
   },
-  rowContainer: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    width: "100%",
-    padding: "5%"
-  },
   columnContainer: {
-    flexDirection: "column",
+    height: scale(75),
     justifyContent: "center",
     alignItems: "center",
-    width: "50%"
   },
   label: {
-    fontSize: scale(15),
+    fontSize: scale(20),
     fontWeight: "bold",
     color: commonColor.textColor,
     alignSelf: "center"
   },
   value: {
-    fontSize: scale(15),
+    fontSize: scale(20),
     color: commonColor.textColor
   }
 };

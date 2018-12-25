@@ -3,7 +3,7 @@ import { scale } from 'react-native-size-matters';
 
 export default (variables = variable) => {
 	const spinnerTheme = {
-		height: scale(80),
+		height: scale(120),
 	};
 
 	return spinnerTheme;

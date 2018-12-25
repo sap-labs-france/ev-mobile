@@ -37,30 +37,31 @@ const commonStyles = {
     paddingLeft: 15,
     paddingRight: 15
   },
+  inputGroup: {
+    backgroundColor: "rgba(255,255,255,0.3)",
+    height: scale(40),
+    marginBottom: 15,
+    alignSelf: "center",
+    borderWidth: 0,
+    borderColor: "transparent"
+  },
   inputIcon: {
     marginLeft: scale(5),
     fontSize: scale(14)
   },
   input: {
-    height: scale(35),
+    height: scale(40),
     fontSize: scale(14)
   },
   button: {
     alignSelf: "center",
     marginBottom: 15,
-    height: scale(30),
+    height: scale(40),
     backgroundColor: "rgba(255,255,255,0.30)"
   },
   buttonText: {
     fontSize: scale(14),
     color: commonColor.textColor
-  },
-  inputGroup: {
-    backgroundColor: "rgba(255,255,255,0.3)",
-    marginBottom: 15,
-    alignSelf: "center",
-    borderWidth: 0,
-    borderColor: "transparent"
   },
   formErrorText: {
     color: commonColor.brandDanger,

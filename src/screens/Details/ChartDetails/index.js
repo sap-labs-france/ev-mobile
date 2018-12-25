@@ -26,8 +26,7 @@ class ChartDetails extends ResponsiveComponent {
       connector: this.props.navigation.state.params.connector,
       values: [],
       consumptions: EMPTY_CHART,
-      stateOfCharge: EMPTY_CHART,
-      maxChartValue: this.props.navigation.state.params.connector.power
+      stateOfCharge: EMPTY_CHART
     };
   }
 
@@ -36,6 +35,11 @@ class ChartDetails extends ResponsiveComponent {
     this.mounted = true;
     // Get the consumption
     this.getChargingStationConsumption();
+    // Start refreshing Charger Data
+    this.timerChartData = setInterval(() => {
+      // Refresh
+      this._refresh();
+    }, Constants.AUTO_REFRESH_CHART_PERIOD_MILLIS);
   }
 
   async componentWillUnmount() {
@@ -51,21 +55,12 @@ class ChartDetails extends ResponsiveComponent {
     try {
       // Active Transaction?
       if (this.state.connector.activeTransactionID) {
-        // Clear interval if it exists
-        if (!this.timerChartData) {
-          // Start refreshing Charger Data
-          this.timerChartData = setInterval(() => {
-            // Component Mounted?
-            if (this.mounted) {
-              // Refresh Consumption
-              this.getChargingStationConsumption();
-            }
-          }, Constants.AUTO_REFRESH_CHART_PERIOD_MILLIS);
-        }
         // Get the consumption
         let result = await _provider.getChargingStationConsumption({
           TransactionId: this.state.connector.activeTransactionID
         });
+        console.log(result);
+        
         // At least 2 values for the chart!!!
         if (result.values && result.values.length > 1) {
           // Convert
@@ -74,8 +69,8 @@ class ChartDetails extends ResponsiveComponent {
             const value = result.values[index];
             const date = new Date(value.date).getTime();
             // Add
-            consumptions.push({x: date, y: value.value}); 
-            stateOfCharge.push({x: date, y: value.stateOfCharge}); 
+            consumptions.push({x: date, y: (value.value ? value.value : 0)}); 
+            stateOfCharge.push({x: date, y: (value.stateOfCharge ? value.stateOfCharge : 0)}); 
           }
           // Set
           this.setState({
@@ -103,6 +98,17 @@ class ChartDetails extends ResponsiveComponent {
         Utils.handleHttpUnexpectedError(error, this.props);
       }
     }
+  }
+
+  _refresh = () => {
+    // Show spinner
+    this.setState({refreshing: true}, async () => {
+      // Component Mounted?
+      if (this.mounted) {
+        // Refresh Consumption
+        this.getChargingStationConsumption();
+      }
+    });
   }
 
   render() {
@@ -189,6 +195,8 @@ class ChartDetails extends ResponsiveComponent {
               left: {
                 enabled: true,
                 valueFormatter: "# W",
+                axisMinimum: 0,
+                axisMaximum: connector.power * 1.05,
                 textColor: processColor(commonColor.brandDanger),
                 limitLines: [{
                   limit: connector.power,
@@ -203,10 +211,12 @@ class ChartDetails extends ResponsiveComponent {
               right: {
                 enabled: true,
                 valueFormatter: "percent",
+                axisMinimum: 0,
+                axisMaximum: 100,
                 textColor: processColor(commonColor.brandSuccess)
               }
             }}
-            autoScaleMinMaxEnabled={true}
+            autoScaleMinMaxEnabled={false}
             animation={{
               durationX: 1500,
               durationY: 1500,
@@ -215,10 +225,10 @@ class ChartDetails extends ResponsiveComponent {
             drawGridBackground={false}
             drawBorders={false}
             touchEnabled={true}
-            dragEnabled={false}
+            dragEnabled={true}
             scaleEnabled={true}
             scaleXEnabled={true}
-            scaleYEnabled={true}
+            scaleYEnabled={false}
             pinchZoom={true}
             doubleTapToZoomEnabled={false}
             dragDecelerationEnabled={true}

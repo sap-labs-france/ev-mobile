@@ -23,7 +23,7 @@ export default (variables = variable) => {
 				backgroundColor: variables.tabActiveBgColor,
 			},
 			flexDirection: null,
-			backgroundColor: "transparent",
+			backgroundColor: variables.footerDefaultBg,
 			borderColor: null,
 			elevation: 0,
 			shadowColor: null,
@@ -55,11 +55,11 @@ export default (variables = variable) => {
 			},
 			"NativeBase.Icon": {
 				color: variables.tabBarTextColor,
-				fontSize: variables.tabBarTextSize
+				fontSize: variables.tabBarTextSize * 1.5
 			},
 			"NativeBase.IconNB": {
 				color: variables.tabBarTextColor,
-				fontSize: variables.tabBarTextSize
+				fontSize: variables.tabBarTextSize * 1.5
 			},
 			"NativeBase.Text": {
 				color: variables.tabBarTextColor,

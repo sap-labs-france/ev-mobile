@@ -125,13 +125,12 @@ module.exports = {
   },
 
   // Footer
-  footerHeight: 55,
-  // footerHeight: scale(40),
+  footerHeight: scale(50),
   footerDefaultBg: "transparent",
 
   // FooterTab
   tabBarTextColor: "#888",
-  tabBarTextSize: platform === "ios" ? scale(14) : scale(11),
+  tabBarTextSize: scale(13),
   activeTab: platform === "ios" ? "#007aff" : "#fff",
   sTabBarActiveTextColor: "#007aff",
   tabBarActiveTextColor: "#fff",

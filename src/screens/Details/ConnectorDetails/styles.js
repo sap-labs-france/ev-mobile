@@ -6,7 +6,7 @@ import { scale } from 'react-native-size-matters';
 const commonStyles = {
   backgroundImage: {
     width: "100%",
-    height: scale(125)
+    height: scale(150)
   },
   spinner: {
     // marginTop: hp("18%")
@@ -52,27 +52,27 @@ const commonStyles = {
   rowContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: scale(90)
+    height: scale(110)
   },
   columnContainer: {
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     width: "50%"
   },
   label: {
-    fontSize: scale(15),
+    fontSize: scale(20),
     color: commonColor.textColor,
     alignSelf: "center"
   },
   labelValue: {
-    fontSize: scale(15),
+    fontSize: scale(35),
     fontWeight: "bold",
     color: commonColor.textColor,
     alignSelf: "center"
   },
   labelTimeValue: {
-    fontSize: scale(15),
+    fontSize: scale(30),
     fontWeight: "bold",
     color: commonColor.textColor,
     alignSelf: "center"
@@ -80,6 +80,7 @@ const commonStyles = {
   subLabel: {
     fontSize: scale(10),
     fontWeight: "bold",
+    marginTop: scale(-5),
     color: commonColor.textColor,
     alignSelf: "center"
   },
@@ -87,7 +88,7 @@ const commonStyles = {
     fontSize: scale(30),
   },
   labelUser: {
-    fontSize: scale(10),
+    fontSize: scale(15),
     color: commonColor.textColor,
     alignSelf: "center"
   },
@@ -98,10 +99,10 @@ const commonStyles = {
     alignSelf: "center"
   },
   userPicture: {
-    height: scale(40),
-    width: scale(40),
+    height: scale(50),
+    width: scale(50),
     alignSelf: "center",
-    borderRadius: scale(20),
+    borderRadius: scale(25),
     borderWidth: 2,
     borderColor: commonColor.textColor
   }
