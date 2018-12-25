@@ -90,6 +90,6 @@
     "instantPower": "Puissance Instantanée (W)",
     "cumulated": "Cumulé (W.h)",
     "battery": "Niveau Batterie (%)",
-    "connectorMax": "Connecteur Max (W)"
+    "connectorMax": "Connecteur Max Power (W)"
   }
 }

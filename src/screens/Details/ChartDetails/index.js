@@ -26,7 +26,6 @@ class ChartDetails extends ResponsiveComponent {
       connector: this.props.navigation.state.params.connector,
       values: [],
       consumptions: EMPTY_CHART,
-      cumulated: EMPTY_CHART,
       stateOfCharge: EMPTY_CHART,
       maxChartValue: this.props.navigation.state.params.connector.power
     };
@@ -80,7 +79,7 @@ class ChartDetails extends ResponsiveComponent {
         // At least 2 values for the chart!!!
         if (result.values && result.values.length > 1) {
           // Convert
-          let firstDate, minutes, consumptions = [], cumulated = [], stateOfCharge = [];
+          let firstDate, minutes, consumptions = [], stateOfCharge = [];
           for (let index = 0; index < result.values.length; index++) {
             const value = result.values[index];
             // Keep the date
@@ -93,14 +92,12 @@ class ChartDetails extends ResponsiveComponent {
             }
             // Add
             consumptions.push({x: new Date(value.date).getTime(), y: value.value}); 
-            cumulated.push({x: new Date(value.date).getTime(), y: value.cumulated}); 
             stateOfCharge.push({x: new Date(value.date).getTime(), y: value.stateOfCharge}); 
           }
           // Set
           this.setState({
             values: result.values,
             consumptions,
-            cumulated,
             stateOfCharge
           });
         }
@@ -113,7 +110,6 @@ class ChartDetails extends ResponsiveComponent {
       //   this.setState({
       //     values: null,
       //     consumptions: EMPTY_CHART,
-      //     cumulated: EMPTY_CHART,
       //     stateOfCharge: EMPTY_CHART
       //   });
       // }
@@ -128,7 +124,7 @@ class ChartDetails extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const { charger, connector, consumptions, cumulated, stateOfCharge } = this.state;    
+    const { charger, connector, consumptions, stateOfCharge } = this.state;    
     const navigation = this.props.navigation;
     return (
       <View style={{ flex: 1 }}>
@@ -212,7 +208,7 @@ class ChartDetails extends ResponsiveComponent {
                 valueFormatter: "# W",
                 textColor: processColor(commonColor.brandDanger),
                 limitLines: [{
-                  limit: 50000,
+                  limit: connector.power,
                   label: I18n.t("details.connectorMax"),
                   valueTextColor: processColor("white"),
                   lineColor: processColor(commonColor.brandDanger),
