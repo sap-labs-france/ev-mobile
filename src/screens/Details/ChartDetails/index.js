@@ -129,16 +129,6 @@ class ChartDetails extends ResponsiveComponent {
     }
   }
 
-  handleSelect(event) {
-    let entry = event.nativeEvent;
-    if (entry == null) {
-      this.setState({ selectedEntry: null });
-    } else {
-      this.setState({ selectedEntry: JSON.stringify(entry) });
-    }
-    console.log(event.nativeEvent);
-  }
-
   render() {
     const style = computeStyleSheet();
     const { charger, connector, consumptions, cumulated, stateOfCharge } = this.state;    
@@ -153,7 +143,7 @@ class ChartDetails extends ResponsiveComponent {
               dataSets: [
                 {
                   values: consumptions,
-                  label: "Consumption (W)",
+                  label: I18n.t("details.consumption"),
                   config: {
                     mode: "CUBIC_BEZIER",
                     drawValues: false,
@@ -162,46 +152,32 @@ class ChartDetails extends ResponsiveComponent {
                     circleColor: processColor(petrel),
                     drawCircleHole: false,
                     circleRadius: 5,
-                    highlightColor: processColor("transparent"),
+                    highlightColor: processColor("white"),
                     color: processColor(petrel),
                     drawFilled: true,
-                    fillGradient: {
-                      colors: [processColor(petrel), processColor(greenBlue)],
-                      positions: [0, 0.5],
-                      angle: 90,
-                      orientation: "TOP_BOTTOM"
-                    },
-                    fillAlpha: 1000,
                     valueTextSize: scale(15)
                   }
                 },
-                {
-                  values: cumulated,
-                  label: "Cumulated (W.h)",
-                  config: {
-                    mode: "CUBIC_BEZIER",
-                    drawValues: false,
-                    lineWidth: 2,
-                    drawCircles: false,
-                    circleColor: processColor(redBlue),
-                    drawCircleHole: false,
-                    circleRadius: 5,
-                    highlightColor: processColor("transparent"),
-                    color: processColor(redBlue),
-                    drawFilled: true,
-                    fillGradient: {
-                      colors: [processColor(redBlue), processColor(orange)],
-                      positions: [0, 0.5],
-                      angle: 90,
-                      orientation: "TOP_BOTTOM"
-                    },
-                    fillAlpha: 1000,
-                    valueTextSize: scale(15)
-                  }
-                },
+                // {
+                //   values: cumulated,
+                //   label: I18n.t("details.cumulated"),
+                //   config: {
+                //     mode: "CUBIC_BEZIER",
+                //     drawValues: false,
+                //     lineWidth: 2,
+                //     drawCircles: false,
+                //     circleColor: processColor(redBlue),
+                //     drawCircleHole: false,
+                //     circleRadius: 5,
+                //     highlightColor: processColor("white"),
+                //     color: processColor(redBlue),
+                //     drawFilled: true,
+                //     valueTextSize: scale(15)
+                //   }
+                // },
                 {
                   values: stateOfCharge,
-                  label: "Battery (%)",
+                  label: I18n.t("details.battery"),
                   config: {
                     axisDependency: "RIGHT",
                     mode: "CUBIC_BEZIER",
@@ -211,16 +187,9 @@ class ChartDetails extends ResponsiveComponent {
                     circleColor: processColor(blue),
                     drawCircleHole: false,
                     circleRadius: 5,
-                    highlightColor: processColor("transparent"),
+                    highlightColor: processColor("white"),
                     color: processColor(blue),
                     drawFilled: true,
-                    fillGradient: {
-                      colors: [processColor(blue), processColor(violet)],
-                      positions: [0, 0.5],
-                      angle: 90,
-                      orientation: "TOP_BOTTOM"
-                    },
-                    fillAlpha: 1000,
                     valueTextSize: scale(15)
                   }
                 }
@@ -259,7 +228,7 @@ class ChartDetails extends ResponsiveComponent {
                 textColor: processColor(greenBlue),
                 limitLines: [{
                   limit: 50000,
-                  label: "Connector Max",
+                  label: I18n.t("details.connectorMax"),
                   valueTextColor: processColor("white"),
                   lineColor: processColor(greenBlue),
                   lineDashPhase: 2,
@@ -270,16 +239,7 @@ class ChartDetails extends ResponsiveComponent {
               right: {
                 enabled: true,
                 valueFormatter: "percent",
-                textColor: processColor(violet),
-                limitLines: [{
-                  limit: 100,
-                  label: "Battery Max",
-                  valueTextColor: processColor("white"),
-                  lineColor: processColor(violet),
-                  lineDashPhase: 2,
-                  lineWidth: 2,
-                  lineDashLengths: [10,20]
-                }]
+                textColor: processColor(violet)
               }
             }}
             autoScaleMinMaxEnabled={true}
@@ -300,8 +260,6 @@ class ChartDetails extends ResponsiveComponent {
             dragDecelerationEnabled={true}
             dragDecelerationFrictionCoef={0.99}
             keepPositionOnRotation={false}
-            onSelect={this.handleSelect.bind(this)}
-            onChange={event => console.log(event.nativeEvent)}
           />
         </View>
       </View>

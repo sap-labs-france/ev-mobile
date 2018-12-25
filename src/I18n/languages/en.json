@@ -86,6 +86,10 @@
     "ocppVersion": "OCPP Version",
     "firmwareVersion": "Firmware Version",
     "time": "Time (mins)",
-    "chargeInWatts": "Charge (Watt)"
+    "chargeInWatts": "Charge (Watt)",
+    "consumption": "Consumption (W)",
+    "cumulated": "Cumulated (W.h)",
+    "battery": "Battery (%)",
+    "connectorMax": "Connector Max (W)"
   }
 }
