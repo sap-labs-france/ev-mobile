@@ -95,13 +95,10 @@ class ChartDetails extends ResponsiveComponent {
               minutes = Math.trunc((new Date(value.date).getTime() - firstDate.getTime()) / (60 * 1000));
             }
             // Add
-            consumptions.push({x: minutes, y: value.value}); 
-            cumulated.push({x: minutes, y: value.cumulated}); 
-            stateOfCharge.push({x: minutes, y: value.stateOfCharge}); 
+            consumptions.push({x: new Date(value.date).getTime(), y: value.value}); 
+            cumulated.push({x: new Date(value.date).getTime(), y: value.cumulated}); 
+            stateOfCharge.push({x: new Date(value.date).getTime(), y: value.stateOfCharge}); 
           }
-          console.log(consumptions);
-          console.log(cumulated);
-          console.log(stateOfCharge);
           // Set
           this.setState({
             values: result.values,
@@ -156,7 +153,7 @@ class ChartDetails extends ResponsiveComponent {
               dataSets: [
                 {
                   values: consumptions,
-                  label: "Consumption",
+                  label: "Consumption (W)",
                   config: {
                     mode: "CUBIC_BEZIER",
                     drawValues: false,
@@ -180,7 +177,7 @@ class ChartDetails extends ResponsiveComponent {
                 },
                 {
                   values: cumulated,
-                  label: "Cumulated",
+                  label: "Cumulated (W.h)",
                   config: {
                     mode: "CUBIC_BEZIER",
                     drawValues: false,
@@ -204,8 +201,9 @@ class ChartDetails extends ResponsiveComponent {
                 },
                 {
                   values: stateOfCharge,
-                  label: "Battery",
+                  label: "Battery (%)",
                   config: {
+                    axisDependency: "RIGHT",
                     mode: "CUBIC_BEZIER",
                     drawValues: false,
                     lineWidth: 3,
@@ -246,16 +244,34 @@ class ChartDetails extends ResponsiveComponent {
               drawGridLines: false,
               fontFamily: "HelveticaNeue-Medium",
               fontWeight: "bold",
-              textSize: scale(12),
-              textColor: processColor("gray"),
-              valueFormatter: ["M", "T", "W", "T", "F", "S"]
+              valueFormatter: "date",
+              valueFormatterPattern: "HH:mm",
+              textSize: scale(8),
+              textColor: processColor("gray")
             }}
             yAxis={{
               left: {
-                enabled: true
+                enabled: true,
+                limitLines: [{
+                  limit: 50000,
+                  label: "Connector Max",
+                  lineColor: processColor("red"),
+                  lineDashPhase: 2,
+                  lineWidth: 2,
+                  lineDashLengths: [10,20]
+                }]
               },
               right: {
-                enabled: false
+                enabled: true,
+                valueFormatter: "percent",
+                limitLines: [{
+                  limit: 100,
+                  label: "Battery Max",
+                  lineColor: processColor("red"),
+                  lineDashPhase: 2,
+                  lineWidth: 2,
+                  lineDashLengths: [10,20]
+                }]
               }
             }}
             autoScaleMinMaxEnabled={true}
