@@ -6,6 +6,8 @@ import deepmerge from "deepmerge";
 const commonStyles = {
   header: {
     height: scale(45),
+    paddingTop: scale(5),
+    paddingBottom: scale(5),
     borderBottomWidth: 1,
     borderBottomColor: "#D3D3D3"
   },
