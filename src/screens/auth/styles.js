@@ -2,6 +2,7 @@ import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import { scale } from 'react-native-size-matters';
 import commonColor from "../../theme/variables/commonColor";
 import deepmerge from "deepmerge";
+import { Platform } from 'react-native';
 
 const commonStyles = {
   nodisplay: {
@@ -51,7 +52,8 @@ const commonStyles = {
   },
   input: {
     height: scale(40),
-    fontSize: scale(14)
+    fontSize: scale(14),
+    marginTop: Platform.OS === "ios" ? scale(-15) : 0
   },
   button: {
     alignSelf: "center",
@@ -68,18 +70,21 @@ const commonStyles = {
     textAlign: "left",
     top: -5
   },
-  eulaContainer : {
-    alignSelf: "center",
+  eulaContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
     borderBottomWidth: 0,
     paddingTop: 0,
     paddingBottom: 15,
     margin: 5
   },
-  eulaText: {
-    alignSelf: "flex-start",
+  eulaCheckbox: {
+    margin: scale(10)
+  },
+  eulaText: { 
     fontSize: scale(12),
-    marginLeft: scale(14),
-    color: commonColor.textColor
+    color: commonColor.textColor,
+    marginLeft: scale(-10)
   },
   eulaLink: {
     fontSize: scale(12),

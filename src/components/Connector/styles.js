@@ -22,15 +22,15 @@ const commonStyles = {
   statusDescription: {
     color: commonColor.textColor,
     textAlign: "center",
-    paddingTop: "2%",
+    padding: scale(5),
     fontSize: scale(20)
   },
   statusConnectorDetailContainer: {
     flexDirection: "row",
-    paddingBottom: "2%",
+    paddingBottom: scale(10),
   },
   statusConnectorDetailLetter: {
-    marginTop: "-5%",
+    marginTop: scale(-10),
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -51,13 +51,13 @@ const commonStyles = {
   value: {
     color: commonColor.textColor,
     fontWeight: "bold",
-    fontSize: scale(40),
-    // marginTop: scale(-5),
+    fontSize: scale(35),
     textAlign: "center"
   },
   sizeConnectorImage: {
-    width: scale(40),
-    height: scale(40)
+    marginTop: scale(6),
+    width: scale(35),
+    height: scale(35)
   },
   labelImage: {
     color: commonColor.textColor,
@@ -66,7 +66,7 @@ const commonStyles = {
   label: {
     color: commonColor.textColor,
     fontSize: scale(12),
-    marginTop: scale(-5)
+    marginTop: scale(-2)
   },
   subLabel: {
     color: commonColor.textColor,

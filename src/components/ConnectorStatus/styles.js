@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
@@ -13,21 +12,21 @@ const commonStyles = {
   },
   statusGreen: {
     backgroundColor: commonColor.brandSuccess,
-    width: scale(50),
-    height: scale(50),
-    borderRadius: scale(25)
+    width: scale(45),
+    height: scale(45),
+    borderRadius: scale(22)
   },
   statusRed: {
     backgroundColor: commonColor.brandDanger,
-    width: scale(50),
-    height: scale(50),
-    borderRadius: scale(25)
+    width: scale(45),
+    height: scale(45),
+    borderRadius: scale(22)
   },
   statusOrange: {
     backgroundColor: commonColor.brandWarning,
-    width: scale(50),
-    height: scale(50),
-    borderRadius: scale(25)
+    width: scale(45),
+    height: scale(45),
+    borderRadius: scale(22)
   }
 };
 
