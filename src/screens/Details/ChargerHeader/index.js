@@ -1,5 +1,6 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
+import { Image } from "react-native";
 import computeStyleSheet from "./styles";
 import { Button, Icon, Text, View, Header, Body, Left, Right } from "native-base";
 import I18n from "../../../I18n/I18n";
@@ -29,9 +30,7 @@ export class ChargerHeader extends ResponsiveComponent {
             <Text style={style.subTitleHeader}>({I18n.t("details.connector")} {connectorLetter})</Text>
           </Body>
           <Right style={style.rightHeader}>
-            {/* <Button transparent onPress={() => navigation.openDrawer()}>
-              <Icon active name="menu" style={style.iconHeader} />
-            </Button> */}
+            <Image source={require("../../../../assets/logo-low.gif")} style={style.logoHeader} />
           </Right>
         </Header>
       </View>

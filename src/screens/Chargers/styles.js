@@ -5,7 +5,9 @@ import deepmerge from "deepmerge";
 
 const commonStyles = {
   header: {
-    height: scale(40)
+    height: scale(45),
+    borderBottomWidth: 1,
+    borderBottomColor: "#D3D3D3"
   },
   leftHeader: {
     flex: 0

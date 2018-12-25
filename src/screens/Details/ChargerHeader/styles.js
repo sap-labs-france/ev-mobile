@@ -5,7 +5,9 @@ import { scale } from 'react-native-size-matters';
 
 const commonStyles = {
   header: {
-    height: scale(40)
+    height: scale(45),
+    borderBottomWidth: 1,
+    borderBottomColor: "#D3D3D3"
   },
   leftHeader: {
     flex: 0
@@ -26,6 +28,10 @@ const commonStyles = {
     color: commonColor.textColor,
     fontSize: scale(10),
     marginTop: scale(-2)
+  },
+  logoHeader: {
+    width: scale(45),
+    resizeMode: "contain"
   },
   iconHeader: {
     fontSize: scale(25)
