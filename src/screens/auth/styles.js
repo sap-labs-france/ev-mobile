@@ -1,8 +1,8 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
-import { scale } from 'react-native-size-matters';
+import { scale } from "react-native-size-matters";
 import commonColor from "../../theme/variables/commonColor";
 import deepmerge from "deepmerge";
-import { Platform } from 'react-native';
+import { Platform } from "react-native";
 
 const commonStyles = {
   nodisplay: {
@@ -81,7 +81,7 @@ const commonStyles = {
   eulaCheckbox: {
     margin: scale(10)
   },
-  eulaText: { 
+  eulaText: {
     fontSize: scale(12),
     color: commonColor.textColor,
     marginLeft: scale(-10)

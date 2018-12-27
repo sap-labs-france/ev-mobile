@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageBackground, Keyboard, ScrollView, Linking, KeyboardAvoidingView, Text as TextRN } from "react-native";
+import { Image, ImageBackground, Keyboard, Linking, KeyboardAvoidingView, Text as TextRN } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, Footer, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
@@ -79,6 +79,7 @@ class Login extends ResponsiveComponent {
       const password = await _provider.getUserPassword();
       const tenant = await _provider.getTenant();
       const location = _provider.getLocation(tenant);
+      // eslint-disable-next-line react/no-did-mount-set-state
       this.setState({
         email,
         password,
