@@ -5,6 +5,8 @@ import { scale } from 'react-native-size-matters';
 
 const commonStyles = {
   scrollViewContainer: {
+  },
+  container: {
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",

@@ -57,7 +57,7 @@ const commonStyles = {
   },
   columnContainer: {
     flexDirection: "column",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
     width: "50%"
   },

@@ -40,48 +40,56 @@ const commonStyles = {
   },
   inputGroup: {
     backgroundColor: "rgba(255,255,255,0.3)",
-    height: scale(40),
-    marginBottom: 15,
+    height: scale(35),
+    marginBottom: scale(10),
     alignSelf: "center",
     borderWidth: 0,
     borderColor: "transparent"
   },
   inputIconMail: {
+    alignSelf: "center",
+    width: scale(30),
     marginTop: scale(2),
+    marginLeft: scale(5),
     marginRight: scale(5),
-    fontSize: scale(20)
+    fontSize: scale(15)
   },
   inputIconPassword: {
+    alignSelf: "center",
+    width: scale(30),
+    marginLeft: scale(8),
     marginRight: scale(5),
-    fontSize: scale(20)
+    fontSize: scale(18)
   },
   inputField: {
     width: "100%",
-    fontSize: scale(16),
+    fontSize: scale(15),
     color: commonColor.textColor,
   },
   button: {
     alignSelf: "center",
     marginBottom: 15,
-    height: scale(40),
+    height: scale(35),
     backgroundColor: "rgba(255,255,255,0.30)"
   },
   buttonText: {
-    fontSize: scale(16),
+    fontSize: scale(15),
     color: commonColor.textColor
   },
   formErrorText: {
+    fontSize: scale(12),
     color: commonColor.brandDanger,
     textAlign: "left",
-    top: scale(-10)
+    top: scale(-5)
   },
   eulaContainer: {
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "center",
+    alignSelf: "center",
     borderBottomWidth: 0,
     paddingTop: 0,
-    paddingBottom: 15,
-    margin: 5
+    paddingBottom: scale(20),
+    marginTop: scale(5)
   },
   eulaCheckbox: {
     marginRight: scale(5)
