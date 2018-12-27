@@ -36,7 +36,7 @@ class ChargerTabs extends ResponsiveComponent {
       <Footer style={style.footerContainer}>
         <FooterTab>
           <Button vertical active={state.index === 0} onPress={()=>navigation.navigate("ConnectorDetails")}>
-            <Icon type="Feather" name="zap"/>
+            <Icon type="FontAwesome" name="bolt"/>
             <Text>{I18n.t("details.connector")}</Text>
           </Button>
           <Button vertical active={state.index === 1} onPress={()=>navigation.navigate("ChartDetails")}>

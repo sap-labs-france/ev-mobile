@@ -204,8 +204,8 @@ class ChartDetails extends ResponsiveComponent {
                   valueTextColor: processColor("white"),
                   lineColor: processColor(commonColor.brandDanger),
                   lineDashPhase: 2,
-                  lineWidth: 2,
-                  lineDashLengths: [10,20]
+                  lineWidth: 1,
+                  lineDashLengths: [scale(5),scale(5)]
                 }]
               },
               right: {

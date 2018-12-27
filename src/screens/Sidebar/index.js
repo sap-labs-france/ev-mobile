@@ -79,7 +79,7 @@ class SideBar extends ResponsiveComponent {
               <Text style={style.versionDate}>{I18n.t("general.date")}</Text>
             </View>
             <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Sites")}>
-              <Icon name="ios-grid-outline" />
+              <Icon type="MaterialIcons" name="business" />
               <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
             </ListItem>
             {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>

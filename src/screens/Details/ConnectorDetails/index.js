@@ -345,7 +345,7 @@ class ConnectorDetails extends ResponsiveComponent {
             <View style={style.content}>
               <View style={style.rowContainer}>
                 <View style={style.columnContainer}>
-                  <ConnectorStatusComponent connector={connector}/>
+                  <ConnectorStatusComponent style={style.connectorLetter} connector={connector}/>
                   <Text style={style.label}>{Utils.translateConnectorStatus(connector.status)}</Text>
                 </View>
                 <View style={style.columnContainer}>
@@ -394,7 +394,7 @@ class ConnectorDetails extends ResponsiveComponent {
                   }
                 </View>
                 <View style={style.columnContainer}>
-                  <Icon type="Feather" name="battery-charging" style={style.icon} />
+                  <Icon type="MaterialIcons" name="battery-charging-full" style={style.icon} />
                   { connector.currentStateOfCharge ?
                     <View>
                       <Text style={style.labelValue}>{connector.currentStateOfCharge}</Text>

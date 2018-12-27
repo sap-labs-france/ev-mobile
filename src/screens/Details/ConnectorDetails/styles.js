@@ -60,51 +60,55 @@ const commonStyles = {
     alignItems: "center",
     width: "50%"
   },
+  connectorLetter: {
+    marginBottom: scale(5)
+  },
   label: {
-    fontSize: scale(20),
+    fontSize: scale(16),
     color: commonColor.textColor,
     alignSelf: "center"
   },
   labelValue: {
-    fontSize: scale(35),
+    fontSize: scale(30),
     fontWeight: "bold",
     color: commonColor.textColor,
     alignSelf: "center"
   },
   labelTimeValue: {
-    fontSize: scale(30),
+    fontSize: scale(25),
     fontWeight: "bold",
     color: commonColor.textColor,
     alignSelf: "center"
   },
   subLabel: {
-    fontSize: scale(10),
+    fontSize: scale(12),
     fontWeight: "bold",
-    marginTop: scale(-5),
+    // marginTop: scale(-5),
     color: commonColor.textColor,
     alignSelf: "center"
   },
   icon: {
-    fontSize: scale(30),
-  },
-  labelUser: {
-    fontSize: scale(15),
-    color: commonColor.textColor,
-    alignSelf: "center"
-  },
-  subLabelUser: {
-    fontSize: scale(10),
-    fontWeight: "bold",
-    color: commonColor.textColor,
-    alignSelf: "center"
+    fontSize: scale(25),
   },
   userPicture: {
     height: scale(50),
     width: scale(50),
     alignSelf: "center",
+    marginBottom: scale(5),
     borderRadius: scale(25),
     borderWidth: 2,
     borderColor: commonColor.textColor
+  },
+  labelUser: {
+    fontSize: scale(16),
+    color: commonColor.textColor,
+    alignSelf: "center"
+  },
+  subLabelUser: {
+    fontSize: scale(12),
+    fontWeight: "bold",
+    color: commonColor.textColor,
+    alignSelf: "center"
   }
 };
 
