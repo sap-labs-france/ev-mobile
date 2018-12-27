@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageBackground, Keyboard, Linking, KeyboardAvoidingView, Text as TextRN } from "react-native";
+import { Image, ImageBackground, Keyboard, Linking, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, Footer, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
@@ -11,6 +11,7 @@ import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
 import computeStyleSheet from "../styles";
 import commonColor from "../../../theme/variables/commonColor";
+import { scale } from "react-native-size-matters";
 
 const _provider = providerFactory.getProvider();
 const _locations = _provider.getLocations();
@@ -215,16 +216,16 @@ class Login extends ResponsiveComponent {
                   <TextRN style={style.buttonText}>{this.state.tenantTitle}</TextRN>
                 </Button>
                 {this.state.errorTenant && this.state.errorTenant.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
-                <Item inlineLabel rounded style={style.inputGroup}>
-                  <Icon active name="mail" style={style.inputIcon}/>
-                  <Input
+                <Item rounded style={style.inputGroup}>
+                  <Icon active name="mail" style={style.inputIconMail}/>
+                  <TextInput
                     name="email"
                     type="email"
                     returnKeyType= "next"
                     placeholder={I18n.t("authentication.email")}
                     placeholderTextColor={commonColor.textColor}
                     onSubmitEditing={() => this.passwordInput._root.focus()}
-                    style={style.input}
+                    style={style.inputField}
                     autoCapitalize="none"
                     blurOnSubmit={false}
                     autoCorrect={false}
@@ -236,9 +237,9 @@ class Login extends ResponsiveComponent {
                 </Item>
                 {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
 
-                <Item inlineLabel rounded style={style.inputGroup}>
-                  <Icon active name="unlock" style={style.inputIcon}/>
-                  <Input
+                <Item rounded style={style.inputGroup}>
+                  <Icon active name="unlock" style={style.inputIconPassword}/>
+                  <TextInput
                     name="password"
                     type="password"
                     returnKeyType="go"
@@ -246,7 +247,7 @@ class Login extends ResponsiveComponent {
                     onSubmitEditing={()=>Keyboard.dismiss()}
                     placeholder={I18n.t("authentication.password")}
                     placeholderTextColor={commonColor.textColor}
-                    style={style.input}
+                    style={style.inputField}
                     autoCapitalize="none"
                     blurOnSubmit={false}
                     autoCorrect={false}

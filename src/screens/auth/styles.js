@@ -35,8 +35,8 @@ const commonStyles = {
     margin: 30
   },
   form: {
-    paddingLeft: 15,
-    paddingRight: 15
+    paddingLeft: scale(15),
+    paddingRight: scale(15)
   },
   inputGroup: {
     backgroundColor: "rgba(255,255,255,0.3)",
@@ -46,14 +46,19 @@ const commonStyles = {
     borderWidth: 0,
     borderColor: "transparent"
   },
-  inputIcon: {
-    marginLeft: scale(5),
-    fontSize: scale(14)
+  inputIconMail: {
+    marginTop: scale(2),
+    marginRight: scale(5),
+    fontSize: scale(20)
   },
-  input: {
-    height: scale(40),
-    fontSize: scale(14),
-    marginTop: Platform.OS === "ios" ? scale(-15) : 0
+  inputIconPassword: {
+    marginRight: scale(5),
+    fontSize: scale(20)
+  },
+  inputField: {
+    width: "100%",
+    fontSize: scale(16),
+    color: commonColor.textColor,
   },
   button: {
     alignSelf: "center",
@@ -62,13 +67,13 @@ const commonStyles = {
     backgroundColor: "rgba(255,255,255,0.30)"
   },
   buttonText: {
-    fontSize: scale(14),
+    fontSize: scale(16),
     color: commonColor.textColor
   },
   formErrorText: {
     color: commonColor.brandDanger,
     textAlign: "left",
-    top: -5
+    top: scale(-10)
   },
   eulaContainer: {
     flexDirection: "row",
@@ -79,15 +84,14 @@ const commonStyles = {
     margin: 5
   },
   eulaCheckbox: {
-    margin: scale(10)
+    marginRight: scale(5)
   },
   eulaText: {
-    fontSize: scale(12),
-    color: commonColor.textColor,
-    marginLeft: scale(-10)
+    fontSize: scale(13),
+    color: commonColor.textColor
   },
   eulaLink: {
-    fontSize: scale(12),
+    fontSize: scale(13),
     color: commonColor.textColor,
     textDecorationLine: "underline"
   },
