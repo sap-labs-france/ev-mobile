@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, Icon, Text, FooterTab, Footer } from "native-base";
-import { TabNavigator } from "react-navigation";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
@@ -8,6 +7,7 @@ import ConnectorDetails from "../ConnectorDetails";
 import ChargerDetails from "../ChargerDetails";
 import ChartDetails from "../ChartDetails";
 import computeStyleSheet from "./styles";
+import { createBottomTabNavigator } from 'react-navigation';
 
 const _provider = ProviderFactory.getProvider();
 
@@ -31,7 +31,7 @@ class ChargerTabs extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const navigation = this.props.navigation;
-    const state = this.props.navigationState;
+    const state = this.props.navigation.state;
     return (
       <Footer style={style.footerContainer}>
         <FooterTab>
@@ -53,7 +53,7 @@ class ChargerTabs extends ResponsiveComponent {
   }
 }
 
-const ChargerNavigation = TabNavigator(
+const ChargerNavigation = createBottomTabNavigator(
   {
     ConnectorDetails: { screen: ConnectorDetails },
     ChartDetails: { screen: ChartDetails },
