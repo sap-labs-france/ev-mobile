@@ -205,7 +205,7 @@ class ChartDetails extends ResponsiveComponent {
                   lineColor: processColor(commonColor.brandDanger),
                   lineDashPhase: 2,
                   lineWidth: 1,
-                  lineDashLengths: [scale(5),scale(5)]
+                  lineDashLengths: [10,10]
                 }]
               },
               right: {
@@ -228,7 +228,7 @@ class ChartDetails extends ResponsiveComponent {
             dragEnabled={true}
             scaleEnabled={true}
             scaleXEnabled={true}
-            scaleYEnabled={false}
+            scaleYEnabled={true}
             pinchZoom={true}
             doubleTapToZoomEnabled={false}
             dragDecelerationEnabled={true}

@@ -2,6 +2,7 @@ import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../../theme/variables/commonColor";
 import { scale } from 'react-native-size-matters';
+import { Platform } from "react-native";
 
 const commonStyles = {
   backgroundImage: {
@@ -52,7 +53,7 @@ const commonStyles = {
   rowContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: scale(110)
+    height: scale(100)
   },
   columnContainer: {
     flexDirection: "column",
@@ -83,7 +84,7 @@ const commonStyles = {
   subLabel: {
     fontSize: scale(12),
     fontWeight: "bold",
-    // marginTop: scale(-5),
+    marginTop: (Platform.OS === "ios" ? 0 : scale(-5)),
     color: commonColor.textColor,
     alignSelf: "center"
   },

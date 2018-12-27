@@ -2,13 +2,14 @@ import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
 import { scale } from 'react-native-size-matters';
+import { Platform } from "react-native";
 
 const commonStyles = {
   statusLetter: {
     color: commonColor.textColor,
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: scale(40)
+    fontSize: (Platform.OS === "ios" ? scale(40) : scale(35))
   },
   statusGreen: {
     backgroundColor: commonColor.brandSuccess,
