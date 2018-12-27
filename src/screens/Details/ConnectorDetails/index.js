@@ -35,6 +35,7 @@ class ConnectorDetails extends ResponsiveComponent {
       loadingTransaction: false,
       isAdmin: false
     };
+    
   }
 
   async componentDidMount() {
@@ -150,9 +151,10 @@ class ConnectorDetails extends ResponsiveComponent {
   }
 
   _isAuthorizedStopTransaction = async () => {
+    const { charger, connector } = this.state;
     try {
       let result = await _provider.isAuthorizedStopTransaction(
-        { Action: "StopTransaction", Arg1: this.props.charger.id, Arg2: this.props.connector.activeTransactionID }
+        { Action: "StopTransaction", Arg1: charger.id, Arg2: connector.activeTransactionID }
       );
       if (result) {
         return result.IsAuthorized;
