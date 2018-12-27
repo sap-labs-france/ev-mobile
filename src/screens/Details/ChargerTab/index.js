@@ -7,7 +7,7 @@ import ConnectorDetails from "../ConnectorDetails";
 import ChargerDetails from "../ChargerDetails";
 import ChartDetails from "../ChartDetails";
 import computeStyleSheet from "./styles";
-import { createBottomTabNavigator } from 'react-navigation';
+import { createBottomTabNavigator } from "react-navigation";
 
 const _provider = ProviderFactory.getProvider();
 
@@ -22,6 +22,7 @@ class ChargerTabs extends ResponsiveComponent {
   async componentDidMount() {
     // Set if Admin
     const isAdmin = (await _provider.getSecurityProvider()).isAdmin();
+    // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({isAdmin});
   }
 

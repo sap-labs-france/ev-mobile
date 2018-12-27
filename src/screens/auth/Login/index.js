@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, ImageBackground, Keyboard, Linking, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
-import { Container, Text, Form, Item, Input, Button, Icon, View, Left, Right, CheckBox, Body, Footer, Spinner, ActionSheet } from "native-base";
+import { Container, Text, Form, Item, Button, Icon, View, Left, Right, CheckBox, Body, Footer, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
 import { ResponsiveComponent, MediaQuery } from "react-native-responsive-ui";
 
@@ -11,7 +11,6 @@ import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
 import computeStyleSheet from "../styles";
 import commonColor from "../../../theme/variables/commonColor";
-import { scale } from "react-native-size-matters";
 
 const _provider = providerFactory.getProvider();
 const _locations = _provider.getLocations();

@@ -1,13 +1,13 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import { View, processColor } from 'react-native';
+import { View, processColor } from "react-native";
 import ChargerHeader from "../ChargerHeader";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import Constants from "../../../utils/Constants";
 import Utils from "../../../utils/Utils";
 import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./styles";
-import { scale } from 'react-native-size-matters';
+import { scale } from "react-native-size-matters";
 import commonColor from "../../../theme/variables/commonColor";
 
 import { LineChart } from "react-native-charts-wrapper";
@@ -59,8 +59,6 @@ class ChartDetails extends ResponsiveComponent {
         let result = await _provider.getChargingStationConsumption({
           TransactionId: this.state.connector.activeTransactionID
         });
-        console.log(result);
-        
         // At least 2 values for the chart!!!
         if (result.values && result.values.length > 1) {
           // Convert
@@ -69,8 +67,8 @@ class ChartDetails extends ResponsiveComponent {
             const value = result.values[index];
             const date = new Date(value.date).getTime();
             // Add
-            consumptions.push({x: date, y: (value.value ? value.value : 0)}); 
-            stateOfCharge.push({x: date, y: (value.stateOfCharge ? value.stateOfCharge : 0)}); 
+            consumptions.push({x: date, y: (value.value ? value.value : 0)});
+            stateOfCharge.push({x: date, y: (value.stateOfCharge ? value.stateOfCharge : 0)});
           }
           // Set
           this.setState({
@@ -113,7 +111,7 @@ class ChartDetails extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const { charger, connector, consumptions, stateOfCharge } = this.state;    
+    const { charger, connector, consumptions, stateOfCharge } = this.state;
     const navigation = this.props.navigation;
     return (
       <View style={{ flex: 1 }}>

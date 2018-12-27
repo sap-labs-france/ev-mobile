@@ -2,7 +2,6 @@ import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import { scale } from "react-native-size-matters";
 import commonColor from "../../theme/variables/commonColor";
 import deepmerge from "deepmerge";
-import { Platform } from "react-native";
 
 const commonStyles = {
   nodisplay: {

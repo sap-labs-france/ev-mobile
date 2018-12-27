@@ -25,6 +25,7 @@ class SideBar extends ResponsiveComponent {
     // Logoff
     const userInfo = await _provider.getUserInfo();
     // Add sites
+    // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({
       userName: `${userInfo.name} ${userInfo.firstName}`,
       userID: `${userInfo.id}`

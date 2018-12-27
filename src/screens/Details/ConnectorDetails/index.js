@@ -35,7 +35,6 @@ class ConnectorDetails extends ResponsiveComponent {
       loadingTransaction: false,
       isAdmin: false
     };
-    
   }
 
   async componentDidMount() {
@@ -43,9 +42,10 @@ class ConnectorDetails extends ResponsiveComponent {
     this.mounted = true;
     // Set if Admin
     const isAdmin = (await _provider.getSecurityProvider()).isAdmin();
+    // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({isAdmin});
     // Get the Site Image
-    this._getSiteImage();    
+    this._getSiteImage();
     // Get Current Transaction
     await this._getTransaction();
     // Init
@@ -59,9 +59,10 @@ class ConnectorDetails extends ResponsiveComponent {
       }
     }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
     // Ok
+    // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({
       firstLoad: false
-    })
+    });
   }
 
   async componentWillUnmount() {
