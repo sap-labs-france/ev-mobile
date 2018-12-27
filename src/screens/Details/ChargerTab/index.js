@@ -30,6 +30,7 @@ class ChargerTabs extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
+    const { isAdmin } = this.state;
     const navigation = this.props.navigation;
     const state = this.props.navigation.state;
     return (
@@ -43,10 +44,14 @@ class ChargerTabs extends ResponsiveComponent {
             <Icon type="MaterialIcons" name="timeline" />
             <Text>{I18n.t("details.graph")}</Text>
           </Button>
-          <Button vertical active={state.index === 2} onPress={()=>navigation.navigate("ChargerDetails")}>
-            <Icon type="MaterialIcons" name="info" />
-            <Text>{I18n.t("details.informations")}</Text>
-          </Button>
+          { isAdmin ?
+              <Button vertical active={state.index === 2} onPress={()=>navigation.navigate("ChargerDetails")}>
+                <Icon type="MaterialIcons" name="info" />
+                <Text>{I18n.t("details.informations")}</Text>
+              </Button>
+            :
+              undefined
+          }
         </FooterTab>
       </Footer>
     );
