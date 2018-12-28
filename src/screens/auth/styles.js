@@ -47,7 +47,7 @@ const commonStyles = {
   },
   inputIconMail: {
     alignSelf: "center",
-    width: scale(30),
+    width: scale(35),
     marginTop: scale(2),
     marginLeft: scale(5),
     marginRight: scale(5),
@@ -55,7 +55,7 @@ const commonStyles = {
   },
   inputIconPassword: {
     alignSelf: "center",
-    width: scale(30),
+    width: scale(35),
     marginLeft: scale(8),
     marginRight: scale(5),
     fontSize: scale(18)
