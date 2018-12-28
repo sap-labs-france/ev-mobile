@@ -166,6 +166,7 @@ export default class  CentralServerProvider {
     _decodedToken = jwtDecode(_token);
     _tenant = tenant;
     _initialized = true;
+    _securityProvider = new SecurityProvider(_decodedToken);
   }
 
   async register(name, firstName, email, passwords, eula) {
