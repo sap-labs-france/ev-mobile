@@ -83,7 +83,7 @@ const commonStyles = {
   },
   eulaContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignSelf: "center",
     borderBottomWidth: 0,
     paddingTop: 0,
@@ -91,9 +91,10 @@ const commonStyles = {
     marginTop: scale(5)
   },
   eulaCheckbox: {
-    marginRight: scale(5)
+    marginRight: scale(15)
   },
   eulaText: {
+    alignSelf: "flex-start",
     fontSize: scale(13),
     color: commonColor.textColor
   },
