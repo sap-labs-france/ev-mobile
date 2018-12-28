@@ -226,7 +226,7 @@ class ChartDetails extends ResponsiveComponent {
             dragEnabled={true}
             scaleEnabled={true}
             scaleXEnabled={true}
-            scaleYEnabled={true}
+            scaleYEnabled={false}
             pinchZoom={true}
             doubleTapToZoomEnabled={false}
             dragDecelerationEnabled={true}

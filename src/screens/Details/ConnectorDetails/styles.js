@@ -15,6 +15,7 @@ const commonStyles = {
   transactionContainer: {
     justifyContent: "center",
     alignItems: "center",
+    marginTop: scale(-50)
   },
   startTransaction: {
     borderRadius: scale(50),
@@ -25,8 +26,7 @@ const commonStyles = {
     height: scale(100),
     backgroundColor: commonColor.brandSuccess,
     justifyContent: "center",
-    alignItems: "center",
-    marginTop: scale(-50)
+    alignItems: "center"
   },
   stopTransaction: {
     borderRadius: scale(50),
@@ -37,8 +37,7 @@ const commonStyles = {
     height: scale(100),
     backgroundColor: commonColor.brandDanger,
     justifyContent: "center",
-    alignItems: "center",
-    marginTop: scale(-50)
+    alignItems: "center"
   },
   startStopTransactionIcon: {
     fontSize: scale(75)

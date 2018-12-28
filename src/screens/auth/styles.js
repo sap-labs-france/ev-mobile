@@ -39,7 +39,7 @@ const commonStyles = {
   },
   inputGroup: {
     backgroundColor: "rgba(255,255,255,0.3)",
-    height: scale(35),
+    height: scale(40),
     marginBottom: scale(10),
     alignSelf: "center",
     borderWidth: 0,
@@ -67,8 +67,8 @@ const commonStyles = {
   },
   button: {
     alignSelf: "center",
+    height: scale(40),
     marginBottom: 15,
-    height: scale(35),
     backgroundColor: "rgba(255,255,255,0.30)"
   },
   buttonText: {
