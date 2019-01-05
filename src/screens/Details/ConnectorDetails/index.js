@@ -46,23 +46,65 @@ class ConnectorDetails extends ResponsiveComponent {
     this.setState({isAdmin});
     // Get the Site Image
     this._getSiteImage();
+    // Read the charger
+    await this._getCharger();
     // Get Current Transaction
     await this._getTransaction();
     // Init
     this._refreshElapsedTime();
     // Refresh Charger Data
     this.timerChargerData = setInterval(() => {
-      // Component Mounted?
-      if (this.mounted) {
-        // Refresh
-        this._refreshChargerData();
-      }
+      // Refresh
+      this._refreshTransaction();
     }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
-    // Ok
+    // Start refresh of time
+    this.timerElapsedTime = setInterval(() => {
+      // Refresh
+      this._refreshElapsedTime();
+    }, 1000);
     // eslint-disable-next-line react/no-did-mount-set-state
+    // Ok
     this.setState({
       firstLoad: false
     });
+    // Add listeners
+    this.props.navigation.addListener("didFocus", this.componentDidFocus);
+    this.props.navigation.addListener("didBlur", this.componentDidBlur);
+  }
+
+  componentDidFocus = () => {
+    // Start the timer
+    if (!this.timerChargerData) {
+      // Force Refresh
+      this._refreshTransaction();
+      // Refresh Charger Data
+      this.timerChargerData = setInterval(() => {
+        // Refresh
+        this._refreshTransaction();
+      }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
+    }
+    // Start the timer
+    if (!this.timerChargerData) {
+      // Force Refresh
+      this._refreshElapsedTime();
+      // Start refresh of time
+      this.timerElapsedTime = setInterval(() => {
+        // Refresh
+        this._refreshElapsedTime();
+      }, 1000);
+    }
+  }
+
+  componentDidBlur = () => {
+    // Clear interval if it exists
+    if (this.timerChargerData) {
+      clearInterval(this.timerChargerData);
+      this.timerChargerData = null;
+    }
+    if (this.timerElapsedTime) {
+      clearInterval(this.timerElapsedTime);
+      this.timerElapsedTime = null;
+    }
   }
 
   async componentWillUnmount() {
@@ -198,14 +240,6 @@ class ConnectorDetails extends ResponsiveComponent {
           if (!this.timerElapsedTime) {
             // Get user image
             this._getUserImage(transaction.user);
-            // Start
-            this.timerElapsedTime = setInterval(() => {
-              // Component Mounted?
-              if (this.mounted) {
-                // Refresh
-                this._refreshElapsedTime();
-              }
-            }, 1000);
           }
         } else {
           // Check Timer
@@ -217,6 +251,13 @@ class ConnectorDetails extends ResponsiveComponent {
         }
         this.setState({
           transaction: transaction
+        });
+      } else {
+        this.setState({
+          seconds: "00",
+          minutes: "00",
+          hours: "00",
+          transaction: null
         });
       }
     } catch (error) {
@@ -244,28 +285,31 @@ class ConnectorDetails extends ResponsiveComponent {
   }
 
   _refreshElapsedTime = () => {
-    const { transaction } = this.state;
-    // Is their a timestamp ?
-    if (transaction && transaction.timestamp) {
-      // Diff
-      let diffSecs = (Date.now() - transaction.timestamp.getTime()) / 1000;
-      // Set Hours
-      const hours = Math.trunc(diffSecs / 3600);
-      diffSecs -= hours * 3600;
-      // Set Mins
-      let minutes = 0;
-      if (diffSecs > 0) {
-        minutes = Math.trunc(diffSecs / 60);
-        diffSecs -= minutes * 60;
+    // Component Mounted?
+    if (this.mounted) {
+      const { transaction } = this.state;
+      // Is their a timestamp ?
+      if (transaction && transaction.timestamp) {
+        // Diff
+        let diffSecs = (Date.now() - transaction.timestamp.getTime()) / 1000;
+        // Set Hours
+        const hours = Math.trunc(diffSecs / 3600);
+        diffSecs -= hours * 3600;
+        // Set Mins
+        let minutes = 0;
+        if (diffSecs > 0) {
+          minutes = Math.trunc(diffSecs / 60);
+          diffSecs -= minutes * 60;
+        }
+        // Set Secs
+        const seconds = Math.trunc(diffSecs);
+        // Set elapsed time
+        this.setState({
+          hours: this._formatTimer(hours),
+          minutes: this._formatTimer(minutes),
+          seconds: this._formatTimer(seconds)
+        });
       }
-      // Set Secs
-      const seconds = Math.trunc(diffSecs);
-      // Set elapsed time
-      this.setState({
-        hours: this._formatTimer(hours),
-        minutes: this._formatTimer(minutes),
-        seconds: this._formatTimer(seconds)
-      });
     }
   }
 
@@ -279,18 +323,21 @@ class ConnectorDetails extends ResponsiveComponent {
     return valString;
   };
 
-  _refreshChargerData = async () => {
-    // Read the charger
-    await this._getCharger();
-    // Read the transaction
-    await this._getTransaction();
+  _refreshTransaction = async () => {
+    // Component Mounted?
+    if (this.mounted) {
+      // Read the charger
+      await this._getCharger();
+      // Read the transaction
+      await this._getTransaction();
+    }
   }
 
   _refresh = () => {
     // Show spinner
     this.setState({refreshing: true}, async () => {
       // Refresh
-      await this._refreshChargerData();
+      await this._refreshTransaction();
       // Hide spinner
       this.setState({refreshing: false});
     });

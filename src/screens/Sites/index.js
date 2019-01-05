@@ -35,12 +35,9 @@ class Sites extends ResponsiveComponent {
       loading: false
     });
     // Refresh every minutes
-    this.refreshTimer = setInterval(() => {
-      // Component Mounted?
-      if (this.mounted) {
-        // Refresh
-        this._refresh();
-      }
+    this.timerRefresh = setInterval(() => {
+      // Refresh
+      this._refresh();
     }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
     // Add listeners
     this.props.navigation.addListener("didFocus", this.componentDidFocus);
@@ -51,32 +48,29 @@ class Sites extends ResponsiveComponent {
     // Clear
     this.mounted = false;
     // Stop the timer
-    if (this.refreshTimer) {
-      clearInterval(this.refreshTimer);
+    if (this.timerRefresh) {
+      clearInterval(this.timerRefresh);
     }
   }
 
   componentDidFocus = () => {
-    // Force Refresh
-    this._refresh();
-    // Stop the timer
-    if (!this.refreshTimer) {
+    // Restart the timer
+    if (!this.timerRefresh) {
+      // Force Refresh
+      this._refresh();
       // Refresh every minutes
-      this.refreshTimer = setInterval(() => {
-        // Component Mounted?
-        if (this.mounted) {
-          // Refresh
-          this._refresh();
-        }
+      this.timerRefresh = setInterval(() => {
+        // Refresh
+        this._refresh();
       }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
     }
   }
 
   componentDidBlur = () => {
     // Stop the timer
-    if (this.refreshTimer) {
-      clearInterval(this.refreshTimer);
-      this.refreshTimer = null;
+    if (this.timerRefresh) {
+      clearInterval(this.timerRefresh);
+      this.timerRefresh = null;
     }
   }
 
@@ -95,13 +89,16 @@ class Sites extends ResponsiveComponent {
   }
 
   _refresh = async () => {
-    const { skip, limit } = this.state;
-    // Refresh All
-    let sites = await this.getSites(0, (skip + limit));
-    // Add sites
-    this.setState({
-      sites: sites.result
-    });
+    // Component Mounted?
+    if (this.mounted) {
+      const { skip, limit } = this.state;
+      // Refresh All
+      let sites = await this.getSites(0, (skip + limit));
+      // Add sites
+      this.setState({
+        sites: sites.result
+      });
+    }
   }
 
   _onEndScroll = async () => {

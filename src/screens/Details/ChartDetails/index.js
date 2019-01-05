@@ -33,13 +33,39 @@ class ChartDetails extends ResponsiveComponent {
   async componentDidMount() {
     // Set
     this.mounted = true;
+    // Refresh Charger
+    await this._getCharger();
     // Get the consumption
-    this.getChargingStationConsumption();
+    await this._getChargingStationConsumption();
     // Start refreshing Charger Data
     this.timerChartData = setInterval(() => {
       // Refresh
       this._refresh();
     }, Constants.AUTO_REFRESH_CHART_PERIOD_MILLIS);
+    // Add listeners
+    this.props.navigation.addListener("didFocus", this.componentDidFocus);
+    this.props.navigation.addListener("didBlur", this.componentDidBlur);
+  }
+
+  componentDidFocus = () => {
+    // Start the timer
+    if (!this.timerChartData) {
+      // Refresh
+      this._refresh();
+      // Start refreshing Charger Data
+      this.timerChartData = setInterval(() => {
+        // Refresh
+        this._refresh();
+      }, Constants.AUTO_REFRESH_CHART_PERIOD_MILLIS);
+    }
+  }
+
+  componentDidBlur = () => {
+    // Clear interval if it exists
+    if (this.timerChartData) {
+      clearInterval(this.timerChartData);
+      this.timerChartData = null;
+    }
   }
 
   async componentWillUnmount() {
@@ -51,12 +77,12 @@ class ChartDetails extends ResponsiveComponent {
     }
   }
 
-  getChargingStationConsumption = async () => {
+  _getChargingStationConsumption = async () => {
     try {
       // Active Transaction?
       if (this.state.connector.activeTransactionID) {
         // Get the consumption
-        let result = await _provider.getChargingStationConsumption({
+        let result = await _provider._getChargingStationConsumption({
           TransactionId: this.state.connector.activeTransactionID
         });
         // At least 2 values for the chart!!!
@@ -98,15 +124,29 @@ class ChartDetails extends ResponsiveComponent {
     }
   }
 
-  _refresh = () => {
-    // Show spinner
-    this.setState({refreshing: true}, async () => {
-      // Component Mounted?
-      if (this.mounted) {
-        // Refresh Consumption
-        this.getChargingStationConsumption();
-      }
-    });
+  _refresh = async () => {
+    // Component Mounted?
+    if (this.mounted) {
+      // Refresh Charger
+      await this._getCharger();
+      // Refresh Consumption
+      await this._getChargingStationConsumption();
+    }
+  }
+
+  _getCharger = async () => {
+    try {
+      let charger = await _provider.getCharger(
+        { ID: this.state.charger.id }
+      );
+      this.setState({
+        charger: charger,
+        connector: charger.connectors[this.state.connector.connectorId - 1]
+      });
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
   }
 
   render() {

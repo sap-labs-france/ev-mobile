@@ -40,36 +40,30 @@ class Chargers extends ResponsiveComponent {
       loading: false
     }));
     // Refresh every minutes
-    this.refreshTimer = setInterval(() => {
-      // Component Mounted?
-      if (this.mounted) {
-        // Refresh
-        this._refresh();
-      }
+    this.timerRefresh = setInterval(() => {
+      // Refresh
+      this._refresh();
     }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
   }
 
   componentDidFocus = () => {
-    // Force Refresh
-    this._refresh();
     // Stop the timer
-    if (!this.refreshTimer) {
+    if (!this.timerRefresh) {
+      // Force Refresh
+      this._refresh();
       // Refresh every minutes
-      this.refreshTimer = setInterval(() => {
-        // Component Mounted?
-        if (this.mounted) {
-          // Refresh
-          this._refresh();
-        }
+      this.timerRefresh = setInterval(() => {
+        // Refresh
+        this._refresh();
       }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
     }
   }
 
   componentDidBlur = () => {
     // Stop the timer
-    if (this.refreshTimer) {
-      clearInterval(this.refreshTimer);
-      this.refreshTimer = null;
+    if (this.timerRefresh) {
+      clearInterval(this.timerRefresh);
+      this.timerRefresh = null;
     }
   }
 
@@ -77,8 +71,8 @@ class Chargers extends ResponsiveComponent {
     // Clear
     this.mounted = false;
     // Stop the timer
-    if (this.refreshTimer) {
-      clearInterval(this.refreshTimer);
+    if (this.timerRefresh) {
+      clearInterval(this.timerRefresh);
     }
   }
 
@@ -111,13 +105,16 @@ class Chargers extends ResponsiveComponent {
   }
 
   _refresh = async () => {
-    const { skip, limit } = this.state;
-    // Refresh All
-    let chargers = await this._getChargers(0, (skip + limit), this.state.site.id);
-    // Add sites
-    this.setState((prevState, props) => ({
-      chargers: chargers.result
-    }));
+    // Component Mounted?
+    if (this.mounted) {
+      const { skip, limit } = this.state;
+      // Refresh All
+      let chargers = await this._getChargers(0, (skip + limit), this.state.site.id);
+      // Add sites
+      this.setState((prevState, props) => ({
+        chargers: chargers.result
+      }));
+    }
   }
 
   _footerList = () => {
