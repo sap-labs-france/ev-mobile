@@ -42,6 +42,7 @@ export default class  CentralServerProvider {
 
   debug(method) {
     if (DEBUG) {
+      // eslint-disable-next-line no-console
       console.log( new Date().toISOString() + " - " + method);
     }
   }
@@ -54,7 +55,7 @@ export default class  CentralServerProvider {
     return [
       { subdomain: "slf", name: "SAP Labs France"},
       { subdomain: "slfcah", name: "Charge@Home"},
-    ]
+    ];
   }
 
   async isUserAuthenticated() {
