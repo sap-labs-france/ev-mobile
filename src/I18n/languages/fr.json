@@ -1,17 +1,17 @@
 {
   "general": {
-    "cannotConnectBackend": "Connexion Perdue!",
-    "unexpectedErrorBackend": "Erreur Requête Serveur",
-    "unexpectedError": "Erreur Application",
-    "sessionExpired": "Session expirée",
+    "cannotConnectBackend": "La connexion a été perdue",
+    "unexpectedErrorBackend": "Erreur serveur inattendue",
+    "unexpectedError": "Erreur applicative inattendue",
+    "sessionExpired": "La session a expirée",
     "numbers": "Entrez un nombre valide",
     "email": "Entrez une adresse email valide",
     "required": "Champ obligatoire",
     "ok": "Ok",
     "yes": "Oui",
     "no": "Non",
-    "version": "Version 0.37",
-    "date": "(5 Janvier)"
+    "version": "Version 0.38",
+    "date": "(6 Janvier)"
   },
   "sidebar": {
     "sites": "Sites"
@@ -75,12 +75,12 @@
     "startTransactionMessage": "Voulez-vous vraiment démarrer une nouvelle session sur la borne ",
     "stopTransactionMessage": "Voulez-vous vraiment arrêter la session sur la borne ",
     "notAuthorisedTitle": "Non autorisé",
-    "notAuthorised": "Vous n'êtes pas autorisés à arrêter la transaction.",
-    "accepted": "Accepted",
-    "denied": "Denied",
+    "notAuthorised": "Vous n'êtes pas autorisé à arrêter la transaction.",
+    "accepted": "La requête a été acceptée",
+    "denied": "La requête a été refusée",
     "total": "Total",
     "maximum": "Maximum",
-    "instant": "Instantané",
+    "instant": "Instant.",
     "vendor": "Vendeur",
     "model": "Modèle",
     "ocppVersion": "Version OCPP",

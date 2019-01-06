@@ -30,7 +30,7 @@ class ConnectorStatusComponent extends ResponsiveComponent {
 
   _getStatusAnimation(connector) {
     // First check
-    if (connector.currentConsumption > 0) {
+    if (connector.status === Constants.CONN_STATUS_CHARGING) {
       return "fadeIn";
     }
     return "";

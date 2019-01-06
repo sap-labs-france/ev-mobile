@@ -16,6 +16,7 @@ class Chargers extends ResponsiveComponent {
     // Init State
     this.state = {
       site: this.props.navigation.state.params.site,
+      siteImage: null,
       chargers: [],
       loading: true,
       refreshing: false,
@@ -28,6 +29,8 @@ class Chargers extends ResponsiveComponent {
   async componentDidMount() {
     // Set
     this.mounted = true;
+    // Get the Site Image
+    this._getSiteImage();
     // Get chargers first time
     const chargers = await this._getChargers(this.state.skip, this.state.limit, this.state.site.id);
     // Add listeners
@@ -73,6 +76,20 @@ class Chargers extends ResponsiveComponent {
     // Stop the timer
     if (this.timerRefresh) {
       clearInterval(this.timerRefresh);
+    }
+  }
+
+  _getSiteImage = async () => {
+    try {
+      let result = await _provider.getSiteImage(
+        { ID: this.state.site.id }
+      );
+      if (result) {
+        this.setState({siteImage: result.image});
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
     }
   }
 
@@ -130,7 +147,7 @@ class Chargers extends ResponsiveComponent {
   _renderItem = ({item}, navigation) => {
     return (
       <List>
-        <ChargerComponent charger={item} navigation={navigation} siteID={this.state.site.id} />
+        <ChargerComponent charger={item} navigation={navigation} siteID={this.state.site.id} siteImage={this.state.siteImage} />
       </List>
     );
   }

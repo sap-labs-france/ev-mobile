@@ -39,6 +39,9 @@ const commonStyles = {
     justifyContent: "center",
     alignItems: "center"
   },
+  startStopTransactionDisabled: {
+    backgroundColor: commonColor.btnDisabledBg,
+  },
   startStopTransactionIcon: {
     fontSize: scale(75)
   },

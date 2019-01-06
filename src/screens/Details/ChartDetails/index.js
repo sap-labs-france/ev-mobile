@@ -82,7 +82,7 @@ class ChartDetails extends ResponsiveComponent {
       // Active Transaction?
       if (this.state.connector.activeTransactionID) {
         // Get the consumption
-        let result = await _provider._getChargingStationConsumption({
+        let result = await _provider.getChargingStationConsumption({
           TransactionId: this.state.connector.activeTransactionID
         });
         // At least 2 values for the chart!!!

@@ -10,6 +10,7 @@ class ChargerComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
+      siteImage: this.props.navigation.state.params.siteImage,
       isChargerDead: false
     };
   }
@@ -34,7 +35,7 @@ class ChargerComponent extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const { charger, navigation, siteID } = this.props;
+    const { charger, navigation, siteID, siteImage } = this.props;
     const { isChargerDead } = this.state;
     return (
       <View style={style.container}>
@@ -55,7 +56,7 @@ class ChargerComponent extends ResponsiveComponent {
                 key={`${charger.id}~${connector.connectorId}` } 
                 index={index} connector={connector} 
                 navigation={navigation} charger={charger} 
-                siteID={siteID} />);
+                siteID={siteID} siteImage={siteImage}/>);
             })
           }
         </View>

@@ -24,7 +24,7 @@ class ConnectorDetails extends ResponsiveComponent {
       charger: this.props.navigation.state.params.charger,
       connector: this.props.navigation.state.params.connector,
       siteID: this.props.navigation.state.params.siteID,
-      siteImage: null,
+      siteImage: this.props.navigation.state.params.siteImage,
       transaction: null,
       seconds: "00",
       minutes: "00",
@@ -33,6 +33,9 @@ class ConnectorDetails extends ResponsiveComponent {
       refreshing: false,
       firstLoad: true,
       loadingTransaction: false,
+      startButtonDisabledNbTrial: 0,
+      startButtonDisabled: true,
+      stopButtonDisabled: true,
       isAdmin: false
     };
   }
@@ -44,8 +47,6 @@ class ConnectorDetails extends ResponsiveComponent {
     const isAdmin = (await _provider.getSecurityProvider()).isAdmin();
     // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({isAdmin});
-    // Get the Site Image
-    this._getSiteImage();
     // Read the charger
     await this._getCharger();
     // Get Current Transaction
@@ -84,7 +85,7 @@ class ConnectorDetails extends ResponsiveComponent {
       }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
     }
     // Start the timer
-    if (!this.timerChargerData) {
+    if (!this.timerElapsedTime) {
       // Force Refresh
       this._refreshElapsedTime();
       // Start refresh of time
@@ -133,21 +134,29 @@ class ConnectorDetails extends ResponsiveComponent {
 
   _startTransaction = async () => {
     const { charger, connector } = this.state;
-    this.setState({loadingTransaction: true});
+    this.setState({
+      loadingTransaction: true,
+      startButtonDisabled: true
+    });
     try {
       // Start the Transaction
       let status = await _provider.startTransaction(charger.id, connector.connectorId);
       // Check
       if (status.status && status.status === "Accepted") {
         Message.showSuccess(I18n.t("details.accepted"));
+        this.setState({
+          startButtonDisabledNbTrial: 4,
+          loadingTransaction: false
+        });
       } else {
         Message.showError(I18n.t("details.denied"));
+        this.setState({loadingTransaction: false});
       }
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
+      this.setState({loadingTransaction: false});
     }
-    this.setState({loadingTransaction: false});
   }
 
   onStopTransaction = async () => {
@@ -176,7 +185,10 @@ class ConnectorDetails extends ResponsiveComponent {
 
   _stopTransaction = async () => {
     const { charger, connector } = this.state;
-    this.setState({loadingTransaction: true});
+    this.setState({
+      loadingTransaction: true,
+      stopButtonDisabled: true
+    });
     try {
       // Stop the Transaction
       let status = await _provider.stopTransaction(charger.id, connector.activeTransactionID);
@@ -216,6 +228,23 @@ class ConnectorDetails extends ResponsiveComponent {
       this.setState({
         charger: charger,
         connector: charger.connectors[this.state.connector.connectorId - 1]
+      }, () => {
+        // Connector Available?
+        if (this.state.connector.status === Constants.CONN_STATUS_AVAILABLE &&
+            this.state.startButtonDisabledNbTrial === 0) {
+          // Set
+          this.setState({
+            startButtonDisabled: false,
+            stopButtonDisabled: true
+          });
+        } else {
+          // Set
+          this.setState((previousState) => ({
+            startButtonDisabled: true,
+            stopButtonDisabled: false,
+            startButtonDisabledNbTrial: (previousState.startButtonDisabledNbTrial > 0 ? (previousState.startButtonDisabledNbTrial - 1) : 0 )
+          }));
+        }
       });
     } catch (error) {
       // Other common Error
@@ -236,17 +265,10 @@ class ConnectorDetails extends ResponsiveComponent {
         if (transaction) {
           // Convert
           transaction.timestamp = new Date(transaction.timestamp);
-          // Start timer?
-          if (!this.timerElapsedTime) {
+          // Already loaded?
+          if (!this.state.userImage) {
             // Get user image
             this._getUserImage(transaction.user);
-          }
-        } else {
-          // Check Timer
-          if (this.timerElapsedTime) {
-            // Clear it
-            clearInterval(this.timerElapsedTime);
-            this.timerElapsedTime = null;
           }
         }
         this.setState({
@@ -257,6 +279,7 @@ class ConnectorDetails extends ResponsiveComponent {
           seconds: "00",
           minutes: "00",
           hours: "00",
+          userImage: null,
           transaction: null
         });
       }
@@ -271,8 +294,9 @@ class ConnectorDetails extends ResponsiveComponent {
 
   _getUserImage = async (user) => {
     try {
+      // User provided?
       if (user) {
-        let userImage = await _provider.getUserImage(
+        const userImage = await _provider.getUserImage(
           { ID: user.id }
         );
         // Set
@@ -343,20 +367,6 @@ class ConnectorDetails extends ResponsiveComponent {
     });
   }
 
-  _getSiteImage = async () => {
-    try {
-      let result = await _provider.getSiteImage(
-        { ID: this.state.siteID }
-      );
-      if (result) {
-        this.setState({siteImage: result.image});
-      }
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
-    }
-  }
-
   render() {
     const style = computeStyleSheet();
     const navigation = this.props.navigation;
@@ -374,14 +384,14 @@ class ConnectorDetails extends ResponsiveComponent {
             :
               <View style={style.transactionContainer}>
                 {connector.activeTransactionID === 0 ?
-                  <TouchableOpacity onPress={() => this.onStartTransaction()}>
-                    <View style={style.startTransaction}>
+                  <TouchableOpacity onPress={() => this.onStartTransaction()} disabled={this.state.startButtonDisabled}>
+                    <View style={(!this.state.startButtonDisabled ? style.startTransaction : [style.startTransaction, style.startStopTransactionDisabled])}>
                       <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
                     </View>
                   </TouchableOpacity>
                 :
-                  <TouchableOpacity onPress={() => this.onStopTransaction()}>
-                    <View style={style.stopTransaction}>
+                  <TouchableOpacity onPress={() => this.onStopTransaction()} disabled={this.state.stopButtonDisabled}>
+                    <View style={(!this.state.stopButtonDisabled ? style.stopTransaction : [style.stopTransaction, style.startStopTransactionDisabled])}>
                       <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="stop" />
                     </View>
                   </TouchableOpacity>
@@ -424,7 +434,7 @@ class ConnectorDetails extends ResponsiveComponent {
                 </View>
                 <View style={style.columnContainer}>
                   <Icon type="Ionicons" name="time" style={style.icon} />
-                  {transaction && transaction.timestamp ?
+                  {transaction ?
                     <Text style={style.labelTimeValue}>{`${hours}:${minutes}:${seconds}`}</Text>
                   :
                     <Text style={style.labelValue}>- : - : -</Text>

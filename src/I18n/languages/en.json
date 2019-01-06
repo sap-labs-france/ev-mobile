@@ -1,17 +1,17 @@
 {
   "general": {
-    "cannotConnectBackend": "Connection Lost",
-    "unexpectedErrorBackend": "Backend Request Error",
-    "unexpectedError": "Application Error",
-    "sessionExpired": "Session expired",
+    "cannotConnectBackend": "The connection has been lost",
+    "unexpectedErrorBackend": "Unexpected backend error",
+    "unexpectedError": "Unexpected Application Error",
+    "sessionExpired": "Session has expired",
     "numbers": "Enter a valid number",
     "email": "Enter a valid email address",
     "required": "Mandatory field",
     "ok": "Ok",
     "yes": "Yes",
     "no": "No",
-    "version": "Version 0.37",
-    "date": "(5th, January)"
+    "version": "Version 0.38",
+    "date": "(6th, January)"
   },
   "sidebar": {
     "sites": "Sites"
@@ -76,8 +76,8 @@
     "stopTransactionMessage": "Do you really want to stop the session of the charging station ",
     "notAuthorisedTitle": "Not Authorised",
     "notAuthorised": "You are not authorized to stop the transaction.",
-    "accepted": "Accepted",
-    "denied": "Denied",
+    "accepted": "Request has been accepted",
+    "denied": "Request has been denied",
     "total": "Total",
     "maximum": "Maximum",
     "instant": "Instant",
