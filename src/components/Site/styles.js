@@ -29,24 +29,54 @@ const commonStyles = {
     paddingTop: 5,
     fontSize: scale(25)
   },
-  detailsContent: {
+  detailsContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center"
   },
-  chargerText: {
+  badgeSuccessContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRightWidth: 1,
+    borderRightColor: "#D3D3D3"
+  },
+  badgeOccupiedContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  connectorText: {
     color: commonColor.textColor,
+    marginRight: scale(10),
     fontSize: scale(20)
   },
-  badge: {
-    margin: scale(10),
+  freeConnectorBadge: {
+    marginTop: scale(5),
+    marginLeft: scale(10),
+    marginRight: scale(10),
+    width: scale(50),
     backgroundColor: commonColor.brandSecondary
   },
-  badgeText: {
+  occupiedConnectorBadge: {
+    marginTop: scale(5),
+    marginLeft: scale(10),
+    marginRight: scale(10),
+    width: scale(50),
+    backgroundColor: commonColor.brandDanger
+  },
+  connectorBadgeTitle: {
     fontSize: scale(25),
     marginTop: -2,
     marginLeft: -2,
     fontWeight: "bold",
+    color: commonColor.textColor,
+  },
+  connectorSubTitle: {
+    fontSize: scale(15),
+    marginBottom: scale(5),
+    marginLeft: scale(10),
+    marginRight: scale(10),
     color: commonColor.textColor,
   }
 };

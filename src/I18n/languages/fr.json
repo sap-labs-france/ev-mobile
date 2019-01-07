@@ -48,7 +48,10 @@
     "location": "Choisir un Site"
   },
   "sites": {
-    "freeChargers": "Chargeurs disponibles"
+    "freeChargers": "Chargeurs disponibles",
+    "chargePoint": "Point de Charge",
+    "free": "Libre(s)",
+    "occupied": "Occupé(s)"
   },
   "connector": {
     "occupied": "Occupé",

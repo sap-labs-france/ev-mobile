@@ -48,7 +48,10 @@
     "location": "Choose a Location"
   },
   "sites": {
-    "freeChargers": "Free chargers"
+    "freeChargers": "Free chargers",
+    "chargePoint": "Charge Point",
+    "free": "Free",
+    "occupied": "Occupied"
   },
   "connector": {
     "occupied": "Occupied",

@@ -26,9 +26,16 @@ class SiteComponent extends ResponsiveComponent {
             <Text style={style.siteName}>{site.name}</Text>
             <Icon style={style.icon} name="arrow-forward"/>
           </View>
-          <View style={style.detailsContent}>
-            <Text style={style.chargerText}>{I18n.t("sites.freeChargers")}</Text>
-            <Badge containerStyle={style.badge} textStyle={style.badgeText} value={site.availableChargers}/>
+          <View style={style.detailsContainer}>
+            <Text style={style.connectorText}>{I18n.t("sites.chargePoint")}</Text>
+            <View style={style.badgeSuccessContainer}>
+              <Badge containerStyle={style.freeConnectorBadge} textStyle={style.connectorBadgeTitle} value={site.availableConnectors}/>
+              <Text style={style.connectorSubTitle}>{I18n.t("sites.free")}</Text>
+            </View>
+            <View style={style.badgeOccupiedContainer}>
+              <Badge containerStyle={style.occupiedConnectorBadge} textStyle={style.connectorBadgeTitle} value={site.totalConnectors - site.availableConnectors}/>
+              <Text style={style.connectorSubTitle}>{I18n.t("sites.occupied")}</Text>
+            </View>
           </View>
         </View>
       </TouchableOpacity>
