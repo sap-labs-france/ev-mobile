@@ -238,12 +238,19 @@ class ConnectorDetails extends ResponsiveComponent {
             stopButtonDisabled: true
           });
         } else {
+          let startButtonDisabledNbTrial = (this.state.startButtonDisabledNbTrial > 0 ? (this.state.startButtonDisabledNbTrial - 1) : 0 );
+          // Check if status has changed
+          if (this.state.connector.status !== Constants.CONN_STATUS_AVAILABLE && 
+              startButtonDisabledNbTrial !== 0) {
+            // Init
+            startButtonDisabledNbTrial = 0;
+          }
           // Set
-          this.setState((previousState) => ({
+          this.setState({
             startButtonDisabled: true,
             stopButtonDisabled: false,
-            startButtonDisabledNbTrial: (previousState.startButtonDisabledNbTrial > 0 ? (previousState.startButtonDisabledNbTrial - 1) : 0 )
-          }));
+            startButtonDisabledNbTrial
+          });
         }
       });
     } catch (error) {
