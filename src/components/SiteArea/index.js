@@ -3,37 +3,29 @@ import { ResponsiveComponent } from "react-native-responsive-ui";
 import { Badge } from 'react-native-elements'
 import { TouchableOpacity } from "react-native";
 import { Text, View, Icon } from "native-base";
-import openMap from "react-native-open-maps";
 import computeStyleSheet from "./styles";
 import I18n from "../../I18n/I18n";
 
-class SiteComponent extends ResponsiveComponent {
-
-  _siteLocation(address) {
-    openMap({ latitude: address.latitude, longitude: address.longitude, zoom: 18});
-  }
+class SiteAreaComponent extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const { site, navigation } = this.props;
+    const { siteArea, siteImage, navigation } = this.props;
     return (
-      <TouchableOpacity onPress={() => navigation.navigate("SiteAreas", { site })}>
+      <TouchableOpacity onPress={() => navigation.navigate("Chargers", { siteArea, siteImage })}>
         <View style={style.siteContainer}>
           <View style={style.mainContent}>
-            <TouchableOpacity onPress={()=>this._siteLocation(site.address)}>
-              <Icon style={style.icon} name="pin" />
-            </TouchableOpacity>
-            <Text style={style.siteName}>{site.name}</Text>
+            <Text style={style.siteName}>{siteArea.name}</Text>
             <Icon style={style.icon} name="arrow-forward"/>
           </View>
           <View style={style.detailsContainer}>
             <Text style={style.connectorText}>{I18n.t("sites.chargePoint")}</Text>
             <View style={style.badgeSuccessContainer}>
-              <Badge containerStyle={style.freeConnectorBadge} textStyle={style.connectorBadgeTitle} value={site.availableConnectors}/>
+              <Badge containerStyle={style.freeConnectorBadge} textStyle={style.connectorBadgeTitle} value={siteArea.availableConnectors}/>
               <Text style={style.connectorSubTitle}>{I18n.t("sites.free")}</Text>
             </View>
             <View style={style.badgeOccupiedContainer}>
-              <Badge containerStyle={style.occupiedConnectorBadge} textStyle={style.connectorBadgeTitle} value={site.totalConnectors - site.availableConnectors}/>
+              <Badge containerStyle={style.occupiedConnectorBadge} textStyle={style.connectorBadgeTitle} value={siteArea.totalConnectors - siteArea.availableConnectors}/>
               <Text style={style.connectorSubTitle}>{I18n.t("sites.occupied")}</Text>
             </View>
           </View>
@@ -43,4 +35,4 @@ class SiteComponent extends ResponsiveComponent {
   }
 }
 
-export default SiteComponent;
+export default SiteAreaComponent;

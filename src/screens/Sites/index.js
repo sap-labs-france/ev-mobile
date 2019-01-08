@@ -27,7 +27,7 @@ class Sites extends ResponsiveComponent {
     // Set
     this.mounted = true;
     // Get the sites
-    const sites = await this.getSites(this.state.skip, this.state.limit);
+    const sites = await this._getSites(this.state.skip, this.state.limit);
     // Add sites
     this.setState({
       sites: sites.result,
@@ -74,13 +74,12 @@ class Sites extends ResponsiveComponent {
     }
   }
 
-  getSites = async (skip, limit) => {
+  _getSites = async (skip, limit) => {
     let sites = [];
     try {
       // Get the Sites
       sites = await _provider.getSites(
-        { WithAvailableChargers: true, WithChargeBoxes: true }, { skip, limit });
-      console.log(sites);
+        { WithAvailableChargers: true }, { skip, limit });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -94,7 +93,7 @@ class Sites extends ResponsiveComponent {
     if (this.mounted) {
       const { skip, limit } = this.state;
       // Refresh All
-      let sites = await this.getSites(0, (skip + limit));
+      let sites = await this._getSites(0, (skip + limit));
       // Add sites
       this.setState({
         sites: sites.result
@@ -107,7 +106,7 @@ class Sites extends ResponsiveComponent {
     // No reached the end?
     if ((skip + limit) < count) {
       // No: get next sites
-      let sites = await this.getSites(skip + Constants.PAGING_SIZE, limit);
+      let sites = await this._getSites(skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState, props) => ({
         sites: [...prevState.sites, ...sites.result],
@@ -126,12 +125,6 @@ class Sites extends ResponsiveComponent {
     }
     return null;
   }
-
-  _renderItem = ({item}) => {
-    return (
-      <SiteComponent site={item} navigation={this.props.navigation} />
-    );
-  };
 
   render() {
     const style = computeStyleSheet();
@@ -159,7 +152,9 @@ class Sites extends ResponsiveComponent {
           :
             <FlatList
               data={this.state.sites}
-              renderItem={this._renderItem}
+              renderItem={({item}) => 
+                <SiteComponent site={item} navigation={this.props.navigation} />
+              }
               keyExtractor={item => item.id}
               refreshControl={
                 <RefreshControl onRefresh={this._refresh} refreshing={this.state.refreshing} />

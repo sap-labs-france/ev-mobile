@@ -1,5 +1,4 @@
 import React from "react";
-import { FlatList } from "react-native";
 import { Text, View, Icon } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./styles";

@@ -8,6 +8,7 @@ import RetrievePassword from "./screens/auth/RetrievePassword";
 import SignUp from "./screens/auth/SignUp";
 import Sidebar from "./screens/Sidebar";
 import Sites from "./screens/Sites";
+import SiteAreas from "./screens/SiteAreas";
 import Chargers from "./screens/Chargers";
 import ChargerHeader from "./screens/Details/ChargerHeader";
 import ChargerNavigation from "./screens/Details/ChargerTab";
@@ -16,6 +17,7 @@ import ChargerNavigation from "./screens/Details/ChargerTab";
 const DrawerNavigation = createDrawerNavigator(
   {
     Sites: { screen: Sites },
+    SiteAreas: { screen: SiteAreas },
     Chargers: { screen: Chargers },
     ChargerHeader: { screen: ChargerHeader }
   },
@@ -38,6 +40,7 @@ const AppNavigation = createStackNavigator(
     SignUp: { screen: SignUp },
     RetrievePassword: { screen: RetrievePassword },
     DrawerNavigation: { screen: DrawerNavigation },
+    SiteAreas: { screen: SiteAreas },
     Chargers: { screen: Chargers },
     Charger: { screen: ChargerNavigation }
   },
