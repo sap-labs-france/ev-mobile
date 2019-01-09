@@ -61,7 +61,8 @@ const commonStyles = {
   },
   labelImage: {
     color: commonColor.textColor,
-    fontSize: scale(12)
+    fontSize: scale(12),
+    marginTop: scale(3)
   },
   label: {
     color: commonColor.textColor,

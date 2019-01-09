@@ -9,25 +9,25 @@ const commonStyles = {
     color: commonColor.textColor,
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: (Platform.OS === "ios" ? scale(40) : scale(35))
+    fontSize: (Platform.OS === "ios" ? scale(35) : scale(30))
   },
   statusGreen: {
     backgroundColor: commonColor.brandSuccess,
-    width: scale(50),
-    height: scale(50),
-    borderRadius: scale(25)
+    width: scale(42),
+    height: scale(42),
+    borderRadius: scale(21)
   },
   statusRed: {
     backgroundColor: commonColor.brandDanger,
-    width: scale(50),
-    height: scale(50),
-    borderRadius: scale(25)
+    width: scale(42),
+    height: scale(42),
+    borderRadius: scale(21)
   },
   statusOrange: {
     backgroundColor: commonColor.brandWarning,
-    width: scale(50),
-    height: scale(50),
-    borderRadius: scale(25)
+    width: scale(42),
+    height: scale(42),
+    borderRadius: scale(21)
   }
 };
 

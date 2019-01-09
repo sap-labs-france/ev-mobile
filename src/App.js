@@ -45,7 +45,7 @@ const AppNavigator = createStackNavigator(
     Charger: { screen: ChargerNavigation }
   },
   {
-    index: 0,
+    // index: 0,
     initialRouteName: "Login",
     headerMode: "none"
   }

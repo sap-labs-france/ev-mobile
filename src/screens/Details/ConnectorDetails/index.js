@@ -387,7 +387,7 @@ class ConnectorDetails extends ResponsiveComponent {
           <View style={style.detailsContainer}>
             <Image style={style.backgroundImage} source={siteImage ? {uri: siteImage} : noSite}/>
             { loadingTransaction ?
-              <Spinner color="white" style={style.spinner} />
+              <Spinner style={style.spinner} />
             :
               <View style={style.transactionContainer}>
                 {connector.activeTransactionID === 0 ?

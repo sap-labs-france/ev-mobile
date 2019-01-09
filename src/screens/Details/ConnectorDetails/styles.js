@@ -10,7 +10,7 @@ const commonStyles = {
     height: scale(150)
   },
   spinner: {
-    // marginTop: hp("18%")
+    color: commonColor.textColor
   },
   transactionContainer: {
     justifyContent: "center",
@@ -64,6 +64,7 @@ const commonStyles = {
     width: "50%"
   },
   connectorLetter: {
+    marginTop: scale(5),
     marginBottom: scale(5)
   },
   label: {
@@ -97,7 +98,7 @@ const commonStyles = {
     height: scale(52),
     width: scale(52),
     alignSelf: "center",
-    marginBottom: scale(7),
+    marginBottom: scale(5),
     borderRadius: scale(26),
     borderWidth: 2,
     borderColor: commonColor.textColor
