@@ -94,11 +94,11 @@ const commonStyles = {
     fontSize: scale(25),
   },
   userPicture: {
-    height: scale(50),
-    width: scale(50),
+    height: scale(52),
+    width: scale(52),
     alignSelf: "center",
-    marginBottom: scale(5),
-    borderRadius: scale(25),
+    marginBottom: scale(7),
+    borderRadius: scale(26),
     borderWidth: 2,
     borderColor: commonColor.textColor
   },

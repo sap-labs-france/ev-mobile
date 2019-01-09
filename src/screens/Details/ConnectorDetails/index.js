@@ -418,10 +418,7 @@ class ConnectorDetails extends ResponsiveComponent {
                 <View style={style.columnContainer}>
                   <Thumbnail style={style.userPicture} source={userImage ? {uri: userImage} : noPhoto} />
                   {transaction ?
-                    <View>
-                      <Text style={style.labelUser}>{Utils.buildUserName(transaction.user)}</Text>
-                      <Text style={style.subLabelUser}>({transaction.tagID})</Text>
-                    </View>
+                    <Text style={style.labelUser}>{Utils.buildUserName(transaction.user)}</Text>
                   :
                     <Text style={style.label}>-</Text>
                   }

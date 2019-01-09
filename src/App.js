@@ -33,7 +33,7 @@ const DrawerNavigation = createDrawerNavigator(
 );
 
 // Stack Navigation
-const AppNavigation = createStackNavigator(
+const AppNavigator = createStackNavigator(
   {
     Login: { screen: Login },
     Eula: { screen: Eula },
@@ -54,5 +54,5 @@ const AppNavigation = createStackNavigator(
 export default () =>
   <Root>
     <StatusBar hidden/>
-    <AppNavigation/>
+    <AppNavigator persistenceKey={"NAVIGATION_PERSIST_KEY"}/>
   </Root>;
