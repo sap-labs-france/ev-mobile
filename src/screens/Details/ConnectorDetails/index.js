@@ -307,7 +307,7 @@ class ConnectorDetails extends ResponsiveComponent {
           { ID: user.id }
         );
         // Set
-        this.setState({userImage: userImage.image});
+        this.setState({userImage: (userImage ? userImage.image : null)});
       }
     } catch (error) {
       // Other common Error
@@ -413,12 +413,12 @@ class ConnectorDetails extends ResponsiveComponent {
               <View style={style.rowContainer}>
                 <View style={style.columnContainer}>
                   <ConnectorStatusComponent style={style.connectorLetter} connector={connector}/>
-                  <Text style={style.label}>{Utils.translateConnectorStatus(connector.status)}</Text>
+                  <Text style={[style.label, style.labelStatus]}>{Utils.translateConnectorStatus(connector.status)}</Text>
                 </View>
                 <View style={style.columnContainer}>
                   <Thumbnail style={style.userPicture} source={userImage ? {uri: userImage} : noPhoto} />
                   {transaction ?
-                    <Text style={style.labelUser}>{Utils.buildUserName(transaction.user)}</Text>
+                    <Text style={[style.label, style.labelUser]}>{Utils.buildUserName(transaction.user)}</Text>
                   :
                     <Text style={style.label}>-</Text>
                   }
@@ -428,10 +428,10 @@ class ConnectorDetails extends ResponsiveComponent {
                 <View style={style.columnContainer}>
                   <Icon type="FontAwesome" name="bolt" style={style.icon} />
                   { connector.activeTransactionID === 0 ?
-                    <Text style={style.labelValue}>-</Text>
+                    <Text style={[style.label, style.labelValue]}>-</Text>
                   :
                     <View>
-                      <Text style={style.labelValue}>{(connector.currentConsumption / 1000) > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0}</Text>
+                      <Text style={[style.label, style.labelValue]}>{(connector.currentConsumption / 1000) > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0}</Text>
                       <Text style={style.subLabel}>{I18n.t("details.instant")} (kW)</Text>
                     </View>
                   }
@@ -439,9 +439,9 @@ class ConnectorDetails extends ResponsiveComponent {
                 <View style={style.columnContainer}>
                   <Icon type="Ionicons" name="time" style={style.icon} />
                   {transaction ?
-                    <Text style={style.labelTimeValue}>{`${hours}:${minutes}:${seconds}`}</Text>
+                    <Text style={[style.label, style.labelTimeValue]}>{`${hours}:${minutes}:${seconds}`}</Text>
                   :
-                    <Text style={style.labelValue}>- : - : -</Text>
+                    <Text style={[style.label, style.labelValue]}>- : - : -</Text>
                   }
                 </View>
               </View>
@@ -449,10 +449,10 @@ class ConnectorDetails extends ResponsiveComponent {
                 <View style={style.columnContainer}>
                   <Icon style={style.icon} type="MaterialIcons" name="trending-up" />
                   { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
-                    <Text style={style.labelValue}>-</Text>
+                    <Text style={[style.label, style.labelValue]}>-</Text>
                   :
                     <View>
-                      <Text style={style.labelValue}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
+                      <Text style={[style.label, style.labelValue]}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
                       <Text style={style.subLabel}>{I18n.t("details.total")} (kW.h)</Text>
                     </View>
                   }
@@ -461,12 +461,12 @@ class ConnectorDetails extends ResponsiveComponent {
                   <Icon type="MaterialIcons" name="battery-charging-full" style={style.icon} />
                   { connector.currentStateOfCharge ?
                     <View>
-                      <Text style={style.labelValue}>{connector.currentStateOfCharge}</Text>
+                      <Text style={[style.label, style.labelValue]}>{connector.currentStateOfCharge}</Text>
                       <Text style={style.subLabel}>(%)</Text>
                     </View>
                   :
                     <View>
-                      <Text style={style.labelValue}>-</Text>
+                      <Text style={[style.label, style.labelValue]}>-</Text>
                     </View>
                   }
                 </View>

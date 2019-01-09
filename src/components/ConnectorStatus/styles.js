@@ -11,23 +11,19 @@ const commonStyles = {
     fontWeight: "bold",
     fontSize: (Platform.OS === "ios" ? scale(35) : scale(30))
   },
+  status: {
+    width: scale(44),
+    height: scale(44),
+    borderRadius: scale(22)
+  },
   statusGreen: {
     backgroundColor: commonColor.brandSuccess,
-    width: scale(42),
-    height: scale(42),
-    borderRadius: scale(21)
   },
   statusRed: {
     backgroundColor: commonColor.brandDanger,
-    width: scale(42),
-    height: scale(42),
-    borderRadius: scale(21)
   },
   statusOrange: {
     backgroundColor: commonColor.brandWarning,
-    width: scale(42),
-    height: scale(42),
-    borderRadius: scale(21)
   }
 };
 

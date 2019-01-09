@@ -43,7 +43,7 @@ class ConnectorStatusComponent extends ResponsiveComponent {
     return (
       <View style={this.props.style}>
         <Animatable.View animation={this._getStatusAnimation(connector)} iterationCount={"infinite"} direction="alternate-reverse">
-          <View style={this._getStyleFromStatus(connector, style)}>
+          <View style={[style.status, this._getStyleFromStatus(connector, style)]}>
             <TextRN style={style.statusLetter}>{connectorLetter}</TextRN>
           </View>
         </Animatable.View>

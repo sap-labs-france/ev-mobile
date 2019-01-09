@@ -72,17 +72,16 @@ const commonStyles = {
     color: commonColor.textColor,
     alignSelf: "center"
   },
+  labelStatus: {
+    fontSize: scale(16),
+  },
   labelValue: {
     fontSize: scale(30),
     fontWeight: "bold",
-    color: commonColor.textColor,
-    alignSelf: "center"
   },
   labelTimeValue: {
     fontSize: scale(25),
     fontWeight: "bold",
-    color: commonColor.textColor,
-    alignSelf: "center"
   },
   subLabel: {
     fontSize: scale(12),
@@ -105,8 +104,6 @@ const commonStyles = {
   },
   labelUser: {
     fontSize: scale(16),
-    color: commonColor.textColor,
-    alignSelf: "center"
   },
   subLabelUser: {
     fontSize: scale(12),
