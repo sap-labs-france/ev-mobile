@@ -376,8 +376,9 @@ class ConnectorDetails extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const navigation = this.props.navigation;
+    const { navigation } = this.props;
     const { firstLoad, siteImage, loadingTransaction, charger, connector, refreshing, userImage, transaction, hours, minutes, seconds } = this.state;
+    
     return (
       <Container>
         <ChargerHeader charger={charger} connector={connector} navigation={navigation} />

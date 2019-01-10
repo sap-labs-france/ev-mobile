@@ -11,10 +11,10 @@ import Sites from "./screens/Sites";
 import SiteAreas from "./screens/SiteAreas";
 import Chargers from "./screens/Chargers";
 import ChargerHeader from "./screens/Details/ChargerHeader";
-import ChargerNavigation from "./screens/Details/ChargerTab";
+import ChargerNavigator from "./screens/Details/ChargerTab";
 
 // Drawer Menu Navigation
-const DrawerNavigation = createDrawerNavigator(
+const DrawerNavigator = createDrawerNavigator(
   {
     Sites: { screen: Sites },
     SiteAreas: { screen: SiteAreas },
@@ -39,10 +39,10 @@ const AppNavigator = createStackNavigator(
     Eula: { screen: Eula },
     SignUp: { screen: SignUp },
     RetrievePassword: { screen: RetrievePassword },
-    DrawerNavigation: { screen: DrawerNavigation },
+    DrawerNavigator: { screen: DrawerNavigator },
     SiteAreas: { screen: SiteAreas },
     Chargers: { screen: Chargers },
-    Charger: { screen: ChargerNavigation }
+    ChargerTab: { screen: ChargerNavigator }
   },
   {
     // index: 0,
@@ -54,5 +54,5 @@ const AppNavigator = createStackNavigator(
 export default () =>
   <Root>
     <StatusBar hidden/>
-    <AppNavigator persistenceKey={"NAVIGATION_PERSIST_KEY"}/>
+    <AppNavigator/>
   </Root>;

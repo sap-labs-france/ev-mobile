@@ -148,7 +148,7 @@ class Login extends ResponsiveComponent {
     return this.props.navigation.dispatch(
       StackActions.reset({
         index: 0,
-        actions: [NavigationActions.navigate({ routeName: "DrawerNavigation" })]
+        actions: [NavigationActions.navigate({ routeName: "DrawerNavigator" })]
       })
     );
   }

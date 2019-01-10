@@ -48,7 +48,7 @@ class ConnectorComponent extends ResponsiveComponent {
     const { index, connector, navigation, charger, siteID, siteImage } = this.props;
     const even = (index % 2 === 0);
     return (
-      <TouchableOpacity style={style.statusConnectorContainer} onPress={()=> navigation.navigate("Charger", { charger, index, siteID, siteImage, connector })}>
+      <TouchableOpacity style={style.statusConnectorContainer} onPress={()=> navigation.navigate("ChargerTab", { charger, index, siteID, siteImage, connector })}>
         <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1} >
           <View style={even ? style.leftConnectorContainer : style.rightConnectorContainer}>
             <Text style={style.statusDescription} numberOfLines={1}>

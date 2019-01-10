@@ -20,7 +20,7 @@ class ChargerComponent extends ResponsiveComponent {
     this._checkHeartbeat(charger);
   }
 
-  _checkHeartbeat = (charger, minutesNow) => {
+  _checkHeartbeat = (charger) => {
     let lastHeartbeatMinutes = new Date(charger.lastHeartBeat).getMinutes();
     // Is last heartbeat has been sent more than 5 minutes ago ?
     if ((new Date().getMinutes() - lastHeartbeatMinutes) > 5) {

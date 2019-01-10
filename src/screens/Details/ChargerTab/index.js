@@ -37,16 +37,16 @@ class ChargerTabs extends ResponsiveComponent {
     return (
       <Footer style={style.footerContainer}>
         <FooterTab>
-          <Button vertical active={state.index === 0} onPress={()=>navigation.navigate("ConnectorDetails")}>
+          <Button vertical active={state.index === 0} onPress={()=> navigation.navigate("ConnectorDetails")}>
             <Icon type="FontAwesome" name="bolt"/>
             <Text>{I18n.t("details.connector")}</Text>
           </Button>
-          <Button vertical active={state.index === 1} onPress={()=>navigation.navigate("ChartDetails")}>
+          <Button vertical active={state.index === 1} onPress={()=> navigation.navigate("ChartDetails")}>
             <Icon type="MaterialIcons" name="timeline" />
             <Text>{I18n.t("details.graph")}</Text>
           </Button>
           { isAdmin ?
-              <Button vertical active={state.index === 2} onPress={()=>navigation.navigate("ChargerDetails")}>
+              <Button vertical active={state.index === 2} onPress={()=> navigation.navigate("ChargerDetails")}>
                 <Icon type="MaterialIcons" name="info" />
                 <Text>{I18n.t("details.informations")}</Text>
               </Button>
@@ -59,7 +59,7 @@ class ChargerTabs extends ResponsiveComponent {
   }
 }
 
-const ChargerNavigation = createBottomTabNavigator(
+const ChargerNavigator = createBottomTabNavigator(
   {
     ConnectorDetails: { screen: ConnectorDetails },
     ChartDetails: { screen: ChartDetails },
@@ -78,4 +78,4 @@ const ChargerNavigation = createBottomTabNavigator(
   }
 );
 
-export default ChargerNavigation;
+export default ChargerNavigator;
