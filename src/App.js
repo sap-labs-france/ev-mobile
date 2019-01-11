@@ -1,6 +1,6 @@
 import React from "react";
 import { StatusBar, Dimensions } from "react-native";
-import { createAppContainer, createStackNavigator, createDrawerNavigator } from "react-navigation";
+import { createStackNavigator, createDrawerNavigator } from "react-navigation";
 import { Root } from "native-base";
 import Login from "./screens/auth/Login";
 import Eula from "./screens/auth/Eula/";
@@ -51,11 +51,8 @@ const AppNavigator = createStackNavigator(
   }
 );
 
-// Create the app
-const AppContainer = createAppContainer(AppNavigator);
-
 export default () =>
   <Root>
     <StatusBar hidden/>
-    <AppContainer/>
+    <AppNavigator/>
   </Root>;
