@@ -30,7 +30,7 @@ class ConnectorComponent extends ResponsiveComponent {
             <View style={style.statusConnectorDetail}>
               <Image style={style.sizeConnectorImage} source={Utils.getConnectorTypeImage(connector.type)}/>
               <Text style={style.labelImage}>{Utils.translateConnectorType(connector.type)}</Text>
-              <Text style={style.subLabel} numberOfLines={1}></Text>
+              <Text style={style.subLabel} numberOfLines={1}/>
             </View>
             <View style={style.statusConnectorDetail}>
               <Text style={style.value}>{Math.trunc(connector.power / 1000)}</Text>
@@ -48,7 +48,7 @@ class ConnectorComponent extends ResponsiveComponent {
     const { index, connector, navigation, charger, siteID, siteImage } = this.props;
     const even = (index % 2 === 0);
     return (
-      <TouchableOpacity style={style.statusConnectorContainer} onPress={()=> navigation.push("ChargerTab", { charger, index, siteID, siteImage, connector })}>
+      <TouchableOpacity style={style.statusConnectorContainer} onPress={()=> navigation.navigate("ChargerTabNavigator", { charger, index, siteID, siteImage, connector })}>
         <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1} >
           <View style={even ? style.leftConnectorContainer : style.rightConnectorContainer}>
             <Text style={style.statusDescription} numberOfLines={1}>

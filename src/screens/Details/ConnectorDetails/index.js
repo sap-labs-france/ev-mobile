@@ -17,7 +17,6 @@ const noSite = require("../../../../assets/no-site.gif");
 const _provider = ProviderFactory.getProvider();
 
 class ConnectorDetails extends ResponsiveComponent {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -378,7 +377,6 @@ class ConnectorDetails extends ResponsiveComponent {
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { firstLoad, siteImage, loadingTransaction, charger, connector, refreshing, userImage, transaction, hours, minutes, seconds } = this.state;
-    
     return (
       <Container>
         <ChargerHeader charger={charger} connector={connector} navigation={navigation} />

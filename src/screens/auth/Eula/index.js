@@ -57,7 +57,7 @@ export default class Eula extends React.Component {
     return (
       <Container>
         {loading && (
-          <Spinner style={styles.spinner} color="white" />
+          <Spinner style={styles.spinner} />
         )}
         {!loading && (
           <ScrollView style={styles.container}>

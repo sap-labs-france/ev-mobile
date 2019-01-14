@@ -1,7 +1,6 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import { ImageBackground, TouchableOpacity, Image } from "react-native";
-import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Content, Text, Icon, ListItem, Thumbnail, View } from "native-base";
 import computeStyleSheet from "./styles";
 import ProviderFactory from "../../provider/ProviderFactory";
@@ -53,10 +52,7 @@ class SideBar extends ResponsiveComponent {
     // Logoff
     await _provider.logoff();
     // Back to login
-    this.props.navigation.dispatch(StackActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({routeName: "Login"})]
-    }));
+    this.props.navigation.navigate("AuthNavigator");
   }
 
   _navigateTo = (screen) => {

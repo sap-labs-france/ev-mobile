@@ -1,6 +1,5 @@
 import React from "react";
 import { Image, ImageBackground, Keyboard, Linking, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
-import { NavigationActions, StackActions } from "react-navigation";
 import { Container, Text, Form, Item, Button, Icon, View, Left, Right, CheckBox, Body, Footer, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
 import { ResponsiveComponent, MediaQuery } from "react-native-responsive-ui";
@@ -144,13 +143,8 @@ class Login extends ResponsiveComponent {
   }
 
   _navigateToSites() {
-    // Navigate to sites
-    return this.props.navigation.dispatch(
-      StackActions.reset({
-        index: 0,
-        actions: [NavigationActions.navigate({ routeName: "DrawerNavigator" })]
-      })
-    );
+    // Navigate to App
+    this.props.navigation.navigate("AppDrawerNavigator");
   }
 
   _setTenant = (buttonIndex) => {

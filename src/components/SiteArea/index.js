@@ -12,7 +12,7 @@ class SiteAreaComponent extends ResponsiveComponent {
     const style = computeStyleSheet();
     const { siteArea, siteImage, navigation } = this.props;
     return (
-      <TouchableOpacity onPress={() => navigation.push("Chargers", { siteArea, siteImage })}>
+      <TouchableOpacity onPress={() => navigation.navigate("Chargers", { siteArea, siteImage })}>
         <View style={style.siteContainer}>
           <View style={style.mainContent}>
             <Text style={style.siteName}>{siteArea.name}</Text>
