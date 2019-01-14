@@ -20,14 +20,9 @@ import ChargerTab from "./screens/Details/ChargerTab";
 const ChargerTabNavigator = createBottomTabNavigator(
   {
     Empty: { screen: Empty },
-    ConnectorDetails: { screen: (props) => {
-        console.log("ConnectorDetails");
-        console.log(props.navigation.state.params);
-        return (<ConnectorDetails {...props} />);
-      } 
-    },
-    ChartDetails: { screen: (props) => <ChartDetails {...props} /> },
-    ChargerDetails: { screen: (props) => <ChargerDetails {...props} /> }
+    ConnectorDetails: { screen: ConnectorDetails },
+    ChartDetails: { screen: ChartDetails },
+    ChargerDetails: { screen: ChargerDetails }
   },
   {
     tabBarPosition: "bottom",
@@ -35,11 +30,7 @@ const ChargerTabNavigator = createBottomTabNavigator(
     initialRouteName: "Empty",
     animationEnabled: true,
     backBehavior: "none",
-    tabBarComponent: (props) => {
-      console.log("ChargerTabNavigator");
-      console.log(props.navigation.state.params);
-      return (<ChargerTab {...props} />);
-    }
+    tabBarComponent: (props) => <ChargerTab {...props} />
   }
 );
 
