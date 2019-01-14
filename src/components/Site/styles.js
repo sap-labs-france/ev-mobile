@@ -1,7 +1,8 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
-import { scale } from 'react-native-size-matters';
+import { scale } from "react-native-size-matters";
+import { Platform } from "react-native";
 
 const commonStyles = {
   siteContainer: {
@@ -63,9 +64,7 @@ const commonStyles = {
   },
   connectorBadgeTitle: {
     fontSize: scale(25),
-    // marginTop: -2,
-    // marginLeft: -2,
-    padding: scale(5),
+    padding: (Platform.OS === "ios" ? scale(5) : scale(0)),
     fontWeight: "bold",
     color: commonColor.textColor,
   },
