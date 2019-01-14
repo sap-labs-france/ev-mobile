@@ -20,12 +20,14 @@ class SiteAreaComponent extends ResponsiveComponent {
           </View>
           <View style={style.detailsContainer}>
             <Text style={style.connectorText}>{I18n.t("sites.chargePoint")}</Text>
-            <View style={style.badgeSuccessContainer}>
-              <Badge containerStyle={style.freeConnectorBadge} textStyle={style.connectorBadgeTitle} value={siteArea.availableConnectors}/>
+            <View style={[style.badgeContainer, style.badgeSuccessContainer]}>
+              <Badge containerStyle={[style.connectorBadge, style.freeConnectorBadge]} 
+                textStyle={style.connectorBadgeTitle} value={siteArea.availableConnectors}/>
               <Text style={style.connectorSubTitle}>{I18n.t("sites.free")}</Text>
             </View>
-            <View style={style.badgeOccupiedContainer}>
-              <Badge containerStyle={style.occupiedConnectorBadge} textStyle={style.connectorBadgeTitle} value={siteArea.totalConnectors - siteArea.availableConnectors}/>
+            <View style={[style.badgeContainer, style.badgeOccupiedContainer]}>
+              <Badge containerStyle={[style.connectorBadge, style.occupiedConnectorBadge]}
+                textStyle={style.connectorBadgeTitle} value={siteArea.totalConnectors - siteArea.availableConnectors}/>
               <Text style={style.connectorSubTitle}>{I18n.t("sites.occupied")}</Text>
             </View>
           </View>

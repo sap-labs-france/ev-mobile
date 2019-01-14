@@ -264,7 +264,7 @@ class ChartDetails extends ResponsiveComponent {
             drawBorders={false}
             touchEnabled={true}
             dragEnabled={true}
-            scaleEnabled={true}
+            scaleEnabled={false}
             scaleXEnabled={true}
             scaleYEnabled={false}
             pinchZoom={true}
