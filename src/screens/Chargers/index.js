@@ -9,7 +9,6 @@ import Constants from "../../utils/Constants";
 import computeStyleSheet from "./styles";
 
 const _provider = ProviderFactory.getProvider();
-
 class Chargers extends ResponsiveComponent {
   constructor(props) {
     super(props);

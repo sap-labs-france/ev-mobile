@@ -15,6 +15,10 @@ import ChargerDetails from "./screens/Details/ChargerDetails";
 import ConnectorDetails from "./screens/Details/ConnectorDetails";
 import ChartDetails from "./screens/Details/ChartDetails";
 import ChargerTab from "./screens/Details/ChargerTab";
+import NotificationScheduler from "./notification/NotificationScheduler";
+
+// Start monitoring the notifications
+new NotificationScheduler().start();
 
 // Charger Tab Navigation
 const ChargerTabNavigator = createBottomTabNavigator(
