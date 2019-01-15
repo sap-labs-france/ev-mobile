@@ -19,10 +19,10 @@ import ChargerTab from "./screens/Details/ChargerTab";
 // Charger Tab Navigation
 const ChargerTabNavigator = createBottomTabNavigator(
   {
-    Empty: { screen: Empty },
     ConnectorDetails: { screen: ConnectorDetails },
     ChartDetails: { screen: ChartDetails },
-    ChargerDetails: { screen: ChargerDetails }
+    ChargerDetails: { screen: ChargerDetails },
+    Empty: { screen: Empty },
   },
   {
     tabBarPosition: "bottom",

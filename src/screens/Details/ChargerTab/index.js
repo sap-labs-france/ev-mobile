@@ -37,16 +37,16 @@ class ChargerTab extends ResponsiveComponent {
     return (
       <Footer style={style.footerContainer}>
         <FooterTab>
-          <Button vertical active={index === 1} onPress={()=> navigation.navigate("ConnectorDetails", params)}>
+          <Button vertical active={index === 0} onPress={()=> navigation.navigate("ConnectorDetails", params)}>
             <Icon type="FontAwesome" name="bolt"/>
             <Text>{I18n.t("details.connector")}</Text>
           </Button>
-          <Button vertical active={index === 2} onPress={()=> navigation.navigate("ChartDetails", params)}>
+          <Button vertical active={index === 1} onPress={()=> navigation.navigate("ChartDetails", params)}>
             <Icon type="MaterialIcons" name="timeline" />
             <Text>{I18n.t("details.graph")}</Text>
           </Button>
           { isAdmin ?
-              <Button vertical active={index === 3} onPress={()=> navigation.navigate("ChargerDetails", params)}>
+              <Button vertical active={index === 2} onPress={()=> navigation.navigate("ChargerDetails", params)}>
                 <Icon type="MaterialIcons" name="info" />
                 <Text>{I18n.t("details.informations")}</Text>
               </Button>
