@@ -50,6 +50,7 @@ export default {
   ACTION_GET_CONFIGURATION: "GetConfiguration",
 
   // Keystore
+  KEY_CREDENTIALS: "credentials",
   KEY_EMAIL: "email",
   KEY_PASSWORD: "password",
   KEY_TOKEN: "token",

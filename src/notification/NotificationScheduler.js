@@ -20,7 +20,8 @@ export default class NotificationScheduler {
     }, Constants.AUTO_REFRESH_PUSH_NOTIF_PERIOD_MILLIS);
   }
 
-  checkAndTriggerNotifications() {
+  async checkAndTriggerNotifications() {
+    await _provider.getNotifications();
     // Read the notification
     this.notificationProvider.sendNotification({});
   }

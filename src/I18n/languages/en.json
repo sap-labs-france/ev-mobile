@@ -6,6 +6,7 @@
     "sessionExpired": "Session has expired",
     "numbers": "Enter a valid number",
     "email": "Enter a valid email address",
+    "mandatory": "is mandatory",
     "required": "Mandatory field",
     "ok": "Ok",
     "yes": "Yes",

@@ -6,7 +6,7 @@
     "sessionExpired": "La session a expirée",
     "numbers": "Entrez un nombre valide",
     "email": "Entrez une adresse email valide",
-    "required": "Champ obligatoire",
+    "mandatory": "est obligatoire",
     "ok": "Ok",
     "yes": "Oui",
     "no": "Non",

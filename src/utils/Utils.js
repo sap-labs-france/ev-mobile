@@ -63,19 +63,17 @@ export default class Utils {
   static validateInput(screen, constraints) {
     let formValid = true;
     const errorState = {};
-    // Reset all
+    // Reset all errors
     for (const key in screen.state) {
-      if (screen.state.hasOwnProperty(key)) {
-        // Error?
-        if (key.startsWith("error")) {
-          // Clear
-          let clearError = {};
-          clearError[key] = null;
-          screen.setState(clearError);
-        }
+      // Error?
+      if (key.startsWith("error")) {
+        // Clear
+        let clearError = {};
+        clearError[key] = null;
+        screen.setState(clearError);
       }
     }
-    // Check
+    // Check for errors
     let error = validate(screen.state, constraints);
     // Check for Errors
     if (error) {

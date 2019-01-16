@@ -15,25 +15,25 @@ const _provider = providerFactory.getProvider();
 const _locations = _provider.getLocations();
 
 const formValidationDef = {
+  location: {
+    presence: {
+      allowEmpty: false,
+      message: I18n.t("general.mandatory")
+    }
+  },
   email: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("general.required")
+      message: I18n.t("general.mandatory")
     },
     email: {
       message: "^" + I18n.t("general.email")
     }
   },
-  tenant: {
-    presence: {
-      allowEmpty: false,
-      message: "^" + I18n.t("general.required")
-    }
-  },
   password: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("general.required")
+      message: I18n.t("general.mandatory")
     }
   },
   eula: {
@@ -49,18 +49,14 @@ const formValidationDef = {
 };
 
 class Login extends ResponsiveComponent {
-  passwordInput;
-  eulaCheckBox;
-
   constructor(props) {
     super(props);
-
     this.state = {
       eula: false,
-      password: "",
-      email: "",
-      tenant: "",
-      tenantTitle: I18n.t("authentication.location"),
+      password: null,
+      email: null,
+      location: null,
+      locationTitle: I18n.t("authentication.location"),
       loading: false,
       display: false
     };
@@ -82,25 +78,27 @@ class Login extends ResponsiveComponent {
       this.setState({
         email,
         password,
-        tenant,
-        tenantTitle: (location ? location.name : this.state.tenantTitle),
+        location: tenant,
+        locationTitle: (location ? location.name : this.state.locationTitle),
         display: true
       });
     }
   }
 
   login = async () => {
+    console.log(this.state);
+    console.log(formValidationDef);
     // Check field
     const formIsValid = Utils.validateInput(this, formValidationDef);
     // Ok?
     if (formIsValid) {
       // Login
-      const { password, email, eula, tenant } = this.state;
+      const { password, email, eula, location } = this.state;
       try {
         // Loading
         this.setState({loading: true});
         // Login
-        await _provider.login(email, password, eula, tenant);
+        await _provider.login(email, password, eula, location);
         // Login Success
         this.setState({loading: false});
         // Navigate
@@ -152,16 +150,16 @@ class Login extends ResponsiveComponent {
     if (buttonIndex !== undefined) {
       // Set Tenant
       this.setState({
-        tenant: _locations[buttonIndex].subdomain,
-        tenantTitle: _locations[buttonIndex].name
+        location: _locations[buttonIndex].subdomain,
+        locationTitle: _locations[buttonIndex].name
       });
     }
   }
 
   _newUser = () => {
     // Tenant selected?
-    if (this.state.tenant) {
-      Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/register`);
+    if (this.state.location) {
+      Linking.openURL(`https://${this.state.location}.ev.cfapps.eu10.hana.ondemand.com/#/register`);
     } else {
       // Error
       Message.showError(I18n.t("authentication.mustSelectLocation"));
@@ -170,8 +168,8 @@ class Login extends ResponsiveComponent {
 
   _forgotPassword = () => {
     // Tenant selected?
-    if (this.state.tenant) {
-      Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/reset-password`);
+    if (this.state.location) {
+      Linking.openURL(`https://${this.state.location}.ev.cfapps.eu10.hana.ondemand.com/#/reset-password`);
     } else {
       // Error
       Message.showError(I18n.t("authentication.mustSelectLocation"));
@@ -206,9 +204,9 @@ class Login extends ResponsiveComponent {
                         this._setTenant(buttonIndex);
                       }
                     )}>
-                  <TextRN style={style.buttonText}>{this.state.tenantTitle}</TextRN>
+                  <TextRN style={style.buttonText}>{this.state.locationTitle}</TextRN>
                 </Button>
-                {this.state.errorTenant && this.state.errorTenant.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
+                {this.state.errorLocation && this.state.errorLocation.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
                 <Item rounded style={style.inputGroup}>
                   <Icon active name="mail" style={style.inputIconMail}/>
                   <TextInput

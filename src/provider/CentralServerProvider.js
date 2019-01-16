@@ -1,7 +1,7 @@
 import axios from "axios";
 import Constants from "../utils/Constants";
 import SecurityProvider from "../security/SecurityProvider";
-import SInfo from "react-native-sensitive-info";
+import SecureStorage from "../utils/SecureStorage";
 const jwtDecode = require("jwt-decode");
 
 // const centralRestServerServiceBaseURL = 'https://192.168.1.130';
@@ -25,10 +25,12 @@ export default class  CentralServerProvider {
     // Only once
     if (!_initialized) {
       // Get stored data
-      _email = await SInfo.getItem(Constants.KEY_EMAIL, {});
-      _password = await SInfo.getItem(Constants.KEY_PASSWORD, {});
-      _token = await SInfo.getItem(Constants.KEY_TOKEN, {});
-      _tenant = await SInfo.getItem(Constants.KEY_TENANT, {});
+      const credentials = await SecureStorage.getUserCredentials();
+      // Set
+      _email = credentials.email;
+      _password = credentials.password;
+      _token = credentials.token;
+      _tenant = credentials.tenant;
       // Check Token
       if (_token) {
         // Decode the token
@@ -122,7 +124,7 @@ export default class  CentralServerProvider {
   async logoff() {
     this.debug("logoff");
     // Clear the token and tenant
-    await SInfo.deleteItem(Constants.KEY_TOKEN, {});
+    await SecureStorage.clearUserCredentials();
     // Clear local data
     _email = null;
     _password = null;
@@ -157,12 +159,11 @@ export default class  CentralServerProvider {
     }, {
       headers: this._builHeaders()
     });
-    // Store User/Password/Token/tenant
-    SInfo.setItem(Constants.KEY_EMAIL, email, {});
-    SInfo.setItem(Constants.KEY_PASSWORD, password, {});
-    SInfo.setItem(Constants.KEY_TOKEN, result.data.token, {});
-    SInfo.setItem(Constants.KEY_TENANT, tenant, {});
-    // Keep the token and tenant
+    // Save 
+    await SecureStorage.saveUserCredentials({
+      email, password, "token": result.data.token, tenant
+    });
+    // Keep them
     _token = result.data.token;
     _decodedToken = jwtDecode(_token);
     _tenant = tenant;
@@ -181,6 +182,23 @@ export default class  CentralServerProvider {
     }, {
       headers: this._builHeaders()
     });
+    return result.data;
+  }
+
+  async getNotifications(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+    this.debug("getNotifications");
+    // Init?
+    await this.initialize();
+    // Build Paging
+    this._buildPaging(paging, params);
+    // Build Ordering
+    this._buildOrdering(ordering, params);
+    // Call
+    let result = await axios.get(`${centralRestServerServiceSecuredURL}/Notifications`, {
+      headers: this._builSecuredHeaders(),
+      params
+    });
+    console.log(result);
     return result.data;
   }
 

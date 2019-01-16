@@ -68,7 +68,8 @@ const commonStyles = {
   button: {
     alignSelf: "center",
     height: scale(40),
-    marginBottom: 15,
+    marginTop: scale(10),
+    marginBottom: scale(10),
     backgroundColor: "rgba(255,255,255,0.30)"
   },
   buttonText: {
@@ -87,7 +88,7 @@ const commonStyles = {
     alignSelf: "center",
     borderBottomWidth: 0,
     paddingTop: 0,
-    paddingBottom: scale(20),
+    marginBottom: scale(10),
     marginTop: scale(5)
   },
   eulaCheckbox: {
@@ -122,7 +123,7 @@ const commonStyles = {
 
 const portraitStyles = {
   logo: {
-    ght: "25%",
+    height: "25%",
     width: "50%"
   },
   formErrorText: {
