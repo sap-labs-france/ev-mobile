@@ -1,7 +1,7 @@
 import axios from "axios";
 import Constants from "../utils/Constants";
 import SecurityProvider from "../security/SecurityProvider";
-import SecureStorage from "../utils/SecureStorage";
+import SecuredStorage from "../utils/SecuredStorage";
 const jwtDecode = require("jwt-decode");
 
 // const centralRestServerServiceBaseURL = 'https://192.168.1.130';
@@ -25,12 +25,20 @@ export default class  CentralServerProvider {
     // Only once
     if (!_initialized) {
       // Get stored data
-      const credentials = await SecureStorage.getUserCredentials();
-      // Set
-      _email = credentials.email;
-      _password = credentials.password;
-      _token = credentials.token;
-      _tenant = credentials.tenant;
+      const credentials = await SecuredStorage.getUserCredentials();
+      if (credentials) {
+        // Set
+        _email = credentials.email;
+        _password = credentials.password;
+        _token = credentials.token;
+        _tenant = credentials.tenant;
+      } else {
+        // Set
+        _email = null;
+        _password = null;
+        _token = null;
+        _tenant = null;
+      }
       // Check Token
       if (_token) {
         // Decode the token
@@ -124,7 +132,7 @@ export default class  CentralServerProvider {
   async logoff() {
     this.debug("logoff");
     // Clear the token and tenant
-    await SecureStorage.clearUserCredentials();
+    await SecuredStorage.clearUserCredentials();
     // Clear local data
     _email = null;
     _password = null;
@@ -160,7 +168,7 @@ export default class  CentralServerProvider {
       headers: this._builHeaders()
     });
     // Save 
-    await SecureStorage.saveUserCredentials({
+    await SecuredStorage.saveUserCredentials({
       email, password, "token": result.data.token, tenant
     });
     // Keep them
@@ -195,10 +203,9 @@ export default class  CentralServerProvider {
     this._buildOrdering(ordering, params);
     // Call
     let result = await axios.get(`${centralRestServerServiceSecuredURL}/Notifications`, {
-      headers: this._builSecuredHeaders(),
+      headers: this._buildSecuredHeaders(),
       params
     });
-    console.log(result);
     return result.data;
   }
 
@@ -212,7 +219,7 @@ export default class  CentralServerProvider {
     this._buildOrdering(ordering, params);
     // Call
     let result = await axios.get(`${centralRestServerServiceSecuredURL}/ChargingStations`, {
-      headers: this._builSecuredHeaders(),
+      headers: this._buildSecuredHeaders(),
       params
     });
     return result.data;
@@ -228,7 +235,7 @@ export default class  CentralServerProvider {
     this._buildOrdering(ordering, params);
     // Call
     let result = await axios.get(`${centralRestServerServiceSecuredURL}/ChargingStation`, {
-      headers: this._builSecuredHeaders(),
+      headers: this._buildSecuredHeaders(),
       params
     });
     return result.data;
@@ -244,7 +251,7 @@ export default class  CentralServerProvider {
     this._buildOrdering(ordering, params);
     // Call
     let result = await axios.get(`${centralRestServerServiceSecuredURL}/Sites`, {
-      headers: this._builSecuredHeaders(),
+      headers: this._buildSecuredHeaders(),
       params
     });
     return result.data;
@@ -256,7 +263,7 @@ export default class  CentralServerProvider {
     await this.initialize();
     // Call
     let result = await axios.get(`${centralRestServerServiceSecuredURL}/SiteAreas`, {
-      headers: this._builSecuredHeaders(),
+      headers: this._buildSecuredHeaders(),
       params
     });
     return result.data;
@@ -284,7 +291,7 @@ export default class  CentralServerProvider {
         connectorID
       }
     }, {
-      headers: this._builSecuredHeaders()
+      headers: this._buildSecuredHeaders()
     });
     return result.data;
   }
@@ -300,7 +307,7 @@ export default class  CentralServerProvider {
         transactionId
       }
     }, {
-      headers: this._builSecuredHeaders()
+      headers: this._buildSecuredHeaders()
     });
     return result.data;
   }
@@ -311,7 +318,7 @@ export default class  CentralServerProvider {
     await this.initialize();
     // Call
     let result = await axios.get(`${centralRestServerServiceSecuredURL}/Transaction`, {
-      headers: this._builSecuredHeaders(),
+      headers: this._buildSecuredHeaders(),
       params
     });
     return result.data;
@@ -323,7 +330,7 @@ export default class  CentralServerProvider {
     await this.initialize();
     // Call
     let result = await axios.get(`${centralRestServerServiceSecuredURL}/UserImage`, {
-      headers: this._builSecuredHeaders(),
+      headers: this._buildSecuredHeaders(),
       params
     });
     return result.data;
@@ -335,7 +342,7 @@ export default class  CentralServerProvider {
     await this.initialize();
     // Call
     let result = await axios.get(`${centralRestServerServiceSecuredURL}/SiteImage`, {
-      headers: this._builSecuredHeaders(),
+      headers: this._buildSecuredHeaders(),
       params
     });
     return result.data;
@@ -347,7 +354,7 @@ export default class  CentralServerProvider {
     await this.initialize();
     // Call
     let result = await axios.get(`${centralRestServerServiceSecuredURL}/IsAuthorized`, {
-      headers: this._builSecuredHeaders(),
+      headers: this._buildSecuredHeaders(),
       params
     });
     return result.data;
@@ -359,7 +366,7 @@ export default class  CentralServerProvider {
     await this.initialize();
     // Call
     let result = await axios.get(`${centralRestServerServiceSecuredURL}/Pricing`, {
-      headers: this._builSecuredHeaders()
+      headers: this._buildSecuredHeaders()
     });
     return result.data;
   }
@@ -370,7 +377,7 @@ export default class  CentralServerProvider {
     await this.initialize();
     // Call
     let result = await axios.get(`${centralRestServerServiceSecuredURL}/ChargingStationConsumptionFromTransaction`, {
-      headers: this._builSecuredHeaders(),
+      headers: this._buildSecuredHeaders(),
       params
     });
     return result.data;
@@ -420,7 +427,7 @@ export default class  CentralServerProvider {
     };
   }
 
-  _builSecuredHeaders() {
+  _buildSecuredHeaders() {
     return {
       "Accept": "application/json",
       "Content-Type": "application/json",

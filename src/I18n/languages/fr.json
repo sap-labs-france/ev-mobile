@@ -94,5 +94,37 @@
     "cumulated": "Cumulé (W.h)",
     "battery": "Niveau Batterie (%)",
     "connectorMax": "Connecteur Max Power (W)"
+  },
+  "notifications": {
+    "notifyEndOfSession": {
+      "message": "Votre session sur '{{chargeBoxID}}' est terminée.",
+      "subMessage": "Session Terminée",
+      "longMessage": "Votre session sur '{{chargeBoxID}}' est terminée."
+    },
+    "notifyEndOfCharge": {
+      "message": "Votre charge maximale sur '{{chargeBoxID}}' a été atteinte.",
+      "subMessage": "Fin De Charge",
+      "longMessage": "Votre charge maximale sur '{{chargeBoxID}}' a été atteinte. Vous pouvez stopper la session et déplacer votre véhicule."
+    },
+    "notifyOptimalChargeReached": {
+      "message": "Votre charge optimale sur '{{chargeBoxID}}' a été atteinte.",
+      "subMessage": "Charge Optimale",
+      "longMessage": "Votre charge optimale sur '{{chargeBoxID}}' a été atteinte."
+    },
+    "notifyChargingStationStatusError": {
+      "message": "Une erreur est survenue sur '{{chargeBoxID}}'",
+      "subMessage": "Erreur Borne",
+      "longMessage": "Une erreur est survenue sur '{{chargeBoxID}}' - Connecteur {{connectorId}}: {{error}}."
+    },
+    "notifyChargingStationRegistered": {
+      "message": "'{{chargeBoxID}}' vient de se connecter au serveur central.",
+      "subMessage": "Borne Connectée",
+      "longMessage": "'{{chargeBoxID}}' vient de se connecter au serveur central."
+    },
+    "notifyUnknownUserBadged": {
+      "message": "Un utilisateur inconnu vient juste de badger sur '{{chargeBoxID}}'.",
+      "subMessage": "Utilisateur Inconnu",
+      "longMessage": "Un utilisateur inconnu vient juste de badger sur '{{chargeBoxID}}'."
+    }
   }
 }

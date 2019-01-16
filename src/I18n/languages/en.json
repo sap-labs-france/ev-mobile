@@ -78,7 +78,7 @@
     "stopTransaction": "Stop transaction",
     "startTransactionMessage": "Do you really want to start a new session on the charging station ",
     "stopTransactionMessage": "Do you really want to stop the session of the charging station ",
-    "notAuthorisedTitle": "Not Authorised",
+    "notAuthorisedTitle": "Not Authorized",
     "notAuthorised": "You are not authorized to stop the transaction.",
     "accepted": "Request has been accepted",
     "denied": "Request has been denied",
@@ -95,5 +95,37 @@
     "cumulated": "Cumulated (W.h)",
     "battery": "Battery Level (%)",
     "connectorMax": "Connector Max Power (W)"
+  },
+  "notifications": {
+    "notifyEndOfSession": {
+      "message": "Your session on '{{chargeBoxID}}' has just finished.",
+      "subMessage": "Session Finished",
+      "longMessage": "Your session on '{{chargeBoxID}}' has just finished."
+    },
+    "notifyEndOfCharge": {
+      "message": "Your maximal charge on '{{chargeBoxID}}' has been reached.",
+      "subMessage": "End Of Charge",
+      "longMessage": "Your maximal charge on '{{chargeBoxID}}' has been reached. You can now stop the session and move your vehicle."
+    },
+    "notifyOptimalChargeReached": {
+      "message": "Your optimal charge on '{{chargeBoxID}}' has been reached.",
+      "subMessage": "Optimal Charge",
+      "longMessage": "Your optimal charge on '{{chargeBoxID}}' has been reached."
+    },
+    "notifyChargingStationStatusError": {
+      "message": "Error occurred on '{{chargeBoxID}}'",
+      "subMessage": "Charging Station Error",
+      "longMessage": "Error occurred on '{{chargeBoxID}}' - Connector {{connectorId}}: {{error}}."
+    },
+    "notifyChargingStationRegistered": {
+      "message": "'{{chargeBoxID}}' just got registered to the central server.",
+      "subMessage": "Charger Registered",
+      "longMessage": "'{{chargeBoxID}}' just got registered to the central server."
+    },
+    "notifyUnknownUserBadged": {
+      "message": "An unknown user has just badged on '{{chargeBoxID}}'.",
+      "subMessage": "Unknown User",
+      "longMessage": "An unknown user has just badged on '{{chargeBoxID}}'."
+    }
   }
 }

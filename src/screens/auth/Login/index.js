@@ -86,8 +86,6 @@ class Login extends ResponsiveComponent {
   }
 
   login = async () => {
-    console.log(this.state);
-    console.log(formValidationDef);
     // Check field
     const formIsValid = Utils.validateInput(this, formValidationDef);
     // Ok?
