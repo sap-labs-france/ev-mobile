@@ -50,6 +50,9 @@ export default {
   ACTION_GET_CONFIGURATION: "GetConfiguration",
 
   // Keystore
+  SHARED_PREFERENCES_NAME: "eMobilityPreferences",
+  KEYCHAIN_SERVICE: "eMobilityKeyChain",
+  
   KEY_CREDENTIALS: "credentials",
   KEY_EMAIL: "email",
   KEY_PASSWORD: "password",
