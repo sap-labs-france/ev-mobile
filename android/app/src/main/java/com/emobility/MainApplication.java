@@ -3,6 +3,7 @@ package com.emobility;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.taluttasgiran.rnsecurestorage.RNSecureStoragePackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.github.wuxudong.rncharts.MPAndroidChartPackage;
@@ -32,6 +33,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNSecureStoragePackage(),
             new ReactNativePushNotificationPackage(),
             new RNGestureHandlerPackage(),
             new MPAndroidChartPackage(),
