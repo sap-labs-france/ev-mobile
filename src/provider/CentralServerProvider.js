@@ -4,7 +4,6 @@ import SecurityProvider from "../security/SecurityProvider";
 import SecuredStorage from "../utils/SecuredStorage";
 const jwtDecode = require("jwt-decode");
 
-// const centralRestServerServiceBaseURL = 'https://192.168.1.130';
 const centralRestServerServiceBaseURL = "https://sap-ev-rest-server.cfapps.eu10.hana.ondemand.com";
 const centralRestServerServiceAuthURL = centralRestServerServiceBaseURL + "/client/auth";
 const centralRestServerServiceSecuredURL = centralRestServerServiceBaseURL + "/client/api";
@@ -12,7 +11,7 @@ const centralRestServerServiceSecuredURL = centralRestServerServiceBaseURL + "/c
 // Debug
 const DEBUG = false;
 
-// Paste the tokken below
+// Paste the token below
 let _token;
 let _decodedToken;
 let _initialized;
@@ -20,6 +19,7 @@ let _email;
 let _password;
 let _tenant;
 let _securityProvider;
+
 export default class  CentralServerProvider {
   async initialize() {
     // Only once
@@ -139,7 +139,6 @@ export default class  CentralServerProvider {
     _tenant = null;
     _token = null;
     _decodedToken = null;
-    // Reload
     _initialized = false;
   }
 

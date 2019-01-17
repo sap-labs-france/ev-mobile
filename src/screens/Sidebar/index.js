@@ -6,6 +6,7 @@ import computeStyleSheet from "./styles";
 import ProviderFactory from "../../provider/ProviderFactory";
 import I18n from "../../I18n/I18n";
 import Utils from "../../utils/Utils";
+import DeviceInfo from "react-native-device-info";
 
 const _provider = ProviderFactory.getProvider();
 const noPhoto = require("../../../assets/no-photo.png");
@@ -72,7 +73,7 @@ class SideBar extends ResponsiveComponent {
           <Content style={style.drawerContent}>
             <View style={style.logoContainer}>
               <Image source={require("../../../assets/logo-low.gif")} style={style.logo} />
-              <Text style={style.versionText}>{I18n.t("general.version")}</Text>
+              <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
               <Text style={style.versionDate}>{I18n.t("general.date")}</Text>
             </View>
             <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Sites")}>

@@ -55,6 +55,7 @@
     "react-native-calendars": "^1.21.0",
     "react-native-carousel-view": "^0.5.1",
     "react-native-charts-wrapper": "^0.5.0",
+    "react-native-device-info": "^0.25.0",
     "react-native-elements": "^0.19.1",
     "react-native-gesture-handler": "^1.0.12",
     "react-native-google-maps-directions": "^2.0.0",

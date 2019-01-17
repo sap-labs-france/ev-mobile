@@ -137,6 +137,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-device-info')
     compile project(':rn-secure-storage')
     compile project(':react-native-push-notification')
     compile project(':react-native-gesture-handler')

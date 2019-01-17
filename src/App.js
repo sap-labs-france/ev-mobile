@@ -16,7 +16,7 @@ import ChartDetails from "./screens/Details/ChartDetails";
 import ChargerTab from "./screens/Details/ChargerTab";
 import NotificationScheduler from "./notification/NotificationScheduler";
 
-// Start monitoring the notifications
+// Start the monitoring of notifications
 new NotificationScheduler().start();
 
 // Charger Tab Navigation
