@@ -101,7 +101,7 @@ android {
         applicationId "com.emobility"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 13
+        versionCode 14
         versionName "0.41"
         ndk {
             abiFilters "armeabi-v7a", "x86"
