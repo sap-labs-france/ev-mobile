@@ -3,9 +3,10 @@ import Constants from "../utils/Constants";
 import I18n from "../I18n/I18n";
 import commonColor from "../theme/variables/commonColor";
 import DeviceInfo from "react-native-device-info";
-
 import ProviderFactory from "../provider/ProviderFactory";
+
 const _provider = ProviderFactory.getProvider();
+let _notificationScheduler;
 
 export default class NotificationScheduler {
   constructor() {
@@ -13,6 +14,22 @@ export default class NotificationScheduler {
     this.notificationProvider = new NotificationProvider(
       this.onRegister, this.onNotify
     );
+  }
+  
+  static getInstance() {
+    if (!_notificationScheduler) {
+      // Create & Start
+      _notificationScheduler = new NotificationScheduler();
+      // Start
+      _notificationScheduler.start();
+    }
+    return _notificationScheduler;
+  }
+
+  setNavigation(navigation) {
+    console.log("setNavigation(navigation)");
+    console.log(navigation);
+    this.navigation = navigation;
   }
 
   start() {
@@ -41,8 +58,7 @@ export default class NotificationScheduler {
     // Get the logged user
     const user = await _provider.getUserInfo();
     // Get the last minute notifications
-    // const dateFrom = new Date(new Date().getTime() - (60 * 1000));
-    const dateFrom = new Date("2019-01-15T19:21:00");
+    const dateFrom = new Date(new Date().getTime() - (60 * 1000));
     // Read the last notification
     const notifications = await _provider.getNotifications({
         UserID: user.id, Channel: "email", DateFrom: dateFrom.toISOString()
@@ -117,37 +133,37 @@ export default class NotificationScheduler {
     }
   }
 
-  onRegister(token) {
+  onRegister = (token) => {
     // Do nothing
   }
 
-  async onNotify(notification) {
-    console.log("onNotify");
-    console.log(notification);
-    // User must be logged
-    if (!(await _provider.isUserAuthenticated())) {
+  onNotify = async (notification) => {
+    // User must be logged and Navigation available
+    if (!(await _provider.isUserAuthenticated()) || !this.navigation) {
       return;
     }
     // Get back the original notification
     const notificationBackend = JSON.parse(notification.userInfo);
-    console.log(notificationBackend);
-    
     // Check the type of notification
     switch (notificationBackend.sourceDescr) {
       // End of Session
       case "NotifyEndOfSession":
-        break;
-      // End of Charge
       case "NotifyEndOfCharge":
-        break;
-      // Optimal Charge
       case "NotifyOptimalChargeReached":
-        break;
-      // Charger in Error
       case "NotifyChargingStationStatusError":
+        // Navigate
+        if (notificationBackend.data && notificationBackend.data.connectorId) {
+          // Navigate
+          this.navigation.navigate("ChargerTabNavigator", { chargerID: notificationBackend.chargeBoxID, connectorID: notificationBackend.data.connectorId })
+        }
         break;
       // Charger just connected
       case "NotifyChargingStationRegistered":
+        // Navigate
+        if (notificationBackend.data) {
+          // Navigate
+          this.navigation.navigate("ChargerTabNavigator", { chargerID: notificationBackend.chargeBoxID, connectorID: 1 })
+        }
         break;
       // Unknown user
       case "NotifyUnknownUserBadged":
