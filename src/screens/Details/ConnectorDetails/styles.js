@@ -5,12 +5,17 @@ import { scale } from "react-native-size-matters";
 import { Platform } from "react-native";
 
 const commonStyles = {
-  backgroundImage: {
-    width: "100%",
-    height: scale(150)
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "#000"
   },
   spinner: {
     color: commonColor.textColor
+  },
+  backgroundImage: {
+    width: "100%",
+    height: scale(150)
   },
   transactionContainer: {
     justifyContent: "center",

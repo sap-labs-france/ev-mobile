@@ -12,6 +12,10 @@ const commonStyles = {
     justifyContent: "flex-start",
     alignItems: "center"
   },
+  spinner: {
+    flex: 1,
+    color: commonColor.textColor
+  },
   columnContainer: {
     height: scale(75),
     justifyContent: "center",

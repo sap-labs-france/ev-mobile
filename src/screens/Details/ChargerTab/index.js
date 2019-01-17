@@ -28,7 +28,7 @@ class ChargerTab extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { isAdmin } = this.state;
-    const navigation = this.props.navigation;
+    const { navigation } = this.props;
     const { index, params } = this.props.navigation.state;
     return (
       <Footer style={style.footerContainer}>
