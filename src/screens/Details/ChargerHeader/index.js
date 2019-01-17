@@ -21,7 +21,7 @@ export class ChargerHeader extends ResponsiveComponent {
       <View>
         <Header style={style.header}>
           <Left style={style.leftHeader}>
-            <Button transparent onPress={() => navigation.navigate("Chargers")}>
+            <Button transparent onPress={() => navigation.navigate("Chargers", { siteAreaID: charger.siteAreaID })}>
               <Icon active name="arrow-back" style={style.iconHeader} />
             </Button>
           </Left>

@@ -136,7 +136,7 @@ export default class SiteAreas extends ResponsiveComponent {
       <Container>
         <Header style={style.header}>
         <Left style={style.leftHeader}>
-            <Button transparent onPress={() => navigation.goBack()}>
+            <Button transparent onPress={() => navigation.navigate("Sites")}>
               <Icon active name="arrow-back" style={style.iconHeader} />
             </Button>
           </Left>

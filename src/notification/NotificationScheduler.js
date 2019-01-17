@@ -27,8 +27,6 @@ export default class NotificationScheduler {
   }
 
   setNavigation(navigation) {
-    console.log("setNavigation(navigation)");
-    console.log(navigation);
     this.navigation = navigation;
   }
 

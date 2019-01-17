@@ -132,11 +132,16 @@ class Chargers extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
+    let siteID = null;
+    // Retrieve the site ID to navigate back from a notification
+    if (this.state.chargers && this.state.chargers.length > 0) {
+      siteID = this.state.chargers[0].siteArea.siteID;
+    }
     return (
       <Container>
         <Header style={style.header}>
           <Left style={style.leftHeader}>
-            <Button transparent onPress={() => navigation.navigate("SiteAreas")}>
+            <Button transparent onPress={() => navigation.navigate("SiteAreas", { siteID: siteID })}>
               <Icon active name="arrow-back" style={style.iconHeader} />
             </Button>
           </Left>
