@@ -10,14 +10,14 @@ class ChargerDetails extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
-      charger: this.props.navigation.state.params.charger,
-      connector: this.props.navigation.state.params.connector
+      charger: this.props.navigation.dangerouslyGetParent().state.params.charger,
+      connector: this.props.navigation.dangerouslyGetParent().state.params.connector
     };
   }
 
   render() {
     const style = computeStyleSheet();
-    const navigation = this.props.navigation;
+    const { navigation } = this.props;
     const { charger, connector } = this.state;
     return (
       <Container>

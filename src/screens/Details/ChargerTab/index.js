@@ -22,8 +22,6 @@ class ChargerTab extends ResponsiveComponent {
     const isAdmin = (await _provider.getSecurityProvider()).isAdmin();
     // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({isAdmin});
-    // Navigate to the first screen
-    navigation.navigate("ConnectorDetails", params);
   }
 
   componentWillUnmount() {

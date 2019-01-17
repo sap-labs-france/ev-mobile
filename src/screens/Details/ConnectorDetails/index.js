@@ -20,10 +20,10 @@ class ConnectorDetails extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
-      charger: this.props.navigation.state.params.charger,
-      connector: this.props.navigation.state.params.connector,
-      siteID: this.props.navigation.state.params.siteID,
-      siteImage: this.props.navigation.state.params.siteImage,
+      charger: this.props.navigation.dangerouslyGetParent().state.params.charger,
+      connector: this.props.navigation.dangerouslyGetParent().state.params.connector,
+      siteID: this.props.navigation.dangerouslyGetParent().state.params.siteID,
+      siteImage: this.props.navigation.dangerouslyGetParent().state.params.siteImage,
       transaction: null,
       seconds: "00",
       minutes: "00",
@@ -44,8 +44,6 @@ class ConnectorDetails extends ResponsiveComponent {
     this.mounted = true;
     // Set if Admin
     const isAdmin = (await _provider.getSecurityProvider()).isAdmin();
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({isAdmin});
     // Read the charger
     await this._getCharger();
     // Get Current Transaction
@@ -63,9 +61,9 @@ class ConnectorDetails extends ResponsiveComponent {
       this._refreshElapsedTime();
     }, 1000);
     // eslint-disable-next-line react/no-did-mount-set-state
-    // Ok
     this.setState({
-      firstLoad: false
+      firstLoad: false,
+      isAdmin: isAdmin
     });
     // Add listeners
     this.props.navigation.addListener("didFocus", this.componentDidFocus);
@@ -376,7 +374,7 @@ class ConnectorDetails extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { firstLoad, siteImage, loadingTransaction, charger, connector, refreshing, userImage, transaction, hours, minutes, seconds } = this.state;
+    const { firstLoad, loadingTransaction, charger, connector, siteImage, refreshing, userImage, transaction, hours, minutes, seconds } = this.state;
     return (
       <Container>
         <ChargerHeader charger={charger} connector={connector} navigation={navigation} />

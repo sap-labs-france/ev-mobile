@@ -10,7 +10,6 @@ import Sidebar from "./screens/Sidebar";
 import Sites from "./screens/Sites";
 import SiteAreas from "./screens/SiteAreas";
 import Chargers from "./screens/Chargers";
-import Empty from "./screens/Empty";
 import ChargerDetails from "./screens/Details/ChargerDetails";
 import ConnectorDetails from "./screens/Details/ConnectorDetails";
 import ChartDetails from "./screens/Details/ChartDetails";
@@ -25,13 +24,12 @@ const ChargerTabNavigator = createBottomTabNavigator(
   {
     ConnectorDetails: { screen: ConnectorDetails },
     ChartDetails: { screen: ChartDetails },
-    ChargerDetails: { screen: ChargerDetails },
-    Empty: { screen: Empty },
+    ChargerDetails: { screen: ChargerDetails }
   },
   {
     tabBarPosition: "bottom",
     swipeEnabled: false,
-    initialRouteName: "Empty",
+    initialRouteName: "ConnectorDetails",
     animationEnabled: true,
     backBehavior: "none",
     tabBarComponent: (props) => <ChargerTab {...props} />

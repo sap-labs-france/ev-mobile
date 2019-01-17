@@ -69,8 +69,6 @@ export default class NotificationProvider {
       // Yes: Add it
       notification.date = new Date(date);
     }
-    console.log(notification);
-    
     // Send Notif
     await PushNotification.localNotification(notification);
   }
