@@ -53,6 +53,12 @@
     "free": "Libre(s)",
     "occupied": "Occupé(s)"
   },
+  "siteAreas": {
+    "title": "Zones"
+  },
+  "chargers": {
+    "title": "Bornes"
+  },
   "connector": {
     "occupied": "Occupé",
     "charging": "En charge",

@@ -1,6 +1,6 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import { Badge } from 'react-native-elements'
+import { Badge } from "react-native-elements"
 import { TouchableOpacity } from "react-native";
 import { Text, View, Icon } from "native-base";
 import computeStyleSheet from "./styles";
@@ -10,9 +10,9 @@ class SiteAreaComponent extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const { siteArea, siteImage, navigation } = this.props;
+    const { siteArea, navigation } = this.props;
     return (
-      <TouchableOpacity onPress={() => navigation.navigate("Chargers", { siteArea, siteImage })}>
+      <TouchableOpacity onPress={() => navigation.navigate("Chargers", { siteAreaID: siteArea.id })}>
         <View style={style.siteContainer}>
           <View style={style.mainContent}>
             <Text style={style.siteName}>{siteArea.name}</Text>

@@ -17,7 +17,7 @@ class SiteComponent extends ResponsiveComponent {
     const style = computeStyleSheet();
     const { site, navigation } = this.props;
     return (
-      <TouchableOpacity onPress={() => navigation.navigate("SiteAreas", { site })}>
+      <TouchableOpacity onPress={() => navigation.navigate("SiteAreas", { siteID: site.id })}>
         <View style={style.siteContainer}>
           <View style={style.mainContent}>
             <TouchableOpacity onPress={()=>this._siteLocation(site.address)}>

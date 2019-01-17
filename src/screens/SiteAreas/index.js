@@ -1,20 +1,21 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import { Image, FlatList, RefreshControl } from "react-native";
+import PropTypes from "prop-types";
+import { FlatList, RefreshControl } from "react-native";
 import { Container, Header, Spinner, Left, Right, Body, Title, Button, Icon, View } from "native-base";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import ProviderFactory from "../../provider/ProviderFactory";
 import SiteAreaComponent from "../../components/SiteArea";
 import computeStyleSheet from "./styles";
+import I18n from "../../I18n/I18n";
 
 const _provider = ProviderFactory.getProvider();
-class SiteAreas extends ResponsiveComponent {
+export default class SiteAreas extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
       siteAreas: [],
-      siteImage: null,
       loading: true,
       refreshing: false,
       skip: 0,
@@ -26,8 +27,6 @@ class SiteAreas extends ResponsiveComponent {
   async componentDidMount() {
     // Set
     this.mounted = true;
-    // Get the Site Image
-    this._getSiteImage();
     // Get the sites
     const siteAreas = await this._getSiteAreas(this.state.skip, this.state.limit);
     // Add sites
@@ -76,30 +75,13 @@ class SiteAreas extends ResponsiveComponent {
     }
   }
 
-  _getSiteImage = async () => {
-    const { site } = this.props.navigation.state.params;
-    try {
-      let result = await _provider.getSiteImage(
-        { ID: site.id }
-      );
-      // Found 
-      if (result) {
-        // Yes
-        this.setState({siteImage: result.image});
-      }
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
-    }
-  }
-
   _getSiteAreas = async (skip, limit) => {
-    const { site } = this.props.navigation.state.params;
+    const { siteID } = this.props.navigation.state.params;
     let siteAreas = [];
     try {
       // Get the Sites
       siteAreas = await _provider.getSiteAreas(
-        { SiteID: site.id, WithAvailableChargers: true }, { skip, limit });
+        { SiteID: siteID, WithAvailableChargers: true }, { skip, limit });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -149,8 +131,7 @@ class SiteAreas extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { site } = this.props.navigation.state.params;
-    const { loading, siteImage } = this.state;
+    const { loading } = this.state;
     return (
       <Container>
         <Header style={style.header}>
@@ -160,7 +141,7 @@ class SiteAreas extends ResponsiveComponent {
             </Button>
           </Left>
           <Body style={style.bodyHeader}>
-            <Title style={style.titleHeader}>{site.name}</Title>
+            <Title style={style.titleHeader}>{I18n.t("siteAreas.title")}</Title>
           </Body>
           <Right style={style.rightHeader}>
             <Button transparent onPress={() => navigation.openDrawer()}>
@@ -175,7 +156,7 @@ class SiteAreas extends ResponsiveComponent {
             <FlatList
               data={this.state.siteAreas}
               renderItem={({item}) => 
-                <SiteAreaComponent siteArea={item} navigation={this.props.navigation} siteImage={siteImage} />
+                <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />
               }
               keyExtractor={item => item.id}
               refreshControl={
@@ -191,5 +172,3 @@ class SiteAreas extends ResponsiveComponent {
     );
   }
 }
-
-export default SiteAreas;

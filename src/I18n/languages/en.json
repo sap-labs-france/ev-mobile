@@ -7,7 +7,6 @@
     "numbers": "Enter a valid number",
     "email": "Enter a valid email address",
     "mandatory": "is mandatory",
-    "required": "Mandatory field",
     "ok": "Ok",
     "yes": "Yes",
     "no": "No",
@@ -53,6 +52,12 @@
     "chargePoint": "Charge Point",
     "free": "Free",
     "occupied": "Occupied"
+  },
+  "siteAreas": {
+    "title": "Site Areas"
+  },
+  "chargers": {
+    "title": "Charging Stations"
   },
   "connector": {
     "occupied": "Occupied",

@@ -2,10 +2,10 @@ import React from "react";
 import { Image, TouchableOpacity } from "react-native";
 import { Text, View } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import Utils from "../../utils/Utils";
-import ConnectorStatusComponent from "../ConnectorStatus";
+import Utils from "../../../utils/Utils";
+import ConnectorStatusComponent from "../../ConnectorStatus";
 import * as Animatable from "react-native-animatable";
-import I18n from "../../I18n/I18n";
+import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./styles";
 
 class ConnectorComponent extends ResponsiveComponent {
@@ -45,10 +45,10 @@ class ConnectorComponent extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const { index, connector, navigation, charger, siteID, siteImage } = this.props;
+    const { index, connector, navigation, charger } = this.props;
     const even = (index % 2 === 0);
     return (
-      <TouchableOpacity style={style.statusConnectorContainer} onPress={()=> navigation.navigate("ChargerTabNavigator", { charger, index, siteID, siteImage, connector })}>
+      <TouchableOpacity style={style.statusConnectorContainer} onPress={()=> navigation.navigate("ChargerTabNavigator", { charger, connector })}>
         <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1} >
           <View style={even ? style.leftConnectorContainer : style.rightConnectorContainer}>
             <Text style={style.statusDescription} numberOfLines={1}>

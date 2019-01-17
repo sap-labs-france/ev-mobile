@@ -22,7 +22,7 @@ const commonStyles = {
   },
   titleHeader: {
     color: commonColor.textColor,
-    fontSize: scale(17),
+    fontSize: scale(20),
     fontWeight: "bold"
   },
   iconHeader: {

@@ -7,6 +7,7 @@ import ChargerComponent from "../../components/Charger";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import computeStyleSheet from "./styles";
+import I18n from "../../I18n/I18n";
 
 const _provider = ProviderFactory.getProvider();
 class Chargers extends ResponsiveComponent {
@@ -24,11 +25,11 @@ class Chargers extends ResponsiveComponent {
   }
 
   async componentDidMount() {
-    const { siteArea } = this.props.navigation.state.params;
+    const { siteAreaID } = this.props.navigation.state.params;
     // Set
     this.mounted = true;
     // Get chargers first time
-    const chargers = await this._getChargers(this.state.skip, this.state.limit, siteArea.id);
+    const chargers = await this._getChargers(this.state.skip, this.state.limit, siteAreaID);
     // Add listeners
     this.props.navigation.addListener("didFocus", this.componentDidFocus);
     this.props.navigation.addListener("didBlur", this.componentDidBlur);
@@ -89,12 +90,12 @@ class Chargers extends ResponsiveComponent {
   }
 
   _onEndScroll = async () => {
-    const { siteArea } = this.props.navigation.state.params;
+    const { siteAreaID } = this.props.navigation.state.params;
     const { count, skip, limit } = this.state;
     // No reached the end?
     if ((skip + limit) < count) {
       // No: get next sites
-      let chargers = await this._getChargers(skip + Constants.PAGING_SIZE, limit, siteArea.id);
+      let chargers = await this._getChargers(skip + Constants.PAGING_SIZE, limit, siteAreaID);
       // Add sites
       this.setState((prevState, props) => ({
         chargers: [...prevState.chargers, ...chargers.result],
@@ -105,12 +106,12 @@ class Chargers extends ResponsiveComponent {
   }
 
   _refresh = async () => {
-    const { siteArea } = this.props.navigation.state.params;
+    const { siteAreaID } = this.props.navigation.state.params;
     // Component Mounted?
     if (this.mounted) {
       const { skip, limit } = this.state;
       // Refresh All
-      let chargers = await this._getChargers(0, (skip + limit), siteArea.id);
+      let chargers = await this._getChargers(0, (skip + limit), siteAreaID);
       // Add sites
       this.setState((prevState, props) => ({
         chargers: chargers.result
@@ -131,7 +132,6 @@ class Chargers extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { siteArea, siteImage } = this.props.navigation.state.params;
     return (
       <Container>
         <Header style={style.header}>
@@ -141,7 +141,7 @@ class Chargers extends ResponsiveComponent {
             </Button>
           </Left>
           <Body style={style.bodyHeader}>
-            <Title style={style.titleHeader}>{siteArea.name}</Title>
+            <Title style={style.titleHeader}>{I18n.t("chargers.title")}</Title>
           </Body>
           <Right style={style.rightHeader}>
             <Button transparent onPress={() => navigation.openDrawer()}>
@@ -157,8 +157,7 @@ class Chargers extends ResponsiveComponent {
               data={this.state.chargers}
               renderItem={({item}) =>
                 <List>
-                  <ChargerComponent charger={item} navigation={navigation} 
-                    siteID={siteArea.id} siteImage={siteImage} />
+                  <ChargerComponent charger={item} navigation={navigation} />
                 </List>
               }
               keyExtractor={item => item.id}

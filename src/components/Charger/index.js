@@ -3,13 +3,12 @@ import { Text, View, Icon } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./styles";
 import * as Animatable from "react-native-animatable";
-import ConnectorComponent from "../Connector";
+import ConnectorComponent from "./Connector";
 
 class ChargerComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
-      siteImage: this.props.navigation.state.params.siteImage,
       isChargerDead: false
     };
   }
@@ -34,7 +33,7 @@ class ChargerComponent extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const { charger, navigation, siteID, siteImage } = this.props;
+    const { charger, navigation } = this.props;
     const { isChargerDead } = this.state;
     return (
       <View style={style.container}>
@@ -54,8 +53,7 @@ class ChargerComponent extends ResponsiveComponent {
               return (<ConnectorComponent
                 key={`${charger.id}~${connector.connectorId}` } 
                 index={index} connector={connector} 
-                navigation={navigation} charger={charger} 
-                siteID={siteID} siteImage={siteImage}/>);
+                navigation={navigation} charger={charger} />);
             })
           }
         </View>
