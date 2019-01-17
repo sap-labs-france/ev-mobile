@@ -16,8 +16,6 @@ class ChargerTab extends ResponsiveComponent {
   }
 
   async componentDidMount() {
-    const { params } = this.props.navigation.state;
-    const navigation = this.props.navigation;
     // Set if Admin
     const isAdmin = (await _provider.getSecurityProvider()).isAdmin();
     // eslint-disable-next-line react/no-did-mount-set-state

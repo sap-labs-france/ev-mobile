@@ -22,8 +22,8 @@ class ChartDetails extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
-      charger: this.props.navigation.state.params.charger,
-      connector: this.props.navigation.state.params.connector,
+      charger: this.props.navigation.dangerouslyGetParent().state.params.charger,
+      connector: this.props.navigation.dangerouslyGetParent().state.params.connector,
       values: [],
       consumptions: EMPTY_CHART,
       stateOfCharge: EMPTY_CHART
