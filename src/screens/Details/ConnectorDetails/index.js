@@ -118,6 +118,28 @@ class ConnectorDetails extends ResponsiveComponent {
     }
   }
 
+  _getSiteImage = async (siteID) => {
+    try {
+      if (!this.state.siteImage) {
+        // Get it
+        let result = await _provider.getSiteImage(
+          { ID: siteID }
+        );
+        // Found 
+        if (result) {
+          // Yes
+          this.setState({siteImage: result.image});
+        } else {
+          // Yes
+          this.setState({siteImage: null});
+        }          
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
   onStartTransaction = () => {
     const { charger } = this.state;
     Alert.alert(
@@ -217,7 +239,7 @@ class ConnectorDetails extends ResponsiveComponent {
       Utils.handleHttpUnexpectedError(error, this.props);
     }
   }
-
+  
   _getCharger = async () => {
     try {
       let charger = await _provider.getCharger(
@@ -227,6 +249,8 @@ class ConnectorDetails extends ResponsiveComponent {
         charger: charger,
         connector: charger.connectors[this.state.connectorID - 1]
       }, () => {
+        // Get the Site Image
+        this._getSiteImage(charger.siteArea.siteID);
         // Connector Available?
         if (this.state.connector.status === Constants.CONN_STATUS_AVAILABLE &&
             this.state.startButtonDisabledNbTrial === 0) {
