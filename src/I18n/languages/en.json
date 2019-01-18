@@ -108,9 +108,9 @@
       "longMessage": "Your session on '{{chargeBoxID}}' has just finished."
     },
     "notifyEndOfCharge": {
-      "message": "Your maximal charge on '{{chargeBoxID}}' has been reached.",
+      "message": "Your charge on '{{chargeBoxID}}' has finished.",
       "subMessage": "End Of Charge",
-      "longMessage": "Your maximal charge on '{{chargeBoxID}}' has been reached. You can now stop the session and move your vehicle."
+      "longMessage": "Your charge on '{{chargeBoxID}}' has finished. You can now stop the session and move your vehicle."
     },
     "notifyOptimalChargeReached": {
       "message": "Your optimal charge on '{{chargeBoxID}}' has been reached.",
