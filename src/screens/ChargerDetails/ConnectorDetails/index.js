@@ -122,9 +122,7 @@ class ConnectorDetails extends ResponsiveComponent {
     try {
       if (!this.state.siteImage) {
         // Get it
-        let result = await _provider.getSiteImage(
-          { ID: siteID }
-        );
+        let result = await _provider.getSiteImage(siteID);
         // Found 
         if (result) {
           // Yes

@@ -19,6 +19,7 @@ let _email;
 let _password;
 let _tenant;
 let _securityProvider;
+const _siteImages = [];
 
 export default class  CentralServerProvider {
   async initialize() {
@@ -335,16 +336,27 @@ export default class  CentralServerProvider {
     return result.data;
   }
 
-  async getSiteImage(params = {}) {
+  async getSiteImage(id) {
     this.debug("getSiteImage");
     // Init?
     await this.initialize();
-    // Call
-    let result = await axios.get(`${centralRestServerServiceSecuredURL}/SiteImage`, {
-      headers: this._buildSecuredHeaders(),
-      params
-    });
-    return result.data;
+    // Check cache
+    let siteImage = _siteImages.find((siteImage) => siteImage.id === id);
+    if (!siteImage) {
+      // Call
+      let result = await axios.get(`${centralRestServerServiceSecuredURL}/SiteImage`, {
+        headers: this._buildSecuredHeaders(),
+        params: { ID: id }
+      });
+      // Set
+      siteImage = {
+        id: id,
+        data: result.data
+      };
+      // Add
+      _siteImages.push(siteImage);
+    }
+    return siteImage.data;
   }
 
   async isAuthorizedStopTransaction(params = {}) {
