@@ -56,7 +56,7 @@ export default class NotificationScheduler {
     // Get the logged user
     const user = await _provider.getUserInfo();
     // Get the last minute notifications
-    const dateFrom = new Date(new Date().getTime() - (90 * 60 * 1000));
+    const dateFrom = new Date(new Date().getTime() - (60 * 1000));
     // Read the last notification
     const notifications = await _provider.getNotifications({
         UserID: user.id, Channel: "email", DateFrom: dateFrom.toISOString()
