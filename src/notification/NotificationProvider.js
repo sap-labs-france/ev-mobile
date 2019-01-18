@@ -63,7 +63,7 @@ export default class NotificationProvider {
       /* iOS only properties */
       alertAction: 'view', // (optional) default: view
       category: null, // (optional) default: null
-      userInfo: extraData, // (optional) default: null (object containing additional notification data)
+      extraData: extraData, // (optional) default: null (object containing additional notification data)
     };
     // Delayed?
     if (date) {

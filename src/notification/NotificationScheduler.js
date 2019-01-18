@@ -56,7 +56,7 @@ export default class NotificationScheduler {
     // Get the logged user
     const user = await _provider.getUserInfo();
     // Get the last minute notifications
-    const dateFrom = new Date(new Date().getTime() - (60 * 1000));
+    const dateFrom = new Date(new Date().getTime() - (90 * 60 * 1000));
     // Read the last notification
     const notifications = await _provider.getNotifications({
         UserID: user.id, Channel: "email", DateFrom: dateFrom.toISOString()
@@ -125,7 +125,7 @@ export default class NotificationScheduler {
           subText: subMessage,
           bigText: longMessage,
           color: color,
-          extraData: JSON.stringify(notification)
+          extraData: notification
         });
       }
     }
@@ -140,27 +140,25 @@ export default class NotificationScheduler {
     if (!(await _provider.isUserAuthenticated()) || !this.navigation) {
       return;
     }
-    // Get back the original notification
-    const notificationBackend = JSON.parse(notification.userInfo);
     // Check the type of notification
-    switch (notificationBackend.sourceDescr) {
+    switch (notification.extraData.sourceDescr) {
       // End of Session
       case "NotifyEndOfSession":
       case "NotifyEndOfCharge":
       case "NotifyOptimalChargeReached":
       case "NotifyChargingStationStatusError":
         // Navigate
-        if (notificationBackend.data && notificationBackend.data.connectorId) {
+        if (notification.extraData.data && notification.extraData.data.connectorId) {
           // Navigate
-          this.navigation.navigate("ChargerTabNavigator", { chargerID: notificationBackend.chargeBoxID, connectorID: notificationBackend.data.connectorId })
+          this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: notification.extraData.data.connectorId })
         }
         break;
       // Charger just connected
       case "NotifyChargingStationRegistered":
         // Navigate
-        if (notificationBackend.data) {
+        if (notification.extraData.data) {
           // Navigate
-          this.navigation.navigate("ChargerTabNavigator", { chargerID: notificationBackend.chargeBoxID, connectorID: 1 })
+          this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: 1 })
         }
         break;
       // Unknown user

@@ -10,10 +10,10 @@ import Sidebar from "./screens/Sidebar";
 import Sites from "./screens/Sites";
 import SiteAreas from "./screens/SiteAreas";
 import Chargers from "./screens/Chargers";
-import ChargerDetails from "./screens/Details/ChargerDetails";
-import ConnectorDetails from "./screens/Details/ConnectorDetails";
-import ChartDetails from "./screens/Details/ChartDetails";
-import ChargerTab from "./screens/Details/ChargerTab";
+import ChargerDetails from "./screens/ChargerDetails/ChargerDetails";
+import ConnectorDetails from "./screens/ChargerDetails/ConnectorDetails";
+import ChartDetails from "./screens/ChargerDetails/ChartDetails";
+import ChargerTab from "./screens/ChargerDetails/ChargerTab";
 
 // Charger Tab Navigation
 const ChargerTabNavigator = createBottomTabNavigator(
