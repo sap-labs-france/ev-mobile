@@ -22,8 +22,9 @@ class Sites extends ResponsiveComponent {
       limit: Constants.PAGING_SIZE,
       count: 0
     };
-    // Set the navigation
+    // Get the Notification Scheduler
     const notificationScheduler = NotificationScheduler.getInstance();
+    // Set the navigation
     notificationScheduler.setNavigation(this.props.navigation);
   }
 

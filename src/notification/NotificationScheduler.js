@@ -9,19 +9,19 @@ const _provider = ProviderFactory.getProvider();
 let _notificationScheduler;
 
 export default class NotificationScheduler {
-  constructor() {
+  initialize() {
     // Create the notif provider
     this.notificationProvider = new NotificationProvider(
       this.onRegister, this.onNotify
     );
+    // Start
+    this.start();
   }
-  
+
   static getInstance() {
     if (!_notificationScheduler) {
       // Create & Start
       _notificationScheduler = new NotificationScheduler();
-      // Start
-      _notificationScheduler.start();
     }
     return _notificationScheduler;
   }
