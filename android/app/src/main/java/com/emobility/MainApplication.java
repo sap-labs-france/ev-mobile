@@ -3,6 +3,7 @@ package com.emobility;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.taluttasgiran.rnsecurestorage.RNSecureStoragePackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFirebasePackage(),
             new RNDeviceInfo(),
             new RNSecureStoragePackage(),
             new ReactNativePushNotificationPackage(),
