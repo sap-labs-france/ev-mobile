@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -489,6 +490,13 @@
 			remoteGlobalIDString = 5DBEB1501B18CEA900B34395;
 			remoteInfo = RNVectorIcons;
 		};
+		F18D2F0021F3DAAE00D45247 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F18D2ED121F3DAAE00D45247 /* RNGestureHandler.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNGestureHandler;
+		};
 		F1B677F321D3AD7300E98BCE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AE15795E4DBA4329A1C182FC /* RNVectorIcons.xcodeproj */;
@@ -568,6 +576,9 @@
 		F15B9B7921F34E010086EB61 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		F15B9BB121F34F6F0086EB61 /* eMobility.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = eMobility.entitlements; path = eMobility/eMobility.entitlements; sourceTree = "<group>"; };
 		F15BBCED21F3520600DEC50C /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
+		F18D2EA421F3D22F00D45247 /* RNFirebaseInvites.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNFirebaseInvites.m; sourceTree = "<group>"; };
+		F18D2EA521F3D22F00D45247 /* RNFirebaseInvites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNFirebaseInvites.h; sourceTree = "<group>"; };
+		F18D2ED121F3DAAE00D45247 /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
 		F1B677F521D3ADA700E98BCE /* eMobility-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "eMobility-Bridging-Header.h"; sourceTree = "<group>"; };
 		F1B677F721D3ADA700E98BCE /* RNBarChartViewBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNBarChartViewBase.swift; sourceTree = "<group>"; };
 		F1B677F821D3ADA700E98BCE /* BarDataExtract.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarDataExtract.swift; sourceTree = "<group>"; };
@@ -738,6 +749,7 @@
 		00E356EF1AD99517003FC87E /* eMobilityTests */ = {
 			isa = PBXGroup;
 			children = (
+				F18D2EA621F3D22F00D45247 /* invites */,
 				00E356F21AD99517003FC87E /* eMobilityTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
@@ -849,6 +861,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				F18D2ED121F3DAAE00D45247 /* RNGestureHandler.xcodeproj */,
 				F15BBCED21F3520600DEC50C /* RNDeviceInfo.xcodeproj */,
 				F15B9B7921F34E010086EB61 /* RCTPushNotification.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
@@ -1038,6 +1051,23 @@
 			children = (
 				F18616F621C01895000EF234 /* libRNVectorIcons.a */,
 				F1B677F421D3AD7300E98BCE /* libRNVectorIcons-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F18D2EA621F3D22F00D45247 /* invites */ = {
+			isa = PBXGroup;
+			children = (
+				F18D2EA421F3D22F00D45247 /* RNFirebaseInvites.m */,
+				F18D2EA521F3D22F00D45247 /* RNFirebaseInvites.h */,
+			);
+			path = invites;
+			sourceTree = "<group>";
+		};
+		F18D2ED221F3DAAE00D45247 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F18D2F0121F3DAAE00D45247 /* libRNGestureHandler.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1381,6 +1411,10 @@
 				{
 					ProductGroup = F1818AA521F3B71500E1DDB1 /* Products */;
 					ProjectRef = E391DD41855B4E549102B224 /* RNFirebase.xcodeproj */;
+				},
+				{
+					ProductGroup = F18D2ED221F3DAAE00D45247 /* Products */;
+					ProjectRef = F18D2ED121F3DAAE00D45247 /* RNGestureHandler.xcodeproj */;
 				},
 				{
 					ProductGroup = F18616D821C01895000EF234 /* Products */;
@@ -1764,6 +1798,13 @@
 			remoteRef = F18616F521C01895000EF234 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		F18D2F0121F3DAAE00D45247 /* libRNGestureHandler.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNGestureHandler.a;
+			remoteRef = F18D2F0021F3DAAE00D45247 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		F1B677F421D3AD7300E98BCE /* libRNVectorIcons-tvOS.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2093,6 +2134,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = SG7N28T3A2;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)/**",
+					"$(PROJECT_DIR)/**",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
@@ -2100,8 +2145,8 @@
 					"$(SRCROOT)/../node_modules/react-native-sensitive-info/ios/RNSensitiveInfo",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
-					"$(SRCROOT)..\node_modules\nn-secure-storageios",
-					"$(SRCROOT)..\node_modules\neact-native-firebaseiosRNFirebase/**",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/**",
+					"$(SRCROOT)..",
 				);
 				INFOPLIST_FILE = eMobility/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2133,6 +2178,10 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = SG7N28T3A2;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)/**",
+					"$(PROJECT_DIR)/**",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
@@ -2140,8 +2189,8 @@
 					"$(SRCROOT)/../node_modules/react-native-sensitive-info/ios/RNSensitiveInfo",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
-					"$(SRCROOT)..\node_modules\nn-secure-storageios",
-					"$(SRCROOT)..\node_modules\neact-native-firebaseiosRNFirebase/**",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/**",
+					"$(SRCROOT)..",
 				);
 				INFOPLIST_FILE = eMobility/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
