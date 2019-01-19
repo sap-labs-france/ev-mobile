@@ -1,8 +1,7 @@
 target 'eMobility' do
-  pod 'SwiftyJSON', '4.0.0'      
-  pod 'Charts', '3.1.1'         
+  pod 'SwiftyJSON', '4.0.0'
+  pod 'Charts', '3.1.1'
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
-
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
 end
