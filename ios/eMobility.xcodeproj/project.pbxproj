@@ -412,13 +412,6 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTPushNotification;
 		};
-		F15BBCC921F350C200DEC50C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F15B9B7921F34E010086EB61 /* RCTPushNotification.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F15BBCB921F350B100DEC50C;
-			remoteInfo = "RCTPushNotification-tvOS";
-		};
 		F15BBCF221F3520600DEC50C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F15BBCED21F3520600DEC50C /* RNDeviceInfo.xcodeproj */;
@@ -432,6 +425,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = E72EC1401F7ABB5A0001BC90;
 			remoteInfo = "RNDeviceInfo-tvOS";
+		};
+		F1818A3921F39D8300E1DDB1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F15B9B7921F34E010086EB61 /* RCTPushNotification.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F1818A2921F39D7500E1DDB1;
+			remoteInfo = "RCTPushNotification-tvOS";
 		};
 		F18616E321C01895000EF234 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -954,7 +954,7 @@
 			isa = PBXGroup;
 			children = (
 				F15B9B8C21F34E010086EB61 /* libRCTPushNotification.a */,
-				F15BBCCA21F350C200DEC50C /* libRCTPushNotification-tvOS.a */,
+				F1818A3A21F39D8300E1DDB1 /* libRCTPushNotification-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1667,13 +1667,6 @@
 			remoteRef = F15B9B8B21F34E010086EB61 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		F15BBCCA21F350C200DEC50C /* libRCTPushNotification-tvOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libRCTPushNotification-tvOS.a";
-			remoteRef = F15BBCC921F350C200DEC50C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		F15BBCF321F3520600DEC50C /* libRNDeviceInfo.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1686,6 +1679,13 @@
 			fileType = archive.ar;
 			path = "libRNDeviceInfo-tvOS.a";
 			remoteRef = F15BBCF421F3520600DEC50C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F1818A3A21F39D8300E1DDB1 /* libRCTPushNotification-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRCTPushNotification-tvOS.a";
+			remoteRef = F1818A3921F39D8300E1DDB1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		F18616E421C01895000EF234 /* libRCTOrientation.a */ = {
