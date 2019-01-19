@@ -4,7 +4,9 @@ import DeviceInfo from "react-native-device-info";
 export default class NotificationProvider {
 
   constructor(onRegister, onNotification) {
+    // Configure
     this.configure(onRegister, onNotification);
+    // Init message ID
     this.lastId = 0;
   }
 

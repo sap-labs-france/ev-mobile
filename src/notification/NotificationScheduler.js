@@ -150,7 +150,9 @@ export default class NotificationScheduler {
         // Navigate
         if (notification.extraData.data && notification.extraData.data.connectorId) {
           // Navigate
-          this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: notification.extraData.data.connectorId })
+          if (this.navigation) {
+            this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: notification.extraData.data.connectorId })
+          }
         }
         break;
       // Charger just connected
@@ -158,7 +160,9 @@ export default class NotificationScheduler {
         // Navigate
         if (notification.extraData.data) {
           // Navigate
-          this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: 1 })
+          if (this.navigation) {
+            this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: 1 })
+          }
         }
         break;
       // Unknown user

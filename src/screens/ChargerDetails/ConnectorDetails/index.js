@@ -33,9 +33,8 @@ class ConnectorDetails extends ResponsiveComponent {
       userImage: null,
       refreshing: false,
       loadingTransaction: false,
-      startButtonDisabledNbTrial: 0,
-      startButtonDisabled: true,
-      stopButtonDisabled: true,
+      startTransactionNbTrial: 0,
+      buttonDisabled: false,
       isAdmin: false
     };
   }
@@ -154,7 +153,7 @@ class ConnectorDetails extends ResponsiveComponent {
     const { charger, connector } = this.state;
     this.setState({
       loadingTransaction: true,
-      startButtonDisabled: true
+      buttonDisabled: true
     });
     try {
       // Start the Transaction
@@ -163,7 +162,7 @@ class ConnectorDetails extends ResponsiveComponent {
       if (status.status && status.status === "Accepted") {
         Message.showSuccess(I18n.t("details.accepted"));
         this.setState({
-          startButtonDisabledNbTrial: 4,
+          startTransactionNbTrial: 4,
           loadingTransaction: false
         });
       } else {
@@ -205,7 +204,7 @@ class ConnectorDetails extends ResponsiveComponent {
     const { charger, connector } = this.state;
     this.setState({
       loadingTransaction: true,
-      stopButtonDisabled: true
+      buttonDisabled: true
     });
     try {
       // Stop the Transaction
@@ -247,30 +246,35 @@ class ConnectorDetails extends ResponsiveComponent {
         charger: charger,
         connector: charger.connectors[this.state.connectorID - 1]
       }, () => {
-        // Get the Site Image
+        // Get the Site Image (only first time)
         this._getSiteImage(charger.siteArea.siteID);
-        // Connector Available?
-        if (this.state.connector.status === Constants.CONN_STATUS_AVAILABLE &&
-            this.state.startButtonDisabledNbTrial === 0) {
-          // Set
-          this.setState({
-            startButtonDisabled: false,
-            stopButtonDisabled: true
-          });
-        } else {
-          let startButtonDisabledNbTrial = (this.state.startButtonDisabledNbTrial > 0 ? (this.state.startButtonDisabledNbTrial - 1) : 0 );
-          // Check if status has changed
-          if (this.state.connector.status !== Constants.CONN_STATUS_AVAILABLE && 
-              startButtonDisabledNbTrial !== 0) {
-            // Init
-            startButtonDisabledNbTrial = 0;
+        // Check to enable the buttons after a certain period of time
+        if (this.state.buttonDisabled) {
+          console.log("button disabled");          
+          // Check if the Start/Stop Button should stay disabled
+          if (this.state.connector.status === Constants.CONN_STATUS_AVAILABLE &&
+              this.state.startTransactionNbTrial === 0) {
+            console.log("button active again");
+            // Connector still available after the trials: Enable Start Transaction again 
+            this.setState({
+              buttonDisabled: false
+            });
+          // Still trials? (only for Start Transaction)
+          } else if (this.state.startTransactionNbTrial > 0) {
+            // Trial - 1
+            let startTransactionNbTrial = (this.state.startTransactionNbTrial > 0 ? (this.state.startTransactionNbTrial - 1) : 0 );
+            console.log("nb trial: " + startTransactionNbTrial);          
+            // Check if charger's status has changed
+            if (this.state.connector.status !== Constants.CONN_STATUS_AVAILABLE) {
+              // Yes: Init trial
+              startTransactionNbTrial = 0;
+              console.log("nb trial init!");
+            }
+            // Set
+            this.setState({
+              startTransactionNbTrial
+            });
           }
-          // Set
-          this.setState({
-            startButtonDisabled: true,
-            stopButtonDisabled: false,
-            startButtonDisabledNbTrial
-          });
         }
       });
     } catch (error) {
@@ -412,14 +416,14 @@ class ConnectorDetails extends ResponsiveComponent {
                 <Image style={style.backgroundImage} source={siteImage ? {uri: siteImage} : noSite}/>
                 <View style={style.transactionContainer}>
                   {connector.activeTransactionID === 0 ?
-                    <TouchableOpacity onPress={() => this.onStartTransaction()} disabled={this.state.startButtonDisabled}>
-                      <View style={(!this.state.startButtonDisabled ? style.startTransaction : [style.startTransaction, style.startStopTransactionDisabled])}>
+                    <TouchableOpacity onPress={() => this.onStartTransaction()} disabled={this.state.buttonDisabled}>
+                      <View style={(this.state.buttonDisabled ? [style.startTransaction, style.startStopTransactionDisabled] : style.startTransaction)}>
                         <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
                       </View>
                     </TouchableOpacity>
                   :
-                    <TouchableOpacity onPress={() => this.onStopTransaction()} disabled={this.state.stopButtonDisabled}>
-                      <View style={(!this.state.stopButtonDisabled ? style.stopTransaction : [style.stopTransaction, style.startStopTransactionDisabled])}>
+                    <TouchableOpacity onPress={() => this.onStopTransaction()} disabled={this.state.buttonDisabled}>
+                      <View style={(this.state.buttonDisabled ? [style.stopTransaction, style.startStopTransactionDisabled] : style.stopTransaction)}>
                         <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="stop" />
                       </View>
                     </TouchableOpacity>
