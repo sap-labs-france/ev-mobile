@@ -4,11 +4,13 @@ import I18n from "../I18n/I18n";
 import commonColor from "../theme/variables/commonColor";
 import DeviceInfo from "react-native-device-info";
 import ProviderFactory from "../provider/ProviderFactory";
+import Message from "../utils/Message";
+
 
 const _provider = ProviderFactory.getProvider();
+const _notifications = [];
 let _notificationManager;
 let _token;
-const _notifications = [];
 
 export default class NotificationManager {
   initialize() {
@@ -68,7 +70,8 @@ export default class NotificationManager {
   }
 
   async sendLocalNotification(notification) {
-    console.log("triggerLocalNotification");
+    console.log("sendLocalNotification");
+    console.log(notification);
     // Text?
     if (typeof notification.extraData === "string") {
       // Convert ot JSon
@@ -128,6 +131,7 @@ export default class NotificationManager {
     }
     // Send the notification
     if (message) {
+      console.log(message);
       // Send
       await this.notificationProvider.sendLocalNotification({
         title: DeviceInfo.getApplicationName(),
@@ -158,14 +162,38 @@ export default class NotificationManager {
         } else {
           console.log("Remote Notif: Navigate");
           // No: meaning the user got the notif and clicked on it, then navigate to the right screen
-          // User must be logged and Navigation available
-          if (!(await _provider.isUserAuthenticated()) || !this.navigation) {
+          // User must be logged
+          if (!(await _provider.isUserAuthenticated())) {
+            // Show
+            console.log("Remote Notif: User must login");
+            Message.showError(I18n.t("notification.mustLogin"));
+            return;
+          }
+          // Must have Navigation 
+          if (!this.navigation) {
+            // Show
+            console.log("Remote Notif: No navigation");
+            Message.showError(I18n.t("notification.cannotNavigate"));
+            return;
+          }
+          // Extra Data must be available
+          if (!notification.extraData) {
+            // Show
+            console.log("Remote Notif: No extra data");
+            Message.showError(I18n.t("notification.extraDataMissing"));
             return;
           }
           // Text?
           if (typeof notification.extraData === "string") {
             // Convert ot JSon
             notification.extraData = JSON.parse(notification.extraData);
+          }
+          // Same Tenant
+          if ((await _provider.getTenant()) === notification.extraData.tenant) {
+            // Show
+            console.log("Remote Notif: Incorrect tenant");
+            Message.showError(I18n.t("notification.incorrectTenant"));
+            return;
           }
           // Check the type of notification
           if (notification.extraData) {

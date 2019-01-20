@@ -129,7 +129,7 @@ class ConnectorDetails extends ResponsiveComponent {
         } else {
           // Yes
           this.setState({siteImage: null});
-        }          
+        }
       }
     } catch (error) {
       // Other common Error
