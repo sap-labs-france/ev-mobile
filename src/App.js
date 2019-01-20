@@ -14,12 +14,12 @@ import ChargerDetails from "./screens/ChargerDetails/ChargerDetails";
 import ConnectorDetails from "./screens/ChargerDetails/ConnectorDetails";
 import ChartDetails from "./screens/ChargerDetails/ChartDetails";
 import ChargerTab from "./screens/ChargerDetails/ChargerTab";
-import NotificationScheduler from "./notification/NotificationScheduler";
+import NotificationManager from "./notification/NotificationManager";
 
 // Get the Notification Scheduler
-const notificationScheduler = NotificationScheduler.getInstance();
+const notificationManager = NotificationManager.getInstance();
 // Initialize
-notificationScheduler.initialize();
+notificationManager.initialize();
 
 // Charger Tab Navigation
 const ChargerTabNavigator = createBottomTabNavigator(

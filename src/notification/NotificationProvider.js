@@ -36,7 +36,7 @@ export default class NotificationProvider {
     });
   }
 
-  async sendNotification({id = ++this.lastId, title = "Title", message = "Message", bigText, subText, color = "red", vibrate = true, vibrationMillis = 300, playSound = true, date, extraData = ""}) {
+  async sendLocalNotification({id = ++this.lastId, title = "Title", message = "Message", bigText, subText, color = "red", vibrate = true, vibrationMillis = 300, playSound = true, date, extraData = ""}) {
     // Create notif object
     const notification = {
       /* iOS and Android properties */

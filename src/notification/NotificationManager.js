@@ -6,9 +6,10 @@ import DeviceInfo from "react-native-device-info";
 import ProviderFactory from "../provider/ProviderFactory";
 
 const _provider = ProviderFactory.getProvider();
-let _notificationScheduler;
+let _notificationManager;
+let _token;
 
-export default class NotificationScheduler {
+export default class NotificationManager {
   initialize() {
     // Create the notif provider
     this.notificationProvider = new NotificationProvider(
@@ -19,11 +20,11 @@ export default class NotificationScheduler {
   }
 
   static getInstance() {
-    if (!_notificationScheduler) {
+    if (!_notificationManager) {
       // Create & Start
-      _notificationScheduler = new NotificationScheduler();
+      _notificationManager = new NotificationManager();
     }
-    return _notificationScheduler;
+    return _notificationManager;
   }
 
   setNavigation(navigation) {
@@ -119,7 +120,7 @@ export default class NotificationScheduler {
       // Send the notification
       if (message) {
         // Send
-        await this.notificationProvider.sendNotification({
+        await this.notificationProvider.sendLocalNotification({
           title: DeviceInfo.getApplicationName(),
           message: message,
           subText: subMessage,
@@ -131,7 +132,13 @@ export default class NotificationScheduler {
     }
   }
 
+  getToken() {
+    return _token;
+  }
+
   onRegister = (token) => {
+    // Keep the token
+    _token = token;
     // Do nothing
     console.log("NOTIF TOKEN");
     console.log(token);
