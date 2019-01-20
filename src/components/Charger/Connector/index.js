@@ -48,23 +48,39 @@ class ConnectorComponent extends ResponsiveComponent {
     const { index, connector, navigation, charger } = this.props;
     const even = (index % 2 === 0);
     return (
+      charger.connectors.length > 1
+      ?
+        <TouchableOpacity style={style.statusLeftRightConnectorContainer} onPress={()=> navigation.navigate("ChargerTabNavigator", { chargerID: charger.id, connectorID: connector.connectorId })}>
+          <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1} >
+            <View style={even ? [style.connectorContainer, style.leftConnectorContainer] : [style.connectorContainer, style.rightConnectorContainer]}>
+              <Text style={style.statusDescription} numberOfLines={1}>
+                {Utils.translateConnectorStatus(connector.status)}
+              </Text>
+              {even ?
+                <View style={style.statusConnectorDetailContainer}>
+                  <ConnectorStatusComponent style={style.statusConnectorDetailLetter} connector={connector}/>
+                  {this._renderConnectorDetails(connector, style)}
+                </View>
+              :
+                <View style={style.statusConnectorDetailContainer}>
+                  {this._renderConnectorDetails(connector, style)}
+                  <ConnectorStatusComponent style={style.statusConnectorDetailLetter} connector={connector}/>
+                </View>
+              }
+            </View>
+          </Animatable.View>
+        </TouchableOpacity>
+      :
       <TouchableOpacity style={style.statusConnectorContainer} onPress={()=> navigation.navigate("ChargerTabNavigator", { chargerID: charger.id, connectorID: connector.connectorId })}>
-        <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1} >
-          <View style={even ? style.leftConnectorContainer : style.rightConnectorContainer}>
+        <Animatable.View animation={"fadeInUp"} iterationCount={1} >
+          <View style={style.connectorContainer}>
             <Text style={style.statusDescription} numberOfLines={1}>
               {Utils.translateConnectorStatus(connector.status)}
             </Text>
-            {even ?
-              <View style={style.statusConnectorDetailContainer}>
-                <ConnectorStatusComponent style={style.statusConnectorDetailLetter} connector={connector}/>
-                {this._renderConnectorDetails(connector, style)}
-              </View>
-            :
-              <View style={style.statusConnectorDetailContainer}>
-                {this._renderConnectorDetails(connector, style)}
-                <ConnectorStatusComponent style={style.statusConnectorDetailLetter} connector={connector}/>
-              </View>
-            }
+            <View style={style.statusConnectorDetailContainer}>
+              <ConnectorStatusComponent style={style.statusConnectorDetailLetter} connector={connector}/>
+              {this._renderConnectorDetails(connector, style)}
+            </View>
           </View>
         </Animatable.View>
       </TouchableOpacity>

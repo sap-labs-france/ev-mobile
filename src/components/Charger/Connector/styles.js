@@ -4,20 +4,24 @@ import commonColor from "../../../theme/variables/commonColor";
 import { scale } from "react-native-size-matters";
 
 const commonStyles = {
-  statusConnectorContainer: {
+  statusLeftRightConnectorContainer: {
     width: "50%"
   },
-  leftConnectorContainer: {
-    flexDirection: "column",
-    justifyContent: "space-around",
+  statusConnectorContainer: {
     width: "100%",
+    justifyContent: "center",
+    alignItems: "stretch"
+  },
+  connectorContainer: {
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+    width: "100%"
+  },
+  leftConnectorContainer: {
     borderColor: commonColor.textColor,
     borderRightWidth: 1
   },
   rightConnectorContainer: {
-    flexDirection: "column",
-    justifyContent: "space-around",
-    width: "100%"
   },
   statusDescription: {
     color: commonColor.textColor,
@@ -27,7 +31,7 @@ const commonStyles = {
   },
   statusConnectorDetailContainer: {
     flexDirection: "row",
-    paddingBottom: scale(10),
+    paddingBottom: scale(10)
   },
   statusConnectorDetailLetter: {
     marginTop: scale(-10),
