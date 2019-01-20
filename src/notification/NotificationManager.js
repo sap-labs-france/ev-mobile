@@ -67,87 +67,76 @@ export default class NotificationManager {
     }
   }
 
-  async checkAndTriggerNotifications() {
-    console.log("checkAndTriggerNotifications");
-    // User must be logged
-    if (!(await _provider.isUserAuthenticated())) {
-      return;
+  async sendLocalNotification(notification) {
+    console.log("triggerLocalNotification");
+    // Text?
+    if (typeof notification.extraData === "string") {
+      // Convert ot JSon
+      notification.extraData = JSON.parse(notification.extraData);
     }
-    // Get the logged user
-    const user = await _provider.getUserInfo();
-    // Get the last minute notifications
-    const dateFrom = new Date(new Date().getTime() - (60 * 1000));
-    // Read the last notification
-    const notifications = await _provider.getNotifications({
-        UserID: user.id, Channel: "email", DateFrom: dateFrom.toISOString()
-      },
-      { limit: 5, skip: 0 }
-    );
-    // Check
-    for (const notification of notifications.result) {
-      let message = null, subMessage = null, longMessage = null, color = commonColor.brandInfo;
-      // Check the type of notification
-      switch (notification.sourceDescr) {
-        // End of Session
-        case "NotifyEndOfSession":
-          message = I18n.t("notifications.notifyEndOfSession.message", {chargeBoxID: notification.chargeBoxID});
-          subMessage = I18n.t("notifications.notifyEndOfSession.subMessage");
-          longMessage = I18n.t("notifications.notifyEndOfSession.longMessage", {chargeBoxID: notification.chargeBoxID});
-          break;
-        // End of Charge
-        case "NotifyEndOfCharge":
-          message = I18n.t("notifications.notifyEndOfCharge.message", {chargeBoxID: notification.chargeBoxID});
-          subMessage = I18n.t("notifications.notifyEndOfCharge.subMessage");
-          longMessage = I18n.t("notifications.notifyEndOfCharge.longMessage", {chargeBoxID: notification.chargeBoxID});
-          break;
-        // Optimal Charge
-        case "NotifyOptimalChargeReached":
-          message = I18n.t("notifications.notifyOptimalChargeReached.message", {chargeBoxID: notification.chargeBoxID});
-          subMessage = I18n.t("notifications.notifyOptimalChargeReached.subMessage");
-          longMessage = I18n.t("notifications.notifyOptimalChargeReached.longMessage", {chargeBoxID: notification.chargeBoxID});
-          break;
-        // Charger in Error
-        case "NotifyChargingStationStatusError":
-          color = commonColor.brandDanger;
-          message = I18n.t("notifications.notifyChargingStationStatusError.message", {
-            chargeBoxID: notification.chargeBoxID,
-            connectorId: (notification.data ? notification.data.connectorId : "Unknown"),
-            error: (notification.data ? notification.data.error : "Unknown")
-          });
-          subMessage = I18n.t("notifications.notifyChargingStationStatusError.subMessage");
-          longMessage = I18n.t("notifications.notifyChargingStationStatusError.longMessage", {
-            chargeBoxID: notification.chargeBoxID,
-            connectorId: (notification.data ? notification.data.connectorId : "Unknown"),
-            error: (notification.data ? notification.data.error : "Unknown")
-          });
-          break;
-        // Charger just connected
-        case "NotifyChargingStationRegistered":
-          color = commonColor.brandDanger;
-          message = I18n.t("notifications.notifyChargingStationRegistered.message", {chargeBoxID: notification.chargeBoxID});
-          subMessage = I18n.t("notifications.notifyChargingStationRegistered.subMessage");
-          longMessage = I18n.t("notifications.notifyChargingStationRegistered.longMessage", {chargeBoxID: notification.chargeBoxID});
-          break;
-        // Unknown user
-        case "NotifyUnknownUserBadged":
-          color = commonColor.brandDanger;
-          message = I18n.t("notifications.notifyUnknownUserBadged.message", {chargeBoxID: notification.chargeBoxID});
-          subMessage = I18n.t("notifications.notifyUnknownUserBadged.subMessage");
-          longMessage = I18n.t("notifications.notifyUnknownUserBadged.longMessage", {chargeBoxID: notification.chargeBoxID});
-          break;
-      }
-      // Send the notification
-      if (message) {
-        // Send
-        await this.notificationProvider.sendLocalNotification({
-          title: DeviceInfo.getApplicationName(),
-          message: message,
-          subText: subMessage,
-          bigText: longMessage,
-          color: color,
-          extraData: notification
+    // Yes: meaning user clicked on the notification, then it should navigate
+    let message = null, subMessage = null, longMessage = null, color = commonColor.brandInfo;
+    // Check the type of notification
+    switch (notification.sourceDescr) {
+      // End of Session
+      case "NotifyEndOfSession":
+        message = I18n.t("notifications.notifyEndOfSession.message", {chargeBoxID: notification.chargeBoxID});
+        subMessage = I18n.t("notifications.notifyEndOfSession.subMessage");
+        longMessage = I18n.t("notifications.notifyEndOfSession.longMessage", {chargeBoxID: notification.chargeBoxID});
+        break;
+      // End of Charge
+      case "NotifyEndOfCharge":
+        message = I18n.t("notifications.notifyEndOfCharge.message", {chargeBoxID: notification.chargeBoxID});
+        subMessage = I18n.t("notifications.notifyEndOfCharge.subMessage");
+        longMessage = I18n.t("notifications.notifyEndOfCharge.longMessage", {chargeBoxID: notification.chargeBoxID});
+        break;
+      // Optimal Charge
+      case "NotifyOptimalChargeReached":
+        message = I18n.t("notifications.notifyOptimalChargeReached.message", {chargeBoxID: notification.chargeBoxID});
+        subMessage = I18n.t("notifications.notifyOptimalChargeReached.subMessage");
+        longMessage = I18n.t("notifications.notifyOptimalChargeReached.longMessage", {chargeBoxID: notification.chargeBoxID});
+        break;
+      // Charger in Error
+      case "NotifyChargingStationStatusError":
+        color = commonColor.brandDanger;
+        message = I18n.t("notifications.notifyChargingStationStatusError.message", {
+          chargeBoxID: notification.chargeBoxID,
+          connectorId: (notification.data ? notification.data.connectorId : "Unknown"),
+          error: (notification.data ? notification.data.error : "Unknown")
         });
-      }
+        subMessage = I18n.t("notifications.notifyChargingStationStatusError.subMessage");
+        longMessage = I18n.t("notifications.notifyChargingStationStatusError.longMessage", {
+          chargeBoxID: notification.chargeBoxID,
+          connectorId: (notification.data ? notification.data.connectorId : "Unknown"),
+          error: (notification.data ? notification.data.error : "Unknown")
+        });
+        break;
+      // Charger just connected
+      case "NotifyChargingStationRegistered":
+        color = commonColor.brandDanger;
+        message = I18n.t("notifications.notifyChargingStationRegistered.message", {chargeBoxID: notification.chargeBoxID});
+        subMessage = I18n.t("notifications.notifyChargingStationRegistered.subMessage");
+        longMessage = I18n.t("notifications.notifyChargingStationRegistered.longMessage", {chargeBoxID: notification.chargeBoxID});
+        break;
+      // Unknown user
+      case "NotifyUnknownUserBadged":
+        color = commonColor.brandDanger;
+        message = I18n.t("notifications.notifyUnknownUserBadged.message", {chargeBoxID: notification.chargeBoxID});
+        subMessage = I18n.t("notifications.notifyUnknownUserBadged.subMessage");
+        longMessage = I18n.t("notifications.notifyUnknownUserBadged.longMessage", {chargeBoxID: notification.chargeBoxID});
+        break;
+    }
+    // Send the notification
+    if (message) {
+      // Send
+      await this.notificationProvider.sendLocalNotification({
+        title: DeviceInfo.getApplicationName(),
+        message: message,
+        subText: subMessage,
+        bigText: longMessage,
+        color: color,
+        extraData: notification
+      });
     }
   }
 
@@ -161,45 +150,54 @@ export default class NotificationManager {
       while ((notification = _notifications.splice(0,1)[0]) !== undefined) {
         console.log("processNotification - notification");
         console.log(notification);
-        // User must be logged and Navigation available
-        if (!(await _provider.isUserAuthenticated()) || !this.navigation) {
-          return;
-        }
-        // Text?
-        if (typeof notification.extraData === "string") {
-          // Convert ot JSon
-          notification.extraData = JSON.parse(notification.extraData);
-        }
-        // Check the type of notification
-        if (notification.extraData) {
-          // Check
-          switch (notification.extraData.sourceDescr) {
-            // End of Session
-            case "NotifyEndOfSession":
-            case "NotifyEndOfCharge":
-            case "NotifyOptimalChargeReached":
-            case "NotifyChargingStationStatusError":
-              // Navigate
-              if (notification.extraData.data && notification.extraData.data.connectorId) {
+        // Check if the app was opened
+        if (notification.foreground) {
+          console.log("Send Local Notif");
+          // Yes: meaning user didn't get the notif, then show a local one
+          this.sendLocalNotification(notification);
+        } else {
+          console.log("Remote Notif: Navigate");
+          // No: meaning the user got the notif and clicked on it, then navigate to the right screen
+          // User must be logged and Navigation available
+          if (!(await _provider.isUserAuthenticated()) || !this.navigation) {
+            return;
+          }
+          // Text?
+          if (typeof notification.extraData === "string") {
+            // Convert ot JSon
+            notification.extraData = JSON.parse(notification.extraData);
+          }
+          // Check the type of notification
+          if (notification.extraData) {
+            // Check
+            switch (notification.extraData.sourceDescr) {
+              // End of Session
+              case "NotifyEndOfSession":
+              case "NotifyEndOfCharge":
+              case "NotifyOptimalChargeReached":
+              case "NotifyChargingStationStatusError":
                 // Navigate
-                if (this.navigation) {
-                  this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: notification.extraData.data.connectorId })
+                if (notification.extraData.data && notification.extraData.data.connectorId) {
+                  // Navigate
+                  if (this.navigation) {
+                    this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: notification.extraData.data.connectorId })
+                  }
                 }
-              }
-              break;
-            // Charger just connected
-            case "NotifyChargingStationRegistered":
-              // Navigate
-              if (notification.extraData.data) {
+                break;
+              // Charger just connected
+              case "NotifyChargingStationRegistered":
                 // Navigate
-                if (this.navigation) {
-                  this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: 1 })
+                if (notification.extraData.data) {
+                  // Navigate
+                  if (this.navigation) {
+                    this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: 1 })
+                  }
                 }
-              }
-              break;
-            // Unknown user
-            case "NotifyUnknownUserBadged":
-              break;
+                break;
+              // Unknown user
+              case "NotifyUnknownUserBadged":
+                break;
+            }
           }
         }
       }
