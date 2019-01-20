@@ -27,11 +27,31 @@ const commonStyles = {
     justifyContent: "space-evenly",
     alignItems: "stretch"
   },
+  logoContainer: {
+    flex:1,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   logo: {
     resizeMode: "contain",
     alignSelf: "center",
-    height: scale(150),
-    margin: 30
+    height: scale(150)
+  },
+  appText: {
+    color: commonColor.textColor,
+    fontSize: scale(25),
+    paddingTop: scale(15),
+    margin: "0.5%"
+  },
+  versionText: {
+    color: commonColor.textColor,
+    fontSize: scale(15),
+    margin: "0.5%"
+  },
+  versionDate: {
+    color: commonColor.textColor,
+    fontSize: scale(15)
   },
   form: {
     paddingLeft: scale(15),

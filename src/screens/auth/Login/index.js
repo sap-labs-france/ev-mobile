@@ -10,6 +10,7 @@ import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
 import computeStyleSheet from "../styles";
 import commonColor from "../../../theme/variables/commonColor";
+import DeviceInfo from "react-native-device-info";
 
 const _provider = providerFactory.getProvider();
 const _locations = _provider.getLocations();
@@ -188,7 +189,12 @@ class Login extends ResponsiveComponent {
         <ImageBackground source={require("../../../../assets/bg.png")} style={style.background}>
             <KeyboardAvoidingView style={style.container} behavior="padding">
               <MediaQuery minHeight={450} >
-                <Image source={require("../../../../assets/logo-low.gif")} style={style.logo} />
+                <View style={style.logoContainer}>
+                  <Image source={require("../../../../assets/logo-low.gif")} style={style.logo} />
+                  <Text style={style.appText}>eMobility</Text>
+                  <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
+                  <Text style={style.versionDate}>({DeviceInfo.getLastUpdateTime() ? new Date(DeviceInfo.getLastUpdateTime()).toLocaleDateString() : I18n.t("general.date")})</Text>
+                </View>
               </MediaQuery>
               <Form style={style.form}>
                 <Button rounded block style={style.button}
