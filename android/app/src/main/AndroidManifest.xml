@@ -5,6 +5,11 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <permission
+        android:name="${applicationId}.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
 
     <application
         android:name=".MainApplication"
@@ -20,6 +25,15 @@
         android:value="eMobility notifications channel"/>
       <meta-data android:name="com.dieam.reactnativepushnotification.notification_color"
         android:resource="@android:color/white"/>
+      <receiver
+        android:name="com.google.android.gms.gcm.GcmReceiver"
+        android:exported="true"
+        android:permission="com.google.android.c2dm.permission.SEND" >
+        <intent-filter>
+            <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            <category android:name="${applicationId}" />
+        </intent-filter>
+      </receiver>
       <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
       <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver">
         <intent-filter>
@@ -28,11 +42,11 @@
       </receiver>
       <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationRegistrationService"/>
       <service
-          android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService"
-          android:exported="false" >
-          <intent-filter>
-              <action android:name="com.google.firebase.MESSAGING_EVENT" />
-          </intent-filter>
+        android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerServiceGcm"
+        android:exported="false" >
+        <intent-filter>
+            <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+        </intent-filter>
       </service>
       <!-- Push Notification -->
 

@@ -15,7 +15,7 @@ export default class NotificationScheduler {
       this.onRegister, this.onNotify
     );
     // Start
-    this.start();
+    // this.start();
   }
 
   static getInstance() {
@@ -145,33 +145,36 @@ export default class NotificationScheduler {
       return;
     }
     // Check the type of notification
-    switch (notification.extraData.sourceDescr) {
-      // End of Session
-      case "NotifyEndOfSession":
-      case "NotifyEndOfCharge":
-      case "NotifyOptimalChargeReached":
-      case "NotifyChargingStationStatusError":
-        // Navigate
-        if (notification.extraData.data && notification.extraData.data.connectorId) {
+    if (notification.extraData) {
+      // Check
+      switch (notification.extraData.sourceDescr) {
+        // End of Session
+        case "NotifyEndOfSession":
+        case "NotifyEndOfCharge":
+        case "NotifyOptimalChargeReached":
+        case "NotifyChargingStationStatusError":
           // Navigate
-          if (this.navigation) {
-            this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: notification.extraData.data.connectorId })
+          if (notification.extraData.data && notification.extraData.data.connectorId) {
+            // Navigate
+            if (this.navigation) {
+              this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: notification.extraData.data.connectorId })
+            }
           }
-        }
-        break;
-      // Charger just connected
-      case "NotifyChargingStationRegistered":
-        // Navigate
-        if (notification.extraData.data) {
+          break;
+        // Charger just connected
+        case "NotifyChargingStationRegistered":
           // Navigate
-          if (this.navigation) {
-            this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: 1 })
+          if (notification.extraData.data) {
+            // Navigate
+            if (this.navigation) {
+              this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: 1 })
+            }
           }
-        }
-        break;
-      // Unknown user
-      case "NotifyUnknownUserBadged":
-        break;
+          break;
+        // Unknown user
+        case "NotifyUnknownUserBadged":
+          break;
+      }
     }
   }
 }
