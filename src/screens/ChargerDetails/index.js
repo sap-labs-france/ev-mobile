@@ -43,7 +43,7 @@ class Chargers extends ResponsiveComponent {
     this.timerRefresh = setInterval(() => {
       // Refresh
       this._refresh();
-    }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
+    }, Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS);
   }
 
   componentDidFocus = () => {
@@ -55,7 +55,7 @@ class Chargers extends ResponsiveComponent {
       this.timerRefresh = setInterval(() => {
         // Refresh
         this._refresh();
-      }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
+      }, Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS);
     }
   }
 

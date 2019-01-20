@@ -45,7 +45,7 @@ class ChartDetails extends ResponsiveComponent {
     this.timerChartData = setInterval(() => {
       // Refresh
       this._refresh();
-    }, Constants.AUTO_REFRESH_CHART_PERIOD_MILLIS);
+    }, Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS);
     // Add listeners
     this.props.navigation.addListener("didFocus", this.componentDidFocus);
     this.props.navigation.addListener("didBlur", this.componentDidBlur);
@@ -64,7 +64,7 @@ class ChartDetails extends ResponsiveComponent {
       this.timerChartData = setInterval(() => {
         // Refresh
         this._refresh();
-      }, Constants.AUTO_REFRESH_CHART_PERIOD_MILLIS);
+      }, Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS);
     }
   }
 

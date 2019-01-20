@@ -54,7 +54,7 @@ class ConnectorDetails extends ResponsiveComponent {
     this.timerChargerData = setInterval(() => {
       // Refresh
       this._refreshTransaction();
-    }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
+    }, Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
     // Start refresh of time
     this.timerElapsedTime = setInterval(() => {
       // Refresh
@@ -79,7 +79,7 @@ class ConnectorDetails extends ResponsiveComponent {
       this.timerChargerData = setInterval(() => {
         // Refresh
         this._refreshTransaction();
-      }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
+      }, Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
     }
     // Start the timer
     if (!this.timerElapsedTime) {

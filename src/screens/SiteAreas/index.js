@@ -39,7 +39,7 @@ export default class SiteAreas extends ResponsiveComponent {
     this.timerRefresh = setInterval(() => {
       // Refresh
       this._refresh();
-    }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
+    }, Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS);
     // Add listeners
     this.props.navigation.addListener("didFocus", this.componentDidFocus);
     this.props.navigation.addListener("didBlur", this.componentDidBlur);
@@ -63,7 +63,7 @@ export default class SiteAreas extends ResponsiveComponent {
       this.timerRefresh = setInterval(() => {
         // Refresh
         this._refresh();
-      }, Constants.AUTO_REFRESH_PERIOD_MILLIS);
+      }, Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS);
     }
   }
 

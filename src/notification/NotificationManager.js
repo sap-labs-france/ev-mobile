@@ -38,7 +38,7 @@ export default class NotificationManager {
     this.notificationCheck = setInterval(() => {
       // Refresh
       this.checkAndTriggerNotifications();
-    }, Constants.AUTO_REFRESH_PUSH_NOTIF_PERIOD_MILLIS);
+    }, Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   stop() {
@@ -150,6 +150,12 @@ export default class NotificationManager {
     // User must be logged and Navigation available
     if (!(await _provider.isUserAuthenticated()) || !this.navigation) {
       return;
+    }
+    // Text?
+    if (typeof notification.extraData === "string") {
+      // Convert ot JSon
+      notification.extraData = JSON.parse(notification.extraData);
+      console.log("converted to JSon");
     }
     // Check the type of notification
     if (notification.extraData) {
