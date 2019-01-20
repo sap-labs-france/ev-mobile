@@ -1320,6 +1320,9 @@
 						LastSwiftMigration = 1010;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -2158,7 +2161,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.e-Mobility";
 				PRODUCT_NAME = eMobility;
 				PROVISIONING_PROFILE = "889d0a30-dfcc-41d9-8646-8cb947af9334";
-				PROVISIONING_PROFILE_SPECIFIER = "e-Mobility";
+				PROVISIONING_PROFILE_SPECIFIER = eMobility;
 				SWIFT_OBJC_BRIDGING_HEADER = "RNCharts/eMobility-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
@@ -2202,7 +2205,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.e-Mobility";
 				PRODUCT_NAME = eMobility;
 				PROVISIONING_PROFILE = "889d0a30-dfcc-41d9-8646-8cb947af9334";
-				PROVISIONING_PROFILE_SPECIFIER = "e-Mobility";
+				PROVISIONING_PROFILE_SPECIFIER = eMobility;
 				SWIFT_OBJC_BRIDGING_HEADER = "RNCharts/eMobility-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
