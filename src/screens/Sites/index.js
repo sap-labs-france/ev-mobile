@@ -6,7 +6,6 @@ import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import ProviderFactory from "../../provider/ProviderFactory";
 import SiteComponent from "../../components/Site";
-import NotificationManager from "../../notification/NotificationManager";
 import I18n from "../../I18n/I18n";
 import computeStyleSheet from "./styles";
 
@@ -22,10 +21,6 @@ class Sites extends ResponsiveComponent {
       limit: Constants.PAGING_SIZE,
       count: 0
     };
-    // Get the Notification Scheduler
-    const notificationManager = NotificationManager.getInstance();
-    // Set the navigation
-    notificationManager.setNavigation(this.props.navigation);
   }
 
   async componentDidMount() {

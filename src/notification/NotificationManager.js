@@ -8,6 +8,7 @@ import ProviderFactory from "../provider/ProviderFactory";
 const _provider = ProviderFactory.getProvider();
 let _notificationManager;
 let _token;
+const _notifications = [];
 
 export default class NotificationManager {
   initialize() {
@@ -15,33 +16,50 @@ export default class NotificationManager {
     this.notificationProvider = new NotificationProvider(
       this.onRegister, this.onNotify
     );
-    // Start
-    // this.start();
+    // Set inactive
+    this._active = false;
+    // No timer
+    this.notificationCheck = null;
   }
 
   static getInstance() {
     if (!_notificationManager) {
-      // Create & Start
+      // Create
       _notificationManager = new NotificationManager();
     }
     return _notificationManager;
   }
 
+  setActive(active) {
+    console.log("setActive = " + active);
+    this._active = active;
+  }
+
+  isActive() {
+    return this._active;
+  }
+
   setNavigation(navigation) {
+    console.log("setNavigation = " + navigation);
     this.navigation = navigation;
   }
 
   start() {
-    // Refresh
-    this.checkAndTriggerNotifications();
-    // Check every minutes
-    this.notificationCheck = setInterval(() => {
+    console.log("start");
+    // Check
+    if (!this.notificationCheck) {
       // Refresh
-      this.checkAndTriggerNotifications();
-    }, Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
+      this.processNotification();
+      // Check every minutes
+      this.notificationCheck = setInterval(() => {
+        // Refresh
+        this.processNotification();
+      }, Constants.AUTO_REFRESH_VERY_SHORT_PERIOD_MILLIS);
+    }
   }
 
   stop() {
+    console.log("stop");
     // Check
     if (this.notificationCheck) {
       clearInterval(this.notificationCheck);
@@ -50,6 +68,7 @@ export default class NotificationManager {
   }
 
   async checkAndTriggerNotifications() {
+    console.log("checkAndTriggerNotifications");
     // User must be logged
     if (!(await _provider.isUserAuthenticated())) {
       return;
@@ -132,6 +151,61 @@ export default class NotificationManager {
     }
   }
 
+  async processNotification() {
+    let notification;
+    console.log("processNotification");
+    // Check if active
+    if (this.isActive()) {
+      console.log("processNotification - active");
+      // Process the notifications
+      while ((notification = _notifications.splice(0,1)[0]) !== undefined) {
+        console.log("processNotification - notification");
+        console.log(notification);
+        // User must be logged and Navigation available
+        if (!(await _provider.isUserAuthenticated()) || !this.navigation) {
+          return;
+        }
+        // Text?
+        if (typeof notification.extraData === "string") {
+          // Convert ot JSon
+          notification.extraData = JSON.parse(notification.extraData);
+        }
+        // Check the type of notification
+        if (notification.extraData) {
+          // Check
+          switch (notification.extraData.sourceDescr) {
+            // End of Session
+            case "NotifyEndOfSession":
+            case "NotifyEndOfCharge":
+            case "NotifyOptimalChargeReached":
+            case "NotifyChargingStationStatusError":
+              // Navigate
+              if (notification.extraData.data && notification.extraData.data.connectorId) {
+                // Navigate
+                if (this.navigation) {
+                  this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: notification.extraData.data.connectorId })
+                }
+              }
+              break;
+            // Charger just connected
+            case "NotifyChargingStationRegistered":
+              // Navigate
+              if (notification.extraData.data) {
+                // Navigate
+                if (this.navigation) {
+                  this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: 1 })
+                }
+              }
+              break;
+            // Unknown user
+            case "NotifyUnknownUserBadged":
+              break;
+          }
+        }
+      }
+    }
+  }
+
   getToken() {
     return _token;
   }
@@ -147,47 +221,7 @@ export default class NotificationManager {
   onNotify = async (notification) => {
     console.log("NOTIF MESSAGE");
     console.log(notification);
-    // User must be logged and Navigation available
-    if (!(await _provider.isUserAuthenticated()) || !this.navigation) {
-      return;
-    }
-    // Text?
-    if (typeof notification.extraData === "string") {
-      // Convert ot JSon
-      notification.extraData = JSON.parse(notification.extraData);
-      console.log("converted to JSon");
-    }
-    // Check the type of notification
-    if (notification.extraData) {
-      // Check
-      switch (notification.extraData.sourceDescr) {
-        // End of Session
-        case "NotifyEndOfSession":
-        case "NotifyEndOfCharge":
-        case "NotifyOptimalChargeReached":
-        case "NotifyChargingStationStatusError":
-          // Navigate
-          if (notification.extraData.data && notification.extraData.data.connectorId) {
-            // Navigate
-            if (this.navigation) {
-              this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: notification.extraData.data.connectorId })
-            }
-          }
-          break;
-        // Charger just connected
-        case "NotifyChargingStationRegistered":
-          // Navigate
-          if (notification.extraData.data) {
-            // Navigate
-            if (this.navigation) {
-              this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: 1 })
-            }
-          }
-          break;
-        // Unknown user
-        case "NotifyUnknownUserBadged":
-          break;
-      }
-    }
+    // Add Notification
+    _notifications.push(notification);
   }
 }

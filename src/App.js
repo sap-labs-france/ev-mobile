@@ -17,9 +17,9 @@ import ChargerTab from "./screens/ChargerDetails/ChargerTab";
 import NotificationManager from "./notification/NotificationManager";
 
 // Get the Notification Scheduler
-const notificationManager = NotificationManager.getInstance();
+const _notificationManager = NotificationManager.getInstance();
 // Initialize
-notificationManager.initialize();
+_notificationManager.initialize();
 
 // Charger Tab Navigation
 const ChargerTabNavigator = createBottomTabNavigator(
@@ -41,7 +41,14 @@ const ChargerTabNavigator = createBottomTabNavigator(
 // Drawer Navigation
 const AppDrawerNavigator = createDrawerNavigator(
   {
-    Sites: { screen: Sites },
+    Sites: { screen: (props) => {
+      // Set the navigation to the notification
+      _notificationManager.setNavigation(props.navigation);
+      // Start
+      _notificationManager.start();
+      // Return the sites
+      return (<Sites {...props} />)
+    }},
     SiteAreas: { screen: SiteAreas },
     Chargers: { screen: Chargers },
     ChargerTabNavigator: ChargerTabNavigator
@@ -53,7 +60,7 @@ const AppDrawerNavigator = createDrawerNavigator(
     drawerWidth: Dimensions.get("window").width / 1.5,
     initialRouteName: "Sites",
     drawerPosition: "right",
-    contentComponent: props => <Sidebar {...props} />
+    contentComponent: (props) => <Sidebar {...props} />
   }
 );
 
@@ -81,8 +88,26 @@ const RootNavigator = createSwitchNavigator(
   }
 );
 
-export default () =>
-  <Root>
-    <StatusBar hidden/>
-    <RootNavigator/>
-  </Root>;
+export default class App extends React.Component {
+  async componentDidMount() {
+    console.log("App componentDidMount");
+    // Activate
+    _notificationManager.setActive(true);
+  }
+
+  async componentWillUnmount() {
+    console.log("App componentWillUnmount");
+    // Deactivate
+    this._notificationManager.setActive(false);
+  }
+
+  render() {
+    return (
+      <Root>
+        <StatusBar hidden/>
+        <RootNavigator/>
+      </Root>
+    );
+  }
+}
+
