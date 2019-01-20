@@ -133,9 +133,13 @@ export default class NotificationScheduler {
 
   onRegister = (token) => {
     // Do nothing
+    console.log("NOTIF TOKEN");
+    console.log(token);
   }
 
   onNotify = async (notification) => {
+    console.log("NOTIF MESSAGE");
+    console.log(notification);
     // User must be logged and Navigation available
     if (!(await _provider.isUserAuthenticated()) || !this.navigation) {
       return;
