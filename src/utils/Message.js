@@ -1,5 +1,4 @@
 import { Toast } from "native-base";
-import Constants from "./Constants";
 import { scale } from 'react-native-size-matters';
 
 export default class Message {

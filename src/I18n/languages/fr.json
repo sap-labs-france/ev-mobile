@@ -102,6 +102,10 @@
     "connectorMax": "Connecteur Max Power (W)"
   },
   "notifications": {
+    "mustLogin": "Vous devez etre connecté",
+    "cannotNavigate": "Impossible de naviger vers l'écran",
+    "extraDataMissing": "La notification est corrompue",
+    "incorrectTenant": "Le tenant est incorrect",
     "notifyEndOfSession": {
       "message": "Votre session sur '{{chargeBoxID}}' est terminée.",
       "subMessage": "Session Terminée",

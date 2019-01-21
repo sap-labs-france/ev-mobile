@@ -4,11 +4,13 @@ import I18n from "../I18n/I18n";
 import commonColor from "../theme/variables/commonColor";
 import DeviceInfo from "react-native-device-info";
 import ProviderFactory from "../provider/ProviderFactory";
+import Message from "../utils/Message";
+
 
 const _provider = ProviderFactory.getProvider();
+const _notifications = [];
 let _notificationManager;
 let _token;
-const _notifications = [];
 
 export default class NotificationManager {
   initialize() {
