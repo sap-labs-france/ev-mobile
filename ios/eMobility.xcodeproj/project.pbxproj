@@ -71,6 +71,8 @@
 		F073DB72EC8E435C9351D229 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 43CFAEDEFD004BE6ABA8CB01 /* Octicons.ttf */; };
 		F15BBCEC21F350C900DEC50C /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F15B9B8C21F34E010086EB61 /* libRCTPushNotification.a */; };
 		F15BBCF621F3521F00DEC50C /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F15BBCF321F3520600DEC50C /* libRNDeviceInfo.a */; };
+		F18D316121F6796000D45247 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
+		F18D316321F67F5500D45247 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F18D316221F67F5400D45247 /* GoogleService-Info.plist */; };
 		F1B6783821D3ADA800E98BCE /* RNBarChartViewBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B677F721D3ADA700E98BCE /* RNBarChartViewBase.swift */; };
 		F1B6783921D3ADA800E98BCE /* BarDataExtract.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B677F821D3ADA700E98BCE /* BarDataExtract.swift */; };
 		F1B6783A21D3ADA800E98BCE /* RNHorizontalBarChartManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B677F921D3ADA700E98BCE /* RNHorizontalBarChartManager.swift */; };
@@ -579,6 +581,7 @@
 		F18D2EA421F3D22F00D45247 /* RNFirebaseInvites.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNFirebaseInvites.m; sourceTree = "<group>"; };
 		F18D2EA521F3D22F00D45247 /* RNFirebaseInvites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNFirebaseInvites.h; sourceTree = "<group>"; };
 		F18D2ED121F3DAAE00D45247 /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
+		F18D316221F67F5400D45247 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F1B677F521D3ADA700E98BCE /* eMobility-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "eMobility-Bridging-Header.h"; sourceTree = "<group>"; };
 		F1B677F721D3ADA700E98BCE /* RNBarChartViewBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNBarChartViewBase.swift; sourceTree = "<group>"; };
 		F1B677F821D3ADA700E98BCE /* BarDataExtract.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarDataExtract.swift; sourceTree = "<group>"; };
@@ -796,6 +799,7 @@
 		13B07FAE1A68108700A75B9A /* eMobility */ = {
 			isa = PBXGroup;
 			children = (
+				F18D316221F67F5400D45247 /* GoogleService-Info.plist */,
 				F15B9BB121F34F6F0086EB61 /* eMobility.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -1831,6 +1835,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				F18D316321F67F5500D45247 /* GoogleService-Info.plist in Resources */,
 				4BD114D592684FF898F5A886 /* Entypo.ttf in Resources */,
 				85327357B999474CA804C0B0 /* EvilIcons.ttf in Resources */,
 				2BEFEBB9E5244EF49B4AB0B5 /* Feather.ttf in Resources */,
@@ -1844,6 +1849,7 @@
 				EEB03C189CC6488CA87DDA61 /* Roboto.ttf in Resources */,
 				6E79052B704F4C1EAC1DCAC6 /* rubicon-icon-font.ttf in Resources */,
 				B0DEE77C86A949228BC8AE96 /* SimpleLineIcons.ttf in Resources */,
+				F18D316121F6796000D45247 /* main.jsbundle in Resources */,
 				B03C5B1EEFF14E488F9D3DCC /* Zocial.ttf in Resources */,
 				514232820D8745268731FC12 /* FontAwesome5_Brands.ttf in Resources */,
 				5EC7B2D0638B4101B1B77BB4 /* FontAwesome5_Regular.ttf in Resources */,
