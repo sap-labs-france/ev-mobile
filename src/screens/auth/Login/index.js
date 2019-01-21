@@ -188,7 +188,7 @@ class Login extends ResponsiveComponent {
                 <MediaQuery minHeight={450} >
                   <View style={style.logoContainer}>
                     <Image source={require("../../../../assets/logo-low.gif")} style={style.logo} />
-                    <Text style={style.appText}>eMobility</Text>
+                    <Text style={style.appText}>e-Mobility</Text>
                     <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
                     <Text style={style.versionDate}>({DeviceInfo.getLastUpdateTime() ? new Date(DeviceInfo.getLastUpdateTime()).toLocaleDateString() : I18n.t("general.date")})</Text>
                   </View>
