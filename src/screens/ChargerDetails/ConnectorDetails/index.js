@@ -129,7 +129,7 @@ class ConnectorDetails extends ResponsiveComponent {
         } else {
           // Yes
           this.setState({siteImage: null});
-        }          
+        }
       }
     } catch (error) {
       // Other common Error
@@ -236,7 +236,7 @@ class ConnectorDetails extends ResponsiveComponent {
       Utils.handleHttpUnexpectedError(error, this.props);
     }
   }
-  
+
   _getCharger = async () => {
     try {
       let charger = await _provider.getCharger(

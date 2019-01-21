@@ -47,7 +47,7 @@ const AppDrawerNavigator = createDrawerNavigator(
       // Start
       _notificationManager.start();
       // Return the sites
-      return (<Sites {...props} />)
+      return (<Sites {...props} />);
     }},
     SiteAreas: { screen: SiteAreas },
     Chargers: { screen: Chargers },
