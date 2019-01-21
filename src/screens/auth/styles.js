@@ -53,7 +53,7 @@ const commonStyles = {
   form: {
     paddingLeft: scale(15),
     paddingRight: scale(15),
-    height: scale(375)
+    height: scale(300)
   },
   inputGroup: {
     backgroundColor: "rgba(255,255,255,0.3)",
