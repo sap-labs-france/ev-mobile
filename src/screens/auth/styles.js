@@ -31,12 +31,11 @@ const commonStyles = {
     flex:1,
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   logo: {
     resizeMode: "contain",
-    alignSelf: "center",
-    height: scale(150)
+    alignSelf: "center"
   },
   appText: {
     color: commonColor.textColor,
@@ -49,11 +48,12 @@ const commonStyles = {
   },
   versionDate: {
     color: commonColor.textColor,
-    fontSize: scale(10)
+    fontSize: scale(11)
   },
   form: {
     paddingLeft: scale(15),
-    paddingRight: scale(15)
+    paddingRight: scale(15),
+    height: scale(375)
   },
   inputGroup: {
     backgroundColor: "rgba(255,255,255,0.3)",
