@@ -40,18 +40,16 @@ const commonStyles = {
   },
   appText: {
     color: commonColor.textColor,
-    fontSize: scale(25),
+    fontSize: scale(30),
     paddingTop: scale(15),
-    margin: "0.5%"
   },
   versionText: {
     color: commonColor.textColor,
-    fontSize: scale(15),
-    margin: "0.5%"
+    fontSize: scale(13),
   },
   versionDate: {
     color: commonColor.textColor,
-    fontSize: scale(15)
+    fontSize: scale(10)
   },
   form: {
     paddingLeft: scale(15),

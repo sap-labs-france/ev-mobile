@@ -66,8 +66,8 @@ const commonStyles = {
   },
   connectorBadgeTitle: {
     fontSize: scale(25),
-    paddingTop: (Platform.OS === "ios" ? scale(5) : scale(2)),
-    paddingBottom: (Platform.OS === "ios" ? scale(5) : scale(2)),
+    paddingTop: (Platform.OS === "ios" ? scale(3) : scale(0)),
+    paddingBottom: (Platform.OS === "ios" ? scale(3) : scale(0)),
     fontWeight: "bold",
     color: commonColor.textColor,
   },
