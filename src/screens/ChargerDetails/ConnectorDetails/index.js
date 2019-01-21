@@ -236,7 +236,7 @@ class ConnectorDetails extends ResponsiveComponent {
       Utils.handleHttpUnexpectedError(error, this.props);
     }
   }
-  
+
   _getCharger = async () => {
     try {
       let charger = await _provider.getCharger(
@@ -249,37 +249,44 @@ class ConnectorDetails extends ResponsiveComponent {
         // Get the Site Image (only first time)
         this._getSiteImage(charger.siteArea.siteID);
         // Check to enable the buttons after a certain period of time
-        if (this.state.buttonDisabled) {
-          console.log("button disabled");          
-          // Check if the Start/Stop Button should stay disabled
-          if (this.state.connector.status === Constants.CONN_STATUS_AVAILABLE &&
-              this.state.startTransactionNbTrial === 0) {
-            console.log("button active again");
-            // Connector still available after the trials: Enable Start Transaction again 
-            this.setState({
-              buttonDisabled: false
-            });
-          // Still trials? (only for Start Transaction)
-          } else if (this.state.startTransactionNbTrial > 0) {
-            // Trial - 1
-            let startTransactionNbTrial = (this.state.startTransactionNbTrial > 0 ? (this.state.startTransactionNbTrial - 1) : 0 );
-            console.log("nb trial: " + startTransactionNbTrial);          
-            // Check if charger's status has changed
-            if (this.state.connector.status !== Constants.CONN_STATUS_AVAILABLE) {
-              // Yes: Init trial
-              startTransactionNbTrial = 0;
-              console.log("nb trial init!");
-            }
-            // Set
-            this.setState({
-              startTransactionNbTrial
-            });
-          }
-        }
+        this._handleStartStopDisabledButton();
       });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
+  _handleStartStopDisabledButton() {
+    // Check if disabled
+    if (this.state.buttonDisabled) {
+      // Check if the Start/Stop Button should stay disabled
+      if (this.state.connector.status === Constants.CONN_STATUS_AVAILABLE &&
+          this.state.startTransactionNbTrial === 0) {
+        // Button are set to available after the nbr of trials
+        this.setState({
+          buttonDisabled: false
+        });
+      // Still trials? (only for Start Transaction)
+      } else if (this.state.startTransactionNbTrial > 0) {
+        // Trial - 1
+        let startTransactionNbTrial = (this.state.startTransactionNbTrial > 0 ? (this.state.startTransactionNbTrial - 1) : 0 );
+        // Check if charger's status has changed
+        if (this.state.connector.status !== Constants.CONN_STATUS_AVAILABLE) {
+          // Yes: Init nbr of trial
+          startTransactionNbTrial = 0;
+        }
+        // Set
+        this.setState({
+          startTransactionNbTrial
+        });
+      } else if (this.state.connector.activeTransactionID !== 0) {
+        // Transaction has started, enable the buttons again
+        this.setState({
+          startTransactionNbTrial: 0,
+          buttonDisabled: false
+        });
+      }
     }
   }
 

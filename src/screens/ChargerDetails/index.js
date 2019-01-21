@@ -135,7 +135,15 @@ class Chargers extends ResponsiveComponent {
     let siteID = null;
     // Retrieve the site ID to navigate back from a notification
     if (this.state.chargers && this.state.chargers.length > 0) {
-      siteID = this.state.chargers[0].siteArea.siteID;
+      // Find the first available Site ID
+      for (const charger of this.state.chargers) {
+        // Site Area provided?
+        if (charger.siteArea) {
+          // Yes: keep the Site ID
+          siteID = charger.siteArea.siteID;
+          break;
+        }
+      }
     }
     return (
       <Container>

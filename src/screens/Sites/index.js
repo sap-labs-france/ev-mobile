@@ -152,7 +152,7 @@ class Sites extends ResponsiveComponent {
           :
             <FlatList
               data={this.state.sites}
-              renderItem={({item}) => 
+              renderItem={({item}) =>
                 <SiteComponent site={item} navigation={this.props.navigation} />
               }
               keyExtractor={item => item.id}
