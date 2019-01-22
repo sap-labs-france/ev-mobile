@@ -12,7 +12,7 @@ class SiteAreaComponent extends ResponsiveComponent {
     const style = computeStyleSheet();
     const { siteArea, navigation } = this.props;
     return (
-      <TouchableOpacity onPress={() => navigation.navigate("Chargers", { siteAreaID: siteArea.id, allowBackButton: false })}>
+      <TouchableOpacity onPress={() => navigation.navigate("Chargers", { siteAreaID: siteArea.id, allowBackButton: true })}>
         <View style={style.siteContainer}>
           <View style={style.mainContent}>
             <Text style={style.siteName}>{siteArea.name}</Text>
