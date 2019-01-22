@@ -8,7 +8,8 @@ const commonStyles = {
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#000"
+    backgroundColor: "#000",
+    height: "100%"
   },
   spinner: {
     color: commonColor.textColor

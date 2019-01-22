@@ -2,6 +2,7 @@ import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import commonColor from "../../theme/variables/commonColor";
 import { scale } from "react-native-size-matters";
 import deepmerge from "deepmerge";
+import { Platform } from "react-native";
 
 const commonStyles = {
   background: {
@@ -15,43 +16,45 @@ const commonStyles = {
   logoContainer: {
     borderColor: commonColor.textColor,
     borderBottomWidth: 1,
-    padding: "5%"
+    padding: scale(5)
   },
   logo: {
     resizeMode: "contain",
     width: scale(100),
     height: scale(50),
     alignSelf: "center",
-    margin: "0.5%",
+    margin: scale(5),
   },
   versionText: {
     color: commonColor.textColor,
     fontSize: scale(14),
-    margin: "0.5%",
+    margin: scale(2),
     alignSelf: "center"
   },
   versionDate: {
     color: commonColor.textColor,
     fontSize: scale(14),
-    alignSelf: "center"
+    alignSelf: "center",
+    marginBottom: scale(2),
   },
   links: {
     borderBottomWidth: 0,
     borderBottomColor: "transparent",
-    height: scale(25),
-    marginTop: scale(10)
+    height: (Platform.OS === "ios" ? undefined : scale(25)),
+    marginTop: (Platform.OS === "ios" ? undefined : scale(15)),
+    paddingBottom: (Platform.OS === "ios" ? undefined : scale(15)),
   },
   linkText: {
     color: commonColor.textColor,
     fontSize: scale(16),
-    paddingLeft: "4%",
+    paddingLeft: scale(10),
   },
   logoutContainer: {
     padding: 30,
     paddingTop: 0
   },
   logoutButton: {
-    paddingTop: "4.5%",
+    paddingTop: scale(10),
     flexDirection: "row",
     borderTopWidth: 1,
     borderTopColor: commonColor.textColor

@@ -412,104 +412,103 @@ class ConnectorDetails extends ResponsiveComponent {
     const { navigation } = this.props;
     const { firstLoad, charger, connector, siteImage, refreshing, userImage, transaction, hours, minutes, seconds } = this.state;
     return (
-      <Container style={style.container}>
-        {firstLoad ?
+      firstLoad ?
+        <Container style={style.container}>
           <Spinner color="white" style={style.spinner} />
-        :
-          <View>
-            <ChargerHeader charger={charger} connector={connector} navigation={navigation} />
+        </Container>
+      :
+        <Container style={style.container}>
+          <ChargerHeader charger={charger} connector={connector} navigation={navigation} />
             <ScrollView style={style.scrollViewContainer} refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={this._refresh} />
-              }>
-              <View style={style.detailsContainer}>
-                <Image style={style.backgroundImage} source={siteImage ? {uri: siteImage} : noSite}/>
-                <View style={style.transactionContainer}>
-                  {connector.activeTransactionID === 0 ?
-                    <TouchableOpacity onPress={() => this.onStartTransaction()} disabled={this.state.buttonDisabled}>
-                      <View style={(this.state.buttonDisabled ? [style.startTransaction, style.startStopTransactionDisabled] : style.startTransaction)}>
-                        <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
+              <RefreshControl refreshing={refreshing} onRefresh={this._refresh} />
+            }>
+            <View style={style.detailsContainer}>
+              <Image style={style.backgroundImage} source={siteImage ? {uri: siteImage} : noSite}/>
+              <View style={style.transactionContainer}>
+                {connector.activeTransactionID === 0 ?
+                  <TouchableOpacity onPress={() => this.onStartTransaction()} disabled={this.state.buttonDisabled}>
+                    <View style={(this.state.buttonDisabled ? [style.startTransaction, style.startStopTransactionDisabled] : style.startTransaction)}>
+                      <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
+                    </View>
+                  </TouchableOpacity>
+                :
+                  <TouchableOpacity onPress={() => this.onStopTransaction()} disabled={this.state.buttonDisabled}>
+                    <View style={(this.state.buttonDisabled ? [style.stopTransaction, style.startStopTransactionDisabled] : style.stopTransaction)}>
+                      <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="stop" />
+                    </View>
+                  </TouchableOpacity>
+                }
+              </View>
+            </View>
+            {firstLoad ?
+              <Spinner color="white" style={style.spinner} />
+            :
+              <View style={style.content}>
+                <View style={style.rowContainer}>
+                  <View style={style.columnContainer}>
+                    <ConnectorStatusComponent style={style.connectorLetter} connector={connector}/>
+                    <Text style={[style.label, style.labelStatus]}>{Utils.translateConnectorStatus(connector.status)}</Text>
+                  </View>
+                  <View style={style.columnContainer}>
+                    <Thumbnail style={style.userPicture} source={userImage ? {uri: userImage} : noPhoto} />
+                    {transaction ?
+                      <Text style={[style.label, style.labelUser]}>{Utils.buildUserName(transaction.user)}</Text>
+                    :
+                      <Text style={style.label}>-</Text>
+                    }
+                  </View>
+                </View>
+                <View style={style.rowContainer}>
+                  <View style={style.columnContainer}>
+                    <Icon type="FontAwesome" name="bolt" style={style.icon} />
+                    { connector.activeTransactionID === 0 ?
+                      <Text style={[style.label, style.labelValue]}>-</Text>
+                    :
+                      <View>
+                        <Text style={[style.label, style.labelValue]}>{(connector.currentConsumption / 1000) > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0}</Text>
+                        <Text style={style.subLabel}>{I18n.t("details.instant")} (kW)</Text>
                       </View>
-                    </TouchableOpacity>
-                  :
-                    <TouchableOpacity onPress={() => this.onStopTransaction()} disabled={this.state.buttonDisabled}>
-                      <View style={(this.state.buttonDisabled ? [style.stopTransaction, style.startStopTransactionDisabled] : style.stopTransaction)}>
-                        <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="stop" />
+                    }
+                  </View>
+                  <View style={style.columnContainer}>
+                    <Icon type="Ionicons" name="time" style={style.icon} />
+                    {transaction ?
+                      <Text style={[style.label, style.labelTimeValue]}>{`${hours}:${minutes}:${seconds}`}</Text>
+                    :
+                      <Text style={[style.label, style.labelValue]}>- : - : -</Text>
+                    }
+                  </View>
+                </View>
+                <View style={style.rowContainer}>
+                  <View style={style.columnContainer}>
+                    <Icon style={style.icon} type="MaterialIcons" name="trending-up" />
+                    { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
+                      <Text style={[style.label, style.labelValue]}>-</Text>
+                    :
+                      <View>
+                        <Text style={[style.label, style.labelValue]}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
+                        <Text style={style.subLabel}>{I18n.t("details.total")} (kW.h)</Text>
                       </View>
-                    </TouchableOpacity>
-                  }
+                    }
+                  </View>
+                  <View style={style.columnContainer}>
+                    <Icon type="MaterialIcons" name="battery-charging-full" style={style.icon} />
+                    { connector.currentStateOfCharge ?
+                      <View>
+                        <Text style={[style.label, style.labelValue]}>{connector.currentStateOfCharge}</Text>
+                        <Text style={style.subLabel}>(%)</Text>
+                      </View>
+                    :
+                      <View>
+                        <Text style={[style.label, style.labelValue]}>-</Text>
+                      </View>
+                    }
+                  </View>
                 </View>
               </View>
-              {firstLoad ?
-                <Spinner color="white" style={style.spinner} />
-              :
-                <View style={style.content}>
-                  <View style={style.rowContainer}>
-                    <View style={style.columnContainer}>
-                      <ConnectorStatusComponent style={style.connectorLetter} connector={connector}/>
-                      <Text style={[style.label, style.labelStatus]}>{Utils.translateConnectorStatus(connector.status)}</Text>
-                    </View>
-                    <View style={style.columnContainer}>
-                      <Thumbnail style={style.userPicture} source={userImage ? {uri: userImage} : noPhoto} />
-                      {transaction ?
-                        <Text style={[style.label, style.labelUser]}>{Utils.buildUserName(transaction.user)}</Text>
-                      :
-                        <Text style={style.label}>-</Text>
-                      }
-                    </View>
-                  </View>
-                  <View style={style.rowContainer}>
-                    <View style={style.columnContainer}>
-                      <Icon type="FontAwesome" name="bolt" style={style.icon} />
-                      { connector.activeTransactionID === 0 ?
-                        <Text style={[style.label, style.labelValue]}>-</Text>
-                      :
-                        <View>
-                          <Text style={[style.label, style.labelValue]}>{(connector.currentConsumption / 1000) > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0}</Text>
-                          <Text style={style.subLabel}>{I18n.t("details.instant")} (kW)</Text>
-                        </View>
-                      }
-                    </View>
-                    <View style={style.columnContainer}>
-                      <Icon type="Ionicons" name="time" style={style.icon} />
-                      {transaction ?
-                        <Text style={[style.label, style.labelTimeValue]}>{`${hours}:${minutes}:${seconds}`}</Text>
-                      :
-                        <Text style={[style.label, style.labelValue]}>- : - : -</Text>
-                      }
-                    </View>
-                  </View>
-                  <View style={style.rowContainer}>
-                    <View style={style.columnContainer}>
-                      <Icon style={style.icon} type="MaterialIcons" name="trending-up" />
-                      { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
-                        <Text style={[style.label, style.labelValue]}>-</Text>
-                      :
-                        <View>
-                          <Text style={[style.label, style.labelValue]}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
-                          <Text style={style.subLabel}>{I18n.t("details.total")} (kW.h)</Text>
-                        </View>
-                      }
-                    </View>
-                    <View style={style.columnContainer}>
-                      <Icon type="MaterialIcons" name="battery-charging-full" style={style.icon} />
-                      { connector.currentStateOfCharge ?
-                        <View>
-                          <Text style={[style.label, style.labelValue]}>{connector.currentStateOfCharge}</Text>
-                          <Text style={style.subLabel}>(%)</Text>
-                        </View>
-                      :
-                        <View>
-                          <Text style={[style.label, style.labelValue]}>-</Text>
-                        </View>
-                      }
-                    </View>
-                  </View>
-                </View>
-              }
-            </ScrollView>
-          </View>
-        }
-      </Container>
+            }
+          </ScrollView>
+        </Container>
     );
   }
 }
