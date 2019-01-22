@@ -41,8 +41,7 @@ const commonStyles = {
     borderBottomWidth: 0,
     borderBottomColor: "transparent",
     height: (Platform.OS === "ios" ? undefined : scale(25)),
-    marginTop: (Platform.OS === "ios" ? undefined : scale(15)),
-    paddingBottom: (Platform.OS === "ios" ? undefined : scale(15)),
+    marginTop: (Platform.OS === "ios" ? undefined : scale(10)),
   },
   linkText: {
     color: commonColor.textColor,
@@ -79,6 +78,7 @@ const commonStyles = {
     color: commonColor.textColor
   },
   userName: {
+    paddingTop: scale(5),
     fontSize: scale(14),
     color: commonColor.textColor
   },
