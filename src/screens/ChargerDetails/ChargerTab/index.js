@@ -23,6 +23,8 @@ class ChargerTab extends ResponsiveComponent {
   }
 
   componentWillUnmount() {
+    // Always first tab
+    this.props.navigation.state.index = 0;
   }
 
   render() {
