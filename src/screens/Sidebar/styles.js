@@ -42,6 +42,7 @@ const commonStyles = {
     borderBottomColor: "transparent",
     height: (Platform.OS === "ios" ? undefined : scale(25)),
     marginTop: (Platform.OS === "ios" ? undefined : scale(10)),
+    paddingBottom: (Platform.OS === "ios" ? 0 : undefined),
   },
   linkText: {
     color: commonColor.textColor,
