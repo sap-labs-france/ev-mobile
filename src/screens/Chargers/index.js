@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, FlatList, RefreshControl } from "react-native";
+import { Platform, FlatList, RefreshControl, Image } from "react-native";
 import { Container, Button, Icon, Header, Body, Left, Right, View, Spinner, List, Title } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import ProviderFactory from "../../provider/ProviderFactory";
@@ -16,6 +16,7 @@ class Chargers extends ResponsiveComponent {
     // Init State
     this.state = {
       chargers: [],
+      allowBackButton: this.props.navigation.state.params.allowBackButton,
       loading: true,
       refreshing: false,
       skip: 0,
@@ -80,8 +81,14 @@ class Chargers extends ResponsiveComponent {
     let chargers = [];
     try {
       // Get Chargers
-      chargers = await _provider.getChargers(
-        { SiteAreaID: siteAreaID }, { skip, limit });
+      if (siteAreaID) {
+        // Get with the Site
+        chargers = await _provider.getChargers(
+          { SiteAreaID: siteAreaID }, { skip, limit });
+      } else {
+        // Get without the Site
+        chargers = await _provider.getChargers({}, { skip, limit });
+      }
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -132,11 +139,12 @@ class Chargers extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
+    const { chargers, allowBackButton } = this.state;
     let siteID = null;
     // Retrieve the site ID to navigate back from a notification
-    if (this.state.chargers && this.state.chargers.length > 0) {
+    if (chargers && chargers.length > 0) {
       // Find the first available Site ID
-      for (const charger of this.state.chargers) {
+      for (const charger of chargers) {
         // Site Area provided?
         if (charger.siteArea) {
           // Yes: keep the Site ID
@@ -149,9 +157,14 @@ class Chargers extends ResponsiveComponent {
       <Container>
         <Header style={style.header}>
           <Left style={style.leftHeader}>
-            <Button transparent onPress={() => navigation.navigate("SiteAreas", { siteID: siteID })}>
-              <Icon active name="arrow-back" style={style.iconHeader} />
-            </Button>
+            {allowBackButton
+            ?
+              <Button transparent onPress={() => navigation.navigate("SiteAreas", { siteID: siteID })}>
+                <Icon active name="arrow-back" style={style.iconHeader} />
+              </Button>
+            :
+              <Image source={require("../../../assets/logo-low.gif")} style={style.logoHeader} />
+            }
           </Left>
           <Body style={style.bodyHeader}>
             <Title style={style.titleHeader}>{I18n.t("chargers.title")}</Title>

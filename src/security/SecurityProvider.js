@@ -47,9 +47,13 @@ export default class  SecurityProvider {
       // Yes
       return this.canPerformAction(Constants.ENTITY_SITE,
         {"Action": action, "SiteID": chargingStation.siteArea.siteID});
+    // No: Must be an admin
+    } else if (this.isAdmin()) {
+      return true;
+    // No site management
     } else {
-      // No: Must be an admin
-      return this.isAdmin();
+      // Ok
+      return true;
     }
   }
 
@@ -69,5 +73,24 @@ export default class  SecurityProvider {
     } else {
       return false;
     }
+  }
+
+  isComponentOrganizationActive() {
+    // TODO: Use the new impl
+    return true;
+    // return this.isComponentActive("organization");
+  }
+
+  isComponentOCPIActive() {
+    return this.isComponentActive("ocpi");
+  }
+
+  isComponentActive(componentName) {
+    // Components provided
+    if (this.decodedToken.hasOwnProperty("activeComponents")) {
+      // Check components
+      return this.decodedToken.activeComponents.indexOf(componentName) !== -1;
+    } 
+    return false;
   }
 }

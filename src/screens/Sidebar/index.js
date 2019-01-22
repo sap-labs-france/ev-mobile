@@ -17,18 +17,22 @@ class SideBar extends ResponsiveComponent {
     this.state = {
       userName: "",
       userID: "",
-      userImage: ""
+      userImage: "",
+      isComponentOrganizationActive: false
     };
   }
 
   async componentDidMount() {
+    // Active
+    const isComponentOrganizationActive = (await _provider.getSecurityProvider()).isComponentOrganizationActive();
     // Logoff
     const userInfo = await _provider.getUserInfo();
     // Add sites
     // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({
       userName: `${userInfo.name} ${userInfo.firstName}`,
-      userID: `${userInfo.id}`
+      userID: `${userInfo.id}`,
+      isComponentOrganizationActive
     }, async () => {
       await this._getUserImage();
     });
@@ -56,9 +60,9 @@ class SideBar extends ResponsiveComponent {
     this.props.navigation.navigate("AuthNavigator");
   }
 
-  _navigateTo = (screen) => {
+  _navigateTo = (screen, params = {}) => {
     // Navigate
-    this.props.navigation.navigate(screen);
+    this.props.navigation.navigate(screen, params);
     // Close
     this.props.navigation.closeDrawer();
   }
@@ -66,7 +70,7 @@ class SideBar extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const navigation = this.props.navigation;
-    const { userName, userImage } = this.state;
+    const { userName, userImage, isComponentOrganizationActive } = this.state;
     return (
       <Container>
         <ImageBackground style={style.background} source={require("../../../assets/sidebar-transparent.png")}>
@@ -76,9 +80,18 @@ class SideBar extends ResponsiveComponent {
               <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
               <Text style={style.versionDate}>({DeviceInfo.getLastUpdateTime() ? new Date(DeviceInfo.getLastUpdateTime()).toLocaleDateString() : I18n.t("general.date")})</Text>
             </View>
-            <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Sites")}>
-              <Icon type="MaterialIcons" name="business" />
-              <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
+            { isComponentOrganizationActive
+              ?
+                <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Sites")}>
+                  <Icon type="MaterialIcons" name="store-mall-directory" />
+                  <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
+                </ListItem>
+              :
+                undefined
+            }
+            <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Chargers", { allowBackButton: false })}>
+              <Icon type="MaterialIcons" name="ev-station" />
+              <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
             </ListItem>
             {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
               <Icon name="ios-settings-outline" />

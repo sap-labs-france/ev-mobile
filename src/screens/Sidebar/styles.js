@@ -36,14 +36,15 @@ const commonStyles = {
     alignSelf: "center"
   },
   links: {
-    padding: "2%",
     borderBottomWidth: 0,
-    borderBottomColor: "transparent"
+    borderBottomColor: "transparent",
+    height: scale(25),
+    marginTop: scale(10)
   },
   linkText: {
     color: commonColor.textColor,
     fontSize: scale(16),
-    paddingLeft: "4%"
+    paddingLeft: "4%",
   },
   logoutContainer: {
     padding: 30,

@@ -247,7 +247,9 @@ class ConnectorDetails extends ResponsiveComponent {
         connector: charger.connectors[this.state.connectorID - 1]
       }, () => {
         // Get the Site Image (only first time)
-        this._getSiteImage(charger.siteArea.siteID);
+        if (charger.siteArea) {
+          this._getSiteImage(charger.siteArea.siteID);
+        }
         // Check to enable the buttons after a certain period of time
         this._handleStartStopDisabledButton();
       });

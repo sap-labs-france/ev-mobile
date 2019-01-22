@@ -18,22 +18,20 @@ export class ChargerHeader extends ResponsiveComponent {
     const { charger, connector, navigation } = this.props;
     const connectorLetter = String.fromCharCode(64 + connector.connectorId);
     return (
-      <View>
-        <Header style={style.header}>
-          <Left style={style.leftHeader}>
-            <Button transparent onPress={() => navigation.navigate("Chargers", { siteAreaID: charger.siteAreaID })}>
-              <Icon active name="arrow-back" style={style.iconHeader} />
-            </Button>
-          </Left>
-          <Body style={style.bodyHeader}>
-            <Text style={style.titleHeader}>{charger.id}</Text>
-            <Text style={style.subTitleHeader}>({I18n.t("details.connector")} {connectorLetter})</Text>
-          </Body>
-          <Right style={style.rightHeader}>
-            <Image source={require("../../../../assets/logo-low.gif")} style={style.logoHeader} />
-          </Right>
-        </Header>
-      </View>
+      <Header style={style.header}>
+        <Left style={style.leftHeader}>
+          <Button transparent onPress={() => navigation.navigate("Chargers", { siteAreaID: charger.siteAreaID })}>
+            <Icon active name="arrow-back" style={style.iconHeader} />
+          </Button>
+        </Left>
+        <Body style={style.bodyHeader}>
+          <Text style={style.titleHeader}>{charger.id}</Text>
+          <Text style={style.subTitleHeader}>({I18n.t("details.connector")} {connectorLetter})</Text>
+        </Body>
+        <Right style={style.rightHeader}>
+          <Image source={require("../../../../assets/logo-low.gif")} style={style.logoHeader} />
+        </Right>
+      </Header>
     );
   }
 }

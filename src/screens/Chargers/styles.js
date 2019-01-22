@@ -20,6 +20,10 @@ const commonStyles = {
   rightHeader: {
     flex: 0
   },
+  logoHeader: {
+    width: scale(45),
+    resizeMode: "contain"
+  },
   titleHeader: {
     color: commonColor.textColor,
     fontSize: scale(20),

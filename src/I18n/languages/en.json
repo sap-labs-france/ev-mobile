@@ -14,7 +14,8 @@
     "date": "22nd, January"
   },
   "sidebar": {
-    "sites": "Sites"
+    "sites": "Sites",
+    "chargers": "Chargers"
   },
 	"authentication": {
     "logOut": "Log Out",

@@ -14,7 +14,8 @@
     "date": "22 Janvier"
   },
   "sidebar": {
-    "sites": "Sites"
+    "sites": "Sites",
+    "chargers": "Bornes"
   },
   "authentication": {
     "logOut": "Se déconnecter",

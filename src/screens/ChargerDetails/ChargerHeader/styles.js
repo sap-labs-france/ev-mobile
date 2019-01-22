@@ -6,7 +6,7 @@ import { scale } from "react-native-size-matters";
 const commonStyles = {
   header: {
     height: scale(45),
-    paddingTop: scale(5),
+    paddingTop: scale(10),
     paddingBottom: scale(5),
     borderBottomWidth: 1,
     borderBottomColor: "#D3D3D3"
