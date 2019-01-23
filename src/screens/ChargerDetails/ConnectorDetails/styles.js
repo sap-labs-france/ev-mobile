@@ -21,26 +21,26 @@ const commonStyles = {
   transactionContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: scale(-50)
+    marginTop: scale(-55)
   },
   startTransaction: {
-    borderRadius: scale(50),
+    borderRadius: scale(55),
     borderStyle: "solid",
     borderWidth: 2,
     borderColor: commonColor.textColor,
-    width: scale(100),
-    height: scale(100),
+    width: scale(110),
+    height: scale(110),
     backgroundColor: commonColor.brandSuccess,
     justifyContent: "center",
     alignItems: "center"
   },
   stopTransaction: {
-    borderRadius: scale(50),
+    borderRadius: scale(55),
     borderStyle: "solid",
     borderWidth: 2,
     borderColor: commonColor.textColor,
-    width: scale(100),
-    height: scale(100),
+    width: scale(110),
+    height: scale(110),
     backgroundColor: commonColor.brandDanger,
     justifyContent: "center",
     alignItems: "center"
@@ -53,10 +53,11 @@ const commonStyles = {
   },
   scrollViewContainer: {
   },
-  content: {
+  detailsContainer: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    marginTop: scale(-20)
   },
   rowContainer: {
     flexDirection: "row",

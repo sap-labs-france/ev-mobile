@@ -4,7 +4,10 @@ import commonColor from "../../../theme/variables/commonColor";
 
 const commonStyles = {  
   footerContainer: {
-    backgroundColor: commonColor.brandPrimary
+    backgroundColor: commonColor.brandPrimary,
+    borderTopStyle: "solid",
+    borderTopWidth: 1,
+    borderTopColor: commonColor.textColor,
   }
 };
 

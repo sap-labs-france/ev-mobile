@@ -79,7 +79,7 @@
   "details": {
     "connector": "Connecteur",
     "informations": "Informations",
-    "graph": "Graphique",
+    "graph": "Courbe",
     "startTransaction": "Démarrer transaction",
     "stopTransaction": "Stopper transaction",
     "startTransactionMessage": "Voulez-vous vraiment démarrer une nouvelle session sur la borne ",

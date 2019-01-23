@@ -79,7 +79,7 @@
   "details": {
     "connector": "Connector",
     "informations": "Informations",
-    "graph": "Graph",
+    "graph": "Chart",
     "startTransaction": "Start transaction",
     "stopTransaction": "Stop transaction",
     "startTransactionMessage": "Do you really want to start a new session on the charging station ",

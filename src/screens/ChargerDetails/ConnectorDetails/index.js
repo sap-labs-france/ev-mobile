@@ -443,7 +443,7 @@ class ConnectorDetails extends ResponsiveComponent {
             {firstLoad ?
               <Spinner color="white" style={style.spinner} />
             :
-              <View style={style.content}>
+              <View style={style.detailsContainer}>
                 <View style={style.rowContainer}>
                   <View style={style.columnContainer}>
                     <ConnectorStatusComponent style={style.connectorLetter} connector={connector}/>
