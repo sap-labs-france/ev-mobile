@@ -15,16 +15,13 @@ export default class Utils {
   static getParamFromNavigation(navigation, name, defaultValue) {
     // Has param object?
     if (!navigation.state.params) {
-      console.log("No params: Default value for " + name + " " + defaultValue);
       return defaultValue;
     }
     // Has param
     if (!navigation.state.params.hasOwnProperty(name)) {
-      console.log("No prop: Default value for " + name + " " + defaultValue);
       return defaultValue;
     }
     // Ok, return the value
-    console.log("Ok: Value for " + name + " = " + navigation.state.params[name]);
     return navigation.state.params[name];
   }
 

@@ -76,8 +76,6 @@ export default class SiteAreas extends ResponsiveComponent {
 
   _getSiteAreas = async (skip, limit) => {
     const siteID = Utils.getParamFromNavigation(this.props.navigation, "siteID", null);
-    console.log(siteID);
-    
     let siteAreas = [];
     try {
       // Get the Sites
