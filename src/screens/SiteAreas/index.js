@@ -1,6 +1,5 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import PropTypes from "prop-types";
 import { FlatList, RefreshControl } from "react-native";
 import { Container, Header, Spinner, Left, Right, Body, Title, Button, Icon, View } from "native-base";
 import Utils from "../../utils/Utils";
@@ -76,7 +75,9 @@ export default class SiteAreas extends ResponsiveComponent {
   }
 
   _getSiteAreas = async (skip, limit) => {
-    const { siteID } = this.props.navigation.state.params;
+    const siteID = Utils.getParamFromNavigation(this.props.navigation, "siteID", null);
+    console.log(siteID);
+    
     let siteAreas = [];
     try {
       // Get the Sites

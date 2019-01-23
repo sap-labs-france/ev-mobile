@@ -58,7 +58,7 @@ const AppDrawerNavigator = createDrawerNavigator(
       swipeEnabled: true,
     },
     drawerWidth: Dimensions.get("window").width / 1.5,
-    initialRouteName: "Sites",
+    initialRouteName: "Chargers",
     drawerPosition: "right",
     contentComponent: (props) => <Sidebar {...props} />
   }

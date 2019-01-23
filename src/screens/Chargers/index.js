@@ -16,7 +16,7 @@ class Chargers extends ResponsiveComponent {
     // Init State
     this.state = {
       chargers: [],
-      withNoSite: this.props.navigation.state.params.withNoSite,
+      withNoSite: Utils.getParamFromNavigation(this.props.navigation, "withNoSite", true),
       loading: true,
       refreshing: false,
       skip: 0,
@@ -26,7 +26,7 @@ class Chargers extends ResponsiveComponent {
   }
 
   async componentDidMount() {
-    const { siteAreaID } = this.props.navigation.state.params;
+    const siteAreaID = Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null);
     // Set
     this.mounted = true;
     // Get chargers first time
@@ -98,7 +98,7 @@ class Chargers extends ResponsiveComponent {
   }
 
   _onEndScroll = async () => {
-    const { siteAreaID } = this.props.navigation.state.params;
+    const siteAreaID = Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null);
     const { count, skip, limit } = this.state;
     // No reached the end?
     if ((skip + limit) < count) {
@@ -114,7 +114,7 @@ class Chargers extends ResponsiveComponent {
   }
 
   _refresh = async () => {
-    const { siteAreaID } = this.props.navigation.state.params;
+    const siteAreaID = Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null);
     // Component Mounted?
     if (this.mounted) {
       const { skip, limit } = this.state;
