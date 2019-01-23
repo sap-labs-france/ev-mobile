@@ -89,7 +89,7 @@ class SideBar extends ResponsiveComponent {
               :
                 undefined
             }
-            <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Chargers", { allowBackButton: false })}>
+            <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Chargers", { withNoSite: true })}>
               <Icon type="MaterialIcons" name="ev-station" />
               <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
             </ListItem>

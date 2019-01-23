@@ -16,7 +16,7 @@ class Chargers extends ResponsiveComponent {
     // Init State
     this.state = {
       chargers: [],
-      allowBackButton: this.props.navigation.state.params.allowBackButton,
+      withNoSite: this.props.navigation.state.params.withNoSite,
       loading: true,
       refreshing: false,
       skip: 0,
@@ -78,10 +78,11 @@ class Chargers extends ResponsiveComponent {
   }
 
   _getChargers = async (skip, limit, siteAreaID) => {
+    const { withNoSite } = this.state;
     let chargers = [];
     try {
       // Get Chargers
-      if (siteAreaID) {
+      if (!withNoSite && siteAreaID) {
         // Get with the Site
         chargers = await _provider.getChargers(
           { SiteAreaID: siteAreaID }, { skip, limit });
@@ -139,7 +140,7 @@ class Chargers extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { chargers, allowBackButton } = this.state;
+    const { chargers, withNoSite } = this.state;
     let siteID = null;
     // Retrieve the site ID to navigate back from a notification
     if (chargers && chargers.length > 0) {
@@ -157,7 +158,7 @@ class Chargers extends ResponsiveComponent {
       <Container>
         <Header style={style.header}>
           <Left style={style.leftHeader}>
-            {allowBackButton
+            {!withNoSite
             ?
               <Button transparent onPress={() => navigation.navigate("SiteAreas", { siteID: siteID })}>
                 <Icon active name="arrow-back" style={style.iconHeader} />
