@@ -13,10 +13,10 @@ import commonColor from "../../../theme/variables/commonColor";
 import DeviceInfo from "react-native-device-info";
 
 const _provider = providerFactory.getProvider();
-const _locations = _provider.getLocations();
+const _tenants = _provider.getTenants();
 
 const formValidationDef = {
-  location: {
+  tenant: {
     presence: {
       allowEmpty: false,
       message: I18n.t("general.mandatory")
@@ -56,8 +56,8 @@ class Login extends ResponsiveComponent {
       eula: false,
       password: null,
       email: null,
-      location: null,
-      locationTitle: I18n.t("authentication.location"),
+      tenant: null,
+      tenantTitle: I18n.t("authentication.tenant"),
       loading: false,
       display: false
     };
@@ -73,31 +73,32 @@ class Login extends ResponsiveComponent {
     } else {
       const email = await _provider.getUserEmail();
       const password = await _provider.getUserPassword();
-      const tenant = await _provider.getTenant();
-      const location = _provider.getLocation(tenant);
+      const userTenant = await _provider.getUserTenant();
+      const tenant = _provider.getTenant(userTenant);
       // eslint-disable-next-line react/no-did-mount-set-state
       this.setState({
         email,
         password,
-        location: tenant,
-        locationTitle: (location ? location.name : this.state.locationTitle),
+        tenant: userTenant,
+        tenantTitle: (tenant ? tenant.name : this.state.tenantTitle),
         display: true
       });
     }
   }
 
-  login = async () => {
+  _login = async () => {
     // Check field
     const formIsValid = Utils.validateInput(this, formValidationDef);
     // Ok?
     if (formIsValid) {
       // Login
-      const { password, email, eula, location } = this.state;
+      const { password, email, eula, tenant } = this.state;
+      console.log(tenant);
       try {
         // Loading
         this.setState({loading: true});
         // Login
-        await _provider.login(email, password, eula, location);
+        await _provider.login(email, password, eula, tenant);
         // Login Success
         this.setState({loading: false});
         // Navigate
@@ -149,29 +150,29 @@ class Login extends ResponsiveComponent {
     if (buttonIndex !== undefined) {
       // Set Tenant
       this.setState({
-        location: _locations[buttonIndex].subdomain,
-        locationTitle: _locations[buttonIndex].name
+        tenant: _tenants[buttonIndex].subdomain,
+        tenantTitle: _tenants[buttonIndex].name
       });
     }
   }
 
   _newUser = () => {
     // Tenant selected?
-    if (this.state.location) {
-      Linking.openURL(`https://${this.state.location}.ev.cfapps.eu10.hana.ondemand.com/#/register`);
+    if (this.state.tenant) {
+      Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/register`);
     } else {
       // Error
-      Message.showError(I18n.t("authentication.mustSelectLocation"));
+      Message.showError(I18n.t("authentication.mustSelectTenant"));
     }
   }
 
   _forgotPassword = () => {
     // Tenant selected?
-    if (this.state.location) {
-      Linking.openURL(`https://${this.state.location}.ev.cfapps.eu10.hana.ondemand.com/#/reset-password`);
+    if (this.state.tenant) {
+      Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/reset-password`);
     } else {
       // Error
-      Message.showError(I18n.t("authentication.mustSelectLocation"));
+      Message.showError(I18n.t("authentication.mustSelectTenant"));
     }
   }
 
@@ -198,16 +199,16 @@ class Login extends ResponsiveComponent {
                     onPress={() =>
                       ActionSheet.show(
                         {
-                          options: _locations.map(location => location.name),
-                          title: I18n.t("authentication.location")
+                          options: _tenants.map(tenant => tenant.name),
+                          title: I18n.t("authentication.tenant")
                         },
                         buttonIndex => {
                           this._setTenant(buttonIndex);
                         }
                       )}>
-                    <TextRN style={style.buttonText}>{this.state.locationTitle}</TextRN>
+                    <TextRN style={style.buttonText}>{this.state.tenantTitle}</TextRN>
                   </Button>
-                  {this.state.errorLocation && this.state.errorLocation.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
+                  {this.state.errorTenant && this.state.errorTenant.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
                   <Item rounded style={style.inputGroup}>
                     <Icon active name="mail" style={style.inputIconMail}/>
                     <TextInput
@@ -265,7 +266,7 @@ class Login extends ResponsiveComponent {
                   { loading ?
                     <Spinner style={style.spinner}/>
                   :
-                    <Button rounded primary block style={style.button} onPress={this.login}>
+                    <Button rounded primary block style={style.button} onPress={this._login}>
                       <TextRN style={style.buttonText}>{I18n.t("authentication.login")}</TextRN>
                     </Button>
                   }

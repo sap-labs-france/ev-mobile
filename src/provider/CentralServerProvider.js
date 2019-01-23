@@ -58,11 +58,11 @@ export default class  CentralServerProvider {
     }
   }
 
-  getLocation(tenant) {
-    return this.getLocations().find((location) => location.subdomain === tenant);
+  getTenant(tenantToFind) {
+    return this.getTenants().find((tenant) => tenant.subdomain === tenantToFind);
   }
 
-  getLocations() {
+  getTenants() {
     return [
       { subdomain: "slf", name: "SAP Labs France"},
       { subdomain: "slfcah", name: "Charge@Home"},
@@ -104,7 +104,7 @@ export default class  CentralServerProvider {
     return _password;
   }
 
-  async getTenant() {
+  async getUserTenant() {
     // Init?
     await this.initialize();
     // Return

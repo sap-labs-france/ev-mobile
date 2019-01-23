@@ -26,11 +26,11 @@ const commonStyles = {
   },
   notAuthorizedText: {
     fontSize: scale(20),
-    color: commonColor.brandDanger
+    color: commonColor.textColor
   },
   notAuthorizedIcon: {
     fontSize: scale(75),
-    color: commonColor.brandDanger
+    color: commonColor.textColor
   }
 };
 

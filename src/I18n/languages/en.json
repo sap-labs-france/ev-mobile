@@ -19,7 +19,7 @@
   },
 	"authentication": {
     "logOut": "Log Out",
-    "mustSelectLocation": "Select a Location",
+    "mustSelectTenant": "Select a Tenant",
     "wrongEmailOrPassword": "Wrong email or password",
     "authenticationFailed": "Authentication Failed",
     "wrongEmail": "Wrong email!",
@@ -46,7 +46,7 @@
     "signUp": "Sign Up",
 		"passwordRule": "Must contain 1 letter lowercase and uppercase, 1 number, 1 special char and 8 chars long",
     "passwordNotMatch": "Password does not match",
-    "location": "Choose a Location"
+    "tenant": "Choose a Tenant"
   },
   "sites": {
     "freeChargers": "Free chargers",

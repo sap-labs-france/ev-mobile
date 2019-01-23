@@ -19,7 +19,7 @@
   },
   "authentication": {
     "logOut": "Se déconnecter",
-    "mustSelectLocation": "Selectionnez un Site",
+    "mustSelectTenant": "Selectionnez un Tenant",
     "wrongEmailOrPassword": "Mauvais email ou mot de passe",
     "authenticationFailed": "Authentification Echouée",
     "wrongEmail": "Email inconnu !",
@@ -46,7 +46,7 @@
     "signUp": "S'enregistrer",
 		"passwordRule": "Doit contenir 1 char. minuscule et majuscule, 1 nombre, 1 char. spécial et une longueur de 8",
     "passwordNotMatch": "Les mots de passes ne correspondent pas",
-    "location": "Choisir un Site"
+    "tenant": "Choisir un Tenant"
   },
   "sites": {
     "freeChargers": "Chargeurs disponibles",
