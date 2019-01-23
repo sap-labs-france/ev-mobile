@@ -80,10 +80,6 @@ class SideBar extends ResponsiveComponent {
               <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
               <Text style={style.versionDate}>({DeviceInfo.getLastUpdateTime() ? new Date(DeviceInfo.getLastUpdateTime()).toLocaleDateString() : I18n.t("general.date")})</Text>
             </View>
-            <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Chargers", { withNoSite: true })}>
-              <Icon type="MaterialIcons" name="ev-station" />
-              <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
-            </ListItem>
             { isComponentOrganizationActive
               ?
                 <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Sites")}>
@@ -93,6 +89,10 @@ class SideBar extends ResponsiveComponent {
               :
                 undefined
             }
+            <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Chargers", { withNoSite: true })}>
+              <Icon type="MaterialIcons" name="ev-station" />
+              <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
+            </ListItem>
             {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
               <Icon name="ios-settings-outline" />
               <Text style={style.linkText}>SETTINGS</Text>

@@ -1,7 +1,7 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import { View, processColor } from "react-native";
-import { Spinner } from "native-base";
+import { Text, Icon, Spinner } from "native-base";
 import ChargerHeader from "../ChargerHeader";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import Constants from "../../../utils/Constants";
@@ -13,8 +13,8 @@ import commonColor from "../../../theme/variables/commonColor";
 
 import { LineChart } from "react-native-charts-wrapper";
 
-const fillGreen = "rgb(26, 182, 151)";
-const fillRed = "rgb(255, 145, 153)";
+const fillGreen = commonColor.brandSuccess;
+const fillRed = commonColor.brandDanger;
 const EMPTY_CHART = [{ x:0, y:0 }];
 
 const _provider = ProviderFactory.getProvider();
@@ -23,11 +23,12 @@ class ChartDetails extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
-      chargerID: this.props.navigation.dangerouslyGetParent().state.params.chargerID,
-      connectorID: this.props.navigation.dangerouslyGetParent().state.params.connectorID,
+      chargerID: Utils.getParamFromNavigation(this.props.navigation.dangerouslyGetParent(), "chargerID", null),
+      connectorID: Utils.getParamFromNavigation(this.props.navigation.dangerouslyGetParent(), "connectorID", null),
       charger: null,
       connector: null,
       firstLoad: true,
+      notAuthorizedToSeeTheChart: false,
       values: [],
       consumptions: EMPTY_CHART,
       stateOfCharge: EMPTY_CHART
@@ -128,6 +129,11 @@ class ChartDetails extends ResponsiveComponent {
       if (!error.request || error.request.status !== 560) {
         // Other common Error
         Utils.handleHttpUnexpectedError(error, this.props);
+      } else {
+            // Cannot see the chart
+        this.setState({
+          notAuthorizedToSeeTheChart: true
+        });
       }
     }
   }
@@ -159,134 +165,141 @@ class ChartDetails extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const { firstLoad, charger, connector, consumptions, stateOfCharge } = this.state;
+    const { firstLoad, charger, connector, consumptions, stateOfCharge, notAuthorizedToSeeTheChart } = this.state;
     const navigation = this.props.navigation;
     return (
       <View style={style.container}>
         {firstLoad ?
           <Spinner color="white" style={style.spinner} />
         :
-          <View style={style.chartContainer}>
-            <ChargerHeader charger={charger} connector={connector} navigation={navigation} />
-            <View style={style.container}>
-              <LineChart
-                style={style.chart}
-                data={{
-                  dataSets: [
-                    {
-                      values: consumptions,
-                      label: I18n.t("details.instantPower"),
-                      config: {
-                        mode: "CUBIC_BEZIER",
-                        drawValues: false,
-                        lineWidth: 2,
-                        drawCircles: false,
-                        circleColor: processColor(commonColor.brandDanger),
-                        drawCircleHole: false,
-                        circleRadius: 5,
-                        highlightColor: processColor("white"),
-                        color: processColor(commonColor.brandDanger),
-                        drawFilled: true,
-                        fillAlpha: 65,
-                        fillColor: processColor(fillRed),
-                        valueTextSize: scale(15)
-                      }
-                    },
-                    {
-                      values: stateOfCharge,
-                      label: I18n.t("details.battery"),
-                      config: {
-                        axisDependency: "RIGHT",
-                        mode: "CUBIC_BEZIER",
-                        drawValues: false,
-                        lineWidth: 2,
-                        drawCircles: false,
-                        circleColor: processColor(commonColor.brandSuccess),
-                        drawCircleHole: false,
-                        circleRadius: 5,
-                        highlightColor: processColor("white"),
-                        color: processColor(commonColor.brandSuccess),
-                        drawFilled: true,
-                        fillAlpha: 65,
-                        fillColor: processColor(fillGreen),
-                        valueTextSize: scale(15)
-                      }
-                    }
-                  ]
-                }}
-                chartDescription={{ text: "" }}
-                noDataText={"No Data"}
-                backgroundColor={"black"}
-                legend={{
-                  enabled: true,
-                  textColor: processColor("white"),
-                }}
-                marker={{
-                  enabled: true,
-                  markerColor: processColor("white"),
-                  textColor: processColor("black")
-                }}
-                xAxis={{
-                  enabled: true,
-                  labelRotationAngle: -45,
-                  granularity: 1,
-                  drawLabels: true,
-                  position: "BOTTOM",
-                  drawAxisLine: true,
-                  drawGridLines: false,
-                  fontFamily: "HelveticaNeue-Medium",
-                  fontWeight: "bold",
-                  valueFormatter: "date",
-                  valueFormatterPattern: "HH:mm",
-                  textSize: scale(8),
-                  textColor: processColor("white")
-                }}
-                yAxis={{
-                  left: {
-                    enabled: true,
-                    valueFormatter: "# W",
-                    axisMinimum: 0,
-                    // axisMaximum: connector.power * 1.05,
-                    textColor: processColor(commonColor.brandDanger),
-                    limitLines: [{
-                      limit: connector.power,
-                      label: I18n.t("details.connectorMax"),
-                      valueTextColor: processColor("white"),
-                      lineColor: processColor(commonColor.brandDanger),
-                      lineDashPhase: 2,
-                      lineWidth: 1,
-                      lineDashLengths: [10,10]
-                    }]
-                  },
-                  right: {
-                    enabled: true,
-                    valueFormatter: "percent",
-                    axisMinimum: 0,
-                    axisMaximum: 100,
-                    textColor: processColor(commonColor.brandSuccess)
-                  }
-                }}
-                autoScaleMinMaxEnabled={false}
-                animation={{
-                  durationX: 1000,
-                  durationY: 1000,
-                  easingY: "EaseInOutQuart"
-                }}
-                drawGridBackground={false}
-                drawBorders={false}
-                touchEnabled={true}
-                dragEnabled={true}
-                scaleEnabled={false}
-                scaleXEnabled={true}
-                scaleYEnabled={false}
-                pinchZoom={true}
-                doubleTapToZoomEnabled={false}
-                dragDecelerationEnabled={true}
-                dragDecelerationFrictionCoef={0.99}
-                keepPositionOnRotation={false}
-              />
+          (notAuthorizedToSeeTheChart ?
+            <View style={style.notAuthorizedContainer}>
+              <Icon style={style.notAuthorizedIcon} type="Entypo" name="circle-with-cross" />
+              <Text style={style.notAuthorizedText}>{I18n.t("details.notAuthorized")}</Text>
             </View>
-          </View>
+          :
+            <View style={style.chartContainer}>
+              <ChargerHeader charger={charger} connector={connector} navigation={navigation} />
+              <View style={style.container}>
+                <LineChart
+                  style={style.chart}
+                  data={{
+                    dataSets: [
+                      {
+                        values: consumptions,
+                        label: I18n.t("details.instantPower"),
+                        config: {
+                          mode: "CUBIC_BEZIER",
+                          drawValues: false,
+                          lineWidth: 2,
+                          drawCircles: false,
+                          circleColor: processColor(commonColor.brandDanger),
+                          drawCircleHole: false,
+                          circleRadius: 5,
+                          highlightColor: processColor("white"),
+                          color: processColor(commonColor.brandDanger),
+                          drawFilled: true,
+                          fillAlpha: 65,
+                          fillColor: processColor(fillRed),
+                          valueTextSize: scale(15)
+                        }
+                      },
+                      {
+                        values: stateOfCharge,
+                        label: I18n.t("details.battery"),
+                        config: {
+                          axisDependency: "RIGHT",
+                          mode: "CUBIC_BEZIER",
+                          drawValues: false,
+                          lineWidth: 2,
+                          drawCircles: false,
+                          circleColor: processColor(commonColor.brandSuccess),
+                          drawCircleHole: false,
+                          circleRadius: 5,
+                          highlightColor: processColor("white"),
+                          color: processColor(commonColor.brandSuccess),
+                          drawFilled: true,
+                          fillAlpha: 65,
+                          fillColor: processColor(fillGreen),
+                          valueTextSize: scale(15)
+                        }
+                      }
+                    ]
+                  }}
+                  chartDescription={{ text: "" }}
+                  noDataText={"No Data"}
+                  backgroundColor={"black"}
+                  legend={{
+                    enabled: true,
+                    textColor: processColor("white"),
+                  }}
+                  marker={{
+                    enabled: true,
+                    markerColor: processColor("white"),
+                    textColor: processColor("black")
+                  }}
+                  xAxis={{
+                    enabled: true,
+                    labelRotationAngle: -45,
+                    granularity: 1,
+                    drawLabels: true,
+                    position: "BOTTOM",
+                    drawAxisLine: true,
+                    drawGridLines: false,
+                    fontFamily: "HelveticaNeue-Medium",
+                    fontWeight: "bold",
+                    valueFormatter: "date",
+                    valueFormatterPattern: "HH:mm",
+                    textSize: scale(8),
+                    textColor: processColor("white")
+                  }}
+                  yAxis={{
+                    left: {
+                      enabled: true,
+                      valueFormatter: "# W",
+                      axisMinimum: 0,
+                      // axisMaximum: connector.power * 1.05,
+                      textColor: processColor(commonColor.brandDanger),
+                      limitLines: [{
+                        limit: connector.power,
+                        label: I18n.t("details.connectorMax"),
+                        valueTextColor: processColor("white"),
+                        lineColor: processColor(commonColor.brandDanger),
+                        lineDashPhase: 2,
+                        lineWidth: 1,
+                        lineDashLengths: [10,10]
+                      }]
+                    },
+                    right: {
+                      enabled: true,
+                      valueFormatter: "percent",
+                      axisMinimum: 0,
+                      axisMaximum: 100,
+                      textColor: processColor(commonColor.brandSuccess)
+                    }
+                  }}
+                  autoScaleMinMaxEnabled={false}
+                  animation={{
+                    durationX: 1000,
+                    durationY: 1000,
+                    easingY: "EaseInOutQuart"
+                  }}
+                  drawGridBackground={false}
+                  drawBorders={false}
+                  touchEnabled={true}
+                  dragEnabled={true}
+                  scaleEnabled={false}
+                  scaleXEnabled={true}
+                  scaleYEnabled={false}
+                  pinchZoom={true}
+                  doubleTapToZoomEnabled={false}
+                  dragDecelerationEnabled={true}
+                  dragDecelerationFrictionCoef={0.99}
+                  keepPositionOnRotation={false}
+                />
+              </View>
+            </View>
+          )
         }
       </View>
     );

@@ -80,6 +80,7 @@
     "connector": "Connecteur",
     "informations": "Informations",
     "graph": "Courbe",
+    "notAuthorized": "Pas Autorisé !",
     "startTransaction": "Démarrer transaction",
     "stopTransaction": "Stopper transaction",
     "startTransactionMessage": "Voulez-vous vraiment démarrer une nouvelle session sur la borne ",

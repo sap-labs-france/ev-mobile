@@ -57,7 +57,7 @@ const commonStyles = {
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-between",
-    marginTop: scale(-20)
+    marginTop: scale(-10)
   },
   rowContainer: {
     flexDirection: "row",

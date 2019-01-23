@@ -1,5 +1,6 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import commonColor from "../../../theme/variables/commonColor";
+import { scale } from "react-native-size-matters";
 import deepmerge from "deepmerge";
 
 const commonStyles = {
@@ -17,6 +18,19 @@ const commonStyles = {
   },
   chart: {
     height: "100%"
+  },
+  notAuthorizedContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  notAuthorizedText: {
+    fontSize: scale(20),
+    color: commonColor.brandDanger
+  },
+  notAuthorizedIcon: {
+    fontSize: scale(75),
+    color: commonColor.brandDanger
   }
 };
 

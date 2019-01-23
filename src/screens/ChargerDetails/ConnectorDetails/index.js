@@ -20,8 +20,8 @@ class ConnectorDetails extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
-      chargerID: this.props.navigation.dangerouslyGetParent().state.params.chargerID,
-      connectorID: this.props.navigation.dangerouslyGetParent().state.params.connectorID,
+      chargerID: Utils.getParamFromNavigation(this.props.navigation.dangerouslyGetParent(), "chargerID", null),
+      connectorID: Utils.getParamFromNavigation(this.props.navigation.dangerouslyGetParent(), "connectorID", null),
       charger: null,
       connector: null,
       firstLoad: true,

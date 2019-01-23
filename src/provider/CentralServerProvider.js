@@ -9,7 +9,7 @@ const centralRestServerServiceAuthURL = centralRestServerServiceBaseURL + "/clie
 const centralRestServerServiceSecuredURL = centralRestServerServiceBaseURL + "/client/api";
 
 // Debug
-const DEBUG = true;
+const DEBUG = false;
 
 // Paste the token below
 let _token;

@@ -40,7 +40,7 @@ class ChargerTab extends ResponsiveComponent {
             <Text>{I18n.t("details.connector")}</Text>
           </Button>
           <Button vertical active={index === 1} onPress={()=> navigation.navigate("ChartDetails", params)}>
-            <Icon type="MaterialIcons" name="timeline" />
+            <Icon type="AntDesign" name="linechart" />
             <Text>{I18n.t("details.graph")}</Text>
           </Button>
           { isAdmin ?
