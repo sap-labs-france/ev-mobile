@@ -16,7 +16,7 @@ const commonStyles = {
   },
   backgroundImage: {
     width: "100%",
-    height: scale(150)
+    height: scale(125)
   },
   transactionContainer: {
     justifyContent: "center",

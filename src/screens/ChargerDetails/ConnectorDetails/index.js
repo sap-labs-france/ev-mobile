@@ -34,7 +34,7 @@ class ConnectorDetails extends ResponsiveComponent {
       refreshing: false,
       loadingTransaction: false,
       startTransactionNbTrial: 0,
-      buttonDisabled: false,
+      buttonDisabled: true,
       isAdmin: false
     };
   }
@@ -63,7 +63,7 @@ class ConnectorDetails extends ResponsiveComponent {
     // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({
       firstLoad: false,
-      isAdmin: isAdmin
+      isAdmin
     });
     // Add listeners
     this.props.navigation.addListener("didFocus", this.componentDidFocus);
@@ -179,25 +179,13 @@ class ConnectorDetails extends ResponsiveComponent {
   onStopTransaction = async () => {
     const { charger } = this.state;
     // Check
-    const isAuthorised = await this._isAuthorizedStopTransaction();
-    if (!isAuthorised) {
-      Alert.alert(
-        `${I18n.t("details.notAuthorisedTitle")}`,
-        `${I18n.t("details.notAuthorised")}`,
-        [
-          {text: I18n.t("general.ok")},
-        ]
-      );
-    } else {
-      Alert.alert(
-        `${I18n.t("details.stopTransaction")}`,
-        `${I18n.t("details.stopTransactionMessage")} ${charger.id} ?`,
-        [
-          {text: I18n.t("general.yes"), onPress: () => this._stopTransaction()},
-          {text: I18n.t("general.no")}
-        ]
-      );
-    }
+    Alert.alert(
+      `${I18n.t("details.notAuthorisedTitle")}`,
+      `${I18n.t("details.notAuthorised")}`,
+      [
+        {text: I18n.t("general.ok")},
+      ]
+    );
   }
 
   _stopTransaction = async () => {
@@ -259,7 +247,7 @@ class ConnectorDetails extends ResponsiveComponent {
     }
   }
 
-  _handleStartStopDisabledButton() {
+  async _handleStartStopDisabledButton() {
     // Check if disabled
     if (this.state.buttonDisabled) {
       // Check if the Start/Stop Button should stay disabled
@@ -283,10 +271,12 @@ class ConnectorDetails extends ResponsiveComponent {
           startTransactionNbTrial
         });
       } else if (this.state.connector.activeTransactionID !== 0) {
+        // Check
+        const isAuthorisedToStopTransaction = await this._isAuthorizedStopTransaction();
         // Transaction has started, enable the buttons again
         this.setState({
           startTransactionNbTrial: 0,
-          buttonDisabled: false
+          buttonDisabled: !isAuthorisedToStopTransaction
         });
       }
     }
