@@ -131,7 +131,7 @@ export default class Chargers extends BaseScreen {
           leftAction={() => navigation.navigate("SiteAreas", { siteID: siteID })} leftActionIcon={"arrow-back" }
           rightAction={navigation.openDrawer} rightActionIcon={"menu"} />
         <SearchHeaderComponent
-          onChange={(searchText) => this._search(searchText)} navigation={navigation} icon={"ev-station"}/>
+          onChange={(searchText) => this._search(searchText)} navigation={navigation}/>
         <View style={style.content}>
           { this.state.loading ?
             <Spinner color="white" style={style.spinner} />

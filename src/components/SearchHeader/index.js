@@ -73,7 +73,7 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const {  iconSearch, iconSearchType, icon, iconType } = this.props;
+    const {  iconSearch, iconSearchType } = this.props;
     return (
       <Header searchBar rounded style={style.header}>
         <Item style={style.items}>
@@ -83,7 +83,6 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
             placeholder={I18n.t("general.search")}
             onChangeText={(searchText) => this._searchChanged(searchText)}/>
           <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this._clearSearch()}/>
-          <Icon type={iconType} name={icon} style={style.icon}/>
         </Item>
         <Button transparent>
           <Text>{I18n.t("general.search")}</Text>
@@ -97,13 +96,10 @@ SearchHeaderComponent.propTypes = {
   navigation: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   iconSearch: PropTypes.string,
-  iconSearchType: PropTypes.string,
-  icon: PropTypes.string,
-  iconType: PropTypes.string,
+  iconSearchType: PropTypes.string
 };
 
 SearchHeaderComponent.defaultProps = {
   iconSearch: "search",
-  iconType: "MaterialIcons",
   iconSearchType: "MaterialIcons",
 };

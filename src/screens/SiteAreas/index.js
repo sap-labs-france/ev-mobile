@@ -108,7 +108,7 @@ export default class SiteAreas extends BaseScreen {
           leftAction={() => navigation.navigate("Sites")} leftActionIcon={"arrow-back" }
           rightAction={navigation.openDrawer} rightActionIcon={"menu"} />
         <SearchHeaderComponent
-          onChange={(searchText) => this._search(searchText)} navigation={navigation} icon={"view-week"}/>
+          onChange={(searchText) => this._search(searchText)} navigation={navigation}/>
         <View style={style.content}>
           {loading ?
             <Spinner color="white" style={style.spinner} />
