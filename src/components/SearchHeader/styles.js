@@ -14,9 +14,7 @@ const commonStyles = {
 		alignItems: "center",
  },
   input: {
-    color: commonColor.textColor,
-    lineHeight: 24,
-    height: scale(25)
+    color: commonColor.textColor
   },
   icon: {
     color: commonColor.textColor
