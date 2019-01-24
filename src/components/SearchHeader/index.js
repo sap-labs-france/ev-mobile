@@ -63,7 +63,7 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     const style = computeStyleSheet();
     const {  iconSearch, iconSearchType, icon, iconType } = this.props;
     return (
-      <Header searchBar rounded>
+      <Header searchBar rounded style={style.header}>
         <Item style={style.items}>
           <Icon type={iconSearchType} name={iconSearch} style={style.text}/>
           <Input placeholder={I18n.t("general.search")} style={style.text} onChangeText={(searchText) => this._searchChanged(searchText)}/>
