@@ -7,10 +7,14 @@ const commonStyles = {
   container: {
     flex: 1,
     flexDirection: "column",
-    padding: scale(5),
-    marginBottom: scale(10),
-    backgroundColor: "rgba(255,255,255,0.2)",
-    borderRadius: scale(15)
+    height: scale(165),
+    paddingTop: scale(5),
+    paddingBottom: scale(5),
+    paddingLeft: scale(10),
+    paddingRight: scale(10),
+    borderBottomWidth: 1,
+    borderBottomColor: commonColor.listBorderColor,
+    backgroundColor: "rgba(255,255,255,0.2)"
   },
   chargerContainer: {
     flexDirection: "row",

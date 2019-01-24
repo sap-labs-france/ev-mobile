@@ -8,13 +8,13 @@ const commonStyles = {
   siteContainer: {
     flex: 1,
     flexDirection: "column",
-    height: "20%",
-    paddingTop: "2%",
-    paddingBottom: "2%",
-    paddingLeft: "4%",
-    paddingRight: "4%",
-    borderTopWidth: 1,
-    borderTopColor: "#D3D3D3",
+    height: scale(115),
+    paddingTop: scale(5),
+    paddingBottom: scale(5),
+    paddingLeft: scale(10),
+    paddingRight: scale(10),
+    borderBottomWidth: 1,
+    borderBottomColor: commonColor.listBorderColor,
     backgroundColor: "rgba(255,255,255,0.2)"
   },
   mainContent: {
@@ -42,7 +42,7 @@ const commonStyles = {
   },
   badgeSuccessContainer: {
     borderRightWidth: 1,
-    borderRightColor: "#D3D3D3"
+    borderRightColor: commonColor.listBorderColor
   },
   badgeOccupiedContainer: {
   },

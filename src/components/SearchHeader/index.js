@@ -36,8 +36,20 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     this.searchChanged = true;
     // Clear the timer
     this._clearSearchTimer();
-    // Launch it again
+    // Launch timer
     this._startSearchTimer();
+  }
+
+  _clearSearch() {
+    // Check
+    if (this.searchText !== "") {
+      // Clear
+      this.searchText = "";
+      this.searchChanged = true;
+      this.textInput._root.clear();
+      // Launch timer
+      this._startSearchTimer();
+    }
   }
 
   _startSearchTimer() {
@@ -65,8 +77,12 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     return (
       <Header searchBar rounded style={style.header}>
         <Item style={style.items}>
-          <Icon type={iconSearchType} name={iconSearch} style={style.text}/>
-          <Input placeholder={I18n.t("general.search")} style={style.text} onChangeText={(searchText) => this._searchChanged(searchText)}/>
+          <Icon type={iconSearchType} name={iconSearch} style={style.icon}/>
+          <Input ref={(ref) => { this.textInput = ref; }} 
+            style={style.text}
+            placeholder={I18n.t("general.search")}
+            onChangeText={(searchText) => this._searchChanged(searchText)}/>
+          <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this._clearSearch()}/>
           <Icon type={iconType} name={icon} style={style.icon}/>
         </Item>
         <Button transparent>

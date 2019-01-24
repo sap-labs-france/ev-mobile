@@ -9,13 +9,14 @@ const commonStyles = {
     paddingTop: scale(10),
     paddingBottom: scale(5),
     borderBottomWidth: 1,
-    borderBottomColor: "#D3D3D3"
+    borderBottomColor: commonColor.listBorderColor
   },
   items: {
     backgroundColor: "black",
     color: commonColor.textColor,
   },
   icon: {
+    marginBottom: scale(5),
     color: commonColor.textColor
   },
   text: {

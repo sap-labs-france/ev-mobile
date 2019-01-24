@@ -9,7 +9,7 @@ const commonStyles = {
     paddingTop: scale(5),
     paddingBottom: scale(5),
     borderBottomWidth: 1,
-    borderBottomColor: "#D3D3D3"
+    borderBottomColor: commonColor.listBorderColor,
   },
   leftHeader: {
     flex: 0
