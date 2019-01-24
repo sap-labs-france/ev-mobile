@@ -1,7 +1,7 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./styles";
-import { Button, Icon, Text, Header, Input, Item } from "native-base";
+import { Button, Icon, Text, View, Input, Item } from "native-base";
 import Constants from "../../utils/Constants";
 import I18n from "../../I18n/I18n";
 import PropTypes from "prop-types";
@@ -75,19 +75,14 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     const style = computeStyleSheet();
     const {  iconSearch, iconSearchType } = this.props;
     return (
-      <Header searchBar rounded style={style.header}>
-        <Item style={style.items}>
-          <Icon type={iconSearchType} name={iconSearch} style={style.icon}/>
-          <Input ref={(ref) => { this.textInput = ref; }} 
-            style={style.text}
-            placeholder={I18n.t("general.search")}
-            onChangeText={(searchText) => this._searchChanged(searchText)}/>
-          <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this._clearSearch()}/>
-        </Item>
-        <Button transparent>
-          <Text>{I18n.t("general.search")}</Text>
-        </Button>
-      </Header>
+      <View style={style.container}>
+        <Icon type={iconSearchType} name={iconSearch} style={style.icon}/>
+        <Input ref={(ref) => { this.textInput = ref; }}
+          style={style.input}
+          placeholder={I18n.t("general.search")}
+          onChangeText={(searchText) => this._searchChanged(searchText)}/>
+        <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this._clearSearch()}/>
+      </View>
     );
   }
 }

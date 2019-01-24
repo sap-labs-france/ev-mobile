@@ -4,22 +4,21 @@ import commonColor from "../../theme/variables/commonColor";
 import { scale } from "react-native-size-matters";
 
 const commonStyles = {
-  header: {
+  container: {
     height: scale(45),
-    paddingTop: scale(10),
-    paddingBottom: scale(5),
+    paddingLeft: scale(10),
+    paddingRight: scale(10),
     borderBottomWidth: 1,
-    borderBottomColor: commonColor.listBorderColor
-  },
-  items: {
-    backgroundColor: "black",
+    borderBottomColor: commonColor.listBorderColor,
+    flexDirection: "row",
+		alignItems: "center",
+ },
+  input: {
     color: commonColor.textColor,
+    lineHeight: 24,
+    height: scale(25)
   },
   icon: {
-    marginBottom: scale(5),
-    color: commonColor.textColor
-  },
-  text: {
     color: commonColor.textColor
   }
 };
