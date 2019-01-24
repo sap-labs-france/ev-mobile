@@ -14,13 +14,13 @@ export default class HeaderComponent extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const { title, subTitle, leftAction, leftActionIcon, rightAction, rightActionIcon } = this.props;
+    const { title, subTitle, leftAction, leftActionIcon, leftActionIconType, rightAction, rightActionIcon, rightActionIconType } = this.props;
     return (
       <Header style={style.header}>
         <Left style={style.leftHeader}>
           {leftAction ?
             <Button transparent onPress={() => leftAction()}>
-              <Icon active name={leftActionIcon} style={style.iconHeader} />
+              <Icon active type={leftActionIconType} name={leftActionIcon} style={style.iconHeader} />
             </Button>
           :
             <Image source={logo} style={style.logoHeader} />
@@ -37,7 +37,7 @@ export default class HeaderComponent extends ResponsiveComponent {
         <Right style={style.rightHeader}>
           {rightAction ?
             <Button transparent onPress={() => rightAction()}>
-              <Icon active name={rightActionIcon} style={style.iconHeader} />
+              <Icon active type={rightActionIconType} name={rightActionIcon} style={style.iconHeader} />
             </Button>
           :
             <Image source={logo} style={style.logoHeader} />
@@ -53,9 +53,13 @@ HeaderComponent.propTypes = {
   subTitle: PropTypes.string,
   leftAction: PropTypes.func,
   leftActionIcon: PropTypes.string,
+  leftActionIconType: PropTypes.string,
   rightAction: PropTypes.func,
   rightActionIcon: PropTypes.string,
+  rightActionIconType: PropTypes.string,
 };
 
 HeaderComponent.defaultProps = {
+  leftActionIconType: "MaterialIcons",
+  rightActionIconType: "MaterialIcons"
 };

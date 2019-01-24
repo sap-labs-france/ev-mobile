@@ -23,13 +23,15 @@ class Sites extends ResponsiveComponent {
       limit: Constants.PAGING_SIZE,
       count: 0
     };
+    // Init
+    this.searchText = "";
   }
 
   async componentDidMount() {
     // Set
     this.mounted = true;
     // Get the sites
-    const sites = await this._getSites(this.state.skip, this.state.limit);
+    const sites = await this._getSites(this.searchText, this.state.skip, this.state.limit);
     // Add sites
     this.setState({
       sites: sites.result,
@@ -76,12 +78,12 @@ class Sites extends ResponsiveComponent {
     }
   }
 
-  _getSites = async (skip, limit) => {
+  _getSites = async (searchText = "",skip, limit) => {
     let sites = [];
     try {
       // Get the Sites
       sites = await _provider.getSites(
-        { WithAvailableChargers: true }, { skip, limit });
+        { Search: searchText, WithAvailableChargers: true }, { skip, limit });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -95,7 +97,7 @@ class Sites extends ResponsiveComponent {
     if (this.mounted) {
       const { skip, limit } = this.state;
       // Refresh All
-      let sites = await this._getSites(0, (skip + limit));
+      let sites = await this._getSites(this.searchText, 0, (skip + limit));
       // Add sites
       this.setState({
         sites: sites.result
@@ -108,7 +110,7 @@ class Sites extends ResponsiveComponent {
     // No reached the end?
     if ((skip + limit) < count) {
       // No: get next sites
-      let sites = await this._getSites(skip + Constants.PAGING_SIZE, limit);
+      let sites = await this._getSites(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState, props) => ({
         sites: [...prevState.sites, ...sites.result],
@@ -128,6 +130,13 @@ class Sites extends ResponsiveComponent {
     return null;
   }
 
+  _search(searchText) {
+    // Set 
+    this.searchText = searchText;
+    // Refresh
+    this._refresh();
+  }
+
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
@@ -137,7 +146,9 @@ class Sites extends ResponsiveComponent {
         <HeaderComponent
           title={I18n.t("sidebar.sites")}
           rightAction={navigation.openDrawer} rightActionIcon={"menu"}  />
-        <SearchHeaderComponent onChange={(event) => { console.log(event); }} />
+        <SearchHeaderComponent
+          onChange={(searchText) => this._search(searchText)} navigation={navigation}
+          icon={"store-mall-directory"} iconType={"MaterialIcons"}/>
         <View style={style.content}>
           {loading ?
             <Spinner color="white" style={style.spinner} />
