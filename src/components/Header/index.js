@@ -27,7 +27,7 @@ export default class HeaderComponent extends ResponsiveComponent {
           }
         </Left>
         <Body style={style.bodyHeader}>
-          <Title style={style.titleHeader}>{title}</Title>
+          <Title style={subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader}>{title}</Title>
           {subTitle ?
             <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>
           :

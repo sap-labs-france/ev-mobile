@@ -13,20 +13,6 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     this.searchChanged = false;
   }
 
-  async componentDidMount() {
-    // Add listeners
-    this.props.navigation.addListener("didFocus", this.componentDidFocus);
-    this.props.navigation.addListener("didBlur", this.componentDidBlur);
-  }
-
-  componentDidFocus = () => {
-  }
-
-  componentDidBlur = () => {
-    // Clear the timer
-    this._clearSearchTimer();
-  }
-
   componentWillUnmount() {
     // Clear the timer
     this._clearSearchTimer();

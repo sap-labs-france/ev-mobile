@@ -5,6 +5,7 @@ import { ResponsiveComponent } from "react-native-responsive-ui";
 import ProviderFactory from "../../provider/ProviderFactory";
 import ChargerComponent from "../../components/Charger";
 import HeaderComponent from "../../components/Header";
+import SearchHeaderComponent from "../../components/SearchHeader";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import computeStyleSheet from "./styles";
@@ -24,6 +25,8 @@ class Chargers extends ResponsiveComponent {
       limit: Constants.PAGING_SIZE,
       count: 0
     };
+    // Init
+    this.searchText = "";
   }
 
   async componentDidMount() {
@@ -31,7 +34,7 @@ class Chargers extends ResponsiveComponent {
     // Set
     this.mounted = true;
     // Get chargers first time
-    const chargers = await this._getChargers(this.state.skip, this.state.limit, siteAreaID);
+    const chargers = await this._getChargers(this.searchText, this.state.skip, this.state.limit, siteAreaID);
     // Add listeners
     this.props.navigation.addListener("didFocus", this.componentDidFocus);
     this.props.navigation.addListener("didBlur", this.componentDidBlur);
@@ -78,7 +81,7 @@ class Chargers extends ResponsiveComponent {
     }
   }
 
-  _getChargers = async (skip, limit, siteAreaID) => {
+  _getChargers = async (searchText, skip, limit, siteAreaID) => {
     const { withNoSite } = this.state;
     let chargers = [];
     try {
@@ -86,10 +89,10 @@ class Chargers extends ResponsiveComponent {
       if (!withNoSite && siteAreaID) {
         // Get with the Site
         chargers = await _provider.getChargers(
-          { SiteAreaID: siteAreaID }, { skip, limit });
+          { Search: searchText, SiteAreaID: siteAreaID }, { skip, limit });
       } else {
         // Get without the Site
-        chargers = await _provider.getChargers({}, { skip, limit });
+        chargers = await _provider.getChargers({ Search: searchText }, { skip, limit });
       }
     } catch (error) {
       // Other common Error
@@ -104,7 +107,7 @@ class Chargers extends ResponsiveComponent {
     // No reached the end?
     if ((skip + limit) < count) {
       // No: get next sites
-      let chargers = await this._getChargers(skip + Constants.PAGING_SIZE, limit, siteAreaID);
+      let chargers = await this._getChargers(this.searchText, skip + Constants.PAGING_SIZE, limit, siteAreaID);
       // Add sites
       this.setState((prevState, props) => ({
         chargers: [...prevState.chargers, ...chargers.result],
@@ -120,7 +123,7 @@ class Chargers extends ResponsiveComponent {
     if (this.mounted) {
       const { skip, limit } = this.state;
       // Refresh All
-      let chargers = await this._getChargers(0, (skip + limit), siteAreaID);
+      let chargers = await this._getChargers(this.searchText, 0, (skip + limit), siteAreaID);
       // Add sites
       this.setState((prevState, props) => ({
         chargers: chargers.result
@@ -136,6 +139,13 @@ class Chargers extends ResponsiveComponent {
       );
     }
     return null;
+  }
+
+  _search(searchText) {
+    // Set 
+    this.searchText = searchText;
+    // Refresh
+    this._refresh();
   }
 
   render() {
@@ -160,6 +170,8 @@ class Chargers extends ResponsiveComponent {
         <HeaderComponent title={I18n.t("chargers.title")}
           leftAction={() => navigation.navigate("SiteAreas", { siteID: siteID })} leftActionIcon={"arrow-back" }
           rightAction={navigation.openDrawer} rightActionIcon={"menu"} />
+        <SearchHeaderComponent
+          onChange={(searchText) => this._search(searchText)} navigation={navigation} icon={"ev-station"}/>
         <View style={style.content}>
           { this.state.loading ?
             <Spinner color="white" style={style.spinner} />

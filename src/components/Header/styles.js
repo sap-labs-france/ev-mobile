@@ -26,10 +26,13 @@ const commonStyles = {
   },
   titleHeader: {
     color: commonColor.textColor,
-    fontSize: scale(18),
+    fontSize: scale(22),
     width: "75%",
     textAlign: "center",
     fontWeight: "bold"
+  },
+  titleHeaderWithSubTitle: {
+    fontSize: scale(18),
   },
   subTitleHeader: {
     fontWeight: "bold",
