@@ -5,11 +5,7 @@ import { scale } from "react-native-size-matters";
 
 const commonStyles = {  
   footerContainer: {
-    backgroundColor: commonColor.brandPrimary,
-    borderTopStyle: "solid",
-    borderTopWidth: 1,
-    borderTopColor: commonColor.textColor,
-    paddingTop: scale(15)
+    backgroundColor: commonColor.brandPrimary
   }
 };
 
