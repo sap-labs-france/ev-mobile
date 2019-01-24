@@ -6,6 +6,7 @@ import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import ProviderFactory from "../../provider/ProviderFactory";
 import SiteAreaComponent from "../../components/SiteArea";
+import SearchHeaderComponent from "../../components/SearchHeader";
 import HeaderComponent from "../../components/Header";
 import computeStyleSheet from "./styles";
 import I18n from "../../I18n/I18n";
@@ -22,13 +23,15 @@ export default class SiteAreas extends ResponsiveComponent {
       limit: Constants.PAGING_SIZE,
       count: 0
     };
+    // Init
+    this.searchText = "";
   }
 
   async componentDidMount() {
     // Set
     this.mounted = true;
     // Get the sites
-    const siteAreas = await this._getSiteAreas(this.state.skip, this.state.limit);
+    const siteAreas = await this._getSiteAreas(this.searchText, this.state.skip, this.state.limit);
     // Add sites
     this.setState({
       siteAreas: siteAreas.result,
@@ -75,13 +78,13 @@ export default class SiteAreas extends ResponsiveComponent {
     }
   }
 
-  _getSiteAreas = async (skip, limit) => {
+  _getSiteAreas = async (searchText, skip, limit) => {
     const siteID = Utils.getParamFromNavigation(this.props.navigation, "siteID", null);
     let siteAreas = [];
     try {
       // Get the Sites
       siteAreas = await _provider.getSiteAreas(
-        { SiteID: siteID, WithAvailableChargers: true }, { skip, limit });
+        { Search: searchText, SiteID: siteID, WithAvailableChargers: true }, { skip, limit });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -95,7 +98,7 @@ export default class SiteAreas extends ResponsiveComponent {
     if (this.mounted) {
       const { skip, limit } = this.state;
       // Refresh All
-      const siteAreas = await this._getSiteAreas(0, (skip + limit));
+      const siteAreas = await this._getSiteAreas(this.searchText, 0, (skip + limit));
       // Add sites
       this.setState({
         siteAreas: siteAreas.result
@@ -108,7 +111,7 @@ export default class SiteAreas extends ResponsiveComponent {
     // No reached the end?
     if ((skip + limit) < count) {
       // No: get next sites
-      const siteAreas = await this._getSiteAreas(skip + Constants.PAGING_SIZE, limit);
+      const siteAreas = await this._getSiteAreas(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState, props) => ({
         siteAreas: [...prevState.siteAreas, ...siteAreas.result],
@@ -128,6 +131,13 @@ export default class SiteAreas extends ResponsiveComponent {
     return null;
   }
 
+  _search(searchText) {
+    // Set 
+    this.searchText = searchText;
+    // Refresh
+    this._refresh();
+  }
+
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
@@ -137,6 +147,8 @@ export default class SiteAreas extends ResponsiveComponent {
         <HeaderComponent title={I18n.t("siteAreas.title")}
           leftAction={() => navigation.navigate("Sites")} leftActionIcon={"arrow-back" }
           rightAction={navigation.openDrawer} rightActionIcon={"menu"} />
+        <SearchHeaderComponent
+          onChange={(searchText) => this._search(searchText)} navigation={navigation} icon={"view-week"}/>
         <View style={style.content}>
           {loading ?
             <Spinner color="white" style={style.spinner} />

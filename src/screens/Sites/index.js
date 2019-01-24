@@ -155,8 +155,7 @@ class Sites extends ResponsiveComponent {
         <HeaderComponent title={I18n.t("sidebar.sites")}
           rightAction={navigation.openDrawer} rightActionIcon={"menu"}  />
         <SearchHeaderComponent
-          onChange={(searchText) => this._search(searchText)} navigation={navigation}
-          icon={"store-mall-directory"} iconType={"MaterialIcons"}/>
+          onChange={(searchText) => this._search(searchText)} navigation={navigation} icon={"store-mall-directory"}/>
         <View style={style.content}>
           {loading ?
             <Spinner color="white" style={style.spinner} />

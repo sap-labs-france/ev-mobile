@@ -56,10 +56,13 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
 
   _startSearchTimer() {
     // Start the timer
-    this.timerCheckSearch = setTimeout(() => {
-      // Refresh
-      this._checkSearch();
-    }, Constants.SEARCH_CHECK_PERIOD_MILLIS);
+    if (!this.timerCheckSearch) {
+      // Start
+      this.timerCheckSearch = setTimeout(() => {
+        // Refresh
+        this._checkSearch();
+      }, Constants.SEARCH_CHECK_PERIOD_MILLIS);
+    }
   }
 
   _clearSearchTimer() {
