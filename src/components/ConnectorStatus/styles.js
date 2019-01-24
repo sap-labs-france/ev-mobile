@@ -9,7 +9,7 @@ const commonStyles = {
     color: commonColor.textColor,
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: (Platform.OS === "ios" ? scale(35) : scale(30))
+    fontSize: (Platform.OS === "ios" ? scale(35) : scale(32))
   },
   status: {
     width: scale(44),
