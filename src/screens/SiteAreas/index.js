@@ -1,11 +1,12 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import { FlatList, RefreshControl } from "react-native";
-import { Container, Header, Spinner, Left, Right, Body, Title, Button, Icon, View } from "native-base";
+import { Container, Spinner, View } from "native-base";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import ProviderFactory from "../../provider/ProviderFactory";
 import SiteAreaComponent from "../../components/SiteArea";
+import HeaderComponent from "../../components/Header";
 import computeStyleSheet from "./styles";
 import I18n from "../../I18n/I18n";
 
@@ -133,21 +134,10 @@ export default class SiteAreas extends ResponsiveComponent {
     const { loading } = this.state;
     return (
       <Container>
-        <Header style={style.header}>
-        <Left style={style.leftHeader}>
-            <Button transparent onPress={() => navigation.navigate("Sites")}>
-              <Icon active name="arrow-back" style={style.iconHeader} />
-            </Button>
-          </Left>
-          <Body style={style.bodyHeader}>
-            <Title style={style.titleHeader}>{I18n.t("siteAreas.title")}</Title>
-          </Body>
-          <Right style={style.rightHeader}>
-            <Button transparent onPress={() => navigation.openDrawer()}>
-              <Icon active name="menu" style={style.iconHeader} />
-            </Button>
-          </Right>
-        </Header>
+        <HeaderComponent
+          title={I18n.t("siteAreas.title")}
+          leftAction={() => navigation.navigate("Sites")} leftActionIcon={"arrow-back" }
+          rightAction={navigation.openDrawer} rightActionIcon={"menu"} />
         <View style={style.content}>
           {loading ?
             <Spinner color="white" style={style.spinner} />

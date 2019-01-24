@@ -2,7 +2,7 @@ import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import { View, processColor } from "react-native";
 import { Text, Icon, Spinner } from "native-base";
-import ChargerHeader from "../ChargerHeader";
+import HeaderComponent from "../../../components/Header";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import Constants from "../../../utils/Constants";
 import Utils from "../../../utils/Utils";
@@ -165,7 +165,8 @@ class ChartDetails extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const { firstLoad, charger, connector, consumptions, stateOfCharge, notAuthorizedToSeeTheChart } = this.state;
+    const { firstLoad, charger, connector, connectorID, consumptions, stateOfCharge, notAuthorizedToSeeTheChart } = this.state;
+    const connectorLetter = String.fromCharCode(64 + connectorID);
     const navigation = this.props.navigation;
     return (
       <View style={style.container}>
@@ -179,7 +180,9 @@ class ChartDetails extends ResponsiveComponent {
             </View>
           :
             <View style={style.chartContainer}>
-              <ChargerHeader charger={charger} connector={connector} navigation={navigation} />
+              <HeaderComponent
+                title={charger.id} subTitle={`${I18n.t("details.connector")} ${connectorLetter}`}
+                leftAction={() => navigation.navigate("Chargers", { siteAreaID: charger.siteAreaID })} leftActionIcon={"arrow-back" } />
               <View style={style.container}>
                 <LineChart
                   style={style.chart}

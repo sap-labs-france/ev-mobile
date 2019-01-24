@@ -1,9 +1,10 @@
 import React from "react";
-import { Platform, FlatList, RefreshControl, Image } from "react-native";
-import { Container, Button, Icon, Header, Body, Left, Right, View, Spinner, List, Title } from "native-base";
+import { Platform, FlatList, RefreshControl } from "react-native";
+import { Container, View, Spinner, List } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import ProviderFactory from "../../provider/ProviderFactory";
 import ChargerComponent from "../../components/Charger";
+import HeaderComponent from "../../components/Header";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import computeStyleSheet from "./styles";
@@ -156,26 +157,10 @@ class Chargers extends ResponsiveComponent {
     }
     return (
       <Container>
-        <Header style={style.header}>
-          <Left style={style.leftHeader}>
-            {!withNoSite
-            ?
-              <Button transparent onPress={() => navigation.navigate("SiteAreas", { siteID: siteID })}>
-                <Icon active name="arrow-back" style={style.iconHeader} />
-              </Button>
-            :
-              <Image source={require("../../../assets/logo-low.gif")} style={style.logoHeader} />
-            }
-          </Left>
-          <Body style={style.bodyHeader}>
-            <Title style={style.titleHeader}>{I18n.t("chargers.title")}</Title>
-          </Body>
-          <Right style={style.rightHeader}>
-            <Button transparent onPress={() => navigation.openDrawer()}>
-              <Icon active name="menu" style={style.iconHeader} />
-            </Button>
-          </Right>
-        </Header>
+        <HeaderComponent
+          title={I18n.t("chargers.title")}
+          leftAction={() => navigation.navigate("SiteAreas", { siteID: siteID })} leftActionIcon={"arrow-back" }
+          rightAction={navigation.openDrawer} rightActionIcon={"menu"} />
         <View style={style.content}>
           { this.state.loading ?
             <Spinner color="white" style={style.spinner} />

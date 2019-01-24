@@ -4,7 +4,7 @@ import { Container, View, Text, Spinner } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./styles";
-import ChargerHeader from "../ChargerHeader";
+import HeaderComponent from "../../../components/Header";
 import Utils from "../../../utils/Utils";
 import ProviderFactory from "../../../provider/ProviderFactory";
 
@@ -49,14 +49,17 @@ class ChargerDetails extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { charger, connector, firstLoad } = this.state;
+    const { charger, connectorID, firstLoad } = this.state;
+    const connectorLetter = String.fromCharCode(64 + connectorID);
     return (
       <Container>
         {firstLoad ?
           <Spinner color="white" style={style.spinner} />
         :
           <View>
-            <ChargerHeader charger={charger} connector={connector} navigation={navigation} />
+            <HeaderComponent
+              title={charger.id} subTitle={`${I18n.t("details.connector")} ${connectorLetter}`}
+              leftAction={() => navigation.navigate("Chargers", { siteAreaID: charger.siteAreaID })} leftActionIcon={"arrow-back" } />
             <ScrollView style={style.scrollViewContainer}>
               <View style={style.container}>
                 <View style={style.columnContainer}>

@@ -1,12 +1,12 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
-import commonColor from "../../../theme/variables/commonColor";
+import commonColor from "../../theme/variables/commonColor";
 import { scale } from "react-native-size-matters";
 
 const commonStyles = {
   header: {
     height: scale(45),
-    paddingTop: scale(10),
+    paddingTop: scale(5),
     paddingBottom: scale(5),
     borderBottomWidth: 1,
     borderBottomColor: "#D3D3D3"
@@ -20,26 +20,26 @@ const commonStyles = {
   rightHeader: {
     flex: 0
   },
+  logoHeader: {
+    width: scale(45),
+    resizeMode: "contain"
+  },
   titleHeader: {
     color: commonColor.textColor,
-    fontSize: scale(15),
+    fontSize: scale(18),
+    width: "75%",
+    textAlign: "center",
     fontWeight: "bold"
   },
   subTitleHeader: {
     fontWeight: "bold",
     color: commonColor.textColor,
-    fontSize: scale(10),
+    fontSize: scale(12),
     marginTop: scale(-2)
-  },
-  logoHeader: {
-    width: scale(45),
-    resizeMode: "contain"
   },
   iconHeader: {
     fontSize: scale(25)
   },
-  detailsContainer: {
-  }
 };
 
 const portraitStyles = {

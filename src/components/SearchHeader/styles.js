@@ -1,14 +1,25 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
+import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
 import { scale } from "react-native-size-matters";
-import deepmerge from "deepmerge";
 
 const commonStyles = {
-  content: {
-    flex: 1
+  header: {
+    height: scale(45),
+    paddingTop: scale(10),
+    paddingBottom: scale(5),
+    borderBottomWidth: 1,
+    borderBottomColor: "#D3D3D3"
   },
-  spinner: {
-    flex: 1
+  items: {
+    backgroundColor: "black",
+    color: commonColor.textColor,
+  },
+  icon: {
+    color: commonColor.textColor
+  },
+  text: {
+    color: commonColor.textColor
   }
 };
 
@@ -30,3 +41,4 @@ export default function computeStyleSheet() {
     }
   ]);
 }
+

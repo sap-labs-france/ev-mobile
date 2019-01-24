@@ -1,13 +1,15 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import { Image, FlatList, RefreshControl } from "react-native";
-import { Container, Header, Spinner, Left, Right, Body, Title, Button, Icon, View } from "native-base";
+import { FlatList, RefreshControl } from "react-native";
+import { Container, Spinner, View } from "native-base";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import ProviderFactory from "../../provider/ProviderFactory";
 import SiteComponent from "../../components/Site";
-import I18n from "../../I18n/I18n";
+import SearchHeaderComponent from "../../components/SearchHeader";
+import HeaderComponent from "../../components/Header";
 import computeStyleSheet from "./styles";
+import I18n from "../../I18n/I18n";
 
 const _provider = ProviderFactory.getProvider();
 class Sites extends ResponsiveComponent {
@@ -132,20 +134,10 @@ class Sites extends ResponsiveComponent {
     const { loading } = this.state;
     return (
       <Container>
-        <Header style={style.header}>
-          <Left style={style.leftHeader}>
-            <Image source={require("../../../assets/logo-low.gif")} style={style.logoHeader} />
-          </Left>
-          <Body style={style.bodyHeader}>
-            <Title style={style.titleHeader}>{I18n.t("sidebar.sites")}</Title>
-          </Body>
-          <Right style={style.rightHeader}>
-            <Button transparent onPress={() => navigation.openDrawer()}>
-              <Icon active name="menu" style={style.iconHeader} />
-            </Button>
-          </Right>
-        </Header>
-
+        <HeaderComponent
+          title={I18n.t("sidebar.sites")}
+          rightAction={navigation.openDrawer} rightActionIcon={"menu"}  />
+        <SearchHeaderComponent onChange={(event) => { console.log(event); }} />
         <View style={style.content}>
           {loading ?
             <Spinner color="white" style={style.spinner} />

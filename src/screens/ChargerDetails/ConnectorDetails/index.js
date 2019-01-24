@@ -2,9 +2,9 @@ import React from "react";
 import { ScrollView, RefreshControl, TouchableOpacity, Image, Alert } from "react-native";
 import { Container, Spinner, Icon, View, Thumbnail, Text } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import ChargerHeader from "../ChargerHeader";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import ConnectorStatusComponent from "../../../components/ConnectorStatus";
+import HeaderComponent from "../../../components/Header";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import computeStyleSheet from "./styles";
@@ -400,7 +400,8 @@ class ConnectorDetails extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { firstLoad, charger, connector, siteImage, refreshing, userImage, transaction, hours, minutes, seconds } = this.state;
+    const { firstLoad, charger, connector, connectorID, siteImage, refreshing, userImage, transaction, hours, minutes, seconds } = this.state;
+    const connectorLetter = String.fromCharCode(64 + connectorID);
     return (
       firstLoad ?
         <Container style={style.container}>
@@ -408,10 +409,10 @@ class ConnectorDetails extends ResponsiveComponent {
         </Container>
       :
         <Container style={style.container}>
-          <ChargerHeader charger={charger} connector={connector} navigation={navigation} />
-            <ScrollView style={style.scrollViewContainer} refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={this._refresh} />
-            }>
+          <HeaderComponent
+            title={charger.id} subTitle={`${I18n.t("details.connector")} ${connectorLetter}`}
+            leftAction={() => navigation.navigate("Chargers", { siteAreaID: charger.siteAreaID })} leftActionIcon={"arrow-back" } />
+          <ScrollView style={style.scrollViewContainer} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={this._refresh} />}>
             <View style={style.detailsContainer}>
               <Image style={style.backgroundImage} source={siteImage ? {uri: siteImage} : noSite}/>
               <View style={style.transactionContainer}>
