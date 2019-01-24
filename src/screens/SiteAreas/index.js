@@ -134,8 +134,7 @@ export default class SiteAreas extends ResponsiveComponent {
     const { loading } = this.state;
     return (
       <Container>
-        <HeaderComponent
-          title={I18n.t("siteAreas.title")}
+        <HeaderComponent title={I18n.t("siteAreas.title")}
           leftAction={() => navigation.navigate("Sites")} leftActionIcon={"arrow-back" }
           rightAction={navigation.openDrawer} rightActionIcon={"menu"} />
         <View style={style.content}>

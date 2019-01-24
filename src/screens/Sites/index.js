@@ -27,6 +27,15 @@ class Sites extends ResponsiveComponent {
     this.searchText = "";
   }
 
+  async componentWillMount() {
+    // Get if Org is active
+    const isComponentOrganizationActive = (await _provider.getSecurityProvider()).isComponentOrganizationActive();
+    if (!isComponentOrganizationActive) {
+      // Navigate
+      this.props.navigation.navigate("Chargers", { withNoSite: true });
+    }
+  }
+
   async componentDidMount() {
     // Set
     this.mounted = true;
@@ -143,8 +152,7 @@ class Sites extends ResponsiveComponent {
     const { loading } = this.state;
     return (
       <Container>
-        <HeaderComponent
-          title={I18n.t("sidebar.sites")}
+        <HeaderComponent title={I18n.t("sidebar.sites")}
           rightAction={navigation.openDrawer} rightActionIcon={"menu"}  />
         <SearchHeaderComponent
           onChange={(searchText) => this._search(searchText)} navigation={navigation}

@@ -157,8 +157,7 @@ class Chargers extends ResponsiveComponent {
     }
     return (
       <Container>
-        <HeaderComponent
-          title={I18n.t("chargers.title")}
+        <HeaderComponent title={I18n.t("chargers.title")}
           leftAction={() => navigation.navigate("SiteAreas", { siteID: siteID })} leftActionIcon={"arrow-back" }
           rightAction={navigation.openDrawer} rightActionIcon={"menu"} />
         <View style={style.content}>
