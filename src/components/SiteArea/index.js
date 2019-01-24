@@ -5,6 +5,7 @@ import { TouchableOpacity } from "react-native";
 import { Text, View, Icon } from "native-base";
 import computeStyleSheet from "./styles";
 import I18n from "../../I18n/I18n";
+import PropTypes from "prop-types";
 
 export default class SiteAreaComponent extends ResponsiveComponent {
 
@@ -36,3 +37,11 @@ export default class SiteAreaComponent extends ResponsiveComponent {
     );
   }
 }
+
+SiteAreaComponent.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  siteArea: PropTypes.object.isRequired
+};
+
+SiteAreaComponent.defaultProps = {
+};

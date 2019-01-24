@@ -6,6 +6,7 @@ import { Text, View, Icon } from "native-base";
 import openMap from "react-native-open-maps";
 import computeStyleSheet from "./styles";
 import I18n from "../../I18n/I18n";
+import PropTypes from "prop-types";
 
 export default class SiteComponent extends ResponsiveComponent {
 
@@ -42,3 +43,11 @@ export default class SiteComponent extends ResponsiveComponent {
     );
   }
 }
+
+SiteComponent.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  site: PropTypes.object.isRequired
+};
+
+SiteComponent.defaultProps = {
+};

@@ -7,6 +7,7 @@ import ConnectorStatusComponent from "../../ConnectorStatus";
 import * as Animatable from "react-native-animatable";
 import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./styles";
+import PropTypes from "prop-types";
 
 export default class ConnectorComponent extends ResponsiveComponent {
   _renderConnectorDetails = (connector, style) => {
@@ -87,3 +88,13 @@ export default class ConnectorComponent extends ResponsiveComponent {
     );
   }
 }
+
+ConnectorComponent.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  charger: PropTypes.object.isRequired,
+  connector: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired
+};
+
+ConnectorComponent.defaultProps = {
+};

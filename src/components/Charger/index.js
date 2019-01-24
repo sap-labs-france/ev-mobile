@@ -4,6 +4,7 @@ import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./styles";
 import * as Animatable from "react-native-animatable";
 import ConnectorComponent from "./Connector";
+import PropTypes from "prop-types";
 
 export default class ChargerComponent extends ResponsiveComponent {
   constructor(props) {
@@ -61,3 +62,11 @@ export default class ChargerComponent extends ResponsiveComponent {
     );
   }
 }
+
+ChargerComponent.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  charger: PropTypes.object.isRequired
+};
+
+ChargerComponent.defaultProps = {
+};

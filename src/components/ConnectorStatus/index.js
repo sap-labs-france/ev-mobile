@@ -5,6 +5,7 @@ import Constants from "../../utils/Constants";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import * as Animatable from "react-native-animatable";
 import computeStyleSheet from "./styles";
+import PropTypes from "prop-types";
 
 export default class ConnectorStatusComponent extends ResponsiveComponent {
   _getStyleFromStatus(connector, style) {
@@ -51,3 +52,10 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     );
   }
 }
+
+ConnectorStatusComponent.propTypes = {
+  connector: PropTypes.object.isRequired
+};
+
+ConnectorStatusComponent.defaultProps = {
+};
