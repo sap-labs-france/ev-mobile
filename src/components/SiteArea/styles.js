@@ -8,7 +8,7 @@ const commonStyles = {
   siteContainer: {
     flex: 1,
     flexDirection: "column",
-    height: scale(115),
+    height: scale(122),
     paddingTop: scale(5),
     paddingBottom: scale(5),
     paddingLeft: scale(10),
@@ -19,7 +19,10 @@ const commonStyles = {
   },
   mainContent: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    paddingBottom: scale(5),
+    borderBottomWidth: 1,
+    borderBottomColor: commonColor.listBorderColor
   },
   siteName: {
     fontSize: scale(20),
@@ -27,18 +30,18 @@ const commonStyles = {
     fontWeight: "bold"
   },
   icon: {
-    paddingTop: 5,
     fontSize: scale(25)
   },
-  detailsContainer: {
+  detailedContent: {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center"
   },
   badgeContainer: {
+    paddingTop: scale(5),
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   badgeSuccessContainer: {
     borderRightWidth: 1,
@@ -73,6 +76,7 @@ const commonStyles = {
   },
   connectorSubTitle: {
     fontSize: scale(15),
+    paddingBottom: scale(5),
     marginTop: scale(5),
     marginBottom: scale(5),
     marginLeft: scale(10),

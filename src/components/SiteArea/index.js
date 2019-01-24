@@ -19,7 +19,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
             <Text style={style.siteName}>{siteArea.name}</Text>
             <Icon style={style.icon} name="arrow-forward"/>
           </View>
-          <View style={style.detailsContainer}>
+          <View style={style.detailedContent}>
             <Text style={style.connectorText}>{I18n.t("sites.chargePoint")}</Text>
             <View style={[style.badgeContainer, style.badgeSuccessContainer]}>
               <Badge containerStyle={[style.connectorBadge, style.freeConnectorBadge]}
