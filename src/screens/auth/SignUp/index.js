@@ -67,8 +67,7 @@ const formValidationDef = {
     }
   }
 };
-
-class SignUp extends React.Component {
+export default class SignUp extends React.Component {
 
   firstNameInput;
   emailInput;
@@ -275,5 +274,3 @@ class SignUp extends React.Component {
     );
   }
 }
-
-export default SignUp;

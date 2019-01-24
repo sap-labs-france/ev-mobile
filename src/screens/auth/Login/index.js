@@ -49,7 +49,7 @@ const formValidationDef = {
   }
 };
 
-class Login extends ResponsiveComponent {
+export default class Login extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -291,5 +291,3 @@ class Login extends ResponsiveComponent {
     );
   }
 }
-
-export default Login;

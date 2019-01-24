@@ -5,7 +5,7 @@ import computeStyleSheet from "./styles";
 import * as Animatable from "react-native-animatable";
 import ConnectorComponent from "./Connector";
 
-class ChargerComponent extends ResponsiveComponent {
+export default class ChargerComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -61,5 +61,3 @@ class ChargerComponent extends ResponsiveComponent {
     );
   }
 }
-
-export default ChargerComponent;

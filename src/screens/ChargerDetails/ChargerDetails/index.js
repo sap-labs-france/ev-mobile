@@ -10,7 +10,7 @@ import ProviderFactory from "../../../provider/ProviderFactory";
 
 const _provider = ProviderFactory.getProvider();
 
-class ChargerDetails extends ResponsiveComponent {
+export default class ChargerDetails extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -86,5 +86,3 @@ class ChargerDetails extends ResponsiveComponent {
     );
   }
 }
-
-export default ChargerDetails;

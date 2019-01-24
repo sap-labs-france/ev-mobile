@@ -8,7 +8,7 @@ import * as Animatable from "react-native-animatable";
 import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./styles";
 
-class ConnectorComponent extends ResponsiveComponent {
+export default class ConnectorComponent extends ResponsiveComponent {
   _renderConnectorDetails = (connector, style) => {
     return (
       <View style={style.statusConnectorDetailsContainer}>
@@ -87,5 +87,3 @@ class ConnectorComponent extends ResponsiveComponent {
     );
   }
 }
-
-export default ConnectorComponent;

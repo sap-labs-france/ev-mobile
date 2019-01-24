@@ -16,7 +16,7 @@ const noSite = require("../../../../assets/no-site.gif");
 
 const _provider = ProviderFactory.getProvider();
 
-class ConnectorDetails extends ResponsiveComponent {
+export default class ConnectorDetails extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -503,5 +503,3 @@ class ConnectorDetails extends ResponsiveComponent {
     );
   }
 }
-
-export default ConnectorDetails;

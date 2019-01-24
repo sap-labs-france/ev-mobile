@@ -6,7 +6,7 @@ import { ResponsiveComponent } from "react-native-responsive-ui";
 import * as Animatable from "react-native-animatable";
 import computeStyleSheet from "./styles";
 
-class ConnectorStatusComponent extends ResponsiveComponent {
+export default class ConnectorStatusComponent extends ResponsiveComponent {
   _getStyleFromStatus(connector, style) {
     switch (connector.status) {
       // Green
@@ -51,5 +51,3 @@ class ConnectorStatusComponent extends ResponsiveComponent {
     );
   }
 }
-
-export default ConnectorStatusComponent;

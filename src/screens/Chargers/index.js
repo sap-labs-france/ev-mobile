@@ -1,7 +1,6 @@
 import React from "react";
 import { Platform, FlatList, RefreshControl } from "react-native";
 import { Container, View, Spinner, List } from "native-base";
-import { ResponsiveComponent } from "react-native-responsive-ui";
 import ProviderFactory from "../../provider/ProviderFactory";
 import ChargerComponent from "../../components/Charger";
 import HeaderComponent from "../../components/Header";
@@ -10,9 +9,10 @@ import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import computeStyleSheet from "./styles";
 import I18n from "../../I18n/I18n";
+import BaseScreen from "../BaseScreen"
 
 const _provider = ProviderFactory.getProvider();
-class Chargers extends ResponsiveComponent {
+export default class Chargers extends BaseScreen {
   constructor(props) {
     super(props);
     // Init State
@@ -25,60 +25,27 @@ class Chargers extends ResponsiveComponent {
       limit: Constants.PAGING_SIZE,
       count: 0
     };
-    // Init
-    this.searchText = "";
   }
 
   async componentDidMount() {
+    // Call parent
+    super.componentDidMount();
+    // Get ID
     const siteAreaID = Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null);
-    // Set
-    this.mounted = true;
     // Get chargers first time
     const chargers = await this._getChargers(this.searchText, this.state.skip, this.state.limit, siteAreaID);
-    // Add listeners
-    this.props.navigation.addListener("didFocus", this.componentDidFocus);
-    this.props.navigation.addListener("didBlur", this.componentDidBlur);
     // Add chargers
+    // eslint-disable-next-line react/no-did-mount-set-state
     this.setState((prevState, props) => ({
       chargers: chargers.result,
       count: chargers.count,
       loading: false
     }));
-    // Refresh every minutes
-    this.timerRefresh = setInterval(() => {
-      // Refresh
-      this._refresh();
-    }, Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS);
-  }
-
-  componentDidFocus = () => {
-    // Stop the timer
-    if (!this.timerRefresh) {
-      // Force Refresh
-      this._refresh();
-      // Refresh every minutes
-      this.timerRefresh = setInterval(() => {
-        // Refresh
-        this._refresh();
-      }, Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS);
-    }
-  }
-
-  componentDidBlur = () => {
-    // Stop the timer
-    if (this.timerRefresh) {
-      clearInterval(this.timerRefresh);
-      this.timerRefresh = null;
-    }
   }
 
   componentWillUnmount() {
-    // Clear
-    this.mounted = false;
-    // Stop the timer
-    if (this.timerRefresh) {
-      clearInterval(this.timerRefresh);
-    }
+    // Call parent
+    super.componentWillUnmount();
   }
 
   _getChargers = async (searchText, skip, limit, siteAreaID) => {
@@ -120,7 +87,7 @@ class Chargers extends ResponsiveComponent {
   _refresh = async () => {
     const siteAreaID = Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null);
     // Component Mounted?
-    if (this.mounted) {
+    if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
       let chargers = await this._getChargers(this.searchText, 0, (skip + limit), siteAreaID);
@@ -139,13 +106,6 @@ class Chargers extends ResponsiveComponent {
       );
     }
     return null;
-  }
-
-  _search(searchText) {
-    // Set 
-    this.searchText = searchText;
-    // Refresh
-    this._refresh();
   }
 
   render() {
@@ -198,5 +158,3 @@ class Chargers extends ResponsiveComponent {
     );
   }
 }
-
-export default Chargers;

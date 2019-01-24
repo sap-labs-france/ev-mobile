@@ -22,7 +22,7 @@ const formValidationDef = {
   }
 };
 
-class RetrievePassword extends React.Component {
+export default class RetrievePassword extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -129,5 +129,3 @@ class RetrievePassword extends React.Component {
     );
   }
 }
-
-export default RetrievePassword;

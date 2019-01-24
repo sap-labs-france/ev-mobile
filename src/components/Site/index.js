@@ -7,7 +7,7 @@ import openMap from "react-native-open-maps";
 import computeStyleSheet from "./styles";
 import I18n from "../../I18n/I18n";
 
-class SiteComponent extends ResponsiveComponent {
+export default class SiteComponent extends ResponsiveComponent {
 
   _siteLocation(address) {
     openMap({ latitude: address.latitude, longitude: address.longitude, zoom: 18});
@@ -42,5 +42,3 @@ class SiteComponent extends ResponsiveComponent {
     );
   }
 }
-
-export default SiteComponent;

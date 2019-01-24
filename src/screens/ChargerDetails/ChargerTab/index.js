@@ -7,7 +7,7 @@ import computeStyleSheet from "./styles";
 
 const _provider = ProviderFactory.getProvider();
 
-class ChargerTab extends ResponsiveComponent {
+export default class ChargerTab extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,5 +56,3 @@ class ChargerTab extends ResponsiveComponent {
     );
   }
 }
-
-export default ChargerTab;

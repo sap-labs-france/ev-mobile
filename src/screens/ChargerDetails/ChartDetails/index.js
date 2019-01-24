@@ -19,7 +19,7 @@ const EMPTY_CHART = [{ x:0, y:0 }];
 
 const _provider = ProviderFactory.getProvider();
 
-class ChartDetails extends ResponsiveComponent {
+export default class ChartDetails extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -308,5 +308,3 @@ class ChartDetails extends ResponsiveComponent {
     );
   }
 }
-
-export default ChartDetails;

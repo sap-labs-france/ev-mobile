@@ -1,5 +1,4 @@
 import React from "react";
-import { ResponsiveComponent } from "react-native-responsive-ui";
 import { FlatList, RefreshControl } from "react-native";
 import { Container, Spinner, View } from "native-base";
 import Utils from "../../utils/Utils";
@@ -10,9 +9,11 @@ import SearchHeaderComponent from "../../components/SearchHeader";
 import HeaderComponent from "../../components/Header";
 import computeStyleSheet from "./styles";
 import I18n from "../../I18n/I18n";
+import BaseScreen from "../BaseScreen"
 
 const _provider = ProviderFactory.getProvider();
-export default class SiteAreas extends ResponsiveComponent {
+
+export default class SiteAreas extends BaseScreen {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,59 +24,25 @@ export default class SiteAreas extends ResponsiveComponent {
       limit: Constants.PAGING_SIZE,
       count: 0
     };
-    // Init
-    this.searchText = "";
   }
 
   async componentDidMount() {
-    // Set
-    this.mounted = true;
+    // Call parent
+    super.componentDidMount();
     // Get the sites
     const siteAreas = await this._getSiteAreas(this.searchText, this.state.skip, this.state.limit);
     // Add sites
+    // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({
       siteAreas: siteAreas.result,
       count: siteAreas.count,
       loading: false
     });
-    // Refresh every minutes
-    this.timerRefresh = setInterval(() => {
-      // Refresh
-      this._refresh();
-    }, Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS);
-    // Add listeners
-    this.props.navigation.addListener("didFocus", this.componentDidFocus);
-    this.props.navigation.addListener("didBlur", this.componentDidBlur);
   }
 
   componentWillUnmount() {
-    // Clear
-    this.mounted = false;
-    // Stop the timer
-    if (this.timerRefresh) {
-      clearInterval(this.timerRefresh);
-    }
-  }
-
-  componentDidFocus = () => {
-    // Restart the timer
-    if (!this.timerRefresh) {
-      // Force Refresh
-      this._refresh();
-      // Refresh every minutes
-      this.timerRefresh = setInterval(() => {
-        // Refresh
-        this._refresh();
-      }, Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS);
-    }
-  }
-
-  componentDidBlur = () => {
-    // Stop the timer
-    if (this.timerRefresh) {
-      clearInterval(this.timerRefresh);
-      this.timerRefresh = null;
-    }
+    // Call parent
+    super.componentWillUnmount();
   }
 
   _getSiteAreas = async (searchText, skip, limit) => {
@@ -95,7 +62,7 @@ export default class SiteAreas extends ResponsiveComponent {
 
   _refresh = async () => {
     // Component Mounted?
-    if (this.mounted) {
+    if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
       const siteAreas = await this._getSiteAreas(this.searchText, 0, (skip + limit));
@@ -129,13 +96,6 @@ export default class SiteAreas extends ResponsiveComponent {
       );
     }
     return null;
-  }
-
-  _search(searchText) {
-    // Set 
-    this.searchText = searchText;
-    // Refresh
-    this._refresh();
   }
 
   render() {

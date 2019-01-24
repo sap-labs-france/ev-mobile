@@ -6,7 +6,7 @@ import { Text, View, Icon } from "native-base";
 import computeStyleSheet from "./styles";
 import I18n from "../../I18n/I18n";
 
-class SiteAreaComponent extends ResponsiveComponent {
+export default class SiteAreaComponent extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
@@ -36,5 +36,3 @@ class SiteAreaComponent extends ResponsiveComponent {
     );
   }
 }
-
-export default SiteAreaComponent;
