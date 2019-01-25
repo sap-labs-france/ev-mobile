@@ -45,7 +45,8 @@ const commonStyles = {
   },
   statusConnectorDetails: {
     flexDirection: "row",
-    justifyContent: "space-evenly"
+    justifyContent: "space-evenly",
+    height: scale(60)
   },
   statusConnectorDetail: {
     flexDirection: "column",
@@ -55,18 +56,17 @@ const commonStyles = {
   value: {
     color: commonColor.textColor,
     fontWeight: "bold",
-    fontSize: scale(35),
+    fontSize: scale(30),
     textAlign: "center"
   },
   sizeConnectorImage: {
     marginTop: scale(6),
-    width: scale(35),
-    height: scale(35)
+    width: scale(30),
+    height: scale(30)
   },
   labelImage: {
     color: commonColor.textColor,
     fontSize: scale(12),
-    marginTop: scale(3)
   },
   label: {
     color: commonColor.textColor,
@@ -75,7 +75,7 @@ const commonStyles = {
   },
   subLabel: {
     color: commonColor.textColor,
-    fontSize: scale(10)
+    fontSize: scale(9)
   }
 };
 

@@ -26,7 +26,7 @@ const commonStyles = {
   },
   titleHeader: {
     color: commonColor.textColor,
-    fontSize: scale(22),
+    fontSize: scale(20),
     width: "75%",
     textAlign: "center",
     fontWeight: "bold"
