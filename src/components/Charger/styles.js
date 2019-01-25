@@ -8,7 +8,7 @@ const commonStyles = {
   container: {
     flex: 1,
     flexDirection: "column",
-    height: (Platform.OS === "ios" ? scale(145) : scale(165)),
+    height: (Platform.OS === "ios" ? scale(145) : scale(150)),
     padding: scale(5),
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,

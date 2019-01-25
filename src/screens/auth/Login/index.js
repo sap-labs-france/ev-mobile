@@ -93,7 +93,6 @@ export default class Login extends ResponsiveComponent {
     if (formIsValid) {
       // Login
       const { password, email, eula, tenant } = this.state;
-      console.log(tenant);
       try {
         // Loading
         this.setState({loading: true});

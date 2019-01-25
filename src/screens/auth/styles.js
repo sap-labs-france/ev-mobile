@@ -39,7 +39,7 @@ const commonStyles = {
   },
   appText: {
     color: commonColor.textColor,
-    fontSize: scale(30),
+    fontSize: scale(25),
     paddingTop: scale(15),
   },
   versionText: {

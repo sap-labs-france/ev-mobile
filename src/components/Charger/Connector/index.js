@@ -62,7 +62,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
               <Animatable.View animation={!this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
                   style={style.animatableValue}
                   duration={this.animationDuration}>
-                <Text style={style.value}>100</Text>
+                <Text style={style.value}>{(connector.currentConsumption / 1000) < 10 ? (connector.currentConsumption > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0) : Math.trunc(connector.currentConsumption / 1000)}</Text>
                 <Text style={style.label} numberOfLines={1}>{I18n.t("details.instant")}</Text>
                 <Text style={style.subLabel} numberOfLines={1}>(kW)</Text>
               </Animatable.View>
@@ -75,7 +75,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
               </Animatable.View>
             </View>
             <View style={style.statusConnectorDetail}>
-              <Text style={style.value}>100</Text>
+              <Text style={style.value}>{Math.round(connector.totalConsumption / 1000)}</Text>
               <Text style={style.label} numberOfLines={1}>{I18n.t("details.total")}</Text>
               <Text style={style.subLabel} numberOfLines={1}>(kW.h)</Text>
             </View>
