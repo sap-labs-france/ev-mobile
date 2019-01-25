@@ -31,28 +31,39 @@ const commonStyles = {
   },
   statusConnectorDetailContainer: {
     flexDirection: "row",
-    paddingBottom: scale(10)
+    paddingBottom: scale(5)
   },
   statusConnectorDetailLetter: {
     marginTop: scale(-10),
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
     flexGrow: 1
+  },
+  leftStatusConnectorDetailLetter: {
+    alignItems: "flex-start"
+  },
+  rightStatusConnectorDetailLetter: {
+    alignItems: "flex-end"
   },
   statusConnectorDetailsContainer: {
     flexGrow: 2
   },
+  leftStatusConnectorDetailsContainer: {
+    paddingRight: scale(5)
+  },
+  rightStatusConnectorDetailsContainer: {
+    paddingLeft: scale(5)
+  },
   statusConnectorDetails: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    height: scale(60)
+    height: scale(65)
   },
   statusConnectorDetail: {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    width: scale(50)
+    width: scale(55)
   },
   animatableValue: {
     position: "absolute",
@@ -61,7 +72,8 @@ const commonStyles = {
   value: {
     color: commonColor.textColor,
     fontWeight: "bold",
-    fontSize: scale(25),
+    marginTop: scale(3),
+    fontSize: scale(28),
     textAlign: "center"
   },
   sizeConnectorImage: {
@@ -76,7 +88,7 @@ const commonStyles = {
   label: {
     color: commonColor.textColor,
     fontSize: scale(10),
-    marginTop: scale(-2)
+    marginTop: scale(-3),
   },
   subLabel: {
     color: commonColor.textColor,

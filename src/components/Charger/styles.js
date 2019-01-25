@@ -9,10 +9,7 @@ const commonStyles = {
     flex: 1,
     flexDirection: "column",
     height: (Platform.OS === "ios" ? scale(145) : scale(165)),
-    paddingTop: scale(5),
-    paddingBottom: scale(5),
-    paddingLeft: scale(10),
-    paddingRight: scale(10),
+    padding: scale(5),
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
     backgroundColor: "rgba(255,255,255,0.2)"
