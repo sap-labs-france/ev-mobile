@@ -28,7 +28,7 @@ export default class ChartDetails extends ResponsiveComponent {
       charger: null,
       connector: null,
       firstLoad: true,
-      notAuthorizedToSeeTheChart: false,
+      notAuthorized: false,
       values: [],
       consumptions: EMPTY_CHART,
       stateOfCharge: EMPTY_CHART
@@ -132,7 +132,7 @@ export default class ChartDetails extends ResponsiveComponent {
       } else {
             // Cannot see the chart
         this.setState({
-          notAuthorizedToSeeTheChart: true
+          notAuthorized: true
         });
       }
     }
@@ -165,7 +165,7 @@ export default class ChartDetails extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const { firstLoad, charger, connector, connectorID, consumptions, stateOfCharge, notAuthorizedToSeeTheChart } = this.state;
+    const { firstLoad, charger, connector, connectorID, consumptions, stateOfCharge, notAuthorized } = this.state;
     const connectorLetter = String.fromCharCode(64 + connectorID);
     const navigation = this.props.navigation;
     return (
@@ -173,10 +173,12 @@ export default class ChartDetails extends ResponsiveComponent {
         {firstLoad ?
           <Spinner color="white" style={style.spinner} />
         :
-          (notAuthorizedToSeeTheChart ?
+          (notAuthorized || connector.activeTransactionID === 0 ?
             <View style={style.notAuthorizedContainer}>
               <Icon style={style.notAuthorizedIcon} type="Entypo" name="circle-with-cross" />
-              <Text style={style.notAuthorizedText}>{I18n.t("details.notAuthorized")}</Text>
+              <Text style={style.notAuthorizedText}>{
+                (notAuthorized ? I18n.t("details.notAuthorized") : I18n.t("details.noTransaction"))
+              }</Text>
             </View>
           :
             <View style={style.chartContainer}>
