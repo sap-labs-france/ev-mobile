@@ -190,7 +190,7 @@ export default class ChartDetails extends ResponsiveComponent {
                     dataSets: [
                       {
                         values: consumptions,
-                        label: I18n.t("details.instantPower"),
+                        label: I18n.t("details.instantPowerChartLabel"),
                         config: {
                           mode: "CUBIC_BEZIER",
                           drawValues: false,
@@ -209,7 +209,7 @@ export default class ChartDetails extends ResponsiveComponent {
                       },
                       {
                         values: stateOfCharge,
-                        label: I18n.t("details.battery"),
+                        label: I18n.t("details.batteryChartLabel"),
                         config: {
                           axisDependency: "RIGHT",
                           mode: "CUBIC_BEZIER",

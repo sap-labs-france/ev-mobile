@@ -8,17 +8,70 @@ import * as Animatable from "react-native-animatable";
 import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./styles";
 import PropTypes from "prop-types";
+import Constants from "../../../utils/Constants";
 
 export default class ConnectorComponent extends ResponsiveComponent {
+  constructor(props) {
+    super(props);
+    // Init State
+    this.state = {
+      showBatteryLevel: false
+    };
+    // No animation
+    this.animationDuration = 0;
+  }
+
+  async componentDidMount() {
+    // Set
+    this.mounted = true;
+    // Refresh every minutes
+    this.timerAnimation = setInterval(() => {
+      // Animate
+      this._animate();
+    }, Constants.ANIMATION_PERIOD_MILLIS);
+  }
+
+  componentWillUnmount() {
+    // Stop the timer
+    if (this.timerAnimation) {
+      clearInterval(this.timerAnimation);
+    }
+  }
+
+  _animate() {
+    const { connector } = this.props;
+    if (connector && connector.currentStateOfCharge === 0) {
+      // SoC not supported
+      return;
+    }
+    // Init animation
+    this.animationDuration = 1000;
+    // Switch battery/Consumptio
+    this.setState({
+      showBatteryLevel: !this.state.showBatteryLevel
+    })
+  }
+
   _renderConnectorDetails = (connector, style) => {
     return (
       <View style={style.statusConnectorDetailsContainer}>
         {(connector.activeTransactionID !== 0) ?
           <View style={style.statusConnectorDetails}>
             <View style={style.statusConnectorDetail}>
-              <Text style={style.value}>{(connector.currentConsumption / 1000) < 10 ? (connector.currentConsumption > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0) : Math.trunc(connector.currentConsumption / 1000)}</Text>
-              <Text style={style.label} numberOfLines={1}>{I18n.t("details.instant")}</Text>
-              <Text style={style.subLabel} numberOfLines={1}>(kW)</Text>
+              <Animatable.View animation={!this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
+                  style={style.animatableValue}
+                  duration={this.animationDuration}>
+                <Text style={style.value}>{(connector.currentConsumption / 1000) < 10 ? (connector.currentConsumption > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0) : Math.trunc(connector.currentConsumption / 1000)}</Text>
+                <Text style={style.label} numberOfLines={1}>{I18n.t("details.instant")}</Text>
+                <Text style={style.subLabel} numberOfLines={1}>(kW)</Text>
+              </Animatable.View>
+              <Animatable.View animation={this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
+                  style={style.animatableValue}
+                  duration={this.animationDuration}>
+                <Text style={style.value}>{connector.currentStateOfCharge}</Text>
+                <Text style={style.label} numberOfLines={1}>{I18n.t("details.battery")}</Text>
+                <Text style={style.subLabel} numberOfLines={1}>(%)</Text>
+              </Animatable.View>
             </View>
             <View style={style.statusConnectorDetail}>
               <Text style={style.value}>{Math.round(connector.totalConsumption / 1000)}</Text>
@@ -51,7 +104,8 @@ export default class ConnectorComponent extends ResponsiveComponent {
     return (
       charger.connectors.length > 1
       ?
-        <TouchableOpacity style={style.statusLeftRightConnectorContainer} onPress={()=> navigation.navigate("ChargerTabNavigator", { chargerID: charger.id, connectorID: connector.connectorId })}>
+        <TouchableOpacity style={style.statusLeftRightConnectorContainer}
+            onPress={()=> navigation.navigate("ChargerTabNavigator", { chargerID: charger.id, connectorID: connector.connectorId })}>
           <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1} >
             <View style={even ? [style.connectorContainer, style.leftConnectorContainer] : [style.connectorContainer, style.rightConnectorContainer]}>
               <Text style={style.statusDescription} numberOfLines={1}>

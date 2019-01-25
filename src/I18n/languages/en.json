@@ -75,7 +75,7 @@
     "unknown": "Unknown",
     "type2": "Type 2",
     "comboCCS": "Combo",
-    "chademo": "CHAdeMO"
+    "chademo": "Chademo"
   },
   "details": {
     "connector": "Connector",
@@ -93,15 +93,16 @@
     "total": "Total",
     "maximum": "Maximum",
     "instant": "Instant",
+    "battery": "Battery",
     "vendor": "Vendor",
     "model": "Model",
     "ocppVersion": "OCPP Version",
     "firmwareVersion": "Firmware Version",
     "time": "Time (mins)",
     "chargeInWatts": "Charge (Watt)",
-    "instantPower": "Instant Power (W)",
-    "cumulated": "Cumulated (W.h)",
-    "battery": "Battery Level (%)",
+    "instantPowerChartLabel": "Instant Power (W)",
+    "cumulatedChartLabel": "Cumulated (W.h)",
+    "batteryChartLabel": "Battery Level (%)",
     "connectorMax": "Connector Max Power (W)"
   },
   "notifications": {

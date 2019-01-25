@@ -9,7 +9,7 @@ export default class BaseScreen extends ResponsiveComponent {
     this.mounted = false;
     this.timerRefresh = null;
   }
-  
+
   isMounted() {
     return this.mounted;
   }
@@ -17,11 +17,8 @@ export default class BaseScreen extends ResponsiveComponent {
   async componentDidMount() {
     // Set
     this.mounted = true;
-    // Refresh every minutes
-    this.timerRefresh = setInterval(() => {
-      // Refresh
-      this._refresh();
-    }, Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS);
+    // Start the timer
+    this._startRefreshTimer(true);
     // Add listeners
     this.props.navigation.addListener("didFocus", this._componentDidFocus);
     this.props.navigation.addListener("didBlur", this._componentDidBlur);
@@ -44,11 +41,14 @@ export default class BaseScreen extends ResponsiveComponent {
     this._clearRefreshTimer();
   }
 
-  _startRefreshTimer() {
+  _startRefreshTimer(initial = false) {
     // Restart the timer
     if (!this.timerRefresh) {
-      // Force Refresh
-      this._refresh();
+      // Inital load?
+      if (!initial) {
+        // No: Force Refresh
+        this._refresh();
+      }
       // Start the timer
       this.timerRefresh = setInterval(() => {
         // Refresh

@@ -51,6 +51,11 @@ const commonStyles = {
   statusConnectorDetail: {
     flexDirection: "column",
     justifyContent: "center",
+    alignItems: "center",
+    width: scale(50)
+  },
+  animatableValue: {
+    position: "absolute",
     alignItems: "center"
   },
   value: {
@@ -66,11 +71,11 @@ const commonStyles = {
   },
   labelImage: {
     color: commonColor.textColor,
-    fontSize: scale(12),
+    fontSize: scale(10),
   },
   label: {
     color: commonColor.textColor,
-    fontSize: scale(12),
+    fontSize: scale(10),
     marginTop: scale(-2)
   },
   subLabel: {

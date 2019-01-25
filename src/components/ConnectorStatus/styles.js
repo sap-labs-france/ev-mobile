@@ -15,7 +15,8 @@ const commonStyles = {
     textAlign: "center",
     fontWeight: "bold",
     fontSize: (Platform.OS === "ios" ? scale(32) : scale(32)),
-    marginTop: (Platform.OS === "ios" ? scale(3) : undefined)
+    marginTop: (Platform.OS === "ios" ? scale(3) : undefined),
+    marginLeft: (Platform.OS === "ios" ? scale(1) : undefined)
   },
   statusGreen: {
     backgroundColor: commonColor.brandSuccess,
