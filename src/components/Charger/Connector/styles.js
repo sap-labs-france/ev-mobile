@@ -26,7 +26,7 @@ const commonStyles = {
   statusDescription: {
     color: commonColor.textColor,
     textAlign: "center",
-    padding: scale(5),
+    paddingTop: scale(5),
     fontSize: scale(20)
   },
   statusConnectorDetailContainer: {
