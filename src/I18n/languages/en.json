@@ -90,6 +90,7 @@
     "notAuthorisedTitle": "Not Authorized",
     "notAuthorised": "You are not authorized to stop the transaction.",
     "accepted": "Request has been accepted",
+    "noBadgeID": "No badge in your profile",
     "denied": "Request has been denied",
     "total": "Total",
     "maximum": "Maximum",

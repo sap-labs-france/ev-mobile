@@ -151,13 +151,20 @@ export default class ConnectorDetails extends ResponsiveComponent {
 
   _startTransaction = async () => {
     const { charger, connector } = this.state;
-    this.setState({
-      loadingTransaction: true,
-      buttonDisabled: true
-    });
     try {
-      // Start the Transaction
-      let status = await _provider.startTransaction(charger.id, connector.connectorId);
+      // Check Tag ID
+      const userInfo = await _provider.getUserInfo(); 
+      if (!userInfo.tagIDs || userInfo.tagIDs.length === 0) {
+        Message.showError(I18n.t("details.noBadgeID"));
+        return;
+      }
+      // Init
+      this.setState({
+        loadingTransaction: true,
+        buttonDisabled: true
+      });
+        // Start the Transaction
+      let status = await _provider.startTransaction(charger.id, connector.connectorId, userInfo.tagIDs[0]);
       // Check
       if (status.status && status.status === "Accepted") {
         Message.showSuccess(I18n.t("details.accepted"));

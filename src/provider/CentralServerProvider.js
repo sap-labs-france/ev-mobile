@@ -279,7 +279,7 @@ export default class  CentralServerProvider {
     return result.data;
   }
 
-  async startTransaction(chargeBoxID, connectorID) {
+  async startTransaction(chargeBoxID, connectorID, tagID) {
     this.debug("startTransaction");
     // Init?
     await this.initialize();
@@ -287,7 +287,7 @@ export default class  CentralServerProvider {
     let result = await axios.post(`${centralRestServerServiceSecuredURL}/ChargingStationStartTransaction`, {
       chargeBoxID,
       "args": {
-        "tagID": _decodedToken.tagIDs[0],
+        tagID,
         connectorID
       }
     }, {
