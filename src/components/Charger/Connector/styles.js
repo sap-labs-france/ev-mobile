@@ -61,7 +61,7 @@ const commonStyles = {
   value: {
     color: commonColor.textColor,
     fontWeight: "bold",
-    fontSize: scale(30),
+    fontSize: scale(25),
     textAlign: "center"
   },
   sizeConnectorImage: {
