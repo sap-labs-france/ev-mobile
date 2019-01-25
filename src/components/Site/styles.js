@@ -34,7 +34,7 @@ const commonStyles = {
   },
   detailedContent: {
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "space-evenly",
     alignItems: "center"
   },
   badgeContainer: {
@@ -44,8 +44,6 @@ const commonStyles = {
     alignItems: "center"
   },
   badgeSuccessContainer: {
-    borderRightWidth: 1,
-    borderRightColor: commonColor.listBorderColor
   },
   badgeOccupiedContainer: {
   },

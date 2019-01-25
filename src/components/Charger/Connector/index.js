@@ -9,6 +9,7 @@ import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./styles";
 import PropTypes from "prop-types";
 import Constants from "../../../utils/Constants";
+import { scale } from "react-native-size-matters";
 
 export default class ConnectorComponent extends ResponsiveComponent {
   constructor(props) {
@@ -80,7 +81,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
             </View>
           </View>
         :
-          <View style={style.statusConnectorDetails}>
+          <View style={[style.statusConnectorDetails, style.statusConnectorDetailsStandalone]}>
             <View style={style.statusConnectorDetail}>
               <Image style={style.sizeConnectorImage} source={Utils.getConnectorTypeImage(connector.type)}/>
               <Text style={style.labelImage}>{Utils.translateConnectorType(connector.type)}</Text>

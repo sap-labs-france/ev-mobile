@@ -85,9 +85,15 @@ const commonStyles = {
 };
 
 const portraitStyles = {
+  statusConnectorDetailsStandalone: {
+    marginLeft: scale(-10)
+  }
 };
 
 const landscapeStyles = {
+  statusConnectorDetailsStandalone: {
+    marginLeft: scale(-50)
+  }
 };
 
 export default function computeStyleSheet() {
