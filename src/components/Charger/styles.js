@@ -2,14 +2,13 @@ import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
 import { scale } from "react-native-size-matters";
-import { Platform } from "react-native";
 
 const commonStyles = {
   container: {
     flex: 1,
     flexDirection: "column",
-    height: (Platform.OS === "ios" ? scale(140) : scale(145)),
-    padding: scale(5),
+    paddingLeft: scale(5),
+    paddingRight: scale(5),
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
     backgroundColor: "rgba(255,255,255,0.2)"

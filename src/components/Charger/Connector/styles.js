@@ -15,7 +15,6 @@ const commonStyles = {
   connectorContainer: {
     flexDirection: "column",
     justifyContent: "space-evenly",
-    width: "100%"
   },
   leftConnectorContainer: {
     borderColor: commonColor.textColor,
@@ -31,39 +30,26 @@ const commonStyles = {
   },
   statusConnectorDetailContainer: {
     flexDirection: "row",
-    paddingBottom: scale(5)
-  },
-  statusConnectorDetailLetter: {
-    marginTop: scale(-10),
-    flexDirection: "column",
-    justifyContent: "center",
-    flexGrow: 1
-  },
-  leftStatusConnectorDetailLetter: {
-    alignItems: "flex-start"
-  },
-  rightStatusConnectorDetailLetter: {
-    alignItems: "flex-end"
-  },
-  statusConnectorDetailsContainer: {
-    flexGrow: 2
-  },
-  leftStatusConnectorDetailsContainer: {
-    paddingRight: scale(5)
-  },
-  rightStatusConnectorDetailsContainer: {
-    paddingLeft: scale(5)
-  },
-  statusConnectorDetails: {
-    flexDirection: "row",
     justifyContent: "space-evenly",
-    height: scale(65)
+    alignItems: "center",
+    paddingBottom: scale(10),
+    paddingLeft: scale(10),
+    paddingRight: scale(10)
+  },
+  leftStatusConnectorDetailContainer: {
+    paddingRight: scale(10)
+  },
+  rightStatusConnectorDetailContainer: {
+    paddingLeft: scale(10)
   },
   statusConnectorDetail: {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    width: scale(55)
+    minWidth: scale(60)
+  },
+  statusConnectorDetailLetter: {
+    marginTop: scale(-10),
   },
   animatableValue: {
     position: "absolute",
@@ -72,11 +58,11 @@ const commonStyles = {
   value: {
     color: commonColor.textColor,
     fontWeight: "bold",
-    marginTop: scale(3),
-    fontSize: scale(28),
+    marginTop: scale(-1),
+    fontSize: scale(30),
     textAlign: "center"
   },
-  sizeConnectorImage: {
+  connectorImage: {
     marginTop: scale(6),
     width: scale(30),
     height: scale(30)
@@ -97,15 +83,9 @@ const commonStyles = {
 };
 
 const portraitStyles = {
-  statusConnectorDetailsStandalone: {
-    marginLeft: scale(-10)
-  }
 };
 
 const landscapeStyles = {
-  statusConnectorDetailsStandalone: {
-    marginLeft: scale(-50)
-  }
 };
 
 export default function computeStyleSheet() {
