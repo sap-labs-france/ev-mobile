@@ -1,7 +1,7 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./styles";
-import { Button, Icon, Text, View, Input, Item } from "native-base";
+import { Icon, View, Input } from "native-base";
 import Constants from "../../utils/Constants";
 import I18n from "../../I18n/I18n";
 import PropTypes from "prop-types";
@@ -47,8 +47,8 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
       this.searchText = "";
       this.searchChanged = true;
       this.textInput._root.clear();
-      // Launch timer
-      this._startSearchTimer();
+      // Search
+      this._checkSearch();
     }
   }
 
