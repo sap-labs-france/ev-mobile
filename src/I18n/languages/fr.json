@@ -82,7 +82,7 @@
     "informations": "Informations",
     "graph": "Courbe",
     "notAuthorized": "Données Privées !",
-    "noTransaction": "Pas de Transaction",
+    "noTransaction": "Pas de Transaction en cours",
     "startTransaction": "Démarrer transaction",
     "stopTransaction": "Stopper transaction",
     "startTransactionMessage": "Voulez-vous vraiment démarrer une nouvelle session sur la borne ",
