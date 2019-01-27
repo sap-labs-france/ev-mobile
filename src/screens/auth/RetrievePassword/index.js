@@ -95,7 +95,7 @@ export default class RetrievePassword extends React.Component {
                     type="email"
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.email")}
-                    placeholderTextColor={commonColor.textColor}
+                    placeholderTextColor={commonColor.tabBarTextColor}
                     style={styles.input}
                     autoCapitalize="none"
                     blurOnSubmit={false}

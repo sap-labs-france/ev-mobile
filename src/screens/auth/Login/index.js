@@ -215,7 +215,7 @@ export default class Login extends ResponsiveComponent {
                       type="email"
                       returnKeyType= "next"
                       placeholder={I18n.t("authentication.email")}
-                      placeholderTextColor={commonColor.textColor}
+                      placeholderTextColor={commonColor.tabBarTextColor}
                       onSubmitEditing={() => this.passwordInput._root.focus()}
                       style={style.inputField}
                       autoCapitalize="none"
@@ -238,7 +238,7 @@ export default class Login extends ResponsiveComponent {
                       ref={(ref)=>(this.passwordInput = ref)}
                       onSubmitEditing={()=>Keyboard.dismiss()}
                       placeholder={I18n.t("authentication.password")}
-                      placeholderTextColor={commonColor.textColor}
+                      placeholderTextColor={commonColor.tabBarTextColor}
                       style={style.inputField}
                       autoCapitalize="none"
                       blurOnSubmit={false}

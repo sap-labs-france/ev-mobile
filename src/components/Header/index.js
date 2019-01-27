@@ -20,7 +20,7 @@ export default class HeaderComponent extends ResponsiveComponent {
         <Left style={style.leftHeader}>
           {leftAction ?
             <Button transparent onPress={() => leftAction()}>
-              <Icon active type={leftActionIconType} name={leftActionIcon} style={style.iconHeader} />
+              <Icon active type={leftActionIconType} name={leftActionIcon} style={[style.iconHeader, style.leftIconHeader]} />
             </Button>
           :
             <Image source={logo} style={style.logoHeader} />
@@ -37,7 +37,7 @@ export default class HeaderComponent extends ResponsiveComponent {
         <Right style={style.rightHeader}>
           {rightAction ?
             <Button transparent onPress={() => rightAction()}>
-              <Icon active type={rightActionIconType} name={rightActionIcon} style={style.iconHeader} />
+              <Icon active type={rightActionIconType} name={rightActionIcon} style={[style.iconHeader, style.rightIconHeader]} />
             </Button>
           :
             <Image source={logo} style={style.logoHeader} />

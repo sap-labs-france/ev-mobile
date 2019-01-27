@@ -145,7 +145,7 @@ export default class SignUp extends React.Component {
                       onSubmitEditing={()=>(this.firstNameInput._root.focus())}
                       returnKeyType={"next"}
                       placeholder={I18n.t("authentication.name")}
-                      placeholderTextColor={commonColor.textColor}
+                      placeholderTextColor={commonColor.tabBarTextColor}
                       style={styles.input}
                       autoCapitalize="none"
                       blurOnSubmit={false}
@@ -165,7 +165,7 @@ export default class SignUp extends React.Component {
                       onSubmitEditing={()=>this.emailInput._root.focus()}
                       returnKeyType={"next"}
                       placeholder={I18n.t("authentication.firstName")}
-                      placeholderTextColor={commonColor.textColor}
+                      placeholderTextColor={commonColor.tabBarTextColor}
                       style={styles.input}
                       autoCapitalize="none"
                       blurOnSubmit={false}
@@ -185,7 +185,7 @@ export default class SignUp extends React.Component {
                       onSubmitEditing={()=>this.passwordInput._root.focus()}
                       returnKeyType={"next"}
                       placeholder={I18n.t("authentication.email")}
-                      placeholderTextColor={commonColor.textColor}
+                      placeholderTextColor={commonColor.tabBarTextColor}
                       style={styles.input}
                       autoCapitalize="none"
                       blurOnSubmit={false}
@@ -206,7 +206,7 @@ export default class SignUp extends React.Component {
                       onSubmitEditing={()=>this.repeatPasswordInput._root.focus()}
                       returnKeyType={"next"}
                       placeholder={I18n.t("authentication.password")}
-                      placeholderTextColor={commonColor.textColor}
+                      placeholderTextColor={commonColor.tabBarTextColor}
                       style={styles.input}
                       autoCapitalize="none"
                       blurOnSubmit={false}
@@ -227,7 +227,7 @@ export default class SignUp extends React.Component {
                       onSubmitEditing={()=>Keyboard.dismiss()}
                       returnKeyType={"next"}
                       placeholder={I18n.t("authentication.repeatPassword")}
-                      placeholderTextColor={commonColor.textColor}
+                      placeholderTextColor={commonColor.tabBarTextColor}
                       style={styles.input}
                       autoCapitalize="none"
                       blurOnSubmit={false}

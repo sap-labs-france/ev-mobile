@@ -5,18 +5,23 @@ import { scale } from "react-native-size-matters";
 
 const commonStyles = {
   container: {
-    height: scale(45),
+    flexDirection: "row",
+    justifyContent: "space-between", 
+		alignItems: "center",
+    height: scale(40),
     paddingLeft: scale(10),
     paddingRight: scale(10),
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
-    flexDirection: "row",
-		alignItems: "center",
- },
-  input: {
+  },
+  inputField: {
+    flex: 1,
+    paddingLeft: scale(5),
+    fontSize: scale(15),
     color: commonColor.textColor
   },
   icon: {
+    fontSize: scale(20),
     color: commonColor.textColor
   }
 };

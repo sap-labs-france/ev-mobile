@@ -14,13 +14,10 @@ const commonStyles = {
     color: commonColor.textColor
   },
   tabHeader: {
-    flexDirection: "column",
   },
   tabIcon: {
-    fontSize: scale(20)
-  },
-  tabText: {
-    fontSize: scale(15)
+    fontSize: scale(20),
+    paddingBottom: scale(5)
   }
 };
 

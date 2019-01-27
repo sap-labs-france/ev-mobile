@@ -1,10 +1,12 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
+import { TextInput } from "react-native";
 import computeStyleSheet from "./styles";
-import { Icon, View, Input } from "native-base";
+import { Icon, View } from "native-base";
 import Constants from "../../utils/Constants";
 import I18n from "../../I18n/I18n";
 import PropTypes from "prop-types";
+import commonColor from "../../theme/variables/commonColor";
 
 export default class SearchHeaderComponent extends ResponsiveComponent {
   constructor(props) {
@@ -46,7 +48,7 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
       // Clear
       this.searchText = "";
       this.searchChanged = true;
-      this.textInput._root.clear();
+      this.textInput.clear();
       // Search
       this._checkSearch();
     }
@@ -77,9 +79,10 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     return (
       <View style={style.container}>
         <Icon type={iconSearchType} name={iconSearch} style={style.icon}/>
-        <Input ref={(ref) => { this.textInput = ref; }}
-          style={style.input}
+        <TextInput ref={(ref) => { this.textInput = ref; }}
+          style={style.inputField}
           placeholder={I18n.t("general.search")}
+          placeholderTextColor={commonColor.tabBarTextColor}
           onChangeText={(searchText) => this._searchChanged(searchText)}/>
         <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this._clearSearch()}/>
       </View>
