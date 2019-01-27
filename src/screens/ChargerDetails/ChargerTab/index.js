@@ -1,5 +1,6 @@
 import React from "react";
-import { Container, Tab, Tabs, TabHeading, Spinner, Icon, Text } from "native-base";
+import { Container, Tab, Tabs, TabHeading, Spinner, Icon } from "native-base";
+import { ScrollView, RefreshControl } from "react-native";
 import ChargerDetails from "../ChargerDetails";
 import ChartDetails from "../ChartDetails";
 import ConnectorDetails from "../ConnectorDetails";
@@ -22,7 +23,8 @@ export default class ChargerTab extends  BaseScreen {
       selectedTabIndex: 0,
       firstLoad: true,
       isAuthorizedToStopTransaction: false,
-      isAdmin: false
+      isAdmin: false,
+      refreshing: false
     };
     // Override
     this.refreshPeriodMillis = Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS;
@@ -50,8 +52,12 @@ export default class ChargerTab extends  BaseScreen {
   _refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
+      // Display spinner
+      this.setState({refreshing: true});
       // Refresh Charger
       await this._getCharger();
+      // Hide spinner
+      this.setState({refreshing: false});
     }
   }
 
@@ -115,7 +121,14 @@ export default class ChargerTab extends  BaseScreen {
           <Spinner color="white" style={style.spinner} />
         </Container>
       :
-        <Container style={style.container}>
+        <ScrollView
+            contentContainerStyle={style.container}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._refresh}
+              />
+            }>
           <HeaderComponent
             title={charger.id} subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
             leftAction={() => navigation.navigate("Chargers", { siteAreaID: charger.siteAreaID })} leftActionIcon={"arrow-back" } />
@@ -151,7 +164,7 @@ export default class ChargerTab extends  BaseScreen {
               undefined
             }
           </Tabs>
-        </Container>
+        </ScrollView>
     );
   }
 }
