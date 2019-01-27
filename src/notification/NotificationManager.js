@@ -182,7 +182,7 @@ export default class NotificationManager {
     //             if (notification.extraData.data && notification.extraData.data.connectorId) {
     //               // Navigate
     //               if (this.navigation) {
-    //                 this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: notification.extraData.data.connectorId })
+    //                 this.navigation.navigate("ChargerTab", { chargerID: notification.extraData.chargeBoxID, connectorID: notification.extraData.data.connectorId })
     //               }
     //             }
     //             break;
@@ -192,7 +192,7 @@ export default class NotificationManager {
     //             if (notification.extraData.data) {
     //               // Navigate
     //               if (this.navigation) {
-    //                 this.navigation.navigate("ChargerTabNavigator", { chargerID: notification.extraData.chargeBoxID, connectorID: 1 })
+    //                 this.navigation.navigate("ChargerTab", { chargerID: notification.extraData.chargeBoxID, connectorID: 1 })
     //               }
     //             }
     //             break;

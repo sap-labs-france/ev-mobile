@@ -1,117 +1,62 @@
 import React from "react";
-import { ScrollView, RefreshControl, TouchableOpacity, Image, Alert } from "react-native";
-import { Container, Spinner, Icon, View, Thumbnail, Text } from "native-base";
-import { ResponsiveComponent } from "react-native-responsive-ui";
+import { ScrollView, TouchableOpacity, Image, Alert } from "react-native";
+import { Container, Icon, View, Thumbnail, Text } from "native-base";
+import BaseScreen from "../../BaseScreen"
 import ProviderFactory from "../../../provider/ProviderFactory";
 import ConnectorStatusComponent from "../../../components/ConnectorStatus";
-import HeaderComponent from "../../../components/Header";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import computeStyleSheet from "./styles";
 import Constants from "../../../utils/Constants";
 import Message from "../../../utils/Message";
+import PropTypes from "prop-types";
 
 const noPhoto = require("../../../../assets/no-photo.png");
 const noSite = require("../../../../assets/no-site.gif");
 
 const _provider = ProviderFactory.getProvider();
 
-export default class ConnectorDetails extends ResponsiveComponent {
+export default class ConnectorDetails extends BaseScreen {
   constructor(props) {
     super(props);
     this.state = {
-      chargerID: Utils.getParamFromNavigation(this.props.navigation.dangerouslyGetParent(), "chargerID", null),
-      connectorID: Utils.getParamFromNavigation(this.props.navigation.dangerouslyGetParent(), "connectorID", null),
-      charger: null,
-      connector: null,
-      firstLoad: true,
-      siteImage: null,
       transaction: null,
+      userImage: null,
       seconds: "00",
       minutes: "00",
       hours: "00",
-      userImage: null,
-      refreshing: false,
-      loadingTransaction: false,
       startTransactionNbTrial: 0,
-      buttonDisabled: true,
-      isAdmin: false
+      buttonDisabled: true
     };
+    // Override
+    this.refreshPeriodMillis = Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS;
   }
 
   async componentDidMount() {
-    // Set
-    this.mounted = true;
-    // Set if Admin
-    const isAdmin = (await _provider.getSecurityProvider()).isAdmin();
-    // Read the charger
-    await this._getCharger();
+    const { charger } = this.props;
+    // Call parent
+    super.componentDidMount();
     // Get Current Transaction
     await this._getTransaction();
+    // Get the Site Image (only first time)
+    if (charger.siteArea) {
+      this._getSiteImage(charger.siteArea.siteID);
+    }
     // Init
     this._refreshElapsedTime();
-    // Refresh Charger Data
-    this.timerChargerData = setInterval(() => {
-      // Refresh
-      this._refreshTransaction();
-    }, Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
+    // Check to enable the buttons after a certain period of time
+    this._handleStartStopDisabledButton();
     // Start refresh of time
     this.timerElapsedTime = setInterval(() => {
       // Refresh
       this._refreshElapsedTime();
     }, 1000);
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({
-      firstLoad: false,
-      isAdmin
-    });
-    // Add listeners
-    this.props.navigation.addListener("didFocus", this.componentDidFocus);
-    this.props.navigation.addListener("didBlur", this.componentDidBlur);
-  }
-
-  componentDidFocus = () => {
-    // Start the timer
-    if (!this.timerChargerData) {
-      // Force Refresh
-      this._refreshTransaction();
-      // Refresh Charger Data
-      this.timerChargerData = setInterval(() => {
-        // Refresh
-        this._refreshTransaction();
-      }, Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
-    }
-    // Start the timer
-    if (!this.timerElapsedTime) {
-      // Force Refresh
-      this._refreshElapsedTime();
-      // Start refresh of time
-      this.timerElapsedTime = setInterval(() => {
-        // Refresh
-        this._refreshElapsedTime();
-      }, 1000);
-    }
-  }
-
-  componentDidBlur = () => {
-    // Clear interval if it exists
-    if (this.timerChargerData) {
-      clearInterval(this.timerChargerData);
-      this.timerChargerData = null;
-    }
-    if (this.timerElapsedTime) {
-      clearInterval(this.timerElapsedTime);
-      this.timerElapsedTime = null;
-    }
   }
 
   async componentWillUnmount() {
+    // Call parent
+    super.componentWillUnmount();
     // Clear
-    this.mounted = false;
-    // Clear interval if it exists
-    if (this.timerChargerData) {
-      clearInterval(this.timerChargerData);
-    }
     if (this.timerElapsedTime) {
       clearInterval(this.timerElapsedTime);
     }
@@ -137,163 +82,11 @@ export default class ConnectorDetails extends ResponsiveComponent {
     }
   }
 
-  onStartTransaction = () => {
-    const { charger } = this.state;
-    Alert.alert(
-      `${I18n.t("details.startTransaction")}`,
-      `${I18n.t("details.startTransactionMessage")} ${charger.id} ?`,
-      [
-        {text: I18n.t("general.yes"), onPress: () => this._startTransaction()},
-        {text: I18n.t("general.no")}
-      ]
-    );
-  }
-
-  _startTransaction = async () => {
-    const { charger, connector } = this.state;
-    try {
-      // Check Tag ID
-      const userInfo = await _provider.getUserInfo(); 
-      if (!userInfo.tagIDs || userInfo.tagIDs.length === 0) {
-        Message.showError(I18n.t("details.noBadgeID"));
-        return;
-      }
-      // Init
-      this.setState({
-        loadingTransaction: true,
-        buttonDisabled: true
-      });
-        // Start the Transaction
-      let status = await _provider.startTransaction(charger.id, connector.connectorId, userInfo.tagIDs[0]);
-      // Check
-      if (status.status && status.status === "Accepted") {
-        Message.showSuccess(I18n.t("details.accepted"));
-        this.setState({
-          startTransactionNbTrial: 4,
-          loadingTransaction: false
-        });
-      } else {
-        Message.showError(I18n.t("details.denied"));
-        this.setState({loadingTransaction: false});
-      }
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
-      this.setState({loadingTransaction: false});
-    }
-  }
-
-  onStopTransaction = async () => {
-    const { charger } = this.state;
-    // Check
-    Alert.alert(
-      `${I18n.t("details.notAuthorisedTitle")}`,
-      `${I18n.t("details.notAuthorised")}`,
-      [
-        {text: I18n.t("general.ok")},
-      ]
-    );
-  }
-
-  _stopTransaction = async () => {
-    const { charger, connector } = this.state;
-    this.setState({
-      loadingTransaction: true,
-      buttonDisabled: true
-    });
-    try {
-      // Stop the Transaction
-      let status = await _provider.stopTransaction(charger.id, connector.activeTransactionID);
-      // Check
-      if (status.status && status.status === "Accepted") {
-        Message.showSuccess(I18n.t("details.accepted"));
-      } else {
-        Message.showError(I18n.t("details.denied"));
-      }
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
-    }
-    this.setState({loadingTransaction: false});
-  }
-
-  _isAuthorizedStopTransaction = async () => {
-    const { charger, connector } = this.state;
-    try {
-      let result = await _provider.isAuthorizedStopTransaction(
-        { Action: "StopTransaction", Arg1: charger.id, Arg2: connector.activeTransactionID }
-      );
-      if (result) {
-        return result.IsAuthorized;
-      }
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
-    }
-  }
-
-  _getCharger = async () => {
-    try {
-      let charger = await _provider.getCharger(
-        { ID: this.state.chargerID }
-      );
-      this.setState({
-        charger: charger,
-        connector: charger.connectors[this.state.connectorID - 1]
-      }, () => {
-        // Get the Site Image (only first time)
-        if (charger.siteArea) {
-          this._getSiteImage(charger.siteArea.siteID);
-        }
-        // Check to enable the buttons after a certain period of time
-        this._handleStartStopDisabledButton();
-      });
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
-    }
-  }
-
-  async _handleStartStopDisabledButton() {
-    // Check if disabled
-    if (this.state.buttonDisabled) {
-      // Check if the Start/Stop Button should stay disabled
-      if (this.state.connector.status === Constants.CONN_STATUS_AVAILABLE &&
-          this.state.startTransactionNbTrial === 0) {
-        // Button are set to available after the nbr of trials
-        this.setState({
-          buttonDisabled: false
-        });
-      // Still trials? (only for Start Transaction)
-      } else if (this.state.startTransactionNbTrial > 0) {
-        // Trial - 1
-        let startTransactionNbTrial = (this.state.startTransactionNbTrial > 0 ? (this.state.startTransactionNbTrial - 1) : 0 );
-        // Check if charger's status has changed
-        if (this.state.connector.status !== Constants.CONN_STATUS_AVAILABLE) {
-          // Yes: Init nbr of trial
-          startTransactionNbTrial = 0;
-        }
-        // Set
-        this.setState({
-          startTransactionNbTrial
-        });
-      } else if (this.state.connector.activeTransactionID !== 0) {
-        // Check
-        const isAuthorisedToStopTransaction = await this._isAuthorizedStopTransaction();
-        // Transaction has started, enable the buttons again
-        this.setState({
-          startTransactionNbTrial: 0,
-          buttonDisabled: !isAuthorisedToStopTransaction
-        });
-      }
-    }
-  }
-
   _getTransaction = async () => {
-    const { connector } = this.state;
+    const { connector } = this.props;
     try {
       // Is their a transaction?
-      if (this.state.connector.activeTransactionID) {
+      if (connector.activeTransactionID) {
         // Yes: Set data
         let transaction = await _provider.getTransaction(
           { ID: connector.activeTransactionID }
@@ -302,11 +95,8 @@ export default class ConnectorDetails extends ResponsiveComponent {
         if (transaction) {
           // Convert
           transaction.timestamp = new Date(transaction.timestamp);
-          // Already loaded?
-          if (!this.state.userImage) {
-            // Get user image
-            this._getUserImage(transaction.user);
-          }
+          // Get user image
+          this._getUserImage(transaction.user);
         }
         this.setState({
           transaction: transaction
@@ -330,7 +120,12 @@ export default class ConnectorDetails extends ResponsiveComponent {
   }
 
   _getUserImage = async (user) => {
+    const { userImage } = this.state;
     try {
+      // Already loaded?
+      if (!userImage) {
+        return;
+      }
       // User provided?
       if (user) {
         const userImage = await _provider.getUserImage(
@@ -345,10 +140,149 @@ export default class ConnectorDetails extends ResponsiveComponent {
     }
   }
 
-  _refreshElapsedTime = () => {
+  _refresh = async () => {
     // Component Mounted?
-    if (this.mounted) {
-      const { transaction } = this.state;
+    if (this.isMounted()) {
+      // Get Current Transaction
+      await this._getTransaction();
+      // Check to enable the buttons after a certain period of time
+      this._handleStartStopDisabledButton();
+    }
+  }
+
+  _onStartTransaction = () => {
+    const { charger } = this.props;
+    Alert.alert(
+      `${I18n.t("details.startTransaction")}`,
+      `${I18n.t("details.startTransactionMessage")} ${charger.id} ?`,
+      [
+        {text: I18n.t("general.yes"), onPress: () => this._startTransaction()},
+        {text: I18n.t("general.no")}
+      ]
+    );
+  }
+
+  _startTransaction = async () => {
+    const { charger, connector } = this.props;
+    try {
+      // Check Tag ID
+      const userInfo = await _provider.getUserInfo(); 
+      if (!userInfo.tagIDs || userInfo.tagIDs.length === 0) {
+        Message.showError(I18n.t("details.noBadgeID"));
+        return;
+      }
+      // Disable the button
+      this.setState({buttonDisabled: true});
+      // Start the Transaction
+      let status = await _provider.startTransaction(charger.id, connector.connectorId, userInfo.tagIDs[0]);
+      // Check
+      if (status.status && status.status === "Accepted") {
+        // Show message
+        Message.showSuccess(I18n.t("details.accepted"));
+        // Nb trials the button stays disabled
+        this.setState({startTransactionNbTrial: 4});
+      } else {
+        // Enable the button
+        this.setState({buttonDisabled: false});
+        // Show message
+        Message.showError(I18n.t("details.denied"));
+      }
+    } catch (error) {
+      // Enable the button
+      this.setState({buttonDisabled: false});
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
+  _onStopTransaction = async () => {
+    const { charger } = this.props;
+    // Confirm
+    Alert.alert(
+      `${I18n.t("details.stopTransaction")}`,
+      `${I18n.t("details.stopTransactionMessage")} ${charger.id} ?`,
+      [
+        {text: I18n.t("general.yes"), onPress: () => this._stopTransaction()},
+        {text: I18n.t("general.no")}
+      ]
+    );
+  }
+
+  _stopTransaction = async () => {
+    const { charger, connector } = this.props;
+    try {
+      // Disable button
+      this.setState({buttonDisabled: true});
+      // Stop the Transaction
+      let status = await _provider.stopTransaction(charger.id, connector.activeTransactionID);
+      // Check
+      if (status.status && status.status === "Accepted") {
+        Message.showSuccess(I18n.t("details.accepted"));
+      } else {
+        Message.showError(I18n.t("details.denied"));
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
+  _isAuthorizedStopTransaction = async () => {
+    const { charger, connector } = this.props;
+    try {
+      let result = await _provider.isAuthorizedStopTransaction(
+        { Action: "StopTransaction", Arg1: charger.id, Arg2: connector.activeTransactionID }
+      );
+      if (result) {
+        return result.IsAuthorized;
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
+  async _handleStartStopDisabledButton() {
+    const { connector } = this.props;
+    const { buttonDisabled, startTransactionNbTrial } = this.state;
+    // Check if disabled
+    if (buttonDisabled) {
+      // Check if the Start/Stop Button should stay disabled
+      if (connector.status === Constants.CONN_STATUS_AVAILABLE &&
+          startTransactionNbTrial === 0) {
+        // Button are set to available after the nbr of trials
+        this.setState({
+          buttonDisabled: false
+        });
+      // Still trials? (only for Start Transaction)
+      } else if (startTransactionNbTrial > 0) {
+        // Trial - 1
+        let newStartTransactionNbTrial = (startTransactionNbTrial > 0 ? (startTransactionNbTrial - 1) : 0 );
+        // Check if charger's status has changed
+        if (connector.status !== Constants.CONN_STATUS_AVAILABLE) {
+          // Yes: Init nbr of trial
+          newStartTransactionNbTrial = 0;
+        }
+        // Set
+        this.setState({
+          startTransactionNbTrial: newStartTransactionNbTrial
+        });
+      } else if (connector.activeTransactionID !== 0) {
+        // Check
+        const isAuthorisedToStopTransaction = await this._isAuthorizedStopTransaction();
+        // Transaction has started, enable the buttons again
+        this.setState({
+          startTransactionNbTrial: 0,
+          buttonDisabled: !isAuthorisedToStopTransaction
+        });
+      }
+    }
+  }
+
+  _refreshElapsedTime = () => {
+    const { transaction } = this.state;
+    // Component Mounted?
+    if (this.isMounted()) {
       // Is their a timestamp ?
       if (transaction && transaction.timestamp) {
         // Diff
@@ -384,129 +318,106 @@ export default class ConnectorDetails extends ResponsiveComponent {
     return valString;
   };
 
-  _refreshTransaction = async () => {
-    // Component Mounted?
-    if (this.mounted) {
-      // Read the charger
-      await this._getCharger();
-      // Read the transaction
-      await this._getTransaction();
-    }
-  }
-
-  _refresh = () => {
-    // Show spinner
-    this.setState({refreshing: true}, async () => {
-      // Refresh
-      await this._refreshTransaction();
-      // Hide spinner
-      this.setState({refreshing: false});
-    });
-  }
-
   render() {
     const style = computeStyleSheet();
-    const { navigation } = this.props;
-    const { firstLoad, charger, connector, connectorID, siteImage, refreshing, userImage, transaction, hours, minutes, seconds } = this.state;
-    const connectorLetter = String.fromCharCode(64 + connectorID);
+    const { connector } = this.props;
+    const { siteImage, transaction, userImage, buttonDisabled, hours, minutes, seconds } = this.state;
     return (
-      firstLoad ?
-        <Container style={style.container}>
-          <Spinner color="white" style={style.spinner} />
-        </Container>
-      :
-        <Container style={style.container}>
-          <HeaderComponent
-            title={charger.id} subTitle={`${I18n.t("details.connector")} ${connectorLetter}`}
-            leftAction={() => navigation.navigate("Chargers", { siteAreaID: charger.siteAreaID })} leftActionIcon={"arrow-back" } />
-          <ScrollView style={style.scrollViewContainer} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={this._refresh} />}>
-            <View style={style.detailsContainer}>
-              <Image style={style.backgroundImage} source={siteImage ? {uri: siteImage} : noSite}/>
-              <View style={style.transactionContainer}>
-                {connector.activeTransactionID === 0 ?
-                  <TouchableOpacity onPress={() => this.onStartTransaction()} disabled={this.state.buttonDisabled}>
-                    <View style={(this.state.buttonDisabled ? [style.startTransaction, style.startStopTransactionDisabled] : style.startTransaction)}>
-                      <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
-                    </View>
-                  </TouchableOpacity>
+      <Container style={style.container}>
+        <ScrollView style={style.scrollViewContainer}>
+          <View style={style.detailsContainer}>
+            <Image style={style.backgroundImage} source={siteImage ? {uri: siteImage} : noSite}/>
+            <View style={style.transactionContainer}>
+              {connector.activeTransactionID === 0 ?
+                <TouchableOpacity onPress={() => this._onStartTransaction()} disabled={buttonDisabled}>
+                  <View style={(buttonDisabled ? [style.startTransaction, style.startStopTransactionDisabled] : style.startTransaction)}>
+                    <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
+                  </View>
+                </TouchableOpacity>
+              :
+                <TouchableOpacity onPress={() => this._onStopTransaction()} disabled={buttonDisabled}>
+                  <View style={(buttonDisabled ? [style.stopTransaction, style.startStopTransactionDisabled] : style.stopTransaction)}>
+                    <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="stop" />
+                  </View>
+                </TouchableOpacity>
+              }
+            </View>
+          </View>
+          <View style={style.detailsContainer}>
+            <View style={style.rowContainer}>
+              <View style={style.columnContainer}>
+                <ConnectorStatusComponent style={style.connectorLetter} connector={connector}/>
+                <Text style={[style.label, style.labelStatus]}>{Utils.translateConnectorStatus(connector.status)}</Text>
+              </View>
+              <View style={style.columnContainer}>
+                <Thumbnail style={style.userPicture} source={userImage ? {uri: userImage} : noPhoto} />
+                {transaction ?
+                  <Text style={[style.label, style.labelUser]}>{Utils.buildUserName(transaction.user)}</Text>
                 :
-                  <TouchableOpacity onPress={() => this.onStopTransaction()} disabled={this.state.buttonDisabled}>
-                    <View style={(this.state.buttonDisabled ? [style.stopTransaction, style.startStopTransactionDisabled] : style.stopTransaction)}>
-                      <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="stop" />
-                    </View>
-                  </TouchableOpacity>
+                  <Text style={style.label}>-</Text>
                 }
               </View>
             </View>
-            {firstLoad ?
-              <Spinner color="white" style={style.spinner} />
-            :
-              <View style={style.detailsContainer}>
-                <View style={style.rowContainer}>
-                  <View style={style.columnContainer}>
-                    <ConnectorStatusComponent style={style.connectorLetter} connector={connector}/>
-                    <Text style={[style.label, style.labelStatus]}>{Utils.translateConnectorStatus(connector.status)}</Text>
+            <View style={style.rowContainer}>
+              <View style={style.columnContainer}>
+                <Icon type="FontAwesome" name="bolt" style={style.icon} />
+                { connector.activeTransactionID === 0 ?
+                  <Text style={[style.label, style.labelValue]}>-</Text>
+                :
+                  <View>
+                    <Text style={[style.label, style.labelValue]}>{(connector.currentConsumption / 1000) > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0}</Text>
+                    <Text style={style.subLabel}>{I18n.t("details.instant")} (kW)</Text>
                   </View>
-                  <View style={style.columnContainer}>
-                    <Thumbnail style={style.userPicture} source={userImage ? {uri: userImage} : noPhoto} />
-                    {transaction ?
-                      <Text style={[style.label, style.labelUser]}>{Utils.buildUserName(transaction.user)}</Text>
-                    :
-                      <Text style={style.label}>-</Text>
-                    }
-                  </View>
-                </View>
-                <View style={style.rowContainer}>
-                  <View style={style.columnContainer}>
-                    <Icon type="FontAwesome" name="bolt" style={style.icon} />
-                    { connector.activeTransactionID === 0 ?
-                      <Text style={[style.label, style.labelValue]}>-</Text>
-                    :
-                      <View>
-                        <Text style={[style.label, style.labelValue]}>{(connector.currentConsumption / 1000) > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0}</Text>
-                        <Text style={style.subLabel}>{I18n.t("details.instant")} (kW)</Text>
-                      </View>
-                    }
-                  </View>
-                  <View style={style.columnContainer}>
-                    <Icon type="Ionicons" name="time" style={style.icon} />
-                    {transaction ?
-                      <Text style={[style.label, style.labelTimeValue]}>{`${hours}:${minutes}:${seconds}`}</Text>
-                    :
-                      <Text style={[style.label, style.labelValue]}>- : - : -</Text>
-                    }
-                  </View>
-                </View>
-                <View style={style.rowContainer}>
-                  <View style={style.columnContainer}>
-                    <Icon style={style.icon} type="MaterialIcons" name="trending-up" />
-                    { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
-                      <Text style={[style.label, style.labelValue]}>-</Text>
-                    :
-                      <View>
-                        <Text style={[style.label, style.labelValue]}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
-                        <Text style={style.subLabel}>{I18n.t("details.total")} (kW.h)</Text>
-                      </View>
-                    }
-                  </View>
-                  <View style={style.columnContainer}>
-                    <Icon type="MaterialIcons" name="battery-charging-full" style={style.icon} />
-                    { connector.currentStateOfCharge ?
-                      <View>
-                        <Text style={[style.label, style.labelValue]}>{connector.currentStateOfCharge}</Text>
-                        <Text style={style.subLabel}>(%)</Text>
-                      </View>
-                    :
-                      <View>
-                        <Text style={[style.label, style.labelValue]}>-</Text>
-                      </View>
-                    }
-                  </View>
-                </View>
+                }
               </View>
-            }
-          </ScrollView>
-        </Container>
+              <View style={style.columnContainer}>
+                <Icon type="Ionicons" name="time" style={style.icon} />
+                {transaction ?
+                  <Text style={[style.label, style.labelTimeValue]}>{`${hours}:${minutes}:${seconds}`}</Text>
+                :
+                  <Text style={[style.label, style.labelValue]}>- : - : -</Text>
+                }
+              </View>
+            </View>
+            <View style={style.rowContainer}>
+              <View style={style.columnContainer}>
+                <Icon style={style.icon} type="MaterialIcons" name="trending-up" />
+                { (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ?
+                  <Text style={[style.label, style.labelValue]}>-</Text>
+                :
+                  <View>
+                    <Text style={[style.label, style.labelValue]}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
+                    <Text style={style.subLabel}>{I18n.t("details.total")} (kW.h)</Text>
+                  </View>
+                }
+              </View>
+              <View style={style.columnContainer}>
+                <Icon type="MaterialIcons" name="battery-charging-full" style={style.icon} />
+                { connector.currentStateOfCharge ?
+                  <View>
+                    <Text style={[style.label, style.labelValue]}>{connector.currentStateOfCharge}</Text>
+                    <Text style={style.subLabel}>(%)</Text>
+                  </View>
+                :
+                  <View>
+                    <Text style={[style.label, style.labelValue]}>-</Text>
+                  </View>
+                }
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+      </Container>
     );
   }
 }
+
+ConnectorDetails.propTypes = {
+  charger: PropTypes.object.isRequired,
+  connector: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired,
+  isAdmin: PropTypes.bool.isRequired
+};
+
+ConnectorDetails.defaultProps = {
+};

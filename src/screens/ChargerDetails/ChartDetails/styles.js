@@ -6,7 +6,7 @@ import deepmerge from "deepmerge";
 const commonStyles = {
   container: {
     flex: 1,
-    backgroundColor: "#000"
+    backgroundColor: commonColor.brandPrimary
   },
   chartContainer: {
     flex: 1

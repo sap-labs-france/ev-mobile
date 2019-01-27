@@ -8,7 +8,7 @@ const commonStyles = {
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#000",
+    backgroundColor: commonColor.brandPrimary,
     height: "100%"
   },
   spinner: {
@@ -16,7 +16,7 @@ const commonStyles = {
   },
   backgroundImage: {
     width: "100%",
-    height: scale(175)
+    height: scale(150)
   },
   transactionContainer: {
     justifyContent: "center",

@@ -110,7 +110,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
     return (
       charger.connectors.length > 1 ?
         <TouchableOpacity style={style.statusLeftRightConnectorContainer}
-            onPress={()=> navigation.navigate("ChargerTabNavigator", { chargerID: charger.id, connectorID: connector.connectorId })}>
+            onPress={()=> navigation.navigate("ChargerTab", { chargerID: charger.id, connectorID: connector.connectorId })}>
           <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1} >
             <View style={even ? [style.connectorContainer, style.leftConnectorContainer] : [style.connectorContainer, style.rightConnectorContainer]}>
               <Text style={style.statusDescription} numberOfLines={1}>
@@ -133,7 +133,8 @@ export default class ConnectorComponent extends ResponsiveComponent {
           </Animatable.View>
         </TouchableOpacity>
       :
-        <TouchableOpacity style={style.statusConnectorContainer} onPress={()=> navigation.navigate("ChargerTabNavigator", { chargerID: charger.id, connectorID: connector.connectorId })}>
+        <TouchableOpacity style={style.statusConnectorContainer} 
+            onPress={()=> navigation.navigate("ChargerTab", { chargerID: charger.id, connectorID: connector.connectorId })}>
           <Animatable.View animation={"fadeInUp"} iterationCount={1} >
             <View style={style.connectorContainer}>
               <Text style={style.statusDescription} numberOfLines={1}>

@@ -4,8 +4,14 @@ import commonColor from "../../../theme/variables/commonColor";
 import { scale } from "react-native-size-matters";
 
 const commonStyles = {  
-  footerContainer: {
-    backgroundColor: commonColor.brandPrimary
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: commonColor.brandPrimary,
+    height: "100%"
+  },
+  spinner: {
+    color: commonColor.textColor
   }
 };
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { StatusBar, Dimensions } from "react-native";
-import { createSwitchNavigator, createBottomTabNavigator, createStackNavigator, createDrawerNavigator } from "react-navigation";
+import { createSwitchNavigator, createStackNavigator, createDrawerNavigator } from "react-navigation";
 import { Root } from "native-base";
 import Login from "./screens/auth/Login";
 import Eula from "./screens/auth/Eula/";
@@ -10,9 +10,6 @@ import Sidebar from "./screens/Sidebar";
 import Sites from "./screens/Sites";
 import SiteAreas from "./screens/SiteAreas";
 import Chargers from "./screens/Chargers";
-import ChargerDetails from "./screens/ChargerDetails/ChargerDetails";
-import ConnectorDetails from "./screens/ChargerDetails/ConnectorDetails";
-import ChartDetails from "./screens/ChargerDetails/ChartDetails";
 import ChargerTab from "./screens/ChargerDetails/ChargerTab";
 import NotificationManager from "./notification/NotificationManager";
 
@@ -20,23 +17,6 @@ import NotificationManager from "./notification/NotificationManager";
 const _notificationManager = NotificationManager.getInstance();
 // Initialize
 _notificationManager.initialize();
-
-// Charger Tab Navigation
-const ChargerTabNavigator = createBottomTabNavigator(
-  {
-    ConnectorDetails: { screen: ConnectorDetails },
-    ChartDetails: { screen: ChartDetails },
-    ChargerDetails: { screen: ChargerDetails }
-  },
-  {
-    tabBarPosition: "bottom",
-    swipeEnabled: false,
-    initialRouteName: "ConnectorDetails",
-    animationEnabled: true,
-    backBehavior: "none",
-    tabBarComponent: (props) => <ChargerTab {...props} />
-  }
-);
 
 // Drawer Navigation
 const AppDrawerNavigator = createDrawerNavigator(
@@ -51,7 +31,7 @@ const AppDrawerNavigator = createDrawerNavigator(
     }},
     SiteAreas: { screen: SiteAreas },
     Chargers: { screen: Chargers },
-    ChargerTabNavigator: ChargerTabNavigator
+    ChargerTab: { screen: ChargerTab }
   },
   {
     navigationOptions: {
