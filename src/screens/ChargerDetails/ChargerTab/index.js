@@ -67,6 +67,7 @@ export default class ChargerTab extends  BaseScreen {
         charger: charger,
         connector: charger.connectors[connectorID - 1]
       }, () => {
+        // Check Auth
         this._isAuthorizedStopTransaction();
       });
     } catch (error) {
@@ -88,11 +89,6 @@ export default class ChargerTab extends  BaseScreen {
           // Assign
           this.setState({
             isAuthorizedToStopTransaction: result.IsAuthorized
-          });
-        } else {
-          // Not Authorized
-          this.setState({
-            isAuthorizedToStopTransaction: false
           });
         }
       } else {
@@ -123,9 +119,7 @@ export default class ChargerTab extends  BaseScreen {
           <HeaderComponent
             title={charger.id} subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
             leftAction={() => navigation.navigate("Chargers", { siteAreaID: charger.siteAreaID })} leftActionIcon={"arrow-back" } />
-          <Tabs tabBarPosition="bottom" locked={true} initialPage={0} onChangeTab={(selectedTab) => {
-                this.setState({selectedTabIndex: selectedTab.i});
-              }} >
+          <Tabs tabBarPosition="bottom" locked={true} initialPage={0} >
             <Tab heading={
                   <TabHeading style={style.tabHeader}>
                     <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />

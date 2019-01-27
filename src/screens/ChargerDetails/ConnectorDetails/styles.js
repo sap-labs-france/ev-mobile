@@ -90,12 +90,21 @@ const commonStyles = {
     fontSize: scale(25),
     fontWeight: "bold",
   },
+  labelUser: {
+    fontSize: scale(16),
+  },
   subLabel: {
     fontSize: scale(12),
     fontWeight: "bold",
     marginTop: (Platform.OS === "ios" ? 0 : scale(-5)),
     color: commonColor.textColor,
     alignSelf: "center"
+  },
+  subLabelStatus: {
+    marginTop: scale(0)
+  },
+  subLabelUser: {
+    marginTop: scale(0)
   },
   icon: {
     fontSize: scale(25),
@@ -108,15 +117,6 @@ const commonStyles = {
     borderRadius: scale(26),
     borderWidth: 2,
     borderColor: commonColor.textColor
-  },
-  labelUser: {
-    fontSize: scale(16),
-  },
-  subLabelUser: {
-    fontSize: scale(12),
-    fontWeight: "bold",
-    color: commonColor.textColor,
-    alignSelf: "center"
   }
 };
 

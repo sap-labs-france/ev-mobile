@@ -297,7 +297,7 @@ export default class ConnectorDetails extends BaseScreen {
 
   render() {
     const style = computeStyleSheet();
-    const { connector } = this.props;
+    const { connector, isAdmin } = this.props;
     const { siteImage, transaction, userImage, buttonDisabled, hours, minutes, seconds } = this.state;
     return (
       <Container style={style.container}>
@@ -325,11 +325,23 @@ export default class ConnectorDetails extends BaseScreen {
               <View style={style.columnContainer}>
                 <ConnectorStatusComponent style={style.connectorLetter} connector={connector}/>
                 <Text style={[style.label, style.labelStatus]}>{Utils.translateConnectorStatus(connector.status)}</Text>
+                {connector.status === Constants.CONN_STATUS_FAULTED ?
+                  <Text style={[style.subLabel, style.subLabelStatus]}>{connector.info ? connector.info : ""}</Text>
+                :
+                  undefined
+                }
               </View>
               <View style={style.columnContainer}>
                 <Thumbnail style={style.userPicture} source={userImage ? {uri: userImage} : noPhoto} />
                 {transaction ?
-                  <Text style={[style.label, style.labelUser]}>{Utils.buildUserName(transaction.user)}</Text>
+                  <View>
+                    <Text style={[style.label, style.labelUser]}>{Utils.buildUserName(transaction.user)}</Text>
+                    {isAdmin ?
+                      <Text style={[style.subLabel, style.subLabelUser]}>({transaction.tagID})</Text>
+                    :
+                      undefined
+                    }
+                  </View>
                 :
                   <Text style={style.label}>-</Text>
                 }
