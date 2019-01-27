@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 
 const noPhoto = require("../../../../assets/no-photo.png");
 const noSite = require("../../../../assets/no-site.gif");
-
+const START_TRANSACTION_NB_TRIAL = 4;
 const _provider = ProviderFactory.getProvider();
 
 export default class ConnectorDetails extends BaseScreen {
@@ -44,13 +44,13 @@ export default class ConnectorDetails extends BaseScreen {
     }
     // Init
     this._refreshElapsedTime();
-    // Check to enable the buttons after a certain period of time
-    this._handleStartStopDisabledButton();
     // Start refresh of time
     this.timerElapsedTime = setInterval(() => {
       // Refresh
       this._refreshElapsedTime();
     }, 1000);
+    // Check to enable the buttons after a certain period of time
+    this._handleStartStopDisabledButton();
   }
 
   async componentWillUnmount() {
@@ -177,7 +177,7 @@ export default class ConnectorDetails extends BaseScreen {
         // Show message
         Message.showSuccess(I18n.t("details.accepted"));
         // Nb trials the button stays disabled
-        this.setState({startTransactionNbTrial: 4});
+        this.setState({startTransactionNbTrial: START_TRANSACTION_NB_TRIAL});
       } else {
         // Enable the button
         this.setState({buttonDisabled: false});
@@ -241,38 +241,35 @@ export default class ConnectorDetails extends BaseScreen {
 
   async _handleStartStopDisabledButton() {
     const { connector } = this.props;
-    const { buttonDisabled, startTransactionNbTrial } = this.state;
-    // Check if disabled
-    if (buttonDisabled) {
-      // Check if the Start/Stop Button should stay disabled
-      if (connector.status === Constants.CONN_STATUS_AVAILABLE &&
-          startTransactionNbTrial === 0) {
-        // Button are set to available after the nbr of trials
-        this.setState({
-          buttonDisabled: false
-        });
-      // Still trials? (only for Start Transaction)
-      } else if (startTransactionNbTrial > 0) {
-        // Trial - 1
-        let newStartTransactionNbTrial = (startTransactionNbTrial > 0 ? (startTransactionNbTrial - 1) : 0 );
-        // Check if charger's status has changed
-        if (connector.status !== Constants.CONN_STATUS_AVAILABLE) {
-          // Yes: Init nbr of trial
-          newStartTransactionNbTrial = 0;
-        }
-        // Set
-        this.setState({
-          startTransactionNbTrial: newStartTransactionNbTrial
-        });
-      } else if (connector.activeTransactionID !== 0) {
-        // Check
-        const isAuthorisedToStopTransaction = await this._isAuthorizedStopTransaction();
-        // Transaction has started, enable the buttons again
-        this.setState({
-          startTransactionNbTrial: 0,
-          buttonDisabled: !isAuthorisedToStopTransaction
-        });
-      }
+    const { startTransactionNbTrial } = this.state;
+    // Check if the Start/Stop Button should stay disabled
+    if ((connector.status === Constants.CONN_STATUS_AVAILABLE && startTransactionNbTrial <= (START_TRANSACTION_NB_TRIAL - 2)) ||
+        (connector.status === Constants.CONN_STATUS_PREPARING && startTransactionNbTrial === 0)) {
+      // Button are set to available after the nbr of trials
+      this.setState({
+        buttonDisabled: false
+      });
+    // Still trials? (only for Start Transaction)
+    } else if (startTransactionNbTrial > 0) {
+      // Trial - 1
+      this.setState({
+        startTransactionNbTrial: (startTransactionNbTrial > 0 ? (startTransactionNbTrial - 1) : 0 )
+      });
+    // Transaction ongoing
+    } else if (connector.activeTransactionID !== 0) {
+      // Check
+      const isAuthorisedToStopTransaction = await this._isAuthorizedStopTransaction();
+      // Transaction has started, enable the buttons again
+      this.setState({
+        startTransactionNbTrial: 0,
+        buttonDisabled: !isAuthorisedToStopTransaction
+      });
+    // Transaction is stopped (activeTransactionID == 0)
+    } else if (connector.status === Constants.CONN_STATUS_FINISHING) {
+      // Disable the button until the user unplug the cable
+      this.setState({
+        buttonDisabled: true
+      });
     }
   }
 
