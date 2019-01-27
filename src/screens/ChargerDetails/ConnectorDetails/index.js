@@ -141,13 +141,10 @@ export default class ConnectorDetails extends BaseScreen {
   }
 
   _refresh = async () => {
-    // Component Mounted?
-    if (this.isMounted()) {
-      // Get Current Transaction
-      await this._getTransaction();
-      // Check to enable the buttons after a certain period of time
-      this._handleStartStopDisabledButton();
-    }
+    // Get Current Transaction
+    await this._getTransaction();
+    // Check to enable the buttons after a certain period of time
+    this._handleStartStopDisabledButton();
   }
 
   _onStartTransaction = () => {

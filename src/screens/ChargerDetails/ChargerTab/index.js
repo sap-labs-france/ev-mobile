@@ -19,6 +19,7 @@ export default class ChargerTab extends  BaseScreen {
     this.state = {
       charger: null,
       connector: null,
+      selectedTabIndex: 0,
       firstLoad: true,
       isAdmin: false
     };
@@ -87,31 +88,37 @@ export default class ChargerTab extends  BaseScreen {
           <HeaderComponent
             title={charger.id} subTitle={`${I18n.t("details.connector")} ${connectorLetter}`}
             leftAction={() => navigation.navigate("Chargers", { siteAreaID: charger.siteAreaID })} leftActionIcon={"arrow-back" } />
-          <Tabs tabBarPosition="bottom" locked={true}>
+          <Tabs tabBarPosition="bottom" locked={true} initialPage={0} onChangeTab={(selectedTab) => {
+                this.setState({selectedTabIndex: selectedTab.i});
+              }} >
             <Tab heading={
-                  <TabHeading>
-                    <Icon type="FontAwesome" name="bolt" />
-                    <Text>{I18n.t("details.connector")}</Text>
+                  <TabHeading style={style.tabHeader}>
+                    <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
+                    <Text style={style.tabText}>{I18n.t("details.connector")}</Text>
                   </TabHeading>
                 }>
               <ConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation}/>
             </Tab>
-            <Tab heading={
-                  <TabHeading>
-                    <Icon type="AntDesign" name="linechart" />
-                    <Text>{I18n.t("details.graph")}</Text>
-                  </TabHeading>
-                }>
-              <ChartDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation}/>
-            </Tab>
-            { isAdmin ?
+            {connector.activeTransactionID ?
               <Tab heading={
-                    <TabHeading>
-                      <Icon type="MaterialIcons" name="info" />
-                      <Text>{I18n.t("details.informations")}</Text>
+                    <TabHeading style={style.tabHeader}>
+                      <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
+                      <Text style={style.tabText}>{I18n.t("details.graph")}</Text>
                     </TabHeading>
                   }>
-                <ChargerDetails charger={charger} connector={connector} isAdmin={isAdmin}  navigation={navigation}/>
+                <ChartDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation}/>
+              </Tab>
+            :
+              undefined
+            }
+            { isAdmin ?
+              <Tab heading={
+                    <TabHeading style={style.tabHeader}>
+                      <Icon style={style.tabIcon} type="MaterialIcons" name="info" />
+                      <Text style={style.tabText}>{I18n.t("details.informations")}</Text>
+                    </TabHeading>
+                  }>
+                <ChargerDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation}/>
               </Tab>
             :
               undefined

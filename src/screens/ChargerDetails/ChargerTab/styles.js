@@ -12,6 +12,15 @@ const commonStyles = {
   },
   spinner: {
     color: commonColor.textColor
+  },
+  tabHeader: {
+    flexDirection: "column",
+  },
+  tabIcon: {
+    fontSize: scale(20)
+  },
+  tabText: {
+    fontSize: scale(15)
   }
 };
 

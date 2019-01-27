@@ -8,9 +8,6 @@ const commonStyles = {
     flex: 1,
     backgroundColor: commonColor.brandPrimary
   },
-  chartContainer: {
-    flex: 1
-  },
   spinner: {
     flex: 1,
     justifyContent: "center",

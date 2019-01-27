@@ -8,6 +8,7 @@ export default class BaseScreen extends ResponsiveComponent {
     this.searchText = "";
     this.mounted = false;
     this.timerRefresh = null;
+    this.active = true;
     this.refreshPeriodMillis = Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS;
   }
 
@@ -44,7 +45,7 @@ export default class BaseScreen extends ResponsiveComponent {
 
   _startRefreshTimer(initial = false) {
     // Restart the timer
-    if (!this.timerRefresh) {
+    if (!this.timerRefresh && this.active) {
       // Inital load?
       if (!initial) {
         // No: Force Refresh
@@ -82,5 +83,9 @@ export default class BaseScreen extends ResponsiveComponent {
 
   _refresh() {
     console.log("BaseScreen: Refresh not implemented!!!");
+  }
+
+  _setActive(active) {
+    this.active = active;
   }
 }
