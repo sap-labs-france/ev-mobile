@@ -26,7 +26,7 @@ const commonStyles = {
     color: commonColor.textColor,
     textAlign: "center",
     paddingTop: scale(5),
-    fontSize: scale(20)
+    fontSize: scale(18)
   },
   statusConnectorDetailContainer: {
     flexDirection: "row",

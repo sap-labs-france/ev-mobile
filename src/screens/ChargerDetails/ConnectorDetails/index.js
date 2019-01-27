@@ -123,7 +123,7 @@ export default class ConnectorDetails extends BaseScreen {
     const { userImage } = this.state;
     try {
       // Already loaded?
-      if (!userImage) {
+      if (userImage) {
         return;
       }
       // User provided?
