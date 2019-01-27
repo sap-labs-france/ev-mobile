@@ -21,7 +21,7 @@ export default class ChargerTab extends  BaseScreen {
       connector: null,
       selectedTabIndex: 0,
       firstLoad: true,
-      isAuthorizedToReadTransaction: false,
+      isAuthorizedToStopTransaction: false,
       isAdmin: false
     };
     // Override
@@ -78,7 +78,6 @@ export default class ChargerTab extends  BaseScreen {
   _isAuthorizedStopTransaction = async () => {
     const { charger, connector } = this.state;
     try {
-      console.log(connector);
       // Transaction?
       if (connector.activeTransactionID !== 0) {
         // Call
@@ -88,18 +87,18 @@ export default class ChargerTab extends  BaseScreen {
         if (result) {
           // Assign
           this.setState({
-            isAuthorizedToReadTransaction: result.IsAuthorized
+            isAuthorizedToStopTransaction: result.IsAuthorized
           });
         } else {
           // Not Authorized
           this.setState({
-            isAuthorizedToReadTransaction: false
+            isAuthorizedToStopTransaction: false
           });
         }
       } else {
         // Not Authorized
         this.setState({
-          isAuthorizedToReadTransaction: false
+          isAuthorizedToStopTransaction: false
         });
       }
     } catch (error) {
@@ -111,7 +110,7 @@ export default class ChargerTab extends  BaseScreen {
   render() {
     const style = computeStyleSheet();
     const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
-    const { charger, connector, isAdmin, isAuthorizedToReadTransaction, firstLoad } = this.state;
+    const { charger, connector, isAdmin, isAuthorizedToStopTransaction, firstLoad } = this.state;
     const { navigation } = this.props;
     const connectorLetter = String.fromCharCode(64 + connectorID);
     return (
@@ -132,9 +131,10 @@ export default class ChargerTab extends  BaseScreen {
                     <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
                   </TabHeading>
                 }>
-              <ConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation}/>
+              <ConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin}
+                navigation={navigation} isAuthorizedToStopTransaction={isAuthorizedToStopTransaction}/>
             </Tab>
-            {connector.activeTransactionID && isAuthorizedToReadTransaction ?
+            {connector.activeTransactionID && isAuthorizedToStopTransaction ?
               <Tab heading={
                     <TabHeading style={style.tabHeader}>
                       <Icon style={style.tabIcon} type="AntDesign" name="linechart" />

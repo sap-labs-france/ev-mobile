@@ -224,27 +224,8 @@ export default class ConnectorDetails extends BaseScreen {
     }
   }
 
-  _isAuthorizedStopTransaction = async () => {
-    const { charger, connector } = this.props;
-    try {
-      // Transaction?
-      if (connector.activeTransactionID !== 0) {
-        // Call
-        const result = await _provider.isAuthorizedStopTransaction(
-          { Action: "StopTransaction", Arg1: charger.id, Arg2: connector.activeTransactionID }
-        );
-        if (result) {
-          return result.IsAuthorized;
-        }
-      }
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
-    }
-  }
-
   async _handleStartStopDisabledButton() {
-    const { connector } = this.props;
+    const { connector, isAuthorizedToStopTransaction } = this.props;
     const { startTransactionNbTrial } = this.state;
     // Check if the Start/Stop Button should stay disabled
     if ((connector.status === Constants.CONN_STATUS_AVAILABLE && startTransactionNbTrial <= (START_TRANSACTION_NB_TRIAL - 2)) ||
@@ -261,12 +242,10 @@ export default class ConnectorDetails extends BaseScreen {
       });
     // Transaction ongoing
     } else if (connector.activeTransactionID !== 0) {
-      // Check
-      const isAuthorisedToStopTransaction = await this._isAuthorizedStopTransaction();
       // Transaction has started, enable the buttons again
       this.setState({
         startTransactionNbTrial: 0,
-        buttonDisabled: !isAuthorisedToStopTransaction
+        buttonDisabled: !isAuthorizedToStopTransaction
       });
     // Transaction is stopped (activeTransactionID == 0)
     } else if (connector.status === Constants.CONN_STATUS_FINISHING) {
@@ -414,6 +393,7 @@ ConnectorDetails.propTypes = {
   charger: PropTypes.object.isRequired,
   connector: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired,
+  isAuthorizedToStopTransaction: PropTypes.bool.isRequired,
   isAdmin: PropTypes.bool.isRequired
 };
 
