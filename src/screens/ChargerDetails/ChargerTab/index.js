@@ -21,6 +21,7 @@ export default class ChargerTab extends  BaseScreen {
       connector: null,
       selectedTabIndex: 0,
       firstLoad: true,
+      isAuthorizedToReadTransaction: false,
       isAdmin: false
     };
     // Override
@@ -65,7 +66,42 @@ export default class ChargerTab extends  BaseScreen {
       this.setState({
         charger: charger,
         connector: charger.connectors[connectorID - 1]
+      }, () => {
+        this._isAuthorizedStopTransaction();
       });
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props);
+    }
+  }
+
+  _isAuthorizedStopTransaction = async () => {
+    const { charger, connector } = this.state;
+    try {
+      console.log(connector);
+      // Transaction?
+      if (connector.activeTransactionID !== 0) {
+        // Call
+        const result = await _provider.isAuthorizedStopTransaction(
+          { Action: "StopTransaction", Arg1: charger.id, Arg2: connector.activeTransactionID }
+        );
+        if (result) {
+          // Assign
+          this.setState({
+            isAuthorizedToReadTransaction: result.IsAuthorized
+          });
+        } else {
+          // Not Authorized
+          this.setState({
+            isAuthorizedToReadTransaction: false
+          });
+        }
+      } else {
+        // Not Authorized
+        this.setState({
+          isAuthorizedToReadTransaction: false
+        });
+      }
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -75,7 +111,7 @@ export default class ChargerTab extends  BaseScreen {
   render() {
     const style = computeStyleSheet();
     const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
-    const { charger, connector, isAdmin, firstLoad } = this.state;
+    const { charger, connector, isAdmin, isAuthorizedToReadTransaction, firstLoad } = this.state;
     const { navigation } = this.props;
     const connectorLetter = String.fromCharCode(64 + connectorID);
     return (
@@ -98,7 +134,7 @@ export default class ChargerTab extends  BaseScreen {
                 }>
               <ConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation}/>
             </Tab>
-            {connector.activeTransactionID ?
+            {connector.activeTransactionID && isAuthorizedToReadTransaction ?
               <Tab heading={
                     <TabHeading style={style.tabHeader}>
                       <Icon style={style.tabIcon} type="AntDesign" name="linechart" />

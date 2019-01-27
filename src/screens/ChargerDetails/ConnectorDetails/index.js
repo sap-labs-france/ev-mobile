@@ -227,11 +227,15 @@ export default class ConnectorDetails extends BaseScreen {
   _isAuthorizedStopTransaction = async () => {
     const { charger, connector } = this.props;
     try {
-      let result = await _provider.isAuthorizedStopTransaction(
-        { Action: "StopTransaction", Arg1: charger.id, Arg2: connector.activeTransactionID }
-      );
-      if (result) {
-        return result.IsAuthorized;
+      // Transaction?
+      if (connector.activeTransactionID !== 0) {
+        // Call
+        const result = await _provider.isAuthorizedStopTransaction(
+          { Action: "StopTransaction", Arg1: charger.id, Arg2: connector.activeTransactionID }
+        );
+        if (result) {
+          return result.IsAuthorized;
+        }
       }
     } catch (error) {
       // Other common Error
