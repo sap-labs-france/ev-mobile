@@ -2,6 +2,7 @@ import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
 import { scale } from "react-native-size-matters";
+import { Platform } from "react-native";
 
 const commonStyles = {
   header: {
@@ -38,7 +39,7 @@ const commonStyles = {
     fontWeight: "bold",
     color: commonColor.textColor,
     fontSize: scale(12),
-    marginTop: scale(-5)
+    marginTop: (Platform.OS === "ios" ? scale(-2) : scale(-5)),
   },
   iconHeader: {
     fontSize: scale(25)
