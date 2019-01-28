@@ -5,18 +5,20 @@ import { scale } from "react-native-size-matters";
 import { Platform } from "react-native";
 
 const commonStyles = {
-  status: {
+  container: {
+    flex: 1
+  },
+  statusContainer: {
     width: scale(44),
     height: scale(44),
-    borderRadius: scale(22)
+    borderRadius: scale(22),
+    justifyContent: "center",
+    alignItems: "center"
   },
   statusLetter: {
     color: commonColor.textColor,
-    textAlign: "center",
     fontWeight: "bold",
-    fontSize: (Platform.OS === "ios" ? scale(32) : scale(32)),
-    marginTop: (Platform.OS === "ios" ? scale(3) : scale(-1)),
-    marginLeft: (Platform.OS === "ios" ? scale(1) : undefined)
+    fontSize: scale(30),
   },
   statusGreen: {
     backgroundColor: commonColor.brandSuccess,

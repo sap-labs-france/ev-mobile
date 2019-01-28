@@ -42,9 +42,9 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     const { connector } = this.props;
     const connectorLetter = String.fromCharCode(64 + connector.connectorId);
     return (
-      <View style={this.props.style}>
+      <View style={[this.props.style, style.container]}>
         <Animatable.View animation={this._getStatusAnimation(connector)} iterationCount={"infinite"} direction="alternate-reverse">
-          <View style={[style.status, this._getStyleFromStatus(connector, style)]}>
+          <View style={[style.statusContainer, this._getStyleFromStatus(connector, style)]}>
             <TextRN style={style.statusLetter}>{connectorLetter}</TextRN>
           </View>
         </Animatable.View>
