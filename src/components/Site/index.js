@@ -19,12 +19,12 @@ export default class SiteComponent extends ResponsiveComponent {
     const { site, navigation } = this.props;
     return (
       <TouchableOpacity onPress={() => navigation.navigate("SiteAreas", { siteID: site.id })}>
-        <View style={style.siteContainer}>
+        <View style={style.container}>
           <View style={style.mainContent}>
             <TouchableOpacity onPress={()=>this._siteLocation(site.address)}>
               <Icon style={style.icon} name="pin" />
             </TouchableOpacity>
-            <Text style={style.siteName}>{site.name}</Text>
+            <Text style={style.name}>{site.name}</Text>
             <Icon style={style.icon} name="arrow-forward"/>
           </View>
           <View style={style.detailedContent}>

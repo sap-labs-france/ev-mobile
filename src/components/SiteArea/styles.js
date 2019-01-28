@@ -5,14 +5,12 @@ import { scale } from "react-native-size-matters";
 import { Platform } from "react-native";
 
 const commonStyles = {
-  siteContainer: {
+  container: {
     flex: 1,
     flexDirection: "column",
     height: scale(122),
     paddingTop: scale(5),
     paddingBottom: scale(5),
-    paddingLeft: scale(10),
-    paddingRight: scale(10),
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
     backgroundColor: "rgba(255,255,255,0.2)"
@@ -24,13 +22,16 @@ const commonStyles = {
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor
   },
-  siteName: {
+  name: {
     fontSize: scale(20),
     color: commonColor.textColor,
+    marginLeft: scale(10),
     fontWeight: "bold"
   },
   icon: {
-    fontSize: scale(25)
+    fontSize: scale(25),
+    marginLeft: scale(10),
+    marginRight: scale(10)
   },
   detailedContent: {
     flexDirection: "row",
@@ -55,8 +56,6 @@ const commonStyles = {
   },
   connectorBadge: {
     marginTop: scale(5),
-    marginLeft: scale(10),
-    marginRight: scale(10),
     minWidth: scale(55)
   },
   freeConnectorBadge: {

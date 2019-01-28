@@ -6,7 +6,6 @@ import { Platform } from "react-native";
 
 const commonStyles = {
   container: {
-    flex: 1
   },
   statusContainer: {
     width: scale(44),

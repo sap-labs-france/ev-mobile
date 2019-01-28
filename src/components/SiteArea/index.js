@@ -14,9 +14,9 @@ export default class SiteAreaComponent extends ResponsiveComponent {
     const { siteArea, navigation } = this.props;
     return (
       <TouchableOpacity onPress={() => navigation.navigate("Chargers", { siteAreaID: siteArea.id, withNoSite: false })}>
-        <View style={style.siteContainer}>
+        <View style={style.container}>
           <View style={style.mainContent}>
-            <Text style={style.siteName}>{siteArea.name}</Text>
+            <Text style={style.name}>{siteArea.name}</Text>
             <Icon style={style.icon} name="arrow-forward"/>
           </View>
           <View style={style.detailedContent}>
