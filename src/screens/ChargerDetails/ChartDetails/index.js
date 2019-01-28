@@ -21,8 +21,8 @@ export default class ChartDetails extends BaseScreen {
     super(props);
     this.state = {
       values: [],
-      consumptions: EMPTY_CHART,
-      stateOfCharge: EMPTY_CHART
+      consumptionValues: EMPTY_CHART,
+      stateOfChargeValues: EMPTY_CHART
     };
   }
 
@@ -50,27 +50,29 @@ export default class ChartDetails extends BaseScreen {
         // At least 2 values for the chart!!!
         if (result.values && result.values.length > 1) {
           // Convert
-          let consumptions = [], stateOfCharge = [];
+          let consumptionValues = [], stateOfChargeValues = [];
           for (let index = 0; index < result.values.length; index++) {
             const value = result.values[index];
             const date = new Date(value.date).getTime();
             // Add
-            consumptions.push({x: date, y: (value.value ? value.value : 0)});
-            stateOfCharge.push({x: date, y: (value.stateOfCharge ? value.stateOfCharge : 0)});
+            consumptionValues.push({x: date, y: (value.value ? value.value : 0)});
+            if (value.stateOfCharge > 0) {
+              stateOfChargeValues.push({x: date, y: (value.stateOfCharge ? value.stateOfCharge : 0)});
+            }
           }
           // Set
           this.setState({
             values: result.values,
-            consumptions,
-            stateOfCharge
+            consumptionValues,
+            stateOfChargeValues
           });
         }
       } else {
         // Clear
         this.setState({
           values: null,
-          consumptions: EMPTY_CHART,
-          stateOfCharge: EMPTY_CHART
+          consumptionValues: EMPTY_CHART,
+          stateOfChargeValues: EMPTY_CHART
         });
       }
     } catch (error) {
@@ -87,56 +89,122 @@ export default class ChartDetails extends BaseScreen {
     await this._getChargingStationConsumption();
   }
 
+  computeChartDefinition(consumptionValues, stateOfChargeValues) {
+    const chartDefinition = {};
+    // Add Data
+    chartDefinition.data = { dataSets: [] };
+    // Check Consumptions\
+    if (consumptionValues && consumptionValues.length > 1) {
+      // Add
+      chartDefinition.data.dataSets.push(
+        {
+          values: consumptionValues,
+          label: I18n.t("details.instantPowerChartLabel"),
+          config: {
+            mode: "CUBIC_BEZIER",
+            drawValues: false,
+            lineWidth: 2,
+            drawCircles: false,
+            circleColor: processColor(commonColor.brandDanger),
+            drawCircleHole: false,
+            circleRadius: 5,
+            highlightColor: processColor("white"),
+            color: processColor(commonColor.brandDanger),
+            drawFilled: true,
+            fillAlpha: 65,
+            fillColor: processColor(fillRed),
+            valueTextSize: scale(15)
+          }
+        }
+      );
+    }
+    // Check SoC
+    if (stateOfChargeValues && stateOfChargeValues.length > 1) {
+      // Add
+      chartDefinition.data.dataSets.push(
+        {
+          values: stateOfChargeValues,
+          label: I18n.t("details.batteryChartLabel"),
+          config: {
+            axisDependency: "RIGHT",
+            mode: "CUBIC_BEZIER",
+            drawValues: false,
+            lineWidth: 2,
+            drawCircles: false,
+            circleColor: processColor(commonColor.brandSuccess),
+            drawCircleHole: false,
+            circleRadius: 5,
+            highlightColor: processColor("white"),
+            color: processColor(commonColor.brandSuccess),
+            drawFilled: true,
+            fillAlpha: 65,
+            fillColor: processColor(fillGreen),
+            valueTextSize: scale(15)
+          }
+        }
+      );
+    }
+    // X Axis
+    chartDefinition.xAxis = {
+      enabled: true,
+      labelRotationAngle: -45,
+      granularity: 1,
+      drawLabels: true,
+      position: "BOTTOM",
+      drawAxisLine: true,
+      drawGridLines: false,
+      fontFamily: "HelveticaNeue-Medium",
+      fontWeight: "bold",
+      valueFormatter: "date",
+      valueFormatterPattern: "HH:mm",
+      textSize: scale(8),
+      textColor: processColor("white")
+    };
+    // Y Axis
+    chartDefinition.yAxis = {};
+    // Check Consumptions\
+    if (consumptionValues && consumptionValues.length > 1) {
+      // Set
+      chartDefinition.yAxis.left = {
+        enabled: true,
+        valueFormatter: "# W",
+        axisMinimum: 0,
+        textColor: processColor(commonColor.brandDanger),
+        // limitLines: [{
+        //   limit: connector.power,
+        //   label: I18n.t("details.connectorMax"),
+        //   valueTextColor: processColor("white"),
+        //   lineColor: processColor(commonColor.brandDanger),
+        //   lineDashPhase: 2,
+        //   lineWidth: 1,
+        //   lineDashLengths: [10,10]
+        // }]
+      };
+    }
+    // Check SoC
+    if (stateOfChargeValues && stateOfChargeValues.length > 1) {
+      // Add SoC
+      chartDefinition.yAxis.right = {
+        enabled: true,
+        valueFormatter: "percent",
+        axisMinimum: 0,
+        axisMaximum: 100,
+        textColor: processColor(commonColor.brandSuccess)
+      };
+    }
+    // Return
+    return chartDefinition;
+  }
+
   render() {
     const style = computeStyleSheet();
-    const { consumptions, stateOfCharge } = this.state;
+    const { consumptionValues, stateOfChargeValues } = this.state;
+    const chartDefinition = this.computeChartDefinition(consumptionValues, stateOfChargeValues);
     return (
       <View style={style.container}>
         <LineChart
           style={style.chart}
-          data={{
-            dataSets: [
-              {
-                values: consumptions,
-                label: I18n.t("details.instantPowerChartLabel"),
-                config: {
-                  mode: "CUBIC_BEZIER",
-                  drawValues: false,
-                  lineWidth: 2,
-                  drawCircles: false,
-                  circleColor: processColor(commonColor.brandDanger),
-                  drawCircleHole: false,
-                  circleRadius: 5,
-                  highlightColor: processColor("white"),
-                  color: processColor(commonColor.brandDanger),
-                  drawFilled: true,
-                  fillAlpha: 65,
-                  fillColor: processColor(fillRed),
-                  valueTextSize: scale(15)
-                }
-              },
-              {
-                values: stateOfCharge,
-                label: I18n.t("details.batteryChartLabel"),
-                config: {
-                  axisDependency: "RIGHT",
-                  mode: "CUBIC_BEZIER",
-                  drawValues: false,
-                  lineWidth: 2,
-                  drawCircles: false,
-                  circleColor: processColor(commonColor.brandSuccess),
-                  drawCircleHole: false,
-                  circleRadius: 5,
-                  highlightColor: processColor("white"),
-                  color: processColor(commonColor.brandSuccess),
-                  drawFilled: true,
-                  fillAlpha: 65,
-                  fillColor: processColor(fillGreen),
-                  valueTextSize: scale(15)
-                }
-              }
-            ]
-          }}
+          data={chartDefinition.data}
           chartDescription={{ text: "" }}
           noDataText={"No Data"}
           backgroundColor={"black"}
@@ -149,45 +217,8 @@ export default class ChartDetails extends BaseScreen {
             markerColor: processColor("white"),
             textColor: processColor("black")
           }}
-          xAxis={{
-            enabled: true,
-            labelRotationAngle: -45,
-            granularity: 1,
-            drawLabels: true,
-            position: "BOTTOM",
-            drawAxisLine: true,
-            drawGridLines: false,
-            fontFamily: "HelveticaNeue-Medium",
-            fontWeight: "bold",
-            valueFormatter: "date",
-            valueFormatterPattern: "HH:mm",
-            textSize: scale(8),
-            textColor: processColor("white")
-          }}
-          yAxis={{
-            left: {
-              enabled: true,
-              valueFormatter: "# W",
-              axisMinimum: 0,
-              textColor: processColor(commonColor.brandDanger),
-              // limitLines: [{
-              //   limit: connector.power,
-              //   label: I18n.t("details.connectorMax"),
-              //   valueTextColor: processColor("white"),
-              //   lineColor: processColor(commonColor.brandDanger),
-              //   lineDashPhase: 2,
-              //   lineWidth: 1,
-              //   lineDashLengths: [10,10]
-              // }]
-            },
-            right: {
-              enabled: true,
-              valueFormatter: "percent",
-              axisMinimum: 0,
-              axisMaximum: 100,
-              textColor: processColor(commonColor.brandSuccess)
-            }
-          }}
+          xAxis={chartDefinition.xAxis}
+          yAxis={chartDefinition.yAxis}
           autoScaleMinMaxEnabled={false}
           animation={{
             durationX: 1000,
