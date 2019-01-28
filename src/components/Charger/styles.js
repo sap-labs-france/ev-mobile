@@ -7,8 +7,6 @@ const commonStyles = {
   container: {
     flex: 1,
     flexDirection: "column",
-    paddingLeft: scale(5),
-    paddingRight: scale(5),
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
     backgroundColor: "rgba(255,255,255,0.2)"

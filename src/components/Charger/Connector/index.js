@@ -109,7 +109,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
     const even = (index % 2 === 0);
     return (
       charger.connectors.length > 1 ?
-        <TouchableOpacity style={style.statusLeftRightConnectorContainer}
+        <TouchableOpacity style={style.statusConnectorContainer}
             onPress={()=> navigation.navigate("ChargerTab", { chargerID: charger.id, connectorID: connector.connectorId })}>
           <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1} >
             <View style={even ? [style.connectorContainer, style.leftConnectorContainer] : [style.connectorContainer, style.rightConnectorContainer]}>
@@ -133,11 +133,11 @@ export default class ConnectorComponent extends ResponsiveComponent {
           </Animatable.View>
         </TouchableOpacity>
       :
-        <TouchableOpacity style={style.statusConnectorContainer} 
+        <TouchableOpacity style={style.statusOneConnectorContainer} 
             onPress={()=> navigation.navigate("ChargerTab", { chargerID: charger.id, connectorID: connector.connectorId })}>
           <Animatable.View animation={"fadeInUp"} iterationCount={1} >
             <View style={style.connectorContainer}>
-              <Text style={style.statusDescription} numberOfLines={1}>
+              <Text style={[style.statusDescription, style.statusOneDescription]} numberOfLines={1}>
                 {Utils.translateConnectorStatus(connector.status)}
               </Text>
               <View style={style.statusConnectorDetailContainer}>
