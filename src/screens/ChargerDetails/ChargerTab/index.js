@@ -131,7 +131,8 @@ export default class ChargerTab extends  BaseScreen {
             }>
           <HeaderComponent
             title={charger.id} subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
-            leftAction={() => navigation.navigate("Chargers", { siteAreaID: charger.siteAreaID })} leftActionIcon={"arrow-back" } />
+            leftAction={() => navigation.navigate("Chargers", { siteAreaID: charger.siteAreaID })} leftActionIcon={"arrow-back" }
+            rightAction={navigation.openDrawer} rightActionIcon={"menu"} />
           <Tabs tabBarPosition="bottom" locked={true} initialPage={0} >
             <Tab heading={
                   <TabHeading style={style.tabHeader}>
