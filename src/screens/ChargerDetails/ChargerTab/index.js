@@ -52,13 +52,18 @@ export default class ChargerTab extends  BaseScreen {
   _refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
-      // Display spinner
-      this.setState({refreshing: true});
       // Refresh Charger
       await this._getCharger();
-      // Hide spinner
-      this.setState({refreshing: false});
     }
+  }
+
+  _manualRefresh = async () => {
+    // Display spinner
+    this.setState({refreshing: true});
+    // Refresh
+    await this._refresh();
+    // Hide spinner
+    this.setState({refreshing: false});
   }
 
   _getCharger = async () => {
@@ -72,9 +77,9 @@ export default class ChargerTab extends  BaseScreen {
       this.setState({
         charger: charger,
         connector: charger.connectors[connectorID - 1]
-      }, () => {
+      }, async () => {
         // Check Auth
-        this._isAuthorizedStopTransaction();
+        await this._isAuthorizedStopTransaction();
       });
     } catch (error) {
       // Other common Error
@@ -126,7 +131,7 @@ export default class ChargerTab extends  BaseScreen {
             refreshControl={
               <RefreshControl
                 refreshing={this.state.refreshing}
-                onRefresh={this._refresh}
+                onRefresh={this._manualRefresh}
               />
             }>
           <HeaderComponent
@@ -140,7 +145,7 @@ export default class ChargerTab extends  BaseScreen {
                   </TabHeading>
                 }>
               <ConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin}
-                navigation={navigation} isAuthorizedToStopTransaction={isAuthorizedToStopTransaction}/>
+                navigation={navigation}/>
             </Tab>
             {connector.activeTransactionID && isAuthorizedToStopTransaction ?
               <Tab heading={

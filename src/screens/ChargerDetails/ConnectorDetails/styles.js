@@ -9,10 +9,17 @@ const commonStyles = {
     flex: 1,
     justifyContent: "center",
     backgroundColor: commonColor.brandPrimary,
-    height: "100%"
   },
   spinner: {
     color: commonColor.textColor
+  },
+  scrollViewContainer: {
+  },
+  detailsContainer: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   backgroundImage: {
     width: "100%",
@@ -23,41 +30,27 @@ const commonStyles = {
     alignItems: "center",
     marginTop: scale(-55)
   },
-  startTransaction: {
+  buttonTransaction: {
     borderRadius: scale(55),
     borderStyle: "solid",
     borderWidth: 2,
     borderColor: commonColor.textColor,
     width: scale(110),
     height: scale(110),
-    backgroundColor: commonColor.brandSuccess,
     justifyContent: "center",
     alignItems: "center"
+  },
+  startTransaction: {
+    backgroundColor: commonColor.brandSuccess,
   },
   stopTransaction: {
-    borderRadius: scale(55),
-    borderStyle: "solid",
-    borderWidth: 2,
-    borderColor: commonColor.textColor,
-    width: scale(110),
-    height: scale(110),
     backgroundColor: commonColor.brandDanger,
-    justifyContent: "center",
-    alignItems: "center"
   },
-  startStopTransactionDisabled: {
+  buttonTransactionDisabled: {
     backgroundColor: commonColor.btnDisabledBg,
   },
   startStopTransactionIcon: {
     fontSize: scale(75)
-  },
-  scrollViewContainer: {
-  },
-  detailsContainer: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-between",
-    marginTop: scale(-10)
   },
   rowContainer: {
     flexDirection: "row",

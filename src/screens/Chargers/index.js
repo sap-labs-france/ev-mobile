@@ -98,6 +98,15 @@ export default class Chargers extends BaseScreen {
     }
   }
 
+  _manualRefresh = async () => {
+    // Display spinner
+    this.setState({refreshing: true});
+    // Refresh
+    await this._refresh();
+    // Hide spinner
+    this.setState({refreshing: false});
+  }
+
   _footerList = () => {
     const { skip, count, limit } = this.state;
     if ((skip + limit) < count) {
@@ -145,7 +154,7 @@ export default class Chargers extends BaseScreen {
               }
               keyExtractor={item => item.id}
               refreshControl={
-                <RefreshControl onRefresh={this._refresh} refreshing={this.state.refreshing} />
+                <RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />
               }
               indicatorStyle={"white"}
               onEndReached={this._onEndScroll}

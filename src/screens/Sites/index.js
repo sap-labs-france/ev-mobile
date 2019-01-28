@@ -84,6 +84,15 @@ export default class Sites extends BaseScreen {
     }
   }
 
+  _manualRefresh = async () => {
+    // Display spinner
+    this.setState({refreshing: true});
+    // Refresh
+    await this._refresh();
+    // Hide spinner
+    this.setState({refreshing: false});
+  }
+
   _onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
@@ -130,7 +139,7 @@ export default class Sites extends BaseScreen {
               }
               keyExtractor={item => item.id}
               refreshControl={
-                <RefreshControl onRefresh={this._refresh} refreshing={this.state.refreshing} />
+                <RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />
               }
               onEndReached={this._onEndScroll}
               onEndReachedThreshold={0.5}

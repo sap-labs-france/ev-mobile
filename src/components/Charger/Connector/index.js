@@ -136,7 +136,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
       :
         <TouchableOpacity style={style.statusOneConnectorContainer} 
             onPress={()=> navigation.navigate("ChargerTab", { chargerID: charger.id, connectorID: connector.connectorId })}>
-          <Animatable.View animation={"fadeInUp"} iterationCount={1} >
+          <Animatable.View animation={"fadeIn"} iterationCount={1} >
             <View style={style.connectorContainer}>
               <View style={style.statusConnectorDetailContainer}>
                 <Text style={[style.statusDescription, style.statusOneDescription]} numberOfLines={1}>

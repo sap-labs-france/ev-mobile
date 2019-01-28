@@ -69,14 +69,14 @@ const commonStyles = {
     marginTop: scale(2),
     marginLeft: scale(5),
     marginRight: scale(5),
-    fontSize: scale(15)
+    fontSize: scale(20)
   },
   inputIconPassword: {
     alignSelf: "center",
     width: scale(35),
     marginLeft: scale(8),
     marginRight: scale(5),
-    fontSize: scale(18)
+    fontSize: scale(20)
   },
   inputField: {
     width: "100%",

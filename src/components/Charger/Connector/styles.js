@@ -37,6 +37,7 @@ const commonStyles = {
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
+    width: "100%",
     paddingLeft: scale(5),
     paddingRight: scale(5),
     paddingBottom: scale(5),
