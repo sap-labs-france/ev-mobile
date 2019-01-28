@@ -148,7 +148,7 @@ export default class ChargerTab extends  BaseScreen {
                       <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
                     </TabHeading>
                   }>
-                <ChartDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation}/>
+                <ChartDetails transactionID={connector.activeTransactionID} isAdmin={isAdmin} navigation={navigation}/>
               </Tab>
             :
               undefined

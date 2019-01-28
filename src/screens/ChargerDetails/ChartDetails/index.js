@@ -39,13 +39,13 @@ export default class ChartDetails extends BaseScreen {
   }
 
   _getChargingStationConsumption = async () => {
-    const { connector } = this.props;
+    const { transactionID } = this.props;
     try {
       // Active Transaction?
-      if (connector.activeTransactionID) {
+      if (transactionID) {
         // Get the consumption
         let result = await _provider.getChargingStationConsumption({
-          TransactionId: connector.activeTransactionID
+          TransactionId: transactionID
         });
         // At least 2 values for the chart!!!
         if (result.values && result.values.length > 1) {
@@ -89,7 +89,6 @@ export default class ChartDetails extends BaseScreen {
 
   render() {
     const style = computeStyleSheet();
-    const { connector } = this.props;
     const { consumptions, stateOfCharge } = this.state;
     return (
       <View style={style.container}>
@@ -170,17 +169,16 @@ export default class ChartDetails extends BaseScreen {
               enabled: true,
               valueFormatter: "# W",
               axisMinimum: 0,
-              // axisMaximum: connector.power * 1.05,
               textColor: processColor(commonColor.brandDanger),
-              limitLines: [{
-                limit: connector.power,
-                label: I18n.t("details.connectorMax"),
-                valueTextColor: processColor("white"),
-                lineColor: processColor(commonColor.brandDanger),
-                lineDashPhase: 2,
-                lineWidth: 1,
-                lineDashLengths: [10,10]
-              }]
+              // limitLines: [{
+              //   limit: connector.power,
+              //   label: I18n.t("details.connectorMax"),
+              //   valueTextColor: processColor("white"),
+              //   lineColor: processColor(commonColor.brandDanger),
+              //   lineDashPhase: 2,
+              //   lineWidth: 1,
+              //   lineDashLengths: [10,10]
+              // }]
             },
             right: {
               enabled: true,
@@ -215,10 +213,7 @@ export default class ChartDetails extends BaseScreen {
 }
 
 ChartDetails.propTypes = {
-  charger: PropTypes.object.isRequired,
-  connector: PropTypes.object.isRequired,
-  navigation: PropTypes.object.isRequired,
-  isAdmin: PropTypes.bool.isRequired
+  transactionID: PropTypes.number
 };
 
 ChartDetails.defaultProps = {
