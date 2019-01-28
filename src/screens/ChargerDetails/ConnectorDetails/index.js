@@ -329,23 +329,21 @@ export default class ConnectorDetails extends BaseScreen {
     const { siteImage, transaction, userImage, buttonDisabled, hours, minutes, seconds } = this.state;
     return (
       <Container style={style.container}>
-        <View style={style.detailsContainer}>
-          <Image style={style.backgroundImage} source={siteImage ? {uri: siteImage} : noSite}/>
-          <View style={style.transactionContainer}>
-            {connector.activeTransactionID === 0 ?
-              <TouchableOpacity onPress={() => this._onStartTransaction()} disabled={buttonDisabled}>
-                <View style={(buttonDisabled ? [style.buttonTransaction, style.startTransaction, style.buttonTransactionDisabled] : [style.buttonTransaction, style.startTransaction])}>
-                  <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
-                </View>
-              </TouchableOpacity>
-            :
-              <TouchableOpacity onPress={() => this._onStopTransaction()} disabled={buttonDisabled}>
-                <View style={(buttonDisabled ? [style.buttonTransaction, style.stopTransaction, style.buttonTransactionDisabled] : [style.buttonTransaction, style.stopTransaction])}>
-                  <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="stop" />
-                </View>
-              </TouchableOpacity>
-            }
-          </View>
+        <Image style={style.backgroundImage} source={siteImage ? {uri: siteImage} : noSite}/>
+        <View style={style.transactionContainer}>
+          {connector.activeTransactionID === 0 ?
+            <TouchableOpacity onPress={() => this._onStartTransaction()} disabled={buttonDisabled}>
+              <View style={(buttonDisabled ? [style.buttonTransaction, style.startTransaction, style.buttonTransactionDisabled] : [style.buttonTransaction, style.startTransaction])}>
+                <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="play-arrow" />
+              </View>
+            </TouchableOpacity>
+          :
+            <TouchableOpacity onPress={() => this._onStopTransaction()} disabled={buttonDisabled}>
+              <View style={(buttonDisabled ? [style.buttonTransaction, style.stopTransaction, style.buttonTransactionDisabled] : [style.buttonTransaction, style.stopTransaction])}>
+                <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="stop" />
+              </View>
+            </TouchableOpacity>
+          }
         </View>
         <ScrollView style={style.scrollViewContainer}>
           <View style={style.detailsContainer}>

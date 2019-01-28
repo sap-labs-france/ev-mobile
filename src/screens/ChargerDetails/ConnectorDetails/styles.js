@@ -7,19 +7,13 @@ import { Platform } from "react-native";
 const commonStyles = {
   container: {
     flex: 1,
-    justifyContent: "center",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
     backgroundColor: commonColor.brandPrimary,
   },
   spinner: {
     color: commonColor.textColor
-  },
-  scrollViewContainer: {
-  },
-  detailsContainer: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "center"
   },
   backgroundImage: {
     width: "100%",
@@ -51,6 +45,13 @@ const commonStyles = {
   },
   startStopTransactionIcon: {
     fontSize: scale(75)
+  },
+  scrollViewContainer: {
+  },
+  detailsContainer: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   rowContainer: {
     flexDirection: "row",
