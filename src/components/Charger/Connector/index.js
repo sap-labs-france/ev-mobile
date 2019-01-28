@@ -81,7 +81,6 @@ export default class ConnectorComponent extends ResponsiveComponent {
         <View style={style.statusConnectorDetail}>
           <Image style={style.connectorImage} source={Utils.getConnectorTypeImage(connector.type)}/>
           <Text style={style.labelImage}>{Utils.translateConnectorType(connector.type)}</Text>
-          <Text style={style.subLabel} numberOfLines={1}/>
         </View>
     );
   }
@@ -113,9 +112,11 @@ export default class ConnectorComponent extends ResponsiveComponent {
             onPress={()=> navigation.navigate("ChargerTab", { chargerID: charger.id, connectorID: connector.connectorId })}>
           <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1} >
             <View style={even ? [style.connectorContainer, style.leftConnectorContainer] : [style.connectorContainer, style.rightConnectorContainer]}>
-              <Text style={style.statusDescription} numberOfLines={1}>
-                {Utils.translateConnectorStatus(connector.status)}
-              </Text>
+              <View style={style.statusConnectorDetailContainer}>
+                <Text style={style.statusDescription} numberOfLines={1}>
+                  {Utils.translateConnectorStatus(connector.status)}
+                </Text>
+              </View>
               {even ?
                 <View style={[style.statusConnectorDetailContainer, style.leftStatusConnectorDetailContainer]}>
                   {this._renderFirstConnectorDetails(connector, style)}
@@ -137,9 +138,11 @@ export default class ConnectorComponent extends ResponsiveComponent {
             onPress={()=> navigation.navigate("ChargerTab", { chargerID: charger.id, connectorID: connector.connectorId })}>
           <Animatable.View animation={"fadeInUp"} iterationCount={1} >
             <View style={style.connectorContainer}>
-              <Text style={[style.statusDescription, style.statusOneDescription]} numberOfLines={1}>
-                {Utils.translateConnectorStatus(connector.status)}
-              </Text>
+              <View style={style.statusConnectorDetailContainer}>
+                <Text style={[style.statusDescription, style.statusOneDescription]} numberOfLines={1}>
+                  {Utils.translateConnectorStatus(connector.status)}
+                </Text>
+              </View>
               <View style={style.statusConnectorDetailContainer}>
                 {this._renderFirstConnectorDetails(connector, style)}
                 {this._renderSecondConnectorDetails(connector, style)}

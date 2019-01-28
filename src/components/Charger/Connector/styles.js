@@ -15,7 +15,8 @@ const commonStyles = {
   connectorContainer: {
     flexDirection: "column",
     justifyContent: "space-evenly",
-    alignItems: "center"
+    alignItems: "center",
+    width: "100%"
   },
   leftConnectorContainer: {
     borderColor: commonColor.textColor,
@@ -25,17 +26,21 @@ const commonStyles = {
   },
   statusDescription: {
     color: commonColor.textColor,
-    // paddingTop: scale(5),
+    paddingTop: scale(5),
     fontSize: scale(18),
   },
   statusOneDescription: {
+    paddingTop: scale(5),
     fontSize: scale(22),
   },
   statusConnectorDetailContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
-    padding: scale(5),
+    paddingLeft: scale(5),
+    paddingRight: scale(5),
+    paddingBottom: scale(5),
+    paddingTop: 0
   },
   leftStatusConnectorDetailContainer: {
     paddingRight: scale(5)
@@ -47,7 +52,8 @@ const commonStyles = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    minWidth: scale(60)
+    height: scale(60),
+    width: scale(60)
   },
   statusConnectorDetailLetter: {
     marginTop: scale(-10),
@@ -66,7 +72,6 @@ const commonStyles = {
   connectorImage: {
     width: scale(40),
     height: scale(40),
-    marginTop: scale(15)
   },
   labelImage: {
     color: commonColor.textColor,
