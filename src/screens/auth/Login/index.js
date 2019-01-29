@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ImageBackground, Keyboard, Linking, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
+import { ScrollView, Image, ImageBackground, Keyboard, Linking, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
 import { Container, Text, Form, Item, Button, Icon, View, Left, Right, CheckBox, Body, Footer, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
 import { ResponsiveComponent, MediaQuery } from "react-native-responsive-ui";
@@ -181,18 +181,18 @@ export default class Login extends ResponsiveComponent {
     const { display, eula, loading } = this.state;
     // Render
     return (
-      display ?
-        <Container>
+      !display ?
+        <View style={style.noDisplay}/>
+      :
+        <Container style={style.container}>
           <ImageBackground source={require("../../../../assets/bg.png")} style={style.background}>
-              <KeyboardAvoidingView style={style.container} behavior="padding">
-                <MediaQuery minHeight={450} >
-                  <View style={style.logoContainer}>
-                    <Image source={require("../../../../assets/logo-low.gif")} style={style.logo} />
-                    <Text style={style.appText}>e-Mobility</Text>
-                    <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
-                    <Text style={style.versionDate}>({DeviceInfo.getLastUpdateTime() ? new Date(DeviceInfo.getLastUpdateTime()).toLocaleDateString() : I18n.t("general.date")})</Text>
-                  </View>
-                </MediaQuery>
+            <ScrollView contentContainerStyle={style.scrollContainer}>
+              <KeyboardAvoidingView behavior="padding" style={style.formContainer}>
+                <View style={style.formHeader}>
+                  <Image style={style.logo} source={require("../../../../assets/logo-low.gif")} />
+                  <Text style={style.appText}>e-Mobility</Text>
+                  <Text style={style.appVersionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
+                </View>
                 <Form style={style.form}>
                   <Button rounded block style={style.button}
                     onPress={() =>
@@ -209,14 +209,14 @@ export default class Login extends ResponsiveComponent {
                   </Button>
                   {this.state.errorTenant && this.state.errorTenant.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
                   <Item rounded style={style.inputGroup}>
-                    <Icon active name="mail" style={style.inputIconMail}/>
+                    <Icon active name="mail" style={style.inputIcon}/>
                     <TextInput
                       name="email"
                       type="email"
                       returnKeyType= "next"
                       placeholder={I18n.t("authentication.email")}
-                      placeholderTextColor={commonColor.tabBarTextColor}
-                      onSubmitEditing={() => this.passwordInput._root.focus()}
+                      placeholderTextColor={commonColor.textColor}
+                      onSubmitEditing={() => this.passwordInput.focus()}
                       style={style.inputField}
                       autoCapitalize="none"
                       blurOnSubmit={false}
@@ -230,7 +230,7 @@ export default class Login extends ResponsiveComponent {
                   {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
 
                   <Item rounded style={style.inputGroup}>
-                    <Icon active name="unlock" style={style.inputIconPassword}/>
+                    <Icon active name="unlock" style={[style.inputIcon, style.inputIconLock]}/>
                     <TextInput
                       name="password"
                       type="password"
@@ -238,7 +238,7 @@ export default class Login extends ResponsiveComponent {
                       ref={(ref)=>(this.passwordInput = ref)}
                       onSubmitEditing={()=>Keyboard.dismiss()}
                       placeholder={I18n.t("authentication.password")}
-                      placeholderTextColor={commonColor.tabBarTextColor}
+                      placeholderTextColor={commonColor.textColor}
                       style={style.inputField}
                       autoCapitalize="none"
                       blurOnSubmit={false}
@@ -250,20 +250,15 @@ export default class Login extends ResponsiveComponent {
                     />
                   </Item>
                   {this.state.errorPassword && this.state.errorPassword.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
-
-                  <Item style={style.eulaContainer}>
+                  <View style={style.eulaContainer}>
                     <CheckBox style={style.eulaCheckbox} checked={eula} onPress={() => this.setState({eula: !eula})} />
-                    <Body>
-                      <Text style={style.eulaText}>{I18n.t("authentication.acceptEula")}
-                        <Text onPress={()=> navigation.navigate("Eula")} style={style.eulaLink}>{I18n.t("authentication.eula")}</Text>
-                      </Text>
-                    </Body>
-                  </Item>
-                  <View>
-                    {this.state.errorEula && this.state.errorEula.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
+                    <Text style={style.eulaText}>{I18n.t("authentication.acceptEula")}
+                      <Text onPress={()=> navigation.navigate("Eula")} style={style.eulaLink}>{I18n.t("authentication.eula")}</Text>
+                    </Text>
                   </View>
+                  {this.state.errorEula && this.state.errorEula.map((errorMessage, index) => <Text style={[style.formErrorText, style.formErrorTextEula]} key={index}>{errorMessage}</Text>) }
                   { loading ?
-                    <Spinner style={style.spinner}/>
+                    <Spinner color="white" style={style.spinner} />
                   :
                     <Button rounded primary block style={style.button} onPress={this._login}>
                       <TextRN style={style.buttonText}>{I18n.t("authentication.login")}</TextRN>
@@ -271,22 +266,21 @@ export default class Login extends ResponsiveComponent {
                   }
                 </Form>
               </KeyboardAvoidingView>
-              <Footer>
-                <Left>
-                  <Button small transparent style={style.linksButtonLeft} onPress={ () => this._newUser()}>
-                    <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
-                  </Button>
-                </Left>
-                <Right>
-                  <Button small transparent style={style.linksButtonRight} onPress={ () => this._forgotPassword()}>
-                    <TextRN style={style.linksTextButton}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
-                  </Button>
-                </Right>
-              </Footer>
+            </ScrollView>
+            <Footer>
+              <Left>
+                <Button small transparent style={style.linksButtonLeft} onPress={ () => this._newUser()}>
+                  <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
+                </Button>
+              </Left>
+              <Right>
+                <Button small transparent style={style.linksButtonRight} onPress={ () => this._forgotPassword()}>
+                  <TextRN style={style.linksTextButton}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
+                </Button>
+              </Right>
+            </Footer>
           </ImageBackground>
         </Container>
-      :
-        <View style={style.noDisplay}/>
     );
   }
 }

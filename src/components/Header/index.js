@@ -5,7 +5,7 @@ import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./styles";
 import PropTypes from "prop-types";
 
-const logo = require("../../../assets/logo-low.gif")
+const logo = require("../../../assets/logo-low.gif");
 
 export default class HeaderComponent extends ResponsiveComponent {
   constructor(props) {
