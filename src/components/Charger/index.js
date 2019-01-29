@@ -45,7 +45,9 @@ export default class ChargerComponent extends ResponsiveComponent {
               <Icon style={style.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
             </Animatable.Text>
           :
-            <Icon style={style.heartbeatIcon} type="FontAwesome" name="heartbeat" />
+            <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: "center" }}>
+              <Icon style={style.heartbeatIcon} type="FontAwesome" name="heartbeat" />
+            </Animatable.Text>
           }
         </View>
         <View style={style.connectorsContainer}>

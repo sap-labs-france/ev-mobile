@@ -8,11 +8,20 @@ const commonStyles = {
     flexDirection: "row",
     justifyContent: "space-between", 
 		alignItems: "center",
-    height: scale(40),
+    height: 0,
+    opacity: 0,
     paddingLeft: scale(10),
     paddingRight: scale(10),
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
+  },
+  hidden: {
+    height: 0,
+    opacity: 0
+  },
+  visible: {
+    height: scale(40),
+    opacity: 1
   },
   inputField: {
     flex: 1,
