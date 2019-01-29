@@ -17,7 +17,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
     const style = computeStyleSheet();
     const { siteArea, navigation } = this.props;
     return (
-      <Animatable.View animation={(counter++ % 2 === 0) ? "fadeInLeft" : "fadeInRight"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+      <Animatable.View animation={(counter++ % 2 === 0) ? "flipInX" : "flipInX"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity onPress={() => navigation.navigate("Chargers", { siteAreaID: siteArea.id, withNoSite: false })}>
           <View style={style.container}>
             <View style={style.mainContent}>

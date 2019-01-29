@@ -17,6 +17,7 @@ const commonStyles = {
     color: commonColor.textColor,
     fontWeight: "bold",
     fontSize: scale(30),
+    marginTop: scale(-2)
   },
   statusGreen: {
     backgroundColor: commonColor.brandSuccess,

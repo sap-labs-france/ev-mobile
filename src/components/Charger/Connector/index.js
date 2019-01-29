@@ -111,7 +111,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
       charger.connectors.length > 1 ?
         <TouchableOpacity style={style.statusConnectorContainer}
             onPress={()=> navigation.navigate("ChargerTab", { chargerID: charger.id, connectorID: connector.connectorId })}>
-          <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1} >
+          <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
             <View style={even ? [style.connectorContainer, style.leftConnectorContainer] : [style.connectorContainer, style.rightConnectorContainer]}>
               <View style={[style.statusConnectorDetailContainer, style.statusConnectorDescriptionContainer]}>
                 <Text style={style.statusDescription} numberOfLines={1}>
@@ -137,14 +137,14 @@ export default class ConnectorComponent extends ResponsiveComponent {
       :
         <TouchableOpacity style={style.statusOneConnectorContainer} 
             onPress={()=> navigation.navigate("ChargerTab", { chargerID: charger.id, connectorID: connector.connectorId })}>
-          <Animatable.View animation={"fadeIn"} iterationCount={1} >
+          <Animatable.View animation={"flipInX"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
             <View style={style.connectorContainer}>
               <View style={style.statusConnectorDetailContainer}>
                 <Text style={[style.statusDescription, style.statusOneDescription]} numberOfLines={1}>
                   {Utils.translateConnectorStatus(connector.status)}
                 </Text>
               </View>
-              <View style={style.statusConnectorDetailContainer}>
+              <View style={[style.statusConnectorDetailContainer, style.statusOneConnectorDetailContainer]}>
                 {this._renderFirstConnectorDetails(connector, style)}
                 {this._renderSecondConnectorDetails(connector, style)}
                 {this._renderThirdConnectorDetails(connector, style)}

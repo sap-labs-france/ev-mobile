@@ -30,7 +30,6 @@ const commonStyles = {
     fontSize: scale(18),
   },
   statusOneDescription: {
-    paddingTop: scale(5),
     fontSize: scale(22),
   },
   statusConnectorDetailContainer: {
@@ -41,6 +40,10 @@ const commonStyles = {
     paddingLeft: scale(5),
     paddingRight: scale(5),
     paddingBottom: scale(15),
+  },
+  statusOneConnectorDetailContainer: {
+    marginTop: scale(-5),
+    padding: 0
   },
   statusConnectorDescriptionContainer: {
     paddingBottom: scale(5),

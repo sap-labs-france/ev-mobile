@@ -6,7 +6,7 @@ import { Platform } from "react-native";
 
 const commonStyles = {
   header: {
-    height: scale(40),
+    height: scale(45),
     paddingTop: scale(5),
     paddingBottom: scale(5),
     borderBottomWidth: 1,
@@ -20,7 +20,7 @@ const commonStyles = {
   rightHeader: {
   },
   logoHeader: {
-    width: scale(45),
+    width: scale(50),
     resizeMode: "contain"
   },
   titleHeader: {
