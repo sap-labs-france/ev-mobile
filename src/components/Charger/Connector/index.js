@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 import Constants from "../../../utils/Constants";
 
 let counter = 0;
+let bypassedfirstAnimation = false;
 export default class ConnectorComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
@@ -18,8 +19,6 @@ export default class ConnectorComponent extends ResponsiveComponent {
     this.state = {
       showBatteryLevel: false
     };
-    // No animation
-    this.animationDuration = 0;
   }
 
   async componentDidMount() {
@@ -45,8 +44,6 @@ export default class ConnectorComponent extends ResponsiveComponent {
       // SoC not supported
       return;
     }
-    // Init animation
-    this.animationDuration = 1000;
     // Switch battery/Consumption
     this.setState({
       showBatteryLevel: !this.state.showBatteryLevel
@@ -64,15 +61,13 @@ export default class ConnectorComponent extends ResponsiveComponent {
       connector.activeTransactionID !== 0 ?
         <View style={style.statusConnectorDetail}>
           <Animatable.View animation={!this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
-              style={style.animatableValue}
-              duration={this.animationDuration}>
+              style={style.animatableValue} duration={Constants.ANIMATION_ROTATION_MILLIS}>
             <Text style={style.value}>{(connector.currentConsumption / 1000) < 10 ? (connector.currentConsumption > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0) : Math.trunc(connector.currentConsumption / 1000)}</Text>
             <Text style={style.label} numberOfLines={1}>{I18n.t("details.instant")}</Text>
             <Text style={style.subLabel} numberOfLines={1}>(kW)</Text>
           </Animatable.View>
           <Animatable.View animation={this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
-              style={style.animatableValue}
-              duration={this.animationDuration}>
+              style={style.animatableValue} duration={Constants.ANIMATION_ROTATION_MILLIS}>
             <Text style={style.value}>{connector.currentStateOfCharge}</Text>
             <Text style={style.label} numberOfLines={1}>{I18n.t("details.battery")}</Text>
             <Text style={style.subLabel} numberOfLines={1}>(%)</Text>
