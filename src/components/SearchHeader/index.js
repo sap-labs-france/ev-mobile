@@ -11,6 +11,9 @@ import commonColor from "../../theme/variables/commonColor";
 export default class SearchHeaderComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
+    this.state = {
+      isVisible: this.props.initialVisibility
+    }
     this.searchText = "";
     this.searchChanged = false;
   }
@@ -73,19 +76,26 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     }
   }
 
+  setVisible(isVisible) {
+    this.setState({isVisible});
+  }
+
   render() {
     const style = computeStyleSheet();
-    const {  iconSearch, iconSearchType } = this.props;
+    const { isVisible } = this.state;
     return (
-      <View style={style.container}>
-        <Icon type={iconSearchType} name={iconSearch} style={style.icon}/>
-        <TextInput ref={(ref) => { this.textInput = ref; }}
-          style={style.inputField}
-          placeholder={I18n.t("general.search")}
-          placeholderTextColor={commonColor.tabBarTextColor}
-          onChangeText={(searchText) => this._searchChanged(searchText)}/>
-        <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this._clearSearch()}/>
-      </View>
+      isVisible ?
+        <View style={style.container}>
+          <Icon type={"MaterialIcons"} name={"search"} style={style.icon}/>
+          <TextInput ref={(ref) => { this.textInput = ref; }}
+            style={style.inputField}
+            placeholder={I18n.t("general.search")}
+            placeholderTextColor={commonColor.tabBarTextColor}
+            onChangeText={(searchText) => this._searchChanged(searchText)}/>
+          <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this._clearSearch()}/>
+        </View>
+      :
+        <View></View>
     );
   }
 }
@@ -93,11 +103,9 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
 SearchHeaderComponent.propTypes = {
   navigation: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
-  iconSearch: PropTypes.string,
-  iconSearchType: PropTypes.string
+  initialVisibility: PropTypes.bool
 };
 
 SearchHeaderComponent.defaultProps = {
-  iconSearch: "search",
-  iconSearchType: "MaterialIcons",
+  initialVisibility: true
 };

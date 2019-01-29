@@ -10,17 +10,18 @@ const logo = require("../../../assets/logo-low.gif")
 export default class HeaderComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
+    this.searchIsActive = false;
   }
 
   render() {
     const style = computeStyleSheet();
-    const { title, subTitle, leftAction, leftActionIcon, leftActionIconType, rightAction, rightActionIcon, rightActionIconType } = this.props;
+    const { title, subTitle, searchRef, showSearchAction, onSearchAction, leftAction, leftActionIcon, leftActionIconType, rightAction, rightActionIcon, rightActionIconType } = this.props;
     return (
       <Header style={style.header}>
         <Left style={style.leftHeader}>
           {leftAction ?
             <Button transparent onPress={() => leftAction()}>
-              <Icon active type={leftActionIconType} name={leftActionIcon} style={[style.iconHeader, style.leftIconHeader]} />
+              <Icon type={leftActionIconType} name={leftActionIcon} style={[style.iconHeader, style.leftIconHeader]} />
             </Button>
           :
             <Image source={logo} style={style.logoHeader} />
@@ -35,10 +36,26 @@ export default class HeaderComponent extends ResponsiveComponent {
           }
         </Body>
         <Right style={style.rightHeader}>
+          {showSearchAction ?
+            <Icon type={"MaterialIcons"} name={"search"}
+              onPress={() => {
+                // Invert
+                this.searchIsActive = !this.searchIsActive;
+                // Set?
+                console.log(searchRef);
+                
+                if (searchRef) {
+                  searchRef.setVisible(this.searchIsActive);
+                }
+              }}
+              style={[style.iconHeader, style.rightIconHeader]} />
+          :
+            undefined
+          }
           {rightAction ?
-            <Button transparent onPress={() => rightAction()}>
-              <Icon active type={rightActionIconType} name={rightActionIcon} style={[style.iconHeader, style.rightIconHeader]} />
-            </Button>
+            <Icon type={rightActionIconType} name={rightActionIcon}
+              onPress={() => rightAction()}
+              style={[style.iconHeader, style.rightIconHeader]} />
           :
             <Image source={logo} style={style.logoHeader} />
           }
@@ -57,9 +74,13 @@ HeaderComponent.propTypes = {
   rightAction: PropTypes.func,
   rightActionIcon: PropTypes.string,
   rightActionIconType: PropTypes.string,
+  showSearchAction: PropTypes.bool,
+  onSearchAction: PropTypes.func,
+  searchRef: PropTypes.object
 };
 
 HeaderComponent.defaultProps = {
   leftActionIconType: "MaterialIcons",
-  rightActionIconType: "MaterialIcons"
+  rightActionIconType: "MaterialIcons",
+  showSearchAction: false
 };

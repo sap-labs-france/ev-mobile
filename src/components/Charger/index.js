@@ -39,7 +39,7 @@ export default class ChargerComponent extends ResponsiveComponent {
     return (
       <View style={style.container}>
         <View style={style.chargerContainer}>
-          <Text style={style.chargerName}>{charger.id}</Text>
+          <Text style={style.name}>{charger.id}</Text>
           { isChargerDead ?
             <Animatable.Text animation="fadeIn" easing="ease-in-out" duration="1000" iterationCount="infinite" direction="alternate-reverse">
               <Icon style={style.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />

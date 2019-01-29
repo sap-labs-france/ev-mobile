@@ -13,13 +13,11 @@ const commonStyles = {
     borderBottomColor: commonColor.listBorderColor,
   },
   leftHeader: {
-    flex: 0
   },
   bodyHeader: {
-    flex: 1
+    flexGrow: 2,
   },
   rightHeader: {
-    flex: 0
   },
   logoHeader: {
     width: scale(45),
@@ -28,9 +26,6 @@ const commonStyles = {
   titleHeader: {
     color: commonColor.textColor,
     fontSize: scale(20),
-    width: "75%",
-    textAlign: "center",
-    fontWeight: "bold"
   },
   titleHeaderWithSubTitle: {
     fontSize: scale(18),
@@ -42,13 +37,14 @@ const commonStyles = {
     marginTop: (Platform.OS === "ios" ? scale(-2) : scale(-5)),
   },
   iconHeader: {
-    fontSize: scale(25)
+    fontSize: scale(25),
+    alignSelf: "center",
   },
   leftIconHeader: {
     marginLeft: scale(-5)
   },
   rightIconHeader: {
-    marginRight: scale(-5)
+    marginRight: scale(5)
   },
 };
 

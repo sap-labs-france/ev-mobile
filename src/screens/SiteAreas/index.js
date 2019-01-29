@@ -113,10 +113,12 @@ export default class SiteAreas extends BaseScreen {
     const { loading } = this.state;
     return (
       <Container>
-        <HeaderComponent title={I18n.t("siteAreas.title")}
+        <HeaderComponent title={I18n.t("siteAreas.title")} showSearchAction={true}
+          searchRef={this.searchRef}
           leftAction={() => navigation.navigate("Sites")} leftActionIcon={"arrow-back" }
           rightAction={navigation.openDrawer} rightActionIcon={"menu"} />
         <SearchHeaderComponent
+          initialVisibility={false} ref={(ref) => {this.searchRef = ref;}}
           onChange={(searchText) => this._search(searchText)} navigation={navigation}/>
         <View style={style.content}>
           {loading ?

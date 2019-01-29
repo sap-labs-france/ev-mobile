@@ -125,8 +125,11 @@ export default class Sites extends BaseScreen {
     return (
       <Container>
         <HeaderComponent title={I18n.t("sidebar.sites")}
+          showSearchAction={true} onSearchAction={this._onShowHideSearch}
+          searchRef={this.searchRef}
           rightAction={navigation.openDrawer} rightActionIcon={"menu"}  />
         <SearchHeaderComponent
+          initialVisibility={false} ref={(ref) => {this.searchRef = ref;}}
           onChange={(searchText) => this._search(searchText)} navigation={navigation}/>
         <View style={style.content}>
           {loading ?

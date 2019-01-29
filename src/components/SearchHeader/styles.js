@@ -17,7 +17,7 @@ const commonStyles = {
   inputField: {
     flex: 1,
     paddingLeft: scale(5),
-    fontSize: scale(15),
+    fontSize: scale(18),
     color: commonColor.textColor
   },
   icon: {

@@ -136,10 +136,12 @@ export default class Chargers extends BaseScreen {
     }
     return (
       <Container>
-        <HeaderComponent title={I18n.t("chargers.title")}
+        <HeaderComponent title={I18n.t("chargers.title")} showSearchAction={true}
+          searchRef={this.searchRef}
           leftAction={!withNoSite ? () => navigation.navigate("SiteAreas", { siteID: siteID }) : undefined} leftActionIcon={!withNoSite ? "arrow-back" : undefined}
           rightAction={navigation.openDrawer} rightActionIcon={"menu"} />
         <SearchHeaderComponent
+          initialVisibility={false} ref={(ref) => {this.searchRef = ref;}}
           onChange={(searchText) => this._search(searchText)} navigation={navigation}/>
         <View style={style.content}>
           { this.state.loading ?

@@ -20,9 +20,10 @@ const commonStyles = {
     borderBottomColor: commonColor.textColor,
     borderBottomWidth: 1,
   },
-  chargerName: {
+  name: {
     color: commonColor.textColor,
     fontSize: scale(20),
+    marginLeft: scale(5),
     fontWeight: "bold"
   },
   heartbeatIcon: {
