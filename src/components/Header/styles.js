@@ -34,7 +34,7 @@ const commonStyles = {
     fontWeight: "bold",
     color: commonColor.textColor,
     fontSize: scale(12),
-    marginTop: (Platform.OS === "ios" ? scale(-2) : scale(-5)),
+    marginTop: (Platform.OS === "ios" ? scale(-2) : scale(-3)),
   },
   iconHeader: {
     fontSize: scale(30),
