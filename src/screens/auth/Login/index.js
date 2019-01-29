@@ -1,8 +1,8 @@
 import React from "react";
 import { ScrollView, Image, ImageBackground, Keyboard, Linking, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
-import { Container, Text, Form, Item, Button, Icon, View, Left, Right, CheckBox, Body, Footer, Spinner, ActionSheet } from "native-base";
+import { Container, Text, Form, Item, Button, Icon, View, Left, Right, CheckBox, Footer, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
-import { ResponsiveComponent, MediaQuery } from "react-native-responsive-ui";
+import { ResponsiveComponent } from "react-native-responsive-ui";
 
 import providerFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
@@ -14,6 +14,10 @@ import DeviceInfo from "react-native-device-info";
 
 const _provider = providerFactory.getProvider();
 const _tenants = _provider.getTenants();
+
+const background = require("../../../../assets/lightning.gif");
+// const background = require("../../../../assets/bg.png");
+const logo = require("../../../../assets/logo-low.gif");
 
 const formValidationDef = {
   tenant: {
@@ -185,11 +189,11 @@ export default class Login extends ResponsiveComponent {
         <View style={style.noDisplay}/>
       :
         <Container style={style.container}>
-          <ImageBackground source={require("../../../../assets/bg.png")} style={style.background}>
+          <ImageBackground source={background} style={style.background}>
             <ScrollView contentContainerStyle={style.scrollContainer}>
               <KeyboardAvoidingView behavior="padding" style={style.formContainer}>
                 <View style={style.formHeader}>
-                  <Image style={style.logo} source={require("../../../../assets/logo-low.gif")} />
+                  <Image style={style.logo} source={logo} />
                   <Text style={style.appText}>e-Mobility</Text>
                   <Text style={style.appVersionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
                 </View>

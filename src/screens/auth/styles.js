@@ -70,7 +70,7 @@ const commonStyles = {
     flexDirection: "row",
     justifyContent: "flex-start",
     marginBottom: scale(10),
-    backgroundColor: "rgba(255,255,255,0.30)",
+    backgroundColor: "rgba(255,255,255,0.20)",
     borderWidth: 0,
     borderColor: "transparent"
   },
