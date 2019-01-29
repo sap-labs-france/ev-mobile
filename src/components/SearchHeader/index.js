@@ -77,7 +77,17 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
   }
 
   setVisible(isVisible) {
+    // Show/Hide
     this.setState({isVisible});
+    // Show?
+    if (isVisible) {
+      setTimeout(() => {
+        // Set the focus
+        if (this.textInput) {
+          this.textInput.focus();
+        }
+      }, 100);
+    }
   }
 
   render() {
