@@ -42,7 +42,7 @@ const commonStyles = {
     paddingBottom: scale(15),
   },
   statusOneConnectorDetailContainer: {
-    marginTop: scale(-5),
+    marginTop: scale(-10),
     padding: 0
   },
   statusConnectorDescriptionContainer: {
