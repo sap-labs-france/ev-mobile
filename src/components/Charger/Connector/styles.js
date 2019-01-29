@@ -40,8 +40,10 @@ const commonStyles = {
     width: "100%",
     paddingLeft: scale(5),
     paddingRight: scale(5),
+    paddingBottom: scale(15),
+  },
+  statusConnectorDescriptionContainer: {
     paddingBottom: scale(5),
-    paddingTop: 0
   },
   leftStatusConnectorDetailContainer: {
     paddingRight: scale(5)

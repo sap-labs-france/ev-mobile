@@ -37,14 +37,14 @@ const commonStyles = {
     marginTop: (Platform.OS === "ios" ? scale(-2) : scale(-5)),
   },
   iconHeader: {
-    fontSize: scale(25),
+    fontSize: scale(30),
     alignSelf: "center",
   },
   leftIconHeader: {
     marginLeft: scale(-5)
   },
   rightIconHeader: {
-    marginRight: scale(5)
+    marginLeft: scale(10)
   },
 };
 

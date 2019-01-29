@@ -10,6 +10,7 @@ import computeStyleSheet from "./styles";
 import PropTypes from "prop-types";
 import Constants from "../../../utils/Constants";
 
+let counter = 0;
 export default class ConnectorComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
@@ -46,7 +47,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
     }
     // Init animation
     this.animationDuration = 1000;
-    // Switch battery/Consumptio
+    // Switch battery/Consumption
     this.setState({
       showBatteryLevel: !this.state.showBatteryLevel
     })
@@ -104,15 +105,15 @@ export default class ConnectorComponent extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const { index, connector, navigation, charger } = this.props;
-    const even = (index % 2 === 0);
+    const { connector, navigation, charger } = this.props;
+    const even = (counter++ % 2 === 0);
     return (
       charger.connectors.length > 1 ?
         <TouchableOpacity style={style.statusConnectorContainer}
             onPress={()=> navigation.navigate("ChargerTab", { chargerID: charger.id, connectorID: connector.connectorId })}>
           <Animatable.View animation={even ? "slideInLeft" : "slideInRight"} iterationCount={1} >
             <View style={even ? [style.connectorContainer, style.leftConnectorContainer] : [style.connectorContainer, style.rightConnectorContainer]}>
-              <View style={style.statusConnectorDetailContainer}>
+              <View style={[style.statusConnectorDetailContainer, style.statusConnectorDescriptionContainer]}>
                 <Text style={style.statusDescription} numberOfLines={1}>
                   {Utils.translateConnectorStatus(connector.status)}
                 </Text>
@@ -158,8 +159,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
 ConnectorComponent.propTypes = {
   navigation: PropTypes.object.isRequired,
   charger: PropTypes.object.isRequired,
-  connector: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired
+  connector: PropTypes.object.isRequired
 };
 
 ConnectorComponent.defaultProps = {

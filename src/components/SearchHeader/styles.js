@@ -15,13 +15,13 @@ const commonStyles = {
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
   },
+  visible: {
+    height: scale(45),
+    opacity: 1
+  },
   hidden: {
     height: 0,
     opacity: 0
-  },
-  visible: {
-    height: scale(40),
-    opacity: 1
   },
   inputField: {
     flex: 1,
