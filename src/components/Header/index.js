@@ -10,12 +10,12 @@ const logo = require("../../../assets/logo-low.gif")
 export default class HeaderComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
-    this.searchIsActive = false;
+    this.searchIsVisible = false;
   }
 
   render() {
     const style = computeStyleSheet();
-    const { title, subTitle, searchRef, showSearchAction, onSearchAction, leftAction, leftActionIcon, leftActionIconType, rightAction, rightActionIcon, rightActionIconType } = this.props;
+    const { title, subTitle, searchRef, showSearchAction, leftAction, leftActionIcon, leftActionIconType, rightAction, rightActionIcon, rightActionIconType } = this.props;
     return (
       <Header style={style.header}>
         <Left style={style.leftHeader}>
@@ -40,12 +40,10 @@ export default class HeaderComponent extends ResponsiveComponent {
             <Icon type={"MaterialIcons"} name={"search"}
               onPress={() => {
                 // Invert
-                this.searchIsActive = !this.searchIsActive;
+                this.searchIsVisible = !this.searchIsVisible;
                 // Set?
-                console.log(searchRef);
-                
                 if (searchRef) {
-                  searchRef.setVisible(this.searchIsActive);
+                  searchRef.setVisible(this.searchIsVisible);
                 }
               }}
               style={[style.iconHeader, style.rightIconHeader]} />
@@ -75,7 +73,6 @@ HeaderComponent.propTypes = {
   rightActionIcon: PropTypes.string,
   rightActionIconType: PropTypes.string,
   showSearchAction: PropTypes.bool,
-  onSearchAction: PropTypes.func,
   searchRef: PropTypes.object
 };
 
