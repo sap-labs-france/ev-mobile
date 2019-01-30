@@ -3,10 +3,12 @@ import { ScrollView, Image, ImageBackground, Keyboard, Linking, KeyboardAvoiding
 import { Container, Text, Form, Item, Button, Icon, View, Left, Right, CheckBox, Footer, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
 import { ResponsiveComponent } from "react-native-responsive-ui";
+import * as Animatable from "react-native-animatable";
 
 import providerFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
+import Constants from "../../../utils/Constants";
 import Message from "../../../utils/Message";
 import computeStyleSheet from "../styles";
 import commonColor from "../../../theme/variables/commonColor";
@@ -188,7 +190,7 @@ export default class Login extends ResponsiveComponent {
       !display ?
         <View style={style.noDisplay}/>
       :
-        <Container style={style.container}>
+        <Animatable.View style={style.container} animation={"fadeIn"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
           <ImageBackground source={background} style={style.background}>
             <ScrollView contentContainerStyle={style.scrollContainer}>
               <KeyboardAvoidingView behavior="padding" style={style.formContainer}>
@@ -284,7 +286,7 @@ export default class Login extends ResponsiveComponent {
               </Right>
             </Footer>
           </ImageBackground>
-        </Container>
+        </Animatable.View>
     );
   }
 }
