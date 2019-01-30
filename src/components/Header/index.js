@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "react-native";
+import { Image, BackHandler } from "react-native";
 import { Header, Left, Right, Body, Title, Subtitle, Button, Icon } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./styles";
@@ -13,6 +13,20 @@ export default class HeaderComponent extends ResponsiveComponent {
     this.searchIsVisible = false;
   }
 
+  componentDidMount() {
+    const { leftAction } = this.props;
+    if (leftAction) {
+      BackHandler.addEventListener("hardwareBackPress", leftAction);
+    }
+  }
+
+  componentWillUnmount() {
+    const { leftAction } = this.props;
+    if (leftAction) {
+      BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+    }
+  }
+  
   render() {
     const style = computeStyleSheet();
     const { title, subTitle, searchRef, showSearchAction, leftAction, leftActionIcon, leftActionIconType, rightAction, rightActionIcon, rightActionIconType } = this.props;
