@@ -1,6 +1,6 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import { TextInput } from "react-native";
+import { TextInput, Keyboard } from "react-native";
 import computeStyleSheet from "./styles";
 import { Icon } from "native-base";
 import Constants from "../../utils/Constants";
@@ -85,18 +85,19 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     if (isVisible) {
       this.animRef.transitionTo(
         style.visible, Constants.ANIMATION_SHOW_HIDE_MILLIS)
-    } else {
-      this.animRef.transitionTo(
-        style.hidden, Constants.ANIMATION_SHOW_HIDE_MILLIS)
-    }
-    // Show?
-    if (isVisible) {
+      // Set the focus
       setTimeout(() => {
         // Set the focus
         if (this.textInput) {
           this.textInput.focus();
         }
       }, 100);
+    } else {
+      // Hide
+      this.animRef.transitionTo(
+        style.hidden, Constants.ANIMATION_SHOW_HIDE_MILLIS)
+      // Hide keyboard
+      Keyboard.dismiss();
     }
   }
 
