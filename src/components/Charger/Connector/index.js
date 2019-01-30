@@ -10,8 +10,6 @@ import computeStyleSheet from "./styles";
 import PropTypes from "prop-types";
 import Constants from "../../../utils/Constants";
 
-let counter = 0;
-let bypassedfirstAnimation = false;
 export default class ConnectorComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
@@ -100,8 +98,8 @@ export default class ConnectorComponent extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const { connector, navigation, charger } = this.props;
-    const even = (counter++ % 2 === 0);
+    const { connector, navigation, charger, index } = this.props;
+    const even = (index % 2 === 0);
     return (
       charger.connectors.length > 1 ?
         <TouchableOpacity style={style.statusConnectorContainer}
@@ -154,7 +152,8 @@ export default class ConnectorComponent extends ResponsiveComponent {
 ConnectorComponent.propTypes = {
   navigation: PropTypes.object.isRequired,
   charger: PropTypes.object.isRequired,
-  connector: PropTypes.object.isRequired
+  connector: PropTypes.object.isRequired,
+  index: PropTypes.number
 };
 
 ConnectorComponent.defaultProps = {

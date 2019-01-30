@@ -15,8 +15,8 @@ import DeviceInfo from "react-native-device-info";
 const _provider = providerFactory.getProvider();
 const _tenants = _provider.getTenants();
 
-const background = require("../../../../assets/lightning.gif");
-// const background = require("../../../../assets/bg.png");
+// const background = require("../../../../assets/lightning.gif");
+const background = require("../../../../assets/bg.png");
 const logo = require("../../../../assets/logo-low.gif");
 
 const formValidationDef = {

@@ -52,11 +52,11 @@ export default class ChargerComponent extends ResponsiveComponent {
         </View>
         <View style={style.connectorsContainer}>
           {
-            charger.connectors.map((connector) => {
+            charger.connectors.map((connector, index) => {
               return (<ConnectorComponent
                 key={`${charger.id}~${connector.connectorId}` } 
                 charger={charger} connector={connector} 
-                navigation={navigation} />);
+                index={index} navigation={navigation} />);
             })
           }
         </View>
