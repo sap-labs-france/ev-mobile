@@ -62,6 +62,8 @@ const commonStyles = {
     backgroundColor: "rgba(255,255,255,0.30)"
   },
   buttonText: {
+    width: "100%",
+    textAlign: "center",
     fontSize: scale(15),
     color: commonColor.textColor
   },
