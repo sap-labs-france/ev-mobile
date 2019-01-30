@@ -56,7 +56,7 @@ const commonStyles = {
   },
   connectorBadge: {
     marginTop: scale(5),
-    minWidth: scale(55)
+    minWidth: scale(60)
   },
   freeConnectorBadge: {
     backgroundColor: commonColor.brandSecondary
