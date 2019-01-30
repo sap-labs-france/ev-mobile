@@ -15,6 +15,7 @@ export default class HeaderComponent extends ResponsiveComponent {
 
   componentDidMount() {
     const { leftAction } = this.props;
+    // Left Action is always Back
     if (leftAction) {
       BackHandler.addEventListener("hardwareBackPress", leftAction);
     }
@@ -22,6 +23,7 @@ export default class HeaderComponent extends ResponsiveComponent {
 
   componentWillUnmount() {
     const { leftAction } = this.props;
+    // Left Action is always Back
     if (leftAction) {
       BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
     }
