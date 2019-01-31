@@ -55,7 +55,6 @@ const commonStyles = {
   },
   connectorBadge: {
     marginTop: scale(5),
-    minWidth: scale(60)
   },
   freeConnectorBadge: {
     backgroundColor: commonColor.brandSecondary
@@ -64,9 +63,11 @@ const commonStyles = {
     backgroundColor: commonColor.brandDanger
   },
   connectorBadgeTitle: {
+    minWidth: scale(35),
+    textAlign: "center",
     fontSize: scale(25),
-    paddingTop: (Platform.OS === "ios" ? scale(3) : scale(0)),
-    paddingBottom: (Platform.OS === "ios" ? scale(3) : scale(0)),
+    paddingTop: (Platform.OS === "ios" ? scale(3) : 0),
+    paddingBottom: (Platform.OS === "ios" ? scale(3) : 0),
     fontWeight: "bold",
     color: commonColor.textColor,
   },

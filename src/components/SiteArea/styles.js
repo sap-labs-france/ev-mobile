@@ -23,9 +23,9 @@ const commonStyles = {
     borderBottomColor: commonColor.listBorderColor
   },
   name: {
+    paddingLeft: scale(10),
     fontSize: scale(20),
     color: commonColor.textColor,
-    marginLeft: scale(10),
     fontWeight: "bold"
   },
   icon: {
@@ -56,7 +56,6 @@ const commonStyles = {
   },
   connectorBadge: {
     marginTop: scale(5),
-    minWidth: scale(60)
   },
   freeConnectorBadge: {
     backgroundColor: commonColor.brandSecondary
@@ -65,9 +64,11 @@ const commonStyles = {
     backgroundColor: commonColor.brandDanger
   },
   connectorBadgeTitle: {
+    minWidth: scale(35),
+    textAlign: "center",
     fontSize: scale(25),
-    paddingTop: (Platform.OS === "ios" ? scale(3) : scale(0)),
-    paddingBottom: (Platform.OS === "ios" ? scale(3) : scale(0)),
+    paddingTop: (Platform.OS === "ios" ? scale(3) : 0),
+    paddingBottom: (Platform.OS === "ios" ? scale(3) : 0),
     fontWeight: "bold",
     color: commonColor.textColor,
   },

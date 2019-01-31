@@ -127,6 +127,7 @@ const commonStyles = {
     alignSelf: "flex-end"
   },
   linksTextButton: {
+    width: "100%",
     opacity: 0.9,
     fontSize: scale(12),
     fontWeight: "bold",
