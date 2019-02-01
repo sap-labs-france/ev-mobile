@@ -24,7 +24,7 @@ const commonStyles = {
   formContainer: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center"
   },
   formHeader: {
@@ -36,7 +36,7 @@ const commonStyles = {
   form: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
   },
   logo: {
@@ -57,7 +57,6 @@ const commonStyles = {
     width: "90%",
     alignSelf: "center",
     height: scale(40),
-    marginTop: scale(10),
     marginBottom: scale(10),
     backgroundColor: "rgba(255,255,255,0.30)"
   },
@@ -106,7 +105,7 @@ const commonStyles = {
     alignItems: "center",
     borderBottomWidth: 0,
     paddingTop: 0,
-    marginBottom: scale(10),
+    marginBottom: scale(20),
     marginTop: scale(5)
   },
   eulaCheckbox: {

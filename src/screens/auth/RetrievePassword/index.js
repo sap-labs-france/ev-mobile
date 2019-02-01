@@ -1,15 +1,23 @@
 import React from "react";
-import { Image, ImageBackground, Linking, KeyboardAvoidingView } from "react-native";
+import { ScrollView, Image, TextInput, ImageBackground, KeyboardAvoidingView } from "react-native";
+import { Text, Form, Item, Button, Icon, View, Spinner, Footer } from "native-base";
 import { NavigationActions, StackActions } from "react-navigation";
-import { Container, Content, Text, Form, Item, Input, Button, Icon, View, Spinner, Footer } from "native-base";
 import commonColor from "../../../theme/variables/commonColor";
 import ProviderFactory from "../../../provider/ProviderFactory";
+import { ResponsiveComponent } from "react-native-responsive-ui";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
-import styles from "../styles";
+import computeStyleSheet from "../styles";
+import * as Animatable from "react-native-animatable";
+import Constants from "../../../utils/Constants";
+import DeviceInfo from "react-native-device-info";
+import PropTypes from "prop-types";
 
 const _provider = ProviderFactory.getProvider();
+const logo = require("../../../../assets/logo-low.gif");
+const background = require("../../../../assets/bg-signup.png");
+
 const formValidationDef = {
   email: {
     presence: {
@@ -22,7 +30,7 @@ const formValidationDef = {
   }
 };
 
-export default class RetrievePassword extends React.Component {
+export default class RetrievePassword extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -79,24 +87,27 @@ export default class RetrievePassword extends React.Component {
 
   render() {
     const { loading } = this.state;
+    const style = computeStyleSheet();
     return (
-      <Container>
-        <ImageBackground source={require("../../../../assets/bg-signup.png")} style={styles.background}>
-          <Content contentContainerStyle={styles.content}>
-            <View style={styles.container}>
-              <Image source={require("../../../../assets/logo-low.gif")} style={styles.logo} />
-            </View>
-            <KeyboardAvoidingView style={styles.container} behavior="padding">
-              <Form style={styles.form}>
-                <Item inlineLabel rounded style={styles.inputGroup}>
-                  <Icon active name="mail"/>
-                  <Input
+      <Animatable.View style={style.container} animation={"fadeIn"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+        <ImageBackground source={background} style={style.background}>
+          <ScrollView contentContainerStyle={style.scrollContainer}>
+            <KeyboardAvoidingView style={style.container} behavior="padding">
+              <View style={style.formHeader}>
+                <Image style={style.logo} source={logo} />
+                <Text style={style.appText}>e-Mobility</Text>
+                <Text style={style.appVersionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
+              </View>
+              <Form style={style.form}>
+                <Item rounded style={style.inputGroup}>
+                  <Icon active name="mail" style={style.inputIcon}/>
+                  <TextInput
                     name="email"
                     type="email"
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.email")}
-                    placeholderTextColor={commonColor.tabBarTextColor}
-                    style={styles.input}
+                    placeholderTextColor={commonColor.textColor}
+                    style={style.inputField}
                     autoCapitalize="none"
                     blurOnSubmit={false}
                     autoCorrect={false}
@@ -105,27 +116,34 @@ export default class RetrievePassword extends React.Component {
                     secureTextEntry={false}
                   />
                 </Item>
-                {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={styles.formErrorText} key={index}>{errorMessage}</Text>) }
-
+                {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
                 { loading ?
-                  <Spinner style={styles.spinner} color="white" />
+                  <Spinner style={style.spinner} color="white" />
                 :
-                  <Button rounded primary block large style={styles.button} onPress={this.resetPassword}>
-                    <Text style={styles.buttonText}>
+                  <Button rounded primary block large style={style.button} onPress={this.resetPassword}>
+                    <Text style={style.buttonText}>
                       {I18n.t("authentication.retrievePassword")}
                     </Text>
                   </Button>
                 }
               </Form>
             </KeyboardAvoidingView>
-          </Content>
+          </ScrollView>
           <Footer>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Text style={styles.helpButton}>{I18n.t("authentication.backLogin")}</Text>
+              <Text style={style.linksTextButton}>{I18n.t("authentication.backLogin")}</Text>
             </Button>
           </Footer>
         </ImageBackground>
-      </Container>
+      </Animatable.View>
     );
   }
 }
+
+RetrievePassword.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  tenant: PropTypes.object.isRequired
+};
+
+RetrievePassword.defaultProps = {
+};

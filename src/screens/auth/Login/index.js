@@ -172,9 +172,10 @@ export default class Login extends ResponsiveComponent {
   }
 
   _forgotPassword = () => {
+    const navigation = this.props.navigation;
     // Tenant selected?
     if (this.state.tenant) {
-      Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/reset-password`);
+      navigation.navigate("RetrievePassword", { tenant: this.state.tenant });
     } else {
       // Error
       Message.showError(I18n.t("authentication.mustSelectTenant"));
@@ -193,7 +194,7 @@ export default class Login extends ResponsiveComponent {
         <Animatable.View style={style.container} animation={"fadeIn"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
           <ImageBackground source={background} style={style.background}>
             <ScrollView contentContainerStyle={style.scrollContainer}>
-              <KeyboardAvoidingView behavior="padding" style={style.formContainer}>
+              <KeyboardAvoidingView style={style.container} behavior="padding">
                 <View style={style.formHeader}>
                   <Image style={style.logo} source={logo} />
                   <Text style={style.appText}>e-Mobility</Text>
@@ -234,7 +235,6 @@ export default class Login extends ResponsiveComponent {
                     />
                   </Item>
                   {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
-
                   <Item rounded style={style.inputGroup}>
                     <Icon active name="unlock" style={[style.inputIcon, style.inputIconLock]}/>
                     <TextInput
@@ -273,18 +273,18 @@ export default class Login extends ResponsiveComponent {
                 </Form>
               </KeyboardAvoidingView>
             </ScrollView>
-            {/* <Footer>
+            <Footer>
               <Left>
-                <Button small transparent style={style.linksButtonLeft} onPress={ () => this._newUser()}>
+                <Button small transparent style={style.linksButtonLeft} onPress={ () => this._newUser() }>
                   <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
                 </Button>
               </Left>
               <Right>
-                <Button small transparent style={style.linksButtonRight} onPress={ () => this._forgotPassword()}>
+                <Button small transparent style={style.linksButtonRight} onPress={ () => this._forgotPassword() }>
                   <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
                 </Button>
               </Right>
-            </Footer> */}
+            </Footer>
           </ImageBackground>
         </Animatable.View>
     );
