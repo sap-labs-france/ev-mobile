@@ -11,7 +11,7 @@
     "yes": "Oui",
     "no": "Non",
     "version": "Version",
-    "date": "31 Janvier",
+    "date": "1er Février",
     "search": "Rechercher"
   },
   "sidebar": {
@@ -56,7 +56,8 @@
     "occupied": "Occupé(s)"
   },
   "siteAreas": {
-    "title": "Zones"
+    "title": "Zones",
+    "noChargers": "Cette Zone n'a pas de Borne"
   },
   "chargers": {
     "title": "Bornes"

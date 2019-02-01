@@ -273,7 +273,7 @@ export default class Login extends ResponsiveComponent {
                 </Form>
               </KeyboardAvoidingView>
             </ScrollView>
-            <Footer>
+            {/* <Footer>
               <Left>
                 <Button small transparent style={style.linksButtonLeft} onPress={ () => this._newUser()}>
                   <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
@@ -284,7 +284,7 @@ export default class Login extends ResponsiveComponent {
                   <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
                 </Button>
               </Right>
-            </Footer>
+            </Footer> */}
           </ImageBackground>
         </Animatable.View>
     );

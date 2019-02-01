@@ -8,6 +8,7 @@ import I18n from "../../I18n/I18n";
 import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 import Constants from "../../utils/Constants";
+import Message from "../../utils/Message";
 
 let counter = 0;
 
@@ -18,11 +19,23 @@ export default class SiteAreaComponent extends ResponsiveComponent {
     const { siteArea, navigation } = this.props;
     return (
       <Animatable.View animation={(counter++ % 2 === 0) ? "flipInX" : "flipInX"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
-        <TouchableOpacity onPress={() => navigation.navigate("Chargers", { siteAreaID: siteArea.id, withNoSite: false })}>
+        <TouchableOpacity onPress={() => {
+            if (siteArea.totalConnectors > 0) {
+              // Navigate
+              navigation.navigate("Chargers", { siteAreaID: siteArea.id, withNoSite: false })
+            } else {
+              // No connector
+              Message.showError(I18n.t("siteAreas.noChargers"));
+            }
+          }}>
           <View style={style.container}>
             <View style={style.mainContent}>
               <Text style={style.name}>{siteArea.name}</Text>
-              <Icon style={style.icon} name="arrow-forward"/>
+              {siteArea.totalConnectors > 0 ?
+                <Icon style={style.icon} name="arrow-forward"/>
+              :
+                <Icon style={style.icon} name=""/>
+              }
             </View>
             <View style={style.detailedContent}>
               <Text style={style.connectorText}>{I18n.t("sites.chargePoint")}</Text>

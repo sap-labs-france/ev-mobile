@@ -11,7 +11,7 @@
     "yes": "Yes",
     "no": "No",
     "version": "Version",
-    "date": "31st, January",
+    "date": "1st, February",
     "search": "Search"
   },
   "sidebar": {
@@ -56,7 +56,8 @@
     "occupied": "Occupied"
   },
   "siteAreas": {
-    "title": "Site Areas"
+    "title": "Site Areas",
+    "noChargers": "This Site Area has no Charger"
   },
   "chargers": {
     "title": "Charging Stations"
