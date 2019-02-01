@@ -125,7 +125,6 @@ const commonStyles = {
     alignSelf: "flex-start"
   },
   linksButtonRight: {
-    textAlign: "right",
     alignSelf: "flex-end"
   },
   linksTextButton: {
@@ -134,6 +133,9 @@ const commonStyles = {
     fontSize: scale(12),
     fontWeight: "bold",
     color: commonColor.textColor
+  },
+  linksTextButtonRight: {
+    textAlign: "right"
   }
 };
 

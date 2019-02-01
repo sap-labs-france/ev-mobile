@@ -281,7 +281,7 @@ export default class Login extends ResponsiveComponent {
               </Left>
               <Right>
                 <Button small transparent style={style.linksButtonRight} onPress={ () => this._forgotPassword()}>
-                  <TextRN style={style.linksTextButton}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
+                  <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
                 </Button>
               </Right>
             </Footer>
