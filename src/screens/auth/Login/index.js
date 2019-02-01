@@ -1,6 +1,6 @@
 import React from "react";
 import { ScrollView, Image, ImageBackground, Keyboard, Linking, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
-import { Container, Text, Form, Item, Button, Icon, View, Left, Right, CheckBox, Footer, Spinner, ActionSheet } from "native-base";
+import { Text, Form, Item, Button, Icon, View, Left, Right, CheckBox, Footer, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import * as Animatable from "react-native-animatable";
@@ -281,7 +281,7 @@ export default class Login extends ResponsiveComponent {
               </Left>
               <Right>
                 <Button small transparent style={style.linksButtonRight} onPress={ () => this._forgotPassword()}>
-                  <TextRN style={style.linksTextButton}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
+                  <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
                 </Button>
               </Right>
             </Footer>

@@ -103,6 +103,7 @@ const commonStyles = {
   eulaContainer: {
     flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
     borderBottomWidth: 0,
     paddingTop: 0,
     marginBottom: scale(10),
@@ -132,6 +133,9 @@ const commonStyles = {
     fontSize: scale(12),
     fontWeight: "bold",
     color: commonColor.textColor
+  },
+  linksTextButtonRight: {
+    textAlign: "right"
   }
 };
 
