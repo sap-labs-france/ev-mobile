@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, Image, TextInput, ImageBackground, KeyboardAvoidingView } from "react-native";
+import { WebView, ScrollView, Image, TextInput, ImageBackground, KeyboardAvoidingView } from "react-native";
 import { Text, Form, Item, Button, Icon, View, Spinner, Footer } from "native-base";
 import { NavigationActions, StackActions } from "react-navigation";
 import commonColor from "../../../theme/variables/commonColor";
@@ -12,7 +12,6 @@ import computeStyleSheet from "../styles";
 import * as Animatable from "react-native-animatable";
 import Constants from "../../../utils/Constants";
 import DeviceInfo from "react-native-device-info";
-import PropTypes from "prop-types";
 
 const _provider = ProviderFactory.getProvider();
 const logo = require("../../../../assets/logo-low.gif");
@@ -34,12 +33,13 @@ export default class RetrievePassword extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
+      tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", null),
       email: "",
       loading: false
     };
   }
 
-  resetPassword = async () => {
+  _resetPassword = async () => {
     // Check field
     const formIsValid = Utils.validateInput(this, formValidationDef);
     // Ok?
@@ -85,6 +85,12 @@ export default class RetrievePassword extends ResponsiveComponent {
     }
   }
 
+  onMessage(data) {
+    //Prints out data that was passed.
+    console.log("onMessage");
+    console.log(data);
+  }
+
   render() {
     const { loading } = this.state;
     const style = computeStyleSheet();
@@ -120,7 +126,7 @@ export default class RetrievePassword extends ResponsiveComponent {
                 { loading ?
                   <Spinner style={style.spinner} color="white" />
                 :
-                  <Button rounded primary block large style={style.button} onPress={this.resetPassword}>
+                  <Button rounded primary block large style={style.button} onPress={this._resetPassword}>
                     <Text style={style.buttonText}>
                       {I18n.t("authentication.retrievePassword")}
                     </Text>
@@ -128,6 +134,16 @@ export default class RetrievePassword extends ResponsiveComponent {
                 }
               </Form>
             </KeyboardAvoidingView>
+            <WebView
+              javaScriptEnabled={true}
+              mixedContentMode={"always"}
+              style={{height: 200, backgroundColor: 'black'}}
+              onMessage={this.onMessage}
+              source={{
+                  html: `
+                  `,
+                  baseUrl: 'https://slf.cfapps.eu10.hana.ondemand.com' // <-- SET YOUR DOMAIN HERE
+              }}/>
           </ScrollView>
           <Footer>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
@@ -139,11 +155,3 @@ export default class RetrievePassword extends ResponsiveComponent {
     );
   }
 }
-
-RetrievePassword.propTypes = {
-  navigation: PropTypes.object.isRequired,
-  tenant: PropTypes.object.isRequired
-};
-
-RetrievePassword.defaultProps = {
-};

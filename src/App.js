@@ -69,6 +69,7 @@ const RootNavigator = createSwitchNavigator(
 );
 
 export default class App extends React.Component {
+
   async componentDidMount() {
     // Activate
     _notificationManager.setActive(true);
