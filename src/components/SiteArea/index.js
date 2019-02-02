@@ -31,11 +31,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
           <View style={style.container}>
             <View style={style.mainContent}>
               <Text style={style.name}>{siteArea.name}</Text>
-              {siteArea.totalConnectors > 0 ?
-                <Icon style={style.icon} name="arrow-forward"/>
-              :
-                <Icon style={style.icon} name=""/>
-              }
+              <Icon style={siteArea.totalConnectors > 0 ? style.icon : style.iconHidden} name="arrow-forward"/>
             </View>
             <View style={style.detailedContent}>
               <Text style={style.connectorText}>{I18n.t("sites.chargePoint")}</Text>

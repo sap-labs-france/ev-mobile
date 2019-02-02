@@ -33,6 +33,9 @@ const commonStyles = {
     marginLeft: scale(10),
     marginRight: scale(10)
   },
+  iconHidden: {
+    opacity: 0
+  },
   detailedContent: {
     flexDirection: "row",
     justifyContent: "space-evenly",
