@@ -137,18 +137,18 @@ android {
 }
 
 dependencies {
-    compile project(':rn-secure-storage')
-    compile project(':react-native-vector-icons')
-    compile project(':react-native-svg')
-    compile project(':react-native-sensitive-info')
-    compile project(':react-native-push-notification')
-    compile project(':react-native-orientation')
-    compile project(':react-native-i18n')
-    compile project(':react-native-gesture-handler')
-    compile project(':react-native-firebase')
-    compile project(':react-native-device-info')
-    compile project(':react-native-charts-wrapper')
-    compile 'com.facebook.fresco:animated-gif:1.10.0'
+    api project(':rn-secure-storage')
+    api project(':react-native-vector-icons')
+    api project(':react-native-svg')
+    api project(':react-native-sensitive-info')
+    api project(':react-native-push-notification')
+    api project(':react-native-orientation')
+    api project(':react-native-i18n')
+    api project(':react-native-gesture-handler')
+    api project(':react-native-firebase')
+    api project(':react-native-device-info')
+    api project(':react-native-charts-wrapper')
+    api 'com.facebook.fresco:animated-gif:1.10.0'
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
