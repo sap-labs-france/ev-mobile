@@ -103,7 +103,7 @@ android {
         applicationId "com.emobility"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 39
+        versionCode 40
         versionName "1.0.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
@@ -150,7 +150,7 @@ dependencies {
     api project(':react-native-firebase')
     api project(':react-native-device-info')
     api project(':react-native-charts-wrapper')
-    api 'com.facebook.fresco:animated-gif:1.10.0'
+    compile 'com.facebook.fresco:animated-gif:1.10.0'
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
