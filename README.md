@@ -22,10 +22,12 @@ This application is the Electric Vehicule Charging Station (EVSE) mobile applica
 * Clone this GitHub project
 * Go into the **ev-mobile** directory and run **npm install** or **yarn install**
 
-**NOTE**: On Windows with **chocolatey** (https://chocolatey.org/), do:
+**NOTE**: On Windows with **chocolatey** (https://chocolatey.org/),  
+do as an administrator:
 ```
 choco install -y nodejs-lts python2 jdk8 androidstudio
 ```
+to install some of the needed dependencies
 
 ## Running the application on a virtual device
 
