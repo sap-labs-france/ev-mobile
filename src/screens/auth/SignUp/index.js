@@ -68,7 +68,6 @@ const formValidationDef = {
   }
 };
 export default class SignUp extends React.Component {
-
   firstNameInput;
   emailInput;
   passwordInput;

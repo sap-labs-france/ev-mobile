@@ -34,14 +34,18 @@ export default class ChargerTab extends  BaseScreen {
     // Call parent
     super.componentDidMount();
     // Refresh Charger
-    await this._getCharger();
+    if (this.isMounted()) {
+      await this._getCharger();
+    }
     // Set if Admin
     const isAdmin = (await _provider.getSecurityProvider()).isAdmin();
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({
-      firstLoad: false,
-      isAdmin
-    });
+    if (this.isMounted()) {
+      // eslint-disable-next-line react/no-did-mount-set-state
+      this.setState({
+        firstLoad: false,
+        isAdmin
+      });
+    }
   }
 
   componentWillUnmount() {

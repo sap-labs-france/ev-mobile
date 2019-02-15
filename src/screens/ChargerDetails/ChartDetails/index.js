@@ -30,7 +30,9 @@ export default class ChartDetails extends BaseScreen {
     // Call parent
     super.componentDidMount();
     // Get the consumption
-    await this._getChargingStationConsumption();
+    if (this.isMounted()) {
+      await this._getChargingStationConsumption();
+    }
   }
 
   async componentWillUnmount() {
@@ -85,8 +87,11 @@ export default class ChartDetails extends BaseScreen {
   }
 
   _refresh = async () => {
-    // Refresh Consumption
-    await this._getChargingStationConsumption();
+    // Component Mounted?
+    if (this.isMounted()) {
+      // Refresh Consumption
+      await this._getChargingStationConsumption();
+    }
   }
 
   computeChartDefinition(consumptionValues, stateOfChargeValues) {

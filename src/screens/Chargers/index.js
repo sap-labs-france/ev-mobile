@@ -35,12 +35,14 @@ export default class Chargers extends BaseScreen {
     // Get chargers first time
     const chargers = await this._getChargers(this.searchText, this.state.skip, this.state.limit, siteAreaID);
     // Add chargers
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState((prevState, props) => ({
-      chargers: chargers.result,
-      count: chargers.count,
-      loading: false
-    }));
+    if (this.isMounted()) {
+      // eslint-disable-next-line react/no-did-mount-set-state
+      this.setState((prevState, props) => ({
+        chargers: chargers.result,
+        count: chargers.count,
+        loading: false
+      }));
+    }
   }
 
   componentWillUnmount() {

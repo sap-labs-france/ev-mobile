@@ -38,10 +38,12 @@ export default class ConnectorDetails extends BaseScreen {
     // Call parent
     super.componentDidMount();
     // Get Current Transaction
-    await this._getTransaction();
+    if (this.isMounted()) {
+      await this._getTransaction();
+    }
     // Get the Site Image (only first time)
-    if (charger.siteArea) {
-      this._getSiteImage(charger.siteArea.siteID);
+    if (charger.siteArea && this.isMounted()) {
+      await this._getSiteImage(charger.siteArea.siteID);
     }
     // Init
     this._refreshElapsedTime();
@@ -53,7 +55,9 @@ export default class ConnectorDetails extends BaseScreen {
     // Check Authorization
     await this._isAuthorizedStopTransaction();
     // Check to enable the buttons after a certain period of time
-    this._handleStartStopDisabledButton();
+    if (this.isMounted()) {
+      this._handleStartStopDisabledButton();
+    }
   }
 
   async componentWillUnmount() {

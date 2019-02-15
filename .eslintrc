@@ -1,6 +1,14 @@
 {
   "root": true,
 
+  "extends": [
+    "react-native",
+    "plugin:prettier/recommended",
+    "prettier/flowtype",
+    "prettier/react",
+    "prettier/standard"
+  ],
+
   "parser": "babel-eslint",
 
   "env": {
@@ -12,7 +20,8 @@
   "plugins": [
     "flowtype",
     "prettier",
-    "react"
+    "react",
+    "react-native"
   ],
 
   // Map from global var to bool specifying if it can be redefined
@@ -163,7 +172,7 @@
 
   // Prettier Plugin
   // https://github.com/prettier/eslint-plugin-prettier
-    "prettier/prettier": [2, "fb", "@format"],
+    "prettier/prettier": [2],
 
   // Stylistic Issues
   // These rules are purely matters of style and are quite subjective.

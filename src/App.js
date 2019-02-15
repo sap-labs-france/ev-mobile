@@ -1,6 +1,6 @@
 import React from "react";
 import { StatusBar, Dimensions } from "react-native";
-import { createSwitchNavigator, createStackNavigator, createDrawerNavigator } from "react-navigation";
+import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createAppContainer } from "react-navigation";
 import { Root } from "native-base";
 import Login from "./screens/auth/Login";
 import Eula from "./screens/auth/Eula/";
@@ -39,6 +39,7 @@ const AppDrawerNavigator = createDrawerNavigator(
     },
     drawerWidth: Dimensions.get("window").width / 1.5,
     initialRouteName: "Sites",
+    unmountInactiveRoutes: true,
     drawerPosition: "right",
     contentComponent: (props) => <Sidebar {...props} />
   }
@@ -68,6 +69,9 @@ const RootNavigator = createSwitchNavigator(
   }
 );
 
+// Create a container to wrap the main navigator
+const RootContainer = createAppContainer(RootNavigator);
+
 export default class App extends React.Component {
 
   async componentDidMount() {
@@ -84,7 +88,7 @@ export default class App extends React.Component {
     return (
       <Root>
         <StatusBar hidden/>
-        <RootNavigator/>
+        <RootContainer/>
       </Root>
     );
   }

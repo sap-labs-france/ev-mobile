@@ -44,12 +44,14 @@ export default class Sites extends BaseScreen {
     // Get the sites
     const sites = await this._getSites(this.searchText, this.state.skip, this.state.limit);
     // Add sites
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({
-      sites: sites.result,
-      count: sites.count,
-      loading: false
-    });
+    if (this.isMounted()) {
+      // eslint-disable-next-line react/no-did-mount-set-state
+      this.setState({
+        sites: sites.result,
+        count: sites.count,
+        loading: false
+      });
+    }
   }
 
   componentWillUnmount() {

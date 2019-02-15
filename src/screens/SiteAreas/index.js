@@ -32,12 +32,14 @@ export default class SiteAreas extends BaseScreen {
     // Get the sites
     const siteAreas = await this._getSiteAreas(this.searchText, this.state.skip, this.state.limit);
     // Add sites
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({
-      siteAreas: siteAreas.result,
-      count: siteAreas.count,
-      loading: false
-    });
+    if (this.isMounted()) {
+      // eslint-disable-next-line react/no-did-mount-set-state
+      this.setState({
+        siteAreas: siteAreas.result,
+        count: siteAreas.count,
+        loading: false
+      });
+    }
   }
 
   componentWillUnmount() {
