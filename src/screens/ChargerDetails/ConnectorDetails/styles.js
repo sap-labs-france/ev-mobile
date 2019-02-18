@@ -10,7 +10,7 @@ const commonStyles = {
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: commonColor.brandPrimary,
+    backgroundColor: commonColor.brandPrimary
   },
   spinner: {
     color: commonColor.textColor
@@ -35,19 +35,18 @@ const commonStyles = {
     alignItems: "center"
   },
   startTransaction: {
-    backgroundColor: commonColor.brandSuccess,
+    backgroundColor: commonColor.brandSuccess
   },
   stopTransaction: {
-    backgroundColor: commonColor.brandDanger,
+    backgroundColor: commonColor.brandDanger
   },
   buttonTransactionDisabled: {
-    backgroundColor: commonColor.btnDisabledBg,
+    backgroundColor: commonColor.btnDisabledBg
   },
   startStopTransactionIcon: {
     fontSize: scale(75)
   },
-  scrollViewContainer: {
-  },
+  scrollViewContainer: {},
   detailsContainer: {
     flexDirection: "column",
     justifyContent: "space-between",
@@ -74,23 +73,23 @@ const commonStyles = {
     alignSelf: "center"
   },
   labelStatus: {
-    fontSize: scale(16),
+    fontSize: scale(16)
   },
   labelValue: {
     fontSize: scale(30),
-    fontWeight: "bold",
+    fontWeight: "bold"
   },
   labelTimeValue: {
     fontSize: scale(25),
-    fontWeight: "bold",
+    fontWeight: "bold"
   },
   labelUser: {
-    fontSize: scale(16),
+    fontSize: scale(16)
   },
   subLabel: {
     fontSize: scale(12),
     fontWeight: "bold",
-    marginTop: (Platform.OS === "ios" ? 0 : scale(-5)),
+    marginTop: Platform.OS === "ios" ? 0 : scale(-5),
     color: commonColor.textColor,
     alignSelf: "center"
   },
@@ -101,7 +100,7 @@ const commonStyles = {
     marginTop: scale(0)
   },
   icon: {
-    fontSize: scale(25),
+    fontSize: scale(25)
   },
   userPicture: {
     height: scale(52),
@@ -114,11 +113,9 @@ const commonStyles = {
   }
 };
 
-const portraitStyles = {
-};
+const portraitStyles = {};
 
-const landscapeStyles = {
-};
+const landscapeStyles = {};
 
 export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([

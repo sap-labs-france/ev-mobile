@@ -1,6 +1,11 @@
 import React from "react";
 import { StatusBar, Dimensions } from "react-native";
-import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createAppContainer } from "react-navigation";
+import {
+  createSwitchNavigator,
+  createStackNavigator,
+  createDrawerNavigator,
+  createAppContainer
+} from "react-navigation";
 import { Root } from "native-base";
 import Login from "./screens/auth/Login";
 import Eula from "./screens/auth/Eula/";
@@ -21,27 +26,29 @@ _notificationManager.initialize();
 // Drawer Navigation
 const AppDrawerNavigator = createDrawerNavigator(
   {
-    Sites: { screen: (props) => {
-      // Set the navigation to the notification
-      _notificationManager.setNavigation(props.navigation);
-      // Start
-      _notificationManager.start();
-      // Return the sites
-      return (<Sites {...props} />);
-    }},
+    Sites: {
+      screen: props => {
+        // Set the navigation to the notification
+        _notificationManager.setNavigation(props.navigation);
+        // Start
+        _notificationManager.start();
+        // Return the sites
+        return <Sites {...props} />;
+      }
+    },
     SiteAreas: { screen: SiteAreas },
     Chargers: { screen: Chargers },
     ChargerTab: { screen: ChargerTab }
   },
   {
     navigationOptions: {
-      swipeEnabled: true,
+      swipeEnabled: true
     },
     drawerWidth: Dimensions.get("window").width / 1.5,
     initialRouteName: "Sites",
     unmountInactiveRoutes: true,
     drawerPosition: "right",
-    contentComponent: (props) => <Sidebar {...props} />
+    contentComponent: props => <Sidebar {...props} />
   }
 );
 
@@ -51,7 +58,7 @@ const AuthNavigator = createStackNavigator(
     Login: { screen: Login },
     Eula: { screen: Eula },
     SignUp: { screen: SignUp },
-    RetrievePassword: { screen: RetrievePassword },
+    RetrievePassword: { screen: RetrievePassword }
   },
   {
     initialRouteName: "Login",
@@ -61,11 +68,11 @@ const AuthNavigator = createStackNavigator(
 
 const RootNavigator = createSwitchNavigator(
   {
-    AuthNavigator: AuthNavigator,
-    AppDrawerNavigator: AppDrawerNavigator,
+    AuthNavigator,
+    AppDrawerNavigator
   },
   {
-    initialRouteName: "AuthNavigator",
+    initialRouteName: "AuthNavigator"
   }
 );
 
@@ -73,7 +80,6 @@ const RootNavigator = createSwitchNavigator(
 const RootContainer = createAppContainer(RootNavigator);
 
 export default class App extends React.Component {
-
   async componentDidMount() {
     // Activate
     _notificationManager.setActive(true);
@@ -87,10 +93,9 @@ export default class App extends React.Component {
   render() {
     return (
       <Root>
-        <StatusBar hidden/>
-        <RootContainer/>
+        <StatusBar hidden />
+        <RootContainer />
       </Root>
     );
   }
 }
-

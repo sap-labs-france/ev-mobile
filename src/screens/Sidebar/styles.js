@@ -23,7 +23,7 @@ const commonStyles = {
     width: scale(100),
     height: scale(50),
     alignSelf: "center",
-    margin: scale(5),
+    margin: scale(5)
   },
   versionText: {
     color: commonColor.textColor,
@@ -35,19 +35,19 @@ const commonStyles = {
     color: commonColor.textColor,
     fontSize: scale(14),
     alignSelf: "center",
-    marginBottom: scale(2),
+    marginBottom: scale(2)
   },
   links: {
     borderBottomWidth: 0,
     borderBottomColor: "transparent",
-    height: (Platform.OS === "ios" ? undefined : scale(25)),
-    marginTop: (Platform.OS === "ios" ? undefined : scale(10)),
-    paddingBottom: (Platform.OS === "ios" ? 0 : scale(15)),
+    height: Platform.OS === "ios" ? undefined : scale(25),
+    marginTop: Platform.OS === "ios" ? undefined : scale(10),
+    paddingBottom: Platform.OS === "ios" ? 0 : scale(15)
   },
   linkText: {
     color: commonColor.textColor,
     fontSize: scale(16),
-    paddingLeft: scale(10),
+    paddingLeft: scale(10)
   },
   logoutContainer: {
     padding: 30,
@@ -97,11 +97,9 @@ const commonStyles = {
   }
 };
 
-const portraitStyles = {
-};
+const portraitStyles = {};
 
-const landscapeStyles = {
-};
+const landscapeStyles = {};
 
 export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([

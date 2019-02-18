@@ -12,19 +12,16 @@ const commonStyles = {
   spinner: {
     color: commonColor.textColor
   },
-  tabHeader: {
-  },
+  tabHeader: {},
   tabIcon: {
     fontSize: scale(20),
     paddingBottom: scale(5)
   }
 };
 
-const portraitStyles = {
-};
+const portraitStyles = {};
 
-const landscapeStyles = {
-};
+const landscapeStyles = {};
 
 export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([

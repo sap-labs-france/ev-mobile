@@ -6,7 +6,6 @@ import DeviceInfo from "react-native-device-info";
 import ProviderFactory from "../provider/ProviderFactory";
 import Message from "../utils/Message";
 
-
 const _provider = ProviderFactory.getProvider();
 const _notifications = [];
 let _notificationManager;
@@ -210,18 +209,18 @@ export default class NotificationManager {
     // return _token;
   }
 
-  onRegister = (token) => {
+  onRegister = token => {
     // // Keep the token
     // _token = token;
     // // Do nothing
     // console.log("NOTIF TOKEN");
     // console.log(token);
-  }
+  };
 
-  onNotify = async (notification) => {
+  onNotify = async notification => {
     // console.log("NOTIF MESSAGE");
     // console.log(notification);
     // // Add Notification
     // _notifications.push(notification);
-  }
+  };
 }

@@ -20,19 +20,29 @@ export default class ChargerDetails extends ResponsiveComponent {
           <View style={style.container}>
             <View style={style.columnContainer}>
               <Text style={style.label}>{I18n.t("details.vendor")}</Text>
-              <Text style={style.value}>{charger.chargePointVendor ? charger.chargePointVendor : "-"}</Text>
+              <Text style={style.value}>
+                {charger.chargePointVendor ? charger.chargePointVendor : "-"}
+              </Text>
             </View>
             <View style={style.columnContainer}>
               <Text style={style.label}>{I18n.t("details.model")}</Text>
-              <Text style={style.value}>{charger.chargePointModel ? charger.chargePointModel : "-"}</Text>
+              <Text style={style.value}>
+                {charger.chargePointModel ? charger.chargePointModel : "-"}
+              </Text>
             </View>
             <View style={style.columnContainer}>
               <Text style={style.label}>{I18n.t("details.ocppVersion")}</Text>
-              <Text style={style.value}>{charger.ocppVersion ? charger.ocppVersion : "-"}</Text>
+              <Text style={style.value}>
+                {charger.ocppVersion ? charger.ocppVersion : "-"}
+              </Text>
             </View>
             <View style={style.columnContainer}>
-              <Text style={style.label}>{I18n.t("details.firmwareVersion")}</Text>
-              <Text style={style.value}>{charger.firmwareVersion ? charger.firmwareVersion : "-"}</Text>
+              <Text style={style.label}>
+                {I18n.t("details.firmwareVersion")}
+              </Text>
+              <Text style={style.value}>
+                {charger.firmwareVersion ? charger.firmwareVersion : "-"}
+              </Text>
             </View>
           </View>
         </ScrollView>
@@ -48,5 +58,4 @@ ChargerDetails.propTypes = {
   isAdmin: PropTypes.bool.isRequired
 };
 
-ChargerDetails.defaultProps = {
-};
+ChargerDetails.defaultProps = {};

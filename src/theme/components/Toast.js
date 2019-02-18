@@ -1,5 +1,5 @@
 import variable from "./../variables/platform";
-import { scale } from 'react-native-size-matters';
+import { scale } from "react-native-size-matters";
 
 export default (variables = variable) => {
   const platform = variables.platform;

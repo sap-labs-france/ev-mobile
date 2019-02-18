@@ -1,8 +1,7 @@
 import variable from "./../variables/platform";
 
 export default (variables = variable) => {
-	const spinnerTheme = {
-	};
+  const spinnerTheme = {};
 
-	return spinnerTheme;
+  return spinnerTheme;
 };

@@ -47,10 +47,8 @@ const commonStyles = {
     justifyContent: "center",
     alignItems: "center"
   },
-  badgeSuccessContainer: {
-  },
-  badgeOccupiedContainer: {
-  },
+  badgeSuccessContainer: {},
+  badgeOccupiedContainer: {},
   connectorText: {
     color: commonColor.textColor,
     marginTop: scale(-15),
@@ -58,7 +56,7 @@ const commonStyles = {
     fontSize: scale(20)
   },
   connectorBadge: {
-    marginTop: scale(5),
+    marginTop: scale(5)
   },
   freeConnectorBadge: {
     backgroundColor: commonColor.brandSecondary
@@ -70,10 +68,10 @@ const commonStyles = {
     minWidth: scale(35),
     textAlign: "center",
     fontSize: scale(25),
-    paddingTop: (Platform.OS === "ios" ? scale(3) : 0),
-    paddingBottom: (Platform.OS === "ios" ? scale(3) : 0),
+    paddingTop: Platform.OS === "ios" ? scale(3) : 0,
+    paddingBottom: Platform.OS === "ios" ? scale(3) : 0,
     fontWeight: "bold",
-    color: commonColor.textColor,
+    color: commonColor.textColor
   },
   connectorSubTitle: {
     fontSize: scale(15),
@@ -82,15 +80,13 @@ const commonStyles = {
     marginBottom: scale(5),
     marginLeft: scale(10),
     marginRight: scale(10),
-    color: commonColor.textColor,
+    color: commonColor.textColor
   }
 };
 
-const portraitStyles = {
-};
+const portraitStyles = {};
 
-const landscapeStyles = {
-};
+const landscapeStyles = {};
 
 export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([

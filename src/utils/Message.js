@@ -1,8 +1,7 @@
 import { Toast } from "native-base";
-import { scale } from 'react-native-size-matters';
+import { scale } from "react-native-size-matters";
 
 export default class Message {
-
   static showError(message) {
     // Show
     Message._show(message, "danger");
@@ -33,7 +32,7 @@ export default class Message {
         textAlign: "center"
       },
       duration: 3000,
-      type: type,
+      type,
       position: "top"
     });
   }

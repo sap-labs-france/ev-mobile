@@ -9,7 +9,7 @@ import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import computeStyleSheet from "./styles";
 import I18n from "../../I18n/I18n";
-import BaseScreen from "../BaseScreen"
+import BaseScreen from "../BaseScreen";
 
 const _provider = ProviderFactory.getProvider();
 export default class Chargers extends BaseScreen {
@@ -18,7 +18,11 @@ export default class Chargers extends BaseScreen {
     // Init State
     this.state = {
       chargers: [],
-      withNoSite: Utils.getParamFromNavigation(this.props.navigation, "withNoSite", true),
+      withNoSite: Utils.getParamFromNavigation(
+        this.props.navigation,
+        "withNoSite",
+        true
+      ),
       loading: true,
       refreshing: false,
       skip: 0,
@@ -31,9 +35,18 @@ export default class Chargers extends BaseScreen {
     // Call parent
     super.componentDidMount();
     // Get ID
-    const siteAreaID = Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null);
+    const siteAreaID = Utils.getParamFromNavigation(
+      this.props.navigation,
+      "siteAreaID",
+      null
+    );
     // Get chargers first time
-    const chargers = await this._getChargers(this.searchText, this.state.skip, this.state.limit, siteAreaID);
+    const chargers = await this._getChargers(
+      this.searchText,
+      this.state.skip,
+      this.state.limit,
+      siteAreaID
+    );
     // Add chargers
     if (this.isMounted()) {
       // eslint-disable-next-line react/no-did-mount-set-state
@@ -58,25 +71,39 @@ export default class Chargers extends BaseScreen {
       if (!withNoSite && siteAreaID) {
         // Get with the Site
         chargers = await _provider.getChargers(
-          { Search: searchText, SiteAreaID: siteAreaID }, { skip, limit });
+          { Search: searchText, SiteAreaID: siteAreaID },
+          { skip, limit }
+        );
       } else {
         // Get without the Site
-        chargers = await _provider.getChargers({ Search: searchText }, { skip, limit });
+        chargers = await _provider.getChargers(
+          { Search: searchText },
+          { skip, limit }
+        );
       }
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
     }
     return chargers;
-  }
+  };
 
   _onEndScroll = async () => {
-    const siteAreaID = Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null);
+    const siteAreaID = Utils.getParamFromNavigation(
+      this.props.navigation,
+      "siteAreaID",
+      null
+    );
     const { count, skip, limit } = this.state;
     // No reached the end?
-    if ((skip + limit) < count) {
+    if (skip + limit < count) {
       // No: get next sites
-      let chargers = await this._getChargers(this.searchText, skip + Constants.PAGING_SIZE, limit, siteAreaID);
+      const chargers = await this._getChargers(
+        this.searchText,
+        skip + Constants.PAGING_SIZE,
+        limit,
+        siteAreaID
+      );
       // Add sites
       this.setState((prevState, props) => ({
         chargers: [...prevState.chargers, ...chargers.result],
@@ -84,40 +111,47 @@ export default class Chargers extends BaseScreen {
         refreshing: false
       }));
     }
-  }
+  };
 
   _refresh = async () => {
-    const siteAreaID = Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null);
+    const siteAreaID = Utils.getParamFromNavigation(
+      this.props.navigation,
+      "siteAreaID",
+      null
+    );
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
-      let chargers = await this._getChargers(this.searchText, 0, (skip + limit), siteAreaID);
+      const chargers = await this._getChargers(
+        this.searchText,
+        0,
+        skip + limit,
+        siteAreaID
+      );
       // Add sites
       this.setState((prevState, props) => ({
         chargers: chargers.result
       }));
     }
-  }
+  };
 
   _manualRefresh = async () => {
     // Display spinner
-    this.setState({refreshing: true});
+    this.setState({ refreshing: true });
     // Refresh
     await this._refresh();
     // Hide spinner
-    this.setState({refreshing: false});
-  }
+    this.setState({ refreshing: false });
+  };
 
   _footerList = () => {
     const { skip, count, limit } = this.state;
-    if ((skip + limit) < count) {
-      return (
-        <Spinner color="white" />
-      );
+    if (skip + limit < count) {
+      return <Spinner color="white" />;
     }
     return null;
-  }
+  };
 
   render() {
     const style = computeStyleSheet();
@@ -138,34 +172,51 @@ export default class Chargers extends BaseScreen {
     }
     return (
       <Container>
-        <HeaderComponent title={I18n.t("chargers.title")} showSearchAction={true}
+        <HeaderComponent
+          title={I18n.t("chargers.title")}
+          showSearchAction={true}
           searchRef={this.searchRef}
-          leftAction={!withNoSite ? () => navigation.navigate("SiteAreas", { siteID: siteID }) : undefined} leftActionIcon={!withNoSite ? "arrow-back" : undefined}
-          rightAction={navigation.openDrawer} rightActionIcon={"menu"} />
+          leftAction={
+            !withNoSite
+              ? () => navigation.navigate("SiteAreas", { siteID })
+              : undefined
+          }
+          leftActionIcon={!withNoSite ? "arrow-back" : undefined}
+          rightAction={navigation.openDrawer}
+          rightActionIcon={"menu"}
+        />
         <SearchHeaderComponent
-          initialVisibility={false} ref={(ref) => {this.searchRef = ref;}}
-          onChange={(searchText) => this._search(searchText)} navigation={navigation}/>
+          initialVisibility={false}
+          ref={ref => {
+            this.searchRef = ref;
+          }}
+          onChange={searchText => this._search(searchText)}
+          navigation={navigation}
+        />
         <View style={style.content}>
-          { this.state.loading ?
+          {this.state.loading ? (
             <Spinner color="white" style={style.spinner} />
-          :
+          ) : (
             <FlatList
               data={this.state.chargers}
-              renderItem={({item}) =>
+              renderItem={({ item }) => (
                 <List>
                   <ChargerComponent charger={item} navigation={navigation} />
                 </List>
-              }
+              )}
               keyExtractor={item => item.id}
               refreshControl={
-                <RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />
+                <RefreshControl
+                  onRefresh={this._manualRefresh}
+                  refreshing={this.state.refreshing}
+                />
               }
               indicatorStyle={"white"}
               onEndReached={this._onEndScroll}
-              onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1 }
+              onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
               ListFooterComponent={this._footerList}
             />
-          }
+          )}
         </View>
       </Container>
     );

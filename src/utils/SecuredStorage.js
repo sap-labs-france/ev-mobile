@@ -15,7 +15,9 @@ export default class SecuredStorage {
 
   static async clearUserCredentials() {
     // Clear only the token
-    let credentials = await SecuredStorage._getJson(Constants.KEY_CREDENTIALS);;
+    const credentials = await SecuredStorage._getJson(
+      Constants.KEY_CREDENTIALS
+    );
     // Check
     if (credentials) {
       // Clear token
@@ -32,7 +34,11 @@ export default class SecuredStorage {
 
   static async saveUserCredentials(credentials) {
     // Store credentials
-    await RNSecureStorage.set(Constants.KEY_CREDENTIALS, JSON.stringify(credentials), {accessible: ACCESSIBLE.WHEN_UNLOCKED});
+    await RNSecureStorage.set(
+      Constants.KEY_CREDENTIALS,
+      JSON.stringify(credentials),
+      { accessible: ACCESSIBLE.WHEN_UNLOCKED }
+    );
   }
 
   static async _getJson(key) {

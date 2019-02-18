@@ -6,7 +6,7 @@ export default StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     paddingBottom: 10,
-    backgroundColor: "snow",
+    backgroundColor: "snow"
   },
   spinner: {
     flex: 2,

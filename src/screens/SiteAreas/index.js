@@ -9,7 +9,7 @@ import SearchHeaderComponent from "../../components/SearchHeader";
 import HeaderComponent from "../../components/Header";
 import computeStyleSheet from "./styles";
 import I18n from "../../I18n/I18n";
-import BaseScreen from "../BaseScreen"
+import BaseScreen from "../BaseScreen";
 
 const _provider = ProviderFactory.getProvider();
 
@@ -30,7 +30,11 @@ export default class SiteAreas extends BaseScreen {
     // Call parent
     super.componentDidMount();
     // Get the sites
-    const siteAreas = await this._getSiteAreas(this.searchText, this.state.skip, this.state.limit);
+    const siteAreas = await this._getSiteAreas(
+      this.searchText,
+      this.state.skip,
+      this.state.limit
+    );
     // Add sites
     if (this.isMounted()) {
       // eslint-disable-next-line react/no-did-mount-set-state
@@ -48,48 +52,62 @@ export default class SiteAreas extends BaseScreen {
   }
 
   _getSiteAreas = async (searchText, skip, limit) => {
-    const siteID = Utils.getParamFromNavigation(this.props.navigation, "siteID", null);
+    const siteID = Utils.getParamFromNavigation(
+      this.props.navigation,
+      "siteID",
+      null
+    );
     let siteAreas = [];
     try {
       // Get the Sites
       siteAreas = await _provider.getSiteAreas(
-        { Search: searchText, SiteID: siteID, WithAvailableChargers: true }, { skip, limit });
+        { Search: searchText, SiteID: siteID, WithAvailableChargers: true },
+        { skip, limit }
+      );
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
     }
     // Return
     return siteAreas;
-  }
+  };
 
   _refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
-      const siteAreas = await this._getSiteAreas(this.searchText, 0, (skip + limit));
+      const siteAreas = await this._getSiteAreas(
+        this.searchText,
+        0,
+        skip + limit
+      );
       // Add sites
       this.setState({
         siteAreas: siteAreas.result
       });
     }
-  }
+  };
 
   _manualRefresh = async () => {
     // Display spinner
-    this.setState({refreshing: true});
+    this.setState({ refreshing: true });
     // Refresh
     await this._refresh();
     // Hide spinner
-    this.setState({refreshing: false});
-  }
+    this.setState({ refreshing: false });
+  };
 
   _onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
-    if ((skip + limit) < count) {
+    if (skip + limit < count) {
       // No: get next sites
-      const siteAreas = await this._getSiteAreas(this.searchText, skip + Constants.PAGING_SIZE, limit);
+      const siteAreas = await this._getSiteAreas(
+        this.searchText,
+        skip + Constants.PAGING_SIZE,
+        limit
+      );
       // Add sites
       this.setState((prevState, props) => ({
         siteAreas: [...prevState.siteAreas, ...siteAreas.result],
@@ -97,17 +115,15 @@ export default class SiteAreas extends BaseScreen {
         refreshing: false
       }));
     }
-  }
+  };
 
   _footerList = () => {
     const { skip, count, limit } = this.state;
-    if ((skip + limit) < count) {
-      return (
-        <Spinner color="white" />
-      );
+    if (skip + limit < count) {
+      return <Spinner color="white" />;
     }
     return null;
-  }
+  };
 
   render() {
     const style = computeStyleSheet();
@@ -115,31 +131,47 @@ export default class SiteAreas extends BaseScreen {
     const { loading } = this.state;
     return (
       <Container>
-        <HeaderComponent title={I18n.t("siteAreas.title")} showSearchAction={true}
+        <HeaderComponent
+          title={I18n.t("siteAreas.title")}
+          showSearchAction={true}
           searchRef={this.searchRef}
-          leftAction={() => navigation.navigate("Sites")} leftActionIcon={"arrow-back" }
-          rightAction={navigation.openDrawer} rightActionIcon={"menu"} />
+          leftAction={() => navigation.navigate("Sites")}
+          leftActionIcon={"arrow-back"}
+          rightAction={navigation.openDrawer}
+          rightActionIcon={"menu"}
+        />
         <SearchHeaderComponent
-          initialVisibility={false} ref={(ref) => {this.searchRef = ref;}}
-          onChange={(searchText) => this._search(searchText)} navigation={navigation}/>
+          initialVisibility={false}
+          ref={ref => {
+            this.searchRef = ref;
+          }}
+          onChange={searchText => this._search(searchText)}
+          navigation={navigation}
+        />
         <View style={style.content}>
-          {loading ?
+          {loading ? (
             <Spinner color="white" style={style.spinner} />
-          :
+          ) : (
             <FlatList
               data={this.state.siteAreas}
-              renderItem={({item}) => 
-                <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />
-              }
+              renderItem={({ item }) => (
+                <SiteAreaComponent
+                  siteArea={item}
+                  navigation={this.props.navigation}
+                />
+              )}
               keyExtractor={item => item.id}
               refreshControl={
-                <RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />
+                <RefreshControl
+                  onRefresh={this._manualRefresh}
+                  refreshing={this.state.refreshing}
+                />
               }
               onEndReached={this._onEndScroll}
               onEndReachedThreshold={0.5}
               ListFooterComponent={this._footerList}
             />
-          }
+          )}
         </View>
       </Container>
     );

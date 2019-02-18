@@ -1,6 +1,22 @@
 import React from "react";
-import { WebView, ScrollView, Image, TextInput, ImageBackground, KeyboardAvoidingView } from "react-native";
-import { Text, Form, Item, Button, Icon, View, Spinner, Footer } from "native-base";
+import {
+  WebView,
+  ScrollView,
+  Image,
+  TextInput,
+  ImageBackground,
+  KeyboardAvoidingView
+} from "react-native";
+import {
+  Text,
+  Form,
+  Item,
+  Button,
+  Icon,
+  View,
+  Spinner,
+  Footer
+} from "native-base";
 import { NavigationActions, StackActions } from "react-navigation";
 import commonColor from "../../../theme/variables/commonColor";
 import ProviderFactory from "../../../provider/ProviderFactory";
@@ -33,7 +49,11 @@ export default class RetrievePassword extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
-      tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", null),
+      tenant: Utils.getParamFromNavigation(
+        this.props.navigation,
+        "tenant",
+        null
+      ),
       email: "",
       loading: false
     };
@@ -47,11 +67,11 @@ export default class RetrievePassword extends ResponsiveComponent {
       // Login
       const { email } = this.state;
       try {
-        this.setState({loading: true});
+        this.setState({ loading: true });
         // Login
         await _provider.resetPassword(email);
         // Login Success
-        this.setState({loading: false});
+        this.setState({ loading: false });
         // Show
         Message.showSuccess(I18n.t("authentication.resetSuccess"));
         // Navigate
@@ -61,10 +81,9 @@ export default class RetrievePassword extends ResponsiveComponent {
             actions: [NavigationActions.navigate({ routeName: "Login" })]
           })
         );
-
       } catch (error) {
         // Login failed
-        this.setState({loading: false});
+        this.setState({ loading: false });
         // Check request?
         if (error.request) {
           // Show error
@@ -83,7 +102,7 @@ export default class RetrievePassword extends ResponsiveComponent {
         }
       }
     }
-  }
+  };
 
   onMessage(data) {
     //Prints out data that was passed.
@@ -95,18 +114,25 @@ export default class RetrievePassword extends ResponsiveComponent {
     const { loading } = this.state;
     const style = computeStyleSheet();
     return (
-      <Animatable.View style={style.container} animation={"fadeIn"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+      <Animatable.View
+        style={style.container}
+        animation={"fadeIn"}
+        iterationCount={1}
+        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
+      >
         <ImageBackground source={background} style={style.background}>
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.container} behavior="padding">
               <View style={style.formHeader}>
                 <Image style={style.logo} source={logo} />
                 <Text style={style.appText}>e-Mobility</Text>
-                <Text style={style.appVersionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
+                <Text style={style.appVersionText}>{`${I18n.t(
+                  "general.version"
+                )} ${DeviceInfo.getVersion()}`}</Text>
               </View>
               <Form style={style.form}>
                 <Item rounded style={style.inputGroup}>
-                  <Icon active name="mail" style={style.inputIcon}/>
+                  <Icon active name="mail" style={style.inputIcon} />
                   <TextInput
                     name="email"
                     type="email"
@@ -118,36 +144,51 @@ export default class RetrievePassword extends ResponsiveComponent {
                     blurOnSubmit={false}
                     autoCorrect={false}
                     keyboardType={"email-address"}
-                    onChangeText={(text) => this.setState({email: text})}
+                    onChangeText={text => this.setState({ email: text })}
                     secureTextEntry={false}
                   />
                 </Item>
-                {this.state.errorEmail && this.state.errorEmail.map((errorMessage, index) => <Text style={style.formErrorText} key={index}>{errorMessage}</Text>) }
-                { loading ?
+                {this.state.errorEmail &&
+                  this.state.errorEmail.map((errorMessage, index) => (
+                    <Text style={style.formErrorText} key={index}>
+                      {errorMessage}
+                    </Text>
+                  ))}
+                {loading ? (
                   <Spinner style={style.spinner} color="white" />
-                :
-                  <Button rounded primary block large style={style.button} onPress={this._resetPassword}>
+                ) : (
+                  <Button
+                    rounded
+                    primary
+                    block
+                    large
+                    style={style.button}
+                    onPress={this._resetPassword}
+                  >
                     <Text style={style.buttonText}>
                       {I18n.t("authentication.retrievePassword")}
                     </Text>
                   </Button>
-                }
+                )}
               </Form>
             </KeyboardAvoidingView>
             <WebView
               javaScriptEnabled={true}
               mixedContentMode={"always"}
-              style={{height: 200, backgroundColor: 'black'}}
+              style={{ height: 200, backgroundColor: "black" }}
               onMessage={this.onMessage}
               source={{
-                  html: `
+                html: `
                   `,
-                  baseUrl: 'https://slf.cfapps.eu10.hana.ondemand.com' // <-- SET YOUR DOMAIN HERE
-              }}/>
+                baseUrl: "https://slf.cfapps.eu10.hana.ondemand.com" // <-- SET YOUR DOMAIN HERE
+              }}
+            />
           </ScrollView>
           <Footer>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Text style={style.linksTextButton}>{I18n.t("authentication.backLogin")}</Text>
+              <Text style={style.linksTextButton}>
+                {I18n.t("authentication.backLogin")}
+              </Text>
             </Button>
           </Footer>
         </ImageBackground>

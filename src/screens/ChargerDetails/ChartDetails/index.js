@@ -1,5 +1,5 @@
 import React from "react";
-import BaseScreen from "../../BaseScreen"
+import BaseScreen from "../../BaseScreen";
 import { View, processColor } from "react-native";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import Utils from "../../../utils/Utils";
@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 
 const fillGreen = commonColor.brandSuccess;
 const fillRed = commonColor.brandDanger;
-const EMPTY_CHART = [{ x:0, y:0 }];
+const EMPTY_CHART = [{ x: 0, y: 0 }];
 
 const _provider = ProviderFactory.getProvider();
 
@@ -46,20 +46,27 @@ export default class ChartDetails extends BaseScreen {
       // Active Transaction?
       if (transactionID) {
         // Get the consumption
-        let result = await _provider.getChargingStationConsumption({
+        const result = await _provider.getChargingStationConsumption({
           TransactionId: transactionID
         });
         // At least 2 values for the chart!!!
         if (result.values && result.values.length > 1) {
           // Convert
-          let consumptionValues = [], stateOfChargeValues = [];
+          const consumptionValues = [],
+            stateOfChargeValues = [];
           for (let index = 0; index < result.values.length; index++) {
             const value = result.values[index];
             const date = new Date(value.date).getTime();
             // Add
-            consumptionValues.push({x: date, y: (value.value ? value.value : 0)});
+            consumptionValues.push({
+              x: date,
+              y: value.value ? value.value : 0
+            });
             if (value.stateOfCharge > 0) {
-              stateOfChargeValues.push({x: date, y: (value.stateOfCharge ? value.stateOfCharge : 0)});
+              stateOfChargeValues.push({
+                x: date,
+                y: value.stateOfCharge ? value.stateOfCharge : 0
+              });
             }
           }
           // Set
@@ -84,7 +91,7 @@ export default class ChartDetails extends BaseScreen {
         Utils.handleHttpUnexpectedError(error, this.props);
       }
     }
-  }
+  };
 
   _refresh = async () => {
     // Component Mounted?
@@ -92,7 +99,7 @@ export default class ChartDetails extends BaseScreen {
       // Refresh Consumption
       await this._getChargingStationConsumption();
     }
-  }
+  };
 
   computeChartDefinition(consumptionValues, stateOfChargeValues) {
     const chartDefinition = {};
@@ -101,53 +108,49 @@ export default class ChartDetails extends BaseScreen {
     // Check Consumptions\
     if (consumptionValues && consumptionValues.length > 1) {
       // Add
-      chartDefinition.data.dataSets.push(
-        {
-          values: consumptionValues,
-          label: I18n.t("details.instantPowerChartLabel"),
-          config: {
-            mode: "CUBIC_BEZIER",
-            drawValues: false,
-            lineWidth: 2,
-            drawCircles: false,
-            circleColor: processColor(commonColor.brandDanger),
-            drawCircleHole: false,
-            circleRadius: 5,
-            highlightColor: processColor("white"),
-            color: processColor(commonColor.brandDanger),
-            drawFilled: true,
-            fillAlpha: 65,
-            fillColor: processColor(fillRed),
-            valueTextSize: scale(15)
-          }
+      chartDefinition.data.dataSets.push({
+        values: consumptionValues,
+        label: I18n.t("details.instantPowerChartLabel"),
+        config: {
+          mode: "CUBIC_BEZIER",
+          drawValues: false,
+          lineWidth: 2,
+          drawCircles: false,
+          circleColor: processColor(commonColor.brandDanger),
+          drawCircleHole: false,
+          circleRadius: 5,
+          highlightColor: processColor("white"),
+          color: processColor(commonColor.brandDanger),
+          drawFilled: true,
+          fillAlpha: 65,
+          fillColor: processColor(fillRed),
+          valueTextSize: scale(15)
         }
-      );
+      });
     }
     // Check SoC
     if (stateOfChargeValues && stateOfChargeValues.length > 1) {
       // Add
-      chartDefinition.data.dataSets.push(
-        {
-          values: stateOfChargeValues,
-          label: I18n.t("details.batteryChartLabel"),
-          config: {
-            axisDependency: "RIGHT",
-            mode: "CUBIC_BEZIER",
-            drawValues: false,
-            lineWidth: 2,
-            drawCircles: false,
-            circleColor: processColor(commonColor.brandSuccess),
-            drawCircleHole: false,
-            circleRadius: 5,
-            highlightColor: processColor("white"),
-            color: processColor(commonColor.brandSuccess),
-            drawFilled: true,
-            fillAlpha: 65,
-            fillColor: processColor(fillGreen),
-            valueTextSize: scale(15)
-          }
+      chartDefinition.data.dataSets.push({
+        values: stateOfChargeValues,
+        label: I18n.t("details.batteryChartLabel"),
+        config: {
+          axisDependency: "RIGHT",
+          mode: "CUBIC_BEZIER",
+          drawValues: false,
+          lineWidth: 2,
+          drawCircles: false,
+          circleColor: processColor(commonColor.brandSuccess),
+          drawCircleHole: false,
+          circleRadius: 5,
+          highlightColor: processColor("white"),
+          color: processColor(commonColor.brandSuccess),
+          drawFilled: true,
+          fillAlpha: 65,
+          fillColor: processColor(fillGreen),
+          valueTextSize: scale(15)
         }
-      );
+      });
     }
     // X Axis
     chartDefinition.xAxis = {
@@ -174,7 +177,7 @@ export default class ChartDetails extends BaseScreen {
         enabled: true,
         valueFormatter: "# W",
         axisMinimum: 0,
-        textColor: processColor(commonColor.brandDanger),
+        textColor: processColor(commonColor.brandDanger)
         // limitLines: [{
         //   limit: connector.power,
         //   label: I18n.t("details.connectorMax"),
@@ -204,7 +207,10 @@ export default class ChartDetails extends BaseScreen {
   render() {
     const style = computeStyleSheet();
     const { consumptionValues, stateOfChargeValues } = this.state;
-    const chartDefinition = this.computeChartDefinition(consumptionValues, stateOfChargeValues);
+    const chartDefinition = this.computeChartDefinition(
+      consumptionValues,
+      stateOfChargeValues
+    );
     return (
       <View style={style.container}>
         <LineChart
@@ -215,7 +221,7 @@ export default class ChartDetails extends BaseScreen {
           backgroundColor={"black"}
           legend={{
             enabled: true,
-            textColor: processColor("white"),
+            textColor: processColor("white")
           }}
           marker={{
             enabled: true,
@@ -252,5 +258,4 @@ ChartDetails.propTypes = {
   transactionID: PropTypes.number
 };
 
-ChartDetails.defaultProps = {
-};
+ChartDetails.defaultProps = {};
