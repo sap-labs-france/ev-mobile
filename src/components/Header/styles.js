@@ -10,49 +10,45 @@ const commonStyles = {
     paddingTop: scale(5),
     paddingBottom: scale(5),
     borderBottomWidth: 1,
-    borderBottomColor: commonColor.listBorderColor,
+    borderBottomColor: commonColor.listBorderColor
   },
-  leftHeader: {
-  },
+  leftHeader: {},
   bodyHeader: {
-    flexGrow: 2,
+    flexGrow: 2
   },
-  rightHeader: {
-  },
+  rightHeader: {},
   logoHeader: {
     width: scale(50),
     resizeMode: "contain"
   },
   titleHeader: {
     color: commonColor.textColor,
-    fontSize: scale(20),
+    fontSize: scale(20)
   },
   titleHeaderWithSubTitle: {
-    fontSize: scale(18),
+    fontSize: scale(18)
   },
   subTitleHeader: {
     fontWeight: "bold",
     color: commonColor.textColor,
     fontSize: scale(12),
-    marginTop: (Platform.OS === "ios" ? scale(-2) : scale(-3)),
+    marginTop: Platform.OS === "ios" ? scale(-2) : scale(-3)
   },
   iconHeader: {
     fontSize: scale(30),
-    alignSelf: "center",
+    alignSelf: "center"
   },
   leftIconHeader: {
     marginLeft: scale(-5)
   },
   rightIconHeader: {
     marginLeft: scale(10)
-  },
+  }
 };
 
-const portraitStyles = {
-};
+const portraitStyles = {};
 
-const landscapeStyles = {
-};
+const landscapeStyles = {};
 
 export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([
@@ -66,4 +62,3 @@ export default function computeStyleSheet() {
     }
   ]);
 }
-

@@ -4,8 +4,7 @@ import commonColor from "../../../theme/variables/commonColor";
 import { scale } from "react-native-size-matters";
 
 const commonStyles = {
-  scrollViewContainer: {
-  },
+  scrollViewContainer: {},
   container: {
     flex: 1,
     flexDirection: "column",
@@ -19,7 +18,7 @@ const commonStyles = {
   columnContainer: {
     height: scale(75),
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   label: {
     fontSize: scale(20),
@@ -33,11 +32,9 @@ const commonStyles = {
   }
 };
 
-const portraitStyles = {
-};
+const portraitStyles = {};
 
-const landscapeStyles = {
-};
+const landscapeStyles = {};
 
 export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([
@@ -51,4 +48,3 @@ export default function computeStyleSheet() {
     }
   ]);
 }
-

@@ -4,8 +4,7 @@ import commonColor from "../../theme/variables/commonColor";
 import { scale } from "react-native-size-matters";
 
 const commonStyles = {
-  container: {
-  },
+  container: {},
   statusContainer: {
     width: scale(44),
     height: scale(44),
@@ -20,21 +19,19 @@ const commonStyles = {
     marginTop: scale(-2)
   },
   statusGreen: {
-    backgroundColor: commonColor.brandSuccess,
+    backgroundColor: commonColor.brandSuccess
   },
   statusRed: {
-    backgroundColor: commonColor.brandDanger,
+    backgroundColor: commonColor.brandDanger
   },
   statusOrange: {
-    backgroundColor: commonColor.brandWarning,
+    backgroundColor: commonColor.brandWarning
   }
 };
 
-const portraitStyles = {
-};
+const portraitStyles = {};
 
-const landscapeStyles = {
-};
+const landscapeStyles = {};
 
 export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([

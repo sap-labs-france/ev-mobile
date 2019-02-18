@@ -20,17 +20,17 @@ export default class ChargerComponent extends ResponsiveComponent {
     this._checkHeartbeat(charger);
   }
 
-  _checkHeartbeat = (charger) => {
-    let lastHeartbeatMinutes = new Date(charger.lastHeartBeat).getMinutes();
+  _checkHeartbeat = charger => {
+    const lastHeartbeatMinutes = new Date(charger.lastHeartBeat).getMinutes();
     // Is last heartbeat has been sent more than 5 minutes ago ?
-    if ((new Date().getMinutes() - lastHeartbeatMinutes) > 5) {
+    if (new Date().getMinutes() - lastHeartbeatMinutes > 5) {
       // Yes: Charger is dead
       this.setState({ isChargerDead: true });
     } else {
       // No: It doesn't
       this.setState({ isChargerDead: false });
     }
-  }
+  };
 
   render() {
     const style = computeStyleSheet();
@@ -40,25 +40,47 @@ export default class ChargerComponent extends ResponsiveComponent {
       <View style={style.container}>
         <View style={style.chargerContainer}>
           <Text style={style.name}>{charger.id}</Text>
-          { isChargerDead ?
-            <Animatable.Text animation="fadeIn" easing="ease-in-out" duration="1000" iterationCount="infinite" direction="alternate-reverse">
-              <Icon style={style.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
+          {isChargerDead ? (
+            <Animatable.Text
+              animation="fadeIn"
+              easing="ease-in-out"
+              duration="1000"
+              iterationCount="infinite"
+              direction="alternate-reverse"
+            >
+              <Icon
+                style={style.deadHeartbeatIcon}
+                type="FontAwesome"
+                name="heartbeat"
+              />
             </Animatable.Text>
-          :
-            <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: "center" }}>
-              <Icon style={style.heartbeatIcon} type="FontAwesome" name="heartbeat" />
+          ) : (
+            <Animatable.Text
+              animation="pulse"
+              easing="ease-out"
+              iterationCount="infinite"
+              style={{ textAlign: "center" }}
+            >
+              <Icon
+                style={style.heartbeatIcon}
+                type="FontAwesome"
+                name="heartbeat"
+              />
             </Animatable.Text>
-          }
+          )}
         </View>
         <View style={style.connectorsContainer}>
-          {
-            charger.connectors.map((connector, index) => {
-              return (<ConnectorComponent
-                key={`${charger.id}~${connector.connectorId}` } 
-                charger={charger} connector={connector} 
-                index={index} navigation={navigation} />);
-            })
-          }
+          {charger.connectors.map((connector, index) => {
+            return (
+              <ConnectorComponent
+                key={`${charger.id}~${connector.connectorId}`}
+                charger={charger}
+                connector={connector}
+                index={index}
+                navigation={navigation}
+              />
+            );
+          })}
         </View>
       </View>
     );
@@ -70,5 +92,4 @@ ChargerComponent.propTypes = {
   charger: PropTypes.object.isRequired
 };
 
-ChargerComponent.defaultProps = {
-};
+ChargerComponent.defaultProps = {};

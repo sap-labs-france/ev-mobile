@@ -14,7 +14,7 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     super(props);
     this.state = {
       isVisible: this.props.initialVisibility
-    }
+    };
     this.searchText = "";
     this.searchChanged = false;
   }
@@ -80,11 +80,13 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
   setVisible(isVisible) {
     const style = computeStyleSheet();
     // Show/Hide
-    this.setState({isVisible});
+    this.setState({ isVisible });
     // Check
     if (isVisible) {
       this.animRef.transitionTo(
-        style.visible, Constants.ANIMATION_SHOW_HIDE_MILLIS)
+        style.visible,
+        Constants.ANIMATION_SHOW_HIDE_MILLIS
+      );
       // Set the focus
       setTimeout(() => {
         // Set the focus
@@ -95,7 +97,9 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     } else {
       // Hide
       this.animRef.transitionTo(
-        style.hidden, Constants.ANIMATION_SHOW_HIDE_MILLIS)
+        style.hidden,
+        Constants.ANIMATION_SHOW_HIDE_MILLIS
+      );
       // Hide keyboard
       Keyboard.dismiss();
     }
@@ -104,14 +108,28 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     return (
-      <Animatable.View ref={(ref) => { this.animRef = ref; }} style={style.container}>
-        <Icon type={"MaterialIcons"} name={"search"} style={style.icon}/>
-        <TextInput ref={(ref) => { this.textInput = ref; }}
+      <Animatable.View
+        ref={ref => {
+          this.animRef = ref;
+        }}
+        style={style.container}
+      >
+        <Icon type={"MaterialIcons"} name={"search"} style={style.icon} />
+        <TextInput
+          ref={ref => {
+            this.textInput = ref;
+          }}
           style={style.inputField}
           placeholder={I18n.t("general.search")}
           placeholderTextColor={commonColor.tabBarTextColor}
-          onChangeText={(searchText) => this._searchChanged(searchText)}/>
-        <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this._clearSearch()}/>
+          onChangeText={searchText => this._searchChanged(searchText)}
+        />
+        <Icon
+          type="MaterialIcons"
+          name="clear"
+          style={style.icon}
+          onPress={() => this._clearSearch()}
+        />
       </Animatable.View>
     );
   }

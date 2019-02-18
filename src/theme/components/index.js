@@ -36,235 +36,239 @@ import separatorTheme from "./Separator";
 import variable from "./../variables/platform";
 
 export default (variables = variable) => {
-	const theme = {
-		variables,
-		"NativeBase.Left": {
-			flex: 1,
-			alignSelf: "center",
-			alignItems: "flex-start",
-		},
-		"NativeBase.Right": {
-			"NativeBase.Button": {
-				alignSelf: null,
-			},
-			flex: 1,
-			alignSelf: "center",
-			alignItems: "flex-end",
-		},
-		"NativeBase.Body": {
-			flex: 1,
-			alignItems: "center",
-			alignSelf: "center",
-		},
+  const theme = {
+    variables,
+    "NativeBase.Left": {
+      flex: 1,
+      alignSelf: "center",
+      alignItems: "flex-start"
+    },
+    "NativeBase.Right": {
+      "NativeBase.Button": {
+        alignSelf: null
+      },
+      flex: 1,
+      alignSelf: "center",
+      alignItems: "flex-end"
+    },
+    "NativeBase.Body": {
+      flex: 1,
+      alignItems: "center",
+      alignSelf: "center"
+    },
 
-		"NativeBase.Header": {
-			...headerTheme(variables),
-		},
+    "NativeBase.Header": {
+      ...headerTheme(variables)
+    },
 
-		"NativeBase.Button": {
-			...buttonTheme(variables),
-		},
+    "NativeBase.Button": {
+      ...buttonTheme(variables)
+    },
 
-		"NativeBase.Title": {
-			...titleTheme(variables),
-		},
+    "NativeBase.Title": {
+      ...titleTheme(variables)
+    },
 
-		"NativeBase.InputGroup": {
-			...inputGroupTheme(variables),
-		},
+    "NativeBase.InputGroup": {
+      ...inputGroupTheme(variables)
+    },
 
-		"NativeBase.Badge": {
-			...badgeTheme(variables),
-		},
+    "NativeBase.Badge": {
+      ...badgeTheme(variables)
+    },
 
-		"NativeBase.CheckBox": {
-			...checkBoxTheme(variables),
-		},
+    "NativeBase.CheckBox": {
+      ...checkBoxTheme(variables)
+    },
 
-		"NativeBase.Radio": {
-			...radioTheme(variables),
-		},
-		"NativeBase.Toast": {
-			...toastTheme(variables),
-		},
-		"NativeBase.Card": {
-			...cardTheme(),
-		},
+    "NativeBase.Radio": {
+      ...radioTheme(variables)
+    },
+    "NativeBase.Toast": {
+      ...toastTheme(variables)
+    },
+    "NativeBase.Card": {
+      ...cardTheme()
+    },
 
-		"NativeBase.CardItem": {
-			...cardItemTheme(variables),
-			".cardBody": {
-				padding: -5,
-				"NativeBase.Text": {
-					marginTop: 5,
-				},
-			},
-			flexDirection: "row",
-			alignItems: "center",
-		},
+    "NativeBase.CardItem": {
+      ...cardItemTheme(variables),
+      ".cardBody": {
+        padding: -5,
+        "NativeBase.Text": {
+          marginTop: 5
+        }
+      },
+      flexDirection: "row",
+      alignItems: "center"
+    },
 
-		"NativeBase.CardItem1": {
-			...cardItemTheme(variables),
-		},
+    "NativeBase.CardItem1": {
+      ...cardItemTheme(variables)
+    },
 
-		"NativeBase.H1": {
-			...h1Theme(variables),
-		},
-		"NativeBase.H2": {
-			...h2Theme(variables),
-		},
-		"NativeBase.H3": {
-			...h3Theme(variables),
-		},
-		"NativeBase.Form": {
-			...formTheme(variables),
-		},
+    "NativeBase.H1": {
+      ...h1Theme(variables)
+    },
+    "NativeBase.H2": {
+      ...h2Theme(variables)
+    },
+    "NativeBase.H3": {
+      ...h3Theme(variables)
+    },
+    "NativeBase.Form": {
+      ...formTheme(variables)
+    },
 
-		"NativeBase.Container": {
-			...containerTheme(variables),
-		},
-		"NativeBase.Content": {
-			...contentTheme(variables),
-		},
+    "NativeBase.Container": {
+      ...containerTheme(variables)
+    },
+    "NativeBase.Content": {
+      ...contentTheme(variables)
+    },
 
-		"NativeBase.Footer": {
-			...footerTheme(variables),
-		},
+    "NativeBase.Footer": {
+      ...footerTheme(variables)
+    },
 
-		"NativeBase.Tabs": {
-			flex: 1,
-		},
+    "NativeBase.Tabs": {
+      flex: 1
+    },
 
-		"NativeBase.FooterTab": {
-			...footerTabTheme(variables),
-		},
+    "NativeBase.FooterTab": {
+      ...footerTabTheme(variables)
+    },
 
-		"NativeBase.ListItem": {
-			...listItemTheme(variables),
-			"NativeBase.CheckBox": {
-				marginLeft: -10,
-				marginRight: 10,
-			},
-			"NativeBase.Text": {
-				".note": {
-					color: variables.listNoteColor,
-					fontWeight: "200",
-				},
-				alignSelf: "center",
-			},
-		},
+    "NativeBase.ListItem": {
+      ...listItemTheme(variables),
+      "NativeBase.CheckBox": {
+        marginLeft: -10,
+        marginRight: 10
+      },
+      "NativeBase.Text": {
+        ".note": {
+          color: variables.listNoteColor,
+          fontWeight: "200"
+        },
+        alignSelf: "center"
+      }
+    },
 
-		"NativeBase.ListItem1": {
-			...listItemTheme(variables),
-		},
+    "NativeBase.ListItem1": {
+      ...listItemTheme(variables)
+    },
 
-		"NativeBase.Icon": {
-			...iconTheme(variables),
-		},
-		"NativeBase.IconNB": {
-			...iconTheme(variables),
-		},
-		"NativeBase.Text": {
-			...textTheme(variables),
-		},
-		"NativeBase.Spinner": {
-			...spinnerTheme(variables),
-		},
+    "NativeBase.Icon": {
+      ...iconTheme(variables)
+    },
+    "NativeBase.IconNB": {
+      ...iconTheme(variables)
+    },
+    "NativeBase.Text": {
+      ...textTheme(variables)
+    },
+    "NativeBase.Spinner": {
+      ...spinnerTheme(variables)
+    },
 
-		"NativeBase.Fab": {
-			...fabTheme(variables),
-		},
+    "NativeBase.Fab": {
+      ...fabTheme(variables)
+    },
 
-		"NativeBase.Item": {
-			...itemTheme(variables),
-		},
+    "NativeBase.Item": {
+      ...itemTheme(variables)
+    },
 
-		"NativeBase.Label": {
-			...labelTheme(variables),
-		},
+    "NativeBase.Label": {
+      ...labelTheme(variables)
+    },
 
-		"NativeBase.Textarea": {
-			...textAreaTheme(variables),
-		},
+    "NativeBase.Textarea": {
+      ...textAreaTheme(variables)
+    },
 
-		"NativeBase.PickerNB": {
-			"NativeBase.Button": {
-				"NativeBase.Text": {},
-			},
-		},
+    "NativeBase.PickerNB": {
+      "NativeBase.Button": {
+        "NativeBase.Text": {}
+      }
+    },
 
-		"NativeBase.Tab": {
-			...tabTheme(variables),
-		},
+    "NativeBase.Tab": {
+      ...tabTheme(variables)
+    },
 
-		"NativeBase.STabs": {
-			flex: 1,
-		},
+    "NativeBase.STabs": {
+      flex: 1
+    },
 
-		"NativeBase.TabBar": {
-			...tabBarTheme(variables),
-		},
-		"NativeBase.ViewNB": {
-			...viewTheme(variables),
-		},
-		"NativeBase.TabHeading": {
-			...tabHeadingTheme(variables),
-		},
-		"NativeBase.TabContainer": {
-			...tabContainerTheme(variables),
-		},
-		"NativeBase.Switch": {
-			marginVertical: -5,
-		},
-		"NativeBase.Separator": {
-			...separatorTheme(variables),
-		},
+    "NativeBase.TabBar": {
+      ...tabBarTheme(variables)
+    },
+    "NativeBase.ViewNB": {
+      ...viewTheme(variables)
+    },
+    "NativeBase.TabHeading": {
+      ...tabHeadingTheme(variables)
+    },
+    "NativeBase.TabContainer": {
+      ...tabContainerTheme(variables)
+    },
+    "NativeBase.Switch": {
+      marginVertical: -5
+    },
+    "NativeBase.Separator": {
+      ...separatorTheme(variables)
+    },
 
-		"NativeBase.Input": {
-			...inputTheme(variables),
-		},
-		"NativeBase.SwipeRow": {
-			...swipeRowTheme(variables),
-		},
+    "NativeBase.Input": {
+      ...inputTheme(variables)
+    },
+    "NativeBase.SwipeRow": {
+      ...swipeRowTheme(variables)
+    },
 
-		"NativeBase.Thumbnail": {
-			".square": {
-				borderRadius: 0,
-			},
-			".small": {
-				width: 36,
-				height: 36,
-				borderRadius: 18,
-			},
-			".large": {
-				width: 80,
-				height: 80,
-				borderRadius: 40,
-			},
-			width: 56,
-			height: 56,
-			borderRadius: 28,
-		},
-	};
+    "NativeBase.Thumbnail": {
+      ".square": {
+        borderRadius: 0
+      },
+      ".small": {
+        width: 36,
+        height: 36,
+        borderRadius: 18
+      },
+      ".large": {
+        width: 80,
+        height: 80,
+        borderRadius: 40
+      },
+      width: 56,
+      height: 56,
+      borderRadius: 28
+    }
+  };
 
-	const cssifyTheme = (grandparent, parent, parentKey) => {
-		_.forEach(parent, (style, styleName) => {
-			if (styleName.indexOf(".") === 0 && parentKey && parentKey.indexOf(".") === 0) {
-				if (grandparent) {
-					if (!grandparent[styleName]) {
-						grandparent[styleName] = {};
-					} else {
-						grandparent[styleName][parentKey] = style;
-					}
-				}
-			}
-			if (style && typeof style === "object") {
-				cssifyTheme(parent, style, styleName);
-			}
-		});
-	};
+  const cssifyTheme = (grandparent, parent, parentKey) => {
+    _.forEach(parent, (style, styleName) => {
+      if (
+        styleName.indexOf(".") === 0 &&
+        parentKey &&
+        parentKey.indexOf(".") === 0
+      ) {
+        if (grandparent) {
+          if (!grandparent[styleName]) {
+            grandparent[styleName] = {};
+          } else {
+            grandparent[styleName][parentKey] = style;
+          }
+        }
+      }
+      if (style && typeof style === "object") {
+        cssifyTheme(parent, style, styleName);
+      }
+    });
+  };
 
-	cssifyTheme(null, theme, null);
+  cssifyTheme(null, theme, null);
 
-	return theme;
+  return theme;
 };

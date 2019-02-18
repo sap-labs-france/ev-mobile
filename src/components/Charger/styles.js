@@ -18,7 +18,7 @@ const commonStyles = {
     backgroundColor: "transparent",
     padding: scale(5),
     borderBottomColor: commonColor.textColor,
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
   },
   name: {
     color: commonColor.textColor,
@@ -42,11 +42,9 @@ const commonStyles = {
   }
 };
 
-const portraitStyles = {
-};
+const portraitStyles = {};
 
-const landscapeStyles = {
-};
+const landscapeStyles = {};
 
 export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([

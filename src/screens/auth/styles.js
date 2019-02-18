@@ -13,10 +13,10 @@ const commonStyles = {
   },
   container: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.1)",
+    backgroundColor: "rgba(0,0,0,0.1)"
   },
   background: {
-    flex: 1,
+    flex: 1
   },
   scrollContainer: {
     minHeight: "90%"
@@ -37,17 +37,17 @@ const commonStyles = {
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
-    alignItems: "center",
+    alignItems: "center"
   },
   logo: {
     resizeMode: "contain",
     marginTop: scale(20),
-    height: scale(100),
+    height: scale(100)
   },
   appText: {
     color: commonColor.textColor,
     fontSize: scale(30),
-    paddingTop: scale(15),
+    paddingTop: scale(15)
   },
   appVersionText: {
     color: commonColor.textColor,
@@ -87,7 +87,7 @@ const commonStyles = {
   inputField: {
     width: "79%",
     fontSize: scale(15),
-    color: commonColor.textColor,
+    color: commonColor.textColor
   },
   formErrorText: {
     fontSize: scale(12),
@@ -138,8 +138,7 @@ const commonStyles = {
   }
 };
 
-const portraitStyles = {
-};
+const portraitStyles = {};
 
 const landscapeStyles = {
   button: {

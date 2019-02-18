@@ -13,37 +13,72 @@ import Message from "../../utils/Message";
 let counter = 0;
 
 export default class SiteAreaComponent extends ResponsiveComponent {
-
   render() {
     const style = computeStyleSheet();
     const { siteArea, navigation } = this.props;
     return (
-      <Animatable.View animation={(counter++ % 2 === 0) ? "flipInX" : "flipInX"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
-        <TouchableOpacity onPress={() => {
+      <Animatable.View
+        animation={counter++ % 2 === 0 ? "flipInX" : "flipInX"}
+        iterationCount={1}
+        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
+      >
+        <TouchableOpacity
+          onPress={() => {
             if (siteArea.totalConnectors > 0) {
               // Navigate
-              navigation.navigate("Chargers", { siteAreaID: siteArea.id, withNoSite: false })
+              navigation.navigate("Chargers", {
+                siteAreaID: siteArea.id,
+                withNoSite: false
+              });
             } else {
               // No connector
               Message.showError(I18n.t("siteAreas.noChargers"));
             }
-          }}>
+          }}
+        >
           <View style={style.container}>
             <View style={style.mainContent}>
               <Text style={style.name}>{siteArea.name}</Text>
-              <Icon style={siteArea.totalConnectors > 0 ? style.icon : style.iconHidden} name="arrow-forward"/>
+              <Icon
+                style={
+                  siteArea.totalConnectors > 0 ? style.icon : style.iconHidden
+                }
+                name="arrow-forward"
+              />
             </View>
             <View style={style.detailedContent}>
-              <Text style={style.connectorText}>{I18n.t("sites.chargePoint")}</Text>
+              <Text style={style.connectorText}>
+                {I18n.t("sites.chargePoint")}
+              </Text>
               <View style={[style.badgeContainer, style.badgeSuccessContainer]}>
-                <Badge containerStyle={[style.connectorBadge, style.freeConnectorBadge]}
-                  textStyle={style.connectorBadgeTitle} value={siteArea.availableConnectors}/>
-                <Text style={style.connectorSubTitle}>{I18n.t("sites.free")}</Text>
+                <Badge
+                  containerStyle={[
+                    style.connectorBadge,
+                    style.freeConnectorBadge
+                  ]}
+                  textStyle={style.connectorBadgeTitle}
+                  value={siteArea.availableConnectors}
+                />
+                <Text style={style.connectorSubTitle}>
+                  {I18n.t("sites.free")}
+                </Text>
               </View>
-              <View style={[style.badgeContainer, style.badgeOccupiedContainer]}>
-                <Badge containerStyle={[style.connectorBadge, style.occupiedConnectorBadge]}
-                  textStyle={style.connectorBadgeTitle} value={siteArea.totalConnectors - siteArea.availableConnectors}/>
-                <Text style={style.connectorSubTitle}>{I18n.t("sites.occupied")}</Text>
+              <View
+                style={[style.badgeContainer, style.badgeOccupiedContainer]}
+              >
+                <Badge
+                  containerStyle={[
+                    style.connectorBadge,
+                    style.occupiedConnectorBadge
+                  ]}
+                  textStyle={style.connectorBadgeTitle}
+                  value={
+                    siteArea.totalConnectors - siteArea.availableConnectors
+                  }
+                />
+                <Text style={style.connectorSubTitle}>
+                  {I18n.t("sites.occupied")}
+                </Text>
               </View>
             </View>
           </View>
@@ -58,5 +93,4 @@ SiteAreaComponent.propTypes = {
   siteArea: PropTypes.object.isRequired
 };
 
-SiteAreaComponent.defaultProps = {
-};
+SiteAreaComponent.defaultProps = {};

@@ -6,14 +6,14 @@ import { scale } from "react-native-size-matters";
 const commonStyles = {
   container: {
     flexDirection: "row",
-    justifyContent: "space-between", 
-		alignItems: "center",
+    justifyContent: "space-between",
+    alignItems: "center",
     height: 0,
     opacity: 0,
     paddingLeft: scale(10),
     paddingRight: scale(10),
     borderBottomWidth: 1,
-    borderBottomColor: commonColor.listBorderColor,
+    borderBottomColor: commonColor.listBorderColor
   },
   visible: {
     height: scale(45),
@@ -35,11 +35,9 @@ const commonStyles = {
   }
 };
 
-const portraitStyles = {
-};
+const portraitStyles = {};
 
-const landscapeStyles = {
-};
+const landscapeStyles = {};
 
 export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([
@@ -53,4 +51,3 @@ export default function computeStyleSheet() {
     }
   ]);
 }
-

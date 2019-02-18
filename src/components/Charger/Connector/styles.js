@@ -22,15 +22,14 @@ const commonStyles = {
     borderColor: commonColor.textColor,
     borderRightWidth: 1
   },
-  rightConnectorContainer: {
-  },
+  rightConnectorContainer: {},
   statusDescription: {
     color: commonColor.textColor,
     paddingTop: scale(5),
-    fontSize: scale(18),
+    fontSize: scale(18)
   },
   statusOneDescription: {
-    fontSize: scale(22),
+    fontSize: scale(22)
   },
   statusConnectorDetailContainer: {
     flexDirection: "row",
@@ -39,14 +38,14 @@ const commonStyles = {
     width: "100%",
     paddingLeft: scale(5),
     paddingRight: scale(5),
-    paddingBottom: scale(15),
+    paddingBottom: scale(15)
   },
   statusOneConnectorDetailContainer: {
     marginTop: scale(-10),
     padding: 0
   },
   statusConnectorDescriptionContainer: {
-    paddingBottom: scale(5),
+    paddingBottom: scale(5)
   },
   leftStatusConnectorDetailContainer: {
     paddingRight: scale(5)
@@ -62,7 +61,7 @@ const commonStyles = {
     width: scale(60)
   },
   statusConnectorDetailLetter: {
-    marginTop: scale(-10),
+    marginTop: scale(-10)
   },
   animatableValue: {
     position: "absolute",
@@ -77,16 +76,16 @@ const commonStyles = {
   },
   connectorImage: {
     width: scale(40),
-    height: scale(40),
+    height: scale(40)
   },
   labelImage: {
     color: commonColor.textColor,
-    fontSize: scale(10),
+    fontSize: scale(10)
   },
   label: {
     color: commonColor.textColor,
     fontSize: scale(10),
-    marginTop: scale(-3),
+    marginTop: scale(-3)
   },
   subLabel: {
     color: commonColor.textColor,
@@ -94,11 +93,9 @@ const commonStyles = {
   }
 };
 
-const portraitStyles = {
-};
+const portraitStyles = {};
 
-const landscapeStyles = {
-};
+const landscapeStyles = {};
 
 export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([
@@ -112,4 +109,3 @@ export default function computeStyleSheet() {
     }
   ]);
 }
-

@@ -18,34 +18,40 @@ export default class Eula extends React.Component {
     this.state = {
       I18nLocal: I18n.currentLocale().substr(0, 2),
       loading: true,
-      eulaTextHtml: "",
+      eulaTextHtml: ""
     };
   }
 
   componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackButtonClick);
+    BackHandler.addEventListener(
+      "hardwareBackPress",
+      this.handleBackButtonClick
+    );
     this.endUserLicenseAgreement();
   }
 
   componentWillMount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButtonClick);
+    BackHandler.removeEventListener(
+      "hardwareBackPress",
+      this.handleBackButtonClick
+    );
   }
 
   endUserLicenseAgreement = async () => {
-		const { I18nLocal } = this.state;
-		try {
-      let result = await _provider.getEndUserLicenseAgreement({
+    const { I18nLocal } = this.state;
+    try {
+      const result = await _provider.getEndUserLicenseAgreement({
         Language: I18nLocal
       });
       this.setState({
         loading: false,
         eulaTextHtml: result.text
       });
-		} catch (error) {
+    } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
     }
-  }
+  };
 
   handleBackButtonClick() {
     this.props.navigation.goBack(null);
@@ -56,9 +62,7 @@ export default class Eula extends React.Component {
     const { eulaTextHtml, loading } = this.state;
     return (
       <Container>
-        {loading && (
-          <Spinner style={styles.spinner} />
-        )}
+        {loading && <Spinner style={styles.spinner} />}
         {!loading && (
           <ScrollView style={styles.container}>
             <HTMLView value={eulaTextHtml} />

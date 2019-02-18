@@ -57,7 +57,7 @@ export default {
   // Keystore
   SHARED_PREFERENCES_NAME: "eMobilityPreferences",
   KEYCHAIN_SERVICE: "eMobilityKeyChain",
-  
+
   KEY_CREDENTIALS: "credentials",
   KEY_EMAIL: "email",
   KEY_PASSWORD: "password",
@@ -80,7 +80,7 @@ export default {
   CONN_STATUS_FINISHING: "Finishing",
   CONN_STATUS_PREPARING: "Preparing",
   CONN_STATUS_SUSPENDED_EVSE: "SuspendedEVSE",
-  CONN_STATUS_SUSPENDED_EV:  "SuspendedEV",
+  CONN_STATUS_SUSPENDED_EV: "SuspendedEV",
   CONN_STATUS_UNAVAILABLE: "Unavailable",
 
   CONN_TYPE_2: "T2",

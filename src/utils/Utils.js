@@ -11,7 +11,6 @@ const noConnector = require("../../assets/connectorType/no-connector.gif");
 
 const _provider = ProviderFactory.getProvider();
 export default class Utils {
-
   static getParamFromNavigation(navigation, name, defaultValue) {
     // Has param object?
     if (!navigation.state.params) {
@@ -44,7 +43,7 @@ export default class Utils {
             Message.showError(I18n.t("general.authenticationFailed"));
           }
           break;
-          // Other errors
+        // Other errors
         default:
           Message.showError(I18n.t("general.unexpectedErrorBackend"));
           break;
@@ -56,11 +55,15 @@ export default class Utils {
   }
 
   static buildUserName(user) {
-    let userName = "-";
+    const userName = "-";
     // User?
     if (user) {
       // Firstname provided?
-      if (user.name && user.firstName && `${user.name} ${user.firstName}`.length < 19) {
+      if (
+        user.name &&
+        user.firstName &&
+        `${user.name} ${user.firstName}`.length < 19
+      ) {
         return `${user.name} ${user.firstName}`;
       } else {
         return `${user.name}`;
@@ -81,13 +84,13 @@ export default class Utils {
       // Error?
       if (key.startsWith("error")) {
         // Clear
-        let clearError = {};
+        const clearError = {};
         clearError[key] = null;
         screen.setState(clearError);
       }
     }
     // Check for errors
-    let error = validate(screen.state, constraints);
+    const error = validate(screen.state, constraints);
     // Check for Errors
     if (error) {
       // Set in state the errors
@@ -105,7 +108,7 @@ export default class Utils {
     return formValid;
   }
 
-  static translateConnectorStatus = (status) => {
+  static translateConnectorStatus = status => {
     switch (status) {
       case Constants.CONN_STATUS_AVAILABLE:
         return I18n.t("connector.available");
@@ -130,9 +133,9 @@ export default class Utils {
       default:
         return I18n.t("connector.unknown");
     }
-  }
+  };
 
-  static translateConnectorType = (type) => {
+  static translateConnectorType = type => {
     switch (type) {
       case Constants.CONN_TYPE_2:
         return I18n.t("connector.type2");
@@ -143,9 +146,9 @@ export default class Utils {
       default:
         return I18n.t("connector.unknown");
     }
-  }
+  };
 
-  static getConnectorTypeImage = (type) => {
+  static getConnectorTypeImage = type => {
     switch (type) {
       case Constants.CONN_TYPE_2:
         return type2;
@@ -156,5 +159,5 @@ export default class Utils {
       default:
         return noConnector;
     }
-  }
+  };
 }

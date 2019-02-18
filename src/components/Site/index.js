@@ -12,34 +12,67 @@ import Constants from "../../utils/Constants";
 
 let counter = 0;
 export default class SiteComponent extends ResponsiveComponent {
-
   _siteLocation(address) {
-    openMap({ latitude: address.latitude, longitude: address.longitude, zoom: 18});
+    openMap({
+      latitude: address.latitude,
+      longitude: address.longitude,
+      zoom: 18
+    });
   }
 
   render() {
     const style = computeStyleSheet();
     const { site, navigation } = this.props;
     return (
-      <Animatable.View animation={(counter++ % 2 === 0) ? "flipInX" : "flipInX"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
-        <TouchableOpacity onPress={() => navigation.navigate("SiteAreas", { siteID: site.id })}>
+      <Animatable.View
+        animation={counter++ % 2 === 0 ? "flipInX" : "flipInX"}
+        iterationCount={1}
+        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
+      >
+        <TouchableOpacity
+          onPress={() => navigation.navigate("SiteAreas", { siteID: site.id })}
+        >
           <View style={style.container}>
             <View style={style.mainContent}>
-              <TouchableOpacity onPress={()=>this._siteLocation(site.address)}>
+              <TouchableOpacity
+                onPress={() => this._siteLocation(site.address)}
+              >
                 <Icon style={style.icon} name="pin" />
               </TouchableOpacity>
               <Text style={style.name}>{site.name}</Text>
-              <Icon style={style.icon} name="arrow-forward"/>
+              <Icon style={style.icon} name="arrow-forward" />
             </View>
             <View style={style.detailedContent}>
-              <Text style={style.connectorText}>{I18n.t("sites.chargePoint")}</Text>
+              <Text style={style.connectorText}>
+                {I18n.t("sites.chargePoint")}
+              </Text>
               <View style={[style.badgeContainer, style.badgeSuccessContainer]}>
-                <Badge containerStyle={[style.connectorBadge, style.freeConnectorBadge]} textStyle={style.connectorBadgeTitle} value={site.availableConnectors}/>
-                <Text style={style.connectorSubTitle}>{I18n.t("sites.free")}</Text>
+                <Badge
+                  containerStyle={[
+                    style.connectorBadge,
+                    style.freeConnectorBadge
+                  ]}
+                  textStyle={style.connectorBadgeTitle}
+                  value={site.availableConnectors}
+                />
+                <Text style={style.connectorSubTitle}>
+                  {I18n.t("sites.free")}
+                </Text>
               </View>
-              <View style={[style.badgeContainer, style.badgeOccupiedContainer]}>
-                <Badge containerStyle={[style.connectorBadge, style.occupiedConnectorBadge]} textStyle={style.connectorBadgeTitle} value={site.totalConnectors - site.availableConnectors}/>
-                <Text style={style.connectorSubTitle}>{I18n.t("sites.occupied")}</Text>
+              <View
+                style={[style.badgeContainer, style.badgeOccupiedContainer]}
+              >
+                <Badge
+                  containerStyle={[
+                    style.connectorBadge,
+                    style.occupiedConnectorBadge
+                  ]}
+                  textStyle={style.connectorBadgeTitle}
+                  value={site.totalConnectors - site.availableConnectors}
+                />
+                <Text style={style.connectorSubTitle}>
+                  {I18n.t("sites.occupied")}
+                </Text>
               </View>
             </View>
           </View>
@@ -54,5 +87,4 @@ SiteComponent.propTypes = {
   site: PropTypes.object.isRequired
 };
 
-SiteComponent.defaultProps = {
-};
+SiteComponent.defaultProps = {};

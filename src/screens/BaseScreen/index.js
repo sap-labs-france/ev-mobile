@@ -36,12 +36,12 @@ export default class BaseScreen extends ResponsiveComponent {
   _componentDidFocus = () => {
     // Start the timer
     this._startRefreshTimer();
-  }
+  };
 
   _componentDidBlur = () => {
     // Clear the timer
     this._clearRefreshTimer();
-  }
+  };
 
   _startRefreshTimer(initial = false) {
     // Restart the timer
@@ -72,10 +72,10 @@ export default class BaseScreen extends ResponsiveComponent {
       // Refresh
       this._refresh();
     }
-  }
+  };
 
   _search(searchText) {
-    // Set 
+    // Set
     this.searchText = searchText;
     // Refresh
     this._refresh();
