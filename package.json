@@ -34,7 +34,7 @@
     "test": "jest && flow && eslint .",
     "eslint-fix": "eslint . --fix",
     "clean-install-win": "rmdir node_modules /S /Q && del package-lock.json && npm cache clear --force && npm install",
-    "clean-install-lin": "rm -rf node_modules && rm -f ./package-lock.json && npm cache clear --force && npm install",
+    "clean-install-lin": "rm -rf ./node_modules && rm -f ./package-lock.json && npm cache clear --force && npm install",
     "precommit": "npm test",
     "iosBundle": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
     "clean": "npm start -- --reset-cache"
