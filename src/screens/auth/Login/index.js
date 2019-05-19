@@ -16,10 +16,7 @@ import {
   Button,
   Icon,
   View,
-  Left,
-  Right,
   CheckBox,
-  Footer,
   Spinner,
   ActionSheet
 } from "native-base";
