@@ -1,4 +1,5 @@
 import variable from "./../variables/platform";
+import { scale } from "react-native-size-matters";
 
 export default (variables = variable) => {
   const badgeTheme = {
@@ -27,9 +28,10 @@ export default (variables = variable) => {
     backgroundColor: variables.badgeBg,
     padding: variables.badgePadding,
     paddingHorizontal: 6,
-    alignSelf: "flex-start",
+    // alignSelf: "flex-start",
     borderRadius: 13.5,
-    height: 27
+    height: scale(27),
+    width: scale(44)
   };
   return badgeTheme;
 };

@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 import Constants from "../../utils/Constants";
 import Message from "../../utils/Message";
+import ChargePointStatus from "../ChargePointStatus/ChargePointStatus";
 
 let counter = 0;
 
@@ -50,36 +51,15 @@ export default class SiteAreaComponent extends ResponsiveComponent {
               <Text style={style.connectorText}>
                 {I18n.t("sites.chargePoint")}
               </Text>
-              <View style={[style.badgeContainer, style.badgeSuccessContainer]}>
-                <Badge
-                  containerStyle={[
-                    style.connectorBadge,
-                    style.freeConnectorBadge
-                  ]}
-                  textStyle={style.connectorBadgeTitle}
-                  value={siteArea.availableConnectors}
-                />
-                <Text style={style.connectorSubTitle}>
-                  {I18n.t("sites.free")}
-                </Text>
-              </View>
-              <View
-                style={[style.badgeContainer, style.badgeOccupiedContainer]}
-              >
-                <Badge
-                  containerStyle={[
-                    style.connectorBadge,
-                    style.occupiedConnectorBadge
-                  ]}
-                  textStyle={style.connectorBadgeTitle}
-                  value={
-                    siteArea.totalConnectors - siteArea.availableConnectors
-                  }
-                />
-                <Text style={style.connectorSubTitle}>
-                  {I18n.t("sites.occupied")}
-                </Text>
-              </View>
+              <ChargePointStatus
+                value={siteArea.availableConnectors}
+                text={I18n.t("sites.free")}
+              />
+              <ChargePointStatus
+                value={siteArea.totalConnectors - siteArea.availableConnectors}
+                text={I18n.t("sites.occupied")}
+                type="occupied"
+              />
             </View>
           </View>
         </TouchableOpacity>

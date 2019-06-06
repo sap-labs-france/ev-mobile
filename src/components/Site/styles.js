@@ -37,46 +37,11 @@ const commonStyles = {
     justifyContent: "space-evenly",
     alignItems: "center"
   },
-  badgeContainer: {
-    paddingTop: scale(5),
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  badgeSuccessContainer: {},
-  badgeOccupiedContainer: {},
   connectorText: {
     color: commonColor.textColor,
     marginTop: scale(-15),
     marginRight: scale(10),
     fontSize: scale(20)
-  },
-  connectorBadge: {
-    marginTop: scale(5)
-  },
-  freeConnectorBadge: {
-    backgroundColor: commonColor.brandSecondary
-  },
-  occupiedConnectorBadge: {
-    backgroundColor: commonColor.brandDanger
-  },
-  connectorBadgeTitle: {
-    minWidth: scale(35),
-    textAlign: "center",
-    fontSize: scale(25),
-    paddingTop: Platform.OS === "ios" ? scale(3) : 0,
-    paddingBottom: Platform.OS === "ios" ? scale(3) : 0,
-    fontWeight: "bold",
-    color: commonColor.textColor
-  },
-  connectorSubTitle: {
-    fontSize: scale(15),
-    paddingBottom: scale(5),
-    marginTop: scale(5),
-    marginBottom: scale(5),
-    marginLeft: scale(10),
-    marginRight: scale(10),
-    color: commonColor.textColor
   }
 };
 
