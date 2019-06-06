@@ -34,7 +34,7 @@ const commonStyles = {
     textAlign: "center",
     fontSize: scale(20),
     paddingTop: scale(4),
-    paddingBottom: Platform.OS === "ios" ? scale(4) : scale(4),
+    paddingBottom: scale(4),
     fontWeight: "bold",
     color: commonColor.textColor
   },
