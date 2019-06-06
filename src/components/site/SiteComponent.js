@@ -8,7 +8,7 @@ import I18n from "../../I18n/I18n";
 import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 import Constants from "../../utils/Constants";
-import ChargePointStatus from "../chargePointStatus/ChargePointStatus";
+import ChargePointStatus from "../charge-point-status/ChargePointStatus";
 
 let counter = 0;
 export default class SiteComponent extends ResponsiveComponent {
