@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 import Constants from "../../utils/Constants";
 import Message from "../../utils/Message";
-import ChargePointStatus from "../charge-point-status/ChargePointStatus";
+import ChargePointStatus from "../charge-point-status/ChargePointStatusComponent";
 
 let counter = 0;
 

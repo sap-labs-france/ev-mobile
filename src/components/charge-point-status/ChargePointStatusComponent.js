@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import computeStyleSheet from "./ChargePointStatusStyles.js";
+import computeStyleSheet from "./ChargePointStatusComponentStyles.js";
 import { Badge, Text, View } from "native-base";
 
 const style = computeStyleSheet();
