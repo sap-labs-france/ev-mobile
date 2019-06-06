@@ -7,14 +7,14 @@ import {
   createAppContainer
 } from "react-navigation";
 import { Root } from "native-base";
-import Login from "./screens/auth/login/Login";
-import Eula from "./screens/auth/eula/Eula";
+import Login from "./screens/auth/Login/Login";
+import Eula from "./screens/auth/Eula/Eula";
 import RetrievePassword from "./screens/auth/retrieve-password/RetrievePassword";
 import SignUp from "./screens/auth/sign-up/SignUp";
-import Sidebar from "./screens/sidebar/SideBar";
-import Sites from "./screens/sites/Sites";
+import Sidebar from "./screens/Sidebar/SideBar";
+import Sites from "./screens/Sites/Sites";
 import SiteAreas from "./screens/site-areas/SiteAreas";
-import Chargers from "./screens/chargers/Chargers";
+import Chargers from "./screens/Chargers/Chargers";
 import ChargerTab from "./screens/charger-details/charger-tab/ChargerTab";
 import NotificationManager from "./notification/NotificationManager";
 
