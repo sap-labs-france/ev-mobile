@@ -7,15 +7,15 @@ import {
   createAppContainer
 } from "react-navigation";
 import { Root } from "native-base";
-import Login from "./screens/auth/Login";
-import Eula from "./screens/auth/Eula/";
-import RetrievePassword from "./screens/auth/RetrievePassword";
-import SignUp from "./screens/auth/SignUp";
-import Sidebar from "./screens/Sidebar";
-import Sites from "./screens/Sites";
-import SiteAreas from "./screens/SiteAreas";
-import Chargers from "./screens/Chargers";
-import ChargerTab from "./screens/ChargerDetails/ChargerTab";
+import Login from "./screens/auth/login/Login";
+import Eula from "./screens/auth/eula/Eula";
+import RetrievePassword from "./screens/auth/retrieve-password/RetrievePassword";
+import SignUp from "./screens/auth/sign-up/SignUp";
+import Sidebar from "./screens/sidebar/SideBar";
+import Sites from "./screens/sites/Sites";
+import SiteAreas from "./screens/site-areas/SiteAreas";
+import Chargers from "./screens/chargers/Chargers";
+import ChargerTab from "./screens/charger-details/charger-tab/ChargerTab";
 import NotificationManager from "./notification/NotificationManager";
 
 // Get the Notification Scheduler
