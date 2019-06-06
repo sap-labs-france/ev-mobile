@@ -10,6 +10,7 @@ const chademo = require("../../assets/connectorType/chademo.gif");
 const noConnector = require("../../assets/connectorType/no-connector.gif");
 
 const _provider = ProviderFactory.getProvider();
+
 export default class Utils {
   static getParamFromNavigation(navigation, name, defaultValue) {
     // Has param object?

@@ -1,6 +1,5 @@
 import color from "color";
 import { scale } from "react-native-size-matters";
-
 import { Platform, Dimensions, PixelRatio } from "react-native";
 
 const primary = "black";
@@ -9,6 +8,7 @@ const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 const platform = Platform.OS;
 const platformStyle = undefined;
+
 module.exports = {
   platformStyle,
   platform,
@@ -33,7 +33,7 @@ module.exports = {
   CheckboxBorderWidth: platform === "ios" ? 1 : 2,
   CheckboxPaddingLeft: platform === "ios" ? 4 : 2,
   CheckboxPaddingBottom: platform === "ios" ? 0 : 5,
-  CheckboxIconSize: platform === "ios" ? 21 : 14,
+  CheckboxIconSize: platform === "ios" ? 21 : 21,
   CheckboxIconMarginTop: platform === "ios" ? undefined : 1,
   CheckboxFontSize: platform === "ios" ? 23 / 0.9 : 18,
   DefaultFontSize: 17,
