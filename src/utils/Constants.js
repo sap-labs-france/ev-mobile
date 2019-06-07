@@ -85,5 +85,14 @@ export default {
 
   CONN_TYPE_2: "T2",
   CONN_TYPE_COMBO_CCS: "CCS",
-  CONN_TYPE_CHADEMO: "C"
+  CONN_TYPE_CHADEMO: "C",
+
+  // Components
+  COMPONENTS: {
+    OCPI: "ocpi",
+    REFUND: "refund",
+    PRICING: "pricing",
+    ORGANIZATION: "organization",
+    ANALYTICS: "analytics"
+  },
 };

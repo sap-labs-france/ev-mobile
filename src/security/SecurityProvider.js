@@ -91,13 +91,7 @@ export default class SecurityProvider {
   }
 
   isComponentOrganizationActive() {
-    // TODO: Use the new impl
-    return true;
-    // return this.isComponentActive("organization");
-  }
-
-  isComponentOCPIActive() {
-    return this.isComponentActive("ocpi");
+    return this.isComponentActive(Constants.COMPONENTS.ORGANIZATION);
   }
 
   isComponentActive(componentName) {
