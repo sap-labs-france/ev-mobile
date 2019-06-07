@@ -43,7 +43,7 @@ export default class SecurityProvider {
     // Return
     return (
       result &&
-      this.checkChargingStationSite(
+      this.canPerformActionOnSite(
         this.decodedToken,
         chargingStation,
         Constants.ACTION_READ
@@ -51,7 +51,7 @@ export default class SecurityProvider {
     );
   }
 
-  checkChargingStationSite(chargingStation, action) {
+  canPerformActionOnSite(chargingStation, action) {
     // Check Site?
     if (chargingStation.siteArea) {
       // Yes
@@ -91,13 +91,7 @@ export default class SecurityProvider {
   }
 
   isComponentOrganizationActive() {
-    // TODO: Use the new impl
-    return true;
-    // return this.isComponentActive("organization");
-  }
-
-  isComponentOCPIActive() {
-    return this.isComponentActive("ocpi");
+    return this.isComponentActive(Constants.COMPONENTS.ORGANIZATION);
   }
 
   isComponentActive(componentName) {

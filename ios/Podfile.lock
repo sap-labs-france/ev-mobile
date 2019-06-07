@@ -1,7 +1,7 @@
 PODS:
-  - Charts (3.1.1):
-    - Charts/Core (= 3.1.1)
-  - Charts/Core (3.1.1)
+  - Charts (3.3.0):
+    - Charts/Core (= 3.3.0)
+  - Charts/Core (3.3.0)
   - Firebase/Core (5.16.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 5.5.0)
@@ -66,7 +66,7 @@ PODS:
   - SwiftyJSON (4.0.0)
 
 DEPENDENCIES:
-  - Charts (= 3.1.1)
+  - Charts (= 3.3.0)
   - Firebase/Core
   - Firebase/Messaging
   - SwiftyJSON (= 4.0.0)
@@ -87,7 +87,7 @@ SPEC REPOS:
     - SwiftyJSON
 
 SPEC CHECKSUMS:
-  Charts: 90a4d61da0f6e06684c591e3bcab11940fe61736
+  Charts: ec1f57f9340054155691e84d4544a1d239d382c5
   Firebase: 749a8ff4962f9d8c79dda1966de20f6f77583d67
   FirebaseAnalytics: d35d47c03c50c73c14a7fd31463c5775843e78a9
   FirebaseAnalyticsInterop: e5f21be9af6548372e2f0815834ff909bff395a2
@@ -100,6 +100,6 @@ SPEC CHECKSUMS:
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
 
-PODFILE CHECKSUM: 617a6773480d2b4343d3354f4df6de310ec8d769
+PODFILE CHECKSUM: 8787daa3ebb73cd8d6e22c0dd97b2ec0be07e960
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.7.1

@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import axios from "axios";
 import Constants from "../utils/Constants";
 import SecurityProvider from "../security/SecurityProvider";
@@ -5,7 +6,7 @@ import SecuredStorage from "../utils/SecuredStorage";
 const jwtDecode = require("jwt-decode");
 
 const centralRestServerServiceBaseURL =
-  "https://sap-ev-rest-server.cfapps.eu10.hana.ondemand.com";
+  "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
 const centralRestServerServiceAuthURL =
   centralRestServerServiceBaseURL + "/client/auth";
 const centralRestServerServiceSecuredURL =
