@@ -1,6 +1,5 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import { Badge } from "react-native-elements";
 import { TouchableOpacity } from "react-native";
 import { Text, View, Icon } from "native-base";
 import openMap from "react-native-open-maps";
@@ -9,6 +8,8 @@ import I18n from "../../I18n/I18n";
 import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 import Constants from "../../utils/Constants";
+import ChargePointStatus from "../charge-point-status/ChargePointStatusComponent";
+import ChargePointStatusContainerComponent from "../charge-point-status/ChargePointStatusContainerComponent";
 
 let counter = 0;
 export default class SiteComponent extends ResponsiveComponent {
@@ -42,39 +43,10 @@ export default class SiteComponent extends ResponsiveComponent {
               <Text style={style.name}>{site.name}</Text>
               <Icon style={style.icon} name="arrow-forward" />
             </View>
-            <View style={style.detailedContent}>
-              <Text style={style.connectorText}>
-                {I18n.t("sites.chargePoint")}
-              </Text>
-              <View style={[style.badgeContainer, style.badgeSuccessContainer]}>
-                <Badge
-                  containerStyle={[
-                    style.connectorBadge,
-                    style.freeConnectorBadge
-                  ]}
-                  textStyle={style.connectorBadgeTitle}
-                  value={site.availableConnectors}
-                />
-                <Text style={style.connectorSubTitle}>
-                  {I18n.t("sites.free")}
-                </Text>
-              </View>
-              <View
-                style={[style.badgeContainer, style.badgeOccupiedContainer]}
-              >
-                <Badge
-                  containerStyle={[
-                    style.connectorBadge,
-                    style.occupiedConnectorBadge
-                  ]}
-                  textStyle={style.connectorBadgeTitle}
-                  value={site.totalConnectors - site.availableConnectors}
-                />
-                <Text style={style.connectorSubTitle}>
-                  {I18n.t("sites.occupied")}
-                </Text>
-              </View>
-            </View>
+            <ChargePointStatusContainerComponent
+              totalConnectors={site.totalConnectors}
+              availableConnectors={site.availableConnectors}
+            />
           </View>
         </TouchableOpacity>
       </Animatable.View>
