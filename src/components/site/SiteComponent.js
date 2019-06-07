@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 import Constants from "../../utils/Constants";
 import ChargePointStatus from "../charge-point-status/ChargePointStatusComponent";
+import ChargePointStatusContainerComponent from "../charge-point-status/ChargePointStatusContainerComponent";
 
 let counter = 0;
 export default class SiteComponent extends ResponsiveComponent {
@@ -42,20 +43,10 @@ export default class SiteComponent extends ResponsiveComponent {
               <Text style={style.name}>{site.name}</Text>
               <Icon style={style.icon} name="arrow-forward" />
             </View>
-            <View style={style.detailedContent}>
-              <Text style={style.connectorText}>
-                {I18n.t("sites.chargePoint")}
-              </Text>
-              <ChargePointStatus
-                value={site.availableConnectors}
-                text={I18n.t("sites.free")}
-              />
-              <ChargePointStatus
-                value={site.totalConnectors - site.availableConnectors}
-                text={I18n.t("sites.occupied")}
-                type="occupied"
-              />
-            </View>
+            <ChargePointStatusContainerComponent
+              totalConnectors={site.totalConnectors}
+              availableConnectors={site.availableConnectors}
+            />
           </View>
         </TouchableOpacity>
       </Animatable.View>

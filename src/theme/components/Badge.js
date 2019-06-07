@@ -27,7 +27,7 @@ export default (variables = variable) => {
     backgroundColor: variables.badgeBg,
     padding: variables.badgePadding,
     paddingHorizontal: 6,
-    alignSelf: "flex-start",
+    // alignSelf: "flex-start",
     borderRadius: 13.5,
     height: 27
   };

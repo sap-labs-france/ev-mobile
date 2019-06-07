@@ -9,10 +9,10 @@ const commonStyles = {
     paddingTop: scale(10),
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    minWidth: scale(20)
   },
   connectorBadge: {
-    marginTop: scale(5),
     paddingTop: scale(5),
     height: scale(30),
     alignSelf: "center"
