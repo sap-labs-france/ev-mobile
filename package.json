@@ -23,6 +23,7 @@
     "jest": "24.8.0",
     "jest-expo": "32.0.1",
     "metro-react-native-babel-preset": "^0.54.1",
+    "npm-check": "^5.9.0",
     "prettier": "1.17.1",
     "react-test-renderer": "16.8.6",
     "schedule": "^0.5.0"
@@ -37,7 +38,8 @@
     "clean-install-lin": "rm -rf ./node_modules && rm -f ./package-lock.json && npm cache clear --force && npm install",
     "precommit": "npm test",
     "iosBundle": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
-    "clean": "npm start -- --reset-cache"
+    "clean": "npm start -- --reset-cache",
+    "npm-check": "npm-check"
   },
   "jest": {
     "preset": "react-native",
