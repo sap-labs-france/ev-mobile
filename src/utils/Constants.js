@@ -94,5 +94,5 @@ export default {
     PRICING: "pricing",
     ORGANIZATION: "organization",
     ANALYTICS: "analytics"
-  },
+  }
 };
