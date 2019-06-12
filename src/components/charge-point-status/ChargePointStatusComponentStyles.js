@@ -14,8 +14,7 @@ const commonStyles = {
   },
   connectorBadge: {
     paddingTop: scale(5),
-    minHeight: scale(300),
-    height: 6000,
+    height:  scale(30),
     alignSelf: "center"
   },
   connectorBadgeText: {
