@@ -2,7 +2,6 @@ import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
 import { scale } from "react-native-size-matters";
-import { Platform } from "react-native";
 
 const commonStyles = {
   badgeContainer: {
@@ -14,7 +13,7 @@ const commonStyles = {
   },
   connectorBadge: {
     paddingTop: scale(5),
-    height:  scale(30),
+    height: scale(30),
     alignSelf: "center"
   },
   connectorBadgeText: {
