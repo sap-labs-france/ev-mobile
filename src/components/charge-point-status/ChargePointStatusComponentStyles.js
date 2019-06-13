@@ -2,7 +2,6 @@ import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
 import { scale } from "react-native-size-matters";
-import { Platform } from "react-native";
 
 const commonStyles = {
   badgeContainer: {
@@ -33,7 +32,7 @@ const commonStyles = {
     minWidth: scale(35),
     textAlign: "center",
     fontSize: scale(20),
-    paddingTop: scale(4),
+    paddingTop: scale(8),
     paddingBottom: scale(4),
     fontWeight: "bold",
     color: commonColor.textColor
