@@ -42,11 +42,7 @@ export default class Sites extends BaseScreen {
     // Call parent
     super.componentDidMount();
     // Get the sites
-    const sites = await this._getSites(
-      this.searchText,
-      this.state.skip,
-      this.state.limit
-    );
+    const sites = await this._getSites(this.searchText, this.state.skip, this.state.limit);
     // Add sites
     if (this.isMounted()) {
       // eslint-disable-next-line react/no-did-mount-set-state
@@ -106,11 +102,7 @@ export default class Sites extends BaseScreen {
     // No reached the end?
     if (skip + limit < count) {
       // No: get next sites
-      const sites = await this._getSites(
-        this.searchText,
-        skip + Constants.PAGING_SIZE,
-        limit
-      );
+      const sites = await this._getSites(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState, props) => ({
         sites: [...prevState.sites, ...sites.result],

@@ -23,18 +23,12 @@ export default class Eula extends React.Component {
   }
 
   componentDidMount() {
-    BackHandler.addEventListener(
-      "hardwareBackPress",
-      this.handleBackButtonClick
-    );
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButtonClick);
     this.endUserLicenseAgreement();
   }
 
   componentWillMount() {
-    BackHandler.removeEventListener(
-      "hardwareBackPress",
-      this.handleBackButtonClick
-    );
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButtonClick);
   }
 
   endUserLicenseAgreement = async () => {

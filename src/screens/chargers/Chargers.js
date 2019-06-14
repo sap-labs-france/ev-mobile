@@ -18,11 +18,7 @@ export default class Chargers extends BaseScreen {
     // Init State
     this.state = {
       chargers: [],
-      withNoSite: Utils.getParamFromNavigation(
-        this.props.navigation,
-        "withNoSite",
-        true
-      ),
+      withNoSite: Utils.getParamFromNavigation(this.props.navigation, "withNoSite", true),
       loading: true,
       refreshing: false,
       skip: 0,
@@ -35,11 +31,7 @@ export default class Chargers extends BaseScreen {
     // Call parent
     super.componentDidMount();
     // Get ID
-    const siteAreaID = Utils.getParamFromNavigation(
-      this.props.navigation,
-      "siteAreaID",
-      null
-    );
+    const siteAreaID = Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null);
     // Get chargers first time
     const chargers = await this._getChargers(
       this.searchText,
@@ -76,10 +68,7 @@ export default class Chargers extends BaseScreen {
         );
       } else {
         // Get without the Site
-        chargers = await _provider.getChargers(
-          { Search: searchText },
-          { skip, limit }
-        );
+        chargers = await _provider.getChargers({ Search: searchText }, { skip, limit });
       }
     } catch (error) {
       // Other common Error
@@ -89,11 +78,7 @@ export default class Chargers extends BaseScreen {
   };
 
   _onEndScroll = async () => {
-    const siteAreaID = Utils.getParamFromNavigation(
-      this.props.navigation,
-      "siteAreaID",
-      null
-    );
+    const siteAreaID = Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null);
     const { count, skip, limit } = this.state;
     // No reached the end?
     if (skip + limit < count) {
@@ -114,21 +99,12 @@ export default class Chargers extends BaseScreen {
   };
 
   _refresh = async () => {
-    const siteAreaID = Utils.getParamFromNavigation(
-      this.props.navigation,
-      "siteAreaID",
-      null
-    );
+    const siteAreaID = Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null);
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
-      const chargers = await this._getChargers(
-        this.searchText,
-        0,
-        skip + limit,
-        siteAreaID
-      );
+      const chargers = await this._getChargers(this.searchText, 0, skip + limit, siteAreaID);
       // Add sites
       this.setState((prevState, props) => ({
         chargers: chargers.result
@@ -176,11 +152,7 @@ export default class Chargers extends BaseScreen {
           title={I18n.t("chargers.title")}
           showSearchAction={true}
           searchRef={this.searchRef}
-          leftAction={
-            !withNoSite
-              ? () => navigation.navigate("SiteAreas", { siteID })
-              : undefined
-          }
+          leftAction={!withNoSite ? () => navigation.navigate("SiteAreas", { siteID }) : undefined}
           leftActionIcon={!withNoSite ? "arrow-back" : undefined}
           rightAction={navigation.openDrawer}
           rightActionIcon={"menu"}

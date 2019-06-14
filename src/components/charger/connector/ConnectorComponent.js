@@ -95,13 +95,8 @@ export default class ConnectorComponent extends ResponsiveComponent {
       </View>
     ) : (
       <View style={style.statusConnectorDetail}>
-        <Image
-          style={style.connectorImage}
-          source={Utils.getConnectorTypeImage(connector.type)}
-        />
-        <Text style={style.labelImage}>
-          {Utils.translateConnectorType(connector.type)}
-        </Text>
+        <Image style={style.connectorImage} source={Utils.getConnectorTypeImage(connector.type)} />
+        <Text style={style.labelImage}>{Utils.translateConnectorType(connector.type)}</Text>
       </View>
     );
   };
@@ -109,9 +104,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
   _renderThirdConnectorDetails = (connector, style) => {
     return connector.activeTransactionID !== 0 ? (
       <View style={style.statusConnectorDetail}>
-        <Text style={style.value}>
-          {Math.round(connector.totalConsumption / 1000)}
-        </Text>
+        <Text style={style.value}>{Math.round(connector.totalConsumption / 1000)}</Text>
         <Text style={style.label} numberOfLines={1}>
           {I18n.t("details.total")}
         </Text>
@@ -211,10 +204,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
         >
           <View style={style.connectorContainer}>
             <View style={style.statusConnectorDetailContainer}>
-              <Text
-                style={[style.statusDescription, style.statusOneDescription]}
-                numberOfLines={1}
-              >
+              <Text style={[style.statusDescription, style.statusOneDescription]} numberOfLines={1}>
                 {Utils.translateConnectorStatus(connector.status)}
               </Text>
             </View>

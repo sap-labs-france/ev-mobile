@@ -32,14 +32,10 @@ export default class ChargerDetails extends ResponsiveComponent {
             </View>
             <View style={style.columnContainer}>
               <Text style={style.label}>{I18n.t("details.ocppVersion")}</Text>
-              <Text style={style.value}>
-                {charger.ocppVersion ? charger.ocppVersion : "-"}
-              </Text>
+              <Text style={style.value}>{charger.ocppVersion ? charger.ocppVersion : "-"}</Text>
             </View>
             <View style={style.columnContainer}>
-              <Text style={style.label}>
-                {I18n.t("details.firmwareVersion")}
-              </Text>
+              <Text style={style.label}>{I18n.t("details.firmwareVersion")}</Text>
               <Text style={style.value}>
                 {charger.firmwareVersion ? charger.firmwareVersion : "-"}
               </Text>

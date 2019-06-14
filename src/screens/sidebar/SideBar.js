@@ -1,15 +1,7 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import { ImageBackground, TouchableOpacity, Image } from "react-native";
-import {
-  Container,
-  Content,
-  Text,
-  Icon,
-  ListItem,
-  Thumbnail,
-  View
-} from "native-base";
+import { Container, Content, Text, Icon, ListItem, Thumbnail, View } from "native-base";
 import computeStyleSheet from "./SideBarStyles";
 import ProviderFactory from "../../provider/ProviderFactory";
 import I18n from "../../I18n/I18n";
@@ -88,19 +80,14 @@ class SideBar extends ResponsiveComponent {
         >
           <Content style={style.drawerContent}>
             <View style={style.logoContainer}>
-              <Image
-                source={require("../../../assets/logo-low.gif")}
-                style={style.logo}
-              />
+              <Image source={require("../../../assets/logo-low.gif")} style={style.logo} />
               <Text style={style.versionText}>{`${I18n.t(
                 "general.version"
               )} ${DeviceInfo.getVersion()}`}</Text>
               <Text style={style.versionDate}>
                 (
                 {DeviceInfo.getLastUpdateTime()
-                  ? new Date(
-                      DeviceInfo.getLastUpdateTime()
-                    ).toLocaleDateString()
+                  ? new Date(DeviceInfo.getLastUpdateTime()).toLocaleDateString()
                   : I18n.t("general.date")}
                 )
               </Text>
@@ -140,13 +127,8 @@ class SideBar extends ResponsiveComponent {
             <View style={style.logoutButton} foregroundColor={"white"}>
               <View style={style.gridLogoutContainer}>
                 <View style={style.columnAccount}>
-                  <TouchableOpacity
-                    style={style.buttonLogout}
-                    onPress={() => this._logoff()}
-                  >
-                    <Text style={style.logoutText}>
-                      {I18n.t("authentication.logOut")}
-                    </Text>
+                  <TouchableOpacity style={style.buttonLogout} onPress={() => this._logoff()}>
+                    <Text style={style.logoutText}>{I18n.t("authentication.logOut")}</Text>
                     <Text note style={style.userName}>
                       {userName}
                     </Text>

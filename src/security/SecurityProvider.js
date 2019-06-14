@@ -43,11 +43,7 @@ export default class SecurityProvider {
     // Return
     return (
       result &&
-      this.canPerformActionOnSite(
-        this.decodedToken,
-        chargingStation,
-        Constants.ACTION_READ
-      )
+      this.canPerformActionOnSite(this.decodedToken, chargingStation, Constants.ACTION_READ)
     );
   }
 
@@ -76,10 +72,7 @@ export default class SecurityProvider {
       Authorization.switchTraceOn();
     }
     if (!this.authorizations) {
-      this.authorizations = new Authorization(
-        this.decodedToken.role,
-        this.decodedToken.auths
-      );
+      this.authorizations = new Authorization(this.decodedToken.role, this.decodedToken.auths);
     }
     // Check
     if (this.authorizations.check(entity, fieldNamesValues)) {

@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Image,
-  ImageBackground,
-  Keyboard,
-  ScrollView,
-  KeyboardAvoidingView
-} from "react-native";
+import { Image, ImageBackground, Keyboard, ScrollView, KeyboardAvoidingView } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import {
   Container,
@@ -114,14 +108,7 @@ export default class SignUp extends React.Component {
     const formIsValid = Utils.validateInput(this, formValidationDef);
     // Ok?
     if (formIsValid) {
-      const {
-        name,
-        firstName,
-        email,
-        password,
-        repeatPassword,
-        eula
-      } = this.state;
+      const { name, firstName, email, password, repeatPassword, eula } = this.state;
       try {
         // Loading
         this.setState({ loading: true });
@@ -170,10 +157,7 @@ export default class SignUp extends React.Component {
           <ScrollView>
             <Content contentContainerStyle={styles.content}>
               <View style={styles.containerLogo}>
-                <Image
-                  source={require("../../../../assets/logo-low.gif")}
-                  style={styles.logo}
-                />
+                <Image source={require("../../../../assets/logo-low.gif")} style={styles.logo} />
               </View>
               <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <Form style={styles.form}>
@@ -258,9 +242,7 @@ export default class SignUp extends React.Component {
                       name="password"
                       type="password"
                       ref={ref => (this.passwordInput = ref)}
-                      onSubmitEditing={() =>
-                        this.repeatPasswordInput._root.focus()
-                      }
+                      onSubmitEditing={() => this.repeatPasswordInput._root.focus()}
                       returnKeyType={"next"}
                       placeholder={I18n.t("authentication.password")}
                       placeholderTextColor={commonColor.tabBarTextColor}
@@ -295,26 +277,19 @@ export default class SignUp extends React.Component {
                       blurOnSubmit={false}
                       autoCorrect={false}
                       keyboardType={"default"}
-                      onChangeText={text =>
-                        this.setState({ repeatPassword: text })
-                      }
+                      onChangeText={text => this.setState({ repeatPassword: text })}
                       secureTextEntry={true}
                     />
                   </Item>
                   {this.state.errorRepeatPassword &&
-                    this.state.errorRepeatPassword.map(
-                      (errorMessage, index) => (
-                        <Text style={styles.formErrorText} key={index}>
-                          {errorMessage}
-                        </Text>
-                      )
-                    )}
+                    this.state.errorRepeatPassword.map((errorMessage, index) => (
+                      <Text style={styles.formErrorText} key={index}>
+                        {errorMessage}
+                      </Text>
+                    ))}
 
                   <ListItem style={styles.eulaContainer}>
-                    <CheckBox
-                      checked={eula}
-                      onPress={() => this.setState({ eula: !eula })}
-                    />
+                    <CheckBox checked={eula} onPress={() => this.setState({ eula: !eula })} />
                     <Body>
                       <Text style={styles.eulaText}>
                         {I18n.t("authentication.acceptEula")}
@@ -338,31 +313,16 @@ export default class SignUp extends React.Component {
                   {loading ? (
                     <Spinner style={styles.spinner} color="white" />
                   ) : (
-                    <Button
-                      rounded
-                      primary
-                      block
-                      large
-                      style={styles.button}
-                      onPress={this.signUp}
-                    >
-                      <Text style={styles.buttonText}>
-                        {I18n.t("authentication.signUp")}
-                      </Text>
+                    <Button rounded primary block large style={styles.button} onPress={this.signUp}>
+                      <Text style={styles.buttonText}>{I18n.t("authentication.signUp")}</Text>
                     </Button>
                   )}
                 </Form>
               </KeyboardAvoidingView>
             </Content>
             <Footer>
-              <Button
-                small
-                transparent
-                onPress={() => this.props.navigation.goBack()}
-              >
-                <Text style={styles.helpButton}>
-                  {I18n.t("authentication.haveAlreadyAccount")}
-                </Text>
+              <Button small transparent onPress={() => this.props.navigation.goBack()}>
+                <Text style={styles.helpButton}>{I18n.t("authentication.haveAlreadyAccount")}</Text>
               </Button>
             </Footer>
           </ScrollView>

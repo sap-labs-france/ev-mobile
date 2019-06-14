@@ -1,15 +1,6 @@
 import React from "react";
 import { Image, BackHandler } from "react-native";
-import {
-  Header,
-  Left,
-  Right,
-  Body,
-  Title,
-  Subtitle,
-  Button,
-  Icon
-} from "native-base";
+import { Header, Left, Right, Body, Title, Subtitle, Button, Icon } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./HeaderComponentStyles";
 import PropTypes from "prop-types";
@@ -34,10 +25,7 @@ export default class HeaderComponent extends ResponsiveComponent {
     const { leftAction } = this.props;
     // Left Action is always Back
     if (leftAction) {
-      BackHandler.removeEventListener(
-        "hardwareBackPress",
-        this.handleBackPress
-      );
+      BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
     }
   }
 
@@ -73,18 +61,12 @@ export default class HeaderComponent extends ResponsiveComponent {
         <Body style={style.bodyHeader}>
           <Title
             style={
-              subTitle
-                ? [style.titleHeader, style.titleHeaderWithSubTitle]
-                : style.titleHeader
+              subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader
             }
           >
             {title}
           </Title>
-          {subTitle ? (
-            <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>
-          ) : (
-            undefined
-          )}
+          {subTitle ? <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle> : undefined}
         </Body>
         <Right style={style.rightHeader}>
           {showSearchAction ? (

@@ -8,9 +8,7 @@ const translateOrFallback = initialMsg => {
   // The native I18n function will simply crash instead of rejecting the attempt with an error message
   if (typeof initialMsg !== "string") {
     __DEV__ &&
-      console.log(
-        `I18n: you must give a string to translate instead of "${typeof initialMsg}"`
-      );
+      console.log(`I18n: you must give a string to translate instead of "${typeof initialMsg}"`);
 
     return ""; // We don't return any message as we don't know what to send
   }
@@ -20,10 +18,7 @@ const translateOrFallback = initialMsg => {
   // The translation does not exist, the default message is not very sexy
   // Instead we return the message we tried to translate
   if (missingTranslationRegex.test(localMsg)) {
-    __DEV__ &&
-      console.log(
-        `translation "${initialMsg}" does not exists in translations files`
-      );
+    __DEV__ && console.log(`translation "${initialMsg}" does not exists in translations files`);
 
     return initialMsg;
   }

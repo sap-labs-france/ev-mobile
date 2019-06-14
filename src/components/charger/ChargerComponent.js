@@ -48,11 +48,7 @@ export default class ChargerComponent extends ResponsiveComponent {
               iterationCount="infinite"
               direction="alternate-reverse"
             >
-              <Icon
-                style={style.deadHeartbeatIcon}
-                type="FontAwesome"
-                name="heartbeat"
-              />
+              <Icon style={style.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
             </Animatable.Text>
           ) : (
             <Animatable.Text
@@ -61,11 +57,7 @@ export default class ChargerComponent extends ResponsiveComponent {
               iterationCount="infinite"
               style={{ textAlign: "center" }}
             >
-              <Icon
-                style={style.heartbeatIcon}
-                type="FontAwesome"
-                name="heartbeat"
-              />
+              <Icon style={style.heartbeatIcon} type="FontAwesome" name="heartbeat" />
             </Animatable.Text>
           )}
         </View>
