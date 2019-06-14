@@ -72,16 +72,8 @@ export default class ChargerTab extends BaseScreen {
 
   _getCharger = async () => {
     // Get IDs
-    const chargerID = Utils.getParamFromNavigation(
-      this.props.navigation,
-      "chargerID",
-      null
-    );
-    const connectorID = Utils.getParamFromNavigation(
-      this.props.navigation,
-      "connectorID",
-      null
-    );
+    const chargerID = Utils.getParamFromNavigation(this.props.navigation, "chargerID", null);
+    const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
     try {
       const charger = await _provider.getCharger({ ID: chargerID });
       this.setState(
@@ -131,18 +123,8 @@ export default class ChargerTab extends BaseScreen {
 
   render() {
     const style = computeStyleSheet();
-    const connectorID = Utils.getParamFromNavigation(
-      this.props.navigation,
-      "connectorID",
-      null
-    );
-    const {
-      charger,
-      connector,
-      isAdmin,
-      isAuthorizedToStopTransaction,
-      firstLoad
-    } = this.state;
+    const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
+    const { charger, connector, isAdmin, isAuthorizedToStopTransaction, firstLoad } = this.state;
     const { navigation } = this.props;
     const connectorLetter = String.fromCharCode(64 + connectorID);
     return firstLoad ? (
@@ -153,18 +135,13 @@ export default class ChargerTab extends BaseScreen {
       <ScrollView
         contentContainerStyle={style.container}
         refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this._manualRefresh}
-          />
+          <RefreshControl refreshing={this.state.refreshing} onRefresh={this._manualRefresh} />
         }
       >
         <HeaderComponent
           title={charger.id}
           subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
-          leftAction={() =>
-            navigation.navigate("Chargers", { siteAreaID: charger.siteAreaID })
-          }
+          leftAction={() => navigation.navigate("Chargers", { siteAreaID: charger.siteAreaID })}
           leftActionIcon={"arrow-back"}
           rightAction={navigation.openDrawer}
           rightActionIcon={"menu"}
@@ -188,11 +165,7 @@ export default class ChargerTab extends BaseScreen {
             <Tab
               heading={
                 <TabHeading style={style.tabHeader}>
-                  <Icon
-                    style={style.tabIcon}
-                    type="AntDesign"
-                    name="linechart"
-                  />
+                  <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
                 </TabHeading>
               }
             >
@@ -209,11 +182,7 @@ export default class ChargerTab extends BaseScreen {
             <Tab
               heading={
                 <TabHeading style={style.tabHeader}>
-                  <Icon
-                    style={style.tabIcon}
-                    type="MaterialIcons"
-                    name="info"
-                  />
+                  <Icon style={style.tabIcon} type="MaterialIcons" name="info" />
                 </TabHeading>
               }
             >

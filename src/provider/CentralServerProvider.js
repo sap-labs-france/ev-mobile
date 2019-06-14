@@ -7,10 +7,8 @@ const jwtDecode = require("jwt-decode");
 
 const centralRestServerServiceBaseURL =
   "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
-const centralRestServerServiceAuthURL =
-  centralRestServerServiceBaseURL + "/client/auth";
-const centralRestServerServiceSecuredURL =
-  centralRestServerServiceBaseURL + "/client/api";
+const centralRestServerServiceAuthURL = centralRestServerServiceBaseURL + "/client/auth";
+const centralRestServerServiceSecuredURL = centralRestServerServiceBaseURL + "/client/api";
 
 // Debug
 const DEBUG = false;
@@ -225,13 +223,10 @@ export default class CentralServerProvider {
     // Build Ordering
     this._buildOrdering(ordering, params);
     // Call
-    const result = await axios.get(
-      `${centralRestServerServiceSecuredURL}/Notifications`,
-      {
-        headers: this._buildSecuredHeaders(),
-        params
-      }
-    );
+    const result = await axios.get(`${centralRestServerServiceSecuredURL}/Notifications`, {
+      headers: this._buildSecuredHeaders(),
+      params
+    });
     return result.data;
   }
 
@@ -248,13 +243,10 @@ export default class CentralServerProvider {
     // Build Ordering
     this._buildOrdering(ordering, params);
     // Call
-    const result = await axios.get(
-      `${centralRestServerServiceSecuredURL}/ChargingStations`,
-      {
-        headers: this._buildSecuredHeaders(),
-        params
-      }
-    );
+    const result = await axios.get(`${centralRestServerServiceSecuredURL}/ChargingStations`, {
+      headers: this._buildSecuredHeaders(),
+      params
+    });
     return result.data;
   }
 
@@ -271,13 +263,10 @@ export default class CentralServerProvider {
     // Build Ordering
     this._buildOrdering(ordering, params);
     // Call
-    const result = await axios.get(
-      `${centralRestServerServiceSecuredURL}/ChargingStation`,
-      {
-        headers: this._buildSecuredHeaders(),
-        params
-      }
-    );
+    const result = await axios.get(`${centralRestServerServiceSecuredURL}/ChargingStation`, {
+      headers: this._buildSecuredHeaders(),
+      params
+    });
     return result.data;
   }
 
@@ -294,13 +283,10 @@ export default class CentralServerProvider {
     // Build Ordering
     this._buildOrdering(ordering, params);
     // Call
-    const result = await axios.get(
-      `${centralRestServerServiceSecuredURL}/Sites`,
-      {
-        headers: this._buildSecuredHeaders(),
-        params
-      }
-    );
+    const result = await axios.get(`${centralRestServerServiceSecuredURL}/Sites`, {
+      headers: this._buildSecuredHeaders(),
+      params
+    });
     return result.data;
   }
 
@@ -313,26 +299,20 @@ export default class CentralServerProvider {
     // Init?
     await this.initialize();
     // Call
-    const result = await axios.get(
-      `${centralRestServerServiceSecuredURL}/SiteAreas`,
-      {
-        headers: this._buildSecuredHeaders(),
-        params
-      }
-    );
+    const result = await axios.get(`${centralRestServerServiceSecuredURL}/SiteAreas`, {
+      headers: this._buildSecuredHeaders(),
+      params
+    });
     return result.data;
   }
 
   async getEndUserLicenseAgreement(params = {}) {
     this.debug("getEndUserLicenseAgreement");
     // Call
-    const result = await axios.get(
-      `${centralRestServerServiceAuthURL}/EndUserLicenseAgreement`,
-      {
-        headers: this._builHeaders(),
-        params
-      }
-    );
+    const result = await axios.get(`${centralRestServerServiceAuthURL}/EndUserLicenseAgreement`, {
+      headers: this._builHeaders(),
+      params
+    });
     return result.data;
   }
 
@@ -382,13 +362,10 @@ export default class CentralServerProvider {
     // Init?
     await this.initialize();
     // Call
-    const result = await axios.get(
-      `${centralRestServerServiceSecuredURL}/Transaction`,
-      {
-        headers: this._buildSecuredHeaders(),
-        params
-      }
-    );
+    const result = await axios.get(`${centralRestServerServiceSecuredURL}/Transaction`, {
+      headers: this._buildSecuredHeaders(),
+      params
+    });
     return result.data;
   }
 
@@ -397,13 +374,10 @@ export default class CentralServerProvider {
     // Init?
     await this.initialize();
     // Call
-    const result = await axios.get(
-      `${centralRestServerServiceSecuredURL}/UserImage`,
-      {
-        headers: this._buildSecuredHeaders(),
-        params
-      }
-    );
+    const result = await axios.get(`${centralRestServerServiceSecuredURL}/UserImage`, {
+      headers: this._buildSecuredHeaders(),
+      params
+    });
     return result.data;
   }
 
@@ -415,13 +389,10 @@ export default class CentralServerProvider {
     let siteImage = _siteImages.find(siteImage => siteImage.id === id);
     if (!siteImage) {
       // Call
-      const result = await axios.get(
-        `${centralRestServerServiceSecuredURL}/SiteImage`,
-        {
-          headers: this._buildSecuredHeaders(),
-          params: { ID: id }
-        }
-      );
+      const result = await axios.get(`${centralRestServerServiceSecuredURL}/SiteImage`, {
+        headers: this._buildSecuredHeaders(),
+        params: { ID: id }
+      });
       // Set
       siteImage = {
         id,
@@ -438,13 +409,10 @@ export default class CentralServerProvider {
     // Init ?
     await this.initialize();
     // Call
-    const result = await axios.get(
-      `${centralRestServerServiceSecuredURL}/IsAuthorized`,
-      {
-        headers: this._buildSecuredHeaders(),
-        params
-      }
-    );
+    const result = await axios.get(`${centralRestServerServiceSecuredURL}/IsAuthorized`, {
+      headers: this._buildSecuredHeaders(),
+      params
+    });
     return result.data;
   }
 
@@ -453,12 +421,9 @@ export default class CentralServerProvider {
     // Init ?
     await this.initialize();
     // Call
-    const result = await axios.get(
-      `${centralRestServerServiceSecuredURL}/Pricing`,
-      {
-        headers: this._buildSecuredHeaders()
-      }
-    );
+    const result = await axios.get(`${centralRestServerServiceSecuredURL}/Pricing`, {
+      headers: this._buildSecuredHeaders()
+    });
     return result.data;
   }
 

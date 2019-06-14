@@ -83,10 +83,7 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     this.setState({ isVisible });
     // Check
     if (isVisible) {
-      this.animRef.transitionTo(
-        style.visible,
-        Constants.ANIMATION_SHOW_HIDE_MILLIS
-      );
+      this.animRef.transitionTo(style.visible, Constants.ANIMATION_SHOW_HIDE_MILLIS);
       // Set the focus
       setTimeout(() => {
         // Set the focus
@@ -96,10 +93,7 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
       }, 100);
     } else {
       // Hide
-      this.animRef.transitionTo(
-        style.hidden,
-        Constants.ANIMATION_SHOW_HIDE_MILLIS
-      );
+      this.animRef.transitionTo(style.hidden, Constants.ANIMATION_SHOW_HIDE_MILLIS);
       // Hide keyboard
       Keyboard.dismiss();
     }

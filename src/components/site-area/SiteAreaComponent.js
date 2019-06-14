@@ -41,9 +41,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
             <View style={style.mainContent}>
               <Text style={style.name}>{siteArea.name}</Text>
               <Icon
-                style={
-                  siteArea.totalConnectors > 0 ? style.icon : style.iconHidden
-                }
+                style={siteArea.totalConnectors > 0 ? style.icon : style.iconHidden}
                 name="arrow-forward"
               />
             </View>

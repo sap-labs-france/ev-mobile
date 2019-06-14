@@ -9,17 +9,7 @@ import {
   Text as TextRN,
   TextInput
 } from "react-native";
-import {
-  Text,
-  Form,
-  Item,
-  Button,
-  Icon,
-  View,
-  CheckBox,
-  Spinner,
-  ActionSheet
-} from "native-base";
+import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet } from "native-base";
 import Orientation from "react-native-orientation";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import * as Animatable from "react-native-animatable";
@@ -183,11 +173,7 @@ export default class Login extends ResponsiveComponent {
   _newUser = () => {
     // Tenant selected?
     if (this.state.tenant) {
-      Linking.openURL(
-        `https://${
-          this.state.tenant
-        }.ev.cfapps.eu10.hana.ondemand.com/#/register`
-      );
+      Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/register`);
     } else {
       // Error
       Message.showError(I18n.t("authentication.mustSelectTenant"));
@@ -246,9 +232,7 @@ export default class Login extends ResponsiveComponent {
                     )
                   }
                 >
-                  <TextRN style={style.buttonText}>
-                    {this.state.tenantTitle}
-                  </TextRN>
+                  <TextRN style={style.buttonText}>{this.state.tenantTitle}</TextRN>
                 </Button>
                 {this.state.errorTenant &&
                   this.state.errorTenant.map((errorMessage, index) => (
@@ -282,11 +266,7 @@ export default class Login extends ResponsiveComponent {
                     </Text>
                   ))}
                 <Item rounded style={style.inputGroup}>
-                  <Icon
-                    active
-                    name="unlock"
-                    style={[style.inputIcon, style.inputIconLock]}
-                  />
+                  <Icon active name="unlock" style={[style.inputIcon, style.inputIconLock]} />
                   <TextInput
                     name="password"
                     type="password"
@@ -319,36 +299,22 @@ export default class Login extends ResponsiveComponent {
                   />
                   <Text style={style.eulaText}>
                     {I18n.t("authentication.acceptEula")}
-                    <Text
-                      onPress={() => navigation.navigate("Eula")}
-                      style={style.eulaLink}
-                    >
+                    <Text onPress={() => navigation.navigate("Eula")} style={style.eulaLink}>
                       {I18n.t("authentication.eula")}
                     </Text>
                   </Text>
                 </View>
                 {this.state.errorEula &&
                   this.state.errorEula.map((errorMessage, index) => (
-                    <Text
-                      style={[style.formErrorText, style.formErrorTextEula]}
-                      key={index}
-                    >
+                    <Text style={[style.formErrorText, style.formErrorTextEula]} key={index}>
                       {errorMessage}
                     </Text>
                   ))}
                 {loading ? (
                   <Spinner color="white" style={style.spinner} />
                 ) : (
-                  <Button
-                    rounded
-                    primary
-                    block
-                    style={style.button}
-                    onPress={this._login}
-                  >
-                    <TextRN style={style.buttonText}>
-                      {I18n.t("authentication.login")}
-                    </TextRN>
+                  <Button rounded primary block style={style.button} onPress={this._login}>
+                    <TextRN style={style.buttonText}>{I18n.t("authentication.login")}</TextRN>
                   </Button>
                 )}
               </Form>

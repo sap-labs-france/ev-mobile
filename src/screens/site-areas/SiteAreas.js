@@ -30,11 +30,7 @@ export default class SiteAreas extends BaseScreen {
     // Call parent
     super.componentDidMount();
     // Get the sites
-    const siteAreas = await this._getSiteAreas(
-      this.searchText,
-      this.state.skip,
-      this.state.limit
-    );
+    const siteAreas = await this._getSiteAreas(this.searchText, this.state.skip, this.state.limit);
     // Add sites
     if (this.isMounted()) {
       // eslint-disable-next-line react/no-did-mount-set-state
@@ -52,11 +48,7 @@ export default class SiteAreas extends BaseScreen {
   }
 
   _getSiteAreas = async (searchText, skip, limit) => {
-    const siteID = Utils.getParamFromNavigation(
-      this.props.navigation,
-      "siteID",
-      null
-    );
+    const siteID = Utils.getParamFromNavigation(this.props.navigation, "siteID", null);
     let siteAreas = [];
     try {
       // Get the Sites
@@ -77,11 +69,7 @@ export default class SiteAreas extends BaseScreen {
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
-      const siteAreas = await this._getSiteAreas(
-        this.searchText,
-        0,
-        skip + limit
-      );
+      const siteAreas = await this._getSiteAreas(this.searchText, 0, skip + limit);
       // Add sites
       this.setState({
         siteAreas: siteAreas.result
@@ -155,10 +143,7 @@ export default class SiteAreas extends BaseScreen {
             <FlatList
               data={this.state.siteAreas}
               renderItem={({ item }) => (
-                <SiteAreaComponent
-                  siteArea={item}
-                  navigation={this.props.navigation}
-                />
+                <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />
               )}
               keyExtractor={item => item.id}
               refreshControl={

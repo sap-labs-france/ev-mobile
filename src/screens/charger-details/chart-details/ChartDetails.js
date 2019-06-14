@@ -207,10 +207,7 @@ export default class ChartDetails extends BaseScreen {
   render() {
     const style = computeStyleSheet();
     const { consumptionValues, stateOfChargeValues } = this.state;
-    const chartDefinition = this.computeChartDefinition(
-      consumptionValues,
-      stateOfChargeValues
-    );
+    const chartDefinition = this.computeChartDefinition(consumptionValues, stateOfChargeValues);
     return (
       <View style={style.container}>
         <LineChart

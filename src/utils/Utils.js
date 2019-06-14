@@ -60,11 +60,7 @@ export default class Utils {
     // User?
     if (user) {
       // Firstname provided?
-      if (
-        user.name &&
-        user.firstName &&
-        `${user.name} ${user.firstName}`.length < 19
-      ) {
+      if (user.name && user.firstName && `${user.name} ${user.firstName}`.length < 19) {
         return `${user.name} ${user.firstName}`;
       } else {
         return `${user.name}`;

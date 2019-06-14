@@ -249,11 +249,7 @@ export default (variables = variable) => {
 
   const cssifyTheme = (grandparent, parent, parentKey) => {
     _.forEach(parent, (style, styleName) => {
-      if (
-        styleName.indexOf(".") === 0 &&
-        parentKey &&
-        parentKey.indexOf(".") === 0
-      ) {
+      if (styleName.indexOf(".") === 0 && parentKey && parentKey.indexOf(".") === 0) {
         if (grandparent) {
           if (!grandparent[styleName]) {
             grandparent[styleName] = {};

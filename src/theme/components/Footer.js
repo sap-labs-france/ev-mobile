@@ -82,14 +82,8 @@ export default (variables = variable) => {
     backgroundColor: variables.footerDefaultBg,
     flexDirection: "row",
     justifyContent: "center",
-    borderTopWidth:
-      platform === "ios" && platformStyle !== "material"
-        ? undefined
-        : undefined,
-    borderColor:
-      platform === "ios" && platformStyle !== "material"
-        ? "#cbcbcb"
-        : undefined,
+    borderTopWidth: platform === "ios" && platformStyle !== "material" ? undefined : undefined,
+    borderColor: platform === "ios" && platformStyle !== "material" ? "#cbcbcb" : undefined,
     height: variables.footerHeight,
     elevation: 3,
     left: 0,

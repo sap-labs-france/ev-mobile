@@ -48,12 +48,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
           iterationCount={"infinite"}
           direction="alternate-reverse"
         >
-          <View
-            style={[
-              style.statusContainer,
-              this._getStyleFromStatus(connector, style)
-            ]}
-          >
+          <View style={[style.statusContainer, this._getStyleFromStatus(connector, style)]}>
             <TextRN style={style.statusLetter}>{connectorLetter}</TextRN>
           </View>
         </Animatable.View>

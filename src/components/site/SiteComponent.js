@@ -30,14 +30,10 @@ export default class SiteComponent extends ResponsiveComponent {
         iterationCount={1}
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
       >
-        <TouchableOpacity
-          onPress={() => navigation.navigate("SiteAreas", { siteID: site.id })}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate("SiteAreas", { siteID: site.id })}>
           <View style={style.container}>
             <View style={style.mainContent}>
-              <TouchableOpacity
-                onPress={() => this._siteLocation(site.address)}
-              >
+              <TouchableOpacity onPress={() => this._siteLocation(site.address)}>
                 <Icon style={style.icon} name="pin" />
               </TouchableOpacity>
               <Text style={style.name}>{site.name}</Text>

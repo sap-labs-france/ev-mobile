@@ -7,16 +7,7 @@ import {
   ImageBackground,
   KeyboardAvoidingView
 } from "react-native";
-import {
-  Text,
-  Form,
-  Item,
-  Button,
-  Icon,
-  View,
-  Spinner,
-  Footer
-} from "native-base";
+import { Text, Form, Item, Button, Icon, View, Spinner, Footer } from "native-base";
 import { NavigationActions, StackActions } from "react-navigation";
 import commonColor from "../../../theme/variables/commonColor";
 import ProviderFactory from "../../../provider/ProviderFactory";
@@ -49,11 +40,7 @@ export default class RetrievePassword extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
-      tenant: Utils.getParamFromNavigation(
-        this.props.navigation,
-        "tenant",
-        null
-      ),
+      tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", null),
       email: "",
       loading: false
     };
@@ -186,9 +173,7 @@ export default class RetrievePassword extends ResponsiveComponent {
           </ScrollView>
           <Footer>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Text style={style.linksTextButton}>
-                {I18n.t("authentication.backLogin")}
-              </Text>
+              <Text style={style.linksTextButton}>{I18n.t("authentication.backLogin")}</Text>
             </Button>
           </Footer>
         </ImageBackground>

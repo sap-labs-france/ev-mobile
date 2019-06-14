@@ -250,10 +250,7 @@ export default class ConnectorDetails extends BaseScreen {
       // Disable button
       this.setState({ buttonDisabled: true });
       // Stop the Transaction
-      const status = await _provider.stopTransaction(
-        charger.id,
-        connector.activeTransactionID
-      );
+      const status = await _provider.stopTransaction(charger.id, connector.activeTransactionID);
       // Check
       if (status.status && status.status === "Accepted") {
         Message.showSuccess(I18n.t("details.accepted"));
@@ -273,8 +270,7 @@ export default class ConnectorDetails extends BaseScreen {
     if (
       (connector.status === Constants.CONN_STATUS_AVAILABLE &&
         startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
-      (connector.status === Constants.CONN_STATUS_PREPARING &&
-        startTransactionNbTrial === 0)
+      (connector.status === Constants.CONN_STATUS_PREPARING && startTransactionNbTrial === 0)
     ) {
       // Button are set to available after the nbr of trials
       this.setState({
@@ -284,8 +280,7 @@ export default class ConnectorDetails extends BaseScreen {
     } else if (startTransactionNbTrial > 0) {
       // Trial - 1
       this.setState({
-        startTransactionNbTrial:
-          startTransactionNbTrial > 0 ? startTransactionNbTrial - 1 : 0
+        startTransactionNbTrial: startTransactionNbTrial > 0 ? startTransactionNbTrial - 1 : 0
       });
       // Transaction ongoing
     } else if (connector.activeTransactionID !== 0) {
@@ -356,16 +351,10 @@ export default class ConnectorDetails extends BaseScreen {
     } = this.state;
     return (
       <Container style={style.container}>
-        <Image
-          style={style.backgroundImage}
-          source={siteImage ? { uri: siteImage } : noSite}
-        />
+        <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
         <View style={style.transactionContainer}>
           {connector.activeTransactionID === 0 ? (
-            <TouchableOpacity
-              onPress={() => this._onStartTransaction()}
-              disabled={buttonDisabled}
-            >
+            <TouchableOpacity onPress={() => this._onStartTransaction()} disabled={buttonDisabled}>
               <View
                 style={
                   buttonDisabled
@@ -385,10 +374,7 @@ export default class ConnectorDetails extends BaseScreen {
               </View>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity
-              onPress={() => this._onStopTransaction()}
-              disabled={buttonDisabled}
-            >
+            <TouchableOpacity onPress={() => this._onStopTransaction()} disabled={buttonDisabled}>
               <View
                 style={
                   buttonDisabled
@@ -400,11 +386,7 @@ export default class ConnectorDetails extends BaseScreen {
                     : [style.buttonTransaction, style.stopTransaction]
                 }
               >
-                <Icon
-                  style={style.startStopTransactionIcon}
-                  type="MaterialIcons"
-                  name="stop"
-                />
+                <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="stop" />
               </View>
             </TouchableOpacity>
           )}
@@ -413,10 +395,7 @@ export default class ConnectorDetails extends BaseScreen {
           <View style={style.detailsContainer}>
             <View style={style.rowContainer}>
               <View style={style.columnContainer}>
-                <ConnectorStatusComponent
-                  style={style.connectorLetter}
-                  connector={connector}
-                />
+                <ConnectorStatusComponent style={style.connectorLetter} connector={connector} />
                 <Text style={[style.label, style.labelStatus]}>
                   {Utils.translateConnectorStatus(connector.status)}
                 </Text>
@@ -463,9 +442,7 @@ export default class ConnectorDetails extends BaseScreen {
                         ? (connector.currentConsumption / 1000).toFixed(1)
                         : 0}
                     </Text>
-                    <Text style={style.subLabel}>
-                      {I18n.t("details.instant")} (kW)
-                    </Text>
+                    <Text style={style.subLabel}>{I18n.t("details.instant")} (kW)</Text>
                   </View>
                 )}
               </View>
@@ -482,11 +459,7 @@ export default class ConnectorDetails extends BaseScreen {
             </View>
             <View style={style.rowContainer}>
               <View style={style.columnContainer}>
-                <Icon
-                  style={style.icon}
-                  type="MaterialIcons"
-                  name="trending-up"
-                />
+                <Icon style={style.icon} type="MaterialIcons" name="trending-up" />
                 {(connector.totalConsumption / 1000).toFixed(1) === 0.0 ||
                 connector.totalConsumption === 0 ? (
                   <Text style={[style.label, style.labelValue]}>-</Text>
@@ -495,18 +468,12 @@ export default class ConnectorDetails extends BaseScreen {
                     <Text style={[style.label, style.labelValue]}>
                       {(connector.totalConsumption / 1000).toFixed(1)}
                     </Text>
-                    <Text style={style.subLabel}>
-                      {I18n.t("details.total")} (kW.h)
-                    </Text>
+                    <Text style={style.subLabel}>{I18n.t("details.total")} (kW.h)</Text>
                   </View>
                 )}
               </View>
               <View style={style.columnContainer}>
-                <Icon
-                  type="MaterialIcons"
-                  name="battery-charging-full"
-                  style={style.icon}
-                />
+                <Icon type="MaterialIcons" name="battery-charging-full" style={style.icon} />
                 {connector.currentStateOfCharge ? (
                   <View>
                     <Text style={[style.label, style.labelValue]}>

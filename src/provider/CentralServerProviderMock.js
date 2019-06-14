@@ -27,10 +27,7 @@ export default class CentralServerProviderMock {
             charger => charger.siteArea.siteID === params.SiteID
           );
           // Get them all
-          const pagedChargersFiltered = this.applyPaging(
-            chargersFiltered,
-            paging
-          );
+          const pagedChargersFiltered = this.applyPaging(chargersFiltered, paging);
           // Send mock data
           resolve(pagedChargersFiltered);
         } else {
