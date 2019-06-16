@@ -80,6 +80,7 @@ const RootNavigator = createSwitchNavigator(
 const RootContainer = createAppContainer(RootNavigator);
 
 export default class App extends React.Component {
+  // eslint-disable-next-line class-methods-use-this
   async componentDidMount() {
     // Activate
     _notificationManager.setActive(true);
@@ -90,6 +91,7 @@ export default class App extends React.Component {
     this._notificationManager.setActive(false);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   render() {
     return (
       <Root>
