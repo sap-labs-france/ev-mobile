@@ -1,9 +1,8 @@
-/* eslint-disable class-methods-use-this */
 import axios from "axios";
 import Constants from "../utils/Constants";
 import SecurityProvider from "../security/SecurityProvider";
 import SecuredStorage from "../utils/SecuredStorage";
-const jwtDecode = require("jwt-decode");
+import jwtDecode from "jwt-decode";
 
 const centralRestServerServiceBaseURL =
   "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
@@ -24,6 +23,7 @@ let _securityProvider;
 const _siteImages = [];
 
 export default class CentralServerProvider {
+  // eslint-disable-next-line class-methods-use-this
   async initialize() {
     // Only once
     if (!_initialized) {
@@ -53,6 +53,7 @@ export default class CentralServerProvider {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   debug(method) {
     if (DEBUG) {
       // eslint-disable-next-line no-console
@@ -64,6 +65,7 @@ export default class CentralServerProvider {
     return this.getTenants().find(tenant => tenant.subdomain === tenantToFind);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   getTenants() {
     return [
       { subdomain: "slf", name: "SAP Labs France" },
@@ -449,6 +451,7 @@ export default class CentralServerProvider {
     return _securityProvider;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   _buildPaging(paging, queryString) {
     // Check
     if (paging) {
@@ -463,6 +466,7 @@ export default class CentralServerProvider {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   _buildOrdering(ordering, queryString) {
     // Check
     if (ordering && ordering.length) {
@@ -478,6 +482,7 @@ export default class CentralServerProvider {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   _builHeaders() {
     return {
       Accept: "application/json",
@@ -486,6 +491,7 @@ export default class CentralServerProvider {
     };
   }
 
+  // eslint-disable-next-line class-methods-use-this
   _buildSecuredHeaders() {
     return {
       Accept: "application/json",

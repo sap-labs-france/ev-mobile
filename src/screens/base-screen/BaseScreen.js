@@ -81,6 +81,7 @@ export default class BaseScreen extends ResponsiveComponent {
     this._refresh();
   }
 
+  // eslint-disable-next-line class-methods-use-this
   _refresh() {
     console.log("BaseScreen: Refresh not implemented!!!");
   }
