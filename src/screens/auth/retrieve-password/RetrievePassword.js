@@ -91,6 +91,7 @@ export default class RetrievePassword extends ResponsiveComponent {
     }
   };
 
+  // eslint-disable-next-line class-methods-use-this
   onMessage(data) {
     //Prints out data that was passed.
     console.log("onMessage");

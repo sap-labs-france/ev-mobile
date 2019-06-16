@@ -8,6 +8,7 @@ import computeStyleSheet from "./ConnectorStatusComponentStyles";
 import PropTypes from "prop-types";
 
 export default class ConnectorStatusComponent extends ResponsiveComponent {
+  // eslint-disable-next-line class-methods-use-this
   _getStyleFromStatus(connector, style) {
     switch (connector.status) {
       // Green
@@ -29,6 +30,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   _getStatusAnimation(connector) {
     // First check
     if (connector.status === Constants.CONN_STATUS_CHARGING) {
