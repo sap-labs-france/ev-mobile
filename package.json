@@ -47,7 +47,7 @@
     "iosBundle": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
     "clean": "npm start -- --reset-cache",
     "npm-check": "npm-check",
-    "react-native-upgrade": "react-native upgrade"
+    "react-native:upgrade": "react-native upgrade"
   },
   "jest": {
     "preset": "react-native",
