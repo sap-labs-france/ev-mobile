@@ -77,6 +77,7 @@
   "rules": {
   // Flow Plugin
   // The following rules are made available via `eslint-plugin-flowtype`
+    "flowtype/no-types-missing-file-annotation": 0,
     "flowtype/define-flow-type": 1,
     "flowtype/use-flow-type": 1,
 
