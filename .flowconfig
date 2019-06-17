@@ -27,7 +27,6 @@ node_modules/react-native/flow/
 
 [options]
 emoji=true
-module.system.node.resolve_dirname=node_modules
 
 esproposal.optional_chaining=enable
 esproposal.nullish_coalescing=enable
@@ -46,6 +45,8 @@ module.system.haste.paths.blacklist=.*/__tests__/.*
 module.system.haste.paths.blacklist=.*/__mocks__/.*
 module.system.haste.paths.blacklist=<PROJECT_ROOT>/node_modules/react-native/Libraries/Animated/src/polyfills/.*
 module.system.haste.paths.whitelist=<PROJECT_ROOT>/node_modules/react-native/Libraries/.*
+
+module.system.node.resolve_dirname=node_modules
 
 munge_underscores=true
 
