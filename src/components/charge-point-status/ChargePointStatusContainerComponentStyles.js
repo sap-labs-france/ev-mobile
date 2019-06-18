@@ -12,6 +12,7 @@ const commonStyles = {
   },
   connectorText: {
     color: commonColor.textColor,
+    marginTop: scale(-15),
     marginRight: scale(10),
     fontSize: scale(20)
   }
