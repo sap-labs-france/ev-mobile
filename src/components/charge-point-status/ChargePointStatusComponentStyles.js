@@ -31,8 +31,8 @@ const commonStyles = ScaledSheet.create({
   connectorBadgeTitle: {
     minWidth: scale(35),
     textAlign: "center",
-    fontSize: scale(15),
-    paddingTop: "6@ms4",
+    fontSize: scale(20),
+    paddingTop: "8@ms4",
     paddingBottom: "8@ms",
     fontWeight: "bold",
     color: commonColor.textColor
