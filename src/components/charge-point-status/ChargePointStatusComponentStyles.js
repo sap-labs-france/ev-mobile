@@ -1,19 +1,19 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
-import { scale } from "react-native-size-matters";
+import { scale, ScaledSheet } from "react-native-size-matters";
 
-const commonStyles = {
+const commonStyles = ScaledSheet.create({
   badgeContainer: {
-    paddingTop: scale(10),
+    paddingTop: "10@ms",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     minWidth: scale(20)
   },
   connectorBadge: {
-    paddingTop: scale(5),
-    height: scale(30),
+    paddingTop: "5@fs",
+    height: "30@vs",
     alignSelf: "center"
   },
   connectorBadgeText: {
@@ -31,9 +31,9 @@ const commonStyles = {
   connectorBadgeTitle: {
     minWidth: scale(35),
     textAlign: "center",
-    fontSize: scale(20),
-    paddingTop: scale(8),
-    paddingBottom: scale(4),
+    fontSize: scale(15),
+    paddingTop: "6@ms4",
+    paddingBottom: "8@ms",
     fontWeight: "bold",
     color: commonColor.textColor
   },
@@ -46,7 +46,7 @@ const commonStyles = {
     marginRight: scale(10),
     color: commonColor.textColor
   }
-};
+});
 
 const portraitStyles = {};
 
