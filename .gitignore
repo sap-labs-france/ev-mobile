@@ -54,3 +54,23 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
+
+# Legacy Eclipse project files
+.classpath
+.project
+.cproject
+.se
+
+# VisualStudioCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Vim
+# Persistent undo
+[._]*.un~
+# Temporary
+.netrwhist
+*~
