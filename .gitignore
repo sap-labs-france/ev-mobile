@@ -1,12 +1,6 @@
 # OSX
 #
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
 
 # Xcode
 #
@@ -28,24 +22,13 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 
-# Legacy Eclipse project files
-.classpath
-.project
-.cproject
-.settings/
-
 # Android/IntelliJ
 #
 build/
 .idea
 .gradle
-.gradle/
 local.properties
 *.iml
-# Built application files
-*.apk
-*.aab
-*.ap_
 
 # node.js
 #
@@ -53,27 +36,10 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
-# Buck
+# BUCK
 buck-out/
-.buckconfig.local
-.buckd/
-.buckversion
-.fakebuckversion
+\.buckd/
 *.keystore
-
-# VisualStudioCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
-# Vim
-# Persistent undo
-[._]*.un~
-# Temporary
-.netrwhist
-*~
 
 # fastlane
 #
