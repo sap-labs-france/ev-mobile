@@ -1,6 +1,6 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import { Badge } from "react-native-elements";
+// import { Badge } from "react-native-elements";
 import { TouchableOpacity } from "react-native";
 import { Text, View, Icon } from "native-base";
 import computeStyleSheet from "./SiteAreaComponentStyles";
