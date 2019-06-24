@@ -138,6 +138,14 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-charts-wrapper')
+    implementation project(':react-native-firebase')
+    implementation project(':react-native-orientation')
+    implementation project(':react-native-push-notification')
+    implementation project(':react-native-svg')
+    implementation project(':react-native-vector-icons')
+    implementation project(':rn-secure-storage')
+    implementation project(':react-native-gesture-handler')
     implementation project(':react-native-device-info')
     implementation project(':react-native-i18n')
     implementation project(':react-native-sensitive-info')
