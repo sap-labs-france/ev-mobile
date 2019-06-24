@@ -106,7 +106,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.1"
     }
     splits {
         abi {
@@ -138,6 +138,8 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-device-info')
+    implementation project(':react-native-i18n')
     implementation project(':react-native-sensitive-info')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
