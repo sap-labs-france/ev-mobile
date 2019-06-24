@@ -3,6 +3,8 @@ target 'eMobility' do
   pod 'Charts', '3.3.0'
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
+  pod 'react-native-sensitive-info', :path => '../node_modules/react-native-sensitive-info'
+
 end
 
 swift4 = ['Charts']
