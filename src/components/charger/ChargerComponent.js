@@ -3,7 +3,7 @@ import { Text, View, Icon } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./ChargerComponentStyles";
 import * as Animatable from "react-native-animatable";
-import ConnectorComponent from "./Connector/ConnectorComponent";
+import ConnectorComponent from "./connector/ConnectorComponent";
 import PropTypes from "prop-types";
 
 export default class ChargerComponent extends ResponsiveComponent {

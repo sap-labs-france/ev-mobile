@@ -6,7 +6,7 @@ import ChartDetails from "../chart-details/ChartDetails";
 import ConnectorDetails from "../connector-details/ConnectorDetails";
 import BaseScreen from "../../base-screen/BaseScreen";
 import ProviderFactory from "../../../provider/ProviderFactory";
-import HeaderComponent from "../../../components/Header/HeaderComponent";
+import HeaderComponent from "../../../components/header/HeaderComponent";
 import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./ChargerTabStyles";
 import Utils from "../../../utils/Utils";

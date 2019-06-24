@@ -6,7 +6,7 @@ import Constants from "../../utils/Constants";
 import ProviderFactory from "../../provider/ProviderFactory";
 import SiteAreaComponent from "../../components/site-area/SiteAreaComponent";
 import SearchHeaderComponent from "../../components/search-header/SearchHeaderComponent";
-import HeaderComponent from "../../components/Header/HeaderComponent";
+import HeaderComponent from "../../components/header/HeaderComponent";
 import computeStyleSheet from "./SiteAreasStyles";
 import I18n from "../../I18n/I18n";
 import BaseScreen from "../base-screen/BaseScreen";

@@ -4,11 +4,9 @@ import { TouchableOpacity } from "react-native";
 import { Text, View, Icon } from "native-base";
 import openMap from "react-native-open-maps";
 import computeStyleSheet from "./SiteComponentStyles";
-// import I18n from "../../I18n/I18n";
 import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 import Constants from "../../utils/Constants";
-// import ChargePointStatus from "../charge-point-status/ChargePointStatusComponent";
 import ChargePointStatusContainerComponent from "../charge-point-status/ChargePointStatusContainerComponent";
 
 let counter = 0;
