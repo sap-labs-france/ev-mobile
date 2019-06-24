@@ -7,9 +7,9 @@ import computeStyleSheet from "./ChargerDetailsStyles";
 import PropTypes from "prop-types";
 
 export default class ChargerDetails extends ResponsiveComponent {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
     const style = computeStyleSheet();

@@ -1,7 +1,7 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
-import { Platform } from "react-native";
-import { scale } from "react-native-size-matters";
+// import { Platform } from "react-native";
+// import { scale } from "react-native-size-matters";
 
 const commonStyles = {
   content: {

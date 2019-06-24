@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./ChargePointStatusContainerComponentStyles.js";
-import { Badge, Text, View } from "native-base";
+import { Text, View } from "native-base";
 import I18n from "../../I18n/I18n";
 import ChargePointStatusComponent from "./ChargePointStatusComponent";
 

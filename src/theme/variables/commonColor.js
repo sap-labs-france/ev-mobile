@@ -9,7 +9,7 @@ const deviceWidth = Dimensions.get("window").width;
 const platform = Platform.OS;
 const platformStyle = undefined;
 
-module.exports = {
+export default {
   platformStyle,
   platform,
   // AndroidRipple
