@@ -3,6 +3,14 @@ package com.emobility;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.github.wuxudong.rncharts.MPAndroidChartPackage;
+import io.invertase.firebase.RNFirebasePackage;
+import com.github.yamill.orientation.OrientationPackage;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
+import com.horcrux.svg.SvgPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.taluttasgiran.rnsecurestorage.RNSecureStoragePackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import br.com.classapp.RNSensitiveInfo.RNSensitiveInfoPackage;
@@ -26,6 +34,14 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new MPAndroidChartPackage(),
+            new RNFirebasePackage(),
+            new OrientationPackage(),
+            new ReactNativePushNotificationPackage(),
+            new SvgPackage(),
+            new VectorIconsPackage(),
+            new RNSecureStoragePackage(),
+            new RNGestureHandlerPackage(),
             new RNDeviceInfo(),
             new RNI18nPackage(),
             new RNSensitiveInfoPackage()
