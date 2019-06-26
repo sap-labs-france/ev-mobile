@@ -3,20 +3,6 @@ target 'eMobility' do
   pod 'Charts', '3.3.0'
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
-  pod 'react-native-sensitive-info', :path => '../node_modules/react-native-sensitive-info'
-
-  pod 'RNI18n', :path => '../node_modules/react-native-i18n'
-
-  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
-
-  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
-
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-
-  pod 'RNSVG', :path => '../node_modules/react-native-svg'
-
-  pod 'react-native-orientation', :path => '../node_modules/react-native-orientation'
-
 end
 
 swift4 = ['Charts']
