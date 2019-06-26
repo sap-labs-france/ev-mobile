@@ -89,7 +89,7 @@ export default class SecurityProvider {
 
   isComponentActive(componentName) {
     // Components provided
-    if (this.decodedToken.hasOwnProperty("activeComponents")) {
+    if (this.decodedToken.activeComponents) {
       // Check components
       return this.decodedToken.activeComponents.indexOf(componentName) !== -1;
     }
