@@ -28,6 +28,7 @@
     "jest": "24.8.0",
     "jest-expo": "^33.0.2",
     "jetifier": "^1.5.0",
+    "jshint": "^2.10.2",
     "metro-react-native-babel-preset": "^0.54.1",
     "npm-check": "^5.9.0",
     "prettier": "1.18.2",
@@ -48,11 +49,12 @@
     "clean-install-lin": "rm -rf ./node_modules && rm -f ./package-lock.json && npm cache clear --force && npm install",
     "iosBundle": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
     "clean": "npm start -- --reset-cache",
-    "postinstall": "npm run android:jetify",
+    "postinstall": "git lfs unlock package-lock.json && npm run android:jetify",
     "npm-check": "npm-check",
     "android:jetify": "npx jetify",
     "react-native:upgrade": "react-native upgrade",
-    "react-native:link": "react-native link"
+    "react-native:link": "react-native link",
+    "preinstall": "git lfs lock package-lock.json"
   },
   "jest": {
     "preset": "react-native",
