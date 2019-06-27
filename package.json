@@ -27,7 +27,7 @@
     "flow-typed": "^2.5.2",
     "jest": "24.8.0",
     "jest-expo": "^33.0.2",
-    "jetifier": "^1.5.0",
+    "jetifier": "^1.5.1",
     "jshint": "^2.10.2",
     "metro-react-native-babel-preset": "^0.54.1",
     "npm-check": "^5.9.0",
@@ -49,12 +49,11 @@
     "clean-install-lin": "rm -rf ./node_modules && rm -f ./package-lock.json && npm cache clear --force && npm install",
     "iosBundle": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
     "clean": "npm start -- --reset-cache",
-    "postinstall": "git lfs unlock package-lock.json && npm run android:jetify",
+    "postinstall": "npm run android:jetify",
     "npm-check": "npm-check",
     "android:jetify": "npx jetify",
     "react-native:upgrade": "react-native upgrade",
-    "react-native:link": "react-native link",
-    "preinstall": "git lfs lock package-lock.json"
+    "react-native:link": "react-native link"
   },
   "jest": {
     "preset": "react-native",
@@ -94,7 +93,7 @@
     "react-native-sensitive-info": "^5.4.1",
     "react-native-size-matters": "^0.2.1",
     "react-native-svg": "^9.5.1",
-    "react-native-vector-icons": "^6.5.0",
+    "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^3.11.0",
     "rn-secure-storage": "^1.1.1",
     "validate.js": "^0.13.1"
