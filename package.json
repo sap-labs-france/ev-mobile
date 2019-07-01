@@ -48,6 +48,7 @@
     "clean-install-lin": "rm -rf ./node_modules && rm -f ./package-lock.json && npm cache clear --force && npm install",
     "iosBundle": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
     "clean": "npm start -- --reset-cache",
+    "clean:android": "cd android && ./gradlew clean",
     "postinstall": "npm run android:jetify",
     "npm-check": "npm-check",
     "android:jetify": "npx jetify",
