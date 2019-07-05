@@ -16,6 +16,8 @@
 
 #import "FIRMessagingPubSub.h"
 
+#import <GoogleUtilities/GULUserDefaults.h>
+
 #import "FIRMessaging.h"
 #import "FIRMessagingClient.h"
 #import "FIRMessagingDefines.h"
@@ -186,19 +188,25 @@ static NSString *const kPendingSubscriptionsListKey =
 #pragma mark - Storing Pending Topics
 
 - (void)archivePendingTopicsList:(FIRMessagingPendingTopicsList *)topicsList {
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  GULUserDefaults *defaults = [GULUserDefaults standardUserDefaults];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
   NSData *pendingData = [NSKeyedArchiver archivedDataWithRootObject:topicsList];
+#pragma clang diagnostic pop
   [defaults setObject:pendingData forKey:kPendingSubscriptionsListKey];
   [defaults synchronize];
 }
 
 - (void)restorePendingTopicsList {
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  GULUserDefaults *defaults = [GULUserDefaults standardUserDefaults];
   NSData *pendingData = [defaults objectForKey:kPendingSubscriptionsListKey];
   FIRMessagingPendingTopicsList *subscriptions;
   @try {
     if (pendingData) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
       subscriptions = [NSKeyedUnarchiver unarchiveObjectWithData:pendingData];
+#pragma clang diagnostic pop
     }
   } @catch (NSException *exception) {
     // Nothing we can do, just continue as if we don't have pending subscriptions
