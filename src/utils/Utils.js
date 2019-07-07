@@ -18,7 +18,7 @@ export default class Utils {
       return defaultValue;
     }
     // Has param
-    if (!navigation.state.params.hasOwnProperty(name)) {
+    if (!navigation.state.params.name) {
       return defaultValue;
     }
     // Ok, return the value
@@ -92,7 +92,7 @@ export default class Utils {
     if (error) {
       // Set in state the errors
       for (const key in error) {
-        if (error.hasOwnProperty(key)) {
+        if (error.key) {
           // Set
           errorState["error" + Utils.capitalizeFirstLetter(key)] = error[key];
         }
