@@ -1,7 +1,7 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
-import { scale, ScaledSheet } from "react-native-size-matters";
+import { ScaledSheet } from "react-native-size-matters";
 
 const commonStyles = ScaledSheet.create({
   badgeContainer: {
@@ -9,7 +9,7 @@ const commonStyles = ScaledSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    minWidth: scale(20)
+    minWidth: "20@s"
   },
   connectorBadge: {
     paddingTop: "5@fs",
@@ -29,21 +29,21 @@ const commonStyles = ScaledSheet.create({
   badgeSuccessContainer: {},
   badgeOccupiedContainer: {},
   connectorBadgeTitle: {
-    minWidth: scale(35),
+    minWidth: "35@s",
     textAlign: "center",
-    fontSize: scale(20),
+    fontSize: "20@s",
     paddingTop: "8@ms4",
     paddingBottom: "8@ms",
     fontWeight: "bold",
     color: commonColor.textColor
   },
   connectorSubTitle: {
-    fontSize: scale(15),
-    paddingBottom: scale(5),
-    marginTop: scale(5),
-    marginBottom: scale(5),
-    marginLeft: scale(10),
-    marginRight: scale(10),
+    fontSize: "15@s",
+    paddingBottom: "5@s",
+    marginTop: "5@s",
+    marginBottom: "5@s",
+    marginLeft: "10@s",
+    marginRight: "10@s",
     color: commonColor.textColor
   }
 });

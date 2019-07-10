@@ -1,9 +1,9 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import commonColor from "../../../theme/variables/commonColor";
-import { scale } from "react-native-size-matters";
 import deepmerge from "deepmerge";
+import { ScaledSheet } from "react-native-size-matters";
 
-const commonStyles = {
+const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
     backgroundColor: commonColor.brandPrimary
@@ -22,14 +22,14 @@ const commonStyles = {
     alignItems: "center"
   },
   notAuthorizedText: {
-    fontSize: scale(20),
+    fontSize: "20@s",
     color: commonColor.textColor
   },
   notAuthorizedIcon: {
-    fontSize: scale(75),
+    fontSize: "75@s",
     color: commonColor.textColor
   }
-};
+});
 
 const portraitStyles = {};
 

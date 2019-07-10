@@ -1,22 +1,22 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
-import { scale } from "react-native-size-matters";
+import { ScaledSheet } from "react-native-size-matters";
 
-const commonStyles = {
+const commonStyles = ScaledSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    paddingTop: scale(5),
+    paddingTop: "5@s",
     alignItems: "center"
   },
   connectorText: {
     color: commonColor.textColor,
-    marginTop: scale(-15),
-    marginRight: scale(10),
-    fontSize: scale(20)
+    marginTop: "-15@s",
+    marginRight: "10@s",
+    fontSize: "20@s"
   }
-};
+});
 
 const portraitStyles = {};
 

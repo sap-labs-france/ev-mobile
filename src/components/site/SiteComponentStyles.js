@@ -1,16 +1,15 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
-import { scale } from "react-native-size-matters";
-// import { Platform } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
 
-const commonStyles = {
+const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    height: scale(122),
-    paddingTop: scale(5),
-    paddingBottom: scale(5),
+    height: "122@s",
+    paddingTop: "5@s",
+    paddingBottom: "5@s",
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
     backgroundColor: "rgba(255,255,255,0.2)"
@@ -18,33 +17,33 @@ const commonStyles = {
   mainContent: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingBottom: scale(5),
+    paddingBottom: "5@s",
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor
   },
   name: {
-    fontSize: scale(20),
+    fontSize: "20@s",
     color: commonColor.textColor,
     fontWeight: "bold"
   },
   icon: {
-    fontSize: scale(25),
-    marginLeft: scale(10),
-    marginRight: scale(10)
+    fontSize: "25@s",
+    marginLeft: "10@s",
+    marginRight: "10@s"
   },
   detailedContent: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    paddingTop: scale(5),
+    paddingTop: "5@s",
     alignItems: "center"
   },
   connectorText: {
     color: commonColor.textColor,
-    marginTop: scale(-15),
-    marginRight: scale(10),
-    fontSize: scale(20)
+    marginTop: "-15@s",
+    marginRight: "10@s",
+    fontSize: "20@s"
   }
-};
+});
 
 const portraitStyles = {};
 

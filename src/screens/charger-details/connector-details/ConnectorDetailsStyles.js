@@ -1,10 +1,10 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../../theme/variables/commonColor";
-import { scale } from "react-native-size-matters";
 import { Platform } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
 
-const commonStyles = {
+const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
@@ -17,20 +17,20 @@ const commonStyles = {
   },
   backgroundImage: {
     width: "100%",
-    height: scale(150)
+    height: "150@s"
   },
   transactionContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: scale(-55)
+    marginTop: "-55@s"
   },
   buttonTransaction: {
-    borderRadius: scale(55),
+    borderRadius: "55@s",
     borderStyle: "solid",
     borderWidth: 2,
     borderColor: commonColor.textColor,
-    width: scale(110),
-    height: scale(110),
+    width: "110@s",
+    height: "110@s",
     justifyContent: "center",
     alignItems: "center"
   },
@@ -44,7 +44,7 @@ const commonStyles = {
     backgroundColor: commonColor.btnDisabledBg
   },
   startStopTransactionIcon: {
-    fontSize: scale(75)
+    fontSize: "75@s"
   },
   scrollViewContainer: {},
   detailsContainer: {
@@ -55,7 +55,7 @@ const commonStyles = {
   rowContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: scale(100)
+    height: "100@s"
   },
   columnContainer: {
     flexDirection: "column",
@@ -64,54 +64,54 @@ const commonStyles = {
     width: "50%"
   },
   connectorLetter: {
-    marginTop: scale(5),
-    marginBottom: scale(5)
+    marginTop: "5@s",
+    marginBottom: "5@s"
   },
   label: {
-    fontSize: scale(16),
+    fontSize: "16@s",
     color: commonColor.textColor,
     alignSelf: "center"
   },
   labelStatus: {
-    fontSize: scale(16)
+    fontSize: "16@s"
   },
   labelValue: {
-    fontSize: scale(30),
+    fontSize: "30@s",
     fontWeight: "bold"
   },
   labelTimeValue: {
-    fontSize: scale(25),
+    fontSize: "25@s",
     fontWeight: "bold"
   },
   labelUser: {
-    fontSize: scale(16)
+    fontSize: "16@s"
   },
   subLabel: {
-    fontSize: scale(12),
+    fontSize: "12@s",
     fontWeight: "bold",
-    marginTop: Platform.OS === "ios" ? 0 : scale(-5),
+    marginTop: Platform.OS === "ios" ? "0@s" : "-5@s",
     color: commonColor.textColor,
     alignSelf: "center"
   },
   subLabelStatus: {
-    marginTop: scale(0)
+    marginTop: "0@s"
   },
   subLabelUser: {
-    marginTop: scale(0)
+    marginTop: "0@s"
   },
   icon: {
-    fontSize: scale(25)
+    fontSize: "25@s"
   },
   userPicture: {
-    height: scale(52),
-    width: scale(52),
+    height: "52@s",
+    width: "52@s",
     alignSelf: "center",
-    marginBottom: scale(5),
-    borderRadius: scale(26),
+    marginBottom: "5@s",
+    borderRadius: "26@s",
     borderWidth: 2,
     borderColor: commonColor.textColor
   }
-};
+});
 
 const portraitStyles = {};
 

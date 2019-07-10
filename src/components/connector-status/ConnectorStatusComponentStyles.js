@@ -1,22 +1,22 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
-import { scale } from "react-native-size-matters";
+import { ScaledSheet } from "react-native-size-matters";
 
-const commonStyles = {
+const commonStyles = ScaledSheet.create({
   container: {},
   statusContainer: {
-    width: scale(44),
-    height: scale(44),
-    borderRadius: scale(22),
+    width: "44@s",
+    height: "44@s",
+    borderRadius: "22@s",
     justifyContent: "center",
     alignItems: "center"
   },
   statusLetter: {
     color: commonColor.textColor,
     fontWeight: "bold",
-    fontSize: scale(30),
-    marginTop: scale(-2)
+    fontSize: "30@s",
+    marginTop: "-2@s"
   },
   statusGreen: {
     backgroundColor: commonColor.brandSuccess
@@ -27,7 +27,7 @@ const commonStyles = {
   statusOrange: {
     backgroundColor: commonColor.brandWarning
   }
-};
+});
 
 const portraitStyles = {};
 

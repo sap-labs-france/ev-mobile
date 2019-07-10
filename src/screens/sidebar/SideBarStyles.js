@@ -1,10 +1,10 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import commonColor from "../../theme/variables/commonColor";
-import { scale } from "react-native-size-matters";
 import deepmerge from "deepmerge";
 import { Platform } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
 
-const commonStyles = {
+const commonStyles = ScaledSheet.create({
   background: {
     flex: 1,
     backgroundColor: commonColor.brandPrimary
@@ -16,45 +16,45 @@ const commonStyles = {
   logoContainer: {
     borderColor: commonColor.textColor,
     borderBottomWidth: 1,
-    padding: scale(5)
+    padding: "5@s"
   },
   logo: {
     resizeMode: "contain",
-    width: scale(100),
-    height: scale(50),
+    width: "100@s",
+    height: "50@s",
     alignSelf: "center",
-    margin: scale(5)
+    margin: "5@s"
   },
   versionText: {
     color: commonColor.textColor,
-    fontSize: scale(14),
-    margin: scale(2),
+    fontSize: "14@s",
+    margin: "2@s",
     alignSelf: "center"
   },
   versionDate: {
     color: commonColor.textColor,
-    fontSize: scale(14),
+    fontSize: "14@s",
     alignSelf: "center",
-    marginBottom: scale(2)
+    marginBottom: "2@s"
   },
   links: {
-    borderBottomWidth: 0,
+    borderBottomWidth: "0@s",
     borderBottomColor: "transparent",
-    height: Platform.OS === "ios" ? undefined : scale(25),
-    marginTop: Platform.OS === "ios" ? undefined : scale(10),
-    paddingBottom: Platform.OS === "ios" ? 0 : scale(15)
+    height: Platform.OS === "ios" ? undefined : "25@s",
+    marginTop: Platform.OS === "ios" ? undefined : "10@s",
+    paddingBottom: Platform.OS === "ios" ? "0@s" : "15@s"
   },
   linkText: {
     color: commonColor.textColor,
-    fontSize: scale(16),
-    paddingLeft: scale(10)
+    fontSize: "16@s",
+    paddingLeft: "10@s"
   },
   logoutContainer: {
     padding: 30,
-    paddingTop: 0
+    paddingTop: "0@s"
   },
   logoutButton: {
-    paddingTop: scale(10),
+    paddingTop: "10@s",
     flexDirection: "row",
     borderTopWidth: 1,
     borderTopColor: commonColor.textColor
@@ -75,12 +75,12 @@ const commonStyles = {
   },
   logoutText: {
     fontWeight: "bold",
-    fontSize: scale(14),
+    fontSize: "14@s",
     color: commonColor.textColor
   },
   userName: {
-    paddingTop: scale(5),
-    fontSize: scale(14),
+    paddingTop: "5@s",
+    fontSize: "14@s",
     color: commonColor.textColor
   },
   columnThumbnail: {
@@ -91,11 +91,11 @@ const commonStyles = {
     alignSelf: "flex-end"
   },
   profilePic: {
-    width: scale(40),
-    height: scale(40),
-    borderRadius: scale(20)
+    width: "40@s",
+    height: "40@s",
+    borderRadius: "20@s"
   }
-};
+});
 
 const portraitStyles = {};
 

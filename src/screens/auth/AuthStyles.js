@@ -1,9 +1,9 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
-import { scale } from "react-native-size-matters";
 import commonColor from "../../theme/variables/commonColor";
 import deepmerge from "deepmerge";
+import { ScaledSheet } from "react-native-size-matters";
 
-const commonStyles = {
+const commonStyles = ScaledSheet.create({
   noDisplay: {
     flex: 1,
     backgroundColor: "black"
@@ -41,59 +41,59 @@ const commonStyles = {
   },
   logo: {
     resizeMode: "contain",
-    marginTop: scale(20),
-    height: scale(100)
+    marginTop: "20@s",
+    height: "100@s"
   },
   appText: {
     color: commonColor.textColor,
-    fontSize: scale(30),
-    paddingTop: scale(15)
+    fontSize: "30@s",
+    paddingTop: "15@s"
   },
   appVersionText: {
     color: commonColor.textColor,
-    fontSize: scale(15)
+    fontSize: "15@s"
   },
   button: {
     width: "90%",
     alignSelf: "center",
-    height: scale(40),
-    marginBottom: scale(10),
+    height: "40@s",
+    marginBottom: "10@s",
     backgroundColor: "rgba(255,255,255,0.30)"
   },
   buttonText: {
     width: "100%",
     textAlign: "center",
-    fontSize: scale(15),
+    fontSize: "15@s",
     color: commonColor.textColor
   },
   inputGroup: {
-    height: scale(40),
+    height: "40@s",
     flexDirection: "row",
     justifyContent: "flex-start",
-    marginBottom: scale(10),
+    marginBottom: "10@s",
     backgroundColor: "rgba(255,255,255,0.20)",
-    borderWidth: 0,
+    borderWidth: "0@s",
     borderColor: "transparent"
   },
   inputIcon: {
     alignSelf: "center",
     textAlign: "center",
     width: "11%",
-    fontSize: scale(15)
+    fontSize: "15@s"
   },
   inputIconLock: {
-    fontSize: scale(20)
+    fontSize: "20@s"
   },
   inputField: {
     width: "79%",
-    fontSize: scale(15),
+    fontSize: "15@s",
     color: commonColor.textColor
   },
   formErrorText: {
-    fontSize: scale(12),
+    fontSize: "12@s",
     color: commonColor.brandDanger,
     alignSelf: "flex-start",
-    top: scale(-5)
+    top: "-5@s"
   },
   formErrorTextEula: {
     alignSelf: "center",
@@ -103,20 +103,20 @@ const commonStyles = {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    borderBottomWidth: 0,
-    paddingTop: 0,
-    marginBottom: scale(20),
-    marginTop: scale(5)
+    borderBottomWidth: "0@s",
+    paddingTop: "0@s",
+    marginBottom: "20@s",
+    marginTop: "5@s"
   },
   eulaCheckbox: {
-    marginRight: scale(15)
+    marginRight: "15@s"
   },
   eulaText: {
-    fontSize: scale(13),
+    fontSize: "13@s",
     color: commonColor.textColor
   },
   eulaLink: {
-    fontSize: scale(13),
+    fontSize: "13@s",
     color: commonColor.textColor,
     textDecorationLine: "underline"
   },
@@ -129,14 +129,14 @@ const commonStyles = {
   linksTextButton: {
     width: "100%",
     opacity: 0.9,
-    fontSize: scale(12),
+    fontSize: "12@s",
     fontWeight: "bold",
     color: commonColor.textColor
   },
   linksTextButtonRight: {
     textAlign: "right"
   }
-};
+});
 
 const portraitStyles = {};
 
