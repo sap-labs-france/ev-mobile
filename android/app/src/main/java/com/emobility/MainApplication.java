@@ -3,6 +3,7 @@ package com.emobility;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.github.wuxudong.rncharts.MPAndroidChartPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import com.github.yamill.orientation.OrientationPackage;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SplashScreenReactPackage(),
             new MPAndroidChartPackage(),
             new RNFirebasePackage(),
             new OrientationPackage(),
