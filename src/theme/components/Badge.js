@@ -21,7 +21,7 @@ export default (variables = variable) => {
     "NativeBase.Text": {
       color: variables.badgeColor,
       fontSize: variables.fontSizeBase,
-      lineHeight: variables.lineHeight - 1,
+      lineHeight: variables.lineHeight - 3,
       textAlign: "center",
       paddingHorizontal: 3
     },
@@ -30,7 +30,7 @@ export default (variables = variable) => {
     paddingHorizontal: 6,
     // alignSelf: "flex-start",
     borderRadius: 13.5,
-    height: scale(36)
+    height: scale(32)
   };
   return badgeTheme;
 };

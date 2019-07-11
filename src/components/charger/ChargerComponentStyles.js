@@ -1,9 +1,9 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
-import { scale } from "react-native-size-matters";
+import { ScaledSheet } from "react-native-size-matters";
 
-const commonStyles = {
+const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
@@ -16,23 +16,23 @@ const commonStyles = {
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "transparent",
-    padding: scale(5),
+    padding: "5@s",
     borderBottomColor: commonColor.textColor,
     borderBottomWidth: 1
   },
   name: {
     color: commonColor.textColor,
-    fontSize: scale(20),
-    marginLeft: scale(5),
+    fontSize: "20@s",
+    marginLeft: "5@s",
     fontWeight: "bold"
   },
   heartbeatIcon: {
     color: commonColor.brandSuccess,
-    fontSize: scale(18)
+    fontSize: "18@s"
   },
   deadHeartbeatIcon: {
     color: commonColor.brandDanger,
-    fontSize: scale(18)
+    fontSize: "18@s"
   },
   connectorsContainer: {
     flexDirection: "row",
@@ -40,7 +40,7 @@ const commonStyles = {
     alignItems: "center",
     flexWrap: "wrap"
   }
-};
+});
 
 const portraitStyles = {};
 

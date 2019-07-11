@@ -5,10 +5,11 @@ import ProviderFactory from "../../../provider/ProviderFactory";
 import Utils from "../../../utils/Utils";
 import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./ChartDetailsStyles";
-import { scale } from "react-native-size-matters";
 import commonColor from "../../../theme/variables/commonColor";
 import { LineChart } from "react-native-charts-wrapper";
 import PropTypes from "prop-types";
+import { ScaledSheet } from "react-native-size-matters";
+
 
 const fillGreen = commonColor.brandSuccess;
 const fillRed = commonColor.brandDanger;
@@ -108,7 +109,7 @@ export default class ChartDetails extends BaseScreen {
     // Check Consumptions\
     if (consumptionValues && consumptionValues.length > 1) {
       // Add
-      chartDefinition.data.dataSets.push({
+      chartDefinition.data.dataSets.push(ScaledSheet.create({
         values: consumptionValues,
         label: I18n.t("details.instantPowerChartLabel"),
         config: {
@@ -124,14 +125,14 @@ export default class ChartDetails extends BaseScreen {
           drawFilled: true,
           fillAlpha: 65,
           fillColor: processColor(fillRed),
-          valueTextSize: scale(15)
+          valueTextSize: "15@s"
         }
-      });
+      }));
     }
     // Check SoC
     if (stateOfChargeValues && stateOfChargeValues.length > 1) {
       // Add
-      chartDefinition.data.dataSets.push({
+      chartDefinition.data.dataSets.push(ScaledSheet.create({
         values: stateOfChargeValues,
         label: I18n.t("details.batteryChartLabel"),
         config: {
@@ -148,12 +149,12 @@ export default class ChartDetails extends BaseScreen {
           drawFilled: true,
           fillAlpha: 65,
           fillColor: processColor(fillGreen),
-          valueTextSize: scale(15)
+          valueTextSize: "15@s"
         }
-      });
+      }));
     }
     // X Axis
-    chartDefinition.xAxis = {
+    chartDefinition.xAxis = ScaledSheet.create({
       enabled: true,
       labelRotationAngle: -45,
       granularity: 1,
@@ -165,9 +166,9 @@ export default class ChartDetails extends BaseScreen {
       fontWeight: "bold",
       valueFormatter: "date",
       valueFormatterPattern: "HH:mm",
-      textSize: scale(8),
+      textSize: "8@s",
       textColor: processColor("white")
-    };
+    });
     // Y Axis
     chartDefinition.yAxis = {};
     // Check Consumptions\

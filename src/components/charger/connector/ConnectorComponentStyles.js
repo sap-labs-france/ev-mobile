@@ -1,9 +1,9 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../../theme/variables/commonColor";
-import { scale } from "react-native-size-matters";
+import { ScaledSheet } from "react-native-size-matters";
 
-const commonStyles = {
+const commonStyles = ScaledSheet.create({
   statusConnectorContainer: {
     width: "50%"
   },
@@ -25,43 +25,43 @@ const commonStyles = {
   rightConnectorContainer: {},
   statusDescription: {
     color: commonColor.textColor,
-    paddingTop: scale(5),
-    fontSize: scale(18)
+    paddingTop: "5@s",
+    fontSize: "18@s"
   },
   statusOneDescription: {
-    fontSize: scale(22)
+    fontSize: "22@s"
   },
   statusConnectorDetailContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
     width: "100%",
-    paddingLeft: scale(5),
-    paddingRight: scale(5),
-    paddingBottom: scale(15)
+    paddingLeft: "5@s",
+    paddingRight: "5@s",
+    paddingBottom: "15@s"
   },
   statusOneConnectorDetailContainer: {
-    marginTop: scale(-10),
-    padding: 0
+    marginTop: "-10@s",
+    padding: "0@s"
   },
   statusConnectorDescriptionContainer: {
-    paddingBottom: scale(5)
+    paddingBottom: "5@s"
   },
   leftStatusConnectorDetailContainer: {
-    paddingRight: scale(5)
+    paddingRight: "5@s"
   },
   rightStatusConnectorDetailContainer: {
-    paddingLeft: scale(5)
+    paddingLeft: "5@s"
   },
   statusConnectorDetail: {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    height: scale(60),
-    width: scale(60)
+    height: "60@s",
+    width: "60@s"
   },
   statusConnectorDetailLetter: {
-    marginTop: scale(-10)
+    marginTop: "-10@s"
   },
   animatableValue: {
     position: "absolute",
@@ -70,28 +70,28 @@ const commonStyles = {
   value: {
     color: commonColor.textColor,
     fontWeight: "bold",
-    marginTop: scale(-1),
-    fontSize: scale(30),
+    marginTop: "-1@s",
+    fontSize: "30@s",
     textAlign: "center"
   },
   connectorImage: {
-    width: scale(40),
-    height: scale(40)
+    width: "40@s",
+    height: "40@s"
   },
   labelImage: {
     color: commonColor.textColor,
-    fontSize: scale(10)
+    fontSize: "10@s"
   },
   label: {
     color: commonColor.textColor,
-    fontSize: scale(10),
-    marginTop: scale(-3)
+    fontSize: "10@s",
+    marginTop: "-3@s"
   },
   subLabel: {
     color: commonColor.textColor,
-    fontSize: scale(9)
+    fontSize: "9@s"
   }
-};
+});
 
 const portraitStyles = {};
 

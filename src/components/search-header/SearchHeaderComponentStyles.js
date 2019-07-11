@@ -1,39 +1,39 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
-import { scale } from "react-native-size-matters";
+import { ScaledSheet } from "react-native-size-matters";
 
-const commonStyles = {
+const commonStyles = ScaledSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    height: 0,
+    height: "0@s",
     opacity: 0,
-    paddingLeft: scale(10),
-    paddingRight: scale(10),
+    paddingLeft: "10@s",
+    paddingRight: "10@s",
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor
   },
   visible: {
-    height: scale(45),
+    height: "45@s",
     opacity: 1
   },
   hidden: {
-    height: 0,
+    height: "0@s",
     opacity: 0
   },
   inputField: {
     flex: 1,
-    paddingLeft: scale(5),
-    fontSize: scale(18),
+    paddingLeft: "5@s",
+    fontSize: "18@s",
     color: commonColor.textColor
   },
   icon: {
-    fontSize: scale(25),
+    fontSize: "25@s",
     color: commonColor.textColor
   }
-};
+});
 
 const portraitStyles = {};
 

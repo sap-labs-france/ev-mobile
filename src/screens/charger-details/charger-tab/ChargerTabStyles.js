@@ -1,9 +1,9 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../../theme/variables/commonColor";
-import { scale } from "react-native-size-matters";
+import { ScaledSheet } from "react-native-size-matters";
 
-const commonStyles = {
+const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
@@ -14,10 +14,10 @@ const commonStyles = {
   },
   tabHeader: {},
   tabIcon: {
-    fontSize: scale(20),
-    paddingBottom: scale(5)
+    fontSize: "20@s",
+    paddingBottom: "5@s"
   }
-};
+});
 
 const portraitStyles = {};
 
