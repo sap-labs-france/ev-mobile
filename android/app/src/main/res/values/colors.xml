@@ -1,3 +1,4 @@
 <resources>
-    <color name="blue">#D9EBFF</color>
+    <color name="primary_dark">#9DC2E0</color>
+    <color name="status_bar_color">#9DC2E0</color>
 </resources>
