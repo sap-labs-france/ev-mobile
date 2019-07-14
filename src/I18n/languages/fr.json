@@ -27,7 +27,7 @@
     "accountLocked": "Votre compte est bloqué",
     "accountNotActive": "Votre compte est inactif",
     "accountPending": "Compte en attente de confirmation, vérifiez vos e-mail",
-    "resetSuccess": "Mot de passe réinitialisé avec succès, vérifiez vos e-mail",
+    "resetSuccess": "Requête acceptée, vérifiez votre e-mail",
     "eulaNotAccepted": "Vous devez accepter les conditions d'utilisation",
     "newUser": "Nouvel Utilisateur ?",
     "forgotYourPassword": "Mot de passe oublié?",

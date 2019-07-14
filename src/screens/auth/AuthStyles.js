@@ -48,7 +48,8 @@ const commonStyles = ScaledSheet.create({
   },
   appText: {
     color: commonColor.textColor,
-    fontSize: "30@s",
+    fontSize: "40@s",
+    fontWeight: "bold",
     paddingTop: "15@s"
   },
   appVersionText: {
@@ -82,6 +83,9 @@ const commonStyles = ScaledSheet.create({
     textAlign: "center",
     width: "11%",
     fontSize: "15@s"
+  },
+  recaptcha: {
+    display: "none"
   },
   inputIconLock: {
     fontSize: "20@s"

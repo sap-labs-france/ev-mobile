@@ -6,7 +6,8 @@ export default class CentralServerProviderMock {
     return true;
   }
 
-  async resetPassword(email) {}
+  async resetPassword(tenant, email, token) {
+  }
 
   async login(email, password, eula) {}
 
