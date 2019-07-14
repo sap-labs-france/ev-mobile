@@ -29,7 +29,7 @@ export default {
 
   // CheckBox
   CheckboxRadius: platform === "ios" ? 13 : 0,
-  CheckboxBorderWidth: platform === "ios" ? 1 : 2,
+  CheckboxBorderWidth: platform === "ios" ? 2 : 2,
   CheckboxPaddingLeft: platform === "ios" ? 4 : 2,
   CheckboxPaddingBottom: platform === "ios" ? 0 : 5,
   CheckboxIconSize: platform === "ios" ? 21 : 14,

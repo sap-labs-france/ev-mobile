@@ -12,11 +12,13 @@ const commonStyles = ScaledSheet.create({
     flex: 1
   },
   container: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.1)"
+    flex: 1
   },
   background: {
     flex: 1
+  },
+  imageBackground: {
+    resizeMode: "cover"
   },
   scrollContainer: {
     minHeight: "90%"
@@ -104,9 +106,9 @@ const commonStyles = ScaledSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderBottomWidth: "0@s",
-    paddingTop: "0@s",
-    marginBottom: "20@s",
-    marginTop: "5@s"
+    // paddingTop: "0@s",
+    marginBottom: "30@s",
+    marginTop: "15@s"
   },
   eulaCheckbox: {
     marginRight: "15@s"

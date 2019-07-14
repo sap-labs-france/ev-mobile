@@ -22,7 +22,7 @@ import DeviceInfo from "react-native-device-info";
 
 const _provider = ProviderFactory.getProvider();
 const logo = require("../../../../assets/logo-low.gif");
-const background = require("../../../../assets/bg-signup.png");
+const background = require("../../../../assets/bg.png");
 
 const formValidationDef = {
   email: {

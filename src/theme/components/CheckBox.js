@@ -4,10 +4,16 @@ export default (variables = variable) => {
   const checkBoxTheme = {
     ".checked": {
       "NativeBase.Icon": {
-        color: variables.checkboxTickColor
+        color: variables.checkboxTickColor,
+        lineHeight: variables.CheckboxIconSize,
+        marginTop: variables.CheckboxIconMarginTop,
+        fontSize: variables.CheckboxFontSize
       },
       "NativeBase.IconNB": {
-        color: variables.checkboxTickColor
+        color: variables.checkboxTickColor,
+        lineHeight: variables.CheckboxIconSize,
+        marginTop: variables.CheckboxIconMarginTop,
+        fontSize: variables.CheckboxFontSize
       }
     },
     "NativeBase.Icon": {

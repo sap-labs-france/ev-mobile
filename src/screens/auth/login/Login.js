@@ -205,7 +205,11 @@ export default class Login extends ResponsiveComponent {
         iterationCount={1}
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
       >
-        <ImageBackground source={background} style={style.background}>
+        <ImageBackground
+            source={background}
+            style={style.background}
+            imageStyle={style.imageBackground}
+           >
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.container} behavior="padding">
               <View style={style.formHeader}>
