@@ -171,13 +171,13 @@ export default class RetrievePassword extends ResponsiveComponent {
                 )}
               </Form>
             </KeyboardAvoidingView>
-            <ReCaptcha
-              containerStyle={style.recaptcha}
-              siteKey="6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw"
-              url={captchaBaseUrl}
-              action="ResetPassword"
-              reCaptchaType={1}
-              onExecute={this._recaptchaResponseToken}/>
+          <ReCaptcha
+            containerStyle={style.recaptcha}
+            siteKey="6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw"
+            url={captchaBaseUrl}
+            action="ResetPassword"
+            reCaptchaType={1}
+            onExecute={this._recaptchaResponseToken}/>
           </ScrollView>
           <Footer>
             <Button transparent onPress={() => this.props.navigation.goBack()}>

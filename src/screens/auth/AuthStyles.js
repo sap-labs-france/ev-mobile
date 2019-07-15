@@ -85,7 +85,7 @@ const commonStyles = ScaledSheet.create({
     fontSize: "15@s"
   },
   recaptcha: {
-    display: "none"
+    backgroundColor: "transparent"
   },
   inputIconLock: {
     fontSize: "20@s"
@@ -110,7 +110,6 @@ const commonStyles = ScaledSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderBottomWidth: "0@s",
-    // paddingTop: "0@s",
     marginBottom: "30@s",
     marginTop: "15@s"
   },
