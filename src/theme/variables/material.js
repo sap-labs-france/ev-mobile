@@ -30,13 +30,13 @@ export default {
   CheckboxRadius: 0,
   CheckboxBorderWidth: 2,
   CheckboxPaddingLeft: 2,
-  CheckboxPaddingBottom: platform === "ios" ? 0 : 5,
+  CheckboxPaddingBottom: platform === "ios" ? 0 : 7,
   CheckboxIconSize: platform === "ios" ? 18 : 14,
   CheckboxIconMarginTop: platform === "ios" ? undefined : 1,
   CheckboxFontSize: platform === "ios" ? 21 : 18,
   DefaultFontSize: 17,
   checkboxBgColor: "#039BE5",
-  checkboxSize: 20,
+  checkboxSize: 25,
   checkboxTickColor: "#fff",
 
   // New Variable

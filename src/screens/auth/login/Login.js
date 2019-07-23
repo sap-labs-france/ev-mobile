@@ -9,7 +9,7 @@ import {
   Text as TextRN,
   TextInput
 } from "react-native";
-import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet } from "native-base";
+import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet, Footer, Left, Right } from "native-base";
 import Orientation from "react-native-orientation";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import * as Animatable from "react-native-animatable";
@@ -26,7 +26,6 @@ import DeviceInfo from "react-native-device-info";
 const _provider = providerFactory.getProvider();
 const _tenants = _provider.getTenants();
 
-// const background = require("../../../../assets/lightning.gif");
 const background = require("../../../../assets/bg.png");
 const logo = require("../../../../assets/logo-low.gif");
 
@@ -80,7 +79,7 @@ export default class Login extends ResponsiveComponent {
 
   async componentDidMount() {
     // Unlock all
-    Orientation.unlockAllOrientations();
+    Orientation.lockToPortrait();
     // Check if user is authenticated
     if (await _provider.isUserAuthenticated()) {
       // Navigate
@@ -184,7 +183,10 @@ export default class Login extends ResponsiveComponent {
     const navigation = this.props.navigation;
     // Tenant selected?
     if (this.state.tenant) {
-      navigation.navigate("RetrievePassword", { tenant: this.state.tenant });
+      navigation.navigate("RetrievePassword", {
+        tenant: this.state.tenant,
+        email: this.state.email
+      });
     } else {
       // Error
       Message.showError(I18n.t("authentication.mustSelectTenant"));
@@ -205,7 +207,11 @@ export default class Login extends ResponsiveComponent {
         iterationCount={1}
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
       >
-        <ImageBackground source={background} style={style.background}>
+        <ImageBackground
+            source={background}
+            style={style.background}
+            imageStyle={style.imageBackground}
+           >
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.container} behavior="padding">
               <View style={style.formHeader}>
@@ -320,18 +326,18 @@ export default class Login extends ResponsiveComponent {
               </Form>
             </KeyboardAvoidingView>
           </ScrollView>
-          {/* <Footer>
-              <Left>
-                <Button small transparent style={style.linksButtonLeft} onPress={ () => this._newUser() }>
-                  <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
-                </Button>
-              </Left>
-              <Right>
-                <Button small transparent style={style.linksButtonRight} onPress={ () => this._forgotPassword() }>
-                  <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
-                </Button>
-              </Right>
-            </Footer> */}
+          <Footer>
+            {/* <Left>
+              <Button small transparent style={style.linksButtonLeft} onPress={ () => this._newUser() }>
+                <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
+              </Button>
+            </Left> */}
+            <Right>
+              <Button small transparent style={style.linksButtonRight} onPress={ () => this._forgotPassword() }>
+                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
+              </Button>
+            </Right>
+          </Footer>
         </ImageBackground>
       </Animatable.View>
     );

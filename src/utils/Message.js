@@ -1,5 +1,5 @@
 import { Toast } from "native-base";
-import { ScaledSheet } from "react-native-size-matters";
+import { scale } from "react-native-size-matters";
 
 export default class Message {
   static showError(message) {
@@ -24,18 +24,16 @@ export default class Message {
 
   static _show(message, type) {
     // Show
-    Toast.show(
-      ScaledSheet.create({
-        text: message,
-        textStyle: {
-          fontSize: "15@s",
-          color: "white",
-          textAlign: "center"
-        },
-        duration: 3000,
-        type,
-        position: "top"
-      })
-    );
+    Toast.show({
+      text: message,
+      textStyle: {
+        fontSize: scale(15),
+        color: "white",
+        textAlign: "center"
+      },
+      duration: 3000,
+      type,
+      position: "top"
+    });
   }
 }

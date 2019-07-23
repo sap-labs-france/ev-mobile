@@ -151,8 +151,9 @@ export default class SignUp extends React.Component {
     return (
       <Container>
         <ImageBackground
-          source={require("../../../../assets/bg-signup.png")}
+          source={require("../../../../assets/bg.png")}
           style={styles.background}
+          imageStyle={styles.imageBackground}
         >
           <ScrollView>
             <Content contentContainerStyle={styles.content}>

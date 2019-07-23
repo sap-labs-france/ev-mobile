@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  WebView,
   ScrollView,
   Image,
   TextInput,
@@ -19,10 +18,12 @@ import computeStyleSheet from "../AuthStyles";
 import * as Animatable from "react-native-animatable";
 import Constants from "../../../utils/Constants";
 import DeviceInfo from "react-native-device-info";
+import ReCaptcha from "react-native-recaptcha-v3";
+
 
 const _provider = ProviderFactory.getProvider();
 const logo = require("../../../../assets/logo-low.gif");
-const background = require("../../../../assets/bg-signup.png");
+const background = require("../../../../assets/bg.png");
 
 const formValidationDef = {
   email: {
@@ -40,10 +41,16 @@ export default class RetrievePassword extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
-      tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", null),
-      email: "",
+      tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
+      email: Utils.getParamFromNavigation(this.props.navigation, "email", ""),
+      token: null,
+      captchaBaseUrl: _provider.getCaptchaBaseUrl(),
       loading: false
     };
+  }
+
+  _recaptchaResponseToken = (token) => {
+    this.setState({ token });
   }
 
   _resetPassword = async () => {
@@ -52,11 +59,11 @@ export default class RetrievePassword extends ResponsiveComponent {
     // Ok?
     if (formIsValid) {
       // Login
-      const { email } = this.state;
+      const { tenant, email, token } = this.state;
       try {
         this.setState({ loading: true });
         // Login
-        await _provider.resetPassword(email);
+        await _provider.resetPassword(tenant, email, token);
         // Login Success
         this.setState({ loading: false });
         // Show
@@ -99,8 +106,8 @@ export default class RetrievePassword extends ResponsiveComponent {
   }
 
   render() {
-    const { loading } = this.state;
     const style = computeStyleSheet();
+    const { loading, token, captchaBaseUrl } = this.state;
     return (
       <Animatable.View
         style={style.container}
@@ -108,7 +115,11 @@ export default class RetrievePassword extends ResponsiveComponent {
         iterationCount={1}
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
       >
-        <ImageBackground source={background} style={style.background}>
+        <ImageBackground
+            source={background}
+            style={style.background}
+            imageStyle={style.imageBackground}
+          >
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.container} behavior="padding">
               <View style={style.formHeader}>
@@ -133,7 +144,7 @@ export default class RetrievePassword extends ResponsiveComponent {
                     autoCorrect={false}
                     keyboardType={"email-address"}
                     onChangeText={text => this.setState({ email: text })}
-                    secureTextEntry={false}
+                    value={this.state.email}
                   />
                 </Item>
                 {this.state.errorEmail &&
@@ -142,7 +153,7 @@ export default class RetrievePassword extends ResponsiveComponent {
                       {errorMessage}
                     </Text>
                   ))}
-                {loading ? (
+                {loading || !token ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
                   <Button
@@ -160,17 +171,13 @@ export default class RetrievePassword extends ResponsiveComponent {
                 )}
               </Form>
             </KeyboardAvoidingView>
-            <WebView
-              javaScriptEnabled={true}
-              mixedContentMode={"always"}
-              style={{ height: 200, backgroundColor: "black" }}
-              onMessage={this.onMessage}
-              source={{
-                html: `
-                  `,
-                baseUrl: "https://slf.cfapps.eu10.hana.ondemand.com" // <-- SET YOUR DOMAIN HERE
-              }}
-            />
+          <ReCaptcha
+            containerStyle={style.recaptcha}
+            siteKey="6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw"
+            url={captchaBaseUrl}
+            action="ResetPassword"
+            reCaptchaType={1}
+            onExecute={this._recaptchaResponseToken}/>
           </ScrollView>
           <Footer>
             <Button transparent onPress={() => this.props.navigation.goBack()}>

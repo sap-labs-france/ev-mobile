@@ -12,11 +12,13 @@ const commonStyles = ScaledSheet.create({
     flex: 1
   },
   container: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.1)"
+    flex: 1
   },
   background: {
     flex: 1
+  },
+  imageBackground: {
+    resizeMode: "cover"
   },
   scrollContainer: {
     minHeight: "90%"
@@ -46,7 +48,8 @@ const commonStyles = ScaledSheet.create({
   },
   appText: {
     color: commonColor.textColor,
-    fontSize: "30@s",
+    fontSize: "40@s",
+    fontWeight: "bold",
     paddingTop: "15@s"
   },
   appVersionText: {
@@ -81,6 +84,9 @@ const commonStyles = ScaledSheet.create({
     width: "11%",
     fontSize: "15@s"
   },
+  recaptcha: {
+    backgroundColor: "transparent"
+  },
   inputIconLock: {
     fontSize: "20@s"
   },
@@ -104,9 +110,8 @@ const commonStyles = ScaledSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderBottomWidth: "0@s",
-    paddingTop: "0@s",
-    marginBottom: "20@s",
-    marginTop: "5@s"
+    marginBottom: "30@s",
+    marginTop: "15@s"
   },
   eulaCheckbox: {
     marginRight: "15@s"

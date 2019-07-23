@@ -2,7 +2,7 @@ import color from "color";
 import { scale } from "react-native-size-matters";
 import { Platform, Dimensions, PixelRatio } from "react-native";
 
-const primary = "black";
+const primary = "#1976d2";
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
@@ -31,15 +31,15 @@ export default {
   // CheckBox
   CheckboxRadius: platform === "ios" ? 13 : 0,
   CheckboxBorderWidth: platform === "ios" ? 1 : 2,
-  CheckboxPaddingLeft: platform === "ios" ? 4 : 2,
-  CheckboxPaddingBottom: platform === "ios" ? 0 : 5,
+  CheckboxPaddingLeft: platform === "ios" ? 5 : 2,
+  CheckboxPaddingBottom: platform === "ios" ? 0 : 20,
   CheckboxIconSize: platform === "ios" ? 21 : 21,
-  CheckboxIconMarginTop: platform === "ios" ? undefined : 1,
+  CheckboxIconMarginTop: platform === "ios" ? 2 : 1,
   CheckboxFontSize: platform === "ios" ? 23 / 0.9 : 18,
   DefaultFontSize: 17,
-  checkboxBgColor: "#039BE5",
-  checkboxSize: 20,
-  checkboxTickColor: "#fff",
+  checkboxBgColor: "#fff",
+  checkboxSize: 22,
+  checkboxTickColor: primary,
 
   // New Variable
   get defaultTextColor() {
@@ -103,7 +103,7 @@ export default {
 
   // Color
   brandPrimary: primary,
-  brandSecondary: "#00c497",
+  brandSecondary: "#2196f3",
   brandInfo: "#62B1F6",
   brandSuccess: "#5cb85c",
   brandDanger: "#d9534f",

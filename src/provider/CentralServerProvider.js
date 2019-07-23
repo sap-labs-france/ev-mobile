@@ -4,6 +4,7 @@ import SecurityProvider from "../security/SecurityProvider";
 import SecuredStorage from "../utils/SecuredStorage";
 import jwtDecode from "jwt-decode";
 
+const captchaBaseUrl = "https://evse.cfapps.eu10.hana.ondemand.com/";
 const centralRestServerServiceBaseURL =
   "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
 const centralRestServerServiceAuthURL = centralRestServerServiceBaseURL + "/client/auth";
@@ -23,6 +24,10 @@ let _securityProvider;
 const _siteImages = [];
 
 export default class CentralServerProvider {
+  getCaptchaBaseUrl() {
+    return captchaBaseUrl;
+  }
+
   // eslint-disable-next-line class-methods-use-this
   async initialize() {
     // Only once
@@ -122,15 +127,16 @@ export default class CentralServerProvider {
     return _decodedToken;
   }
 
-  async resetPassword(email) {
-    this.debug("resetPassword");
+  async resetPassword(tenant, email, token) {
     // Init?
     await this.initialize();
     // Call
     await axios.post(
       `${centralRestServerServiceAuthURL}/Reset`,
       {
-        email
+        tenant,
+        email,
+        captcha: token
       },
       {
         headers: this._builHeaders()
