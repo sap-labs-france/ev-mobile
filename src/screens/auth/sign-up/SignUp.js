@@ -21,32 +21,32 @@ const formValidationDef = {
   name: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("general.required")
+      message: '^' + I18n.t("authentication.mandatory_name")
     }
   },
   firstName: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("general.required")
+      message: '^' + I18n.t("authentication.mandatory_first_name")
     }
   },
   email: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("general.required")
+      message: '^' + I18n.t("authentication.mandatory_email")
     },
     email: {
-      message: "^" + I18n.t("general.email")
+      message: '^' + I18n.t("authentication.invalid_email")
     }
   },
   password: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("general.required")
+      message: '^' + I18n.t("authentication.mandatory_password")
     },
     equality: {
       attribute: "ghost",
-      message: "^" + I18n.t("authentication.passwordRule"),
+      message: '^' + I18n.t("authentication.passwordRule"),
       comparator(password, ghost) {
         // True if EULA is checked
         return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(
@@ -58,17 +58,17 @@ const formValidationDef = {
   repeatPassword: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("general.required")
+      message: '^' + I18n.t("authentication.mandatory_password")
     },
     equality: {
       attribute: "password",
-      message: "^" + I18n.t("authentication.passwordNotMatch")
+      message: '^' + I18n.t("authentication.passwordNotMatch")
     }
   },
   eula: {
     equality: {
       attribute: "ghost",
-      message: "^" + I18n.t("authentication.eulaNotAccepted"),
+      message: I18n.t("authentication.eulaNotAccepted"),
       comparator(eula, ghost) {
         // True if EULA is checked
         return eula;
@@ -81,8 +81,10 @@ export default class SignUp extends React.Component {
     super(props);
     this.captchaSiteKey = _provider.getCaptchaSiteKey();
     this.captchaBaseUrl = _provider.getCaptchaBaseUrl();
+    const tenantSubDomain = Utils.getParamFromNavigation(this.props.navigation, "tenant", "");
+    this.tenant = _provider.getTenant(tenantSubDomain);
     this.state = {
-      tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
+      tenant: tenantSubDomain,
       name: "",
       firstName: "",
       email: Utils.getParamFromNavigation(this.props.navigation, "email", ""),
@@ -124,7 +126,10 @@ export default class SignUp extends React.Component {
         return this.props.navigation.dispatch(
           StackActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({ routeName: "Login" })]
+            actions: [NavigationActions.navigate({ routeName: "Login", params: {
+              tenant: this.state.tenant,
+              email: this.state.email
+            }})]
           })
         );
       } catch (error) {
@@ -143,6 +148,7 @@ export default class SignUp extends React.Component {
 
   render() {
     const style = computeStyleSheet();
+    const navigation = this.props.navigation;
     const { eula, loading, captcha } = this.state;
     return (
       <Animatable.View
@@ -191,7 +197,7 @@ export default class SignUp extends React.Component {
                   ))}
 
                 <Item inlineLabel rounded style={style.inputGroup}>
-                  <Icon active name="person" />
+                  <Icon active name="person" style={style.inputIcon} />
                   <TextInput
                     name="firstName"
                     type="text"
@@ -216,7 +222,7 @@ export default class SignUp extends React.Component {
                   ))}
 
                 <Item inlineLabel rounded style={style.inputGroup}>
-                  <Icon active name="mail" />
+                  <Icon active name="mail" style={style.inputIcon} />
                   <TextInput
                     name="email"
                     type="email"
@@ -242,7 +248,7 @@ export default class SignUp extends React.Component {
                   ))}
 
                 <Item inlineLabel rounded style={style.inputGroup}>
-                  <Icon active name="unlock" />
+                  <Icon active name="unlock" style={style.inputIcon} />
                   <TextInput
                     name="password"
                     type="password"
@@ -267,7 +273,7 @@ export default class SignUp extends React.Component {
                     </Text>
                   ))}
                 <Item inlineLabel rounded style={style.inputGroup}>
-                  <Icon active name="unlock" />
+                  <Icon active name="unlock" style={style.inputIcon} />
                   <TextInput
                     name="repeatPassword"
                     type="password"
@@ -314,7 +320,7 @@ export default class SignUp extends React.Component {
                   <Spinner style={style.spinner} color="white" />
                 ) : (
                   <Button rounded primary block large style={style.button} onPress={this._signUp}>
-                    <Text style={style.buttonText}>{I18n.t("authentication.signUp")}</Text>
+                    <Text style={style.buttonText}>{I18n.t("authentication.signUp", { tenantName: this.tenant.name })}</Text>
                   </Button>
                 )}
               </Form>

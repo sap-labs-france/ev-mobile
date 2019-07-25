@@ -29,10 +29,10 @@ const formValidationDef = {
   email: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("general.required")
+      message: '^' + I18n.t("authentication.mandatory_email")
     },
     email: {
-      message: "^" + I18n.t("general.email")
+      message: '^' + I18n.t("authentication.invalid_email")
     }
   }
 };
@@ -42,8 +42,10 @@ export default class RetrievePassword extends ResponsiveComponent {
     super(props);
     this.captchaSiteKey = _provider.getCaptchaSiteKey();
     this.captchaBaseUrl = _provider.getCaptchaBaseUrl();
+    const tenantSubDomain = Utils.getParamFromNavigation(this.props.navigation, "tenant", "");
+    this.tenant = _provider.getTenant(tenantSubDomain);
     this.state = {
-      tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
+      tenant: tenantSubDomain,
       email: Utils.getParamFromNavigation(this.props.navigation, "email", ""),
       captcha: null,
       loading: false
@@ -54,7 +56,7 @@ export default class RetrievePassword extends ResponsiveComponent {
     this.setState({ captcha });
   }
 
-  _resetPassword = async () => {
+  _retrievePassword = async () => {
     // Check field
     const formIsValid = Utils.validateInput(this, formValidationDef);
     if (formIsValid) {
@@ -71,7 +73,10 @@ export default class RetrievePassword extends ResponsiveComponent {
         return this.props.navigation.dispatch(
           StackActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({ routeName: "Login" })]
+            actions: [NavigationActions.navigate({ routeName: "Login", params: {
+              tenant: this.state.tenant,
+              email: this.state.email
+            }})]
           })
         );
       } catch (error) {
@@ -148,8 +153,8 @@ export default class RetrievePassword extends ResponsiveComponent {
                 {loading || !captcha ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
-                  <Button rounded primary block large style={style.button} onPress={this._resetPassword}>
-                    <Text style={style.buttonText}>{I18n.t("authentication.retrievePassword")}</Text>
+                  <Button rounded primary block large style={style.button} onPress={this._retrievePassword}>
+                    <Text style={style.buttonText}>{I18n.t("authentication.retrievePassword", { tenantName: this.tenant.name })}</Text>
                   </Button>
                 )}
               </Form>

@@ -97,12 +97,14 @@ const commonStyles = ScaledSheet.create({
   },
   formErrorText: {
     fontSize: "12@s",
+    marginLeft: 30,
     color: commonColor.brandDanger,
     alignSelf: "flex-start",
     top: "-5@s"
   },
   formErrorTextEula: {
     alignSelf: "center",
+    marginLeft: 0,
     textDecorationLine: "none"
   },
   eulaContainer: {
