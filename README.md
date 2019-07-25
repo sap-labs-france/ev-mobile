@@ -11,14 +11,14 @@ This application is the Electric Vehicule Charging Station (EVSE) mobile applica
 * Install Java SE Development Kit 8
 * Install React Native: https://facebook.github.io/react-native/
   ```
-  npm install -g expo-cli
+  npm install -g react-native-cli
   ```
 * Install Android Studio: https://developer.android.com/studio/
   * Ensure Android SDK Platform 28 and Intel x86 Atom_64 System Image are checked in the SDK manager.
   * Windows:
-    * Add a user environment variable:
+    * Add user environment variable:
       **ANDROID_HOME=C:\Users\YOUR_USERNAME\AppData\Local\Android\Sdk**
-    * Add **C:\Users\YOUR_USERNAME\AppData\Local\Android\Sdk\platform-tools** to the user paths
+    * Add **C:\Users\YOUR_USERNAME\AppData\Local\Android\Sdk\platform-tools** to user paths
   * OSX/*nix:
     * Add to your shell profile:
     ```
