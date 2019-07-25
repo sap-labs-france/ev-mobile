@@ -9,7 +9,7 @@ const centralRestServerServiceBaseURL =
   "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
 const centralRestServerServiceAuthURL = centralRestServerServiceBaseURL + "/client/auth";
 const centralRestServerServiceSecuredURL = centralRestServerServiceBaseURL + "/client/api";
-
+const captchaSiteKey = "6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw";
 // Debug
 const DEBUG = false;
 
@@ -26,6 +26,10 @@ const _siteImages = [];
 export default class CentralServerProvider {
   getCaptchaBaseUrl() {
     return captchaBaseUrl;
+  }
+
+  getCaptchaSiteKey() {
+    return captchaSiteKey;
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -127,7 +131,7 @@ export default class CentralServerProvider {
     return _decodedToken;
   }
 
-  async resetPassword(tenant, email, token) {
+  async resetPassword(tenant, email, captcha) {
     // Init?
     await this.initialize();
     // Call
@@ -136,7 +140,7 @@ export default class CentralServerProvider {
       {
         tenant,
         email,
-        captcha: token
+        captcha
       },
       {
         headers: this._builHeaders()
@@ -200,16 +204,18 @@ export default class CentralServerProvider {
     _securityProvider = new SecurityProvider(_decodedToken);
   }
 
-  async register(name, firstName, email, passwords, eula) {
+  async register(tenant, name, firstName, email, passwords, acceptEula, captcha) {
     this.debug("register");
     const result = await axios.post(
       `${centralRestServerServiceAuthURL}/RegisterUser`,
       {
+        tenant,
         name,
         firstName,
         email,
         passwords,
-        acceptEula: eula
+        acceptEula,
+        captcha
       },
       {
         headers: this._builHeaders()

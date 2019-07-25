@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  ScrollView,
-  Image,
-  ImageBackground,
-  Keyboard,
-  Linking,
-  KeyboardAvoidingView,
-  Text as TextRN,
-  TextInput
-} from "react-native";
+import { ScrollView, Image, ImageBackground, Keyboard, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
 import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet, Footer, Left, Right } from "native-base";
 import Orientation from "react-native-orientation";
 import { ResponsiveComponent } from "react-native-responsive-ui";
@@ -25,7 +16,6 @@ import DeviceInfo from "react-native-device-info";
 
 const _provider = providerFactory.getProvider();
 const _tenants = _provider.getTenants();
-
 const background = require("../../../../assets/bg.png");
 const logo = require("../../../../assets/logo-low.gif");
 
@@ -170,9 +160,13 @@ export default class Login extends ResponsiveComponent {
   };
 
   _newUser = () => {
+    const navigation = this.props.navigation;
     // Tenant selected?
     if (this.state.tenant) {
-      Linking.openURL(`https://${this.state.tenant}.ev.cfapps.eu10.hana.ondemand.com/#/register`);
+      navigation.navigate("SignUp", {
+        tenant: this.state.tenant,
+        email: this.state.email
+      });
     } else {
       // Error
       Message.showError(I18n.t("authentication.mustSelectTenant"));
@@ -208,10 +202,10 @@ export default class Login extends ResponsiveComponent {
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
       >
         <ImageBackground
-            source={background}
-            style={style.background}
-            imageStyle={style.imageBackground}
-           >
+          source={background}
+          style={style.background}
+          imageStyle={style.imageBackground}
+          >
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.container} behavior="padding">
               <View style={style.formHeader}>
@@ -222,10 +216,7 @@ export default class Login extends ResponsiveComponent {
                 )} ${DeviceInfo.getVersion()}`}</Text>
               </View>
               <Form style={style.form}>
-                <Button
-                  rounded
-                  block
-                  style={style.button}
+                <Button rounded block style={style.button}
                   onPress={() =>
                     ActionSheet.show(
                       {
@@ -246,7 +237,7 @@ export default class Login extends ResponsiveComponent {
                       {errorMessage}
                     </Text>
                   ))}
-                <Item rounded style={style.inputGroup}>
+                <Item inlineLabel rounded style={style.inputGroup}>
                   <Icon active name="mail" style={style.inputIcon} />
                   <TextInput
                     name="email"
@@ -271,7 +262,7 @@ export default class Login extends ResponsiveComponent {
                       {errorMessage}
                     </Text>
                   ))}
-                <Item rounded style={style.inputGroup}>
+                <Item inlineLabel rounded style={style.inputGroup}>
                   <Icon active name="unlock" style={[style.inputIcon, style.inputIconLock]} />
                   <TextInput
                     name="password"
@@ -327,11 +318,11 @@ export default class Login extends ResponsiveComponent {
             </KeyboardAvoidingView>
           </ScrollView>
           <Footer>
-            {/* <Left>
+            <Left>
               <Button small transparent style={style.linksButtonLeft} onPress={ () => this._newUser() }>
                 <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
               </Button>
-            </Left> */}
+            </Left>
             <Right>
               <Button small transparent style={style.linksButtonRight} onPress={ () => this._forgotPassword() }>
                 <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
