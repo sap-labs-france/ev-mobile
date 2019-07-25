@@ -40,30 +40,29 @@ const formValidationDef = {
 export default class RetrievePassword extends ResponsiveComponent {
   constructor(props) {
     super(props);
+    this.captchaSiteKey = _provider.getCaptchaSiteKey();
+    this.captchaBaseUrl = _provider.getCaptchaBaseUrl();
     this.state = {
       tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
       email: Utils.getParamFromNavigation(this.props.navigation, "email", ""),
-      token: null,
-      captchaBaseUrl: _provider.getCaptchaBaseUrl(),
+      captcha: null,
       loading: false
     };
   }
 
-  _recaptchaResponseToken = (token) => {
-    this.setState({ token });
+  _recaptchaResponseToken = (captcha) => {
+    this.setState({ captcha });
   }
 
   _resetPassword = async () => {
     // Check field
     const formIsValid = Utils.validateInput(this, formValidationDef);
-    // Ok?
     if (formIsValid) {
-      // Login
-      const { tenant, email, token } = this.state;
+      const { tenant, email, captcha } = this.state;
       try {
         this.setState({ loading: true });
         // Login
-        await _provider.resetPassword(tenant, email, token);
+        await _provider.resetPassword(tenant, email, captcha);
         // Login Success
         this.setState({ loading: false });
         // Show
@@ -98,16 +97,9 @@ export default class RetrievePassword extends ResponsiveComponent {
     }
   };
 
-  // eslint-disable-next-line class-methods-use-this
-  onMessage(data) {
-    //Prints out data that was passed.
-    console.log("onMessage");
-    console.log(data);
-  }
-
   render() {
     const style = computeStyleSheet();
-    const { loading, token, captchaBaseUrl } = this.state;
+    const { loading, captcha } = this.state;
     return (
       <Animatable.View
         style={style.container}
@@ -116,10 +108,10 @@ export default class RetrievePassword extends ResponsiveComponent {
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
       >
         <ImageBackground
-            source={background}
-            style={style.background}
-            imageStyle={style.imageBackground}
-          >
+          source={background}
+          style={style.background}
+          imageStyle={style.imageBackground}
+        >
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.container} behavior="padding">
               <View style={style.formHeader}>
@@ -130,7 +122,7 @@ export default class RetrievePassword extends ResponsiveComponent {
                 )} ${DeviceInfo.getVersion()}`}</Text>
               </View>
               <Form style={style.form}>
-                <Item rounded style={style.inputGroup}>
+                <Item inlineLabel rounded style={style.inputGroup}>
                   <Icon active name="mail" style={style.inputIcon} />
                   <TextInput
                     name="email"
@@ -153,34 +145,25 @@ export default class RetrievePassword extends ResponsiveComponent {
                       {errorMessage}
                     </Text>
                   ))}
-                {loading || !token ? (
+                {loading || !captcha ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
-                  <Button
-                    rounded
-                    primary
-                    block
-                    large
-                    style={style.button}
-                    onPress={this._resetPassword}
-                  >
-                    <Text style={style.buttonText}>
-                      {I18n.t("authentication.retrievePassword")}
-                    </Text>
+                  <Button rounded primary block large style={style.button} onPress={this._resetPassword}>
+                    <Text style={style.buttonText}>{I18n.t("authentication.retrievePassword")}</Text>
                   </Button>
                 )}
               </Form>
             </KeyboardAvoidingView>
-          <ReCaptcha
-            containerStyle={style.recaptcha}
-            siteKey="6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw"
-            url={captchaBaseUrl}
-            action="ResetPassword"
-            reCaptchaType={1}
-            onExecute={this._recaptchaResponseToken}/>
+            <ReCaptcha
+              containerStyle={style.recaptcha}
+              siteKey={this.captchaSiteKey}
+              url={this.captchaBaseUrl}
+              action="ResetPassword"
+              reCaptchaType={1}
+              onExecute={this._recaptchaResponseToken}/>
           </ScrollView>
           <Footer>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
+            <Button small transparent onPress={() => this.props.navigation.goBack()}>
               <Text style={style.linksTextButton}>{I18n.t("authentication.backLogin")}</Text>
             </Button>
           </Footer>
