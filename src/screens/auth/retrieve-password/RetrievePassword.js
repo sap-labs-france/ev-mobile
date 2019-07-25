@@ -64,7 +64,7 @@ export default class RetrievePassword extends ResponsiveComponent {
       try {
         this.setState({ loading: true });
         // Login
-        await _provider.resetPassword(tenant, email, captcha);
+        await _provider.retrievePassword(tenant, email, captcha);
         // Login Success
         this.setState({ loading: false });
         // Show
@@ -87,7 +87,6 @@ export default class RetrievePassword extends ResponsiveComponent {
           // Show error
           switch (error.request.status) {
             // Unknown Email
-            case 500:
             case 550:
               Message.showError(I18n.t("authentication.wrongEmail"));
               break;

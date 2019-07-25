@@ -5,7 +5,7 @@ import SecuredStorage from "../utils/SecuredStorage";
 import jwtDecode from "jwt-decode";
 
 const captchaBaseUrl = "https://evse.cfapps.eu10.hana.ondemand.com/";
-const centralRestServerServiceBaseURL = "https://sap-ev-rest-server.cfapps.eu10.hana.ondemand.com";
+const centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
 const centralRestServerServiceAuthURL = centralRestServerServiceBaseURL + "/client/auth";
 const centralRestServerServiceSecuredURL = centralRestServerServiceBaseURL + "/client/api";
 const captchaSiteKey = "6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw";
@@ -130,7 +130,7 @@ export default class CentralServerProvider {
     return _decodedToken;
   }
 
-  async resetPassword(tenant, email, captcha) {
+  async retrievePassword(tenant, email, captcha) {
     // Init?
     await this.initialize();
     // Call
@@ -496,7 +496,6 @@ export default class CentralServerProvider {
   // eslint-disable-next-line class-methods-use-this
   _builHeaders() {
     return {
-      "Accept": "application/json",
       "Content-Type": "application/json"
     };
   }
@@ -504,7 +503,6 @@ export default class CentralServerProvider {
   // eslint-disable-next-line class-methods-use-this
   _buildSecuredHeaders() {
     return {
-      "Accept": "application/json",
       "Content-Type": "application/json",
       "Authorization": "Bearer " + _token
     };
