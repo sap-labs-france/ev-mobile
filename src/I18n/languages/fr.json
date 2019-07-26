@@ -110,10 +110,10 @@
     "firmwareVersion": "Version Firmware",
     "time": "Temps (mins)",
     "chargeInWatts": "Charge (Watt)",
-    "instantPowerChartLabel": "Puissance Instantanée (W)",
-    "cumulatedChartLabel": "Cumulé (W.h)",
+    "instantPowerChartLabel": "Puissance Instantanée (kW)",
+    "cumulatedChartLabel": "Cumulé (kW.h)",
     "batteryChartLabel": "Niveau Batterie (%)",
-    "connectorMax": "Connecteur Max Power (W)"
+    "connectorMax": "Connecteur Max Power (kW)"
   },
   "notifications": {
     "mustLogin": "Vous devez etre connecté",

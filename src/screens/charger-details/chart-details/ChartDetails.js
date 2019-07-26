@@ -5,14 +5,11 @@ import ProviderFactory from "../../../provider/ProviderFactory";
 import Utils from "../../../utils/Utils";
 import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./ChartDetailsStyles";
+import { scale } from "react-native-size-matters";
 import commonColor from "../../../theme/variables/commonColor";
 import { LineChart } from "react-native-charts-wrapper";
 import PropTypes from "prop-types";
-import { ScaledSheet } from "react-native-size-matters";
 
-
-const fillGreen = commonColor.brandSuccess;
-const fillRed = commonColor.brandDanger;
 const EMPTY_CHART = [{ x: 0, y: 0 }];
 
 const _provider = ProviderFactory.getProvider();
@@ -61,7 +58,7 @@ export default class ChartDetails extends BaseScreen {
             // Add
             consumptionValues.push({
               x: date,
-              y: value.value ? value.value : 0
+              y: value.value ? (value.value / 1000) : 0
             });
             if (value.stateOfCharge > 0) {
               stateOfChargeValues.push({
@@ -106,38 +103,36 @@ export default class ChartDetails extends BaseScreen {
     const chartDefinition = {};
     // Add Data
     chartDefinition.data = { dataSets: [] };
-    // Check Consumptions\
+    // Check Consumptions
     if (consumptionValues && consumptionValues.length > 1) {
-      // Add
-      chartDefinition.data.dataSets.push(ScaledSheet.create({
+      chartDefinition.data.dataSets.push({
         values: consumptionValues,
         label: I18n.t("details.instantPowerChartLabel"),
         config: {
-          mode: "CUBIC_BEZIER",
+          mode: "LINEAR",
           drawValues: false,
           lineWidth: 2,
           drawCircles: false,
-          circleColor: processColor(commonColor.brandDanger),
+          circleColor: processColor(commonColor.brandInfo),
           drawCircleHole: false,
           circleRadius: 5,
           highlightColor: processColor("white"),
-          color: processColor(commonColor.brandDanger),
+          color: processColor(commonColor.brandInfo),
           drawFilled: true,
           fillAlpha: 65,
-          fillColor: processColor(fillRed),
-          valueTextSize: "15@s"
+          fillColor: processColor(commonColor.brandInfo),
+          valueTextSize: scale(15)
         }
-      }));
+      });
     }
     // Check SoC
     if (stateOfChargeValues && stateOfChargeValues.length > 1) {
-      // Add
-      chartDefinition.data.dataSets.push(ScaledSheet.create({
+      chartDefinition.data.dataSets.push({
         values: stateOfChargeValues,
         label: I18n.t("details.batteryChartLabel"),
         config: {
           axisDependency: "RIGHT",
-          mode: "CUBIC_BEZIER",
+          mode: "LINEAR",
           drawValues: false,
           lineWidth: 2,
           drawCircles: false,
@@ -148,13 +143,13 @@ export default class ChartDetails extends BaseScreen {
           color: processColor(commonColor.brandSuccess),
           drawFilled: true,
           fillAlpha: 65,
-          fillColor: processColor(fillGreen),
-          valueTextSize: "15@s"
+          fillColor: processColor(commonColor.brandSuccess),
+          valueTextSize: scale(15)
         }
-      }));
+      });
     }
     // X Axis
-    chartDefinition.xAxis = ScaledSheet.create({
+    chartDefinition.xAxis = {
       enabled: true,
       labelRotationAngle: -45,
       granularity: 1,
@@ -166,19 +161,18 @@ export default class ChartDetails extends BaseScreen {
       fontWeight: "bold",
       valueFormatter: "date",
       valueFormatterPattern: "HH:mm",
-      textSize: "8@s",
+      textSize: scale(8),
       textColor: processColor("white")
-    });
+    };
     // Y Axis
     chartDefinition.yAxis = {};
-    // Check Consumptions\
+    // Check Consumptions
     if (consumptionValues && consumptionValues.length > 1) {
-      // Set
       chartDefinition.yAxis.left = {
         enabled: true,
-        valueFormatter: "# W",
+        valueFormatter: "##0 kW",
         axisMinimum: 0,
-        textColor: processColor(commonColor.brandDanger)
+        textColor: processColor(commonColor.brandInfo)
         // limitLines: [{
         //   limit: connector.power,
         //   label: I18n.t("details.connectorMax"),
@@ -189,16 +183,23 @@ export default class ChartDetails extends BaseScreen {
         //   lineDashLengths: [10,10]
         // }]
       };
+    } else {
+      chartDefinition.yAxis.left = {
+        enabled: false,
+      };
     }
     // Check SoC
     if (stateOfChargeValues && stateOfChargeValues.length > 1) {
-      // Add SoC
       chartDefinition.yAxis.right = {
         enabled: true,
         valueFormatter: "percent",
         axisMinimum: 0,
         axisMaximum: 100,
         textColor: processColor(commonColor.brandSuccess)
+      };
+    } else {
+      chartDefinition.yAxis.right = {
+        enabled: false
       };
     }
     // Return
@@ -216,7 +217,7 @@ export default class ChartDetails extends BaseScreen {
           data={chartDefinition.data}
           chartDescription={{ text: "" }}
           noDataText={"No Data"}
-          backgroundColor={"black"}
+          backgroundColor={commonColor.brandPrimary}
           legend={{
             enabled: true,
             textColor: processColor("white")
