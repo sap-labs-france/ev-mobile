@@ -130,23 +130,6 @@ export default class CentralServerProvider {
     return _decodedToken;
   }
 
-  async retrievePassword(tenant, email, captcha) {
-    // Init?
-    await this.initialize();
-    // Call
-    await axios.post(
-      `${centralRestServerServiceAuthURL}/Reset`,
-      {
-        tenant,
-        email,
-        captcha
-      },
-      {
-        headers: this._builHeaders()
-      }
-    );
-  }
-
   async logoff() {
     this.debug("logoff");
     // Clear the token and tenant
@@ -205,6 +188,7 @@ export default class CentralServerProvider {
 
   async register(tenant, name, firstName, email, passwords, acceptEula, captcha) {
     this.debug("register");
+    // Call
     const result = await axios.post(
       `${centralRestServerServiceAuthURL}/RegisterUser`,
       {
@@ -214,6 +198,24 @@ export default class CentralServerProvider {
         email,
         passwords,
         acceptEula,
+        captcha
+      },
+      {
+        headers: this._builHeaders()
+      }
+    );
+    return result.data;
+  }
+
+  async retrievePassword(tenant, email, captcha) {
+    this.debug("retrievePassword");
+    // Call
+    console.log({tenant, email, captcha});
+    const result = await axios.post(
+      `${centralRestServerServiceAuthURL}/Reset`,
+      {
+        tenant,
+        email,
         captcha
       },
       {
