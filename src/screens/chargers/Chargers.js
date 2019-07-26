@@ -18,7 +18,7 @@ export default class Chargers extends BaseScreen {
     // Init State
     this.state = {
       chargers: [],
-      withNoSite: Utils.getParamFromNavigation(this.props.navigation, "withNoSite", true),
+      siteAreaID: Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null),
       loading: true,
       refreshing: false,
       skip: 0,
@@ -30,14 +30,11 @@ export default class Chargers extends BaseScreen {
   async componentDidMount() {
     // Call parent
     super.componentDidMount();
-    // Get ID
-    const siteAreaID = Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null);
     // Get chargers first time
     const chargers = await this._getChargers(
       this.searchText,
       this.state.skip,
-      this.state.limit,
-      siteAreaID
+      this.state.limit
     );
     // Add chargers
     if (this.isMounted()) {
@@ -55,13 +52,13 @@ export default class Chargers extends BaseScreen {
     super.componentWillUnmount();
   }
 
-  _getChargers = async (searchText, skip, limit, siteAreaID) => {
-    const { withNoSite } = this.state;
+  _getChargers = async (searchText, skip, limit) => {
+    const { siteAreaID } = this.state;
     let chargers = [];
     try {
       // Get Chargers
-      if (!withNoSite && siteAreaID) {
-        // Get with the Site
+      if (siteAreaID) {
+        // Get with the Site Area
         chargers = await _provider.getChargers(
           { Search: searchText, SiteAreaID: siteAreaID },
           { skip, limit }
@@ -78,7 +75,6 @@ export default class Chargers extends BaseScreen {
   };
 
   _onEndScroll = async () => {
-    const siteAreaID = Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null);
     const { count, skip, limit } = this.state;
     // No reached the end?
     if (skip + limit < count) {
@@ -86,8 +82,7 @@ export default class Chargers extends BaseScreen {
       const chargers = await this._getChargers(
         this.searchText,
         skip + Constants.PAGING_SIZE,
-        limit,
-        siteAreaID
+        limit
       );
       // Add sites
       this.setState((prevState, props) => ({
@@ -99,12 +94,11 @@ export default class Chargers extends BaseScreen {
   };
 
   _refresh = async () => {
-    const siteAreaID = Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null);
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
-      const chargers = await this._getChargers(this.searchText, 0, skip + limit, siteAreaID);
+      const chargers = await this._getChargers(this.searchText, 0, skip + limit);
       // Add sites
       this.setState((prevState, props) => ({
         chargers: chargers.result
@@ -132,7 +126,7 @@ export default class Chargers extends BaseScreen {
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { chargers, withNoSite } = this.state;
+    const { chargers, siteAreaID } = this.state;
     let siteID = null;
     // Retrieve the site ID to navigate back from a notification
     if (chargers && chargers.length > 0) {
@@ -140,7 +134,6 @@ export default class Chargers extends BaseScreen {
       for (const charger of chargers) {
         // Site Area provided?
         if (charger.siteArea) {
-          // Yes: keep the Site ID
           siteID = charger.siteArea.siteID;
           break;
         }
@@ -152,8 +145,8 @@ export default class Chargers extends BaseScreen {
           title={I18n.t("chargers.title")}
           showSearchAction={true}
           searchRef={this.searchRef}
-          leftAction={!withNoSite ? () => navigation.navigate("SiteAreas", { siteID }) : undefined}
-          leftActionIcon={!withNoSite ? "arrow-back" : undefined}
+          leftAction={siteAreaID ? () => navigation.navigate("SiteAreas", { siteID }) : undefined}
+          leftActionIcon={siteAreaID ? "arrow-back" : undefined}
           rightAction={navigation.openDrawer}
           rightActionIcon={"menu"}
         />
@@ -173,7 +166,7 @@ export default class Chargers extends BaseScreen {
               data={this.state.chargers}
               renderItem={({ item }) => (
                 <List>
-                  <ChargerComponent charger={item} navigation={navigation} />
+                  <ChargerComponent charger={item} navigation={navigation} siteAreaID={siteAreaID} />
                 </List>
               )}
               keyExtractor={item => item.id}

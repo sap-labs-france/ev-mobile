@@ -34,7 +34,7 @@ export default class ChargerComponent extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const { charger, navigation } = this.props;
+    const { charger, navigation, siteAreaID } = this.props;
     const { isChargerDead } = this.state;
     return (
       <View style={style.container}>
@@ -68,6 +68,7 @@ export default class ChargerComponent extends ResponsiveComponent {
                 key={`${charger.id}~${connector.connectorId}`}
                 charger={charger}
                 connector={connector}
+                siteAreaID={siteAreaID}
                 index={index}
                 navigation={navigation}
               />

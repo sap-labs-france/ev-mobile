@@ -109,7 +109,7 @@ class SideBar extends ResponsiveComponent {
               style={style.links}
               button
               iconLeft
-              onPress={() => this._navigateTo("Chargers", { withNoSite: true })}
+              onPress={() => this._navigateTo("Chargers")}
             >
               <Icon type="MaterialIcons" name="ev-station" />
               <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>

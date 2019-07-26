@@ -34,7 +34,7 @@ export default class Sites extends BaseScreen {
     // Check
     if (!isComponentOrganizationActive) {
       // No site management: go to chargers
-      this.props.navigation.navigate("Chargers", { withNoSite: true });
+      this.props.navigation.navigate("Chargers");
     }
   }
 

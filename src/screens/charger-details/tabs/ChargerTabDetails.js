@@ -20,6 +20,7 @@ export default class ChargerTabDetails extends BaseScreen {
     this.state = {
       charger: null,
       connector: null,
+      siteAreaID: Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null),
       selectedTabIndex: 0,
       firstLoad: true,
       isAuthorizedToStopTransaction: false,
@@ -124,7 +125,7 @@ export default class ChargerTabDetails extends BaseScreen {
   render() {
     const style = computeStyleSheet();
     const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
-    const { charger, connector, isAdmin, isAuthorizedToStopTransaction, firstLoad } = this.state;
+    const { charger, connector, isAdmin, isAuthorizedToStopTransaction, siteAreaID, firstLoad } = this.state;
     const { navigation } = this.props;
     const connectorLetter = String.fromCharCode(64 + connectorID);
     return firstLoad ? (
@@ -141,7 +142,7 @@ export default class ChargerTabDetails extends BaseScreen {
         <HeaderComponent
           title={charger.id}
           subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
-          leftAction={() => navigation.navigate("Chargers", { siteAreaID: charger.siteAreaID })}
+          leftAction={() => navigation.navigate("Chargers", { siteAreaID: siteAreaID })}
           leftActionIcon={"arrow-back"}
           rightAction={navigation.openDrawer}
           rightActionIcon={"menu"}
