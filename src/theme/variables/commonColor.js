@@ -129,7 +129,7 @@ export default {
   footerDefaultBg: "transparent",
 
   // FooterTab
-  tabBarTextColor: "#888",
+  tabBarTextColor: "#DDD",
   tabBarTextSize: scale(13),
   activeTab: platform === "ios" ? "#007aff" : "#fff",
   sTabBarActiveTextColor: "#007aff",
