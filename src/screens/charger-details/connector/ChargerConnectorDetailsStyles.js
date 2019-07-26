@@ -34,6 +34,9 @@ const commonStyles = ScaledSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
+  noButtonStopTransaction: {
+    height: "110@s",
+  },
   startTransaction: {
     backgroundColor: commonColor.brandSuccess
   },

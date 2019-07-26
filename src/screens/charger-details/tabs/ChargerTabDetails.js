@@ -162,7 +162,7 @@ export default class ChargerTabDetails extends BaseScreen {
               navigation={navigation}
             />
           </Tab>
-          {connector.activeTransactionID && isAuthorizedToStopTransaction ? (
+          {connector.activeTransactionID && (isAuthorizedToStopTransaction || isAdmin) ? (
             <Tab
               heading={
                 <TabHeading style={style.tabHeader}>
