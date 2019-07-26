@@ -55,9 +55,7 @@ export default class ChargerTabDetails extends BaseScreen {
   }
 
   _refresh = async () => {
-    // Component Mounted?
     if (this.isMounted()) {
-      // Refresh Charger
       await this._getCharger();
     }
   };
@@ -76,6 +74,7 @@ export default class ChargerTabDetails extends BaseScreen {
     const chargerID = Utils.getParamFromNavigation(this.props.navigation, "chargerID", null);
     const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
     try {
+      // Get Charger
       const charger = await _provider.getCharger({ ID: chargerID });
       this.setState(
         {

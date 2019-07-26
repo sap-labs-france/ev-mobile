@@ -53,7 +53,7 @@ export default class NotificationManager {
     //   this.notificationCheck = setInterval(() => {
     //     // Refresh
     //     this.processNotification();
-    //   }, Constants.AUTO_REFRESH_VERY_SHORT_PERIOD_MILLIS);
+    //   }, Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
     // }
   }
 
