@@ -5,8 +5,7 @@ import SecuredStorage from "../utils/SecuredStorage";
 import jwtDecode from "jwt-decode";
 
 const captchaBaseUrl = "https://evse.cfapps.eu10.hana.ondemand.com/";
-const centralRestServerServiceBaseURL =
-  "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
+const centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
 const centralRestServerServiceAuthURL = centralRestServerServiceBaseURL + "/client/auth";
 const centralRestServerServiceSecuredURL = centralRestServerServiceBaseURL + "/client/api";
 const captchaSiteKey = "6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw";
@@ -70,8 +69,8 @@ export default class CentralServerProvider {
     }
   }
 
-  getTenant(tenantToFind) {
-    return this.getTenants().find(tenant => tenant.subdomain === tenantToFind);
+  getTenant(subdomain) {
+    return this.getTenants().find(tenant => tenant.subdomain === subdomain);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -129,23 +128,6 @@ export default class CentralServerProvider {
     await this.initialize();
     // Return
     return _decodedToken;
-  }
-
-  async resetPassword(tenant, email, captcha) {
-    // Init?
-    await this.initialize();
-    // Call
-    await axios.post(
-      `${centralRestServerServiceAuthURL}/Reset`,
-      {
-        tenant,
-        email,
-        captcha
-      },
-      {
-        headers: this._builHeaders()
-      }
-    );
   }
 
   async logoff() {
@@ -206,6 +188,7 @@ export default class CentralServerProvider {
 
   async register(tenant, name, firstName, email, passwords, acceptEula, captcha) {
     this.debug("register");
+    // Call
     const result = await axios.post(
       `${centralRestServerServiceAuthURL}/RegisterUser`,
       {
@@ -215,6 +198,23 @@ export default class CentralServerProvider {
         email,
         passwords,
         acceptEula,
+        captcha
+      },
+      {
+        headers: this._builHeaders()
+      }
+    );
+    return result.data;
+  }
+
+  async retrievePassword(tenant, email, captcha) {
+    this.debug("retrievePassword");
+    // Call
+    const result = await axios.post(
+      `${centralRestServerServiceAuthURL}/Reset`,
+      {
+        tenant,
+        email,
         captcha
       },
       {
@@ -497,18 +497,15 @@ export default class CentralServerProvider {
   // eslint-disable-next-line class-methods-use-this
   _builHeaders() {
     return {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Tenant: "slf"
+      "Content-Type": "application/json"
     };
   }
 
   // eslint-disable-next-line class-methods-use-this
   _buildSecuredHeaders() {
     return {
-      Accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: "Bearer " + _token
+      "Authorization": "Bearer " + _token
     };
   }
 }

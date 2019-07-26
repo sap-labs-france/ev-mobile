@@ -15,7 +15,6 @@ import commonColor from "../../../theme/variables/commonColor";
 import DeviceInfo from "react-native-device-info";
 
 const _provider = providerFactory.getProvider();
-const _tenants = _provider.getTenants();
 const background = require("../../../../assets/bg.png");
 const logo = require("../../../../assets/logo-low.gif");
 
@@ -23,22 +22,22 @@ const formValidationDef = {
   tenant: {
     presence: {
       allowEmpty: false,
-      message: I18n.t("general.mandatory")
+      message: '^' + I18n.t("authentication.mandatory_tenant")
     }
   },
   email: {
     presence: {
       allowEmpty: false,
-      message: I18n.t("general.mandatory")
+      message: '^' + I18n.t("authentication.mandatory_email")
     },
     email: {
-      message: "^" + I18n.t("general.email")
+      message: '^' + I18n.t("authentication.invalid_email")
     }
   },
   password: {
     presence: {
       allowEmpty: false,
-      message: I18n.t("general.mandatory")
+      message: '^' + I18n.t("authentication.mandatory_password")
     }
   },
   eula: {
@@ -56,11 +55,12 @@ const formValidationDef = {
 export default class Login extends ResponsiveComponent {
   constructor(props) {
     super(props);
+    this.tenants = _provider.getTenants();
     this.state = {
       eula: false,
       password: null,
-      email: null,
-      tenant: null,
+      email: Utils.getParamFromNavigation(this.props.navigation, "email", ""),
+      tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
       tenantTitle: I18n.t("authentication.tenant"),
       loading: false,
       display: false
@@ -153,8 +153,8 @@ export default class Login extends ResponsiveComponent {
     if (buttonIndex !== undefined) {
       // Set Tenant
       this.setState({
-        tenant: _tenants[buttonIndex].subdomain,
-        tenantTitle: _tenants[buttonIndex].name
+        tenant: this.tenants[buttonIndex].subdomain,
+        tenantTitle: this.tenants[buttonIndex].name
       });
     }
   };
@@ -220,7 +220,7 @@ export default class Login extends ResponsiveComponent {
                   onPress={() =>
                     ActionSheet.show(
                       {
-                        options: _tenants.map(tenant => tenant.name),
+                        options: this.tenants.map(tenant => tenant.name),
                         title: I18n.t("authentication.tenant")
                       },
                       buttonIndex => {

@@ -36,7 +36,7 @@ export default {
   CheckboxFontSize: platform === "ios" ? 21 : 18,
   DefaultFontSize: 17,
   checkboxBgColor: "#039BE5",
-  checkboxSize: 25,
+  checkboxSize: 20,
   checkboxTickColor: "#fff",
 
   // New Variable
