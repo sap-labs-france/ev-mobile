@@ -123,22 +123,23 @@ export default class Chargers extends BaseScreen {
     return null;
   };
 
+  _getSiteIDFromChargers(chargers) {
+    // Find the first available Site ID
+    if (chargers && chargers.length > 0) {
+      for (const charger of chargers) {
+        if (charger.siteArea) {
+          return  charger.siteArea.siteID;
+        }
+      }
+    }
+  }
+
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { chargers, siteAreaID } = this.state;
-    let siteID = null;
-    // Retrieve the site ID to navigate back from a notification
-    if (chargers && chargers.length > 0) {
-      // Find the first available Site ID
-      for (const charger of chargers) {
-        // Site Area provided?
-        if (charger.siteArea) {
-          siteID = charger.siteArea.siteID;
-          break;
-        }
-      }
-    }
+    // Safe way to retrieve the Site ID to navigate back from a notification
+    const siteID = this._getSiteIDFromChargers(chargers);
     return (
       <Container>
         <HeaderComponent
