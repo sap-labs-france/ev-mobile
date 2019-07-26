@@ -210,7 +210,6 @@ export default class CentralServerProvider {
   async retrievePassword(tenant, email, captcha) {
     this.debug("retrievePassword");
     // Call
-    console.log({tenant, email, captcha});
     const result = await axios.post(
       `${centralRestServerServiceAuthURL}/Reset`,
       {

@@ -86,9 +86,9 @@ export default class RetrievePassword extends ResponsiveComponent {
         if (error.request) {
           // Show error
           switch (error.request.status) {
-            // Captcha
-            case 500:
-              Message.showError(I18n.t("authentication.wrongEmail"));
+            // Invalid Captcha
+            case 530:
+              Message.showError(I18n.t("authentication.invalidCaptcha"));
               break;
             // Unknown Email
             case 550:
@@ -108,8 +108,6 @@ export default class RetrievePassword extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { loading, captcha } = this.state;
-    console.log({captcha})
-    console.log({captchaSiteKey: this.captchaSiteKey, captchaBaseUrl: this.captchaBaseUrl})
     return (
       <Animatable.View
         style={style.container}

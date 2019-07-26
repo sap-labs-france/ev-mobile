@@ -137,8 +137,16 @@ export default class SignUp extends React.Component {
         this.setState({ loading: false });
         // Check request?
         if (error.request) {
-          // Other common Error
-          Utils.handleHttpUnexpectedError(error.request);
+          // Show error
+          switch (error.request.status) {
+            // Invalid Captcha
+            case 530:
+              Message.showError(I18n.t("authentication.invalidCaptcha"));
+              break;
+            default:
+              // Other common Error
+              Utils.handleHttpUnexpectedError(error.request);
+          }
         } else {
           Message.showError(I18n.t("general.unexpectedError"));
         }

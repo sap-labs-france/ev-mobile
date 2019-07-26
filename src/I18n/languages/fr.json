@@ -29,6 +29,7 @@
     "mustSelectTenant": "Selectionnez un Tenant",
     "wrongEmailOrPassword": "Mauvais email ou mot de passe",
     "authenticationFailed": "Authentification Echouée",
+    "invalidCaptcha": "Le Captcha a été refusé (sécurité)!",
     "wrongEmail": "Email inconnu !",
     "accountLocked": "Votre compte est bloqué",
     "accountNotActive": "Votre compte est inactif",
