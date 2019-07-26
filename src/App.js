@@ -15,7 +15,7 @@ import Sidebar from "./screens/sidebar/SideBar";
 import Sites from "./screens/sites/Sites";
 import SiteAreas from "./screens/site-areas/SiteAreas";
 import Chargers from "./screens/chargers/Chargers";
-import ChargerTab from "./screens/charger-details/charger-tab/ChargerTab";
+import ChargerTabDetails from "./screens/charger-details/tabs/ChargerTabDetails";
 import NotificationManager from "./notification/NotificationManager";
 
 // Get the Notification Scheduler
@@ -38,7 +38,7 @@ const AppDrawerNavigator = createDrawerNavigator(
     },
     SiteAreas: { screen: SiteAreas },
     Chargers: { screen: Chargers },
-    ChargerTab: { screen: ChargerTab }
+    ChargerTabDetails: { screen: ChargerTabDetails }
   },
   {
     navigationOptions: {

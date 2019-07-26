@@ -4,7 +4,7 @@ import { View, processColor } from "react-native";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import Utils from "../../../utils/Utils";
 import I18n from "../../../I18n/I18n";
-import computeStyleSheet from "./ChartDetailsStyles";
+import computeStyleSheet from "./ChargerChartDetailsStyles";
 import { scale } from "react-native-size-matters";
 import commonColor from "../../../theme/variables/commonColor";
 import { LineChart } from "react-native-charts-wrapper";
@@ -14,7 +14,7 @@ const EMPTY_CHART = [{ x: 0, y: 0 }];
 
 const _provider = ProviderFactory.getProvider();
 
-export default class ChartDetails extends BaseScreen {
+export default class ChargerChartDetails extends BaseScreen {
   constructor(props) {
     super(props);
     this.state = {
@@ -253,8 +253,8 @@ export default class ChartDetails extends BaseScreen {
   }
 }
 
-ChartDetails.propTypes = {
+ChargerChartDetails.propTypes = {
   transactionID: PropTypes.number
 };
 
-ChartDetails.defaultProps = {};
+ChargerChartDetails.defaultProps = {};

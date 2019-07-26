@@ -6,7 +6,7 @@ import ProviderFactory from "../../../provider/ProviderFactory";
 import ConnectorStatusComponent from "../../../components/connector-status/ConnectorStatusComponent";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
-import computeStyleSheet from "./ConnectorDetailsStyles";
+import computeStyleSheet from "./ChargerConnectorDetailsStyles";
 import Constants from "../../../utils/Constants";
 import Message from "../../../utils/Message";
 import PropTypes from "prop-types";
@@ -16,7 +16,7 @@ const noSite = require("../../../../assets/no-site.gif");
 const START_TRANSACTION_NB_TRIAL = 4;
 const _provider = ProviderFactory.getProvider();
 
-export default class ConnectorDetails extends BaseScreen {
+export default class ChargerConnectorDetails extends BaseScreen {
   constructor(props) {
     super(props);
     this.state = {
@@ -495,11 +495,11 @@ export default class ConnectorDetails extends BaseScreen {
   }
 }
 
-ConnectorDetails.propTypes = {
+ChargerConnectorDetails.propTypes = {
   charger: PropTypes.object.isRequired,
   connector: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired,
   isAdmin: PropTypes.bool.isRequired
 };
 
-ConnectorDetails.defaultProps = {};
+ChargerConnectorDetails.defaultProps = {};

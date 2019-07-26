@@ -133,7 +133,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
       <TouchableOpacity
         style={style.statusConnectorContainer}
         onPress={() =>
-          navigation.navigate("ChargerTab", {
+          navigation.navigate("ChargerTabDetails", {
             chargerID: charger.id,
             connectorID: connector.connectorId
           })
@@ -191,7 +191,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
       <TouchableOpacity
         style={style.statusOneConnectorContainer}
         onPress={() =>
-          navigation.navigate("ChargerTab", {
+          navigation.navigate("ChargerTabDetails", {
             chargerID: charger.id,
             connectorID: connector.connectorId
           })

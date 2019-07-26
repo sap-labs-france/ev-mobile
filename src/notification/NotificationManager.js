@@ -202,7 +202,7 @@ export default class NotificationManager {
     //             if (notification.extraData.data && notification.extraData.data.connectorId) {
     //               // Navigate
     //               if (this.navigation) {
-    //                 this.navigation.navigate("ChargerTab", {
+    //                 this.navigation.navigate("ChargerTabDetails", {
     //                   chargerID: notification.extraData.chargeBoxID,
     //                   connectorID: notification.extraData.data.connectorId
     //                 });
@@ -215,7 +215,7 @@ export default class NotificationManager {
     //             if (notification.extraData.data) {
     //               // Navigate
     //               if (this.navigation) {
-    //                 this.navigation.navigate("ChargerTab", {
+    //                 this.navigation.navigate("ChargerTabDetails", {
     //                   chargerID: notification.extraData.chargeBoxID,
     //                   connectorID: 1
     //                 });

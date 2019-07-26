@@ -1,20 +1,20 @@
 import React from "react";
 import { Container, Tab, Tabs, TabHeading, Spinner, Icon } from "native-base";
 import { ScrollView, RefreshControl } from "react-native";
-import ChargerDetails from "../charger-details/ChargerDetails";
-import ChartDetails from "../chart-details/ChartDetails";
-import ConnectorDetails from "../connector-details/ConnectorDetails";
+import ChargerDetails from "../details/ChargerDetails";
+import ChargerChartDetails from "../chart/ChargerChartDetails";
+import ChargerConnectorDetails from "../connector/ChargerConnectorDetails";
 import BaseScreen from "../../base-screen/BaseScreen";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import I18n from "../../../I18n/I18n";
-import computeStyleSheet from "./ChargerTabStyles";
+import computeStyleSheet from "./ChargerTabDetailsStyles";
 import Utils from "../../../utils/Utils";
 import Constants from "../../../utils/Constants";
 
 const _provider = ProviderFactory.getProvider();
 
-export default class ChargerTab extends BaseScreen {
+export default class ChargerTabDetails extends BaseScreen {
   constructor(props) {
     super(props);
     this.state = {
@@ -154,7 +154,7 @@ export default class ChargerTab extends BaseScreen {
               </TabHeading>
             }
           >
-            <ConnectorDetails
+            <ChargerConnectorDetails
               charger={charger}
               connector={connector}
               isAdmin={isAdmin}
@@ -169,7 +169,7 @@ export default class ChargerTab extends BaseScreen {
                 </TabHeading>
               }
             >
-              <ChartDetails
+              <ChargerChartDetails
                 transactionID={connector.activeTransactionID}
                 isAdmin={isAdmin}
                 navigation={navigation}
