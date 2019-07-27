@@ -1,8 +1,8 @@
 import React from "react";
-import { Image, TextInput, ImageBackground, Keyboard, ScrollView, KeyboardAvoidingView } from "react-native";
+import { Image, TextInput, ImageBackground, Keyboard, ScrollView, Text as TextRN, KeyboardAvoidingView } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import * as Animatable from "react-native-animatable";
-import { Form, Text, Button, Icon, Item, View, CheckBox, Footer, Spinner } from "native-base";
+import { Form, Text, Button, Icon, Item, View, CheckBox, Footer, Spinner, Left } from "native-base";
 import commonColor from "../../../theme/variables/commonColor";
 import computeStyleSheet from "../AuthStyles";
 import ProviderFactory from "../../../provider/ProviderFactory";
@@ -178,6 +178,7 @@ export default class SignUp extends React.Component {
                 <Text style={style.appVersionText}>{`${I18n.t(
                   "general.version"
                 )} ${DeviceInfo.getVersion()}`}</Text>
+                <Text style={style.appTenantName}>{this.tenant.name}</Text>
               </View>
               <Form style={style.form}>
                 <Item inlineLabel rounded style={style.inputGroup}>
@@ -342,9 +343,11 @@ export default class SignUp extends React.Component {
               onExecute={this._recaptchaResponseToken}/>
           </ScrollView>
           <Footer>
-            <Button small transparent onPress={() => this.props.navigation.goBack()}>
-              <Text style={style.linksTextButton}>{I18n.t("authentication.backLogin")}</Text>
-            </Button>
+            <Left>
+              <Button small transparent style={style.linksButtonLeft} onPress={() => this.props.navigation.goBack()}>
+                <TextRN style={style.linksTextButton}>{I18n.t("authentication.backLogin")}</TextRN>
+              </Button>
+            </Left>
           </Footer>
         </ImageBackground>
       </Animatable.View>

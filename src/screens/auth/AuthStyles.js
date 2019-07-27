@@ -56,6 +56,13 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.textColor,
     fontSize: "15@s"
   },
+  appTenantName: {
+    color: commonColor.textColor,
+    marginTop: 10,
+    marginBottom: 10,
+    fontSize: "15@s",
+    fontWeight: "bold",
+  },
   button: {
     width: "90%",
     alignSelf: "center",
@@ -112,8 +119,8 @@ const commonStyles = ScaledSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderBottomWidth: "0@s",
-    marginBottom: "30@s",
-    marginTop: "15@s"
+    marginBottom: "20@s",
+    marginTop: "10@s"
   },
   eulaCheckbox: {
     marginRight: "15@s"

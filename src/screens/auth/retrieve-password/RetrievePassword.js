@@ -1,12 +1,6 @@
 import React from "react";
-import {
-  ScrollView,
-  Image,
-  TextInput,
-  ImageBackground,
-  KeyboardAvoidingView
-} from "react-native";
-import { Text, Form, Item, Button, Icon, View, Spinner, Footer } from "native-base";
+import { ScrollView, Image, TextInput, ImageBackground, KeyboardAvoidingView, Text as TextRN } from "react-native";
+import { Text, Form, Item, Button, Icon, View, Spinner, Footer, Left } from "native-base";
 import { NavigationActions, StackActions } from "react-navigation";
 import commonColor from "../../../theme/variables/commonColor";
 import ProviderFactory from "../../../provider/ProviderFactory";
@@ -128,6 +122,7 @@ export default class RetrievePassword extends ResponsiveComponent {
                 <Text style={style.appVersionText}>{`${I18n.t(
                   "general.version"
                 )} ${DeviceInfo.getVersion()}`}</Text>
+                <Text style={style.appTenantName}>{this.tenant.name}</Text>
               </View>
               <Form style={style.form}>
                 <Item inlineLabel rounded style={style.inputGroup}>
@@ -157,7 +152,7 @@ export default class RetrievePassword extends ResponsiveComponent {
                   <Spinner style={style.spinner} color="white" />
                 ) : (
                   <Button rounded primary block large style={style.button} onPress={this._retrievePassword}>
-                    <Text style={style.buttonText}>{I18n.t("authentication.retrievePassword", { tenantName: this.tenant.name })}</Text>
+                    <Text style={style.buttonText}>{I18n.t("authentication.retrievePassword")}</Text>
                   </Button>
                 )}
               </Form>
@@ -171,9 +166,11 @@ export default class RetrievePassword extends ResponsiveComponent {
               onExecute={this._recaptchaResponseToken}/>
           </ScrollView>
           <Footer>
-            <Button small transparent onPress={() => this.props.navigation.goBack()}>
-              <Text style={style.linksTextButton}>{I18n.t("authentication.backLogin")}</Text>
-            </Button>
+            <Left>
+              <Button small transparent style={style.linksButtonLeft} onPress={() => this.props.navigation.goBack()}>
+                <TextRN style={style.linksTextButton}>{I18n.t("authentication.backLogin")}</TextRN>
+              </Button>
+            </Left>
           </Footer>
         </ImageBackground>
       </Animatable.View>
