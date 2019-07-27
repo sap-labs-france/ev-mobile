@@ -38,7 +38,7 @@
     "eulaNotAccepted": "Vous devez accepter les conditions d'utilisation",
     "newUser": "Nouvel Utilisateur ?",
     "forgotYourPassword": "Mot de passe oublié?",
-    "retrievePassword": "Récupérez sur '{{tenantName}}'",
+    "retrievePassword": "Récupérez Mot de Passe",
     "backLogin": "Se Connecter",
     "required": "Obligatoire",
     "acceptEula": "J'accepte les ",
@@ -51,7 +51,7 @@
     "email": "Email",
     "password": "Mot de passe",
     "repeatPassword": "Répétez mot de passe",
-    "signUp": "S'enregistrer sur '{{tenantName}}'",
+    "signUp": "S'enregistrer",
 		"passwordRule": "Doit contenir 1 char. minuscule et majuscule, 1 nombre, 1 char. spécial et une longueur minimum de 8",
     "passwordNotMatch": "Les mots de passes ne correspondent pas",
     "tenant": "Choisir un Tenant"
@@ -110,10 +110,10 @@
     "firmwareVersion": "Version Firmware",
     "time": "Temps (mins)",
     "chargeInWatts": "Charge (Watt)",
-    "instantPowerChartLabel": "Puissance Instantanée (W)",
-    "cumulatedChartLabel": "Cumulé (W.h)",
+    "instantPowerChartLabel": "Puissance Instantanée (kW)",
+    "cumulatedChartLabel": "Cumulé (kW.h)",
     "batteryChartLabel": "Niveau Batterie (%)",
-    "connectorMax": "Connecteur Max Power (W)"
+    "connectorMax": "Connecteur Max Power (kW)"
   },
   "notifications": {
     "mustLogin": "Vous devez etre connecté",

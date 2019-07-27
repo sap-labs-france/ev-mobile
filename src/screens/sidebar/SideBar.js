@@ -9,7 +9,10 @@ import Utils from "../../utils/Utils";
 import DeviceInfo from "react-native-device-info";
 
 const _provider = ProviderFactory.getProvider();
+
 const noPhoto = require("../../../assets/no-photo.png");
+const logo = require("../../../assets/logo-low.gif");
+const background = require("../../../assets/sidebar-transparent.png");
 
 class SideBar extends ResponsiveComponent {
   constructor(props) {
@@ -63,7 +66,7 @@ class SideBar extends ResponsiveComponent {
 
   _navigateTo = (screen, params = {}) => {
     // Navigate
-    this.props.navigation.navigate(screen, params);
+    this.props.navigation.navigate({routeName: screen, params: params});
     // Close
     this.props.navigation.closeDrawer();
   };
@@ -76,11 +79,11 @@ class SideBar extends ResponsiveComponent {
       <Container>
         <ImageBackground
           style={style.background}
-          source={require("../../../assets/sidebar-transparent.png")}
+          source={background}
         >
           <Content style={style.drawerContent}>
             <View style={style.logoContainer}>
-              <Image source={require("../../../assets/logo-low.gif")} style={style.logo} />
+              <Image source={logo} style={style.logo} />
               <Text style={style.versionText}>{`${I18n.t(
                 "general.version"
               )} ${DeviceInfo.getVersion()}`}</Text>
@@ -109,7 +112,7 @@ class SideBar extends ResponsiveComponent {
               style={style.links}
               button
               iconLeft
-              onPress={() => this._navigateTo("Chargers", { withNoSite: true })}
+              onPress={() => this._navigateTo("AllChargers")}
             >
               <Icon type="MaterialIcons" name="ev-station" />
               <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>

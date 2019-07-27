@@ -1,16 +1,20 @@
 import axios from "axios";
 import Constants from "../utils/Constants";
-import SecurityProvider from "../security/SecurityProvider";
+import SecurityProvider from "./SecurityProvider";
 import SecuredStorage from "../utils/SecuredStorage";
 import jwtDecode from "jwt-decode";
 
 const captchaBaseUrl = "https://evse.cfapps.eu10.hana.ondemand.com/";
-const centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
-const centralRestServerServiceAuthURL = centralRestServerServiceBaseURL + "/client/auth";
-const centralRestServerServiceSecuredURL = centralRestServerServiceBaseURL + "/client/api";
-const captchaSiteKey = "6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw";
-// Debug
-const DEBUG = false;
+let _centralRestServerServiceBaseURL = "https://sap-ev-rest-server.cfapps.eu10.hana.ondemand.com";
+let _debug = false;
+if (__DEV__) {
+  // QA REST Server
+  _centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
+  _debug = true;
+}
+const _centralRestServerServiceAuthURL = _centralRestServerServiceBaseURL + "/client/auth";
+const _centralRestServerServiceSecuredURL = _centralRestServerServiceBaseURL + "/client/api";
+const _captchaSiteKey = "6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw";
 
 // Paste the token below
 let _token;
@@ -28,7 +32,7 @@ export default class CentralServerProvider {
   }
 
   getCaptchaSiteKey() {
-    return captchaSiteKey;
+    return _captchaSiteKey;
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -63,7 +67,7 @@ export default class CentralServerProvider {
 
   // eslint-disable-next-line class-methods-use-this
   debug(method) {
-    if (DEBUG) {
+    if (_debug) {
       // eslint-disable-next-line no-console
       console.log(new Date().toISOString() + " - " + method);
     }
@@ -77,11 +81,41 @@ export default class CentralServerProvider {
   getTenants() {
     return [
       { subdomain: "slf", name: "SAP Labs France" },
-      { subdomain: "slfcah", name: "Charge@Home" }
+      { subdomain: "slfcah", name: "SAP Labs France (Charge@Home)" },
+      { subdomain: "sapbelgium", name: "SAP Belgium" },
+      { subdomain: "sapmarkdorf", name: "SAP Markdorf" },
+      { subdomain: "sapnl", name: "SAP Netherland" }
     ];
   }
 
-  async isUserAuthenticated() {
+  async checkAndTriggerAutoLogin() {
+    try {
+      // Check if connection has expired
+      if (await this.hasUserConnectionExpired()) {
+        // Try to authenticate again
+        await this.reAuthenticate();
+      }
+    } catch (error) {
+      // Cannot auto login, continue and enter login info
+      console.log(error);
+    }
+  }
+
+  async hasUserConnectionExpired() {
+    this.debug("hasUserConnectionExpired");
+    return (await this.isUserConnected()) && !(await this.isUserConnectionValid());
+  }
+
+  async isUserConnected() {
+    this.debug("isUserConnected");
+    // Init?
+    await this.initialize();
+    // Check
+    return !!_token;
+  }
+
+  async isUserConnectionValid() {
+    this.debug("isUserConnectionValid");
     // Init?
     await this.initialize();
     // Email and Password are mandatory
@@ -91,14 +125,12 @@ export default class CentralServerProvider {
     // Check Token
     if (_decodedToken) {
       // Check if expired
-      if (_decodedToken.exp < Date.now() / 1000) {
+      if (_decodedToken.exp < (Date.now() / 1000)) {
         // Expired
         return false;
       }
-      // Ok
       return true;
     }
-    // No
     return false;
   }
 
@@ -144,27 +176,26 @@ export default class CentralServerProvider {
   }
 
   async reAuthenticate() {
-    // Authenticated ?
-    const isUserAuthenticated = await this.isUserAuthenticated();
-    // Not authenticated ?
-    if (!isUserAuthenticated) {
+    this.debug("reAuthenticate");
+    // Check token
+    if (!(await this.isUserConnectionValid())) {
       // User not authenticated: email, password and tenant registered ?
       if (_email && _password && _tenant) {
-        // Yes: Log user
+      // Yes: relog user
         await this.login(_email, _password, true, _tenant);
       }
     }
   }
 
-  async login(email, password, eula, tenant) {
+  async login(email, password, acceptEula, tenant) {
     this.debug("login");
     // Call
     const result = await axios.post(
-      `${centralRestServerServiceAuthURL}/Login`,
+      `${_centralRestServerServiceAuthURL}/Login`,
       {
         email,
         password,
-        acceptEula: eula,
+        acceptEula,
         tenant
       },
       {
@@ -190,7 +221,7 @@ export default class CentralServerProvider {
     this.debug("register");
     // Call
     const result = await axios.post(
-      `${centralRestServerServiceAuthURL}/RegisterUser`,
+      `${_centralRestServerServiceAuthURL}/RegisterUser`,
       {
         tenant,
         name,
@@ -211,7 +242,7 @@ export default class CentralServerProvider {
     this.debug("retrievePassword");
     // Call
     const result = await axios.post(
-      `${centralRestServerServiceAuthURL}/Reset`,
+      `${_centralRestServerServiceAuthURL}/Reset`,
       {
         tenant,
         email,
@@ -224,11 +255,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  async getNotifications(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getNotifications(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getNotifications");
     // Init?
     await this.initialize();
@@ -237,18 +264,14 @@ export default class CentralServerProvider {
     // Build Ordering
     this._buildOrdering(ordering, params);
     // Call
-    const result = await axios.get(`${centralRestServerServiceSecuredURL}/Notifications`, {
+    const result = await axios.get(`${_centralRestServerServiceSecuredURL}/Notifications`, {
       headers: this._buildSecuredHeaders(),
       params
     });
     return result.data;
   }
 
-  async getChargers(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getChargers(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getChargers");
     // Init?
     await this.initialize();
@@ -257,38 +280,26 @@ export default class CentralServerProvider {
     // Build Ordering
     this._buildOrdering(ordering, params);
     // Call
-    const result = await axios.get(`${centralRestServerServiceSecuredURL}/ChargingStations`, {
+    const result = await axios.get(`${_centralRestServerServiceSecuredURL}/ChargingStations`, {
       headers: this._buildSecuredHeaders(),
       params
     });
     return result.data;
   }
 
-  async getCharger(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getCharger(params = {}) {
     this.debug("getCharger");
     // Init?
     await this.initialize();
-    // Build Paging
-    this._buildPaging(paging, params);
-    // Build Ordering
-    this._buildOrdering(ordering, params);
     // Call
-    const result = await axios.get(`${centralRestServerServiceSecuredURL}/ChargingStation`, {
+    const result = await axios.get(`${_centralRestServerServiceSecuredURL}/ChargingStation`, {
       headers: this._buildSecuredHeaders(),
       params
     });
     return result.data;
   }
 
-  async getSites(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getSites(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getSites");
     // Init?
     await this.initialize();
@@ -297,23 +308,23 @@ export default class CentralServerProvider {
     // Build Ordering
     this._buildOrdering(ordering, params);
     // Call
-    const result = await axios.get(`${centralRestServerServiceSecuredURL}/Sites`, {
+    const result = await axios.get(`${_centralRestServerServiceSecuredURL}/Sites`, {
       headers: this._buildSecuredHeaders(),
       params
     });
     return result.data;
   }
 
-  async getSiteAreas(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getSiteAreas(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getSiteAreas");
     // Init?
     await this.initialize();
+    // Build Paging
+    this._buildPaging(paging, params);
+    // Build Ordering
+    this._buildOrdering(ordering, params);
     // Call
-    const result = await axios.get(`${centralRestServerServiceSecuredURL}/SiteAreas`, {
+    const result = await axios.get(`${_centralRestServerServiceSecuredURL}/SiteAreas`, {
       headers: this._buildSecuredHeaders(),
       params
     });
@@ -323,7 +334,7 @@ export default class CentralServerProvider {
   async getEndUserLicenseAgreement(params = {}) {
     this.debug("getEndUserLicenseAgreement");
     // Call
-    const result = await axios.get(`${centralRestServerServiceAuthURL}/EndUserLicenseAgreement`, {
+    const result = await axios.get(`${_centralRestServerServiceAuthURL}/EndUserLicenseAgreement`, {
       headers: this._builHeaders(),
       params
     });
@@ -336,7 +347,7 @@ export default class CentralServerProvider {
     await this.initialize();
     // Call
     const result = await axios.post(
-      `${centralRestServerServiceSecuredURL}/ChargingStationStartTransaction`,
+      `${_centralRestServerServiceSecuredURL}/ChargingStationStartTransaction`,
       {
         chargeBoxID,
         args: {
@@ -357,7 +368,7 @@ export default class CentralServerProvider {
     await this.initialize();
     // Call
     const result = await axios.post(
-      `${centralRestServerServiceSecuredURL}/ChargingStationStopTransaction`,
+      `${_centralRestServerServiceSecuredURL}/ChargingStationStopTransaction`,
       {
         chargeBoxID,
         args: {
@@ -376,7 +387,7 @@ export default class CentralServerProvider {
     // Init?
     await this.initialize();
     // Call
-    const result = await axios.get(`${centralRestServerServiceSecuredURL}/Transaction`, {
+    const result = await axios.get(`${_centralRestServerServiceSecuredURL}/Transaction`, {
       headers: this._buildSecuredHeaders(),
       params
     });
@@ -388,7 +399,7 @@ export default class CentralServerProvider {
     // Init?
     await this.initialize();
     // Call
-    const result = await axios.get(`${centralRestServerServiceSecuredURL}/UserImage`, {
+    const result = await axios.get(`${_centralRestServerServiceSecuredURL}/UserImage`, {
       headers: this._buildSecuredHeaders(),
       params
     });
@@ -403,7 +414,7 @@ export default class CentralServerProvider {
     let siteImage = _siteImages.find(siteImage => siteImage.id === id);
     if (!siteImage) {
       // Call
-      const result = await axios.get(`${centralRestServerServiceSecuredURL}/SiteImage`, {
+      const result = await axios.get(`${_centralRestServerServiceSecuredURL}/SiteImage`, {
         headers: this._buildSecuredHeaders(),
         params: { ID: id }
       });
@@ -423,7 +434,7 @@ export default class CentralServerProvider {
     // Init ?
     await this.initialize();
     // Call
-    const result = await axios.get(`${centralRestServerServiceSecuredURL}/IsAuthorized`, {
+    const result = await axios.get(`${_centralRestServerServiceSecuredURL}/IsAuthorized`, {
       headers: this._buildSecuredHeaders(),
       params
     });
@@ -435,7 +446,7 @@ export default class CentralServerProvider {
     // Init ?
     await this.initialize();
     // Call
-    const result = await axios.get(`${centralRestServerServiceSecuredURL}/Pricing`, {
+    const result = await axios.get(`${_centralRestServerServiceSecuredURL}/Pricing`, {
       headers: this._buildSecuredHeaders()
     });
     return result.data;
@@ -447,7 +458,7 @@ export default class CentralServerProvider {
     await this.initialize();
     // Call
     const result = await axios.get(
-      `${centralRestServerServiceSecuredURL}/ChargingStationConsumptionFromTransaction`,
+      `${_centralRestServerServiceSecuredURL}/ChargingStationConsumptionFromTransaction`,
       {
         headers: this._buildSecuredHeaders(),
         params

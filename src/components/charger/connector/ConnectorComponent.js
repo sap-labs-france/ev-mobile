@@ -127,15 +127,16 @@ export default class ConnectorComponent extends ResponsiveComponent {
 
   render() {
     const style = computeStyleSheet();
-    const { connector, navigation, charger, index } = this.props;
+    const { connector, navigation, charger, index, siteAreaID } = this.props;
     const even = index % 2 === 0;
     return charger.connectors.length > 1 ? (
       <TouchableOpacity
         style={style.statusConnectorContainer}
         onPress={() =>
-          navigation.navigate("ChargerTab", {
+          navigation.navigate("ChargerTabDetails", {
             chargerID: charger.id,
-            connectorID: connector.connectorId
+            connectorID: connector.connectorId,
+            siteAreaID: siteAreaID
           })
         }
       >
@@ -191,9 +192,10 @@ export default class ConnectorComponent extends ResponsiveComponent {
       <TouchableOpacity
         style={style.statusOneConnectorContainer}
         onPress={() =>
-          navigation.navigate("ChargerTab", {
+          navigation.navigate("ChargerTabDetails", {
             chargerID: charger.id,
-            connectorID: connector.connectorId
+            connectorID: connector.connectorId,
+            siteAreaID: siteAreaID
           })
         }
       >
@@ -229,6 +231,7 @@ ConnectorComponent.propTypes = {
   navigation: PropTypes.object.isRequired,
   charger: PropTypes.object.isRequired,
   connector: PropTypes.object.isRequired,
+  siteAreaID: PropTypes.string,
   index: PropTypes.number
 };
 

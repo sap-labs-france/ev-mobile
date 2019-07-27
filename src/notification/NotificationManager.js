@@ -53,7 +53,7 @@ export default class NotificationManager {
     //   this.notificationCheck = setInterval(() => {
     //     // Refresh
     //     this.processNotification();
-    //   }, Constants.AUTO_REFRESH_VERY_SHORT_PERIOD_MILLIS);
+    //   }, Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
     // }
   }
 
@@ -181,7 +181,7 @@ export default class NotificationManager {
     //       console.log("Remote Notif: Navigate");
     //       // No: meaning the user got the notif and clicked on it, then navigate to the right screen
     //       // User must be logged and Navigation available
-    //       if (!(await _provider.isUserAuthenticated()) || !this.navigation) {
+    //       if (!(await _provider.isUserConnectionValid()) || !this.navigation) {
     //         return;
     //       }
     //       // Text?
@@ -202,7 +202,7 @@ export default class NotificationManager {
     //             if (notification.extraData.data && notification.extraData.data.connectorId) {
     //               // Navigate
     //               if (this.navigation) {
-    //                 this.navigation.navigate("ChargerTab", {
+    //                 this.navigation.navigate("ChargerTabDetails", {
     //                   chargerID: notification.extraData.chargeBoxID,
     //                   connectorID: notification.extraData.data.connectorId
     //                 });
@@ -215,7 +215,7 @@ export default class NotificationManager {
     //             if (notification.extraData.data) {
     //               // Navigate
     //               if (this.navigation) {
-    //                 this.navigation.navigate("ChargerTab", {
+    //                 this.navigation.navigate("ChargerTabDetails", {
     //                   chargerID: notification.extraData.chargeBoxID,
     //                   connectorID: 1
     //                 });

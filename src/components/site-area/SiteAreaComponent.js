@@ -28,8 +28,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
             if (siteArea.totalConnectors > 0) {
               // Navigate
               navigation.navigate("Chargers", {
-                siteAreaID: siteArea.id,
-                withNoSite: false
+                siteAreaID: siteArea.id
               });
             } else {
               // No connector

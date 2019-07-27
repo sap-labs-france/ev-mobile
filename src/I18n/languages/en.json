@@ -38,7 +38,7 @@
     "eulaNotAccepted": "You must accept the End-User License Agreement",
     "newUser": "New User?",
     "forgotYourPassword": "Forgot Password?",
-    "retrievePassword": "Retrieve on '{{tenantName}}'",
+    "retrievePassword": "Retrieve Password",
     "backLogin": "Back to Login",
     "required": "Required",
     "acceptEula": "I accept the ",
@@ -51,7 +51,7 @@
     "email": "Email",
     "password": "Password",
     "repeatPassword": "Repeat password",
-    "signUp": "Sign Up on '{{tenantName}}'",
+    "signUp": "Sign Up",
 		"passwordRule": "Must contain 1 letter lowercase and uppercase, 1 number, 1 special char and 8 chars long",
     "passwordNotMatch": "Password does not match",
     "tenant": "Choose a Tenant"
@@ -110,10 +110,10 @@
     "firmwareVersion": "Firmware Version",
     "time": "Time (mins)",
     "chargeInWatts": "Charge (Watt)",
-    "instantPowerChartLabel": "Instant Power (W)",
-    "cumulatedChartLabel": "Cumulated (W.h)",
+    "instantPowerChartLabel": "Instant Power (kW)",
+    "cumulatedChartLabel": "Cumulated (kW.h)",
     "batteryChartLabel": "Battery Level (%)",
-    "connectorMax": "Connector Max Power (W)"
+    "connectorMax": "Connector Max Power (kW)"
   },
   "notifications": {
     "mustLogin": "You must be logged in",
