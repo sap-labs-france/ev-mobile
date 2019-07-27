@@ -27,7 +27,7 @@ export default class Utils {
 
   static async handleHttpUnexpectedError(error, props) {
     // Log in console
-    console.log(error);
+    console.log({error});
     // Check if HTTP?
     if (error.request) {
       // Status?
@@ -36,14 +36,10 @@ export default class Utils {
         case 0:
           Message.showError(I18n.t("general.cannotConnectBackend"));
           break;
-        // Not logged in
-        case 401:
-          try {
-            await _provider.reAuthenticate();
-          } catch (errorLogin) {
-            Message.showError(I18n.t("general.authenticationFailed"));
-          }
-          break;
+        // // Not logged in?
+        // case 401:
+        //   _provider.checkAndTriggerAutoLogin();
+        //   break;
         // Other errors
         default:
           Message.showError(I18n.t("general.unexpectedErrorBackend"));

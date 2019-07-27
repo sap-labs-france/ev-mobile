@@ -181,7 +181,7 @@ export default class NotificationManager {
     //       console.log("Remote Notif: Navigate");
     //       // No: meaning the user got the notif and clicked on it, then navigate to the right screen
     //       // User must be logged and Navigation available
-    //       if (!(await _provider.isUserAuthenticated()) || !this.navigation) {
+    //       if (!(await _provider.isUserConnectionValid()) || !this.navigation) {
     //         return;
     //       }
     //       // Text?

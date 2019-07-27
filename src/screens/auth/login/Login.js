@@ -70,8 +70,10 @@ export default class Login extends ResponsiveComponent {
   async componentDidMount() {
     // Unlock all
     Orientation.lockToPortrait();
+    // Check
+    _provider.checkAndTriggerAutoLogin();
     // Check if user is authenticated
-    if (await _provider.isUserAuthenticated()) {
+    if (await _provider.isUserConnectionValid()) {
       // Navigate
       this._navigateToSites();
     } else {

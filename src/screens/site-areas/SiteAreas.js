@@ -48,8 +48,8 @@ export default class SiteAreas extends BaseScreen {
   }
 
   _getSiteAreas = async (searchText, skip, limit) => {
-    const siteID = Utils.getParamFromNavigation(this.props.navigation, "siteID", null);
     let siteAreas = [];
+    const siteID = Utils.getParamFromNavigation(this.props.navigation, "siteID", null);
     try {
       // Get the Sites
       siteAreas = await _provider.getSiteAreas(

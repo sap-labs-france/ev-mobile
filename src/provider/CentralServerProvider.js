@@ -10,7 +10,7 @@ const centralRestServerServiceAuthURL = centralRestServerServiceBaseURL + "/clie
 const centralRestServerServiceSecuredURL = centralRestServerServiceBaseURL + "/client/api";
 const captchaSiteKey = "6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw";
 // Debug
-const DEBUG = false;
+const DEBUG = true;
 
 // Paste the token below
 let _token;
@@ -84,7 +84,34 @@ export default class CentralServerProvider {
     ];
   }
 
-  async isUserAuthenticated() {
+  async checkAndTriggerAutoLogin() {
+    try {
+      // Check if connection has expired
+      if (await this.hasUserConnectionExpired()) {
+        // Try to authenticate again
+        await this.reAuthenticate();
+      }
+    } catch (error) {
+      // Cannot auto login, continue and enter login info
+      console.log(error);
+    }
+  }
+
+  async hasUserConnectionExpired() {
+    this.debug("hasUserConnectionExpired");
+    return (await this.isUserConnected()) && !(await this.isUserConnectionValid());
+  }
+
+  async isUserConnected() {
+    this.debug("isUserConnected");
+    // Init?
+    await this.initialize();
+    // Check
+    return !!_token;
+  }
+
+  async isUserConnectionValid() {
+    this.debug("isUserConnectionValid");
     // Init?
     await this.initialize();
     // Email and Password are mandatory
@@ -94,14 +121,12 @@ export default class CentralServerProvider {
     // Check Token
     if (_decodedToken) {
       // Check if expired
-      if (_decodedToken.exp < Date.now() / 1000) {
+      if (_decodedToken.exp < (Date.now() / 1000)) {
         // Expired
         return false;
       }
-      // Ok
       return true;
     }
-    // No
     return false;
   }
 
@@ -147,19 +172,18 @@ export default class CentralServerProvider {
   }
 
   async reAuthenticate() {
-    // Authenticated ?
-    const isUserAuthenticated = await this.isUserAuthenticated();
-    // Not authenticated ?
-    if (!isUserAuthenticated) {
+    this.debug("reAuthenticate");
+    // Check token
+    if (!(await this.isUserConnectionValid())) {
       // User not authenticated: email, password and tenant registered ?
       if (_email && _password && _tenant) {
-        // Yes: Log user
+      // Yes: relog user
         await this.login(_email, _password, true, _tenant);
       }
     }
   }
 
-  async login(email, password, eula, tenant) {
+  async login(email, password, acceptEula, tenant) {
     this.debug("login");
     // Call
     const result = await axios.post(
@@ -167,7 +191,7 @@ export default class CentralServerProvider {
       {
         email,
         password,
-        acceptEula: eula,
+        acceptEula,
         tenant
       },
       {
@@ -227,11 +251,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  async getNotifications(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getNotifications(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getNotifications");
     // Init?
     await this.initialize();
@@ -247,11 +267,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  async getChargers(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getChargers(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getChargers");
     // Init?
     await this.initialize();
@@ -267,18 +283,10 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  async getCharger(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getCharger(params = {}) {
     this.debug("getCharger");
     // Init?
     await this.initialize();
-    // Build Paging
-    this._buildPaging(paging, params);
-    // Build Ordering
-    this._buildOrdering(ordering, params);
     // Call
     const result = await axios.get(`${centralRestServerServiceSecuredURL}/ChargingStation`, {
       headers: this._buildSecuredHeaders(),
@@ -287,11 +295,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  async getSites(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getSites(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getSites");
     // Init?
     await this.initialize();
@@ -307,14 +311,14 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  async getSiteAreas(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getSiteAreas(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getSiteAreas");
     // Init?
     await this.initialize();
+    // Build Paging
+    this._buildPaging(paging, params);
+    // Build Ordering
+    this._buildOrdering(ordering, params);
     // Call
     const result = await axios.get(`${centralRestServerServiceSecuredURL}/SiteAreas`, {
       headers: this._buildSecuredHeaders(),
