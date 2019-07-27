@@ -1,6 +1,6 @@
 import axios from "axios";
 import Constants from "../utils/Constants";
-import SecurityProvider from "../security/SecurityProvider";
+import SecurityProvider from "./SecurityProvider";
 import SecuredStorage from "../utils/SecuredStorage";
 import jwtDecode from "jwt-decode";
 
