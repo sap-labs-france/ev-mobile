@@ -1,11 +1,6 @@
 import React from "react";
 import { StatusBar, Dimensions } from "react-native";
-import {
-  createSwitchNavigator,
-  createStackNavigator,
-  createDrawerNavigator,
-  createAppContainer
-} from "react-navigation";
+import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createAppContainer } from "react-navigation";
 import { Root } from "native-base";
 import Login from "./screens/auth/login/Login";
 import Eula from "./screens/auth/eula/Eula";
@@ -15,6 +10,7 @@ import Sidebar from "./screens/sidebar/SideBar";
 import Sites from "./screens/sites/Sites";
 import SiteAreas from "./screens/site-areas/SiteAreas";
 import Chargers from "./screens/chargers/Chargers";
+import AllChargers from "./screens/chargers/AllChargers";
 import ChargerTabDetails from "./screens/charger-details/tabs/ChargerTabDetails";
 import NotificationManager from "./notification/NotificationManager";
 
@@ -38,6 +34,7 @@ const AppDrawerNavigator = createDrawerNavigator(
     },
     SiteAreas: { screen: SiteAreas },
     Chargers: { screen: Chargers },
+    AllChargers: { screen: AllChargers },
     ChargerTabDetails: { screen: ChargerTabDetails }
   },
   {

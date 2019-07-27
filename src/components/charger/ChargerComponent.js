@@ -44,7 +44,6 @@ export default class ChargerComponent extends ResponsiveComponent {
             <Animatable.Text
               animation="fadeIn"
               easing="ease-in-out"
-              duration="1000"
               iterationCount="infinite"
               direction="alternate-reverse"
             >
