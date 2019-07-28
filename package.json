@@ -37,6 +37,7 @@
   "scripts": {
     "start": "react-native start",
     "android": "react-native run-android",
+    "android:release": "cd android && ./gradlew assembleRelease",
     "ios": "react-native run-ios",
     "test": "jest --passWithNoTests && flow check src && eslint src",
     "precommit": "npm test",
@@ -53,7 +54,9 @@
     "npm-check": "npm-check",
     "android:jetify": "npx jetify",
     "react-native:upgrade": "react-native upgrade",
-    "react-native:link": "react-native link"
+    "react-native:link": "react-native link",
+    "react-native:unlink": "react-native unlink",
+    "react-native:uninstall": "react-native uninstall"
   },
   "jest": {
     "preset": "react-native",
@@ -87,7 +90,7 @@
     "react-native-i18n": "^2.0.15",
     "react-native-modalbox": "^1.7.1",
     "react-native-open-maps": "^0.3.3",
-    "react-native-orientation": "^3.1.3",
+    "react-native-orientation-locker": "^1.1.6",
     "react-native-push-notification": "^3.1.3",
     "react-native-recaptcha-v3": "0.0.16",
     "react-native-responsive-ui": "^1.1.1",

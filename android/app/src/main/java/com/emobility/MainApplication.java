@@ -3,10 +3,10 @@ package com.emobility;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.wonday.orientation.OrientationPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.github.wuxudong.rncharts.MPAndroidChartPackage;
 import io.invertase.firebase.RNFirebasePackage;
-import com.github.yamill.orientation.OrientationPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.horcrux.svg.SvgPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
