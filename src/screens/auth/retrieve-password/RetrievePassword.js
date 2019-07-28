@@ -16,7 +16,7 @@ import ReCaptcha from "react-native-recaptcha-v3";
 
 
 const _provider = ProviderFactory.getProvider();
-const logo = require("../../../../assets/logo-low.gif");
+const logo = require("../../../../assets/logo-low.png");
 const background = require("../../../../assets/bg.png");
 
 const formValidationDef = {
