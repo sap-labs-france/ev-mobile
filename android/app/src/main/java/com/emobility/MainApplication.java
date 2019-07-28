@@ -11,7 +11,7 @@ import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.horcrux.svg.SvgPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.taluttasgiran.rnsecurestorage.RNSecureStoragePackage;
-import com.swmansion.gesturehandler.RNGestureHandlerPackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import br.com.classapp.RNSensitiveInfo.RNSensitiveInfoPackage;
