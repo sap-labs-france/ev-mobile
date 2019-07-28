@@ -6,7 +6,6 @@ target 'eMobility' do
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
-  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
 end
 
