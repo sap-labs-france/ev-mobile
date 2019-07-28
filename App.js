@@ -12,10 +12,11 @@ import SplashScreen from "react-native-splash-screen";
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class App extends React.Component {
+  // eslint-disable-next-line class-methods-use-this
   componentDidMount() {
-    // do stuff while splash screen is shown
-      // After having done stuff (such as async tasks) hide the splash screen
-      SplashScreen.hide();
+    // Do stuff while splash screen is shown
+    // After having done stuff (such as async tasks) hide the splash screen
+    SplashScreen.hide();
   }
   // eslint-disable-next-line class-methods-use-this
   render() {
