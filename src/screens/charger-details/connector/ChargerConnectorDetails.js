@@ -12,7 +12,7 @@ import Message from "../../../utils/Message";
 import PropTypes from "prop-types";
 
 const noPhoto = require("../../../../assets/no-photo.png");
-const noSite = require("../../../../assets/no-site.gif");
+const noSite = require("../../../../assets/no-site.png");
 const START_TRANSACTION_NB_TRIAL = 4;
 const _provider = ProviderFactory.getProvider();
 

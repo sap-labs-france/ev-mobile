@@ -11,7 +11,7 @@ import DeviceInfo from "react-native-device-info";
 const _provider = ProviderFactory.getProvider();
 
 const noPhoto = require("../../../assets/no-photo.png");
-const logo = require("../../../assets/logo-low.gif");
+const logo = require("../../../assets/logo-low.png");
 const background = require("../../../assets/sidebar-transparent.png");
 
 class SideBar extends ResponsiveComponent {
