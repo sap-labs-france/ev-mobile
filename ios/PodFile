@@ -3,8 +3,6 @@ target 'eMobility' do
   pod 'Charts', '3.3.0'
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
-  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
-  pod 'react-native-orientation-locker', :path => '../node_modules/react-native-orientation-locker'
 end
 
 swift4 = ['Charts']

@@ -39,6 +39,7 @@
     "android": "react-native run-android",
     "android:release": "cd android && ./gradlew assembleRelease",
     "ios": "react-native run-ios",
+    "pod:install": "cd ios && pod install",
     "test": "jest --passWithNoTests && flow check src && eslint src",
     "precommit": "npm test",
     "flow:check": "flow check src",
