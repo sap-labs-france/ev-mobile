@@ -350,11 +350,7 @@ export default class ChargerConnectorDetails extends BaseScreen {
               <View
                 style={
                   buttonDisabled
-                    ? [
-                        style.buttonTransaction,
-                        style.startTransaction,
-                        style.buttonTransactionDisabled
-                      ]
+                    ? [style.buttonTransaction, style.startTransaction, style.buttonTransactionDisabled]
                     : [style.buttonTransaction, style.startTransaction]
                 }
               >
@@ -371,11 +367,7 @@ export default class ChargerConnectorDetails extends BaseScreen {
                 <View
                   style={
                     buttonDisabled
-                      ? [
-                          style.buttonTransaction,
-                          style.stopTransaction,
-                          style.buttonTransactionDisabled
-                        ]
+                      ? [style.buttonTransaction, style.stopTransaction, style.buttonTransactionDisabled]
                       : [style.buttonTransaction, style.stopTransaction]
                   }
                 >

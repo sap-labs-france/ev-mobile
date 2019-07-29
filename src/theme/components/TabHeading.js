@@ -1,36 +1,36 @@
-import variable from "./../variables/platform";
+// @flow
 
-const primary = require("../variables/commonColor").brandPrimary;
+import variable from './../variables/platform';
+import { PLATFORM } from './../variables/commonColor';
 
-export default (variables = variable) => {
+export default (variables /* : * */ = variable) => {
   const platform = variables.platform;
 
   const tabHeadingTheme = {
-    flexDirection: "row",
-    backgroundColor: primary,
+    flexDirection: 'row',
+    backgroundColor: variables.tabDefaultBg,
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    ".scrollable": {
+    alignItems: 'center',
+    justifyContent: 'center',
+    '.scrollable': {
       paddingHorizontal: 20,
-      flex: platform === "android" ? 0 : 1,
-      minWidth: platform === "android" ? undefined : 60
+      flex: platform === PLATFORM.ANDROID ? 0 : 1,
+      minWidth: platform === PLATFORM.ANDROID ? undefined : 60
     },
-    "NativeBase.Text": {
-      color: variables.topTabBarActiveTextColor,
-      marginHorizontal: 7,
-      fontWeight: platform === "ios" ? "500" : "300"
-    },
-    "NativeBase.Icon": {
+    'NativeBase.Text': {
       color: variables.topTabBarTextColor,
-      fontSize: platform === "ios" ? 26 : undefined
+      marginHorizontal: 7
     },
-    ".active": {
-      "NativeBase.Text": {
+    'NativeBase.Icon': {
+      color: variables.topTabBarTextColor,
+      fontSize: platform === PLATFORM.IOS ? 26 : undefined
+    },
+    '.active': {
+      'NativeBase.Text': {
         color: variables.topTabBarActiveTextColor,
-        fontWeight: "900"
+        fontWeight: '600'
       },
-      "NativeBase.Icon": {
+      'NativeBase.Icon': {
         color: variables.topTabBarActiveTextColor
       }
     }

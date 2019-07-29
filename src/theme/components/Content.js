@@ -1,12 +1,13 @@
-import variable from "./../variables/platform";
+// @flow
 
-export default (variables = variable) => {
+export default () => {
   const contentTheme = {
-    ".padder": {
-      padding: variables.contentPadding
-    },
     flex: 1,
-    backgroundColor: "transparent"
+    backgroundColor: 'transparent',
+    'NativeBase.Segment': {
+      borderWidth: 0,
+      backgroundColor: 'transparent'
+    }
   };
 
   return contentTheme;

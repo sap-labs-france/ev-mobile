@@ -37,6 +37,8 @@ export default class RetrievePassword extends ResponsiveComponent {
     this.captchaSiteKey = _provider.getCaptchaSiteKey();
     this.captchaBaseUrl = _provider.getCaptchaBaseUrl();
     const tenantSubDomain = Utils.getParamFromNavigation(this.props.navigation, "tenant", "");
+    console.log({tenantSubDomain});
+    console.log(this.props.navigation);
     this.tenant = _provider.getTenant(tenantSubDomain);
     this.state = {
       tenant: tenantSubDomain,
@@ -151,8 +153,8 @@ export default class RetrievePassword extends ResponsiveComponent {
                 {loading || !captcha ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
-                  <Button rounded primary block large style={style.button} onPress={this._retrievePassword}>
-                    <Text style={style.buttonText}>{I18n.t("authentication.retrievePassword")}</Text>
+                  <Button rounded primary block style={style.button} onPress={this._retrievePassword}>
+                    <TextRN style={style.buttonText}>{I18n.t("authentication.retrievePassword")}</TextRN>
                   </Button>
                 )}
               </Form>

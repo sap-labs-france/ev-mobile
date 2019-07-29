@@ -68,7 +68,7 @@ const commonStyles = ScaledSheet.create({
     alignSelf: "center",
     height: "40@s",
     marginBottom: "10@s",
-    backgroundColor: "rgba(255,255,255,0.30)"
+    backgroundColor: "rgba(255,255,255,0.20)"
   },
   buttonText: {
     width: "100%",
@@ -135,10 +135,12 @@ const commonStyles = ScaledSheet.create({
     textDecorationLine: "underline"
   },
   linksButtonLeft: {
-    alignSelf: "flex-start"
+    alignSelf: "flex-start",
+    paddingLeft: 15
   },
   linksButtonRight: {
-    alignSelf: "flex-end"
+    alignSelf: "flex-end",
+    paddingRight: 15
   },
   linksTextButton: {
     width: "100%",

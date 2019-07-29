@@ -18,7 +18,7 @@ export default class Utils {
       return defaultValue;
     }
     // Has param
-    if (!navigation.state.params.name) {
+    if (!navigation.state.params[name]) {
       return defaultValue;
     }
     // Ok, return the value

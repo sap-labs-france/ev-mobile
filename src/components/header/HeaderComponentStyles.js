@@ -14,11 +14,12 @@ const commonStyles = ScaledSheet.create({
   },
   leftHeader: {},
   bodyHeader: {
-    flexGrow: 2
+    flexGrow: 2,
+    paddingLeft: "50@s"
   },
   rightHeader: {},
   logoHeader: {
-    width: "50@s",
+    width: "45@s",
     resizeMode: "contain"
   },
   titleHeader: {
@@ -35,14 +36,13 @@ const commonStyles = ScaledSheet.create({
     marginTop: Platform.OS === "ios" ? "-2@s" : "-3@s"
   },
   iconHeader: {
-    fontSize: "30@s",
-    alignSelf: "center"
+    fontSize: "30@s"
   },
-  leftIconHeader: {
-    marginLeft: "-5@s"
+  leftButtonHeader: {
+    paddingLeft: 0
   },
-  rightIconHeader: {
-    marginLeft: "10@s"
+  rightButtonHeader: {
+    paddingLeft: 0
   }
 });
 

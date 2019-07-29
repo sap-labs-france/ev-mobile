@@ -25,17 +25,18 @@ const commonStyles = ScaledSheet.create({
     marginTop: "-55@s"
   },
   buttonTransaction: {
-    borderRadius: "55@s",
+    borderRadius: "50@s",
     borderStyle: "solid",
+    backgroundColor: commonColor.brandSuccess,
     borderWidth: 2,
     borderColor: commonColor.textColor,
-    width: "110@s",
-    height: "110@s",
+    width: "100@s",
+    height: "100@s",
     justifyContent: "center",
     alignItems: "center"
   },
   noButtonStopTransaction: {
-    height: "110@s",
+    height: "110@s"
   },
   startTransaction: {
     backgroundColor: commonColor.brandSuccess

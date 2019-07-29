@@ -47,7 +47,10 @@ export default class HeaderComponent extends ResponsiveComponent {
       <Header style={style.header}>
         <Left style={style.leftHeader}>
           {leftAction ? (
-            <Button transparent onPress={() => leftAction()}>
+            <Button transparent
+              style={style.leftButtonHeader}
+              onPress={() => leftAction()}
+            >
               <Icon
                 type={leftActionIconType}
                 name={leftActionIcon}
@@ -70,9 +73,8 @@ export default class HeaderComponent extends ResponsiveComponent {
         </Body>
         <Right style={style.rightHeader}>
           {showSearchAction ? (
-            <Icon
-              type={"MaterialIcons"}
-              name={"search"}
+            <Button transparent
+              style={style.rightButtonHeader}
               onPress={() => {
                 // Invert
                 this.searchIsVisible = !this.searchIsVisible;
@@ -81,18 +83,27 @@ export default class HeaderComponent extends ResponsiveComponent {
                   searchRef.setVisible(this.searchIsVisible);
                 }
               }}
-              style={[style.iconHeader, style.rightIconHeader]}
-            />
+            >
+              <Icon
+                type={"MaterialIcons"}
+                name={"search"}
+                style={style.iconHeader}
+              />
+            </Button>
           ) : (
             undefined
           )}
           {rightAction ? (
-            <Icon
-              type={rightActionIconType}
-              name={rightActionIcon}
+            <Button transparent
+              style={style.rightButtonHeader}
               onPress={() => rightAction()}
-              style={[style.iconHeader, style.rightIconHeader]}
-            />
+            >
+              <Icon
+                type={rightActionIconType}
+                name={rightActionIcon}
+                style={style.iconHeader}
+              />
+            </Button>
           ) : (
             <Image source={logo} style={style.logoHeader} />
           )}

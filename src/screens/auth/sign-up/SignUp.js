@@ -325,11 +325,11 @@ export default class SignUp extends React.Component {
                       {errorMessage}
                     </Text>
                   ))}
-                {loading || !captcha  ? (
+                {loading || !captcha ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
-                  <Button rounded primary block large style={style.button} onPress={this._signUp}>
-                    <Text style={style.buttonText}>{I18n.t("authentication.signUp", { tenantName: this.tenant.name })}</Text>
+                  <Button rounded primary block style={style.button} onPress={this._signUp}>
+                    <TextRN style={style.buttonText}>{I18n.t("authentication.signUp")}</TextRN>
                   </Button>
                 )}
               </Form>
