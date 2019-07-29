@@ -1,10 +1,9 @@
 import React from "react";
 import { ScrollView, Image, ImageBackground, Keyboard, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
 import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet, Footer, Left, Right } from "native-base";
-import Orientation from "react-native-orientation";
+import Orientation from "react-native-orientation-locker";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import * as Animatable from "react-native-animatable";
-
 import providerFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
