@@ -978,7 +978,6 @@
 				2B4DF3647A858D20A6DFF142 /* Pods-eMobility.debug.xcconfig */,
 				900BA60ABD5873E3528D8563 /* Pods-eMobility.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
