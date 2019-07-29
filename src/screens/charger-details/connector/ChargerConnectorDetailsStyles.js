@@ -45,7 +45,7 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: commonColor.brandDanger
   },
   buttonTransactionDisabled: {
-    backgroundColor: commonColor.btnDisabledBg
+    backgroundColor: commonColor.buttonDisabledBg
   },
   startStopTransactionIcon: {
     fontSize: "75@s"
