@@ -3,12 +3,18 @@ target 'eMobility' do
   pod 'Charts', '3.3.0'
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
+  pod 'React', :path => '../node_modules/react-native'
+  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+  pod 'react-native-orientation-locker', :path => '../node_modules/react-native-orientation-locker/react-native-orientation-locker.podspec'
 end
 
 swift4 = ['Charts']
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
+    if target.name == "React"
+      target.remove_from_project
+    end
     target.build_configurations.each do |config|
       if swift4.include?(target.name)
         config.build_settings['SWIFT_VERSION'] = '4.2'
