@@ -125,7 +125,7 @@ export default class CentralServerProvider {
     // Check Token
     if (_decodedToken) {
       // Check if expired
-      if (_decodedToken.exp < (Date.now() / 1000)) {
+      if (_decodedToken.exp < Date.now() / 1000) {
         // Expired
         return false;
       }
@@ -181,7 +181,7 @@ export default class CentralServerProvider {
     if (!(await this.isUserConnectionValid())) {
       // User not authenticated: email, password and tenant registered ?
       if (_email && _password && _tenant) {
-      // Yes: relog user
+        // Yes: relog user
         await this.login(_email, _password, true, _tenant);
       }
     }
@@ -255,7 +255,11 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  async getNotifications(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+  async getNotifications(
+    params = {},
+    paging = Constants.DEFAULT_PAGING,
+    ordering = Constants.DEFAULT_ORDERING
+  ) {
     this.debug("getNotifications");
     // Init?
     await this.initialize();
@@ -271,7 +275,11 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  async getChargers(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+  async getChargers(
+    params = {},
+    paging = Constants.DEFAULT_PAGING,
+    ordering = Constants.DEFAULT_ORDERING
+  ) {
     this.debug("getChargers");
     // Init?
     await this.initialize();
@@ -299,7 +307,11 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  async getSites(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+  async getSites(
+    params = {},
+    paging = Constants.DEFAULT_PAGING,
+    ordering = Constants.DEFAULT_ORDERING
+  ) {
     this.debug("getSites");
     // Init?
     await this.initialize();
@@ -315,7 +327,11 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  async getSiteAreas(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+  async getSiteAreas(
+    params = {},
+    paging = Constants.DEFAULT_PAGING,
+    ordering = Constants.DEFAULT_ORDERING
+  ) {
     this.debug("getSiteAreas");
     // Init?
     await this.initialize();
@@ -516,7 +532,7 @@ export default class CentralServerProvider {
   _buildSecuredHeaders() {
     return {
       "Content-Type": "application/json",
-      "Authorization": "Bearer " + _token
+      Authorization: "Bearer " + _token
     };
   }
 }

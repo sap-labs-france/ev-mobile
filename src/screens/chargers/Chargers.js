@@ -31,11 +31,7 @@ export default class Chargers extends BaseScreen {
     // Call parent
     super.componentDidMount();
     // Get chargers first time
-    const chargers = await this._getChargers(
-      this.searchText,
-      this.state.skip,
-      this.state.limit
-    );
+    const chargers = await this._getChargers(this.searchText, this.state.skip, this.state.limit);
     // Add chargers
     if (this.isMounted()) {
       // eslint-disable-next-line react/no-did-mount-set-state
@@ -128,7 +124,7 @@ export default class Chargers extends BaseScreen {
     if (chargers && chargers.length > 0) {
       for (const charger of chargers) {
         if (charger.siteArea) {
-          return  charger.siteArea.siteID;
+          return charger.siteArea.siteID;
         }
       }
     }
@@ -167,7 +163,11 @@ export default class Chargers extends BaseScreen {
               data={this.state.chargers}
               renderItem={({ item }) => (
                 <List>
-                  <ChargerComponent charger={item} navigation={navigation} siteAreaID={siteAreaID} />
+                  <ChargerComponent
+                    charger={item}
+                    navigation={navigation}
+                    siteAreaID={siteAreaID}
+                  />
                 </List>
               )}
               keyExtractor={item => item.id}

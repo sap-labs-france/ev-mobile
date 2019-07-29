@@ -11,7 +11,7 @@ const commonStyles = ScaledSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
-    alignItems: "center",
+    alignItems: "center"
   },
   spinner: {
     flex: 1,

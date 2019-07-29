@@ -1,5 +1,13 @@
 import React from "react";
-import { Image, TextInput, ImageBackground, Keyboard, ScrollView, Text as TextRN, KeyboardAvoidingView } from "react-native";
+import {
+  Image,
+  TextInput,
+  ImageBackground,
+  Keyboard,
+  ScrollView,
+  Text as TextRN,
+  KeyboardAvoidingView
+} from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import * as Animatable from "react-native-animatable";
 import { Form, Text, Button, Icon, Item, View, CheckBox, Footer, Spinner, Left } from "native-base";
@@ -21,32 +29,32 @@ const formValidationDef = {
   name: {
     presence: {
       allowEmpty: false,
-      message: '^' + I18n.t("authentication.mandatory_name")
+      message: "^" + I18n.t("authentication.mandatory_name")
     }
   },
   firstName: {
     presence: {
       allowEmpty: false,
-      message: '^' + I18n.t("authentication.mandatory_first_name")
+      message: "^" + I18n.t("authentication.mandatory_first_name")
     }
   },
   email: {
     presence: {
       allowEmpty: false,
-      message: '^' + I18n.t("authentication.mandatory_email")
+      message: "^" + I18n.t("authentication.mandatory_email")
     },
     email: {
-      message: '^' + I18n.t("authentication.invalid_email")
+      message: "^" + I18n.t("authentication.invalid_email")
     }
   },
   password: {
     presence: {
       allowEmpty: false,
-      message: '^' + I18n.t("authentication.mandatory_password")
+      message: "^" + I18n.t("authentication.mandatory_password")
     },
     equality: {
       attribute: "ghost",
-      message: '^' + I18n.t("authentication.passwordRule"),
+      message: "^" + I18n.t("authentication.passwordRule"),
       comparator(password, ghost) {
         // True if EULA is checked
         return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(
@@ -58,11 +66,11 @@ const formValidationDef = {
   repeatPassword: {
     presence: {
       allowEmpty: false,
-      message: '^' + I18n.t("authentication.mandatory_password")
+      message: "^" + I18n.t("authentication.mandatory_password")
     },
     equality: {
       attribute: "password",
-      message: '^' + I18n.t("authentication.passwordNotMatch")
+      message: "^" + I18n.t("authentication.passwordNotMatch")
     }
   },
   eula: {
@@ -96,15 +104,24 @@ export default class SignUp extends React.Component {
     };
   }
 
-  _recaptchaResponseToken = (captcha) => {
+  _recaptchaResponseToken = captcha => {
     this.setState({ captcha });
-  }
+  };
 
   _signUp = async () => {
     // Check field
     const formIsValid = Utils.validateInput(this, formValidationDef);
     if (formIsValid) {
-      const { tenant, name, firstName, email, password, repeatPassword, eula, captcha } = this.state;
+      const {
+        tenant,
+        name,
+        firstName,
+        email,
+        password,
+        repeatPassword,
+        eula,
+        captcha
+      } = this.state;
       try {
         // Loading
         this.setState({ loading: true });
@@ -126,10 +143,15 @@ export default class SignUp extends React.Component {
         return this.props.navigation.dispatch(
           StackActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({ routeName: "Login", params: {
-              tenant: this.state.tenant,
-              email: this.state.email
-            }})]
+            actions: [
+              NavigationActions.navigate({
+                routeName: "Login",
+                params: {
+                  tenant: this.state.tenant,
+                  email: this.state.email
+                }
+              })
+            ]
           })
         );
       } catch (error) {
@@ -306,7 +328,7 @@ export default class SignUp extends React.Component {
                       {errorMessage}
                     </Text>
                   ))}
-                  <View style={style.eulaContainer}>
+                <View style={style.eulaContainer}>
                   <CheckBox
                     style={style.eulaCheckbox}
                     checked={eula}
@@ -340,11 +362,17 @@ export default class SignUp extends React.Component {
               url={this.captchaBaseUrl}
               action="RegisterUser"
               reCaptchaType={1}
-              onExecute={this._recaptchaResponseToken}/>
+              onExecute={this._recaptchaResponseToken}
+            />
           </ScrollView>
           <Footer>
             <Left>
-              <Button small transparent style={style.linksButtonLeft} onPress={() => this.props.navigation.goBack()}>
+              <Button
+                small
+                transparent
+                style={style.linksButtonLeft}
+                onPress={() => this.props.navigation.goBack()}
+              >
                 <TextRN style={style.linksTextButton}>{I18n.t("authentication.backLogin")}</TextRN>
               </Button>
             </Left>

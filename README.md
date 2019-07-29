@@ -49,6 +49,12 @@ Open a terminal in the **ev-mobile** directory
   npm run android:jetify
   ```
 
+* Install CocoaPods on Mac OSX:
+
+  ```
+  npm run pod:install
+  ```
+
 * Run on Android:
   Setup and start an Android virtual device in Android Studio
 

@@ -2,7 +2,7 @@
 
 export default () => {
   const labelTheme = {
-    '.focused': {
+    ".focused": {
       width: 0
     },
     fontSize: 17
