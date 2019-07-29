@@ -1,6 +1,0 @@
-module Pods_eMobility {
-  umbrella header "Pods-eMobility-umbrella.h"
-
-  export *
-  module * { export * }
-}
