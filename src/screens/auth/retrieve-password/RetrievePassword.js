@@ -1,5 +1,12 @@
 import React from "react";
-import { ScrollView, Image, TextInput, ImageBackground, KeyboardAvoidingView, Text as TextRN } from "react-native";
+import {
+  ScrollView,
+  Image,
+  TextInput,
+  ImageBackground,
+  KeyboardAvoidingView,
+  Text as TextRN
+} from "react-native";
 import { Text, Form, Item, Button, Icon, View, Spinner, Footer, Left } from "native-base";
 import { NavigationActions, StackActions } from "react-navigation";
 import commonColor from "../../../theme/variables/commonColor";
@@ -14,7 +21,6 @@ import Constants from "../../../utils/Constants";
 import DeviceInfo from "react-native-device-info";
 import ReCaptcha from "react-native-recaptcha-v3";
 
-
 const _provider = ProviderFactory.getProvider();
 const logo = require("../../../../assets/logo-low.png");
 const background = require("../../../../assets/bg.png");
@@ -23,10 +29,10 @@ const formValidationDef = {
   email: {
     presence: {
       allowEmpty: false,
-      message: '^' + I18n.t("authentication.mandatory_email")
+      message: "^" + I18n.t("authentication.mandatory_email")
     },
     email: {
-      message: '^' + I18n.t("authentication.invalid_email")
+      message: "^" + I18n.t("authentication.invalid_email")
     }
   }
 };
@@ -37,7 +43,7 @@ export default class RetrievePassword extends ResponsiveComponent {
     this.captchaSiteKey = _provider.getCaptchaSiteKey();
     this.captchaBaseUrl = _provider.getCaptchaBaseUrl();
     const tenantSubDomain = Utils.getParamFromNavigation(this.props.navigation, "tenant", "");
-    console.log({tenantSubDomain});
+    console.log({ tenantSubDomain });
     console.log(this.props.navigation);
     this.tenant = _provider.getTenant(tenantSubDomain);
     this.state = {
@@ -48,9 +54,9 @@ export default class RetrievePassword extends ResponsiveComponent {
     };
   }
 
-  _recaptchaResponseToken = (captcha) => {
+  _recaptchaResponseToken = captcha => {
     this.setState({ captcha });
-  }
+  };
 
   _retrievePassword = async () => {
     // Check field
@@ -69,10 +75,15 @@ export default class RetrievePassword extends ResponsiveComponent {
         return this.props.navigation.dispatch(
           StackActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({ routeName: "Login", params: {
-              tenant: this.state.tenant,
-              email: this.state.email
-            }})]
+            actions: [
+              NavigationActions.navigate({
+                routeName: "Login",
+                params: {
+                  tenant: this.state.tenant,
+                  email: this.state.email
+                }
+              })
+            ]
           })
         );
       } catch (error) {
@@ -153,8 +164,16 @@ export default class RetrievePassword extends ResponsiveComponent {
                 {loading || !captcha ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
-                  <Button rounded primary block style={style.button} onPress={this._retrievePassword}>
-                    <TextRN style={style.buttonText}>{I18n.t("authentication.retrievePassword")}</TextRN>
+                  <Button
+                    rounded
+                    primary
+                    block
+                    style={style.button}
+                    onPress={this._retrievePassword}
+                  >
+                    <TextRN style={style.buttonText}>
+                      {I18n.t("authentication.retrievePassword")}
+                    </TextRN>
                   </Button>
                 )}
               </Form>
@@ -165,11 +184,17 @@ export default class RetrievePassword extends ResponsiveComponent {
               url={this.captchaBaseUrl}
               action="ResetPassword"
               reCaptchaType={1}
-              onExecute={this._recaptchaResponseToken}/>
+              onExecute={this._recaptchaResponseToken}
+            />
           </ScrollView>
           <Footer>
             <Left>
-              <Button small transparent style={style.linksButtonLeft} onPress={() => this.props.navigation.goBack()}>
+              <Button
+                small
+                transparent
+                style={style.linksButtonLeft}
+                onPress={() => this.props.navigation.goBack()}
+              >
                 <TextRN style={style.linksTextButton}>{I18n.t("authentication.backLogin")}</TextRN>
               </Button>
             </Left>

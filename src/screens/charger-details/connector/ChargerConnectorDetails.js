@@ -166,7 +166,7 @@ export default class ChargerConnectorDetails extends BaseScreen {
         this.setState({
           isAuthorizedToStopTransaction: false
         });
-    }
+      }
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(error, this.props);
@@ -270,26 +270,29 @@ export default class ChargerConnectorDetails extends BaseScreen {
     const { connector } = this.props;
     const { startTransactionNbTrial } = this.state;
     // Check if the Start/Stop Button should stay disabled
-    if ((connector.status === Constants.CONN_STATUS_AVAILABLE && startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
-        (connector.status === Constants.CONN_STATUS_PREPARING && startTransactionNbTrial === 0)) {
+    if (
+      (connector.status === Constants.CONN_STATUS_AVAILABLE &&
+        startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
+      (connector.status === Constants.CONN_STATUS_PREPARING && startTransactionNbTrial === 0)
+    ) {
       // Button are set to available after the nbr of trials
       this.setState({
         buttonDisabled: false
       });
-    // Still trials? (only for Start Transaction)
+      // Still trials? (only for Start Transaction)
     } else if (startTransactionNbTrial > 0) {
       // Trial - 1
       this.setState({
         startTransactionNbTrial: startTransactionNbTrial > 0 ? startTransactionNbTrial - 1 : 0
       });
-    // Transaction ongoing
+      // Transaction ongoing
     } else if (connector.activeTransactionID !== 0) {
       // Transaction has started, enable the buttons again
       this.setState({
         startTransactionNbTrial: 0,
         buttonDisabled: false
       });
-    // Transaction is stopped (activeTransactionID == 0)
+      // Transaction is stopped (activeTransactionID == 0)
     } else if (connector.status === Constants.CONN_STATUS_FINISHING) {
       // Disable the button until the user unplug the cable
       this.setState({
@@ -340,7 +343,16 @@ export default class ChargerConnectorDetails extends BaseScreen {
   render() {
     const style = computeStyleSheet();
     const { connector, isAdmin } = this.props;
-    const { siteImage, transaction, userImage, buttonDisabled, hours, minutes, seconds, isAuthorizedToStopTransaction } = this.state;
+    const {
+      siteImage,
+      transaction,
+      userImage,
+      buttonDisabled,
+      hours,
+      minutes,
+      seconds,
+      isAuthorizedToStopTransaction
+    } = this.state;
     return (
       <Container style={style.container}>
         <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
@@ -350,7 +362,11 @@ export default class ChargerConnectorDetails extends BaseScreen {
               <View
                 style={
                   buttonDisabled
-                    ? [style.buttonTransaction, style.startTransaction, style.buttonTransactionDisabled]
+                    ? [
+                        style.buttonTransaction,
+                        style.startTransaction,
+                        style.buttonTransactionDisabled
+                      ]
                     : [style.buttonTransaction, style.startTransaction]
                 }
               >
@@ -361,22 +377,25 @@ export default class ChargerConnectorDetails extends BaseScreen {
                 />
               </View>
             </TouchableOpacity>
-          ) :
-            isAuthorizedToStopTransaction ?
-              (<TouchableOpacity onPress={() => this._onStopTransaction()} disabled={buttonDisabled}>
-                <View
-                  style={
-                    buttonDisabled
-                      ? [style.buttonTransaction, style.stopTransaction, style.buttonTransactionDisabled]
-                      : [style.buttonTransaction, style.stopTransaction]
-                  }
-                >
-                  <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="stop" />
-                </View>
-              </TouchableOpacity>)
-            :
-              (<View style={style.noButtonStopTransaction}/>)
-          }
+          ) : isAuthorizedToStopTransaction ? (
+            <TouchableOpacity onPress={() => this._onStopTransaction()} disabled={buttonDisabled}>
+              <View
+                style={
+                  buttonDisabled
+                    ? [
+                        style.buttonTransaction,
+                        style.stopTransaction,
+                        style.buttonTransactionDisabled
+                      ]
+                    : [style.buttonTransaction, style.stopTransaction]
+                }
+              >
+                <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="stop" />
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <View style={style.noButtonStopTransaction} />
+          )}
         </View>
         <ScrollView style={style.scrollViewContainer}>
           <View style={style.detailsContainer}>

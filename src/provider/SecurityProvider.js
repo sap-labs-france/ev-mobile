@@ -33,6 +33,10 @@ export default class SecurityProvider {
   }
 
   _canAccess(resource: String, action: String) {
-    return this.loggedUser && this.loggedUser.scopes && this.loggedUser.scopes.includes(`${resource}:${action}`);
+    return (
+      this.loggedUser &&
+      this.loggedUser.scopes &&
+      this.loggedUser.scopes.includes(`${resource}:${action}`)
+    );
   }
 }

@@ -47,10 +47,7 @@ export default class HeaderComponent extends ResponsiveComponent {
       <Header style={style.header}>
         <Left style={style.leftHeader}>
           {leftAction ? (
-            <Button transparent
-              style={style.leftButtonHeader}
-              onPress={() => leftAction()}
-            >
+            <Button transparent style={style.leftButtonHeader} onPress={() => leftAction()}>
               <Icon
                 type={leftActionIconType}
                 name={leftActionIcon}
@@ -73,7 +70,8 @@ export default class HeaderComponent extends ResponsiveComponent {
         </Body>
         <Right style={style.rightHeader}>
           {showSearchAction ? (
-            <Button transparent
+            <Button
+              transparent
               style={style.rightButtonHeader}
               onPress={() => {
                 // Invert
@@ -84,25 +82,14 @@ export default class HeaderComponent extends ResponsiveComponent {
                 }
               }}
             >
-              <Icon
-                type={"MaterialIcons"}
-                name={"search"}
-                style={style.iconHeader}
-              />
+              <Icon type={"MaterialIcons"} name={"search"} style={style.iconHeader} />
             </Button>
           ) : (
             undefined
           )}
           {rightAction ? (
-            <Button transparent
-              style={style.rightButtonHeader}
-              onPress={() => rightAction()}
-            >
-              <Icon
-                type={rightActionIconType}
-                name={rightActionIcon}
-                style={style.iconHeader}
-              />
+            <Button transparent style={style.rightButtonHeader} onPress={() => rightAction()}>
+              <Icon type={rightActionIconType} name={rightActionIcon} style={style.iconHeader} />
             </Button>
           ) : (
             <Image source={logo} style={style.logoHeader} />

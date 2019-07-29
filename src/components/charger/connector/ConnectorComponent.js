@@ -136,7 +136,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
           navigation.navigate("ChargerTabDetails", {
             chargerID: charger.id,
             connectorID: connector.connectorId,
-            siteAreaID: siteAreaID
+            siteAreaID
           })
         }
       >
@@ -195,7 +195,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
           navigation.navigate("ChargerTabDetails", {
             chargerID: charger.id,
             connectorID: connector.connectorId,
-            siteAreaID: siteAreaID
+            siteAreaID
           })
         }
       >

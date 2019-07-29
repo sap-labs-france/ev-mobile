@@ -27,7 +27,7 @@ export default class Utils {
 
   static async handleHttpUnexpectedError(error, props) {
     // Log in console
-    console.log({error});
+    console.log({ error });
     // Check if HTTP?
     if (error.request) {
       // Status?

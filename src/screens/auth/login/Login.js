@@ -1,6 +1,27 @@
 import React from "react";
-import { ScrollView, Image, ImageBackground, Keyboard, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
-import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet, Footer, Left, Right } from "native-base";
+import {
+  ScrollView,
+  Image,
+  ImageBackground,
+  Keyboard,
+  KeyboardAvoidingView,
+  Text as TextRN,
+  TextInput
+} from "react-native";
+import {
+  Text,
+  Form,
+  Item,
+  Button,
+  Icon,
+  View,
+  CheckBox,
+  Spinner,
+  ActionSheet,
+  Footer,
+  Left,
+  Right
+} from "native-base";
 import Orientation from "react-native-orientation-locker";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import * as Animatable from "react-native-animatable";
@@ -21,22 +42,22 @@ const formValidationDef = {
   tenant: {
     presence: {
       allowEmpty: false,
-      message: '^' + I18n.t("authentication.mandatory_tenant")
+      message: "^" + I18n.t("authentication.mandatory_tenant")
     }
   },
   email: {
     presence: {
       allowEmpty: false,
-      message: '^' + I18n.t("authentication.mandatory_email")
+      message: "^" + I18n.t("authentication.mandatory_email")
     },
     email: {
-      message: '^' + I18n.t("authentication.invalid_email")
+      message: "^" + I18n.t("authentication.invalid_email")
     }
   },
   password: {
     presence: {
       allowEmpty: false,
-      message: '^' + I18n.t("authentication.mandatory_password")
+      message: "^" + I18n.t("authentication.mandatory_password")
     }
   },
   eula: {
@@ -206,7 +227,7 @@ export default class Login extends ResponsiveComponent {
           source={background}
           style={style.background}
           imageStyle={style.imageBackground}
-          >
+        >
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.container} behavior="padding">
               <View style={style.formHeader}>
@@ -217,7 +238,10 @@ export default class Login extends ResponsiveComponent {
                 )} ${DeviceInfo.getVersion()}`}</Text>
               </View>
               <Form style={style.form}>
-                <Button rounded block style={style.button}
+                <Button
+                  rounded
+                  block
+                  style={style.button}
                   onPress={() =>
                     ActionSheet.show(
                       {
@@ -320,13 +344,25 @@ export default class Login extends ResponsiveComponent {
           </ScrollView>
           <Footer>
             <Left>
-              <Button small transparent style={style.linksButtonLeft} onPress={ () => this._newUser() }>
+              <Button
+                small
+                transparent
+                style={style.linksButtonLeft}
+                onPress={() => this._newUser()}
+              >
                 <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
               </Button>
             </Left>
             <Right>
-              <Button small transparent style={style.linksButtonRight} onPress={ () => this._forgotPassword() }>
-                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
+              <Button
+                small
+                transparent
+                style={style.linksButtonRight}
+                onPress={() => this._forgotPassword()}
+              >
+                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>
+                  {I18n.t("authentication.forgotYourPassword")}
+                </TextRN>
               </Button>
             </Right>
           </Footer>

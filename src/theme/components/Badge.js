@@ -1,37 +1,37 @@
 // @flow
 
-import variable from './../variables/platform';
-import { PLATFORM } from './../variables/commonColor';
+import variable from "./../variables/platform";
+import { PLATFORM } from "./../variables/commonColor";
 import { scale } from "react-native-size-matters";
 
 export default (variables /* : * */ = variable) => {
   const badgeTheme = {
-    '.primary': {
+    ".primary": {
       backgroundColor: variables.buttonPrimaryBg
     },
-    '.warning': {
+    ".warning": {
       backgroundColor: variables.buttonWarningBg
     },
-    '.info': {
+    ".info": {
       backgroundColor: variables.buttonInfoBg
     },
-    '.success': {
+    ".success": {
       backgroundColor: variables.buttonSuccessBg
     },
-    '.danger': {
+    ".danger": {
       backgroundColor: variables.buttonDangerBg
     },
-    'NativeBase.Text': {
+    "NativeBase.Text": {
       color: variables.badgeColor,
       fontSize: variables.fontSizeBase,
       lineHeight: variables.lineHeight - 3,
-      textAlign: 'center',
+      textAlign: "center",
       paddingHorizontal: 3
     },
     backgroundColor: variables.badgeBg,
     padding: variables.badgePadding,
     paddingHorizontal: 6,
-    justifyContent: variables.platform === PLATFORM.IOS ? 'center' : undefined,
+    justifyContent: variables.platform === PLATFORM.IOS ? "center" : undefined,
     borderRadius: 13.5,
     height: scale(32)
   };

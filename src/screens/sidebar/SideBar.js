@@ -66,7 +66,7 @@ class SideBar extends ResponsiveComponent {
 
   _navigateTo = (screen, params = {}) => {
     // Navigate
-    this.props.navigation.navigate({routeName: screen, params: params});
+    this.props.navigation.navigate({ routeName: screen, params });
     // Close
     this.props.navigation.closeDrawer();
   };
@@ -77,10 +77,7 @@ class SideBar extends ResponsiveComponent {
     const { userName, userImage, isComponentOrganizationActive } = this.state;
     return (
       <Container>
-        <ImageBackground
-          style={style.background}
-          source={background}
-        >
+        <ImageBackground style={style.background} source={background}>
           <Content style={style.drawerContent}>
             <View style={style.logoContainer}>
               <Image source={logo} style={style.logo} />

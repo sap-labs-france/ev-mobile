@@ -61,7 +61,7 @@ const commonStyles = ScaledSheet.create({
     marginTop: 10,
     marginBottom: 10,
     fontSize: "15@s",
-    fontWeight: "bold",
+    fontWeight: "bold"
   },
   button: {
     width: "90%",

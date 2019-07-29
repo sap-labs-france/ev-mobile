@@ -58,7 +58,7 @@ export default class ChargerChartDetails extends BaseScreen {
             // Add
             consumptionValues.push({
               x: date,
-              y: value.value ? (value.value / 1000) : 0
+              y: value.value ? value.value / 1000 : 0
             });
             if (value.stateOfCharge > 0) {
               stateOfChargeValues.push({
@@ -185,7 +185,7 @@ export default class ChargerChartDetails extends BaseScreen {
       };
     } else {
       chartDefinition.yAxis.left = {
-        enabled: false,
+        enabled: false
       };
     }
     // Check SoC
