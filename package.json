@@ -31,6 +31,7 @@
     "metro-react-native-babel-preset": "^0.54.1",
     "npm-check": "^5.9.0",
     "prettier": "^1.18.2",
+    "react-native-clean-project": "^3.2.4",
     "react-test-renderer": "16.8.3",
     "schedule": "^0.5.0"
   },
@@ -58,7 +59,8 @@
     "react-native:upgrade": "react-native upgrade",
     "react-native:link": "react-native link",
     "react-native:unlink": "react-native unlink",
-    "react-native:uninstall": "react-native uninstall"
+    "react-native:uninstall": "react-native uninstall",
+    "react-native:clean-project-auto": "react-native clean-project-auto"
   },
   "jest": {
     "preset": "react-native",
