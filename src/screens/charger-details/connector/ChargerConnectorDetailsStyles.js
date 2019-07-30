@@ -19,6 +19,12 @@ const commonStyles = ScaledSheet.create({
     width: "100%",
     height: "150@s"
   },
+  background: {
+    flex: 1
+  },
+  imageBackground: {
+    resizeMode: "cover"
+  },
   transactionContainer: {
     justifyContent: "center",
     alignItems: "center",

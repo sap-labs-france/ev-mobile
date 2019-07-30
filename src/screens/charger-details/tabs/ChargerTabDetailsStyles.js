@@ -7,15 +7,24 @@ const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    height: "100%"
+    height: "100%",
+    backgroundColor: commonColor.brandPrimary
   },
   spinner: {
     color: commonColor.textColorApp
   },
-  tabHeader: {},
+  tabHeader: {
+    // backgroundColor: commonColor.brandSecondary
+  },
   tabIcon: {
     fontSize: "20@s",
     paddingBottom: "5@s"
+  },
+  background: {
+    flex: 1
+  },
+  imageBackground: {
+    resizeMode: "cover"
   }
 });
 

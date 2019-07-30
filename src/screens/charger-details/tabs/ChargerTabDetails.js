@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Tab, Tabs, TabHeading, Spinner, Icon } from "native-base";
-import { ScrollView, RefreshControl } from "react-native";
+import { ScrollView, ImageBackground, RefreshControl } from "react-native";
 import ChargerDetails from "../details/ChargerDetails";
 import ChargerChartDetails from "../chart/ChargerChartDetails";
 import ChargerConnectorDetails from "../connector/ChargerConnectorDetails";
@@ -13,6 +13,7 @@ import Utils from "../../../utils/Utils";
 import Constants from "../../../utils/Constants";
 
 const _provider = ProviderFactory.getProvider();
+const background = require("../../../../assets/sidebar-transparent.png");
 
 export default class ChargerTabDetails extends BaseScreen {
   constructor(props) {
@@ -145,65 +146,71 @@ export default class ChargerTabDetails extends BaseScreen {
           <RefreshControl refreshing={this.state.refreshing} onRefresh={this._manualRefresh} />
         }
       >
-        <HeaderComponent
-          title={charger.id}
-          subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
-          leftAction={() => navigation.navigate("Chargers", { siteAreaID })}
-          leftActionIcon={"arrow-back"}
-          rightAction={navigation.openDrawer}
-          rightActionIcon={"menu"}
-        />
-        <Tabs tabBarPosition="bottom" locked={true} initialPage={0}>
-          <Tab
-            heading={
-              <TabHeading style={style.tabHeader}>
-                <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
-              </TabHeading>
-            }
-          >
-            <ChargerConnectorDetails
-              charger={charger}
-              connector={connector}
-              isAdmin={isAdmin}
-              navigation={navigation}
-            />
-          </Tab>
-          {connector.activeTransactionID && (isAuthorizedToStopTransaction || isAdmin) ? (
+        <ImageBackground
+          source={background}
+          style={style.background}
+          imageStyle={style.imageBackground}
+        >
+          <HeaderComponent
+            title={charger.id}
+            subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
+            leftAction={() => navigation.navigate("Chargers", { siteAreaID })}
+            leftActionIcon={"arrow-back"}
+            rightAction={navigation.openDrawer}
+            rightActionIcon={"menu"}
+          />
+          <Tabs tabBarPosition="bottom" locked={true} initialPage={0}>
             <Tab
               heading={
                 <TabHeading style={style.tabHeader}>
-                  <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
+                  <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
                 </TabHeading>
               }
             >
-              <ChargerChartDetails
-                transactionID={connector.activeTransactionID}
-                isAdmin={isAdmin}
-                navigation={navigation}
-              />
-            </Tab>
-          ) : (
-            undefined
-          )}
-          {isAdmin ? (
-            <Tab
-              heading={
-                <TabHeading style={style.tabHeader}>
-                  <Icon style={style.tabIcon} type="MaterialIcons" name="info" />
-                </TabHeading>
-              }
-            >
-              <ChargerDetails
+              <ChargerConnectorDetails
                 charger={charger}
                 connector={connector}
                 isAdmin={isAdmin}
                 navigation={navigation}
               />
             </Tab>
-          ) : (
-            undefined
-          )}
-        </Tabs>
+            {connector.activeTransactionID && (isAuthorizedToStopTransaction || isAdmin) ? (
+              <Tab
+                heading={
+                  <TabHeading style={style.tabHeader}>
+                    <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
+                  </TabHeading>
+                }
+              >
+                <ChargerChartDetails
+                  transactionID={connector.activeTransactionID}
+                  isAdmin={isAdmin}
+                  navigation={navigation}
+                />
+              </Tab>
+            ) : (
+              undefined
+            )}
+            {isAdmin ? (
+              <Tab
+                heading={
+                  <TabHeading style={style.tabHeader}>
+                    <Icon style={style.tabIcon} type="MaterialIcons" name="info" />
+                  </TabHeading>
+                }
+              >
+                <ChargerDetails
+                  charger={charger}
+                  connector={connector}
+                  isAdmin={isAdmin}
+                  navigation={navigation}
+                />
+              </Tab>
+            ) : (
+              undefined
+            )}
+          </Tabs>
+        </ImageBackground>
       </ScrollView>
     );
   }

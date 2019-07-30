@@ -4,14 +4,16 @@ import commonColor from "../../../theme/variables/commonColor";
 import { ScaledSheet } from "react-native-size-matters";
 
 const commonStyles = ScaledSheet.create({
-  scrollViewContainer: {
+  container: {
     backgroundColor: commonColor.brandPrimary
   },
-  container: {
+  scrollViewContainer: {
+  },
+  viewContainer: {
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
-    alignItems: "center"
+    alignItems: "center",
   },
   spinner: {
     flex: 1,
@@ -21,6 +23,12 @@ const commonStyles = ScaledSheet.create({
     height: "75@s",
     justifyContent: "center",
     alignItems: "center"
+  },
+  background: {
+    flex: 1
+  },
+  imageBackground: {
+    resizeMode: "cover"
   },
   label: {
     fontSize: "20@s",
