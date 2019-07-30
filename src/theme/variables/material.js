@@ -18,10 +18,11 @@ export default {
   platform,
 
   // Color
-  brandPrimary: "#3F51B5",
-  brandInfo: "#62B1F6",
-  brandSuccess: "#5cb85c",
-  brandDanger: "#d9534f",
+  brandPrimary: "#2F7ACF",
+  brandSecondary: "#3B9AF0",
+  brandInfo: "#428F40",
+  brandSuccess: "#428F40",
+  brandDanger: "#CC1832",
   brandWarning: "#f0ad4e",
   brandDark: "#000",
   brandLight: "#f4f4f4",
@@ -129,7 +130,6 @@ export default {
   checkboxTickColor: this.brandPrimary,
   checkboxDefaultColor: "transparent",
 
-  // Container
   containerBgColor: "#fff",
 
   // Date Picker
@@ -168,7 +168,7 @@ export default {
 
   // Header
   toolbarBtnColor: "#fff",
-  toolbarDefaultBg: "#3F51B5",
+  toolbarDefaultBg: this.brandPrimary,
   toolbarHeight: 56,
   toolbarSearchIconSize: 23,
   toolbarInputColor: "#fff",

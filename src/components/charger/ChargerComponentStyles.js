@@ -17,11 +17,11 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center",
     backgroundColor: "transparent",
     padding: "5@s",
-    borderBottomColor: commonColor.textColor,
+    borderBottomColor: commonColor.textColorApp,
     borderBottomWidth: 1
   },
   name: {
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     fontSize: "20@s",
     marginLeft: "5@s",
     fontWeight: "bold"

@@ -15,7 +15,7 @@ const commonStyles = ScaledSheet.create({
   },
   spinner: {
     flex: 1,
-    color: commonColor.textColor
+    color: commonColor.textColorApp
   },
   columnContainer: {
     height: "75@s",
@@ -25,12 +25,12 @@ const commonStyles = ScaledSheet.create({
   label: {
     fontSize: "20@s",
     fontWeight: "bold",
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     alignSelf: "center"
   },
   value: {
     fontSize: "20@s",
-    color: commonColor.textColor
+    color: commonColor.textColorApp
   }
 });
 

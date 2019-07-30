@@ -13,7 +13,7 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center"
   },
   statusLetter: {
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     fontWeight: "bold",
     fontSize: "30@s",
     marginTop: "-2@s"

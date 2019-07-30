@@ -14,7 +14,7 @@ const commonStyles = ScaledSheet.create({
     flex: 1
   },
   logoContainer: {
-    borderColor: commonColor.textColor,
+    borderColor: commonColor.textColorApp,
     borderBottomWidth: 1,
     padding: "5@s"
   },
@@ -26,13 +26,13 @@ const commonStyles = ScaledSheet.create({
     margin: "5@s"
   },
   versionText: {
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     fontSize: "14@s",
     margin: "2@s",
     alignSelf: "center"
   },
   versionDate: {
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     fontSize: "14@s",
     alignSelf: "center",
     marginBottom: "2@s"
@@ -45,7 +45,7 @@ const commonStyles = ScaledSheet.create({
     paddingBottom: Platform.OS === "ios" ? "0@s" : "15@s"
   },
   linkText: {
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     fontSize: "16@s",
     paddingLeft: "10@s"
   },
@@ -57,7 +57,7 @@ const commonStyles = ScaledSheet.create({
     paddingTop: "10@s",
     flexDirection: "row",
     borderTopWidth: 1,
-    borderTopColor: commonColor.textColor
+    borderTopColor: commonColor.textColorApp
   },
   gridLogoutContainer: {
     flexDirection: "row",
@@ -76,12 +76,12 @@ const commonStyles = ScaledSheet.create({
   logoutText: {
     fontWeight: "bold",
     fontSize: "14@s",
-    color: commonColor.textColor
+    color: commonColor.textColorApp
   },
   userName: {
     paddingTop: "5@s",
     fontSize: "14@s",
-    color: commonColor.textColor
+    color: commonColor.textColorApp
   },
   columnThumbnail: {
     flex: 1,

@@ -25,7 +25,7 @@ const commonStyles = ScaledSheet.create({
   name: {
     paddingLeft: "10@s",
     fontSize: "20@s",
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     fontWeight: "bold"
   },
   icon: {
@@ -50,7 +50,7 @@ const commonStyles = ScaledSheet.create({
   badgeSuccessContainer: {},
   badgeOccupiedContainer: {},
   connectorText: {
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     marginTop: "-15@s",
     marginRight: "10@s",
     fontSize: "20@s"
@@ -71,7 +71,7 @@ const commonStyles = ScaledSheet.create({
     paddingTop: Platform.OS === "ios" ? "3@s" : 0,
     paddingBottom: Platform.OS === "ios" ? "3@s" : 0,
     fontWeight: "bold",
-    color: commonColor.textColor
+    color: commonColor.textColorApp
   },
   connectorSubTitle: {
     fontSize: "15@s",
@@ -80,7 +80,7 @@ const commonStyles = ScaledSheet.create({
     marginBottom: "5@s",
     marginLeft: "10@s",
     marginRight: "10@s",
-    color: commonColor.textColor
+    color: commonColor.textColorApp
   }
 });
 

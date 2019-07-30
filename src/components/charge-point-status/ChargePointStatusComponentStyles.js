@@ -35,7 +35,7 @@ const commonStyles = ScaledSheet.create({
     paddingTop: "8@ms4",
     paddingBottom: "8@ms",
     fontWeight: "bold",
-    color: commonColor.textColor
+    color: commonColor.textColorApp
   },
   connectorSubTitle: {
     fontSize: "15@s",
@@ -44,7 +44,7 @@ const commonStyles = ScaledSheet.create({
     marginBottom: "5@s",
     marginLeft: "10@s",
     marginRight: "10@s",
-    color: commonColor.textColor
+    color: commonColor.textColorApp
   }
 });
 

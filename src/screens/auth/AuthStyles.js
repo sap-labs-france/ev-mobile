@@ -47,17 +47,17 @@ const commonStyles = ScaledSheet.create({
     height: "100@s"
   },
   appText: {
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     fontSize: "40@s",
     fontWeight: "bold",
     paddingTop: "15@s"
   },
   appVersionText: {
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     fontSize: "15@s"
   },
   appTenantName: {
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     marginTop: 10,
     marginBottom: 10,
     fontSize: "15@s",
@@ -74,7 +74,7 @@ const commonStyles = ScaledSheet.create({
     width: "100%",
     textAlign: "center",
     fontSize: "15@s",
-    color: commonColor.textColor
+    color: commonColor.textColorApp
   },
   inputGroup: {
     height: "40@s",
@@ -100,7 +100,7 @@ const commonStyles = ScaledSheet.create({
   inputField: {
     width: "79%",
     fontSize: "15@s",
-    color: commonColor.textColor
+    color: commonColor.textColorApp
   },
   formErrorText: {
     fontSize: "12@s",
@@ -127,11 +127,11 @@ const commonStyles = ScaledSheet.create({
   },
   eulaText: {
     fontSize: "13@s",
-    color: commonColor.textColor
+    color: commonColor.textColorApp
   },
   eulaLink: {
     fontSize: "13@s",
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     textDecorationLine: "underline"
   },
   linksButtonLeft: {
@@ -147,7 +147,7 @@ const commonStyles = ScaledSheet.create({
     opacity: 0.9,
     fontSize: "12@s",
     fontWeight: "bold",
-    color: commonColor.textColor
+    color: commonColor.textColorApp
   },
   linksTextButtonRight: {
     textAlign: "right"

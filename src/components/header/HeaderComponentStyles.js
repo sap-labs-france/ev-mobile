@@ -15,7 +15,7 @@ const commonStyles = ScaledSheet.create({
   leftHeader: {},
   bodyHeader: {
     flexGrow: 2,
-    paddingLeft: "50@s"
+    paddingLeft: Platform.OS === "ios" ? 0 : "50@s"
   },
   rightHeader: {},
   logoHeader: {
@@ -23,7 +23,6 @@ const commonStyles = ScaledSheet.create({
     resizeMode: "contain"
   },
   titleHeader: {
-    color: commonColor.textColor,
     fontSize: "20@s"
   },
   titleHeaderWithSubTitle: {
@@ -31,7 +30,6 @@ const commonStyles = ScaledSheet.create({
   },
   subTitleHeader: {
     fontWeight: "bold",
-    color: commonColor.textColor,
     fontSize: "12@s",
     marginTop: Platform.OS === "ios" ? "-2@s" : "-3@s"
   },

@@ -28,11 +28,9 @@ const commonStyles = ScaledSheet.create({
     flex: 1,
     paddingLeft: "5@s",
     fontSize: "18@s",
-    color: commonColor.textColor
   },
   icon: {
     fontSize: "25@s",
-    color: commonColor.textColor
   }
 });
 

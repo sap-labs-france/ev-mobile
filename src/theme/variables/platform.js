@@ -18,10 +18,11 @@ export default {
   platform,
 
   // Color
-  brandPrimary: platform === PLATFORM.IOS ? "#007aff" : "#3F51B5",
-  brandInfo: "#62B1F6",
-  brandSuccess: "#5cb85c",
-  brandDanger: "#d9534f",
+  brandPrimary: "#2F7ACF",
+  brandSecondary: "#3B9AF0",
+  brandInfo: "#428F40",
+  brandSuccess: "#428F40",
+  brandDanger: "#CC1832",
   brandWarning: "#f0ad4e",
   brandDark: "#000",
   brandLight: "#f4f4f4",
@@ -193,14 +194,14 @@ export default {
   tabActiveBgColor: platform === PLATFORM.IOS ? "#cde1f9" : "#3F51B5",
 
   // Header
-  toolbarBtnColor: platform === PLATFORM.IOS ? "#007aff" : "#fff",
-  toolbarDefaultBg: platform === PLATFORM.IOS ? "#F8F8F8" : "#3F51B5",
+  toolbarBtnColor: "#fff",
+  toolbarDefaultBg: this.brandPrimary,
   toolbarHeight: platform === PLATFORM.IOS ? 64 : 56,
   toolbarSearchIconSize: platform === PLATFORM.IOS ? 20 : 23,
   toolbarInputColor: platform === PLATFORM.IOS ? "#CECDD2" : "#fff",
   searchBarHeight: platform === PLATFORM.IOS ? 30 : 40,
   searchBarInputHeight: platform === PLATFORM.IOS ? 30 : 50,
-  toolbarBtnTextColor: platform === PLATFORM.IOS ? "#007aff" : "#fff",
+  toolbarBtnTextColor: "#fff",
   toolbarDefaultBorder: platform === PLATFORM.IOS ? "#a7a6ab" : "#3F51B5",
   iosStatusbar: platform === PLATFORM.IOS ? "dark-content" : "light-content",
   get statusBarColor() {
@@ -297,8 +298,8 @@ export default {
   titleFontfamily: platform === PLATFORM.IOS ? "System" : "Roboto_medium",
   titleFontSize: platform === PLATFORM.IOS ? 17 : 19,
   subTitleFontSize: platform === PLATFORM.IOS ? 11 : 14,
-  subtitleColor: platform === PLATFORM.IOS ? "#8e8e93" : "#FFF",
-  titleFontColor: platform === PLATFORM.IOS ? "#000" : "#FFF",
+  subtitleColor: "#FFF",
+  titleFontColor: "#FFF",
 
   // Other
   borderRadiusBase: platform === PLATFORM.IOS ? 5 : 2,

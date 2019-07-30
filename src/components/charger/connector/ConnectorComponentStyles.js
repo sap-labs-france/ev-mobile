@@ -19,12 +19,12 @@ const commonStyles = ScaledSheet.create({
     width: "100%"
   },
   leftConnectorContainer: {
-    borderColor: commonColor.textColor,
+    borderColor: commonColor.textColorApp,
     borderRightWidth: 1
   },
   rightConnectorContainer: {},
   statusDescription: {
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     paddingTop: "5@s",
     fontSize: "18@s"
   },
@@ -68,7 +68,7 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center"
   },
   value: {
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     fontWeight: "bold",
     marginTop: "-1@s",
     fontSize: "30@s",
@@ -79,16 +79,16 @@ const commonStyles = ScaledSheet.create({
     height: "40@s"
   },
   labelImage: {
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     fontSize: "10@s"
   },
   label: {
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     fontSize: "10@s",
     marginTop: "-3@s"
   },
   subLabel: {
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     fontSize: "9@s"
   }
 });

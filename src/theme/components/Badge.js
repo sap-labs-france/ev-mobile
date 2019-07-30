@@ -24,7 +24,7 @@ export default (variables /* : * */ = variable) => {
     "NativeBase.Text": {
       color: variables.badgeColor,
       fontSize: variables.fontSizeBase,
-      lineHeight: variables.lineHeight - 3,
+      lineHeight: variables.lineHeight - 4,
       textAlign: "center",
       paddingHorizontal: 3
     },

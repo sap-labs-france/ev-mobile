@@ -4,6 +4,7 @@ import { PixelRatio, StatusBar } from "react-native";
 
 import variable from "./../variables/platform";
 import { PLATFORM } from "./../variables/commonColor";
+import commonColor from "../../theme/variables/commonColor";
 
 export default (variables /* : * */ = variable) => {
   const platformStyle = variables.platformStyle;
@@ -361,7 +362,7 @@ export default (variables /* : * */ = variable) => {
       flexDirection: "row",
       justifyContent: "flex-end"
     },
-    backgroundColor: variables.toolbarDefaultBg,
+    backgroundColor: commonColor.brandPrimary,
     flexDirection: "row",
     // paddingHorizontal: 10,
     paddingLeft:

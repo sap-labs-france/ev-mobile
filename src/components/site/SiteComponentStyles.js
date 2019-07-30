@@ -23,7 +23,7 @@ const commonStyles = ScaledSheet.create({
   },
   name: {
     fontSize: "20@s",
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     fontWeight: "bold"
   },
   icon: {
@@ -38,7 +38,7 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center"
   },
   connectorText: {
-    color: commonColor.textColor,
+    color: commonColor.textColorApp,
     marginTop: "-15@s",
     marginRight: "10@s",
     fontSize: "20@s"

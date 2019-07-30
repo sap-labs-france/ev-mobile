@@ -10,6 +10,6 @@ export default StyleSheet.create({
   },
   spinner: {
     flex: 2,
-    color: commonColor.textColor
+    color: commonColor.textColorApp
   }
 });
