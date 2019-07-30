@@ -3,8 +3,7 @@
 import { PixelRatio, StatusBar } from "react-native";
 
 import variable from "./../variables/platform";
-import { PLATFORM } from "./../variables/commonColor";
-import commonColor from "../../theme/variables/commonColor";
+import commonColor, { PLATFORM } from './../variables/commonColor';
 
 export default (variables /* : * */ = variable) => {
   const platformStyle = variables.platformStyle;
