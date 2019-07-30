@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, FlatList, RefreshControl } from "react-native";
+import { Platform, ImageBackground, FlatList, RefreshControl } from "react-native";
 import { Container, View, Spinner, List } from "native-base";
 import ProviderFactory from "../../provider/ProviderFactory";
 import ChargerComponent from "../../components/charger/ChargerComponent";
@@ -12,6 +12,8 @@ import I18n from "../../I18n/I18n";
 import BaseScreen from "../base-screen/BaseScreen";
 
 const _provider = ProviderFactory.getProvider();
+const background = require("../../../assets/sidebar-transparent.png");
+
 export default class Chargers extends BaseScreen {
   constructor(props) {
     super(props);
@@ -137,53 +139,61 @@ export default class Chargers extends BaseScreen {
     // Safe way to retrieve the Site ID to navigate back from a notification
     const siteID = this._getSiteIDFromChargers(chargers);
     return (
-      <Container>
-        <HeaderComponent
-          title={I18n.t("chargers.title")}
-          showSearchAction={true}
-          searchRef={this.searchRef}
-          leftAction={siteAreaID ? () => navigation.navigate("SiteAreas", { siteID }) : undefined}
-          leftActionIcon={siteAreaID ? "arrow-back" : undefined}
-          rightAction={navigation.openDrawer}
-          rightActionIcon={"menu"}
-        />
-        <SearchHeaderComponent
-          initialVisibility={false}
-          ref={ref => {
-            this.searchRef = ref;
-          }}
-          onChange={searchText => this._search(searchText)}
-          navigation={navigation}
-        />
-        <View style={style.content}>
-          {this.state.loading ? (
-            <Spinner color="white" style={style.spinner} />
-          ) : (
-            <FlatList
-              data={this.state.chargers}
-              renderItem={({ item }) => (
-                <List>
-                  <ChargerComponent
-                    charger={item}
-                    navigation={navigation}
-                    siteAreaID={siteAreaID}
+      <Container
+        style={style.container}
+      >
+        <ImageBackground
+          source={background}
+          style={style.background}
+          imageStyle={style.imageBackground}
+        >
+          <HeaderComponent
+            title={I18n.t("chargers.title")}
+            showSearchAction={true}
+            searchRef={this.searchRef}
+            leftAction={siteAreaID ? () => navigation.navigate("SiteAreas", { siteID }) : undefined}
+            leftActionIcon={siteAreaID ? "arrow-back" : undefined}
+            rightAction={navigation.openDrawer}
+            rightActionIcon={"menu"}
+          />
+          <SearchHeaderComponent
+            initialVisibility={false}
+            ref={ref => {
+              this.searchRef = ref;
+            }}
+            onChange={searchText => this._search(searchText)}
+            navigation={navigation}
+          />
+          <View style={style.content}>
+            {this.state.loading ? (
+              <Spinner color="white" style={style.spinner} />
+            ) : (
+              <FlatList
+                data={this.state.chargers}
+                renderItem={({ item }) => (
+                  <List>
+                    <ChargerComponent
+                      charger={item}
+                      navigation={navigation}
+                      siteAreaID={siteAreaID}
+                    />
+                  </List>
+                )}
+                keyExtractor={item => item.id}
+                refreshControl={
+                  <RefreshControl
+                    onRefresh={this._manualRefresh}
+                    refreshing={this.state.refreshing}
                   />
-                </List>
-              )}
-              keyExtractor={item => item.id}
-              refreshControl={
-                <RefreshControl
-                  onRefresh={this._manualRefresh}
-                  refreshing={this.state.refreshing}
-                />
-              }
-              indicatorStyle={"white"}
-              onEndReached={this._onEndScroll}
-              onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
-              ListFooterComponent={this._footerList}
-            />
-          )}
-        </View>
+                }
+                indicatorStyle={"white"}
+                onEndReached={this._onEndScroll}
+                onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
+                ListFooterComponent={this._footerList}
+              />
+            )}
+          </View>
+        </ImageBackground>
       </Container>
     );
   }

@@ -361,7 +361,7 @@ export default (variables /* : * */ = variable) => {
       flexDirection: "row",
       justifyContent: "flex-end"
     },
-    backgroundColor: commonColor.brandPrimary,
+    backgroundColor: "transparent",
     flexDirection: "row",
     // paddingHorizontal: 10,
     paddingLeft:
