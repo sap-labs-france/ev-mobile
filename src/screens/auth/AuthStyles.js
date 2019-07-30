@@ -12,13 +12,17 @@ const commonStyles = ScaledSheet.create({
     flex: 1
   },
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: commonColor.brandPrimary
   },
   background: {
     flex: 1
   },
   imageBackground: {
     resizeMode: "cover"
+  },
+  keyboardContainer: {
+    flex: 1
   },
   scrollContainer: {
     minHeight: "90%"

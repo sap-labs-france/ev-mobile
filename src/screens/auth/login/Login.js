@@ -35,7 +35,7 @@ import commonColor from "../../../theme/variables/commonColor";
 import DeviceInfo from "react-native-device-info";
 
 const _provider = providerFactory.getProvider();
-const background = require("../../../../assets/bg.png");
+const background = require("../../../../assets/sidebar-transparent.png");
 const logo = require("../../../../assets/logo-low.png");
 
 const formValidationDef = {
@@ -229,7 +229,7 @@ export default class Login extends ResponsiveComponent {
           imageStyle={style.imageBackground}
         >
           <ScrollView contentContainerStyle={style.scrollContainer}>
-            <KeyboardAvoidingView style={style.container} behavior="padding">
+            <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
               <View style={style.formHeader}>
                 <Image style={style.logo} source={logo} />
                 <Text style={style.appText}>e-Mobility</Text>

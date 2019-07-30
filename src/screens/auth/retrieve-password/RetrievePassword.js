@@ -23,7 +23,7 @@ import ReCaptcha from "react-native-recaptcha-v3";
 
 const _provider = ProviderFactory.getProvider();
 const logo = require("../../../../assets/logo-low.png");
-const background = require("../../../../assets/bg.png");
+const background = require("../../../../assets/sidebar-transparent.png");
 
 const formValidationDef = {
   email: {
@@ -128,7 +128,7 @@ export default class RetrievePassword extends ResponsiveComponent {
           imageStyle={style.imageBackground}
         >
           <ScrollView contentContainerStyle={style.scrollContainer}>
-            <KeyboardAvoidingView style={style.container} behavior="padding">
+            <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
               <View style={style.formHeader}>
                 <Image style={style.logo} source={logo} />
                 <Text style={style.appText}>e-Mobility</Text>

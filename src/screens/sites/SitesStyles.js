@@ -3,12 +3,21 @@ import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
 
 const commonStyles = {
-  content: {
+  container: {
     flex: 1,
     backgroundColor: commonColor.brandPrimary
   },
+  content: {
+    flex: 1
+  },
   spinner: {
     flex: 1
+  },
+  background: {
+    flex: 1
+  },
+  imageBackground: {
+    resizeMode: "cover"
   }
 };
 
