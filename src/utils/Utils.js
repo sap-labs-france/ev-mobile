@@ -74,12 +74,14 @@ export default class Utils {
     const errorState = {};
     // Reset all errors
     for (const key in screen.state) {
-      // Error?
-      if (key.startsWith("error")) {
-        // Clear
-        const clearError = {};
-        clearError[key] = null;
-        screen.setState(clearError);
+      if (screen.state.hasOwnProperty(key)) {
+        // Error?
+        if (key.startsWith("error")) {
+          // Clear
+          const clearError = {};
+          clearError[key] = null;
+          screen.setState(clearError);
+        }
       }
     }
     // Check for errors
@@ -88,8 +90,7 @@ export default class Utils {
     if (error) {
       // Set in state the errors
       for (const key in error) {
-        if (error.key) {
-          // Set
+        if (error.hasOwnProperty(key)) {
           errorState["error" + Utils.capitalizeFirstLetter(key)] = error[key];
         }
       }
