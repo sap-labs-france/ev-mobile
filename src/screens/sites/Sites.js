@@ -126,9 +126,7 @@ export default class Sites extends BaseScreen {
     const { navigation } = this.props;
     const { loading } = this.state;
     return (
-      <Container
-        style={style.container}
-      >
+      <Container style={style.container}>
         <ImageBackground
           source={background}
           style={style.background}
