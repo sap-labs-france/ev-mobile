@@ -3,7 +3,6 @@ import { Image, TouchableOpacity } from "react-native";
 import { Text, View } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import Utils from "../../../utils/Utils";
-import ConnectorStatusComponent from "../../connector-status/ConnectorStatusComponent";
 import * as Animatable from "react-native-animatable";
 import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./ConnectorComponentStyles";
