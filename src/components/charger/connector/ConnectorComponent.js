@@ -53,6 +53,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
     return (
       <ChargePointStatusComponent
         connector={connector}
+        text={Utils.translateConnectorStatus(connector.status)}
       />
     );
   };
@@ -62,10 +63,10 @@ export default class ConnectorComponent extends ResponsiveComponent {
       <View style={style.statusConnectorDetail}>
         <Animatable.View
           animation={!this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
-          style={style.animatableValue}
+          style={style.statusConnectorDetailAnimated}
           duration={Constants.ANIMATION_ROTATION_MILLIS}
         >
-          <Text style={style.value}>
+          <Text style={style.connectorValues}>
             {connector.currentConsumption / 1000 < 10
               ? connector.currentConsumption > 0
                 ? (connector.currentConsumption / 1000).toFixed(1)
@@ -81,10 +82,10 @@ export default class ConnectorComponent extends ResponsiveComponent {
         </Animatable.View>
         <Animatable.View
           animation={this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
-          style={style.animatableValue}
+          style={style.statusConnectorDetailAnimated}
           duration={Constants.ANIMATION_ROTATION_MILLIS}
         >
-          <Text style={style.value}>{connector.currentStateOfCharge}</Text>
+          <Text style={style.connectorValues}>{connector.currentStateOfCharge}</Text>
           <Text style={style.label} numberOfLines={1}>
             {I18n.t("details.battery")}
           </Text>
@@ -104,7 +105,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
   _renderThirdConnectorDetails = (connector, style) => {
     return connector.activeTransactionID !== 0 ? (
       <View style={style.statusConnectorDetail}>
-        <Text style={style.value}>{Math.round(connector.totalConsumption / 1000)}</Text>
+        <Text style={style.connectorValues}>{Math.round(connector.totalConsumption / 1000)}</Text>
         <Text style={style.label} numberOfLines={1}>
           {I18n.t("details.total")}
         </Text>
@@ -114,7 +115,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
       </View>
     ) : (
       <View style={style.statusConnectorDetail}>
-        <Text style={style.value}>{Math.trunc(connector.power / 1000)}</Text>
+        <Text style={style.connectorValues}>{Math.trunc(connector.power / 1000)}</Text>
         <Text style={style.label} numberOfLines={1}>
           {I18n.t("details.maximum")}
         </Text>
@@ -128,67 +129,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { connector, navigation, charger, index, siteAreaID } = this.props;
-    const even = index % 2 === 0;
-    return charger.connectors.length > 1 ? (
-      <TouchableOpacity
-        style={style.statusConnectorContainer}
-        onPress={() =>
-          navigation.navigate("ChargerTabDetails", {
-            chargerID: charger.id,
-            connectorID: connector.connectorId,
-            siteAreaID
-          })
-        }
-      >
-        <Animatable.View
-          animation={even ? "slideInLeft" : "slideInRight"}
-          iterationCount={1}
-          duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
-        >
-          <View
-            style={
-              even
-                ? [style.connectorContainer, style.leftConnectorContainer]
-                : [style.connectorContainer, style.rightConnectorContainer]
-            }
-          >
-            <View
-              style={[
-                style.statusConnectorDetailContainer,
-                style.statusConnectorDescriptionContainer
-              ]}
-            >
-              <Text style={style.statusDescription} numberOfLines={1}>
-                {Utils.translateConnectorStatus(connector.status)}
-              </Text>
-            </View>
-            {even ? (
-              <View
-                style={[
-                  style.statusConnectorDetailContainer,
-                  style.leftStatusConnectorDetailContainer
-                ]}
-              >
-                {this._renderFirstConnectorDetails(connector)}
-                {this._renderSecondConnectorDetails(connector, style)}
-                {this._renderThirdConnectorDetails(connector, style)}
-              </View>
-            ) : (
-              <View
-                style={[
-                  style.statusConnectorDetailContainer,
-                  style.rightStatusConnectorDetailContainer
-                ]}
-              >
-                {this._renderThirdConnectorDetails(connector, style)}
-                {this._renderSecondConnectorDetails(connector, style)}
-                {this._renderFirstConnectorDetails(connector)}
-              </View>
-            )}
-          </View>
-        </Animatable.View>
-      </TouchableOpacity>
-    ) : (
+    return (
       <TouchableOpacity
         style={style.statusOneConnectorContainer}
         onPress={() =>
@@ -205,17 +146,8 @@ export default class ConnectorComponent extends ResponsiveComponent {
           duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
         >
           <View style={style.connectorContainer}>
-            <View style={style.statusConnectorDetailContainer}>
-              <Text style={[style.statusDescription, style.statusOneDescription]} numberOfLines={1}>
-                {Utils.translateConnectorStatus(connector.status)}
-              </Text>
-            </View>
-            <View
-              style={[
-                style.statusConnectorDetailContainer,
-                style.statusOneConnectorDetailContainer
-              ]}
-            >
+            <View style={[style.statusConnectorDetailContainer,
+                (index === 0 && charger.connectors.length > 1 ? style.firstStatusConnectorDetailContainer : undefined)]}>
               {this._renderFirstConnectorDetails(connector)}
               {this._renderSecondConnectorDetails(connector, style)}
               {this._renderThirdConnectorDetails(connector, style)}

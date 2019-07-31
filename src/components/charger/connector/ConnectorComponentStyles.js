@@ -23,14 +23,6 @@ const commonStyles = ScaledSheet.create({
     borderRightWidth: 1
   },
   rightConnectorContainer: {},
-  statusDescription: {
-    color: commonColor.textColorApp,
-    paddingTop: "5@s",
-    fontSize: "18@s"
-  },
-  statusOneDescription: {
-    fontSize: "22@s"
-  },
   statusConnectorDetailContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
@@ -38,38 +30,25 @@ const commonStyles = ScaledSheet.create({
     width: "100%",
     paddingLeft: "5@s",
     paddingRight: "5@s",
-    paddingBottom: "15@s"
+    paddingTop: "10@s",
+    paddingBottom: "10@s"
   },
-  statusOneConnectorDetailContainer: {
-    marginTop: "-10@s",
-    padding: "0@s"
-  },
-  statusConnectorDescriptionContainer: {
-    paddingBottom: "5@s"
-  },
-  leftStatusConnectorDetailContainer: {
-    paddingRight: "5@s"
-  },
-  rightStatusConnectorDetailContainer: {
-    paddingLeft: "5@s"
+  firstStatusConnectorDetailContainer: {
+    paddingBottom: 0
   },
   statusConnectorDetail: {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     height: "60@s",
-    width: "60@s"
+    width: "80@s"
   },
-  statusConnectorDetailLetter: {
-    marginTop: "-10@s"
-  },
-  animatableValue: {
+  statusConnectorDetailAnimated: {
     position: "absolute",
     alignItems: "center"
   },
-  value: {
+  connectorValues: {
     color: commonColor.textColorApp,
-    fontWeight: "bold",
     marginTop: "-1@s",
     fontSize: "30@s",
     textAlign: "center"

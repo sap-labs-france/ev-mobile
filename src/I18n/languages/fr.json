@@ -67,28 +67,15 @@
     "noChargers": "Cette Zone n'a pas de Borne"
   },
   "chargers": {
-    "title": "Bornes",
-    "status_occupied": "Occupé",
-    "status_available": "Disponible",
-    "status_preparing": "En Préparation",
-    "status_charging": "En Charge",
-    "status_suspended": "Suspendue",
-    "status_suspendedevse": "EVSE Suspendu",
-    "status_suspendedev": "EV Suspendu",
-    "status_finishing": "Terminé",
-    "status_reserved": "Réservée",
-    "show_active_only": "Connecté",
-    "status_unavailable": "Indisponible",
-    "status_faulted": "En Erreur",
-    "status_unknown": "Inconnu"
+    "title": "Bornes"
   },
   "connector": {
     "occupied": "Occupé",
     "charging": "En charge",
     "available": "Disponible",
     "unavailable": "Indisponible",
-    "suspendedEV": "Suspendu (VE)",
-    "suspendedEVSE": "Suspendu (EVSE)",
+    "suspendedEV": "EV Suspendu",
+    "suspendedEVSE": "EVSE Suspendu",
     "faulted": "Erreur",
     "reserved": "Réservé",
     "preparing": "Préparation",

@@ -6,6 +6,7 @@ import { Text, View } from "native-base";
 import I18n from "../../I18n/I18n";
 import ChargePointStatusComponent from "./ChargePointStatusComponent";
 import Constants from "../../utils/Constants";
+import Utils from "../../utils/Utils";
 
 const style = computeStyleSheet();
 
@@ -15,19 +16,19 @@ export default class ChargePoinStatusContainerComponent extends ResponsiveCompon
       <View style={style.container}>
         <ChargePointStatusComponent
           value={this.props.availableConnectors}
-          text={I18n.t("chargers.status_available")}
+          text={Utils.translateConnectorStatus(Constants.CONN_STATUS_AVAILABLE)}
           type={Constants.CONN_STATUS_AVAILABLE}
+        />
+        <ChargePointStatusComponent
+          value={this.props.totalConnectors - this.props.availableConnectors}
+          text={Utils.translateConnectorStatus(Constants.CONN_STATUS_OCCUPIED)}
+          type={Constants.CONN_STATUS_SUSPENDED_EVSE}
         />
         {/* <ChargePointStatusComponent
           value={this.props.totalConnectors - this.props.availableConnectors}
-          text={I18n.t("chargers.status_suspended")}
-          type={Constants.CONN_STATUS_SUSPENDED_EVSE}
-        /> */}
-        <ChargePointStatusComponent
-          value={this.props.totalConnectors - this.props.availableConnectors}
           text={I18n.t("chargers.status_charging")}
           type={Constants.CONN_STATUS_CHARGING}
-        />
+        /> */}
       </View>
     );
   }
