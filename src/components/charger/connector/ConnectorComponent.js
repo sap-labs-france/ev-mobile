@@ -8,7 +8,7 @@ import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./ConnectorComponentStyles";
 import PropTypes from "prop-types";
 import Constants from "../../../utils/Constants";
-import ChargePointStatusComponent from "../../charge-point-status/ChargePointStatusComponent";
+import ConnectorStatusComponent from "../../connector-status/ConnectorStatusComponent";
 
 export default class ConnectorComponent extends ResponsiveComponent {
   constructor(props) {
@@ -50,7 +50,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
 
   _renderFirstConnectorDetails = (connector) => {
     return (
-      <ChargePointStatusComponent
+      <ConnectorStatusComponent
         connector={connector}
         text={Utils.translateConnectorStatus(connector.status)}
       />

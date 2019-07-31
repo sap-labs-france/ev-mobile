@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import computeStyleSheet from "./ChargePointStatusComponentStyles.js";
+import computeStyleSheet from "./ConnectorStatusComponentStyles.js";
 import { Animated, Easing } from "react-native";
 import { Badge, Text, View } from "native-base";
 import Constants from "../../utils/Constants";
 
 
-export default class ChargePointStatusComponent extends ResponsiveComponent {
+export default class ConnectorStatusComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {};
@@ -118,7 +118,7 @@ export default class ChargePointStatusComponent extends ResponsiveComponent {
   }
 }
 
-ChargePointStatusComponent.propTypes = {
+ConnectorStatusComponent.propTypes = {
   connector: PropTypes.object,
   value: PropTypes.number,
   text: PropTypes.string,

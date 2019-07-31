@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 import Constants from "../../utils/Constants";
 import Message from "../../utils/Message";
-import ChargePointStatusContainerComponent from "../charge-point-status/ChargePointStatusContainerComponent";
+import ConnectorStatusesContainerComponent from "../connector-status/ConnectorStatusesContainerComponent";
 
 let counter = 0;
 
@@ -44,7 +44,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
                 type="AntDesign" name="right"
               />
             </View>
-            <ChargePointStatusContainerComponent
+            <ConnectorStatusesContainerComponent
               totalConnectors={siteArea.totalConnectors}
               availableConnectors={siteArea.availableConnectors}
             />

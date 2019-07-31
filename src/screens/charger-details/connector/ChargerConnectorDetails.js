@@ -3,7 +3,7 @@ import { ScrollView, TouchableOpacity, Image, Alert } from "react-native";
 import { Container, Icon, View, Thumbnail, Text } from "native-base";
 import BaseScreen from "../../base-screen/BaseScreen";
 import ProviderFactory from "../../../provider/ProviderFactory";
-import ChargePointStatusComponent from "../../../components/charge-point-status/ChargePointStatusComponent";
+import ConnectorStatusComponent from "../../../components/connector-status/ConnectorStatusComponent";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import computeStyleSheet from "./ChargerConnectorDetailsStyles";
@@ -407,7 +407,7 @@ export default class ChargerConnectorDetails extends BaseScreen {
             <View style={style.detailsContainer}>
               <View style={style.rowContainer}>
                 <View style={style.columnContainer}>
-                  <ChargePointStatusComponent
+                  <ConnectorStatusComponent
                     connector={connector}
                     text={Utils.translateConnectorStatus(connector.status)}
                   />
