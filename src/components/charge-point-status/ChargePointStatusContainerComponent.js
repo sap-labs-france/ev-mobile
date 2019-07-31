@@ -18,11 +18,11 @@ export default class ChargePoinStatusContainerComponent extends ResponsiveCompon
           text={I18n.t("chargers.status_available")}
           type={Constants.CONN_STATUS_AVAILABLE}
         />
-        <ChargePointStatusComponent
+        {/* <ChargePointStatusComponent
           value={this.props.totalConnectors - this.props.availableConnectors}
           text={I18n.t("chargers.status_suspended")}
           type={Constants.CONN_STATUS_SUSPENDED_EVSE}
-        />
+        /> */}
         <ChargePointStatusComponent
           value={this.props.totalConnectors - this.props.availableConnectors}
           text={I18n.t("chargers.status_charging")}

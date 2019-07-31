@@ -7,7 +7,6 @@ import { Platform } from "react-native";
 const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
-    width: "150@s",
     height: "65@s",
     flexDirection: "column",
     justifyContent: "flex-start",
