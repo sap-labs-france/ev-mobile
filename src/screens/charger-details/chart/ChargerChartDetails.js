@@ -193,7 +193,7 @@ export default class ChargerChartDetails extends BaseScreen {
     if (stateOfChargeValues && stateOfChargeValues.length > 1) {
       chartDefinition.yAxis.right = {
         enabled: true,
-        valueFormatter: "percent",
+        valueFormatter: "##0",
         axisMinimum: 0,
         axisMaximum: 100,
         textColor: processColor(commonColor.brandSuccess)
