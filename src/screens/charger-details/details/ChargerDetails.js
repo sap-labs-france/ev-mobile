@@ -7,7 +7,6 @@ import computeStyleSheet from "./ChargerDetailsStyles";
 import PropTypes from "prop-types";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 
-
 export default class ChargerDetails extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();

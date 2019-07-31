@@ -7,13 +7,12 @@ const commonStyles = ScaledSheet.create({
   container: {
     backgroundColor: commonColor.brandPrimary
   },
-  scrollViewContainer: {
-  },
+  scrollViewContainer: {},
   viewContainer: {
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
-    alignItems: "center",
+    alignItems: "center"
   },
   spinner: {
     flex: 1,
