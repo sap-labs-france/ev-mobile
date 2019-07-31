@@ -10,7 +10,7 @@ export default (variables /* : * */ = variable) => {
 
   const tabContainerTheme = {
     elevation: 3,
-    height: 50,
+    height: 55,
     flexDirection: "row",
     shadowColor: platformStyle === PLATFORM.MATERIAL ? "#000" : undefined,
     shadowOffset: platformStyle === PLATFORM.MATERIAL ? { width: 0, height: 2 } : undefined,

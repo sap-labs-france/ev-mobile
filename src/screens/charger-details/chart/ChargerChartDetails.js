@@ -9,6 +9,7 @@ import { scale } from "react-native-size-matters";
 import commonColor from "../../../theme/variables/commonColor";
 import { LineChart } from "react-native-charts-wrapper";
 import PropTypes from "prop-types";
+import BackgroundComponent from "../../../components/background/BackgroundComponent";
 
 const EMPTY_CHART = [{ x: 0, y: 0 }];
 
@@ -192,7 +193,7 @@ export default class ChargerChartDetails extends BaseScreen {
     if (stateOfChargeValues && stateOfChargeValues.length > 1) {
       chartDefinition.yAxis.right = {
         enabled: true,
-        valueFormatter: "percent",
+        valueFormatter: "##0",
         axisMinimum: 0,
         axisMaximum: 100,
         textColor: processColor(commonColor.brandSuccess)
@@ -212,42 +213,43 @@ export default class ChargerChartDetails extends BaseScreen {
     const chartDefinition = this.computeChartDefinition(consumptionValues, stateOfChargeValues);
     return (
       <View style={style.container}>
-        <LineChart
-          style={style.chart}
-          data={chartDefinition.data}
-          chartDescription={{ text: "" }}
-          noDataText={"No Data"}
-          backgroundColor={commonColor.brandPrimary}
-          legend={{
-            enabled: true,
-            textColor: processColor("white")
-          }}
-          marker={{
-            enabled: true,
-            markerColor: processColor("white"),
-            textColor: processColor("black")
-          }}
-          xAxis={chartDefinition.xAxis}
-          yAxis={chartDefinition.yAxis}
-          autoScaleMinMaxEnabled={false}
-          animation={{
-            durationX: 1000,
-            durationY: 1000,
-            easingY: "EaseInOutQuart"
-          }}
-          drawGridBackground={false}
-          drawBorders={false}
-          touchEnabled={true}
-          dragEnabled={true}
-          scaleEnabled={false}
-          scaleXEnabled={true}
-          scaleYEnabled={false}
-          pinchZoom={true}
-          doubleTapToZoomEnabled={false}
-          dragDecelerationEnabled={true}
-          dragDecelerationFrictionCoef={0.99}
-          keepPositionOnRotation={false}
-        />
+        <BackgroundComponent>
+          <LineChart
+            style={style.chart}
+            data={chartDefinition.data}
+            chartDescription={{ text: "" }}
+            noDataText={"No Data"}
+            legend={{
+              enabled: true,
+              textColor: processColor("white")
+            }}
+            marker={{
+              enabled: true,
+              markerColor: processColor("white"),
+              textColor: processColor("black")
+            }}
+            xAxis={chartDefinition.xAxis}
+            yAxis={chartDefinition.yAxis}
+            autoScaleMinMaxEnabled={false}
+            animation={{
+              durationX: 1000,
+              durationY: 1000,
+              easingY: "EaseInOutQuart"
+            }}
+            drawGridBackground={false}
+            drawBorders={false}
+            touchEnabled={true}
+            dragEnabled={true}
+            scaleEnabled={false}
+            scaleXEnabled={true}
+            scaleYEnabled={false}
+            pinchZoom={true}
+            doubleTapToZoomEnabled={false}
+            dragDecelerationEnabled={true}
+            dragDecelerationFrictionCoef={0.99}
+            keepPositionOnRotation={false}
+          />
+        </BackgroundComponent>
       </View>
     );
   }

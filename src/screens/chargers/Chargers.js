@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, ImageBackground, FlatList, RefreshControl } from "react-native";
+import { Platform, FlatList, RefreshControl } from "react-native";
 import { Container, View, Spinner, List } from "native-base";
 import ProviderFactory from "../../provider/ProviderFactory";
 import ChargerComponent from "../../components/charger/ChargerComponent";
@@ -10,9 +10,9 @@ import Constants from "../../utils/Constants";
 import computeStyleSheet from "./ChargersStyles";
 import I18n from "../../I18n/I18n";
 import BaseScreen from "../base-screen/BaseScreen";
+import BackgroundComponent from "../../components/background/BackgroundComponent";
 
 const _provider = ProviderFactory.getProvider();
-const background = require("../../../assets/sidebar-transparent.png");
 
 export default class Chargers extends BaseScreen {
   constructor(props) {
@@ -140,11 +140,7 @@ export default class Chargers extends BaseScreen {
     const siteID = this._getSiteIDFromChargers(chargers);
     return (
       <Container style={style.container}>
-        <ImageBackground
-          source={background}
-          style={style.background}
-          imageStyle={style.imageBackground}
-        >
+        <BackgroundComponent>
           <HeaderComponent
             title={I18n.t("chargers.title")}
             showSearchAction={true}
@@ -191,7 +187,7 @@ export default class Chargers extends BaseScreen {
               />
             )}
           </View>
-        </ImageBackground>
+        </BackgroundComponent>
       </Container>
     );
   }

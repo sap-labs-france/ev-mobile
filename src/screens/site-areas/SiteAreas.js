@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, ImageBackground, RefreshControl } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 import { Container, Spinner, View } from "native-base";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
@@ -10,9 +10,9 @@ import HeaderComponent from "../../components/header/HeaderComponent";
 import computeStyleSheet from "./SiteAreasStyles";
 import I18n from "../../I18n/I18n";
 import BaseScreen from "../base-screen/BaseScreen";
+import BackgroundComponent from "../../components/background/BackgroundComponent";
 
 const _provider = ProviderFactory.getProvider();
-const background = require("../../../assets/sidebar-transparent.png");
 
 export default class SiteAreas extends BaseScreen {
   constructor(props) {
@@ -120,11 +120,7 @@ export default class SiteAreas extends BaseScreen {
     const { loading } = this.state;
     return (
       <Container style={style.container}>
-        <ImageBackground
-          source={background}
-          style={style.background}
-          imageStyle={style.imageBackground}
-        >
+        <BackgroundComponent>
           <HeaderComponent
             title={I18n.t("siteAreas.title")}
             showSearchAction={true}
@@ -164,7 +160,7 @@ export default class SiteAreas extends BaseScreen {
               />
             )}
           </View>
-        </ImageBackground>
+        </BackgroundComponent>
       </Container>
     );
   }

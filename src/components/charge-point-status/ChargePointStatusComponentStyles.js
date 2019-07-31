@@ -21,7 +21,7 @@ const commonStyles = ScaledSheet.create({
     alignSelf: "center"
   },
   freeConnectorBadge: {
-    backgroundColor: commonColor.brandSecondary
+    backgroundColor: commonColor.brandInfo
   },
   occupiedConnectorBadge: {
     backgroundColor: commonColor.brandDanger

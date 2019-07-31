@@ -59,7 +59,7 @@ const commonStyles = ScaledSheet.create({
     marginTop: "5@s"
   },
   freeConnectorBadge: {
-    backgroundColor: commonColor.brandSecondary
+    backgroundColor: commonColor.brandInfo
   },
   occupiedConnectorBadge: {
     backgroundColor: commonColor.brandDanger

@@ -18,12 +18,11 @@ export default {
   platform,
 
   // Color
-  brandPrimary: "#2F7ACF",
-  brandSecondary: "#3B9AF0",
-  brandInfo: "#428F40",
-  brandSuccess: "#428F40",
-  brandDanger: "#CC1832",
-  brandWarning: "#f0ad4e",
+  brandPrimary: "#0098D5",
+  brandInfo: "#81C2EA",
+  brandSuccess: "#388E3C",
+  brandDanger: "#E53934",
+  brandWarning: "#FB8C00",
   brandDark: "#000",
   brandLight: "#f4f4f4",
 
@@ -276,7 +275,7 @@ export default {
 
   // Tab
   tabBarDisabledTextColor: "#BDBDBD",
-  tabDefaultBg: platform === PLATFORM.IOS ? "#F8F8F8" : "#3F51B5",
+  tabDefaultBg: this.brandPrimary,
   topTabBarTextColor: platform === PLATFORM.IOS ? "#6b6b6b" : "#b3c7f9",
   topTabBarActiveTextColor: platform === PLATFORM.IOS ? "#007aff" : "#fff",
   topTabBarBorderColor: platform === PLATFORM.IOS ? "#a7a6ab" : "#fff",

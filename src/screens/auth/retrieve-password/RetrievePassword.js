@@ -3,7 +3,6 @@ import {
   ScrollView,
   Image,
   TextInput,
-  ImageBackground,
   KeyboardAvoidingView,
   Text as TextRN
 } from "react-native";
@@ -20,10 +19,10 @@ import * as Animatable from "react-native-animatable";
 import Constants from "../../../utils/Constants";
 import DeviceInfo from "react-native-device-info";
 import ReCaptcha from "react-native-recaptcha-v3";
+import BackgroundComponent from "../../../components/background/BackgroundComponent";
 
 const _provider = ProviderFactory.getProvider();
 const logo = require("../../../../assets/logo-low.png");
-const background = require("../../../../assets/sidebar-transparent.png");
 
 const formValidationDef = {
   email: {
@@ -122,11 +121,7 @@ export default class RetrievePassword extends ResponsiveComponent {
         iterationCount={1}
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
       >
-        <ImageBackground
-          source={background}
-          style={style.background}
-          imageStyle={style.imageBackground}
-        >
+        <BackgroundComponent>
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
               <View style={style.formHeader}>
@@ -199,7 +194,7 @@ export default class RetrievePassword extends ResponsiveComponent {
               </Button>
             </Left>
           </Footer>
-        </ImageBackground>
+        </BackgroundComponent>
       </Animatable.View>
     );
   }

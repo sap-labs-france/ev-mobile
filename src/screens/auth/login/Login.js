@@ -2,7 +2,6 @@ import React from "react";
 import {
   ScrollView,
   Image,
-  ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
   Text as TextRN,
@@ -33,9 +32,9 @@ import Message from "../../../utils/Message";
 import computeStyleSheet from "../AuthStyles";
 import commonColor from "../../../theme/variables/commonColor";
 import DeviceInfo from "react-native-device-info";
+import BackgroundComponent from "../../../components/background/BackgroundComponent";
 
 const _provider = providerFactory.getProvider();
-const background = require("../../../../assets/sidebar-transparent.png");
 const logo = require("../../../../assets/logo-low.png");
 
 const formValidationDef = {
@@ -223,11 +222,7 @@ export default class Login extends ResponsiveComponent {
         iterationCount={1}
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
       >
-        <ImageBackground
-          source={background}
-          style={style.background}
-          imageStyle={style.imageBackground}
-        >
+        <BackgroundComponent>
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
               <View style={style.formHeader}>
@@ -366,7 +361,7 @@ export default class Login extends ResponsiveComponent {
               </Button>
             </Right>
           </Footer>
-        </ImageBackground>
+        </BackgroundComponent>
       </Animatable.View>
     );
   }
