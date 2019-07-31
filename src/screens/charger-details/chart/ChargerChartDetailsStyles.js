@@ -16,12 +16,6 @@ const commonStyles = ScaledSheet.create({
   chart: {
     height: "100%"
   },
-  background: {
-    flex: 1
-  },
-  imageBackground: {
-    resizeMode: "cover"
-  },
   notAuthorizedContainer: {
     flex: 1,
     justifyContent: "center",

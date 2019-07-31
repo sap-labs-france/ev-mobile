@@ -1,6 +1,6 @@
 import React from "react";
 import BaseScreen from "../../base-screen/BaseScreen";
-import { View, ImageBackground, processColor } from "react-native";
+import { View, processColor } from "react-native";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import Utils from "../../../utils/Utils";
 import I18n from "../../../I18n/I18n";
@@ -9,9 +9,9 @@ import { scale } from "react-native-size-matters";
 import commonColor from "../../../theme/variables/commonColor";
 import { LineChart } from "react-native-charts-wrapper";
 import PropTypes from "prop-types";
+import BackgroundComponent from "../../../components/background/BackgroundComponent";
 
 const EMPTY_CHART = [{ x: 0, y: 0 }];
-const background = require("../../../../assets/sidebar-transparent.png");
 
 const _provider = ProviderFactory.getProvider();
 
@@ -213,11 +213,7 @@ export default class ChargerChartDetails extends BaseScreen {
     const chartDefinition = this.computeChartDefinition(consumptionValues, stateOfChargeValues);
     return (
       <View style={style.container}>
-        <ImageBackground
-          source={background}
-          style={style.background}
-          imageStyle={style.imageBackground}
-        >
+        <BackgroundComponent>
           <LineChart
             style={style.chart}
             data={chartDefinition.data}
@@ -253,7 +249,7 @@ export default class ChargerChartDetails extends BaseScreen {
             dragDecelerationFrictionCoef={0.99}
             keepPositionOnRotation={false}
           />
-        </ImageBackground>
+        </BackgroundComponent>
       </View>
     );
   }

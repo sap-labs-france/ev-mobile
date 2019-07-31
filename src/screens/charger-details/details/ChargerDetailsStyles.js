@@ -24,12 +24,6 @@ const commonStyles = ScaledSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  background: {
-    flex: 1
-  },
-  imageBackground: {
-    resizeMode: "cover"
-  },
   label: {
     fontSize: "20@s",
     fontWeight: "bold",

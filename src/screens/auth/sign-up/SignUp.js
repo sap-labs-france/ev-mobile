@@ -2,7 +2,6 @@ import React from "react";
 import {
   Image,
   TextInput,
-  ImageBackground,
   Keyboard,
   ScrollView,
   Text as TextRN,
@@ -20,10 +19,10 @@ import Message from "../../../utils/Message";
 import Constants from "../../../utils/Constants";
 import DeviceInfo from "react-native-device-info";
 import ReCaptcha from "react-native-recaptcha-v3";
+import BackgroundComponent from "../../../components/background/BackgroundComponent";
 
 const _provider = ProviderFactory.getProvider();
 const logo = require("../../../../assets/logo-low.png");
-const background = require("../../../../assets/sidebar-transparent.png");
 
 const formValidationDef = {
   name: {
@@ -187,11 +186,7 @@ export default class SignUp extends React.Component {
         iterationCount={1}
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
       >
-        <ImageBackground
-          source={background}
-          style={style.background}
-          imageStyle={style.imageBackground}
-        >
+        <BackgroundComponent>
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
               <View style={style.formHeader}>
@@ -377,7 +372,7 @@ export default class SignUp extends React.Component {
               </Button>
             </Left>
           </Footer>
-        </ImageBackground>
+        </BackgroundComponent>
       </Animatable.View>
     );
   }

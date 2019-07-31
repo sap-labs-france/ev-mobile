@@ -12,12 +12,6 @@ const commonStyles = {
   },
   spinner: {
     flex: 1
-  },
-  background: {
-    flex: 1
-  },
-  imageBackground: {
-    resizeMode: "cover"
   }
 };
 

@@ -1,12 +1,12 @@
 import React from "react";
-import { ScrollView, ImageBackground } from "react-native";
+import { ScrollView } from "react-native";
 import { Container, View, Text } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./ChargerDetailsStyles";
 import PropTypes from "prop-types";
+import BackgroundComponent from "../../../components/background/BackgroundComponent";
 
-const background = require("../../../../assets/sidebar-transparent.png");
 
 export default class ChargerDetails extends ResponsiveComponent {
   render() {
@@ -14,11 +14,7 @@ export default class ChargerDetails extends ResponsiveComponent {
     const { charger } = this.props;
     return (
       <Container style={style.container}>
-        <ImageBackground
-          source={background}
-          style={style.background}
-          imageStyle={style.imageBackground}
-        >
+        <BackgroundComponent>
           <ScrollView style={style.scrollViewContainer}>
             <View style={style.viewContainer}>
               <View style={style.columnContainer}>
@@ -45,7 +41,7 @@ export default class ChargerDetails extends ResponsiveComponent {
               </View>
             </View>
           </ScrollView>
-        </ImageBackground>
+        </BackgroundComponent>
       </Container>
     );
   }

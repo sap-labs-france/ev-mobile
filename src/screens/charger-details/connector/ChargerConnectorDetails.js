@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, TouchableOpacity, ImageBackground, Image, Alert } from "react-native";
+import { ScrollView, TouchableOpacity, Image, Alert } from "react-native";
 import { Container, Icon, View, Thumbnail, Text } from "native-base";
 import BaseScreen from "../../base-screen/BaseScreen";
 import ProviderFactory from "../../../provider/ProviderFactory";
@@ -10,10 +10,10 @@ import computeStyleSheet from "./ChargerConnectorDetailsStyles";
 import Constants from "../../../utils/Constants";
 import Message from "../../../utils/Message";
 import PropTypes from "prop-types";
+import BackgroundComponent from "../../../components/background/BackgroundComponent";
 
 const noPhoto = require("../../../../assets/no-photo.png");
 const noSite = require("../../../../assets/no-site.png");
-const background = require("../../../../assets/sidebar-transparent.png");
 
 const START_TRANSACTION_NB_TRIAL = 4;
 const _provider = ProviderFactory.getProvider();
@@ -358,11 +358,7 @@ export default class ChargerConnectorDetails extends BaseScreen {
     return (
       <Container style={style.container}>
         <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
-        <ImageBackground
-          source={background}
-          style={style.background}
-          imageStyle={style.imageBackground}
-        >
+        <BackgroundComponent>
           <View style={style.transactionContainer}>
             {connector.activeTransactionID === 0 ? (
               <TouchableOpacity onPress={() => this._onStartTransaction()} disabled={buttonDisabled}>
@@ -503,7 +499,7 @@ export default class ChargerConnectorDetails extends BaseScreen {
               </View>
             </View>
           </ScrollView>
-        </ImageBackground>
+        </BackgroundComponent>
       </Container>
     );
   }

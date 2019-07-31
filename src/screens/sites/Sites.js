@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, ImageBackground, RefreshControl } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 import { Container, Spinner, View } from "native-base";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
@@ -7,12 +7,12 @@ import ProviderFactory from "../../provider/ProviderFactory";
 import SiteComponent from "../../components/site/SiteComponent";
 import SearchHeaderComponent from "../../components/search-header/SearchHeaderComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
+import BackgroundComponent from "../../components/background/BackgroundComponent";
 import computeStyleSheet from "./SitesStyles";
 import I18n from "../../I18n/I18n";
 import BaseScreen from "../base-screen/BaseScreen";
 
 const _provider = ProviderFactory.getProvider();
-const background = require("../../../assets/sidebar-transparent.png");
 
 export default class Sites extends BaseScreen {
   constructor(props) {
@@ -129,11 +129,7 @@ export default class Sites extends BaseScreen {
       <Container
         style={style.container}
       >
-        <ImageBackground
-          source={background}
-          style={style.background}
-          imageStyle={style.imageBackground}
-        >
+        <BackgroundComponent>
           <HeaderComponent
             title={I18n.t("sidebar.sites")}
             showSearchAction={true}
@@ -171,7 +167,7 @@ export default class Sites extends BaseScreen {
               />
             )}
           </View>
-        </ImageBackground>
+        </BackgroundComponent>
       </Container>
     );
   }
