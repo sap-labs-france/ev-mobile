@@ -41,7 +41,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
               <Text style={style.name}>{siteArea.name}</Text>
               <Icon
                 style={siteArea.totalConnectors > 0 ? style.icon : style.iconHidden}
-                name="arrow-forward"
+                type="AntDesign" name="right"
               />
             </View>
             <ChargePointStatusContainerComponent

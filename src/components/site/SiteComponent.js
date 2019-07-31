@@ -35,7 +35,7 @@ export default class SiteComponent extends ResponsiveComponent {
                 <Icon style={style.icon} name="pin" />
               </TouchableOpacity>
               <Text style={style.name}>{site.name}</Text>
-              <Icon style={style.icon} name="arrow-forward" />
+              <Icon style={style.icon} type="AntDesign" name="right" />
             </View>
             <View style={style.connectorContent}>
               <ChargePointStatusContainerComponent
