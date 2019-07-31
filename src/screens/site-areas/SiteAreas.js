@@ -119,9 +119,7 @@ export default class SiteAreas extends BaseScreen {
     const { navigation } = this.props;
     const { loading } = this.state;
     return (
-      <Container
-        style={style.container}
-      >
+      <Container style={style.container}>
         <BackgroundComponent>
           <HeaderComponent
             title={I18n.t("siteAreas.title")}

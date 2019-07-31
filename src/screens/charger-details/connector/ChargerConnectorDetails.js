@@ -361,7 +361,10 @@ export default class ChargerConnectorDetails extends BaseScreen {
         <BackgroundComponent>
           <View style={style.transactionContainer}>
             {connector.activeTransactionID === 0 ? (
-              <TouchableOpacity onPress={() => this._onStartTransaction()} disabled={buttonDisabled}>
+              <TouchableOpacity
+                onPress={() => this._onStartTransaction()}
+                disabled={buttonDisabled}
+              >
                 <View
                   style={
                     buttonDisabled

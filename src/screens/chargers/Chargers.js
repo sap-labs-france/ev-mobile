@@ -139,9 +139,7 @@ export default class Chargers extends BaseScreen {
     // Safe way to retrieve the Site ID to navigate back from a notification
     const siteID = this._getSiteIDFromChargers(chargers);
     return (
-      <Container
-        style={style.container}
-      >
+      <Container style={style.container}>
         <BackgroundComponent>
           <HeaderComponent
             title={I18n.t("chargers.title")}
