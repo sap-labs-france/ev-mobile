@@ -24,7 +24,7 @@ const commonStyles = ScaledSheet.create({
     fontSize: commonColor.fontSizeBase,
     fontWeight: "bold",
     textAlign: "center",
-    marginTop: Platform.OS === "ios" ? "-35@s" : "-37@s"
+    marginTop: Platform.OS === "ios" ? "-35@s" : "-38@s"
   },
   faultedConnector: {
     backgroundColor: commonColor.brandDanger,

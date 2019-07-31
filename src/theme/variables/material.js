@@ -145,7 +145,7 @@ export default {
   // Font
   DefaultFontSize: 16,
   fontFamily: "Roboto",
-  fontSizeBase: scale(20),
+  fontSizeBase: scale(22),
   get fontSizeH1() {
     return this.fontSizeBase * 1.8;
   },

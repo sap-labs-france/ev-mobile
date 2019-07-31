@@ -30,7 +30,7 @@ export default (variables /* : * */ = variable) => {
       color: variables.badgeColor,
       fontSize: variables.fontSizeBase,
       fontWeight: "bold",
-      lineHeight: variables.lineHeight - 4,
+      lineHeight: variables.lineHeight - 5,
       textAlign: "center",
       paddingTop: moderateScale(11, 4),
       paddingBottom: moderateScale(8),
