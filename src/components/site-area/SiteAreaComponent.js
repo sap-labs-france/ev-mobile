@@ -1,6 +1,5 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-// import { Badge } from "react-native-elements";
 import { TouchableOpacity } from "react-native";
 import { Text, View, Icon } from "native-base";
 import computeStyleSheet from "./SiteAreaComponentStyles";
@@ -39,8 +38,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
           <View style={style.container}>
             <View style={style.mainContent}>
               <Text style={style.name}>{siteArea.name}</Text>
-              <Icon
-                style={siteArea.totalConnectors > 0 ? style.icon : style.iconHidden}
+              <Icon style={siteArea.totalConnectors > 0 ? style.icon : style.iconHidden}
                 type="MaterialIcons" name="navigate-next"
               />
             </View>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, TouchableOpacity } from "react-native";
-import { Text, View } from "native-base";
+import { Text, View, Icon } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import Utils from "../../../utils/Utils";
 import * as Animatable from "react-native-animatable";
@@ -150,6 +150,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
               {this._renderFirstConnectorDetails(connector)}
               {this._renderSecondConnectorDetails(connector, style)}
               {this._renderThirdConnectorDetails(connector, style)}
+              <Icon style={style.icon} type="MaterialIcons" name="navigate-next"/>
             </View>
           </View>
         </Animatable.View>
