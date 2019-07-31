@@ -27,10 +27,10 @@ const commonStyles = ScaledSheet.create({
   inputField: {
     flex: 1,
     paddingLeft: "5@s",
-    fontSize: "18@s",
+    fontSize: "18@s"
   },
   icon: {
-    fontSize: "25@s",
+    fontSize: "25@s"
   }
 });
 

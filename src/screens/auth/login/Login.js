@@ -243,7 +243,7 @@ export default class Login extends ResponsiveComponent {
                         options: this.tenants.map(tenant => tenant.name),
                         title: I18n.t("authentication.tenant")
                       },
-                      (buttonIndex) => {
+                      buttonIndex => {
                         this._setTenant(buttonIndex);
                       }
                     )

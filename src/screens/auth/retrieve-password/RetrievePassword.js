@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  ScrollView,
-  Image,
-  TextInput,
-  KeyboardAvoidingView,
-  Text as TextRN
-} from "react-native";
+import { ScrollView, Image, TextInput, KeyboardAvoidingView, Text as TextRN } from "react-native";
 import { Text, Form, Item, Button, Icon, View, Spinner, Footer, Left } from "native-base";
 import { NavigationActions, StackActions } from "react-navigation";
 import commonColor from "../../../theme/variables/commonColor";
