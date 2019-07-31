@@ -13,9 +13,7 @@ const commonStyles = ScaledSheet.create({
   spinner: {
     color: commonColor.textColorApp
   },
-  tabHeader: {
-    // backgroundColor: commonColor.brandSecondary
-  },
+  tabHeader: {},
   tabIcon: {
     fontSize: "20@s",
     paddingBottom: "5@s"
