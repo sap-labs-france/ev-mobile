@@ -4,7 +4,8 @@ import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./BackgroundComponentStyles";
 import PropTypes from "prop-types";
 
-const background = require("../../../assets/sidebar-transparent.png");
+const background = require("../../../assets/bg.png");
+// const background = require("../../../assets/sidebar-transparent.png");
 
 export default class BackgroundComponent extends ResponsiveComponent {
   render() {

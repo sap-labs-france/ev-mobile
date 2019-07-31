@@ -12,6 +12,7 @@ export default (variables /* : * */ = variable) => {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: 10,
     ".scrollable": {
       paddingHorizontal: 20,
       flex: platform === PLATFORM.ANDROID ? 0 : 1,

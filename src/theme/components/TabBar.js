@@ -42,7 +42,7 @@ export default (variables /* : * */ = variable) => {
       borderBottomColor: "transparent",
       backgroundColor: variables.tabBgColor
     },
-    height: 45,
+    height: 50,
     flexDirection: "row",
     justifyContent: "space-around",
     borderWidth: 1,
