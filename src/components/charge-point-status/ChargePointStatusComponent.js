@@ -11,6 +11,11 @@ export default class ChargePointStatusComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {};
+    // Start animation
+    this._buildAnimation();
+  }
+
+  _buildAnimation() {
     // Create
     this.spinValue = new Animated.Value(0);
     // First set up animation
@@ -28,38 +33,83 @@ export default class ChargePointStatusComponent extends ResponsiveComponent {
     });
   }
 
-  render() {
-    const style = computeStyleSheet();
-    const isCharging = this.props.type === Constants.CONN_STATUS_CHARGING;
-    const connectorStyle = [];
-    const connectorTextStyle = [style.connectorValue];
-    switch (this.props.type) {
+  _getConnectorStyle(style) {
+    const { type, connector } = this.props;
+    let connectorType;
+    if (connector) {
+      connectorType = connector.status;
+    } else {
+      connectorType = type;
+    }
+    switch (connectorType) {
       // Charging
       case Constants.CONN_STATUS_CHARGING:
-        connectorStyle.push(style.chargingConnector);
-        connectorTextStyle.push(style.chargingConnectorValue);
-        break;
-      // Suspending
+      case Constants.CONN_STATUS_OCCUPIED:
+        return style.chargingConnector;
+      // Preparing
+      case Constants.CONN_STATUS_PREPARING:
+        return style.preparingConnector;
+      // Preparing
+      case Constants.CONN_STATUS_FINISHING:
+        return style.finishingConnector;
+      // Reserved
+      case Constants.CONN_STATUS_RESERVED:
+        return style.reservedConnector;
+      // Faulted
+      case Constants.CONN_STATUS_FAULTED:
+        return style.faultedConnector;
+      // Unavailable
+      case Constants.CONN_STATUS_UNAVAILABLE:
+        return style.unavailableConnector;
+      // Suspending EV / EVSE
       case Constants.CONN_STATUS_SUSPENDED_EVSE:
-        connectorStyle.push(style.supendedConnector);
-        connectorTextStyle.push(style.supendedConnectorValue);
-        break;
+      case Constants.CONN_STATUS_SUSPENDED_EV:
+        return style.supendedConnector;
       // Available
       case Constants.CONN_STATUS_AVAILABLE:
-        connectorStyle.push(style.freeConnector);
-        connectorTextStyle.push(style.freeConnectorValue);
-        break;
+        return style.availableConnector;
     }
+  }
+
+  _getConnectorValue() {
+    // Get value
+    const { value, connector } = this.props;
+    if (connector) {
+      return String.fromCharCode(64 + connector.connectorId);
+    } else {
+      return value;
+    }
+  }
+
+  _isAnimated() {
+    const { value, connector } = this.props;
+    if (connector) {
+      return connector.currentConsumption > 0;
+    } else {
+      return value > 0;
+    }
+    console.log(connector);
+    console.log(typeof value);
+  }
+
+  render() {
+    const style = computeStyleSheet();
+    // Get styling
+    const connectorStyle = this._getConnectorStyle(style);
+    // Get value
+    const value = this._getConnectorValue();
+    // Animated
+    const isAnimated = this._isAnimated();
 
     return (
-      <View style={style.container}>
-        <Animated.View style={[{ transform: [{ rotate: this.spin }] }]}>
-          <Badge style={[...connectorStyle]}>
+      <View style={this.props.text ? style.containerWithText : style.containerWithNoText}>
+        <Animated.View style={isAnimated ? { transform: [{ rotate: this.spin }] } : undefined }>
+          <Badge style={connectorStyle}>
           </Badge>
         </Animated.View>
-        <Text style={connectorTextStyle}>{ this.props.value }</Text>
+        <Text style={style.connectorValue}>{ value }</Text>
         {this.props.text ?
-          <Text style={style.connectorSubTitle}>{this.props.text}</Text>
+          <Text style={style.connectorText}>{this.props.text}</Text>
         :
           undefined
         }
@@ -69,7 +119,8 @@ export default class ChargePointStatusComponent extends ResponsiveComponent {
 }
 
 ChargePointStatusComponent.propTypes = {
-  value: PropTypes.number.isRequired,
+  connector: PropTypes.object,
+  value: PropTypes.number,
   text: PropTypes.string,
-  type: PropTypes.string.isRequired
+  type: PropTypes.string
 };

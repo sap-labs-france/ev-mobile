@@ -31,7 +31,12 @@ export default {
   brandSuccess: "#388E3C",
   brandSuccessDark: "#2C742F",
   brandDanger: "#E53934",
+  brandDangerDark: "#98211D",
   brandWarning: "#FB8C00",
+  brandWarningDark: "#C06B00",
+  brandDisable: "#757575",
+  brandDisableDark: "#4F4F4F",
+
   brandDark: "#000",
   brandLight: "#f4f4f4",
 

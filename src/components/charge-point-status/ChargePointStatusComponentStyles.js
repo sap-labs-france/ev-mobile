@@ -5,9 +5,16 @@ import { ScaledSheet, scale, moderateScale } from "react-native-size-matters";
 import { Platform } from "react-native";
 
 const commonStyles = ScaledSheet.create({
-  container: {
-    flex: 1,
+  containerWithText: {
     height: "65@s",
+    width: "75@s",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center"
+  },
+  containerWithNoText: {
+    height: "55@s",
+    width: "60@s",
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center"
@@ -19,25 +26,42 @@ const commonStyles = ScaledSheet.create({
     textAlign: "center",
     marginTop: Platform.OS === "ios" ? "-35@s" : "-37@s"
   },
-  freeConnector: {
+  faultedConnector: {
+    backgroundColor: commonColor.brandDanger,
+    borderColor: commonColor.brandDangerDark
+  },
+  availableConnector: {
     backgroundColor: commonColor.brandSuccess,
     borderColor: commonColor.brandSuccessDark
   },
-  freeConnectorValue: {},
   supendedConnector: {
     backgroundColor: commonColor.brandPrimary,
     borderColor: commonColor.brandPrimaryDark
   },
-  suspendedConnectorValue: {},
+  preparingConnector: {
+    backgroundColor: commonColor.brandWarning,
+    borderColor: commonColor.brandPrimaryDark
+  },
+  finishingConnector: {
+    backgroundColor: commonColor.brandWarning,
+    borderColor: commonColor.brandPrimaryDark
+  },
+  unavailableConnector: {
+    backgroundColor: commonColor.brandDisable,
+    borderColor: commonColor.brandDisableDark
+  },
+  reservedConnector: {
+    backgroundColor: commonColor.brandDisable,
+    borderColor: commonColor.brandDisableDark
+  },
   chargingConnector: {
     backgroundColor: commonColor.brandPrimary,
-    borderTopColor: commonColor.brandPrimary,
-    borderBottomColor: commonColor.brandPrimary,
-    borderLeftColor: commonColor.brandPrimaryLight,
-    borderRightColor: commonColor.brandPrimaryLight
+    borderTopColor: commonColor.brandPrimaryLight,
+    borderBottomColor: commonColor.brandPrimaryLight,
+    borderLeftColor: commonColor.brandPrimary,
+    borderRightColor: commonColor.brandPrimary
   },
-  chargingConnectorValue: {},
-  connectorSubTitle: {
+  connectorText: {
     position: "absolute",
     bottom: 0,
     fontSize: "15@s",

@@ -9,6 +9,7 @@ import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./ConnectorComponentStyles";
 import PropTypes from "prop-types";
 import Constants from "../../../utils/Constants";
+import ChargePointStatusComponent from "../../charge-point-status/ChargePointStatusComponent";
 
 export default class ConnectorComponent extends ResponsiveComponent {
   constructor(props) {
@@ -48,10 +49,9 @@ export default class ConnectorComponent extends ResponsiveComponent {
     });
   }
 
-  _renderFirstConnectorDetails = (connector, style) => {
+  _renderFirstConnectorDetails = (connector) => {
     return (
-      <ConnectorStatusComponent
-        style={[style.statusConnectorDetail, style.statusConnectorDetailLetter]}
+      <ChargePointStatusComponent
         connector={connector}
       />
     );
@@ -169,7 +169,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
                   style.leftStatusConnectorDetailContainer
                 ]}
               >
-                {this._renderFirstConnectorDetails(connector, style)}
+                {this._renderFirstConnectorDetails(connector)}
                 {this._renderSecondConnectorDetails(connector, style)}
                 {this._renderThirdConnectorDetails(connector, style)}
               </View>
@@ -182,7 +182,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
               >
                 {this._renderThirdConnectorDetails(connector, style)}
                 {this._renderSecondConnectorDetails(connector, style)}
-                {this._renderFirstConnectorDetails(connector, style)}
+                {this._renderFirstConnectorDetails(connector)}
               </View>
             )}
           </View>
@@ -216,7 +216,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
                 style.statusOneConnectorDetailContainer
               ]}
             >
-              {this._renderFirstConnectorDetails(connector, style)}
+              {this._renderFirstConnectorDetails(connector)}
               {this._renderSecondConnectorDetails(connector, style)}
               {this._renderThirdConnectorDetails(connector, style)}
             </View>
