@@ -5,9 +5,6 @@ import { ScaledSheet } from "react-native-size-matters";
 
 const commonStyles = ScaledSheet.create({
   statusConnectorContainer: {
-    width: "50%"
-  },
-  statusOneConnectorContainer: {
     width: "100%",
     justifyContent: "center",
     alignItems: "stretch"
@@ -18,11 +15,6 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center",
     width: "100%"
   },
-  leftConnectorContainer: {
-    borderColor: commonColor.textColorApp,
-    borderRightWidth: 1
-  },
-  rightConnectorContainer: {},
   statusConnectorDetailContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
