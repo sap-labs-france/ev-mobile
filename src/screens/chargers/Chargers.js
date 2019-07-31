@@ -146,7 +146,7 @@ export default class Chargers extends BaseScreen {
             showSearchAction={true}
             searchRef={this.searchRef}
             leftAction={siteAreaID ? () => navigation.navigate("SiteAreas", { siteID }) : undefined}
-            leftActionIcon={siteAreaID ? "arrow-back" : undefined}
+            leftActionIcon={siteAreaID ? "navigate-before" : undefined}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />

@@ -126,7 +126,7 @@ export default class SiteAreas extends BaseScreen {
             showSearchAction={true}
             searchRef={this.searchRef}
             leftAction={() => navigation.navigate("Sites")}
-            leftActionIcon={"arrow-back"}
+            leftActionIcon={"navigate-before"}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />

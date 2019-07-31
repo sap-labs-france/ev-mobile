@@ -41,7 +41,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
               <Text style={style.name}>{siteArea.name}</Text>
               <Icon
                 style={siteArea.totalConnectors > 0 ? style.icon : style.iconHidden}
-                type="AntDesign" name="right"
+                type="MaterialIcons" name="navigate-next"
               />
             </View>
             <ConnectorStatusesContainerComponent

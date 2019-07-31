@@ -151,7 +151,7 @@ export default class ChargerTabDetails extends BaseScreen {
             title={charger.id}
             subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
             leftAction={() => navigation.navigate("Chargers", { siteAreaID })}
-            leftActionIcon={"arrow-back"}
+            leftActionIcon={"navigate-before"}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />
