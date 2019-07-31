@@ -5,6 +5,7 @@ import computeStyleSheet from "./ChargePointStatusContainerComponentStyles.js";
 import { Text, View } from "native-base";
 import I18n from "../../I18n/I18n";
 import ChargePointStatusComponent from "./ChargePointStatusComponent";
+import Constants from "../../utils/Constants";
 
 const style = computeStyleSheet();
 
@@ -12,15 +13,20 @@ export default class ChargePoinStatusContainerComponent extends ResponsiveCompon
   render() {
     return (
       <View style={style.container}>
-        <Text style={style.connectorText}>{I18n.t("sites.chargePoint")}</Text>
         <ChargePointStatusComponent
           value={this.props.availableConnectors}
-          text={I18n.t("sites.free")}
+          text={I18n.t("chargers.status_available")}
+          type={Constants.CONN_STATUS_AVAILABLE}
         />
         <ChargePointStatusComponent
           value={this.props.totalConnectors - this.props.availableConnectors}
-          text={I18n.t("sites.occupied")}
-          type="occupied"
+          text={I18n.t("chargers.status_suspended")}
+          type={Constants.CONN_STATUS_SUSPENDED_EVSE}
+        />
+        <ChargePointStatusComponent
+          value={this.props.totalConnectors - this.props.availableConnectors}
+          text={I18n.t("chargers.status_charging")}
+          type={Constants.CONN_STATUS_CHARGING}
         />
       </View>
     );

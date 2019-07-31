@@ -5,16 +5,10 @@ import { ScaledSheet } from "react-native-size-matters";
 
 const commonStyles = ScaledSheet.create({
   container: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-evenly",
-    paddingTop: "5@s",
     alignItems: "center"
-  },
-  connectorText: {
-    color: commonColor.textColorApp,
-    marginTop: "-15@s",
-    marginRight: "10@s",
-    fontSize: "20@s"
   }
 });
 

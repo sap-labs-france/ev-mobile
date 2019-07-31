@@ -2,6 +2,7 @@
 
 import color from "color";
 import { Platform, Dimensions, PixelRatio } from "react-native";
+import { scale } from "react-native-size-matters";
 
 export const PLATFORM = {
   ANDROID: "android",
@@ -24,8 +25,11 @@ export default {
 
   // Color
   brandPrimary: "#0098D5",
+  brandPrimaryLight: "#98CEFB",
+  brandPrimaryDark: "#0077A7",
   brandInfo: "#81C2EA",
   brandSuccess: "#388E3C",
+  brandSuccessDark: "#2C742F",
   brandDanger: "#E53934",
   brandWarning: "#FB8C00",
   brandDark: "#000",
@@ -147,7 +151,7 @@ export default {
   // Font
   DefaultFontSize: 16,
   fontFamily: platform === PLATFORM.IOS ? "System" : "Roboto",
-  fontSizeBase: 15,
+  fontSizeBase: scale(20),
   get fontSizeH1() {
     return this.fontSizeBase * 1.8;
   },

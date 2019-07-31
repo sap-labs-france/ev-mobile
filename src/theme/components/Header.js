@@ -376,11 +376,6 @@ export default (variables /* : * */ = variable) => {
       variables.platform === PLATFORM.IOS && variables.platformStyle === PLATFORM.MATERIAL
         ? variables.toolbarHeight + 10
         : variables.toolbarHeight,
-    elevation: 3,
-    shadowColor: platformStyle === PLATFORM.MATERIAL ? "#000" : undefined,
-    shadowOffset: platformStyle === PLATFORM.MATERIAL ? { width: 0, height: 2 } : undefined,
-    shadowOpacity: platformStyle === PLATFORM.MATERIAL ? 0.2 : undefined,
-    shadowRadius: platformStyle === PLATFORM.MATERIAL ? 1.2 : undefined,
     top: 0,
     left: 0,
     right: 0

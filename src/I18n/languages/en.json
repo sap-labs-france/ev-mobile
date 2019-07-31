@@ -67,7 +67,20 @@
     "noChargers": "This Site Area has no Charger"
   },
   "chargers": {
-    "title": "Chargers"
+    "title": "Chargers",
+    "status_occupied": "Occupied",
+    "status_available": "Available",
+    "status_preparing": "Preparing",
+    "status_charging": "Charging",
+    "status_suspended": "Suspended",
+    "status_suspendedevse": "Suspended EVSE",
+    "status_suspendedev": "Suspended EV",
+    "status_finishing": "Finishing",
+    "status_reserved": "Reserved",
+    "show_active_only": "Connected",
+    "status_unavailable": "Unavailable",
+    "status_faulted": "Faulted",
+    "status_unknown": "Unknown"
   },
   "connector": {
     "occupied": "Occupied",

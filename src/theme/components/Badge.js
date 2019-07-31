@@ -2,7 +2,8 @@
 
 import variable from "./../variables/platform";
 import { PLATFORM } from "./../variables/commonColor";
-import { scale } from "react-native-size-matters";
+import { scale, moderateScale } from "react-native-size-matters";
+import commonColor from "../../theme/variables/commonColor";
 
 export default (variables /* : * */ = variable) => {
   const badgeTheme = {
@@ -22,18 +23,32 @@ export default (variables /* : * */ = variable) => {
       backgroundColor: variables.buttonDangerBg
     },
     "NativeBase.Text": {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      alignSelf: "center",
       color: variables.badgeColor,
       fontSize: variables.fontSizeBase,
+      fontWeight: "bold",
       lineHeight: variables.lineHeight - 4,
       textAlign: "center",
+      paddingTop: moderateScale(11, 4),
+      paddingBottom: moderateScale(8),
       paddingHorizontal: 3
     },
     backgroundColor: variables.badgeBg,
     padding: variables.badgePadding,
     paddingHorizontal: 6,
-    justifyContent: variables.platform === PLATFORM.IOS ? "center" : undefined,
-    borderRadius: 13.5,
-    height: scale(32)
+    borderStyle: "solid",
+    borderColor: commonColor.textColorApp,
+    borderRadius: scale(22),
+    borderWidth: 4,
+    justifyContent: "center",
+    alignItems: "center",
+    width: scale(44),
+    height: scale(44),
+    minWidth: scale(44),
+    minHeight: scale(44)
   };
   return badgeTheme;
 };

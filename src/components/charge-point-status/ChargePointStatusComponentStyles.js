@@ -1,49 +1,46 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
-import { ScaledSheet } from "react-native-size-matters";
+import { ScaledSheet, scale, moderateScale } from "react-native-size-matters";
 
 const commonStyles = ScaledSheet.create({
-  badgeContainer: {
-    paddingTop: "10@ms",
+  container: {
+    flex: 1,
+    width: "150@s",
+    height: "65@s",
     flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    minWidth: "20@s"
+    justifyContent: "flex-start",
+    alignItems: "center"
   },
-  connectorBadge: {
-    paddingTop: "5@fs",
-    height: "30@vs",
-    alignSelf: "center"
-  },
-  connectorBadgeText: {
+  connectorValue: {
+    color: commonColor.badgeColor,
+    fontSize: commonColor.fontSizeBase,
     fontWeight: "bold",
-    alignSelf: "center"
-  },
-  freeConnectorBadge: {
-    backgroundColor: commonColor.brandInfo
-  },
-  occupiedConnectorBadge: {
-    backgroundColor: commonColor.brandDanger
-  },
-  badgeSuccessContainer: {},
-  badgeOccupiedContainer: {},
-  connectorBadgeTitle: {
-    minWidth: "35@s",
     textAlign: "center",
-    fontSize: "20@s",
-    paddingTop: "8@ms4",
-    paddingBottom: "8@ms",
-    fontWeight: "bold",
-    color: commonColor.textColorApp
+    marginTop: "-35@s"
   },
+  freeConnector: {
+    backgroundColor: commonColor.brandSuccess,
+    borderColor: commonColor.brandSuccessDark
+  },
+  freeConnectorValue: {},
+  supendedConnector: {
+    backgroundColor: commonColor.brandPrimary,
+    borderColor: commonColor.brandPrimaryDark
+  },
+  suspendedConnectorValue: {},
+  chargingConnector: {
+    backgroundColor: commonColor.brandPrimary,
+    borderTopColor: commonColor.brandPrimary,
+    borderBottomColor: commonColor.brandPrimary,
+    borderLeftColor: commonColor.brandPrimaryLight,
+    borderRightColor: commonColor.brandPrimaryLight
+  },
+  chargingConnectorValue: {},
   connectorSubTitle: {
+    position: "absolute",
+    bottom: 0,
     fontSize: "15@s",
-    paddingBottom: "5@s",
-    marginTop: "5@s",
-    marginBottom: "5@s",
-    marginLeft: "10@s",
-    marginRight: "10@s",
     color: commonColor.textColorApp
   }
 });

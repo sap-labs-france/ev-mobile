@@ -2,6 +2,7 @@
 
 import color from "color";
 import { Platform, Dimensions, PixelRatio } from "react-native";
+import { scale } from "react-native-size-matters";
 
 import { PLATFORM } from "./commonColor";
 
@@ -141,7 +142,7 @@ export default {
   // Font
   DefaultFontSize: 16,
   fontFamily: "Roboto",
-  fontSizeBase: 15,
+  fontSizeBase: scale(20),
   get fontSizeH1() {
     return this.fontSizeBase * 1.8;
   },
