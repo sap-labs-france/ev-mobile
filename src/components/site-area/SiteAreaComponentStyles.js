@@ -23,11 +23,10 @@ const commonStyles = ScaledSheet.create({
     borderBottomColor: commonColor.listBorderColor
   },
   name: {
-    paddingTop: "2@s",
+    paddingTop: Platform.OS === "ios" ? "2@s" : 0,
     paddingLeft: "10@s",
     fontSize: "20@s",
-    color: commonColor.textColorApp,
-    fontWeight: "bold"
+    color: commonColor.textColorApp
   },
   icon: {
     fontSize: "30@s",

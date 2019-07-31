@@ -40,11 +40,11 @@ const commonStyles = ScaledSheet.create({
   },
   preparingConnector: {
     backgroundColor: commonColor.brandWarning,
-    borderColor: commonColor.brandPrimaryDark
+    borderColor: commonColor.brandWarningDark
   },
   finishingConnector: {
     backgroundColor: commonColor.brandWarning,
-    borderColor: commonColor.brandPrimaryDark
+    borderColor: commonColor.brandWarningDark
   },
   unavailableConnector: {
     backgroundColor: commonColor.brandDisable,

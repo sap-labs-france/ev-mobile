@@ -2,6 +2,7 @@ import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
 import { ScaledSheet } from "react-native-size-matters";
+import { Platform } from "react-native";
 
 const commonStyles = ScaledSheet.create({
   container: {
@@ -27,7 +28,7 @@ const commonStyles = ScaledSheet.create({
     borderBottomColor: commonColor.listBorderColor
   },
   name: {
-    paddingTop: "3@s",
+    paddingTop: Platform.OS === "ios" ? "3@s" : 0,
     fontSize: "20@s",
     color: commonColor.textColorApp
   },

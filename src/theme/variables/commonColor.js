@@ -33,7 +33,7 @@ export default {
   brandDanger: "#E53934",
   brandDangerDark: "#98211D",
   brandWarning: "#FB8C00",
-  brandWarningDark: "#C06B00",
+  brandWarningDark: "#C66F01",
   brandDisable: "#757575",
   brandDisableDark: "#4F4F4F",
 
