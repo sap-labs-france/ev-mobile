@@ -2,6 +2,7 @@ import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
 import { ScaledSheet, scale, moderateScale } from "react-native-size-matters";
+import { Platform } from "react-native";
 
 const commonStyles = ScaledSheet.create({
   container: {
@@ -17,7 +18,7 @@ const commonStyles = ScaledSheet.create({
     fontSize: commonColor.fontSizeBase,
     fontWeight: "bold",
     textAlign: "center",
-    marginTop: "-35@s"
+    marginTop: Platform.OS === "ios" ? "-35@s" : "-37@s"
   },
   freeConnector: {
     backgroundColor: commonColor.brandSuccess,
