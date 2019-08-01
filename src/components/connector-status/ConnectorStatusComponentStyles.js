@@ -56,10 +56,9 @@ const commonStyles = ScaledSheet.create({
   },
   chargingConnector: {
     backgroundColor: commonColor.brandPrimary,
+    borderColor: commonColor.brandPrimary,
     borderTopColor: commonColor.brandPrimaryLight,
-    borderBottomColor: commonColor.brandPrimaryLight,
-    borderLeftColor: commonColor.brandPrimary,
-    borderRightColor: commonColor.brandPrimary
+    borderBottomColor: commonColor.brandPrimaryLight
   },
   connectorText: {
     position: "absolute",
