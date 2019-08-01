@@ -67,7 +67,10 @@
     "noChargers": "This Site Area has no Charger"
   },
   "chargers": {
-    "title": "Chargers"
+    "title": "Chargers",
+    "heartBeat": "Heartbeat",
+    "heartBeatOkMessage": "'{{chargeBoxID}}' is working properly and reported its status a minute ago",
+    "heartBeatKoMessage": "'{{chargeBoxID}}' is NOT working properly and hasn't reported its status since {{lastHeartBeat}}"
   },
   "connector": {
     "occupied": "Occupied",
@@ -93,8 +96,8 @@
     "noTransaction": "No ongoing transaction",
     "startTransaction": "Start transaction",
     "stopTransaction": "Stop transaction",
-    "startTransactionMessage": "Do you really want to start a new session on the charging station ",
-    "stopTransactionMessage": "Do you really want to stop the session of the charging station ",
+    "startTransactionMessage": "Do you really want to start a new session on the charging station '{{chargeBoxID}}'?",
+    "stopTransactionMessage": "Do you really want to stop the session of the charging station '{{chargeBoxID}}'?",
     "notAuthorisedTitle": "Not Authorized",
     "notAuthorised": "You are not authorized to stop the transaction.",
     "accepted": "Request has been accepted",

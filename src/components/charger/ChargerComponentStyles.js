@@ -26,6 +26,9 @@ const commonStyles = ScaledSheet.create({
     marginLeft: "5@s",
     fontWeight: "bold"
   },
+  heartbeatButton: {
+    marginRight: "5@s"
+  },
   heartbeatIcon: {
     color: commonColor.brandSuccess,
     fontSize: "18@s"

@@ -187,13 +187,10 @@ export default class ChargerConnectorDetails extends BaseScreen {
   _onStartTransaction = () => {
     const { charger } = this.props;
     Alert.alert(
-      `${I18n.t("details.startTransaction")}`,
-      `${I18n.t("details.startTransactionMessage")} ${charger.id} ?`,
+      I18n.t("details.startTransaction"),
+      I18n.t("details.startTransactionMessage", { chargeBoxID: charger.id }),
       [
-        {
-          text: I18n.t("general.yes"),
-          onPress: () => this._startTransaction()
-        },
+        { text: I18n.t("general.yes"), onPress: () => this._startTransaction() },
         { text: I18n.t("general.no") }
       ]
     );
@@ -240,8 +237,8 @@ export default class ChargerConnectorDetails extends BaseScreen {
     const { charger } = this.props;
     // Confirm
     Alert.alert(
-      `${I18n.t("details.stopTransaction")}`,
-      `${I18n.t("details.stopTransactionMessage")} ${charger.id} ?`,
+      I18n.t("details.stopTransaction"),
+      I18n.t("details.stopTransactionMessage", { chargeBoxID: charger.id }),
       [
         { text: I18n.t("general.yes"), onPress: () => this._stopTransaction() },
         { text: I18n.t("general.no") }
@@ -368,11 +365,7 @@ export default class ChargerConnectorDetails extends BaseScreen {
                 <View
                   style={
                     buttonDisabled
-                      ? [
-                          style.buttonTransaction,
-                          style.startTransaction,
-                          style.buttonTransactionDisabled
-                        ]
+                      ? [style.buttonTransaction, style.startTransaction, style.buttonTransactionDisabled]
                       : [style.buttonTransaction, style.startTransaction]
                   }
                 >
@@ -388,11 +381,7 @@ export default class ChargerConnectorDetails extends BaseScreen {
                 <View
                   style={
                     buttonDisabled
-                      ? [
-                          style.buttonTransaction,
-                          style.stopTransaction,
-                          style.buttonTransactionDisabled
-                        ]
+                      ? [style.buttonTransaction, style.stopTransaction, style.buttonTransactionDisabled]
                       : [style.buttonTransaction, style.stopTransaction]
                   }
                 >
