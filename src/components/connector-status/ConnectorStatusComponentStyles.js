@@ -23,8 +23,7 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.badgeColor,
     fontSize: commonColor.fontSizeBase,
     fontWeight: "bold",
-    textAlign: "center",
-    marginTop: Platform.OS === "ios" ? "-35@s" : "-38@s"
+    textAlign: "center"
   },
   faultedConnector: {
     backgroundColor: commonColor.brandDanger,
@@ -56,9 +55,9 @@ const commonStyles = ScaledSheet.create({
   },
   chargingConnector: {
     backgroundColor: commonColor.brandPrimary,
-    borderColor: commonColor.brandPrimary,
-    borderTopColor: commonColor.brandPrimaryLight,
-    borderBottomColor: commonColor.brandPrimaryLight
+    borderColor: commonColor.brandPrimaryLight,
+    borderTopColor: commonColor.brandPrimary,
+    borderBottomColor: commonColor.brandPrimary
   },
   connectorText: {
     position: "absolute",

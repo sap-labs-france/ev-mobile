@@ -6,31 +6,31 @@ import { Animated, Easing } from "react-native";
 import { Badge, Text, View } from "native-base";
 import Constants from "../../utils/Constants";
 
+// Create
+const spinValue = new Animated.Value(0);
+// First set up animation
+Animated.loop(
+  Animated.timing(spinValue, {
+    toValue: 1,
+    duration: 4000,
+    easing: Easing.linear
+  })
+).start();
+// Second interpolate beginning and end values (in this case 0 and 1)
+const rotateClockwise = spinValue.interpolate({
+  inputRange: [0, 1],
+  outputRange: ['0deg', '360deg']
+});
+
+const rotateCounterClockwise = spinValue.interpolate({
+  inputRange: [0, 1],
+  outputRange: ['360deg', '0deg']
+});
 
 export default class ConnectorStatusComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {};
-    // Start animation
-    this._buildAnimation();
-  }
-
-  _buildAnimation() {
-    // Create
-    this.spinValue = new Animated.Value(0);
-    // First set up animation
-    Animated.loop(
-      Animated.timing(this.spinValue, {
-        toValue: 1,
-        duration: 3000,
-        easing: Easing.linear
-      })
-    ).start();
-    // Second interpolate beginning and end values (in this case 0 and 1)
-    this.spin = this.spinValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['0deg', '360deg']
-    });
   }
 
   _getConnectorStyle(style) {
@@ -82,14 +82,12 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
   }
 
   _isAnimated() {
-    const { value, connector } = this.props;
+    const { value, type, connector } = this.props;
     if (connector) {
       return connector.currentConsumption > 0;
     } else {
-      return value > 0;
+      return (type === Constants.CONN_STATUS_CHARGING) && (value > 0);
     }
-    console.log(connector);
-    console.log(typeof value);
   }
 
   render() {
@@ -103,11 +101,11 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
 
     return (
       <View style={this.props.text ? style.containerWithText : style.containerWithNoText}>
-        <Animated.View style={isAnimated ? { transform: [{ rotate: this.spin }] } : undefined }>
+        <Animated.View style={isAnimated ? { transform: [{ rotate: rotateClockwise }] } : undefined}>
           <Badge style={connectorStyle}>
+            <Animated.Text style={[style.connectorValue, isAnimated ? { transform: [{ rotate: rotateCounterClockwise }] } : undefined]}>{ value }</Animated.Text>
           </Badge>
         </Animated.View>
-        <Text style={style.connectorValue}>{ value }</Text>
         {this.props.text ?
           <Text style={style.connectorText}>{this.props.text}</Text>
         :
