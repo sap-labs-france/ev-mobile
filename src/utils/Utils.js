@@ -36,10 +36,18 @@ export default class Utils {
         case 0:
           Message.showError(I18n.t("general.cannotConnectBackend"));
           break;
-        // // Not logged in?
-        // case 401:
-        //   _provider.checkAndTriggerAutoLogin();
-        //   break;
+        // Not logged in?
+        case 401:
+          // Max Failed Auto Login Reached?
+          if (!_provider.hasReachedMaxAutologinFailure()) {
+            // Try to auto login
+            await _provider.checkAndTriggerAutoLogin();
+          } else {
+            // Logoff
+            await _provider.logoff();
+            props.navigation.navigate("AuthNavigator");
+          }
+          break;
         // Other errors
         default:
           Message.showError(I18n.t("general.unexpectedErrorBackend"));
