@@ -206,7 +206,7 @@ export default class SignUp extends React.Component {
                     onSubmitEditing={() => this.firstNameInput.focus()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.name")}
-                    placeholderTextColor={commonColor.textColorApp}
+                    placeholderTextColor={commonColor.inverseTextColor}
                     style={style.inputField}
                     autoCapitalize="none"
                     blurOnSubmit={false}
@@ -231,7 +231,7 @@ export default class SignUp extends React.Component {
                     onSubmitEditing={() => this.emailInput.focus()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.firstName")}
-                    placeholderTextColor={commonColor.textColorApp}
+                    placeholderTextColor={commonColor.inverseTextColor}
                     style={style.inputField}
                     autoCapitalize="none"
                     blurOnSubmit={false}
@@ -256,7 +256,7 @@ export default class SignUp extends React.Component {
                     onSubmitEditing={() => this.passwordInput.focus()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.email")}
-                    placeholderTextColor={commonColor.textColorApp}
+                    placeholderTextColor={commonColor.inverseTextColor}
                     style={style.inputField}
                     autoCapitalize="none"
                     blurOnSubmit={false}
@@ -282,7 +282,7 @@ export default class SignUp extends React.Component {
                     onSubmitEditing={() => this.repeatPasswordInput.focus()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.password")}
-                    placeholderTextColor={commonColor.textColorApp}
+                    placeholderTextColor={commonColor.inverseTextColor}
                     style={style.inputField}
                     autoCapitalize="none"
                     blurOnSubmit={false}
@@ -307,7 +307,7 @@ export default class SignUp extends React.Component {
                     onSubmitEditing={() => Keyboard.dismiss()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.repeatPassword")}
-                    placeholderTextColor={commonColor.textColorApp}
+                    placeholderTextColor={commonColor.inverseTextColor}
                     style={style.inputField}
                     autoCapitalize="none"
                     blurOnSubmit={false}

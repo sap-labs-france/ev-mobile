@@ -13,7 +13,7 @@ export default class ChargerDetails extends ResponsiveComponent {
     const { charger } = this.props;
     return (
       <Container style={style.container}>
-        <BackgroundComponent>
+        <BackgroundComponent active={false}>
           <ScrollView style={style.scrollViewContainer}>
             <View style={style.viewContainer}>
               <View style={style.columnContainer}>

@@ -5,7 +5,7 @@ import commonColor from "../../theme/variables/commonColor";
 const commonStyles = {
   container: {
     flex: 1,
-    backgroundColor: commonColor.brandPrimary
+    backgroundColor: commonColor.containerBgColor
   },
   content: {
     flex: 1

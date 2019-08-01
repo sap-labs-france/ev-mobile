@@ -6,7 +6,7 @@ import { ScaledSheet } from "react-native-size-matters";
 const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
-    backgroundColor: commonColor.brandPrimary
+    backgroundColor: commonColor.containerBgColor
   },
   spinner: {
     flex: 1,

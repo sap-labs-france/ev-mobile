@@ -6,14 +6,14 @@ import { ScaledSheet } from "react-native-size-matters";
 const commonStyles = ScaledSheet.create({
   noDisplay: {
     flex: 1,
-    backgroundColor: "black"
+    backgroundColor: commonColor.containerBgColor
   },
   spinner: {
     flex: 1
   },
   container: {
     flex: 1,
-    backgroundColor: commonColor.brandPrimary
+    backgroundColor: commonColor.containerBgColor
   },
   keyboardContainer: {
     flex: 1
@@ -45,17 +45,17 @@ const commonStyles = ScaledSheet.create({
     height: "100@s"
   },
   appText: {
-    color: commonColor.textColorApp,
+    color: commonColor.inverseTextColor,
     fontSize: "40@s",
     fontWeight: "bold",
     paddingTop: "15@s"
   },
   appVersionText: {
-    color: commonColor.textColorApp,
+    color: commonColor.inverseTextColor,
     fontSize: "15@s"
   },
   appTenantName: {
-    color: commonColor.textColorApp,
+    color: commonColor.inverseTextColor,
     marginTop: 10,
     marginBottom: 10,
     fontSize: "15@s",
@@ -66,24 +66,25 @@ const commonStyles = ScaledSheet.create({
     alignSelf: "center",
     height: "40@s",
     marginBottom: "10@s",
-    backgroundColor: "rgba(255,255,255,0.20)"
+    backgroundColor: "rgba(255,255,255,0.2)"
   },
   buttonText: {
     width: "100%",
     textAlign: "center",
     fontSize: "15@s",
-    color: commonColor.textColorApp
+    color: commonColor.inverseTextColor
   },
   inputGroup: {
     height: "40@s",
     flexDirection: "row",
     justifyContent: "flex-start",
     marginBottom: "10@s",
-    backgroundColor: "rgba(255,255,255,0.20)",
+    backgroundColor: "rgba(255,255,255,0.2)",
     borderWidth: "0@s",
     borderColor: "transparent"
   },
   inputIcon: {
+    color: commonColor.inverseTextColor,
     alignSelf: "center",
     textAlign: "center",
     width: "11%",
@@ -98,7 +99,7 @@ const commonStyles = ScaledSheet.create({
   inputField: {
     width: "79%",
     fontSize: "15@s",
-    color: commonColor.textColorApp
+    color: commonColor.inverseTextColor
   },
   formErrorText: {
     fontSize: "12@s",
@@ -125,11 +126,11 @@ const commonStyles = ScaledSheet.create({
   },
   eulaText: {
     fontSize: "13@s",
-    color: commonColor.textColorApp
+    color: commonColor.inverseTextColor
   },
   eulaLink: {
     fontSize: "13@s",
-    color: commonColor.textColorApp,
+    color: commonColor.inverseTextColor,
     textDecorationLine: "underline"
   },
   linksButtonLeft: {
@@ -145,7 +146,7 @@ const commonStyles = ScaledSheet.create({
     opacity: 0.9,
     fontSize: "12@s",
     fontWeight: "bold",
-    color: commonColor.textColorApp
+    color: commonColor.inverseTextColor
   },
   linksTextButtonRight: {
     textAlign: "right"

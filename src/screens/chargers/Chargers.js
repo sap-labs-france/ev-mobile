@@ -116,7 +116,7 @@ export default class Chargers extends BaseScreen {
   _footerList = () => {
     const { skip, count, limit } = this.state;
     if (skip + limit < count) {
-      return <Spinner color="white" />;
+      return <Spinner/>;
     }
     return null;
   };
@@ -140,7 +140,7 @@ export default class Chargers extends BaseScreen {
     const siteID = this._getSiteIDFromChargers(chargers);
     return (
       <Container style={style.container}>
-        <BackgroundComponent>
+        <BackgroundComponent active={false}>
           <HeaderComponent
             title={I18n.t("chargers.title")}
             showSearchAction={true}
@@ -160,7 +160,7 @@ export default class Chargers extends BaseScreen {
           />
           <View style={style.content}>
             {this.state.loading ? (
-              <Spinner color="white" style={style.spinner} />
+              <Spinner style={style.spinner} />
             ) : (
               <FlatList
                 data={this.state.chargers}

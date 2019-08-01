@@ -36,16 +36,18 @@ export default class SiteAreaComponent extends ResponsiveComponent {
           }}
         >
           <View style={style.container}>
-            <View style={style.mainContent}>
+            <View style={style.headerContent}>
               <Text style={style.name}>{siteArea.name}</Text>
               <Icon style={siteArea.totalConnectors > 0 ? style.icon : style.iconHidden}
                 type="MaterialIcons" name="navigate-next"
               />
             </View>
-            <ConnectorStatusesContainerComponent
-              totalConnectors={siteArea.totalConnectors}
-              availableConnectors={siteArea.availableConnectors}
-            />
+            <View style={style.connectorContent}>
+              <ConnectorStatusesContainerComponent
+                totalConnectors={siteArea.totalConnectors}
+                availableConnectors={siteArea.availableConnectors}
+              />
+            </View>
           </View>
         </TouchableOpacity>
       </Animatable.View>

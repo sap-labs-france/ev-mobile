@@ -43,6 +43,7 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.textColorApp,
     marginTop: "-1@s",
     fontSize: "30@s",
+    fontWeight: "bold",
     textAlign: "center"
   },
   connectorImage: {

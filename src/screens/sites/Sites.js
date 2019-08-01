@@ -116,7 +116,7 @@ export default class Sites extends BaseScreen {
   _footerList = () => {
     const { skip, count, limit } = this.state;
     if (skip + limit < count) {
-      return <Spinner color="white" />;
+      return <Spinner/>;
     }
     return null;
   };
@@ -127,7 +127,7 @@ export default class Sites extends BaseScreen {
     const { loading } = this.state;
     return (
       <Container style={style.container}>
-        <BackgroundComponent>
+        <BackgroundComponent active={false}>
           <HeaderComponent
             title={I18n.t("sidebar.sites")}
             showSearchAction={true}
@@ -145,7 +145,7 @@ export default class Sites extends BaseScreen {
           />
           <View style={style.content}>
             {loading ? (
-              <Spinner color="white" style={style.spinner} />
+              <Spinner style={style.spinner} />
             ) : (
               <FlatList
                 data={this.state.sites}

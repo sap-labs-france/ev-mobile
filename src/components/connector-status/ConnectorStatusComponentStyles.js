@@ -34,7 +34,7 @@ const commonStyles = ScaledSheet.create({
     borderColor: commonColor.brandSuccessDark
   },
   supendedConnector: {
-    backgroundColor: commonColor.brandPrimary,
+    backgroundColor: commonColor.brandInfo,
     borderColor: commonColor.brandPrimaryDark
   },
   preparingConnector: {
@@ -54,7 +54,7 @@ const commonStyles = ScaledSheet.create({
     borderColor: commonColor.brandDisableDark
   },
   chargingConnector: {
-    backgroundColor: commonColor.brandPrimary,
+    backgroundColor: commonColor.brandInfo,
     borderColor: commonColor.brandPrimaryLight,
     borderTopColor: commonColor.brandPrimary,
     borderBottomColor: commonColor.brandPrimary

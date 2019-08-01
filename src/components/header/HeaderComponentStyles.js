@@ -10,7 +10,8 @@ const commonStyles = ScaledSheet.create({
     paddingTop: "5@s",
     paddingBottom: "5@s",
     borderBottomWidth: 1,
-    borderBottomColor: commonColor.listBorderColor
+    borderBottomColor: commonColor.listBorderColor,
+    backgroundColor: commonColor.brandPrimaryDark
   },
   leftHeader: {},
   bodyHeader: {
@@ -23,17 +24,20 @@ const commonStyles = ScaledSheet.create({
     resizeMode: "contain"
   },
   titleHeader: {
+    color: commonColor.inverseTextColor,
     fontSize: "20@s"
   },
   titleHeaderWithSubTitle: {
     fontSize: "18@s"
   },
   subTitleHeader: {
+    color: commonColor.inverseTextColor,
     fontWeight: "bold",
     fontSize: "12@s",
     marginTop: Platform.OS === "ios" ? "-2@s" : "-3@s"
   },
   iconHeader: {
+    color: commonColor.inverseTextColor,
     fontSize: "30@s"
   },
   leftButtonHeader: {

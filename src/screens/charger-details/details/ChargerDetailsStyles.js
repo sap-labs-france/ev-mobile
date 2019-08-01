@@ -5,7 +5,7 @@ import { ScaledSheet } from "react-native-size-matters";
 
 const commonStyles = ScaledSheet.create({
   container: {
-    backgroundColor: commonColor.brandPrimary
+    backgroundColor: commonColor.containerBgColor
   },
   scrollViewContainer: {},
   viewContainer: {

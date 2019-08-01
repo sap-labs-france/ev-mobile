@@ -355,7 +355,7 @@ export default class ChargerConnectorDetails extends BaseScreen {
     return (
       <Container style={style.container}>
         <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
-        <BackgroundComponent>
+        <BackgroundComponent active={false}>
           <View style={style.transactionContainer}>
             {connector.activeTransactionID === 0 ? (
               <TouchableOpacity
@@ -370,7 +370,11 @@ export default class ChargerConnectorDetails extends BaseScreen {
                   }
                 >
                   <Icon
-                    style={style.startStopTransactionIcon}
+                    style={
+                      buttonDisabled
+                        ? [style.transactionIcon, style.startTransactionIcon, style.transactionDisabledIcon]
+                        : [style.transactionIcon, style.startTransactionIcon]
+                    }
                     type="MaterialIcons"
                     name="play-arrow"
                   />
@@ -385,7 +389,13 @@ export default class ChargerConnectorDetails extends BaseScreen {
                       : [style.buttonTransaction, style.stopTransaction]
                   }
                 >
-                  <Icon style={style.startStopTransactionIcon} type="MaterialIcons" name="stop" />
+                  <Icon
+                    style={
+                      buttonDisabled
+                        ? [style.transactionIcon, style.stopTransactionIcon, style.transactionDisabledIcon]
+                        : [style.transactionIcon, style.stopTransactionIcon]
+                    }
+                    type="MaterialIcons" name="stop" />
                 </View>
               </TouchableOpacity>
             ) : (

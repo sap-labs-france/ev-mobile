@@ -56,7 +56,7 @@ export default class Eula extends React.Component {
     const { eulaTextHtml, loading } = this.state;
     return (
       <Container>
-        {loading && <Spinner style={styles.spinner} />}
+        {loading && <Spinner style={styles.spinner} color="white" />}
         {!loading && (
           <ScrollView style={styles.container}>
             <HTMLView value={eulaTextHtml} />

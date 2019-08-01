@@ -14,7 +14,7 @@ const commonStyles = ScaledSheet.create({
     paddingRight: "10@s",
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
-    backgroundColor: commonColor.brandPrimary
+    backgroundColor: commonColor.containerBgColor
   },
   visible: {
     height: "45@s",

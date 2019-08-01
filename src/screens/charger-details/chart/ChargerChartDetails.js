@@ -213,7 +213,7 @@ export default class ChargerChartDetails extends BaseScreen {
     const chartDefinition = this.computeChartDefinition(consumptionValues, stateOfChargeValues);
     return (
       <View style={style.container}>
-        <BackgroundComponent>
+        <BackgroundComponent active={false}>
           <LineChart
             style={style.chart}
             data={chartDefinition.data}

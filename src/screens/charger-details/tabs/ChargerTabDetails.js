@@ -137,7 +137,7 @@ export default class ChargerTabDetails extends BaseScreen {
     const connectorLetter = String.fromCharCode(64 + connectorID);
     return firstLoad ? (
       <Container style={style.container}>
-        <Spinner color="white" style={style.spinner} />
+        <Spinner style={style.spinner} />
       </Container>
     ) : (
       <ScrollView
@@ -146,7 +146,7 @@ export default class ChargerTabDetails extends BaseScreen {
           <RefreshControl refreshing={this.state.refreshing} onRefresh={this._manualRefresh} />
         }
       >
-        <BackgroundComponent>
+        <BackgroundComponent active={false}>
           <HeaderComponent
             title={charger.id}
             subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}

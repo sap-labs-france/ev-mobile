@@ -8,7 +8,7 @@ const commonStyles = ScaledSheet.create({
     flex: 1,
     justifyContent: "center",
     height: "100%",
-    backgroundColor: commonColor.brandPrimary
+    backgroundColor: commonColor.containerBgColor
   },
   spinner: {
     color: commonColor.textColorApp

@@ -328,7 +328,7 @@ export default class Login extends ResponsiveComponent {
                     </Text>
                   ))}
                 {loading ? (
-                  <Spinner color="white" style={style.spinner} />
+                  <Spinner style={style.spinner} color="white" />
                 ) : (
                   <Button rounded primary block style={style.button} onPress={this._login}>
                     <TextRN style={style.buttonText}>{I18n.t("authentication.login")}</TextRN>

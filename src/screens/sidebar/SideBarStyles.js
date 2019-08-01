@@ -5,16 +5,19 @@ import { Platform } from "react-native";
 import { ScaledSheet } from "react-native-size-matters";
 
 const commonStyles = ScaledSheet.create({
-  background: {
+  container: {
     flex: 1,
-    backgroundColor: commonColor.brandPrimary
+    backgroundColor: commonColor.brandPrimaryDark
+  },
+  background: {
+    flex: 1
   },
   drawerContent: {
     paddingTop: "3%",
     flex: 1
   },
   logoContainer: {
-    borderColor: commonColor.textColorApp,
+    borderColor: commonColor.inverseTextColor,
     borderBottomWidth: 1,
     padding: "5@s"
   },
@@ -26,13 +29,13 @@ const commonStyles = ScaledSheet.create({
     margin: "5@s"
   },
   versionText: {
-    color: commonColor.textColorApp,
+    color: commonColor.inverseTextColor,
     fontSize: "14@s",
     margin: "2@s",
     alignSelf: "center"
   },
   versionDate: {
-    color: commonColor.textColorApp,
+    color: commonColor.inverseTextColor,
     fontSize: "14@s",
     alignSelf: "center",
     marginBottom: "2@s"
@@ -44,8 +47,11 @@ const commonStyles = ScaledSheet.create({
     marginTop: Platform.OS === "ios" ? undefined : "10@s",
     paddingBottom: Platform.OS === "ios" ? "0@s" : "15@s"
   },
+  linkIcon: {
+    color: commonColor.inverseTextColor
+  },
   linkText: {
-    color: commonColor.textColorApp,
+    color: commonColor.inverseTextColor,
     fontSize: "16@s",
     paddingLeft: "10@s"
   },
@@ -57,12 +63,11 @@ const commonStyles = ScaledSheet.create({
     paddingTop: "10@s",
     flexDirection: "row",
     borderTopWidth: 1,
-    borderTopColor: commonColor.textColorApp
+    borderTopColor: commonColor.inverseTextColor
   },
   gridLogoutContainer: {
-    flexDirection: "row",
-
-    flex: 1
+    flex: 1,
+    flexDirection: "row"
   },
   columnAccount: {
     flexDirection: "column",
@@ -76,12 +81,12 @@ const commonStyles = ScaledSheet.create({
   logoutText: {
     fontWeight: "bold",
     fontSize: "14@s",
-    color: commonColor.textColorApp
+    color: commonColor.inverseTextColor
   },
   userName: {
     paddingTop: "5@s",
     fontSize: "14@s",
-    color: commonColor.textColorApp
+    color: commonColor.inverseTextColor
   },
   columnThumbnail: {
     flex: 1,

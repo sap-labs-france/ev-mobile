@@ -10,7 +10,7 @@ const commonStyles = ScaledSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: commonColor.brandPrimary
+    backgroundColor: commonColor.containerBgColor
   },
   spinner: {
     color: commonColor.textColorApp
@@ -27,9 +27,9 @@ const commonStyles = ScaledSheet.create({
   buttonTransaction: {
     borderRadius: "50@s",
     borderStyle: "solid",
-    backgroundColor: commonColor.brandSuccess,
     borderWidth: 2,
     borderColor: commonColor.textColorApp,
+    backgroundColor: commonColor.containerBgColor,
     width: "100@s",
     height: "100@s",
     justifyContent: "center",
@@ -39,16 +39,25 @@ const commonStyles = ScaledSheet.create({
     height: "110@s"
   },
   startTransaction: {
-    backgroundColor: commonColor.brandSuccess
+    borderColor: commonColor.brandSuccess
   },
   stopTransaction: {
-    backgroundColor: commonColor.brandDanger
+    borderColor: commonColor.brandDanger
+  },
+  transactionIcon: {
+    fontSize: "75@s"
+  },
+  startTransactionIcon: {
+    color: commonColor.brandSuccess
+  },
+  stopTransactionIcon: {
+    color: commonColor.brandDanger
   },
   buttonTransactionDisabled: {
-    backgroundColor: commonColor.buttonDisabledBg
+    borderColor: commonColor.buttonDisabledBg
   },
-  startStopTransactionIcon: {
-    fontSize: "75@s"
+  transactionDisabledIcon: {
+    color: commonColor.buttonDisabledBg
   },
   scrollViewContainer: {},
   detailsContainer: {

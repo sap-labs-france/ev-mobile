@@ -8,17 +8,18 @@ const commonStyles = ScaledSheet.create({
     flex: 1,
     flexDirection: "column",
     borderBottomWidth: 1,
-    borderBottomColor: commonColor.listBorderColor,
-    backgroundColor: "rgba(255,255,255,0.2)"
+    borderBottomColor: commonColor.brandPrimaryDark
   },
-  chargerContainer: {
+  headerContent: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "transparent",
-    padding: "5@s",
-    borderBottomColor: commonColor.textColorApp,
-    borderBottomWidth: 1
+    paddingLeft: "5@s",
+    paddingRight: "5@s",
+    borderBottomColor: commonColor.listBorderColor,
+    borderBottomWidth: 1,
+    backgroundColor: "rgba(0,0,0,0.05)"
   },
   name: {
     color: commonColor.textColorApp,

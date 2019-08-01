@@ -8,24 +8,31 @@ const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    height: "122@s",
+    borderBottomWidth: 1,
+    borderBottomColor: commonColor.listBorderColor
+  },
+  headerContent: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingTop: "5@s",
     paddingBottom: "5@s",
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
-    backgroundColor: "rgba(255,255,255,0.2)"
+    backgroundColor: "rgba(0,0,0,0.05)"
   },
-  mainContent: {
+  connectorContent: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    paddingBottom: "5@s",
+    justifyContent: "center",
+    paddingTop: "12@s",
+    paddingBottom: "12@s",
     borderBottomWidth: 1,
-    borderBottomColor: commonColor.listBorderColor
+    borderBottomColor: commonColor.brandPrimaryDark
   },
   name: {
     paddingTop: Platform.OS === "ios" ? "2@s" : 0,
     paddingLeft: "10@s",
     fontSize: "20@s",
+    fontWeight: "bold",
     color: commonColor.textColorApp
   },
   icon: {

@@ -9,8 +9,7 @@ const commonStyles = ScaledSheet.create({
     flex: 1,
     flexDirection: "column",
     borderBottomWidth: 1,
-    borderBottomColor: commonColor.listBorderColor,
-    backgroundColor: "rgba(255,255,255,0.2)"
+    borderBottomColor: commonColor.listBorderColor
   },
   headerContent: {
     flexDirection: "row",
@@ -18,18 +17,21 @@ const commonStyles = ScaledSheet.create({
     paddingTop: "5@s",
     paddingBottom: "5@s",
     borderBottomWidth: 1,
-    borderBottomColor: commonColor.listBorderColor
+    borderBottomColor: commonColor.listBorderColor,
+    backgroundColor: "rgba(0,0,0,0.05)"
   },
   connectorContent: {
     flexDirection: "row",
     justifyContent: "center",
-    paddingTop: "10@s",
-    paddingBottom: "10@s",
-    borderBottomColor: commonColor.listBorderColor
+    paddingTop: "12@s",
+    paddingBottom: "12@s",
+    borderBottomWidth: 1,
+    borderBottomColor: commonColor.brandPrimaryDark
   },
   name: {
-    paddingTop: Platform.OS === "ios" ? "3@s" : 0,
+    paddingTop: Platform.OS === "ios" ? "4@s" : 0,
     fontSize: "20@s",
+    fontWeight: "bold",
     color: commonColor.textColorApp
   },
   icon: {

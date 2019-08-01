@@ -134,7 +134,7 @@ export default class RetrievePassword extends ResponsiveComponent {
                     type="email"
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.email")}
-                    placeholderTextColor={commonColor.textColorApp}
+                    placeholderTextColor={commonColor.inverseTextColor}
                     style={style.inputField}
                     autoCapitalize="none"
                     blurOnSubmit={false}

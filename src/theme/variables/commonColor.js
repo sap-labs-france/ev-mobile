@@ -19,23 +19,36 @@ const isIphoneX =
   platform === PLATFORM.IOS &&
   (deviceHeight === 812 || deviceWidth === 812 || deviceHeight === 896 || deviceWidth === 896);
 
+const primary = "#0098D5";
+const primaryLight = "#98CEFB";
+const primaryDark = "#0077A7";
+const info = "#81C2EA";
+const success = "#388E3C";
+const successDark = "#2C742F";
+const danger = "#E53934";
+const dangerDark = "#98211D";
+const warning = "#FB8C00";
+const warningDark = "#C66F01";
+const disable = "#757575";
+const disableDark = "#4F4F4F";
+
 export default {
   platformStyle,
   platform,
 
   // Color
-  brandPrimary: "#0098D5",
-  brandPrimaryLight: "#98CEFB",
-  brandPrimaryDark: "#0077A7",
-  brandInfo: "#81C2EA",
-  brandSuccess: "#388E3C",
-  brandSuccessDark: "#2C742F",
-  brandDanger: "#E53934",
-  brandDangerDark: "#98211D",
-  brandWarning: "#FB8C00",
-  brandWarningDark: "#C66F01",
-  brandDisable: "#757575",
-  brandDisableDark: "#4F4F4F",
+  brandPrimary: primary,
+  brandPrimaryLight: primaryLight,
+  brandPrimaryDark: primaryDark,
+  brandInfo: info,
+  brandSuccess: success,
+  brandSuccessDark: successDark,
+  brandDanger: danger,
+  brandDangerDark: dangerDark,
+  brandWarning: warning,
+  brandWarningDark: warningDark,
+  brandDisable: disable,
+  brandDisableDark: disableDark,
 
   brandDark: "#000",
   brandLight: "#f4f4f4",
@@ -140,7 +153,7 @@ export default {
   CheckboxFontSize: platform === PLATFORM.IOS ? 23 / 0.9 : 17,
   checkboxBgColor: "#fff",
   checkboxSize: 20,
-  checkboxTickColor: this.brandPrimary,
+  checkboxTickColor: primaryDark,
   checkboxDefaultColor: "transparent",
 
   // Container
@@ -169,7 +182,7 @@ export default {
 
   // Footer
   footerHeight: 55,
-  footerDefaultBg: this.brandPrimary,
+  footerDefaultBg: primaryDark,
   footerPaddingBottom: 0,
 
   // FooterTab
@@ -181,14 +194,14 @@ export default {
   tabActiveBgColor: platform === PLATFORM.IOS ? "#cde1f9" : "#3F51B5",
 
   // Header
-  toolbarBtnColor: "#fff",
-  toolbarDefaultBg: this.brandPrimary,
+  toolbarBtnColor: primaryDark,
+  toolbarDefaultBg: primary,
   toolbarHeight: platform === PLATFORM.IOS ? 64 : 56,
   toolbarSearchIconSize: platform === PLATFORM.IOS ? 20 : 23,
   toolbarInputColor: platform === PLATFORM.IOS ? "#CECDD2" : "#fff",
   searchBarHeight: platform === PLATFORM.IOS ? 30 : 40,
   searchBarInputHeight: platform === PLATFORM.IOS ? 30 : 50,
-  toolbarBtnTextColor: "#fff",
+  toolbarBtnTextColor: primaryDark,
   iosStatusbar: "dark-content",
   toolbarDefaultBorder: platform === PLATFORM.IOS ? "#a7a6ab" : "#3F51B5",
   get statusBarColor() {
@@ -246,7 +259,7 @@ export default {
   radioSelectedColorAndroid: "#3F51B5",
   radioBtnLineHeight: platform === PLATFORM.IOS ? 29 : 24,
   get radioColor() {
-    return this.brandPrimary;
+    return primary;
   },
 
   // Segment
@@ -262,7 +275,7 @@ export default {
   inverseSpinnerColor: "#1A191B",
 
   // Tab
-  tabDefaultBg: this.brandPrimary,
+  tabDefaultBg: primaryDark,
   topTabBarTextColor: "#b3c7f9",
   topTabBarActiveTextColor: "#fff",
   topTabBarBorderColor: platform === PLATFORM.IOS ? "#a7a6ab" : "#fff",
@@ -273,8 +286,8 @@ export default {
   tabFontSize: 15,
 
   // Text
-  textColorApp: "#fff",
-  textColor: "#000",
+  textColorApp: primaryDark,
+  textColor: primaryDark,
   inverseTextColor: "#fff",
   noteFontSize: 14,
   get defaultTextColor() {
@@ -285,8 +298,8 @@ export default {
   titleFontfamily: platform === PLATFORM.IOS ? "System" : "Roboto_medium",
   titleFontSize: platform === PLATFORM.IOS ? 17 : 19,
   subTitleFontSize: platform === PLATFORM.IOS ? 11 : 14,
-  subtitleColor: "#FFF",
-  titleFontColor: "#FFF",
+  subtitleColor: primaryDark,
+  titleFontColor: primaryDark,
 
   // Other
   borderRadiusBase: platform === PLATFORM.IOS ? 5 : 2,
