@@ -221,12 +221,12 @@ export default class ChargerChartDetails extends BaseScreen {
             noDataText={"No Data"}
             legend={{
               enabled: true,
-              textColor: processColor("white")
+              textColor: processColor(commonColor.brandPrimaryDark)
             }}
             marker={{
               enabled: true,
-              markerColor: processColor("white"),
-              textColor: processColor("black")
+              markerColor: processColor(commonColor.brandPrimaryDark),
+              textColor: processColor(commonColor.inverseTextColor)
             }}
             xAxis={chartDefinition.xAxis}
             yAxis={chartDefinition.yAxis}
