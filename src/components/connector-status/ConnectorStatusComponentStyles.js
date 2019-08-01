@@ -6,8 +6,8 @@ import { Platform } from "react-native";
 
 const commonStyles = ScaledSheet.create({
   containerWithText: {
-    height: "65@s",
-    width: "100@s",
+    height: "60@s",
+    width: "75@s",
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center"
@@ -63,8 +63,8 @@ const commonStyles = ScaledSheet.create({
   },
   connectorText: {
     position: "absolute",
-    bottom: 0,
-    fontSize: "15@s",
+    bottom: "-2@s",
+    fontSize: "13@s",
     color: commonColor.textColorApp
   }
 });
