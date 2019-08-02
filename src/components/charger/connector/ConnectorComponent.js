@@ -48,7 +48,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
     });
   }
 
-  _renderFirstConnectorDetails = (connector) => {
+  _renderFirstConnectorDetails = connector => {
     return (
       <ConnectorStatusComponent
         connector={connector}
@@ -145,12 +145,18 @@ export default class ConnectorComponent extends ResponsiveComponent {
           duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
         >
           <View style={style.connectorContainer}>
-            <View style={[style.statusConnectorDetailContainer,
-                (index === 0 && charger.connectors.length > 1 ? style.firstStatusConnectorDetailContainer : undefined)]}>
+            <View
+              style={[
+                style.statusConnectorDetailContainer,
+                index === 0 && charger.connectors.length > 1
+                  ? style.firstStatusConnectorDetailContainer
+                  : undefined
+              ]}
+            >
               {this._renderFirstConnectorDetails(connector)}
               {this._renderSecondConnectorDetails(connector, style)}
               {this._renderThirdConnectorDetails(connector, style)}
-              <Icon style={style.icon} type="MaterialIcons" name="navigate-next"/>
+              <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
             </View>
           </View>
         </Animatable.View>

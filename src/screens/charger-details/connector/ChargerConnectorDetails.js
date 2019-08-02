@@ -365,14 +365,22 @@ export default class ChargerConnectorDetails extends BaseScreen {
                 <View
                   style={
                     buttonDisabled
-                      ? [style.buttonTransaction, style.startTransaction, style.buttonTransactionDisabled]
+                      ? [
+                          style.buttonTransaction,
+                          style.startTransaction,
+                          style.buttonTransactionDisabled
+                        ]
                       : [style.buttonTransaction, style.startTransaction]
                   }
                 >
                   <Icon
                     style={
                       buttonDisabled
-                        ? [style.transactionIcon, style.startTransactionIcon, style.transactionDisabledIcon]
+                        ? [
+                            style.transactionIcon,
+                            style.startTransactionIcon,
+                            style.transactionDisabledIcon
+                          ]
                         : [style.transactionIcon, style.startTransactionIcon]
                     }
                     type="MaterialIcons"
@@ -385,17 +393,27 @@ export default class ChargerConnectorDetails extends BaseScreen {
                 <View
                   style={
                     buttonDisabled
-                      ? [style.buttonTransaction, style.stopTransaction, style.buttonTransactionDisabled]
+                      ? [
+                          style.buttonTransaction,
+                          style.stopTransaction,
+                          style.buttonTransactionDisabled
+                        ]
                       : [style.buttonTransaction, style.stopTransaction]
                   }
                 >
                   <Icon
                     style={
                       buttonDisabled
-                        ? [style.transactionIcon, style.stopTransactionIcon, style.transactionDisabledIcon]
+                        ? [
+                            style.transactionIcon,
+                            style.stopTransactionIcon,
+                            style.transactionDisabledIcon
+                          ]
                         : [style.transactionIcon, style.stopTransactionIcon]
                     }
-                    type="MaterialIcons" name="stop" />
+                    type="MaterialIcons"
+                    name="stop"
+                  />
                 </View>
               </TouchableOpacity>
             ) : (

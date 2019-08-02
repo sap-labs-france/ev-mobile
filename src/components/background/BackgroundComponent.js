@@ -12,19 +12,16 @@ export default class BackgroundComponent extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { active, background } = this.props;
-    return (
-      active ?
-        <ImageBackground
-          source={(background ? background : defaultBackground)}
-          style={style.background}
-          imageStyle={style.imageBackground}
-        >
-          {this.props.children}
-        </ImageBackground>
-      :
-        <View style={style.background}>
-          {this.props.children}
-        </View>
+    return active ? (
+      <ImageBackground
+        source={background || defaultBackground}
+        style={style.background}
+        imageStyle={style.imageBackground}
+      >
+        {this.props.children}
+      </ImageBackground>
+    ) : (
+      <View style={style.background}>{this.props.children}</View>
     );
   }
 }

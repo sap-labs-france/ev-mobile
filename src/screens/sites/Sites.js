@@ -116,7 +116,7 @@ export default class Sites extends BaseScreen {
   _footerList = () => {
     const { skip, count, limit } = this.state;
     if (skip + limit < count) {
-      return <Spinner/>;
+      return <Spinner />;
     }
     return null;
   };

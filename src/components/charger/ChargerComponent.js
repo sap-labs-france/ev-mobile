@@ -39,14 +39,12 @@ export default class ChargerComponent extends ResponsiveComponent {
     const { isChargerDead } = this.state;
     let message = I18n.t("chargers.heartBeatOkMessage", { chargeBoxID: charger.id });
     if (isChargerDead) {
-      message = I18n.t("chargers.heartBeatKoMessage",
-        { chargeBoxID: charger.id, lastHeartBeat: moment(new Date(charger.lastHeartBeat), true).fromNow() });
+      message = I18n.t("chargers.heartBeatKoMessage", {
+        chargeBoxID: charger.id,
+        lastHeartBeat: moment(new Date(charger.lastHeartBeat), true).fromNow()
+      });
     }
-    Alert.alert(
-      I18n.t("chargers.heartBeat"),
-      message,
-      [ { text: I18n.t("general.ok") }]
-    );
+    Alert.alert(I18n.t('chargers.heartBeat'), message, [{ text: I18n.t('general.ok') }]);
   };
 
   render() {
@@ -58,8 +56,13 @@ export default class ChargerComponent extends ResponsiveComponent {
         <View style={style.headerContent}>
           <Text style={style.name}>{charger.id}</Text>
           {isChargerDead ? (
-            <Button transparent style={style.heartbeatButton}
-                onPress={() => { this._showHeartbeatStatus() }}>
+            <Button
+              transparent
+              style={style.heartbeatButton}
+              onPress={() => {
+                this._showHeartbeatStatus();
+              }}
+            >
               <Animatable.Text
                 animation="fadeIn"
                 easing="ease-in-out"
@@ -70,8 +73,13 @@ export default class ChargerComponent extends ResponsiveComponent {
               </Animatable.Text>
             </Button>
           ) : (
-            <Button transparent style={style.heartbeatButton}
-                onPress={() => { this._showHeartbeatStatus() }}>
+            <Button
+              transparent
+              style={style.heartbeatButton}
+              onPress={() => {
+                this._showHeartbeatStatus();
+              }}
+            >
               <Animatable.Text
                 animation="pulse"
                 easing="ease-out"

@@ -85,7 +85,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     if (connector) {
       return connector.currentConsumption > 0;
     } else {
-      return (type === Constants.CONN_STATUS_CHARGING) && (value > 0);
+      return type === Constants.CONN_STATUS_CHARGING && value > 0;
     }
   }
 
@@ -100,16 +100,21 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
 
     return (
       <View style={this.props.text ? style.containerWithText : style.containerWithNoText}>
-        <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
+        <Animated.View
+          style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}
+        >
           <Badge style={connectorStyle}>
-            <Animated.Text style={[style.connectorValue, isAnimated ? { transform: [{ rotate: this.rotateCounterClockwise }] } : undefined]}>{ value }</Animated.Text>
+            <Animated.Text
+              style={[
+                style.connectorValue,
+                isAnimated ? { transform: [{ rotate: this.rotateCounterClockwise }] } : undefined
+              ]}
+            >
+              {value}
+            </Animated.Text>
           </Badge>
         </Animated.View>
-        {this.props.text ?
-          <Text style={style.connectorText}>{this.props.text}</Text>
-        :
-          undefined
-        }
+        {this.props.text ? <Text style={style.connectorText}>{this.props.text}</Text> : undefined}
       </View>
     );
   }

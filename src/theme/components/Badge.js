@@ -1,9 +1,8 @@
 // @flow
 
 import variable from "./../variables/platform";
-import { PLATFORM } from "./../variables/commonColor";
-import { scale, moderateScale } from "react-native-size-matters";
-import commonColor from "../../theme/variables/commonColor";
+import commonColor, { PLATFORM } from './../variables/commonColor';
+import { scale, moderateScale } from 'react-native-size-matters';
 
 export default (variables /* : * */ = variable) => {
   const badgeTheme = {

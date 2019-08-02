@@ -91,12 +91,7 @@ class SideBar extends ResponsiveComponent {
             </Text>
           </View>
           {isComponentOrganizationActive ? (
-            <ListItem
-              style={style.links}
-              button
-              iconLeft
-              onPress={() => this._navigateTo("Sites")}
-            >
+            <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo('Sites')}>
               <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
               <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
             </ListItem>
