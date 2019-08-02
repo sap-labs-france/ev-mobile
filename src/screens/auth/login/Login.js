@@ -71,7 +71,7 @@ export default class Login extends BaseScreen {
     // Unlock all
     Orientation.lockToPortrait();
     // Check
-    _provider.checkAndTriggerAutoLogin();
+    _provider.checkAndTriggerAutoLogin(this.props.navigation);
     // Check if user is authenticated
     if (await _provider.isUserConnectionValid()) {
       // Navigate
@@ -138,7 +138,7 @@ export default class Login extends BaseScreen {
               break;
             default:
               // Other common Error
-              Utils.handleHttpUnexpectedError(error.request);
+              Utils.handleHttpUnexpectedError(error.request, this.props.navigation);
           }
         }
       }

@@ -89,7 +89,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
       );
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
+      Utils.handleHttpUnexpectedError(error, this.props.navigation);
     }
   };
 
@@ -118,7 +118,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
+      Utils.handleHttpUnexpectedError(error, this.props.navigation);
     }
   };
 

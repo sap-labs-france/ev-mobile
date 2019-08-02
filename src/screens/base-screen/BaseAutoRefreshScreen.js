@@ -27,11 +27,15 @@ export default class BaseAutoRefreshScreen extends BaseScreen {
   }
 
   componentDidFocus = () => {
+    // Call parent
+    super.componentDidFocus();
     // Start the timer
     this._startRefreshTimer();
   };
 
   componentDidBlur = () => {
+    // Call parent
+    super.componentDidBlur();
     // Clear the timer
     this._clearRefreshTimer();
   };

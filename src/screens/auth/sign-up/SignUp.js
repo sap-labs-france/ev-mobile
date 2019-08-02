@@ -160,13 +160,18 @@ export default class SignUp extends BaseScreen {
               break;
             default:
               // Other common Error
-              Utils.handleHttpUnexpectedError(error.request);
+              Utils.handleHttpUnexpectedError(error.request, this.props.navigation);
           }
         } else {
           Message.showError(I18n.t("general.unexpectedError"));
         }
       }
     }
+  };
+
+  onBack = () => {
+    console.log("Back Signup");
+    this.props.navigation.navigate("Login");
   };
 
   render() {

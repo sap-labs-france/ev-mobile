@@ -87,7 +87,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
+      Utils.handleHttpUnexpectedError(error, this.props.navigation);
     }
   };
 
@@ -123,7 +123,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       // Check if HTTP?
       if (!error.request || error.request.status !== 560) {
         // Other common Error
-        Utils.handleHttpUnexpectedError(error, this.props);
+        Utils.handleHttpUnexpectedError(error, this.props.navigation);
       }
     }
   };
@@ -143,7 +143,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
+      Utils.handleHttpUnexpectedError(error, this.props.navigation);
     }
   };
 
@@ -171,7 +171,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
+      Utils.handleHttpUnexpectedError(error, this.props.navigation);
     }
   };
 
@@ -229,7 +229,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       // Enable the button
       this.setState({ buttonDisabled: false });
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
+      Utils.handleHttpUnexpectedError(error, this.props.navigation);
     }
   };
 
@@ -261,7 +261,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
+      Utils.handleHttpUnexpectedError(error, this.props.navigation);
     }
   };
 

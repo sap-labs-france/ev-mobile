@@ -87,7 +87,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
       // Check if HTTP?
       if (!error.request || error.request.status !== 560) {
         // Other common Error
-        Utils.handleHttpUnexpectedError(error, this.props);
+        Utils.handleHttpUnexpectedError(error, this.props.navigation);
       }
     }
   };

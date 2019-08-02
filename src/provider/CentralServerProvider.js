@@ -25,7 +25,6 @@ let _password;
 let _tenant;
 let _securityProvider;
 const _siteImages = [];
-let _autoLoginFailure = 0;
 
 export default class CentralServerProvider {
   getCaptchaBaseUrl() {
@@ -89,7 +88,7 @@ export default class CentralServerProvider {
     ];
   }
 
-  async checkAndTriggerAutoLogin() {
+  async checkAndTriggerAutoLogin(navigation) {
     try {
       // Check if connection has expired
       if (await this.hasUserConnectionExpired()) {
@@ -97,14 +96,10 @@ export default class CentralServerProvider {
         await this.reAuthenticate();
       }
     } catch (error) {
-      // Cannot auto login, continue and enter login info
-      _autoLoginFailure++;
-      console.log(error);
+      // Logoff
+      await this.logoff();
+      navigation.navigate("AuthNavigator");
     }
-  }
-
-  hasReachedMaxAutologinFailure() {
-    return _autoLoginFailure >= 3;
   }
 
   async hasUserConnectionExpired() {
@@ -221,7 +216,6 @@ export default class CentralServerProvider {
     _tenant = tenant;
     _initialized = true;
     _securityProvider = new SecurityProvider(_decodedToken);
-    _autoLoginFailure = 0;
   }
 
   async register(tenant, name, firstName, email, passwords, acceptEula, captcha) {

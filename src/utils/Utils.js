@@ -25,7 +25,7 @@ export default class Utils {
     return navigation.state.params[name];
   }
 
-  static async handleHttpUnexpectedError(error, props) {
+  static async handleHttpUnexpectedError(error, navigation) {
     // Log in console
     console.log({ error });
     // Check if HTTP?
@@ -38,15 +38,8 @@ export default class Utils {
           break;
         // Not logged in?
         case 401:
-          // Max Failed Auto Login Reached?
-          if (!_provider.hasReachedMaxAutologinFailure()) {
-            // Try to auto login
-            await _provider.checkAndTriggerAutoLogin();
-          } else {
-            // Logoff
-            await _provider.logoff();
-            props.navigation.navigate("AuthNavigator");
-          }
+          // Try to auto login
+          await _provider.checkAndTriggerAutoLogin(navigation);
           break;
         // Other errors
         default:

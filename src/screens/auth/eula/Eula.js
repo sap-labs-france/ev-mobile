@@ -43,7 +43,7 @@ export default class Eula extends React.Component {
       });
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
+      Utils.handleHttpUnexpectedError(error, this.props.navigation);
     }
   };
 

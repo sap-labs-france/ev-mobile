@@ -53,7 +53,7 @@ class SideBar extends ResponsiveComponent {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
+      Utils.handleHttpUnexpectedError(error, this.props.navigation);
     }
   }
 
