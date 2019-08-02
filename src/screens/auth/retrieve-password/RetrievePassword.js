@@ -4,7 +4,6 @@ import { Text, Form, Item, Button, Icon, View, Spinner, Footer, Right } from "na
 import { NavigationActions, StackActions } from "react-navigation";
 import commonColor from "../../../theme/variables/commonColor";
 import ProviderFactory from "../../../provider/ProviderFactory";
-import { ResponsiveComponent } from "react-native-responsive-ui";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
@@ -13,6 +12,7 @@ import * as Animatable from "react-native-animatable";
 import Constants from "../../../utils/Constants";
 import DeviceInfo from "react-native-device-info";
 import ReCaptcha from "react-native-recaptcha-v3";
+import BaseScreen from "../../base-screen/BaseScreen";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 
 const _provider = ProviderFactory.getProvider();
@@ -30,7 +30,7 @@ const formValidationDef = {
   }
 };
 
-export default class RetrievePassword extends ResponsiveComponent {
+export default class RetrievePassword extends BaseScreen {
   constructor(props) {
     super(props);
     this.captchaSiteKey = _provider.getCaptchaSiteKey();

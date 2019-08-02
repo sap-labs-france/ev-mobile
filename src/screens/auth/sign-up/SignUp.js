@@ -12,6 +12,7 @@ import Message from "../../../utils/Message";
 import Constants from "../../../utils/Constants";
 import DeviceInfo from "react-native-device-info";
 import ReCaptcha from "react-native-recaptcha-v3";
+import BaseScreen from "../../base-screen/BaseScreen";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 
 const _provider = ProviderFactory.getProvider();
@@ -76,7 +77,7 @@ const formValidationDef = {
     }
   }
 };
-export default class SignUp extends React.Component {
+export default class SignUp extends BaseScreen {
   constructor(props) {
     super(props);
     this.captchaSiteKey = _provider.getCaptchaSiteKey();
