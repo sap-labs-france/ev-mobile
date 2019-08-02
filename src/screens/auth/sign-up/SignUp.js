@@ -170,8 +170,10 @@ export default class SignUp extends BaseScreen {
   };
 
   onBack = () => {
-    console.log("Back Signup");
+    // Back mobile button: Force navigation
     this.props.navigation.navigate("Login");
+    // Do not bubble up
+    return true;
   };
 
   render() {

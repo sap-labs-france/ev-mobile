@@ -105,6 +105,13 @@ export default class RetrievePassword extends BaseScreen {
     }
   };
 
+  onBack = () => {
+    // Back mobile button: Force navigation
+    this.props.navigation.navigate("Login");
+    // Do not bubble up
+    return true;
+  };
+
   render() {
     const style = computeStyleSheet();
     const { loading, captcha } = this.state;

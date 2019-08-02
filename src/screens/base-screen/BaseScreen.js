@@ -16,19 +16,19 @@ export default class BaseScreen extends ResponsiveComponent {
 
   async componentDidMount() {
     this.mounted = true;
+    BackHandler.removeEventListener("hardwareBackPress", this.onBack);
   }
 
   componentWillUnmount() {
     this.mounted = false;
     // Remove listeners
-    this.didFocus.remove();
-    this.didBlur.remove();
-    BackHandler.removeEventListener("hardwareBackPress", this.onBack);
+    this.didFocus && this.didFocus.remove();
+    this.didBlur && this.didBlur.remove();
   }
 
   onBack = () => {
-    console.log("Back");
-    // this.props.navigation.goBack();
+    // Not Handled: has to be taken in the sub-classes
+    return false;
   };
 
   componentDidFocus = () => {
