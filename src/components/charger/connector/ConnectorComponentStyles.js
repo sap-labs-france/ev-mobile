@@ -4,10 +4,14 @@ import commonColor from "../../../theme/variables/commonColor";
 import { ScaledSheet } from "react-native-size-matters";
 
 const commonStyles = ScaledSheet.create({
-  statusConnectorContainer: {
+  container: {
     width: "100%",
     justifyContent: "center",
-    alignItems: "stretch"
+    alignItems: "stretch",
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: "transparent",
+    borderTopColor: commonColor.listBorderColor
   },
   connectorContainer: {
     flexDirection: "column",
@@ -15,7 +19,7 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center",
     width: "100%"
   },
-  statusConnectorDetailContainer: {
+  connectorDetailContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
@@ -25,17 +29,14 @@ const commonStyles = ScaledSheet.create({
     paddingTop: "10@s",
     paddingBottom: "10@s"
   },
-  firstStatusConnectorDetailContainer: {
-    paddingBottom: 0
-  },
-  statusConnectorDetail: {
+  connectorDetail: {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     height: "60@s",
     width: "80@s"
   },
-  statusConnectorDetailAnimated: {
+  connectorDetailAnimated: {
     position: "absolute",
     alignItems: "center"
   },

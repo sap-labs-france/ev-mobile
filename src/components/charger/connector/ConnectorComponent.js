@@ -59,10 +59,10 @@ export default class ConnectorComponent extends ResponsiveComponent {
 
   _renderSecondConnectorDetails = (connector, style) => {
     return connector.activeTransactionID !== 0 ? (
-      <View style={style.statusConnectorDetail}>
+      <View style={style.connectorDetail}>
         <Animatable.View
           animation={!this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
-          style={style.statusConnectorDetailAnimated}
+          style={style.connectorDetailAnimated}
           duration={Constants.ANIMATION_ROTATION_MILLIS}
         >
           <Text style={style.connectorValues}>
@@ -81,7 +81,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
         </Animatable.View>
         <Animatable.View
           animation={this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
-          style={style.statusConnectorDetailAnimated}
+          style={style.connectorDetailAnimated}
           duration={Constants.ANIMATION_ROTATION_MILLIS}
         >
           <Text style={style.connectorValues}>{connector.currentStateOfCharge}</Text>
@@ -94,7 +94,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
         </Animatable.View>
       </View>
     ) : (
-      <View style={style.statusConnectorDetail}>
+      <View style={style.connectorDetail}>
         <Image style={style.connectorImage} source={Utils.getConnectorTypeImage(connector.type)} />
         <Text style={style.labelImage}>{Utils.translateConnectorType(connector.type)}</Text>
       </View>
@@ -103,7 +103,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
 
   _renderThirdConnectorDetails = (connector, style) => {
     return connector.activeTransactionID !== 0 ? (
-      <View style={style.statusConnectorDetail}>
+      <View style={style.connectorDetail}>
         <Text style={style.connectorValues}>{Math.round(connector.totalConsumption / 1000)}</Text>
         <Text style={style.label} numberOfLines={1}>
           {I18n.t("details.total")}
@@ -113,7 +113,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
         </Text>
       </View>
     ) : (
-      <View style={style.statusConnectorDetail}>
+      <View style={style.connectorDetail}>
         <Text style={style.connectorValues}>{Math.trunc(connector.power / 1000)}</Text>
         <Text style={style.label} numberOfLines={1}>
           {I18n.t("details.maximum")}
@@ -130,7 +130,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
     const { connector, navigation, charger, index, siteAreaID } = this.props;
     return (
       <TouchableOpacity
-        style={style.statusConnectorContainer}
+        style={style.container}
         onPress={() =>
           navigation.navigate("ChargerTabDetails", {
             chargerID: charger.id,
@@ -145,8 +145,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
           duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
         >
           <View style={style.connectorContainer}>
-            <View style={[style.statusConnectorDetailContainer,
-                (index === 0 && charger.connectors.length > 1 ? style.firstStatusConnectorDetailContainer : undefined)]}>
+            <View style={style.connectorDetailContainer}>
               {this._renderFirstConnectorDetails(connector)}
               {this._renderSecondConnectorDetails(connector, style)}
               {this._renderThirdConnectorDetails(connector, style)}
