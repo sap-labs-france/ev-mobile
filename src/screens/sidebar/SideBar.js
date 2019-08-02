@@ -7,6 +7,7 @@ import ProviderFactory from "../../provider/ProviderFactory";
 import I18n from "../../I18n/I18n";
 import Utils from "../../utils/Utils";
 import DeviceInfo from "react-native-device-info";
+import BackgroundComponent from "../../components/background/BackgroundComponent";
 
 const _provider = ProviderFactory.getProvider();
 
@@ -76,76 +77,78 @@ class SideBar extends ResponsiveComponent {
     const { userName, userImage, isComponentOrganizationActive } = this.state;
     return (
       <Container style={style.container}>
-        <Content style={style.drawerContent}>
-          <View style={style.logoContainer}>
-            <Image source={logo} style={style.logo} />
-            <Text style={style.versionText}>{`${I18n.t(
-              "general.version"
-            )} ${DeviceInfo.getVersion()}`}</Text>
-            <Text style={style.versionDate}>
-              (
-              {DeviceInfo.getLastUpdateTime()
-                ? new Date(DeviceInfo.getLastUpdateTime()).toLocaleDateString()
-                : I18n.t("general.date")}
-              )
-            </Text>
-          </View>
-          {isComponentOrganizationActive ? (
+        <BackgroundComponent>
+          <Content style={style.drawerContent}>
+            <View style={style.logoContainer}>
+              <Image source={logo} style={style.logo} />
+              <Text style={style.versionText}>{`${I18n.t(
+                "general.version"
+              )} ${DeviceInfo.getVersion()}`}</Text>
+              <Text style={style.versionDate}>
+                (
+                {DeviceInfo.getLastUpdateTime()
+                  ? new Date(DeviceInfo.getLastUpdateTime()).toLocaleDateString()
+                  : I18n.t("general.date")}
+                )
+              </Text>
+            </View>
+            {isComponentOrganizationActive ? (
+              <ListItem
+                style={style.links}
+                button
+                iconLeft
+                onPress={() => this._navigateTo("Sites")}
+              >
+                <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
+                <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
+              </ListItem>
+            ) : (
+              undefined
+            )}
             <ListItem
               style={style.links}
               button
               iconLeft
-              onPress={() => this._navigateTo("Sites")}
+              onPress={() => this._navigateTo("AllChargers")}
             >
-              <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
-              <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
+              <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
+              <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
             </ListItem>
-          ) : (
-            undefined
-          )}
-          <ListItem
-            style={style.links}
-            button
-            iconLeft
-            onPress={() => this._navigateTo("AllChargers")}
-          >
-            <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
-            <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
-          </ListItem>
-          {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
-            <Icon name="ios-settings-outline" />
-            <Text style={style.linkText}>SETTINGS</Text>
-          </ListItem> */}
-          {/* <ListItem button onPress={() => navigation.navigate("Feedback")} iconLeft style={style.links}>
-            <Icon name="ios-paper-outline" />
-            <Text style={style.linkText}>FEEDBACK</Text>
-          </ListItem> */}
-        </Content>
-        <View style={style.logoutContainer}>
-          <View style={style.logoutButton} foregroundColor={"white"}>
-            <View style={style.gridLogoutContainer}>
-              <View style={style.columnAccount}>
-                <TouchableOpacity style={style.buttonLogout} onPress={() => this._logoff()}>
-                  <Text style={style.logoutText}>{I18n.t("authentication.logOut")}</Text>
-                  <Text note style={style.userName}>
-                    {userName}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View style={style.columnThumbnail}>
-                <TouchableOpacity
-                  style={style.buttonThumbnail}
-                  onPress={() => navigation.navigate("Profile")}
-                >
-                  <Thumbnail
-                    style={style.profilePic}
-                    source={userImage ? { uri: userImage } : noPhoto}
-                  />
-                </TouchableOpacity>
+            {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
+              <Icon name="ios-settings-outline" />
+              <Text style={style.linkText}>SETTINGS</Text>
+            </ListItem> */}
+            {/* <ListItem button onPress={() => navigation.navigate("Feedback")} iconLeft style={style.links}>
+              <Icon name="ios-paper-outline" />
+              <Text style={style.linkText}>FEEDBACK</Text>
+            </ListItem> */}
+          </Content>
+          <View style={style.logoutContainer}>
+            <View style={style.logoutButton} foregroundColor={"white"}>
+              <View style={style.gridLogoutContainer}>
+                <View style={style.columnAccount}>
+                  <TouchableOpacity style={style.buttonLogout} onPress={() => this._logoff()}>
+                    <Text style={style.logoutText}>{I18n.t("authentication.logOut")}</Text>
+                    <Text note style={style.userName}>
+                      {userName}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={style.columnThumbnail}>
+                  <TouchableOpacity
+                    style={style.buttonThumbnail}
+                    onPress={() => navigation.navigate("Profile")}
+                  >
+                    <Thumbnail
+                      style={style.profilePic}
+                      source={userImage ? { uri: userImage } : noPhoto}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>
-        </View>
+        </BackgroundComponent>
       </Container>
     );
   }
