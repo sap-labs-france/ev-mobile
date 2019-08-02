@@ -1,26 +1,6 @@
 import React from "react";
-import {
-  ScrollView,
-  Image,
-  Keyboard,
-  KeyboardAvoidingView,
-  Text as TextRN,
-  TextInput
-} from "react-native";
-import {
-  Text,
-  Form,
-  Item,
-  Button,
-  Icon,
-  View,
-  CheckBox,
-  Spinner,
-  ActionSheet,
-  Footer,
-  Left,
-  Right
-} from "native-base";
+import { ScrollView, Image, Keyboard, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
+import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet, Footer, Left, Right } from "native-base";
 import Orientation from "react-native-orientation-locker";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import * as Animatable from "react-native-animatable";
@@ -33,6 +13,7 @@ import computeStyleSheet from "../AuthStyles";
 import commonColor from "../../../theme/variables/commonColor";
 import DeviceInfo from "react-native-device-info";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import BaseScreen from "../../base-screen/BaseScreen";
 
 const _provider = providerFactory.getProvider();
 const logo = require("../../../../assets/logo-low.png");
@@ -71,7 +52,7 @@ const formValidationDef = {
   }
 };
 
-export default class Login extends ResponsiveComponent {
+export default class Login extends BaseScreen {
   constructor(props) {
     super(props);
     this.tenants = _provider.getTenants();

@@ -10,11 +10,11 @@ import HeaderComponent from "../../components/header/HeaderComponent";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import computeStyleSheet from "./SitesStyles";
 import I18n from "../../I18n/I18n";
-import BaseScreen from "../base-screen/BaseScreen";
+import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 
 const _provider = ProviderFactory.getProvider();
 
-export default class Sites extends BaseScreen {
+export default class Sites extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     this.state = {
@@ -76,7 +76,7 @@ export default class Sites extends BaseScreen {
     return sites;
   };
 
-  _refresh = async () => {
+  refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
@@ -93,7 +93,7 @@ export default class Sites extends BaseScreen {
     // Display spinner
     this.setState({ refreshing: true });
     // Refresh
-    await this._refresh();
+    await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
   };

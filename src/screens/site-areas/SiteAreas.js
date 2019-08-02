@@ -9,12 +9,12 @@ import SearchHeaderComponent from "../../components/search-header/SearchHeaderCo
 import HeaderComponent from "../../components/header/HeaderComponent";
 import computeStyleSheet from "./SiteAreasStyles";
 import I18n from "../../I18n/I18n";
-import BaseScreen from "../base-screen/BaseScreen";
+import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 
 const _provider = ProviderFactory.getProvider();
 
-export default class SiteAreas extends BaseScreen {
+export default class SiteAreas extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     this.state = {
@@ -65,7 +65,7 @@ export default class SiteAreas extends BaseScreen {
     return siteAreas;
   };
 
-  _refresh = async () => {
+  refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
@@ -82,7 +82,7 @@ export default class SiteAreas extends BaseScreen {
     // Display spinner
     this.setState({ refreshing: true });
     // Refresh
-    await this._refresh();
+    await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
   };

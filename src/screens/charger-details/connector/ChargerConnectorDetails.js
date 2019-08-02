@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, TouchableOpacity, Image, Alert } from "react-native";
 import { Container, Icon, View, Thumbnail, Text } from "native-base";
-import BaseScreen from "../../base-screen/BaseScreen";
+import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import ConnectorStatusComponent from "../../../components/connector-status/ConnectorStatusComponent";
 import I18n from "../../../I18n/I18n";
@@ -18,7 +18,7 @@ const noSite = require("../../../../assets/no-site.png");
 const START_TRANSACTION_NB_TRIAL = 4;
 const _provider = ProviderFactory.getProvider();
 
-export default class ChargerConnectorDetails extends BaseScreen {
+export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     this.state = {
@@ -175,7 +175,7 @@ export default class ChargerConnectorDetails extends BaseScreen {
     }
   };
 
-  _refresh = async () => {
+  refresh = async () => {
     // Get Current Transaction
     await this._getTransaction();
     // Check Authorization

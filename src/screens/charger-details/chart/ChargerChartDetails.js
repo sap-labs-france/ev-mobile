@@ -1,5 +1,5 @@
 import React from "react";
-import BaseScreen from "../../base-screen/BaseScreen";
+import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
 import { View, processColor } from "react-native";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import Utils from "../../../utils/Utils";
@@ -15,7 +15,7 @@ const EMPTY_CHART = [{ x: 0, y: 0 }];
 
 const _provider = ProviderFactory.getProvider();
 
-export default class ChargerChartDetails extends BaseScreen {
+export default class ChargerChartDetails extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     this.state = {
@@ -92,7 +92,7 @@ export default class ChargerChartDetails extends BaseScreen {
     }
   };
 
-  _refresh = async () => {
+  refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
       // Refresh Consumption
