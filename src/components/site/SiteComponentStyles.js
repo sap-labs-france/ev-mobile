@@ -3,6 +3,7 @@ import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
 import { ScaledSheet } from "react-native-size-matters";
 import { Platform } from "react-native";
+import Constants from "../../utils/Constants";
 
 const commonStyles = ScaledSheet.create({
   container: {
@@ -18,7 +19,7 @@ const commonStyles = ScaledSheet.create({
     paddingBottom: "5@s",
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
-    backgroundColor: "rgba(0,0,0,0.05)"
+    backgroundColor: Constants.CSS_HEADER_BG
   },
   connectorContent: {
     flexDirection: "row",

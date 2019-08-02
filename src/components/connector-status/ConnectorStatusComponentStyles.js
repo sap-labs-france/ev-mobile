@@ -7,7 +7,7 @@ import { Platform } from "react-native";
 const commonStyles = ScaledSheet.create({
   containerWithText: {
     height: "60@s",
-    width: "75@s",
+    width: "85@s",
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center"
@@ -20,50 +20,51 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center"
   },
   connectorValue: {
-    color: commonColor.badgeColor,
     fontSize: commonColor.fontSizeBase,
     fontWeight: "bold",
     textAlign: "center"
   },
+  connectorDescription: {
+    position: "absolute",
+    bottom: "-2@s",
+    fontSize: "12@s"
+  },
+  commonConnector: {
+    backgroundColor: "transparent"
+  },
   faultedConnector: {
-    backgroundColor: commonColor.brandDanger,
-    borderColor: commonColor.brandDangerDark
+    color: commonColor.brandDanger,
+    borderColor: commonColor.brandDanger
   },
   availableConnector: {
-    backgroundColor: commonColor.brandSuccess,
-    borderColor: commonColor.brandSuccessDark
+    color: commonColor.brandSuccess,
+    borderColor: commonColor.brandSuccess
   },
   supendedConnector: {
-    backgroundColor: commonColor.brandInfo,
+    color: commonColor.brandPrimaryDark,
     borderColor: commonColor.brandPrimaryDark
   },
   preparingConnector: {
-    backgroundColor: commonColor.brandWarning,
-    borderColor: commonColor.brandWarningDark
+    color: commonColor.brandWarning,
+    borderColor: commonColor.brandWarning
   },
   finishingConnector: {
-    backgroundColor: commonColor.brandWarning,
-    borderColor: commonColor.brandWarningDark
+    color: commonColor.brandWarning,
+    borderColor: commonColor.brandWarning
   },
   unavailableConnector: {
-    backgroundColor: commonColor.brandDisable,
-    borderColor: commonColor.brandDisableDark
+    color: commonColor.brandDisable,
+    borderColor: commonColor.brandDisable
   },
   reservedConnector: {
-    backgroundColor: commonColor.brandDisable,
-    borderColor: commonColor.brandDisableDark
+    color: commonColor.brandDisable,
+    borderColor: commonColor.brandDisable
   },
   chargingConnector: {
-    backgroundColor: commonColor.brandInfo,
-    borderColor: commonColor.brandPrimaryLight,
-    borderTopColor: commonColor.brandPrimary,
-    borderBottomColor: commonColor.brandPrimary
-  },
-  connectorText: {
-    position: "absolute",
-    bottom: "-2@s",
-    fontSize: "13@s",
-    color: commonColor.textColorApp
+    color: commonColor.brandPrimaryDark,
+    borderColor: commonColor.brandInfo,
+    borderTopColor: commonColor.brandPrimaryDark,
+    borderBottomColor: commonColor.brandPrimaryDark
   }
 });
 

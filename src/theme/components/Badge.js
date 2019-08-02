@@ -42,7 +42,7 @@ export default (variables /* : * */ = variable) => {
     borderStyle: "solid",
     borderColor: commonColor.textColorApp,
     borderRadius: scale(22),
-    borderWidth: 4,
+    borderWidth: 3,
     justifyContent: "center",
     alignItems: "center",
     width: scale(44),

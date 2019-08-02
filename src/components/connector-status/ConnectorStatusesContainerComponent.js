@@ -24,11 +24,11 @@ export default class ConnectorStatusesContainerComponent extends ResponsiveCompo
           text={Utils.translateConnectorStatus(Constants.CONN_STATUS_OCCUPIED)}
           type={Constants.CONN_STATUS_SUSPENDED_EVSE}
         />
-        {/* <ConnectorStatusComponent
+        <ConnectorStatusComponent
           value={this.props.totalConnectors - this.props.availableConnectors}
           text={Utils.translateConnectorStatus(Constants.CONN_STATUS_CHARGING)}
           type={Constants.CONN_STATUS_CHARGING}
-        /> */}
+        />
       </View>
     );
   }
