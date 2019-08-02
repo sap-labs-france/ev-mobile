@@ -6,14 +6,14 @@ import { ScaledSheet } from "react-native-size-matters";
 const commonStyles = ScaledSheet.create({
   noDisplay: {
     flex: 1,
-    backgroundColor: commonColor.containerBgColor
+    backgroundColor: commonColor.brandPrimaryDark
   },
   spinner: {
     flex: 1
   },
   container: {
     flex: 1,
-    backgroundColor: commonColor.containerBgColor
+    backgroundColor: commonColor.brandPrimaryDark
   },
   keyboardContainer: {
     flex: 1
@@ -150,6 +150,11 @@ const commonStyles = ScaledSheet.create({
   },
   linksTextButtonRight: {
     textAlign: "right"
+  },
+  footer: {
+    elevation: 0,
+    borderColor: "transparent",
+    backgroundColor: "transparent"
   }
 });
 

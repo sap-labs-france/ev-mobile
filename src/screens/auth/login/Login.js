@@ -337,7 +337,7 @@ export default class Login extends ResponsiveComponent {
               </Form>
             </KeyboardAvoidingView>
           </ScrollView>
-          <Footer>
+          <Footer style={style.footer}>
             <Left>
               <Button
                 small

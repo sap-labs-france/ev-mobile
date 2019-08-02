@@ -1,6 +1,6 @@
 import React from "react";
 import { ScrollView, Image, TextInput, KeyboardAvoidingView, Text as TextRN } from "react-native";
-import { Text, Form, Item, Button, Icon, View, Spinner, Footer, Left } from "native-base";
+import { Text, Form, Item, Button, Icon, View, Spinner, Footer, Right } from "native-base";
 import { NavigationActions, StackActions } from "react-navigation";
 import commonColor from "../../../theme/variables/commonColor";
 import ProviderFactory from "../../../provider/ProviderFactory";
@@ -176,17 +176,19 @@ export default class RetrievePassword extends ResponsiveComponent {
               onExecute={this._recaptchaResponseToken}
             />
           </ScrollView>
-          <Footer>
-            <Left>
+          <Footer style={style.footer}>
+            <Right>
               <Button
                 small
                 transparent
-                style={style.linksButtonLeft}
+                style={style.linksButtonRight}
                 onPress={() => this.props.navigation.goBack()}
               >
-                <TextRN style={style.linksTextButton}>{I18n.t("authentication.backLogin")}</TextRN>
+                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>
+                  {I18n.t("authentication.backLogin")}
+                </TextRN>
               </Button>
-            </Left>
+            </Right>
           </Footer>
         </BackgroundComponent>
       </Animatable.View>

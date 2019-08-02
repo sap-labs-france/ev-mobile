@@ -1,15 +1,8 @@
 import React from "react";
-import {
-  Image,
-  TextInput,
-  Keyboard,
-  ScrollView,
-  Text as TextRN,
-  KeyboardAvoidingView
-} from "react-native";
+import { Image, TextInput, Keyboard, ScrollView, Text as TextRN, KeyboardAvoidingView } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import * as Animatable from "react-native-animatable";
-import { Form, Text, Button, Icon, Item, View, CheckBox, Footer, Spinner, Left } from "native-base";
+import { Form, Text, Button, Icon, Item, View, CheckBox, Footer, Spinner, Right } from "native-base";
 import commonColor from "../../../theme/variables/commonColor";
 import computeStyleSheet from "../AuthStyles";
 import ProviderFactory from "../../../provider/ProviderFactory";
@@ -360,17 +353,19 @@ export default class SignUp extends React.Component {
               onExecute={this._recaptchaResponseToken}
             />
           </ScrollView>
-          <Footer>
-            <Left>
+          <Footer style={style.footer}>
+            <Right>
               <Button
                 small
                 transparent
-                style={style.linksButtonLeft}
+                style={style.linksButtonRight}
                 onPress={() => this.props.navigation.goBack()}
               >
-                <TextRN style={style.linksTextButton}>{I18n.t("authentication.backLogin")}</TextRN>
+                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>
+                  {I18n.t("authentication.backLogin")}
+                </TextRN>
               </Button>
-            </Left>
+            </Right>
           </Footer>
         </BackgroundComponent>
       </Animatable.View>
