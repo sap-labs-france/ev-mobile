@@ -48,7 +48,7 @@
     "flow:check": "flow check src",
     "flow:deps": "flow-typed install",
     "lint": "eslint src",
-    "lint-fix": "eslint --fix src",
+    "lint:fix": "eslint --fix src",
     "clean-install-win": "rmdir node_modules /S /Q && del package-lock.json && npm cache clear --force && npm install",
     "clean-install-lin": "rm -rf ./node_modules && rm -f ./package-lock.json && npm cache clear --force && npm install",
     "iosBundle": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
