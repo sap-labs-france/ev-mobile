@@ -55,8 +55,8 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
         break;
       // Preparing
       case Constants.CONN_STATUS_PREPARING:
-        connectorStyles.badge.push(style.chargingConnector);
-        connectorStyles.text.push(style.chargingConnectorText);
+        connectorStyles.badge.push(style.preparingConnector);
+        connectorStyles.text.push(style.preparingConnectorText);
         break;
       // Preparing
       case Constants.CONN_STATUS_FINISHING:

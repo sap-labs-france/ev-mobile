@@ -34,10 +34,10 @@ const commonStyles = ScaledSheet.create({
   },
   faultedConnector: {
     color: commonColor.inverseTextColor,
-    borderColor: commonColor.brandDanger
+    backgroundColor: commonColor.brandDanger,
+    borderColor: commonColor.brandDangerDark
   },
   faultedConnectorText: {
-    backgroundColor: commonColor.brandDanger,
     color: commonColor.brandDangerDark
   },
   availableConnector: {
