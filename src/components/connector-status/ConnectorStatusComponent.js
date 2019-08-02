@@ -42,41 +42,52 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
       connectorType = type;
     }
     // Default CSS
-    const connectorStyles = [style.commonConnector];
+    const connectorStyles = {
+      badge: [style.commonConnector],
+      text: []
+    };
     switch (connectorType) {
       // Charging
       case Constants.CONN_STATUS_CHARGING:
       case Constants.CONN_STATUS_OCCUPIED:
-        connectorStyles.push(style.chargingConnector);
+        connectorStyles.badge.push(style.chargingConnector);
+        connectorStyles.text.push(style.chargingConnectorText);
         break;
       // Preparing
       case Constants.CONN_STATUS_PREPARING:
-        connectorStyles.push(style.chargingConnector);
+        connectorStyles.badge.push(style.chargingConnector);
+        connectorStyles.text.push(style.chargingConnectorText);
         break;
       // Preparing
       case Constants.CONN_STATUS_FINISHING:
-        connectorStyles.push(style.finishingConnector);
+        connectorStyles.badge.push(style.finishingConnector);
+        connectorStyles.text.push(style.finishingConnectorText);
         break;
       // Reserved
       case Constants.CONN_STATUS_RESERVED:
-        connectorStyles.push(style.reservedConnector);
+        connectorStyles.badge.push(style.reservedConnector);
+        connectorStyles.text.push(style.reservedConnectorText);
         break;
       // Faulted
       case Constants.CONN_STATUS_FAULTED:
-        connectorStyles.push(style.faultedConnector);
+        connectorStyles.badge.push(style.faultedConnector);
+        connectorStyles.text.push(style.faultedConnectorText);
         break;
       // Unavailable
       case Constants.CONN_STATUS_UNAVAILABLE:
-        connectorStyles.push(style.unavailableConnector);
+        connectorStyles.badge.push(style.unavailableConnector);
+        connectorStyles.text.push(style.unavailableConnectorText);
         break;
       // Suspending EV / EVSE
       case Constants.CONN_STATUS_SUSPENDED_EVSE:
       case Constants.CONN_STATUS_SUSPENDED_EV:
-        connectorStyles.push(style.supendedConnector);
+        connectorStyles.badge.push(style.supendedConnector);
+        connectorStyles.text.push(style.supendedConnectorText);
         break;
       // Available
       case Constants.CONN_STATUS_AVAILABLE:
-        connectorStyles.push(style.availableConnector);
+        connectorStyles.badge.push(style.availableConnector);
+        connectorStyles.text.push(style.availableConnectorText);
         break;
     }
     return connectorStyles;
@@ -112,17 +123,17 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     return (
       <View style={this.props.text ? style.containerWithText : style.containerWithNoText}>
         <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
-          <Badge style={connectorStyles}>
+          <Badge style={connectorStyles.badge}>
             <Animated.Text style={
               isAnimated ?
-                [ style.connectorValue, ...connectorStyles, { transform: [{ rotate: this.rotateCounterClockwise }] }]
+                [ style.connectorValue, ...connectorStyles.badge, { transform: [{ rotate: this.rotateCounterClockwise }] }]
               :
-                [ style.connectorValue, ...connectorStyles ]
+                [ style.connectorValue, ...connectorStyles.badge ]
               }>{ value }</Animated.Text>
           </Badge>
         </Animated.View>
         {this.props.text ?
-          <Text style={[...connectorStyles, style.connectorDescription]}>{this.props.text}</Text>
+          <Text style={[...connectorStyles.text, style.connectorDescription]}>{this.props.text}</Text>
         :
           undefined
         }

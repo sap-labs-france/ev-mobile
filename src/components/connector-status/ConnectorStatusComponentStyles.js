@@ -20,7 +20,7 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center"
   },
   connectorValue: {
-    fontSize: commonColor.fontSizeBase,
+    fontSize: "20@s",
     fontWeight: "bold",
     textAlign: "center"
   },
@@ -33,38 +33,69 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: "transparent"
   },
   faultedConnector: {
-    color: commonColor.brandDanger,
+    color: commonColor.inverseTextColor,
     borderColor: commonColor.brandDanger
+  },
+  faultedConnectorText: {
+    backgroundColor: commonColor.brandDanger,
+    color: commonColor.brandDangerDark
   },
   availableConnector: {
     color: commonColor.brandSuccess,
     borderColor: commonColor.brandSuccess
   },
+  availableConnectorText: {
+    color: commonColor.brandSuccess
+  },
   supendedConnector: {
-    color: commonColor.brandPrimaryDark,
+    color: commonColor.inverseTextColor,
+    backgroundColor: commonColor.brandPrimary,
     borderColor: commonColor.brandPrimaryDark
   },
+  supendedConnectorText: {
+    color: commonColor.brandPrimaryDark
+  },
   preparingConnector: {
-    color: commonColor.brandWarning,
-    borderColor: commonColor.brandWarning
+    color: commonColor.inverseTextColor,
+    backgroundColor: commonColor.brandWarning,
+    borderColor: commonColor.brandWarningDark
+  },
+  preparingConnectorText: {
+    color: commonColor.brandWarning
   },
   finishingConnector: {
-    color: commonColor.brandWarning,
-    borderColor: commonColor.brandWarning
+    color: commonColor.inverseTextColor,
+    backgroundColor: commonColor.brandWarning,
+    borderColor: commonColor.brandWarningDark
+  },
+  finishingConnectorText: {
+    color: commonColor.brandWarning
   },
   unavailableConnector: {
-    color: commonColor.brandDisable,
-    borderColor: commonColor.brandDisable
+    color: commonColor.inverseTextColor,
+    backgroundColor: commonColor.brandDisable,
+    borderColor: commonColor.brandDisableDark
+  },
+  unavailableConnectorText: {
+    color: commonColor.brandDisable
   },
   reservedConnector: {
-    color: commonColor.brandDisable,
-    borderColor: commonColor.brandDisable
+    color: commonColor.inverseTextColor,
+    backgroundColor: commonColor.brandDisable,
+    borderColor: commonColor.brandDisableDark
+  },
+  reservedConnectorText: {
+    color: commonColor.brandDisable
   },
   chargingConnector: {
-    color: commonColor.brandPrimaryDark,
-    borderColor: commonColor.brandInfo,
-    borderTopColor: commonColor.brandPrimaryDark,
-    borderBottomColor: commonColor.brandPrimaryDark
+    color: commonColor.inverseTextColor,
+    backgroundColor: commonColor.brandPrimary,
+    borderColor: commonColor.brandPrimaryLight,
+    borderTopColor: commonColor.brandPrimary,
+    borderBottomColor: commonColor.brandPrimary
+  },
+  chargingConnectorText: {
+    color: commonColor.brandPrimary
   }
 });
 
