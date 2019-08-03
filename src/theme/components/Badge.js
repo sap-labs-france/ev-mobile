@@ -45,9 +45,7 @@ export default (variables /* : * */ = variable) => {
     justifyContent: "center",
     alignItems: "center",
     width: scale(44),
-    height: scale(44),
-    minWidth: scale(44),
-    minHeight: scale(44)
+    height: scale(44)
   };
   return badgeTheme;
 };
