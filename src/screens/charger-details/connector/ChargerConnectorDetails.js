@@ -24,9 +24,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     this.state = {
       transaction: null,
       userImage: null,
-      seconds: "00",
-      minutes: "00",
-      hours: "00",
+      elapsedTimeFormatted: "00:00:00",
+      inactivityFormatted: "00:00:00",
       startTransactionNbTrial: 0,
       isAuthorizedToStopTransaction: false,
       buttonDisabled: true
@@ -48,11 +47,11 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       await this._getSiteImage(charger.siteArea.siteID);
     }
     // Init
-    this._refreshElapsedTime();
-    // Start refresh of time
+    this._refreshTimeInfos();
+    // Dedicated timer for refreshing time
     this.timerElapsedTime = setInterval(() => {
       // Refresh
-      this._refreshElapsedTime();
+      this._refreshTimeInfos();
     }, 1000);
     // Check Authorization
     await this._isAuthorizedStopTransaction();
@@ -76,12 +75,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       if (!this.state.siteImage) {
         // Get it
         const result = await _provider.getSiteImage(siteID);
-        // Found
         if (result) {
-          // Yes
           this.setState({ siteImage: result.image });
         } else {
-          // Yes
           this.setState({ siteImage: null });
         }
       }
@@ -112,9 +108,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
         });
       } else {
         this.setState({
-          seconds: "00",
-          minutes: "00",
-          hours: "00",
+          elapsedTimeFormatted: "00:00:00",
           userImage: null,
           transaction: null
         });
@@ -300,37 +294,53 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     }
   }
 
-  _refreshElapsedTime = () => {
+  _refreshTimeInfos = () => {
     const { transaction } = this.state;
     // Component Mounted?
     if (this.isMounted()) {
-      // Is their a timestamp ?
-      if (transaction && transaction.timestamp) {
-        // Diff
-        let diffSecs = (Date.now() - transaction.timestamp.getTime()) / 1000;
-        if (diffSecs < 0) {
-          diffSecs = 0;
+      // Transaction timestamp ?
+      if (transaction) {
+        let elapsedTimeFormatted = "00:00:00";
+        let inactivityFormatted = "00:00:00";
+        // Elapsed Time?
+        if (transaction.timestamp) {
+          // Get duration
+          const durationSecs = (Date.now() - transaction.timestamp.getTime()) / 1000;
+          // Format
+          elapsedTimeFormatted = this._formatDurationHHMMSS(durationSecs);
         }
-        // Set Hours
-        const hours = Math.trunc(diffSecs / 3600);
-        diffSecs -= hours * 3600;
-        // Set Mins
-        let minutes = 0;
-        if (diffSecs > 0) {
-          minutes = Math.trunc(diffSecs / 60);
-          diffSecs -= minutes * 60;
+        // Inactivity?
+        if (transaction.totalInactivitySecs) {
+          // Format
+          inactivityFormatted = this._formatDurationHHMMSS(transaction.totalInactivitySecs);
         }
-        // Set Secs
-        const seconds = Math.trunc(diffSecs);
-        // Set elapsed time
+        // Set
         this.setState({
-          hours: this._formatTimer(hours),
-          minutes: this._formatTimer(minutes),
-          seconds: this._formatTimer(seconds)
+          elapsedTimeFormatted,
+          inactivityFormatted
         });
       }
     }
   };
+
+  _formatDurationHHMMSS = (durationSecs) => {
+    if (durationSecs <= 0) {
+      return "00:00:00";
+    }
+    // Set Hours
+    const hours = Math.trunc(durationSecs / 3600);
+    durationSecs -= hours * 3600;
+    // Set Mins
+    let minutes = 0;
+    if (durationSecs > 0) {
+      minutes = Math.trunc(durationSecs / 60);
+      durationSecs -= minutes * 60;
+    }
+    // Set Secs
+    const seconds = Math.trunc(durationSecs);
+    // Format
+    return `${this._formatTimer(hours)}:${this._formatTimer(minutes)}:${this._formatTimer(seconds)}`;
+  }
 
   _formatTimer = val => {
     // Put 0 next to the digit if lower than 10
@@ -370,22 +380,22 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
           style={style.userImage}
           source={userImage ? { uri: userImage } : noPhoto}
         />
-        {transaction ? (
+        {transaction ?
           <View>
             <Text style={[style.label, style.labelUser]}>
               {Utils.buildUserName(transaction.user)}
             </Text>
-            {isAdmin ? (
+            {isAdmin ?
               <Text style={[style.subLabel, style.subLabelUser]}>
                 ({transaction.tagID})
               </Text>
-            ) : (
+            :
               undefined
-            )}
+            }
           </View>
-        ) : (
+        :
           <Text style={style.label}>-</Text>
-        )}
+        }
       </View>
     );
   };
@@ -412,16 +422,36 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
   };
 
   _renderElapsedTime = (style) => {
-    const { transaction, hours, minutes, seconds } = this.state;
+    const { transaction, elapsedTimeFormatted } = this.state;
     return (
       <View style={style.columnContainer}>
-        <Icon type="Ionicons" name="time" style={style.icon} />
+        <Icon type="MaterialIcons" name="timer" style={style.icon} />
         {transaction ? (
-          <Text
-            style={[style.label, style.labelTimeValue]}
-          >{`${hours}:${minutes}:${seconds}`}</Text>
+          <Text style={[style.label, style.labelTimeValue]}>
+            {elapsedTimeFormatted}
+          </Text>
         ) : (
-          <Text style={[style.label, style.labelValue]}>- : - : -</Text>
+          <Text style={[style.label, style.labelValue]}>
+            - : - : -
+          </Text>
+        )}
+      </View>
+    );
+  };
+
+  _renderInactivity = (style) => {
+    const { transaction, inactivityFormatted } = this.state;
+    return (
+      <View style={style.columnContainer}>
+        <Icon type="MaterialIcons" name="timer-off" style={style.icon} />
+        {transaction ? (
+          <Text style={[style.label, style.labelTimeValue]}>
+            {inactivityFormatted}
+          </Text>
+        ) : (
+          <Text style={[style.label, style.labelValue]}>
+            - : - : -
+          </Text>
         )}
       </View>
     );
@@ -521,8 +551,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
 
   render() {
     const style = computeStyleSheet();
-    const { connector, isAdmin } = this.props;
-    const { siteImage, transaction, userImage, buttonDisabled, hours, minutes, seconds, isAuthorizedToStopTransaction } = this.state;
+    const { connector } = this.props;
+    const { siteImage, isAuthorizedToStopTransaction } = this.state;
     return (
       <Container style={style.container}>
           {/* Site Image */}
@@ -550,10 +580,13 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
               </View>
               <View style={style.rowContainer}>
                 {this._renderInstantPower(style)}
-                {this._renderElapsedTime(style)}
+                {this._renderTotalConsumption(style)}
               </View>
               <View style={style.rowContainer}>
-                {this._renderTotalConsumption(style)}
+                {this._renderElapsedTime(style)}
+                {this._renderInactivity(style)}
+              </View>
+              <View style={style.rowContainer}>
                 {this._renderBatteryLevel(style)}
               </View>
             </View>
