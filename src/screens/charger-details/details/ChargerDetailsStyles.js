@@ -9,13 +9,20 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: commonColor.containerBgColor
   },
   scrollViewContainer: {
-    flex: 1
-  },
-  viewContainer: {
     flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-between"
+  },
+  topViewContainer: {
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center"
+  },
+  bottomViewContainer: {
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginBottom: "10@s"
   },
   spinner: {
     flex: 1,
@@ -37,7 +44,7 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.textColor
   },
   actionContainer: {
-    height: "75@s",
+    height: "45@s",
     width: "80%",
     justifyContent: "center"
   },

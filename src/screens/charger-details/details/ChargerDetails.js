@@ -16,10 +16,22 @@ export default class ChargerDetails extends ResponsiveComponent {
   _resetHardConfirm() {
     const { charger } = this.props;
     Alert.alert(
-      I18n.t("chargers.reboot"),
-      I18n.t("chargers.rebootMessage", { chargeBoxID: charger.id }),
+      I18n.t("chargers.resetHard"),
+      I18n.t("chargers.resetHardMessage", { chargeBoxID: charger.id }),
       [
         { text: I18n.t("general.yes"), onPress: () => this._reset(charger.id, "Hard") },
+        { text: I18n.t("general.cancel") }
+      ]
+    );
+  }
+
+  _resetSoftConfirm() {
+    const { charger } = this.props;
+    Alert.alert(
+      I18n.t("chargers.resetSoft"),
+      I18n.t("chargers.resetSoftMessage", { chargeBoxID: charger.id }),
+      [
+        { text: I18n.t("general.yes"), onPress: () => this._reset(charger.id, "Soft") },
         { text: I18n.t("general.cancel") }
       ]
     );
@@ -47,8 +59,8 @@ export default class ChargerDetails extends ResponsiveComponent {
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
-          <ScrollView style={style.scrollViewContainer}>
-            <View style={style.viewContainer}>
+          <ScrollView contentContainerStyle={style.scrollViewContainer}>
+            <View style={style.topViewContainer}>
               <View style={style.descriptionContainer}>
                 <Text style={style.label}>{I18n.t("details.vendor")}</Text>
                 <Text style={style.value}>
@@ -71,9 +83,18 @@ export default class ChargerDetails extends ResponsiveComponent {
                   {charger.firmwareVersion ? charger.firmwareVersion : "-"}
                 </Text>
               </View>
+            </View>
+            <View style={style.bottomViewContainer}>
               <View style={style.actionContainer}>
-                <Button rounded danger style={style.actionButton} onPress={() => this._resetHardConfirm()}>
-                  <Text uppercase={false} style={style.actionButtonText}>{I18n.t("chargers.reboot")}</Text>
+                <Button rounded danger style={style.actionButton}
+                    onPress={() => this._resetHardConfirm()}>
+                  <Text uppercase={false} style={style.actionButtonText}>{I18n.t("chargers.resetHard")}</Text>
+                </Button>
+              </View>
+              <View style={style.actionContainer}>
+                <Button rounded warning style={style.actionButton}
+                    onPress={() => this._resetSoftConfirm()}>
+                  <Text uppercase={false} style={style.actionButtonText}>{I18n.t("chargers.resetSoft")}</Text>
                 </Button>
               </View>
             </View>

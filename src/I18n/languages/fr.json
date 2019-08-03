@@ -72,8 +72,10 @@
     "heartBeat": "Heartbeat",
     "heartBeatOkMessage": "'{{chargeBoxID}}' fonctionne correctement et a reporté son statut il y a moins d'une minute",
     "heartBeatKoMessage": "'{{chargeBoxID}}' ne fonctionne pas correctement et n'a pas reporté son statut depuis {{lastHeartBeat}}",
-    "reboot": "Redémarrer",
-    "rebootMessage": "Voulez-vous vraimment redémarrer '{{chargeBoxID}}'?"
+    "resetHard": "Redémarrer",
+    "resetHardMessage": "Voulez-vous vraiment redémarrer '{{chargeBoxID}}'?",
+    "resetSoft": "Réinitialiser (Soft)",
+    "resetSoftMessage": "Voulez-vous vraiment réinitialiser '{{chargeBoxID}}'?"
   },
   "connector": {
     "occupied": "Occupé",

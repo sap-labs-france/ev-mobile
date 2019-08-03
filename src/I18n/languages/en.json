@@ -72,8 +72,10 @@
     "heartBeat": "Heartbeat",
     "heartBeatOkMessage": "'{{chargeBoxID}}' is working properly and reported its status a minute ago",
     "heartBeatKoMessage": "'{{chargeBoxID}}' is not working properly and hasn't reported its status since {{lastHeartBeat}}",
-    "reboot": "Reboot",
-    "rebootMessage": "Do you really want to restart '{{chargeBoxID}}'?"
+    "resetHard": "Reboot",
+    "resetHardMessage": "Do you really want to restart '{{chargeBoxID}}'?",
+    "resetSoft": "Reset (Soft)",
+    "resetSoftMessage": "Do you really want to reset '{{chargeBoxID}}'?"
   },
   "connector": {
     "occupied": "Occupied",
