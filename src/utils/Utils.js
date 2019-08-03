@@ -27,10 +27,17 @@ export default class Utils {
   }
 
   static getLocale() {
-    const deviceLanguage =
+    let deviceLanguage =
       Platform.OS === 'ios'
         ? NativeModules.SettingsManager.settings.AppleLocale
         : NativeModules.I18nManager.localeIdentifier;
+    // Filter only on supported languages
+    const shortDeviceLanguage = deviceLanguage.substring(0, 2);
+    if ((shortDeviceLanguage !== 'en') &&
+        (shortDeviceLanguage !== 'fr')) {
+      // Default
+      deviceLanguage = "en-gb";
+    }
     return deviceLanguage;
   }
 
