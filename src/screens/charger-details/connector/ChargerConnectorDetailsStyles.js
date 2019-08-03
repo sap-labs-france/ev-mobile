@@ -115,7 +115,7 @@ const commonStyles = ScaledSheet.create({
   icon: {
     fontSize: "25@s"
   },
-  userPicture: {
+  userImage: {
     height: "52@s",
     width: "52@s",
     alignSelf: "center",

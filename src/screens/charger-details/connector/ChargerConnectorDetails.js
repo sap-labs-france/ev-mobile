@@ -342,174 +342,219 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     return valString;
   };
 
+  _renderConnectorStatus = (style) => {
+    const { connector } = this.props;
+    return (
+      <View style={style.columnContainer}>
+        <ConnectorStatusComponent
+          connector={connector}
+          text={Utils.translateConnectorStatus(connector.status)}
+        />
+        {connector.status === Constants.CONN_STATUS_FAULTED ? (
+          <Text style={[style.subLabel, style.subLabelStatus]}>
+            {connector.info ? connector.info : ""}
+          </Text>
+        ) : (
+          undefined
+        )}
+      </View>
+    );
+  };
+
+  _renderUserInfo = (style) => {
+    const { isAdmin } = this.props;
+    const { userImage, transaction } = this.state;
+    return (
+      <View style={style.columnContainer}>
+        <Thumbnail
+          style={style.userImage}
+          source={userImage ? { uri: userImage } : noPhoto}
+        />
+        {transaction ? (
+          <View>
+            <Text style={[style.label, style.labelUser]}>
+              {Utils.buildUserName(transaction.user)}
+            </Text>
+            {isAdmin ? (
+              <Text style={[style.subLabel, style.subLabelUser]}>
+                ({transaction.tagID})
+              </Text>
+            ) : (
+              undefined
+            )}
+          </View>
+        ) : (
+          <Text style={style.label}>-</Text>
+        )}
+      </View>
+    );
+  };
+
+  _renderInstantPower = (style) => {
+    const { connector } = this.props;
+    return (
+      <View style={style.columnContainer}>
+        <Icon type="FontAwesome" name="bolt" style={style.icon} />
+        {connector.activeTransactionID === 0 ? (
+          <Text style={[style.label, style.labelValue]}>-</Text>
+        ) : (
+          <View>
+            <Text style={[style.label, style.labelValue]}>
+              {connector.currentConsumption / 1000 > 0
+                ? (connector.currentConsumption / 1000).toFixed(1)
+                : 0}
+            </Text>
+            <Text style={style.subLabel}>{I18n.t("details.instant")} (kW)</Text>
+          </View>
+        )}
+      </View>
+    );
+  };
+
+  _renderElapsedTime = (style) => {
+    const { transaction, hours, minutes, seconds } = this.state;
+    return (
+      <View style={style.columnContainer}>
+        <Icon type="Ionicons" name="time" style={style.icon} />
+        {transaction ? (
+          <Text
+            style={[style.label, style.labelTimeValue]}
+          >{`${hours}:${minutes}:${seconds}`}</Text>
+        ) : (
+          <Text style={[style.label, style.labelValue]}>- : - : -</Text>
+        )}
+      </View>
+    );
+  };
+
+  _renderTotalConsumption = (style) => {
+    const { connector } = this.props;
+    return (
+      <View style={style.columnContainer}>
+        <Icon style={style.icon} type="MaterialIcons" name="trending-up" />
+        {(connector.totalConsumption / 1000).toFixed(1) === 0.0 ||
+        connector.totalConsumption === 0 ? (
+          <Text style={[style.label, style.labelValue]}>-</Text>
+        ) : (
+          <View>
+            <Text style={[style.label, style.labelValue]}>
+              {(connector.totalConsumption / 1000).toFixed(1)}
+            </Text>
+            <Text style={style.subLabel}>{I18n.t("details.total")} (kW.h)</Text>
+          </View>
+        )}
+      </View>
+    );
+  };
+
+  _renderBatteryLevel = (style) => {
+    const { connector } = this.props;
+    return (
+      <View style={style.columnContainer}>
+        <Icon type="MaterialIcons" name="battery-charging-full" style={style.icon} />
+        {connector.currentStateOfCharge ? (
+          <View>
+            <Text style={[style.label, style.labelValue]}>
+              {connector.currentStateOfCharge}
+            </Text>
+            <Text style={style.subLabel}>(%)</Text>
+          </View>
+        ) : (
+          <View>
+            <Text style={[style.label, style.labelValue]}>-</Text>
+          </View>
+        )}
+      </View>
+    );
+  };
+
+  _renderStartTransactionButton = (style) => {
+    const { buttonDisabled } = this.state;
+    return (
+      <TouchableOpacity
+        disabled={buttonDisabled}
+        onPress={() => this._startTransactionConfirm()}
+      >
+        <View
+          style={
+            buttonDisabled
+              ? [style.buttonTransaction, style.startTransaction, style.buttonTransactionDisabled]
+              : [style.buttonTransaction, style.startTransaction]
+          }
+        >
+          <Icon
+            style={
+              buttonDisabled
+                ? [style.transactionIcon, style.startTransactionIcon, style.transactionDisabledIcon]
+                : [style.transactionIcon, style.startTransactionIcon]
+            }
+            type="MaterialIcons"
+            name="play-arrow"
+          />
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  _renderStopTransactionButton = (style) => {
+    const { buttonDisabled } = this.state;
+    return (
+      <TouchableOpacity onPress={() => this._stopTransactionConfirm()} disabled={buttonDisabled}>
+        <View
+          style={
+            buttonDisabled
+              ? [style.buttonTransaction, style.stopTransaction, style.buttonTransactionDisabled]
+              : [style.buttonTransaction, style.stopTransaction]
+          }
+        >
+          <Icon
+            style={
+              buttonDisabled
+                ? [style.transactionIcon, style.stopTransactionIcon, style.transactionDisabledIcon]
+                : [style.transactionIcon, style.stopTransactionIcon]
+            }
+            type="MaterialIcons" name="stop" />
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   render() {
     const style = computeStyleSheet();
     const { connector, isAdmin } = this.props;
-    const {
-      siteImage,
-      transaction,
-      userImage,
-      buttonDisabled,
-      hours,
-      minutes,
-      seconds,
-      isAuthorizedToStopTransaction
-    } = this.state;
+    const { siteImage, transaction, userImage, buttonDisabled, hours, minutes, seconds, isAuthorizedToStopTransaction } = this.state;
     return (
       <Container style={style.container}>
+          {/* Site Image */}
         <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
         <BackgroundComponent active={false}>
+          {/* Start/Stop Transaction */}
           <View style={style.transactionContainer}>
-            {connector.activeTransactionID === 0 ? (
-              <TouchableOpacity
-                onPress={() => this._startTransactionConfirm()}
-                disabled={buttonDisabled}
-              >
-                <View
-                  style={
-                    buttonDisabled
-                      ? [style.buttonTransaction, style.startTransaction, style.buttonTransactionDisabled]
-                      : [style.buttonTransaction, style.startTransaction]
-                  }
-                >
-                  <Icon
-                    style={
-                      buttonDisabled
-                        ? [style.transactionIcon, style.startTransactionIcon, style.transactionDisabledIcon]
-                        : [style.transactionIcon, style.startTransactionIcon]
-                    }
-                    type="MaterialIcons"
-                    name="play-arrow"
-                  />
-                </View>
-              </TouchableOpacity>
-            ) : isAuthorizedToStopTransaction ? (
-              <TouchableOpacity onPress={() => this._stopTransactionConfirm()} disabled={buttonDisabled}>
-                <View
-                  style={
-                    buttonDisabled
-                      ? [style.buttonTransaction, style.stopTransaction, style.buttonTransactionDisabled]
-                      : [style.buttonTransaction, style.stopTransaction]
-                  }
-                >
-                  <Icon
-                    style={
-                      buttonDisabled
-                        ? [style.transactionIcon, style.stopTransactionIcon, style.transactionDisabledIcon]
-                        : [style.transactionIcon, style.stopTransactionIcon]
-                    }
-                    type="MaterialIcons" name="stop" />
-                </View>
-              </TouchableOpacity>
-            ) : (
-              <View style={style.noButtonStopTransaction} />
-            )}
+            {connector.activeTransactionID === 0
+            ?
+              this._renderStartTransactionButton(style)
+            :
+              isAuthorizedToStopTransaction
+              ?
+                this._renderStopTransactionButton(style)
+              :
+                <View style={style.noButtonStopTransaction} />
+            }
           </View>
+          {/* Details */}
           <ScrollView style={style.scrollViewContainer}>
             <View style={style.detailsContainer}>
-              { /* First Row */ }
               <View style={style.rowContainer}>
-                { /* Connector Status */ }
-                <View style={style.columnContainer}>
-                  <ConnectorStatusComponent
-                    connector={connector}
-                    text={Utils.translateConnectorStatus(connector.status)}
-                  />
-                  {connector.status === Constants.CONN_STATUS_FAULTED ? (
-                    <Text style={[style.subLabel, style.subLabelStatus]}>
-                      {connector.info ? connector.info : ""}
-                    </Text>
-                  ) : (
-                    undefined
-                  )}
-                </View>
-                { /* User Info */ }
-                <View style={style.columnContainer}>
-                  <Thumbnail
-                    style={style.userPicture}
-                    source={userImage ? { uri: userImage } : noPhoto}
-                  />
-                  {transaction ? (
-                    <View>
-                      <Text style={[style.label, style.labelUser]}>
-                        {Utils.buildUserName(transaction.user)}
-                      </Text>
-                      {isAdmin ? (
-                        <Text style={[style.subLabel, style.subLabelUser]}>
-                          ({transaction.tagID})
-                        </Text>
-                      ) : (
-                        undefined
-                      )}
-                    </View>
-                  ) : (
-                    <Text style={style.label}>-</Text>
-                  )}
-                </View>
+                {this._renderConnectorStatus(style)}
+                {this._renderUserInfo(style)}
               </View>
-              { /* Second Row */ }
               <View style={style.rowContainer}>
-                { /* Instant Power in kW */ }
-                <View style={style.columnContainer}>
-                  <Icon type="FontAwesome" name="bolt" style={style.icon} />
-                  {connector.activeTransactionID === 0 ? (
-                    <Text style={[style.label, style.labelValue]}>-</Text>
-                  ) : (
-                    <View>
-                      <Text style={[style.label, style.labelValue]}>
-                        {connector.currentConsumption / 1000 > 0
-                          ? (connector.currentConsumption / 1000).toFixed(1)
-                          : 0}
-                      </Text>
-                      <Text style={style.subLabel}>{I18n.t("details.instant")} (kW)</Text>
-                    </View>
-                  )}
-                </View>
-                { /* Elapsed Time HH:MM:SS */ }
-                <View style={style.columnContainer}>
-                  <Icon type="Ionicons" name="time" style={style.icon} />
-                  {transaction ? (
-                    <Text
-                      style={[style.label, style.labelTimeValue]}
-                    >{`${hours}:${minutes}:${seconds}`}</Text>
-                  ) : (
-                    <Text style={[style.label, style.labelValue]}>- : - : -</Text>
-                  )}
-                </View>
+                {this._renderInstantPower(style)}
+                {this._renderElapsedTime(style)}
               </View>
-              { /* Third Row */ }
               <View style={style.rowContainer}>
-                { /* Total Concumption in kW.h */ }
-                <View style={style.columnContainer}>
-                  <Icon style={style.icon} type="MaterialIcons" name="trending-up" />
-                  {(connector.totalConsumption / 1000).toFixed(1) === 0.0 ||
-                  connector.totalConsumption === 0 ? (
-                    <Text style={[style.label, style.labelValue]}>-</Text>
-                  ) : (
-                    <View>
-                      <Text style={[style.label, style.labelValue]}>
-                        {(connector.totalConsumption / 1000).toFixed(1)}
-                      </Text>
-                      <Text style={style.subLabel}>{I18n.t("details.total")} (kW.h)</Text>
-                    </View>
-                  )}
-                </View>
-                { /* Battery Level in % */ }
-                <View style={style.columnContainer}>
-                  <Icon type="MaterialIcons" name="battery-charging-full" style={style.icon} />
-                  {connector.currentStateOfCharge ? (
-                    <View>
-                      <Text style={[style.label, style.labelValue]}>
-                        {connector.currentStateOfCharge}
-                      </Text>
-                      <Text style={style.subLabel}>(%)</Text>
-                    </View>
-                  ) : (
-                    <View>
-                      <Text style={[style.label, style.labelValue]}>-</Text>
-                    </View>
-                  )}
-                </View>
+                {this._renderTotalConsumption(style)}
+                {this._renderBatteryLevel(style)}
               </View>
             </View>
           </ScrollView>
