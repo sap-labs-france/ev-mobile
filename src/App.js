@@ -88,7 +88,6 @@ const RootContainer = createAppContainer(RootNavigator);
 // Handle persistence of navigation
 const persistenceKey = DeviceInfo.getVersion();
 const persistNavigationState = async (navState) => {
-  console.log('persistNavigationState');
   try {
     await AsyncStorage.setItem(persistenceKey, JSON.stringify(navState));
   } catch(error) {
@@ -96,7 +95,6 @@ const persistNavigationState = async (navState) => {
   }
 }
 const loadNavigationState = async () => {
-  console.log('loadNavigationState');
   const navState = await AsyncStorage.getItem(persistenceKey);
   return JSON.parse(navState);
 }

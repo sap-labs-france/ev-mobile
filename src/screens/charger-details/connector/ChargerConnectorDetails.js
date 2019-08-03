@@ -310,9 +310,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
           elapsedTimeFormatted = this._formatDurationHHMMSS(durationSecs);
         }
         // Inactivity?
-        if (transaction.totalInactivitySecs) {
+        if (transaction.currentTotalInactivitySecs) {
           // Format
-          inactivityFormatted = this._formatDurationHHMMSS(transaction.totalInactivitySecs);
+          inactivityFormatted = this._formatDurationHHMMSS(transaction.currentTotalInactivitySecs);
         }
         // Set
         this.setState({
