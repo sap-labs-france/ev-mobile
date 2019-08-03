@@ -74,7 +74,7 @@
     "heartBeatKoMessage": "'{{chargeBoxID}}' is not working properly and hasn't reported its status since {{lastHeartBeat}}",
     "resetHard": "Reboot",
     "resetHardMessage": "Do you really want to reboot '{{chargeBoxID}}'?",
-    "resetSoft": "Reset (Soft)",
+    "resetSoft": "Reset",
     "resetSoftMessage": "Do you really want to reset '{{chargeBoxID}}'?",
     "clearCache": "Clear Cache",
     "clearCacheMessage": "Do you really want to clear the cache of '{{chargeBoxID}}'?"

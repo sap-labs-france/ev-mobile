@@ -74,7 +74,7 @@
     "heartBeatKoMessage": "'{{chargeBoxID}}' ne fonctionne pas correctement et n'a pas reporté son statut depuis {{lastHeartBeat}}",
     "resetHard": "Redémarrer",
     "resetHardMessage": "Voulez-vous vraiment redémarrer '{{chargeBoxID}}'?",
-    "resetSoft": "Réinitialiser (Soft)",
+    "resetSoft": "Réinitialiser",
     "resetSoftMessage": "Voulez-vous vraiment réinitialiser '{{chargeBoxID}}'?",
     "clearCache": "Effacer le Cache",
     "clearCacheMessage": "Voulez-vous vraiment le cache de '{{chargeBoxID}}'?"
