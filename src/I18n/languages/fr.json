@@ -67,7 +67,10 @@
     "noChargers": "Cette Zone n'a pas de Borne"
   },
   "chargers": {
-    "title": "Bornes"
+    "title": "Bornes",
+    "heartBeat": "Heartbeat",
+    "heartBeatOkMessage": "'{{chargeBoxID}}' fonctionne correctement et a reporté son statut il y a moins d'une minute",
+    "heartBeatKoMessage": "'{{chargeBoxID}}' ne fonctionne pas correctement et n'a pas reporté son statut depuis {{lastHeartBeat}}"
   },
   "connector": {
     "occupied": "Occupé",

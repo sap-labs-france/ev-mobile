@@ -18,6 +18,15 @@ import Chargers from "./screens/chargers/Chargers";
 import AllChargers from "./screens/chargers/AllChargers";
 import ChargerTabDetails from "./screens/charger-details/tabs/ChargerTabDetails";
 import NotificationManager from "./notification/NotificationManager";
+import Utils from "./utils/Utils";
+import moment from "moment";
+
+// Get the supported locales
+require('moment/locale/fr');
+require('moment/locale/en-gb');
+
+// Set the current locale
+moment.locale(Utils.getLocaleShort());
 
 // Get the Notification Scheduler
 const _notificationManager = NotificationManager.getInstance();

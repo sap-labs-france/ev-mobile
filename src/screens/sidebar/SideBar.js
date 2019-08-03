@@ -8,6 +8,7 @@ import I18n from "../../I18n/I18n";
 import Utils from "../../utils/Utils";
 import DeviceInfo from "react-native-device-info";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
+import moment from "moment";
 
 const _provider = ProviderFactory.getProvider();
 
@@ -81,16 +82,16 @@ class SideBar extends ResponsiveComponent {
           <Content style={style.drawerContent}>
             <View style={style.logoContainer}>
               <Image source={logo} style={style.logo} />
-              <Text style={style.versionText}>{`${I18n.t(
-                "general.version"
-              )} ${DeviceInfo.getVersion()}`}</Text>
-              <Text style={style.versionDate}>
-                (
-                {DeviceInfo.getLastUpdateTime()
-                  ? new Date(DeviceInfo.getLastUpdateTime()).toLocaleDateString()
-                  : I18n.t("general.date")}
-                )
+              <Text style={style.versionText}>
+                {`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}
               </Text>
+              {DeviceInfo.getLastUpdateTime() ?
+                <Text style={style.versionDate}>
+                  {moment(DeviceInfo.getLastUpdateTime()).format("LL")}
+                </Text>
+              :
+                undefined
+              }
             </View>
             {isComponentOrganizationActive ? (
               <ListItem

@@ -2,6 +2,7 @@ import Message from "./Message";
 import Constants from "./Constants";
 import I18n from "../I18n/I18n";
 import validate from "validate.js";
+import { NativeModules, Platform } from 'react-native';
 import ProviderFactory from "../provider/ProviderFactory";
 
 const type2 = require("../../assets/connectorType/type2.gif");
@@ -23,6 +24,18 @@ export default class Utils {
     }
     // Ok, return the value
     return navigation.state.params[name];
+  }
+
+  static getLocale() {
+    const deviceLanguage =
+      Platform.OS === 'ios'
+        ? NativeModules.SettingsManager.settings.AppleLocale
+        : NativeModules.I18nManager.localeIdentifier;
+    return deviceLanguage;
+  }
+
+  static getLocaleShort() {
+    return Utils.getLocale().substring(0, 2);
   }
 
   static async handleHttpUnexpectedError(error, navigation) {

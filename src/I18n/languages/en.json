@@ -70,7 +70,7 @@
     "title": "Chargers",
     "heartBeat": "Heartbeat",
     "heartBeatOkMessage": "'{{chargeBoxID}}' is working properly and reported its status a minute ago",
-    "heartBeatKoMessage": "'{{chargeBoxID}}' is NOT working properly and hasn't reported its status since {{lastHeartBeat}}"
+    "heartBeatKoMessage": "'{{chargeBoxID}}' is not working properly and hasn't reported its status since {{lastHeartBeat}}"
   },
   "connector": {
     "occupied": "Occupied",
