@@ -364,7 +364,7 @@ export default class CentralServerProvider {
     await this.initialize();
     // Call
     const result = await axios.post(
-      `${_centralRestServerServiceSecuredURL}/ChargingStationStartTransaction`,
+      `${_centralRestServerServiceSecuredURL}/ChargingStationRemoteStartTransaction`,
       {
         chargeBoxID,
         args: {
@@ -385,7 +385,7 @@ export default class CentralServerProvider {
     await this.initialize();
     // Call
     const result = await axios.post(
-      `${_centralRestServerServiceSecuredURL}/ChargingStationStopTransaction`,
+      `${_centralRestServerServiceSecuredURL}/ChargingStationRemoteStopTransaction`,
       {
         chargeBoxID,
         args: {
