@@ -53,6 +53,34 @@ export default class ChargerDetails extends ResponsiveComponent {
     }
   }
 
+  _clearCacheConfirm() {
+    const { charger } = this.props;
+    Alert.alert(
+      I18n.t("chargers.clearCache"),
+      I18n.t("chargers.clearCacheMessage", { chargeBoxID: charger.id }),
+      [
+        { text: I18n.t("general.yes"), onPress: () => this._clearCache(charger.id) },
+        { text: I18n.t("general.cancel") }
+      ]
+    );
+  }
+
+  async _clearCache(chargeBoxID) {
+    try {
+      // Start the Transaction
+      const status = await _provider.clearCache(chargeBoxID);
+      // Check
+      if (status.status && status.status === "Accepted") {
+        Message.showSuccess(I18n.t("details.accepted"));
+      } else {
+        Message.showError(I18n.t("details.denied"));
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+    }
+  }
+
   render() {
     const style = computeStyleSheet();
     const { charger } = this.props;
@@ -95,6 +123,12 @@ export default class ChargerDetails extends ResponsiveComponent {
                 <Button rounded warning style={style.actionButton}
                     onPress={() => this._resetSoftConfirm()}>
                   <Text uppercase={false} style={style.actionButtonText}>{I18n.t("chargers.resetSoft")}</Text>
+                </Button>
+              </View>
+              <View style={style.actionContainer}>
+                <Button rounded warning style={style.actionButton}
+                    onPress={() => this._clearCacheConfirm()}>
+                  <Text uppercase={false} style={style.actionButtonText}>{I18n.t("chargers.clearCache")}</Text>
                 </Button>
               </View>
             </View>

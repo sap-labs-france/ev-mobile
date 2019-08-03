@@ -400,7 +400,7 @@ export default class CentralServerProvider {
   }
 
   async reset(chargeBoxID, type) {
-    this.debug("rebootTransaction");
+    this.debug("reset");
     // Init?
     await this.initialize();
     // Call
@@ -411,6 +411,24 @@ export default class CentralServerProvider {
         args: {
           type
         }
+      },
+      {
+        headers: this._buildSecuredHeaders()
+      }
+    );
+    return result.data;
+  }
+
+  async clearCache(chargeBoxID) {
+    this.debug("clearCache");
+    // Init?
+    await this.initialize();
+    // Call
+    const result = await axios.post(
+      `${_centralRestServerServiceSecuredURL}/ChargingStationClearCache`,
+      {
+        chargeBoxID,
+        args: {}
       },
       {
         headers: this._buildSecuredHeaders()

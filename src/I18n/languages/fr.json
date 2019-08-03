@@ -75,7 +75,9 @@
     "resetHard": "Redémarrer",
     "resetHardMessage": "Voulez-vous vraiment redémarrer '{{chargeBoxID}}'?",
     "resetSoft": "Réinitialiser (Soft)",
-    "resetSoftMessage": "Voulez-vous vraiment réinitialiser '{{chargeBoxID}}'?"
+    "resetSoftMessage": "Voulez-vous vraiment réinitialiser '{{chargeBoxID}}'?",
+    "clearCache": "Effacer le Cache",
+    "clearCacheMessage": "Voulez-vous vraiment le cache de '{{chargeBoxID}}'?"
   },
   "connector": {
     "occupied": "Occupé",
