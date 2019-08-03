@@ -33,7 +33,7 @@ const commonStyles = ScaledSheet.create({
     paddingTop: Platform.OS === "ios" ? "4@s" : 0,
     fontSize: "20@s",
     fontWeight: "bold",
-    color: commonColor.textColorApp
+    color: commonColor.textColor
   },
   icon: {
     fontSize: "30@s",

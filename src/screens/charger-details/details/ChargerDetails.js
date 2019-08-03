@@ -1,6 +1,6 @@
 import React from "react";
 import { ScrollView } from "react-native";
-import { Container, View, Text } from "native-base";
+import { Container, View, Text, Button } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./ChargerDetailsStyles";
@@ -37,6 +37,11 @@ export default class ChargerDetails extends ResponsiveComponent {
                 <Text style={style.value}>
                   {charger.firmwareVersion ? charger.firmwareVersion : "-"}
                 </Text>
+              </View>
+              <View style={style.columnContainer}>
+                <Button rounded danger style={style.actionButton}>
+                  <Text uppercase={false} style={style.actionButtonText}>Reboot</Text>
+                </Button>
               </View>
             </View>
           </ScrollView>

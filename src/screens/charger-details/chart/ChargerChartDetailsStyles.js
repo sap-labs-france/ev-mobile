@@ -11,7 +11,7 @@ const commonStyles = ScaledSheet.create({
   spinner: {
     flex: 1,
     justifyContent: "center",
-    color: commonColor.textColorApp
+    color: commonColor.textColor
   },
   chart: {
     height: "100%"
@@ -23,11 +23,11 @@ const commonStyles = ScaledSheet.create({
   },
   notAuthorizedText: {
     fontSize: "20@s",
-    color: commonColor.textColorApp
+    color: commonColor.textColor
   },
   notAuthorizedIcon: {
     fontSize: "75@s",
-    color: commonColor.textColorApp
+    color: commonColor.textColor
   }
 });
 

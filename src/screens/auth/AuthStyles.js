@@ -41,23 +41,24 @@ const commonStyles = ScaledSheet.create({
   },
   logo: {
     resizeMode: "contain",
-    marginTop: "20@s",
+    marginTop: "10@s",
     height: "100@s"
   },
   appText: {
     color: commonColor.inverseTextColor,
     fontSize: "40@s",
     fontWeight: "bold",
-    paddingTop: "15@s"
+    paddingTop: "5@s"
   },
   appVersionText: {
     color: commonColor.inverseTextColor,
+    marginTop: "-5@s",
     fontSize: "15@s"
   },
   appTenantName: {
     color: commonColor.inverseTextColor,
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: "5@s",
+    marginBottom: "10@s",
     fontSize: "15@s",
     fontWeight: "bold"
   },

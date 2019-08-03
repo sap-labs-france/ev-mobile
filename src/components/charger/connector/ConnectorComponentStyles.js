@@ -41,7 +41,7 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center"
   },
   connectorValues: {
-    color: commonColor.textColorApp,
+    color: commonColor.textColor,
     marginTop: "-1@s",
     fontSize: "30@s",
     fontWeight: "bold",
@@ -52,16 +52,16 @@ const commonStyles = ScaledSheet.create({
     height: "40@s"
   },
   labelImage: {
-    color: commonColor.textColorApp,
+    color: commonColor.textColor,
     fontSize: "10@s"
   },
   label: {
-    color: commonColor.textColorApp,
+    color: commonColor.textColor,
     fontSize: "10@s",
     marginTop: "-3@s"
   },
   subLabel: {
-    color: commonColor.textColorApp,
+    color: commonColor.textColor,
     fontSize: "9@s"
   }
 });

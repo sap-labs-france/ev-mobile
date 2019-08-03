@@ -36,6 +36,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     const { type, connector } = this.props;
     // Get the type
     let connectorType;
+    let status;
     if (connector) {
       connectorType = connector.status;
     } else {
@@ -44,52 +45,51 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     // Default CSS
     const connectorStyles = {
       badge: [style.commonConnector],
-      text: []
+      value: [style.commonConnectorValue],
+      description: [style.commonConnectorDescription]
     };
     switch (connectorType) {
       // Charging
       case Constants.CONN_STATUS_CHARGING:
       case Constants.CONN_STATUS_OCCUPIED:
-        connectorStyles.badge.push(style.chargingConnector);
-        connectorStyles.text.push(style.chargingConnectorText);
+        status = "charging";
         break;
       // Preparing
       case Constants.CONN_STATUS_PREPARING:
-        connectorStyles.badge.push(style.preparingConnector);
-        connectorStyles.text.push(style.preparingConnectorText);
+        status = "preparing";
         break;
       // Preparing
       case Constants.CONN_STATUS_FINISHING:
-        connectorStyles.badge.push(style.finishingConnector);
-        connectorStyles.text.push(style.finishingConnectorText);
+        status = "finishing";
         break;
       // Reserved
       case Constants.CONN_STATUS_RESERVED:
-        connectorStyles.badge.push(style.reservedConnector);
-        connectorStyles.text.push(style.reservedConnectorText);
+        status = "reserved";
         break;
       // Faulted
       case Constants.CONN_STATUS_FAULTED:
-        connectorStyles.badge.push(style.faultedConnector);
-        connectorStyles.text.push(style.faultedConnectorText);
+        status = "faulted";
         break;
       // Unavailable
       case Constants.CONN_STATUS_UNAVAILABLE:
-        connectorStyles.badge.push(style.unavailableConnector);
-        connectorStyles.text.push(style.unavailableConnectorText);
+        status = "unavailable";
         break;
       // Suspending EV / EVSE
       case Constants.CONN_STATUS_SUSPENDED_EVSE:
       case Constants.CONN_STATUS_SUSPENDED_EV:
-        connectorStyles.badge.push(style.supendedConnector);
-        connectorStyles.text.push(style.supendedConnectorText);
+        status = "supended";
         break;
       // Available
       case Constants.CONN_STATUS_AVAILABLE:
-        connectorStyles.badge.push(style.availableConnector);
-        connectorStyles.text.push(style.availableConnectorText);
+        status = "available";
         break;
     }
+    if (status) {
+      connectorStyles.badge.push(style[status + "Connector"]);
+      connectorStyles.value.push(style[status + "ConnectorValue"]);
+      connectorStyles.description.push(style[status + "ConnectorDescription"]);
+    }
+    console.log(connectorStyles);
     return connectorStyles;
   }
 
@@ -121,19 +121,19 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     // Animated
     const isAnimated = this._isAnimated();
     return (
-      <View style={this.props.text ? style.containerWithText : style.containerWithNoText}>
+      <View style={this.props.text ? style.containerWithDescription : style.containerWithNoDescription}>
         <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
           <Badge style={connectorStyles.badge}>
             <Animated.Text style={
               isAnimated ?
-                [ style.connectorValue, ...connectorStyles.badge, { transform: [{ rotate: this.rotateCounterClockwise }] }]
+                [ ...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }]
               :
-                [ style.connectorValue, ...connectorStyles.badge ]
+                connectorStyles.value
               }>{ value }</Animated.Text>
           </Badge>
         </Animated.View>
         {this.props.text ?
-          <Text style={[...connectorStyles.text, style.connectorDescription]}>{this.props.text}</Text>
+          <Text style={connectorStyles.description}>{this.props.text}</Text>
         :
           undefined
         }

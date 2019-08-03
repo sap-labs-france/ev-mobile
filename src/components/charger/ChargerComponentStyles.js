@@ -23,7 +23,7 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: Constants.CSS_HEADER_BG
   },
   name: {
-    color: commonColor.textColorApp,
+    color: commonColor.textColor,
     fontSize: "20@s",
     marginLeft: "5@s",
     fontWeight: "bold"

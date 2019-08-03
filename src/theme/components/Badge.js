@@ -39,7 +39,7 @@ export default (variables /* : * */ = variable) => {
     padding: variables.badgePadding,
     paddingHorizontal: 6,
     borderStyle: "solid",
-    borderColor: commonColor.textColorApp,
+    borderColor: commonColor.textColor,
     borderRadius: scale(22),
     borderWidth: 4,
     justifyContent: "center",

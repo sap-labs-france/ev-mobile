@@ -286,7 +286,6 @@ export default {
   tabFontSize: 15,
 
   // Text
-  textColorApp: primaryDark,
   textColor: primaryDark,
   inverseTextColor: "#fff",
   noteFontSize: 14,
