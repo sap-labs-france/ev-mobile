@@ -308,6 +308,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       if (transaction && transaction.timestamp) {
         // Diff
         let diffSecs = (Date.now() - transaction.timestamp.getTime()) / 1000;
+        if (diffSecs < 0) {
+          diffSecs = 0;
+        }
         // Set Hours
         const hours = Math.trunc(diffSecs / 3600);
         diffSecs -= hours * 3600;
@@ -404,7 +407,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
           </View>
           <ScrollView style={style.scrollViewContainer}>
             <View style={style.detailsContainer}>
+              { /* First Row */ }
               <View style={style.rowContainer}>
+                { /* Connector Status */ }
                 <View style={style.columnContainer}>
                   <ConnectorStatusComponent
                     connector={connector}
@@ -418,6 +423,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
                     undefined
                   )}
                 </View>
+                { /* User Info */ }
                 <View style={style.columnContainer}>
                   <Thumbnail
                     style={style.userPicture}
@@ -441,7 +447,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
                   )}
                 </View>
               </View>
+              { /* Second Row */ }
               <View style={style.rowContainer}>
+                { /* Instant Power in kW */ }
                 <View style={style.columnContainer}>
                   <Icon type="FontAwesome" name="bolt" style={style.icon} />
                   {connector.activeTransactionID === 0 ? (
@@ -457,6 +465,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
                     </View>
                   )}
                 </View>
+                { /* Elapsed Time HH:MM:SS */ }
                 <View style={style.columnContainer}>
                   <Icon type="Ionicons" name="time" style={style.icon} />
                   {transaction ? (
@@ -468,7 +477,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
                   )}
                 </View>
               </View>
+              { /* Third Row */ }
               <View style={style.rowContainer}>
+                { /* Total Concumption in kW.h */ }
                 <View style={style.columnContainer}>
                   <Icon style={style.icon} type="MaterialIcons" name="trending-up" />
                   {(connector.totalConsumption / 1000).toFixed(1) === 0.0 ||
@@ -483,6 +494,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
                     </View>
                   )}
                 </View>
+                { /* Battery Level in % */ }
                 <View style={style.columnContainer}>
                   <Icon type="MaterialIcons" name="battery-charging-full" style={style.icon} />
                   {connector.currentStateOfCharge ? (
