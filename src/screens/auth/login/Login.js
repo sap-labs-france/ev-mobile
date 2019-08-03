@@ -4,7 +4,7 @@ import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet, F
 import Orientation from "react-native-orientation-locker";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import * as Animatable from "react-native-animatable";
-import providerFactory from "../../../provider/ProviderFactory";
+import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import Constants from "../../../utils/Constants";
@@ -15,7 +15,7 @@ import DeviceInfo from "react-native-device-info";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import BaseScreen from "../../base-screen/BaseScreen";
 
-const _provider = providerFactory.getProvider();
+const _provider = ProviderFactory.getProvider();
 const logo = require("../../../../assets/logo-low.png");
 
 const formValidationDef = {
@@ -311,7 +311,7 @@ export default class Login extends BaseScreen {
                 {loading ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
-                  <Button rounded primary block style={style.button} onPress={this._login}>
+                  <Button rounded primary block style={style.button} onPress={() => this._login()}>
                     <TextRN style={style.buttonText}>{I18n.t("authentication.login")}</TextRN>
                   </Button>
                 )}

@@ -346,7 +346,7 @@ export default class SignUp extends BaseScreen {
                 {loading || !captcha ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
-                  <Button rounded primary block style={style.button} onPress={this._signUp}>
+                  <Button rounded primary block style={style.button} onPress={() => this._signUp()}>
                     <TextRN style={style.buttonText}>{I18n.t("authentication.signUp")}</TextRN>
                   </Button>
                 )}

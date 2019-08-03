@@ -184,7 +184,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     this._handleStartStopDisabledButton();
   };
 
-  _onStartTransaction = () => {
+  _startTransactionConfirm = () => {
     const { charger } = this.props;
     Alert.alert(
       I18n.t("details.startTransaction"),
@@ -233,7 +233,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     }
   };
 
-  _onStopTransaction = async () => {
+  _stopTransactionConfirm = async () => {
     const { charger } = this.props;
     // Confirm
     Alert.alert(
@@ -359,7 +359,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
           <View style={style.transactionContainer}>
             {connector.activeTransactionID === 0 ? (
               <TouchableOpacity
-                onPress={() => this._onStartTransaction()}
+                onPress={() => this._startTransactionConfirm()}
                 disabled={buttonDisabled}
               >
                 <View
@@ -381,7 +381,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
                 </View>
               </TouchableOpacity>
             ) : isAuthorizedToStopTransaction ? (
-              <TouchableOpacity onPress={() => this._onStopTransaction()} disabled={buttonDisabled}>
+              <TouchableOpacity onPress={() => this._stopTransactionConfirm()} disabled={buttonDisabled}>
                 <View
                   style={
                     buttonDisabled

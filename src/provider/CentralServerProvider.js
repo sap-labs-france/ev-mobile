@@ -399,6 +399,26 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  async reset(chargeBoxID, type) {
+    this.debug("rebootTransaction");
+    // Init?
+    await this.initialize();
+    // Call
+    const result = await axios.post(
+      `${_centralRestServerServiceSecuredURL}/ChargingStationReset`,
+      {
+        chargeBoxID,
+        args: {
+          type
+        }
+      },
+      {
+        headers: this._buildSecuredHeaders()
+      }
+    );
+    return result.data;
+  }
+
   async getTransaction(params = {}) {
     this.debug("getTransaction");
     // Init?

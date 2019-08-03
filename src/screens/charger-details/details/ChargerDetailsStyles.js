@@ -5,9 +5,12 @@ import { ScaledSheet } from "react-native-size-matters";
 
 const commonStyles = ScaledSheet.create({
   container: {
+    flex: 1,
     backgroundColor: commonColor.containerBgColor
   },
-  scrollViewContainer: {},
+  scrollViewContainer: {
+    flex: 1
+  },
   viewContainer: {
     flex: 1,
     flexDirection: "column",
@@ -18,7 +21,7 @@ const commonStyles = ScaledSheet.create({
     flex: 1,
     color: commonColor.textColor
   },
-  columnContainer: {
+  descriptionContainer: {
     height: "75@s",
     justifyContent: "center",
     alignItems: "center"
@@ -33,10 +36,13 @@ const commonStyles = ScaledSheet.create({
     fontSize: "20@s",
     color: commonColor.textColor
   },
+  actionContainer: {
+    height: "75@s",
+    width: "80%",
+    justifyContent: "center"
+  },
   actionButton: {
-    width: "200@s",
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: "center"
   },
   actionButtonText: {
     fontSize: "18@s"

@@ -57,7 +57,7 @@ const commonStyles = ScaledSheet.create({
   },
   supendedConnectorValue: {},
   supendedConnectorDescription: {
-    color: commonColor.brandPrimary
+    color: commonColor.brandPrimaryDark
   },
   preparingConnector: {
     backgroundColor: commonColor.brandWarning,

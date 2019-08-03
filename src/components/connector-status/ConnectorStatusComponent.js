@@ -89,7 +89,6 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
       connectorStyles.value.push(style[status + "ConnectorValue"]);
       connectorStyles.description.push(style[status + "ConnectorDescription"]);
     }
-    console.log(connectorStyles);
     return connectorStyles;
   }
 
