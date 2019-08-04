@@ -4,7 +4,7 @@ import { ScrollView, RefreshControl } from "react-native";
 import ChargerDetails from "../details/ChargerDetails";
 import ChargerChartDetails from "../chart/ChargerChartDetails";
 import ChargerConnectorDetails from "../connector/ChargerConnectorDetails";
-import BaseScreen from "../../base-screen/BaseScreen";
+import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import I18n from "../../../I18n/I18n";
@@ -15,7 +15,7 @@ import BackgroundComponent from "../../../components/background/BackgroundCompon
 
 const _provider = ProviderFactory.getProvider();
 
-export default class ChargerTabDetails extends BaseScreen {
+export default class ChargerTabDetails extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,8 +28,8 @@ export default class ChargerTabDetails extends BaseScreen {
       isAdmin: false,
       refreshing: false
     };
-    // Override
-    this.refreshPeriodMillis = Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS;
+    // Set refresh period
+    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
   }
 
   async componentDidMount() {
@@ -55,7 +55,7 @@ export default class ChargerTabDetails extends BaseScreen {
     super.componentWillUnmount();
   }
 
-  _refresh = async () => {
+  refresh = async () => {
     if (this.isMounted()) {
       await this._getCharger();
     }
@@ -65,7 +65,7 @@ export default class ChargerTabDetails extends BaseScreen {
     // Display spinner
     this.setState({ refreshing: true });
     // Refresh
-    await this._refresh();
+    await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
   };
@@ -89,7 +89,7 @@ export default class ChargerTabDetails extends BaseScreen {
       );
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
+      Utils.handleHttpUnexpectedError(error, this.props.navigation);
     }
   };
 
@@ -118,7 +118,7 @@ export default class ChargerTabDetails extends BaseScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
+      Utils.handleHttpUnexpectedError(error, this.props.navigation);
     }
   };
 

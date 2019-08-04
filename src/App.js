@@ -1,11 +1,6 @@
 import React from "react";
-import { StatusBar, Dimensions } from "react-native";
-import {
-  createSwitchNavigator,
-  createStackNavigator,
-  createDrawerNavigator,
-  createAppContainer
-} from "react-navigation";
+import { StatusBar, Dimensions, AsyncStorage } from "react-native";
+import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createAppContainer } from "react-navigation";
 import { Root } from "native-base";
 import Login from "./screens/auth/login/Login";
 import Eula from "./screens/auth/eula/Eula";
@@ -18,6 +13,15 @@ import Chargers from "./screens/chargers/Chargers";
 import AllChargers from "./screens/chargers/AllChargers";
 import ChargerTabDetails from "./screens/charger-details/tabs/ChargerTabDetails";
 import NotificationManager from "./notification/NotificationManager";
+import DeviceInfo from "react-native-device-info";
+import Utils from "./utils/Utils";
+import moment from "moment";
+
+// Get the supported locales
+require('moment/locale/fr');
+require('moment/locale/en-gb');
+// Set the current locale
+moment.locale(Utils.getLocaleShort());
 
 // Get the Notification Scheduler
 const _notificationManager = NotificationManager.getInstance();
@@ -81,6 +85,24 @@ const RootNavigator = createSwitchNavigator(
 // Create a container to wrap the main navigator
 const RootContainer = createAppContainer(RootNavigator);
 
+// Handle persistence of navigation
+const persistenceKey = DeviceInfo.getVersion();
+const persistNavigationState = async (navState) => {
+  try {
+    await AsyncStorage.setItem(persistenceKey, JSON.stringify(navState));
+  } catch(error) {
+    console.log(error);
+  }
+}
+const loadNavigationState = async () => {
+  const navState = await AsyncStorage.getItem(persistenceKey);
+  return JSON.parse(navState);
+}
+const RootContainerPersists = () => <RootContainer
+  persistNavigationState={persistNavigationState}
+  loadNavigationState={loadNavigationState}
+/>
+
 export default class App extends React.Component {
   // eslint-disable-next-line class-methods-use-this
   async componentDidMount() {
@@ -98,7 +120,7 @@ export default class App extends React.Component {
     return (
       <Root>
         <StatusBar hidden />
-        <RootContainer />
+        <RootContainerPersists />
       </Root>
     );
   }

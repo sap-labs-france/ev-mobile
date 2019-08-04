@@ -1,5 +1,5 @@
 import React from "react";
-import BaseScreen from "../../base-screen/BaseScreen";
+import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
 import { View, processColor } from "react-native";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import Utils from "../../../utils/Utils";
@@ -15,7 +15,7 @@ const EMPTY_CHART = [{ x: 0, y: 0 }];
 
 const _provider = ProviderFactory.getProvider();
 
-export default class ChargerChartDetails extends BaseScreen {
+export default class ChargerChartDetails extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     this.state = {
@@ -87,12 +87,12 @@ export default class ChargerChartDetails extends BaseScreen {
       // Check if HTTP?
       if (!error.request || error.request.status !== 560) {
         // Other common Error
-        Utils.handleHttpUnexpectedError(error, this.props);
+        Utils.handleHttpUnexpectedError(error, this.props.navigation);
       }
     }
   };
 
-  _refresh = async () => {
+  refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
       // Refresh Consumption
@@ -163,7 +163,7 @@ export default class ChargerChartDetails extends BaseScreen {
       valueFormatter: "date",
       valueFormatterPattern: "HH:mm",
       textSize: scale(8),
-      textColor: processColor("white")
+      textColor: processColor(commonColor.brandInfo)
     };
     // Y Axis
     chartDefinition.yAxis = {};

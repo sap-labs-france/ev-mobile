@@ -5,65 +5,101 @@ import { ScaledSheet, scale, moderateScale } from "react-native-size-matters";
 import { Platform } from "react-native";
 
 const commonStyles = ScaledSheet.create({
-  containerWithText: {
+  containerWithDescription: {
     height: "60@s",
-    width: "75@s",
+    width: "85@s",
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center"
   },
-  containerWithNoText: {
+  containerWithNoDescription: {
     height: "55@s",
     width: "60@s",
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center"
   },
-  connectorValue: {
-    color: commonColor.badgeColor,
-    fontSize: commonColor.fontSizeBase,
+  commonConnector: {
+    backgroundColor: "transparent"
+  },
+  commonConnectorValue: {
+    fontSize: "20@s",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
+    color: commonColor.inverseTextColor
+  },
+  commonConnectorDescription: {
+    position: "absolute",
+    bottom: "-2@s",
+    fontSize: "12@s",
+    color: commonColor.textColor
   },
   faultedConnector: {
     backgroundColor: commonColor.brandDanger,
     borderColor: commonColor.brandDangerDark
   },
+  faultedConnectorValue: {},
+  faultedConnectorDescription: {
+    color: commonColor.brandDanger
+  },
   availableConnector: {
-    backgroundColor: commonColor.brandSuccess,
-    borderColor: commonColor.brandSuccessDark
+    borderColor: commonColor.brandSuccess
+  },
+  availableConnectorValue: {
+    color: commonColor.brandSuccess
+  },
+  availableConnectorDescription: {
+    color: commonColor.brandSuccess
   },
   supendedConnector: {
-    backgroundColor: commonColor.brandInfo,
+    backgroundColor: commonColor.brandPrimary,
     borderColor: commonColor.brandPrimaryDark
+  },
+  supendedConnectorValue: {},
+  supendedConnectorDescription: {
+    color: commonColor.brandPrimaryDark
   },
   preparingConnector: {
     backgroundColor: commonColor.brandWarning,
     borderColor: commonColor.brandWarningDark
   },
+  preparingConnectorValue: {},
+  preparingConnectorDescription: {
+    color: commonColor.brandWarning
+  },
   finishingConnector: {
     backgroundColor: commonColor.brandWarning,
     borderColor: commonColor.brandWarningDark
+  },
+  finishingConnectorValue: {},
+  finishingConnectorDescription: {
+    color: commonColor.brandWarning
   },
   unavailableConnector: {
     backgroundColor: commonColor.brandDisable,
     borderColor: commonColor.brandDisableDark
   },
+  unavailableConnectorValue: {},
+  unavailableConnectorDescription: {
+    color: commonColor.brandDisable
+  },
   reservedConnector: {
     backgroundColor: commonColor.brandDisable,
     borderColor: commonColor.brandDisableDark
   },
+  reservedConnectorValue: {},
+  reservedConnectorDescription: {
+    color: commonColor.brandDisable
+  },
   chargingConnector: {
-    backgroundColor: commonColor.brandInfo,
+    backgroundColor: commonColor.brandPrimary,
     borderColor: commonColor.brandPrimaryLight,
     borderTopColor: commonColor.brandPrimary,
     borderBottomColor: commonColor.brandPrimary
   },
-  connectorText: {
-    position: "absolute",
-    bottom: "-2@s",
-    fontSize: "13@s",
-    color: commonColor.textColorApp
+  chargingConnectorValue: {},
+  chargingConnectorDescription: {
+    color: commonColor.brandPrimary
   }
 });
 

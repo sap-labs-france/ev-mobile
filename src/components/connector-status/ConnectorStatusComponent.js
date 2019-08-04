@@ -32,42 +32,64 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     });
   }
 
-  _getConnectorStyle(style) {
+  _getConnectorStyles(style) {
     const { type, connector } = this.props;
+    // Get the type
     let connectorType;
+    let status;
     if (connector) {
       connectorType = connector.status;
     } else {
       connectorType = type;
     }
+    // Default CSS
+    const connectorStyles = {
+      badge: [style.commonConnector],
+      value: [style.commonConnectorValue],
+      description: [style.commonConnectorDescription]
+    };
     switch (connectorType) {
       // Charging
       case Constants.CONN_STATUS_CHARGING:
       case Constants.CONN_STATUS_OCCUPIED:
-        return style.chargingConnector;
+        status = "charging";
+        break;
       // Preparing
       case Constants.CONN_STATUS_PREPARING:
-        return style.preparingConnector;
+        status = "preparing";
+        break;
       // Preparing
       case Constants.CONN_STATUS_FINISHING:
-        return style.finishingConnector;
+        status = "finishing";
+        break;
       // Reserved
       case Constants.CONN_STATUS_RESERVED:
-        return style.reservedConnector;
+        status = "reserved";
+        break;
       // Faulted
       case Constants.CONN_STATUS_FAULTED:
-        return style.faultedConnector;
+        status = "faulted";
+        break;
       // Unavailable
       case Constants.CONN_STATUS_UNAVAILABLE:
-        return style.unavailableConnector;
+        status = "unavailable";
+        break;
       // Suspending EV / EVSE
       case Constants.CONN_STATUS_SUSPENDED_EVSE:
       case Constants.CONN_STATUS_SUSPENDED_EV:
-        return style.supendedConnector;
+        status = "supended";
+        break;
       // Available
       case Constants.CONN_STATUS_AVAILABLE:
-        return style.availableConnector;
+        status = "available";
+        break;
     }
+    if (status) {
+      connectorStyles.badge.push(style[status + "Connector"]);
+      connectorStyles.value.push(style[status + "ConnectorValue"]);
+      connectorStyles.description.push(style[status + "ConnectorDescription"]);
+    }
+    return connectorStyles;
   }
 
   _getConnectorValue() {
@@ -92,29 +114,28 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     // Get styling
-    const connectorStyle = this._getConnectorStyle(style);
+    const connectorStyles = this._getConnectorStyles(style);
     // Get value
     const value = this._getConnectorValue();
     // Animated
     const isAnimated = this._isAnimated();
-
     return (
-      <View style={this.props.text ? style.containerWithText : style.containerWithNoText}>
-        <Animated.View
-          style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}
-        >
-          <Badge style={connectorStyle}>
-            <Animated.Text
-              style={[
-                style.connectorValue,
-                isAnimated ? { transform: [{ rotate: this.rotateCounterClockwise }] } : undefined
-              ]}
-            >
-              {value}
-            </Animated.Text>
+      <View style={this.props.text ? style.containerWithDescription : style.containerWithNoDescription}>
+        <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
+          <Badge style={connectorStyles.badge}>
+            <Animated.Text style={
+              isAnimated ?
+                [ ...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }]
+              :
+                connectorStyles.value
+              }>{ value }</Animated.Text>
           </Badge>
         </Animated.View>
-        {this.props.text ? <Text style={style.connectorText}>{this.props.text}</Text> : undefined}
+        {this.props.text ?
+          <Text style={connectorStyles.description}>{this.props.text}</Text>
+        :
+          undefined
+        }
       </View>
     );
   }

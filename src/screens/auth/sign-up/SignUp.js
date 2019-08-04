@@ -1,15 +1,8 @@
 import React from "react";
-import {
-  Image,
-  TextInput,
-  Keyboard,
-  ScrollView,
-  Text as TextRN,
-  KeyboardAvoidingView
-} from "react-native";
+import { Image, TextInput, Keyboard, ScrollView, Text as TextRN, KeyboardAvoidingView } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import * as Animatable from "react-native-animatable";
-import { Form, Text, Button, Icon, Item, View, CheckBox, Footer, Spinner, Left } from "native-base";
+import { Form, Text, Button, Icon, Item, View, CheckBox, Footer, Spinner, Right } from "native-base";
 import commonColor from "../../../theme/variables/commonColor";
 import computeStyleSheet from "../AuthStyles";
 import ProviderFactory from "../../../provider/ProviderFactory";
@@ -19,6 +12,7 @@ import Message from "../../../utils/Message";
 import Constants from "../../../utils/Constants";
 import DeviceInfo from "react-native-device-info";
 import ReCaptcha from "react-native-recaptcha-v3";
+import BaseScreen from "../../base-screen/BaseScreen";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 
 const _provider = ProviderFactory.getProvider();
@@ -83,7 +77,7 @@ const formValidationDef = {
     }
   }
 };
-export default class SignUp extends React.Component {
+export default class SignUp extends BaseScreen {
   constructor(props) {
     super(props);
     this.captchaSiteKey = _provider.getCaptchaSiteKey();
@@ -166,13 +160,20 @@ export default class SignUp extends React.Component {
               break;
             default:
               // Other common Error
-              Utils.handleHttpUnexpectedError(error.request);
+              Utils.handleHttpUnexpectedError(error.request, this.props.navigation);
           }
         } else {
           Message.showError(I18n.t("general.unexpectedError"));
         }
       }
     }
+  };
+
+  onBack = () => {
+    // Back mobile button: Force navigation
+    this.props.navigation.navigate("Login");
+    // Do not bubble up
+    return true;
   };
 
   render() {
@@ -345,7 +346,7 @@ export default class SignUp extends React.Component {
                 {loading || !captcha ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
-                  <Button rounded primary block style={style.button} onPress={this._signUp}>
+                  <Button rounded primary block style={style.button} onPress={() => this._signUp()}>
                     <TextRN style={style.buttonText}>{I18n.t("authentication.signUp")}</TextRN>
                   </Button>
                 )}
@@ -360,17 +361,19 @@ export default class SignUp extends React.Component {
               onExecute={this._recaptchaResponseToken}
             />
           </ScrollView>
-          <Footer>
-            <Left>
+          <Footer style={style.footer}>
+            <Right>
               <Button
                 small
                 transparent
-                style={style.linksButtonLeft}
+                style={style.linksButtonRight}
                 onPress={() => this.props.navigation.goBack()}
               >
-                <TextRN style={style.linksTextButton}>{I18n.t("authentication.backLogin")}</TextRN>
+                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>
+                  {I18n.t("authentication.backLogin")}
+                </TextRN>
               </Button>
-            </Left>
+            </Right>
           </Footer>
         </BackgroundComponent>
       </Animatable.View>

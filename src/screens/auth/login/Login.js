@@ -1,30 +1,10 @@
 import React from "react";
-import {
-  ScrollView,
-  Image,
-  Keyboard,
-  KeyboardAvoidingView,
-  Text as TextRN,
-  TextInput
-} from "react-native";
-import {
-  Text,
-  Form,
-  Item,
-  Button,
-  Icon,
-  View,
-  CheckBox,
-  Spinner,
-  ActionSheet,
-  Footer,
-  Left,
-  Right
-} from "native-base";
+import { ScrollView, Image, Keyboard, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
+import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet, Footer, Left, Right } from "native-base";
 import Orientation from "react-native-orientation-locker";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import * as Animatable from "react-native-animatable";
-import providerFactory from "../../../provider/ProviderFactory";
+import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import Constants from "../../../utils/Constants";
@@ -33,8 +13,9 @@ import computeStyleSheet from "../AuthStyles";
 import commonColor from "../../../theme/variables/commonColor";
 import DeviceInfo from "react-native-device-info";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import BaseScreen from "../../base-screen/BaseScreen";
 
-const _provider = providerFactory.getProvider();
+const _provider = ProviderFactory.getProvider();
 const logo = require("../../../../assets/logo-low.png");
 
 const formValidationDef = {
@@ -71,7 +52,7 @@ const formValidationDef = {
   }
 };
 
-export default class Login extends ResponsiveComponent {
+export default class Login extends BaseScreen {
   constructor(props) {
     super(props);
     this.tenants = _provider.getTenants();
@@ -90,7 +71,7 @@ export default class Login extends ResponsiveComponent {
     // Unlock all
     Orientation.lockToPortrait();
     // Check
-    _provider.checkAndTriggerAutoLogin();
+    _provider.checkAndTriggerAutoLogin(this.props.navigation);
     // Check if user is authenticated
     if (await _provider.isUserConnectionValid()) {
       // Navigate
@@ -157,7 +138,7 @@ export default class Login extends ResponsiveComponent {
               break;
             default:
               // Other common Error
-              Utils.handleHttpUnexpectedError(error.request);
+              Utils.handleHttpUnexpectedError(error.request, this.props.navigation);
           }
         }
       }
@@ -264,7 +245,7 @@ export default class Login extends ResponsiveComponent {
                     type="email"
                     returnKeyType="next"
                     placeholder={I18n.t("authentication.email")}
-                    placeholderTextColor={commonColor.textColorApp}
+                    placeholderTextColor={commonColor.inverseTextColor}
                     onSubmitEditing={() => this.passwordInput.focus()}
                     style={style.inputField}
                     autoCapitalize="none"
@@ -291,7 +272,7 @@ export default class Login extends ResponsiveComponent {
                     ref={ref => (this.passwordInput = ref)}
                     onSubmitEditing={() => Keyboard.dismiss()}
                     placeholder={I18n.t("authentication.password")}
-                    placeholderTextColor={commonColor.textColorApp}
+                    placeholderTextColor={commonColor.inverseTextColor}
                     style={style.inputField}
                     autoCapitalize="none"
                     blurOnSubmit={false}
@@ -330,14 +311,14 @@ export default class Login extends ResponsiveComponent {
                 {loading ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
-                  <Button rounded primary block style={style.button} onPress={this._login}>
+                  <Button rounded primary block style={style.button} onPress={() => this._login()}>
                     <TextRN style={style.buttonText}>{I18n.t("authentication.login")}</TextRN>
                   </Button>
                 )}
               </Form>
             </KeyboardAvoidingView>
           </ScrollView>
-          <Footer>
+          <Footer style={style.footer}>
             <Left>
               <Button
                 small

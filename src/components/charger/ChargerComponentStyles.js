@@ -2,6 +2,7 @@ import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
 import { ScaledSheet } from "react-native-size-matters";
+import Constants from "../../utils/Constants";
 
 const commonStyles = ScaledSheet.create({
   container: {
@@ -19,10 +20,10 @@ const commonStyles = ScaledSheet.create({
     paddingRight: "5@s",
     borderBottomColor: commonColor.listBorderColor,
     borderBottomWidth: 1,
-    backgroundColor: "rgba(0,0,0,0.05)"
+    backgroundColor: Constants.CSS_HEADER_BG
   },
   name: {
-    color: commonColor.textColorApp,
+    color: commonColor.textColor,
     fontSize: "20@s",
     marginLeft: "5@s",
     fontWeight: "bold"

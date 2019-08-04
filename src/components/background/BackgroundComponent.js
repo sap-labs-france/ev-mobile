@@ -5,8 +5,8 @@ import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./BackgroundComponentStyles";
 import PropTypes from "prop-types";
 
-const defaultBackground = require("../../../assets/bg.png");
-// const background = require("../../../assets/sidebar-transparent.png");
+// const defaultBackground = require("../../../assets/bg.png");
+const defaultBackground = require("../../../assets/sidebar-transparent.png");
 
 export default class BackgroundComponent extends ResponsiveComponent {
   render() {
@@ -27,7 +27,7 @@ export default class BackgroundComponent extends ResponsiveComponent {
 }
 
 BackgroundComponent.propTypes = {
-  active: PropTypes.object,
+  active: PropTypes.bool,
   background: PropTypes.object
 };
 

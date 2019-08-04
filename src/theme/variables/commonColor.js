@@ -81,7 +81,7 @@ export default {
 
   // Badge
   badgeBg: "#ED1727",
-  badgeColor: "#fff",
+  badgeColor: primaryDark,
   badgePadding: platform === PLATFORM.IOS ? 3 : 0,
 
   // Button
@@ -286,7 +286,6 @@ export default {
   tabFontSize: 15,
 
   // Text
-  textColorApp: primaryDark,
   textColor: primaryDark,
   inverseTextColor: "#fff",
   noteFontSize: 14,

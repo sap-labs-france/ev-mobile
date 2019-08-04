@@ -1,8 +1,8 @@
 {
   "general": {
     "cannotConnectBackend": "La connexion a été perdue",
-    "unexpectedErrorBackend": "Erreur Serveur inattendue",
-    "unexpectedError": "Erreur Serveur inatendue",
+    "unexpectedErrorBackend": "La connexion a été perdue",
+    "unexpectedError": "La connexion a été perdue",
     "sessionExpired": "La session a expirée",
     "numbers": "Entrez un nombre valide",
     "email": "Entrez une adresse email valide",
@@ -10,8 +10,8 @@
     "ok": "Ok",
     "yes": "Oui",
     "no": "Non",
+    "cancel": "Annuler",
     "version": "Version",
-    "date": "1er Aout",
     "search": "Rechercher"
   },
   "sidebar": {
@@ -67,7 +67,16 @@
     "noChargers": "Cette Zone n'a pas de Borne"
   },
   "chargers": {
-    "title": "Bornes"
+    "title": "Bornes",
+    "heartBeat": "Heartbeat",
+    "heartBeatOkMessage": "'{{chargeBoxID}}' fonctionne correctement et a reporté son statut il y a moins d'une minute",
+    "heartBeatKoMessage": "'{{chargeBoxID}}' ne fonctionne pas correctement et n'a pas reporté son statut depuis {{lastHeartBeat}}",
+    "resetHard": "Redémarrer",
+    "resetHardMessage": "Voulez-vous vraiment redémarrer '{{chargeBoxID}}'?",
+    "resetSoft": "Réinitialiser",
+    "resetSoftMessage": "Voulez-vous vraiment réinitialiser '{{chargeBoxID}}'?",
+    "clearCache": "Effacer le Cache",
+    "clearCacheMessage": "Voulez-vous vraiment le cache de '{{chargeBoxID}}'?"
   },
   "connector": {
     "occupied": "Occupé",
@@ -93,8 +102,8 @@
     "noTransaction": "Pas de transaction en cours",
     "startTransaction": "Démarrer transaction",
     "stopTransaction": "Stopper transaction",
-    "startTransactionMessage": "Voulez-vous vraiment démarrer une nouvelle session sur la borne ",
-    "stopTransactionMessage": "Voulez-vous vraiment arrêter la session sur la borne ",
+    "startTransactionMessage": "Voulez-vous vraiment démarrer une nouvelle session sur la borne '{{chargeBoxID}}'",
+    "stopTransactionMessage": "Voulez-vous vraiment arrêter la session sur la borne '{{chargeBoxID}}'",
     "notAuthorisedTitle": "Non autorisé",
     "notAuthorised": "Vous n'êtes pas autorisé à arrêter la transaction.",
     "accepted": "La requête a été acceptée",

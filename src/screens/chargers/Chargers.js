@@ -9,12 +9,12 @@ import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import computeStyleSheet from "./ChargersStyles";
 import I18n from "../../I18n/I18n";
-import BaseScreen from "../base-screen/BaseScreen";
+import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 
 const _provider = ProviderFactory.getProvider();
 
-export default class Chargers extends BaseScreen {
+export default class Chargers extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     // Init State
@@ -67,7 +67,7 @@ export default class Chargers extends BaseScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
+      Utils.handleHttpUnexpectedError(error, this.props.navigation);
     }
     return chargers;
   };
@@ -91,7 +91,7 @@ export default class Chargers extends BaseScreen {
     }
   };
 
-  _refresh = async () => {
+  refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
@@ -108,7 +108,7 @@ export default class Chargers extends BaseScreen {
     // Display spinner
     this.setState({ refreshing: true });
     // Refresh
-    await this._refresh();
+    await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
   };

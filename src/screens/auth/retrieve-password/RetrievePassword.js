@@ -1,10 +1,9 @@
 import React from "react";
 import { ScrollView, Image, TextInput, KeyboardAvoidingView, Text as TextRN } from "react-native";
-import { Text, Form, Item, Button, Icon, View, Spinner, Footer, Left } from "native-base";
+import { Text, Form, Item, Button, Icon, View, Spinner, Footer, Right } from "native-base";
 import { NavigationActions, StackActions } from "react-navigation";
 import commonColor from "../../../theme/variables/commonColor";
 import ProviderFactory from "../../../provider/ProviderFactory";
-import { ResponsiveComponent } from "react-native-responsive-ui";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
@@ -13,6 +12,7 @@ import * as Animatable from "react-native-animatable";
 import Constants from "../../../utils/Constants";
 import DeviceInfo from "react-native-device-info";
 import ReCaptcha from "react-native-recaptcha-v3";
+import BaseScreen from "../../base-screen/BaseScreen";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 
 const _provider = ProviderFactory.getProvider();
@@ -30,14 +30,12 @@ const formValidationDef = {
   }
 };
 
-export default class RetrievePassword extends ResponsiveComponent {
+export default class RetrievePassword extends BaseScreen {
   constructor(props) {
     super(props);
     this.captchaSiteKey = _provider.getCaptchaSiteKey();
     this.captchaBaseUrl = _provider.getCaptchaBaseUrl();
     const tenantSubDomain = Utils.getParamFromNavigation(this.props.navigation, "tenant", "");
-    console.log({ tenantSubDomain });
-    console.log(this.props.navigation);
     this.tenant = _provider.getTenant(tenantSubDomain);
     this.state = {
       tenant: tenantSubDomain,
@@ -96,13 +94,20 @@ export default class RetrievePassword extends ResponsiveComponent {
               break;
             default:
               // Other common Error
-              Utils.handleHttpUnexpectedError(error.request);
+              Utils.handleHttpUnexpectedError(error.request, this.props.navigation);
           }
         } else {
           Message.showError(I18n.t("general.unexpectedError"));
         }
       }
     }
+  };
+
+  onBack = () => {
+    // Back mobile button: Force navigation
+    this.props.navigation.navigate("Login");
+    // Do not bubble up
+    return true;
   };
 
   render() {
@@ -158,7 +163,7 @@ export default class RetrievePassword extends ResponsiveComponent {
                     primary
                     block
                     style={style.button}
-                    onPress={this._retrievePassword}
+                    onPress={() => this._retrievePassword()}
                   >
                     <TextRN style={style.buttonText}>
                       {I18n.t("authentication.retrievePassword")}
@@ -176,17 +181,19 @@ export default class RetrievePassword extends ResponsiveComponent {
               onExecute={this._recaptchaResponseToken}
             />
           </ScrollView>
-          <Footer>
-            <Left>
+          <Footer style={style.footer}>
+            <Right>
               <Button
                 small
                 transparent
-                style={style.linksButtonLeft}
+                style={style.linksButtonRight}
                 onPress={() => this.props.navigation.goBack()}
               >
-                <TextRN style={style.linksTextButton}>{I18n.t("authentication.backLogin")}</TextRN>
+                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>
+                  {I18n.t("authentication.backLogin")}
+                </TextRN>
               </Button>
-            </Left>
+            </Right>
           </Footer>
         </BackgroundComponent>
       </Animatable.View>

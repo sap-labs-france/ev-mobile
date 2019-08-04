@@ -4,10 +4,14 @@ import commonColor from "../../../theme/variables/commonColor";
 import { ScaledSheet } from "react-native-size-matters";
 
 const commonStyles = ScaledSheet.create({
-  statusConnectorContainer: {
+  container: {
     width: "100%",
     justifyContent: "center",
-    alignItems: "stretch"
+    alignItems: "stretch",
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: "transparent",
+    borderTopColor: commonColor.listBorderColor
   },
   connectorContainer: {
     flexDirection: "column",
@@ -15,7 +19,7 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center",
     width: "100%"
   },
-  statusConnectorDetailContainer: {
+  connectorDetailContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
@@ -25,22 +29,19 @@ const commonStyles = ScaledSheet.create({
     paddingTop: "10@s",
     paddingBottom: "10@s"
   },
-  firstStatusConnectorDetailContainer: {
-    paddingBottom: 0
-  },
-  statusConnectorDetail: {
+  connectorDetail: {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     height: "60@s",
     width: "80@s"
   },
-  statusConnectorDetailAnimated: {
+  connectorDetailAnimated: {
     position: "absolute",
     alignItems: "center"
   },
   connectorValues: {
-    color: commonColor.textColorApp,
+    color: commonColor.textColor,
     marginTop: "-1@s",
     fontSize: "30@s",
     fontWeight: "bold",
@@ -51,16 +52,16 @@ const commonStyles = ScaledSheet.create({
     height: "40@s"
   },
   labelImage: {
-    color: commonColor.textColorApp,
+    color: commonColor.textColor,
     fontSize: "10@s"
   },
   label: {
-    color: commonColor.textColorApp,
+    color: commonColor.textColor,
     fontSize: "10@s",
     marginTop: "-3@s"
   },
   subLabel: {
-    color: commonColor.textColorApp,
+    color: commonColor.textColor,
     fontSize: "9@s"
   }
 });

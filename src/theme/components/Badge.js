@@ -28,7 +28,6 @@ export default (variables /* : * */ = variable) => {
       alignSelf: "center",
       color: variables.badgeColor,
       fontSize: variables.fontSizeBase,
-      fontWeight: "bold",
       lineHeight: variables.lineHeight - 5,
       textAlign: "center",
       paddingTop: moderateScale(11, 4),
@@ -39,15 +38,13 @@ export default (variables /* : * */ = variable) => {
     padding: variables.badgePadding,
     paddingHorizontal: 6,
     borderStyle: "solid",
-    borderColor: commonColor.textColorApp,
+    borderColor: commonColor.textColor,
     borderRadius: scale(22),
     borderWidth: 4,
     justifyContent: "center",
     alignItems: "center",
     width: scale(44),
-    height: scale(44),
-    minWidth: scale(44),
-    minHeight: scale(44)
+    height: scale(44)
   };
   return badgeTheme;
 };

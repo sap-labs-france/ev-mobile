@@ -1,8 +1,8 @@
 {
   "general": {
-    "cannotConnectBackend": "The connection has been lost",
-    "unexpectedErrorBackend": "Unexpected backend error",
-    "unexpectedError": "Unexpected Backend error",
+    "cannotConnectBackend": "Connection has been lost",
+    "unexpectedErrorBackend": "Connection has been lost",
+    "unexpectedError": "Connection has been lost",
     "sessionExpired": "Session has expired",
     "numbers": "Enter a valid number",
     "email": "Enter a valid email address",
@@ -10,8 +10,8 @@
     "ok": "Ok",
     "yes": "Yes",
     "no": "No",
+    "cancel": "Cancel",
     "version": "Version",
-    "date": "1st, August",
     "search": "Search"
   },
   "sidebar": {
@@ -70,7 +70,13 @@
     "title": "Chargers",
     "heartBeat": "Heartbeat",
     "heartBeatOkMessage": "'{{chargeBoxID}}' is working properly and reported its status a minute ago",
-    "heartBeatKoMessage": "'{{chargeBoxID}}' is NOT working properly and hasn't reported its status since {{lastHeartBeat}}"
+    "heartBeatKoMessage": "'{{chargeBoxID}}' is not working properly and hasn't reported its status since {{lastHeartBeat}}",
+    "resetHard": "Reboot",
+    "resetHardMessage": "Do you really want to reboot '{{chargeBoxID}}'?",
+    "resetSoft": "Reset",
+    "resetSoftMessage": "Do you really want to reset '{{chargeBoxID}}'?",
+    "clearCache": "Clear Cache",
+    "clearCacheMessage": "Do you really want to clear the cache of '{{chargeBoxID}}'?"
   },
   "connector": {
     "occupied": "Occupied",

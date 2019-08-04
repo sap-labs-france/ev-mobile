@@ -2,6 +2,7 @@ import Message from "./Message";
 import Constants from "./Constants";
 import I18n from "../I18n/I18n";
 import validate from "validate.js";
+import { NativeModules, Platform } from 'react-native';
 import ProviderFactory from "../provider/ProviderFactory";
 
 const type2 = require("../../assets/connectorType/type2.gif");
@@ -25,7 +26,26 @@ export default class Utils {
     return navigation.state.params[name];
   }
 
-  static async handleHttpUnexpectedError(error, props) {
+  static getLocale() {
+    let deviceLanguage =
+      Platform.OS === 'ios'
+        ? NativeModules.SettingsManager.settings.AppleLocale
+        : NativeModules.I18nManager.localeIdentifier;
+    // Filter only on supported languages
+    const shortDeviceLanguage = deviceLanguage.substring(0, 2);
+    if ((shortDeviceLanguage !== 'en') &&
+        (shortDeviceLanguage !== 'fr')) {
+      // Default
+      deviceLanguage = "en-gb";
+    }
+    return deviceLanguage;
+  }
+
+  static getLocaleShort() {
+    return Utils.getLocale().substring(0, 2);
+  }
+
+  static async handleHttpUnexpectedError(error, navigation) {
     // Log in console
     console.log({ error });
     // Check if HTTP?
@@ -38,15 +58,8 @@ export default class Utils {
           break;
         // Not logged in?
         case 401:
-          // Max Failed Auto Login Reached?
-          if (!_provider.hasReachedMaxAutologinFailure()) {
-            // Try to auto login
-            await _provider.checkAndTriggerAutoLogin();
-          } else {
-            // Logoff
-            await _provider.logoff();
-            props.navigation.navigate("AuthNavigator");
-          }
+          // Try to auto login
+          await _provider.checkAndTriggerAutoLogin(navigation);
           break;
         // Other errors
         default:

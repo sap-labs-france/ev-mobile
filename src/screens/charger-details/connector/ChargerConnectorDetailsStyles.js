@@ -13,7 +13,7 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: commonColor.containerBgColor
   },
   spinner: {
-    color: commonColor.textColorApp
+    color: commonColor.textColor
   },
   backgroundImage: {
     width: "100%",
@@ -28,7 +28,7 @@ const commonStyles = ScaledSheet.create({
     borderRadius: "50@s",
     borderStyle: "solid",
     borderWidth: 2,
-    borderColor: commonColor.textColorApp,
+    borderColor: commonColor.textColor,
     backgroundColor: commonColor.containerBgColor,
     width: "100@s",
     height: "100@s",
@@ -82,7 +82,7 @@ const commonStyles = ScaledSheet.create({
   },
   label: {
     fontSize: "16@s",
-    color: commonColor.textColorApp,
+    color: commonColor.textColor,
     alignSelf: "center"
   },
   labelStatus: {
@@ -103,7 +103,7 @@ const commonStyles = ScaledSheet.create({
     fontSize: "12@s",
     fontWeight: "bold",
     marginTop: Platform.OS === "ios" ? "0@s" : "-5@s",
-    color: commonColor.textColorApp,
+    color: commonColor.textColor,
     alignSelf: "center"
   },
   subLabelStatus: {
@@ -115,14 +115,14 @@ const commonStyles = ScaledSheet.create({
   icon: {
     fontSize: "25@s"
   },
-  userPicture: {
+  userImage: {
     height: "52@s",
     width: "52@s",
     alignSelf: "center",
     marginBottom: "5@s",
     borderRadius: "26@s",
     borderWidth: 2,
-    borderColor: commonColor.textColorApp
+    borderColor: commonColor.textColor
   }
 });
 
