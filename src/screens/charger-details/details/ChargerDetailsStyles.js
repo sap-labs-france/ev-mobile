@@ -46,7 +46,6 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.textColor
   },
   actionContainer: {
-    // height: "45@s",
     width: "90%",
     marginTop: "10@s",
     justifyContent: "center"
