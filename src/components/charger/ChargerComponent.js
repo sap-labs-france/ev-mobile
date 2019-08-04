@@ -40,7 +40,7 @@ export default class ChargerComponent extends ResponsiveComponent {
     let message = I18n.t("chargers.heartBeatOkMessage", { chargeBoxID: charger.id });
     if (isChargerDead) {
       message = I18n.t("chargers.heartBeatKoMessage",
-        { chargeBoxID: charger.id, lastHeartBeat: moment(new Date(charger.lastHeartBeat), true).fromNow() });
+        { chargeBoxID: charger.id, lastHeartBeat: moment(new Date(charger.lastHeartBeat), true).fromNow(true) });
     }
     Alert.alert(
       I18n.t("chargers.heartBeat"),
