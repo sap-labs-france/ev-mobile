@@ -163,7 +163,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
       valueFormatter: "date",
       valueFormatterPattern: "HH:mm",
       textSize: scale(8),
-      textColor: processColor("white")
+      textColor: processColor(commonColor.brandInfo)
     };
     // Y Axis
     chartDefinition.yAxis = {};

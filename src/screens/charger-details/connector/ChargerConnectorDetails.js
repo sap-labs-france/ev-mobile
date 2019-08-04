@@ -586,9 +586,13 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
                 {this._renderElapsedTime(style)}
                 {this._renderInactivity(style)}
               </View>
-              <View style={style.rowContainer}>
-                {this._renderBatteryLevel(style)}
-              </View>
+              {connector.currentStateOfCharge ?
+                <View style={style.rowContainer}>
+                  {this._renderBatteryLevel(style)}
+                </View>
+              :
+                undefined
+              }
             </View>
           </ScrollView>
         </BackgroundComponent>
