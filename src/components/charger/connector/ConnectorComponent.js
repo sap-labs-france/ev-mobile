@@ -48,7 +48,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
     });
   }
 
-  _renderFirstConnectorDetails = (connector) => {
+  _renderFirstConnectorDetails = connector => {
     return (
       <ConnectorStatusComponent
         connector={connector}

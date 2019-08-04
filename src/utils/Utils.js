@@ -33,8 +33,7 @@ export default class Utils {
         : NativeModules.I18nManager.localeIdentifier;
     // Filter only on supported languages
     const shortDeviceLanguage = deviceLanguage.substring(0, 2);
-    if ((shortDeviceLanguage !== 'en') &&
-        (shortDeviceLanguage !== 'fr')) {
+    if (shortDeviceLanguage !== 'en' && shortDeviceLanguage !== 'fr') {
       // Default
       deviceLanguage = "en-gb";
     }

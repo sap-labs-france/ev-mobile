@@ -1,8 +1,26 @@
 import React from "react";
-import { Image, TextInput, Keyboard, ScrollView, Text as TextRN, KeyboardAvoidingView } from "react-native";
+import {
+  Image,
+  TextInput,
+  Keyboard,
+  ScrollView,
+  Text as TextRN,
+  KeyboardAvoidingView
+} from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import * as Animatable from "react-native-animatable";
-import { Form, Text, Button, Icon, Item, View, CheckBox, Footer, Spinner, Right } from "native-base";
+import {
+  Form,
+  Text,
+  Button,
+  Icon,
+  Item,
+  View,
+  CheckBox,
+  Footer,
+  Spinner,
+  Right
+} from "native-base";
 import commonColor from "../../../theme/variables/commonColor";
 import computeStyleSheet from "../AuthStyles";
 import ProviderFactory from "../../../provider/ProviderFactory";

@@ -323,7 +323,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     }
   };
 
-  _formatDurationHHMMSS = (durationSecs) => {
+  _formatDurationHHMMSS = durationSecs => {
     if (durationSecs <= 0) {
       return "00:00:00";
     }
@@ -339,8 +339,10 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     // Set Secs
     const seconds = Math.trunc(durationSecs);
     // Format
-    return `${this._formatTimer(hours)}:${this._formatTimer(minutes)}:${this._formatTimer(seconds)}`;
-  }
+    return `${this._formatTimer(hours)}:${this._formatTimer(minutes)}:${this._formatTimer(
+      seconds
+    )}`;
+  };
 
   _formatTimer = val => {
     // Put 0 next to the digit if lower than 10
@@ -352,7 +354,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     return valString;
   };
 
-  _renderConnectorStatus = (style) => {
+  _renderConnectorStatus = style => {
     const { connector } = this.props;
     return (
       <View style={style.columnContainer}>
@@ -371,36 +373,31 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     );
   };
 
-  _renderUserInfo = (style) => {
+  _renderUserInfo = style => {
     const { isAdmin } = this.props;
     const { userImage, transaction } = this.state;
     return (
       <View style={style.columnContainer}>
-        <Thumbnail
-          style={style.userImage}
-          source={userImage ? { uri: userImage } : noPhoto}
-        />
-        {transaction ?
+        <Thumbnail style={style.userImage} source={userImage ? { uri: userImage } : noPhoto} />
+        {transaction ? (
           <View>
             <Text style={[style.label, style.labelUser]}>
               {Utils.buildUserName(transaction.user)}
             </Text>
-            {isAdmin ?
-              <Text style={[style.subLabel, style.subLabelUser]}>
-                ({transaction.tagID})
-              </Text>
-            :
+            {isAdmin ? (
+              <Text style={[style.subLabel, style.subLabelUser]}>({transaction.tagID})</Text>
+            ) : (
               undefined
-            }
+            )}
           </View>
-        :
+        ) : (
           <Text style={style.label}>-</Text>
-        }
+        )}
       </View>
     );
   };
 
-  _renderInstantPower = (style) => {
+  _renderInstantPower = style => {
     const { connector } = this.props;
     return (
       <View style={style.columnContainer}>
@@ -421,43 +418,35 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     );
   };
 
-  _renderElapsedTime = (style) => {
+  _renderElapsedTime = style => {
     const { transaction, elapsedTimeFormatted } = this.state;
     return (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="timer" style={style.icon} />
         {transaction ? (
-          <Text style={[style.label, style.labelTimeValue]}>
-            {elapsedTimeFormatted}
-          </Text>
+          <Text style={[style.label, style.labelTimeValue]}>{elapsedTimeFormatted}</Text>
         ) : (
-          <Text style={[style.label, style.labelValue]}>
-            - : - : -
-          </Text>
+          <Text style={[style.label, style.labelValue]}>- : - : -</Text>
         )}
       </View>
     );
   };
 
-  _renderInactivity = (style) => {
+  _renderInactivity = style => {
     const { transaction, inactivityFormatted } = this.state;
     return (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="timer-off" style={style.icon} />
         {transaction ? (
-          <Text style={[style.label, style.labelTimeValue]}>
-            {inactivityFormatted}
-          </Text>
+          <Text style={[style.label, style.labelTimeValue]}>{inactivityFormatted}</Text>
         ) : (
-          <Text style={[style.label, style.labelValue]}>
-            - : - : -
-          </Text>
+          <Text style={[style.label, style.labelValue]}>- : - : -</Text>
         )}
       </View>
     );
   };
 
-  _renderTotalConsumption = (style) => {
+  _renderTotalConsumption = style => {
     const { connector } = this.props;
     return (
       <View style={style.columnContainer}>
@@ -477,16 +466,14 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     );
   };
 
-  _renderBatteryLevel = (style) => {
+  _renderBatteryLevel = style => {
     const { connector } = this.props;
     return (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="battery-charging-full" style={style.icon} />
         {connector.currentStateOfCharge ? (
           <View>
-            <Text style={[style.label, style.labelValue]}>
-              {connector.currentStateOfCharge}
-            </Text>
+            <Text style={[style.label, style.labelValue]}>{connector.currentStateOfCharge}</Text>
             <Text style={style.subLabel}>(%)</Text>
           </View>
         ) : (
@@ -498,13 +485,10 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     );
   };
 
-  _renderStartTransactionButton = (style) => {
+  _renderStartTransactionButton = style => {
     const { buttonDisabled } = this.state;
     return (
-      <TouchableOpacity
-        disabled={buttonDisabled}
-        onPress={() => this._startTransactionConfirm()}
-      >
+      <TouchableOpacity disabled={buttonDisabled} onPress={() => this._startTransactionConfirm()}>
         <View
           style={
             buttonDisabled
@@ -526,7 +510,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     );
   };
 
-  _renderStopTransactionButton = (style) => {
+  _renderStopTransactionButton = style => {
     const { buttonDisabled } = this.state;
     return (
       <TouchableOpacity onPress={() => this._stopTransactionConfirm()} disabled={buttonDisabled}>
@@ -543,7 +527,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
                 ? [style.transactionIcon, style.stopTransactionIcon, style.transactionDisabledIcon]
                 : [style.transactionIcon, style.stopTransactionIcon]
             }
-            type="MaterialIcons" name="stop" />
+            type="MaterialIcons"
+            name="stop"
+          />
         </View>
       </TouchableOpacity>
     );
@@ -555,21 +541,18 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     const { siteImage, isAuthorizedToStopTransaction } = this.state;
     return (
       <Container style={style.container}>
-          {/* Site Image */}
+        {/* Site Image */}
         <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
         <BackgroundComponent active={false}>
           {/* Start/Stop Transaction */}
           <View style={style.transactionContainer}>
-            {connector.activeTransactionID === 0
-            ?
+            {connector.activeTransactionID === 0 ? (
               this._renderStartTransactionButton(style)
-            :
-              isAuthorizedToStopTransaction
-              ?
-                this._renderStopTransactionButton(style)
-              :
-                <View style={style.noButtonStopTransaction} />
-            }
+            ) : isAuthorizedToStopTransaction ? (
+              this._renderStopTransactionButton(style)
+            ) : (
+              <View style={style.noButtonStopTransaction} />
+            )}
           </View>
           {/* Details */}
           <ScrollView style={style.scrollViewContainer}>
@@ -586,13 +569,11 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
                 {this._renderElapsedTime(style)}
                 {this._renderInactivity(style)}
               </View>
-              {connector.currentStateOfCharge ?
-                <View style={style.rowContainer}>
-                  {this._renderBatteryLevel(style)}
-                </View>
-              :
+              {connector.currentStateOfCharge ? (
+                <View style={style.rowContainer}>{this._renderBatteryLevel(style)}</View>
+              ) : (
                 undefined
-              }
+              )}
             </View>
           </ScrollView>
         </BackgroundComponent>

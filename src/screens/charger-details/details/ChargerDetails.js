@@ -114,21 +114,39 @@ export default class ChargerDetails extends ResponsiveComponent {
             </View>
             <View style={style.bottomViewContainer}>
               <View style={style.actionContainer}>
-                <Button rounded danger style={style.actionButton}
-                    onPress={() => this._resetHardConfirm()}>
-                  <Text uppercase={false} style={style.actionButtonText}>{I18n.t("chargers.resetHard")}</Text>
+                <Button
+                  rounded
+                  danger
+                  style={style.actionButton}
+                  onPress={() => this._resetHardConfirm()}
+                >
+                  <Text uppercase={false} style={style.actionButtonText}>
+                    {I18n.t('chargers.resetHard')}
+                  </Text>
                 </Button>
               </View>
               <View style={style.actionContainer}>
-                <Button rounded warning style={style.actionButton}
-                    onPress={() => this._resetSoftConfirm()}>
-                  <Text uppercase={false} style={style.actionButtonText}>{I18n.t("chargers.resetSoft")}</Text>
+                <Button
+                  rounded
+                  warning
+                  style={style.actionButton}
+                  onPress={() => this._resetSoftConfirm()}
+                >
+                  <Text uppercase={false} style={style.actionButtonText}>
+                    {I18n.t('chargers.resetSoft')}
+                  </Text>
                 </Button>
               </View>
               <View style={style.actionContainer}>
-                <Button rounded warning style={style.actionButton}
-                    onPress={() => this._clearCacheConfirm()}>
-                  <Text uppercase={false} style={style.actionButtonText}>{I18n.t("chargers.clearCache")}</Text>
+                <Button
+                  rounded
+                  warning
+                  style={style.actionButton}
+                  onPress={() => this._clearCacheConfirm()}
+                >
+                  <Text uppercase={false} style={style.actionButtonText}>
+                    {I18n.t('chargers.clearCache')}
+                  </Text>
                 </Button>
               </View>
             </View>

@@ -85,13 +85,13 @@ class SideBar extends ResponsiveComponent {
               <Text style={style.versionText}>
                 {`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}
               </Text>
-              {DeviceInfo.getLastUpdateTime() ?
+              {DeviceInfo.getLastUpdateTime() ? (
                 <Text style={style.versionDate}>
                   {moment(DeviceInfo.getLastUpdateTime()).format("LL")}
                 </Text>
-              :
+              ) : (
                 undefined
-              }
+              )}
             </View>
             {isComponentOrganizationActive ? (
               <ListItem

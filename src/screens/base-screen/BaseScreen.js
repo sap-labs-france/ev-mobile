@@ -35,6 +35,5 @@ export default class BaseScreen extends ResponsiveComponent {
     BackHandler.addEventListener("hardwareBackPress", this.onBack);
   };
 
-  componentDidBlur = () => {
-  };
+  componentDidBlur = () => {};
 }

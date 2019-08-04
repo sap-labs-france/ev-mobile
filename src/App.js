@@ -1,6 +1,11 @@
 import React from "react";
 import { StatusBar, Dimensions, AsyncStorage } from "react-native";
-import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createAppContainer } from "react-navigation";
+import {
+  createSwitchNavigator,
+  createStackNavigator,
+  createDrawerNavigator,
+  createAppContainer
+} from "react-navigation";
 import { Root } from "native-base";
 import Login from "./screens/auth/login/Login";
 import Eula from "./screens/auth/eula/Eula";
@@ -87,21 +92,23 @@ const RootContainer = createAppContainer(RootNavigator);
 
 // Handle persistence of navigation
 const persistenceKey = DeviceInfo.getVersion();
-const persistNavigationState = async (navState) => {
+const persistNavigationState = async navState => {
   try {
     await AsyncStorage.setItem(persistenceKey, JSON.stringify(navState));
-  } catch(error) {
+  } catch (error) {
     console.log(error);
   }
-}
+};
 const loadNavigationState = async () => {
   const navState = await AsyncStorage.getItem(persistenceKey);
   return JSON.parse(navState);
-}
-const RootContainerPersists = () => <RootContainer
-  persistNavigationState={persistNavigationState}
-  loadNavigationState={loadNavigationState}
-/>
+};
+const RootContainerPersists = () => (
+  <RootContainer
+    persistNavigationState={persistNavigationState}
+    loadNavigationState={loadNavigationState}
+  />
+);
 
 export default class App extends React.Component {
   // eslint-disable-next-line class-methods-use-this
