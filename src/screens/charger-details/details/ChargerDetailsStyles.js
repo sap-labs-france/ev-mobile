@@ -14,11 +14,13 @@ const commonStyles = ScaledSheet.create({
     justifyContent: "space-between"
   },
   topViewContainer: {
+    flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center"
   },
   bottomViewContainer: {
+    flex: 1,
     flexDirection: "column",
     justifyContent: "flex-end",
     alignItems: "center",
@@ -44,8 +46,9 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.textColor
   },
   actionContainer: {
-    height: "45@s",
-    width: "70%",
+    // height: "45@s",
+    width: "90%",
+    marginTop: "10@s",
     justifyContent: "center"
   },
   actionButton: {
