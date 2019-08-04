@@ -30,8 +30,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       isAuthorizedToStopTransaction: false,
       buttonDisabled: true
     };
-    // Override
-    this.refreshPeriodMillis = Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS;
+    // Set refresh period
+    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
   }
 
   async componentDidMount() {

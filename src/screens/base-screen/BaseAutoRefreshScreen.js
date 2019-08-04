@@ -44,6 +44,18 @@ export default class BaseAutoRefreshScreen extends BaseScreen {
     this.timerRefreshActive = active;
   }
 
+  isActive() {
+    return this.timerRefreshActive;
+  }
+
+  setRefreshPeriodMillis(refreshPeriodMillis) {
+    this.refreshPeriodMillis = refreshPeriodMillis;
+  }
+
+  getRefreshPeriodMillis() {
+    return this.refreshPeriodMillis;
+  }
+
   // eslint-disable-next-line class-methods-use-this
   refresh() {
     console.log("BaseAutoRefreshScreen: Refresh not implemented!!!");

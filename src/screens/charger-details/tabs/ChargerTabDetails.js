@@ -28,8 +28,8 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
       isAdmin: false,
       refreshing: false
     };
-    // Override
-    this.refreshPeriodMillis = Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS;
+    // Set refresh period
+    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
   }
 
   async componentDidMount() {
