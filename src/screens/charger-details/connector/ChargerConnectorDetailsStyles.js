@@ -36,7 +36,7 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center"
   },
   noButtonStopTransaction: {
-    height: "110@s"
+    height: "90@s"
   },
   startTransaction: {
     borderColor: commonColor.brandSuccess
@@ -59,7 +59,9 @@ const commonStyles = ScaledSheet.create({
   transactionDisabledIcon: {
     color: commonColor.buttonDisabledBg
   },
-  scrollViewContainer: {},
+  scrollViewContainer: {
+    marginTop: "-15@s"
+  },
   detailsContainer: {
     flexDirection: "column",
     justifyContent: "space-between",
