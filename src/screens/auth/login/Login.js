@@ -165,6 +165,11 @@ export default class Login extends BaseScreen {
     }
   };
 
+  onBack = () => {
+    // Do nothing
+    return true;
+  };
+
   _navigateToSites() {
     // Navigate to App
     this.props.navigation.navigate("AppDrawerNavigator");
