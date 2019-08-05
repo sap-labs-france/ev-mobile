@@ -8,8 +8,7 @@ const commonStyles = ScaledSheet.create({
     flex: 1,
     backgroundColor: commonColor.brandPrimaryDark
   },
-  spinner: {
-  },
+  spinner: {},
   container: {
     flex: 1,
     backgroundColor: commonColor.brandPrimaryDark
