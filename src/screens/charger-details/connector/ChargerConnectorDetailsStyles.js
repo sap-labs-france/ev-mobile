@@ -100,14 +100,14 @@ const commonStyles = ScaledSheet.create({
     fontSize: "16@s"
   },
   subLabel: {
-    fontSize: "12@s",
-    fontWeight: "bold",
+    fontSize: "10@s",
     marginTop: Platform.OS === "ios" ? "0@s" : "-5@s",
-    color: commonColor.textColor,
+    color: commonColor.brandPrimaryDark,
     alignSelf: "center"
   },
-  subLabelStatus: {
-    marginTop: "0@s"
+  subLabelStatusError: {
+    color: commonColor.brandDanger,
+    marginTop: "2@s"
   },
   subLabelUser: {
     marginTop: "0@s"
