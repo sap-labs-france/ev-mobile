@@ -354,7 +354,6 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
 
   _renderConnectorStatus = (style) => {
     const { connector } = this.props;
-    console.log(connector);
     return (
       <View style={style.columnContainer}>
         <ConnectorStatusComponent
