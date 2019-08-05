@@ -12,7 +12,7 @@ import moment from "moment";
 
 const _provider = ProviderFactory.getProvider();
 
-const noPhoto = require("../../../assets/no-photo.png");
+const noPhoto = require("../../../assets/no-photo-inverse.png");
 const logo = require("../../../assets/logo-low.png");
 
 class SideBar extends ResponsiveComponent {
