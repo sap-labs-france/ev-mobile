@@ -141,7 +141,7 @@ export default {
   },
 
   // Card
-  cardDefaultBg: "#fff",
+  cardDefaultBg: fiori3Bg,
   cardBorderColor: "#ccc",
   cardBorderRadius: 2,
   cardItemPadding: platform === PLATFORM.IOS ? 10 : 12,

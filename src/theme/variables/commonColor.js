@@ -31,14 +31,14 @@ const fiori3Active = "#0854a0";
 const fiori3ShellInteractiveBorder = "#7996b4";
 const fiori3Brand = "#0a6ed1";
 
-const primary = fiori3Brand || "#0098D5";
-const primaryLight = fiori3ShellInteractiveBorder || "#98CEFB";
-const primaryDark = fiori3ShellColor || "#0077A7";
+const primary = fiori3Brand;
+const primaryLight = fiori3ShellInteractiveBorder;
+const primaryDark = fiori3ShellColor;
 const info = "#81C2EA";
-const success = fiori3Success || "#388E3C";
-const successDark = fiori3SuccessBorder || "#2C742F";
-const danger = fiori3Error || "#E53934";
-const dangerDark = fiori3ErrorBorder || "#98211D";
+const success = fiori3Success;
+const successDark = fiori3SuccessBorder;
+const danger = fiori3Error;
+const dangerDark = fiori3ErrorBorder;
 const warning = "#FB8C00";
 const warningDark = "#C66F01";
 const disable = "#757575";
@@ -150,7 +150,7 @@ export default {
   },
 
   // Card
-  cardDefaultBg: fiori3Bg || "#fff",
+  cardDefaultBg: fiori3Bg,
   cardBorderColor: "#ccc",
   cardBorderRadius: 2,
   cardItemPadding: platform === PLATFORM.IOS ? 10 : 12,
