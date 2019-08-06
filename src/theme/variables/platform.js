@@ -15,6 +15,7 @@ const isIphoneX =
   (deviceHeight === 812 || deviceWidth === 812 || deviceHeight === 896 || deviceWidth === 896);
 
 const fiori3ShellColor = "#354a5f";
+const fiori3Bg = "#f7f7f7";
 
 const primary = "#0098D5";
 const primaryLight = "#98CEFB";
