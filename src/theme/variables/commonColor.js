@@ -19,9 +19,11 @@ const isIphoneX =
   platform === PLATFORM.IOS &&
   (deviceHeight === 812 || deviceWidth === 812 || deviceHeight === 896 || deviceWidth === 896);
 
+const fiori3ShellColor = "#354a5f";
+
 const primary = "#0098D5";
 const primaryLight = "#98CEFB";
-const primaryDark = "#0077A7";
+const primaryDark = fiori3ShellColor || "#0077A7";
 const info = "#81C2EA";
 const success = "#388E3C";
 const successDark = "#2C742F";
@@ -286,7 +288,7 @@ export default {
   tabFontSize: 15,
 
   // Text
-  textColor: primaryDark,
+  textColor: "#32363a" || primaryDark,
   inverseTextColor: "#fff",
   noteFontSize: 14,
   get defaultTextColor() {
