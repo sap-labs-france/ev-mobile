@@ -2,6 +2,7 @@ import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import commonColor from "../../theme/variables/commonColor";
 import deepmerge from "deepmerge";
 import { ScaledSheet } from "react-native-size-matters";
+import { Platform } from "react-native";
 
 const commonStyles = ScaledSheet.create({
   noDisplay: {
@@ -88,7 +89,7 @@ const commonStyles = ScaledSheet.create({
     alignSelf: "center",
     textAlign: "center",
     width: "11%",
-    fontSize: "15@s"
+    fontSize: Platform.OS === "ios" ? "20@s" : "15@s"
   },
   recaptcha: {
     backgroundColor: "transparent"
