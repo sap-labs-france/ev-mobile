@@ -9,7 +9,7 @@ let _centralRestServerServiceBaseURL = "https://sap-ev-rest-server.cfapps.eu10.h
 let _debug = false;
 if (__DEV__) {
   // QA REST Server
-  _centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
+  _centralRestServerServiceBaseURL = "https://sap-ev-rest-server.cfapps.eu10.hana.ondemand.com";
   _debug = true;
 }
 const _centralRestServerServiceAuthURL = _centralRestServerServiceBaseURL + "/client/auth";

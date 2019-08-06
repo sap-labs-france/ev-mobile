@@ -227,7 +227,7 @@ export default class SignUp extends BaseScreen {
                     placeholder={I18n.t("authentication.name")}
                     placeholderTextColor={commonColor.inverseTextColor}
                     style={style.inputField}
-                    autoCapitalize="none"
+                    autoCapitalize="characters"
                     blurOnSubmit={false}
                     autoCorrect={false}
                     onChangeText={text => this.setState({ name: text })}
@@ -252,7 +252,7 @@ export default class SignUp extends BaseScreen {
                     placeholder={I18n.t("authentication.firstName")}
                     placeholderTextColor={commonColor.inverseTextColor}
                     style={style.inputField}
-                    autoCapitalize="none"
+                    autoCapitalize="words"
                     blurOnSubmit={false}
                     autoCorrect={false}
                     onChangeText={text => this.setState({ firstName: text })}

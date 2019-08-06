@@ -1,6 +1,6 @@
 import React from "react";
 import { ScrollView, Image, TextInput, KeyboardAvoidingView, Text as TextRN } from "react-native";
-import { Text, Form, Item, Button, Icon, View, Spinner, Footer, Right } from "native-base";
+import { Text, Form, Item, Button, Icon, View, Spinner, Footer, Left } from "native-base";
 import { NavigationActions, StackActions } from "react-navigation";
 import commonColor from "../../../theme/variables/commonColor";
 import ProviderFactory from "../../../provider/ProviderFactory";
@@ -158,11 +158,7 @@ export default class RetrievePassword extends BaseScreen {
                 {loading || !captcha ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
-                  <Button
-                    rounded
-                    primary
-                    block
-                    style={style.button}
+                  <Button rounded primary block style={style.button}
                     onPress={() => this._retrievePassword()}
                   >
                     <TextRN style={style.buttonText}>
@@ -182,18 +178,15 @@ export default class RetrievePassword extends BaseScreen {
             />
           </ScrollView>
           <Footer style={style.footer}>
-            <Right>
-              <Button
-                small
-                transparent
-                style={style.linksButtonRight}
+            <Left>
+              <Button small transparent style={style.linksButtonLeft}
                 onPress={() => this.props.navigation.goBack()}
               >
-                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>
+                <TextRN style={[style.linksTextButton, style.linksTextButtonLeft]}>
                   {I18n.t("authentication.backLogin")}
                 </TextRN>
               </Button>
-            </Right>
+            </Left>
           </Footer>
         </BackgroundComponent>
       </Animatable.View>
