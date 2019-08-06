@@ -71,7 +71,7 @@ export default {
   PAGING_SIZE: 10,
   DEFAULT_ORDERING: [],
 
-  CSS_HEADER_BG: "#f7f7f7",
+  CSS_HEADER_BG: "#d9d9d9",
 
   CONN_STATUS_AVAILABLE: "Available",
   CONN_STATUS_OCCUPIED: "Occupied",
