@@ -87,6 +87,8 @@ export default class SignUp extends BaseScreen {
       password: "",
       repeatPassword: "",
       eula: false,
+      captchaSiteKey: null,
+      captchaBaseUrl: null,
       captcha: null,
       loading: false
     };
@@ -96,11 +98,11 @@ export default class SignUp extends BaseScreen {
     // Call parent
     await super.componentDidMount();
     // Init
-    this.captchaSiteKey = this.centralServerProvider.getCaptchaSiteKey();
-    this.captchaBaseUrl = this.centralServerProvider.getCaptchaBaseUrl();
     const tenant = this.centralServerProvider.getTenant(this.state.tenant);
     this.setState({
-      tenantName: tenant.name
+      tenantName: tenant.name,
+      captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
+      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl()
     });
   }
 
@@ -186,7 +188,7 @@ export default class SignUp extends BaseScreen {
   render() {
     const style = computeStyleSheet();
     const navigation = this.props.navigation;
-    const { eula, loading, captcha, tenantName } = this.state;
+    const { eula, loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl } = this.state;
     return (
       <Animatable.View
         style={style.container}
@@ -359,14 +361,18 @@ export default class SignUp extends BaseScreen {
                 )}
               </Form>
             </KeyboardAvoidingView>
-            <ReCaptcha
-              containerStyle={style.recaptcha}
-              siteKey={this.captchaSiteKey}
-              url={this.captchaBaseUrl}
-              action="RegisterUser"
-              reCaptchaType={1}
-              onExecute={this._recaptchaResponseToken}
-            />
+            { captchaSiteKey && captchaBaseUrl ?
+              <ReCaptcha
+                containerStyle={style.recaptcha}
+                siteKey={captchaSiteKey}
+                url={captchaBaseUrl}
+                action="RegisterUser"
+                reCaptchaType={1}
+                onExecute={this._recaptchaResponseToken}
+              />
+            :
+              undefined
+            }
           </ScrollView>
           <Footer style={style.footer}>
             <Right>

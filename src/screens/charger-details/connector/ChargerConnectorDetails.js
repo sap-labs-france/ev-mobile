@@ -21,6 +21,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     super(props);
     this.state = {
       transaction: null,
+      userImageLoaded: false,
       userImage: null,
       elapsedTimeFormatted: "00:00:00",
       inactivityFormatted: "00:00:00",
@@ -110,18 +111,26 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     }
   };
 
-  _getUserImage = async user => {
-    const { userImage } = this.state;
+  _getUserImage = async (user) => {
+    const { userImageLoaded } = this.state;
     try {
-      // Already loaded?
-      if (userImage) {
-        return;
-      }
       // User provided?
       if (user) {
-        const userImage = await this.centralServerProvider.getUserImage({ ID: user.id });
+        // Not already loaded?
+        if (!userImageLoaded) {
+          // Get it
+          userImageBackend = await this.centralServerProvider.getUserImage({ ID: user.id });
+          this.setState({
+            userImageLoaded: true,
+            userImage: userImageBackend ? userImageBackend.image : null
+          });
+        }
+      } else {
         // Set
-        this.setState({ userImage: userImage ? userImage.image : null });
+        this.setState({
+          userImageLoaded: false,
+          userImage: null
+        });
       }
     } catch (error) {
       // Other common Error

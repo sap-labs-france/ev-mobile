@@ -35,6 +35,8 @@ export default class RetrievePassword extends BaseScreen {
       tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
       tenantName: "",
       email: Utils.getParamFromNavigation(this.props.navigation, "email", ""),
+      captchaSiteKey: null,
+      captchaBaseUrl: null,
       captcha: null,
       loading: false
     };
@@ -44,11 +46,11 @@ export default class RetrievePassword extends BaseScreen {
     // Call parent
     await super.componentDidMount();
     // Init
-    this.captchaSiteKey = this.centralServerProvider.getCaptchaSiteKey();
-    this.captchaBaseUrl = this.centralServerProvider.getCaptchaBaseUrl();
     const tenant = this.centralServerProvider.getTenant(this.state.tenant);
     this.setState({
-      tenantName: tenant.name
+      tenantName: tenant.name,
+      captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
+      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl()
     });
   }
 
@@ -119,7 +121,7 @@ export default class RetrievePassword extends BaseScreen {
 
   render() {
     const style = computeStyleSheet();
-    const { loading, captcha, tenantName } = this.state;
+    const { loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl } = this.state;
     return (
       <Animatable.View
         style={style.container}
@@ -175,14 +177,18 @@ export default class RetrievePassword extends BaseScreen {
                 )}
               </Form>
             </KeyboardAvoidingView>
-            <ReCaptcha
-              containerStyle={style.recaptcha}
-              siteKey={this.captchaSiteKey}
-              url={this.captchaBaseUrl}
-              action="ResetPassword"
-              reCaptchaType={1}
-              onExecute={this._recaptchaResponseToken}
-            />
+            { captchaSiteKey && captchaBaseUrl ?
+              <ReCaptcha
+                containerStyle={style.recaptcha}
+                siteKey={captchaSiteKey}
+                url={captchaBaseUrl}
+                action="ResetPassword"
+                reCaptchaType={1}
+                onExecute={this._recaptchaResponseToken}
+              />
+            :
+              undefined
+            }
           </ScrollView>
           <Footer style={style.footer}>
             <Left>
