@@ -15,16 +15,25 @@ const isIphoneX =
   (deviceHeight === 812 || deviceWidth === 812 || deviceHeight === 896 || deviceWidth === 896);
 
 const fiori3ShellColor = "#354a5f";
+const fiori3Success = "#16ab54";
+const fiori3SuccessBorder = "#107e3e";
+const fiori3Error = "#ee0000";
+const fiori3ErrorBorder = "#bb0000";
 const fiori3Bg = "#f7f7f7";
+const fiori3Primary = "#354a5f";
+const fiori3Primary2 = "#0a6ed1";
+const fiori3Active = "#0854a0";
+const fiori3ShellInteractiveBorder = "#7996b4";
+const fiori3Brand = "#0a6ed1";
 
-const primary = "#0098D5";
-const primaryLight = "#98CEFB";
-const primaryDark = fiori3ShellColor || "#0077A7";
+const primary = fiori3Brand;
+const primaryLight = fiori3Primary2;
+const primaryDark = fiori3Active;
 const info = "#81C2EA";
-const success = "#388E3C";
-const successDark = "#2C742F";
-const danger = "#E53934";
-const dangerDark = "#98211D";
+const success = fiori3Success;
+const successDark = fiori3SuccessBorder;
+const danger = fiori3Error;
+const dangerDark = fiori3ErrorBorder;
 const warning = "#FB8C00";
 const warningDark = "#C66F01";
 const disable = "#757575";
@@ -312,6 +321,7 @@ export default {
 
   // Text
   textColor: primaryDark,
+  headerTextColor: fiori3Primary,
   inverseTextColor: "#fff",
   noteFontSize: 14,
   get defaultTextColor() {

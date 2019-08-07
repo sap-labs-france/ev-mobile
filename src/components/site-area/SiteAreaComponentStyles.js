@@ -34,7 +34,7 @@ const commonStyles = ScaledSheet.create({
     paddingLeft: "10@s",
     fontSize: "20@s",
     fontWeight: "bold",
-    color: commonColor.textColor
+    color: commonColor.headerTextColor
   },
   icon: {
     fontSize: "30@s",
