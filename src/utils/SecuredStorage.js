@@ -1,37 +1,44 @@
 import Constants from "./Constants";
-import SInfo from "react-native-sensitive-info";
 import RNSecureStorage, { ACCESSIBLE } from "rn-secure-storage";
-
-// Clear old pass
-SInfo.deleteItem(Constants.KEY_EMAIL, {});
-SInfo.deleteItem(Constants.KEY_PASSWORD, {});
-SInfo.deleteItem(Constants.KEY_TENANT, {});
-SInfo.deleteItem(Constants.KEY_TOKEN, {});
+import DeviceInfo from "react-native-device-info";
 
 export default class SecuredStorage {
+  static async getNavigationState() {
+    const navigationState = await SecuredStorage._getJson(Constants.KEY_NAVIGATION_STATE);
+    // Check the key
+    if (navigationState) {
+      if (navigationState.key === DeviceInfo.getVersion()) {
+        return navigationState.navigationState;
+      }
+    }
+    return null;
+  }
+
+  static async saveNavigationState(navigationState) {
+    // Add a key
+    navigationState = { key: DeviceInfo.getVersion(), navigationState };
+    await RNSecureStorage.set(Constants.KEY_NAVIGATION_STATE, JSON.stringify(navigationState), {
+      accessible: ACCESSIBLE.WHEN_UNLOCKED
+    });
+  }
+
   static getUserCredentials() {
     return SecuredStorage._getJson(Constants.KEY_CREDENTIALS);
   }
 
   static async clearUserCredentials() {
-    // Clear only the token
     const credentials = await SecuredStorage._getJson(Constants.KEY_CREDENTIALS);
-    // Check
     if (credentials) {
-      // Clear token
       delete credentials.token;
-      // Save
       SecuredStorage.saveUserCredentials(credentials);
     }
   }
 
   static async deleteUserCredentials() {
-    // Clear only the token
     await RNSecureStorage.remove(Constants.KEY_CREDENTIALS);
   }
 
   static async saveUserCredentials(credentials) {
-    // Store credentials
     await RNSecureStorage.set(Constants.KEY_CREDENTIALS, JSON.stringify(credentials), {
       accessible: ACCESSIBLE.WHEN_UNLOCKED
     });

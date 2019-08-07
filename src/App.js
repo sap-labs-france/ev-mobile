@@ -1,5 +1,5 @@
 import React from "react";
-import { StatusBar, Dimensions, AsyncStorage } from "react-native";
+import { StatusBar, Dimensions } from "react-native";
 import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createAppContainer } from "react-navigation";
 import { Root } from "native-base";
 import Login from "./screens/auth/login/Login";
@@ -13,8 +13,8 @@ import Chargers from "./screens/chargers/Chargers";
 import AllChargers from "./screens/chargers/AllChargers";
 import ChargerTabDetails from "./screens/charger-details/tabs/ChargerTabDetails";
 import NotificationManager from "./notification/NotificationManager";
-import DeviceInfo from "react-native-device-info";
 import Utils from "./utils/Utils";
+import SecuredStorage from "./utils/SecuredStorage";
 import moment from "moment";
 
 // Get the supported locales
@@ -86,22 +86,27 @@ const RootNavigator = createSwitchNavigator(
 const RootContainer = createAppContainer(RootNavigator);
 
 // Handle persistence of navigation
-const persistenceKey = DeviceInfo.getVersion();
-const persistNavigationState = async (navState) => {
+const persistNavigationState = async (navigationState) => {
   try {
-    await AsyncStorage.setItem(persistenceKey, JSON.stringify(navState));
+    await SecuredStorage.saveNavigationState(navigationState);
   } catch(error) {
     console.log(error);
   }
-}
+};
+
 const loadNavigationState = async () => {
-  const navState = await AsyncStorage.getItem(persistenceKey);
-  return JSON.parse(navState);
-}
-const RootContainerPersists = () => <RootContainer
-  persistNavigationState={persistNavigationState}
-  loadNavigationState={loadNavigationState}
-/>
+  const navigationState = await SecuredStorage.getNavigationState();
+  return navigationState;
+};
+
+const RootContainerPersists = () => {
+  return (
+    <RootContainer
+      persistNavigationState={persistNavigationState}
+      loadNavigationState={loadNavigationState}
+    />
+  );
+};
 
 export default class App extends React.Component {
   // eslint-disable-next-line class-methods-use-this

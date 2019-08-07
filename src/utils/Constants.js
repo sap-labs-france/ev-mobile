@@ -59,10 +59,7 @@ export default {
   KEYCHAIN_SERVICE: "eMobilityKeyChain",
 
   KEY_CREDENTIALS: "credentials",
-  KEY_EMAIL: "email",
-  KEY_PASSWORD: "password",
-  KEY_TOKEN: "token",
-  KEY_TENANT: "tenant",
+  KEY_NAVIGATION_STATE: "navigation-state",
 
   // Paging
   DEFAULT_PAGING: {
