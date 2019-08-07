@@ -28,7 +28,7 @@ const fiori3Brand = "#0a6ed1";
 
 const primary = fiori3Brand;
 const primaryLight = fiori3Primary2;
-const primaryDark = fiori3Active;
+const primaryDark = fiori3ShellColor;
 const info = "#81C2EA";
 const success = fiori3Success;
 const successDark = fiori3SuccessBorder;

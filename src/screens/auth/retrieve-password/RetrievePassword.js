@@ -3,7 +3,6 @@ import { ScrollView, Image, TextInput, KeyboardAvoidingView, Text as TextRN } fr
 import { Text, Form, Item, Button, Icon, View, Spinner, Footer, Left } from "native-base";
 import { NavigationActions, StackActions } from "react-navigation";
 import commonColor from "../../../theme/variables/commonColor";
-import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
@@ -15,7 +14,6 @@ import ReCaptcha from "react-native-recaptcha-v3";
 import BaseScreen from "../../base-screen/BaseScreen";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 
-const _provider = ProviderFactory.getProvider();
 const logo = require("../../../../assets/logo-low.png");
 
 const formValidationDef = {
@@ -33,16 +31,25 @@ const formValidationDef = {
 export default class RetrievePassword extends BaseScreen {
   constructor(props) {
     super(props);
-    this.captchaSiteKey = _provider.getCaptchaSiteKey();
-    this.captchaBaseUrl = _provider.getCaptchaBaseUrl();
-    const tenantSubDomain = Utils.getParamFromNavigation(this.props.navigation, "tenant", "");
-    this.tenant = _provider.getTenant(tenantSubDomain);
     this.state = {
-      tenant: tenantSubDomain,
+      tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
+      tenantName: "",
       email: Utils.getParamFromNavigation(this.props.navigation, "email", ""),
       captcha: null,
       loading: false
     };
+  }
+
+  async componentDidMount() {
+    // Call parent
+    await super.componentDidMount();
+    // Init
+    this.captchaSiteKey = this.centralServerProvider.getCaptchaSiteKey();
+    this.captchaBaseUrl = this.centralServerProvider.getCaptchaBaseUrl();
+    const tenant = this.centralServerProvider.getTenant(this.state.tenant);
+    this.setState({
+      tenantName: tenant.name
+    });
   }
 
   _recaptchaResponseToken = captcha => {
@@ -57,7 +64,7 @@ export default class RetrievePassword extends BaseScreen {
       try {
         this.setState({ loading: true });
         // Login
-        await _provider.retrievePassword(tenant, email, captcha);
+        await this.centralServerProvider.retrievePassword(tenant, email, captcha);
         // Login Success
         this.setState({ loading: false });
         // Show
@@ -94,7 +101,7 @@ export default class RetrievePassword extends BaseScreen {
               break;
             default:
               // Other common Error
-              Utils.handleHttpUnexpectedError(error.request, this.props.navigation);
+              Utils.handleHttpUnexpectedError(error.request);
           }
         } else {
           Message.showError(I18n.t("general.unexpectedError"));
@@ -112,7 +119,7 @@ export default class RetrievePassword extends BaseScreen {
 
   render() {
     const style = computeStyleSheet();
-    const { loading, captcha } = this.state;
+    const { loading, captcha, tenantName } = this.state;
     return (
       <Animatable.View
         style={style.container}
@@ -129,7 +136,7 @@ export default class RetrievePassword extends BaseScreen {
                 <Text style={style.appVersionText}>{`${I18n.t(
                   "general.version"
                 )} ${DeviceInfo.getVersion()}`}</Text>
-                <Text style={style.appTenantName}>{this.tenant.name}</Text>
+                <Text style={style.appTenantName}>{tenantName}</Text>
               </View>
               <Form style={style.form}>
                 <Item inlineLabel rounded style={style.inputGroup}>

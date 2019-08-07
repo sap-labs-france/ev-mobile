@@ -1,13 +1,14 @@
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import Constants from "../../utils/Constants";
 import { BackHandler } from "react-native";
+import ProviderFactory from "../../provider/ProviderFactory";
 
 export default class BaseScreen extends ResponsiveComponent {
   constructor(props) {
     super(props);
     // Add listeners
-    this.didFocus = this.props.navigation.addListener("didFocus", this.componentDidFocus);
-    this.didBlur = this.props.navigation.addListener("didBlur", this.componentDidBlur);
+    this.didFocus = this.props.navigation.addListener("didFocus", this.componentDidFocus.bind(this));
+    this.didBlur = this.props.navigation.addListener("didBlur", this.componentDidBlur.bind(this));
   }
 
   isMounted() {
@@ -16,10 +17,12 @@ export default class BaseScreen extends ResponsiveComponent {
 
   async componentDidMount() {
     this.mounted = true;
+    this.centralServerProvider = await ProviderFactory.getProvider();
+    this.securityProvider = this.centralServerProvider.getSecurityProvider();
     BackHandler.removeEventListener("hardwareBackPress", this.onBack);
   }
 
-  componentWillUnmount() {
+  async componentWillUnmount() {
     this.mounted = false;
     // Remove listeners
     this.didFocus && this.didFocus.remove();
@@ -31,10 +34,10 @@ export default class BaseScreen extends ResponsiveComponent {
     return false;
   };
 
-  componentDidFocus = () => {
+  async componentDidFocus() {
     BackHandler.addEventListener("hardwareBackPress", this.onBack);
-  };
+  }
 
-  componentDidBlur = () => {
-  };
+  async componentDidBlur() {
+  }
 }

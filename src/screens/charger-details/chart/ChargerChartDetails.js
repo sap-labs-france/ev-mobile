@@ -1,7 +1,6 @@
 import React from "react";
 import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
 import { View, processColor } from "react-native";
-import ProviderFactory from "../../../provider/ProviderFactory";
 import Utils from "../../../utils/Utils";
 import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./ChargerChartDetailsStyles";
@@ -12,8 +11,6 @@ import PropTypes from "prop-types";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 
 const EMPTY_CHART = [{ x: 0, y: 0 }];
-
-const _provider = ProviderFactory.getProvider();
 
 export default class ChargerChartDetails extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -27,7 +24,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
 
   async componentDidMount() {
     // Call parent
-    super.componentDidMount();
+    await super.componentDidMount();
     // Get the consumption
     if (this.isMounted()) {
       await this._getChargingStationConsumption();
@@ -36,7 +33,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
 
   async componentWillUnmount() {
     // Call parent
-    super.componentWillUnmount();
+    await super.componentWillUnmount();
   }
 
   _getChargingStationConsumption = async () => {
@@ -45,7 +42,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
       // Active Transaction?
       if (transactionID) {
         // Get the consumption
-        const result = await _provider.getChargingStationConsumption({
+        const result = await this.centralServerProvider.getChargingStationConsumption({
           TransactionId: transactionID
         });
         // At least 2 values for the chart!!!

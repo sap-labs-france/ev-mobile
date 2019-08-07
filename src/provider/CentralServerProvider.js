@@ -54,11 +54,22 @@ export default class CentralServerProvider {
         _token = null;
         _tenant = null;
       }
-      // Check Token
+      // // Check Token
+      // if (!this.forceExpiredOnce) {
+      //   console.log("initialize() - Force Expired Token");
+      //   _token = "eyJpZCI6IjVkMzc0MTNhOWJiZGNmMDAwZDUxODUzYyIsInJvbGUiOiJCIiwibmFtZSI6IkZBQklBTk8iLCJ0YWdJRHMiOlsiU0Y4MjczMjMyMzUiXSwiZmlyc3ROYW1lIjoiU2VyZ2UgKEJhc2ljKSIsImxvY2FsZSI6ImVuX1VTIiwibGFuZ3VhZ2UiOiJlbiIsInRlbmFudElEIjoiNWQyNTk4NGI2MWY3YjEwMDA2N2I3NjlhIiwidXNlckhhc2hJRCI6IjE2MWYzYTM4ZTdlZDQwNmI2NGEyZTBlOTE3YjQ1MmNjOWNkMGEzYzEwNTNjNjVmNjM4YWNjNTNkN2Q3MzlhZTkiLCJ0ZW5hbnRIYXNoSUQiOiI1MjU1NjU1ZjQxZTA0YjNhODE0MWQxNzBlNDg4OTVjN2U4MTQ0NTE4ZDI1ZWY0ODdiZDQwZDA5N2VlYWJmMDZiIiwic2NvcGVzIjpbIkNoYXJnaW5nU3RhdGlvbjpBdXRob3JpemUiLCJDaGFyZ2luZ1N0YXRpb246UmVhZCIsIkNoYXJnaW5nU3RhdGlvbjpSZW1vdGVTdGFydFRyYW5zYWN0aW9uIiwiQ2hhcmdpbmdTdGF0aW9uOlJlbW90ZVN0b3BUcmFuc2FjdGlvbiIsIkNoYXJnaW5nU3RhdGlvbjpVbmxvY2tDb25uZWN0b3IiLCJDaGFyZ2luZ1N0YXRpb25zOkxpc3QiLCJDb21wYW5pZXM6TGlzdCIsIkNvbXBhbnk6UmVhZCIsIkNvbm5lY3Rpb246Q3JlYXRlIiwiQ29ubmVjdGlvbjpEZWxldGUiLCJDb25uZWN0aW9uOlJlYWQiLCJDb25uZWN0aW9uczpMaXN0IiwiU2V0dGluZzpSZWFkIiwiU2V0dGluZ3M6TGlzdCIsIlNpdGU6UmVhZCIsIlNpdGVBcmVhOlJlYWQiLCJTaXRlQXJlYXM6TGlzdCIsIlNpdGVzOkxpc3QiLCJUcmFuc2FjdGlvbjpSZWFkIiwiVHJhbnNhY3Rpb246UmVmdW5kVHJhbnNhY3Rpb24iLCJUcmFuc2FjdGlvbnM6TGlzdCIsIlVzZXI6UmVhZCIsIlVzZXI6VXBkYXRlIl0sImNvbXBhbmllcyI6WyI1ZDI1YWExMzYxZjdiMTAwMDY3Yjc2YmYiXSwic2l0ZXNBZG1pbiI6W10sInNpdGVzIjpbIjVkMjVhYTVjNjFmN2IxMDAwNjdiNzZjMSJdLCJhY3RpdmVDb21wb25lbnRzIjpbIm9yZ2FuaXphdGlvbiIsInN0YXRpc3RpY3MiLCJhbmFseXRpY3MiXSwiaWF0IjoxNTY0NzU2Nzg0LCJleHAiOjE1NjQ3OTk5ODR9";
+      //   this.forceExpiredOnce = true;
+      // }
       if (_token) {
-        // Decode the token
-        _decodedToken = jwtDecode(_token);
-        _securityProvider = new SecurityProvider(_decodedToken);
+        // Try to decode the token
+        try {
+          // Decode the token
+          _decodedToken = jwtDecode(_token);
+          _securityProvider = new SecurityProvider(_decodedToken);
+        } catch(error) {
+          console.log("initialize() - ERROR");
+          console.log({initializeError: error});
+        }
       }
       // Ok
       _initialized = true;
@@ -88,104 +99,86 @@ export default class CentralServerProvider {
     ];
   }
 
-  async checkAndTriggerAutoLogin(navigation) {
+  async triggerAutoLogin(navigation, fctRefresh) {
+    this.debug("triggerAutoLogin");
     try {
-      // Check if connection has expired
-      if (await this.hasUserConnectionExpired()) {
-        // Try to authenticate again
-        await this.reAuthenticate();
+      // Force log the user
+      await this.login(_email, _password, true, _tenant);
+      // Ok: Refresh
+      if (fctRefresh) {
+        fctRefresh();
       }
     } catch (error) {
-      // Logoff
+      // Ko: Logoff
       await this.logoff();
-      navigation.navigate("AuthNavigator");
+      console.log("triggerAutoLogin() - ERROR - Force Logoff");
+      // Go to login page
+      if (navigation) {
+        navigation.navigate("AuthNavigator");
+      }
     }
   }
 
-  async hasUserConnectionExpired() {
+  hasUserConnectionExpired() {
     this.debug("hasUserConnectionExpired");
-    return (await this.isUserConnected()) && !(await this.isUserConnectionValid());
+    return this.isUserConnected() && !this.isUserConnectionValid();
   }
 
-  async isUserConnected() {
+  isUserConnected() {
     this.debug("isUserConnected");
-    // Init?
-    await this.initialize();
     // Check
     return !!_token;
   }
 
-  async isUserConnectionValid() {
+  isUserConnectionValid() {
     this.debug("isUserConnectionValid");
-    // Init?
-    await this.initialize();
     // Email and Password are mandatory
     if (!_email || !_password || !_tenant) {
       return false;
     }
     // Check Token
-    if (_decodedToken) {
-      // Check if expired
-      if (_decodedToken.exp < Date.now() / 1000) {
-        // Expired
+    if (_token) {
+      try {
+        // Try to decode the token
+        _decodedToken = jwtDecode(_token);
+      } catch(error) {
         return false;
       }
-      return true;
+      // Check if expired
+      if (_decodedToken) {
+        if (_decodedToken.exp < Date.now() / 1000) {
+          // Expired
+          return false;
+        }
+        return true;
+      }
     }
     return false;
   }
 
-  async getUserEmail() {
-    // Init?
-    await this.initialize();
-    // Return
+  getUserEmail() {
     return _email;
   }
 
-  async getUserPassword() {
-    // Init?
-    await this.initialize();
-    // Return
+  getUserPassword() {
     return _password;
   }
 
-  async getUserTenant() {
-    // Init?
-    await this.initialize();
-    // Return
+  getUserTenant() {
     return _tenant;
   }
 
-  async getUserInfo() {
-    // Init?
-    await this.initialize();
-    // Return
+  getUserInfo() {
     return _decodedToken;
   }
 
-  async logoff() {
+  logoff() {
     this.debug("logoff");
     // Clear the token and tenant
-    await SecuredStorage.clearUserCredentials();
+    SecuredStorage.clearUserCredentials();
     // Clear local data
-    _email = null;
-    _password = null;
-    _tenant = null;
     _token = null;
     _decodedToken = null;
-    _initialized = false;
-  }
-
-  async reAuthenticate() {
-    this.debug("reAuthenticate");
-    // Check token
-    if (!(await this.isUserConnectionValid())) {
-      // User not authenticated: email, password and tenant registered ?
-      if (_email && _password && _tenant) {
-        // Yes: relog user
-        await this.login(_email, _password, true, _tenant);
-      }
-    }
   }
 
   async login(email, password, acceptEula, tenant) {
@@ -210,6 +203,7 @@ export default class CentralServerProvider {
       token: result.data.token,
       tenant
     });
+    console.log("Login OK");
     // Keep them
     _token = result.data.token;
     _decodedToken = jwtDecode(_token);
@@ -262,8 +256,6 @@ export default class CentralServerProvider {
     ordering = Constants.DEFAULT_ORDERING
   ) {
     this.debug("getNotifications");
-    // Init?
-    await this.initialize();
     // Build Paging
     this._buildPaging(paging, params);
     // Build Ordering
@@ -282,8 +274,6 @@ export default class CentralServerProvider {
     ordering = Constants.DEFAULT_ORDERING
   ) {
     this.debug("getChargers");
-    // Init?
-    await this.initialize();
     // Build Paging
     this._buildPaging(paging, params);
     // Build Ordering
@@ -298,8 +288,6 @@ export default class CentralServerProvider {
 
   async getCharger(params = {}) {
     this.debug("getCharger");
-    // Init?
-    await this.initialize();
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/ChargingStation`, {
       headers: this._buildSecuredHeaders(),
@@ -314,8 +302,6 @@ export default class CentralServerProvider {
     ordering = Constants.DEFAULT_ORDERING
   ) {
     this.debug("getSites");
-    // Init?
-    await this.initialize();
     // Build Paging
     this._buildPaging(paging, params);
     // Build Ordering
@@ -334,8 +320,6 @@ export default class CentralServerProvider {
     ordering = Constants.DEFAULT_ORDERING
   ) {
     this.debug("getSiteAreas");
-    // Init?
-    await this.initialize();
     // Build Paging
     this._buildPaging(paging, params);
     // Build Ordering
@@ -360,8 +344,6 @@ export default class CentralServerProvider {
 
   async startTransaction(chargeBoxID, connectorID, tagID) {
     this.debug("startTransaction");
-    // Init?
-    await this.initialize();
     // Call
     const result = await axios.post(
       `${_centralRestServerServiceSecuredURL}/ChargingStationRemoteStartTransaction`,
@@ -381,8 +363,6 @@ export default class CentralServerProvider {
 
   async stopTransaction(chargeBoxID, transactionId) {
     this.debug("stopTransaction");
-    // Init?
-    await this.initialize();
     // Call
     const result = await axios.post(
       `${_centralRestServerServiceSecuredURL}/ChargingStationRemoteStopTransaction`,
@@ -401,8 +381,6 @@ export default class CentralServerProvider {
 
   async reset(chargeBoxID, type) {
     this.debug("reset");
-    // Init?
-    await this.initialize();
     // Call
     const result = await axios.post(
       `${_centralRestServerServiceSecuredURL}/ChargingStationReset`,
@@ -421,8 +399,6 @@ export default class CentralServerProvider {
 
   async clearCache(chargeBoxID) {
     this.debug("clearCache");
-    // Init?
-    await this.initialize();
     // Call
     const result = await axios.post(
       `${_centralRestServerServiceSecuredURL}/ChargingStationClearCache`,
@@ -439,8 +415,6 @@ export default class CentralServerProvider {
 
   async getTransaction(params = {}) {
     this.debug("getTransaction");
-    // Init?
-    await this.initialize();
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/Transaction`, {
       headers: this._buildSecuredHeaders(),
@@ -451,8 +425,6 @@ export default class CentralServerProvider {
 
   async getUserImage(params = {}) {
     this.debug("getUserImage");
-    // Init?
-    await this.initialize();
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/UserImage`, {
       headers: this._buildSecuredHeaders(),
@@ -463,8 +435,6 @@ export default class CentralServerProvider {
 
   async getSiteImage(id) {
     this.debug("getSiteImage");
-    // Init?
-    await this.initialize();
     // Check cache
     let siteImage = _siteImages.find(siteImage => siteImage.id === id);
     if (!siteImage) {
@@ -486,8 +456,6 @@ export default class CentralServerProvider {
 
   async isAuthorizedStopTransaction(params = {}) {
     this.debug("isAuthorizedStopTransaction");
-    // Init ?
-    await this.initialize();
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/IsAuthorized`, {
       headers: this._buildSecuredHeaders(),
@@ -498,8 +466,6 @@ export default class CentralServerProvider {
 
   async getPrice() {
     this.debug("getPrice");
-    // Init ?
-    await this.initialize();
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/Pricing`, {
       headers: this._buildSecuredHeaders()
@@ -509,8 +475,6 @@ export default class CentralServerProvider {
 
   async getChargingStationConsumption(params = {}) {
     this.debug("getChargingStationConsumption");
-    // Init ?
-    await this.initialize();
     // Call
     const result = await axios.get(
       `${_centralRestServerServiceSecuredURL}/ChargingStationConsumptionFromTransaction`,
@@ -522,16 +486,12 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  async getSecurityProvider() {
-    // Init ?
-    await this.initialize();
-    // Return
+  getSecurityProvider() {
     return _securityProvider;
   }
 
   // eslint-disable-next-line class-methods-use-this
   _buildPaging(paging, queryString) {
-    // Check
     if (paging) {
       // Limit
       if (paging.limit) {
@@ -546,13 +506,11 @@ export default class CentralServerProvider {
 
   // eslint-disable-next-line class-methods-use-this
   _buildOrdering(ordering, queryString) {
-    // Check
     if (ordering && ordering.length) {
       if (!queryString.SortFields) {
         queryString.SortFields = [];
         queryString.SortDirs = [];
       }
-      // Set
       ordering.forEach(order => {
         queryString.SortFields.push(order.field);
         queryString.SortDirs.push(order.direction);

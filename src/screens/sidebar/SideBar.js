@@ -3,19 +3,17 @@ import { ResponsiveComponent } from "react-native-responsive-ui";
 import { ImageBackground, TouchableOpacity, Image } from "react-native";
 import { Container, Content, Text, Icon, ListItem, Thumbnail, View } from "native-base";
 import computeStyleSheet from "./SideBarStyles";
-import ProviderFactory from "../../provider/ProviderFactory";
 import I18n from "../../I18n/I18n";
 import Utils from "../../utils/Utils";
 import DeviceInfo from "react-native-device-info";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import moment from "moment";
-
-const _provider = ProviderFactory.getProvider();
+import BaseScreen from "../base-screen/BaseScreen";
 
 const noPhoto = require("../../../assets/no-photo-inverse.png");
 const logo = require("../../../assets/logo-low.png");
 
-class SideBar extends ResponsiveComponent {
+class SideBar extends BaseScreen {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,17 +25,17 @@ class SideBar extends ResponsiveComponent {
   }
 
   async componentDidMount() {
-    // Active
-    const isComponentOrganizationActive = (await _provider.getSecurityProvider()).isComponentOrganizationActive();
+    // Call parent
+    await super.componentDidMount();
     // Logoff
-    const userInfo = await _provider.getUserInfo();
+    const userInfo = this.centralServerProvider.getUserInfo();
     // Add sites
     // eslint-disable-next-line react/no-did-mount-set-state
     this.setState(
       {
         userName: `${userInfo.name} ${userInfo.firstName}`,
         userID: `${userInfo.id}`,
-        isComponentOrganizationActive
+        isComponentOrganizationActive : (this.securityProvider ? this.securityProvider.isComponentOrganizationActive() : false)
       },
       async () => {
         await this._getUserImage();
@@ -45,22 +43,26 @@ class SideBar extends ResponsiveComponent {
     );
   }
 
+  async refresh() {
+    await this._getUserImage();
+  }
+
   async _getUserImage() {
     const { userID } = this.state;
     try {
-      const result = await _provider.getUserImage({ ID: userID });
+      const result = await this.centralServerProvider.getUserImage({ ID: userID });
       if (result) {
         this.setState({ userImage: result.image });
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(error, this.props.navigation, this.refresh);
     }
   }
 
   async _logoff() {
     // Logoff
-    await _provider.logoff();
+    this.centralServerProvider.logoff();
     // Back to login
     this.props.navigation.navigate("AuthNavigator");
   }

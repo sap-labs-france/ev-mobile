@@ -13,8 +13,6 @@ import Utils from "../../../utils/Utils";
 import Constants from "../../../utils/Constants";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 
-const _provider = ProviderFactory.getProvider();
-
 export default class ChargerTabDetails extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
@@ -34,13 +32,13 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
 
   async componentDidMount() {
     // Call parent
-    super.componentDidMount();
+    await super.componentDidMount();
     // Refresh Charger
     if (this.isMounted()) {
       await this._getCharger();
     }
     // Set if Admin
-    const isAdmin = (await _provider.getSecurityProvider()).isAdmin();
+    const isAdmin = this.securityProvider.isAdmin();
     if (this.isMounted()) {
       // eslint-disable-next-line react/no-did-mount-set-state
       this.setState({
@@ -50,9 +48,9 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
     }
   }
 
-  componentWillUnmount() {
+  async componentWillUnmount() {
     // Call parent
-    super.componentWillUnmount();
+    await super.componentWillUnmount();
   }
 
   refresh = async () => {
@@ -76,7 +74,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
     const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
     try {
       // Get Charger
-      const charger = await _provider.getCharger({ ID: chargerID });
+      const charger = await this.centralServerProvider.getCharger({ ID: chargerID });
       this.setState(
         {
           charger,
@@ -99,7 +97,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
       // Transaction?
       if (connector.activeTransactionID !== 0) {
         // Call
-        const result = await _provider.isAuthorizedStopTransaction({
+        const result = await this.centralServerProvider.isAuthorizedStopTransaction({
           Action: "StopTransaction",
           Arg1: charger.id,
           Arg2: connector.activeTransactionID

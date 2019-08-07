@@ -1,7 +1,6 @@
 import React from "react";
 import { Platform, FlatList, RefreshControl } from "react-native";
 import { Container, View, Spinner, List } from "native-base";
-import ProviderFactory from "../../provider/ProviderFactory";
 import ChargerComponent from "../../components/charger/ChargerComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
 import SearchHeaderComponent from "../../components/search-header/SearchHeaderComponent";
@@ -11,8 +10,6 @@ import computeStyleSheet from "./ChargersStyles";
 import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
-
-const _provider = ProviderFactory.getProvider();
 
 export default class Chargers extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -31,7 +28,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
 
   async componentDidMount() {
     // Call parent
-    super.componentDidMount();
+    await super.componentDidMount();
     // Get chargers first time
     const chargers = await this._getChargers(this.searchText, this.state.skip, this.state.limit);
     // Add chargers
@@ -45,9 +42,9 @@ export default class Chargers extends BaseAutoRefreshScreen {
     }
   }
 
-  componentWillUnmount() {
+  async componentWillUnmount() {
     // Call parent
-    super.componentWillUnmount();
+    await super.componentWillUnmount();
   }
 
   _getChargers = async (searchText, skip, limit) => {
@@ -57,13 +54,13 @@ export default class Chargers extends BaseAutoRefreshScreen {
       // Get Chargers
       if (siteAreaID) {
         // Get with the Site Area
-        chargers = await _provider.getChargers(
+        chargers = await this.centralServerProvider.getChargers(
           { Search: searchText, SiteAreaID: siteAreaID },
           { skip, limit }
         );
       } else {
         // Get without the Site
-        chargers = await _provider.getChargers({ Search: searchText }, { skip, limit });
+        chargers = await this.centralServerProvider.getChargers({ Search: searchText }, { skip, limit });
       }
     } catch (error) {
       // Other common Error

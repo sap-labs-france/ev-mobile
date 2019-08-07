@@ -3,7 +3,6 @@ import { FlatList, RefreshControl } from "react-native";
 import { Container, Spinner, View } from "native-base";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
-import ProviderFactory from "../../provider/ProviderFactory";
 import SiteAreaComponent from "../../components/site-area/SiteAreaComponent";
 import SearchHeaderComponent from "../../components/search-header/SearchHeaderComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
@@ -11,8 +10,6 @@ import computeStyleSheet from "./SiteAreasStyles";
 import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
-
-const _provider = ProviderFactory.getProvider();
 
 export default class SiteAreas extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -29,7 +26,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
 
   async componentDidMount() {
     // Call parent
-    super.componentDidMount();
+    await super.componentDidMount();
     // Get the sites
     const siteAreas = await this._getSiteAreas(this.searchText, this.state.skip, this.state.limit);
     // Add sites
@@ -43,9 +40,9 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
     }
   }
 
-  componentWillUnmount() {
+  async componentWillUnmount() {
     // Call parent
-    super.componentWillUnmount();
+    await super.componentWillUnmount();
   }
 
   _getSiteAreas = async (searchText, skip, limit) => {
@@ -53,7 +50,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
     const siteID = Utils.getParamFromNavigation(this.props.navigation, "siteID", null);
     try {
       // Get the Sites
-      siteAreas = await _provider.getSiteAreas(
+      siteAreas = await this.centralServerProvider.getSiteAreas(
         { Search: searchText, SiteID: siteID, WithAvailableChargers: true },
         { skip, limit }
       );

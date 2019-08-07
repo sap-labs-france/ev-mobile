@@ -14,31 +14,31 @@ export default class BaseAutoRefreshScreen extends BaseScreen {
 
   async componentDidMount() {
     // Call parent
-    super.componentDidMount();
+    await super.componentDidMount();
     // Start the timer
     this._startRefreshTimer(true);
   }
 
-  componentWillUnmount() {
+  async componentWillUnmount() {
     // Call parent
-    super.componentWillUnmount();
+    await super.componentWillUnmount();
     // Clear the timer
     this._clearRefreshTimer();
   }
 
-  componentDidFocus = () => {
+  async componentDidFocus() {
     // Call parent
-    super.componentDidFocus();
+    await super.componentDidFocus();
     // Start the timer
     this._startRefreshTimer();
-  };
+  }
 
-  componentDidBlur = () => {
+  async componentDidBlur() {
     // Call parent
-    super.componentDidBlur();
+    await super.componentDidBlur();
     // Clear the timer
     this._clearRefreshTimer();
-  };
+  }
 
   setActive(active) {
     this.timerRefreshActive = active;

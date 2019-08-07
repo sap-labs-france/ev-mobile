@@ -4,7 +4,6 @@ import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet, F
 import Orientation from "react-native-orientation-locker";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import * as Animatable from "react-native-animatable";
-import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import Constants from "../../../utils/Constants";
@@ -15,7 +14,6 @@ import DeviceInfo from "react-native-device-info";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import BaseScreen from "../../base-screen/BaseScreen";
 
-const _provider = ProviderFactory.getProvider();
 const logo = require("../../../../assets/logo-low.png");
 
 const formValidationDef = {
@@ -55,7 +53,6 @@ const formValidationDef = {
 export default class Login extends BaseScreen {
   constructor(props) {
     super(props);
-    this.tenants = _provider.getTenants();
     this.state = {
       eula: false,
       password: null,
@@ -68,28 +65,22 @@ export default class Login extends BaseScreen {
   }
 
   async componentDidMount() {
+    // Call parent
+    await super.componentDidMount();
+    // Get Tenants
+    this.tenants = this.centralServerProvider.getTenants();
     // Unlock all
     Orientation.lockToPortrait();
-    // Check
-    _provider.checkAndTriggerAutoLogin(this.props.navigation);
-    // Check if user is authenticated
-    if (await _provider.isUserConnectionValid()) {
-      // Navigate
-      this._navigateToSites();
-    } else {
-      const email = await _provider.getUserEmail();
-      const password = await _provider.getUserPassword();
-      const userTenant = await _provider.getUserTenant();
-      const tenant = _provider.getTenant(userTenant);
-      // eslint-disable-next-line react/no-did-mount-set-state
-      this.setState({
-        email,
-        password,
-        tenant: userTenant,
-        tenantTitle: tenant ? tenant.name : this.state.tenantTitle,
-        display: true
-      });
-    }
+    const tenantSubmain = this.centralServerProvider.getUserTenant();
+    const tenant = this.centralServerProvider.getTenant(tenantSubmain);
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({
+      email: this.centralServerProvider.getUserEmail(),
+      password: this.centralServerProvider.getUserPassword(),
+      tenant: tenantSubmain,
+      tenantTitle: tenant ? tenant.name : this.state.tenantTitle,
+      display: true
+    });
   }
 
   _login = async () => {
@@ -103,7 +94,7 @@ export default class Login extends BaseScreen {
         // Loading
         this.setState({ loading: true });
         // Login
-        await _provider.login(email, password, eula, tenant);
+        await this.centralServerProvider.login(email, password, eula, tenant);
         // Login Success
         this.setState({ loading: false });
         // Navigate
@@ -138,7 +129,7 @@ export default class Login extends BaseScreen {
               break;
             default:
               // Other common Error
-              Utils.handleHttpUnexpectedError(error.request, this.props.navigation);
+              Utils.handleHttpUnexpectedError(error.request);
           }
         }
       }
