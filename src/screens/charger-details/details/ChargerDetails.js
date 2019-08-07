@@ -121,8 +121,7 @@ export default class ChargerDetails extends BaseScreen {
                   rounded
                   danger
                   style={style.actionButton}
-                  onPress={() => this._resetHardConfirm()}
-                >
+                  onPress={() => this._resetHardConfirm()}>
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t("chargers.resetHard")}
                   </Text>
@@ -133,8 +132,7 @@ export default class ChargerDetails extends BaseScreen {
                   rounded
                   warning
                   style={style.actionButton}
-                  onPress={() => this._resetSoftConfirm()}
-                >
+                  onPress={() => this._resetSoftConfirm()}>
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t("chargers.resetSoft")}
                   </Text>
@@ -145,8 +143,7 @@ export default class ChargerDetails extends BaseScreen {
                   rounded
                   warning
                   style={style.actionButton}
-                  onPress={() => this._clearCacheConfirm()}
-                >
+                  onPress={() => this._clearCacheConfirm()}>
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t("chargers.clearCache")}
                   </Text>

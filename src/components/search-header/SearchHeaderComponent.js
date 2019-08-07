@@ -106,8 +106,7 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
         ref={(ref) => {
           this.animRef = ref;
         }}
-        style={style.container}
-      >
+        style={style.container}>
         <Icon type={"MaterialIcons"} name={"search"} style={style.icon} />
         <TextInput
           ref={(ref) => {

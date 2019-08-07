@@ -212,8 +212,7 @@ export default class SignUp extends BaseScreen {
         style={style.container}
         animation={"fadeIn"}
         iterationCount={1}
-        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
-      >
+        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <BackgroundComponent>
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
@@ -398,8 +397,7 @@ export default class SignUp extends BaseScreen {
                 small
                 transparent
                 style={style.linksButtonRight}
-                onPress={() => this.props.navigation.goBack()}
-              >
+                onPress={() => this.props.navigation.goBack()}>
                 <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>
                   {I18n.t("authentication.backLogin")}
                 </TextRN>

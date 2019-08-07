@@ -127,8 +127,7 @@ export default class RetrievePassword extends BaseScreen {
         style={style.container}
         animation={"fadeIn"}
         iterationCount={1}
-        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
-      >
+        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <BackgroundComponent>
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
@@ -172,8 +171,7 @@ export default class RetrievePassword extends BaseScreen {
                     primary
                     block
                     style={style.button}
-                    onPress={() => this._retrievePassword()}
-                  >
+                    onPress={() => this._retrievePassword()}>
                     <TextRN style={style.buttonText}>
                       {I18n.t("authentication.retrievePassword")}
                     </TextRN>
@@ -200,8 +198,7 @@ export default class RetrievePassword extends BaseScreen {
                 small
                 transparent
                 style={style.linksButtonLeft}
-                onPress={() => this.props.navigation.goBack()}
-              >
+                onPress={() => this.props.navigation.goBack()}>
                 <TextRN style={[style.linksTextButton, style.linksTextButtonLeft]}>
                   {I18n.t("authentication.backLogin")}
                 </TextRN>

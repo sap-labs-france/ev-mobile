@@ -65,8 +65,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
         <Animatable.View
           animation={!this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
           style={style.connectorDetailAnimated}
-          duration={Constants.ANIMATION_ROTATION_MILLIS}
-        >
+          duration={Constants.ANIMATION_ROTATION_MILLIS}>
           <Text style={style.connectorValues}>
             {connector.currentConsumption / 1000 < 10
               ? connector.currentConsumption > 0
@@ -84,8 +83,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
         <Animatable.View
           animation={this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
           style={style.connectorDetailAnimated}
-          duration={Constants.ANIMATION_ROTATION_MILLIS}
-        >
+          duration={Constants.ANIMATION_ROTATION_MILLIS}>
           <Text style={style.connectorValues}>{connector.currentStateOfCharge}</Text>
           <Text style={style.label} numberOfLines={1}>
             {I18n.t("details.battery")}
@@ -139,13 +137,11 @@ export default class ConnectorComponent extends ResponsiveComponent {
             connectorID: connector.connectorId,
             siteAreaID,
           })
-        }
-      >
+        }>
         <Animatable.View
           animation={"flipInX"}
           iterationCount={1}
-          duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
-        >
+          duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
           <View style={style.connectorContainer}>
             <View style={style.connectorDetailContainer}>
               {this._renderFirstConnectorDetails(connector)}

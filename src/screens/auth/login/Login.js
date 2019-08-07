@@ -217,8 +217,7 @@ export default class Login extends BaseScreen {
         style={style.container}
         animation={"fadeIn"}
         iterationCount={1}
-        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
-      >
+        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <BackgroundComponent>
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
@@ -244,8 +243,7 @@ export default class Login extends BaseScreen {
                         this._setTenant(buttonIndex);
                       }
                     )
-                  }
-                >
+                  }>
                   <TextRN style={style.buttonText}>{this.state.tenantTitle}</TextRN>
                 </Button>
                 {this.state.errorTenant &&
@@ -340,8 +338,7 @@ export default class Login extends BaseScreen {
                 small
                 transparent
                 style={style.linksButtonLeft}
-                onPress={() => this._newUser()}
-              >
+                onPress={() => this._newUser()}>
                 <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
               </Button>
             </Left>
@@ -350,8 +347,7 @@ export default class Login extends BaseScreen {
                 small
                 transparent
                 style={style.linksButtonRight}
-                onPress={() => this._forgotPassword()}
-              >
+                onPress={() => this._forgotPassword()}>
                 <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>
                   {I18n.t("authentication.forgotYourPassword")}
                 </TextRN>

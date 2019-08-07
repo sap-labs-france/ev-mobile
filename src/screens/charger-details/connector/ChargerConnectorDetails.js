@@ -522,8 +522,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
             buttonDisabled
               ? [style.buttonTransaction, style.startTransaction, style.buttonTransactionDisabled]
               : [style.buttonTransaction, style.startTransaction]
-          }
-        >
+          }>
           <Icon
             style={
               buttonDisabled
@@ -547,8 +546,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
             buttonDisabled
               ? [style.buttonTransaction, style.stopTransaction, style.buttonTransactionDisabled]
               : [style.buttonTransaction, style.stopTransaction]
-          }
-        >
+          }>
           <Icon
             style={
               buttonDisabled

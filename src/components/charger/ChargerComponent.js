@@ -61,14 +61,12 @@ export default class ChargerComponent extends ResponsiveComponent {
               style={style.heartbeatButton}
               onPress={() => {
                 this._showHeartbeatStatus();
-              }}
-            >
+              }}>
               <Animatable.Text
                 animation="fadeIn"
                 easing="ease-in-out"
                 iterationCount="infinite"
-                direction="alternate-reverse"
-              >
+                direction="alternate-reverse">
                 <Icon style={style.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
               </Animatable.Text>
             </Button>
@@ -78,14 +76,12 @@ export default class ChargerComponent extends ResponsiveComponent {
               style={style.heartbeatButton}
               onPress={() => {
                 this._showHeartbeatStatus();
-              }}
-            >
+              }}>
               <Animatable.Text
                 animation="pulse"
                 easing="ease-out"
                 iterationCount="infinite"
-                style={{ textAlign: "center" }}
-              >
+                style={{ textAlign: "center" }}>
                 <Icon style={style.heartbeatIcon} type="FontAwesome" name="heartbeat" />
               </Animatable.Text>
             </Button>

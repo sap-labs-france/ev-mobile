@@ -121,11 +121,9 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     const isAnimated = this._isAnimated();
     return (
       <View
-        style={this.props.text ? style.containerWithDescription : style.containerWithNoDescription}
-      >
+        style={this.props.text ? style.containerWithDescription : style.containerWithNoDescription}>
         <Animated.View
-          style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}
-        >
+          style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
           <Badge style={connectorStyles.badge}>
             <Animated.Text
               style={
@@ -135,8 +133,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
                       { transform: [{ rotate: this.rotateCounterClockwise }] },
                     ]
                   : connectorStyles.value
-              }
-            >
+              }>
               {value}
             </Animated.Text>
           </Badge>

@@ -148,8 +148,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
         contentContainerStyle={style.container}
         refreshControl={
           <RefreshControl refreshing={this.state.refreshing} onRefresh={this._manualRefresh} />
-        }
-      >
+        }>
         <BackgroundComponent active={false}>
           <HeaderComponent
             title={charger.id}
@@ -165,8 +164,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
                 <TabHeading style={style.tabHeader}>
                   <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
                 </TabHeading>
-              }
-            >
+              }>
               <ChargerConnectorDetails
                 charger={charger}
                 connector={connector}
@@ -180,8 +178,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
                   <TabHeading style={style.tabHeader}>
                     <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
                   </TabHeading>
-                }
-              >
+                }>
                 <ChargerChartDetails
                   transactionID={connector.activeTransactionID}
                   isAdmin={isAdmin}
@@ -197,8 +194,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
                   <TabHeading style={style.tabHeader}>
                     <Icon style={style.tabIcon} type="MaterialIcons" name="info" />
                   </TabHeading>
-                }
-              >
+                }>
                 <ChargerDetails
                   charger={charger}
                   connector={connector}

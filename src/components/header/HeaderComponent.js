@@ -62,8 +62,7 @@ export default class HeaderComponent extends ResponsiveComponent {
           <Title
             style={
               subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader
-            }
-          >
+            }>
             {title}
           </Title>
           {subTitle ? <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle> : undefined}
@@ -80,8 +79,7 @@ export default class HeaderComponent extends ResponsiveComponent {
                 if (searchRef) {
                   searchRef.setVisible(this.searchIsVisible);
                 }
-              }}
-            >
+              }}>
               <Icon type={"MaterialIcons"} name={"search"} style={style.iconHeader} />
             </Button>
           ) : (

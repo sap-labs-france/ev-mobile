@@ -16,8 +16,7 @@ export default class BackgroundComponent extends ResponsiveComponent {
       <ImageBackground
         source={background || defaultBackground}
         style={style.background}
-        imageStyle={style.imageBackground}
-      >
+        imageStyle={style.imageBackground}>
         {this.props.children}
       </ImageBackground>
     ) : (

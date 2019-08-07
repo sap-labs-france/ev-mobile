@@ -109,8 +109,7 @@ class SideBar extends BaseScreen {
                 style={style.links}
                 button
                 iconLeft
-                onPress={() => this._navigateTo("Sites")}
-              >
+                onPress={() => this._navigateTo("Sites")}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
                 <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
               </ListItem>
@@ -121,8 +120,7 @@ class SideBar extends BaseScreen {
               style={style.links}
               button
               iconLeft
-              onPress={() => this._navigateTo("AllChargers")}
-            >
+              onPress={() => this._navigateTo("AllChargers")}>
               <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
               <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
             </ListItem>
@@ -149,8 +147,7 @@ class SideBar extends BaseScreen {
                 <View style={style.columnThumbnail}>
                   <TouchableOpacity
                     style={style.buttonThumbnail}
-                    onPress={() => navigation.navigate("Profile")}
-                  >
+                    onPress={() => navigation.navigate("Profile")}>
                     <Thumbnail
                       style={style.profilePic}
                       source={userImage ? { uri: userImage } : noPhoto}

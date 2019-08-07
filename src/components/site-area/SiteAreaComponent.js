@@ -20,8 +20,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
       <Animatable.View
         animation={counter++ % 2 === 0 ? "flipInX" : "flipInX"}
         iterationCount={1}
-        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
-      >
+        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity
           onPress={() => {
             if (siteArea.totalConnectors > 0) {
@@ -33,8 +32,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
               // No connector
               Message.showError(I18n.t("siteAreas.noChargers"));
             }
-          }}
-        >
+          }}>
           <View style={style.container}>
             <View style={style.headerContent}>
               <Text style={style.name}>{siteArea.name}</Text>
