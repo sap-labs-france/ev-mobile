@@ -6,13 +6,16 @@ import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./ChargerDetailsStyles";
 import PropTypes from "prop-types";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
-import ProviderFactory from "../../../provider/ProviderFactory";
 import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
+import BaseScreen from "../../base-screen/BaseScreen";
 
-const _provider = ProviderFactory.getProvider();
+export default class ChargerDetails extends BaseScreen {
+  async componentDidMount() {
+    // Call parent
+    await super.componentDidMount();
+  }
 
-export default class ChargerDetails extends ResponsiveComponent {
   _resetHardConfirm() {
     const { charger } = this.props;
     Alert.alert(
@@ -40,7 +43,7 @@ export default class ChargerDetails extends ResponsiveComponent {
   async _reset(chargeBoxID, type) {
     try {
       // Start the Transaction
-      const status = await _provider.reset(chargeBoxID, type);
+      const status = await this.centralServerProvider.reset(chargeBoxID, type);
       // Check
       if (status.status && status.status === "Accepted") {
         Message.showSuccess(I18n.t("details.accepted"));
@@ -49,7 +52,7 @@ export default class ChargerDetails extends ResponsiveComponent {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
     }
   }
 
@@ -68,7 +71,7 @@ export default class ChargerDetails extends ResponsiveComponent {
   async _clearCache(chargeBoxID) {
     try {
       // Start the Transaction
-      const status = await _provider.clearCache(chargeBoxID);
+      const status = await this.centralServerProvider.clearCache(chargeBoxID);
       // Check
       if (status.status && status.status === "Accepted") {
         Message.showSuccess(I18n.t("details.accepted"));
@@ -77,7 +80,7 @@ export default class ChargerDetails extends ResponsiveComponent {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
     }
   }
 

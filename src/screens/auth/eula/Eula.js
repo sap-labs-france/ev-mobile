@@ -8,10 +8,9 @@ import styles from "./EulaStyles";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
+import BaseScreen from "../../base-screen/BaseScreen";
 
-const _provider = ProviderFactory.getProvider();
-
-export default class Eula extends React.Component {
+export default class Eula extends BaseScreen {
   constructor(props) {
     super(props);
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
@@ -34,7 +33,7 @@ export default class Eula extends React.Component {
   endUserLicenseAgreement = async () => {
     const { I18nLocal } = this.state;
     try {
-      const result = await _provider.getEndUserLicenseAgreement({
+      const result = await this.centralServerProvider.getEndUserLicenseAgreement({
         Language: I18nLocal
       });
       this.setState({
@@ -43,7 +42,7 @@ export default class Eula extends React.Component {
       });
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
     }
   };
 

@@ -3,7 +3,6 @@ import { FlatList, RefreshControl } from "react-native";
 import { Container, Spinner, View } from "native-base";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
-import ProviderFactory from "../../provider/ProviderFactory";
 import SiteComponent from "../../components/site/SiteComponent";
 import SearchHeaderComponent from "../../components/search-header/SearchHeaderComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
@@ -11,8 +10,6 @@ import BackgroundComponent from "../../components/background/BackgroundComponent
 import computeStyleSheet from "./SitesStyles";
 import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
-
-const _provider = ProviderFactory.getProvider();
 
 export default class Sites extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -29,48 +26,37 @@ export default class Sites extends BaseAutoRefreshScreen {
 
   async componentWillMount() {
     // Call parent
-    super.componentWillMount();
-    // Get if Org is active
-    const isComponentOrganizationActive = (await _provider.getSecurityProvider()).isComponentOrganizationActive();
-    // Check
-    if (!isComponentOrganizationActive) {
-      // No site management: go to chargers
+    await super.componentWillMount();
+    // No Site Management: Go to chargers
+    const securityProvider = this.centralServerProvider.getSecurityProvider();
+    if (securityProvider && !securityProvider.isComponentOrganizationActive()) {
       this.props.navigation.navigate("Chargers");
     }
   }
 
   async componentDidMount() {
     // Call parent
-    super.componentDidMount();
+    await super.componentDidMount();
     // Get the sites
-    const sites = await this._getSites(this.searchText, this.state.skip, this.state.limit);
-    // Add sites
-    if (this.isMounted()) {
-      // eslint-disable-next-line react/no-did-mount-set-state
-      this.setState({
-        sites: sites.result,
-        count: sites.count,
-        loading: false
-      });
-    }
+    await this.refresh();
   }
 
-  componentWillUnmount() {
+  async componentWillUnmount() {
     // Call parent
-    super.componentWillUnmount();
+    await super.componentWillUnmount();
   }
 
   _getSites = async (searchText = "", skip, limit) => {
     let sites = [];
     try {
       // Get the Sites
-      sites = await _provider.getSites(
+      sites = await this.centralServerProvider.getSites(
         { Search: searchText, WithAvailableChargers: true },
         { skip, limit }
       );
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
     // Return
     return sites;
@@ -84,6 +70,8 @@ export default class Sites extends BaseAutoRefreshScreen {
       const sites = await this._getSites(this.searchText, 0, skip + limit);
       // Add sites
       this.setState({
+        loading: false,
+        count: sites.count,
         sites: sites.result
       });
     }

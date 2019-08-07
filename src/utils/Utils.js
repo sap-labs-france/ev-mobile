@@ -3,7 +3,6 @@ import Constants from "./Constants";
 import I18n from "../I18n/I18n";
 import validate from "validate.js";
 import { NativeModules, Platform } from 'react-native';
-import ProviderFactory from "../provider/ProviderFactory";
 
 const type2 = require("../../assets/connectorType/type2.gif");
 // const type2 = require("../../assets/connectorType/type-2.svg");
@@ -11,7 +10,6 @@ const combo = require("../../assets/connectorType/combo_ccs.gif");
 const chademo = require("../../assets/connectorType/chademo.gif");
 const noConnector = require("../../assets/connectorType/no-connector.gif");
 
-const _provider = ProviderFactory.getProvider();
 
 export default class Utils {
   static getParamFromNavigation(navigation, name, defaultValue) {
@@ -45,7 +43,7 @@ export default class Utils {
     return Utils.getLocale().substring(0, 2);
   }
 
-  static async handleHttpUnexpectedError(error, navigation) {
+  static async handleHttpUnexpectedError(centralServerProvider, error, navigation, fctRefresh) {
     // Log in console
     console.log({ error });
     // Check if HTTP?
@@ -58,14 +56,17 @@ export default class Utils {
           break;
         // Not logged in?
         case 401:
-          // Try to auto login
-          await _provider.checkAndTriggerAutoLogin(navigation);
+          // Force auto login
+          await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;
         // Other errors
         default:
           Message.showError(I18n.t("general.unexpectedErrorBackend"));
           break;
       }
+    } else if (error.name === "InvalidTokenError") {
+      // Force auto login
+      await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
     } else {
       // Error in code
       Message.showError(I18n.t("general.unexpectedError"));

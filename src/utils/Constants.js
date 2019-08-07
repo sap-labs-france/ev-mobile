@@ -1,5 +1,6 @@
 export default {
   // Auto Refresh
+  AUTO_REFRESH_ON_ERROR_PERIOD_MILLIS: 2 * 1000,
   AUTO_REFRESH_SHORT_PERIOD_MILLIS: 5 * 1000,
   AUTO_REFRESH_MEDIUM_PERIOD_MILLIS: 10 * 1000,
 
@@ -58,10 +59,7 @@ export default {
   KEYCHAIN_SERVICE: "eMobilityKeyChain",
 
   KEY_CREDENTIALS: "credentials",
-  KEY_EMAIL: "email",
-  KEY_PASSWORD: "password",
-  KEY_TOKEN: "token",
-  KEY_TENANT: "tenant",
+  KEY_NAVIGATION_STATE: "navigation-state",
 
   // Paging
   DEFAULT_PAGING: {

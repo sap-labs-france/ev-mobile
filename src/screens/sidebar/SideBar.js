@@ -3,19 +3,18 @@ import { ResponsiveComponent } from "react-native-responsive-ui";
 import { ImageBackground, TouchableOpacity, Image } from "react-native";
 import { Container, Content, Text, Icon, ListItem, Thumbnail, View } from "native-base";
 import computeStyleSheet from "./SideBarStyles";
-import ProviderFactory from "../../provider/ProviderFactory";
 import I18n from "../../I18n/I18n";
 import Utils from "../../utils/Utils";
+import Constants from "../../utils/Constants";
 import DeviceInfo from "react-native-device-info";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import moment from "moment";
-
-const _provider = ProviderFactory.getProvider();
+import BaseScreen from "../base-screen/BaseScreen";
 
 const noPhoto = require("../../../assets/no-photo-inverse.png");
 const logo = require("../../../assets/logo-low.png");
 
-class SideBar extends ResponsiveComponent {
+class SideBar extends BaseScreen {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,17 +26,27 @@ class SideBar extends ResponsiveComponent {
   }
 
   async componentDidMount() {
-    // Active
-    const isComponentOrganizationActive = (await _provider.getSecurityProvider()).isComponentOrganizationActive();
+    // Call parent
+    await super.componentDidMount();
+    // Init User
+    await this.refresh();
+  }
+
+  refresh = async () => {
+    await this._getUserInfo();
+  }
+
+  _getUserInfo = async () => {
     // Logoff
-    const userInfo = await _provider.getUserInfo();
+    const userInfo = this.centralServerProvider.getUserInfo();
+    const securityProvider = this.centralServerProvider.getSecurityProvider();
     // Add sites
     // eslint-disable-next-line react/no-did-mount-set-state
     this.setState(
       {
-        userName: `${userInfo.name} ${userInfo.firstName}`,
-        userID: `${userInfo.id}`,
-        isComponentOrganizationActive
+        userName: userInfo ? `${userInfo.name} ${userInfo.firstName}` : "",
+        userID: userInfo ? `${userInfo.id}` : "",
+        isComponentOrganizationActive : (securityProvider ? securityProvider.isComponentOrganizationActive() : false)
       },
       async () => {
         await this._getUserImage();
@@ -48,19 +57,19 @@ class SideBar extends ResponsiveComponent {
   async _getUserImage() {
     const { userID } = this.state;
     try {
-      const result = await _provider.getUserImage({ ID: userID });
+      const result = await this.centralServerProvider.getUserImage({ ID: userID });
       if (result) {
         this.setState({ userImage: result.image });
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      setTimeout(() => this.refresh(), Constants.AUTO_REFRESH_ON_ERROR_PERIOD_MILLIS);
     }
   }
 
   async _logoff() {
     // Logoff
-    await _provider.logoff();
+    this.centralServerProvider.logoff();
     // Back to login
     this.props.navigation.navigate("AuthNavigator");
   }

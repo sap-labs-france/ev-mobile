@@ -1,7 +1,6 @@
 import React from "react";
 import { Platform, FlatList, RefreshControl } from "react-native";
 import { Container, View, Spinner, List } from "native-base";
-import ProviderFactory from "../../provider/ProviderFactory";
 import ChargerComponent from "../../components/charger/ChargerComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
 import SearchHeaderComponent from "../../components/search-header/SearchHeaderComponent";
@@ -11,8 +10,6 @@ import computeStyleSheet from "./ChargersStyles";
 import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
-
-const _provider = ProviderFactory.getProvider();
 
 export default class Chargers extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -31,23 +28,14 @@ export default class Chargers extends BaseAutoRefreshScreen {
 
   async componentDidMount() {
     // Call parent
-    super.componentDidMount();
-    // Get chargers first time
-    const chargers = await this._getChargers(this.searchText, this.state.skip, this.state.limit);
-    // Add chargers
-    if (this.isMounted()) {
-      // eslint-disable-next-line react/no-did-mount-set-state
-      this.setState((prevState, props) => ({
-        chargers: chargers.result,
-        count: chargers.count,
-        loading: false
-      }));
-    }
+    await super.componentDidMount();
+    // Get Chargers
+    await this.refresh();
   }
 
-  componentWillUnmount() {
+  async componentWillUnmount() {
     // Call parent
-    super.componentWillUnmount();
+    await super.componentWillUnmount();
   }
 
   _getChargers = async (searchText, skip, limit) => {
@@ -57,17 +45,17 @@ export default class Chargers extends BaseAutoRefreshScreen {
       // Get Chargers
       if (siteAreaID) {
         // Get with the Site Area
-        chargers = await _provider.getChargers(
+        chargers = await this.centralServerProvider.getChargers(
           { Search: searchText, SiteAreaID: siteAreaID },
           { skip, limit }
         );
       } else {
         // Get without the Site
-        chargers = await _provider.getChargers({ Search: searchText }, { skip, limit });
+        chargers = await this.centralServerProvider.getChargers({ Search: searchText }, { skip, limit });
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
     return chargers;
   };
@@ -97,9 +85,11 @@ export default class Chargers extends BaseAutoRefreshScreen {
       const { skip, limit } = this.state;
       // Refresh All
       const chargers = await this._getChargers(this.searchText, 0, skip + limit);
-      // Add sites
+      // Add Chargers
       this.setState((prevState, props) => ({
-        chargers: chargers.result
+        loading: false,
+        chargers: chargers.result,
+        count: chargers.count
       }));
     }
   };

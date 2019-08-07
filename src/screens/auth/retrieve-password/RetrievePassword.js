@@ -3,7 +3,6 @@ import { ScrollView, Image, TextInput, KeyboardAvoidingView, Text as TextRN } fr
 import { Text, Form, Item, Button, Icon, View, Spinner, Footer, Left } from "native-base";
 import { NavigationActions, StackActions } from "react-navigation";
 import commonColor from "../../../theme/variables/commonColor";
-import ProviderFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
@@ -15,7 +14,6 @@ import ReCaptcha from "react-native-recaptcha-v3";
 import BaseScreen from "../../base-screen/BaseScreen";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 
-const _provider = ProviderFactory.getProvider();
 const logo = require("../../../../assets/logo-low.png");
 
 const formValidationDef = {
@@ -33,16 +31,27 @@ const formValidationDef = {
 export default class RetrievePassword extends BaseScreen {
   constructor(props) {
     super(props);
-    this.captchaSiteKey = _provider.getCaptchaSiteKey();
-    this.captchaBaseUrl = _provider.getCaptchaBaseUrl();
-    const tenantSubDomain = Utils.getParamFromNavigation(this.props.navigation, "tenant", "");
-    this.tenant = _provider.getTenant(tenantSubDomain);
     this.state = {
-      tenant: tenantSubDomain,
+      tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
+      tenantName: "",
       email: Utils.getParamFromNavigation(this.props.navigation, "email", ""),
+      captchaSiteKey: null,
+      captchaBaseUrl: null,
       captcha: null,
       loading: false
     };
+  }
+
+  async componentDidMount() {
+    // Call parent
+    await super.componentDidMount();
+    // Init
+    const tenant = this.centralServerProvider.getTenant(this.state.tenant);
+    this.setState({
+      tenantName: tenant.name,
+      captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
+      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl()
+    });
   }
 
   _recaptchaResponseToken = captcha => {
@@ -57,7 +66,7 @@ export default class RetrievePassword extends BaseScreen {
       try {
         this.setState({ loading: true });
         // Login
-        await _provider.retrievePassword(tenant, email, captcha);
+        await this.centralServerProvider.retrievePassword(tenant, email, captcha);
         // Login Success
         this.setState({ loading: false });
         // Show
@@ -94,7 +103,7 @@ export default class RetrievePassword extends BaseScreen {
               break;
             default:
               // Other common Error
-              Utils.handleHttpUnexpectedError(error.request, this.props.navigation);
+              Utils.handleHttpUnexpectedError(this.centralServerProvider, error.request);
           }
         } else {
           Message.showError(I18n.t("general.unexpectedError"));
@@ -112,7 +121,7 @@ export default class RetrievePassword extends BaseScreen {
 
   render() {
     const style = computeStyleSheet();
-    const { loading, captcha } = this.state;
+    const { loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl } = this.state;
     return (
       <Animatable.View
         style={style.container}
@@ -129,7 +138,7 @@ export default class RetrievePassword extends BaseScreen {
                 <Text style={style.appVersionText}>{`${I18n.t(
                   "general.version"
                 )} ${DeviceInfo.getVersion()}`}</Text>
-                <Text style={style.appTenantName}>{this.tenant.name}</Text>
+                <Text style={style.appTenantName}>{tenantName}</Text>
               </View>
               <Form style={style.form}>
                 <Item inlineLabel rounded style={style.inputGroup}>
@@ -168,14 +177,18 @@ export default class RetrievePassword extends BaseScreen {
                 )}
               </Form>
             </KeyboardAvoidingView>
-            <ReCaptcha
-              containerStyle={style.recaptcha}
-              siteKey={this.captchaSiteKey}
-              url={this.captchaBaseUrl}
-              action="ResetPassword"
-              reCaptchaType={1}
-              onExecute={this._recaptchaResponseToken}
-            />
+            { captchaSiteKey && captchaBaseUrl ?
+              <ReCaptcha
+                containerStyle={style.recaptcha}
+                siteKey={captchaSiteKey}
+                url={captchaBaseUrl}
+                action="ResetPassword"
+                reCaptchaType={1}
+                onExecute={this._recaptchaResponseToken}
+              />
+            :
+              undefined
+            }
           </ScrollView>
           <Footer style={style.footer}>
             <Left>

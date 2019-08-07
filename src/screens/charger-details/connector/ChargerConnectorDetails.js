@@ -2,7 +2,6 @@ import React from "react";
 import { ScrollView, TouchableOpacity, Image, Alert } from "react-native";
 import { Container, Icon, View, Thumbnail, Text } from "native-base";
 import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
-import ProviderFactory from "../../../provider/ProviderFactory";
 import ConnectorStatusComponent from "../../../components/connector-status/ConnectorStatusComponent";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
@@ -16,13 +15,13 @@ const noPhoto = require("../../../../assets/no-photo.png");
 const noSite = require("../../../../assets/no-site.png");
 
 const START_TRANSACTION_NB_TRIAL = 4;
-const _provider = ProviderFactory.getProvider();
 
 export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     this.state = {
       transaction: null,
+      userImageLoaded: false,
       userImage: null,
       elapsedTimeFormatted: "00:00:00",
       inactivityFormatted: "00:00:00",
@@ -37,33 +36,23 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
   async componentDidMount() {
     const { charger } = this.props;
     // Call parent
-    super.componentDidMount();
-    // Get Current Transaction
-    if (this.isMounted()) {
-      await this._getTransaction();
-    }
+    await super.componentDidMount();
     // Get the Site Image (only first time)
     if (charger.siteArea && this.isMounted()) {
       await this._getSiteImage(charger.siteArea.siteID);
     }
-    // Init
+    // Get Transaction
+    await this.refresh();
+    // First/Next calls
     this._refreshTimeInfos();
-    // Dedicated timer for refreshing time
     this.timerElapsedTime = setInterval(() => {
-      // Refresh
       this._refreshTimeInfos();
     }, 1000);
-    // Check Authorization
-    await this._isAuthorizedStopTransaction();
-    // Check to enable the buttons after a certain period of time
-    if (this.isMounted()) {
-      this._handleStartStopDisabledButton();
-    }
   }
 
   async componentWillUnmount() {
     // Call parent
-    super.componentWillUnmount();
+    await super.componentWillUnmount();
     // Clear
     if (this.timerElapsedTime) {
       clearInterval(this.timerElapsedTime);
@@ -74,7 +63,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     try {
       if (!this.state.siteImage) {
         // Get it
-        const result = await _provider.getSiteImage(siteID);
+        const result = await this.centralServerProvider.getSiteImage(siteID);
         if (result) {
           this.setState({ siteImage: result.image });
         } else {
@@ -83,7 +72,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
   };
 
@@ -93,7 +82,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       // Is their a transaction?
       if (connector.activeTransactionID) {
         // Yes: Set data
-        const transaction = await _provider.getTransaction({
+        const transaction = await this.centralServerProvider.getTransaction({
           ID: connector.activeTransactionID
         });
         // Found?
@@ -117,27 +106,35 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       // Check if HTTP?
       if (!error.request || error.request.status !== 560) {
         // Other common Error
-        Utils.handleHttpUnexpectedError(error, this.props.navigation);
+        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
       }
     }
   };
 
-  _getUserImage = async user => {
-    const { userImage } = this.state;
+  _getUserImage = async (user) => {
+    const { userImageLoaded } = this.state;
     try {
-      // Already loaded?
-      if (userImage) {
-        return;
-      }
       // User provided?
       if (user) {
-        const userImage = await _provider.getUserImage({ ID: user.id });
+        // Not already loaded?
+        if (!userImageLoaded) {
+          // Get it
+          userImageBackend = await this.centralServerProvider.getUserImage({ ID: user.id });
+          this.setState({
+            userImageLoaded: true,
+            userImage: userImageBackend ? userImageBackend.image : null
+          });
+        }
+      } else {
         // Set
-        this.setState({ userImage: userImage ? userImage.image : null });
+        this.setState({
+          userImageLoaded: false,
+          userImage: null
+        });
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
   };
 
@@ -147,7 +144,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       // Transaction?
       if (connector.activeTransactionID !== 0) {
         // Call
-        const result = await _provider.isAuthorizedStopTransaction({
+        const result = await this.centralServerProvider.isAuthorizedStopTransaction({
           Action: "StopTransaction",
           Arg1: charger.id,
           Arg2: connector.activeTransactionID
@@ -165,7 +162,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
   };
 
@@ -194,7 +191,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     const { charger, connector } = this.props;
     try {
       // Check Tag ID
-      const userInfo = await _provider.getUserInfo();
+      const userInfo = this.centralServerProvider.getUserInfo();
       if (!userInfo.tagIDs || userInfo.tagIDs.length === 0) {
         Message.showError(I18n.t("details.noBadgeID"));
         return;
@@ -202,7 +199,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       // Disable the button
       this.setState({ buttonDisabled: true });
       // Start the Transaction
-      const status = await _provider.startTransaction(
+      const status = await this.centralServerProvider.startTransaction(
         charger.id,
         connector.connectorId,
         userInfo.tagIDs[0]
@@ -223,7 +220,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       // Enable the button
       this.setState({ buttonDisabled: false });
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
   };
 
@@ -246,7 +243,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       // Disable button
       this.setState({ buttonDisabled: true });
       // Stop the Transaction
-      const status = await _provider.stopTransaction(charger.id, connector.activeTransactionID);
+      const status = await this.centralServerProvider.stopTransaction(charger.id, connector.activeTransactionID);
       // Check
       if (status.status && status.status === "Accepted") {
         Message.showSuccess(I18n.t("details.accepted"));
@@ -255,7 +252,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
   };
 
