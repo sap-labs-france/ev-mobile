@@ -71,7 +71,7 @@ export default {
   PAGING_SIZE: 10,
   DEFAULT_ORDERING: [],
 
-  CSS_HEADER_BG: "rgba(4,119,167,0.1)", // Primary RGB
+  CSS_HEADER_BG: "#d9d9d9",
 
   CONN_STATUS_AVAILABLE: "Available",
   CONN_STATUS_OCCUPIED: "Occupied",
