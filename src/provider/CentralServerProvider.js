@@ -19,11 +19,9 @@ const _captchaSiteKey = "6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw";
 // Paste the token below
 let _token;
 let _decodedToken;
-let _initialized;
 let _email;
 let _password;
 let _tenant;
-let _securityProvider;
 const _siteImages = [];
 
 export default class CentralServerProvider {
@@ -37,42 +35,30 @@ export default class CentralServerProvider {
 
   // eslint-disable-next-line class-methods-use-this
   async initialize() {
-    // Only once
-    if (!_initialized) {
-      // Get stored data
-      const credentials = await SecuredStorage.getUserCredentials();
-      if (credentials) {
-        // Set
-        _email = credentials.email;
-        _password = credentials.password;
-        _token = credentials.token;
-        _tenant = credentials.tenant;
-      } else {
-        // Set
-        _email = null;
-        _password = null;
-        _token = null;
-        _tenant = null;
+    // Get stored data
+    const credentials = await SecuredStorage.getUserCredentials();
+    if (credentials) {
+      // Set
+      _email = credentials.email;
+      _password = credentials.password;
+      _token = credentials.token;
+      _tenant = credentials.tenant;
+    } else {
+      // Set
+      _email = null;
+      _password = null;
+      _token = null;
+      _tenant = null;
+    }
+    // Check Token
+    if (_token) {
+      // Try to decode the token
+      try {
+        // Decode the token
+        _decodedToken = jwtDecode(_token);
+        this.securityProvider = new SecurityProvider(_decodedToken);
+      } catch(error) {
       }
-      // // Check Token
-      // if (!this.forceExpiredOnce) {
-      //   console.log("initialize() - Force Expired Token");
-      //   _token = "eyJpZCI6IjVkMzc0MTNhOWJiZGNmMDAwZDUxODUzYyIsInJvbGUiOiJCIiwibmFtZSI6IkZBQklBTk8iLCJ0YWdJRHMiOlsiU0Y4MjczMjMyMzUiXSwiZmlyc3ROYW1lIjoiU2VyZ2UgKEJhc2ljKSIsImxvY2FsZSI6ImVuX1VTIiwibGFuZ3VhZ2UiOiJlbiIsInRlbmFudElEIjoiNWQyNTk4NGI2MWY3YjEwMDA2N2I3NjlhIiwidXNlckhhc2hJRCI6IjE2MWYzYTM4ZTdlZDQwNmI2NGEyZTBlOTE3YjQ1MmNjOWNkMGEzYzEwNTNjNjVmNjM4YWNjNTNkN2Q3MzlhZTkiLCJ0ZW5hbnRIYXNoSUQiOiI1MjU1NjU1ZjQxZTA0YjNhODE0MWQxNzBlNDg4OTVjN2U4MTQ0NTE4ZDI1ZWY0ODdiZDQwZDA5N2VlYWJmMDZiIiwic2NvcGVzIjpbIkNoYXJnaW5nU3RhdGlvbjpBdXRob3JpemUiLCJDaGFyZ2luZ1N0YXRpb246UmVhZCIsIkNoYXJnaW5nU3RhdGlvbjpSZW1vdGVTdGFydFRyYW5zYWN0aW9uIiwiQ2hhcmdpbmdTdGF0aW9uOlJlbW90ZVN0b3BUcmFuc2FjdGlvbiIsIkNoYXJnaW5nU3RhdGlvbjpVbmxvY2tDb25uZWN0b3IiLCJDaGFyZ2luZ1N0YXRpb25zOkxpc3QiLCJDb21wYW5pZXM6TGlzdCIsIkNvbXBhbnk6UmVhZCIsIkNvbm5lY3Rpb246Q3JlYXRlIiwiQ29ubmVjdGlvbjpEZWxldGUiLCJDb25uZWN0aW9uOlJlYWQiLCJDb25uZWN0aW9uczpMaXN0IiwiU2V0dGluZzpSZWFkIiwiU2V0dGluZ3M6TGlzdCIsIlNpdGU6UmVhZCIsIlNpdGVBcmVhOlJlYWQiLCJTaXRlQXJlYXM6TGlzdCIsIlNpdGVzOkxpc3QiLCJUcmFuc2FjdGlvbjpSZWFkIiwiVHJhbnNhY3Rpb246UmVmdW5kVHJhbnNhY3Rpb24iLCJUcmFuc2FjdGlvbnM6TGlzdCIsIlVzZXI6UmVhZCIsIlVzZXI6VXBkYXRlIl0sImNvbXBhbmllcyI6WyI1ZDI1YWExMzYxZjdiMTAwMDY3Yjc2YmYiXSwic2l0ZXNBZG1pbiI6W10sInNpdGVzIjpbIjVkMjVhYTVjNjFmN2IxMDAwNjdiNzZjMSJdLCJhY3RpdmVDb21wb25lbnRzIjpbIm9yZ2FuaXphdGlvbiIsInN0YXRpc3RpY3MiLCJhbmFseXRpY3MiXSwiaWF0IjoxNTY0NzU2Nzg0LCJleHAiOjE1NjQ3OTk5ODR9";
-      //   this.forceExpiredOnce = true;
-      // }
-      if (_token) {
-        // Try to decode the token
-        try {
-          // Decode the token
-          _decodedToken = jwtDecode(_token);
-          _securityProvider = new SecurityProvider(_decodedToken);
-        } catch(error) {
-          console.log("initialize() - ERROR");
-          console.log({initializeError: error});
-        }
-      }
-      // Ok
-      _initialized = true;
     }
   }
 
@@ -111,7 +97,6 @@ export default class CentralServerProvider {
     } catch (error) {
       // Ko: Logoff
       await this.logoff();
-      console.log("triggerAutoLogin() - ERROR - Force Logoff");
       // Go to login page
       if (navigation) {
         navigation.navigate("AuthNavigator");
@@ -203,13 +188,12 @@ export default class CentralServerProvider {
       token: result.data.token,
       tenant
     });
-    console.log("Login OK");
     // Keep them
     _token = result.data.token;
     _decodedToken = jwtDecode(_token);
     _tenant = tenant;
     _initialized = true;
-    _securityProvider = new SecurityProvider(_decodedToken);
+    this.securityProvider = new SecurityProvider(_decodedToken);
   }
 
   async register(tenant, name, firstName, email, passwords, acceptEula, captcha) {
@@ -487,7 +471,7 @@ export default class CentralServerProvider {
   }
 
   getSecurityProvider() {
-    return _securityProvider;
+    return this.securityProvider;
   }
 
   // eslint-disable-next-line class-methods-use-this

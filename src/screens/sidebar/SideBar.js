@@ -5,6 +5,7 @@ import { Container, Content, Text, Icon, ListItem, Thumbnail, View } from "nativ
 import computeStyleSheet from "./SideBarStyles";
 import I18n from "../../I18n/I18n";
 import Utils from "../../utils/Utils";
+import Constants from "../../utils/Constants";
 import DeviceInfo from "react-native-device-info";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import moment from "moment";
@@ -27,24 +28,30 @@ class SideBar extends BaseScreen {
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();
+    // Init User
+    await this.refresh();
+  }
+
+  refresh = async () => {
+    await this._getUserInfo();
+  }
+
+  _getUserInfo = async () => {
     // Logoff
     const userInfo = this.centralServerProvider.getUserInfo();
+    const securityProvider = this.centralServerProvider.getSecurityProvider();
     // Add sites
     // eslint-disable-next-line react/no-did-mount-set-state
     this.setState(
       {
-        userName: `${userInfo.name} ${userInfo.firstName}`,
-        userID: `${userInfo.id}`,
-        isComponentOrganizationActive : (this.securityProvider ? this.securityProvider.isComponentOrganizationActive() : false)
+        userName: userInfo ? `${userInfo.name} ${userInfo.firstName}` : "",
+        userID: userInfo ? `${userInfo.id}` : "",
+        isComponentOrganizationActive : (securityProvider ? securityProvider.isComponentOrganizationActive() : false)
       },
       async () => {
         await this._getUserImage();
       }
     );
-  }
-
-  async refresh() {
-    await this._getUserImage();
   }
 
   async _getUserImage() {
@@ -56,7 +63,7 @@ class SideBar extends BaseScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation, this.refresh);
+      setTimeout(() => this.refresh(), Constants.AUTO_REFRESH_ON_ERROR_PERIOD_MILLIS);
     }
   }
 

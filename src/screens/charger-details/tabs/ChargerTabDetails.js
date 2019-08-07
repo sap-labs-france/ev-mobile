@@ -34,18 +34,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
     // Call parent
     await super.componentDidMount();
     // Refresh Charger
-    if (this.isMounted()) {
-      await this._getCharger();
-    }
-    // Set if Admin
-    const isAdmin = this.securityProvider.isAdmin();
-    if (this.isMounted()) {
-      // eslint-disable-next-line react/no-did-mount-set-state
-      this.setState({
-        firstLoad: false,
-        isAdmin
-      });
-    }
+    await this.refresh();
   }
 
   async componentWillUnmount() {
@@ -55,7 +44,14 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
 
   refresh = async () => {
     if (this.isMounted()) {
+      // Get Charger
       await this._getCharger();
+      // Refresh Admin
+      const securityProvider = this.centralServerProvider.getSecurityProvider();
+      this.setState({
+        firstLoad: false,
+        isAdmin: (securityProvider ? securityProvider.isAdmin() : false)
+      });
     }
   };
 
@@ -87,7 +83,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
       );
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
   };
 
@@ -116,7 +112,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
   };
 

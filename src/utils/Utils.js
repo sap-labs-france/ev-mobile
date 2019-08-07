@@ -44,10 +44,9 @@ export default class Utils {
     return Utils.getLocale().substring(0, 2);
   }
 
-  static async handleHttpUnexpectedError(error, navigation, fctRefresh) {
+  static async handleHttpUnexpectedError(centralServerProvider, error, navigation, fctRefresh) {
     // Log in console
     console.log({ error });
-    console.log(error.name);
     // Check if HTTP?
     if (error.request) {
       // Status?
@@ -59,11 +58,7 @@ export default class Utils {
         // Not logged in?
         case 401:
           // Force auto login
-          await this.centralServerProvider.triggerAutoLogin(navigation);
-          // Ok: Refresh
-          if (fctRefresh) {
-            fctRefresh();
-          }
+          await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;
         // Other errors
         default:
@@ -72,7 +67,7 @@ export default class Utils {
       }
     } else if (error.name === "InvalidTokenError") {
       // Force auto login
-      await this.centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
+      await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
     } else {
       // Error in code
       Message.showError(I18n.t("general.unexpectedError"));

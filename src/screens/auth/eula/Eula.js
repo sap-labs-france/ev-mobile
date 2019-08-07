@@ -42,7 +42,7 @@ export default class Eula extends BaseScreen {
       });
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
     }
   };
 

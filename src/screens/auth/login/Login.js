@@ -129,7 +129,7 @@ export default class Login extends BaseScreen {
               break;
             default:
               // Other common Error
-              Utils.handleHttpUnexpectedError(error.request);
+              Utils.handleHttpUnexpectedError(this.centralServerProvider, error.request);
           }
         }
       }

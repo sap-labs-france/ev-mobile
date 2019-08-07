@@ -29,17 +29,8 @@ export default class Chargers extends BaseAutoRefreshScreen {
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();
-    // Get chargers first time
-    const chargers = await this._getChargers(this.searchText, this.state.skip, this.state.limit);
-    // Add chargers
-    if (this.isMounted()) {
-      // eslint-disable-next-line react/no-did-mount-set-state
-      this.setState((prevState, props) => ({
-        chargers: chargers.result,
-        count: chargers.count,
-        loading: false
-      }));
-    }
+    // Get Chargers
+    await this.refresh();
   }
 
   async componentWillUnmount() {
@@ -64,7 +55,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
     return chargers;
   };
@@ -94,9 +85,11 @@ export default class Chargers extends BaseAutoRefreshScreen {
       const { skip, limit } = this.state;
       // Refresh All
       const chargers = await this._getChargers(this.searchText, 0, skip + limit);
-      // Add sites
+      // Add Chargers
       this.setState((prevState, props) => ({
-        chargers: chargers.result
+        loading: false,
+        chargers: chargers.result,
+        count: chargers.count
       }));
     }
   };

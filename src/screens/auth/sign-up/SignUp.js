@@ -167,7 +167,7 @@ export default class SignUp extends BaseScreen {
               break;
             default:
               // Other common Error
-              Utils.handleHttpUnexpectedError(error.request);
+              Utils.handleHttpUnexpectedError(this.centralServerProvider, error.request);
           }
         } else {
           Message.showError(I18n.t("general.unexpectedError"));

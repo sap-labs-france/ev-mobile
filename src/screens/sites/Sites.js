@@ -28,7 +28,8 @@ export default class Sites extends BaseAutoRefreshScreen {
     // Call parent
     await super.componentWillMount();
     // No Site Management: Go to chargers
-    if (this.securityProvider && !this.securityProvider.isComponentOrganizationActive()) {
+    const securityProvider = this.centralServerProvider.getSecurityProvider();
+    if (securityProvider && !securityProvider.isComponentOrganizationActive()) {
       this.props.navigation.navigate("Chargers");
     }
   }
@@ -37,16 +38,7 @@ export default class Sites extends BaseAutoRefreshScreen {
     // Call parent
     await super.componentDidMount();
     // Get the sites
-    const sites = await this._getSites(this.searchText, this.state.skip, this.state.limit);
-    // Add sites
-    if (this.isMounted()) {
-      // eslint-disable-next-line react/no-did-mount-set-state
-      this.setState({
-        sites: sites.result,
-        count: sites.count,
-        loading: false
-      });
-    }
+    await this.refresh();
   }
 
   async componentWillUnmount() {
@@ -57,17 +49,14 @@ export default class Sites extends BaseAutoRefreshScreen {
   _getSites = async (searchText = "", skip, limit) => {
     let sites = [];
     try {
-      console.log("_getSites()");
       // Get the Sites
       sites = await this.centralServerProvider.getSites(
         { Search: searchText, WithAvailableChargers: true },
         { skip, limit }
       );
-      console.log("_getSites() - Okay");
     } catch (error) {
-      console.log("_getSites() - Error");
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
     // Return
     return sites;
@@ -81,6 +70,8 @@ export default class Sites extends BaseAutoRefreshScreen {
       const sites = await this._getSites(this.searchText, 0, skip + limit);
       // Add sites
       this.setState({
+        loading: false,
+        count: sites.count,
         sites: sites.result
       });
     }

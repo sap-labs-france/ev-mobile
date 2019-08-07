@@ -12,6 +12,11 @@ export default class BaseAutoRefreshScreen extends BaseScreen {
     this.refreshPeriodMillis = Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS;
   }
 
+  async componentWillMount() {
+    // Call parent
+    await super.componentWillMount();
+  }
+
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();
@@ -64,11 +69,6 @@ export default class BaseAutoRefreshScreen extends BaseScreen {
   _startRefreshTimer(initial = false) {
     // Restart the timer
     if (!this.timerRefresh && this.timerRefreshActive) {
-      // Inital load?
-      if (!initial) {
-        // No: Force Refresh
-        this.refresh();
-      }
       // Start the timer
       this.timerRefresh = setInterval(() => {
         // Refresh

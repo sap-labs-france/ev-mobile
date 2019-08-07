@@ -25,10 +25,8 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();
-    // Get the consumption
-    if (this.isMounted()) {
-      await this._getChargingStationConsumption();
-    }
+    // Get the Consumption
+    this.refresh();
   }
 
   async componentWillUnmount() {
@@ -84,7 +82,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
       // Check if HTTP?
       if (!error.request || error.request.status !== 560) {
         // Other common Error
-        Utils.handleHttpUnexpectedError(error, this.props.navigation);
+        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
       }
     }
   };

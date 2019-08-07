@@ -18,7 +18,6 @@ export default class BaseScreen extends ResponsiveComponent {
   async componentDidMount() {
     this.mounted = true;
     this.centralServerProvider = await ProviderFactory.getProvider();
-    this.securityProvider = this.centralServerProvider.getSecurityProvider();
     BackHandler.removeEventListener("hardwareBackPress", this.onBack);
   }
 

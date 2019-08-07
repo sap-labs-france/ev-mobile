@@ -27,17 +27,8 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();
-    // Get the sites
-    const siteAreas = await this._getSiteAreas(this.searchText, this.state.skip, this.state.limit);
-    // Add sites
-    if (this.isMounted()) {
-      // eslint-disable-next-line react/no-did-mount-set-state
-      this.setState({
-        siteAreas: siteAreas.result,
-        count: siteAreas.count,
-        loading: false
-      });
-    }
+    // Get the Site Areas
+    await this.refresh();
   }
 
   async componentWillUnmount() {
@@ -49,14 +40,14 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
     let siteAreas = [];
     const siteID = Utils.getParamFromNavigation(this.props.navigation, "siteID", null);
     try {
-      // Get the Sites
+      // Get the Site Areas
       siteAreas = await this.centralServerProvider.getSiteAreas(
         { Search: searchText, SiteID: siteID, WithAvailableChargers: true },
         { skip, limit }
       );
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
     // Return
     return siteAreas;
@@ -68,9 +59,11 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
       const { skip, limit } = this.state;
       // Refresh All
       const siteAreas = await this._getSiteAreas(this.searchText, 0, skip + limit);
-      // Add sites
+      // Set Site Areas
       this.setState({
-        siteAreas: siteAreas.result
+        loading: false,
+        siteAreas: siteAreas.result,
+        count: siteAreas.count
       });
     }
   };
