@@ -353,14 +353,14 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
   };
 
   _renderConnectorStatus = (style) => {
-    const { connector } = this.props;
+    const { connector, isAdmin } = this.props;
     return (
       <View style={style.columnContainer}>
         <ConnectorStatusComponent
           connector={connector}
           text={Utils.translateConnectorStatus(connector.status)}
         />
-        {connector.status === Constants.CONN_STATUS_FAULTED ? (
+        {isAdmin && connector.status === Constants.CONN_STATUS_FAULTED ? (
           <Text style={[style.subLabel, style.subLabelStatusError]}>
             ({connector.errorCode})
           </Text>
