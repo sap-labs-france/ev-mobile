@@ -8,16 +8,16 @@ const commonStyles = ScaledSheet.create({
     flex: 1,
     justifyContent: "center",
     height: "100%",
-    backgroundColor: commonColor.containerBgColor
+    backgroundColor: commonColor.containerBgColor,
   },
   spinner: {
-    color: commonColor.textColor
+    color: commonColor.textColor,
   },
   tabHeader: {},
   tabIcon: {
     fontSize: "20@s",
-    paddingBottom: "5@s"
-  }
+    paddingBottom: "5@s",
+  },
 });
 
 const portraitStyles = {};
@@ -28,11 +28,11 @@ export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([
     {
       query: { orientation: "landscape" },
-      style: deepmerge(commonStyles, landscapeStyles)
+      style: deepmerge(commonStyles, landscapeStyles),
     },
     {
       query: { orientation: "portrait" },
-      style: deepmerge(commonStyles, portraitStyles)
-    }
+      style: deepmerge(commonStyles, portraitStyles),
+    },
   ]);
 }

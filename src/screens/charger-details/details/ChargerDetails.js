@@ -23,7 +23,7 @@ export default class ChargerDetails extends BaseScreen {
       I18n.t("chargers.resetHardMessage", { chargeBoxID: charger.id }),
       [
         { text: I18n.t("general.yes"), onPress: () => this._reset(charger.id, "Hard") },
-        { text: I18n.t("general.cancel") }
+        { text: I18n.t("general.cancel") },
       ]
     );
   }
@@ -35,7 +35,7 @@ export default class ChargerDetails extends BaseScreen {
       I18n.t("chargers.resetSoftMessage", { chargeBoxID: charger.id }),
       [
         { text: I18n.t("general.yes"), onPress: () => this._reset(charger.id, "Soft") },
-        { text: I18n.t("general.cancel") }
+        { text: I18n.t("general.cancel") },
       ]
     );
   }
@@ -63,7 +63,7 @@ export default class ChargerDetails extends BaseScreen {
       I18n.t("chargers.clearCacheMessage", { chargeBoxID: charger.id }),
       [
         { text: I18n.t("general.yes"), onPress: () => this._clearCache(charger.id) },
-        { text: I18n.t("general.cancel") }
+        { text: I18n.t("general.cancel") },
       ]
     );
   }
@@ -124,7 +124,7 @@ export default class ChargerDetails extends BaseScreen {
                   onPress={() => this._resetHardConfirm()}
                 >
                   <Text uppercase={false} style={style.actionButtonText}>
-                    {I18n.t('chargers.resetHard')}
+                    {I18n.t("chargers.resetHard")}
                   </Text>
                 </Button>
               </View>
@@ -136,7 +136,7 @@ export default class ChargerDetails extends BaseScreen {
                   onPress={() => this._resetSoftConfirm()}
                 >
                   <Text uppercase={false} style={style.actionButtonText}>
-                    {I18n.t('chargers.resetSoft')}
+                    {I18n.t("chargers.resetSoft")}
                   </Text>
                 </Button>
               </View>
@@ -148,7 +148,7 @@ export default class ChargerDetails extends BaseScreen {
                   onPress={() => this._clearCacheConfirm()}
                 >
                   <Text uppercase={false} style={style.actionButtonText}>
-                    {I18n.t('chargers.clearCache')}
+                    {I18n.t("chargers.clearCache")}
                   </Text>
                 </Button>
               </View>
@@ -164,7 +164,7 @@ ChargerDetails.propTypes = {
   charger: PropTypes.object.isRequired,
   connector: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired,
-  isAdmin: PropTypes.bool.isRequired
+  isAdmin: PropTypes.bool.isRequired,
 };
 
 ChargerDetails.defaultProps = {};

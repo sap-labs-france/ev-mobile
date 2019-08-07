@@ -6,10 +6,10 @@ export default StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     paddingBottom: 10,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   spinner: {
     flex: 2,
-    color: commonColor.textColor
-  }
+    color: commonColor.textColor,
+  },
 });

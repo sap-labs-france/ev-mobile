@@ -22,7 +22,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
       refreshing: false,
       skip: 0,
       limit: Constants.PAGING_SIZE,
-      count: 0
+      count: 0,
     };
   }
 
@@ -51,11 +51,19 @@ export default class Chargers extends BaseAutoRefreshScreen {
         );
       } else {
         // Get without the Site
-        chargers = await this.centralServerProvider.getChargers({ Search: searchText }, { skip, limit });
+        chargers = await this.centralServerProvider.getChargers(
+          { Search: searchText },
+          { skip, limit }
+        );
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        this.props.navigation,
+        this.refresh
+      );
     }
     return chargers;
   };
@@ -74,7 +82,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
       this.setState((prevState, props) => ({
         chargers: [...prevState.chargers, ...chargers.result],
         skip: prevState.skip + Constants.PAGING_SIZE,
-        refreshing: false
+        refreshing: false,
       }));
     }
   };
@@ -89,7 +97,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
       this.setState((prevState, props) => ({
         loading: false,
         chargers: chargers.result,
-        count: chargers.count
+        count: chargers.count,
       }));
     }
   };
@@ -142,10 +150,10 @@ export default class Chargers extends BaseAutoRefreshScreen {
           />
           <SearchHeaderComponent
             initialVisibility={false}
-            ref={ref => {
+            ref={(ref) => {
               this.searchRef = ref;
             }}
-            onChange={searchText => this._search(searchText)}
+            onChange={(searchText) => this._search(searchText)}
             navigation={navigation}
           />
           <View style={style.content}>
@@ -163,7 +171,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
                     />
                   </List>
                 )}
-                keyExtractor={item => item.id}
+                keyExtractor={(item) => item.id}
                 refreshControl={
                   <RefreshControl
                     onRefresh={this._manualRefresh}

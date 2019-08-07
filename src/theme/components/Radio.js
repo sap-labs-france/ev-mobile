@@ -12,14 +12,14 @@ export default (variables /* : * */ = variable) => {
         color:
           Platform.OS === PLATFORM.IOS ? variables.radioColor : variables.radioSelectedColorAndroid,
         lineHeight: Platform.OS === PLATFORM.IOS ? 25 : variables.radioBtnLineHeight,
-        height: Platform.OS === PLATFORM.IOS ? 20 : undefined
-      }
+        height: Platform.OS === PLATFORM.IOS ? 20 : undefined,
+      },
     },
     "NativeBase.IconNB": {
       color: Platform.OS === PLATFORM.IOS ? "transparent" : undefined,
       lineHeight: Platform.OS === PLATFORM.IOS ? undefined : variables.radioBtnLineHeight,
-      fontSize: Platform.OS === PLATFORM.IOS ? undefined : variables.radioBtnSize
-    }
+      fontSize: Platform.OS === PLATFORM.IOS ? undefined : variables.radioBtnSize,
+    },
   };
 
   return radioTheme;

@@ -1,6 +1,11 @@
 import React from "react";
 import { StatusBar, Dimensions } from "react-native";
-import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createAppContainer } from "react-navigation";
+import {
+  createSwitchNavigator,
+  createStackNavigator,
+  createDrawerNavigator,
+  createAppContainer,
+} from "react-navigation";
 import { Root } from "native-base";
 import Login from "./screens/auth/login/Login";
 import Eula from "./screens/auth/eula/Eula";
@@ -18,8 +23,8 @@ import SecuredStorage from "./utils/SecuredStorage";
 import moment from "moment";
 
 // Get the supported locales
-require('moment/locale/fr');
-require('moment/locale/en-gb');
+require("moment/locale/fr");
+require("moment/locale/en-gb");
 // Set the current locale
 moment.locale(Utils.getLocaleShort());
 
@@ -32,29 +37,29 @@ _notificationManager.initialize();
 const AppDrawerNavigator = createDrawerNavigator(
   {
     Sites: {
-      screen: props => {
+      screen: (props) => {
         // Set the navigation to the notification
         _notificationManager.setNavigation(props.navigation);
         // Start
         _notificationManager.start();
         // Return the sites
         return <Sites {...props} />;
-      }
+      },
     },
     SiteAreas: { screen: SiteAreas },
     Chargers: { screen: Chargers },
     AllChargers: { screen: AllChargers },
-    ChargerTabDetails: { screen: ChargerTabDetails }
+    ChargerTabDetails: { screen: ChargerTabDetails },
   },
   {
     navigationOptions: {
-      swipeEnabled: true
+      swipeEnabled: true,
     },
     drawerWidth: Dimensions.get("window").width / 1.5,
     initialRouteName: "Sites",
     unmountInactiveRoutes: true,
     drawerPosition: "right",
-    contentComponent: props => <Sidebar {...props} />
+    contentComponent: (props) => <Sidebar {...props} />,
   }
 );
 
@@ -64,21 +69,21 @@ const AuthNavigator = createStackNavigator(
     Login: { screen: Login },
     Eula: { screen: Eula },
     SignUp: { screen: SignUp },
-    RetrievePassword: { screen: RetrievePassword }
+    RetrievePassword: { screen: RetrievePassword },
   },
   {
     initialRouteName: "Login",
-    headerMode: "none"
+    headerMode: "none",
   }
 );
 
 const RootNavigator = createSwitchNavigator(
   {
     AuthNavigator,
-    AppDrawerNavigator
+    AppDrawerNavigator,
   },
   {
-    initialRouteName: "AuthNavigator"
+    initialRouteName: "AuthNavigator",
   }
 );
 
@@ -89,7 +94,7 @@ const RootContainer = createAppContainer(RootNavigator);
 const persistNavigationState = async (navigationState) => {
   try {
     await SecuredStorage.saveNavigationState(navigationState);
-  } catch(error) {
+  } catch (error) {
     console.log(error);
   }
 };

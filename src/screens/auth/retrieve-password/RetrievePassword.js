@@ -20,12 +20,12 @@ const formValidationDef = {
   email: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_email")
+      message: "^" + I18n.t("authentication.mandatory_email"),
     },
     email: {
-      message: "^" + I18n.t("authentication.invalid_email")
-    }
-  }
+      message: "^" + I18n.t("authentication.invalid_email"),
+    },
+  },
 };
 
 export default class RetrievePassword extends BaseScreen {
@@ -38,7 +38,7 @@ export default class RetrievePassword extends BaseScreen {
       captchaSiteKey: null,
       captchaBaseUrl: null,
       captcha: null,
-      loading: false
+      loading: false,
     };
   }
 
@@ -50,11 +50,11 @@ export default class RetrievePassword extends BaseScreen {
     this.setState({
       tenantName: tenant.name,
       captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
-      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl()
+      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl(),
     });
   }
 
-  _recaptchaResponseToken = captcha => {
+  _recaptchaResponseToken = (captcha) => {
     this.setState({ captcha });
   };
 
@@ -80,10 +80,10 @@ export default class RetrievePassword extends BaseScreen {
                 routeName: "Login",
                 params: {
                   tenant: this.state.tenant,
-                  email: this.state.email
-                }
-              })
-            ]
+                  email: this.state.email,
+                },
+              }),
+            ],
           })
         );
       } catch (error) {
@@ -154,7 +154,7 @@ export default class RetrievePassword extends BaseScreen {
                     blurOnSubmit={false}
                     autoCorrect={false}
                     keyboardType={"email-address"}
-                    onChangeText={text => this.setState({ email: text })}
+                    onChangeText={(text) => this.setState({ email: text })}
                     value={this.state.email}
                   />
                 </Item>
@@ -167,7 +167,11 @@ export default class RetrievePassword extends BaseScreen {
                 {loading || !captcha ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
-                  <Button rounded primary block style={style.button}
+                  <Button
+                    rounded
+                    primary
+                    block
+                    style={style.button}
                     onPress={() => this._retrievePassword()}
                   >
                     <TextRN style={style.buttonText}>
@@ -177,7 +181,7 @@ export default class RetrievePassword extends BaseScreen {
                 )}
               </Form>
             </KeyboardAvoidingView>
-            { captchaSiteKey && captchaBaseUrl ?
+            {captchaSiteKey && captchaBaseUrl ? (
               <ReCaptcha
                 containerStyle={style.recaptcha}
                 siteKey={captchaSiteKey}
@@ -186,13 +190,16 @@ export default class RetrievePassword extends BaseScreen {
                 reCaptchaType={1}
                 onExecute={this._recaptchaResponseToken}
               />
-            :
+            ) : (
               undefined
-            }
+            )}
           </ScrollView>
           <Footer style={style.footer}>
             <Left>
-              <Button small transparent style={style.linksButtonLeft}
+              <Button
+                small
+                transparent
+                style={style.linksButtonLeft}
                 onPress={() => this.props.navigation.goBack()}
               >
                 <TextRN style={[style.linksTextButton, style.linksTextButtonLeft]}>

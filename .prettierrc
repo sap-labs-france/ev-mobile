@@ -1,0 +1,7 @@
+{
+  arrowParens: "always",
+  printWidth: 100,
+  trailingComma: "es5",
+  requirePragma: true
+}
+

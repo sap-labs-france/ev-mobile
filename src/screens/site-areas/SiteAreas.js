@@ -20,7 +20,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
       refreshing: false,
       skip: 0,
       limit: Constants.PAGING_SIZE,
-      count: 0
+      count: 0,
     };
   }
 
@@ -47,7 +47,12 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
       );
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        this.props.navigation,
+        this.refresh
+      );
     }
     // Return
     return siteAreas;
@@ -63,7 +68,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
       this.setState({
         loading: false,
         siteAreas: siteAreas.result,
-        count: siteAreas.count
+        count: siteAreas.count,
       });
     }
   };
@@ -91,7 +96,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
       this.setState((prevState, props) => ({
         siteAreas: [...prevState.siteAreas, ...siteAreas.result],
         skip: prevState.skip + Constants.PAGING_SIZE,
-        refreshing: false
+        refreshing: false,
       }));
     }
   };
@@ -122,10 +127,10 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
           />
           <SearchHeaderComponent
             initialVisibility={false}
-            ref={ref => {
+            ref={(ref) => {
               this.searchRef = ref;
             }}
-            onChange={searchText => this._search(searchText)}
+            onChange={(searchText) => this._search(searchText)}
             navigation={navigation}
           />
           <View style={style.content}>
@@ -137,7 +142,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
                 renderItem={({ item }) => (
                   <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />
                 )}
-                keyExtractor={item => item.id}
+                keyExtractor={(item) => item.id}
                 refreshControl={
                   <RefreshControl
                     onRefresh={this._manualRefresh}

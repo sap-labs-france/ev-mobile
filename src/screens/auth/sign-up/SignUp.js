@@ -5,7 +5,7 @@ import {
   Keyboard,
   ScrollView,
   Text as TextRN,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import * as Animatable from "react-native-animatable";
@@ -19,7 +19,7 @@ import {
   CheckBox,
   Footer,
   Spinner,
-  Right
+  Right,
 } from "native-base";
 import commonColor from "../../../theme/variables/commonColor";
 import computeStyleSheet from "../AuthStyles";
@@ -38,28 +38,28 @@ const formValidationDef = {
   name: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_name")
-    }
+      message: "^" + I18n.t("authentication.mandatory_name"),
+    },
   },
   firstName: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_first_name")
-    }
+      message: "^" + I18n.t("authentication.mandatory_first_name"),
+    },
   },
   email: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_email")
+      message: "^" + I18n.t("authentication.mandatory_email"),
     },
     email: {
-      message: "^" + I18n.t("authentication.invalid_email")
-    }
+      message: "^" + I18n.t("authentication.invalid_email"),
+    },
   },
   password: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_password")
+      message: "^" + I18n.t("authentication.mandatory_password"),
     },
     equality: {
       attribute: "ghost",
@@ -69,18 +69,18 @@ const formValidationDef = {
         return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(
           password
         );
-      }
-    }
+      },
+    },
   },
   repeatPassword: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_password")
+      message: "^" + I18n.t("authentication.mandatory_password"),
     },
     equality: {
       attribute: "password",
-      message: "^" + I18n.t("authentication.passwordNotMatch")
-    }
+      message: "^" + I18n.t("authentication.passwordNotMatch"),
+    },
   },
   eula: {
     equality: {
@@ -89,9 +89,9 @@ const formValidationDef = {
       comparator(eula, ghost) {
         // True if EULA is checked
         return eula;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 export default class SignUp extends BaseScreen {
   constructor(props) {
@@ -108,7 +108,7 @@ export default class SignUp extends BaseScreen {
       captchaSiteKey: null,
       captchaBaseUrl: null,
       captcha: null,
-      loading: false
+      loading: false,
     };
   }
 
@@ -120,11 +120,11 @@ export default class SignUp extends BaseScreen {
     this.setState({
       tenantName: tenant.name,
       captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
-      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl()
+      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl(),
     });
   }
 
-  _recaptchaResponseToken = captcha => {
+  _recaptchaResponseToken = (captcha) => {
     this.setState({ captcha });
   };
 
@@ -140,7 +140,7 @@ export default class SignUp extends BaseScreen {
         password,
         repeatPassword,
         eula,
-        captcha
+        captcha,
       } = this.state;
       try {
         // Loading
@@ -168,10 +168,10 @@ export default class SignUp extends BaseScreen {
                 routeName: "Login",
                 params: {
                   tenant: this.state.tenant,
-                  email: this.state.email
-                }
-              })
-            ]
+                  email: this.state.email,
+                },
+              }),
+            ],
           })
         );
       } catch (error) {
@@ -239,7 +239,7 @@ export default class SignUp extends BaseScreen {
                     autoCapitalize="characters"
                     blurOnSubmit={false}
                     autoCorrect={false}
-                    onChangeText={text => this.setState({ name: text })}
+                    onChangeText={(text) => this.setState({ name: text })}
                     secureTextEntry={false}
                   />
                 </Item>
@@ -255,7 +255,7 @@ export default class SignUp extends BaseScreen {
                   <TextInput
                     name="firstName"
                     type="text"
-                    ref={ref => (this.firstNameInput = ref)}
+                    ref={(ref) => (this.firstNameInput = ref)}
                     onSubmitEditing={() => this.emailInput.focus()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.firstName")}
@@ -264,7 +264,7 @@ export default class SignUp extends BaseScreen {
                     autoCapitalize="words"
                     blurOnSubmit={false}
                     autoCorrect={false}
-                    onChangeText={text => this.setState({ firstName: text })}
+                    onChangeText={(text) => this.setState({ firstName: text })}
                     secureTextEntry={false}
                   />
                 </Item>
@@ -280,7 +280,7 @@ export default class SignUp extends BaseScreen {
                   <TextInput
                     name="email"
                     type="email"
-                    ref={ref => (this.emailInput = ref)}
+                    ref={(ref) => (this.emailInput = ref)}
                     onSubmitEditing={() => this.passwordInput.focus()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.email")}
@@ -290,7 +290,7 @@ export default class SignUp extends BaseScreen {
                     blurOnSubmit={false}
                     autoCorrect={false}
                     keyboardType={"email-address"}
-                    onChangeText={text => this.setState({ email: text })}
+                    onChangeText={(text) => this.setState({ email: text })}
                     secureTextEntry={false}
                   />
                 </Item>
@@ -306,7 +306,7 @@ export default class SignUp extends BaseScreen {
                   <TextInput
                     name="password"
                     type="password"
-                    ref={ref => (this.passwordInput = ref)}
+                    ref={(ref) => (this.passwordInput = ref)}
                     onSubmitEditing={() => this.repeatPasswordInput.focus()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.password")}
@@ -316,7 +316,7 @@ export default class SignUp extends BaseScreen {
                     blurOnSubmit={false}
                     autoCorrect={false}
                     keyboardType={"default"}
-                    onChangeText={text => this.setState({ password: text })}
+                    onChangeText={(text) => this.setState({ password: text })}
                     secureTextEntry={true}
                   />
                 </Item>
@@ -331,7 +331,7 @@ export default class SignUp extends BaseScreen {
                   <TextInput
                     name="repeatPassword"
                     type="password"
-                    ref={ref => (this.repeatPasswordInput = ref)}
+                    ref={(ref) => (this.repeatPasswordInput = ref)}
                     onSubmitEditing={() => Keyboard.dismiss()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.repeatPassword")}
@@ -341,7 +341,7 @@ export default class SignUp extends BaseScreen {
                     blurOnSubmit={false}
                     autoCorrect={false}
                     keyboardType={"default"}
-                    onChangeText={text => this.setState({ repeatPassword: text })}
+                    onChangeText={(text) => this.setState({ repeatPassword: text })}
                     secureTextEntry={true}
                   />
                 </Item>
@@ -379,7 +379,7 @@ export default class SignUp extends BaseScreen {
                 )}
               </Form>
             </KeyboardAvoidingView>
-            { captchaSiteKey && captchaBaseUrl ?
+            {captchaSiteKey && captchaBaseUrl ? (
               <ReCaptcha
                 containerStyle={style.recaptcha}
                 siteKey={captchaSiteKey}
@@ -388,9 +388,9 @@ export default class SignUp extends BaseScreen {
                 reCaptchaType={1}
                 onExecute={this._recaptchaResponseToken}
               />
-            :
+            ) : (
               undefined
-            }
+            )}
           </ScrollView>
           <Footer style={style.footer}>
             <Right>

@@ -1,25 +1,25 @@
 // @flow
 
 import variable from "./../variables/platform";
-import commonColor, { PLATFORM } from './../variables/commonColor';
-import { scale, moderateScale } from 'react-native-size-matters';
+import commonColor, { PLATFORM } from "./../variables/commonColor";
+import { scale, moderateScale } from "react-native-size-matters";
 
 export default (variables /* : * */ = variable) => {
   const badgeTheme = {
     ".primary": {
-      backgroundColor: variables.buttonPrimaryBg
+      backgroundColor: variables.buttonPrimaryBg,
     },
     ".warning": {
-      backgroundColor: variables.buttonWarningBg
+      backgroundColor: variables.buttonWarningBg,
     },
     ".info": {
-      backgroundColor: variables.buttonInfoBg
+      backgroundColor: variables.buttonInfoBg,
     },
     ".success": {
-      backgroundColor: variables.buttonSuccessBg
+      backgroundColor: variables.buttonSuccessBg,
     },
     ".danger": {
-      backgroundColor: variables.buttonDangerBg
+      backgroundColor: variables.buttonDangerBg,
     },
     "NativeBase.Text": {
       flex: 1,
@@ -32,7 +32,7 @@ export default (variables /* : * */ = variable) => {
       textAlign: "center",
       paddingTop: moderateScale(11, 4),
       paddingBottom: moderateScale(8),
-      paddingHorizontal: 3
+      paddingHorizontal: 3,
     },
     backgroundColor: variables.badgeBg,
     padding: variables.badgePadding,
@@ -44,7 +44,7 @@ export default (variables /* : * */ = variable) => {
     justifyContent: "center",
     alignItems: "center",
     width: scale(44),
-    height: scale(44)
+    height: scale(44),
   };
   return badgeTheme;
 };

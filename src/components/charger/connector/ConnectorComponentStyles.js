@@ -11,13 +11,13 @@ const commonStyles = ScaledSheet.create({
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "transparent",
-    borderTopColor: commonColor.listBorderColor
+    borderTopColor: commonColor.listBorderColor,
   },
   connectorContainer: {
     flexDirection: "column",
     justifyContent: "space-evenly",
     alignItems: "center",
-    width: "100%"
+    width: "100%",
   },
   connectorDetailContainer: {
     flexDirection: "row",
@@ -27,7 +27,7 @@ const commonStyles = ScaledSheet.create({
     paddingLeft: "5@s",
     paddingRight: "5@s",
     paddingTop: "10@s",
-    paddingBottom: "10@s"
+    paddingBottom: "10@s",
   },
   connectorDetail: {
     flexDirection: "column",
@@ -35,36 +35,36 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center",
     height: "60@s",
     width: "80@s",
-    color: commonColor.textColor
+    color: commonColor.textColor,
   },
   connectorDetailAnimated: {
     position: "absolute",
-    alignItems: "center"
+    alignItems: "center",
   },
   connectorValues: {
     color: commonColor.textColor,
     marginTop: "-1@s",
     fontSize: "30@s",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   connectorImage: {
     width: "40@s",
-    height: "40@s"
+    height: "40@s",
   },
   labelImage: {
     color: commonColor.textColor,
-    fontSize: "10@s"
+    fontSize: "10@s",
   },
   label: {
     color: commonColor.textColor,
     fontSize: "10@s",
-    marginTop: "-3@s"
+    marginTop: "-3@s",
   },
   subLabel: {
     color: commonColor.textColor,
-    fontSize: "9@s"
-  }
+    fontSize: "9@s",
+  },
 });
 
 const portraitStyles = {};
@@ -75,11 +75,11 @@ export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([
     {
       query: { orientation: "landscape" },
-      style: deepmerge(commonStyles, landscapeStyles)
+      style: deepmerge(commonStyles, landscapeStyles),
     },
     {
       query: { orientation: "portrait" },
-      style: deepmerge(commonStyles, portraitStyles)
-    }
+      style: deepmerge(commonStyles, portraitStyles),
+    },
   ]);
 }

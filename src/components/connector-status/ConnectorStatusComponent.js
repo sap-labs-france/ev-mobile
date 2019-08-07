@@ -17,18 +17,18 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
       Animated.timing(spinValue, {
         toValue: 1,
         duration: 4000,
-        easing: Easing.linear
+        easing: Easing.linear,
       })
     ).start();
     // Second interpolate beginning and end values (in this case 0 and 1)
     this.rotateClockwise = spinValue.interpolate({
       inputRange: [0, 1],
-      outputRange: ["0deg", "360deg"]
+      outputRange: ["0deg", "360deg"],
     });
 
     this.rotateCounterClockwise = spinValue.interpolate({
       inputRange: [0, 1],
-      outputRange: ["360deg", "0deg"]
+      outputRange: ["360deg", "0deg"],
     });
   }
 
@@ -46,7 +46,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     const connectorStyles = {
       badge: [style.commonConnector],
       value: [style.commonConnectorValue],
-      description: [style.commonConnectorDescription]
+      description: [style.commonConnectorDescription],
     };
     switch (connectorType) {
       // Charging
@@ -132,7 +132,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
                 isAnimated
                   ? [
                       ...connectorStyles.value,
-                      { transform: [{ rotate: this.rotateCounterClockwise }] }
+                      { transform: [{ rotate: this.rotateCounterClockwise }] },
                     ]
                   : connectorStyles.value
               }
@@ -155,5 +155,5 @@ ConnectorStatusComponent.propTypes = {
   connector: PropTypes.object,
   value: PropTypes.number,
   text: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
 };

@@ -2,9 +2,10 @@
   "root": true,
 
   "extends": [
-    "plugin:flowtype/recommended",
     "react",
     "react-native",
+    "plugin:flowtype/recommended",
+    "plugin:prettier/recommended",
     "prettier",
     "prettier/flowtype",
     "prettier/react"
@@ -19,10 +20,10 @@
   },
 
   "plugins": [
-    "flowtype",
-    "prettier",
     "react",
-    "react-native"
+    "react-native",
+    "flowtype",
+    "prettier"
   ],
 
   "settings": {
@@ -213,7 +214,7 @@
     "no-trailing-spaces": 1,         // disallow trailing whitespace at the end of lines
     "no-underscore-dangle": 0,       // disallow dangling underscores in identifiers
     "no-mixed-spaces-and-tabs": 1,   // disallow mixed spaces and tabs for indentation
-    "quotes": [1, "single", { "avoidEscape": true }], // specify whether double or single quotes should be used
+    "quotes": [1, "double", { "avoidEscape": true }], // specify whether double or single quotes should be used
     "quote-props": 0,                // require quotes around object literal property names (off by default)
     "semi": 1,                       // require or disallow use of semicolons instead of ASI
     "sort-vars": 0,                  // sort variables within the same declaration block (off by default)

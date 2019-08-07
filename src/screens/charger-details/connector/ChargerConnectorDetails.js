@@ -27,7 +27,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       inactivityFormatted: "00:00:00",
       startTransactionNbTrial: 0,
       isAuthorizedToStopTransaction: false,
-      buttonDisabled: true
+      buttonDisabled: true,
     };
     // Set refresh period
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
@@ -59,7 +59,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     }
   }
 
-  _getSiteImage = async siteID => {
+  _getSiteImage = async (siteID) => {
     try {
       if (!this.state.siteImage) {
         // Get it
@@ -72,7 +72,12 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        this.props.navigation,
+        this.refresh
+      );
     }
   };
 
@@ -83,7 +88,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       if (connector.activeTransactionID) {
         // Yes: Set data
         const transaction = await this.centralServerProvider.getTransaction({
-          ID: connector.activeTransactionID
+          ID: connector.activeTransactionID,
         });
         // Found?
         if (transaction) {
@@ -93,20 +98,25 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
           this._getUserImage(transaction.user);
         }
         this.setState({
-          transaction
+          transaction,
         });
       } else {
         this.setState({
           elapsedTimeFormatted: "00:00:00",
           userImage: null,
-          transaction: null
+          transaction: null,
         });
       }
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== 560) {
         // Other common Error
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+        Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          this.props.navigation,
+          this.refresh
+        );
       }
     }
   };
@@ -122,19 +132,24 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
           userImageBackend = await this.centralServerProvider.getUserImage({ ID: user.id });
           this.setState({
             userImageLoaded: true,
-            userImage: userImageBackend ? userImageBackend.image : null
+            userImage: userImageBackend ? userImageBackend.image : null,
           });
         }
       } else {
         // Set
         this.setState({
           userImageLoaded: false,
-          userImage: null
+          userImage: null,
         });
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        this.props.navigation,
+        this.refresh
+      );
     }
   };
 
@@ -147,22 +162,27 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
         const result = await this.centralServerProvider.isAuthorizedStopTransaction({
           Action: "StopTransaction",
           Arg1: charger.id,
-          Arg2: connector.activeTransactionID
+          Arg2: connector.activeTransactionID,
         });
         if (result) {
           this.setState({
-            isAuthorizedToStopTransaction: result.IsAuthorized
+            isAuthorizedToStopTransaction: result.IsAuthorized,
           });
         }
       } else {
         // Not Authorized
         this.setState({
-          isAuthorizedToStopTransaction: false
+          isAuthorizedToStopTransaction: false,
         });
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        this.props.navigation,
+        this.refresh
+      );
     }
   };
 
@@ -182,7 +202,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       I18n.t("details.startTransactionMessage", { chargeBoxID: charger.id }),
       [
         { text: I18n.t("general.yes"), onPress: () => this._startTransaction() },
-        { text: I18n.t("general.no") }
+        { text: I18n.t("general.no") },
       ]
     );
   };
@@ -220,7 +240,12 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       // Enable the button
       this.setState({ buttonDisabled: false });
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        this.props.navigation,
+        this.refresh
+      );
     }
   };
 
@@ -232,7 +257,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       I18n.t("details.stopTransactionMessage", { chargeBoxID: charger.id }),
       [
         { text: I18n.t("general.yes"), onPress: () => this._stopTransaction() },
-        { text: I18n.t("general.no") }
+        { text: I18n.t("general.no") },
       ]
     );
   };
@@ -243,7 +268,10 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       // Disable button
       this.setState({ buttonDisabled: true });
       // Stop the Transaction
-      const status = await this.centralServerProvider.stopTransaction(charger.id, connector.activeTransactionID);
+      const status = await this.centralServerProvider.stopTransaction(
+        charger.id,
+        connector.activeTransactionID
+      );
       // Check
       if (status.status && status.status === "Accepted") {
         Message.showSuccess(I18n.t("details.accepted"));
@@ -252,7 +280,12 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        this.props.navigation,
+        this.refresh
+      );
     }
   };
 
@@ -267,26 +300,26 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     ) {
       // Button are set to available after the nbr of trials
       this.setState({
-        buttonDisabled: false
+        buttonDisabled: false,
       });
       // Still trials? (only for Start Transaction)
     } else if (startTransactionNbTrial > 0) {
       // Trial - 1
       this.setState({
-        startTransactionNbTrial: startTransactionNbTrial > 0 ? startTransactionNbTrial - 1 : 0
+        startTransactionNbTrial: startTransactionNbTrial > 0 ? startTransactionNbTrial - 1 : 0,
       });
       // Transaction ongoing
     } else if (connector.activeTransactionID !== 0) {
       // Transaction has started, enable the buttons again
       this.setState({
         startTransactionNbTrial: 0,
-        buttonDisabled: false
+        buttonDisabled: false,
       });
       // Transaction is stopped (activeTransactionID == 0)
     } else if (connector.status === Constants.CONN_STATUS_FINISHING) {
       // Disable the button until the user unplug the cable
       this.setState({
-        buttonDisabled: true
+        buttonDisabled: true,
       });
     }
   }
@@ -314,13 +347,13 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
         // Set
         this.setState({
           elapsedTimeFormatted,
-          inactivityFormatted
+          inactivityFormatted,
         });
       }
     }
   };
 
-  _formatDurationHHMMSS = durationSecs => {
+  _formatDurationHHMMSS = (durationSecs) => {
     if (durationSecs <= 0) {
       return "00:00:00";
     }
@@ -341,7 +374,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     )}`;
   };
 
-  _formatTimer = val => {
+  _formatTimer = (val) => {
     // Put 0 next to the digit if lower than 10
     const valString = val + "";
     if (valString.length < 2) {
@@ -351,7 +384,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     return valString;
   };
 
-  _renderConnectorStatus = style => {
+  _renderConnectorStatus = (style) => {
     const { connector, isAdmin } = this.props;
     return (
       <View style={style.columnContainer}>
@@ -360,9 +393,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
           text={Utils.translateConnectorStatus(connector.status)}
         />
         {isAdmin && connector.status === Constants.CONN_STATUS_FAULTED ? (
-          <Text style={[style.subLabel, style.subLabelStatusError]}>
-            ({connector.errorCode})
-          </Text>
+          <Text style={[style.subLabel, style.subLabelStatusError]}>({connector.errorCode})</Text>
         ) : (
           undefined
         )}
@@ -370,7 +401,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     );
   };
 
-  _renderUserInfo = style => {
+  _renderUserInfo = (style) => {
     const { isAdmin } = this.props;
     const { userImage, transaction } = this.state;
     return (
@@ -394,7 +425,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     );
   };
 
-  _renderInstantPower = style => {
+  _renderInstantPower = (style) => {
     const { connector } = this.props;
     return (
       <View style={style.columnContainer}>
@@ -415,7 +446,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     );
   };
 
-  _renderElapsedTime = style => {
+  _renderElapsedTime = (style) => {
     const { transaction, elapsedTimeFormatted } = this.state;
     return (
       <View style={style.columnContainer}>
@@ -429,7 +460,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     );
   };
 
-  _renderInactivity = style => {
+  _renderInactivity = (style) => {
     const { transaction, inactivityFormatted } = this.state;
     return (
       <View style={style.columnContainer}>
@@ -443,7 +474,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     );
   };
 
-  _renderTotalConsumption = style => {
+  _renderTotalConsumption = (style) => {
     const { connector } = this.props;
     return (
       <View style={style.columnContainer}>
@@ -463,7 +494,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     );
   };
 
-  _renderBatteryLevel = style => {
+  _renderBatteryLevel = (style) => {
     const { connector } = this.props;
     return (
       <View style={style.columnContainer}>
@@ -482,7 +513,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     );
   };
 
-  _renderStartTransactionButton = style => {
+  _renderStartTransactionButton = (style) => {
     const { buttonDisabled } = this.state;
     return (
       <TouchableOpacity disabled={buttonDisabled} onPress={() => this._startTransactionConfirm()}>
@@ -507,7 +538,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     );
   };
 
-  _renderStopTransactionButton = style => {
+  _renderStopTransactionButton = (style) => {
     const { buttonDisabled } = this.state;
     return (
       <TouchableOpacity onPress={() => this._stopTransactionConfirm()} disabled={buttonDisabled}>
@@ -583,7 +614,7 @@ ChargerConnectorDetails.propTypes = {
   charger: PropTypes.object.isRequired,
   connector: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired,
-  isAdmin: PropTypes.bool.isRequired
+  isAdmin: PropTypes.bool.isRequired,
 };
 
 ChargerConnectorDetails.defaultProps = {};

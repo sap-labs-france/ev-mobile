@@ -7,7 +7,10 @@ export default class BaseScreen extends ResponsiveComponent {
   constructor(props) {
     super(props);
     // Add listeners
-    this.didFocus = this.props.navigation.addListener("didFocus", this.componentDidFocus.bind(this));
+    this.didFocus = this.props.navigation.addListener(
+      "didFocus",
+      this.componentDidFocus.bind(this)
+    );
     this.didBlur = this.props.navigation.addListener("didBlur", this.componentDidBlur.bind(this));
   }
 
@@ -37,6 +40,5 @@ export default class BaseScreen extends ResponsiveComponent {
     BackHandler.addEventListener("hardwareBackPress", this.onBack);
   }
 
-  async componentDidBlur() {
-  }
+  async componentDidBlur() {}
 }

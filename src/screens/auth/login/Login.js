@@ -5,7 +5,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Text as TextRN,
-  TextInput
+  TextInput,
 } from "react-native";
 import {
   Text,
@@ -19,7 +19,7 @@ import {
   ActionSheet,
   Footer,
   Left,
-  Right
+  Right,
 } from "native-base";
 import Orientation from "react-native-orientation-locker";
 import { ResponsiveComponent } from "react-native-responsive-ui";
@@ -40,23 +40,23 @@ const formValidationDef = {
   tenant: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_tenant")
-    }
+      message: "^" + I18n.t("authentication.mandatory_tenant"),
+    },
   },
   email: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_email")
+      message: "^" + I18n.t("authentication.mandatory_email"),
     },
     email: {
-      message: "^" + I18n.t("authentication.invalid_email")
-    }
+      message: "^" + I18n.t("authentication.invalid_email"),
+    },
   },
   password: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_password")
-    }
+      message: "^" + I18n.t("authentication.mandatory_password"),
+    },
   },
   eula: {
     equality: {
@@ -65,9 +65,9 @@ const formValidationDef = {
       comparator(v1, v2) {
         // True if EULA is checked
         return v1;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 
 export default class Login extends BaseScreen {
@@ -80,7 +80,7 @@ export default class Login extends BaseScreen {
       tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
       tenantTitle: I18n.t("authentication.tenant"),
       loading: false,
-      display: false
+      display: false,
     };
   }
 
@@ -99,7 +99,7 @@ export default class Login extends BaseScreen {
       password: this.centralServerProvider.getUserPassword(),
       tenant: tenantSubmain,
       tenantTitle: tenant ? tenant.name : this.state.tenantTitle,
-      display: true
+      display: true,
     });
   }
 
@@ -166,13 +166,13 @@ export default class Login extends BaseScreen {
     this.props.navigation.navigate("AppDrawerNavigator");
   }
 
-  _setTenant = buttonIndex => {
+  _setTenant = (buttonIndex) => {
     // Provided?
     if (buttonIndex !== undefined) {
       // Set Tenant
       this.setState({
         tenant: this.tenants[buttonIndex].subdomain,
-        tenantTitle: this.tenants[buttonIndex].name
+        tenantTitle: this.tenants[buttonIndex].name,
       });
     }
   };
@@ -183,7 +183,7 @@ export default class Login extends BaseScreen {
     if (this.state.tenant) {
       navigation.navigate("SignUp", {
         tenant: this.state.tenant,
-        email: this.state.email
+        email: this.state.email,
       });
     } else {
       // Error
@@ -197,7 +197,7 @@ export default class Login extends BaseScreen {
     if (this.state.tenant) {
       navigation.navigate("RetrievePassword", {
         tenant: this.state.tenant,
-        email: this.state.email
+        email: this.state.email,
       });
     } else {
       // Error
@@ -237,10 +237,10 @@ export default class Login extends BaseScreen {
                   onPress={() =>
                     ActionSheet.show(
                       {
-                        options: this.tenants.map(tenant => tenant.name),
-                        title: I18n.t("authentication.tenant")
+                        options: this.tenants.map((tenant) => tenant.name),
+                        title: I18n.t("authentication.tenant"),
                       },
-                      buttonIndex => {
+                      (buttonIndex) => {
                         this._setTenant(buttonIndex);
                       }
                     )
@@ -269,7 +269,7 @@ export default class Login extends BaseScreen {
                     autoCorrect={false}
                     keyboardType={"email-address"}
                     secureTextEntry={false}
-                    onChangeText={text => this.setState({ email: text })}
+                    onChangeText={(text) => this.setState({ email: text })}
                     value={this.state.email}
                   />
                 </Item>
@@ -285,7 +285,7 @@ export default class Login extends BaseScreen {
                     name="password"
                     type="password"
                     returnKeyType="go"
-                    ref={ref => (this.passwordInput = ref)}
+                    ref={(ref) => (this.passwordInput = ref)}
                     onSubmitEditing={() => Keyboard.dismiss()}
                     placeholder={I18n.t("authentication.password")}
                     placeholderTextColor={commonColor.inverseTextColor}
@@ -295,7 +295,7 @@ export default class Login extends BaseScreen {
                     autoCorrect={false}
                     keyboardType={"default"}
                     secureTextEntry={true}
-                    onChangeText={text => this.setState({ password: text })}
+                    onChangeText={(text) => this.setState({ password: text })}
                     value={this.state.password}
                   />
                 </Item>

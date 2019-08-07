@@ -15,7 +15,7 @@ export default class SiteComponent extends ResponsiveComponent {
     openMap({
       latitude: address.latitude,
       longitude: address.longitude,
-      zoom: 18
+      zoom: 18,
     });
   }
 
@@ -52,7 +52,7 @@ export default class SiteComponent extends ResponsiveComponent {
 
 SiteComponent.propTypes = {
   navigation: PropTypes.object.isRequired,
-  site: PropTypes.object.isRequired
+  site: PropTypes.object.isRequired,
 };
 
 SiteComponent.defaultProps = {};
