@@ -50,17 +50,14 @@ export default class ConnectorComponent extends ResponsiveComponent {
     });
   }
 
-  _renderFirstConnectorDetails = (connector) => {
-    return (
+  _renderFirstConnectorDetails = (connector) => (
       <ConnectorStatusComponent
         connector={connector}
         text={Utils.translateConnectorStatus(connector.status)}
       />
     );
-  };
 
-  _renderSecondConnectorDetails = (connector, style) => {
-    return connector.activeTransactionID !== 0 ? (
+  _renderSecondConnectorDetails = (connector, style) => connector.activeTransactionID !== 0 ? (
       <View style={style.connectorDetail}>
         <Animatable.View
           animation={!this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
@@ -99,10 +96,8 @@ export default class ConnectorComponent extends ResponsiveComponent {
         <Text style={style.labelImage}>{Utils.translateConnectorType(connector.type)}</Text>
       </View>
     );
-  };
 
-  _renderThirdConnectorDetails = (connector, style) => {
-    return connector.activeTransactionID !== 0 ? (
+  _renderThirdConnectorDetails = (connector, style) => connector.activeTransactionID !== 0 ? (
       <View style={style.connectorDetail}>
         <Text style={style.connectorValues}>{Math.round(connector.totalConsumption / 1000)}</Text>
         <Text style={style.label} numberOfLines={1}>
@@ -123,7 +118,6 @@ export default class ConnectorComponent extends ResponsiveComponent {
         </Text>
       </View>
     );
-  };
 
   render() {
     const style = computeStyleSheet();

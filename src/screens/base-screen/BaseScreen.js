@@ -31,10 +31,10 @@ export default class BaseScreen extends ResponsiveComponent {
     this.didBlur && this.didBlur.remove();
   }
 
-  onBack = () => {
+  onBack = () =>
     // Not Handled: has to be taken in the sub-classes
-    return false;
-  };
+     false
+  ;
 
   async componentDidFocus() {
     BackHandler.addEventListener("hardwareBackPress", this.onBack);

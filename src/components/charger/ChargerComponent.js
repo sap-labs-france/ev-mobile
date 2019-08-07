@@ -88,8 +88,7 @@ export default class ChargerComponent extends ResponsiveComponent {
           )}
         </View>
         <View style={style.connectorsContainer}>
-          {charger.connectors.map((connector, index) => {
-            return (
+          {charger.connectors.map((connector, index) => (
               <ConnectorComponent
                 key={`${charger.id}~${connector.connectorId}`}
                 charger={charger}
@@ -98,8 +97,7 @@ export default class ChargerComponent extends ResponsiveComponent {
                 index={index}
                 navigation={navigation}
               />
-            );
-          })}
+            ))}
         </View>
       </View>
     );

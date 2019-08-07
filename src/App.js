@@ -104,14 +104,12 @@ const loadNavigationState = async () => {
   return navigationState;
 };
 
-const RootContainerPersists = () => {
-  return (
+const RootContainerPersists = () => (
     <RootContainer
       persistNavigationState={persistNavigationState}
       loadNavigationState={loadNavigationState}
     />
   );
-};
 
 export default class App extends React.Component {
   // eslint-disable-next-line class-methods-use-this
