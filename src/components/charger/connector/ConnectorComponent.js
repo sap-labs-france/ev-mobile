@@ -9,6 +9,8 @@ import computeStyleSheet from "./ConnectorComponentStyles";
 import PropTypes from "prop-types";
 import Constants from "../../../utils/Constants";
 import ConnectorStatusComponent from "../../connector-status/ConnectorStatusComponent";
+import SvgUri from 'react-native-svg-uri';
+import { scale } from "react-native-size-matters";
 
 export default class ConnectorComponent extends ResponsiveComponent {
   constructor(props) {
@@ -96,6 +98,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
     ) : (
       <View style={style.connectorDetail}>
         <Image style={style.connectorImage} source={Utils.getConnectorTypeImage(connector.type)} />
+        {/* <SvgUri width={scale(40)} height={scale(40)} source={require("../../../../assets/connectorType/type-2.svg")} /> */}
         <Text style={style.labelImage}>{Utils.translateConnectorType(connector.type)}</Text>
       </View>
     );
