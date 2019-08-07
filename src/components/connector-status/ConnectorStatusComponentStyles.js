@@ -93,13 +93,13 @@ const commonStyles = ScaledSheet.create({
   },
   chargingConnector: {
     backgroundColor: commonColor.brandPrimary,
-    borderColor: commonColor.brandPrimaryLight,
+    borderColor: commonColor.brandInfo,
     borderTopColor: commonColor.brandPrimary,
     borderBottomColor: commonColor.brandPrimary
   },
   chargingConnectorValue: {},
   chargingConnectorDescription: {
-    color: commonColor.brandPrimary
+    color: commonColor.brandPrimaryDark
   }
 });
 

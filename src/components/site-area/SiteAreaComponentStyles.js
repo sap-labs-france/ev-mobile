@@ -34,12 +34,13 @@ const commonStyles = ScaledSheet.create({
     paddingLeft: "10@s",
     fontSize: "20@s",
     fontWeight: "bold",
-    color: commonColor.textColor
+    color: commonColor.headerTextColor
   },
   icon: {
     fontSize: "30@s",
     marginLeft: "10@s",
-    marginRight: "10@s"
+    marginRight: "10@s",
+    color: commonColor.headerTextColor
   },
   iconHidden: {
     opacity: 0

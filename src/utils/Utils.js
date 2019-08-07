@@ -6,6 +6,7 @@ import { NativeModules, Platform } from 'react-native';
 import ProviderFactory from "../provider/ProviderFactory";
 
 const type2 = require("../../assets/connectorType/type2.gif");
+// const type2 = require("../../assets/connectorType/type-2.svg");
 const combo = require("../../assets/connectorType/combo_ccs.gif");
 const chademo = require("../../assets/connectorType/chademo.gif");
 const noConnector = require("../../assets/connectorType/no-connector.gif");

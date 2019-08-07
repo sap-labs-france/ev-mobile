@@ -33,12 +33,13 @@ const commonStyles = ScaledSheet.create({
     paddingTop: Platform.OS === "ios" ? "4@s" : 0,
     fontSize: "20@s",
     fontWeight: "bold",
-    color: commonColor.textColor
+    color: commonColor.headerTextColor
   },
   icon: {
     fontSize: "30@s",
     marginLeft: "10@s",
-    marginRight: "10@s"
+    marginRight: "10@s",
+    color: commonColor.headerTextColor
   }
 });
 
