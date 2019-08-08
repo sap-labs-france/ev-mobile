@@ -1,26 +1,8 @@
 import React from "react";
-import {
-  Image,
-  TextInput,
-  Keyboard,
-  ScrollView,
-  Text as TextRN,
-  KeyboardAvoidingView,
-} from "react-native";
+import { Image, TextInput, Keyboard, ScrollView, Text as TextRN, KeyboardAvoidingView } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import * as Animatable from "react-native-animatable";
-import {
-  Form,
-  Text,
-  Button,
-  Icon,
-  Item,
-  View,
-  CheckBox,
-  Footer,
-  Spinner,
-  Right,
-} from "native-base";
+import { Form, Text, Button, Icon, Item, View, CheckBox, Footer, Spinner, Right } from "native-base";
 import commonColor from "../../../theme/variables/commonColor";
 import computeStyleSheet from "../AuthStyles";
 import I18n from "../../../I18n/I18n";
@@ -387,9 +369,9 @@ export default class SignUp extends BaseScreen {
                 reCaptchaType={1}
                 onExecute={this._recaptchaResponseToken}
               />
-            ) : (
+            :
               undefined
-            )}
+            }
           </ScrollView>
           <Footer style={style.footer}>
             <Right>
