@@ -7,13 +7,12 @@ import { Platform } from "react-native";
 const commonStyles = ScaledSheet.create({
   noDisplay: {
     flex: 1,
+    backgroundColor: commonColor.brandPrimaryDark
   },
-  spinner: {
-    backgroundColor: commonColor.brandPrimaryDark,
-  },
+  spinner: {},
   container: {
     flex: 1,
-    backgroundColor: commonColor.brandPrimaryDark,
+    backgroundColor: commonColor.brandPrimaryDark
   },
   keyboardContainer: {
     flex: 1,
