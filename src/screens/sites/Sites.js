@@ -20,7 +20,7 @@ export default class Sites extends BaseAutoRefreshScreen {
       refreshing: false,
       skip: 0,
       limit: Constants.PAGING_SIZE,
-      count: 0,
+      count: 0
     };
   }
 
@@ -69,7 +69,7 @@ export default class Sites extends BaseAutoRefreshScreen {
       this.setState({
         loading: false,
         count: sites.count,
-        sites: sites.result,
+        sites: sites.result
       });
     }
   };
@@ -93,7 +93,7 @@ export default class Sites extends BaseAutoRefreshScreen {
       this.setState((prevState, props) => ({
         sites: [...prevState.sites, ...sites.result],
         skip: prevState.skip + Constants.PAGING_SIZE,
-        refreshing: false,
+        refreshing: false
       }));
     }
   };

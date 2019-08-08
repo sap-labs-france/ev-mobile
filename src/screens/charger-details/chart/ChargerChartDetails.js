@@ -18,7 +18,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
     this.state = {
       values: [],
       consumptionValues: EMPTY_CHART,
-      stateOfChargeValues: EMPTY_CHART,
+      stateOfChargeValues: EMPTY_CHART
     };
   }
 
@@ -41,7 +41,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
       if (transactionID) {
         // Get the consumption
         const result = await this.centralServerProvider.getChargingStationConsumption({
-          TransactionId: transactionID,
+          TransactionId: transactionID
         });
         // At least 2 values for the chart!!!
         if (result.values && result.values.length > 1) {
@@ -54,12 +54,12 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
             // Add
             consumptionValues.push({
               x: date,
-              y: value.value ? value.value / 1000 : 0,
+              y: value.value ? value.value / 1000 : 0
             });
             if (value.stateOfCharge > 0) {
               stateOfChargeValues.push({
                 x: date,
-                y: value.stateOfCharge ? value.stateOfCharge : 0,
+                y: value.stateOfCharge ? value.stateOfCharge : 0
               });
             }
           }
@@ -67,7 +67,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
           this.setState({
             values: result.values,
             consumptionValues,
-            stateOfChargeValues,
+            stateOfChargeValues
           });
         }
       } else {
@@ -75,7 +75,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
         this.setState({
           values: null,
           consumptionValues: EMPTY_CHART,
-          stateOfChargeValues: EMPTY_CHART,
+          stateOfChargeValues: EMPTY_CHART
         });
       }
     } catch (error) {
@@ -117,8 +117,8 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
           drawFilled: true,
           fillAlpha: 65,
           fillColor: processColor(commonColor.brandInfo),
-          valueTextSize: scale(8),
-        },
+          valueTextSize: scale(8)
+        }
       });
     }
     // Check SoC
@@ -140,8 +140,8 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
           drawFilled: true,
           fillAlpha: 65,
           fillColor: processColor(commonColor.brandSuccess),
-          valueTextSize: scale(8),
-        },
+          valueTextSize: scale(8)
+        }
       });
     }
     // X Axis
@@ -158,7 +158,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
       valueFormatter: "date",
       valueFormatterPattern: "HH:mm",
       textSize: scale(8),
-      textColor: processColor(commonColor.brandInfo),
+      textColor: processColor(commonColor.brandInfo)
     };
     // Y Axis
     chartDefinition.yAxis = {};
@@ -169,7 +169,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
         valueFormatter: "##0 kW",
         axisMinimum: 0,
         textColor: processColor(commonColor.brandInfo),
-        textSize: scale(8),
+        textSize: scale(8)
         // limitLines: [{
         //   limit: connector.power,
         //   label: I18n.t("details.connectorMax"),
@@ -182,7 +182,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
       };
     } else {
       chartDefinition.yAxis.left = {
-        enabled: false,
+        enabled: false
       };
     }
     // Check SoC
@@ -193,11 +193,11 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
         axisMinimum: 0,
         axisMaximum: 100,
         textColor: processColor(commonColor.brandSuccess),
-        textSize: scale(8),
+        textSize: scale(8)
       };
     } else {
       chartDefinition.yAxis.right = {
-        enabled: false,
+        enabled: false
       };
     }
     // Return
@@ -219,13 +219,13 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
             legend={{
               enabled: true,
               textSize: scale(8),
-              textColor: processColor(commonColor.brandPrimaryDark),
+              textColor: processColor(commonColor.brandPrimaryDark)
             }}
             marker={{
               enabled: true,
               markerColor: processColor(commonColor.brandPrimaryDark),
               textSize: scale(12),
-              textColor: processColor(commonColor.inverseTextColor),
+              textColor: processColor(commonColor.inverseTextColor)
             }}
             xAxis={chartDefinition.xAxis}
             yAxis={chartDefinition.yAxis}
@@ -233,7 +233,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
             animation={{
               durationX: 1000,
               durationY: 1000,
-              easingY: "EaseInOutQuart",
+              easingY: "EaseInOutQuart"
             }}
             drawGridBackground={false}
             drawBorders={false}
@@ -255,7 +255,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
 }
 
 ChargerChartDetails.propTypes = {
-  transactionID: PropTypes.number,
+  transactionID: PropTypes.number
 };
 
 ChargerChartDetails.defaultProps = {};

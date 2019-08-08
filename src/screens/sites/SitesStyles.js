@@ -5,14 +5,14 @@ import commonColor from "../../theme/variables/commonColor";
 const commonStyles = {
   container: {
     flex: 1,
-    backgroundColor: commonColor.containerBgColor,
+    backgroundColor: commonColor.containerBgColor
   },
   content: {
-    flex: 1,
+    flex: 1
   },
   spinner: {
-    flex: 1,
-  },
+    flex: 1
+  }
 };
 
 const portraitStyles = {};
@@ -23,11 +23,11 @@ export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([
     {
       query: { orientation: "landscape" },
-      style: deepmerge(commonStyles, landscapeStyles),
+      style: deepmerge(commonStyles, landscapeStyles)
     },
     {
       query: { orientation: "portrait" },
-      style: deepmerge(commonStyles, portraitStyles),
-    },
+      style: deepmerge(commonStyles, portraitStyles)
+    }
   ]);
 }

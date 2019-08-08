@@ -30,5 +30,5 @@ const translateOrFallback = (initialMsg) => {
 
 export default {
   ...I18n,
-  t: translateOrFallback,
+  t: translateOrFallback
 };

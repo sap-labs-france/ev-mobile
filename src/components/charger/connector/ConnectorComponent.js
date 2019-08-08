@@ -17,7 +17,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
     super(props);
     // Init State
     this.state = {
-      showBatteryLevel: false,
+      showBatteryLevel: false
     };
   }
 
@@ -46,7 +46,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
     }
     // Switch battery/Consumption
     this.setState({
-      showBatteryLevel: !this.state.showBatteryLevel,
+      showBatteryLevel: !this.state.showBatteryLevel
     });
   }
 
@@ -128,7 +128,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
           navigation.navigate("ChargerTabDetails", {
             chargerID: charger.id,
             connectorID: connector.connectorId,
-            siteAreaID,
+            siteAreaID
           })
         }>
         <Animatable.View animation={"flipInX"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
@@ -151,7 +151,7 @@ ConnectorComponent.propTypes = {
   charger: PropTypes.object.isRequired,
   connector: PropTypes.object.isRequired,
   siteAreaID: PropTypes.string,
-  index: PropTypes.number,
+  index: PropTypes.number
 };
 
 ConnectorComponent.defaultProps = {};

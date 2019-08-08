@@ -1,7 +1,7 @@
 {
   arrowParens: "always",
   printWidth: 140,
-  trailingComma: "es5",
+  trailingComma: "none",
   jsxBracketSameLine: true,
   requirePragma: false
 }

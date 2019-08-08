@@ -80,7 +80,7 @@ export default class CentralServerProvider {
       { subdomain: "slfcah", name: "SAP Labs France (Charge@Home)" },
       { subdomain: "sapbelgium", name: "SAP Belgium" },
       { subdomain: "sapmarkdorf", name: "SAP Markdorf" },
-      { subdomain: "sapnl", name: "SAP Netherland" },
+      { subdomain: "sapnl", name: "SAP Netherland" }
     ];
   }
 
@@ -174,10 +174,10 @@ export default class CentralServerProvider {
         email,
         password,
         acceptEula,
-        tenant,
+        tenant
       },
       {
-        headers: this._builHeaders(),
+        headers: this._builHeaders()
       }
     );
     // Save
@@ -185,7 +185,7 @@ export default class CentralServerProvider {
       email,
       password,
       token: result.data.token,
-      tenant,
+      tenant
     });
     // Keep them
     _token = result.data.token;
@@ -207,10 +207,10 @@ export default class CentralServerProvider {
         email,
         passwords,
         acceptEula,
-        captcha,
+        captcha
       },
       {
-        headers: this._builHeaders(),
+        headers: this._builHeaders()
       }
     );
     return result.data;
@@ -224,10 +224,10 @@ export default class CentralServerProvider {
       {
         tenant,
         email,
-        captcha,
+        captcha
       },
       {
-        headers: this._builHeaders(),
+        headers: this._builHeaders()
       }
     );
     return result.data;
@@ -242,7 +242,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/Notifications`, {
       headers: this._buildSecuredHeaders(),
-      params,
+      params
     });
     return result.data;
   }
@@ -256,7 +256,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/ChargingStations`, {
       headers: this._buildSecuredHeaders(),
-      params,
+      params
     });
     return result.data;
   }
@@ -266,7 +266,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/ChargingStation`, {
       headers: this._buildSecuredHeaders(),
-      params,
+      params
     });
     return result.data;
   }
@@ -280,7 +280,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/Sites`, {
       headers: this._buildSecuredHeaders(),
-      params,
+      params
     });
     return result.data;
   }
@@ -294,7 +294,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/SiteAreas`, {
       headers: this._buildSecuredHeaders(),
-      params,
+      params
     });
     return result.data;
   }
@@ -304,7 +304,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceAuthURL}/EndUserLicenseAgreement`, {
       headers: this._builHeaders(),
-      params,
+      params
     });
     return result.data;
   }
@@ -318,11 +318,11 @@ export default class CentralServerProvider {
         chargeBoxID,
         args: {
           tagID,
-          connectorID,
-        },
+          connectorID
+        }
       },
       {
-        headers: this._buildSecuredHeaders(),
+        headers: this._buildSecuredHeaders()
       }
     );
     return result.data;
@@ -336,11 +336,11 @@ export default class CentralServerProvider {
       {
         chargeBoxID,
         args: {
-          transactionId,
-        },
+          transactionId
+        }
       },
       {
-        headers: this._buildSecuredHeaders(),
+        headers: this._buildSecuredHeaders()
       }
     );
     return result.data;
@@ -354,11 +354,11 @@ export default class CentralServerProvider {
       {
         chargeBoxID,
         args: {
-          type,
-        },
+          type
+        }
       },
       {
-        headers: this._buildSecuredHeaders(),
+        headers: this._buildSecuredHeaders()
       }
     );
     return result.data;
@@ -371,10 +371,10 @@ export default class CentralServerProvider {
       `${_centralRestServerServiceSecuredURL}/ChargingStationClearCache`,
       {
         chargeBoxID,
-        args: {},
+        args: {}
       },
       {
-        headers: this._buildSecuredHeaders(),
+        headers: this._buildSecuredHeaders()
       }
     );
     return result.data;
@@ -385,7 +385,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/Transaction`, {
       headers: this._buildSecuredHeaders(),
-      params,
+      params
     });
     return result.data;
   }
@@ -395,7 +395,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/UserImage`, {
       headers: this._buildSecuredHeaders(),
-      params,
+      params
     });
     return result.data;
   }
@@ -408,12 +408,12 @@ export default class CentralServerProvider {
       // Call
       const result = await axios.get(`${_centralRestServerServiceSecuredURL}/SiteImage`, {
         headers: this._buildSecuredHeaders(),
-        params: { ID: id },
+        params: { ID: id }
       });
       // Set
       siteImage = {
         id,
-        data: result.data,
+        data: result.data
       };
       // Add
       _siteImages.push(siteImage);
@@ -426,7 +426,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/IsAuthorized`, {
       headers: this._buildSecuredHeaders(),
-      params,
+      params
     });
     return result.data;
   }
@@ -435,7 +435,7 @@ export default class CentralServerProvider {
     this.debug("getPrice");
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/Pricing`, {
-      headers: this._buildSecuredHeaders(),
+      headers: this._buildSecuredHeaders()
     });
     return result.data;
   }
@@ -445,7 +445,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/ChargingStationConsumptionFromTransaction`, {
       headers: this._buildSecuredHeaders(),
-      params,
+      params
     });
     return result.data;
   }
@@ -485,7 +485,7 @@ export default class CentralServerProvider {
   // eslint-disable-next-line class-methods-use-this
   _builHeaders() {
     return {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     };
   }
 
@@ -493,7 +493,7 @@ export default class CentralServerProvider {
   _buildSecuredHeaders() {
     return {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + _token,
+      Authorization: "Bearer " + _token
     };
   }
 }
