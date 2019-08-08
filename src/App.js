@@ -24,7 +24,7 @@ import moment from "moment";
 
 // Get the supported locales
 require("moment/locale/fr");
-require("moment/locale/en-gb");
+require('moment/locale/de');
 // Set the current locale
 moment.locale(Utils.getLocaleShort());
 

@@ -1,5 +1,3 @@
-// @flow
-
 import color from "color";
 import { Platform, Dimensions, PixelRatio } from "react-native";
 import { scale } from "react-native-size-matters";
@@ -39,6 +37,7 @@ const success = fiori3Success;
 const successDark = fiori3SuccessBorder;
 const danger = fiori3Error;
 const dangerDark = fiori3ErrorBorder;
+const dangerLight = "#FFA9A9";
 const warning = "#FB8C00";
 const warningDark = "#C66F01";
 const disable = "#757575";
@@ -56,6 +55,7 @@ export default {
   brandSuccess: success,
   brandSuccessDark: successDark,
   brandDanger: danger,
+  brandDangerLight: dangerLight,
   brandDangerDark: dangerDark,
   brandWarning: warning,
   brandWarningDark: warningDark,

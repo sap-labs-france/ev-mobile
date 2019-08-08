@@ -369,7 +369,7 @@ export default class SignUp extends BaseScreen {
                       {errorMessage}
                     </Text>
                   ))}
-                {loading || !captcha ? (
+                {loading || (!captcha && this.state.eula) ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
                   <Button rounded primary block style={style.button} onPress={() => this._signUp()}>
@@ -378,7 +378,7 @@ export default class SignUp extends BaseScreen {
                 )}
               </Form>
             </KeyboardAvoidingView>
-            {captchaSiteKey && captchaBaseUrl ? (
+            { this.state.eula && captchaSiteKey && captchaBaseUrl ?
               <ReCaptcha
                 containerStyle={style.recaptcha}
                 siteKey={captchaSiteKey}
