@@ -1,17 +1,17 @@
 {
   "general": {
     "cannotConnectBackend": "Die Verbindung wurde unterbrochen",
-    "unexpectedErrorBackend": "Unerwarteter Backend Fehler",
-    "unexpectedError": "Unerwarteter Backend Fehler",
-    "sessionExpired": "Sitzung ausgelaufen",
+    "unexpectedErrorBackend": "Die Verbindung wurde unterbrochen",
+    "unexpectedError": "Die Verbindung wurde unterbrochen",
+    "sessionExpired": "Sitzung abgelaufen",
     "numbers": "Geben Sie eine gültige Zahl ein",
     "email": "Geben Sie eine gültige E-Mail ein",
     "mandatory": "ist notwendig",
     "ok": "Ok",
     "yes": "Ja",
     "no": "Nein",
+    "cancel": "Abbrechen",
     "version": "Version",
-    "date": "1ter, August",
     "search": "Suche"
   },
   "sidebar": {
@@ -19,32 +19,32 @@
     "chargers": "Ladestationen"
   },
 	"authentication": {
-    "mandatory_tenant": "Der Inhaber ist notwendig",
+    "mandatory_tenant": "Der Tenant ist notwendig",
     "mandatory_name": "Der Name ist notwendig",
     "mandatory_first_name": "Der Vorname ist notwendig",
     "mandatory_email": "Die E-Mail ist notwendig",
     "invalid_email": "Die E-Mail ist ungültig",
     "mandatory_password": "Das Passwort ist notwendig",
     "logOut": "Ausloggen",
-    "mustSelectTenant": "Wählen Sie einen Inhaber",
+    "mustSelectTenant": "Wählen Sie einen Tenant",
     "wrongEmailOrPassword": "Falsche E-Mail oder Passwort",
     "authenticationFailed": "Authentifizierung gescheitert",
     "invalidCaptcha": "Ungültiges Captcha!",
     "wrongEmail": "Ungültige E-Mail!",
     "accountLocked": "Ihr Konto ist gesperrt.",
     "accountNotActive": "Ihr Konto ist nicht aktiv",
-    "accountPending": "Ihr Konto wurde noch nicht aktiviert, überprüfen Sie Ihre E-Mail",
-    "resetSuccess": "Anfrage angenommen, überprüfen Sie Ihre E-Mail",
-    "eulaNotAccepted": "Sie müssen den Endnutzer-Lizenzvertrag annehmen.",
+    "accountPending": "Ihr Konto wurde noch nicht aktiviert, überprüfen Sie Ihre E-Mails!",
+    "resetSuccess": "Anfrage angenommen, überprüfen Sie Ihre E-Mails!",
+    "eulaNotAccepted": "Sie müssen den Endnutzer-Lizenzvertrag annehmen",
     "newUser": "Neuer Benutzer?",
     "forgotYourPassword": "Passwort vergessen?",
-    "retrievePassword": "Passwort auffinden",
+    "retrievePassword": "Passwort wieder auffinden",
     "backLogin": "Zurück zur Anmeldung",
     "required": "Benötigt",
     "acceptEula": "Ich bestätige den ",
     "eula": "Endnutzer-Lizenzvertrag",
     "login": "Anmelden",
-		"registerSuccess": "Konto erfolgreich erstellt, überprüfen Sie bitte Ihre E-Mail",
+		"registerSuccess": "Konto erfolgreich erstellt, überprüfen Sie bitte Ihre E-Mails!",
     "haveAlreadyAccount": "Haben Sie bereits ein Konto?",
     "name": "Name",
     "firstName": "Vorname",
@@ -52,9 +52,9 @@
     "password": "Passwort",
     "repeatPassword": "Passwort wiederholen",
     "signUp": "Konto erstellen",
-		"passwordRule": "Muss ein Kleinbuchstabe, ein Großbuchstabe, eine Nummer, ein Sonderzeichen und mindestens 8 Zeichen beinhalten.",
-    "passwordNotMatch": "Passwörter stimmen nicht übereinander ein",
-    "tenant": "Wählen Sie einen Inhaber"
+		"passwordRule": "Muss einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl, ein Sonderzeichen und mindestens 8 Zeichen beinhalten.",
+    "passwordNotMatch": "Passwörter stimmen nicht miteinander überein",
+    "tenant": "Wählen Sie einen Tenant"
   },
   "sites": {
     "freeChargers": "Freie Ladestationen",
@@ -63,22 +63,28 @@
     "occupied": "Besetzt"
   },
   "siteAreas": {
-    "title": "Standort Bereich",
-    "noChargers": "Dieser Standort Bereich hat keine Ladestationen"
+    "title": "Standortbereiche",
+    "noChargers": "Dieser Standortbereich hat keine Ladestationen"
   },
   "chargers": {
     "title": "Ladestationen",
     "heartBeat": "Herzschlag",
     "heartBeatOkMessage": "'{{chargeBoxID}}' funktioniert ordentlich und hat vor einer Minute einen Herzschlag gesendet",
-    "heartBeatKoMessage": "'{{chargeBoxID}}' ist fehlerhaft und hat zuletzt {{lastHeartBeat}} einen Herzschlag gesendet"
+    "heartBeatKoMessage": "'{{chargeBoxID}}' ist fehlerhaft und hat zuletzt {{lastHeartBeat}} einen Herzschlag gesendet",
+    "resetHard": "Neustart",
+    "resetHardMessage": "Möchten Sie wirklich die Ladestation '{{chargeBoxID}}' neustarten?",
+    "resetSoft": "Zurücksetzung",
+    "resetSoftMessage": "Möchten Sie wirklich die Ladestation '{{chargeBoxID}}' zurücksetzen?",
+    "clearCache": "Cache leeren",
+    "clearCacheMessage": "Möchten Sie wirklich den Cache der Ladestation '{{chargeBoxID}}' leeren?"
   },
   "connector": {
     "occupied": "Besetzt",
     "charging": "Lädt",
     "available": "Verfügbar",
     "unavailable": "Unverfügbar",
-    "suspendedEV": "Augehangene EV",
-    "suspendedEVSE": "Aufgehangene EVSE",
+    "suspendedEV": "Unterbrochenes EV",
+    "suspendedEVSE": "Unterbrochene EVSE",
     "faulted": "Fehlerhaft",
     "reserved": "Gebucht",
     "preparing": "Vorbereitung",
@@ -92,7 +98,7 @@
     "connector": "Anschluss",
     "informations": "Informationen",
     "graph": "Diagramm",
-    "notAuthorized": "Private Information!",
+    "notAuthorized": "Persönliche Daten!",
     "noTransaction": "Keine laufende Transaktionen",
     "startTransaction": "Transaktion starten",
     "stopTransaction": "Transaktion stoppen",
@@ -105,53 +111,53 @@
     "denied": "Anfrage wurde abgelehnt",
     "total": "Summe",
     "maximum": "Maximum",
-    "instant": "Instant",
+    "instant": "Momentan",
     "battery": "Batterie",
     "vendor": "Verkäufer",
     "model": "Modell",
     "ocppVersion": "OCPP Version",
     "firmwareVersion": "Firmware Version",
-    "time": "Zeit (mins)",
+    "time": "Zeit (Minuten)",
     "chargeInWatts": "Ladung (Watt)",
     "instantPowerChartLabel": "Momentane Leistung (kW)",
-    "cumulatedChartLabel": "Angehäuft (kW.h)",
-    "batteryChartLabel": "Batterie Füllstand (%)",
-    "connectorMax": "Anschluss Max Leistung (kW)"
+    "cumulatedChartLabel": "Kumuliert (kW.h)",
+    "batteryChartLabel": "Batterieladestand (%)",
+    "connectorMax": "Max. Leistung Anschluss (kW)"
   },
   "notifications": {
     "mustLogin": "Sie müssen angemeldet sein",
-    "cannotNavigate": "Kann nicht zu dem Bildschirm navigieren",
+    "cannotNavigate": "Kann nicht zum Bildschirm navigieren",
     "extraDataMissing": "Benachrichtigung nicht komplett",
-    "incorrectTenant": "Falscher Inhaber",
+    "incorrectTenant": "Falscher Tenant",
     "notifyEndOfSession": {
-      "message": "Ihre Ladesitzung auf '{{chargeBoxID}}' ist fertig.",
-      "subMessage": "Ladesitzung fertig.",
-      "longMessage": "Ihre Ladesitzung auf '{{chargeBoxID}}' ist fertig."
+      "message": "Ihre Ladesitzung auf '{{chargeBoxID}}' wurde beendet.",
+      "subMessage": "Ladesitzung beendet",
+      "longMessage": "Ihre Ladesitzung auf '{{chargeBoxID}}' wurde soeben beendet."
     },
     "notifyEndOfCharge": {
-      "message": "Ladung auf '{{chargeBoxID}}' ist fertig.",
+      "message": "Ladung auf '{{chargeBoxID}}' wurde beendet.",
       "subMessage": "Ladeende",
-      "longMessage": "'{{chargeBoxID}}' wurde fertig geladen. Sie können die Ladesitzung beenden und Ihr Auto wegfahren."
+      "longMessage": "Ihr Fahrzeug an '{{chargeBoxID}}' wurde vollständig geladen. Sie können die Ladesitzung beenden und Ihr Fahrzeug wegfahren."
     },
     "notifyOptimalChargeReached": {
-      "message": "Der optimale Ladepunkt auf '{{chargeBoxID}}' wurde erreicht.",
-      "subMessage": "Optimaler Ladepunkt",
-      "longMessage": "Der optimale Ladepunkt auf '{{chargeBoxID}}' wurde erreicht."
+      "message": "Der optimale Ladestand auf '{{chargeBoxID}}' wurde erreicht.",
+      "subMessage": "Optimaler Ladestand",
+      "longMessage": "Der optimale Ladestand auf '{{chargeBoxID}}' wurde erreicht."
     },
     "notifyChargingStationStatusError": {
       "message": "Fehler auf '{{chargeBoxID}}'",
-      "subMessage": "Ladestation fehlerhaft",
+      "subMessage": "Fehler auf Ladestation",
       "longMessage": "Fehler auf '{{chargeBoxID}}' - Anschluss {{connectorId}}: {{error}}."
     },
     "notifyChargingStationRegistered": {
       "message": "'{{chargeBoxID}}' wurde auf dem zentralen Server registriert.",
-      "subMessage": "Ladestation registriert.",
+      "subMessage": "Ladestation registriert",
       "longMessage": "'{{chargeBoxID}}' wurde auf dem zentralen Server registriert."
     },
     "notifyUnknownUserBadged": {
-      "message": "Ein unbekannter Nutzer hat auf '{{chargeBoxID}}' gebadgt.",
+      "message": "Ein unbekannter Benutzer hat auf '{{chargeBoxID}}' gebadgt.",
       "subMessage": "Unbekannter Benutzer",
-      "longMessage": "Ein unbekanner Nutzer hat auf '{{chargeBoxID}}' gebadgt."
+      "longMessage": "Ein unbekanner Benutzer hat auf '{{chargeBoxID}}' gebadgt."
     }
   }
 }
