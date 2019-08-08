@@ -105,7 +105,7 @@ const commonStyles = ScaledSheet.create({
   formErrorText: {
     fontSize: "12@s",
     marginLeft: 30,
-    color: commonColor.brandDanger,
+    color: commonColor.brandDangerLight,
     alignSelf: "flex-start",
     top: "-5@s"
   },
