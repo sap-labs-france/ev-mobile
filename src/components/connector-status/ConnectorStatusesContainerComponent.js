@@ -13,7 +13,6 @@ const style = computeStyleSheet();
 export default class ConnectorStatusesContainerComponent extends ResponsiveComponent {
   render() {
     const { connectorStats } = this.props;
-    console.log(connectorStats);
     return (
       connectorStats.hasOwnProperty("chargingConnectors") ?
         <View style={style.container}>
