@@ -24,7 +24,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
       firstLoad: true,
       isAuthorizedToStopTransaction: false,
       isAdmin: false,
-      refreshing: false
+      refreshing: false,
     };
     // Set refresh period
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
@@ -50,7 +50,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       this.setState({
         firstLoad: false,
-        isAdmin: (securityProvider ? securityProvider.isAdmin() : false)
+        isAdmin: securityProvider ? securityProvider.isAdmin() : false,
       });
     }
   };
@@ -74,7 +74,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
       this.setState(
         {
           charger,
-          connector: charger.connectors[connectorID - 1]
+          connector: charger.connectors[connectorID - 1],
         },
         async () => {
           // Check Auth
@@ -96,18 +96,18 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
         const result = await this.centralServerProvider.isAuthorizedStopTransaction({
           Action: "StopTransaction",
           Arg1: charger.id,
-          Arg2: connector.activeTransactionID
+          Arg2: connector.activeTransactionID,
         });
         if (result) {
           // Assign
           this.setState({
-            isAuthorizedToStopTransaction: result.IsAuthorized
+            isAuthorizedToStopTransaction: result.IsAuthorized,
           });
         }
       } else {
         // Not Authorized
         this.setState({
-          isAuthorizedToStopTransaction: false
+          isAuthorizedToStopTransaction: false,
         });
       }
     } catch (error) {
@@ -119,14 +119,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
   render() {
     const style = computeStyleSheet();
     const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
-    const {
-      charger,
-      connector,
-      isAdmin,
-      isAuthorizedToStopTransaction,
-      siteAreaID,
-      firstLoad
-    } = this.state;
+    const { charger, connector, isAdmin, isAuthorizedToStopTransaction, siteAreaID, firstLoad } = this.state;
     const { navigation } = this.props;
     const connectorLetter = String.fromCharCode(64 + connectorID);
     return firstLoad ? (
@@ -136,10 +129,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
     ) : (
       <ScrollView
         contentContainerStyle={style.container}
-        refreshControl={
-          <RefreshControl refreshing={this.state.refreshing} onRefresh={this._manualRefresh} />
-        }
-      >
+        refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._manualRefresh} />}>
         <BackgroundComponent active={false}>
           <HeaderComponent
             title={charger.id}
@@ -155,14 +145,8 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
                 <TabHeading style={style.tabHeader}>
                   <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
                 </TabHeading>
-              }
-            >
-              <ChargerConnectorDetails
-                charger={charger}
-                connector={connector}
-                isAdmin={isAdmin}
-                navigation={navigation}
-              />
+              }>
+              <ChargerConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation} />
             </Tab>
             {connector.activeTransactionID && (isAuthorizedToStopTransaction || isAdmin) ? (
               <Tab
@@ -170,13 +154,8 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
                   <TabHeading style={style.tabHeader}>
                     <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
                   </TabHeading>
-                }
-              >
-                <ChargerChartDetails
-                  transactionID={connector.activeTransactionID}
-                  isAdmin={isAdmin}
-                  navigation={navigation}
-                />
+                }>
+                <ChargerChartDetails transactionID={connector.activeTransactionID} isAdmin={isAdmin} navigation={navigation} />
               </Tab>
             ) : (
               undefined
@@ -187,14 +166,8 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
                   <TabHeading style={style.tabHeader}>
                     <Icon style={style.tabIcon} type="MaterialIcons" name="info" />
                   </TabHeading>
-                }
-              >
-                <ChargerDetails
-                  charger={charger}
-                  connector={connector}
-                  isAdmin={isAdmin}
-                  navigation={navigation}
-                />
+                }>
+                <ChargerDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation} />
               </Tab>
             ) : (
               undefined

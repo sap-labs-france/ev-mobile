@@ -6,29 +6,29 @@ import { ScaledSheet } from "react-native-size-matters";
 const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
-    backgroundColor: commonColor.containerBgColor
+    backgroundColor: commonColor.containerBgColor,
   },
   spinner: {
     flex: 1,
     justifyContent: "center",
-    color: commonColor.textColor
+    color: commonColor.textColor,
   },
   chart: {
-    height: "100%"
+    height: "100%",
   },
   notAuthorizedContainer: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   notAuthorizedText: {
     fontSize: "20@s",
-    color: commonColor.textColor
+    color: commonColor.textColor,
   },
   notAuthorizedIcon: {
     fontSize: "75@s",
-    color: commonColor.textColor
-  }
+    color: commonColor.textColor,
+  },
 });
 
 const portraitStyles = {};
@@ -39,11 +39,11 @@ export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([
     {
       query: { orientation: "landscape" },
-      style: deepmerge(commonStyles, landscapeStyles)
+      style: deepmerge(commonStyles, landscapeStyles),
     },
     {
       query: { orientation: "portrait" },
-      style: deepmerge(commonStyles, portraitStyles)
-    }
+      style: deepmerge(commonStyles, portraitStyles),
+    },
   ]);
 }

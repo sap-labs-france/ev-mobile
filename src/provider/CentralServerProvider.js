@@ -57,8 +57,7 @@ export default class CentralServerProvider {
         // Decode the token
         _decodedToken = jwtDecode(_token);
         this.securityProvider = new SecurityProvider(_decodedToken);
-      } catch(error) {
-      }
+      } catch (error) {}
     }
   }
 
@@ -71,7 +70,7 @@ export default class CentralServerProvider {
   }
 
   getTenant(subdomain) {
-    return this.getTenants().find(tenant => tenant.subdomain === subdomain);
+    return this.getTenants().find((tenant) => tenant.subdomain === subdomain);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -81,7 +80,7 @@ export default class CentralServerProvider {
       { subdomain: "slfcah", name: "SAP Labs France (Charge@Home)" },
       { subdomain: "sapbelgium", name: "SAP Belgium" },
       { subdomain: "sapmarkdorf", name: "SAP Markdorf" },
-      { subdomain: "sapnl", name: "SAP Netherland" }
+      { subdomain: "sapnl", name: "SAP Netherland" },
     ];
   }
 
@@ -126,7 +125,7 @@ export default class CentralServerProvider {
       try {
         // Try to decode the token
         _decodedToken = jwtDecode(_token);
-      } catch(error) {
+      } catch (error) {
         return false;
       }
       // Check if expired
@@ -175,10 +174,10 @@ export default class CentralServerProvider {
         email,
         password,
         acceptEula,
-        tenant
+        tenant,
       },
       {
-        headers: this._builHeaders()
+        headers: this._builHeaders(),
       }
     );
     // Save
@@ -186,7 +185,7 @@ export default class CentralServerProvider {
       email,
       password,
       token: result.data.token,
-      tenant
+      tenant,
     });
     // Keep them
     _token = result.data.token;
@@ -208,10 +207,10 @@ export default class CentralServerProvider {
         email,
         passwords,
         acceptEula,
-        captcha
+        captcha,
       },
       {
-        headers: this._builHeaders()
+        headers: this._builHeaders(),
       }
     );
     return result.data;
@@ -225,20 +224,16 @@ export default class CentralServerProvider {
       {
         tenant,
         email,
-        captcha
+        captcha,
       },
       {
-        headers: this._builHeaders()
+        headers: this._builHeaders(),
       }
     );
     return result.data;
   }
 
-  async getNotifications(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getNotifications(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getNotifications");
     // Build Paging
     this._buildPaging(paging, params);
@@ -247,16 +242,12 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/Notifications`, {
       headers: this._buildSecuredHeaders(),
-      params
+      params,
     });
     return result.data;
   }
 
-  async getChargers(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getChargers(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getChargers");
     // Build Paging
     this._buildPaging(paging, params);
@@ -265,7 +256,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/ChargingStations`, {
       headers: this._buildSecuredHeaders(),
-      params
+      params,
     });
     return result.data;
   }
@@ -275,16 +266,12 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/ChargingStation`, {
       headers: this._buildSecuredHeaders(),
-      params
+      params,
     });
     return result.data;
   }
 
-  async getSites(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getSites(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getSites");
     // Build Paging
     this._buildPaging(paging, params);
@@ -293,16 +280,12 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/Sites`, {
       headers: this._buildSecuredHeaders(),
-      params
+      params,
     });
     return result.data;
   }
 
-  async getSiteAreas(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getSiteAreas(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getSiteAreas");
     // Build Paging
     this._buildPaging(paging, params);
@@ -311,7 +294,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/SiteAreas`, {
       headers: this._buildSecuredHeaders(),
-      params
+      params,
     });
     return result.data;
   }
@@ -321,7 +304,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceAuthURL}/EndUserLicenseAgreement`, {
       headers: this._builHeaders(),
-      params
+      params,
     });
     return result.data;
   }
@@ -335,11 +318,11 @@ export default class CentralServerProvider {
         chargeBoxID,
         args: {
           tagID,
-          connectorID
-        }
+          connectorID,
+        },
       },
       {
-        headers: this._buildSecuredHeaders()
+        headers: this._buildSecuredHeaders(),
       }
     );
     return result.data;
@@ -353,11 +336,11 @@ export default class CentralServerProvider {
       {
         chargeBoxID,
         args: {
-          transactionId
-        }
+          transactionId,
+        },
       },
       {
-        headers: this._buildSecuredHeaders()
+        headers: this._buildSecuredHeaders(),
       }
     );
     return result.data;
@@ -371,11 +354,11 @@ export default class CentralServerProvider {
       {
         chargeBoxID,
         args: {
-          type
-        }
+          type,
+        },
       },
       {
-        headers: this._buildSecuredHeaders()
+        headers: this._buildSecuredHeaders(),
       }
     );
     return result.data;
@@ -388,10 +371,10 @@ export default class CentralServerProvider {
       `${_centralRestServerServiceSecuredURL}/ChargingStationClearCache`,
       {
         chargeBoxID,
-        args: {}
+        args: {},
       },
       {
-        headers: this._buildSecuredHeaders()
+        headers: this._buildSecuredHeaders(),
       }
     );
     return result.data;
@@ -402,7 +385,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/Transaction`, {
       headers: this._buildSecuredHeaders(),
-      params
+      params,
     });
     return result.data;
   }
@@ -412,7 +395,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/UserImage`, {
       headers: this._buildSecuredHeaders(),
-      params
+      params,
     });
     return result.data;
   }
@@ -420,17 +403,17 @@ export default class CentralServerProvider {
   async getSiteImage(id) {
     this.debug("getSiteImage");
     // Check cache
-    let siteImage = _siteImages.find(siteImage => siteImage.id === id);
+    let siteImage = _siteImages.find((siteImage) => siteImage.id === id);
     if (!siteImage) {
       // Call
       const result = await axios.get(`${_centralRestServerServiceSecuredURL}/SiteImage`, {
         headers: this._buildSecuredHeaders(),
-        params: { ID: id }
+        params: { ID: id },
       });
       // Set
       siteImage = {
         id,
-        data: result.data
+        data: result.data,
       };
       // Add
       _siteImages.push(siteImage);
@@ -443,7 +426,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/IsAuthorized`, {
       headers: this._buildSecuredHeaders(),
-      params
+      params,
     });
     return result.data;
   }
@@ -452,7 +435,7 @@ export default class CentralServerProvider {
     this.debug("getPrice");
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/Pricing`, {
-      headers: this._buildSecuredHeaders()
+      headers: this._buildSecuredHeaders(),
     });
     return result.data;
   }
@@ -460,13 +443,10 @@ export default class CentralServerProvider {
   async getChargingStationConsumption(params = {}) {
     this.debug("getChargingStationConsumption");
     // Call
-    const result = await axios.get(
-      `${_centralRestServerServiceSecuredURL}/ChargingStationConsumptionFromTransaction`,
-      {
-        headers: this._buildSecuredHeaders(),
-        params
-      }
-    );
+    const result = await axios.get(`${_centralRestServerServiceSecuredURL}/ChargingStationConsumptionFromTransaction`, {
+      headers: this._buildSecuredHeaders(),
+      params,
+    });
     return result.data;
   }
 
@@ -495,7 +475,7 @@ export default class CentralServerProvider {
         queryString.SortFields = [];
         queryString.SortDirs = [];
       }
-      ordering.forEach(order => {
+      ordering.forEach((order) => {
         queryString.SortFields.push(order.field);
         queryString.SortDirs.push(order.direction);
       });
@@ -505,7 +485,7 @@ export default class CentralServerProvider {
   // eslint-disable-next-line class-methods-use-this
   _builHeaders() {
     return {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     };
   }
 
@@ -513,7 +493,7 @@ export default class CentralServerProvider {
   _buildSecuredHeaders() {
     return {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + _token
+      Authorization: "Bearer " + _token,
     };
   }
 }

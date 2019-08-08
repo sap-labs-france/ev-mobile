@@ -236,7 +236,7 @@ export default class NotificationManager {
     // return _token;
   }
 
-  onRegister = token => {
+  onRegister = (token) => {
     // // Keep the token
     // _token = token;
     // // Do nothing
@@ -244,7 +244,7 @@ export default class NotificationManager {
     // console.log(token);
   };
 
-  onNotify = async notification => {
+  onNotify = async (notification) => {
     // console.log("NOTIF MESSAGE");
     // console.log(notification);
     // // Add Notification

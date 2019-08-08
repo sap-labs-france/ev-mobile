@@ -7,7 +7,7 @@ I18n.fallbacks = true;
 I18n.translations = {
   en: require("./languages/en.json"),
   de: require("./languages/de.json"),
-  fr: require("./languages/fr.json")
+  fr: require("./languages/fr.json"),
 };
 
 export default I18n;

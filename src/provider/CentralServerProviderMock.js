@@ -12,20 +12,14 @@ export default class CentralServerProviderMock {
 
   async register(name, firstName, email, passwords, eula) {}
 
-  async getChargers(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getChargers(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     // Return a promise
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         // Filter provided?
         if (params.SiteID) {
           // Filter the list
-          const chargersFiltered = CHARGERS.filter(
-            charger => charger.siteArea.siteID === params.SiteID
-          );
+          const chargersFiltered = CHARGERS.filter((charger) => charger.siteArea.siteID === params.SiteID);
           // Get them all
           const pagedChargersFiltered = this.applyPaging(chargersFiltered, paging);
           // Send mock data
@@ -40,13 +34,9 @@ export default class CentralServerProviderMock {
     });
   }
 
-  async getSites(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getSites(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     // Return a promise
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         const pagedSites = this.applyPaging(SITES, paging);
         // Send mock data
@@ -57,7 +47,7 @@ export default class CentralServerProviderMock {
 
   applyPaging(data, paging) {
     const pagedData = {
-      count: 0
+      count: 0,
     };
     // Cut the collection
     pagedData.result = data.slice(paging.skip, paging.skip + paging.limit);
@@ -66,22 +56,16 @@ export default class CentralServerProviderMock {
     return pagedData;
   }
 
-  async getSiteAreas(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getSiteAreas(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     // Return a promise
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       // Filter provided?
       if (params.SiteID) {
         const siteAreasFiltered = {
-          count: 0
+          count: 0,
         };
         // Filter the list
-        siteAreasFiltered.result = SITE_AREAS.result.filter(
-          siteArea => siteArea.siteID === params.SiteID
-        );
+        siteAreasFiltered.result = SITE_AREAS.result.filter((siteArea) => siteArea.siteID === params.SiteID);
         // Set the Count
         if (siteAreasFiltered.result) {
           siteAreasFiltered.count = siteAreasFiltered.result.length;
@@ -115,13 +99,13 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
     createdOn: "2018-10-08T21:20:34.418Z",
     lastChangedBy: "Serge FABIANO",
-    lastChangedOn: "2018-10-09T01:14:29.757Z"
+    lastChangedOn: "2018-10-09T01:14:29.757Z",
   },
   {
     id: "5bbbca22e8c4f3893ca91993",
@@ -137,11 +121,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.472Z"
+    createdOn: "2018-10-08T21:20:34.472Z",
   },
   {
     id: "5bbbca22e8c4f3893ca91994",
@@ -157,11 +141,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.473Z"
+    createdOn: "2018-10-08T21:20:34.473Z",
   },
   {
     id: "5bbbca22e8c4f3893ca91995",
@@ -177,11 +161,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.477Z"
+    createdOn: "2018-10-08T21:20:34.477Z",
   },
   {
     id: "5bbbca22e8c4f3893ca91996",
@@ -196,11 +180,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.478Z"
+    createdOn: "2018-10-08T21:20:34.478Z",
   },
   {
     id: "5bbbca22e8c4f3893ca91997",
@@ -215,11 +199,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.480Z"
+    createdOn: "2018-10-08T21:20:34.480Z",
   },
   {
     id: "5bbbca22e8c4f3893ca91998",
@@ -234,11 +218,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.482Z"
+    createdOn: "2018-10-08T21:20:34.482Z",
   },
   {
     id: "5bbbca22e8c4f3893ca91999",
@@ -253,11 +237,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.483Z"
+    createdOn: "2018-10-08T21:20:34.483Z",
   },
   {
     id: "5bbbca22e8c4f3893ca9199a",
@@ -272,11 +256,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.484Z"
+    createdOn: "2018-10-08T21:20:34.484Z",
   },
   {
     id: "5bbbca22e8c4f3893ca9199b",
@@ -291,11 +275,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.484Z"
+    createdOn: "2018-10-08T21:20:34.484Z",
   },
   {
     id: "5bbbca22e8c4f3893ca9199c",
@@ -310,11 +294,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.485Z"
+    createdOn: "2018-10-08T21:20:34.485Z",
   },
   {
     id: "5bbbca22e8c4f3893ca9198b",
@@ -329,11 +313,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.465Z"
+    createdOn: "2018-10-08T21:20:34.465Z",
   },
   {
     id: "5bbbca22e8c4f3893ca9199d",
@@ -348,11 +332,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.488Z"
+    createdOn: "2018-10-08T21:20:34.488Z",
   },
   {
     id: "5bbbca22e8c4f3893ca9199e",
@@ -367,11 +351,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.489Z"
+    createdOn: "2018-10-08T21:20:34.489Z",
   },
   {
     id: "5bbbca22e8c4f3893ca9199f",
@@ -386,11 +370,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.490Z"
+    createdOn: "2018-10-08T21:20:34.490Z",
   },
   {
     id: "5bbbca22e8c4f3893ca919a0",
@@ -405,11 +389,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.490Z"
+    createdOn: "2018-10-08T21:20:34.490Z",
   },
   {
     id: "5bbbca22e8c4f3893ca919a1",
@@ -424,11 +408,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.491Z"
+    createdOn: "2018-10-08T21:20:34.491Z",
   },
   {
     id: "5bbbca22e8c4f3893ca919a2",
@@ -443,11 +427,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.492Z"
+    createdOn: "2018-10-08T21:20:34.492Z",
   },
   {
     id: "5bbbca22e8c4f3893ca9198c",
@@ -462,11 +446,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.467Z"
+    createdOn: "2018-10-08T21:20:34.467Z",
   },
   {
     id: "5bbbca22e8c4f3893ca9198d",
@@ -481,11 +465,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.467Z"
+    createdOn: "2018-10-08T21:20:34.467Z",
   },
   {
     id: "5bbbca22e8c4f3893ca9198e",
@@ -500,11 +484,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.468Z"
+    createdOn: "2018-10-08T21:20:34.468Z",
   },
   {
     id: "5bbbca22e8c4f3893ca9198f",
@@ -519,11 +503,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.469Z"
+    createdOn: "2018-10-08T21:20:34.469Z",
   },
   {
     id: "5bbbca22e8c4f3893ca91990",
@@ -538,11 +522,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.469Z"
+    createdOn: "2018-10-08T21:20:34.469Z",
   },
   {
     id: "5bbbca22e8c4f3893ca91991",
@@ -557,11 +541,11 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.470Z"
+    createdOn: "2018-10-08T21:20:34.470Z",
   },
   {
     id: "5bbbca22e8c4f3893ca91992",
@@ -576,12 +560,12 @@ const SITES = [
       region: "Provence-Alpes-Côte d'Azur",
       country: "France",
       latitude: 43.61230630000001,
-      longitude: 7.0169279000000415
+      longitude: 7.0169279000000415,
     },
     allowAllUsersToStopTransactions: false,
     createdBy: "admin last",
-    createdOn: "2018-10-08T21:20:34.471Z"
-  }
+    createdOn: "2018-10-08T21:20:34.471Z",
+  },
 ];
 
 const CHARGERS = [
@@ -613,7 +597,7 @@ const CHARGERS = [
         errorCode: "NoError",
         power: 22170,
         activeTransactionID: 0,
-        type: "Type2"
+        type: "Type2",
       },
       {
         connectorId: 2,
@@ -623,7 +607,7 @@ const CHARGERS = [
         errorCode: "NoError",
         power: 22170,
         activeTransactionID: 0,
-        type: "Chademo"
+        type: "Chademo",
       },
       {
         connectorId: 3,
@@ -633,7 +617,7 @@ const CHARGERS = [
         errorCode: "NoError",
         power: 22170,
         activeTransactionID: 0,
-        type: "ComboCcs"
+        type: "ComboCcs",
       },
       {
         connectorId: 4,
@@ -642,7 +626,7 @@ const CHARGERS = [
         status: "Occupied",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 5,
@@ -651,7 +635,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 6,
@@ -660,8 +644,8 @@ const CHARGERS = [
         status: "Occupied",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.817Z",
@@ -671,8 +655,8 @@ const CHARGERS = [
       name: "Area 1",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.493Z"
-    }
+      createdOn: "2018-10-08T21:20:34.493Z",
+    },
   },
   {
     id: "Station - 1 - 10",
@@ -701,7 +685,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -710,8 +694,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.864Z",
@@ -721,8 +705,8 @@ const CHARGERS = [
       name: "Area 1",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.493Z"
-    }
+      createdOn: "2018-10-08T21:20:34.493Z",
+    },
   },
   {
     id: "Station - 1 - 2",
@@ -751,7 +735,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -760,8 +744,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.856Z",
@@ -771,8 +755,8 @@ const CHARGERS = [
       name: "Area 1",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.493Z"
-    }
+      createdOn: "2018-10-08T21:20:34.493Z",
+    },
   },
   {
     id: "Station - 1 - 3",
@@ -801,7 +785,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -810,8 +794,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.857Z",
@@ -821,8 +805,8 @@ const CHARGERS = [
       name: "Area 1",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.493Z"
-    }
+      createdOn: "2018-10-08T21:20:34.493Z",
+    },
   },
   {
     id: "Station - 1 - 4",
@@ -851,7 +835,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -860,8 +844,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.858Z",
@@ -871,8 +855,8 @@ const CHARGERS = [
       name: "Area 1",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.493Z"
-    }
+      createdOn: "2018-10-08T21:20:34.493Z",
+    },
   },
   {
     id: "Station - 1 - 5",
@@ -901,7 +885,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -910,8 +894,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.859Z",
@@ -921,8 +905,8 @@ const CHARGERS = [
       name: "Area 1",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.493Z"
-    }
+      createdOn: "2018-10-08T21:20:34.493Z",
+    },
   },
   {
     id: "Station - 1 - 6",
@@ -951,7 +935,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -960,8 +944,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.859Z",
@@ -971,8 +955,8 @@ const CHARGERS = [
       name: "Area 1",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.493Z"
-    }
+      createdOn: "2018-10-08T21:20:34.493Z",
+    },
   },
   {
     id: "Station - 1 - 7",
@@ -1001,7 +985,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1010,8 +994,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.860Z",
@@ -1021,8 +1005,8 @@ const CHARGERS = [
       name: "Area 1",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.493Z"
-    }
+      createdOn: "2018-10-08T21:20:34.493Z",
+    },
   },
   {
     id: "Station - 1 - 8",
@@ -1051,7 +1035,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1060,8 +1044,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.861Z",
@@ -1071,8 +1055,8 @@ const CHARGERS = [
       name: "Area 1",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.493Z"
-    }
+      createdOn: "2018-10-08T21:20:34.493Z",
+    },
   },
   {
     id: "Station - 1 - 9",
@@ -1101,7 +1085,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1110,8 +1094,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.862Z",
@@ -1121,8 +1105,8 @@ const CHARGERS = [
       name: "Area 1",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.493Z"
-    }
+      createdOn: "2018-10-08T21:20:34.493Z",
+    },
   },
   {
     id: "Station - 10 - 1",
@@ -1151,7 +1135,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1160,8 +1144,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.975Z",
@@ -1171,8 +1155,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.551Z"
-    }
+      createdOn: "2018-10-08T21:20:34.551Z",
+    },
   },
   {
     id: "Station - 10 - 10",
@@ -1201,7 +1185,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1210,8 +1194,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.986Z",
@@ -1221,8 +1205,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.551Z"
-    }
+      createdOn: "2018-10-08T21:20:34.551Z",
+    },
   },
   {
     id: "Station - 10 - 2",
@@ -1251,7 +1235,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1260,8 +1244,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.976Z",
@@ -1271,8 +1255,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.551Z"
-    }
+      createdOn: "2018-10-08T21:20:34.551Z",
+    },
   },
   {
     id: "Station - 10 - 3",
@@ -1301,7 +1285,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1310,8 +1294,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.976Z",
@@ -1321,8 +1305,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.551Z"
-    }
+      createdOn: "2018-10-08T21:20:34.551Z",
+    },
   },
   {
     id: "Station - 10 - 4",
@@ -1351,7 +1335,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1360,8 +1344,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.977Z",
@@ -1371,8 +1355,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.551Z"
-    }
+      createdOn: "2018-10-08T21:20:34.551Z",
+    },
   },
   {
     id: "Station - 10 - 5",
@@ -1401,7 +1385,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1410,8 +1394,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.979Z",
@@ -1421,8 +1405,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.551Z"
-    }
+      createdOn: "2018-10-08T21:20:34.551Z",
+    },
   },
   {
     id: "Station - 10 - 6",
@@ -1451,7 +1435,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1460,8 +1444,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.981Z",
@@ -1471,8 +1455,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.551Z"
-    }
+      createdOn: "2018-10-08T21:20:34.551Z",
+    },
   },
   {
     id: "Station - 10 - 7",
@@ -1501,7 +1485,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1510,8 +1494,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.982Z",
@@ -1521,8 +1505,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.551Z"
-    }
+      createdOn: "2018-10-08T21:20:34.551Z",
+    },
   },
   {
     id: "Station - 10 - 8",
@@ -1551,7 +1535,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1560,8 +1544,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.984Z",
@@ -1571,8 +1555,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.551Z"
-    }
+      createdOn: "2018-10-08T21:20:34.551Z",
+    },
   },
   {
     id: "Station - 10 - 9",
@@ -1601,7 +1585,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1610,8 +1594,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:38.985Z",
@@ -1621,8 +1605,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.551Z"
-    }
+      createdOn: "2018-10-08T21:20:34.551Z",
+    },
   },
   {
     id: "Station - 100 - 1",
@@ -1651,7 +1635,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1660,8 +1644,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:40.083Z",
@@ -1671,8 +1655,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.664Z"
-    }
+      createdOn: "2018-10-08T21:20:34.664Z",
+    },
   },
   {
     id: "Station - 100 - 10",
@@ -1701,7 +1685,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1710,8 +1694,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:40.091Z",
@@ -1721,8 +1705,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.664Z"
-    }
+      createdOn: "2018-10-08T21:20:34.664Z",
+    },
   },
   {
     id: "Station - 100 - 2",
@@ -1751,7 +1735,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1760,8 +1744,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:40.084Z",
@@ -1771,8 +1755,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.664Z"
-    }
+      createdOn: "2018-10-08T21:20:34.664Z",
+    },
   },
   {
     id: "Station - 100 - 3",
@@ -1801,7 +1785,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1810,8 +1794,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:40.084Z",
@@ -1821,8 +1805,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.664Z"
-    }
+      createdOn: "2018-10-08T21:20:34.664Z",
+    },
   },
   {
     id: "Station - 100 - 4",
@@ -1851,7 +1835,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1860,8 +1844,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:40.085Z",
@@ -1871,8 +1855,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.664Z"
-    }
+      createdOn: "2018-10-08T21:20:34.664Z",
+    },
   },
   {
     id: "Station - 100 - 5",
@@ -1901,7 +1885,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1910,8 +1894,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:40.086Z",
@@ -1921,8 +1905,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.664Z"
-    }
+      createdOn: "2018-10-08T21:20:34.664Z",
+    },
   },
   {
     id: "Station - 100 - 6",
@@ -1951,7 +1935,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -1960,8 +1944,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:40.086Z",
@@ -1971,8 +1955,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.664Z"
-    }
+      createdOn: "2018-10-08T21:20:34.664Z",
+    },
   },
   {
     id: "Station - 100 - 7",
@@ -2001,7 +1985,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -2010,8 +1994,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:40.087Z",
@@ -2021,8 +2005,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.664Z"
-    }
+      createdOn: "2018-10-08T21:20:34.664Z",
+    },
   },
   {
     id: "Station - 100 - 8",
@@ -2051,7 +2035,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -2060,8 +2044,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:40.088Z",
@@ -2071,8 +2055,8 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.664Z"
-    }
+      createdOn: "2018-10-08T21:20:34.664Z",
+    },
   },
   {
     id: "Station - 100 - 9",
@@ -2101,7 +2085,7 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
+        activeTransactionID: 0,
       },
       {
         connectorId: 2,
@@ -2110,8 +2094,8 @@ const CHARGERS = [
         status: "Available",
         errorCode: "NoError",
         power: 22170,
-        activeTransactionID: 0
-      }
+        activeTransactionID: 0,
+      },
     ],
     lastChangedBy: "admin last",
     lastChangedOn: "2018-10-08T21:20:40.088Z",
@@ -2121,9 +2105,9 @@ const CHARGERS = [
       name: "Area 10",
       accessControl: true,
       createdBy: "5bbbca22e8c4f3893ca91924",
-      createdOn: "2018-10-08T21:20:34.664Z"
-    }
-  }
+      createdOn: "2018-10-08T21:20:34.664Z",
+    },
+  },
 ];
 
 const SITE_AREAS = [];

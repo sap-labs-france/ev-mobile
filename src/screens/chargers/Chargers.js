@@ -22,7 +22,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
       refreshing: false,
       skip: 0,
       limit: Constants.PAGING_SIZE,
-      count: 0
+      count: 0,
     };
   }
 
@@ -45,10 +45,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
       // Get Chargers
       if (siteAreaID) {
         // Get with the Site Area
-        chargers = await this.centralServerProvider.getChargers(
-          { Search: searchText, SiteAreaID: siteAreaID },
-          { skip, limit }
-        );
+        chargers = await this.centralServerProvider.getChargers({ Search: searchText, SiteAreaID: siteAreaID }, { skip, limit });
       } else {
         // Get without the Site
         chargers = await this.centralServerProvider.getChargers({ Search: searchText }, { skip, limit });
@@ -65,16 +62,12 @@ export default class Chargers extends BaseAutoRefreshScreen {
     // No reached the end?
     if (skip + limit < count) {
       // No: get next sites
-      const chargers = await this._getChargers(
-        this.searchText,
-        skip + Constants.PAGING_SIZE,
-        limit
-      );
+      const chargers = await this._getChargers(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState, props) => ({
         chargers: [...prevState.chargers, ...chargers.result],
         skip: prevState.skip + Constants.PAGING_SIZE,
-        refreshing: false
+        refreshing: false,
       }));
     }
   };
@@ -89,7 +82,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
       this.setState((prevState, props) => ({
         loading: false,
         chargers: chargers.result,
-        count: chargers.count
+        count: chargers.count,
       }));
     }
   };
@@ -106,7 +99,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
   _footerList = () => {
     const { skip, count, limit } = this.state;
     if (skip + limit < count) {
-      return <Spinner/>;
+      return <Spinner />;
     }
     return null;
   };
@@ -142,10 +135,10 @@ export default class Chargers extends BaseAutoRefreshScreen {
           />
           <SearchHeaderComponent
             initialVisibility={false}
-            ref={ref => {
+            ref={(ref) => {
               this.searchRef = ref;
             }}
-            onChange={searchText => this._search(searchText)}
+            onChange={(searchText) => this._search(searchText)}
             navigation={navigation}
           />
           <View style={style.content}>
@@ -156,20 +149,11 @@ export default class Chargers extends BaseAutoRefreshScreen {
                 data={this.state.chargers}
                 renderItem={({ item }) => (
                   <List>
-                    <ChargerComponent
-                      charger={item}
-                      navigation={navigation}
-                      siteAreaID={siteAreaID}
-                    />
+                    <ChargerComponent charger={item} navigation={navigation} siteAreaID={siteAreaID} />
                   </List>
                 )}
-                keyExtractor={item => item.id}
-                refreshControl={
-                  <RefreshControl
-                    onRefresh={this._manualRefresh}
-                    refreshing={this.state.refreshing}
-                  />
-                }
+                keyExtractor={(item) => item.id}
+                refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 indicatorStyle={"white"}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}

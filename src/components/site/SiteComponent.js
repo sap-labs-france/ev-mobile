@@ -15,7 +15,7 @@ export default class SiteComponent extends ResponsiveComponent {
     openMap({
       latitude: address.latitude,
       longitude: address.longitude,
-      zoom: 18
+      zoom: 18,
     });
   }
 
@@ -26,8 +26,7 @@ export default class SiteComponent extends ResponsiveComponent {
       <Animatable.View
         animation={counter++ % 2 === 0 ? "flipInX" : "flipInX"}
         iterationCount={1}
-        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
-      >
+        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity onPress={() => navigation.navigate("SiteAreas", { siteID: site.id })}>
           <View style={style.container}>
             <View style={style.headerContent}>
@@ -38,10 +37,7 @@ export default class SiteComponent extends ResponsiveComponent {
               <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
             </View>
             <View style={style.connectorContent}>
-              <ConnectorStatusesContainerComponent
-                totalConnectors={site.totalConnectors}
-                availableConnectors={site.availableConnectors}
-              />
+              <ConnectorStatusesContainerComponent totalConnectors={site.totalConnectors} availableConnectors={site.availableConnectors} />
             </View>
           </View>
         </TouchableOpacity>
@@ -52,7 +48,7 @@ export default class SiteComponent extends ResponsiveComponent {
 
 SiteComponent.propTypes = {
   navigation: PropTypes.object.isRequired,
-  site: PropTypes.object.isRequired
+  site: PropTypes.object.isRequired,
 };
 
 SiteComponent.defaultProps = {};

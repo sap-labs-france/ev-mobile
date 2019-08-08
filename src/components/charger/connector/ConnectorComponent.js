@@ -9,7 +9,7 @@ import computeStyleSheet from "./ConnectorComponentStyles";
 import PropTypes from "prop-types";
 import Constants from "../../../utils/Constants";
 import ConnectorStatusComponent from "../../connector-status/ConnectorStatusComponent";
-import SvgUri from 'react-native-svg-uri';
+import SvgUri from "react-native-svg-uri";
 import { scale } from "react-native-size-matters";
 
 export default class ConnectorComponent extends ResponsiveComponent {
@@ -17,7 +17,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
     super(props);
     // Init State
     this.state = {
-      showBatteryLevel: false
+      showBatteryLevel: false,
     };
   }
 
@@ -46,27 +46,21 @@ export default class ConnectorComponent extends ResponsiveComponent {
     }
     // Switch battery/Consumption
     this.setState({
-      showBatteryLevel: !this.state.showBatteryLevel
+      showBatteryLevel: !this.state.showBatteryLevel,
     });
   }
 
-  _renderFirstConnectorDetails = (connector) => {
-    return (
-      <ConnectorStatusComponent
-        connector={connector}
-        text={Utils.translateConnectorStatus(connector.status)}
-      />
-    );
-  };
+  _renderFirstConnectorDetails = (connector) => (
+    <ConnectorStatusComponent connector={connector} text={Utils.translateConnectorStatus(connector.status)} />
+  );
 
-  _renderSecondConnectorDetails = (connector, style) => {
-    return connector.activeTransactionID !== 0 ? (
+  _renderSecondConnectorDetails = (connector, style) =>
+    connector.activeTransactionID !== 0 ? (
       <View style={style.connectorDetail}>
         <Animatable.View
           animation={!this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
           style={style.connectorDetailAnimated}
-          duration={Constants.ANIMATION_ROTATION_MILLIS}
-        >
+          duration={Constants.ANIMATION_ROTATION_MILLIS}>
           <Text style={style.connectorValues}>
             {connector.currentConsumption / 1000 < 10
               ? connector.currentConsumption > 0
@@ -84,8 +78,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
         <Animatable.View
           animation={this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
           style={style.connectorDetailAnimated}
-          duration={Constants.ANIMATION_ROTATION_MILLIS}
-        >
+          duration={Constants.ANIMATION_ROTATION_MILLIS}>
           <Text style={style.connectorValues}>{connector.currentStateOfCharge}</Text>
           <Text style={style.label} numberOfLines={1}>
             {I18n.t("details.battery")}
@@ -98,14 +91,12 @@ export default class ConnectorComponent extends ResponsiveComponent {
     ) : (
       <View style={style.connectorDetail}>
         <Image style={style.connectorImage} source={Utils.getConnectorTypeImage(connector.type)} />
-        {/* <SvgUri width={scale(40)} height={scale(40)} source={require("../../../../assets/connectorType/type-2.svg")} /> */}
         <Text style={style.labelImage}>{Utils.translateConnectorType(connector.type)}</Text>
       </View>
     );
-  };
 
-  _renderThirdConnectorDetails = (connector, style) => {
-    return connector.activeTransactionID !== 0 ? (
+  _renderThirdConnectorDetails = (connector, style) =>
+    connector.activeTransactionID !== 0 ? (
       <View style={style.connectorDetail}>
         <Text style={style.connectorValues}>{Math.round(connector.totalConsumption / 1000)}</Text>
         <Text style={style.label} numberOfLines={1}>
@@ -126,7 +117,6 @@ export default class ConnectorComponent extends ResponsiveComponent {
         </Text>
       </View>
     );
-  };
 
   render() {
     const style = computeStyleSheet();
@@ -138,21 +128,16 @@ export default class ConnectorComponent extends ResponsiveComponent {
           navigation.navigate("ChargerTabDetails", {
             chargerID: charger.id,
             connectorID: connector.connectorId,
-            siteAreaID
+            siteAreaID,
           })
-        }
-      >
-        <Animatable.View
-          animation={"flipInX"}
-          iterationCount={1}
-          duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
-        >
+        }>
+        <Animatable.View animation={"flipInX"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
           <View style={style.connectorContainer}>
             <View style={style.connectorDetailContainer}>
               {this._renderFirstConnectorDetails(connector)}
               {this._renderSecondConnectorDetails(connector, style)}
               {this._renderThirdConnectorDetails(connector, style)}
-              <Icon style={style.icon} type="MaterialIcons" name="navigate-next"/>
+              <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
             </View>
           </View>
         </Animatable.View>
@@ -166,7 +151,7 @@ ConnectorComponent.propTypes = {
   charger: PropTypes.object.isRequired,
   connector: PropTypes.object.isRequired,
   siteAreaID: PropTypes.string,
-  index: PropTypes.number
+  index: PropTypes.number,
 };
 
 ConnectorComponent.defaultProps = {};

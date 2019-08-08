@@ -15,7 +15,7 @@ export default class Eula extends BaseScreen {
     this.state = {
       I18nLocal: I18n.currentLocale().substr(0, 2),
       loading: true,
-      eulaTextHtml: ""
+      eulaTextHtml: "",
     };
   }
 
@@ -40,16 +40,15 @@ export default class Eula extends BaseScreen {
     const { I18nLocal } = this.state;
     try {
       const result = await this.centralServerProvider.getEndUserLicenseAgreement({
-        Language: I18nLocal
+        Language: I18nLocal,
       });
       this.setState({
         loading: false,
-        eulaTextHtml: result.text
+        eulaTextHtml: result.text,
       });
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
-        this.centralServerProvider, error, this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
   };
 
@@ -70,13 +69,13 @@ export default class Eula extends BaseScreen {
           leftAction={() => this.props.navigation.navigate("Login")}
           leftActionIcon={"navigate-before"}
         />
-        {loading ?
+        {loading ? (
           <Spinner style={style.spinner} color="white" />
-        :
+        ) : (
           <ScrollView style={style.container}>
             <HTMLView value={eulaTextHtml} />
           </ScrollView>
-        }
+        )}
       </Container>
     );
   }

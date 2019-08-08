@@ -64,7 +64,7 @@ export default {
   // Paging
   DEFAULT_PAGING: {
     limit: 10,
-    skip: 0
+    skip: 0,
   },
   PAGING_SIZE: 10,
   DEFAULT_ORDERING: [],
@@ -92,6 +92,6 @@ export default {
     REFUND: "refund",
     PRICING: "pricing",
     ORGANIZATION: "organization",
-    ANALYTICS: "analytics"
-  }
+    ANALYTICS: "analytics",
+  },
 };

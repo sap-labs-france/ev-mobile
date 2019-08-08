@@ -11,41 +11,41 @@ const commonStyles = ScaledSheet.create({
     paddingBottom: "5@s",
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
-    backgroundColor: commonColor.brandPrimaryDark
+    backgroundColor: commonColor.brandPrimaryDark,
   },
   leftHeader: {},
   bodyHeader: {
     flexGrow: 2,
-    paddingLeft: Platform.OS === "ios" ? 0 : "50@s"
+    paddingLeft: Platform.OS === "ios" ? 0 : "50@s",
   },
   rightHeader: {},
   logoHeader: {
     width: "45@s",
-    resizeMode: "contain"
+    resizeMode: "contain",
   },
   titleHeader: {
     color: commonColor.inverseTextColor,
-    fontSize: "18@s"
+    fontSize: "18@s",
   },
   titleHeaderWithSubTitle: {
-    fontSize: "18@s"
+    fontSize: "18@s",
   },
   subTitleHeader: {
     color: commonColor.inverseTextColor,
     fontWeight: "bold",
     fontSize: "12@s",
-    marginTop: Platform.OS === "ios" ? "-2@s" : "-3@s"
+    marginTop: Platform.OS === "ios" ? "-2@s" : "-3@s",
   },
   iconHeader: {
     color: commonColor.inverseTextColor,
-    fontSize: "30@s"
+    fontSize: "30@s",
   },
   leftButtonHeader: {
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   rightButtonHeader: {
-    paddingLeft: 0
-  }
+    paddingLeft: 0,
+  },
 });
 
 const portraitStyles = {};
@@ -56,11 +56,11 @@ export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([
     {
       query: { orientation: "landscape" },
-      style: deepmerge(commonStyles, landscapeStyles)
+      style: deepmerge(commonStyles, landscapeStyles),
     },
     {
       query: { orientation: "portrait" },
-      style: deepmerge(commonStyles, portraitStyles)
-    }
+      style: deepmerge(commonStyles, portraitStyles),
+    },
   ]);
 }

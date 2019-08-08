@@ -13,7 +13,7 @@ export default class ChargerComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isChargerDead: false
+      isChargerDead: false,
     };
   }
 
@@ -39,14 +39,12 @@ export default class ChargerComponent extends ResponsiveComponent {
     const { isChargerDead } = this.state;
     let message = I18n.t("chargers.heartBeatOkMessage", { chargeBoxID: charger.id });
     if (isChargerDead) {
-      message = I18n.t("chargers.heartBeatKoMessage",
-        { chargeBoxID: charger.id, lastHeartBeat: moment(new Date(charger.lastHeartBeat), true).fromNow(true) });
+      message = I18n.t("chargers.heartBeatKoMessage", {
+        chargeBoxID: charger.id,
+        lastHeartBeat: moment(new Date(charger.lastHeartBeat), true).fromNow(true),
+      });
     }
-    Alert.alert(
-      I18n.t("chargers.heartBeat"),
-      message,
-      [ { text: I18n.t("general.ok") }]
-    );
+    Alert.alert(I18n.t("chargers.heartBeat"), message, [{ text: I18n.t("general.ok") }]);
   };
 
   render() {
@@ -58,44 +56,40 @@ export default class ChargerComponent extends ResponsiveComponent {
         <View style={style.headerContent}>
           <Text style={style.name}>{charger.id}</Text>
           {isChargerDead ? (
-            <Button transparent style={style.heartbeatButton}
-                onPress={() => { this._showHeartbeatStatus() }}>
-              <Animatable.Text
-                animation="fadeIn"
-                easing="ease-in-out"
-                iterationCount="infinite"
-                direction="alternate-reverse"
-              >
+            <Button
+              transparent
+              style={style.heartbeatButton}
+              onPress={() => {
+                this._showHeartbeatStatus();
+              }}>
+              <Animatable.Text animation="fadeIn" easing="ease-in-out" iterationCount="infinite" direction="alternate-reverse">
                 <Icon style={style.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
               </Animatable.Text>
             </Button>
           ) : (
-            <Button transparent style={style.heartbeatButton}
-                onPress={() => { this._showHeartbeatStatus() }}>
-              <Animatable.Text
-                animation="pulse"
-                easing="ease-out"
-                iterationCount="infinite"
-                style={{ textAlign: "center" }}
-              >
+            <Button
+              transparent
+              style={style.heartbeatButton}
+              onPress={() => {
+                this._showHeartbeatStatus();
+              }}>
+              <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: "center" }}>
                 <Icon style={style.heartbeatIcon} type="FontAwesome" name="heartbeat" />
               </Animatable.Text>
             </Button>
           )}
         </View>
         <View style={style.connectorsContainer}>
-          {charger.connectors.map((connector, index) => {
-            return (
-              <ConnectorComponent
-                key={`${charger.id}~${connector.connectorId}`}
-                charger={charger}
-                connector={connector}
-                siteAreaID={siteAreaID}
-                index={index}
-                navigation={navigation}
-              />
-            );
-          })}
+          {charger.connectors.map((connector, index) => (
+            <ConnectorComponent
+              key={`${charger.id}~${connector.connectorId}`}
+              charger={charger}
+              connector={connector}
+              siteAreaID={siteAreaID}
+              index={index}
+              navigation={navigation}
+            />
+          ))}
         </View>
       </View>
     );
@@ -104,7 +98,7 @@ export default class ChargerComponent extends ResponsiveComponent {
 
 ChargerComponent.propTypes = {
   navigation: PropTypes.object.isRequired,
-  charger: PropTypes.object.isRequired
+  charger: PropTypes.object.isRequired,
 };
 
 ChargerComponent.defaultProps = {};

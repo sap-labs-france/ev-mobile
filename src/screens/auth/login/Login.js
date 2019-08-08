@@ -20,23 +20,23 @@ const formValidationDef = {
   tenant: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_tenant")
-    }
+      message: "^" + I18n.t("authentication.mandatory_tenant"),
+    },
   },
   email: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_email")
+      message: "^" + I18n.t("authentication.mandatory_email"),
     },
     email: {
-      message: "^" + I18n.t("authentication.invalid_email")
-    }
+      message: "^" + I18n.t("authentication.invalid_email"),
+    },
   },
   password: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_password")
-    }
+      message: "^" + I18n.t("authentication.mandatory_password"),
+    },
   },
   eula: {
     equality: {
@@ -45,9 +45,9 @@ const formValidationDef = {
       comparator(v1, v2) {
         // True if EULA is checked
         return v1;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 
 export default class Login extends BaseScreen {
@@ -60,7 +60,7 @@ export default class Login extends BaseScreen {
       tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
       tenantTitle: I18n.t("authentication.tenant"),
       loading: false,
-      display: false
+      display: false,
     };
   }
 
@@ -79,7 +79,7 @@ export default class Login extends BaseScreen {
       password: this.centralServerProvider.getUserPassword(),
       tenant: tenantSubmain,
       tenantTitle: tenant ? tenant.name : this.state.tenantTitle,
-      display: true
+      display: true,
     });
   }
 
@@ -136,23 +136,22 @@ export default class Login extends BaseScreen {
     }
   };
 
-  onBack = () => {
+  onBack = () =>
     // Do nothing
-    return true;
-  };
+    true;
 
   _navigateToSites() {
     // Navigate to App
     this.props.navigation.navigate("AppDrawerNavigator");
   }
 
-  _setTenant = buttonIndex => {
+  _setTenant = (buttonIndex) => {
     // Provided?
     if (buttonIndex !== undefined) {
       // Set Tenant
       this.setState({
         tenant: this.tenants[buttonIndex].subdomain,
-        tenantTitle: this.tenants[buttonIndex].name
+        tenantTitle: this.tenants[buttonIndex].name,
       });
     }
   };
@@ -163,7 +162,7 @@ export default class Login extends BaseScreen {
     if (this.state.tenant) {
       navigation.navigate("SignUp", {
         tenant: this.state.tenant,
-        email: this.state.email
+        email: this.state.email,
       });
     } else {
       // Error
@@ -177,7 +176,7 @@ export default class Login extends BaseScreen {
     if (this.state.tenant) {
       navigation.navigate("RetrievePassword", {
         tenant: this.state.tenant,
-        email: this.state.email
+        email: this.state.email,
       });
     } else {
       // Error
@@ -193,21 +192,14 @@ export default class Login extends BaseScreen {
     return !display ? (
       <View style={style.noDisplay} />
     ) : (
-      <Animatable.View
-        style={style.container}
-        animation={"fadeIn"}
-        iterationCount={1}
-        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
-      >
+      <Animatable.View style={style.container} animation={"fadeIn"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <BackgroundComponent>
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
               <View style={style.formHeader}>
                 <Image style={style.logo} source={logo} />
                 <Text style={style.appText}>e-Mobility</Text>
-                <Text style={style.appVersionText}>{`${I18n.t(
-                  "general.version"
-                )} ${DeviceInfo.getVersion()}`}</Text>
+                <Text style={style.appVersionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
               </View>
               <Form style={style.form}>
                 <Button
@@ -217,15 +209,14 @@ export default class Login extends BaseScreen {
                   onPress={() =>
                     ActionSheet.show(
                       {
-                        options: this.tenants.map(tenant => tenant.name),
-                        title: I18n.t("authentication.tenant")
+                        options: this.tenants.map((tenant) => tenant.name),
+                        title: I18n.t("authentication.tenant"),
                       },
-                      buttonIndex => {
+                      (buttonIndex) => {
                         this._setTenant(buttonIndex);
                       }
                     )
-                  }
-                >
+                  }>
                   <TextRN style={style.buttonText}>{this.state.tenantTitle}</TextRN>
                 </Button>
                 {this.state.errorTenant &&
@@ -249,7 +240,7 @@ export default class Login extends BaseScreen {
                     autoCorrect={false}
                     keyboardType={"email-address"}
                     secureTextEntry={false}
-                    onChangeText={text => this.setState({ email: text })}
+                    onChangeText={(text) => this.setState({ email: text })}
                     value={this.state.email}
                   />
                 </Item>
@@ -265,7 +256,7 @@ export default class Login extends BaseScreen {
                     name="password"
                     type="password"
                     returnKeyType="go"
-                    ref={ref => (this.passwordInput = ref)}
+                    ref={(ref) => (this.passwordInput = ref)}
                     onSubmitEditing={() => Keyboard.dismiss()}
                     placeholder={I18n.t("authentication.password")}
                     placeholderTextColor={commonColor.inverseTextColor}
@@ -275,7 +266,7 @@ export default class Login extends BaseScreen {
                     autoCorrect={false}
                     keyboardType={"default"}
                     secureTextEntry={true}
-                    onChangeText={text => this.setState({ password: text })}
+                    onChangeText={(text) => this.setState({ password: text })}
                     value={this.state.password}
                   />
                 </Item>
@@ -286,11 +277,7 @@ export default class Login extends BaseScreen {
                     </Text>
                   ))}
                 <View style={style.eulaContainer}>
-                  <CheckBox
-                    style={style.eulaCheckbox}
-                    checked={eula}
-                    onPress={() => this.setState({ eula: !eula })}
-                  />
+                  <CheckBox style={style.eulaCheckbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
                   <Text style={style.eulaText}>
                     {I18n.t("authentication.acceptEula")}
                     <Text onPress={() => navigation.navigate("Eula")} style={style.eulaLink}>
@@ -316,25 +303,13 @@ export default class Login extends BaseScreen {
           </ScrollView>
           <Footer style={style.footer}>
             <Left>
-              <Button
-                small
-                transparent
-                style={style.linksButtonLeft}
-                onPress={() => this._newUser()}
-              >
+              <Button small transparent style={style.linksButtonLeft} onPress={() => this._newUser()}>
                 <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
               </Button>
             </Left>
             <Right>
-              <Button
-                small
-                transparent
-                style={style.linksButtonRight}
-                onPress={() => this._forgotPassword()}
-              >
-                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>
-                  {I18n.t("authentication.forgotYourPassword")}
-                </TextRN>
+              <Button small transparent style={style.linksButtonRight} onPress={() => this._forgotPassword()}>
+                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
               </Button>
             </Right>
           </Footer>

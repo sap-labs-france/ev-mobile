@@ -13,7 +13,7 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isVisible: this.props.initialVisibility
+      isVisible: this.props.initialVisibility,
     };
     this.searchText = "";
     this.searchChanged = false;
@@ -103,27 +103,21 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     const style = computeStyleSheet();
     return (
       <Animatable.View
-        ref={ref => {
+        ref={(ref) => {
           this.animRef = ref;
         }}
-        style={style.container}
-      >
+        style={style.container}>
         <Icon type={"MaterialIcons"} name={"search"} style={style.icon} />
         <TextInput
-          ref={ref => {
+          ref={(ref) => {
             this.textInput = ref;
           }}
           style={style.inputField}
           placeholder={I18n.t("general.search")}
           placeholderTextColor={commonColor.tabBarTextColor}
-          onChangeText={searchText => this._searchChanged(searchText)}
+          onChangeText={(searchText) => this._searchChanged(searchText)}
         />
-        <Icon
-          type="MaterialIcons"
-          name="clear"
-          style={style.icon}
-          onPress={() => this._clearSearch()}
-        />
+        <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this._clearSearch()} />
       </Animatable.View>
     );
   }
@@ -132,9 +126,9 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
 SearchHeaderComponent.propTypes = {
   navigation: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
-  initialVisibility: PropTypes.bool
+  initialVisibility: PropTypes.bool,
 };
 
 SearchHeaderComponent.defaultProps = {
-  initialVisibility: true
+  initialVisibility: true,
 };

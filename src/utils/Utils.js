@@ -2,14 +2,13 @@ import Message from "./Message";
 import Constants from "./Constants";
 import I18n from "../I18n/I18n";
 import validate from "validate.js";
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules, Platform } from "react-native";
 
 const type2 = require("../../assets/connectorType/type2.gif");
 // const type2 = require("../../assets/connectorType/type-2.svg");
 const combo = require("../../assets/connectorType/combo_ccs.gif");
 const chademo = require("../../assets/connectorType/chademo.gif");
 const noConnector = require("../../assets/connectorType/no-connector.gif");
-
 
 export default class Utils {
   static getParamFromNavigation(navigation, name, defaultValue) {
@@ -27,14 +26,10 @@ export default class Utils {
 
   static getLocale() {
     let deviceLanguage =
-      Platform.OS === 'ios'
-        ? NativeModules.SettingsManager.settings.AppleLocale
-        : NativeModules.I18nManager.localeIdentifier;
+      Platform.OS === "ios" ? NativeModules.SettingsManager.settings.AppleLocale : NativeModules.I18nManager.localeIdentifier;
     // Filter only on supported languages
     const shortDeviceLanguage = deviceLanguage.substring(0, 2);
-    if ((shortDeviceLanguage !== 'en') &&
-        (shortDeviceLanguage !== 'de') &&
-        (shortDeviceLanguage !== 'fr')) {
+    if (shortDeviceLanguage !== "en" && shortDeviceLanguage !== "de" && shortDeviceLanguage !== "fr") {
       // Default
       deviceLanguage = "en-gb";
     }
@@ -126,7 +121,7 @@ export default class Utils {
     return formValid;
   }
 
-  static translateConnectorStatus = status => {
+  static translateConnectorStatus = (status) => {
     switch (status) {
       case Constants.CONN_STATUS_AVAILABLE:
         return I18n.t("connector.available");
@@ -153,7 +148,7 @@ export default class Utils {
     }
   };
 
-  static translateConnectorType = type => {
+  static translateConnectorType = (type) => {
     switch (type) {
       case Constants.CONN_TYPE_2:
         return I18n.t("connector.type2");
@@ -166,7 +161,7 @@ export default class Utils {
     }
   };
 
-  static getConnectorTypeImage = type => {
+  static getConnectorTypeImage = (type) => {
     switch (type) {
       case Constants.CONN_TYPE_2:
         return type2;

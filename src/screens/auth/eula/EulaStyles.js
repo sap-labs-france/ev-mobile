@@ -9,37 +9,37 @@ const commonStyles = ScaledSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     paddingBottom: 10,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   spinner: {
     flex: 2,
-    color: commonColor.textColor
-  }
+    color: commonColor.textColor,
+  },
 });
 
 const portraitStyles = {};
 
 const landscapeStyles = {
   button: {
-    width: "65%"
+    width: "65%",
   },
   inputIcon: {
-    width: "7%"
+    width: "7%",
   },
   inputField: {
-    width: "58%"
-  }
+    width: "58%",
+  },
 };
 
 export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([
     {
       query: { orientation: "landscape" },
-      style: deepmerge(commonStyles, landscapeStyles)
+      style: deepmerge(commonStyles, landscapeStyles),
     },
     {
       query: { orientation: "portrait" },
-      style: deepmerge(commonStyles, portraitStyles)
-    }
+      style: deepmerge(commonStyles, portraitStyles),
+    },
   ]);
 }

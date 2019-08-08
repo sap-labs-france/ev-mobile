@@ -41,31 +41,21 @@ export default class HeaderComponent extends ResponsiveComponent {
       leftActionIconType,
       rightAction,
       rightActionIcon,
-      rightActionIconType
+      rightActionIconType,
     } = this.props;
     return (
       <Header style={style.header}>
         <Left style={style.leftHeader}>
           {leftAction ? (
             <Button transparent style={style.leftButtonHeader} onPress={() => leftAction()}>
-              <Icon
-                type={leftActionIconType}
-                name={leftActionIcon}
-                style={[style.iconHeader, style.leftIconHeader]}
-              />
+              <Icon type={leftActionIconType} name={leftActionIcon} style={[style.iconHeader, style.leftIconHeader]} />
             </Button>
           ) : (
             <Image source={logo} style={style.logoHeader} />
           )}
         </Left>
         <Body style={style.bodyHeader}>
-          <Title
-            style={
-              subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader
-            }
-          >
-            {title}
-          </Title>
+          <Title style={subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader}>{title}</Title>
           {subTitle ? <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle> : undefined}
         </Body>
         <Right style={style.rightHeader}>
@@ -80,8 +70,7 @@ export default class HeaderComponent extends ResponsiveComponent {
                 if (searchRef) {
                   searchRef.setVisible(this.searchIsVisible);
                 }
-              }}
-            >
+              }}>
               <Icon type={"MaterialIcons"} name={"search"} style={style.iconHeader} />
             </Button>
           ) : (
@@ -110,11 +99,11 @@ HeaderComponent.propTypes = {
   rightActionIcon: PropTypes.string,
   rightActionIconType: PropTypes.string,
   showSearchAction: PropTypes.bool,
-  searchRef: PropTypes.object
+  searchRef: PropTypes.object,
 };
 
 HeaderComponent.defaultProps = {
   leftActionIconType: "MaterialIcons",
   rightActionIconType: "MaterialIcons",
-  showSearchAction: false
+  showSearchAction: false,
 };

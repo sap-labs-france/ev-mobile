@@ -20,7 +20,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
       refreshing: false,
       skip: 0,
       limit: Constants.PAGING_SIZE,
-      count: 0
+      count: 0,
     };
   }
 
@@ -63,7 +63,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
       this.setState({
         loading: false,
         siteAreas: siteAreas.result,
-        count: siteAreas.count
+        count: siteAreas.count,
       });
     }
   };
@@ -82,16 +82,12 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
     // No reached the end?
     if (skip + limit < count) {
       // No: get next sites
-      const siteAreas = await this._getSiteAreas(
-        this.searchText,
-        skip + Constants.PAGING_SIZE,
-        limit
-      );
+      const siteAreas = await this._getSiteAreas(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState, props) => ({
         siteAreas: [...prevState.siteAreas, ...siteAreas.result],
         skip: prevState.skip + Constants.PAGING_SIZE,
-        refreshing: false
+        refreshing: false,
       }));
     }
   };
@@ -99,7 +95,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
   _footerList = () => {
     const { skip, count, limit } = this.state;
     if (skip + limit < count) {
-      return <Spinner/>;
+      return <Spinner />;
     }
     return null;
   };
@@ -122,10 +118,10 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
           />
           <SearchHeaderComponent
             initialVisibility={false}
-            ref={ref => {
+            ref={(ref) => {
               this.searchRef = ref;
             }}
-            onChange={searchText => this._search(searchText)}
+            onChange={(searchText) => this._search(searchText)}
             navigation={navigation}
           />
           <View style={style.content}>
@@ -134,16 +130,9 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
             ) : (
               <FlatList
                 data={this.state.siteAreas}
-                renderItem={({ item }) => (
-                  <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />
-                )}
-                keyExtractor={item => item.id}
-                refreshControl={
-                  <RefreshControl
-                    onRefresh={this._manualRefresh}
-                    refreshing={this.state.refreshing}
-                  />
-                }
+                renderItem={({ item }) => <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />}
+                keyExtractor={(item) => item.id}
+                refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={0.5}
                 ListFooterComponent={this._footerList}

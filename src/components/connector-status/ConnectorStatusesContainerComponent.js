@@ -36,5 +36,5 @@ export default class ConnectorStatusesContainerComponent extends ResponsiveCompo
 
 ConnectorStatusesContainerComponent.propTypes = {
   totalConnectors: PropTypes.number.isRequired,
-  availableConnectors: PropTypes.number.isRequired
+  availableConnectors: PropTypes.number.isRequired,
 };

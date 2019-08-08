@@ -8,8 +8,8 @@ const commonStyles = ScaledSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-evenly",
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 });
 
 const portraitStyles = {};
@@ -20,11 +20,11 @@ export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([
     {
       query: { orientation: "landscape" },
-      style: deepmerge(commonStyles, landscapeStyles)
+      style: deepmerge(commonStyles, landscapeStyles),
     },
     {
       query: { orientation: "portrait" },
-      style: deepmerge(commonStyles, portraitStyles)
-    }
+      style: deepmerge(commonStyles, portraitStyles),
+    },
   ]);
 }

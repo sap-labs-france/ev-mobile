@@ -17,18 +17,18 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
       Animated.timing(spinValue, {
         toValue: 1,
         duration: 4000,
-        easing: Easing.linear
+        easing: Easing.linear,
       })
     ).start();
     // Second interpolate beginning and end values (in this case 0 and 1)
     this.rotateClockwise = spinValue.interpolate({
       inputRange: [0, 1],
-      outputRange: ["0deg", "360deg"]
+      outputRange: ["0deg", "360deg"],
     });
 
     this.rotateCounterClockwise = spinValue.interpolate({
       inputRange: [0, 1],
-      outputRange: ["360deg", "0deg"]
+      outputRange: ["360deg", "0deg"],
     });
   }
 
@@ -46,7 +46,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     const connectorStyles = {
       badge: [style.commonConnector],
       value: [style.commonConnectorValue],
-      description: [style.commonConnectorDescription]
+      description: [style.commonConnectorDescription],
     };
     switch (connectorType) {
       // Charging
@@ -107,7 +107,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     if (connector) {
       return connector.currentConsumption > 0;
     } else {
-      return (type === Constants.CONN_STATUS_CHARGING) && (value > 0);
+      return type === Constants.CONN_STATUS_CHARGING && value > 0;
     }
   }
 
@@ -123,19 +123,15 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
       <View style={this.props.text ? style.containerWithDescription : style.containerWithNoDescription}>
         <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
           <Badge style={connectorStyles.badge}>
-            <Animated.Text style={
-              isAnimated ?
-                [ ...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }]
-              :
-                connectorStyles.value
-              }>{ value }</Animated.Text>
+            <Animated.Text
+              style={
+                isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
+              }>
+              {value}
+            </Animated.Text>
           </Badge>
         </Animated.View>
-        {this.props.text ?
-          <Text style={connectorStyles.description}>{this.props.text}</Text>
-        :
-          undefined
-        }
+        {this.props.text ? <Text style={connectorStyles.description}>{this.props.text}</Text> : undefined}
       </View>
     );
   }
@@ -145,5 +141,5 @@ ConnectorStatusComponent.propTypes = {
   connector: PropTypes.object,
   value: PropTypes.number,
   text: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
 };
