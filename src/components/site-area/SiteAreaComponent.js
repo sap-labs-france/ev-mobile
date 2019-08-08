@@ -16,6 +16,17 @@ export default class SiteAreaComponent extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { siteArea, navigation } = this.props;
+    let connectorStats;
+    // New backend?
+    if (siteArea.connectorStats) {
+      // Override
+      connectorStats = siteArea.connectorStats
+    } else {
+      connectorStats = {
+        totalConnectors: siteArea.totalConnectors,
+        availableConnectors: siteArea.availableConnectors
+      };
+    }
     return (
       <Animatable.View
         animation={counter++ % 2 === 0 ? "flipInX" : "flipInX"}
@@ -39,10 +50,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
               <Icon style={siteArea.totalConnectors > 0 ? style.icon : style.iconHidden} type="MaterialIcons" name="navigate-next" />
             </View>
             <View style={style.connectorContent}>
-              <ConnectorStatusesContainerComponent
-                totalConnectors={siteArea.totalConnectors}
-                availableConnectors={siteArea.availableConnectors}
-              />
+              <ConnectorStatusesContainerComponent connectorStats={connectorStats} />
             </View>
           </View>
         </TouchableOpacity>

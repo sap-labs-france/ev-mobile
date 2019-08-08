@@ -22,6 +22,17 @@ export default class SiteComponent extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { site, navigation } = this.props;
+    let connectorStats;
+    // New backend?
+    if (site.connectorStats) {
+      // Override
+      connectorStats = site.connectorStats
+    } else {
+      connectorStats = {
+        totalConnectors: site.totalConnectors,
+        availableConnectors: site.availableConnectors
+      };
+    }
     return (
       <Animatable.View
         animation={counter++ % 2 === 0 ? "flipInX" : "flipInX"}
@@ -37,7 +48,7 @@ export default class SiteComponent extends ResponsiveComponent {
               <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
             </View>
             <View style={style.connectorContent}>
-              <ConnectorStatusesContainerComponent totalConnectors={site.totalConnectors} availableConnectors={site.availableConnectors} />
+              <ConnectorStatusesContainerComponent connectorStats={connectorStats} />
             </View>
           </View>
         </TouchableOpacity>

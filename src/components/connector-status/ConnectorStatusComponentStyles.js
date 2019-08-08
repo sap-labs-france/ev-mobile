@@ -7,7 +7,7 @@ import { Platform } from "react-native";
 const commonStyles = ScaledSheet.create({
   containerWithDescription: {
     height: "60@s",
-    width: "85@s",
+    width: "100@s",
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center",
