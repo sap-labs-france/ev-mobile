@@ -98,7 +98,7 @@
     "connector": "Anschluss",
     "informations": "Informationen",
     "graph": "Diagramm",
-    "notAuthorized": "Private Information!",
+    "notAuthorized": "Persönliche Daten!",
     "noTransaction": "Keine laufende Transaktionen",
     "startTransaction": "Transaktion starten",
     "stopTransaction": "Transaktion stoppen",
@@ -140,13 +140,13 @@
       "longMessage": "Ihr Fahrzeug an '{{chargeBoxID}}' wurde vollständig geladen. Sie können die Ladesitzung beenden und Ihr Fahrzeug wegfahren."
     },
     "notifyOptimalChargeReached": {
-      "message": "Der optimale Ladepunkt auf '{{chargeBoxID}}' wurde erreicht.",
-      "subMessage": "Optimaler Ladepunkt",
-      "longMessage": "Der optimale Ladepunkt auf '{{chargeBoxID}}' wurde erreicht."
+      "message": "Der optimale Ladestand auf '{{chargeBoxID}}' wurde erreicht.",
+      "subMessage": "Optimaler Ladestand",
+      "longMessage": "Der optimale Ladestand auf '{{chargeBoxID}}' wurde erreicht."
     },
     "notifyChargingStationStatusError": {
       "message": "Fehler auf '{{chargeBoxID}}'",
-      "subMessage": "Ladestation fehlerhaft",
+      "subMessage": "Fehler auf Ladestation",
       "longMessage": "Fehler auf '{{chargeBoxID}}' - Anschluss {{connectorId}}: {{error}}."
     },
     "notifyChargingStationRegistered": {
