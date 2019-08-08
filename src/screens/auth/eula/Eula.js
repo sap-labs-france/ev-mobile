@@ -48,8 +48,7 @@ export default class Eula extends BaseScreen {
       });
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
-        this.centralServerProvider, error, this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
   };
 
@@ -70,13 +69,13 @@ export default class Eula extends BaseScreen {
           leftAction={() => this.props.navigation.navigate("Login")}
           leftActionIcon={"navigate-before"}
         />
-        {loading ?
+        {loading ? (
           <Spinner style={style.spinner} color="white" />
-        :
+        ) : (
           <ScrollView style={style.container}>
             <HTMLView value={eulaTextHtml} />
           </ScrollView>
-        }
+        )}
       </Container>
     );
   }

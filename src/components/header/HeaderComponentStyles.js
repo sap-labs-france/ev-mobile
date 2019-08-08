@@ -25,7 +25,7 @@ const commonStyles = ScaledSheet.create({
   },
   titleHeader: {
     color: commonColor.inverseTextColor,
-    fontSize: "18@s"
+    fontSize: "18@s",
   },
   titleHeaderWithSubTitle: {
     fontSize: "18@s",
