@@ -51,10 +51,7 @@ export default (variables /* : * */ = variable) => {
       shadowRadius: null,
       shadowOpacity: null,
       paddingTop: platform === PLATFORM.ANDROID ? StatusBar.currentHeight : undefined,
-      height:
-        platform === PLATFORM.ANDROID
-          ? variables.toolbarHeight + StatusBar.currentHeight
-          : variables.toolbarHeight,
+      height: platform === PLATFORM.ANDROID ? variables.toolbarHeight + StatusBar.currentHeight : variables.toolbarHeight,
     },
     ".noShadow": {
       elevation: 0,
@@ -231,8 +228,7 @@ export default (variables /* : * */ = variable) => {
             fontSize: platform === PLATFORM.IOS ? 17 : 0,
             top: platform === PLATFORM.IOS ? 1 : -1.5,
             paddingLeft: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? 2 : 5,
-            paddingRight:
-              platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? undefined : 10,
+            paddingRight: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? undefined : 10,
           },
           backgroundColor: "transparent",
           borderColor: null,
@@ -258,8 +254,7 @@ export default (variables /* : * */ = variable) => {
     },
     "NativeBase.Body": {
       flex: 1,
-      alignItems:
-        platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? "center" : "center",
+      alignItems: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? "center" : "center",
       alignSelf: "center",
       "NativeBase.Segment": {
         borderWidth: 0,
@@ -333,10 +328,7 @@ export default (variables /* : * */ = variable) => {
             color: variables.toolbarBtnTextColor,
             fontSize: platform === PLATFORM.IOS ? 17 : 14,
             top: platform === PLATFORM.IOS ? 1 : -1.5,
-            paddingRight:
-              platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL
-                ? 0
-                : undefined,
+            paddingRight: platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL ? 0 : undefined,
           },
           backgroundColor: "transparent",
           borderColor: null,
@@ -364,8 +356,7 @@ export default (variables /* : * */ = variable) => {
     backgroundColor: "transparent",
     flexDirection: "row",
     // paddingHorizontal: 10,
-    paddingLeft:
-      platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL ? 6 : 10,
+    paddingLeft: platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL ? 6 : 10,
     paddingRight: 10,
     justifyContent: "center",
     paddingTop: platform === PLATFORM.IOS ? 18 : 0,

@@ -50,18 +50,10 @@ export default class Sites extends BaseAutoRefreshScreen {
     let sites = [];
     try {
       // Get the Sites
-      sites = await this.centralServerProvider.getSites(
-        { Search: searchText, WithAvailableChargers: true },
-        { skip, limit }
-      );
+      sites = await this.centralServerProvider.getSites({ Search: searchText, WithAvailableChargers: true }, { skip, limit });
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
-        this.centralServerProvider,
-        error,
-        this.props.navigation,
-        this.refresh
-      );
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
     // Return
     return sites;
@@ -142,16 +134,9 @@ export default class Sites extends BaseAutoRefreshScreen {
             ) : (
               <FlatList
                 data={this.state.sites}
-                renderItem={({ item }) => (
-                  <SiteComponent site={item} navigation={this.props.navigation} />
-                )}
+                renderItem={({ item }) => <SiteComponent site={item} navigation={this.props.navigation} />}
                 keyExtractor={(item) => item.id}
-                refreshControl={
-                  <RefreshControl
-                    onRefresh={this._manualRefresh}
-                    refreshing={this.state.refreshing}
-                  />
-                }
+                refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={0.5}
                 ListFooterComponent={this._footerList}

@@ -51,13 +51,11 @@ export default class ConnectorComponent extends ResponsiveComponent {
   }
 
   _renderFirstConnectorDetails = (connector) => (
-      <ConnectorStatusComponent
-        connector={connector}
-        text={Utils.translateConnectorStatus(connector.status)}
-      />
-    );
+    <ConnectorStatusComponent connector={connector} text={Utils.translateConnectorStatus(connector.status)} />
+  );
 
-  _renderSecondConnectorDetails = (connector, style) => connector.activeTransactionID !== 0 ? (
+  _renderSecondConnectorDetails = (connector, style) =>
+    connector.activeTransactionID !== 0 ? (
       <View style={style.connectorDetail}>
         <Animatable.View
           animation={!this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
@@ -97,7 +95,8 @@ export default class ConnectorComponent extends ResponsiveComponent {
       </View>
     );
 
-  _renderThirdConnectorDetails = (connector, style) => connector.activeTransactionID !== 0 ? (
+  _renderThirdConnectorDetails = (connector, style) =>
+    connector.activeTransactionID !== 0 ? (
       <View style={style.connectorDetail}>
         <Text style={style.connectorValues}>{Math.round(connector.totalConsumption / 1000)}</Text>
         <Text style={style.label} numberOfLines={1}>
@@ -132,10 +131,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
             siteAreaID,
           })
         }>
-        <Animatable.View
-          animation={"flipInX"}
-          iterationCount={1}
-          duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+        <Animatable.View animation={"flipInX"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
           <View style={style.connectorContainer}>
             <View style={style.connectorDetailContainer}>
               {this._renderFirstConnectorDetails(connector)}

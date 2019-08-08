@@ -83,12 +83,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
       );
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
-        this.centralServerProvider,
-        error,
-        this.props.navigation,
-        this.refresh
-      );
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
   };
 
@@ -117,26 +112,14 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
-        this.centralServerProvider,
-        error,
-        this.props.navigation,
-        this.refresh
-      );
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
   };
 
   render() {
     const style = computeStyleSheet();
     const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
-    const {
-      charger,
-      connector,
-      isAdmin,
-      isAuthorizedToStopTransaction,
-      siteAreaID,
-      firstLoad,
-    } = this.state;
+    const { charger, connector, isAdmin, isAuthorizedToStopTransaction, siteAreaID, firstLoad } = this.state;
     const { navigation } = this.props;
     const connectorLetter = String.fromCharCode(64 + connectorID);
     return firstLoad ? (
@@ -146,9 +129,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
     ) : (
       <ScrollView
         contentContainerStyle={style.container}
-        refreshControl={
-          <RefreshControl refreshing={this.state.refreshing} onRefresh={this._manualRefresh} />
-        }>
+        refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._manualRefresh} />}>
         <BackgroundComponent active={false}>
           <HeaderComponent
             title={charger.id}
@@ -165,12 +146,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
                   <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
                 </TabHeading>
               }>
-              <ChargerConnectorDetails
-                charger={charger}
-                connector={connector}
-                isAdmin={isAdmin}
-                navigation={navigation}
-              />
+              <ChargerConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation} />
             </Tab>
             {connector.activeTransactionID && (isAuthorizedToStopTransaction || isAdmin) ? (
               <Tab
@@ -179,11 +155,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
                     <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
                   </TabHeading>
                 }>
-                <ChargerChartDetails
-                  transactionID={connector.activeTransactionID}
-                  isAdmin={isAdmin}
-                  navigation={navigation}
-                />
+                <ChargerChartDetails transactionID={connector.activeTransactionID} isAdmin={isAdmin} navigation={navigation} />
               </Tab>
             ) : (
               undefined
@@ -195,12 +167,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
                     <Icon style={style.tabIcon} type="MaterialIcons" name="info" />
                   </TabHeading>
                 }>
-                <ChargerDetails
-                  charger={charger}
-                  connector={connector}
-                  isAdmin={isAdmin}
-                  navigation={navigation}
-                />
+                <ChargerDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation} />
               </Tab>
             ) : (
               undefined

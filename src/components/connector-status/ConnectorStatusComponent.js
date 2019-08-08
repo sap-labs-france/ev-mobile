@@ -120,29 +120,18 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     // Animated
     const isAnimated = this._isAnimated();
     return (
-      <View
-        style={this.props.text ? style.containerWithDescription : style.containerWithNoDescription}>
-        <Animated.View
-          style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
+      <View style={this.props.text ? style.containerWithDescription : style.containerWithNoDescription}>
+        <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
           <Badge style={connectorStyles.badge}>
             <Animated.Text
               style={
-                isAnimated
-                  ? [
-                      ...connectorStyles.value,
-                      { transform: [{ rotate: this.rotateCounterClockwise }] },
-                    ]
-                  : connectorStyles.value
+                isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
               }>
               {value}
             </Animated.Text>
           </Badge>
         </Animated.View>
-        {this.props.text ? (
-          <Text style={connectorStyles.description}>{this.props.text}</Text>
-        ) : (
-          undefined
-        )}
+        {this.props.text ? <Text style={connectorStyles.description}>{this.props.text}</Text> : undefined}
       </View>
     );
   }

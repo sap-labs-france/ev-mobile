@@ -38,8 +38,7 @@ export default (variables /* : * */ = variable) => {
         "NativeBase.Icon": {
           backgroundColor: "transparent",
           color: variables.dropdownLinkColor,
-          fontSize:
-            platform === PLATFORM.IOS ? variables.iconFontSize - 10 : variables.iconFontSize - 5,
+          fontSize: platform === PLATFORM.IOS ? variables.iconFontSize - 10 : variables.iconFontSize - 5,
           alignItems: "center",
           marginTop: 2,
           paddingRight: 8,

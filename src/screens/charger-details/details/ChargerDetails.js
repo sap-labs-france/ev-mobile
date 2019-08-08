@@ -18,26 +18,18 @@ export default class ChargerDetails extends BaseScreen {
 
   _resetHardConfirm() {
     const { charger } = this.props;
-    Alert.alert(
-      I18n.t("chargers.resetHard"),
-      I18n.t("chargers.resetHardMessage", { chargeBoxID: charger.id }),
-      [
-        { text: I18n.t("general.yes"), onPress: () => this._reset(charger.id, "Hard") },
-        { text: I18n.t("general.cancel") },
-      ]
-    );
+    Alert.alert(I18n.t("chargers.resetHard"), I18n.t("chargers.resetHardMessage", { chargeBoxID: charger.id }), [
+      { text: I18n.t("general.yes"), onPress: () => this._reset(charger.id, "Hard") },
+      { text: I18n.t("general.cancel") },
+    ]);
   }
 
   _resetSoftConfirm() {
     const { charger } = this.props;
-    Alert.alert(
-      I18n.t("chargers.resetSoft"),
-      I18n.t("chargers.resetSoftMessage", { chargeBoxID: charger.id }),
-      [
-        { text: I18n.t("general.yes"), onPress: () => this._reset(charger.id, "Soft") },
-        { text: I18n.t("general.cancel") },
-      ]
-    );
+    Alert.alert(I18n.t("chargers.resetSoft"), I18n.t("chargers.resetSoftMessage", { chargeBoxID: charger.id }), [
+      { text: I18n.t("general.yes"), onPress: () => this._reset(charger.id, "Soft") },
+      { text: I18n.t("general.cancel") },
+    ]);
   }
 
   async _reset(chargeBoxID, type) {
@@ -58,14 +50,10 @@ export default class ChargerDetails extends BaseScreen {
 
   _clearCacheConfirm() {
     const { charger } = this.props;
-    Alert.alert(
-      I18n.t("chargers.clearCache"),
-      I18n.t("chargers.clearCacheMessage", { chargeBoxID: charger.id }),
-      [
-        { text: I18n.t("general.yes"), onPress: () => this._clearCache(charger.id) },
-        { text: I18n.t("general.cancel") },
-      ]
-    );
+    Alert.alert(I18n.t("chargers.clearCache"), I18n.t("chargers.clearCacheMessage", { chargeBoxID: charger.id }), [
+      { text: I18n.t("general.yes"), onPress: () => this._clearCache(charger.id) },
+      { text: I18n.t("general.cancel") },
+    ]);
   }
 
   async _clearCache(chargeBoxID) {
@@ -94,15 +82,11 @@ export default class ChargerDetails extends BaseScreen {
             <View style={style.topViewContainer}>
               <View style={style.descriptionContainer}>
                 <Text style={style.label}>{I18n.t("details.vendor")}</Text>
-                <Text style={style.value}>
-                  {charger.chargePointVendor ? charger.chargePointVendor : "-"}
-                </Text>
+                <Text style={style.value}>{charger.chargePointVendor ? charger.chargePointVendor : "-"}</Text>
               </View>
               <View style={style.descriptionContainer}>
                 <Text style={style.label}>{I18n.t("details.model")}</Text>
-                <Text style={style.value}>
-                  {charger.chargePointModel ? charger.chargePointModel : "-"}
-                </Text>
+                <Text style={style.value}>{charger.chargePointModel ? charger.chargePointModel : "-"}</Text>
               </View>
               <View style={style.descriptionContainer}>
                 <Text style={style.label}>{I18n.t("details.ocppVersion")}</Text>
@@ -110,40 +94,26 @@ export default class ChargerDetails extends BaseScreen {
               </View>
               <View style={style.descriptionContainer}>
                 <Text style={style.label}>{I18n.t("details.firmwareVersion")}</Text>
-                <Text style={style.value}>
-                  {charger.firmwareVersion ? charger.firmwareVersion : "-"}
-                </Text>
+                <Text style={style.value}>{charger.firmwareVersion ? charger.firmwareVersion : "-"}</Text>
               </View>
             </View>
             <View style={style.bottomViewContainer}>
               <View style={style.actionContainer}>
-                <Button
-                  rounded
-                  danger
-                  style={style.actionButton}
-                  onPress={() => this._resetHardConfirm()}>
+                <Button rounded danger style={style.actionButton} onPress={() => this._resetHardConfirm()}>
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t("chargers.resetHard")}
                   </Text>
                 </Button>
               </View>
               <View style={style.actionContainer}>
-                <Button
-                  rounded
-                  warning
-                  style={style.actionButton}
-                  onPress={() => this._resetSoftConfirm()}>
+                <Button rounded warning style={style.actionButton} onPress={() => this._resetSoftConfirm()}>
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t("chargers.resetSoft")}
                   </Text>
                 </Button>
               </View>
               <View style={style.actionContainer}>
-                <Button
-                  rounded
-                  warning
-                  style={style.actionButton}
-                  onPress={() => this._clearCacheConfirm()}>
+                <Button rounded warning style={style.actionButton} onPress={() => this._clearCacheConfirm()}>
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t("chargers.clearCache")}
                   </Text>

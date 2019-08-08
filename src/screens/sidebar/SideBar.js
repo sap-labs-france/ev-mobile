@@ -46,9 +46,7 @@ class SideBar extends BaseScreen {
       {
         userName: userInfo ? `${userInfo.name} ${userInfo.firstName}` : "",
         userID: userInfo ? `${userInfo.id}` : "",
-        isComponentOrganizationActive: securityProvider
-          ? securityProvider.isComponentOrganizationActive()
-          : false,
+        isComponentOrganizationActive: securityProvider ? securityProvider.isComponentOrganizationActive() : false,
       },
       async () => {
         await this._getUserImage();
@@ -93,34 +91,22 @@ class SideBar extends BaseScreen {
           <Content style={style.drawerContent}>
             <View style={style.logoContainer}>
               <Image source={logo} style={style.logo} />
-              <Text style={style.versionText}>
-                {`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}
-              </Text>
+              <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
               {DeviceInfo.getLastUpdateTime() ? (
-                <Text style={style.versionDate}>
-                  {moment(DeviceInfo.getLastUpdateTime()).format("LL")}
-                </Text>
+                <Text style={style.versionDate}>{moment(DeviceInfo.getLastUpdateTime()).format("LL")}</Text>
               ) : (
                 undefined
               )}
             </View>
             {isComponentOrganizationActive ? (
-              <ListItem
-                style={style.links}
-                button
-                iconLeft
-                onPress={() => this._navigateTo("Sites")}>
+              <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Sites")}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
                 <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
               </ListItem>
             ) : (
               undefined
             )}
-            <ListItem
-              style={style.links}
-              button
-              iconLeft
-              onPress={() => this._navigateTo("AllChargers")}>
+            <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("AllChargers")}>
               <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
               <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
             </ListItem>
@@ -145,13 +131,8 @@ class SideBar extends BaseScreen {
                   </TouchableOpacity>
                 </View>
                 <View style={style.columnThumbnail}>
-                  <TouchableOpacity
-                    style={style.buttonThumbnail}
-                    onPress={() => navigation.navigate("Profile")}>
-                    <Thumbnail
-                      style={style.profilePic}
-                      source={userImage ? { uri: userImage } : noPhoto}
-                    />
+                  <TouchableOpacity style={style.buttonThumbnail} onPress={() => navigation.navigate("Profile")}>
+                    <Thumbnail style={style.profilePic} source={userImage ? { uri: userImage } : noPhoto} />
                   </TouchableOpacity>
                 </View>
               </View>

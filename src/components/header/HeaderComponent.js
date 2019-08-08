@@ -48,23 +48,14 @@ export default class HeaderComponent extends ResponsiveComponent {
         <Left style={style.leftHeader}>
           {leftAction ? (
             <Button transparent style={style.leftButtonHeader} onPress={() => leftAction()}>
-              <Icon
-                type={leftActionIconType}
-                name={leftActionIcon}
-                style={[style.iconHeader, style.leftIconHeader]}
-              />
+              <Icon type={leftActionIconType} name={leftActionIcon} style={[style.iconHeader, style.leftIconHeader]} />
             </Button>
           ) : (
             <Image source={logo} style={style.logoHeader} />
           )}
         </Left>
         <Body style={style.bodyHeader}>
-          <Title
-            style={
-              subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader
-            }>
-            {title}
-          </Title>
+          <Title style={subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader}>{title}</Title>
           {subTitle ? <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle> : undefined}
         </Body>
         <Right style={style.rightHeader}>

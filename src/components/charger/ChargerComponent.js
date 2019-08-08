@@ -62,11 +62,7 @@ export default class ChargerComponent extends ResponsiveComponent {
               onPress={() => {
                 this._showHeartbeatStatus();
               }}>
-              <Animatable.Text
-                animation="fadeIn"
-                easing="ease-in-out"
-                iterationCount="infinite"
-                direction="alternate-reverse">
+              <Animatable.Text animation="fadeIn" easing="ease-in-out" iterationCount="infinite" direction="alternate-reverse">
                 <Icon style={style.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
               </Animatable.Text>
             </Button>
@@ -77,11 +73,7 @@ export default class ChargerComponent extends ResponsiveComponent {
               onPress={() => {
                 this._showHeartbeatStatus();
               }}>
-              <Animatable.Text
-                animation="pulse"
-                easing="ease-out"
-                iterationCount="infinite"
-                style={{ textAlign: "center" }}>
+              <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: "center" }}>
                 <Icon style={style.heartbeatIcon} type="FontAwesome" name="heartbeat" />
               </Animatable.Text>
             </Button>
@@ -89,15 +81,15 @@ export default class ChargerComponent extends ResponsiveComponent {
         </View>
         <View style={style.connectorsContainer}>
           {charger.connectors.map((connector, index) => (
-              <ConnectorComponent
-                key={`${charger.id}~${connector.connectorId}`}
-                charger={charger}
-                connector={connector}
-                siteAreaID={siteAreaID}
-                index={index}
-                navigation={navigation}
-              />
-            ))}
+            <ConnectorComponent
+              key={`${charger.id}~${connector.connectorId}`}
+              charger={charger}
+              connector={connector}
+              siteAreaID={siteAreaID}
+              index={index}
+              navigation={navigation}
+            />
+          ))}
         </View>
       </View>
     );

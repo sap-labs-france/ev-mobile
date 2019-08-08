@@ -233,11 +233,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  async getNotifications(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getNotifications(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getNotifications");
     // Build Paging
     this._buildPaging(paging, params);
@@ -251,11 +247,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  async getChargers(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getChargers(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getChargers");
     // Build Paging
     this._buildPaging(paging, params);
@@ -279,11 +271,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  async getSites(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getSites(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getSites");
     // Build Paging
     this._buildPaging(paging, params);
@@ -297,11 +285,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  async getSiteAreas(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getSiteAreas(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getSiteAreas");
     // Build Paging
     this._buildPaging(paging, params);
@@ -459,13 +443,10 @@ export default class CentralServerProvider {
   async getChargingStationConsumption(params = {}) {
     this.debug("getChargingStationConsumption");
     // Call
-    const result = await axios.get(
-      `${_centralRestServerServiceSecuredURL}/ChargingStationConsumptionFromTransaction`,
-      {
-        headers: this._buildSecuredHeaders(),
-        params,
-      }
-    );
+    const result = await axios.get(`${_centralRestServerServiceSecuredURL}/ChargingStationConsumptionFromTransaction`, {
+      headers: this._buildSecuredHeaders(),
+      params,
+    });
     return result.data;
   }
 

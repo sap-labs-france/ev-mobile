@@ -72,12 +72,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
-        this.centralServerProvider,
-        error,
-        this.props.navigation,
-        this.refresh
-      );
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
   };
 
@@ -111,12 +106,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       // Check if HTTP?
       if (!error.request || error.request.status !== 560) {
         // Other common Error
-        Utils.handleHttpUnexpectedError(
-          this.centralServerProvider,
-          error,
-          this.props.navigation,
-          this.refresh
-        );
+        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
       }
     }
   };
@@ -144,12 +134,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
-        this.centralServerProvider,
-        error,
-        this.props.navigation,
-        this.refresh
-      );
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
   };
 
@@ -177,12 +162,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
-        this.centralServerProvider,
-        error,
-        this.props.navigation,
-        this.refresh
-      );
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
   };
 
@@ -197,14 +177,10 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
 
   _startTransactionConfirm = () => {
     const { charger } = this.props;
-    Alert.alert(
-      I18n.t("details.startTransaction"),
-      I18n.t("details.startTransactionMessage", { chargeBoxID: charger.id }),
-      [
-        { text: I18n.t("general.yes"), onPress: () => this._startTransaction() },
-        { text: I18n.t("general.no") },
-      ]
-    );
+    Alert.alert(I18n.t("details.startTransaction"), I18n.t("details.startTransactionMessage", { chargeBoxID: charger.id }), [
+      { text: I18n.t("general.yes"), onPress: () => this._startTransaction() },
+      { text: I18n.t("general.no") },
+    ]);
   };
 
   _startTransaction = async () => {
@@ -219,11 +195,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       // Disable the button
       this.setState({ buttonDisabled: true });
       // Start the Transaction
-      const status = await this.centralServerProvider.startTransaction(
-        charger.id,
-        connector.connectorId,
-        userInfo.tagIDs[0]
-      );
+      const status = await this.centralServerProvider.startTransaction(charger.id, connector.connectorId, userInfo.tagIDs[0]);
       // Check
       if (status.status && status.status === "Accepted") {
         // Show message
@@ -240,26 +212,17 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       // Enable the button
       this.setState({ buttonDisabled: false });
       // Other common Error
-      Utils.handleHttpUnexpectedError(
-        this.centralServerProvider,
-        error,
-        this.props.navigation,
-        this.refresh
-      );
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
   };
 
   _stopTransactionConfirm = async () => {
     const { charger } = this.props;
     // Confirm
-    Alert.alert(
-      I18n.t("details.stopTransaction"),
-      I18n.t("details.stopTransactionMessage", { chargeBoxID: charger.id }),
-      [
-        { text: I18n.t("general.yes"), onPress: () => this._stopTransaction() },
-        { text: I18n.t("general.no") },
-      ]
-    );
+    Alert.alert(I18n.t("details.stopTransaction"), I18n.t("details.stopTransactionMessage", { chargeBoxID: charger.id }), [
+      { text: I18n.t("general.yes"), onPress: () => this._stopTransaction() },
+      { text: I18n.t("general.no") },
+    ]);
   };
 
   _stopTransaction = async () => {
@@ -268,10 +231,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       // Disable button
       this.setState({ buttonDisabled: true });
       // Stop the Transaction
-      const status = await this.centralServerProvider.stopTransaction(
-        charger.id,
-        connector.activeTransactionID
-      );
+      const status = await this.centralServerProvider.stopTransaction(charger.id, connector.activeTransactionID);
       // Check
       if (status.status && status.status === "Accepted") {
         Message.showSuccess(I18n.t("details.accepted"));
@@ -280,12 +240,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
-        this.centralServerProvider,
-        error,
-        this.props.navigation,
-        this.refresh
-      );
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
   };
 
@@ -294,8 +249,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     const { startTransactionNbTrial } = this.state;
     // Check if the Start/Stop Button should stay disabled
     if (
-      (connector.status === Constants.CONN_STATUS_AVAILABLE &&
-        startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
+      (connector.status === Constants.CONN_STATUS_AVAILABLE && startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
       (connector.status === Constants.CONN_STATUS_PREPARING && startTransactionNbTrial === 0)
     ) {
       // Button are set to available after the nbr of trials
@@ -369,9 +323,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     // Set Secs
     const seconds = Math.trunc(durationSecs);
     // Format
-    return `${this._formatTimer(hours)}:${this._formatTimer(minutes)}:${this._formatTimer(
-      seconds
-    )}`;
+    return `${this._formatTimer(hours)}:${this._formatTimer(minutes)}:${this._formatTimer(seconds)}`;
   };
 
   _formatTimer = (val) => {
@@ -388,10 +340,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     const { connector, isAdmin } = this.props;
     return (
       <View style={style.columnContainer}>
-        <ConnectorStatusComponent
-          connector={connector}
-          text={Utils.translateConnectorStatus(connector.status)}
-        />
+        <ConnectorStatusComponent connector={connector} text={Utils.translateConnectorStatus(connector.status)} />
         {isAdmin && connector.status === Constants.CONN_STATUS_FAULTED ? (
           <Text style={[style.subLabel, style.subLabelStatusError]}>({connector.errorCode})</Text>
         ) : (
@@ -409,14 +358,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
         <Thumbnail style={style.userImage} source={userImage ? { uri: userImage } : noPhoto} />
         {transaction ? (
           <View>
-            <Text style={[style.label, style.labelUser]}>
-              {Utils.buildUserName(transaction.user)}
-            </Text>
-            {isAdmin ? (
-              <Text style={[style.subLabel, style.subLabelUser]}>({transaction.tagID})</Text>
-            ) : (
-              undefined
-            )}
+            <Text style={[style.label, style.labelUser]}>{Utils.buildUserName(transaction.user)}</Text>
+            {isAdmin ? <Text style={[style.subLabel, style.subLabelUser]}>({transaction.tagID})</Text> : undefined}
           </View>
         ) : (
           <Text style={style.label}>-</Text>
@@ -435,9 +378,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
         ) : (
           <View>
             <Text style={[style.label, style.labelValue]}>
-              {connector.currentConsumption / 1000 > 0
-                ? (connector.currentConsumption / 1000).toFixed(1)
-                : 0}
+              {connector.currentConsumption / 1000 > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0}
             </Text>
             <Text style={style.subLabel}>{I18n.t("details.instant")} (kW)</Text>
           </View>
@@ -479,14 +420,11 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     return (
       <View style={style.columnContainer}>
         <Icon style={style.icon} type="MaterialIcons" name="trending-up" />
-        {(connector.totalConsumption / 1000).toFixed(1) === 0.0 ||
-        connector.totalConsumption === 0 ? (
+        {(connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ? (
           <Text style={[style.label, style.labelValue]}>-</Text>
         ) : (
           <View>
-            <Text style={[style.label, style.labelValue]}>
-              {(connector.totalConsumption / 1000).toFixed(1)}
-            </Text>
+            <Text style={[style.label, style.labelValue]}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
             <Text style={style.subLabel}>{I18n.t("details.total")} (kW.h)</Text>
           </View>
         )}
@@ -595,11 +533,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
                 {this._renderElapsedTime(style)}
                 {this._renderInactivity(style)}
               </View>
-              {connector.currentStateOfCharge ? (
-                <View style={style.rowContainer}>{this._renderBatteryLevel(style)}</View>
-              ) : (
-                undefined
-              )}
+              {connector.currentStateOfCharge ? <View style={style.rowContainer}>{this._renderBatteryLevel(style)}</View> : undefined}
             </View>
           </ScrollView>
         </BackgroundComponent>

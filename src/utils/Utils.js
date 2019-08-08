@@ -26,13 +26,10 @@ export default class Utils {
 
   static getLocale() {
     let deviceLanguage =
-      Platform.OS === "ios"
-        ? NativeModules.SettingsManager.settings.AppleLocale
-        : NativeModules.I18nManager.localeIdentifier;
+      Platform.OS === "ios" ? NativeModules.SettingsManager.settings.AppleLocale : NativeModules.I18nManager.localeIdentifier;
     // Filter only on supported languages
     const shortDeviceLanguage = deviceLanguage.substring(0, 2);
-    if (shortDeviceLanguage !== "en" && shortDeviceLanguage !== "fr") {
-        (shortDeviceLanguage !== 'de') &&
+    if (shortDeviceLanguage !== "en" && shortDeviceLanguage !== "de" && shortDeviceLanguage !== "fr") {
       // Default
       deviceLanguage = "en-gb";
     }

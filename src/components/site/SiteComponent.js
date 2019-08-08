@@ -37,10 +37,7 @@ export default class SiteComponent extends ResponsiveComponent {
               <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
             </View>
             <View style={style.connectorContent}>
-              <ConnectorStatusesContainerComponent
-                totalConnectors={site.totalConnectors}
-                availableConnectors={site.availableConnectors}
-              />
+              <ConnectorStatusesContainerComponent totalConnectors={site.totalConnectors} availableConnectors={site.availableConnectors} />
             </View>
           </View>
         </TouchableOpacity>

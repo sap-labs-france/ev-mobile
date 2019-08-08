@@ -47,12 +47,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
       );
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
-        this.centralServerProvider,
-        error,
-        this.props.navigation,
-        this.refresh
-      );
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
     // Return
     return siteAreas;
@@ -87,11 +82,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
     // No reached the end?
     if (skip + limit < count) {
       // No: get next sites
-      const siteAreas = await this._getSiteAreas(
-        this.searchText,
-        skip + Constants.PAGING_SIZE,
-        limit
-      );
+      const siteAreas = await this._getSiteAreas(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState, props) => ({
         siteAreas: [...prevState.siteAreas, ...siteAreas.result],
@@ -139,16 +130,9 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
             ) : (
               <FlatList
                 data={this.state.siteAreas}
-                renderItem={({ item }) => (
-                  <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />
-                )}
+                renderItem={({ item }) => <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />}
                 keyExtractor={(item) => item.id}
-                refreshControl={
-                  <RefreshControl
-                    onRefresh={this._manualRefresh}
-                    refreshing={this.state.refreshing}
-                  />
-                }
+                refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={0.5}
                 ListFooterComponent={this._footerList}

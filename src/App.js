@@ -1,11 +1,6 @@
 import React from "react";
 import { StatusBar, Dimensions } from "react-native";
-import {
-  createSwitchNavigator,
-  createStackNavigator,
-  createDrawerNavigator,
-  createAppContainer,
-} from "react-navigation";
+import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createAppContainer } from "react-navigation";
 import { Root } from "native-base";
 import Login from "./screens/auth/login/Login";
 import Eula from "./screens/auth/eula/Eula";
@@ -24,7 +19,8 @@ import moment from "moment";
 
 // Get the supported locales
 require("moment/locale/fr");
-require('moment/locale/de');
+require("moment/locale/de");
+require("moment/locale/en-gb");
 // Set the current locale
 moment.locale(Utils.getLocaleShort());
 
@@ -105,11 +101,8 @@ const loadNavigationState = async () => {
 };
 
 const RootContainerPersists = () => (
-    <RootContainer
-      persistNavigationState={persistNavigationState}
-      loadNavigationState={loadNavigationState}
-    />
-  );
+  <RootContainer persistNavigationState={persistNavigationState} loadNavigationState={loadNavigationState} />
+);
 
 export default class App extends React.Component {
   // eslint-disable-next-line class-methods-use-this

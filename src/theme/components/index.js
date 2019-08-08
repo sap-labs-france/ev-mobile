@@ -228,12 +228,7 @@ export default (variables /* : * */ = variable) => {
           }
         }
       }
-      if (
-        style &&
-        typeof style === "object" &&
-        styleName !== "fontVariant" &&
-        styleName !== "transform"
-      ) {
+      if (style && typeof style === "object" && styleName !== "fontVariant" && styleName !== "transform") {
         cssifyTheme(parent, style, styleName);
       }
     });

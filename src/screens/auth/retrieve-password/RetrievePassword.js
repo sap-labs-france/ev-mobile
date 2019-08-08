@@ -123,20 +123,14 @@ export default class RetrievePassword extends BaseScreen {
     const style = computeStyleSheet();
     const { loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl } = this.state;
     return (
-      <Animatable.View
-        style={style.container}
-        animation={"fadeIn"}
-        iterationCount={1}
-        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+      <Animatable.View style={style.container} animation={"fadeIn"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <BackgroundComponent>
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
               <View style={style.formHeader}>
                 <Image style={style.logo} source={logo} />
                 <Text style={style.appText}>e-Mobility</Text>
-                <Text style={style.appVersionText}>{`${I18n.t(
-                  "general.version"
-                )} ${DeviceInfo.getVersion()}`}</Text>
+                <Text style={style.appVersionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
                 <Text style={style.appTenantName}>{tenantName}</Text>
               </View>
               <Form style={style.form}>
@@ -166,15 +160,8 @@ export default class RetrievePassword extends BaseScreen {
                 {loading || !captcha ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
-                  <Button
-                    rounded
-                    primary
-                    block
-                    style={style.button}
-                    onPress={() => this._retrievePassword()}>
-                    <TextRN style={style.buttonText}>
-                      {I18n.t("authentication.retrievePassword")}
-                    </TextRN>
+                  <Button rounded primary block style={style.button} onPress={() => this._retrievePassword()}>
+                    <TextRN style={style.buttonText}>{I18n.t("authentication.retrievePassword")}</TextRN>
                   </Button>
                 )}
               </Form>
@@ -194,14 +181,8 @@ export default class RetrievePassword extends BaseScreen {
           </ScrollView>
           <Footer style={style.footer}>
             <Left>
-              <Button
-                small
-                transparent
-                style={style.linksButtonLeft}
-                onPress={() => this.props.navigation.goBack()}>
-                <TextRN style={[style.linksTextButton, style.linksTextButtonLeft]}>
-                  {I18n.t("authentication.backLogin")}
-                </TextRN>
+              <Button small transparent style={style.linksButtonLeft} onPress={() => this.props.navigation.goBack()}>
+                <TextRN style={[style.linksTextButton, style.linksTextButtonLeft]}>{I18n.t("authentication.backLogin")}</TextRN>
               </Button>
             </Left>
           </Footer>

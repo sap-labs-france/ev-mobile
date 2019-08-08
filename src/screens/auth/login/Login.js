@@ -1,26 +1,6 @@
 import React from "react";
-import {
-  ScrollView,
-  Image,
-  Keyboard,
-  KeyboardAvoidingView,
-  Text as TextRN,
-  TextInput,
-} from "react-native";
-import {
-  Text,
-  Form,
-  Item,
-  Button,
-  Icon,
-  View,
-  CheckBox,
-  Spinner,
-  ActionSheet,
-  Footer,
-  Left,
-  Right,
-} from "native-base";
+import { ScrollView, Image, Keyboard, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
+import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet, Footer, Left, Right } from "native-base";
 import Orientation from "react-native-orientation-locker";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import * as Animatable from "react-native-animatable";
@@ -158,8 +138,7 @@ export default class Login extends BaseScreen {
 
   onBack = () =>
     // Do nothing
-     true
-  ;
+    true;
 
   _navigateToSites() {
     // Navigate to App
@@ -213,20 +192,14 @@ export default class Login extends BaseScreen {
     return !display ? (
       <View style={style.noDisplay} />
     ) : (
-      <Animatable.View
-        style={style.container}
-        animation={"fadeIn"}
-        iterationCount={1}
-        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+      <Animatable.View style={style.container} animation={"fadeIn"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <BackgroundComponent>
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
               <View style={style.formHeader}>
                 <Image style={style.logo} source={logo} />
                 <Text style={style.appText}>e-Mobility</Text>
-                <Text style={style.appVersionText}>{`${I18n.t(
-                  "general.version"
-                )} ${DeviceInfo.getVersion()}`}</Text>
+                <Text style={style.appVersionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
               </View>
               <Form style={style.form}>
                 <Button
@@ -304,11 +277,7 @@ export default class Login extends BaseScreen {
                     </Text>
                   ))}
                 <View style={style.eulaContainer}>
-                  <CheckBox
-                    style={style.eulaCheckbox}
-                    checked={eula}
-                    onPress={() => this.setState({ eula: !eula })}
-                  />
+                  <CheckBox style={style.eulaCheckbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
                   <Text style={style.eulaText}>
                     {I18n.t("authentication.acceptEula")}
                     <Text onPress={() => navigation.navigate("Eula")} style={style.eulaLink}>
@@ -334,23 +303,13 @@ export default class Login extends BaseScreen {
           </ScrollView>
           <Footer style={style.footer}>
             <Left>
-              <Button
-                small
-                transparent
-                style={style.linksButtonLeft}
-                onPress={() => this._newUser()}>
+              <Button small transparent style={style.linksButtonLeft} onPress={() => this._newUser()}>
                 <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
               </Button>
             </Left>
             <Right>
-              <Button
-                small
-                transparent
-                style={style.linksButtonRight}
-                onPress={() => this._forgotPassword()}>
-                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>
-                  {I18n.t("authentication.forgotYourPassword")}
-                </TextRN>
+              <Button small transparent style={style.linksButtonRight} onPress={() => this._forgotPassword()}>
+                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
               </Button>
             </Right>
           </Footer>
