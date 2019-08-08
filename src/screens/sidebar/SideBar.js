@@ -21,7 +21,7 @@ class SideBar extends BaseScreen {
       userName: "",
       userID: "",
       userImage: "",
-      isComponentOrganizationActive: false,
+      isComponentOrganizationActive: false
     };
   }
 
@@ -46,7 +46,7 @@ class SideBar extends BaseScreen {
       {
         userName: userInfo ? `${userInfo.name} ${userInfo.firstName}` : "",
         userID: userInfo ? `${userInfo.id}` : "",
-        isComponentOrganizationActive: securityProvider ? securityProvider.isComponentOrganizationActive() : false,
+        isComponentOrganizationActive: securityProvider ? securityProvider.isComponentOrganizationActive() : false
       },
       async () => {
         await this._getUserImage();

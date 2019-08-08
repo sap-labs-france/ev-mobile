@@ -40,22 +40,22 @@ const AppDrawerNavigator = createDrawerNavigator(
         _notificationManager.start();
         // Return the sites
         return <Sites {...props} />;
-      },
+      }
     },
     SiteAreas: { screen: SiteAreas },
     Chargers: { screen: Chargers },
     AllChargers: { screen: AllChargers },
-    ChargerTabDetails: { screen: ChargerTabDetails },
+    ChargerTabDetails: { screen: ChargerTabDetails }
   },
   {
     navigationOptions: {
-      swipeEnabled: true,
+      swipeEnabled: true
     },
     drawerWidth: Dimensions.get("window").width / 1.5,
     initialRouteName: "Sites",
     unmountInactiveRoutes: true,
     drawerPosition: "right",
-    contentComponent: (props) => <Sidebar {...props} />,
+    contentComponent: (props) => <Sidebar {...props} />
   }
 );
 
@@ -65,21 +65,21 @@ const AuthNavigator = createStackNavigator(
     Login: { screen: Login },
     Eula: { screen: Eula },
     SignUp: { screen: SignUp },
-    RetrievePassword: { screen: RetrievePassword },
+    RetrievePassword: { screen: RetrievePassword }
   },
   {
     initialRouteName: "Login",
-    headerMode: "none",
+    headerMode: "none"
   }
 );
 
 const RootNavigator = createSwitchNavigator(
   {
     AuthNavigator,
-    AppDrawerNavigator,
+    AppDrawerNavigator
   },
   {
-    initialRouteName: "AuthNavigator",
+    initialRouteName: "AuthNavigator"
   }
 );
 

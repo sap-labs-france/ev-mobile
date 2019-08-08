@@ -22,7 +22,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
       refreshing: false,
       skip: 0,
       limit: Constants.PAGING_SIZE,
-      count: 0,
+      count: 0
     };
   }
 
@@ -67,7 +67,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
       this.setState((prevState, props) => ({
         chargers: [...prevState.chargers, ...chargers.result],
         skip: prevState.skip + Constants.PAGING_SIZE,
-        refreshing: false,
+        refreshing: false
       }));
     }
   };
@@ -82,7 +82,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
       this.setState((prevState, props) => ({
         loading: false,
         chargers: chargers.result,
-        count: chargers.count,
+        count: chargers.count
       }));
     }
   };

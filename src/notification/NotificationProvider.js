@@ -22,7 +22,7 @@ export default class NotificationProvider {
       permissions: {
         alert: true,
         badge: true,
-        sound: true,
+        sound: true
       },
       // Should the initial notification be popped automatically
       // default: true
@@ -32,7 +32,7 @@ export default class NotificationProvider {
        * - Specified if permissions (ios) and token (android and ios) will requested or not,
        * - if not, you must call PushNotificationsHandler.requestPermissions() later
        */
-      requestPermissions: true,
+      requestPermissions: true
     });
   }
 
@@ -47,7 +47,7 @@ export default class NotificationProvider {
     vibrationMillis = 300,
     playSound = true,
     date,
-    extraData = "",
+    extraData = ""
   }) {
     // Create notif object
     const notification = {
@@ -77,7 +77,7 @@ export default class NotificationProvider {
       /* iOS only properties */
       alertAction: "view", // (optional) default: view
       category: null, // (optional) default: null
-      extraData, // (optional) default: null (object containing additional notification data)
+      extraData // (optional) default: null (object containing additional notification data)
     };
     // Delayed?
     if (date) {

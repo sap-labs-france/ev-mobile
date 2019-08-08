@@ -41,7 +41,7 @@ export default class HeaderComponent extends ResponsiveComponent {
       leftActionIconType,
       rightAction,
       rightActionIcon,
-      rightActionIconType,
+      rightActionIconType
     } = this.props;
     return (
       <Header style={style.header}>
@@ -99,11 +99,11 @@ HeaderComponent.propTypes = {
   rightActionIcon: PropTypes.string,
   rightActionIconType: PropTypes.string,
   showSearchAction: PropTypes.bool,
-  searchRef: PropTypes.object,
+  searchRef: PropTypes.object
 };
 
 HeaderComponent.defaultProps = {
   leftActionIconType: "MaterialIcons",
   rightActionIconType: "MaterialIcons",
-  showSearchAction: false,
+  showSearchAction: false
 };

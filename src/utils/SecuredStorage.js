@@ -18,7 +18,7 @@ export default class SecuredStorage {
     // Add a key
     navigationState = { key: DeviceInfo.getVersion(), navigationState };
     await RNSecureStorage.set(Constants.KEY_NAVIGATION_STATE, JSON.stringify(navigationState), {
-      accessible: ACCESSIBLE.WHEN_UNLOCKED,
+      accessible: ACCESSIBLE.WHEN_UNLOCKED
     });
   }
 
@@ -40,7 +40,7 @@ export default class SecuredStorage {
 
   static async saveUserCredentials(credentials) {
     await RNSecureStorage.set(Constants.KEY_CREDENTIALS, JSON.stringify(credentials), {
-      accessible: ACCESSIBLE.WHEN_UNLOCKED,
+      accessible: ACCESSIBLE.WHEN_UNLOCKED
     });
   }
 

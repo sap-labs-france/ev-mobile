@@ -20,7 +20,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
     // New backend?
     if (siteArea.connectorStats) {
       // Override
-      connectorStats = siteArea.connectorStats
+      connectorStats = siteArea.connectorStats;
     } else {
       connectorStats = {
         totalConnectors: siteArea.totalConnectors,
@@ -37,7 +37,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
             if (siteArea.totalConnectors > 0) {
               // Navigate
               navigation.navigate("Chargers", {
-                siteAreaID: siteArea.id,
+                siteAreaID: siteArea.id
               });
             } else {
               // No connector
@@ -61,7 +61,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
 
 SiteAreaComponent.propTypes = {
   navigation: PropTypes.object.isRequired,
-  siteArea: PropTypes.object.isRequired,
+  siteArea: PropTypes.object.isRequired
 };
 
 SiteAreaComponent.defaultProps = {};
