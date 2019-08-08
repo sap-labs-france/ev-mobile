@@ -48,9 +48,7 @@ const formValidationDef = {
       message: "^" + I18n.t("authentication.passwordRule"),
       comparator(password, ghost) {
         // True if EULA is checked
-        return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(
-          password
-        );
+        return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(password);
       },
     },
   },
@@ -114,29 +112,12 @@ export default class SignUp extends BaseScreen {
     // Check field
     const formIsValid = Utils.validateInput(this, formValidationDef);
     if (formIsValid) {
-      const {
-        tenant,
-        name,
-        firstName,
-        email,
-        password,
-        repeatPassword,
-        eula,
-        captcha,
-      } = this.state;
+      const { tenant, name, firstName, email, password, repeatPassword, eula, captcha } = this.state;
       try {
         // Loading
         this.setState({ loading: true });
         // Register
-        await this.centralServerProvider.register(
-          tenant,
-          name,
-          firstName,
-          email,
-          { password, repeatPassword },
-          eula,
-          captcha
-        );
+        await this.centralServerProvider.register(tenant, name, firstName, email, { password, repeatPassword }, eula, captcha);
         // Reset
         this.setState({ loading: false });
         // Show
@@ -190,20 +171,14 @@ export default class SignUp extends BaseScreen {
     const navigation = this.props.navigation;
     const { eula, loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl } = this.state;
     return (
-      <Animatable.View
-        style={style.container}
-        animation={"fadeIn"}
-        iterationCount={1}
-        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+      <Animatable.View style={style.container} animation={"fadeIn"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <BackgroundComponent>
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
               <View style={style.formHeader}>
                 <Image style={style.logo} source={logo} />
                 <Text style={style.appText}>e-Mobility</Text>
-                <Text style={style.appVersionText}>{`${I18n.t(
-                  "general.version"
-                )} ${DeviceInfo.getVersion()}`}</Text>
+                <Text style={style.appVersionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
                 <Text style={style.appTenantName}>{tenantName}</Text>
               </View>
               <Form style={style.form}>
@@ -333,11 +308,7 @@ export default class SignUp extends BaseScreen {
                     </Text>
                   ))}
                 <View style={style.eulaContainer}>
-                  <CheckBox
-                    style={style.eulaCheckbox}
-                    checked={eula}
-                    onPress={() => this.setState({ eula: !eula })}
-                  />
+                  <CheckBox style={style.eulaCheckbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
                   <Text style={style.eulaText}>
                     {I18n.t("authentication.acceptEula")}
                     <Text onPress={() => navigation.navigate("Eula")} style={style.eulaLink}>
@@ -360,7 +331,7 @@ export default class SignUp extends BaseScreen {
                 )}
               </Form>
             </KeyboardAvoidingView>
-            { this.state.eula && captchaSiteKey && captchaBaseUrl ?
+            {this.state.eula && captchaSiteKey && captchaBaseUrl ? (
               <ReCaptcha
                 containerStyle={style.recaptcha}
                 siteKey={captchaSiteKey}
@@ -369,20 +340,14 @@ export default class SignUp extends BaseScreen {
                 reCaptchaType={1}
                 onExecute={this._recaptchaResponseToken}
               />
-            :
+            ) : (
               undefined
-            }
+            )}
           </ScrollView>
           <Footer style={style.footer}>
             <Right>
-              <Button
-                small
-                transparent
-                style={style.linksButtonRight}
-                onPress={() => this.props.navigation.goBack()}>
-                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>
-                  {I18n.t("authentication.backLogin")}
-                </TextRN>
+              <Button small transparent style={style.linksButtonRight} onPress={() => this.props.navigation.goBack()}>
+                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.backLogin")}</TextRN>
               </Button>
             </Right>
           </Footer>
