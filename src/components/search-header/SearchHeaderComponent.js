@@ -13,7 +13,7 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isVisible: this.props.initialVisibility,
+      isVisible: this.props.initialVisibility
     };
     this.searchText = "";
     this.searchChanged = false;
@@ -126,9 +126,9 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
 SearchHeaderComponent.propTypes = {
   navigation: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
-  initialVisibility: PropTypes.bool,
+  initialVisibility: PropTypes.bool
 };
 
 SearchHeaderComponent.defaultProps = {
-  initialVisibility: true,
+  initialVisibility: true
 };

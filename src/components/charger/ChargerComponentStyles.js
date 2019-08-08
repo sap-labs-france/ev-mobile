@@ -9,7 +9,7 @@ const commonStyles = ScaledSheet.create({
     flex: 1,
     flexDirection: "column",
     borderBottomWidth: 1,
-    borderBottomColor: commonColor.brandPrimaryDark,
+    borderBottomColor: commonColor.brandPrimaryDark
   },
   headerContent: {
     flexDirection: "row",
@@ -20,31 +20,31 @@ const commonStyles = ScaledSheet.create({
     paddingRight: "5@s",
     borderBottomColor: commonColor.listBorderColor,
     borderBottomWidth: 1,
-    backgroundColor: Constants.CSS_HEADER_BG,
+    backgroundColor: Constants.CSS_HEADER_BG
   },
   name: {
     color: commonColor.headerTextColor,
     fontSize: "20@s",
     marginLeft: "5@s",
-    fontWeight: "bold",
+    fontWeight: "bold"
   },
   heartbeatButton: {
-    marginRight: "5@s",
+    marginRight: "5@s"
   },
   heartbeatIcon: {
     color: commonColor.brandSuccess,
-    fontSize: "18@s",
+    fontSize: "18@s"
   },
   deadHeartbeatIcon: {
     color: commonColor.brandDanger,
-    fontSize: "18@s",
+    fontSize: "18@s"
   },
   connectorsContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-    flexWrap: "wrap",
-  },
+    flexWrap: "wrap"
+  }
 });
 
 const portraitStyles = {};
@@ -55,11 +55,11 @@ export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([
     {
       query: { orientation: "landscape" },
-      style: deepmerge(commonStyles, landscapeStyles),
+      style: deepmerge(commonStyles, landscapeStyles)
     },
     {
       query: { orientation: "portrait" },
-      style: deepmerge(commonStyles, portraitStyles),
-    },
+      style: deepmerge(commonStyles, portraitStyles)
+    }
   ]);
 }

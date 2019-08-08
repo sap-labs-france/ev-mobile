@@ -13,7 +13,7 @@ export default class ChargerComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isChargerDead: false,
+      isChargerDead: false
     };
   }
 
@@ -41,7 +41,7 @@ export default class ChargerComponent extends ResponsiveComponent {
     if (isChargerDead) {
       message = I18n.t("chargers.heartBeatKoMessage", {
         chargeBoxID: charger.id,
-        lastHeartBeat: moment(new Date(charger.lastHeartBeat), true).fromNow(true),
+        lastHeartBeat: moment(new Date(charger.lastHeartBeat), true).fromNow(true)
       });
     }
     Alert.alert(I18n.t("chargers.heartBeat"), message, [{ text: I18n.t("general.ok") }]);
@@ -98,7 +98,7 @@ export default class ChargerComponent extends ResponsiveComponent {
 
 ChargerComponent.propTypes = {
   navigation: PropTypes.object.isRequired,
-  charger: PropTypes.object.isRequired,
+  charger: PropTypes.object.isRequired
 };
 
 ChargerComponent.defaultProps = {};

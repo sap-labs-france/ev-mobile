@@ -20,28 +20,28 @@ const formValidationDef = {
   name: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_name"),
-    },
+      message: "^" + I18n.t("authentication.mandatory_name")
+    }
   },
   firstName: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_first_name"),
-    },
+      message: "^" + I18n.t("authentication.mandatory_first_name")
+    }
   },
   email: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_email"),
+      message: "^" + I18n.t("authentication.mandatory_email")
     },
     email: {
-      message: "^" + I18n.t("authentication.invalid_email"),
-    },
+      message: "^" + I18n.t("authentication.invalid_email")
+    }
   },
   password: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_password"),
+      message: "^" + I18n.t("authentication.mandatory_password")
     },
     equality: {
       attribute: "ghost",
@@ -49,18 +49,18 @@ const formValidationDef = {
       comparator(password, ghost) {
         // True if EULA is checked
         return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(password);
-      },
-    },
+      }
+    }
   },
   repeatPassword: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_password"),
+      message: "^" + I18n.t("authentication.mandatory_password")
     },
     equality: {
       attribute: "password",
-      message: "^" + I18n.t("authentication.passwordNotMatch"),
-    },
+      message: "^" + I18n.t("authentication.passwordNotMatch")
+    }
   },
   eula: {
     equality: {
@@ -69,9 +69,9 @@ const formValidationDef = {
       comparator(eula, ghost) {
         // True if EULA is checked
         return eula;
-      },
-    },
-  },
+      }
+    }
+  }
 };
 export default class SignUp extends BaseScreen {
   constructor(props) {
@@ -88,7 +88,7 @@ export default class SignUp extends BaseScreen {
       captchaSiteKey: null,
       captchaBaseUrl: null,
       captcha: null,
-      loading: false,
+      loading: false
     };
   }
 
@@ -100,7 +100,7 @@ export default class SignUp extends BaseScreen {
     this.setState({
       tenantName: tenant.name,
       captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
-      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl(),
+      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl()
     });
   }
 
@@ -131,10 +131,10 @@ export default class SignUp extends BaseScreen {
                 routeName: "Login",
                 params: {
                   tenant: this.state.tenant,
-                  email: this.state.email,
-                },
-              }),
-            ],
+                  email: this.state.email
+                }
+              })
+            ]
           })
         );
       } catch (error) {

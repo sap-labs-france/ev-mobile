@@ -20,12 +20,12 @@ const formValidationDef = {
   email: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_email"),
+      message: "^" + I18n.t("authentication.mandatory_email")
     },
     email: {
-      message: "^" + I18n.t("authentication.invalid_email"),
-    },
-  },
+      message: "^" + I18n.t("authentication.invalid_email")
+    }
+  }
 };
 
 export default class RetrievePassword extends BaseScreen {
@@ -38,7 +38,7 @@ export default class RetrievePassword extends BaseScreen {
       captchaSiteKey: null,
       captchaBaseUrl: null,
       captcha: null,
-      loading: false,
+      loading: false
     };
   }
 
@@ -50,7 +50,7 @@ export default class RetrievePassword extends BaseScreen {
     this.setState({
       tenantName: tenant.name,
       captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
-      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl(),
+      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl()
     });
   }
 
@@ -80,10 +80,10 @@ export default class RetrievePassword extends BaseScreen {
                 routeName: "Login",
                 params: {
                   tenant: this.state.tenant,
-                  email: this.state.email,
-                },
-              }),
-            ],
+                  email: this.state.email
+                }
+              })
+            ]
           })
         );
       } catch (error) {

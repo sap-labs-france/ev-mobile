@@ -20,23 +20,23 @@ const formValidationDef = {
   tenant: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_tenant"),
-    },
+      message: "^" + I18n.t("authentication.mandatory_tenant")
+    }
   },
   email: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_email"),
+      message: "^" + I18n.t("authentication.mandatory_email")
     },
     email: {
-      message: "^" + I18n.t("authentication.invalid_email"),
-    },
+      message: "^" + I18n.t("authentication.invalid_email")
+    }
   },
   password: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_password"),
-    },
+      message: "^" + I18n.t("authentication.mandatory_password")
+    }
   },
   eula: {
     equality: {
@@ -45,9 +45,9 @@ const formValidationDef = {
       comparator(v1, v2) {
         // True if EULA is checked
         return v1;
-      },
-    },
-  },
+      }
+    }
+  }
 };
 
 export default class Login extends BaseScreen {
@@ -60,7 +60,7 @@ export default class Login extends BaseScreen {
       tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
       tenantTitle: I18n.t("authentication.tenant"),
       loading: false,
-      display: false,
+      display: false
     };
   }
 
@@ -79,7 +79,7 @@ export default class Login extends BaseScreen {
       password: this.centralServerProvider.getUserPassword(),
       tenant: tenantSubmain,
       tenantTitle: tenant ? tenant.name : this.state.tenantTitle,
-      display: true,
+      display: true
     });
   }
 
@@ -151,7 +151,7 @@ export default class Login extends BaseScreen {
       // Set Tenant
       this.setState({
         tenant: this.tenants[buttonIndex].subdomain,
-        tenantTitle: this.tenants[buttonIndex].name,
+        tenantTitle: this.tenants[buttonIndex].name
       });
     }
   };
@@ -162,7 +162,7 @@ export default class Login extends BaseScreen {
     if (this.state.tenant) {
       navigation.navigate("SignUp", {
         tenant: this.state.tenant,
-        email: this.state.email,
+        email: this.state.email
       });
     } else {
       // Error
@@ -176,7 +176,7 @@ export default class Login extends BaseScreen {
     if (this.state.tenant) {
       navigation.navigate("RetrievePassword", {
         tenant: this.state.tenant,
-        email: this.state.email,
+        email: this.state.email
       });
     } else {
       // Error
@@ -210,7 +210,7 @@ export default class Login extends BaseScreen {
                     ActionSheet.show(
                       {
                         options: this.tenants.map((tenant) => tenant.name),
-                        title: I18n.t("authentication.tenant"),
+                        title: I18n.t("authentication.tenant")
                       },
                       (buttonIndex) => {
                         this._setTenant(buttonIndex);

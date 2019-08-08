@@ -29,11 +29,11 @@ export default class Message {
       textStyle: {
         fontSize: scale(15),
         color: "white",
-        textAlign: "center",
+        textAlign: "center"
       },
       duration: 3000,
       type,
-      position: "top",
+      position: "top"
     });
   }
 }

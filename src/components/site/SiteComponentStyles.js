@@ -10,7 +10,7 @@ const commonStyles = ScaledSheet.create({
     flex: 1,
     flexDirection: "column",
     borderBottomWidth: 1,
-    borderBottomColor: commonColor.listBorderColor,
+    borderBottomColor: commonColor.listBorderColor
   },
   headerContent: {
     flexDirection: "row",
@@ -19,7 +19,7 @@ const commonStyles = ScaledSheet.create({
     paddingBottom: "5@s",
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
-    backgroundColor: Constants.CSS_HEADER_BG,
+    backgroundColor: Constants.CSS_HEADER_BG
   },
   connectorContent: {
     flexDirection: "row",
@@ -27,20 +27,20 @@ const commonStyles = ScaledSheet.create({
     paddingTop: "12@s",
     paddingBottom: "12@s",
     borderBottomWidth: 1,
-    borderBottomColor: commonColor.brandPrimaryDark,
+    borderBottomColor: commonColor.brandPrimaryDark
   },
   name: {
     paddingTop: Platform.OS === "ios" ? "4@s" : 0,
     fontSize: "20@s",
     fontWeight: "bold",
-    color: commonColor.headerTextColor,
+    color: commonColor.headerTextColor
   },
   icon: {
     fontSize: "30@s",
     marginLeft: "10@s",
     marginRight: "10@s",
-    color: commonColor.headerTextColor,
-  },
+    color: commonColor.headerTextColor
+  }
 });
 
 const portraitStyles = {};
@@ -51,11 +51,11 @@ export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([
     {
       query: { orientation: "landscape" },
-      style: deepmerge(commonStyles, landscapeStyles),
+      style: deepmerge(commonStyles, landscapeStyles)
     },
     {
       query: { orientation: "portrait" },
-      style: deepmerge(commonStyles, portraitStyles),
-    },
+      style: deepmerge(commonStyles, portraitStyles)
+    }
   ]);
 }

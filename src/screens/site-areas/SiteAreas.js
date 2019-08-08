@@ -20,7 +20,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
       refreshing: false,
       skip: 0,
       limit: Constants.PAGING_SIZE,
-      count: 0,
+      count: 0
     };
   }
 
@@ -63,7 +63,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
       this.setState({
         loading: false,
         siteAreas: siteAreas.result,
-        count: siteAreas.count,
+        count: siteAreas.count
       });
     }
   };
@@ -87,7 +87,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
       this.setState((prevState, props) => ({
         siteAreas: [...prevState.siteAreas, ...siteAreas.result],
         skip: prevState.skip + Constants.PAGING_SIZE,
-        refreshing: false,
+        refreshing: false
       }));
     }
   };

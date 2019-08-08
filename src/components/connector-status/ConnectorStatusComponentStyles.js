@@ -10,97 +10,97 @@ const commonStyles = ScaledSheet.create({
     width: "100@s",
     flexDirection: "column",
     justifyContent: "flex-start",
-    alignItems: "center",
+    alignItems: "center"
   },
   containerWithNoDescription: {
     height: "55@s",
     width: "60@s",
     flexDirection: "column",
     justifyContent: "flex-start",
-    alignItems: "center",
+    alignItems: "center"
   },
   commonConnector: {
-    backgroundColor: "transparent",
+    backgroundColor: "transparent"
   },
   commonConnectorValue: {
     fontSize: "20@s",
     fontWeight: "bold",
     textAlign: "center",
-    color: commonColor.inverseTextColor,
+    color: commonColor.inverseTextColor
   },
   commonConnectorDescription: {
     position: "absolute",
     bottom: "-2@s",
     fontSize: "12@s",
-    color: commonColor.textColor,
+    color: commonColor.textColor
   },
   faultedConnector: {
     backgroundColor: commonColor.brandDanger,
-    borderColor: commonColor.brandDangerDark,
+    borderColor: commonColor.brandDangerDark
   },
   faultedConnectorValue: {},
   faultedConnectorDescription: {
-    color: commonColor.brandDanger,
+    color: commonColor.brandDanger
   },
   availableConnector: {
-    borderColor: commonColor.brandSuccess,
+    borderColor: commonColor.brandSuccess
   },
   availableConnectorValue: {
-    color: commonColor.brandSuccess,
+    color: commonColor.brandSuccess
   },
   availableConnectorDescription: {
-    color: commonColor.brandSuccess,
+    color: commonColor.brandSuccess
   },
   supendedConnector: {
     backgroundColor: commonColor.brandPrimary,
-    borderColor: commonColor.brandPrimaryDark,
+    borderColor: commonColor.brandPrimaryDark
   },
   supendedConnectorValue: {},
   supendedConnectorDescription: {
-    color: commonColor.brandPrimaryDark,
+    color: commonColor.brandPrimaryDark
   },
   preparingConnector: {
     backgroundColor: commonColor.brandWarning,
-    borderColor: commonColor.brandWarningDark,
+    borderColor: commonColor.brandWarningDark
   },
   preparingConnectorValue: {},
   preparingConnectorDescription: {
-    color: commonColor.brandWarning,
+    color: commonColor.brandWarning
   },
   finishingConnector: {
     backgroundColor: commonColor.brandWarning,
-    borderColor: commonColor.brandWarningDark,
+    borderColor: commonColor.brandWarningDark
   },
   finishingConnectorValue: {},
   finishingConnectorDescription: {
-    color: commonColor.brandWarning,
+    color: commonColor.brandWarning
   },
   unavailableConnector: {
     backgroundColor: commonColor.brandDisable,
-    borderColor: commonColor.brandDisableDark,
+    borderColor: commonColor.brandDisableDark
   },
   unavailableConnectorValue: {},
   unavailableConnectorDescription: {
-    color: commonColor.brandDisable,
+    color: commonColor.brandDisable
   },
   reservedConnector: {
     backgroundColor: commonColor.brandDisable,
-    borderColor: commonColor.brandDisableDark,
+    borderColor: commonColor.brandDisableDark
   },
   reservedConnectorValue: {},
   reservedConnectorDescription: {
-    color: commonColor.brandDisable,
+    color: commonColor.brandDisable
   },
   chargingConnector: {
     backgroundColor: commonColor.brandPrimary,
     borderColor: commonColor.brandInfo,
     borderTopColor: commonColor.brandPrimary,
-    borderBottomColor: commonColor.brandPrimary,
+    borderBottomColor: commonColor.brandPrimary
   },
   chargingConnectorValue: {},
   chargingConnectorDescription: {
-    color: commonColor.brandPrimaryDark,
-  },
+    color: commonColor.brandPrimaryDark
+  }
 });
 
 const portraitStyles = {};
@@ -111,11 +111,11 @@ export default function computeStyleSheet() {
   return ResponsiveStyleSheet.select([
     {
       query: { orientation: "landscape" },
-      style: deepmerge(commonStyles, landscapeStyles),
+      style: deepmerge(commonStyles, landscapeStyles)
     },
     {
       query: { orientation: "portrait" },
-      style: deepmerge(commonStyles, portraitStyles),
-    },
+      style: deepmerge(commonStyles, portraitStyles)
+    }
   ]);
 }

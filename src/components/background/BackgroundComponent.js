@@ -24,9 +24,9 @@ export default class BackgroundComponent extends ResponsiveComponent {
 
 BackgroundComponent.propTypes = {
   active: PropTypes.bool,
-  background: PropTypes.object,
+  background: PropTypes.object
 };
 
 BackgroundComponent.defaultProps = {
-  active: true,
+  active: true
 };
