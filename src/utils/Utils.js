@@ -33,6 +33,7 @@ export default class Utils {
     // Filter only on supported languages
     const shortDeviceLanguage = deviceLanguage.substring(0, 2);
     if ((shortDeviceLanguage !== 'en') &&
+        (shortDeviceLanguage !== 'de') &&
         (shortDeviceLanguage !== 'fr')) {
       // Default
       deviceLanguage = "en-gb";
