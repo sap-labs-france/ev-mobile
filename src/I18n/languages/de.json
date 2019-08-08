@@ -126,18 +126,18 @@
   },
   "notifications": {
     "mustLogin": "Sie müssen angemeldet sein",
-    "cannotNavigate": "Kann nicht zu dem Bildschirm navigieren",
+    "cannotNavigate": "Kann nicht zum Bildschirm navigieren",
     "extraDataMissing": "Benachrichtigung nicht komplett",
     "incorrectTenant": "Falscher Tenant",
     "notifyEndOfSession": {
-      "message": "Ihre Ladesitzung auf '{{chargeBoxID}}' ist fertig.",
-      "subMessage": "Ladesitzung fertig.",
-      "longMessage": "Ihre Ladesitzung auf '{{chargeBoxID}}' ist fertig."
+      "message": "Ihre Ladesitzung auf '{{chargeBoxID}}' wurde beendet.",
+      "subMessage": "Ladesitzung beendet",
+      "longMessage": "Ihre Ladesitzung auf '{{chargeBoxID}}' wurde soeben beendet."
     },
     "notifyEndOfCharge": {
-      "message": "Ladung auf '{{chargeBoxID}}' ist fertig.",
+      "message": "Ladung auf '{{chargeBoxID}}' wurde beendet.",
       "subMessage": "Ladeende",
-      "longMessage": "'{{chargeBoxID}}' wurde fertig geladen. Sie können die Ladesitzung beenden und Ihr Auto wegfahren."
+      "longMessage": "Ihr Fahrzeug an '{{chargeBoxID}}' wurde vollständig geladen. Sie können die Ladesitzung beenden und Ihr Fahrzeug wegfahren."
     },
     "notifyOptimalChargeReached": {
       "message": "Der optimale Ladepunkt auf '{{chargeBoxID}}' wurde erreicht.",
@@ -151,13 +151,13 @@
     },
     "notifyChargingStationRegistered": {
       "message": "'{{chargeBoxID}}' wurde auf dem zentralen Server registriert.",
-      "subMessage": "Ladestation registriert.",
+      "subMessage": "Ladestation registriert",
       "longMessage": "'{{chargeBoxID}}' wurde auf dem zentralen Server registriert."
     },
     "notifyUnknownUserBadged": {
-      "message": "Ein unbekannter Nutzer hat auf '{{chargeBoxID}}' gebadgt.",
+      "message": "Ein unbekannter Benutzer hat auf '{{chargeBoxID}}' gebadgt.",
       "subMessage": "Unbekannter Benutzer",
-      "longMessage": "Ein unbekanner Nutzer hat auf '{{chargeBoxID}}' gebadgt."
+      "longMessage": "Ein unbekanner Benutzer hat auf '{{chargeBoxID}}' gebadgt."
     }
   }
 }
