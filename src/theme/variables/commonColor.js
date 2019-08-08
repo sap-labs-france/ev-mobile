@@ -154,15 +154,15 @@ export default {
   cardItemPadding: platform === PLATFORM.IOS ? 10 : 12,
 
   // CheckBox
-  CheckboxRadius: platform === PLATFORM.IOS ? 13 : 0,
-  CheckboxBorderWidth: platform === PLATFORM.IOS ? 1 : 2,
-  CheckboxPaddingLeft: platform === PLATFORM.IOS ? 4 : 2,
-  CheckboxPaddingBottom: platform === PLATFORM.IOS ? 0 : 5,
-  CheckboxIconSize: platform === PLATFORM.IOS ? 21 : 16,
-  CheckboxIconMarginTop: platform === PLATFORM.IOS ? undefined : 1,
-  CheckboxFontSize: platform === PLATFORM.IOS ? 23 / 0.9 : 17,
+  CheckboxRadius: platform === PLATFORM.IOS ? scale(13) : 0,
+  CheckboxBorderWidth: platform === PLATFORM.IOS ? scale(1) : scale(2),
+  CheckboxPaddingLeft: platform === PLATFORM.IOS ? scale(4) : scale(2),
+  CheckboxPaddingBottom: platform === PLATFORM.IOS ? 0 : scale(5),
+  CheckboxIconSize: platform === PLATFORM.IOS ? scale(21) : scale(16),
+  CheckboxIconMarginTop: platform === PLATFORM.IOS ? undefined : scale(0),
+  CheckboxFontSize: platform === PLATFORM.IOS ? scale(23 / 0.9) : scale(17),
   checkboxBgColor: "#fff",
-  checkboxSize: 20,
+  checkboxSize: scale(18),
   checkboxTickColor: primaryDark,
   checkboxDefaultColor: "transparent",
 

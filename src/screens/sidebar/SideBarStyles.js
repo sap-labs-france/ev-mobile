@@ -13,7 +13,7 @@ const commonStyles = ScaledSheet.create({
     flex: 1,
   },
   drawerContent: {
-    paddingTop: "3%",
+    paddingTop: "5@s",
     flex: 1,
   },
   logoContainer: {
@@ -40,14 +40,19 @@ const commonStyles = ScaledSheet.create({
     alignSelf: "center",
     marginBottom: "2@s",
   },
+  linkContainer: {
+    paddingTop: "10@s",
+  },
   links: {
     borderBottomWidth: "0@s",
     borderBottomColor: "transparent",
     height: Platform.OS === "ios" ? undefined : "25@s",
-    marginTop: Platform.OS === "ios" ? undefined : "10@s",
-    paddingBottom: Platform.OS === "ios" ? "0@s" : "15@s",
+    marginTop: "10@s",
+    paddingTop: "0@s",
+    paddingBottom: "0@s",
   },
   linkIcon: {
+    fontSize: "16@s",
     color: commonColor.inverseTextColor,
   },
   linkText: {

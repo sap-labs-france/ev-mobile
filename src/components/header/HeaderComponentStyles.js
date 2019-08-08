@@ -13,7 +13,9 @@ const commonStyles = ScaledSheet.create({
     borderBottomColor: commonColor.listBorderColor,
     backgroundColor: commonColor.brandPrimaryDark,
   },
-  leftHeader: {},
+  leftHeader: {
+    marginLeft: "5@s",
+  },
   bodyHeader: {
     flexGrow: 2,
     paddingLeft: Platform.OS === "ios" ? 0 : "50@s",

@@ -98,26 +98,28 @@ class SideBar extends BaseScreen {
                 undefined
               )}
             </View>
-            {isComponentOrganizationActive ? (
-              <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Sites")}>
-                <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
-                <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
+            <View style={style.linkContainer}>
+              {isComponentOrganizationActive ? (
+                <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Sites")}>
+                  <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
+                  <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
+                </ListItem>
+              ) : (
+                undefined
+              )}
+              <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("AllChargers")}>
+                <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
+                <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
               </ListItem>
-            ) : (
-              undefined
-            )}
-            <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("AllChargers")}>
-              <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
-              <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
-            </ListItem>
-            {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
-              <Icon name="ios-settings-outline" />
-              <Text style={style.linkText}>SETTINGS</Text>
-            </ListItem> */}
-            {/* <ListItem button onPress={() => navigation.navigate("Feedback")} iconLeft style={style.links}>
-              <Icon name="ios-paper-outline" />
-              <Text style={style.linkText}>FEEDBACK</Text>
-            </ListItem> */}
+              {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
+                <Icon name="ios-settings-outline" />
+                <Text style={style.linkText}>SETTINGS</Text>
+              </ListItem> */}
+              {/* <ListItem button onPress={() => navigation.navigate("Feedback")} iconLeft style={style.links}>
+                <Icon name="ios-paper-outline" />
+                <Text style={style.linkText}>FEEDBACK</Text>
+              </ListItem> */}
+            </View>
           </Content>
           <View style={style.logoutContainer}>
             <View style={style.logoutButton} foregroundColor={"white"}>

@@ -117,7 +117,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
           drawFilled: true,
           fillAlpha: 65,
           fillColor: processColor(commonColor.brandInfo),
-          valueTextSize: scale(15),
+          valueTextSize: scale(8),
         },
       });
     }
@@ -140,7 +140,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
           drawFilled: true,
           fillAlpha: 65,
           fillColor: processColor(commonColor.brandSuccess),
-          valueTextSize: scale(15),
+          valueTextSize: scale(8),
         },
       });
     }
@@ -169,6 +169,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
         valueFormatter: "##0 kW",
         axisMinimum: 0,
         textColor: processColor(commonColor.brandInfo),
+        textSize: scale(8),
         // limitLines: [{
         //   limit: connector.power,
         //   label: I18n.t("details.connectorMax"),
@@ -192,6 +193,7 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
         axisMinimum: 0,
         axisMaximum: 100,
         textColor: processColor(commonColor.brandSuccess),
+        textSize: scale(8),
       };
     } else {
       chartDefinition.yAxis.right = {
@@ -216,11 +218,13 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
             noDataText={"No Data"}
             legend={{
               enabled: true,
+              textSize: scale(8),
               textColor: processColor(commonColor.brandPrimaryDark),
             }}
             marker={{
               enabled: true,
               markerColor: processColor(commonColor.brandPrimaryDark),
+              textSize: scale(12),
               textColor: processColor(commonColor.inverseTextColor),
             }}
             xAxis={chartDefinition.xAxis}

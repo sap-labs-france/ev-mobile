@@ -4,13 +4,14 @@ import { Platform } from "react-native";
 
 import variable from "./../variables/platform";
 import { PLATFORM } from "./../variables/commonColor";
+import { scale } from "react-native-size-matters";
 
 export default (variables /* : * */ = variable) => {
   const platformStyle = variables.platformStyle;
 
   const tabContainerTheme = {
     elevation: 3,
-    height: 55,
+    height: scale(45),
     flexDirection: "row",
     shadowColor: platformStyle === PLATFORM.MATERIAL ? "#000" : undefined,
     shadowOffset: platformStyle === PLATFORM.MATERIAL ? { width: 0, height: 2 } : undefined,

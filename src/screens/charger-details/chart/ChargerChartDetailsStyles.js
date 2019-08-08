@@ -21,14 +21,6 @@ const commonStyles = ScaledSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  notAuthorizedText: {
-    fontSize: "20@s",
-    color: commonColor.textColor,
-  },
-  notAuthorizedIcon: {
-    fontSize: "75@s",
-    color: commonColor.textColor,
-  },
 });
 
 const portraitStyles = {};

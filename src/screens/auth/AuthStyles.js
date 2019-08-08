@@ -135,11 +135,13 @@ const commonStyles = ScaledSheet.create({
   },
   linksButtonLeft: {
     alignSelf: "flex-start",
-    paddingLeft: 15,
+    marginLeft: "15@s",
+    marginBottom: "15@s",
   },
   linksButtonRight: {
     alignSelf: "flex-end",
-    paddingRight: 15,
+    marginRight: "15@s",
+    marginBottom: "15@s",
   },
   linksTextButton: {
     width: "100%",

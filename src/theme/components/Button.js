@@ -2,6 +2,7 @@
 
 import variable from "./../variables/platform";
 import { PLATFORM } from "./../variables/commonColor";
+import { scale } from "react-native-size-matters";
 
 export default (variables /* : * */ = variable) => {
   const platformStyle = variables.platformStyle;
@@ -370,7 +371,7 @@ export default (variables /* : * */ = variable) => {
     borderRadius: variables.borderRadiusBase,
     borderColor: variables.buttonPrimaryBg,
     borderWidth: null,
-    height: 45,
+    height: scale(40),
     flexDirection: "row",
     elevation: 2,
     shadowColor: platformStyle === PLATFORM.MATERIAL ? variables.brandDark : undefined,
