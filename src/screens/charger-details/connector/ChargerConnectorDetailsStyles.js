@@ -27,7 +27,7 @@ const commonStyles = ScaledSheet.create({
   buttonTransaction: {
     borderRadius: "50@s",
     borderStyle: "solid",
-    borderWidth: 2,
+    borderWidth: "4@s",
     borderColor: commonColor.textColor,
     backgroundColor: commonColor.containerBgColor,
     width: "100@s",
@@ -123,7 +123,7 @@ const commonStyles = ScaledSheet.create({
     alignSelf: "center",
     marginBottom: "5@s",
     borderRadius: "26@s",
-    borderWidth: 2,
+    borderWidth: "3@s",
     borderColor: commonColor.textColor
   }
 });

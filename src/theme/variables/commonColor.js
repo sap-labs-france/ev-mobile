@@ -21,24 +21,26 @@ const fiori3Error = "#ee0000";
 const fiori3Bg = "#f7f7f7";
 const fiori3Primary2 = "#0a6ed1";
 
+const dardLightRatio = 0.3;
+
 const primary = fiori3Brand;
-const primaryLight = color(primary).lighten(0.5).hex();
-const primaryDark = color(primary).darken(0.5).hex();
+const primaryLight = color(primary).lighten(dardLightRatio).hex();
+const primaryDark = color(primary).darken(dardLightRatio).hex();
 const info = fiori3Primary2;
-const infoLight = color(info).lighten(0.5).hex();;
-const infoDark = color(info).darken(0.5).hex();
+const infoLight = color(info).lighten(dardLightRatio).hex();;
+const infoDark = color(info).darken(dardLightRatio).hex();
 const success = fiori3Success;
-const successLight = color(success).lighten(0.5).hex();
-const successDark = color(success).darken(0.5).hex();
+const successLight = color(success).lighten(dardLightRatio).hex();
+const successDark = color(success).darken(dardLightRatio).hex();
 const danger = fiori3Error;
-const dangerLight = color(danger).lighten(0.5).hex();
-const dangerDark = color(danger).darken(0.5).hex();
+const dangerLight = color(danger).lighten(dardLightRatio).hex();
+const dangerDark = color(danger).darken(dardLightRatio).hex();
 const warning = "#FB8C00";
-const warningLight = color(warning).lighten(0.5).hex();
-const warningDark = color(warning).darken(0.5).hex();
+const warningLight = color(warning).lighten(dardLightRatio).hex();
+const warningDark = color(warning).darken(dardLightRatio).hex();
 const disabled = "#757575";
-const disabledLight = color(disabled).lighten(0.5).hex();
-const disabledDark = color(disabled).darken(0.5).hex();
+const disabledLight = color(disabled).lighten(dardLightRatio).hex();
+const disabledDark = color(disabled).darken(dardLightRatio).hex();
 const background = fiori3Bg;
 const backgroundHeader = "#E7E7E7";
 const borderColor = "#ccc";
@@ -301,8 +303,8 @@ export default {
   tabDefaultBg: primaryDark,
   topTabBarTextColor: disabledLight,
   topTabBarActiveTextColor: light,
-  topTabBarBorderColor: platform === PLATFORM.IOS ? borderColor : light,
-  topTabBarActiveBorderColor: platform === PLATFORM.IOS ? info : light,
+  topTabBarBorderColor: platform === PLATFORM.IOS ? borderColor : borderColor,
+  topTabBarActiveBorderColor: light,
 
   // Tabs
   tabBgColor: light,
