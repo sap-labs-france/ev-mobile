@@ -59,6 +59,11 @@ export default class Sites extends BaseAutoRefreshScreen {
     return sites;
   };
 
+  onBack = () => {
+    // Do not bubble up
+    return true;
+  };
+
   refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {

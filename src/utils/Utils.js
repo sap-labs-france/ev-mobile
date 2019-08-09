@@ -141,8 +141,6 @@ export default class Utils {
         return I18n.t("connector.suspendedEVSE");
       case Constants.CONN_STATUS_SUSPENDED_EV:
         return I18n.t("connector.suspendedEV");
-      case Constants.CONN_STATUS_SUSPENDED:
-        return I18n.t("connector.suspended");
       case Constants.CONN_STATUS_UNAVAILABLE:
         return I18n.t("connector.unavailable");
       default:

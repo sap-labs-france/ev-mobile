@@ -9,7 +9,9 @@ const commonStyles = ScaledSheet.create({
     flex: 1,
     backgroundColor: commonColor.brandPrimaryDark
   },
-  spinner: {},
+  spinner: {
+    flex: 1
+  },
   container: {
     flex: 1,
     backgroundColor: commonColor.brandPrimaryDark
@@ -66,7 +68,7 @@ const commonStyles = ScaledSheet.create({
     alignSelf: "center",
     height: "40@s",
     marginBottom: "10@s",
-    backgroundColor: "rgba(255,255,255,0.2)"
+    backgroundColor: commonColor.buttonBg
   },
   buttonText: {
     width: "100%",
@@ -79,7 +81,7 @@ const commonStyles = ScaledSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     marginBottom: "10@s",
-    backgroundColor: "rgba(255,255,255,0.2)",
+    backgroundColor: commonColor.inputGroupBg,
     borderWidth: "0@s",
     borderColor: "transparent"
   },
@@ -136,12 +138,12 @@ const commonStyles = ScaledSheet.create({
   linksButtonLeft: {
     alignSelf: "flex-start",
     marginLeft: "15@s",
-    marginBottom: "15@s"
+    marginBottom: "5@s"
   },
   linksButtonRight: {
     alignSelf: "flex-end",
     marginRight: "15@s",
-    marginBottom: "15@s"
+    marginBottom: "5@s"
   },
   linksTextButton: {
     width: "100%",

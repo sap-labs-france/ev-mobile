@@ -69,8 +69,6 @@ export default {
   PAGING_SIZE: 10,
   DEFAULT_ORDERING: [],
 
-  CSS_HEADER_BG: "#d9d9d9",
-
   CONN_STATUS_AVAILABLE: "Available",
   CONN_STATUS_OCCUPIED: "Occupied",
   CONN_STATUS_CHARGING: "Charging",
@@ -80,7 +78,6 @@ export default {
   CONN_STATUS_PREPARING: "Preparing",
   CONN_STATUS_SUSPENDED_EVSE: "SuspendedEVSE",
   CONN_STATUS_SUSPENDED_EV: "SuspendedEV",
-  CONN_STATUS_SUSPENDED: "Suspended",
   CONN_STATUS_UNAVAILABLE: "Unavailable",
 
   CONN_TYPE_2: "T2",

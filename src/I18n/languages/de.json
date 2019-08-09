@@ -83,7 +83,7 @@
     "charging": "Lädt",
     "available": "Verfügbar",
     "unavailable": "Unverfügbar",
-    "suspended": "Unterbrochene",
+    "notCharging": "Unterbrochene",
     "suspendedEV": "EV angehalten",
     "suspendedEVSE": "EVSE angehalten",
     "faulted": "Fehlerhaft",

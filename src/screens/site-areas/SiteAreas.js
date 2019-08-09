@@ -53,6 +53,13 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
     return siteAreas;
   };
 
+  onBack = () => {
+    // Back mobile button: Force navigation
+    this.props.navigation.navigate("Sites");
+    // Do not bubble up
+    return true;
+  };
+
   refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {

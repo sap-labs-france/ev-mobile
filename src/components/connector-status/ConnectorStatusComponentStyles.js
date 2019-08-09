@@ -23,7 +23,7 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: "transparent"
   },
   commonConnectorValue: {
-    fontSize: "20@s",
+    fontSize: "22@s",
     fontWeight: "bold",
     textAlign: "center",
     color: commonColor.inverseTextColor
@@ -93,7 +93,7 @@ const commonStyles = ScaledSheet.create({
   },
   chargingConnector: {
     backgroundColor: commonColor.brandPrimary,
-    borderColor: commonColor.brandInfo,
+    borderColor: commonColor.brandInfoLight,
     borderTopColor: commonColor.brandPrimary,
     borderBottomColor: commonColor.brandPrimary
   },

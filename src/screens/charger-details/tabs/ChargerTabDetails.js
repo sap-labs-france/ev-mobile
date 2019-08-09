@@ -42,6 +42,18 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
     await super.componentWillUnmount();
   }
 
+  onBack = () => {
+    const { siteAreaID } = this.state;
+    // Safe way to retrieve the Site ID to navigate back from a notification
+    const siteID = this._getSiteIDFromChargers();
+    if (siteAreaID) {
+      // Back mobile button: Force navigation
+      this.props.navigation.navigate("SiteAreas", { siteID });
+    }
+    // Do not bubble up
+    return true;
+  };
+
   refresh = async () => {
     if (this.isMounted()) {
       // Get Charger
@@ -139,40 +151,44 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          <Tabs tabBarPosition="bottom" locked={true} initialPage={0}>
-            <Tab
-              heading={
-                <TabHeading style={style.tabHeader}>
-                  <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
-                </TabHeading>
-              }>
-              <ChargerConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation} />
-            </Tab>
-            {connector.activeTransactionID && (isAuthorizedToStopTransaction || isAdmin) ? (
+          {!isAuthorizedToStopTransaction && !isAdmin ?
+            <ChargerConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation} />
+          :
+            <Tabs tabBarPosition="bottom" locked={true} initialPage={0}>
               <Tab
                 heading={
                   <TabHeading style={style.tabHeader}>
-                    <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
+                    <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
                   </TabHeading>
                 }>
-                <ChargerChartDetails transactionID={connector.activeTransactionID} isAdmin={isAdmin} navigation={navigation} />
+                <ChargerConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation} />
               </Tab>
-            ) : (
-              undefined
-            )}
-            {isAdmin ? (
-              <Tab
-                heading={
-                  <TabHeading style={style.tabHeader}>
-                    <Icon style={style.tabIcon} type="MaterialIcons" name="info" />
-                  </TabHeading>
-                }>
-                <ChargerDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation} />
-              </Tab>
-            ) : (
-              undefined
-            )}
-          </Tabs>
+              {connector.activeTransactionID && (isAuthorizedToStopTransaction || isAdmin) ? (
+                <Tab
+                  heading={
+                    <TabHeading style={style.tabHeader}>
+                      <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
+                    </TabHeading>
+                  }>
+                  <ChargerChartDetails transactionID={connector.activeTransactionID} isAdmin={isAdmin} navigation={navigation} />
+                </Tab>
+              ) : (
+                undefined
+              )}
+              {isAdmin ? (
+                <Tab
+                  heading={
+                    <TabHeading style={style.tabHeader}>
+                      <Icon style={style.tabIcon} type="MaterialIcons" name="info" />
+                    </TabHeading>
+                  }>
+                  <ChargerDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation} />
+                </Tab>
+              ) : (
+                undefined
+              )}
+            </Tabs>
+            }
         </BackgroundComponent>
       </ScrollView>
     );

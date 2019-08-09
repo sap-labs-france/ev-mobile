@@ -15,31 +15,36 @@ const platform = Platform.OS;
 const platformStyle = undefined;
 const isIphoneX = platform === PLATFORM.IOS && (deviceHeight === 812 || deviceWidth === 812 || deviceHeight === 896 || deviceWidth === 896);
 
-const fiori3ShellColor = "#354a5f";
-const fiori3Success = "#16ab54";
-const fiori3SuccessBorder = "#107e3e";
-const fiori3Error = "#ee0000";
-const fiori3ErrorBorder = "#bb0000";
-const fiori3Bg = "#f7f7f7";
-const fiori3Primary = "#354a5f";
-const fiori3Primary2 = "#0a6ed1";
-const fiori3Active = "#0854a0";
-const fiori3ShellInteractiveBorder = "#7996b4";
 const fiori3Brand = "#0a6ed1";
+const fiori3Success = "#16ab54";
+const fiori3Error = "#ee0000";
+const fiori3Bg = "#f7f7f7";
+const fiori3Primary2 = "#0a6ed1";
 
 const primary = fiori3Brand;
-const primaryLight = fiori3ShellInteractiveBorder;
-const primaryDark = fiori3ShellColor;
-const info = "#81C2EA";
+const primaryLight = color(primary).lighten(0.5).hex();
+const primaryDark = color(primary).darken(0.5).hex();
+const info = fiori3Primary2;
+const infoLight = color(info).lighten(0.5).hex();;
+const infoDark = color(info).darken(0.5).hex();
 const success = fiori3Success;
-const successDark = fiori3SuccessBorder;
+const successLight = color(success).lighten(0.5).hex();
+const successDark = color(success).darken(0.5).hex();
 const danger = fiori3Error;
-const dangerDark = fiori3ErrorBorder;
-const dangerLight = "#FFA9A9";
+const dangerLight = color(danger).lighten(0.5).hex();
+const dangerDark = color(danger).darken(0.5).hex();
 const warning = "#FB8C00";
-const warningDark = "#C66F01";
-const disable = "#757575";
-const disableDark = "#4F4F4F";
+const warningLight = color(warning).lighten(0.5).hex();
+const warningDark = color(warning).darken(0.5).hex();
+const disabled = "#757575";
+const disabledLight = color(disabled).lighten(0.5).hex();
+const disabledDark = color(disabled).darken(0.5).hex();
+const background = fiori3Bg;
+const backgroundHeader = "#E7E7E7";
+const borderColor = "#ccc";
+const transparentBg = "rgba(256, 256, 256, 0.3)";
+const dark = "#000";
+const light = "#f4f4f4";
 
 export default {
   platformStyle,
@@ -50,30 +55,36 @@ export default {
   brandPrimaryLight: primaryLight,
   brandPrimaryDark: primaryDark,
   brandInfo: info,
+  brandInfoLight: infoLight,
+  brandInfoDark: infoDark,
   brandSuccess: success,
+  brandSuccessLight: successLight,
   brandSuccessDark: successDark,
   brandDanger: danger,
   brandDangerLight: dangerLight,
   brandDangerDark: dangerDark,
   brandWarning: warning,
+  brandWarningLight: warningLight,
   brandWarningDark: warningDark,
-  brandDisable: disable,
-  brandDisableDark: disableDark,
+  brandDisable: disabled,
+  brandDisableLight: disabledLight,
+  brandDisableDark: disabledDark,
+  brandBackground: background,
 
-  brandDark: "#000",
-  brandLight: "#f4f4f4",
+  brandDark: dark,
+  brandLight: light,
 
   // Accordion
-  headerStyle: "#edebed",
-  iconStyle: "#000",
-  contentStyle: "#f5f4f5",
-  expandedIconStyle: "#000",
-  accordionBorderColor: "#d3d3d3",
+  headerStyle: light,
+  iconStyle: dark,
+  contentStyle: light,
+  expandedIconStyle: dark,
+  accordionBorderColor: disabledLight,
 
   // ActionSheet
   elevation: 4,
   containerTouchableBackgroundColor: "rgba(0,0,0,0.4)",
-  innerTouchableBackgroundColor: "#f7f7f7",
+  innerTouchableBackgroundColor: light,
   listItemHeight: 50,
   listItemBorderColor: "transparent",
   marginHorizontal: -15,
@@ -81,22 +92,23 @@ export default {
   marginTop: 15,
   minHeight: 56,
   padding: 15,
-  touchableTextColor: "#757575",
+  touchableTextColor: disabled,
 
   // Android
   androidRipple: true,
-  androidRippleColor: "rgba(256, 256, 256, 0.3)",
+  androidRippleColor: transparentBg,
   androidRippleColorDark: "rgba(0, 0, 0, 0.15)",
   buttonUppercaseAndroidText: true,
 
   // Badge
-  badgeBg: "#ED1727",
+  badgeBg: light,
   badgeColor: primaryDark,
   badgePadding: platform === PLATFORM.IOS ? 3 : 0,
 
   // Button
   buttonFontFamily: platform === PLATFORM.IOS ? "System" : "Roboto_medium",
-  buttonDisabledBg: "#b5b5b5",
+  buttonDisabledBg: disabled,
+  buttonBg: transparentBg,
   buttonPadding: 6,
   get buttonPrimaryBg() {
     return this.brandPrimary;
@@ -148,8 +160,8 @@ export default {
   },
 
   // Card
-  cardDefaultBg: fiori3Bg,
-  cardBorderColor: "#ccc",
+  cardDefaultBg: background,
+  cardBorderColor: borderColor,
   cardBorderRadius: 2,
   cardItemPadding: platform === PLATFORM.IOS ? 10 : 12,
 
@@ -161,16 +173,16 @@ export default {
   CheckboxIconSize: platform === PLATFORM.IOS ? scale(21) : scale(16),
   CheckboxIconMarginTop: platform === PLATFORM.IOS ? undefined : scale(0),
   CheckboxFontSize: platform === PLATFORM.IOS ? scale(23 / 0.9) : scale(17),
-  checkboxBgColor: "#fff",
+  checkboxBgColor: light,
   checkboxSize: scale(18),
   checkboxTickColor: primaryDark,
   checkboxDefaultColor: "transparent",
 
   // Container
-  containerBgColor: "#f7f7f7",
+  containerBgColor: background,
 
   // Date Picker
-  datePickerTextColor: "#000",
+  datePickerTextColor: dark,
   datePickerBg: "transparent",
 
   // FAB
@@ -196,24 +208,24 @@ export default {
   footerPaddingBottom: 0,
 
   // FooterTab
-  tabBarTextColor: "#bfc6ea",
+  tabBarTextColor: primaryDark,
   tabBarTextSize: platform === PLATFORM.IOS ? 14 : 11,
-  activeTab: platform === PLATFORM.IOS ? "#007aff" : "#fff",
-  sTabBarActiveTextColor: "#007aff",
-  tabBarActiveTextColor: platform === PLATFORM.IOS ? "#2874F0" : "#fff",
-  tabActiveBgColor: platform === PLATFORM.IOS ? "#cde1f9" : "#3F51B5",
+  activeTab: platform === PLATFORM.IOS ? primary : light,
+  sTabBarActiveTextColor: primaryLight,
+  tabBarActiveTextColor: platform === PLATFORM.IOS ? primaryLight : light,
+  tabActiveBgColor: platform === PLATFORM.IOS ? primaryLight : primary,
 
   // Header
   toolbarBtnColor: primaryDark,
   toolbarDefaultBg: primary,
   toolbarHeight: platform === PLATFORM.IOS ? 64 : 56,
   toolbarSearchIconSize: platform === PLATFORM.IOS ? 20 : 23,
-  toolbarInputColor: platform === PLATFORM.IOS ? "#CECDD2" : "#fff",
+  toolbarInputColor: platform === PLATFORM.IOS ? disabledLight : light,
   searchBarHeight: platform === PLATFORM.IOS ? 30 : 40,
   searchBarInputHeight: platform === PLATFORM.IOS ? 30 : 50,
   toolbarBtnTextColor: primaryDark,
   iosStatusbar: "dark-content",
-  toolbarDefaultBorder: platform === PLATFORM.IOS ? "#a7a6ab" : "#3F51B5",
+  toolbarDefaultBorder: platform === PLATFORM.IOS ? disabledLight : primary,
   get statusBarColor() {
     return color(this.toolbarDefaultBg)
       .darken(0.2)
@@ -232,15 +244,16 @@ export default {
 
   // InputGroup
   inputFontSize: 17,
-  inputBorderColor: "#D9D5DC",
-  inputSuccessBorderColor: "#2b8339",
-  inputErrorBorderColor: "#ed2f2f",
+  inputBorderColor: borderColor,
+  inputSuccessBorderColor: success,
+  inputErrorBorderColor: danger,
   inputHeightBase: 50,
+  inputGroupBg: transparentBg,
   get inputColor() {
     return this.textColor;
   },
   get inputColorPlaceholder() {
-    return "#575757";
+    return this.brandDisabledDark;
   },
 
   // Line Height
@@ -252,53 +265,54 @@ export default {
 
   // List
   listBg: "transparent",
-  listBorderColor: "#c9c9c9",
-  listDividerBg: "#f4f4f4",
-  listBtnUnderlayColor: "#DDD",
+  listBorderColor: borderColor,
+  listDividerBg: light,
+  listBtnUnderlayColor: disabledLight,
   listItemPadding: platform === PLATFORM.IOS ? 10 : 12,
-  listNoteColor: "#808080",
+  listNoteColor: disabledDark,
   listNoteSize: 13,
-  listItemSelected: platform === PLATFORM.IOS ? "#007aff" : "#3F51B5",
+  listItemSelected: platform === PLATFORM.IOS ? info : primary,
 
   // Progress Bar
-  defaultProgressColor: "#E4202D",
-  inverseProgressColor: "#1A191B",
+  defaultProgressColor: danger,
+  inverseProgressColor: dark,
 
   // Radio Button
   radioBtnSize: platform === PLATFORM.IOS ? 25 : 23,
-  radioSelectedColorAndroid: "#3F51B5",
+  radioSelectedColorAndroid: primary,
   radioBtnLineHeight: platform === PLATFORM.IOS ? 29 : 24,
   get radioColor() {
     return primary;
   },
 
   // Segment
-  segmentBackgroundColor: platform === PLATFORM.IOS ? "#F8F8F8" : "#3F51B5",
-  segmentActiveBackgroundColor: platform === PLATFORM.IOS ? "#007aff" : "#fff",
-  segmentTextColor: platform === PLATFORM.IOS ? "#007aff" : "#fff",
-  segmentActiveTextColor: platform === PLATFORM.IOS ? "#fff" : "#3F51B5",
-  segmentBorderColor: platform === PLATFORM.IOS ? "#007aff" : "#fff",
-  segmentBorderColorMain: platform === PLATFORM.IOS ? "#a7a6ab" : "#3F51B5",
+  segmentBackgroundColor: platform === PLATFORM.IOS ? light : primary,
+  segmentActiveBackgroundColor: platform === PLATFORM.IOS ? info : light,
+  segmentTextColor: platform === PLATFORM.IOS ? info : light,
+  segmentActiveTextColor: platform === PLATFORM.IOS ? light : primary,
+  segmentBorderColor: platform === PLATFORM.IOS ? info : light,
+  segmentBorderColorMain: platform === PLATFORM.IOS ? borderColor : primary,
 
   // Spinner
-  defaultSpinnerColor: "#45D56E",
-  inverseSpinnerColor: "#1A191B",
+  defaultSpinnerColor: primaryDark,
+  inverseSpinnerColor: primaryLight,
 
   // Tab
   tabDefaultBg: primaryDark,
-  topTabBarTextColor: "#b3c7f9",
-  topTabBarActiveTextColor: "#fff",
-  topTabBarBorderColor: platform === PLATFORM.IOS ? "#a7a6ab" : "#fff",
-  topTabBarActiveBorderColor: platform === PLATFORM.IOS ? "#007aff" : "#fff",
+  topTabBarTextColor: disabledLight,
+  topTabBarActiveTextColor: light,
+  topTabBarBorderColor: platform === PLATFORM.IOS ? borderColor : light,
+  topTabBarActiveBorderColor: platform === PLATFORM.IOS ? info : light,
 
   // Tabs
-  tabBgColor: "#F8F8F8",
+  tabBgColor: light,
   tabFontSize: 15,
 
   // Text
   textColor: primaryDark,
-  headerTextColor: fiori3Primary,
-  inverseTextColor: "#fff",
+  headerTextColor: primaryDark,
+  headerBgColor: backgroundHeader,
+  inverseTextColor: light,
   noteFontSize: 14,
   get defaultTextColor() {
     return this.textColor;
@@ -315,7 +329,7 @@ export default {
   borderRadiusBase: platform === PLATFORM.IOS ? 5 : 2,
   borderWidth: 1 / PixelRatio.getPixelSizeForLayoutSize(1),
   contentPadding: 10,
-  dropdownLinkColor: "#414142",
+  dropdownLinkColor: disabledDark,
   inputLineHeight: 24,
   deviceWidth,
   deviceHeight,
