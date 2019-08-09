@@ -1,10 +1,8 @@
 import React from "react";
-import { ResponsiveComponent } from "react-native-responsive-ui";
-import { ImageBackground, TouchableOpacity, Image } from "react-native";
-import { Container, Content, Text, Icon, ListItem, Thumbnail, View } from "native-base";
+import { TouchableOpacity, Image } from "react-native";
+import { Header, Container, Content, Text, Icon, ListItem, Thumbnail, View } from "native-base";
 import computeStyleSheet from "./SideBarStyles";
 import I18n from "../../I18n/I18n";
-import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import DeviceInfo from "react-native-device-info";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
@@ -89,7 +87,7 @@ class SideBar extends BaseScreen {
       <Container style={style.container}>
         <BackgroundComponent>
           <Content style={style.drawerContent}>
-            <View style={style.logoContainer}>
+            <Header style={style.header}>
               <Image source={logo} style={style.logo} />
               <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
               {DeviceInfo.getLastUpdateTime() ? (
@@ -97,7 +95,7 @@ class SideBar extends BaseScreen {
               ) : (
                 undefined
               )}
-            </View>
+            </Header>
             <View style={style.linkContainer}>
               {isComponentOrganizationActive ? (
                 <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Sites")}>

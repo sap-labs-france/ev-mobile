@@ -16,10 +16,13 @@ const commonStyles = ScaledSheet.create({
     paddingTop: "5@s",
     flex: 1
   },
-  logoContainer: {
+  header: {
+    flexDirection: "column",
     borderColor: commonColor.inverseTextColor,
     borderBottomWidth: 1,
-    padding: "5@s"
+    height: "100@s",
+    paddingBottom: "10@s",
+    marginTop: Platform.OS === "ios" ? "-5@s" : "10@s"
   },
   logo: {
     resizeMode: "contain",
