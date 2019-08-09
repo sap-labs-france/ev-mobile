@@ -117,7 +117,7 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
           placeholderTextColor={commonColor.tabBarTextColor}
           onChangeText={(searchText) => this._searchChanged(searchText)}
         />
-        <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this._clearSearch()} />
+        <Icon type="MaterialIcons" name="delete" style={style.icon} onPress={() => this._clearSearch()} />
       </Animatable.View>
     );
   }
