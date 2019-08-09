@@ -306,7 +306,15 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
         });
       // Basic User: Use the connector data
       } else if (connector.activeTransactionID) {
+        let elapsedTimeFormatted = "00:00:00";
         let inactivityFormatted = "00:00:00";
+        // Elapsed Time?
+        if (connector.activeTransactionDate) {
+          // Get duration
+          const durationSecs = (Date.now() - new Date(connector.activeTransactionDate).getTime()) / 1000;
+          // Format
+          elapsedTimeFormatted = this._formatDurationHHMMSS(durationSecs);
+        }
         // Inactivity?
         if (connector.totalInactivitySecs) {
           // Format
@@ -314,7 +322,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
         }
         // Set
         this.setState({
-          inactivityFormatted
+          inactivityFormatted,
+          elapsedTimeFormatted
         });
       }
     }

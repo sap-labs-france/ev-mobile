@@ -25,7 +25,6 @@ const commonStyles = ScaledSheet.create({
   commonConnectorValue: {
     fontSize: "22@s",
     fontWeight: "bold",
-    textAlign: "center",
     color: commonColor.inverseTextColor
   },
   commonConnectorDescription: {
