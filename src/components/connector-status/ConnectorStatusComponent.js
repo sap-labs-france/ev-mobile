@@ -78,7 +78,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
       case Constants.CONN_STATUS_SUSPENDED:
       case Constants.CONN_STATUS_SUSPENDED_EVSE:
       case Constants.CONN_STATUS_SUSPENDED_EV:
-        status = "supended";
+        status = "suspended";
         break;
       // Available
       case Constants.CONN_STATUS_AVAILABLE:

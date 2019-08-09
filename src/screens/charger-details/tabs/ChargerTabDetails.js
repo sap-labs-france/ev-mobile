@@ -151,9 +151,9 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          {!isAuthorizedToStopTransaction && !isAdmin ?
+          {!isAuthorizedToStopTransaction && !isAdmin ? (
             <ChargerConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation} />
-          :
+          ) : (
             <Tabs tabBarPosition="bottom" locked={true} initialPage={0}>
               <Tab
                 heading={
@@ -188,7 +188,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
                 undefined
               )}
             </Tabs>
-            }
+          )}
         </BackgroundComponent>
       </ScrollView>
     );
