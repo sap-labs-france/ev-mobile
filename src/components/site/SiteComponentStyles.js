@@ -19,7 +19,7 @@ const commonStyles = ScaledSheet.create({
     paddingBottom: "5@s",
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
-    backgroundColor: Constants.CSS_HEADER_BG
+    backgroundColor: commonColor.headerBgColor
   },
   connectorContent: {
     flexDirection: "row",

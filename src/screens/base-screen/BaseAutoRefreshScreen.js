@@ -45,6 +45,12 @@ export default class BaseAutoRefreshScreen extends BaseScreen {
     this._clearRefreshTimer();
   }
 
+  onBack = () => {
+    console.log("REFRESH - MY BACK BUTTON");
+    // Not Handled: has to be taken in the sub-classes
+    false;
+  };
+
   setActive(active) {
     this.timerRefreshActive = active;
   }

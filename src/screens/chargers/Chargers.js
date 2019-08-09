@@ -38,6 +38,11 @@ export default class Chargers extends BaseAutoRefreshScreen {
     await super.componentWillUnmount();
   }
 
+  async componentDidFocus() {
+    // Call parent
+    await super.componentDidFocus();
+  }
+
   _getChargers = async (searchText, skip, limit) => {
     const { siteAreaID } = this.state;
     let chargers = [];
@@ -72,6 +77,18 @@ export default class Chargers extends BaseAutoRefreshScreen {
     }
   };
 
+  onBack = () => {
+    const { siteAreaID } = this.state;
+    // Safe way to retrieve the Site ID to navigate back from a notification
+    const siteID = this._getSiteIDFromChargers();
+    if (siteAreaID) {
+      // Back mobile button: Force navigation
+      this.props.navigation.navigate("SiteAreas", { siteID });
+    }
+    // Do not bubble up
+    return true;
+  };
+
   refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
@@ -104,7 +121,8 @@ export default class Chargers extends BaseAutoRefreshScreen {
     return null;
   };
 
-  _getSiteIDFromChargers(chargers) {
+  _getSiteIDFromChargers() {
+    const { chargers } = this.state;
     // Find the first available Site ID
     if (chargers && chargers.length > 0) {
       for (const charger of chargers) {
@@ -120,7 +138,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
     const { navigation } = this.props;
     const { chargers, siteAreaID } = this.state;
     // Safe way to retrieve the Site ID to navigate back from a notification
-    const siteID = this._getSiteIDFromChargers(chargers);
+    const siteID = this._getSiteIDFromChargers();
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>

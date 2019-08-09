@@ -83,7 +83,7 @@
     "charging": "Charging",
     "available": "Available",
     "unavailable": "Unavailable",
-    "suspended": "Suspended",
+    "notCharging": "Not Charging",
     "suspendedEV": "Suspended EV",
     "suspendedEVSE": "Suspended EVSE",
     "faulted": "Faulted",
