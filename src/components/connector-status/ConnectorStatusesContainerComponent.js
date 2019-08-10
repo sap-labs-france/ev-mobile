@@ -13,7 +13,7 @@ const style = computeStyleSheet();
 export default class ConnectorStatusesContainerComponent extends ResponsiveComponent {
   render() {
     const { connectorStats } = this.props;
-    return connectorStats.hasOwnProperty("chargingConnectors") ? (
+    return (
       <View style={style.container}>
         <ConnectorStatusComponent
           value={connectorStats.availableConnectors}
@@ -21,7 +21,7 @@ export default class ConnectorStatusesContainerComponent extends ResponsiveCompo
           type={Constants.CONN_STATUS_AVAILABLE}
         />
         <ConnectorStatusComponent
-          value={connectorStats.suspendedConnectors + connectorStats.finishingConnectors}
+          value={connectorStats.suspendedConnectors + connectorStats.finishingConnectors + connectorStats.preparingConnectors}
           text={I18n.t("connector.notCharging")}
           type={Constants.CONN_STATUS_SUSPENDED}
         />
@@ -30,18 +30,10 @@ export default class ConnectorStatusesContainerComponent extends ResponsiveCompo
           text={Utils.translateConnectorStatus(Constants.CONN_STATUS_CHARGING)}
           type={Constants.CONN_STATUS_CHARGING}
         />
-      </View>
-    ) : (
-      <View style={style.container}>
         <ConnectorStatusComponent
-          value={connectorStats.availableConnectors}
-          text={Utils.translateConnectorStatus(Constants.CONN_STATUS_AVAILABLE)}
-          type={Constants.CONN_STATUS_AVAILABLE}
-        />
-        <ConnectorStatusComponent
-          value={connectorStats.totalConnectors - connectorStats.availableConnectors}
-          text={Utils.translateConnectorStatus(Constants.CONN_STATUS_OCCUPIED)}
-          type={Constants.CONN_STATUS_SUSPENDED_EVSE}
+          value={connectorStats.unavailableConnectors}
+          text={Utils.translateConnectorStatus(Constants.CONN_STATUS_UNAVAILABLE)}
+          type={Constants.CONN_STATUS_UNAVAILABLE}
         />
       </View>
     );
