@@ -1,7 +1,6 @@
 // @flow
 
 import { StyleSheet } from "react-native";
-
 import variable from "./../variables/platform";
 import { PLATFORM } from "./../variables/commonColor";
 

@@ -1,7 +1,6 @@
 // @flow
 
 import { Platform, Dimensions } from "react-native";
-
 import variable from "./../variables/platform";
 import { PLATFORM } from "./../variables/commonColor";
 

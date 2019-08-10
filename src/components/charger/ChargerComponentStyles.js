@@ -15,7 +15,6 @@ const commonStyles = ScaledSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "transparent",
     paddingLeft: "5@s",
     paddingRight: "5@s",
     borderBottomColor: commonColor.listBorderColor,
