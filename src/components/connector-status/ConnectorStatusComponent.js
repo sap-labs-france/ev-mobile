@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./ConnectorStatusComponentStyles.js";
 import { Animated, Easing } from "react-native";
-import { Badge, Text, View } from "native-base";
+import { Text, View } from "native-base";
 import Constants from "../../utils/Constants";
 
 export default class ConnectorStatusComponent extends ResponsiveComponent {

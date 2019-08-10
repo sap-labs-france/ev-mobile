@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./ConnectorStatusesContainerComponentStyles.js";
-import { Text, View } from "native-base";
+import { View } from "native-base";
 import I18n from "../../I18n/I18n";
 import ConnectorStatusComponent from "./ConnectorStatusComponent";
 import Constants from "../../utils/Constants";
