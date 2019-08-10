@@ -108,7 +108,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     if (connector) {
       return connector.currentConsumption > 0;
     } else {
-      return type === Constants.CONN_STATUS_CHARGING && value >= 0;
+      return type === Constants.CONN_STATUS_CHARGING && value > 0;
     }
   }
 
