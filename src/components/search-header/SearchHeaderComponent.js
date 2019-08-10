@@ -114,7 +114,7 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
           }}
           style={style.inputField}
           placeholder={I18n.t("general.search")}
-          placeholderTextColor={commonColor.tabBarTextColor}
+          placeholderTextColor={commonColor.placeholderTextColor}
           onChangeText={(searchText) => this._searchChanged(searchText)}
         />
         <Icon type="MaterialIcons" name="delete" style={style.icon} onPress={() => this._clearSearch()} />

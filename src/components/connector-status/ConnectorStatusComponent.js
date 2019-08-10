@@ -44,7 +44,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     }
     // Default CSS
     const connectorStyles = {
-      badge: [style.commonConnector],
+      container: [style.commonConnector],
       value: [style.commonConnectorValue],
       description: [style.commonConnectorDescription]
     };
@@ -86,7 +86,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
         break;
     }
     if (status) {
-      connectorStyles.badge.push(style[status + "Connector"]);
+      connectorStyles.container.push(style[status + "Connector"]);
       connectorStyles.value.push(style[status + "ConnectorValue"]);
       connectorStyles.description.push(style[status + "ConnectorDescription"]);
     }
@@ -108,7 +108,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     if (connector) {
       return connector.currentConsumption > 0;
     } else {
-      return type === Constants.CONN_STATUS_CHARGING && value >= 0;
+      return type === Constants.CONN_STATUS_CHARGING && value > 0;
     }
   }
 
@@ -123,14 +123,14 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     return (
       <View style={this.props.text ? style.containerWithDescription : style.containerWithNoDescription}>
         <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
-          <Badge style={connectorStyles.badge}>
+          <View style={connectorStyles.container}>
             <Animated.Text
               style={
                 isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
               }>
               {value}
             </Animated.Text>
-          </Badge>
+          </View>
         </Animated.View>
         {this.props.text ? <Text style={connectorStyles.description}>{this.props.text}</Text> : undefined}
       </View>

@@ -21,7 +21,7 @@ export default class ConnectorStatusesContainerComponent extends ResponsiveCompo
           type={Constants.CONN_STATUS_AVAILABLE}
         />
         <ConnectorStatusComponent
-          value={connectorStats.suspendedConnectors}
+          value={connectorStats.suspendedConnectors + connectorStats.finishingConnectors}
           text={I18n.t("connector.notCharging")}
           type={Constants.CONN_STATUS_SUSPENDED}
         />

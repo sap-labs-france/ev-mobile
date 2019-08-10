@@ -232,7 +232,7 @@ export default class Login extends BaseScreen {
                     type="email"
                     returnKeyType="next"
                     placeholder={I18n.t("authentication.email")}
-                    placeholderTextColor={commonColor.inverseTextColor}
+                    placeholderTextColor={commonColor.placeholderTextColor}
                     onSubmitEditing={() => this.passwordInput.focus()}
                     style={style.inputField}
                     autoCapitalize="none"
@@ -259,7 +259,7 @@ export default class Login extends BaseScreen {
                     ref={(ref) => (this.passwordInput = ref)}
                     onSubmitEditing={() => Keyboard.dismiss()}
                     placeholder={I18n.t("authentication.password")}
-                    placeholderTextColor={commonColor.inverseTextColor}
+                    placeholderTextColor={commonColor.placeholderTextColor}
                     style={style.inputField}
                     autoCapitalize="none"
                     blurOnSubmit={false}
