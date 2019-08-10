@@ -21,7 +21,7 @@ const fiori3Error = "#ee0000";
 const fiori3Bg = "#f7f7f7";
 const fiori3Primary2 = "#0a6ed1";
 
-const dardLightRatio = 0.3;
+const dardLightRatio = 0.5;
 
 const primary = fiori3Brand;
 const primaryLight = color(primary).lighten(dardLightRatio).hex();
@@ -68,9 +68,9 @@ export default {
   brandWarning: warning,
   brandWarningLight: warningLight,
   brandWarningDark: warningDark,
-  brandDisable: disabled,
-  brandDisableLight: disabledLight,
-  brandDisableDark: disabledDark,
+  brandDisabled: disabled,
+  brandDisabledLight: disabledLight,
+  brandDisabledDark: disabledDark,
   brandBackground: background,
 
   brandDark: dark,
@@ -251,6 +251,7 @@ export default {
   inputErrorBorderColor: danger,
   inputHeightBase: 50,
   inputGroupBg: transparentBg,
+  placeholderTextColor: borderColor,
   get inputColor() {
     return this.textColor;
   },

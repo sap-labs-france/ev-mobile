@@ -39,7 +39,6 @@ export default (variables /* : * */ = variable) => {
     paddingHorizontal: 6,
     borderStyle: "solid",
     borderColor: commonColor.textColor,
-    borderRadius: scale(22),
     borderWidth: scale(4),
     justifyContent: "center",
     alignItems: "center",

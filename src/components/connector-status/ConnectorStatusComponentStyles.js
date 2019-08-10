@@ -19,6 +19,14 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center"
   },
   commonConnector: {
+    width: "44@s",
+    height: "44@s",
+    justifyContent: "center",
+    borderStyle: "solid",
+    alignItems: "center",
+    borderWidth: "4@s",
+    borderRadius: "22@s",
+    borderColor: commonColor.textColor,
     backgroundColor: "transparent"
   },
   commonConnectorValue: {
@@ -74,20 +82,20 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.brandWarning
   },
   unavailableConnector: {
-    backgroundColor: commonColor.brandDisable,
-    borderColor: commonColor.brandDisableDark
+    backgroundColor: commonColor.brandDisabled,
+    borderColor: commonColor.brandDisabledDark
   },
   unavailableConnectorValue: {},
   unavailableConnectorDescription: {
-    color: commonColor.brandDisable
+    color: commonColor.brandDisabled
   },
   reservedConnector: {
-    backgroundColor: commonColor.brandDisable,
-    borderColor: commonColor.brandDisableDark
+    backgroundColor: commonColor.brandDisabled,
+    borderColor: commonColor.brandDisabledDark
   },
   reservedConnectorValue: {},
   reservedConnectorDescription: {
-    color: commonColor.brandDisable
+    color: commonColor.brandDisabled
   },
   chargingConnector: {
     backgroundColor: commonColor.brandPrimary,
