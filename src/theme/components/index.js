@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 // @flow
 
 import _ from "lodash";
