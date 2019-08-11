@@ -130,8 +130,7 @@ export default class ChargerDetails extends BaseScreen {
 ChargerDetails.propTypes = {
   charger: PropTypes.object.isRequired,
   connector: PropTypes.object.isRequired,
-  navigation: PropTypes.object.isRequired,
-  isAdmin: PropTypes.bool.isRequired
+  navigation: PropTypes.object.isRequired
 };
 
 ChargerDetails.defaultProps = {};

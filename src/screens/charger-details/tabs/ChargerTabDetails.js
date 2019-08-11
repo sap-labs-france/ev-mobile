@@ -5,7 +5,6 @@ import ChargerDetails from "../details/ChargerDetails";
 import ChargerChartDetails from "../chart/ChargerChartDetails";
 import ChargerConnectorDetails from "../connector/ChargerConnectorDetails";
 import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
-import ProviderFactory from "../../../provider/ProviderFactory";
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./ChargerTabDetailsStyles";
@@ -22,7 +21,9 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
       siteAreaID: Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null),
       selectedTabIndex: 0,
       firstLoad: true,
-      isAuthorizedToStopTransaction: false,
+      canStartTransaction: false,
+      canStopTransaction: false,
+      canDisplayTransaction: false,
       isAdmin: false,
       refreshing: false
     };
@@ -33,6 +34,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();
+    // Safe way to retrieve the Site ID to navigate back from a notification
     // Refresh Charger
     await this.refresh();
   }
@@ -90,7 +92,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
         },
         async () => {
           // Check Auth
-          await this._isAuthorizedStopTransaction();
+          this._computeAuths();
         }
       );
     } catch (error) {
@@ -99,27 +101,80 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
     }
   };
 
-  _isAuthorizedStopTransaction = async () => {
+  _computeAuths = () => {
+    // Check Auth
+    this._canStopTransaction();
+    this._canStartTransaction();
+    this._canDisplayTransaction();
+  }
+
+  _canStopTransaction = () => {
     const { charger, connector } = this.state;
     try {
       // Transaction?
       if (connector.activeTransactionID !== 0) {
-        // Call
-        const result = await this.centralServerProvider.isAuthorizedStopTransaction({
-          Action: "StopTransaction",
-          Arg1: charger.id,
-          Arg2: connector.activeTransactionID
+        // Get the Security Provider
+        const securityProvider = this.centralServerProvider.getSecurityProvider();
+        // Check Auth
+        const isAuth = securityProvider.canStopTransaction(charger.siteArea, connector.activeBadgeID);
+        // Assign
+        this.setState({
+          canStopTransaction: isAuth
         });
-        if (result) {
-          // Assign
-          this.setState({
-            isAuthorizedToStopTransaction: result.IsAuthorized
-          });
-        }
       } else {
         // Not Authorized
         this.setState({
-          isAuthorizedToStopTransaction: false
+          canStopTransaction: false
+        });
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+    }
+  };
+
+  _canStartTransaction = () => {
+    const { charger, connector } = this.state;
+    try {
+      // Transaction?
+      if (connector.activeTransactionID === 0) {
+        // Get the Security Provider
+        const securityProvider = this.centralServerProvider.getSecurityProvider();
+        // Check Auth
+        const isAuth = securityProvider.canStartTransaction(charger.siteArea);
+        // Assign
+        this.setState({
+          canStartTransaction: isAuth
+        });
+      } else {
+        // Not Authorized
+        this.setState({
+          canStartTransaction: false
+        });
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+    }
+  };
+
+  _canDisplayTransaction = () => {
+    const { charger, connector } = this.state;
+    try {
+      // Transaction?
+      if (connector.activeTransactionID !== 0) {
+        // Get the Security Provider
+        const securityProvider = this.centralServerProvider.getSecurityProvider();
+        // Check Auth
+        const isAuth = securityProvider.canReadTransaction(charger.siteArea, connector.activeBadgeID);
+        // Assign
+        this.setState({
+          canDisplayTransaction: isAuth
+        });
+      } else {
+        // Not Authorized
+        this.setState({
+          canDisplayTransaction: false
         });
       }
     } catch (error) {
@@ -131,7 +186,8 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
   render() {
     const style = computeStyleSheet();
     const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
-    const { charger, connector, isAdmin, isAuthorizedToStopTransaction, siteAreaID, firstLoad } = this.state;
+    const { charger, connector, isAdmin, siteAreaID, firstLoad,
+      canStopTransaction, canStartTransaction, canDisplayTransaction } = this.state;
     const { navigation } = this.props;
     const connectorLetter = String.fromCharCode(64 + connectorID);
     return firstLoad ? (
@@ -151,8 +207,10 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          {!isAuthorizedToStopTransaction && !isAdmin ?
-            <ChargerConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation} />
+          {!canStopTransaction ?
+            <ChargerConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin}
+              canDisplayTransaction={canDisplayTransaction} canStartTransaction={canStartTransaction} canStopTransaction={canStopTransaction}
+              navigation={navigation} />
           :
             <Tabs tabBarPosition="bottom" locked={true} initialPage={0}>
               <Tab
@@ -161,16 +219,18 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
                     <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
                   </TabHeading>
                 }>
-                <ChargerConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation} />
+                <ChargerConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin}
+                  canStartTransaction={canStartTransaction} canStopTransaction={canStopTransaction}
+                  navigation={navigation} />
               </Tab>
-              {connector.activeTransactionID && (isAuthorizedToStopTransaction || isAdmin) ? (
+              {canDisplayTransaction ? (
                 <Tab
                   heading={
                     <TabHeading style={style.tabHeader}>
                       <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
                     </TabHeading>
                   }>
-                  <ChargerChartDetails transactionID={connector.activeTransactionID} isAdmin={isAdmin} navigation={navigation} />
+                  <ChargerChartDetails transactionID={connector.activeTransactionID} navigation={navigation} />
                 </Tab>
               ) : (
                 undefined
@@ -182,7 +242,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
                       <Icon style={style.tabIcon} type="MaterialIcons" name="info" />
                     </TabHeading>
                   }>
-                  <ChargerDetails charger={charger} connector={connector} isAdmin={isAdmin} navigation={navigation} />
+                  <ChargerDetails charger={charger} connector={connector} navigation={navigation} />
                 </Tab>
               ) : (
                 undefined

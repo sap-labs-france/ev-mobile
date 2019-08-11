@@ -26,7 +26,6 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       elapsedTimeFormatted: "00:00:00",
       inactivityFormatted: "00:00:00",
       startTransactionNbTrial: 0,
-      isAuthorizedToStopTransaction: false,
       buttonDisabled: true
     };
     // Set refresh period
@@ -138,39 +137,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     }
   };
 
-  _isAuthorizedStopTransaction = async () => {
-    const { charger, connector } = this.props;
-    try {
-      // Transaction?
-      if (connector.activeTransactionID !== 0) {
-        // Call
-        const result = await this.centralServerProvider.isAuthorizedStopTransaction({
-          Action: "StopTransaction",
-          Arg1: charger.id,
-          Arg2: connector.activeTransactionID
-        });
-        if (result) {
-          this.setState({
-            isAuthorizedToStopTransaction: result.IsAuthorized
-          });
-        }
-      } else {
-        // Not Authorized
-        this.setState({
-          isAuthorizedToStopTransaction: false
-        });
-      }
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
-    }
-  };
-
   refresh = async () => {
     // Get Current Transaction
     await this._getTransaction();
-    // Check Authorization
-    await this._isAuthorizedStopTransaction();
     // Check to enable the buttons after a certain period of time
     this._handleStartStopDisabledButton();
   };
@@ -283,7 +252,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     const { connector } = this.props;
     // Component Mounted?
     if (this.isMounted()) {
-      // Transaction timestamp ?
+      // Transaction loaded?
       if (transaction) {
         let elapsedTimeFormatted = "00:00:00";
         let inactivityFormatted = "00:00:00";
@@ -524,8 +493,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
 
   render() {
     const style = computeStyleSheet();
-    const { connector } = this.props;
-    const { siteImage, isAuthorizedToStopTransaction } = this.state;
+    const { connector, canStopTransaction, canStartTransaction } = this.props;
+    const { siteImage } = this.state;
     return (
       <Container style={style.container}>
         {/* Site Image */}
@@ -533,13 +502,14 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
         <BackgroundComponent active={false}>
           {/* Start/Stop Transaction */}
           <View style={style.transactionContainer}>
-            {connector.activeTransactionID === 0 ? (
+            {canStartTransaction && connector.activeTransactionID === 0 ?
               this._renderStartTransactionButton(style)
-            ) : isAuthorizedToStopTransaction ? (
-              this._renderStopTransactionButton(style)
-            ) : (
-              <View style={style.noButtonStopTransaction} />
-            )}
+            :
+              canStopTransaction && connector.activeTransactionID > 0 ?
+                this._renderStopTransactionButton(style)
+              :
+                <View style={style.noButtonStopTransaction} />
+            }
           </View>
           {/* Details */}
           <ScrollView style={style.scrollViewContainer}>
@@ -569,7 +539,9 @@ ChargerConnectorDetails.propTypes = {
   charger: PropTypes.object.isRequired,
   connector: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired,
-  isAdmin: PropTypes.bool.isRequired
+  isAdmin: PropTypes.bool.isRequired,
+  canStopTransaction: PropTypes.bool.isRequired,
+  canStartTransaction: PropTypes.bool.isRequired
 };
 
 ChargerConnectorDetails.defaultProps = {};
