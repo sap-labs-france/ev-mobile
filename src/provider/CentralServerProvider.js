@@ -421,16 +421,6 @@ export default class CentralServerProvider {
     return siteImage.data;
   }
 
-  async isAuthorizedStopTransaction(params = {}) {
-    this.debug("isAuthorizedStopTransaction");
-    // Call
-    const result = await axios.get(`${_centralRestServerServiceSecuredURL}/IsAuthorized`, {
-      headers: this._buildSecuredHeaders(),
-      params
-    });
-    return result.data;
-  }
-
   async getPrice() {
     this.debug("getPrice");
     // Call
