@@ -106,7 +106,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
     this._canStopTransaction();
     this._canStartTransaction();
     this._canDisplayTransaction();
-  }
+  };
 
   _canStopTransaction = () => {
     const { charger, connector } = this.state;
@@ -186,8 +186,16 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
   render() {
     const style = computeStyleSheet();
     const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
-    const { charger, connector, isAdmin, siteAreaID, firstLoad,
-      canStopTransaction, canStartTransaction, canDisplayTransaction } = this.state;
+    const {
+      charger,
+      connector,
+      isAdmin,
+      siteAreaID,
+      firstLoad,
+      canStopTransaction,
+      canStartTransaction,
+      canDisplayTransaction
+    } = this.state;
     const { navigation } = this.props;
     const connectorLetter = String.fromCharCode(64 + connectorID);
     return firstLoad ? (
@@ -207,11 +215,17 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          {!canStopTransaction ?
-            <ChargerConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin}
-              canDisplayTransaction={canDisplayTransaction} canStartTransaction={canStartTransaction} canStopTransaction={canStopTransaction}
-              navigation={navigation} />
-          :
+          {!canStopTransaction ? (
+            <ChargerConnectorDetails
+              charger={charger}
+              connector={connector}
+              isAdmin={isAdmin}
+              canDisplayTransaction={canDisplayTransaction}
+              canStartTransaction={canStartTransaction}
+              canStopTransaction={canStopTransaction}
+              navigation={navigation}
+            />
+          ) : (
             <Tabs tabBarPosition="bottom" locked={true} initialPage={0}>
               <Tab
                 heading={
@@ -219,9 +233,14 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
                     <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
                   </TabHeading>
                 }>
-                <ChargerConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin}
-                  canStartTransaction={canStartTransaction} canStopTransaction={canStopTransaction}
-                  navigation={navigation} />
+                <ChargerConnectorDetails
+                  charger={charger}
+                  connector={connector}
+                  isAdmin={isAdmin}
+                  canStartTransaction={canStartTransaction}
+                  canStopTransaction={canStopTransaction}
+                  navigation={navigation}
+                />
               </Tab>
               {canDisplayTransaction ? (
                 <Tab

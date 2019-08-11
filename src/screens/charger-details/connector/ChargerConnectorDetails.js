@@ -502,14 +502,13 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
         <BackgroundComponent active={false}>
           {/* Start/Stop Transaction */}
           <View style={style.transactionContainer}>
-            {canStartTransaction && connector.activeTransactionID === 0 ?
+            {canStartTransaction && connector.activeTransactionID === 0 ? (
               this._renderStartTransactionButton(style)
-            :
-              canStopTransaction && connector.activeTransactionID > 0 ?
-                this._renderStopTransactionButton(style)
-              :
-                <View style={style.noButtonStopTransaction} />
-            }
+            ) : canStopTransaction && connector.activeTransactionID > 0 ? (
+              this._renderStopTransactionButton(style)
+            ) : (
+              <View style={style.noButtonStopTransaction} />
+            )}
           </View>
           {/* Details */}
           <ScrollView style={style.scrollViewContainer}>
