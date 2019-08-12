@@ -57,12 +57,12 @@ const commonStyles = ScaledSheet.create({
   availableConnectorDescription: {
     color: commonColor.brandSuccess
   },
-  supendedConnector: {
+  suspendedConnector: {
     backgroundColor: commonColor.brandPrimary,
     borderColor: commonColor.brandPrimaryDark
   },
-  supendedConnectorValue: {},
-  supendedConnectorDescription: {
+  suspendedConnectorValue: {},
+  suspendedConnectorDescription: {
     color: commonColor.brandPrimaryDark
   },
   preparingConnector: {
