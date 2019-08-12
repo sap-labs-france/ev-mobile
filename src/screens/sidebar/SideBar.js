@@ -1,25 +1,18 @@
 import React from "react";
-import { ResponsiveComponent } from "react-native-responsive-ui";
-import { ImageBackground, TouchableOpacity, Image } from "react-native";
-import {
-  Container,
-  Content,
-  Text,
-  Icon,
-  ListItem,
-  Thumbnail,
-  View
-} from "native-base";
+import { TouchableOpacity, Image } from "react-native";
+import { Header, Container, Content, Text, Icon, ListItem, Thumbnail, View } from "native-base";
 import computeStyleSheet from "./SideBarStyles";
-import ProviderFactory from "../../provider/ProviderFactory";
 import I18n from "../../I18n/I18n";
-import Utils from "../../utils/Utils";
+import Constants from "../../utils/Constants";
 import DeviceInfo from "react-native-device-info";
+import BackgroundComponent from "../../components/background/BackgroundComponent";
+import moment from "moment";
+import BaseScreen from "../base-screen/BaseScreen";
 
-const _provider = ProviderFactory.getProvider();
-const noPhoto = require("../../../assets/no-photo.png");
+const noPhoto = require("../../../assets/no-photo-inverse.png");
+const logo = require("../../../assets/logo-low.png");
 
-class SideBar extends ResponsiveComponent {
+class SideBar extends BaseScreen {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,47 +24,57 @@ class SideBar extends ResponsiveComponent {
   }
 
   async componentDidMount() {
-    // Active
-    const isComponentOrganizationActive = (await _provider.getSecurityProvider()).isComponentOrganizationActive();
+    // Call parent
+    await super.componentDidMount();
+    // Init User
+    await this.refresh();
+  }
+
+  refresh = async () => {
+    await this._getUserInfo();
+  };
+
+  _getUserInfo = async () => {
     // Logoff
-    const userInfo = await _provider.getUserInfo();
+    const userInfo = this.centralServerProvider.getUserInfo();
+    const securityProvider = this.centralServerProvider.getSecurityProvider();
     // Add sites
     // eslint-disable-next-line react/no-did-mount-set-state
     this.setState(
       {
-        userName: `${userInfo.name} ${userInfo.firstName}`,
-        userID: `${userInfo.id}`,
-        isComponentOrganizationActive
+        userName: userInfo ? `${userInfo.name} ${userInfo.firstName}` : "",
+        userID: userInfo ? `${userInfo.id}` : "",
+        isComponentOrganizationActive: securityProvider ? securityProvider.isComponentOrganizationActive() : false
       },
       async () => {
         await this._getUserImage();
       }
     );
-  }
+  };
 
   async _getUserImage() {
     const { userID } = this.state;
     try {
-      const result = await _provider.getUserImage({ ID: userID });
+      const result = await this.centralServerProvider.getUserImage({ ID: userID });
       if (result) {
         this.setState({ userImage: result.image });
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(error, this.props);
+      setTimeout(() => this.refresh(), Constants.AUTO_REFRESH_ON_ERROR_PERIOD_MILLIS);
     }
   }
 
   async _logoff() {
     // Logoff
-    await _provider.logoff();
+    this.centralServerProvider.logoff();
     // Back to login
     this.props.navigation.navigate("AuthNavigator");
   }
 
   _navigateTo = (screen, params = {}) => {
     // Navigate
-    this.props.navigation.navigate(screen, params);
+    this.props.navigation.navigate({ routeName: screen, params });
     // Close
     this.props.navigation.closeDrawer();
   };
@@ -81,92 +84,61 @@ class SideBar extends ResponsiveComponent {
     const navigation = this.props.navigation;
     const { userName, userImage, isComponentOrganizationActive } = this.state;
     return (
-      <Container>
-        <ImageBackground
-          style={style.background}
-          source={require("../../../assets/sidebar-transparent.png")}
-        >
+      <Container style={style.container}>
+        <BackgroundComponent>
           <Content style={style.drawerContent}>
-            <View style={style.logoContainer}>
-              <Image
-                source={require("../../../assets/logo-low.gif")}
-                style={style.logo}
-              />
-              <Text style={style.versionText}>{`${I18n.t(
-                "general.version"
-              )} ${DeviceInfo.getVersion()}`}</Text>
-              <Text style={style.versionDate}>
-                (
-                {DeviceInfo.getLastUpdateTime()
-                  ? new Date(
-                      DeviceInfo.getLastUpdateTime()
-                    ).toLocaleDateString()
-                  : I18n.t("general.date")}
-                )
-              </Text>
-            </View>
-            {isComponentOrganizationActive ? (
-              <ListItem
-                style={style.links}
-                button
-                iconLeft
-                onPress={() => this._navigateTo("Sites")}
-              >
-                <Icon type="MaterialIcons" name="store-mall-directory" />
-                <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
+            <Header style={style.header}>
+              <Image source={logo} style={style.logo} />
+              <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
+              {DeviceInfo.getLastUpdateTime() ? (
+                <Text style={style.versionDate}>{moment(DeviceInfo.getLastUpdateTime()).format("LL")}</Text>
+              ) : (
+                undefined
+              )}
+            </Header>
+            <View style={style.linkContainer}>
+              {isComponentOrganizationActive ? (
+                <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Sites")}>
+                  <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
+                  <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
+                </ListItem>
+              ) : (
+                undefined
+              )}
+              <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("AllChargers")}>
+                <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
+                <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
               </ListItem>
-            ) : (
-              undefined
-            )}
-            <ListItem
-              style={style.links}
-              button
-              iconLeft
-              onPress={() => this._navigateTo("Chargers", { withNoSite: true })}
-            >
-              <Icon type="MaterialIcons" name="ev-station" />
-              <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
-            </ListItem>
-            {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
-              <Icon name="ios-settings-outline" />
-              <Text style={style.linkText}>SETTINGS</Text>
-            </ListItem> */}
-            {/* <ListItem button onPress={() => navigation.navigate("Feedback")} iconLeft style={style.links}>
-              <Icon name="ios-paper-outline" />
-              <Text style={style.linkText}>FEEDBACK</Text>
-            </ListItem> */}
+              {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
+                <Icon name="ios-settings-outline" />
+                <Text style={style.linkText}>SETTINGS</Text>
+              </ListItem> */}
+              {/* <ListItem button onPress={() => navigation.navigate("Feedback")} iconLeft style={style.links}>
+                <Icon name="ios-paper-outline" />
+                <Text style={style.linkText}>FEEDBACK</Text>
+              </ListItem> */}
+            </View>
           </Content>
           <View style={style.logoutContainer}>
             <View style={style.logoutButton} foregroundColor={"white"}>
               <View style={style.gridLogoutContainer}>
                 <View style={style.columnAccount}>
-                  <TouchableOpacity
-                    style={style.buttonLogout}
-                    onPress={() => this._logoff()}
-                  >
-                    <Text style={style.logoutText}>
-                      {I18n.t("authentication.logOut")}
-                    </Text>
+                  <TouchableOpacity style={style.buttonLogout} onPress={() => this._logoff()}>
+                    <Text style={style.logoutText}>{I18n.t("authentication.logOut")}</Text>
                     <Text note style={style.userName}>
                       {userName}
                     </Text>
                   </TouchableOpacity>
                 </View>
                 <View style={style.columnThumbnail}>
-                  <TouchableOpacity
-                    style={style.buttonThumbnail}
-                    onPress={() => navigation.navigate("Profile")}
-                  >
-                    <Thumbnail
-                      style={style.profilePic}
-                      source={userImage ? { uri: userImage } : noPhoto}
-                    />
+                  <TouchableOpacity style={style.buttonThumbnail} onPress={() => navigation.navigate("Profile")}>
+                    <Thumbnail style={style.profilePic} source={userImage ? { uri: userImage } : noPhoto} />
                   </TouchableOpacity>
                 </View>
               </View>
             </View>
           </View>
-        </ImageBackground>
+        </BackgroundComponent>
       </Container>
     );
   }

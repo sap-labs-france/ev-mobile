@@ -6,6 +6,7 @@ I18n.fallbacks = true;
 // English language is the main language for fall back:
 I18n.translations = {
   en: require("./languages/en.json"),
+  de: require("./languages/de.json"),
   fr: require("./languages/fr.json")
 };
 

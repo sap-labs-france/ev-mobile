@@ -1,69 +1,157 @@
 import React from "react";
-import { Text as TextRN } from "react-native";
-import { View } from "native-base";
-import Constants from "../../utils/Constants";
-import { ResponsiveComponent } from "react-native-responsive-ui";
-import * as Animatable from "react-native-animatable";
-import computeStyleSheet from "./ConnectorStatusComponentStyles";
 import PropTypes from "prop-types";
-
+import { ResponsiveComponent } from "react-native-responsive-ui";
+import computeStyleSheet from "./ConnectorStatusComponentStyles.js";
+import { Animated, Easing } from "react-native";
+import { Text, View } from "native-base";
+import Constants from "../../utils/Constants";
+import { Platform } from "react-native";
 export default class ConnectorStatusComponent extends ResponsiveComponent {
-  _getStyleFromStatus(connector, style) {
-    switch (connector.status) {
-      // Green
-      case Constants.CONN_STATUS_AVAILABLE:
-        return style.statusGreen;
-      // Red
-      case Constants.CONN_STATUS_SUSPENDED_EV:
-      case Constants.CONN_STATUS_SUSPENDED_EVSE:
-      case Constants.CONN_STATUS_OCCUPIED:
+  constructor(props) {
+    super(props);
+    this.state = {};
+    // Create
+    const spinValue = new Animated.Value(0);
+    // First set up animation
+    Animated.loop(
+      Animated.timing(spinValue, {
+        toValue: 1,
+        duration: 4000,
+        easing: Easing.linear
+      })
+    ).start();
+    // Second interpolate beginning and end values (in this case 0 and 1)
+    this.rotateClockwise = spinValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: ["0deg", "360deg"]
+    });
+
+    this.rotateCounterClockwise = spinValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: ["360deg", "0deg"]
+    });
+  }
+
+  _getConnectorStyles(style) {
+    const { type, connector } = this.props;
+    // Get the type
+    let connectorType;
+    let status;
+    if (connector) {
+      connectorType = connector.status;
+    } else {
+      connectorType = type;
+    }
+    // Default CSS
+    const connectorStyles = {
+      container: [style.commonConnector],
+      value: [style.commonConnectorValue],
+      description: [style.commonConnectorDescription]
+    };
+    switch (connectorType) {
+      // Charging
       case Constants.CONN_STATUS_CHARGING:
-      case Constants.CONN_STATUS_FAULTED:
-      case Constants.CONN_STATUS_RESERVED:
-      case Constants.CONN_STATUS_UNAVAILABLE:
-        return style.statusRed;
-      // Orange
+      case Constants.CONN_STATUS_OCCUPIED:
+        status = "charging";
+        break;
+      // Preparing
       case Constants.CONN_STATUS_PREPARING:
+        status = "preparing";
+        break;
+      // Preparing
       case Constants.CONN_STATUS_FINISHING:
-        return style.statusOrange;
+        status = "finishing";
+        break;
+      // Reserved
+      case Constants.CONN_STATUS_RESERVED:
+        status = "reserved";
+        break;
+      // Faulted
+      case Constants.CONN_STATUS_FAULTED:
+        status = "faulted";
+        break;
+      // Unavailable
+      case Constants.CONN_STATUS_UNAVAILABLE:
+        status = "unavailable";
+        break;
+      // Suspending EV / EVSE
+      case Constants.CONN_STATUS_SUSPENDED:
+      case Constants.CONN_STATUS_SUSPENDED_EVSE:
+      case Constants.CONN_STATUS_SUSPENDED_EV:
+        status = "suspended";
+        break;
+      // Available
+      case Constants.CONN_STATUS_AVAILABLE:
+        status = "available";
+        break;
+    }
+    if (status) {
+      connectorStyles.container.push(style[status + "Connector"]);
+      connectorStyles.value.push(style[status + "ConnectorValue"]);
+      connectorStyles.description.push(style[status + "ConnectorDescription"]);
+    }
+    return connectorStyles;
+  }
+
+  _getConnectorValue() {
+    // Get value
+    const { value, connector } = this.props;
+    if (connector) {
+      return String.fromCharCode(64 + connector.connectorId);
+    } else {
+      return value;
     }
   }
 
-  _getStatusAnimation(connector) {
-    // First check
-    if (connector.status === Constants.CONN_STATUS_CHARGING) {
-      return "fadeIn";
+  _isAnimated() {
+    const { value, type, connector } = this.props;
+    if (connector) {
+      return connector.currentConsumption > 0;
+    } else {
+      return type === Constants.CONN_STATUS_CHARGING && value > 0;
     }
-    return "";
   }
 
   render() {
     const style = computeStyleSheet();
-    const { connector } = this.props;
-    const connectorLetter = String.fromCharCode(64 + connector.connectorId);
+    // Get styling
+    const connectorStyles = this._getConnectorStyles(style);
+    // Get value
+    const value = this._getConnectorValue();
+    // Animated
+    const isAnimated = this._isAnimated();
+    const isAndroid = Platform.OS === "android";
     return (
-      <View style={[this.props.style, style.container]}>
-        <Animatable.View
-          animation={this._getStatusAnimation(connector)}
-          iterationCount={"infinite"}
-          direction="alternate-reverse"
-        >
-          <View
-            style={[
-              style.statusContainer,
-              this._getStyleFromStatus(connector, style)
-            ]}
-          >
-            <TextRN style={style.statusLetter}>{connectorLetter}</TextRN>
+      <View style={this.props.text ? style.containerWithDescription : style.containerWithNoDescription}>
+        {isAndroid ?
+          <View>
+            <View style={connectorStyles.container}>
+              <Text style={connectorStyles.value}>
+                {value}
+              </Text>
+            </View>
           </View>
-        </Animatable.View>
+        :
+          <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
+            <View style={connectorStyles.container}>
+              <Animated.Text
+                style={
+                  isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
+                }>
+                {value}
+              </Animated.Text>
+            </View>
+          </Animated.View>
+        }
+        {this.props.text ? <Text style={connectorStyles.description}>{this.props.text}</Text> : undefined}
       </View>
     );
   }
 }
 
 ConnectorStatusComponent.propTypes = {
-  connector: PropTypes.object.isRequired
+  connector: PropTypes.object,
+  value: PropTypes.number,
+  text: PropTypes.string,
+  type: PropTypes.string
 };
-
-ConnectorStatusComponent.defaultProps = {};

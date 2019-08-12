@@ -1,12 +1,6 @@
 # OSX
 #
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
 
 # Xcode
 #
@@ -28,24 +22,13 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 
-# Legacy Eclipse project files
-.classpath
-.project
-.cproject
-.settings/
-
 # Android/IntelliJ
 #
 build/
 .idea
 .gradle
-.gradle/
 local.properties
 *.iml
-# Built application files
-*.apk
-*.aab
-*.ap_
 
 # node.js
 #
@@ -53,13 +36,34 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
-# Buck
+# BUCK
 buck-out/
-.buckconfig.local
-.buckd/
-.buckversion
-.fakebuckversion
+\.buckd/
 *.keystore
+
+# fastlane
+#
+# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
+# screenshots whenever they are needed.
+# For more information about the recommended setup visit:
+# https://docs.fastlane.tools/best-practices/source-control/
+
+*/fastlane/report.xml
+*/fastlane/Preview.html
+*/fastlane/screenshots
+
+# Bundle artifact
+*.jsbundle
+
+# CocoaPods
+/ios/Pods/
+/ios/Podfile.lock
+
+# Legacy Eclipse project files
+.classpath
+.project
+.cproject
+.se
 
 # VisualStudioCode
 .vscode/*
@@ -75,16 +79,15 @@ buck-out/
 .netrwhist
 *~
 
-# fastlane
-#
-# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
-# screenshots whenever they are needed.
-# For more information about the recommended setup visit:
-# https://docs.fastlane.tools/best-practices/source-control/
-
-*/fastlane/report.xml
-*/fastlane/Preview.html
-*/fastlane/screenshots
-
-# Bundle artifact
-*.jsbundle
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders

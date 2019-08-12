@@ -1,9 +1,19 @@
+/* eslint-disable no-param-reassign */
+// @flow
+
 import _ from "lodash";
+
+import bodyTheme from "./Body";
+import leftTheme from "./Left";
+import rightTheme from "./Right";
 import headerTheme from "./Header";
+import switchTheme from "./Switch";
+import thumbnailTheme from "./Thumbnail";
 import containerTheme from "./Container";
 import contentTheme from "./Content";
 import buttonTheme from "./Button";
 import titleTheme from "./Title";
+import subtitleTheme from "./Subtitle";
 import inputGroupTheme from "./InputGroup";
 import badgeTheme from "./Badge";
 import checkBoxTheme from "./CheckBox";
@@ -19,42 +29,35 @@ import itemTheme from "./Item";
 import labelTheme from "./Label";
 import textAreaTheme from "./Textarea";
 import textTheme from "./Text";
+import toastTheme from "./Toast";
 import tabTheme from "./Tab";
 import tabBarTheme from "./TabBar";
 import tabContainerTheme from "./TabContainer";
 import viewTheme from "./View";
 import tabHeadingTheme from "./TabHeading";
-import toastTheme from "./Toast";
 import iconTheme from "./Icon";
 import inputTheme from "./Input";
 import swipeRowTheme from "./SwipeRow";
+import segmentTheme from "./Segment";
 import spinnerTheme from "./Spinner";
 import cardItemTheme from "./CardItem";
 import listItemTheme from "./ListItem";
 import formTheme from "./Form";
 import separatorTheme from "./Separator";
+import pickerTheme from "./Picker";
 import variable from "./../variables/platform";
 
-export default (variables = variable) => {
+export default (variables /* : * */ = variable) => {
   const theme = {
     variables,
     "NativeBase.Left": {
-      flex: 1,
-      alignSelf: "center",
-      alignItems: "flex-start"
+      ...leftTheme(variables)
     },
     "NativeBase.Right": {
-      "NativeBase.Button": {
-        alignSelf: null
-      },
-      flex: 1,
-      alignSelf: "center",
-      alignItems: "flex-end"
+      ...rightTheme(variables)
     },
     "NativeBase.Body": {
-      flex: 1,
-      alignItems: "center",
-      alignSelf: "center"
+      ...bodyTheme(variables)
     },
 
     "NativeBase.Header": {
@@ -68,9 +71,16 @@ export default (variables = variable) => {
     "NativeBase.Title": {
       ...titleTheme(variables)
     },
+    "NativeBase.Subtitle": {
+      ...subtitleTheme(variables)
+    },
 
     "NativeBase.InputGroup": {
       ...inputGroupTheme(variables)
+    },
+
+    "NativeBase.Input": {
+      ...inputTheme(variables)
     },
 
     "NativeBase.Badge": {
@@ -84,27 +94,17 @@ export default (variables = variable) => {
     "NativeBase.Radio": {
       ...radioTheme(variables)
     },
-    "NativeBase.Toast": {
-      ...toastTheme(variables)
-    },
+
     "NativeBase.Card": {
-      ...cardTheme()
+      ...cardTheme(variables)
     },
 
     "NativeBase.CardItem": {
-      ...cardItemTheme(variables),
-      ".cardBody": {
-        padding: -5,
-        "NativeBase.Text": {
-          marginTop: 5
-        }
-      },
-      flexDirection: "row",
-      alignItems: "center"
+      ...cardItemTheme(variables)
     },
 
-    "NativeBase.CardItem1": {
-      ...cardItemTheme(variables)
+    "NativeBase.Toast": {
+      ...toastTheme(variables)
     },
 
     "NativeBase.H1": {
@@ -140,18 +140,7 @@ export default (variables = variable) => {
     },
 
     "NativeBase.ListItem": {
-      ...listItemTheme(variables),
-      "NativeBase.CheckBox": {
-        marginLeft: -10,
-        marginRight: 10
-      },
-      "NativeBase.Text": {
-        ".note": {
-          color: variables.listNoteColor,
-          fontWeight: "200"
-        },
-        alignSelf: "center"
-      }
+      ...listItemTheme(variables)
     },
 
     "NativeBase.ListItem1": {
@@ -188,6 +177,7 @@ export default (variables = variable) => {
     },
 
     "NativeBase.PickerNB": {
+      ...pickerTheme(variables),
       "NativeBase.Button": {
         "NativeBase.Text": {}
       }
@@ -197,8 +187,8 @@ export default (variables = variable) => {
       ...tabTheme(variables)
     },
 
-    "NativeBase.STabs": {
-      flex: 1
+    "NativeBase.Segment": {
+      ...segmentTheme(variables)
     },
 
     "NativeBase.TabBar": {
@@ -214,46 +204,22 @@ export default (variables = variable) => {
       ...tabContainerTheme(variables)
     },
     "NativeBase.Switch": {
-      marginVertical: -5
+      ...switchTheme(variables)
     },
     "NativeBase.Separator": {
       ...separatorTheme(variables)
     },
-
-    "NativeBase.Input": {
-      ...inputTheme(variables)
-    },
     "NativeBase.SwipeRow": {
       ...swipeRowTheme(variables)
     },
-
     "NativeBase.Thumbnail": {
-      ".square": {
-        borderRadius: 0
-      },
-      ".small": {
-        width: 36,
-        height: 36,
-        borderRadius: 18
-      },
-      ".large": {
-        width: 80,
-        height: 80,
-        borderRadius: 40
-      },
-      width: 56,
-      height: 56,
-      borderRadius: 28
+      ...thumbnailTheme(variables)
     }
   };
 
   const cssifyTheme = (grandparent, parent, parentKey) => {
     _.forEach(parent, (style, styleName) => {
-      if (
-        styleName.indexOf(".") === 0 &&
-        parentKey &&
-        parentKey.indexOf(".") === 0
-      ) {
+      if (styleName.indexOf(".") === 0 && parentKey && parentKey.indexOf(".") === 0) {
         if (grandparent) {
           if (!grandparent[styleName]) {
             grandparent[styleName] = {};
@@ -262,7 +228,7 @@ export default (variables = variable) => {
           }
         }
       }
-      if (style && typeof style === "object") {
+      if (style && typeof style === "object" && styleName !== "fontVariant" && styleName !== "transform") {
         cssifyTheme(parent, style, styleName);
       }
     });

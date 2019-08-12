@@ -1,15 +1,14 @@
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import Constants from "../../utils/Constants";
+import { BackHandler } from "react-native";
+import ProviderFactory from "../../provider/ProviderFactory";
 
 export default class BaseScreen extends ResponsiveComponent {
   constructor(props) {
     super(props);
-    // Init
-    this.searchText = "";
-    this.mounted = false;
-    this.timerRefresh = null;
-    this.active = true;
-    this.refreshPeriodMillis = Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS;
+    // Add listeners
+    this.didFocus = this.props.navigation.addListener("didFocus", this.componentDidFocus.bind(this));
+    this.didBlur = this.props.navigation.addListener("didBlur", this.componentDidBlur.bind(this));
   }
 
   isMounted() {
@@ -17,75 +16,27 @@ export default class BaseScreen extends ResponsiveComponent {
   }
 
   async componentDidMount() {
-    // Set
     this.mounted = true;
-    // Start the timer
-    this._startRefreshTimer(true);
-    // Add listeners
-    this.props.navigation.addListener("didFocus", this._componentDidFocus);
-    this.props.navigation.addListener("didBlur", this._componentDidBlur);
+    this.centralServerProvider = await ProviderFactory.getProvider();
+    BackHandler.removeEventListener("hardwareBackPress", this.onBack);
   }
 
-  componentWillUnmount() {
-    // Clear
+  async componentWillUnmount() {
     this.mounted = false;
-    // Clear the timer
-    this._clearRefreshTimer();
+    // Remove listeners
+    this.didFocus && this.didFocus.remove();
+    this.didBlur && this.didBlur.remove();
   }
 
-  _componentDidFocus = () => {
-    // Start the timer
-    this._startRefreshTimer();
-  };
-
-  _componentDidBlur = () => {
-    // Clear the timer
-    this._clearRefreshTimer();
-  };
-
-  _startRefreshTimer(initial = false) {
-    // Restart the timer
-    if (!this.timerRefresh && this.active) {
-      // Inital load?
-      if (!initial) {
-        // No: Force Refresh
-        this._refresh();
-      }
-      // Start the timer
-      this.timerRefresh = setInterval(() => {
-        // Refresh
-        this._refreshFromTimer();
-      }, this.refreshPeriodMillis);
-    }
+  onBack() {
+    // Not Handled: has to be taken in the sub-classes
+    return false;
   }
 
-  _clearRefreshTimer() {
-    // Stop the timer
-    if (this.timerRefresh) {
-      clearInterval(this.timerRefresh);
-    }
+  async componentDidFocus() {
+    BackHandler.addEventListener("hardwareBackPress", this.onBack.bind(this));
   }
 
-  _refreshFromTimer = async () => {
-    // Component Mounted?
-    if (this.mounted) {
-      // Refresh
-      this._refresh();
-    }
-  };
-
-  _search(searchText) {
-    // Set
-    this.searchText = searchText;
-    // Refresh
-    this._refresh();
-  }
-
-  _refresh() {
-    console.log("BaseScreen: Refresh not implemented!!!");
-  }
-
-  _setActive(active) {
-    this.active = active;
+  async componentDidBlur() {
   }
 }

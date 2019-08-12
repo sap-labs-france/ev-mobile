@@ -1,33 +1,113 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
-import { scale } from "react-native-size-matters";
+import { ScaledSheet } from "react-native-size-matters";
 
-const commonStyles = {
-  container: {},
-  statusContainer: {
-    width: scale(44),
-    height: scale(44),
-    borderRadius: scale(22),
-    justifyContent: "center",
+const commonStyles = ScaledSheet.create({
+  containerWithDescription: {
+    height: "60@s",
+    width: "100@s",
+    flexDirection: "column",
+    justifyContent: "flex-start",
     alignItems: "center"
   },
-  statusLetter: {
-    color: commonColor.textColor,
+  containerWithNoDescription: {
+    height: "55@s",
+    width: "60@s",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center"
+  },
+  commonConnector: {
+    width: "44@s",
+    height: "44@s",
+    justifyContent: "center",
+    borderStyle: "solid",
+    alignItems: "center",
+    borderWidth: "4@s",
+    borderRadius: "22@s",
+    borderColor: commonColor.textColor,
+    backgroundColor: "transparent"
+  },
+  commonConnectorValue: {
+    fontSize: "22@s",
     fontWeight: "bold",
-    fontSize: scale(30),
-    marginTop: scale(-2)
+    color: commonColor.inverseTextColor
   },
-  statusGreen: {
-    backgroundColor: commonColor.brandSuccess
+  commonConnectorDescription: {
+    position: "absolute",
+    bottom: "-2@s",
+    fontSize: "12@s",
+    color: commonColor.textColor
   },
-  statusRed: {
-    backgroundColor: commonColor.brandDanger
+  faultedConnector: {
+    backgroundColor: commonColor.brandDanger,
+    borderColor: commonColor.brandDangerDark
   },
-  statusOrange: {
-    backgroundColor: commonColor.brandWarning
+  faultedConnectorValue: {},
+  faultedConnectorDescription: {
+    color: commonColor.brandDanger
+  },
+  availableConnector: {
+    borderColor: commonColor.brandSuccess
+  },
+  availableConnectorValue: {
+    color: commonColor.brandSuccess
+  },
+  availableConnectorDescription: {
+    color: commonColor.brandSuccess
+  },
+  suspendedConnector: {
+    backgroundColor: commonColor.brandPrimary,
+    borderColor: commonColor.brandPrimaryDark
+  },
+  suspendedConnectorValue: {},
+  suspendedConnectorDescription: {
+    color: commonColor.brandPrimaryDark
+  },
+  preparingConnector: {
+    backgroundColor: commonColor.brandWarning,
+    borderColor: commonColor.brandWarningDark
+  },
+  preparingConnectorValue: {},
+  preparingConnectorDescription: {
+    color: commonColor.brandWarning
+  },
+  finishingConnector: {
+    backgroundColor: commonColor.brandWarning,
+    borderColor: commonColor.brandWarningDark
+  },
+  finishingConnectorValue: {},
+  finishingConnectorDescription: {
+    color: commonColor.brandWarning
+  },
+  unavailableConnector: {
+    backgroundColor: commonColor.brandDisabled,
+    borderColor: commonColor.brandDisabledDark
+  },
+  unavailableConnectorValue: {},
+  unavailableConnectorDescription: {
+    color: commonColor.brandDisabled
+  },
+  reservedConnector: {
+    backgroundColor: commonColor.brandDisabled,
+    borderColor: commonColor.brandDisabledDark
+  },
+  reservedConnectorValue: {},
+  reservedConnectorDescription: {
+    color: commonColor.brandDisabled
+  },
+  chargingConnector: {
+    backgroundColor: commonColor.brandPrimary,
+    borderColor: commonColor.brandInfoLight,
+    borderTopColor: commonColor.brandPrimary,
+    borderBottomColor: commonColor.brandPrimary
+  },
+  chargingConnectorValue: {},
+  chargingConnectorDescription: {
+    color: commonColor.brandPrimaryDark
   }
-};
+});
 
 const portraitStyles = {};
 

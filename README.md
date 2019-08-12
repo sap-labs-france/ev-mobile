@@ -11,18 +11,28 @@ This application is the Electric Vehicule Charging Station (EVSE) mobile applica
 * Install Java SE Development Kit 8
 * Install React Native: https://facebook.github.io/react-native/
   ```
-  npm install -g expo-cli
+  npm install -g react-native-cli
   ```
 * Install Android Studio: https://developer.android.com/studio/
   * Ensure Android SDK Platform 28 and Intel x86 Atom_64 System Image are checked in the SDK manager.
-  * Add a user environment variable:
-    **ANDROID_HOME=C:\Users\YOUR_USERNAME\AppData\Local\Android\Sdk**
-  * Add **C:\Users\YOUR_USERNAME\AppData\Local\Android\Sdk\platform-tools** to the user paths
+  * Windows:
+    * Add user environment variable:
+      **ANDROID_HOME=C:\Users\YOUR_USERNAME\AppData\Local\Android\Sdk**
+    * Add **C:\Users\YOUR_USERNAME\AppData\Local\Android\Sdk\platform-tools** to user paths
+  * OSX/*nix:
+    * Add to your shell profile:
+    ```
+    export ANDROID_HOME=$HOME/Library/Android/sdk
+    export PATH=$PATH:$ANDROID_HOME/emulator
+    export PATH=$PATH:$ANDROID_HOME/tools
+    export PATH=$PATH:$ANDROID_HOME/tools/bin
+    export PATH=$PATH:$ANDROID_HOME/platform-tools
+    ```
 * Install Xcode: https://developer.apple.com/xcode/
 * Clone this GitHub project
 * Go into the **ev-mobile** directory and run **npm install** or **yarn install**
 
-**NOTE**: On Windows with **chocolatey** (https://chocolatey.org/),  
+**NOTE**: On Windows with **chocolatey** (https://chocolatey.org/),
 do as an administrator:
 ```
 choco install -y nodejs-lts python2 jdk8 androidstudio
@@ -33,13 +43,27 @@ to install some of the needed dependencies
 
 Open a terminal in the **ev-mobile** directory
 
-* Run on Android:  
+* Jetify the React Native libraries:
+
+  ```
+  npm run android:jetify
+  ```
+
+* Install CocoaPods on Mac OSX:
+
+  ```
+  npm run pod:install
+  ```
+
+* Run on Android:
   Setup and start an Android virtual device in Android Studio
+
   ```
   npm run android
-  ``` 
+  ```
 
 * Run on iOS:
+
   ```
   npm run ios
   ```

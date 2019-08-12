@@ -1,21 +1,22 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
-import { scale } from "react-native-size-matters";
 import commonColor from "../../theme/variables/commonColor";
 import deepmerge from "deepmerge";
+import { ScaledSheet } from "react-native-size-matters";
+import { Platform } from "react-native";
 
-const commonStyles = {
+const commonStyles = ScaledSheet.create({
   noDisplay: {
     flex: 1,
-    backgroundColor: "black"
+    backgroundColor: commonColor.brandPrimaryDark
   },
   spinner: {
     flex: 1
   },
   container: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.1)"
+    backgroundColor: commonColor.brandPrimaryDark
   },
-  background: {
+  keyboardContainer: {
     flex: 1
   },
   scrollContainer: {
@@ -41,102 +42,125 @@ const commonStyles = {
   },
   logo: {
     resizeMode: "contain",
-    marginTop: scale(20),
-    height: scale(100)
+    marginTop: "10@s",
+    height: "100@s"
   },
   appText: {
-    color: commonColor.textColor,
-    fontSize: scale(30),
-    paddingTop: scale(15)
+    color: commonColor.inverseTextColor,
+    fontSize: "40@s",
+    fontWeight: "bold",
+    paddingTop: "5@s"
   },
   appVersionText: {
-    color: commonColor.textColor,
-    fontSize: scale(15)
+    color: commonColor.inverseTextColor,
+    marginTop: "-5@s",
+    fontSize: "15@s"
+  },
+  appTenantName: {
+    color: commonColor.inverseTextColor,
+    marginTop: "5@s",
+    marginBottom: "10@s",
+    fontSize: "15@s",
+    fontWeight: "bold"
   },
   button: {
     width: "90%",
     alignSelf: "center",
-    height: scale(40),
-    marginBottom: scale(10),
-    backgroundColor: "rgba(255,255,255,0.30)"
+    height: "40@s",
+    marginBottom: "10@s",
+    backgroundColor: commonColor.buttonBg
   },
   buttonText: {
     width: "100%",
     textAlign: "center",
-    fontSize: scale(15),
-    color: commonColor.textColor
+    fontSize: "15@s",
+    color: commonColor.inverseTextColor
   },
   inputGroup: {
-    height: scale(40),
+    height: "40@s",
     flexDirection: "row",
     justifyContent: "flex-start",
-    marginBottom: scale(10),
-    backgroundColor: "rgba(255,255,255,0.20)",
-    borderWidth: 0,
+    marginBottom: "10@s",
+    backgroundColor: commonColor.inputGroupBg,
+    borderWidth: "0@s",
     borderColor: "transparent"
   },
   inputIcon: {
+    color: commonColor.inverseTextColor,
     alignSelf: "center",
     textAlign: "center",
     width: "11%",
-    fontSize: scale(15)
+    fontSize: Platform.OS === "ios" ? "20@s" : "15@s"
+  },
+  recaptcha: {
+    backgroundColor: "transparent"
   },
   inputIconLock: {
-    fontSize: scale(20)
+    fontSize: "20@s"
   },
   inputField: {
     width: "79%",
-    fontSize: scale(15),
-    color: commonColor.textColor
+    fontSize: "15@s",
+    color: commonColor.inverseTextColor
   },
   formErrorText: {
-    fontSize: scale(12),
-    color: commonColor.brandDanger,
+    fontSize: "12@s",
+    marginLeft: 30,
+    color: commonColor.brandDangerLight,
     alignSelf: "flex-start",
-    top: scale(-5)
+    top: "-5@s"
   },
   formErrorTextEula: {
     alignSelf: "center",
+    marginLeft: 0,
     textDecorationLine: "none"
   },
   eulaContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    borderBottomWidth: 0,
-    paddingTop: 0,
-    marginBottom: scale(20),
-    marginTop: scale(5)
+    borderBottomWidth: "0@s",
+    marginBottom: "20@s",
+    marginTop: "10@s"
   },
   eulaCheckbox: {
-    marginRight: scale(15)
+    marginRight: "15@s"
   },
   eulaText: {
-    fontSize: scale(13),
-    color: commonColor.textColor
+    fontSize: "13@s",
+    color: commonColor.inverseTextColor
   },
   eulaLink: {
-    fontSize: scale(13),
-    color: commonColor.textColor,
+    fontSize: "13@s",
+    color: commonColor.inverseTextColor,
     textDecorationLine: "underline"
   },
   linksButtonLeft: {
-    alignSelf: "flex-start"
+    alignSelf: "flex-start",
+    marginLeft: "15@s",
+    marginBottom: "5@s"
   },
   linksButtonRight: {
-    alignSelf: "flex-end"
+    alignSelf: "flex-end",
+    marginRight: "15@s",
+    marginBottom: "5@s"
   },
   linksTextButton: {
     width: "100%",
     opacity: 0.9,
-    fontSize: scale(12),
+    fontSize: "12@s",
     fontWeight: "bold",
-    color: commonColor.textColor
+    color: commonColor.inverseTextColor
   },
   linksTextButtonRight: {
     textAlign: "right"
+  },
+  footer: {
+    elevation: 0,
+    borderColor: "transparent",
+    backgroundColor: "transparent"
   }
-};
+});
 
 const portraitStyles = {};
 

@@ -1,9 +1,11 @@
-import variable from "./../variables/platform";
+// @flow
 
-export default (variables = variable) => {
+export default () => {
   const swipeRowTheme = {
     "NativeBase.ListItem": {
-      backgroundColor: "#FFF",
+      ".list": {
+        backgroundColor: "#FFF"
+      },
       marginLeft: 0
     },
     "NativeBase.Left": {

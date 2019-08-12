@@ -2,14 +2,13 @@ import Message from "./Message";
 import Constants from "./Constants";
 import I18n from "../I18n/I18n";
 import validate from "validate.js";
-import ProviderFactory from "../provider/ProviderFactory";
+import { NativeModules, Platform } from "react-native";
 
 const type2 = require("../../assets/connectorType/type2.gif");
+// const type2 = require("../../assets/connectorType/type-2.svg");
 const combo = require("../../assets/connectorType/combo_ccs.gif");
 const chademo = require("../../assets/connectorType/chademo.gif");
 const noConnector = require("../../assets/connectorType/no-connector.gif");
-
-const _provider = ProviderFactory.getProvider();
 
 export default class Utils {
   static getParamFromNavigation(navigation, name, defaultValue) {
@@ -18,16 +17,32 @@ export default class Utils {
       return defaultValue;
     }
     // Has param
-    if (!navigation.state.params.hasOwnProperty(name)) {
+    if (!navigation.state.params[name]) {
       return defaultValue;
     }
     // Ok, return the value
     return navigation.state.params[name];
   }
 
-  static async handleHttpUnexpectedError(error, props) {
+  static getLocale() {
+    let deviceLanguage =
+      Platform.OS === "ios" ? NativeModules.SettingsManager.settings.AppleLocale : NativeModules.I18nManager.localeIdentifier;
+    // Filter only on supported languages
+    const shortDeviceLanguage = deviceLanguage.substring(0, 2);
+    if (shortDeviceLanguage !== "en" && shortDeviceLanguage !== "de" && shortDeviceLanguage !== "fr") {
+      // Default
+      deviceLanguage = "en-gb";
+    }
+    return deviceLanguage;
+  }
+
+  static getLocaleShort() {
+    return Utils.getLocale().substring(0, 2);
+  }
+
+  static async handleHttpUnexpectedError(centralServerProvider, error, navigation, fctRefresh) {
     // Log in console
-    console.log(error);
+    console.log({ error });
     // Check if HTTP?
     if (error.request) {
       // Status?
@@ -36,19 +51,19 @@ export default class Utils {
         case 0:
           Message.showError(I18n.t("general.cannotConnectBackend"));
           break;
-        // Not logged in
+        // Not logged in?
         case 401:
-          try {
-            await _provider.reAuthenticate();
-          } catch (errorLogin) {
-            Message.showError(I18n.t("general.authenticationFailed"));
-          }
+          // Force auto login
+          await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;
         // Other errors
         default:
           Message.showError(I18n.t("general.unexpectedErrorBackend"));
           break;
       }
+    } else if (error.name === "InvalidTokenError") {
+      // Force auto login
+      await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
     } else {
       // Error in code
       Message.showError(I18n.t("general.unexpectedError"));
@@ -60,11 +75,7 @@ export default class Utils {
     // User?
     if (user) {
       // Firstname provided?
-      if (
-        user.name &&
-        user.firstName &&
-        `${user.name} ${user.firstName}`.length < 19
-      ) {
+      if (user.name && user.firstName && `${user.name} ${user.firstName}`.length < 19) {
         return `${user.name} ${user.firstName}`;
       } else {
         return `${user.name}`;
@@ -82,12 +93,14 @@ export default class Utils {
     const errorState = {};
     // Reset all errors
     for (const key in screen.state) {
-      // Error?
-      if (key.startsWith("error")) {
-        // Clear
-        const clearError = {};
-        clearError[key] = null;
-        screen.setState(clearError);
+      if (screen.state.hasOwnProperty(key)) {
+        // Error?
+        if (key.startsWith("error")) {
+          // Clear
+          const clearError = {};
+          clearError[key] = null;
+          screen.setState(clearError);
+        }
       }
     }
     // Check for errors
@@ -97,7 +110,6 @@ export default class Utils {
       // Set in state the errors
       for (const key in error) {
         if (error.hasOwnProperty(key)) {
-          // Set
           errorState["error" + Utils.capitalizeFirstLetter(key)] = error[key];
         }
       }
@@ -109,7 +121,7 @@ export default class Utils {
     return formValid;
   }
 
-  static translateConnectorStatus = status => {
+  static translateConnectorStatus = (status) => {
     switch (status) {
       case Constants.CONN_STATUS_AVAILABLE:
         return I18n.t("connector.available");
@@ -136,7 +148,7 @@ export default class Utils {
     }
   };
 
-  static translateConnectorType = type => {
+  static translateConnectorType = (type) => {
     switch (type) {
       case Constants.CONN_TYPE_2:
         return I18n.t("connector.type2");
@@ -149,7 +161,7 @@ export default class Utils {
     }
   };
 
-  static getConnectorTypeImage = type => {
+  static getConnectorTypeImage = (type) => {
     switch (type) {
       case Constants.CONN_TYPE_2:
         return type2;

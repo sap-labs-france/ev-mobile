@@ -1,37 +1,46 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
-import { scale } from "react-native-size-matters";
 import { Platform } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
+import Constants from "../../utils/Constants";
 
-const commonStyles = {
+const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    height: scale(122),
-    paddingTop: scale(5),
-    paddingBottom: scale(5),
-    borderBottomWidth: 1,
-    borderBottomColor: commonColor.listBorderColor,
-    backgroundColor: "rgba(255,255,255,0.2)"
-  },
-  mainContent: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingBottom: scale(5),
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor
   },
+  headerContent: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingTop: "5@s",
+    paddingBottom: "5@s",
+    borderBottomWidth: 1,
+    borderBottomColor: commonColor.listBorderColor,
+    backgroundColor: commonColor.headerBgColor
+  },
+  connectorContent: {
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingTop: "12@s",
+    paddingBottom: "12@s",
+    borderBottomWidth: 1,
+    borderBottomColor: commonColor.brandPrimaryDark
+  },
   name: {
-    paddingLeft: scale(10),
-    fontSize: scale(20),
-    color: commonColor.textColor,
-    fontWeight: "bold"
+    paddingTop: Platform.OS === "ios" ? "2@s" : 0,
+    paddingLeft: "10@s",
+    fontSize: "20@s",
+    fontWeight: "bold",
+    color: commonColor.headerTextColor
   },
   icon: {
-    fontSize: scale(25),
-    marginLeft: scale(10),
-    marginRight: scale(10)
+    fontSize: "30@s",
+    marginLeft: "10@s",
+    marginRight: "10@s",
+    color: commonColor.headerTextColor
   },
   iconHidden: {
     opacity: 0
@@ -42,7 +51,7 @@ const commonStyles = {
     alignItems: "center"
   },
   badgeContainer: {
-    paddingTop: scale(5),
+    paddingTop: "5@s",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center"
@@ -51,38 +60,38 @@ const commonStyles = {
   badgeOccupiedContainer: {},
   connectorText: {
     color: commonColor.textColor,
-    marginTop: scale(-15),
-    marginRight: scale(10),
-    fontSize: scale(20)
+    marginTop: "-15@s",
+    marginRight: "10@s",
+    fontSize: "20@s"
   },
   connectorBadge: {
-    marginTop: scale(5)
+    marginTop: "5@s"
   },
   freeConnectorBadge: {
-    backgroundColor: commonColor.brandSecondary
+    backgroundColor: commonColor.brandInfo
   },
   occupiedConnectorBadge: {
     backgroundColor: commonColor.brandDanger
   },
   connectorBadgeTitle: {
-    minWidth: scale(35),
+    minWidth: "35@s",
     textAlign: "center",
-    fontSize: scale(25),
-    paddingTop: Platform.OS === "ios" ? scale(3) : 0,
-    paddingBottom: Platform.OS === "ios" ? scale(3) : 0,
+    fontSize: "25@s",
+    paddingTop: Platform.OS === "ios" ? "3@s" : 0,
+    paddingBottom: Platform.OS === "ios" ? "3@s" : 0,
     fontWeight: "bold",
     color: commonColor.textColor
   },
   connectorSubTitle: {
-    fontSize: scale(15),
-    paddingBottom: scale(5),
-    marginTop: scale(5),
-    marginBottom: scale(5),
-    marginLeft: scale(10),
-    marginRight: scale(10),
+    fontSize: "15@s",
+    paddingBottom: "5@s",
+    marginTop: "5@s",
+    marginBottom: "5@s",
+    marginLeft: "10@s",
+    marginRight: "10@s",
     color: commonColor.textColor
   }
-};
+});
 
 const portraitStyles = {};
 

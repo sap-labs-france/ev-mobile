@@ -1,7 +1,9 @@
-import variable from "./../variables/platform";
-import { scale } from "react-native-size-matters";
+// @flow
 
-export default (variables = variable) => {
+import variable from "./../variables/platform";
+import { PLATFORM } from "./../variables/commonColor";
+
+export default (variables /* : * */ = variable) => {
   const platform = variables.platform;
 
   const toastTheme = {
@@ -14,27 +16,23 @@ export default (variables = variable) => {
     ".success": {
       backgroundColor: variables.brandSuccess
     },
-    backgroundColor: "rgba(255,255,255,0.6)",
-    borderRadius: platform === "ios" ? 5 : 0,
+    backgroundColor: "rgba(0,0,0,0.8)",
+    borderRadius: platform === PLATFORM.IOS ? 5 : 0,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: scale(5),
-    minHeight: scale(20),
+    padding: 10,
+    minHeight: 50,
     "NativeBase.Text": {
-      color: variables.brandDanger,
+      color: "#fff",
       flex: 1
     },
     "NativeBase.Button": {
       backgroundColor: "transparent",
-      marginTop: scale(5),
-      height: scale(30),
-      verticalAlign: "center",
+      height: 30,
       elevation: 0,
       "NativeBase.Text": {
-        paddingTop: scale(5),
-        height: scale(15),
-        fontSize: scale(12)
+        fontSize: 14
       }
     }
   };

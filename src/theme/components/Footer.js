@@ -1,9 +1,27 @@
-import variable from "./../variables/platform";
+// @flow
 
-export default (variables = variable) => {
+import variable from "./../variables/platform";
+import { PLATFORM } from "./../variables/commonColor";
+
+export default (variables /* : * */ = variable) => {
   const platformStyle = variables.platformStyle;
   const platform = variables.platform;
 
+  const iconCommon = {
+    "NativeBase.Icon": {
+      color: variables.tabBarActiveTextColor
+    }
+  };
+  const iconNBCommon = {
+    "NativeBase.IconNB": {
+      color: variables.tabBarActiveTextColor
+    }
+  };
+  const textCommon = {
+    "NativeBase.Text": {
+      color: variables.tabBarActiveTextColor
+    }
+  };
   const footerTheme = {
     "NativeBase.Left": {
       "NativeBase.Button": {
@@ -14,15 +32,15 @@ export default (variables = variable) => {
           shadowColor: null,
           shadowOffset: null,
           shadowRadius: null,
-          shadowOpacity: null
+          shadowOpacity: null,
+          ...iconCommon,
+          ...iconNBCommon,
+          ...textCommon
         },
-        "NativeBase.Icon": {
-          color: variables.topTabBarActiveTextColor
-        },
-        "NativeBase.IconNB": {
-          color: variables.topTabBarActiveTextColor
-        },
-        alignSelf: null
+        alignSelf: null,
+        ...iconCommon,
+        ...iconNBCommon
+        // ...textCommon
       },
       flex: 1,
       alignSelf: "center",
@@ -42,18 +60,19 @@ export default (variables = variable) => {
           shadowColor: null,
           shadowOffset: null,
           shadowRadius: null,
-          shadowOpacity: null
+          shadowOpacity: null,
+          ...iconCommon,
+          ...iconNBCommon,
+          ...textCommon
         },
         ".full": {
           height: variables.footerHeight,
+          paddingBottom: variables.footerPaddingBottom,
           flex: 1
         },
-        "NativeBase.Icon": {
-          color: variables.topTabBarActiveTextColor
-        },
-        "NativeBase.IconNB": {
-          color: variables.topTabBarActiveTextColor
-        }
+        ...iconCommon,
+        ...iconNBCommon
+        // ...textCommon
       }
     },
     "NativeBase.Right": {
@@ -65,15 +84,15 @@ export default (variables = variable) => {
           shadowColor: null,
           shadowOffset: null,
           shadowRadius: null,
-          shadowOpacity: null
+          shadowOpacity: null,
+          ...iconCommon,
+          ...iconNBCommon,
+          ...textCommon
         },
-        "NativeBase.Icon": {
-          color: variables.topTabBarActiveTextColor
-        },
-        "NativeBase.IconNB": {
-          color: variables.topTabBarActiveTextColor
-        },
-        alignSelf: null
+        alignSelf: null,
+        ...iconCommon,
+        ...iconNBCommon
+        // ...textCommon
       },
       flex: 1,
       alignSelf: "center",
@@ -82,19 +101,13 @@ export default (variables = variable) => {
     backgroundColor: variables.footerDefaultBg,
     flexDirection: "row",
     justifyContent: "center",
-    borderTopWidth:
-      platform === "ios" && platformStyle !== "material"
-        ? undefined
-        : undefined,
-    borderColor:
-      platform === "ios" && platformStyle !== "material"
-        ? "#cbcbcb"
-        : undefined,
+    borderTopWidth: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? variables.borderWidth : undefined,
+    borderColor: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? "#cbcbcb" : undefined,
     height: variables.footerHeight,
+    paddingBottom: variables.footerPaddingBottom,
     elevation: 3,
     left: 0,
     right: 0
   };
-
   return footerTheme;
 };

@@ -1,7 +1,12 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
+import commonColor from "../../theme/variables/commonColor";
 
 const commonStyles = {
+  container: {
+    flex: 1,
+    backgroundColor: commonColor.containerBgColor
+  },
   content: {
     flex: 1
   },

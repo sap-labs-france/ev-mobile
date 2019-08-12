@@ -1,10 +1,21 @@
+// @flow
+
 import { Platform, PixelRatio } from "react-native";
 
 import pickerTheme from "./Picker";
 import variable from "./../variables/platform";
+import { PLATFORM } from "./../variables/commonColor";
 
-export default (variables = variable) => {
+export default (variables /* : * */ = variable) => {
   const platform = variables.platform;
+  const selectedStyle = {
+    "NativeBase.Text": {
+      color: variables.listItemSelected
+    },
+    "NativeBase.Icon": {
+      color: variables.listItemSelected
+    }
+  };
 
   const listItemTheme = {
     "NativeBase.InputGroup": {
@@ -27,10 +38,7 @@ export default (variables = variable) => {
         "NativeBase.Icon": {
           backgroundColor: "transparent",
           color: variables.dropdownLinkColor,
-          fontSize:
-            platform === "ios"
-              ? variables.iconFontSize - 10
-              : variables.iconFontSize - 5,
+          fontSize: platform === PLATFORM.IOS ? variables.iconFontSize - 10 : variables.iconFontSize - 5,
           alignItems: "center",
           marginTop: 2,
           paddingRight: 8
@@ -47,7 +55,7 @@ export default (variables = variable) => {
         alignItems: "center",
         justifyContent: "flex-start",
         flex: 1,
-        height: platform === "ios" ? 30 : 40,
+        height: platform === PLATFORM.IOS ? 30 : 40,
         borderColor: "transparent",
         backgroundColor: "#fff",
         borderRadius: 5
@@ -58,18 +66,19 @@ export default (variables = variable) => {
             fontWeight: "500"
           },
           paddingHorizontal: null,
-          paddingLeft: platform === "ios" ? 10 : null
+          paddingLeft: platform === PLATFORM.IOS ? 10 : null
         },
-        paddingHorizontal: platform === "ios" ? undefined : null,
-        width: platform === "ios" ? undefined : 0,
-        height: platform === "ios" ? undefined : 0
+        paddingHorizontal: platform === PLATFORM.IOS ? undefined : null,
+        width: platform === PLATFORM.IOS ? undefined : 0,
+        height: platform === PLATFORM.IOS ? undefined : 0
       },
       backgroundColor: variables.toolbarInputColor,
       padding: 10,
       marginLeft: null
     },
     "NativeBase.CheckBox": {
-      marginLeft: -10
+      marginLeft: -10,
+      marginRight: 10
     },
     ".first": {
       ".itemHeader": {
@@ -80,19 +89,17 @@ export default (variables = variable) => {
       ".first": {
         paddingTop: variables.listItemPadding + 3
       },
-      borderBottomWidth: platform === "ios" ? variables.borderWidth : null,
+      borderBottomWidth: platform === PLATFORM.IOS ? variables.borderWidth : null,
       marginLeft: null,
       padding: variables.listItemPadding,
       paddingLeft: variables.listItemPadding + 5,
-      paddingTop:
-        platform === "ios" ? variables.listItemPadding + 25 : undefined,
-      paddingBottom:
-        platform === "android" ? variables.listItemPadding + 20 : undefined,
+      paddingTop: platform === PLATFORM.IOS ? variables.listItemPadding + 25 : undefined,
+      paddingBottom: platform === PLATFORM.ANDROID ? variables.listItemPadding + 20 : undefined,
       flexDirection: "row",
       borderColor: variables.listBorderColor,
       "NativeBase.Text": {
         fontSize: 14,
-        color: platform === "ios" ? undefined : variables.listNoteColor
+        color: platform === PLATFORM.IOS ? undefined : variables.listNoteColor
       }
     },
     ".itemDivider": {
@@ -106,13 +113,15 @@ export default (variables = variable) => {
     },
     ".selected": {
       "NativeBase.Left": {
-        "NativeBase.Text": {
-          color: variables.brandPrimary
-        }
+        ...selectedStyle
       },
-      "NativeBase.Text": {
-        color: variables.brandPrimary
-      }
+      "NativeBase.Body": {
+        ...selectedStyle
+      },
+      "NativeBase.Right": {
+        ...selectedStyle
+      },
+      ...selectedStyle
     },
     "NativeBase.Left": {
       "NativeBase.Body": {
@@ -136,7 +145,6 @@ export default (variables = variable) => {
         fontSize: variables.iconFontSize - 10
       },
       "NativeBase.Text": {
-        marginLeft: 10,
         alignSelf: "center"
       },
       flexDirection: "row"
@@ -212,18 +220,18 @@ export default (variables = variable) => {
         color: variables.listNoteColor,
         fontWeight: "200"
       },
-      alignSelf: null
+      alignSelf: "center"
     },
-
     ".last": {
       marginLeft: -(variables.listItemPadding + 5),
       paddingLeft: (variables.listItemPadding + 5) * 2,
       top: 1
     },
-
     ".avatar": {
       "NativeBase.Left": {
-        flex: 0
+        flex: 0,
+        alignSelf: "flex-start",
+        paddingTop: 14
       },
       "NativeBase.Body": {
         "NativeBase.Text": {
@@ -248,11 +256,18 @@ export default (variables = variable) => {
         borderBottomWidth: variables.borderWidth,
         borderColor: variables.listBorderColor
       },
+      ".noBorder": {
+        "NativeBase.Body": {
+          borderBottomWidth: null
+        },
+        "NativeBase.Right": {
+          borderBottomWidth: null
+        }
+      },
       borderBottomWidth: null,
       paddingVertical: null,
       paddingRight: null
     },
-
     ".thumbnail": {
       "NativeBase.Left": {
         flex: 0
@@ -262,7 +277,7 @@ export default (variables = variable) => {
           marginLeft: null
         },
         flex: 1,
-        paddingVertical: variables.listItemPadding + 5,
+        paddingVertical: variables.listItemPadding + 8,
         borderBottomWidth: variables.borderWidth,
         borderColor: variables.listBorderColor,
         marginLeft: variables.listItemPadding + 5
@@ -285,11 +300,18 @@ export default (variables = variable) => {
         borderBottomWidth: variables.borderWidth,
         borderColor: variables.listBorderColor
       },
+      ".noBorder": {
+        "NativeBase.Body": {
+          borderBottomWidth: null
+        },
+        "NativeBase.Right": {
+          borderBottomWidth: null
+        }
+      },
       borderBottomWidth: null,
       paddingVertical: null,
       paddingRight: null
     },
-
     ".icon": {
       ".last": {
         "NativeBase.Body": {
@@ -366,7 +388,7 @@ export default (variables = variable) => {
           paddingTop: 3
         },
         "NativeBase.Switch": {
-          marginRight: Platform.OS === "ios" ? undefined : -5,
+          marginRight: Platform.OS === PLATFORM.IOS ? undefined : -5,
           alignSelf: null
         },
         "NativeBase.PickerNB": {
@@ -382,6 +404,14 @@ export default (variables = variable) => {
         borderColor: variables.listBorderColor,
         paddingRight: variables.listItemPadding + 5
       },
+      ".noBorder": {
+        "NativeBase.Body": {
+          borderBottomWidth: null
+        },
+        "NativeBase.Right": {
+          borderBottomWidth: null
+        }
+      },
       borderBottomWidth: null,
       paddingVertical: null,
       paddingRight: null,
@@ -391,16 +421,16 @@ export default (variables = variable) => {
     ".noBorder": {
       borderBottomWidth: null
     },
-    ".swipeList": {
-      paddingBottom: 0,
-      paddingRight: 0,
-      paddingTop: 0
+    ".noIndent": {
+      marginLeft: null,
+      padding: variables.listItemPadding,
+      paddingLeft: variables.listItemPadding + 6
     },
     alignItems: "center",
     flexDirection: "row",
-    paddingRight: variables.listItemPadding + 5,
+    paddingRight: variables.listItemPadding + 6,
     paddingVertical: variables.listItemPadding + 3,
-    marginLeft: variables.listItemPadding + 5,
+    marginLeft: variables.listItemPadding + 6,
     borderBottomWidth: 1 / PixelRatio.getPixelSizeForLayoutSize(1),
     backgroundColor: variables.listBg,
     borderColor: variables.listBorderColor

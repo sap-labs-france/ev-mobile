@@ -83,10 +83,7 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     this.setState({ isVisible });
     // Check
     if (isVisible) {
-      this.animRef.transitionTo(
-        style.visible,
-        Constants.ANIMATION_SHOW_HIDE_MILLIS
-      );
+      this.animRef.transitionTo(style.visible, Constants.ANIMATION_SHOW_HIDE_MILLIS);
       // Set the focus
       setTimeout(() => {
         // Set the focus
@@ -96,10 +93,7 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
       }, 100);
     } else {
       // Hide
-      this.animRef.transitionTo(
-        style.hidden,
-        Constants.ANIMATION_SHOW_HIDE_MILLIS
-      );
+      this.animRef.transitionTo(style.hidden, Constants.ANIMATION_SHOW_HIDE_MILLIS);
       // Hide keyboard
       Keyboard.dismiss();
     }
@@ -109,27 +103,21 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     const style = computeStyleSheet();
     return (
       <Animatable.View
-        ref={ref => {
+        ref={(ref) => {
           this.animRef = ref;
         }}
-        style={style.container}
-      >
+        style={style.container}>
         <Icon type={"MaterialIcons"} name={"search"} style={style.icon} />
         <TextInput
-          ref={ref => {
+          ref={(ref) => {
             this.textInput = ref;
           }}
           style={style.inputField}
           placeholder={I18n.t("general.search")}
-          placeholderTextColor={commonColor.tabBarTextColor}
-          onChangeText={searchText => this._searchChanged(searchText)}
+          placeholderTextColor={commonColor.placeholderTextColor}
+          onChangeText={(searchText) => this._searchChanged(searchText)}
         />
-        <Icon
-          type="MaterialIcons"
-          name="clear"
-          style={style.icon}
-          onPress={() => this._clearSearch()}
-        />
+        <Icon type="MaterialIcons" name="delete" style={style.icon} onPress={() => this._clearSearch()} />
       </Animatable.View>
     );
   }

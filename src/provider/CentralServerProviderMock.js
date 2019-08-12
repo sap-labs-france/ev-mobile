@@ -2,35 +2,26 @@ import Constants from "../utils/Constants";
 
 const NETWORK_LATENCY_MILLIS = 500;
 export default class CentralServerProviderMock {
-  async isUserAuthenticated() {
+  async isUserConnectionValid() {
     return true;
   }
 
-  async resetPassword(email) {}
+  async retrievePassword(tenant, email, captcha) {}
 
   async login(email, password, eula) {}
 
   async register(name, firstName, email, passwords, eula) {}
 
-  async getChargers(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getChargers(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     // Return a promise
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         // Filter provided?
         if (params.SiteID) {
           // Filter the list
-          const chargersFiltered = CHARGERS.filter(
-            charger => charger.siteArea.siteID === params.SiteID
-          );
+          const chargersFiltered = CHARGERS.filter((charger) => charger.siteArea.siteID === params.SiteID);
           // Get them all
-          const pagedChargersFiltered = this.applyPaging(
-            chargersFiltered,
-            paging
-          );
+          const pagedChargersFiltered = this.applyPaging(chargersFiltered, paging);
           // Send mock data
           resolve(pagedChargersFiltered);
         } else {
@@ -43,13 +34,9 @@ export default class CentralServerProviderMock {
     });
   }
 
-  async getSites(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getSites(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     // Return a promise
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         const pagedSites = this.applyPaging(SITES, paging);
         // Send mock data
@@ -69,22 +56,16 @@ export default class CentralServerProviderMock {
     return pagedData;
   }
 
-  async getSiteAreas(
-    params = {},
-    paging = Constants.DEFAULT_PAGING,
-    ordering = Constants.DEFAULT_ORDERING
-  ) {
+  async getSiteAreas(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     // Return a promise
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       // Filter provided?
       if (params.SiteID) {
         const siteAreasFiltered = {
           count: 0
         };
         // Filter the list
-        siteAreasFiltered.result = SITE_AREAS.result.filter(
-          siteArea => siteArea.siteID === params.SiteID
-        );
+        siteAreasFiltered.result = SITE_AREAS.result.filter((siteArea) => siteArea.siteID === params.SiteID);
         // Set the Count
         if (siteAreasFiltered.result) {
           siteAreasFiltered.count = siteAreasFiltered.result.length;

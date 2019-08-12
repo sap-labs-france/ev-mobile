@@ -1,7 +1,10 @@
-import variable from "./../variables/platform";
+// @flow
+import { scale } from "react-native-size-matters";
 
-export default (variables = variable) => {
-  const spinnerTheme = {};
+export default () => {
+  const spinnerTheme = {
+    height: scale(40)
+  };
 
   return spinnerTheme;
 };

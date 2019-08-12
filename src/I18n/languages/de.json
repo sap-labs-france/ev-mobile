@@ -1,0 +1,164 @@
+{
+  "general": {
+    "cannotConnectBackend": "Die Verbindung wurde unterbrochen",
+    "unexpectedErrorBackend": "Die Verbindung wurde unterbrochen",
+    "unexpectedError": "Die Verbindung wurde unterbrochen",
+    "sessionExpired": "Sitzung abgelaufen",
+    "numbers": "Geben Sie eine gültige Zahl ein",
+    "email": "Geben Sie eine gültige E-Mail ein",
+    "mandatory": "ist notwendig",
+    "ok": "Ok",
+    "yes": "Ja",
+    "no": "Nein",
+    "cancel": "Abbrechen",
+    "version": "Version",
+    "search": "Suche"
+  },
+  "sidebar": {
+    "sites": "Standorte",
+    "chargers": "Ladestationen"
+  },
+	"authentication": {
+    "mandatory_tenant": "Der Tenant ist notwendig",
+    "mandatory_name": "Der Name ist notwendig",
+    "mandatory_first_name": "Der Vorname ist notwendig",
+    "mandatory_email": "Die E-Mail ist notwendig",
+    "invalid_email": "Die E-Mail ist ungültig",
+    "mandatory_password": "Das Passwort ist notwendig",
+    "logOut": "Ausloggen",
+    "mustSelectTenant": "Wählen Sie einen Tenant",
+    "wrongEmailOrPassword": "Falsche E-Mail oder Passwort",
+    "authenticationFailed": "Authentifizierung gescheitert",
+    "invalidCaptcha": "Ungültiges Captcha!",
+    "wrongEmail": "Ungültige E-Mail!",
+    "accountLocked": "Ihr Konto ist gesperrt.",
+    "accountNotActive": "Ihr Konto ist nicht aktiv",
+    "accountPending": "Ihr Konto wurde noch nicht aktiviert, überprüfen Sie Ihre E-Mails!",
+    "resetSuccess": "Anfrage angenommen, überprüfen Sie Ihre E-Mails!",
+    "eulaNotAccepted": "Sie müssen den Endnutzer-Lizenzvertrag annehmen",
+    "newUser": "Neuer Benutzer?",
+    "forgotYourPassword": "Passwort vergessen?",
+    "retrievePassword": "Passwort wieder auffinden",
+    "backLogin": "Zurück zur Anmeldung",
+    "required": "Benötigt",
+    "acceptEula": "Ich bestätige den ",
+    "eula": "Endnutzer-Lizenzvertrag",
+    "login": "Anmelden",
+		"registerSuccess": "Konto erfolgreich erstellt, überprüfen Sie bitte Ihre E-Mails!",
+    "haveAlreadyAccount": "Haben Sie bereits ein Konto?",
+    "name": "Name",
+    "firstName": "Vorname",
+    "email": "E-mail",
+    "password": "Passwort",
+    "repeatPassword": "Passwort wiederholen",
+    "signUp": "Konto erstellen",
+		"passwordRule": "Muss einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl, ein Sonderzeichen und mindestens 8 Zeichen beinhalten.",
+    "passwordNotMatch": "Passwörter stimmen nicht miteinander überein",
+    "tenant": "Wählen Sie einen Tenant"
+  },
+  "sites": {
+    "freeChargers": "Freie Ladestationen",
+    "chargePoint": "Ladepunkt",
+    "free": "Frei",
+    "occupied": "Besetzt"
+  },
+  "siteAreas": {
+    "title": "Standortbereiche",
+    "noChargers": "Dieser Standortbereich hat keine Ladestationen"
+  },
+  "chargers": {
+    "title": "Ladestationen",
+    "heartBeat": "Herzschlag",
+    "heartBeatOkMessage": "'{{chargeBoxID}}' funktioniert ordentlich und hat vor einer Minute einen Herzschlag gesendet",
+    "heartBeatKoMessage": "'{{chargeBoxID}}' ist fehlerhaft und hat zuletzt {{lastHeartBeat}} einen Herzschlag gesendet",
+    "resetHard": "Neubooten",
+    "resetHardMessage": "Möchten Sie wirklich die Ladestation '{{chargeBoxID}}' neu starten?",
+    "resetSoft": "Reset",
+    "resetSoftMessage": "Möchten Sie wirklich die Ladestation '{{chargeBoxID}}' zurücksetzen?",
+    "clearCache": "Cache leeren",
+    "clearCacheMessage": "Möchten Sie wirklich den Cache der Ladestation '{{chargeBoxID}}' leeren?"
+  },
+  "connector": {
+    "occupied": "Besetzt",
+    "charging": "Lädt",
+    "available": "Verfügbar",
+    "unavailable": "Unverfügbar",
+    "notCharging": "Ladet nicht",
+    "suspendedEV": "EV angehalten",
+    "suspendedEVSE": "EVSE angehalten",
+    "faulted": "Fehlerhaft",
+    "reserved": "Gebucht",
+    "preparing": "Vorbereitung",
+    "finishing": "Vollendung",
+    "unknown": "Unbekannt",
+    "type2": "Type 2",
+    "comboCCS": "Kombo",
+    "chademo": "Chademo"
+  },
+  "details": {
+    "connector": "Anschluss",
+    "informations": "Informationen",
+    "graph": "Diagramm",
+    "notAuthorized": "Persönliche Daten!",
+    "noTransaction": "Keine laufende Transaktionen",
+    "startTransaction": "Transaktion starten",
+    "stopTransaction": "Transaktion stoppen",
+    "startTransactionMessage": "Wollen Sie wirklich eine neue Ladesitzung auf '{{chargeBoxID}}' starten?",
+    "stopTransactionMessage": "Wollen Sie die jetzige Ladesitzung auf '{{chargeBoxID}}' beenden?",
+    "notAuthorisedTitle": "Nicht zugelassen",
+    "notAuthorised": "Sie dürfen die Ladesitzung nicht beenden.",
+    "accepted": "Anfrage wurde angenommen",
+    "noBadgeID": "Kein Badge in Ihrem Profil!",
+    "denied": "Anfrage wurde abgelehnt",
+    "total": "Summe",
+    "maximum": "Maximum",
+    "instant": "Momentan",
+    "battery": "Batterie",
+    "vendor": "Verkäufer",
+    "model": "Modell",
+    "ocppVersion": "OCPP Version",
+    "firmwareVersion": "Firmware Version",
+    "time": "Zeit (Minuten)",
+    "chargeInWatts": "Ladung (Watt)",
+    "instantPowerChartLabel": "Momentane Leistung (kW)",
+    "cumulatedChartLabel": "Kumuliert (kW.h)",
+    "batteryChartLabel": "Batterieladestand (%)",
+    "connectorMax": "Max. Leistung Anschluss (kW)"
+  },
+  "notifications": {
+    "mustLogin": "Sie müssen angemeldet sein",
+    "cannotNavigate": "Kann nicht zum Bildschirm navigieren",
+    "extraDataMissing": "Benachrichtigung nicht komplett",
+    "incorrectTenant": "Falscher Tenant",
+    "notifyEndOfSession": {
+      "message": "Ihre Ladesitzung auf '{{chargeBoxID}}' wurde beendet.",
+      "subMessage": "Ladesitzung beendet",
+      "longMessage": "Ihre Ladesitzung auf '{{chargeBoxID}}' wurde soeben beendet."
+    },
+    "notifyEndOfCharge": {
+      "message": "Ladung auf '{{chargeBoxID}}' wurde beendet.",
+      "subMessage": "Ladeende",
+      "longMessage": "Ihr Fahrzeug an '{{chargeBoxID}}' wurde vollständig geladen. Sie können die Ladesitzung beenden und Ihr Fahrzeug wegfahren."
+    },
+    "notifyOptimalChargeReached": {
+      "message": "Der optimale Ladestand auf '{{chargeBoxID}}' wurde erreicht.",
+      "subMessage": "Optimaler Ladestand",
+      "longMessage": "Der optimale Ladestand auf '{{chargeBoxID}}' wurde erreicht."
+    },
+    "notifyChargingStationStatusError": {
+      "message": "Fehler auf '{{chargeBoxID}}'",
+      "subMessage": "Fehler auf Ladestation",
+      "longMessage": "Fehler auf '{{chargeBoxID}}' - Anschluss {{connectorId}}: {{error}}."
+    },
+    "notifyChargingStationRegistered": {
+      "message": "'{{chargeBoxID}}' wurde auf dem zentralen Server registriert.",
+      "subMessage": "Ladestation registriert",
+      "longMessage": "'{{chargeBoxID}}' wurde auf dem zentralen Server registriert."
+    },
+    "notifyUnknownUserBadged": {
+      "message": "Ein unbekannter Benutzer hat auf '{{chargeBoxID}}' gebadgt.",
+      "subMessage": "Unbekannter Benutzer",
+      "longMessage": "Ein unbekanner Benutzer hat auf '{{chargeBoxID}}' gebadgt."
+    }
+  }
+}

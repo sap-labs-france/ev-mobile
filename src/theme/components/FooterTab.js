@@ -1,9 +1,11 @@
+// @flow
+
 import { Platform } from "react-native";
-import { scale } from "react-native-size-matters";
 
 import variable from "./../variables/platform";
+import { PLATFORM } from "./../variables/commonColor";
 
-export default (variables = variable) => {
+export default (variables /* : * */ = variable) => {
   const platform = variables.platform;
 
   const footerTabTheme = {
@@ -12,7 +14,7 @@ export default (variables = variable) => {
         "NativeBase.Text": {
           color: variables.tabBarActiveTextColor,
           fontSize: variables.tabBarTextSize,
-          lineHeight: scale(16)
+          lineHeight: 16
         },
         "NativeBase.Icon": {
           color: variables.tabBarActiveTextColor
@@ -23,7 +25,7 @@ export default (variables = variable) => {
         backgroundColor: variables.tabActiveBgColor
       },
       flexDirection: null,
-      backgroundColor: variables.footerDefaultBg,
+      backgroundColor: "transparent",
       borderColor: null,
       elevation: 0,
       shadowColor: null,
@@ -37,9 +39,9 @@ export default (variables = variable) => {
       ".badge": {
         "NativeBase.Badge": {
           "NativeBase.Text": {
-            fontSize: scale(11),
-            fontWeight: platform === "ios" ? "600" : undefined,
-            lineHeight: scale(14)
+            fontSize: 11,
+            fontWeight: platform === PLATFORM.IOS ? "600" : undefined,
+            lineHeight: 14
           },
           top: -3,
           alignSelf: "center",
@@ -54,21 +56,18 @@ export default (variables = variable) => {
         }
       },
       "NativeBase.Icon": {
-        color: variables.tabBarTextColor,
-        fontSize: variables.tabBarTextSize * 1.5
+        color: variables.tabBarTextColor
       },
       "NativeBase.IconNB": {
-        color: variables.tabBarTextColor,
-        fontSize: variables.tabBarTextSize * 1.5
+        color: variables.tabBarTextColor
       },
       "NativeBase.Text": {
         color: variables.tabBarTextColor,
         fontSize: variables.tabBarTextSize,
-        lineHeight: scale(16)
+        lineHeight: 16
       }
     },
-    backgroundColor:
-      Platform.OS === "android" ? variables.tabActiveBgColor : undefined,
+    backgroundColor: Platform.OS === PLATFORM.ANDROID ? variables.footerDefaultBg : undefined,
     flexDirection: "row",
     justifyContent: "space-between",
     flex: 1,

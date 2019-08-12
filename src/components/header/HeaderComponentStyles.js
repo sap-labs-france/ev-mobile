@@ -1,50 +1,54 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
-import { scale } from "react-native-size-matters";
+import { ScaledSheet } from "react-native-size-matters";
 import { Platform } from "react-native";
 
-const commonStyles = {
+const commonStyles = ScaledSheet.create({
   header: {
-    height: scale(45),
-    paddingTop: scale(5),
-    paddingBottom: scale(5),
+    height: "45@s",
+    paddingTop: "5@s",
+    paddingBottom: "5@s",
     borderBottomWidth: 1,
-    borderBottomColor: commonColor.listBorderColor
+    borderBottomColor: commonColor.listBorderColor,
+    backgroundColor: commonColor.brandPrimaryDark
   },
-  leftHeader: {},
+  leftHeader: {
+    marginLeft: "5@s"
+  },
   bodyHeader: {
-    flexGrow: 2
+    flexGrow: 2,
+    paddingLeft: Platform.OS === "ios" ? 0 : "50@s"
   },
   rightHeader: {},
   logoHeader: {
-    width: scale(50),
+    width: "45@s",
     resizeMode: "contain"
   },
   titleHeader: {
-    color: commonColor.textColor,
-    fontSize: scale(20)
+    color: commonColor.inverseTextColor,
+    fontSize: "18@s"
   },
   titleHeaderWithSubTitle: {
-    fontSize: scale(18)
+    fontSize: "18@s"
   },
   subTitleHeader: {
+    color: commonColor.inverseTextColor,
     fontWeight: "bold",
-    color: commonColor.textColor,
-    fontSize: scale(12),
-    marginTop: Platform.OS === "ios" ? scale(-2) : scale(-3)
+    fontSize: "12@s",
+    marginTop: Platform.OS === "ios" ? "-2@s" : "-3@s"
   },
   iconHeader: {
-    fontSize: scale(30),
-    alignSelf: "center"
+    color: commonColor.inverseTextColor,
+    fontSize: "30@s"
   },
-  leftIconHeader: {
-    marginLeft: scale(-5)
+  leftButtonHeader: {
+    paddingLeft: 0
   },
-  rightIconHeader: {
-    marginLeft: scale(10)
+  rightButtonHeader: {
+    paddingLeft: 0
   }
-};
+});
 
 const portraitStyles = {};
 

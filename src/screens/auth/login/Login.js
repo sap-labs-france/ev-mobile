@@ -1,30 +1,9 @@
 import React from "react";
-import {
-  ScrollView,
-  Image,
-  ImageBackground,
-  Keyboard,
-  Linking,
-  KeyboardAvoidingView,
-  Text as TextRN,
-  TextInput
-} from "react-native";
-import {
-  Text,
-  Form,
-  Item,
-  Button,
-  Icon,
-  View,
-  CheckBox,
-  Spinner,
-  ActionSheet
-} from "native-base";
-import Orientation from "react-native-orientation";
+import { ScrollView, Image, Keyboard, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
+import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet, Footer, Left, Right } from "native-base";
+import Orientation from "react-native-orientation-locker";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import * as Animatable from "react-native-animatable";
-
-import providerFactory from "../../../provider/ProviderFactory";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import Constants from "../../../utils/Constants";
@@ -32,34 +11,31 @@ import Message from "../../../utils/Message";
 import computeStyleSheet from "../AuthStyles";
 import commonColor from "../../../theme/variables/commonColor";
 import DeviceInfo from "react-native-device-info";
+import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import BaseScreen from "../../base-screen/BaseScreen";
 
-const _provider = providerFactory.getProvider();
-const _tenants = _provider.getTenants();
-
-// const background = require("../../../../assets/lightning.gif");
-const background = require("../../../../assets/bg.png");
-const logo = require("../../../../assets/logo-low.gif");
+const logo = require("../../../../assets/logo-low.png");
 
 const formValidationDef = {
   tenant: {
     presence: {
       allowEmpty: false,
-      message: I18n.t("general.mandatory")
+      message: "^" + I18n.t("authentication.mandatory_tenant")
     }
   },
   email: {
     presence: {
       allowEmpty: false,
-      message: I18n.t("general.mandatory")
+      message: "^" + I18n.t("authentication.mandatory_email")
     },
     email: {
-      message: "^" + I18n.t("general.email")
+      message: "^" + I18n.t("authentication.invalid_email")
     }
   },
   password: {
     presence: {
       allowEmpty: false,
-      message: I18n.t("general.mandatory")
+      message: "^" + I18n.t("authentication.mandatory_password")
     }
   },
   eula: {
@@ -74,14 +50,14 @@ const formValidationDef = {
   }
 };
 
-export default class Login extends ResponsiveComponent {
+export default class Login extends BaseScreen {
   constructor(props) {
     super(props);
     this.state = {
       eula: false,
       password: null,
-      email: null,
-      tenant: null,
+      email: Utils.getParamFromNavigation(this.props.navigation, "email", ""),
+      tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
       tenantTitle: I18n.t("authentication.tenant"),
       loading: false,
       display: false
@@ -89,26 +65,22 @@ export default class Login extends ResponsiveComponent {
   }
 
   async componentDidMount() {
+    // Call parent
+    await super.componentDidMount();
+    // Get Tenants
+    this.tenants = this.centralServerProvider.getTenants();
     // Unlock all
-    Orientation.unlockAllOrientations();
-    // Check if user is authenticated
-    if (await _provider.isUserAuthenticated()) {
-      // Navigate
-      this._navigateToSites();
-    } else {
-      const email = await _provider.getUserEmail();
-      const password = await _provider.getUserPassword();
-      const userTenant = await _provider.getUserTenant();
-      const tenant = _provider.getTenant(userTenant);
-      // eslint-disable-next-line react/no-did-mount-set-state
-      this.setState({
-        email,
-        password,
-        tenant: userTenant,
-        tenantTitle: tenant ? tenant.name : this.state.tenantTitle,
-        display: true
-      });
-    }
+    Orientation.lockToPortrait();
+    const tenantSubmain = this.centralServerProvider.getUserTenant();
+    const tenant = this.centralServerProvider.getTenant(tenantSubmain);
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({
+      email: this.centralServerProvider.getUserEmail(),
+      password: this.centralServerProvider.getUserPassword(),
+      tenant: tenantSubmain,
+      tenantTitle: tenant ? tenant.name : this.state.tenantTitle,
+      display: true
+    });
   }
 
   _login = async () => {
@@ -122,7 +94,7 @@ export default class Login extends ResponsiveComponent {
         // Loading
         this.setState({ loading: true });
         // Login
-        await _provider.login(email, password, eula, tenant);
+        await this.centralServerProvider.login(email, password, eula, tenant);
         // Login Success
         this.setState({ loading: false });
         // Navigate
@@ -157,37 +129,41 @@ export default class Login extends ResponsiveComponent {
               break;
             default:
               // Other common Error
-              Utils.handleHttpUnexpectedError(error.request);
+              Utils.handleHttpUnexpectedError(this.centralServerProvider, error.request);
           }
         }
       }
     }
   };
 
+  onBack = () =>
+    // Do nothing
+    true;
+
   _navigateToSites() {
     // Navigate to App
     this.props.navigation.navigate("AppDrawerNavigator");
   }
 
-  _setTenant = buttonIndex => {
+  _setTenant = (buttonIndex) => {
     // Provided?
     if (buttonIndex !== undefined) {
       // Set Tenant
       this.setState({
-        tenant: _tenants[buttonIndex].subdomain,
-        tenantTitle: _tenants[buttonIndex].name
+        tenant: this.tenants[buttonIndex].subdomain,
+        tenantTitle: this.tenants[buttonIndex].name
       });
     }
   };
 
   _newUser = () => {
+    const navigation = this.props.navigation;
     // Tenant selected?
     if (this.state.tenant) {
-      Linking.openURL(
-        `https://${
-          this.state.tenant
-        }.ev.cfapps.eu10.hana.ondemand.com/#/register`
-      );
+      navigation.navigate("SignUp", {
+        tenant: this.state.tenant,
+        email: this.state.email
+      });
     } else {
       // Error
       Message.showError(I18n.t("authentication.mustSelectTenant"));
@@ -198,7 +174,10 @@ export default class Login extends ResponsiveComponent {
     const navigation = this.props.navigation;
     // Tenant selected?
     if (this.state.tenant) {
-      navigation.navigate("RetrievePassword", { tenant: this.state.tenant });
+      navigation.navigate("RetrievePassword", {
+        tenant: this.state.tenant,
+        email: this.state.email
+      });
     } else {
       // Error
       Message.showError(I18n.t("authentication.mustSelectTenant"));
@@ -213,21 +192,14 @@ export default class Login extends ResponsiveComponent {
     return !display ? (
       <View style={style.noDisplay} />
     ) : (
-      <Animatable.View
-        style={style.container}
-        animation={"fadeIn"}
-        iterationCount={1}
-        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
-      >
-        <ImageBackground source={background} style={style.background}>
+      <Animatable.View style={style.container} animation={"fadeIn"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+        <BackgroundComponent>
           <ScrollView contentContainerStyle={style.scrollContainer}>
-            <KeyboardAvoidingView style={style.container} behavior="padding">
+            <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
               <View style={style.formHeader}>
                 <Image style={style.logo} source={logo} />
                 <Text style={style.appText}>e-Mobility</Text>
-                <Text style={style.appVersionText}>{`${I18n.t(
-                  "general.version"
-                )} ${DeviceInfo.getVersion()}`}</Text>
+                <Text style={style.appVersionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
               </View>
               <Form style={style.form}>
                 <Button
@@ -237,18 +209,15 @@ export default class Login extends ResponsiveComponent {
                   onPress={() =>
                     ActionSheet.show(
                       {
-                        options: _tenants.map(tenant => tenant.name),
+                        options: this.tenants.map((tenant) => tenant.name),
                         title: I18n.t("authentication.tenant")
                       },
-                      buttonIndex => {
+                      (buttonIndex) => {
                         this._setTenant(buttonIndex);
                       }
                     )
-                  }
-                >
-                  <TextRN style={style.buttonText}>
-                    {this.state.tenantTitle}
-                  </TextRN>
+                  }>
+                  <TextRN style={style.buttonText}>{this.state.tenantTitle}</TextRN>
                 </Button>
                 {this.state.errorTenant &&
                   this.state.errorTenant.map((errorMessage, index) => (
@@ -256,14 +225,14 @@ export default class Login extends ResponsiveComponent {
                       {errorMessage}
                     </Text>
                   ))}
-                <Item rounded style={style.inputGroup}>
+                <Item inlineLabel rounded style={style.inputGroup}>
                   <Icon active name="mail" style={style.inputIcon} />
                   <TextInput
                     name="email"
                     type="email"
                     returnKeyType="next"
                     placeholder={I18n.t("authentication.email")}
-                    placeholderTextColor={commonColor.textColor}
+                    placeholderTextColor={commonColor.placeholderTextColor}
                     onSubmitEditing={() => this.passwordInput.focus()}
                     style={style.inputField}
                     autoCapitalize="none"
@@ -271,7 +240,7 @@ export default class Login extends ResponsiveComponent {
                     autoCorrect={false}
                     keyboardType={"email-address"}
                     secureTextEntry={false}
-                    onChangeText={text => this.setState({ email: text })}
+                    onChangeText={(text) => this.setState({ email: text })}
                     value={this.state.email}
                   />
                 </Item>
@@ -281,27 +250,23 @@ export default class Login extends ResponsiveComponent {
                       {errorMessage}
                     </Text>
                   ))}
-                <Item rounded style={style.inputGroup}>
-                  <Icon
-                    active
-                    name="unlock"
-                    style={[style.inputIcon, style.inputIconLock]}
-                  />
+                <Item inlineLabel rounded style={style.inputGroup}>
+                  <Icon active name="unlock" style={[style.inputIcon, style.inputIconLock]} />
                   <TextInput
                     name="password"
                     type="password"
                     returnKeyType="go"
-                    ref={ref => (this.passwordInput = ref)}
+                    ref={(ref) => (this.passwordInput = ref)}
                     onSubmitEditing={() => Keyboard.dismiss()}
                     placeholder={I18n.t("authentication.password")}
-                    placeholderTextColor={commonColor.textColor}
+                    placeholderTextColor={commonColor.placeholderTextColor}
                     style={style.inputField}
                     autoCapitalize="none"
                     blurOnSubmit={false}
                     autoCorrect={false}
                     keyboardType={"default"}
                     secureTextEntry={true}
-                    onChangeText={text => this.setState({ password: text })}
+                    onChangeText={(text) => this.setState({ password: text })}
                     value={this.state.password}
                   />
                 </Item>
@@ -312,61 +277,43 @@ export default class Login extends ResponsiveComponent {
                     </Text>
                   ))}
                 <View style={style.eulaContainer}>
-                  <CheckBox
-                    style={style.eulaCheckbox}
-                    checked={eula}
-                    onPress={() => this.setState({ eula: !eula })}
-                  />
+                  <CheckBox style={style.eulaCheckbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
                   <Text style={style.eulaText}>
                     {I18n.t("authentication.acceptEula")}
-                    <Text
-                      onPress={() => navigation.navigate("Eula")}
-                      style={style.eulaLink}
-                    >
+                    <Text onPress={() => navigation.navigate("Eula")} style={style.eulaLink}>
                       {I18n.t("authentication.eula")}
                     </Text>
                   </Text>
                 </View>
                 {this.state.errorEula &&
                   this.state.errorEula.map((errorMessage, index) => (
-                    <Text
-                      style={[style.formErrorText, style.formErrorTextEula]}
-                      key={index}
-                    >
+                    <Text style={[style.formErrorText, style.formErrorTextEula]} key={index}>
                       {errorMessage}
                     </Text>
                   ))}
                 {loading ? (
-                  <Spinner color="white" style={style.spinner} />
+                  <Spinner style={style.spinner} color="white" />
                 ) : (
-                  <Button
-                    rounded
-                    primary
-                    block
-                    style={style.button}
-                    onPress={this._login}
-                  >
-                    <TextRN style={style.buttonText}>
-                      {I18n.t("authentication.login")}
-                    </TextRN>
+                  <Button rounded primary block style={style.button} onPress={() => this._login()}>
+                    <TextRN style={style.buttonText}>{I18n.t("authentication.login")}</TextRN>
                   </Button>
                 )}
               </Form>
             </KeyboardAvoidingView>
           </ScrollView>
-          {/* <Footer>
-              <Left>
-                <Button small transparent style={style.linksButtonLeft} onPress={ () => this._newUser() }>
-                  <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
-                </Button>
-              </Left>
-              <Right>
-                <Button small transparent style={style.linksButtonRight} onPress={ () => this._forgotPassword() }>
-                  <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
-                </Button>
-              </Right>
-            </Footer> */}
-        </ImageBackground>
+          <Footer style={style.footer}>
+            <Left>
+              <Button small transparent style={style.linksButtonLeft} onPress={() => this._newUser()}>
+                <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
+              </Button>
+            </Left>
+            <Right>
+              <Button small transparent style={style.linksButtonRight} onPress={() => this._forgotPassword()}>
+                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
+              </Button>
+            </Right>
+          </Footer>
+        </BackgroundComponent>
       </Animatable.View>
     );
   }

@@ -1,11 +1,6 @@
 import React from "react";
 import { StatusBar, Dimensions } from "react-native";
-import {
-  createSwitchNavigator,
-  createStackNavigator,
-  createDrawerNavigator,
-  createAppContainer
-} from "react-navigation";
+import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createAppContainer } from "react-navigation";
 import { Root } from "native-base";
 import Login from "./screens/auth/login/Login";
 import Eula from "./screens/auth/eula/Eula";
@@ -15,8 +10,19 @@ import Sidebar from "./screens/sidebar/SideBar";
 import Sites from "./screens/sites/Sites";
 import SiteAreas from "./screens/site-areas/SiteAreas";
 import Chargers from "./screens/chargers/Chargers";
-import ChargerTab from "./screens/charger-details/charger-tab/ChargerTab";
+import AllChargers from "./screens/chargers/AllChargers";
+import ChargerTabDetails from "./screens/charger-details/tabs/ChargerTabDetails";
 import NotificationManager from "./notification/NotificationManager";
+import Utils from "./utils/Utils";
+import SecuredStorage from "./utils/SecuredStorage";
+import moment from "moment";
+
+// Get the supported locales
+require("moment/locale/fr");
+require("moment/locale/de");
+require("moment/locale/en-gb");
+// Set the current locale
+moment.locale(Utils.getLocaleShort());
 
 // Get the Notification Scheduler
 const _notificationManager = NotificationManager.getInstance();
@@ -27,7 +33,7 @@ _notificationManager.initialize();
 const AppDrawerNavigator = createDrawerNavigator(
   {
     Sites: {
-      screen: props => {
+      screen: (props) => {
         // Set the navigation to the notification
         _notificationManager.setNavigation(props.navigation);
         // Start
@@ -38,7 +44,8 @@ const AppDrawerNavigator = createDrawerNavigator(
     },
     SiteAreas: { screen: SiteAreas },
     Chargers: { screen: Chargers },
-    ChargerTab: { screen: ChargerTab }
+    AllChargers: { screen: AllChargers },
+    ChargerTabDetails: { screen: ChargerTabDetails }
   },
   {
     navigationOptions: {
@@ -48,7 +55,7 @@ const AppDrawerNavigator = createDrawerNavigator(
     initialRouteName: "Sites",
     unmountInactiveRoutes: true,
     drawerPosition: "right",
-    contentComponent: props => <Sidebar {...props} />
+    contentComponent: (props) => <Sidebar {...props} />
   }
 );
 
@@ -79,7 +86,26 @@ const RootNavigator = createSwitchNavigator(
 // Create a container to wrap the main navigator
 const RootContainer = createAppContainer(RootNavigator);
 
+// Handle persistence of navigation
+const persistNavigationState = async (navigationState) => {
+  try {
+    await SecuredStorage.saveNavigationState(navigationState);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const loadNavigationState = async () => {
+  const navigationState = await SecuredStorage.getNavigationState();
+  return navigationState;
+};
+
+const RootContainerPersists = () => (
+  <RootContainer persistNavigationState={persistNavigationState} loadNavigationState={loadNavigationState} />
+);
+
 export default class App extends React.Component {
+  // eslint-disable-next-line class-methods-use-this
   async componentDidMount() {
     // Activate
     _notificationManager.setActive(true);
@@ -90,11 +116,12 @@ export default class App extends React.Component {
     this._notificationManager.setActive(false);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   render() {
     return (
       <Root>
         <StatusBar hidden />
-        <RootContainer />
+        <RootContainerPersists />
       </Root>
     );
   }

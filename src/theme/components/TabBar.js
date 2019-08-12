@@ -1,6 +1,9 @@
-import variable from "./../variables/platform";
+// @flow
 
-export default (variables = variable) => {
+import variable from "./../variables/platform";
+import { scale } from "react-native-size-matters";
+
+export default (variables /* : * */ = variable) => {
   const tabBarTheme = {
     ".tabIcon": {
       height: undefined
@@ -40,7 +43,7 @@ export default (variables = variable) => {
       borderBottomColor: "transparent",
       backgroundColor: variables.tabBgColor
     },
-    height: 45,
+    height: scale(50),
     flexDirection: "row",
     justifyContent: "space-around",
     borderWidth: 1,

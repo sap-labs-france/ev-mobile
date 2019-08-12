@@ -4,19 +4,17 @@ import I18n from "../I18n/I18n";
 import commonColor from "../theme/variables/commonColor";
 import DeviceInfo from "react-native-device-info";
 import ProviderFactory from "../provider/ProviderFactory";
-import Message from "../utils/Message";
+// import Message from "../utils/Message";
 
-const _provider = ProviderFactory.getProvider();
 const _notifications = [];
 let _notificationManager;
 let _token;
 
 export default class NotificationManager {
-  initialize() {
+  async initialize() {
+    this.centralServerProvider = await ProviderFactory.getProvider();
     // // Create the notif provider
-    // this.notificationProvider = new NotificationProvider(
-    //   this.onRegister, this.onNotify
-    // );
+    // this.notificationProvider = new NotificationProvider(this.onRegister, this.onNotify);
     // // Set inactive
     // this._active = false;
     // // No timer
@@ -55,7 +53,7 @@ export default class NotificationManager {
     //   this.notificationCheck = setInterval(() => {
     //     // Refresh
     //     this.processNotification();
-    //   }, Constants.AUTO_REFRESH_VERY_SHORT_PERIOD_MILLIS);
+    //   }, Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
     // }
   }
 
@@ -76,55 +74,78 @@ export default class NotificationManager {
     //   notification.extraData = JSON.parse(notification.extraData);
     // }
     // // Yes: meaning user clicked on the notification, then it should navigate
-    // let message = null, subMessage = null, longMessage = null, color = commonColor.brandInfo;
+    // let message = null,
+    //   subMessage = null,
+    //   longMessage = null,
+    //   color = commonColor.brandInfo;
     // // Check the type of notification
     // switch (notification.sourceDescr) {
     //   // End of Session
     //   case "NotifyEndOfSession":
-    //     message = I18n.t("notifications.notifyEndOfSession.message", {chargeBoxID: notification.chargeBoxID});
+    //     message = I18n.t("notifications.notifyEndOfSession.message", {
+    //       chargeBoxID: notification.chargeBoxID
+    //     });
     //     subMessage = I18n.t("notifications.notifyEndOfSession.subMessage");
-    //     longMessage = I18n.t("notifications.notifyEndOfSession.longMessage", {chargeBoxID: notification.chargeBoxID});
+    //     longMessage = I18n.t("notifications.notifyEndOfSession.longMessage", {
+    //       chargeBoxID: notification.chargeBoxID
+    //     });
     //     break;
     //   // End of Charge
     //   case "NotifyEndOfCharge":
-    //     message = I18n.t("notifications.notifyEndOfCharge.message", {chargeBoxID: notification.chargeBoxID});
+    //     message = I18n.t("notifications.notifyEndOfCharge.message", {
+    //       chargeBoxID: notification.chargeBoxID
+    //     });
     //     subMessage = I18n.t("notifications.notifyEndOfCharge.subMessage");
-    //     longMessage = I18n.t("notifications.notifyEndOfCharge.longMessage", {chargeBoxID: notification.chargeBoxID});
+    //     longMessage = I18n.t("notifications.notifyEndOfCharge.longMessage", {
+    //       chargeBoxID: notification.chargeBoxID
+    //     });
     //     break;
     //   // Optimal Charge
     //   case "NotifyOptimalChargeReached":
-    //     message = I18n.t("notifications.notifyOptimalChargeReached.message", {chargeBoxID: notification.chargeBoxID});
+    //     message = I18n.t("notifications.notifyOptimalChargeReached.message", {
+    //       chargeBoxID: notification.chargeBoxID
+    //     });
     //     subMessage = I18n.t("notifications.notifyOptimalChargeReached.subMessage");
-    //     longMessage = I18n.t("notifications.notifyOptimalChargeReached.longMessage", {chargeBoxID: notification.chargeBoxID});
+    //     longMessage = I18n.t("notifications.notifyOptimalChargeReached.longMessage", {
+    //       chargeBoxID: notification.chargeBoxID
+    //     });
     //     break;
     //   // Charger in Error
     //   case "NotifyChargingStationStatusError":
     //     color = commonColor.brandDanger;
     //     message = I18n.t("notifications.notifyChargingStationStatusError.message", {
     //       chargeBoxID: notification.chargeBoxID,
-    //       connectorId: (notification.data ? notification.data.connectorId : "Unknown"),
-    //       error: (notification.data ? notification.data.error : "Unknown")
+    //       connectorId: notification.data ? notification.data.connectorId : "Unknown",
+    //       error: notification.data ? notification.data.error : "Unknown"
     //     });
     //     subMessage = I18n.t("notifications.notifyChargingStationStatusError.subMessage");
     //     longMessage = I18n.t("notifications.notifyChargingStationStatusError.longMessage", {
     //       chargeBoxID: notification.chargeBoxID,
-    //       connectorId: (notification.data ? notification.data.connectorId : "Unknown"),
-    //       error: (notification.data ? notification.data.error : "Unknown")
+    //       connectorId: notification.data ? notification.data.connectorId : "Unknown",
+    //       error: notification.data ? notification.data.error : "Unknown"
     //     });
     //     break;
     //   // Charger just connected
     //   case "NotifyChargingStationRegistered":
     //     color = commonColor.brandDanger;
-    //     message = I18n.t("notifications.notifyChargingStationRegistered.message", {chargeBoxID: notification.chargeBoxID});
+    //     message = I18n.t("notifications.notifyChargingStationRegistered.message", {
+    //       chargeBoxID: notification.chargeBoxID
+    //     });
     //     subMessage = I18n.t("notifications.notifyChargingStationRegistered.subMessage");
-    //     longMessage = I18n.t("notifications.notifyChargingStationRegistered.longMessage", {chargeBoxID: notification.chargeBoxID});
+    //     longMessage = I18n.t("notifications.notifyChargingStationRegistered.longMessage", {
+    //       chargeBoxID: notification.chargeBoxID
+    //     });
     //     break;
     //   // Unknown user
     //   case "NotifyUnknownUserBadged":
     //     color = commonColor.brandDanger;
-    //     message = I18n.t("notifications.notifyUnknownUserBadged.message", {chargeBoxID: notification.chargeBoxID});
+    //     message = I18n.t("notifications.notifyUnknownUserBadged.message", {
+    //       chargeBoxID: notification.chargeBoxID
+    //     });
     //     subMessage = I18n.t("notifications.notifyUnknownUserBadged.subMessage");
-    //     longMessage = I18n.t("notifications.notifyUnknownUserBadged.longMessage", {chargeBoxID: notification.chargeBoxID});
+    //     longMessage = I18n.t("notifications.notifyUnknownUserBadged.longMessage", {
+    //       chargeBoxID: notification.chargeBoxID
+    //     });
     //     break;
     // }
     // // Send the notification
@@ -132,10 +153,10 @@ export default class NotificationManager {
     //   // Send
     //   await this.notificationProvider.sendLocalNotification({
     //     title: DeviceInfo.getApplicationName(),
-    //     message: message,
+    //     message,
     //     subText: subMessage,
     //     bigText: longMessage,
-    //     color: color,
+    //     color,
     //     extraData: notification
     //   });
     // }
@@ -148,7 +169,7 @@ export default class NotificationManager {
     // if (this.isActive()) {
     //   console.log("processNotification - active");
     //   // Process the notifications
-    //   while ((notification = _notifications.splice(0,1)[0]) !== undefined) {
+    //   while ((notification = _notifications.splice(0, 1)[0]) !== undefined) {
     //     console.log("processNotification - notification");
     //     console.log(notification);
     //     // Check if the app was opened
@@ -160,7 +181,7 @@ export default class NotificationManager {
     //       console.log("Remote Notif: Navigate");
     //       // No: meaning the user got the notif and clicked on it, then navigate to the right screen
     //       // User must be logged and Navigation available
-    //       if (!(await _provider.isUserAuthenticated()) || !this.navigation) {
+    //       if (!(await _provider.isUserConnectionValid()) || !this.navigation) {
     //         return;
     //       }
     //       // Text?
@@ -181,7 +202,10 @@ export default class NotificationManager {
     //             if (notification.extraData.data && notification.extraData.data.connectorId) {
     //               // Navigate
     //               if (this.navigation) {
-    //                 this.navigation.navigate("ChargerTab", { chargerID: notification.extraData.chargeBoxID, connectorID: notification.extraData.data.connectorId })
+    //                 this.navigation.navigate("ChargerTabDetails", {
+    //                   chargerID: notification.extraData.chargeBoxID,
+    //                   connectorID: notification.extraData.data.connectorId
+    //                 });
     //               }
     //             }
     //             break;
@@ -191,7 +215,10 @@ export default class NotificationManager {
     //             if (notification.extraData.data) {
     //               // Navigate
     //               if (this.navigation) {
-    //                 this.navigation.navigate("ChargerTab", { chargerID: notification.extraData.chargeBoxID, connectorID: 1 })
+    //                 this.navigation.navigate("ChargerTabDetails", {
+    //                   chargerID: notification.extraData.chargeBoxID,
+    //                   connectorID: 1
+    //                 });
     //               }
     //             }
     //             break;
@@ -209,7 +236,7 @@ export default class NotificationManager {
     // return _token;
   }
 
-  onRegister = token => {
+  onRegister = (token) => {
     // // Keep the token
     // _token = token;
     // // Do nothing
@@ -217,7 +244,7 @@ export default class NotificationManager {
     // console.log(token);
   };
 
-  onNotify = async notification => {
+  onNotify = async (notification) => {
     // console.log("NOTIF MESSAGE");
     // console.log(notification);
     // // Add Notification

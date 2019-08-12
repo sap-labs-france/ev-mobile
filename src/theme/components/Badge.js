@@ -1,35 +1,49 @@
-import variable from "./../variables/platform";
+// @flow
 
-export default (variables = variable) => {
+import variable from "./../variables/platform";
+import commonColor, { PLATFORM } from "./../variables/commonColor";
+import { scale, moderateScale } from "react-native-size-matters";
+
+export default (variables /* : * */ = variable) => {
   const badgeTheme = {
     ".primary": {
-      backgroundColor: variables.btnPrimaryBg
+      backgroundColor: variables.buttonPrimaryBg
     },
     ".warning": {
-      backgroundColor: variables.btnWarningBg
+      backgroundColor: variables.buttonWarningBg
     },
     ".info": {
-      backgroundColor: variables.btnInfoBg
+      backgroundColor: variables.buttonInfoBg
     },
     ".success": {
-      backgroundColor: variables.btnSuccessBg
+      backgroundColor: variables.buttonSuccessBg
     },
     ".danger": {
-      backgroundColor: variables.btnDangerBg
+      backgroundColor: variables.buttonDangerBg
     },
     "NativeBase.Text": {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      alignSelf: "center",
       color: variables.badgeColor,
       fontSize: variables.fontSizeBase,
-      lineHeight: variables.lineHeight - 1,
+      lineHeight: variables.lineHeight - 5,
       textAlign: "center",
+      paddingTop: moderateScale(11, 4),
+      paddingBottom: moderateScale(8),
       paddingHorizontal: 3
     },
     backgroundColor: variables.badgeBg,
     padding: variables.badgePadding,
     paddingHorizontal: 6,
-    alignSelf: "flex-start",
-    borderRadius: 13.5,
-    height: 27
+    borderStyle: "solid",
+    borderColor: commonColor.textColor,
+    borderWidth: scale(4),
+    justifyContent: "center",
+    alignItems: "center",
+    width: scale(44),
+    height: scale(44)
   };
   return badgeTheme;
 };

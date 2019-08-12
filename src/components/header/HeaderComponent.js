@@ -1,20 +1,11 @@
 import React from "react";
 import { Image, BackHandler } from "react-native";
-import {
-  Header,
-  Left,
-  Right,
-  Body,
-  Title,
-  Subtitle,
-  Button,
-  Icon
-} from "native-base";
+import { Header, Left, Right, Body, Title, Subtitle, Button, Icon } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./HeaderComponentStyles";
 import PropTypes from "prop-types";
 
-const logo = require("../../../assets/logo-low.gif");
+const logo = require("../../../assets/logo-low.png");
 
 export default class HeaderComponent extends ResponsiveComponent {
   constructor(props) {
@@ -34,10 +25,7 @@ export default class HeaderComponent extends ResponsiveComponent {
     const { leftAction } = this.props;
     // Left Action is always Back
     if (leftAction) {
-      BackHandler.removeEventListener(
-        "hardwareBackPress",
-        this.handleBackPress
-      );
+      BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
     }
   }
 
@@ -59,38 +47,22 @@ export default class HeaderComponent extends ResponsiveComponent {
       <Header style={style.header}>
         <Left style={style.leftHeader}>
           {leftAction ? (
-            <Button transparent onPress={() => leftAction()}>
-              <Icon
-                type={leftActionIconType}
-                name={leftActionIcon}
-                style={[style.iconHeader, style.leftIconHeader]}
-              />
+            <Button transparent style={style.leftButtonHeader} onPress={() => leftAction()}>
+              <Icon type={leftActionIconType} name={leftActionIcon} style={[style.iconHeader, style.leftIconHeader]} />
             </Button>
           ) : (
             <Image source={logo} style={style.logoHeader} />
           )}
         </Left>
         <Body style={style.bodyHeader}>
-          <Title
-            style={
-              subTitle
-                ? [style.titleHeader, style.titleHeaderWithSubTitle]
-                : style.titleHeader
-            }
-          >
-            {title}
-          </Title>
-          {subTitle ? (
-            <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>
-          ) : (
-            undefined
-          )}
+          <Title style={subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader}>{title}</Title>
+          {subTitle ? <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle> : undefined}
         </Body>
         <Right style={style.rightHeader}>
           {showSearchAction ? (
-            <Icon
-              type={"MaterialIcons"}
-              name={"search"}
+            <Button
+              transparent
+              style={style.rightButtonHeader}
               onPress={() => {
                 // Invert
                 this.searchIsVisible = !this.searchIsVisible;
@@ -98,19 +70,16 @@ export default class HeaderComponent extends ResponsiveComponent {
                 if (searchRef) {
                   searchRef.setVisible(this.searchIsVisible);
                 }
-              }}
-              style={[style.iconHeader, style.rightIconHeader]}
-            />
+              }}>
+              <Icon type={"MaterialIcons"} name={"search"} style={style.iconHeader} />
+            </Button>
           ) : (
             undefined
           )}
           {rightAction ? (
-            <Icon
-              type={rightActionIconType}
-              name={rightActionIcon}
-              onPress={() => rightAction()}
-              style={[style.iconHeader, style.rightIconHeader]}
-            />
+            <Button transparent style={style.rightButtonHeader} onPress={() => rightAction()}>
+              <Icon type={rightActionIconType} name={rightActionIcon} style={style.iconHeader} />
+            </Button>
           ) : (
             <Image source={logo} style={style.logoHeader} />
           )}

@@ -1,14 +1,13 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import { Badge } from "react-native-elements";
 import { TouchableOpacity } from "react-native";
 import { Text, View, Icon } from "native-base";
 import openMap from "react-native-open-maps";
 import computeStyleSheet from "./SiteComponentStyles";
-import I18n from "../../I18n/I18n";
 import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 import Constants from "../../utils/Constants";
+import ConnectorStatusesContainerComponent from "../connector-status/ConnectorStatusesContainerComponent";
 
 let counter = 0;
 export default class SiteComponent extends ResponsiveComponent {
@@ -23,57 +22,33 @@ export default class SiteComponent extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { site, navigation } = this.props;
+    let connectorStats;
+    // New backend?
+    if (site.connectorStats) {
+      // Override
+      connectorStats = site.connectorStats;
+    } else {
+      connectorStats = {
+        totalConnectors: site.totalConnectors,
+        availableConnectors: site.availableConnectors
+      };
+    }
     return (
       <Animatable.View
         animation={counter++ % 2 === 0 ? "flipInX" : "flipInX"}
         iterationCount={1}
-        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
-      >
-        <TouchableOpacity
-          onPress={() => navigation.navigate("SiteAreas", { siteID: site.id })}
-        >
+        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+        <TouchableOpacity onPress={() => navigation.navigate("SiteAreas", { siteID: site.id })}>
           <View style={style.container}>
-            <View style={style.mainContent}>
-              <TouchableOpacity
-                onPress={() => this._siteLocation(site.address)}
-              >
+            <View style={style.headerContent}>
+              <TouchableOpacity onPress={() => this._siteLocation(site.address)}>
                 <Icon style={style.icon} name="pin" />
               </TouchableOpacity>
               <Text style={style.name}>{site.name}</Text>
-              <Icon style={style.icon} name="arrow-forward" />
+              <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
             </View>
-            <View style={style.detailedContent}>
-              <Text style={style.connectorText}>
-                {I18n.t("sites.chargePoint")}
-              </Text>
-              <View style={[style.badgeContainer, style.badgeSuccessContainer]}>
-                <Badge
-                  containerStyle={[
-                    style.connectorBadge,
-                    style.freeConnectorBadge
-                  ]}
-                  textStyle={style.connectorBadgeTitle}
-                  value={site.availableConnectors}
-                />
-                <Text style={style.connectorSubTitle}>
-                  {I18n.t("sites.free")}
-                </Text>
-              </View>
-              <View
-                style={[style.badgeContainer, style.badgeOccupiedContainer]}
-              >
-                <Badge
-                  containerStyle={[
-                    style.connectorBadge,
-                    style.occupiedConnectorBadge
-                  ]}
-                  textStyle={style.connectorBadgeTitle}
-                  value={site.totalConnectors - site.availableConnectors}
-                />
-                <Text style={style.connectorSubTitle}>
-                  {I18n.t("sites.occupied")}
-                </Text>
-              </View>
+            <View style={style.connectorContent}>
+              <ConnectorStatusesContainerComponent connectorStats={connectorStats} />
             </View>
           </View>
         </TouchableOpacity>

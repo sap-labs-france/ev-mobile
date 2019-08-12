@@ -3,12 +3,24 @@ target 'eMobility' do
   pod 'Charts', '3.3.0'
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
+  pod 'React', :path => '../node_modules/react-native'
+  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+  pod 'react-native-orientation-locker', :path => '../node_modules/react-native-orientation-locker/react-native-orientation-locker.podspec'
 end
 
 swift4 = ['Charts']
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
+    # The following is needed to ensure the "archive" step works in XCode.
+    # It removes React & Yoga from the Pods project, as it is already included in the main project.
+    # Without this, you'd see errors when you archive like:
+    # "Multiple commands produce ... libReact.a"
+    # "Multiple commands produce ... libyoga.a"
+    targets_to_ignore = %w(React yoga)
+    if targets_to_ignore.include? target.name
+      target.remove_from_project
+    end
     target.build_configurations.each do |config|
       if swift4.include?(target.name)
         config.build_settings['SWIFT_VERSION'] = '4.2'

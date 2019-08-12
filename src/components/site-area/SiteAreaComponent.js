@@ -1,6 +1,5 @@
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import { Badge } from "react-native-elements";
 import { TouchableOpacity } from "react-native";
 import { Text, View, Icon } from "native-base";
 import computeStyleSheet from "./SiteAreaComponentStyles";
@@ -9,6 +8,7 @@ import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
 import Constants from "../../utils/Constants";
 import Message from "../../utils/Message";
+import ConnectorStatusesContainerComponent from "../connector-status/ConnectorStatusesContainerComponent";
 
 let counter = 0;
 
@@ -16,70 +16,41 @@ export default class SiteAreaComponent extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { siteArea, navigation } = this.props;
+    let connectorStats;
+    // New backend?
+    if (siteArea.connectorStats) {
+      // Override
+      connectorStats = siteArea.connectorStats;
+    } else {
+      connectorStats = {
+        totalConnectors: siteArea.totalConnectors,
+        availableConnectors: siteArea.availableConnectors
+      };
+    }
     return (
       <Animatable.View
         animation={counter++ % 2 === 0 ? "flipInX" : "flipInX"}
         iterationCount={1}
-        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}
-      >
+        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity
           onPress={() => {
             if (siteArea.totalConnectors > 0) {
               // Navigate
               navigation.navigate("Chargers", {
-                siteAreaID: siteArea.id,
-                withNoSite: false
+                siteAreaID: siteArea.id
               });
             } else {
               // No connector
               Message.showError(I18n.t("siteAreas.noChargers"));
             }
-          }}
-        >
+          }}>
           <View style={style.container}>
-            <View style={style.mainContent}>
+            <View style={style.headerContent}>
               <Text style={style.name}>{siteArea.name}</Text>
-              <Icon
-                style={
-                  siteArea.totalConnectors > 0 ? style.icon : style.iconHidden
-                }
-                name="arrow-forward"
-              />
+              <Icon style={siteArea.totalConnectors > 0 ? style.icon : style.iconHidden} type="MaterialIcons" name="navigate-next" />
             </View>
-            <View style={style.detailedContent}>
-              <Text style={style.connectorText}>
-                {I18n.t("sites.chargePoint")}
-              </Text>
-              <View style={[style.badgeContainer, style.badgeSuccessContainer]}>
-                <Badge
-                  containerStyle={[
-                    style.connectorBadge,
-                    style.freeConnectorBadge
-                  ]}
-                  textStyle={style.connectorBadgeTitle}
-                  value={siteArea.availableConnectors}
-                />
-                <Text style={style.connectorSubTitle}>
-                  {I18n.t("sites.free")}
-                </Text>
-              </View>
-              <View
-                style={[style.badgeContainer, style.badgeOccupiedContainer]}
-              >
-                <Badge
-                  containerStyle={[
-                    style.connectorBadge,
-                    style.occupiedConnectorBadge
-                  ]}
-                  textStyle={style.connectorBadgeTitle}
-                  value={
-                    siteArea.totalConnectors - siteArea.availableConnectors
-                  }
-                />
-                <Text style={style.connectorSubTitle}>
-                  {I18n.t("sites.occupied")}
-                </Text>
-              </View>
+            <View style={style.connectorContent}>
+              <ConnectorStatusesContainerComponent connectorStats={connectorStats} />
             </View>
           </View>
         </TouchableOpacity>

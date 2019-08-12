@@ -9,6 +9,7 @@ export default class NotificationProvider {
     this.lastId = 0;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   configure(onRegister, onNotification) {
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
