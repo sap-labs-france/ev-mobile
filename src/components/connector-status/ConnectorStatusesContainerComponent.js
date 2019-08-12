@@ -30,11 +30,16 @@ export default class ConnectorStatusesContainerComponent extends ResponsiveCompo
           text={Utils.translateConnectorStatus(Constants.CONN_STATUS_CHARGING)}
           type={Constants.CONN_STATUS_CHARGING}
         />
-        <ConnectorStatusComponent
-          value={connectorStats.unavailableConnectors}
-          text={Utils.translateConnectorStatus(Constants.CONN_STATUS_UNAVAILABLE)}
-          type={Constants.CONN_STATUS_UNAVAILABLE}
-        />
+        {
+          connectorStats.unavailableConnectors ?
+            <ConnectorStatusComponent
+              value={connectorStats.unavailableConnectors}
+              text={Utils.translateConnectorStatus(Constants.CONN_STATUS_UNAVAILABLE)}
+              type={Constants.CONN_STATUS_UNAVAILABLE}
+            />
+          :
+            undefined
+        }
       </View>
     );
   }
