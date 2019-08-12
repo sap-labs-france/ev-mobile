@@ -96,7 +96,7 @@ const commonStyles = ScaledSheet.create({
     fontWeight: "bold"
   },
   labelUser: {
-    fontSize: "12@s"
+    fontSize: "10@s"
   },
   subLabel: {
     fontSize: "10@s",
