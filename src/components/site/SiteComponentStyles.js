@@ -3,7 +3,6 @@ import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
 import { ScaledSheet } from "react-native-size-matters";
 import { Platform } from "react-native";
-import Constants from "../../utils/Constants";
 
 const commonStyles = ScaledSheet.create({
   container: {
