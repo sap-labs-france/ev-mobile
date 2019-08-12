@@ -5,7 +5,7 @@ import computeStyleSheet from "./ConnectorStatusComponentStyles.js";
 import { Animated, Easing } from "react-native";
 import { Text, View } from "native-base";
 import Constants from "../../utils/Constants";
-
+import { Platform } from "react-native";
 export default class ConnectorStatusComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
@@ -120,18 +120,29 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     const value = this._getConnectorValue();
     // Animated
     const isAnimated = this._isAnimated();
+    const isAndroid = Platform.OS === "android";
     return (
       <View style={this.props.text ? style.containerWithDescription : style.containerWithNoDescription}>
-        <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
-          <View style={connectorStyles.container}>
-            <Animated.Text
-              style={
-                isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
-              }>
-              {value}
-            </Animated.Text>
+        {isAndroid ?
+          <View>
+            <View style={connectorStyles.container}>
+              <Text style={connectorStyles.value}>
+                {value}
+              </Text>
+            </View>
           </View>
-        </Animated.View>
+        :
+          <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
+            <View style={connectorStyles.container}>
+              <Animated.Text
+                style={
+                  isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
+                }>
+                {value}
+              </Animated.Text>
+            </View>
+          </Animated.View>
+        }
         {this.props.text ? <Text style={connectorStyles.description}>{this.props.text}</Text> : undefined}
       </View>
     );
