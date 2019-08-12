@@ -291,8 +291,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
         }
         // Set
         this.setState({
-          inactivityFormatted,
-          elapsedTimeFormatted
+          elapsedTimeFormatted,
+          inactivityFormatted
         });
       }
     }
@@ -353,7 +353,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
             {isAdmin ? <Text style={[style.subLabel, style.subLabelUser]}>({transaction.tagID})</Text> : undefined}
           </View>
         ) : (
-          <Text style={style.label}>-</Text>
+          <Text style={style.label}>#####</Text>
         )}
       </View>
     );
@@ -379,11 +379,12 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
   };
 
   _renderElapsedTime = (style) => {
-    const { transaction, elapsedTimeFormatted } = this.state;
+    const { elapsedTimeFormatted } = this.state;
+    const { connector } = this.props;
     return (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="timer" style={style.icon} />
-        {transaction ? (
+        {connector.activeTransactionID ? (
           <Text style={[style.label, style.labelTimeValue]}>{elapsedTimeFormatted}</Text>
         ) : (
           <Text style={[style.label, style.labelValue]}>- : - : -</Text>
@@ -398,7 +399,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     return (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="timer-off" style={style.icon} />
-        {transaction || connector.activeTransactionID ? (
+        {connector.activeTransactionID ? (
           <Text style={[style.label, style.labelTimeValue]}>{inactivityFormatted}</Text>
         ) : (
           <Text style={[style.label, style.labelValue]}>- : - : -</Text>
@@ -494,6 +495,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
   render() {
     const style = computeStyleSheet();
     const { connector, canStopTransaction, canStartTransaction } = this.props;
+    console.log(connector);
     const { siteImage } = this.state;
     return (
       <Container style={style.container}>
