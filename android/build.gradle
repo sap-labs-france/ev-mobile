@@ -7,8 +7,8 @@ buildscript {
         compileSdkVersion = 28
         targetSdkVersion = 28
         supportLibVersion = "28.0.0"
-        googlePlayServicesVersion = "17.0.0" // For react-native-push-notification
-        firebaseVersion = "19.0.1" // For react-native-firebase
+        googlePlayServicesVersion = "16.1.0" // For react-native-push-notification
+        firebaseVersion = "17.1.0" // For react-native-firebase
     }
     repositories {
         google()

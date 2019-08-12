@@ -60,6 +60,8 @@
     "react-native:link": "react-native link",
     "react-native:unlink": "react-native unlink",
     "react-native:uninstall": "react-native uninstall",
+    "react-native:log-ios": "react-native log-ios",
+    "react-native:log-android": "react-native log-android",
     "react-native:clean-project-auto": "react-native clean-project-auto"
   },
   "jest": {
