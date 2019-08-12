@@ -109,6 +109,7 @@ const commonStyles = ScaledSheet.create({
     marginTop: "2@s"
   },
   subLabelUser: {
+    fontSize: "8@s",
     marginTop: "0@s"
   },
   icon: {
