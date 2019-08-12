@@ -353,7 +353,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
             {isAdmin ? <Text style={[style.subLabel, style.subLabelUser]}>({transaction.tagID})</Text> : undefined}
           </View>
         ) : (
-          <Text style={style.label}>#####</Text>
+          <Text style={style.label}>-</Text>
         )}
       </View>
     );
