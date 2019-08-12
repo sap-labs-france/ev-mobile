@@ -1,5 +1,5 @@
-// flow-typed signature: de93b3e02cf673630b393073b047d221
-// flow-typed version: 2afe80cbed/validate.js_v0.x.x/flow_>=v0.25.x
+// flow-typed signature: ce1de7ad510ac2d7608bca7e426df9ce
+// flow-typed version: c6154227d1/validate.js_v0.x.x/flow_>=v0.25.x <=v0.103.x
 
 declare module 'validate.js' {
   declare type Attributes = mixed;
