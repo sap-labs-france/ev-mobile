@@ -39,7 +39,7 @@
   "scripts": {
     "start": "react-native start",
     "android": "react-native run-android",
-    "android:release": "cd android && ./gradlew assembleRelease",
+    "android:release": "cd android && gradlew assembleRelease",
     "android:jetify": "npx jetify",
     "ios": "react-native run-ios",
     "pod:install": "cd ios && pod install",
@@ -54,7 +54,7 @@
     "clean-install-lin": "rm -rf ./node_modules && rm -f ./package-lock.json && npm cache clear --force && npm install",
     "ios:bundle": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
     "clean": "npm start -- --reset-cache",
-    "clean:android": "cd android && ./gradlew clean",
+    "clean:android": "cd android && gradlew clean",
     "npm-check": "npm-check",
     "react-native:upgrade": "react-native upgrade",
     "react-native:link": "react-native link",
@@ -71,6 +71,7 @@
     ]
   },
   "dependencies": {
+    "@react-native-community/push-notification-ios": "^1.0.2",
     "add": "^2.0.6",
     "axios": "^0.19.0",
     "color": "^3.1.2",
@@ -89,7 +90,6 @@
     "react-native-charts-wrapper": "^0.5.5",
     "react-native-device-info": "^2.3.2",
     "react-native-elements": "^1.1.0",
-    "react-native-firebase": "^5.5.6",
     "react-native-gesture-handler": "git://github.com/hyochan/react-native-gesture-handler.git#package-names",
     "react-native-google-maps-directions": "^2.1.0",
     "react-native-htmlview": "^0.15.0",
