@@ -33,7 +33,7 @@ target 'eMobility' do
   # Pods for firebase products
   pod 'Firebase/Messaging', '~> 6.3.0'
   # Required by RNCharts
-  pod 'SwiftyJSON', '5.0.0'
+  pod 'SwiftyJSON', '5.0'
   pod 'Charts', '3.3.0'
 
   target 'eMobilityTests' do
