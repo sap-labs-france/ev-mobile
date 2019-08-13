@@ -16,7 +16,8 @@
   },
   "sidebar": {
     "sites": "Sites",
-    "chargers": "Chargers"
+    "chargers": "Chargers",
+    "sessions": "Sessions"
   },
 	"authentication": {
     "mandatory_tenant": "The Tenant is mandatory",
@@ -55,6 +56,9 @@
 		"passwordRule": "Must contain 1 letter lowercase and uppercase, 1 number, 1 special char and 8 chars long",
     "passwordNotMatch": "Password does not match",
     "tenant": "Choose a Tenant"
+  },
+  "sessions": {
+    "chargingCurve": "Charging Curve"
   },
   "sites": {
     "freeChargers": "Free chargers",

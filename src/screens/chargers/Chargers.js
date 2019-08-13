@@ -136,7 +136,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { chargers, siteAreaID } = this.state;
+    const { siteAreaID, loading } = this.state;
     // Safe way to retrieve the Site ID to navigate back from a notification
     const siteID = this._getSiteIDFromChargers();
     return (
@@ -146,7 +146,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
             title={I18n.t("chargers.title")}
             showSearchAction={true}
             searchRef={this.searchRef}
-            leftAction={siteAreaID ? () => navigation.navigate("SiteAreas", { siteID }) : undefined}
+            leftAction={this.onBack}
             leftActionIcon={siteAreaID ? "navigate-before" : undefined}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
@@ -160,7 +160,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
             navigation={navigation}
           />
           <View style={style.content}>
-            {this.state.loading ? (
+            {loading ? (
               <Spinner style={style.spinner} />
             ) : (
               <FlatList

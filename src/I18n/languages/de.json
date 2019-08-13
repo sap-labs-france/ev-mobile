@@ -16,7 +16,8 @@
   },
   "sidebar": {
     "sites": "Standorte",
-    "chargers": "Ladestationen"
+    "chargers": "Ladestationen",
+    "sessions": "Sitzungen"
   },
 	"authentication": {
     "mandatory_tenant": "Der Tenant ist notwendig",
@@ -55,6 +56,9 @@
 		"passwordRule": "Muss einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl, ein Sonderzeichen und mindestens 8 Zeichen beinhalten.",
     "passwordNotMatch": "Passwörter stimmen nicht miteinander überein",
     "tenant": "Wählen Sie einen Tenant"
+  },
+  "sessions": {
+    "chargingCurve": "Charging Curve"
   },
   "sites": {
     "freeChargers": "Freie Ladestationen",

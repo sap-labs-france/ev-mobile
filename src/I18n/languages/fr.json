@@ -16,7 +16,8 @@
   },
   "sidebar": {
     "sites": "Sites",
-    "chargers": "Bornes"
+    "chargers": "Bornes",
+    "sessions": "Sessions"
   },
   "authentication": {
     "mandatory_tenant": "Le Tenant est obligatoire",
@@ -55,6 +56,9 @@
 		"passwordRule": "Doit contenir 1 char. minuscule et majuscule, 1 nombre, 1 char. spécial et une longueur minimum de 8",
     "passwordNotMatch": "Les mots de passes ne correspondent pas",
     "tenant": "Choisir un Tenant"
+  },
+  "sessions": {
+    "chargingCurve": "Courbe de Charge"
   },
   "sites": {
     "freeChargers": "Chargeurs disponibles",
