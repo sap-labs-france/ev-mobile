@@ -13,7 +13,7 @@ const commonStyles = ScaledSheet.create({
   },
   headerContent: {
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     alignItems: "center",
     paddingLeft: "5@s",
     paddingRight: "5@s",
@@ -81,6 +81,9 @@ const commonStyles = ScaledSheet.create({
     justifyContent: "flex-end",
     fontSize: "10@s",
     marginRight: "5@s"
+  },
+  icon: {
+    justifyContent: "flex-end",
   }
 });
 

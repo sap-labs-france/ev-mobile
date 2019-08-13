@@ -49,7 +49,6 @@ export default class SessionComponent extends ResponsiveComponent {
     return `${this._formatTimer(hours)}:${this._formatTimer(minutes)}:${this._formatTimer(seconds)}`;
   };
 
-
   _navigateTo = (screen, params = {}) => {
     // Navigate
     this.props.navigation.navigate({ routeName: screen, params });
@@ -78,13 +77,16 @@ export default class SessionComponent extends ResponsiveComponent {
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("ChartHistory", {transactionId});
+            navigation.navigate("ChartHistory", { transactionId });
             navigation.closeDrawer();
           }}>
           <View style={style.container}>
             <View style={style.headerContent}>
-              <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="history" />
-              <Text style={style.name}>{sessionDate.format("LLL")}</Text>
+              <View style={style.rowContainer}>
+                <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="history" />
+                <Text style={style.name}>{sessionDate.format("LLL")}</Text>
+              </View>
+              <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
             </View>
             <View style={style.stationHeader}>
               <Text>{session.chargeBoxID}</Text>
