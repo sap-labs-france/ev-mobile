@@ -57,6 +57,9 @@
     "passwordNotMatch": "Passwörter stimmen nicht miteinander überein",
     "tenant": "Wählen Sie einen Tenant"
   },
+  "sessions": {
+    "chargingCurve": "Charging Curve"
+  },
   "sites": {
     "freeChargers": "Freie Ladestationen",
     "chargePoint": "Ladepunkt",

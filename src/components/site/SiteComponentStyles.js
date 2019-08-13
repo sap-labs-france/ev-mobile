@@ -20,6 +20,10 @@ const commonStyles = ScaledSheet.create({
     borderBottomColor: commonColor.listBorderColor,
     backgroundColor: commonColor.headerBgColor
   },
+  subHeaderContent: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   connectorContent: {
     flexDirection: "row",
     justifyContent: "center",

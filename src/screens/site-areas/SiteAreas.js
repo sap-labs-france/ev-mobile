@@ -118,7 +118,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
             title={I18n.t("siteAreas.title")}
             showSearchAction={true}
             searchRef={this.searchRef}
-            leftAction={() => navigation.navigate("Sites")}
+            leftAction={this.onBack}
             leftActionIcon={"navigate-before"}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}

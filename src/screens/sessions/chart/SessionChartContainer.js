@@ -1,20 +1,19 @@
 import React from "react";
-
 import BaseScreen from "../../base-screen/BaseScreen";
-import ChargerChartDetails from "../chart/ChargerChartDetails";
+import SessionChart from "./SessionChart";
 import Utils from "../../../utils/Utils";
-import I18n from "../../../I18n/I18n";
-import computeStyleSheet from "./ChartHistoryStyle";
+import computeStyleSheet from "./SessionChartStyles";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
-import { Container, Icon, View, Thumbnail, Text } from "native-base";
+import { Container } from "native-base";
 import HeaderComponent from "../../../components/header/HeaderComponent";
+import I18n from "../../../I18n/I18n";
 
-export default class ChartHistory extends BaseScreen {
+export default class SessionChartContainer extends BaseScreen {
   constructor(props) {
     super(props);
 
     this.state = {
-      transactionId: Utils.getParamFromNavigation(this.props.navigation, "transactionId", null)
+      sessionID: Utils.getParamFromNavigation(this.props.navigation, "sessionID", null)
     };
   }
 
@@ -37,18 +36,17 @@ export default class ChartHistory extends BaseScreen {
 
   render() {
     const style = computeStyleSheet();
-
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
           <HeaderComponent
-            title={"History"}
-            leftAction={() => this.props.navigation.navigate("AllSessions", {})}
+            title={I18n.t("sessions.chargingCurve")}
+            leftAction={() => this.props.navigation.navigate("Sessions", {})}
             leftActionIcon={"navigate-before"}
             rightAction={this.props.navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          <ChargerChartDetails transactionID={this.state.transactionId} navigation={this.props.navigation} />
+          <SessionChart sessionID={this.state.sessionID} navigation={this.props.navigation} />
         </BackgroundComponent>
       </Container>
     );

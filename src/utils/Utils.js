@@ -173,4 +173,33 @@ export default class Utils {
         return noConnector;
     }
   };
+
+  static formatDurationHHMMSS = (durationSecs) => {
+    if (durationSecs <= 0) {
+      return "00:00:00";
+    }
+    // Set Hours
+    const hours = Math.trunc(durationSecs / 3600);
+    durationSecs -= hours * 3600;
+    // Set Mins
+    let minutes = 0;
+    if (durationSecs > 0) {
+      minutes = Math.trunc(durationSecs / 60);
+      durationSecs -= minutes * 60;
+    }
+    // Set Secs
+    const seconds = Math.trunc(durationSecs);
+    // Format
+    return `${Utils._formatTimer(hours)}:${Utils._formatTimer(minutes)}:${this._formatTimer(seconds)}`;
+  };
+
+  static _formatTimer = (val) => {
+    // Put 0 next to the digit if lower than 10
+    const valString = val + "";
+    if (valString.length < 2) {
+      return "0" + valString;
+    }
+    // Return new digit
+    return valString;
+  };
 }

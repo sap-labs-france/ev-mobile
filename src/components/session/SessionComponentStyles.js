@@ -15,18 +15,22 @@ const commonStyles = ScaledSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingLeft: "5@s",
-    paddingRight: "5@s",
-    borderBottomColor: commonColor.listBorderColor,
+    padding: "5@s",
     borderBottomWidth: 1,
+    borderBottomColor: commonColor.listBorderColor,
     backgroundColor: commonColor.headerBgColor
   },
-  name: {
-    color: commonColor.headerTextColor,
-    fontSize: "19@s",
-    marginLeft: "5@s",
-    marginRight: "5@s",
-    fontWeight: "bold"
+  subHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "5@s",
+    fontSize: "12@s",
+    fontWeight: "bold",
+    backgroundColor: commonColor.headerBgColor
+  },
+  subHeaderName: {
+    fontSize: "16@s"
   },
   sessionContent: {
     flex: 1,
@@ -39,51 +43,30 @@ const commonStyles = ScaledSheet.create({
     height: "80@s",
     width: "100%"
   },
-  chargeDetail: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    // height: "60@s",
-    // width: "80@s",
-    color: commonColor.textColor
-  },
-  chargeValues: {
-    color: commonColor.textColor,
-    marginTop: "-1@s",
-    fontSize: "30@s",
-    fontWeight: "bold",
-    textAlign: "center"
+  name: {
+    color: commonColor.headerTextColor,
+    fontSize: "19@s",
+    marginLeft: "5@s",
+    marginRight: "5@s",
+    fontWeight: "bold"
   },
   label: {
     color: commonColor.textColor,
     fontSize: "10@s",
     marginTop: "-3@s"
   },
-  subLabel: {
-    color: commonColor.textColor,
-    fontSize: "9@s"
-  },
   columnContainer: {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center"
-    // width: "50%"
   },
   rowContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center"
-    // width: "50%"
-  },
-  stationHeader: {
-    flexDirection: "row",
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    fontSize: "10@s",
-    marginRight: "5@s"
   },
   icon: {
-    justifyContent: "flex-end",
+    justifyContent: "flex-end"
   }
 });
 

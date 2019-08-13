@@ -57,6 +57,9 @@
     "passwordNotMatch": "Password does not match",
     "tenant": "Choose a Tenant"
   },
+  "sessions": {
+    "chargingCurve": "Charging Curve"
+  },
   "sites": {
     "freeChargers": "Free chargers",
     "chargePoint": "Charge Point",

@@ -392,15 +392,10 @@ export default class CentralServerProvider {
 
   async getTransactions(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
     this.debug("getTransactions");
-
-    const now = Date.now();
-
-
-    this.debug("running axios");
     // Build Paging
-    //this._buildPaging(paging, params);
+    this._buildPaging(paging, params);
     // Build Ordering
-    //this._buildOrdering(ordering, params);
+    this._buildOrdering(ordering, params);
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/TransactionsCompleted`, {
       headers: this._buildSecuredHeaders(),
