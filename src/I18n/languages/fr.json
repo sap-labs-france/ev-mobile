@@ -16,7 +16,8 @@
   },
   "sidebar": {
     "sites": "Sites",
-    "chargers": "Bornes"
+    "chargers": "Bornes",
+    "sessions": "Sessions"
   },
   "authentication": {
     "mandatory_tenant": "Le Tenant est obligatoire",

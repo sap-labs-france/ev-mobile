@@ -16,7 +16,8 @@
   },
   "sidebar": {
     "sites": "Sites",
-    "chargers": "Chargers"
+    "chargers": "Chargers",
+    "sessions": "Sessions"
   },
 	"authentication": {
     "mandatory_tenant": "The Tenant is mandatory",

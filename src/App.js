@@ -11,7 +11,10 @@ import Sites from "./screens/sites/Sites";
 import SiteAreas from "./screens/site-areas/SiteAreas";
 import Chargers from "./screens/chargers/Chargers";
 import AllChargers from "./screens/chargers/AllChargers";
+import AllSessions from "./screens/sessions/AllSessions";
 import ChargerTabDetails from "./screens/charger-details/tabs/ChargerTabDetails";
+import ChargerChartDetails from "./screens/charger-details/chart/ChargerChartDetails";
+import ChartHistory from "./screens/charger-details/chart-history/ChartHistory";
 import NotificationManager from "./notification/NotificationManager";
 import Utils from "./utils/Utils";
 import SecuredStorage from "./utils/SecuredStorage";
@@ -44,8 +47,11 @@ const AppDrawerNavigator = createDrawerNavigator(
     },
     SiteAreas: { screen: SiteAreas },
     Chargers: { screen: Chargers },
+    ChargerChartDetails: { screen: ChargerChartDetails },
     AllChargers: { screen: AllChargers },
-    ChargerTabDetails: { screen: ChargerTabDetails }
+    ChargerTabDetails: { screen: ChargerTabDetails },
+    AllSessions: { screen: AllSessions },
+    ChartHistory: { screen: ChartHistory }
   },
   {
     navigationOptions: {

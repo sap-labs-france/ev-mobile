@@ -16,7 +16,8 @@
   },
   "sidebar": {
     "sites": "Standorte",
-    "chargers": "Ladestationen"
+    "chargers": "Ladestationen",
+    "sessions": "Sitzungen"
   },
 	"authentication": {
     "mandatory_tenant": "Der Tenant ist notwendig",

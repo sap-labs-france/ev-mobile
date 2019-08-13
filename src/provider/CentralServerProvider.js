@@ -390,6 +390,25 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  async getTransactions(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+    this.debug("getTransactions");
+
+    const now = Date.now();
+
+
+    this.debug("running axios");
+    // Build Paging
+    //this._buildPaging(paging, params);
+    // Build Ordering
+    //this._buildOrdering(ordering, params);
+    // Call
+    const result = await axios.get(`${_centralRestServerServiceSecuredURL}/TransactionsCompleted`, {
+      headers: this._buildSecuredHeaders(),
+      params
+    });
+    return result.data;
+  }
+
   async getUserImage(params = {}) {
     this.debug("getUserImage");
     // Call
