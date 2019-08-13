@@ -25,6 +25,8 @@ const commonStyles = ScaledSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: "5@s",
+    paddingLeft: "8@s",
+    paddingRight: "8@s",
     fontSize: "12@s",
     fontWeight: "bold",
     backgroundColor: commonColor.headerBgColor
