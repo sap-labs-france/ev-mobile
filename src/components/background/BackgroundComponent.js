@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import { ImageBackground } from "react-native";
 import { View } from "native-base";
