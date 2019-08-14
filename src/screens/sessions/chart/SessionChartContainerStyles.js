@@ -6,6 +6,8 @@ import { ScaledSheet } from "react-native-size-matters";
 const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
+    margin: 0,
+    padding: 0,
     backgroundColor: commonColor.containerBgColor
   }
 });

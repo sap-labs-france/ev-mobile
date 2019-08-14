@@ -4,7 +4,7 @@ import SessionChart from "./SessionChart";
 import Utils from "../../../utils/Utils";
 import computeStyleSheet from "./SessionChartStyles";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
-import { Container, View } from "native-base";
+import { Container } from "native-base";
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import I18n from "../../../I18n/I18n";
 
@@ -25,8 +25,6 @@ export default class SessionChartContainer extends BaseScreen {
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();
-    // Get the sites
-    // await this.refresh();
   }
 
   async componentWillUnmount() {
