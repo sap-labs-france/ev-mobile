@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import { ScrollView, Image, Keyboard, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
 import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet, Footer, Left, Right } from "native-base";
