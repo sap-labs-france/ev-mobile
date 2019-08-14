@@ -20,6 +20,12 @@ const commonStyles = ScaledSheet.create({
     borderBottomColor: commonColor.listBorderColor,
     backgroundColor: commonColor.headerBgColor
   },
+  headerName: {
+    paddingTop: Platform.OS === "ios" ? "4@s" : 0,
+    fontSize: "20@s",
+    fontWeight: "bold",
+    color: commonColor.headerTextColor
+  },
   subHeaderContent: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -31,12 +37,6 @@ const commonStyles = ScaledSheet.create({
     paddingBottom: "12@s",
     borderBottomWidth: 1,
     borderBottomColor: commonColor.brandPrimaryDark
-  },
-  name: {
-    paddingTop: Platform.OS === "ios" ? "4@s" : 0,
-    fontSize: "20@s",
-    fontWeight: "bold",
-    color: commonColor.headerTextColor
   },
   icon: {
     fontSize: "30@s",

@@ -20,6 +20,13 @@ const commonStyles = ScaledSheet.create({
     borderBottomColor: commonColor.listBorderColor,
     backgroundColor: commonColor.headerBgColor
   },
+  headerName: {
+    color: commonColor.headerTextColor,
+    fontSize: "18@s",
+    marginLeft: "5@s",
+    marginRight: "5@s",
+    fontWeight: "bold"
+  },
   subHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -29,7 +36,7 @@ const commonStyles = ScaledSheet.create({
     paddingRight: "8@s",
     fontSize: "12@s",
     fontWeight: "bold",
-    backgroundColor: commonColor.headerBgColor
+    backgroundColor: commonColor.headerBgColorLight
   },
   subHeaderName: {
     fontSize: "16@s"
@@ -44,13 +51,6 @@ const commonStyles = ScaledSheet.create({
     paddingRight: "5@s",
     height: "80@s",
     width: "100%"
-  },
-  name: {
-    color: commonColor.headerTextColor,
-    fontSize: "19@s",
-    marginLeft: "5@s",
-    marginRight: "5@s",
-    fontWeight: "bold"
   },
   label: {
     color: commonColor.textColor,

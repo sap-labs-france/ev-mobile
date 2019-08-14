@@ -42,8 +42,7 @@ export default class SessionComponent extends ResponsiveComponent {
           <View style={style.container}>
             <View style={style.headerContent}>
               <View style={style.rowContainer}>
-                <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="history" />
-                <Text style={style.name}>{sessionDate.format("LLL")}</Text>
+                <Text style={style.headerName}>{sessionDate.format("LLL")}</Text>
               </View>
               <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
             </View>

@@ -45,7 +45,7 @@ export default class SiteComponent extends ResponsiveComponent {
                 <TouchableOpacity onPress={() => this._siteLocation(site.address)}>
                   <Icon style={style.icon} name="pin" />
                 </TouchableOpacity>
-                <Text style={style.name}>{site.name}</Text>
+                <Text style={style.headerName}>{site.name}</Text>
               </View>
               <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
             </View>
