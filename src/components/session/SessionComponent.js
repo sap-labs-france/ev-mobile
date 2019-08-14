@@ -48,11 +48,13 @@ export default class SessionComponent extends ResponsiveComponent {
             </View>
             <View style={style.subHeader}>
               <Text style={style.subHeaderName}>{session.chargeBoxID}</Text>
-              {isAdmin ?
-                <Text style={style.subHeaderName}>{session.user.name} {session.user.firstName}</Text>
-              :
+              {isAdmin ? (
+                <Text style={style.subHeaderName}>
+                  {session.user.name} {session.user.firstName}
+                </Text>
+              ) : (
                 undefined
-              }
+              )}
             </View>
             <View style={style.sessionContent}>
               <View style={style.columnContainer}>
@@ -71,7 +73,9 @@ export default class SessionComponent extends ResponsiveComponent {
               </View>
               <View style={style.columnContainer}>
                 <Icon type="FontAwesome" name="money" style={style.icon} />
-                <Text style={[style.value, style.labelTimeValue]}>{price} {session.priceUnit}</Text>
+                <Text style={[style.value, style.labelTimeValue]}>
+                  {price} {session.priceUnit}
+                </Text>
               </View>
             </View>
           </View>
@@ -88,4 +92,3 @@ SessionComponent.propTypes = {
 };
 
 SessionComponent.defaultProps = {};
-

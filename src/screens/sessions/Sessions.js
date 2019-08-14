@@ -46,7 +46,7 @@ export default class Sessions extends BaseAutoRefreshScreen {
     let transactions = [];
     try {
       // Get the Sites
-      transactions = await this.centralServerProvider.getTransactions( {}, { skip, limit });
+      transactions = await this.centralServerProvider.getTransactions({}, { skip, limit });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
@@ -55,10 +55,9 @@ export default class Sessions extends BaseAutoRefreshScreen {
     return transactions;
   };
 
-  onBack = () => {
+  onBack = () =>
     // Do not bubble up
-    return true;
-  };
+    true;
 
   _manualRefresh = async () => {
     // Display spinner
@@ -71,7 +70,7 @@ export default class Sessions extends BaseAutoRefreshScreen {
 
   _footerList = () => {
     const { skip, count, limit } = this.state;
-    if ((skip + limit < count) || (count === -1)) {
+    if (skip + limit < count || count === -1) {
       return <Spinner />;
     }
     return null;
@@ -97,7 +96,7 @@ export default class Sessions extends BaseAutoRefreshScreen {
   _onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
-    if ((skip + limit < count) || (count === -1)) {
+    if (skip + limit < count || count === -1) {
       // No: get next sites
       const transactions = await this._getTransations("", skip + Constants.PAGING_SIZE, limit);
       // Add sites
@@ -128,7 +127,7 @@ export default class Sessions extends BaseAutoRefreshScreen {
             ) : (
               <FlatList
                 data={this.state.transactions}
-                renderItem={({ item }) => <SessionComponent session={item} navigation={navigation} isAdmin={isAdmin}/>}
+                renderItem={({ item }) => <SessionComponent session={item} navigation={navigation} isAdmin={isAdmin} />}
                 keyExtractor={(item) => `${item.id}`}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}

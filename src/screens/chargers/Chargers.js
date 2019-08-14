@@ -65,7 +65,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
   _onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
-    if ((skip + limit < count) || (count === -1)) {
+    if (skip + limit < count || count === -1) {
       // No: get next sites
       const chargers = await this._getChargers(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
@@ -115,7 +115,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
 
   _footerList = () => {
     const { skip, count, limit } = this.state;
-    if ((skip + limit < count) || (count === -1)) {
+    if (skip + limit < count || count === -1) {
       return <Spinner />;
     }
     return null;
