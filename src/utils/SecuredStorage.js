@@ -3,7 +3,11 @@ import RNSecureStorage, { ACCESSIBLE } from "rn-secure-storage";
 import DeviceInfo from "react-native-device-info";
 
 // Generate a new Id for persisting the navigation each time the app is launched first time
-const navigationID = new Date().getTime();
+let navigationID = new Date().getTime();
+if (__DEV__) {
+  // Keep the same key for dev
+  navigationID = "DEV_NAV_KEY";
+}
 
 export default class SecuredStorage {
   static async getNavigationState() {
