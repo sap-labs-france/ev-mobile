@@ -71,7 +71,7 @@ export default class Sessions extends BaseAutoRefreshScreen {
 
   _footerList = () => {
     const { skip, count, limit } = this.state;
-    if (skip + limit < count) {
+    if ((skip + limit < count) || (count === -1)) {
       return <Spinner />;
     }
     return null;
@@ -90,14 +90,14 @@ export default class Sessions extends BaseAutoRefreshScreen {
         transactions: transactions.result,
         count: transactions.count,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false
-      })
+      });
     }
   };
 
   _onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
-    if (skip + limit < count) {
+    if ((skip + limit < count) || (count === -1)) {
       // No: get next sites
       const transactions = await this._getTransations("", skip + Constants.PAGING_SIZE, limit);
       // Add sites
@@ -131,7 +131,6 @@ export default class Sessions extends BaseAutoRefreshScreen {
                 renderItem={({ item }) => <SessionComponent session={item} navigation={navigation} isAdmin={isAdmin}/>}
                 keyExtractor={(item) => `${item.id}`}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
-                indicatorStyle={"white"}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
                 ListFooterComponent={this._footerList}

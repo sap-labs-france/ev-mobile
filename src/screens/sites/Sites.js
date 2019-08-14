@@ -91,7 +91,7 @@ export default class Sites extends BaseAutoRefreshScreen {
   _onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
-    if (skip + limit < count) {
+    if ((skip + limit < count) || (count === -1)) {
       // No: get next sites
       const sites = await this._getSites(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
@@ -105,7 +105,7 @@ export default class Sites extends BaseAutoRefreshScreen {
 
   _footerList = () => {
     const { skip, count, limit } = this.state;
-    if (skip + limit < count) {
+    if ((skip + limit < count) || (count === -1)) {
       return <Spinner />;
     }
     return null;
@@ -142,7 +142,6 @@ export default class Sites extends BaseAutoRefreshScreen {
                 renderItem={({ item }) => <SiteComponent site={item} navigation={this.props.navigation} />}
                 keyExtractor={(item) => item.id}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
-                indicatorStyle={"white"}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
                 ListFooterComponent={this._footerList}

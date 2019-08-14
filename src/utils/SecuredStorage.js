@@ -14,7 +14,7 @@ export default class SecuredStorage {
     const navigationState = await SecuredStorage._getJson(Constants.KEY_NAVIGATION_STATE);
     // Check the key
     if (navigationState) {
-      if (navigationState.key === DeviceInfo.getVersion()) {
+      if (navigationState.key === navigationID) {
         return navigationState.navigationState;
       }
     }
