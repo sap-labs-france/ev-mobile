@@ -40,7 +40,7 @@ const commonStyles = ScaledSheet.create({
     justifyContent: "space-evenly",
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
-    paddingLeft:"5@s",
+    paddingLeft: "5@s",
     paddingRight: "5@s",
     height: "80@s",
     width: "100%"

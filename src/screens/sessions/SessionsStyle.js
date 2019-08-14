@@ -6,6 +6,12 @@ const commonStyles = {
   container: {
     flex: 1,
     backgroundColor: commonColor.containerBgColor
+  },
+  content: {
+    flex: 1
+  },
+  spinner: {
+    flex: 1
   }
 };
 

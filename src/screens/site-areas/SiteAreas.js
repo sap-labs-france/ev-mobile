@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, RefreshControl } from "react-native";
+import { Platform, FlatList, RefreshControl } from "react-native";
 import { Container, Spinner, View } from "native-base";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
@@ -140,8 +140,9 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
                 renderItem={({ item }) => <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />}
                 keyExtractor={(item) => item.id}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
+                indicatorStyle={"white"}
                 onEndReached={this._onEndScroll}
-                onEndReachedThreshold={0.5}
+                onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
                 ListFooterComponent={this._footerList}
               />
             )}

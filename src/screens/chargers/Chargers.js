@@ -165,11 +165,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
             ) : (
               <FlatList
                 data={this.state.chargers}
-                renderItem={({ item }) => (
-                  <List>
-                    <ChargerComponent charger={item} navigation={navigation} siteAreaID={siteAreaID} />
-                  </List>
-                )}
+                renderItem={({ item }) => <ChargerComponent charger={item} navigation={navigation} siteAreaID={siteAreaID} />}
                 keyExtractor={(item) => item.id}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 indicatorStyle={"white"}

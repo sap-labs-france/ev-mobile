@@ -128,11 +128,7 @@ export default class Sessions extends BaseAutoRefreshScreen {
             ) : (
               <FlatList
                 data={this.state.transactions}
-                renderItem={({ item }) => (
-                  <List>
-                    <SessionComponent session={item} navigation={navigation} isAdmin={isAdmin}/>
-                  </List>
-                )}
+                renderItem={({ item }) => <SessionComponent session={item} navigation={navigation} isAdmin={isAdmin}/>}
                 keyExtractor={(item) => `${item.id}`}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 indicatorStyle={"white"}
