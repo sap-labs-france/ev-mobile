@@ -10,7 +10,7 @@
     "@babel/core": "^7.5.5",
     "@babel/runtime": "^7.5.5",
     "@react-native-community/eslint-config": "^0.0.5",
-    "@types/react-native": "^0.60.4",
+    "@types/react-native": "^0.60.5",
     "babel-eslint": "10.0.2",
     "babel-jest": "24.8.0",
     "babel-preset-react-native-stage-0": "^1.0.1",
