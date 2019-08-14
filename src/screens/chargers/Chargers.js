@@ -146,7 +146,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
             title={I18n.t("chargers.title")}
             showSearchAction={true}
             searchRef={this.searchRef}
-            leftAction={this.onBack}
+            leftAction={siteAreaID ? this.onBack : undefined}
             leftActionIcon={siteAreaID ? "navigate-before" : undefined}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
