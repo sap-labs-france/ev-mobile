@@ -14,35 +14,61 @@ const commonStyles = ScaledSheet.create({
   headerContent: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingTop: "5@s",
-    paddingBottom: "5@s",
+    alignItems: "center",
+    padding: "5@s",
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
     backgroundColor: commonColor.headerBgColor
   },
   headerName: {
-    paddingTop: Platform.OS === "ios" ? "4@s" : 0,
-    fontSize: "20@s",
-    fontWeight: "bold",
-    color: commonColor.headerTextColor
+    color: commonColor.headerTextColor,
+    fontSize: "18@s",
+    marginLeft: "5@s",
+    marginRight: "5@s",
+    fontWeight: "bold"
   },
-  subHeaderContent: {
+  subHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
+    padding: "5@s",
+    paddingLeft: "8@s",
+    paddingRight: "8@s",
+    fontSize: "12@s",
+    fontWeight: "bold",
+    backgroundColor: commonColor.headerBgColorLight
   },
-  connectorContent: {
+  subHeaderName: {
+    fontSize: "16@s"
+  },
+  sessionContent: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    borderBottomWidth: 1,
+    borderBottomColor: commonColor.listBorderColor,
+    paddingLeft: "5@s",
+    paddingRight: "5@s",
+    height: "80@s",
+    width: "100%"
+  },
+  label: {
+    color: commonColor.textColor,
+    fontSize: "10@s",
+    marginTop: "-3@s"
+  },
+  columnContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  rowContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    paddingTop: "12@s",
-    paddingBottom: "12@s",
-    borderBottomWidth: 1,
-    borderBottomColor: commonColor.brandPrimaryDark
+    alignItems: "center"
   },
   icon: {
-    fontSize: "30@s",
-    marginLeft: "10@s",
-    marginRight: "10@s",
-    color: commonColor.headerTextColor
+    justifyContent: "flex-end"
   }
 });
 

@@ -261,12 +261,12 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
           // Get duration
           const durationSecs = (Date.now() - transaction.timestamp.getTime()) / 1000;
           // Format
-          elapsedTimeFormatted = this._formatDurationHHMMSS(durationSecs);
+          elapsedTimeFormatted = Utils.formatDurationHHMMSS(durationSecs);
         }
         // Inactivity?
         if (transaction.currentTotalInactivitySecs) {
           // Format
-          inactivityFormatted = this._formatDurationHHMMSS(transaction.currentTotalInactivitySecs);
+          inactivityFormatted = Utils.formatDurationHHMMSS(transaction.currentTotalInactivitySecs);
         }
         // Set
         this.setState({
@@ -282,12 +282,12 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
           // Get duration
           const durationSecs = (Date.now() - new Date(connector.activeTransactionDate).getTime()) / 1000;
           // Format
-          elapsedTimeFormatted = this._formatDurationHHMMSS(durationSecs);
+          elapsedTimeFormatted = Utils.formatDurationHHMMSS(durationSecs);
         }
         // Inactivity?
         if (connector.totalInactivitySecs) {
           // Format
-          inactivityFormatted = this._formatDurationHHMMSS(connector.totalInactivitySecs);
+          inactivityFormatted = Utils.formatDurationHHMMSS(connector.totalInactivitySecs);
         }
         // Set
         this.setState({
@@ -296,35 +296,6 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
         });
       }
     }
-  };
-
-  _formatDurationHHMMSS = (durationSecs) => {
-    if (durationSecs <= 0) {
-      return "00:00:00";
-    }
-    // Set Hours
-    const hours = Math.trunc(durationSecs / 3600);
-    durationSecs -= hours * 3600;
-    // Set Mins
-    let minutes = 0;
-    if (durationSecs > 0) {
-      minutes = Math.trunc(durationSecs / 60);
-      durationSecs -= minutes * 60;
-    }
-    // Set Secs
-    const seconds = Math.trunc(durationSecs);
-    // Format
-    return `${this._formatTimer(hours)}:${this._formatTimer(minutes)}:${this._formatTimer(seconds)}`;
-  };
-
-  _formatTimer = (val) => {
-    // Put 0 next to the digit if lower than 10
-    const valString = val + "";
-    if (valString.length < 2) {
-      return "0" + valString;
-    }
-    // Return new digit
-    return valString;
   };
 
   _renderConnectorStatus = (style) => {
@@ -412,7 +383,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     const { connector } = this.props;
     return (
       <View style={style.columnContainer}>
-        <Icon style={style.icon} type="MaterialIcons" name="trending-up" />
+        <Icon style={style.icon} type="MaterialIcons" name="ev-station" />
         {(connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ? (
           <Text style={[style.label, style.labelValue]}>-</Text>
         ) : (

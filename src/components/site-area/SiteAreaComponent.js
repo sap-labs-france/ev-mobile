@@ -35,18 +35,16 @@ export default class SiteAreaComponent extends ResponsiveComponent {
         <TouchableOpacity
           onPress={() => {
             if (siteArea.totalConnectors > 0) {
-              // Navigate
               navigation.navigate("Chargers", {
                 siteAreaID: siteArea.id
               });
             } else {
-              // No connector
               Message.showError(I18n.t("siteAreas.noChargers"));
             }
           }}>
           <View style={style.container}>
             <View style={style.headerContent}>
-              <Text style={style.name}>{siteArea.name}</Text>
+              <Text style={style.headerName}>{siteArea.name}</Text>
               <Icon style={siteArea.totalConnectors > 0 ? style.icon : style.iconHidden} type="MaterialIcons" name="navigate-next" />
             </View>
             <View style={style.connectorContent}>

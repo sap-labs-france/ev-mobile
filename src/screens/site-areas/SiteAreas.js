@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, RefreshControl } from "react-native";
+import { Platform, FlatList, RefreshControl } from "react-native";
 import { Container, Spinner, View } from "native-base";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
@@ -87,7 +87,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
   _onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
-    if (skip + limit < count) {
+    if ((skip + limit < count) || (count === -1)) {
       // No: get next sites
       const siteAreas = await this._getSiteAreas(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
@@ -101,7 +101,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
 
   _footerList = () => {
     const { skip, count, limit } = this.state;
-    if (skip + limit < count) {
+    if ((skip + limit < count) || (count === -1)) {
       return <Spinner />;
     }
     return null;
@@ -118,7 +118,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
             title={I18n.t("siteAreas.title")}
             showSearchAction={true}
             searchRef={this.searchRef}
-            leftAction={() => navigation.navigate("Sites")}
+            leftAction={this.onBack}
             leftActionIcon={"navigate-before"}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
@@ -141,7 +141,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
                 keyExtractor={(item) => item.id}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
-                onEndReachedThreshold={0.5}
+                onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
                 ListFooterComponent={this._footerList}
               />
             )}

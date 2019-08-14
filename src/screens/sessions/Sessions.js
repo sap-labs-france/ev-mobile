@@ -1,37 +1,33 @@
 import React from "react";
-import { Platform, FlatList, RefreshControl } from "react-native";
-import { Container, Spinner, View } from "native-base";
-import Utils from "../../utils/Utils";
-import Constants from "../../utils/Constants";
-import SiteComponent from "../../components/site/SiteComponent";
-import SearchHeaderComponent from "../../components/search-header/SearchHeaderComponent";
-import HeaderComponent from "../../components/header/HeaderComponent";
-import BackgroundComponent from "../../components/background/BackgroundComponent";
-import computeStyleSheet from "./SitesStyles";
-import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
+import { Container, Spinner, View, List } from "native-base";
+import { FlatList, RefreshControl, Platform } from "react-native";
+import Constants from "../../utils/Constants";
+import I18n from "../../I18n/I18n";
+import Utils from "../../utils/Utils";
+import computeStyleSheet from "./SessionsStyle";
+import HeaderComponent from "../../components/header/HeaderComponent";
+import SessionComponent from "../../components/session/SessionComponent";
+import BackgroundComponent from "../../components/background/BackgroundComponent";
 
-export default class Sites extends BaseAutoRefreshScreen {
+export default class Sessions extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
+    // Init State
     this.state = {
-      sites: [],
+      sessions: [],
       loading: true,
       refreshing: false,
       skip: 0,
       limit: Constants.PAGING_SIZE,
-      count: 0
+      count: 0,
+      isAdmin: false
     };
   }
 
   async componentWillMount() {
     // Call parent
     await super.componentWillMount();
-    // No Site Management: Go to chargers
-    const securityProvider = this.centralServerProvider.getSecurityProvider();
-    if (securityProvider && !securityProvider.isComponentOrganizationActive()) {
-      this.props.navigation.navigate("Chargers");
-    }
   }
 
   async componentDidMount() {
@@ -46,36 +42,22 @@ export default class Sites extends BaseAutoRefreshScreen {
     await super.componentWillUnmount();
   }
 
-  _getSites = async (searchText = "", skip, limit) => {
-    let sites = [];
+  _getTransations = async (searchText = "", skip, limit) => {
+    let transactions = [];
     try {
       // Get the Sites
-      sites = await this.centralServerProvider.getSites({ Search: searchText, WithAvailableChargers: true }, { skip, limit });
+      transactions = await this.centralServerProvider.getTransactions( {}, { skip, limit });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
     // Return
-    return sites;
+    return transactions;
   };
 
-  onBack = () =>
+  onBack = () => {
     // Do not bubble up
-    true;
-
-  refresh = async () => {
-    // Component Mounted?
-    if (this.isMounted()) {
-      const { skip, limit } = this.state;
-      // Refresh All
-      const sites = await this._getSites(this.searchText, 0, skip + limit);
-      // Add sites
-      this.setState({
-        loading: false,
-        count: sites.count,
-        sites: sites.result
-      });
-    }
+    return true;
   };
 
   _manualRefresh = async () => {
@@ -87,21 +69,6 @@ export default class Sites extends BaseAutoRefreshScreen {
     this.setState({ refreshing: false });
   };
 
-  _onEndScroll = async () => {
-    const { count, skip, limit } = this.state;
-    // No reached the end?
-    if ((skip + limit < count) || (count === -1)) {
-      // No: get next sites
-      const sites = await this._getSites(this.searchText, skip + Constants.PAGING_SIZE, limit);
-      // Add sites
-      this.setState((prevState, props) => ({
-        sites: [...prevState.sites, ...sites.result],
-        skip: prevState.skip + Constants.PAGING_SIZE,
-        refreshing: false
-      }));
-    }
-  };
-
   _footerList = () => {
     const { skip, count, limit } = this.state;
     if ((skip + limit < count) || (count === -1)) {
@@ -110,36 +77,59 @@ export default class Sites extends BaseAutoRefreshScreen {
     return null;
   };
 
-  render() {
+  refresh = async () => {
+    // Component Mounted?
+    if (this.isMounted()) {
+      const { skip, limit } = this.state;
+      // Refresh All
+      const transactions = await this._getTransations("", 0, skip + limit);
+      // Refresh Admin
+      const securityProvider = this.centralServerProvider.getSecurityProvider();
+      this.setState({
+        loading: false,
+        transactions: transactions.result,
+        count: transactions.count,
+        isAdmin: securityProvider ? securityProvider.isAdmin() : false
+      });
+    }
+  };
+
+  _onEndScroll = async () => {
+    const { count, skip, limit } = this.state;
+    // No reached the end?
+    if ((skip + limit < count) || (count === -1)) {
+      // No: get next sites
+      const transactions = await this._getTransations("", skip + Constants.PAGING_SIZE, limit);
+      // Add sites
+      this.setState((prevState, props) => ({
+        transactions: [...prevState.transactions, ...transactions.result],
+        skip: prevState.skip + Constants.PAGING_SIZE,
+        refreshing: false
+      }));
+    }
+  };
+
+  render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading } = this.state;
+    const { loading, isAdmin } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
           <HeaderComponent
-            title={I18n.t("sidebar.sites")}
-            showSearchAction={true}
-            searchRef={this.searchRef}
+            title={I18n.t("sidebar.sessions")}
+            showSearchAction={false}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
-          />
-          <SearchHeaderComponent
-            initialVisibility={false}
-            ref={(ref) => {
-              this.searchRef = ref;
-            }}
-            onChange={(searchText) => this._search(searchText)}
-            navigation={navigation}
           />
           <View style={style.content}>
             {loading ? (
               <Spinner style={style.spinner} />
             ) : (
               <FlatList
-                data={this.state.sites}
-                renderItem={({ item }) => <SiteComponent site={item} navigation={this.props.navigation} />}
-                keyExtractor={(item) => item.id}
+                data={this.state.transactions}
+                renderItem={({ item }) => <SessionComponent session={item} navigation={navigation} isAdmin={isAdmin}/>}
+                keyExtractor={(item) => `${item.id}`}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
@@ -150,5 +140,5 @@ export default class Sites extends BaseAutoRefreshScreen {
         </BackgroundComponent>
       </Container>
     );
-  }
+  };
 }

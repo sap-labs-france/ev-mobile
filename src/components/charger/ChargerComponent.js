@@ -54,7 +54,7 @@ export default class ChargerComponent extends ResponsiveComponent {
     return (
       <View style={style.container}>
         <View style={style.headerContent}>
-          <Text style={style.name}>{charger.id}</Text>
+          <Text style={style.headerName}>{charger.id}</Text>
           {isChargerDead ? (
             <Button
               transparent

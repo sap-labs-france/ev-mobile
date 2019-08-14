@@ -65,7 +65,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
   _onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
-    if (skip + limit < count) {
+    if ((skip + limit < count) || (count === -1)) {
       // No: get next sites
       const chargers = await this._getChargers(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
@@ -115,7 +115,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
 
   _footerList = () => {
     const { skip, count, limit } = this.state;
-    if (skip + limit < count) {
+    if ((skip + limit < count) || (count === -1)) {
       return <Spinner />;
     }
     return null;
@@ -136,7 +136,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { chargers, siteAreaID } = this.state;
+    const { siteAreaID, loading } = this.state;
     // Safe way to retrieve the Site ID to navigate back from a notification
     const siteID = this._getSiteIDFromChargers();
     return (
@@ -146,7 +146,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
             title={I18n.t("chargers.title")}
             showSearchAction={true}
             searchRef={this.searchRef}
-            leftAction={siteAreaID ? () => navigation.navigate("SiteAreas", { siteID }) : undefined}
+            leftAction={siteAreaID ? this.onBack : undefined}
             leftActionIcon={siteAreaID ? "navigate-before" : undefined}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
@@ -160,19 +160,14 @@ export default class Chargers extends BaseAutoRefreshScreen {
             navigation={navigation}
           />
           <View style={style.content}>
-            {this.state.loading ? (
+            {loading ? (
               <Spinner style={style.spinner} />
             ) : (
               <FlatList
                 data={this.state.chargers}
-                renderItem={({ item }) => (
-                  <List>
-                    <ChargerComponent charger={item} navigation={navigation} siteAreaID={siteAreaID} />
-                  </List>
-                )}
+                renderItem={({ item }) => <ChargerComponent charger={item} navigation={navigation} siteAreaID={siteAreaID} />}
                 keyExtractor={(item) => item.id}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
-                indicatorStyle={"white"}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
                 ListFooterComponent={this._footerList}
