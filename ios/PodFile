@@ -35,6 +35,7 @@ target 'eMobility' do
     # Pods for testing
   end
 
+  use_frameworks!
   use_native_modules!
 end
 
