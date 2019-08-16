@@ -2,6 +2,7 @@
     package="com.emobility">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
      <!-- < Only if you're using GCM or localNotificationSchedule() > -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <permission
