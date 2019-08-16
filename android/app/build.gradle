@@ -140,10 +140,10 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-reanimated')
     implementation project(':react-native-orientation-locker')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-charts-wrapper')
-    implementation project(':react-native-firebase')
     implementation project(':react-native-push-notification')
     implementation project(':react-native-svg')
     implementation project(':react-native-vector-icons')

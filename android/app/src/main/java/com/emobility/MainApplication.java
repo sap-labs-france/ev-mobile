@@ -3,10 +3,10 @@ package com.emobility;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.swmansion.reanimated.ReanimatedPackage;
 import org.wonday.orientation.OrientationPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.github.wuxudong.rncharts.MPAndroidChartPackage;
-import io.invertase.firebase.RNFirebasePackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.horcrux.svg.SvgPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -35,9 +35,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReanimatedPackage(),
             new SplashScreenReactPackage(),
             new MPAndroidChartPackage(),
-            new RNFirebasePackage(),
             new OrientationPackage(),
             new ReactNativePushNotificationPackage(),
             new SvgPackage(),

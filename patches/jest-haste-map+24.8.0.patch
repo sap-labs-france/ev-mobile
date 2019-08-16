@@ -1,0 +1,15 @@
+diff --git a/node_modules/jest-haste-map/build/crawlers/node.js b/node_modules/jest-haste-map/build/crawlers/node.js
+index a179225..23985ae 100644
+--- a/node_modules/jest-haste-map/build/crawlers/node.js
++++ b/node_modules/jest-haste-map/build/crawlers/node.js
+@@ -223,10 +223,6 @@ function findNative(roots, extensions, ignore, callback) {
+ }
+ 
+ module.exports = function nodeCrawl(options) {
+-  if (options.mapper) {
+-    throw new Error(`Option 'mapper' isn't supported by the Node crawler`);
+-  }
+-
+   const data = options.data,
+     extensions = options.extensions,
+     forceNodeFilesystemAPI = options.forceNodeFilesystemAPI,

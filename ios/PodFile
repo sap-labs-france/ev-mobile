@@ -1,11 +1,13 @@
+platform :ios, '9.0'
+
 target 'eMobility' do
-  pod 'SwiftyJSON', '4.0.0'
+  pod 'SwiftyJSON', '4.2'
   pod 'Charts', '3.3.0'
-  pod 'Firebase/Core'
-  pod 'Firebase/Messaging'
   pod 'React', :path => '../node_modules/react-native'
   pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
   pod 'react-native-orientation-locker', :path => '../node_modules/react-native-orientation-locker/react-native-orientation-locker.podspec'
+  pod 'RNCPushNotificationIOS', :path => '../node_modules/@react-native-community/push-notification-ios'
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
 end
 
 swift4 = ['Charts']
