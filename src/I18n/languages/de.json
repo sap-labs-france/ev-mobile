@@ -16,7 +16,8 @@
   },
   "sidebar": {
     "sites": "Standorte",
-    "chargers": "Ladestationen"
+    "chargers": "Ladestationen",
+    "sessions": "Sitzungen"
   },
 	"authentication": {
     "mandatory_tenant": "Der Tenant ist notwendig",
@@ -56,6 +57,9 @@
     "passwordNotMatch": "Passwörter stimmen nicht miteinander überein",
     "tenant": "Wählen Sie einen Tenant"
   },
+  "sessions": {
+    "chargingCurve": "Diagramm"
+  },
   "sites": {
     "freeChargers": "Freie Ladestationen",
     "chargePoint": "Ladepunkt",
@@ -83,7 +87,7 @@
     "charging": "Lädt",
     "available": "Verfügbar",
     "unavailable": "Unverfügbar",
-    "notCharging": "Ladet nicht",
+    "notCharging": "Inaktiv",
     "suspendedEV": "EV angehalten",
     "suspendedEVSE": "EVSE angehalten",
     "faulted": "Fehlerhaft",

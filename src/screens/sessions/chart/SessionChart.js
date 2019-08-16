@@ -3,7 +3,7 @@ import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
 import { View, processColor } from "react-native";
 import Utils from "../../../utils/Utils";
 import I18n from "../../../I18n/I18n";
-import computeStyleSheet from "./ChargerChartDetailsStyles";
+import computeStyleSheet from "./SessionChartStyles";
 import { scale } from "react-native-size-matters";
 import commonColor from "../../../theme/variables/commonColor";
 import { LineChart } from "react-native-charts-wrapper";
@@ -12,7 +12,7 @@ import BackgroundComponent from "../../../components/background/BackgroundCompon
 
 const EMPTY_CHART = [{ x: 0, y: 0 }];
 
-export default class ChargerChartDetails extends BaseAutoRefreshScreen {
+export default class SessionChart extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,13 +35,13 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
   }
 
   _getChargingStationConsumption = async () => {
-    const { transactionID } = this.props;
+    const { sessionID } = this.props;
     try {
       // Active Transaction?
-      if (transactionID) {
+      if (sessionID) {
         // Get the consumption
         const result = await this.centralServerProvider.getChargingStationConsumption({
-          TransactionId: transactionID
+          TransactionId: sessionID
         });
         // At least 2 values for the chart!!!
         if (result.values && result.values.length > 1) {
@@ -254,8 +254,8 @@ export default class ChargerChartDetails extends BaseAutoRefreshScreen {
   }
 }
 
-ChargerChartDetails.propTypes = {
-  transactionID: PropTypes.number
+SessionChart.propTypes = {
+  sessionID: PropTypes.number
 };
 
-ChargerChartDetails.defaultProps = {};
+SessionChart.defaultProps = {};

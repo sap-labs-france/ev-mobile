@@ -49,10 +49,9 @@ const commonStyles = ScaledSheet.create({
   links: {
     borderBottomWidth: "0@s",
     borderBottomColor: "transparent",
-    height: Platform.OS === "ios" ? undefined : "25@s",
-    marginTop: "10@s",
-    paddingTop: "0@s",
-    paddingBottom: "0@s"
+    height: Platform.OS === "ios" ? undefined : "35@s",
+    paddingTop: "10@s",
+    paddingBottom: "10@s"
   },
   linkIcon: {
     fontSize: "16@s",

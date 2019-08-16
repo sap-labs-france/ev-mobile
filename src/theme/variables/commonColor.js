@@ -21,26 +21,26 @@ const fiori3Error = "#ee0000";
 const fiori3Bg = "#f7f7f7";
 const fiori3Primary2 = "#0a6ed1";
 
-const dardLightRatio = 0.5;
+const darkLightRatio = 0.5;
 
 const primary = fiori3Brand;
-const primaryLight = color(primary).lighten(dardLightRatio).hex();
-const primaryDark = color(primary).darken(dardLightRatio).hex();
+const primaryLight = color(primary).lighten(darkLightRatio).hex();
+const primaryDark = color(primary).darken(darkLightRatio).hex();
 const info = fiori3Primary2;
-const infoLight = color(info).lighten(dardLightRatio).hex();;
-const infoDark = color(info).darken(dardLightRatio).hex();
+const infoLight = color(info).lighten(darkLightRatio).hex();;
+const infoDark = color(info).darken(darkLightRatio).hex();
 const success = fiori3Success;
-const successLight = color(success).lighten(dardLightRatio).hex();
-const successDark = color(success).darken(dardLightRatio).hex();
+const successLight = color(success).lighten(darkLightRatio).hex();
+const successDark = color(success).darken(darkLightRatio).hex();
 const danger = fiori3Error;
-const dangerLight = color(danger).lighten(dardLightRatio).hex();
-const dangerDark = color(danger).darken(dardLightRatio).hex();
+const dangerLight = color(danger).lighten(darkLightRatio).hex();
+const dangerDark = color(danger).darken(darkLightRatio).hex();
 const warning = "#FB8C00";
-const warningLight = color(warning).lighten(dardLightRatio).hex();
-const warningDark = color(warning).darken(dardLightRatio).hex();
+const warningLight = color(warning).lighten(darkLightRatio).hex();
+const warningDark = color(warning).darken(darkLightRatio).hex();
 const disabled = "#757575";
-const disabledLight = color(disabled).lighten(dardLightRatio).hex();
-const disabledDark = color(disabled).darken(dardLightRatio).hex();
+const disabledLight = color(disabled).lighten(darkLightRatio).hex();
+const disabledDark = color(disabled).darken(darkLightRatio).hex();
 const background = fiori3Bg;
 const backgroundHeader = "#E7E7E7";
 const borderColor = "#ccc";
@@ -312,9 +312,11 @@ export default {
   tabFontSize: 15,
 
   // Text
-  textColor: primaryDark,
+  textColor: dark,
   headerTextColor: primaryDark,
   headerBgColor: backgroundHeader,
+  headerBgColorLight: color(backgroundHeader).lighten(0.025).hex(),
+  headerBgColorDark: color(backgroundHeader).darken(0.025).hex(),
   inverseTextColor: light,
   noteFontSize: 14,
   get defaultTextColor() {

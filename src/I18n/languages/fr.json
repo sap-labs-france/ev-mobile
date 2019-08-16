@@ -16,7 +16,8 @@
   },
   "sidebar": {
     "sites": "Sites",
-    "chargers": "Bornes"
+    "chargers": "Bornes",
+    "sessions": "Sessions"
   },
   "authentication": {
     "mandatory_tenant": "Le Tenant est obligatoire",
@@ -56,6 +57,9 @@
     "passwordNotMatch": "Les mots de passes ne correspondent pas",
     "tenant": "Choisir un Tenant"
   },
+  "sessions": {
+    "chargingCurve": "Graphique"
+  },
   "sites": {
     "freeChargers": "Chargeurs disponibles",
     "chargePoint": "Point de Charge",
@@ -83,7 +87,7 @@
     "charging": "En charge",
     "available": "Disponible",
     "unavailable": "Indisponible",
-    "notCharging": "Ne Charge Pas",
+    "notCharging": "Inactif",
     "suspendedEV": "EV Suspendu",
     "suspendedEVSE": "EVSE Suspendu",
     "faulted": "Erreur",

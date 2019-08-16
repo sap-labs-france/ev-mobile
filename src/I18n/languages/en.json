@@ -16,7 +16,8 @@
   },
   "sidebar": {
     "sites": "Sites",
-    "chargers": "Chargers"
+    "chargers": "Chargers",
+    "sessions": "Sessions"
   },
 	"authentication": {
     "mandatory_tenant": "The Tenant is mandatory",
@@ -56,6 +57,9 @@
     "passwordNotMatch": "Password does not match",
     "tenant": "Choose a Tenant"
   },
+  "sessions": {
+    "chargingCurve": "Chart"
+  },
   "sites": {
     "freeChargers": "Free chargers",
     "chargePoint": "Charge Point",
@@ -83,7 +87,7 @@
     "charging": "Charging",
     "available": "Available",
     "unavailable": "Unavailable",
-    "notCharging": "Not Charging",
+    "notCharging": "Inactive",
     "suspendedEV": "Suspended EV",
     "suspendedEVSE": "Suspended EVSE",
     "faulted": "Faulted",

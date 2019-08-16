@@ -11,7 +11,9 @@ import Sites from "./screens/sites/Sites";
 import SiteAreas from "./screens/site-areas/SiteAreas";
 import Chargers from "./screens/chargers/Chargers";
 import AllChargers from "./screens/chargers/AllChargers";
+import Sessions from "./screens/sessions/Sessions";
 import ChargerTabDetails from "./screens/charger-details/tabs/ChargerTabDetails";
+import SessionChartContainer from "./screens/sessions/chart/SessionChartContainer";
 import NotificationManager from "./notification/NotificationManager";
 import Utils from "./utils/Utils";
 import SecuredStorage from "./utils/SecuredStorage";
@@ -44,8 +46,10 @@ const AppDrawerNavigator = createDrawerNavigator(
     },
     SiteAreas: { screen: SiteAreas },
     Chargers: { screen: Chargers },
+    SessionChartContainer: { screen: SessionChartContainer },
     AllChargers: { screen: AllChargers },
-    ChargerTabDetails: { screen: ChargerTabDetails }
+    ChargerTabDetails: { screen: ChargerTabDetails },
+    Sessions: { screen: Sessions }
   },
   {
     navigationOptions: {
