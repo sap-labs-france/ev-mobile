@@ -8,12 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* eMobilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* eMobilityTests.m */; };
-		06ED3711670FDA4FCE529255 /* libPods-eMobility-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 36BF46DA72BFC61F53D5CC06 /* libPods-eMobility-tvOS.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1BBDE951E06E9CADF0CB238F /* libPods-eMobilityTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B7512073C5F779344228532 /* libPods-eMobilityTests.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -37,8 +35,10 @@
 		53DD4FBA230600A100044E75 /* RNBarLineChartBaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DD4FA7230600A000044E75 /* RNBarLineChartBaseManager.swift */; };
 		53DD4FBB230600A100044E75 /* scatter in Resources */ = {isa = PBXBuildFile; fileRef = 53DD4FA8230600A000044E75 /* scatter */; };
 		53DD4FBC230600A100044E75 /* utils in Resources */ = {isa = PBXBuildFile; fileRef = 53DD4FA9230600A100044E75 /* utils */; };
-		60F77596C6F814A868169F81 /* libPods-eMobility-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFF0F11C5BCC0238AC4E6869 /* libPods-eMobility-tvOSTests.a */; };
-		F0A68D44EA5B2367A7764DFB /* libPods-eMobility.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C625AFD32DA9FC98AA36F53 /* libPods-eMobility.a */; };
+		7C6B0565D85002627E8FBB65 /* libPods-eMobility-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2E1D6CE67A1235B179E3F4A /* libPods-eMobility-tvOSTests.a */; };
+		97B2D1169E0AE96EFDE8DED2 /* libPods-eMobilityTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B8644E7D65420A8D310AA2C /* libPods-eMobilityTests.a */; };
+		BC872348762AD536FA7A18B0 /* libPods-eMobility.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F0EBAD433D3B7462D2B8B4FD /* libPods-eMobility.a */; };
+		BCBF102FC038372023F0034E /* libPods-eMobility-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2171939E13F43B092A277E9F /* libPods-eMobility-tvOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,7 +63,6 @@
 		00E356EE1AD99517003FC87E /* eMobilityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = eMobilityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* eMobilityTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = eMobilityTests.m; sourceTree = "<group>"; };
-		0453FEE7362479573E635F7A /* Pods-eMobilityTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobilityTests.debug.xcconfig"; path = "Target Support Files/Pods-eMobilityTests/Pods-eMobilityTests.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* eMobility.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eMobility.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = eMobility/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = eMobility/AppDelegate.m; sourceTree = "<group>"; };
@@ -71,12 +70,13 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = eMobility/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = eMobility/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = eMobility/main.m; sourceTree = "<group>"; };
-		146931F2DF7B50DD1360BF8E /* Pods-eMobilityTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobilityTests.release.xcconfig"; path = "Target Support Files/Pods-eMobilityTests/Pods-eMobilityTests.release.xcconfig"; sourceTree = "<group>"; };
-		2C625AFD32DA9FC98AA36F53 /* libPods-eMobility.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eMobility.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		17F87496FF865E5689AB0EA8 /* Pods-eMobilityTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobilityTests.debug.xcconfig"; path = "Target Support Files/Pods-eMobilityTests/Pods-eMobilityTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2171939E13F43B092A277E9F /* libPods-eMobility-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eMobility-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		21805F775E81E2D935576847 /* Pods-eMobility-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility-tvOS.release.xcconfig"; path = "Target Support Files/Pods-eMobility-tvOS/Pods-eMobility-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		2A7E76E89206D7F4611FB04F /* Pods-eMobility-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-eMobility-tvOSTests/Pods-eMobility-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* eMobility-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "eMobility-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* eMobility-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "eMobility-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D497A4F7223489DFD3D7727 /* Pods-eMobility-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility-tvOS.release.xcconfig"; path = "Target Support Files/Pods-eMobility-tvOS/Pods-eMobility-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		36BF46DA72BFC61F53D5CC06 /* libPods-eMobility-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eMobility-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2EDF3983BC8AA7E16BCE6805 /* Pods-eMobility.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility.debug.xcconfig"; path = "Target Support Files/Pods-eMobility/Pods-eMobility.debug.xcconfig"; sourceTree = "<group>"; };
 		53DD4F932306009E00044E75 /* formatters */ = {isa = PBXFileReference; lastKnownFileType = folder; name = formatters; path = "../../node_modules/react-native-charts-wrapper/ios/ReactNativeCharts/formatters"; sourceTree = "<group>"; };
 		53DD4F942306009E00044E75 /* CustomChartDateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomChartDateFormatter.swift; path = "../../node_modules/react-native-charts-wrapper/ios/ReactNativeCharts/CustomChartDateFormatter.swift"; sourceTree = "<group>"; };
 		53DD4F952306009E00044E75 /* BalloonMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BalloonMarker.swift; path = "../../node_modules/react-native-charts-wrapper/ios/ReactNativeCharts/BalloonMarker.swift"; sourceTree = "<group>"; };
@@ -101,15 +101,15 @@
 		53DD4FA8230600A000044E75 /* scatter */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scatter; path = "../../node_modules/react-native-charts-wrapper/ios/ReactNativeCharts/scatter"; sourceTree = "<group>"; };
 		53DD4FA9230600A100044E75 /* utils */ = {isa = PBXFileReference; lastKnownFileType = folder; name = utils; path = "../../node_modules/react-native-charts-wrapper/ios/ReactNativeCharts/utils"; sourceTree = "<group>"; };
 		53F9531B2307230D00520246 /* eMobility-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "eMobility-Bridging-Header.h"; sourceTree = "<group>"; };
-		5B1E665F0A3EC315258D5483 /* Pods-eMobility.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility.debug.xcconfig"; path = "Target Support Files/Pods-eMobility/Pods-eMobility.debug.xcconfig"; sourceTree = "<group>"; };
-		8B7512073C5F779344228532 /* libPods-eMobilityTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eMobilityTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA8E4121782E91ADE3D344DA /* Pods-eMobility.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility.release.xcconfig"; path = "Target Support Files/Pods-eMobility/Pods-eMobility.release.xcconfig"; sourceTree = "<group>"; };
-		AFF0F11C5BCC0238AC4E6869 /* libPods-eMobility-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eMobility-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BE31A9DC4FF1C1DE2419CC81 /* Pods-eMobility-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-eMobility-tvOSTests/Pods-eMobility-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		C11CE41E1C8DD3A75719E080 /* Pods-eMobility-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-eMobility-tvOS/Pods-eMobility-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		D46B2DA23FD93202763FBC42 /* Pods-eMobility-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-eMobility-tvOSTests/Pods-eMobility-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		5B8644E7D65420A8D310AA2C /* libPods-eMobilityTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eMobilityTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		681C2E0C8C40E1F7D1EAC1D4 /* Pods-eMobility.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility.release.xcconfig"; path = "Target Support Files/Pods-eMobility/Pods-eMobility.release.xcconfig"; sourceTree = "<group>"; };
+		B2E1D6CE67A1235B179E3F4A /* libPods-eMobility-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eMobility-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDD730DEC78016F30DCF6A0C /* Pods-eMobilityTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobilityTests.release.xcconfig"; path = "Target Support Files/Pods-eMobilityTests/Pods-eMobilityTests.release.xcconfig"; sourceTree = "<group>"; };
+		C71B50D6CAA0D2B949C6AFBC /* Pods-eMobility-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-eMobility-tvOSTests/Pods-eMobility-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		E6E5912AA42EBABA3FA889B8 /* Pods-eMobility-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-eMobility-tvOS/Pods-eMobility-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		F0EBAD433D3B7462D2B8B4FD /* libPods-eMobility.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eMobility.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,7 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1BBDE951E06E9CADF0CB238F /* libPods-eMobilityTests.a in Frameworks */,
+				97B2D1169E0AE96EFDE8DED2 /* libPods-eMobilityTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,7 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F0A68D44EA5B2367A7764DFB /* libPods-eMobility.a in Frameworks */,
+				BC872348762AD536FA7A18B0 /* libPods-eMobility.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,7 +133,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				06ED3711670FDA4FCE529255 /* libPods-eMobility-tvOS.a in Frameworks */,
+				BCBF102FC038372023F0034E /* libPods-eMobility-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,7 +141,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60F77596C6F814A868169F81 /* libPods-eMobility-tvOSTests.a in Frameworks */,
+				7C6B0565D85002627E8FBB65 /* libPods-eMobility-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,10 +184,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				2C625AFD32DA9FC98AA36F53 /* libPods-eMobility.a */,
-				36BF46DA72BFC61F53D5CC06 /* libPods-eMobility-tvOS.a */,
-				AFF0F11C5BCC0238AC4E6869 /* libPods-eMobility-tvOSTests.a */,
-				8B7512073C5F779344228532 /* libPods-eMobilityTests.a */,
+				F0EBAD433D3B7462D2B8B4FD /* libPods-eMobility.a */,
+				2171939E13F43B092A277E9F /* libPods-eMobility-tvOS.a */,
+				B2E1D6CE67A1235B179E3F4A /* libPods-eMobility-tvOSTests.a */,
+				5B8644E7D65420A8D310AA2C /* libPods-eMobilityTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -260,14 +260,14 @@
 		C4E99EF1EB30928FD26DDEBC /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5B1E665F0A3EC315258D5483 /* Pods-eMobility.debug.xcconfig */,
-				AA8E4121782E91ADE3D344DA /* Pods-eMobility.release.xcconfig */,
-				C11CE41E1C8DD3A75719E080 /* Pods-eMobility-tvOS.debug.xcconfig */,
-				2D497A4F7223489DFD3D7727 /* Pods-eMobility-tvOS.release.xcconfig */,
-				BE31A9DC4FF1C1DE2419CC81 /* Pods-eMobility-tvOSTests.debug.xcconfig */,
-				D46B2DA23FD93202763FBC42 /* Pods-eMobility-tvOSTests.release.xcconfig */,
-				0453FEE7362479573E635F7A /* Pods-eMobilityTests.debug.xcconfig */,
-				146931F2DF7B50DD1360BF8E /* Pods-eMobilityTests.release.xcconfig */,
+				2EDF3983BC8AA7E16BCE6805 /* Pods-eMobility.debug.xcconfig */,
+				681C2E0C8C40E1F7D1EAC1D4 /* Pods-eMobility.release.xcconfig */,
+				E6E5912AA42EBABA3FA889B8 /* Pods-eMobility-tvOS.debug.xcconfig */,
+				21805F775E81E2D935576847 /* Pods-eMobility-tvOS.release.xcconfig */,
+				2A7E76E89206D7F4611FB04F /* Pods-eMobility-tvOSTests.debug.xcconfig */,
+				C71B50D6CAA0D2B949C6AFBC /* Pods-eMobility-tvOSTests.release.xcconfig */,
+				17F87496FF865E5689AB0EA8 /* Pods-eMobilityTests.debug.xcconfig */,
+				BDD730DEC78016F30DCF6A0C /* Pods-eMobilityTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -279,7 +279,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "eMobilityTests" */;
 			buildPhases = (
-				B981D04A64D8EB74C1C1C5A8 /* [CP] Check Pods Manifest.lock */,
+				0D3F6302C89B27AA1BB16A4B /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
@@ -298,13 +298,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "eMobility" */;
 			buildPhases = (
-				DE73679405A9FBEFA0F12350 /* [CP] Check Pods Manifest.lock */,
+				8C0C3A2F8C813CE040B29A22 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				52DE1994891183E48F9B1B61 /* [CP] Copy Pods Resources */,
+				37F908A624925566DF6DCD0F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -319,7 +319,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "eMobility-tvOS" */;
 			buildPhases = (
-				500062247384F84D026B5590 /* [CP] Check Pods Manifest.lock */,
+				4365AE2D803D5D899C6B67EF /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -339,7 +339,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "eMobility-tvOSTests" */;
 			buildPhases = (
-				D53CCA540FF760F14882154B /* [CP] Check Pods Manifest.lock */,
+				52C7BAB6650FB520D05C0995 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -462,21 +462,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Bundle React Native Code And Images";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
-		};
-		500062247384F84D026B5590 /* [CP] Check Pods Manifest.lock */ = {
+		0D3F6302C89B27AA1BB16A4B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -491,14 +477,28 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-eMobility-tvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-eMobilityTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		52DE1994891183E48F9B1B61 /* [CP] Copy Pods Resources */ = {
+		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native Code And Images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		37F908A624925566DF6DCD0F /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -546,7 +546,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-eMobility/Pods-eMobility-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B981D04A64D8EB74C1C1C5A8 /* [CP] Check Pods Manifest.lock */ = {
+		4365AE2D803D5D899C6B67EF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -561,14 +561,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-eMobilityTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-eMobility-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D53CCA540FF760F14882154B /* [CP] Check Pods Manifest.lock */ = {
+		52C7BAB6650FB520D05C0995 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -590,7 +590,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DE73679405A9FBEFA0F12350 /* [CP] Check Pods Manifest.lock */ = {
+		8C0C3A2F8C813CE040B29A22 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -726,7 +726,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0453FEE7362479573E635F7A /* Pods-eMobilityTests.debug.xcconfig */;
+			baseConfigurationReference = 17F87496FF865E5689AB0EA8 /* Pods-eMobilityTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -750,7 +750,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 146931F2DF7B50DD1360BF8E /* Pods-eMobilityTests.release.xcconfig */;
+			baseConfigurationReference = BDD730DEC78016F30DCF6A0C /* Pods-eMobilityTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -771,7 +771,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B1E665F0A3EC315258D5483 /* Pods-eMobility.debug.xcconfig */;
+			baseConfigurationReference = 2EDF3983BC8AA7E16BCE6805 /* Pods-eMobility.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -838,7 +838,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AA8E4121782E91ADE3D344DA /* Pods-eMobility.release.xcconfig */;
+			baseConfigurationReference = 681C2E0C8C40E1F7D1EAC1D4 /* Pods-eMobility.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -903,7 +903,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C11CE41E1C8DD3A75719E080 /* Pods-eMobility-tvOS.debug.xcconfig */;
+			baseConfigurationReference = E6E5912AA42EBABA3FA889B8 /* Pods-eMobility-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -931,7 +931,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2D497A4F7223489DFD3D7727 /* Pods-eMobility-tvOS.release.xcconfig */;
+			baseConfigurationReference = 21805F775E81E2D935576847 /* Pods-eMobility-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -959,7 +959,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BE31A9DC4FF1C1DE2419CC81 /* Pods-eMobility-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 2A7E76E89206D7F4611FB04F /* Pods-eMobility-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -986,7 +986,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D46B2DA23FD93202763FBC42 /* Pods-eMobility-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = C71B50D6CAA0D2B949C6AFBC /* Pods-eMobility-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;

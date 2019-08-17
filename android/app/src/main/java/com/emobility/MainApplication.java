@@ -11,7 +11,6 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 
 import java.util.List;
 
