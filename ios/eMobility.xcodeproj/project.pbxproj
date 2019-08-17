@@ -497,7 +497,9 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = SG7N28T3A2;
 						LastSwiftMigration = 1030;
+						ProvisioningStyle = Manual;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -947,22 +949,22 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = eMobility/eMobility.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = SG7N28T3A2;
 				INFOPLIST_FILE = eMobility/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Charts\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/DoubleConversion\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstanceID\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMessaging\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Folly\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Protobuf\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNDeviceInfo\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNFirebase\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNGestureHandler\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNI18n\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNSVG\"",
@@ -1014,21 +1016,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = eMobility/eMobility.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SG7N28T3A2;
 				INFOPLIST_FILE = eMobility/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Charts\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/DoubleConversion\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstanceID\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMessaging\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Folly\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Protobuf\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNDeviceInfo\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNFirebase\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNGestureHandler\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNI18n\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNSVG\"",
