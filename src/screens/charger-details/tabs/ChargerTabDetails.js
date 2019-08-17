@@ -105,8 +105,8 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
     // Check Auth
     this._canStopTransaction();
     this._canStartTransaction();
-    this._canDisplayTransaction();
-  };
+    this._canReadTransaction();
+  }
 
   _canStopTransaction = () => {
     const { charger, connector } = this.state;
@@ -116,7 +116,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
         // Get the Security Provider
         const securityProvider = this.centralServerProvider.getSecurityProvider();
         // Check Auth
-        const isAuth = securityProvider.canStopTransaction(charger.siteArea, connector.activeBadgeID);
+        const isAuth = securityProvider.canStopTransaction(charger.siteArea, connector.activeTagID);
         // Assign
         this.setState({
           canStopTransaction: isAuth
@@ -158,7 +158,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
     }
   };
 
-  _canDisplayTransaction = () => {
+  _canReadTransaction = () => {
     const { charger, connector } = this.state;
     try {
       // Transaction?
@@ -166,7 +166,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
         // Get the Security Provider
         const securityProvider = this.centralServerProvider.getSecurityProvider();
         // Check Auth
-        const isAuth = securityProvider.canReadTransaction(charger.siteArea, connector.activeBadgeID);
+        const isAuth = securityProvider.canReadTransaction(charger.siteArea, connector.activeTagID);
         // Assign
         this.setState({
           canDisplayTransaction: isAuth
