@@ -1,4 +1,4 @@
-// flow-typed signature: 5563a2089f0139ea1321ef958aaee5d6
+// flow-typed signature: adc52609e022afb2a805b5e3c030d88a
 // flow-typed version: c6154227d1/react-native-svg-uri_v1.x.x/flow_>=v0.69.0 <=v0.103.x
 
 declare module "react-native-svg-uri" {
