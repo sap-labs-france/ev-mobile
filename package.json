@@ -78,7 +78,6 @@
     "axios": "^0.19.0",
     "color": "^3.1.2",
     "deepmerge": "^4.0.0",
-    "install": "^0.13.0",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
