@@ -1,6 +1,6 @@
 {
   "name": "eMobility",
-  "version": "1.0.16",
+  "version": "1.0.18",
   "private": true,
   "repository": {
     "type": "git",
@@ -57,6 +57,7 @@
     "ios:bundle": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
     "clean": "npm start -- --reset-cache",
     "clean:android": "cd android && gradlew clean",
+    "version": "./version-ios.sh",
     "npm-check": "npm-check",
     "react-native:upgrade": "react-native upgrade",
     "react-native:link": "react-native link",
