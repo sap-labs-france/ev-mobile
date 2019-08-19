@@ -13,7 +13,6 @@
 #import <RNCPushNotificationIOS.h>
 #import "RNSplashScreen.h"
 #import "Orientation.h"
-#import "Firebase.h"
 
 @implementation AppDelegate
 
