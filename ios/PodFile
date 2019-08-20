@@ -27,8 +27,6 @@ target 'eMobility' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'Firebase/Analytics'
-
   # Required by RNCharts
   pod 'SwiftyJSON', '5.0'
   pod 'Charts', '3.3.0'
