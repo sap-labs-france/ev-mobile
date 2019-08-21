@@ -58,7 +58,7 @@
     "tenant": "Choisir un Tenant"
   },
   "sessions": {
-    "chargingCurve": "Graphique"
+    "chargingCurve": "Graphique Session"
   },
   "sites": {
     "freeChargers": "Chargeurs disponibles",

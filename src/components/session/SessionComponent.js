@@ -23,7 +23,6 @@ export default class SessionComponent extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { session, isAdmin } = this.props;
-    const sessionDate = moment(new Date(session.timestamp));
     const consumption = Math.round(session.stop.totalConsumption / 10) / 100;
     const price = Math.round(session.stop.price * 100) / 100;
     const duration = Utils.formatDurationHHMMSS(session.stop.totalDurationSecs);
@@ -42,7 +41,7 @@ export default class SessionComponent extends ResponsiveComponent {
           <View style={style.container}>
             <View style={style.headerContent}>
               <View style={style.rowContainer}>
-                <Text style={style.headerName}>{sessionDate.format("LLL")}</Text>
+                <Text style={style.headerName}>{moment(new Date(session.timestamp)).format("LLL")}</Text>
               </View>
               <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
             </View>
@@ -60,22 +59,20 @@ export default class SessionComponent extends ResponsiveComponent {
               <View style={style.columnContainer}>
                 <Icon type="MaterialIcons" name="ev-station" style={style.icon} />
                 <View style={style.rowContainer}>
-                  <Text style={style.value}>{`${consumption} kW.h`}</Text>
+                  <Text style={style.labelValue}>{`${consumption} kW.h`}</Text>
                 </View>
               </View>
               <View style={style.columnContainer}>
                 <Icon type="MaterialIcons" name="timer" style={style.icon} />
-                <Text style={[style.value, style.labelTimeValue]}>{duration}</Text>
+                <Text style={[style.labelValue]}>{duration}</Text>
               </View>
               <View style={style.columnContainer}>
                 <Icon type="MaterialIcons" name="timer-off" style={style.icon} />
-                <Text style={[style.value, style.labelTimeValue]}>{inactivity}</Text>
+                <Text style={[style.labelValue]}>{inactivity}</Text>
               </View>
               <View style={style.columnContainer}>
                 <Icon type="FontAwesome" name="money" style={style.icon} />
-                <Text style={[style.value, style.labelTimeValue]}>
-                  {price} {session.priceUnit}
-                </Text>
+                <Text style={[style.labelValue]}>{price} {session.priceUnit}</Text>
               </View>
             </View>
           </View>

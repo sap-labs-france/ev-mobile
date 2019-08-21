@@ -34,11 +34,10 @@ const commonStyles = ScaledSheet.create({
     padding: "5@s",
     paddingLeft: "8@s",
     paddingRight: "8@s",
-    fontSize: "12@s",
-    fontWeight: "bold",
     backgroundColor: commonColor.headerBgColorLight
   },
   subHeaderName: {
+    color: commonColor.headerTextColor,
     fontSize: "16@s"
   },
   sessionContent: {
@@ -68,7 +67,11 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center"
   },
   icon: {
+    fontSize: "30@s",
     justifyContent: "flex-end"
+  },
+  labelValue: {
+    fontSize: "15@s"
   }
 });
 
