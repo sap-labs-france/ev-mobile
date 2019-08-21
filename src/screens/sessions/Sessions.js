@@ -119,7 +119,7 @@ export default class Sessions extends BaseAutoRefreshScreen {
       <Container style={style.container}>
         <BackgroundComponent active={false}>
           <HeaderComponent
-            title={I18n.t("sidebar.sessions")}
+            title={I18n.t("sessions.sessionsHistory")}
             showSearchAction={false}
             leftAction={this.onBack}
             leftActionIcon={"navigate-before"}

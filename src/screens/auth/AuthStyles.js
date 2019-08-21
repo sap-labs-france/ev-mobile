@@ -135,19 +135,16 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.inverseTextColor,
     textDecorationLine: "underline"
   },
+  linksButton: {},
   linksButtonLeft: {
     alignSelf: "flex-start",
-    marginLeft: "15@s",
-    marginBottom: "5@s"
+    marginLeft: "15@s"
   },
   linksButtonRight: {
     alignSelf: "flex-end",
-    marginRight: "15@s",
-    marginBottom: "5@s"
+    marginRight: "15@s"
   },
   linksTextButton: {
-    width: "100%",
-    opacity: 0.9,
     fontSize: "12@s",
     fontWeight: "bold",
     color: commonColor.inverseTextColor

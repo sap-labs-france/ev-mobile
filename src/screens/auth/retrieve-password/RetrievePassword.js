@@ -181,7 +181,7 @@ export default class RetrievePassword extends BaseScreen {
           </ScrollView>
           <Footer style={style.footer}>
             <Left>
-              <Button small transparent style={style.linksButtonLeft} onPress={() => this.props.navigation.goBack()}>
+              <Button small transparent style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.props.navigation.goBack()}>
                 <TextRN style={[style.linksTextButton, style.linksTextButtonLeft]}>{I18n.t("authentication.backLogin")}</TextRN>
               </Button>
             </Left>

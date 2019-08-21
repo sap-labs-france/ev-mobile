@@ -58,6 +58,7 @@
     "tenant": "Choisir un Tenant"
   },
   "sessions": {
+    "sessionsHistory": "Historique Sessions",
     "chargingCurve": "Graphique Session"
   },
   "sites": {
