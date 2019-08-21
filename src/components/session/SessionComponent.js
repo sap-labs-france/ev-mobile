@@ -58,20 +58,20 @@ export default class SessionComponent extends ResponsiveComponent {
               <View style={style.columnContainer}>
                 <Icon type="MaterialIcons" name="ev-station" style={style.icon} />
                 <View style={style.rowContainer}>
-                  <Text style={style.value}>{`${consumption} kW.h`}</Text>
+                  <Text style={style.labelValue}>{`${consumption} kW.h`}</Text>
                 </View>
               </View>
               <View style={style.columnContainer}>
                 <Icon type="MaterialIcons" name="timer" style={style.icon} />
-                <Text style={[style.value, style.labelTimeValue]}>{duration}</Text>
+                <Text style={[style.labelValue]}>{duration}</Text>
               </View>
               <View style={style.columnContainer}>
                 <Icon type="MaterialIcons" name="timer-off" style={style.icon} />
-                <Text style={[style.value, style.labelTimeValue]}>{inactivity}</Text>
+                <Text style={[style.labelValue]}>{inactivity}</Text>
               </View>
               <View style={style.columnContainer}>
                 <Icon type="FontAwesome" name="money" style={style.icon} />
-                <Text style={[style.value, style.labelTimeValue]}>{price} {session.priceUnit}</Text>
+                <Text style={[style.labelValue]}>{price} {session.priceUnit}</Text>
               </View>
             </View>
           </View>

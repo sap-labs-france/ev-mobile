@@ -68,7 +68,12 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center"
   },
   icon: {
+    fontSize: "30@s",
     justifyContent: "flex-end"
+  },
+  labelValue: {
+    fontSize: "15@s",
+    fontWeight: "bold"
   }
 });
 
