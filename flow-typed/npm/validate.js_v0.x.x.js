@@ -1,4 +1,4 @@
-// flow-typed signature: 4c61ce5d9ea3f9695968155cd1950f69
+// flow-typed signature: ce1de7ad510ac2d7608bca7e426df9ce
 // flow-typed version: c6154227d1/validate.js_v0.x.x/flow_>=v0.25.x <=v0.103.x
 
 declare module 'validate.js' {

@@ -10,7 +10,7 @@
     "@babel/core": "^7.5.5",
     "@babel/runtime": "^7.5.5",
     "@react-native-community/eslint-config": "^0.0.5",
-    "@types/react-native": "^0.60.6",
+    "@types/react-native": "^0.60.7",
     "babel-eslint": "10.0.2",
     "babel-jest": "24.8.0",
     "babel-preset-react-native-stage-0": "^1.0.1",
@@ -110,6 +110,7 @@
     "react-native-svg": "^9.6.4",
     "react-native-svg-uri": "^1.2.3",
     "react-native-vector-icons": "^6.6.0",
+    "react-native-webview": "^6.9.0",
     "react-navigation": "^3.11.1",
     "rn-secure-storage": "^2.0.1",
     "validate.js": "^0.13.1"
