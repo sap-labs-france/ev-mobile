@@ -44,7 +44,7 @@ export default class SessionChartContainer extends BaseScreen {
             rightAction={this.props.navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          <SessionChart sessionID={this.state.sessionID} navigation={this.props.navigation} />
+          <SessionChart sessionID={this.state.sessionID} navigation={this.props.navigation} showSessionDetails={true} />
         </BackgroundComponent>
       </Container>
     );

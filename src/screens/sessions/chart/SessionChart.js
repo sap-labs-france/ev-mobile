@@ -1,5 +1,6 @@
 import React from "react";
 import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
+import { Text } from "native-base";
 import { View, processColor } from "react-native";
 import Utils from "../../../utils/Utils";
 import I18n from "../../../I18n/I18n";
@@ -9,6 +10,7 @@ import commonColor from "../../../theme/variables/commonColor";
 import { LineChart } from "react-native-charts-wrapper";
 import PropTypes from "prop-types";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import moment from "moment";
 
 const EMPTY_CHART = [{ x: 0, y: 0 }];
 
@@ -16,6 +18,7 @@ export default class SessionChart extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     this.state = {
+      sessionConsumption: null,
       values: [],
       consumptionValues: EMPTY_CHART,
       stateOfChargeValues: EMPTY_CHART
@@ -65,6 +68,7 @@ export default class SessionChart extends BaseAutoRefreshScreen {
           }
           // Set
           this.setState({
+            sessionConsumption: result,
             values: result.values,
             consumptionValues,
             stateOfChargeValues
@@ -73,6 +77,7 @@ export default class SessionChart extends BaseAutoRefreshScreen {
       } else {
         // Clear
         this.setState({
+          sessionConsumption: null,
           values: null,
           consumptionValues: EMPTY_CHART,
           stateOfChargeValues: EMPTY_CHART
@@ -88,8 +93,9 @@ export default class SessionChart extends BaseAutoRefreshScreen {
   };
 
   refresh = async () => {
+    const { sessionConsumption } = this.state;
     // Component Mounted?
-    if (this.isMounted()) {
+    if (this.isMounted() && (!sessionConsumption || !sessionConsumption.stop)) {
       // Refresh Consumption
       await this._getChargingStationConsumption();
     }
@@ -206,11 +212,21 @@ export default class SessionChart extends BaseAutoRefreshScreen {
 
   render() {
     const style = computeStyleSheet();
-    const { consumptionValues, stateOfChargeValues } = this.state;
+    const { sessionConsumption, consumptionValues, stateOfChargeValues } = this.state;
+    const { showSessionDetails } = this.props;
+    console.log(sessionConsumption);
     const chartDefinition = this.computeChartDefinition(consumptionValues, stateOfChargeValues);
     return (
       <View style={style.container}>
         <BackgroundComponent active={false}>
+          { showSessionDetails && sessionConsumption ?
+            <View style={style.header}>
+              <Text style={style.value}>{moment(new Date(sessionConsumption.timestamp)).format("LLL")}</Text>
+              <Text style={style.value}>{sessionConsumption.chargeBoxID}</Text>
+            </View>
+          :
+            undefined
+          }
           <LineChart
             style={style.chart}
             data={chartDefinition.data}
@@ -255,7 +271,10 @@ export default class SessionChart extends BaseAutoRefreshScreen {
 }
 
 SessionChart.propTypes = {
-  sessionID: PropTypes.number
+  sessionID: PropTypes.number,
+  showSessionDetails: PropTypes.bool
 };
 
-SessionChart.defaultProps = {};
+SessionChart.defaultProps = {
+  showSessionDetails: false
+};

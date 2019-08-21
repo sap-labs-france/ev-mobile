@@ -58,7 +58,7 @@
     "tenant": "Wählen Sie einen Tenant"
   },
   "sessions": {
-    "chargingCurve": "Diagramm"
+    "chargingCurve": "Sitzungsdiagramm"
   },
   "sites": {
     "freeChargers": "Freie Ladestationen",

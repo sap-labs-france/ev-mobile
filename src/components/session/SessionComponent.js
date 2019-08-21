@@ -23,7 +23,6 @@ export default class SessionComponent extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { session, isAdmin } = this.props;
-    const sessionDate = moment(new Date(session.timestamp));
     const consumption = Math.round(session.stop.totalConsumption / 10) / 100;
     const price = Math.round(session.stop.price * 100) / 100;
     const duration = Utils.formatDurationHHMMSS(session.stop.totalDurationSecs);
@@ -42,7 +41,7 @@ export default class SessionComponent extends ResponsiveComponent {
           <View style={style.container}>
             <View style={style.headerContent}>
               <View style={style.rowContainer}>
-                <Text style={style.headerName}>{sessionDate.format("LLL")}</Text>
+                <Text style={style.headerName}>{moment(new Date(session.timestamp)).format("LLL")}</Text>
               </View>
               <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
             </View>
