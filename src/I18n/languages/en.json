@@ -115,6 +115,7 @@
     "accepted": "Request has been accepted",
     "noBadgeID": "No badge in your profile",
     "denied": "Request has been denied",
+    "duration": "(hh:mm)",
     "total": "Total",
     "maximum": "Maximum",
     "instant": "Instant",

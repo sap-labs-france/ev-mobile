@@ -174,9 +174,9 @@ export default class Utils {
     }
   };
 
-  static formatDurationHHMMSS = (durationSecs) => {
+  static formatDurationHHMMSS = (durationSecs, withSecs = true) => {
     if (durationSecs <= 0) {
-      return "00:00:00";
+      return withSecs ? "00:00:00" : "00:00";
     }
     // Set Hours
     const hours = Math.trunc(durationSecs / 3600);
@@ -188,9 +188,13 @@ export default class Utils {
       durationSecs -= minutes * 60;
     }
     // Set Secs
-    const seconds = Math.trunc(durationSecs);
+    if (withSecs) {
+      const seconds = Math.trunc(durationSecs);
+      // Format
+      return `${Utils._formatTimer(hours)}:${Utils._formatTimer(minutes)}:${this._formatTimer(seconds)}`;
+    }
     // Format
-    return `${Utils._formatTimer(hours)}:${Utils._formatTimer(minutes)}:${this._formatTimer(seconds)}`;
+    return `${Utils._formatTimer(hours)}:${Utils._formatTimer(minutes)}`;
   };
 
   static _formatTimer = (val) => {
