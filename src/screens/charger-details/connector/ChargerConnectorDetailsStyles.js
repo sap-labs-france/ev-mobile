@@ -84,7 +84,7 @@ const commonStyles = ScaledSheet.create({
   },
   label: {
     fontSize: "16@s",
-    color: commonColor.textColor,
+    color: commonColor.brandPrimaryDark,
     alignSelf: "center"
   },
   labelValue: {

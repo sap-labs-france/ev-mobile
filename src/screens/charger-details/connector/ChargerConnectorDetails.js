@@ -23,8 +23,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       transaction: null,
       userImageLoaded: false,
       userImage: null,
-      elapsedTimeFormatted: "00:00:00",
-      inactivityFormatted: "00:00:00",
+      elapsedTimeFormatted: "-",
+      inactivityFormatted: "-",
       startTransactionNbTrial: 0,
       buttonDisabled: true
     };
@@ -42,20 +42,11 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     }
     // Get Transaction
     await this.refresh();
-    // First/Next calls
-    this._refreshDurationInfos();
-    this.timerElapsedTime = setInterval(() => {
-      this._refreshDurationInfos();
-    }, 1000);
   }
 
   async componentWillUnmount() {
     // Call parent
     await super.componentWillUnmount();
-    // Clear
-    if (this.timerElapsedTime) {
-      clearInterval(this.timerElapsedTime);
-    }
   }
 
   _getSiteImage = async (siteID) => {
@@ -142,6 +133,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     await this._getTransaction();
     // Check to enable the buttons after a certain period of time
     this._handleStartStopDisabledButton();
+    // Refresh Duration
+    this._refreshDurationInfos();
   };
 
   _startTransactionConfirm = () => {
@@ -254,19 +247,19 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     if (this.isMounted()) {
       // Transaction loaded?
       if (transaction) {
-        let elapsedTimeFormatted = "00:00:00";
-        let inactivityFormatted = "00:00:00";
+        let elapsedTimeFormatted = "00:00";
+        let inactivityFormatted = "00:00";
         // Elapsed Time?
         if (transaction.timestamp) {
           // Get duration
           const durationSecs = (Date.now() - transaction.timestamp.getTime()) / 1000;
           // Format
-          elapsedTimeFormatted = Utils.formatDurationHHMMSS(durationSecs);
+          elapsedTimeFormatted = Utils.formatDurationHHMMSS(durationSecs, false);
         }
         // Inactivity?
         if (transaction.currentTotalInactivitySecs) {
           // Format
-          inactivityFormatted = Utils.formatDurationHHMMSS(transaction.currentTotalInactivitySecs);
+          inactivityFormatted = Utils.formatDurationHHMMSS(transaction.currentTotalInactivitySecs, false);
         }
         // Set
         this.setState({
@@ -275,19 +268,19 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
         });
       // Basic User: Use the connector data
       } else if (connector.activeTransactionID) {
-        let elapsedTimeFormatted = "00:00:00";
-        let inactivityFormatted = "00:00:00";
+        let elapsedTimeFormatted = "00:00";
+        let inactivityFormatted = "00:00";
         // Elapsed Time?
         if (connector.activeTransactionDate) {
           // Get duration
           const durationSecs = (Date.now() - new Date(connector.activeTransactionDate).getTime()) / 1000;
           // Format
-          elapsedTimeFormatted = Utils.formatDurationHHMMSS(durationSecs);
+          elapsedTimeFormatted = Utils.formatDurationHHMMSS(durationSecs, false);
         }
         // Inactivity?
         if (connector.totalInactivitySecs) {
           // Format
-          inactivityFormatted = Utils.formatDurationHHMMSS(connector.totalInactivitySecs);
+          inactivityFormatted = Utils.formatDurationHHMMSS(connector.totalInactivitySecs, false);
         }
         // Set
         this.setState({
@@ -356,9 +349,12 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="timer" style={style.icon} />
         {connector.activeTransactionID ? (
-          <Text style={[style.label, style.labelTimeValue]}>{elapsedTimeFormatted}</Text>
+          <View>
+            <Text style={[style.label, style.labelTimeValue]}>{elapsedTimeFormatted}</Text>
+            <Text style={style.subLabel}>{I18n.t("details.duration")}</Text>
+          </View>
         ) : (
-          <Text style={[style.label, style.labelValue]}>- : - : -</Text>
+          <Text style={[style.label, style.labelValue]}>-</Text>
         )}
       </View>
     );
@@ -371,9 +367,12 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="timer-off" style={style.icon} />
         {connector.activeTransactionID ? (
-          <Text style={[style.label, style.labelTimeValue]}>{inactivityFormatted}</Text>
+          <View>
+            <Text style={[style.label, style.labelTimeValue]}>{inactivityFormatted}</Text>
+            <Text style={style.subLabel}>{I18n.t("details.duration")}</Text>
+          </View>
         ) : (
-          <Text style={[style.label, style.labelValue]}>- : - : -</Text>
+          <Text style={[style.label, style.labelValue]}>-</Text>
         )}
       </View>
     );

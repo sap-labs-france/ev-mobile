@@ -78,6 +78,7 @@ const commonStyles = ScaledSheet.create({
   },
   inputGroup: {
     height: "40@s",
+    borderRadius: "20@s",
     flexDirection: "row",
     justifyContent: "flex-start",
     marginBottom: "10@s",
