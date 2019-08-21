@@ -72,7 +72,9 @@ export default class SessionComponent extends ResponsiveComponent {
               </View>
               <View style={style.columnContainer}>
                 <Icon type="FontAwesome" name="money" style={style.icon} />
-                <Text style={[style.labelValue]}>{price} {session.priceUnit}</Text>
+                <Text style={[style.labelValue]}>
+                  {price} {session.priceUnit}
+                </Text>
               </View>
             </View>
           </View>

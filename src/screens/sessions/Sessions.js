@@ -55,11 +55,12 @@ export default class Sessions extends BaseAutoRefreshScreen {
     return transactions;
   };
 
-  onBack = () =>
+  onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack();
     // Do not bubble up
     true;
+  };
 
   _manualRefresh = async () => {
     // Display spinner

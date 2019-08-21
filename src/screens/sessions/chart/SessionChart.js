@@ -219,14 +219,14 @@ export default class SessionChart extends BaseAutoRefreshScreen {
     return (
       <View style={style.container}>
         <BackgroundComponent active={false}>
-          { showSessionDetails && sessionConsumption ?
+          {showSessionDetails && sessionConsumption ? (
             <View style={style.header}>
               <Text style={style.value}>{moment(new Date(sessionConsumption.timestamp)).format("LLL")}</Text>
               <Text style={style.value}>{sessionConsumption.chargeBoxID}</Text>
             </View>
-          :
+          ) : (
             undefined
-          }
+          )}
           <LineChart
             style={style.chart}
             data={chartDefinition.data}

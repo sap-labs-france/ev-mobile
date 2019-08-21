@@ -106,7 +106,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
     this._canStopTransaction();
     this._canStartTransaction();
     this._canReadTransaction();
-  }
+  };
 
   _canStopTransaction = () => {
     const { charger, connector } = this.state;
