@@ -58,6 +58,7 @@
     "tenant": "Wählen Sie einen Tenant"
   },
   "sessions": {
+    "sessionsHistory": "Sitzungsverlauf",
     "chargingCurve": "Sitzungsdiagramm"
   },
   "sites": {

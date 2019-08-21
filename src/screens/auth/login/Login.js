@@ -303,12 +303,12 @@ export default class Login extends BaseScreen {
           </ScrollView>
           <Footer style={style.footer}>
             <Left>
-              <Button small transparent style={style.linksButtonLeft} onPress={() => this._newUser()}>
+              <Button small transparent style={[style.linksButton, style.linksButtonLeft]} onPress={() => this._newUser()}>
                 <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
               </Button>
             </Left>
             <Right>
-              <Button small transparent style={style.linksButtonRight} onPress={() => this._forgotPassword()}>
+              <Button small transparent style={[style.linksButton, style.linksButtonRight]} onPress={() => this._forgotPassword()}>
                 <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
               </Button>
             </Right>

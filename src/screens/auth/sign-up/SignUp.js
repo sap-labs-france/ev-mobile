@@ -346,7 +346,7 @@ export default class SignUp extends BaseScreen {
           </ScrollView>
           <Footer style={style.footer}>
             <Right>
-              <Button small transparent style={style.linksButtonRight} onPress={() => this.props.navigation.goBack()}>
+              <Button small transparent style={[style.linksButton, style.linksButtonRight]} onPress={() => this.props.navigation.goBack()}>
                 <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.backLogin")}</TextRN>
               </Button>
             </Right>

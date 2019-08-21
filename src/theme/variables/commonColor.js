@@ -205,7 +205,7 @@ export default {
   },
 
   // Footer
-  footerHeight: 55,
+  footerHeight: scale(40),
   footerDefaultBg: primaryDark,
   footerPaddingBottom: 0,
 
