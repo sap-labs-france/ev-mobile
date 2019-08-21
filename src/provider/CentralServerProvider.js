@@ -415,24 +415,24 @@ export default class CentralServerProvider {
   }
 
   async getSiteImage(id) {
-    this.debug("getSiteImage");
     // Check cache
-    let siteImage = _siteImages.find((siteImage) => siteImage.id === id);
-    if (!siteImage) {
+    let foundSiteImage = _siteImages.find((siteImage) => siteImage.id === id);
+    if (!foundSiteImage) {
+      this.debug("getSiteImage");
       // Call
       const result = await axios.get(`${_centralRestServerServiceSecuredURL}/SiteImage`, {
         headers: this._buildSecuredHeaders(),
         params: { ID: id }
       });
       // Set
-      siteImage = {
+      foundSiteImage = {
         id,
-        data: result.data
+        image: result.data
       };
       // Add
-      _siteImages.push(siteImage);
+      _siteImages.push(foundSiteImage);
     }
-    return siteImage.data;
+    return foundSiteImage.image;
   }
 
   async getPrice() {
