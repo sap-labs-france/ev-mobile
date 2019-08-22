@@ -188,10 +188,11 @@ export default class CentralServerProvider {
       tenant
     });
     // Keep them
+    _email = email;
+    _password = password;
     _token = result.data.token;
     _decodedToken = jwtDecode(_token);
     _tenant = tenant;
-    _initialized = true;
     this.securityProvider = new SecurityProvider(_decodedToken);
   }
 
@@ -218,7 +219,6 @@ export default class CentralServerProvider {
 
   async retrievePassword(tenant, email, captcha) {
     this.debug("retrievePassword");
-    // Call
     const result = await axios.post(
       `${_centralRestServerServiceAuthURL}/Reset`,
       {

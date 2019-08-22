@@ -215,7 +215,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          {!canStopTransaction ? (
+          {!isAdmin && !canStopTransaction ? (
             <ChargerConnectorDetails
               charger={charger}
               connector={connector}

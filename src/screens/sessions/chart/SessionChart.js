@@ -214,7 +214,6 @@ export default class SessionChart extends BaseAutoRefreshScreen {
     const style = computeStyleSheet();
     const { sessionConsumption, consumptionValues, stateOfChargeValues } = this.state;
     const { showSessionDetails } = this.props;
-    console.log(sessionConsumption);
     const chartDefinition = this.computeChartDefinition(consumptionValues, stateOfChargeValues);
     return (
       <View style={style.container}>

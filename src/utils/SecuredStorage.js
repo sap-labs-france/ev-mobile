@@ -37,7 +37,7 @@ export default class SecuredStorage {
     const credentials = await SecuredStorage._getJson(Constants.KEY_CREDENTIALS);
     if (credentials) {
       delete credentials.token;
-      SecuredStorage.saveUserCredentials(credentials);
+      await SecuredStorage.saveUserCredentials(credentials);
     }
   }
 
