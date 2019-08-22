@@ -34,7 +34,7 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: commonColor.headerBgColorLight
   },
   value: {
-    fontSize: "12@s"
+    fontSize: "15@s"
   }
 });
 
