@@ -1,0 +1,16 @@
+#!/usr/bin/env bash -e
+
+PROJECT_DIR="android/app"
+GRADLE_FILE="build.gradle"
+GRADLE_RPATH="${PROJECT_DIR}/${INFOPLIST_FILE}"
+
+# PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]')
+
+BUILD_NUMBER=$(cat "${GRADLE_RPATH}" | grep versionCode | head -1)
+BUILD_NUMBER=$(($BUILD_NUMBER + 1))
+
+# Update plist with new values
+# /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${PACKAGE_VERSION#*v}" "${INFOPLIST_RPATH}"
+# /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" "${INFOPLIST_RPATH}"
+
+git add "${GRADLE_RPATH}"
