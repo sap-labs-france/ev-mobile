@@ -6,7 +6,7 @@ GRADLE_RPATH="${PROJECT_DIR}/${INFOPLIST_FILE}"
 
 # PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]')
 
-BUILD_NUMBER=$(cat "${GRADLE_RPATH}" | grep versionCode | head -1)
+BUILD_NUMBER=$(cat "${GRADLE_RPATH}" | grep versionCode | head -1 | tr -d '[[:space:]]')
 BUILD_NUMBER=$(($BUILD_NUMBER + 1))
 
 # Update plist with new values
