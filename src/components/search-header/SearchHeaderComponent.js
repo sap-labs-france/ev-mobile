@@ -107,7 +107,7 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
           this.animRef = ref;
         }}
         style={style.container}>
-        <Icon type={"MaterialIcons"} name={"search"} style={style.icon} />
+        <Icon type="MaterialIcons" name="search" style={style.icon} />
         <TextInput
           ref={(ref) => {
             this.textInput = ref;
@@ -117,7 +117,7 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
           placeholderTextColor={commonColor.placeholderTextColor}
           onChangeText={(searchText) => this._searchChanged(searchText)}
         />
-        <Icon type="MaterialIcons" name="delete" style={style.icon} onPress={() => this._clearSearch()} />
+        <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this._clearSearch()} />
       </Animatable.View>
     );
   }
