@@ -3,6 +3,7 @@ import Constants from "./Constants";
 import I18n from "../I18n/I18n";
 import validate from "validate.js";
 import { NativeModules, Platform } from "react-native";
+import commonColor from "../theme/variables/commonColor";
 
 const type2 = require("../../assets/connectorType/type2.gif");
 // const type2 = require("../../assets/connectorType/type-2.svg");
@@ -38,6 +39,18 @@ export default class Utils {
 
   static getLocaleShort() {
     return Utils.getLocale().substring(0, 2);
+  }
+
+  static computeInactivityStyle(totalInactivitySecs) {
+    let style = { color: commonColor.brandInfo };
+    if (totalInactivitySecs < 1800) {
+      style = { color: commonColor.brandSuccess };
+    } else if (totalInactivitySecs < 3600) {
+      style = { color: commonColor.brandWarning };
+    } else {
+      style = { color: commonColor.brandDanger };
+    }
+    return style;
   }
 
   static async handleHttpUnexpectedError(centralServerProvider, error, navigation, fctRefresh) {
@@ -176,7 +189,7 @@ export default class Utils {
 
   static formatDurationHHMMSS = (durationSecs, withSecs = true) => {
     if (durationSecs <= 0) {
-      return withSecs ? "00:00:00" : "00:00";
+      return withSecs ? Constants.DEFAULT_DURATION_WITH_SECS : Constants.DEFAULT_DURATION;
     }
     // Set Hours
     const hours = Math.trunc(durationSecs / 3600);

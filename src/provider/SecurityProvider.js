@@ -37,6 +37,10 @@ export default class SecurityProvider {
     return this.loggedUser.role === Constants.ROLE_DEMO;
   }
 
+  isComponentPricingActive() {
+    return this.isComponentActive(Constants.COMPONENTS.PRICING);
+  }
+
   isComponentOrganizationActive() {
     return this.isComponentActive(Constants.COMPONENTS.ORGANIZATION);
   }

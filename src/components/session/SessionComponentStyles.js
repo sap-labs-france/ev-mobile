@@ -56,6 +56,18 @@ const commonStyles = ScaledSheet.create({
     fontSize: "10@s",
     marginTop: "-3@s"
   },
+  info: {
+    color: commonColor.brandPrimaryDark
+  },
+  success: {
+    color: commonColor.brandSuccess
+  },
+  warning: {
+    color: commonColor.brandWarning
+  },
+  danger: {
+    color: commonColor.brandDanger
+  },
   columnContainer: {
     flexDirection: "column",
     justifyContent: "center",
@@ -67,6 +79,7 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center"
   },
   icon: {
+    color: commonColor.textColor,
     fontSize: "30@s",
     justifyContent: "flex-end"
   },
