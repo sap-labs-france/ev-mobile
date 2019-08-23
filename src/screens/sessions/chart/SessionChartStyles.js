@@ -17,6 +17,9 @@ const commonStyles = ScaledSheet.create({
   chart: {
     height: "100%"
   },
+  chartWithHeader: {
+    height: "93%"
+  },
   notAuthorizedContainer: {
     flex: 1,
     justifyContent: "center",
@@ -26,15 +29,12 @@ const commonStyles = ScaledSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: "5@s",
-    paddingLeft: "8@s",
-    paddingRight: "8@s",
-    fontSize: "12@s",
-    fontWeight: "bold",
+    padding: "8@s",
     backgroundColor: commonColor.headerBgColorLight
   },
-  value: {
-    fontSize: "15@s"
+  headerValue: {
+    fontSize: "15@s",
+    fontWeight: "bold"
   }
 });
 

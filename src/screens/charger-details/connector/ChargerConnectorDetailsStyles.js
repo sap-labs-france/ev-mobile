@@ -88,10 +88,6 @@ const commonStyles = ScaledSheet.create({
     alignSelf: "center"
   },
   labelValue: {
-    fontSize: "30@s",
-    fontWeight: "bold"
-  },
-  labelTimeValue: {
     fontSize: "25@s",
     fontWeight: "bold"
   },
@@ -123,6 +119,23 @@ const commonStyles = ScaledSheet.create({
     borderRadius: "26@s",
     borderWidth: "3@s",
     borderColor: commonColor.textColor
+  },
+  info: {
+    color: commonColor.brandPrimaryDark,
+    borderColor: commonColor.brandPrimaryDark
+  },
+  success: {
+    color: commonColor.brandSuccess
+  },
+  warning: {
+    color: commonColor.brandWarning
+  },
+  danger: {
+    color: commonColor.brandDanger
+  },
+  disabled: {
+    color: commonColor.buttonDisabledBg,
+    borderColor: commonColor.buttonDisabledBg
   }
 });
 

@@ -27,6 +27,7 @@ export default class SessionComponent extends ResponsiveComponent {
     const price = Math.round(session.stop.price * 100) / 100;
     const duration = Utils.formatDurationHHMMSS(session.stop.totalDurationSecs);
     const inactivity = Utils.formatDurationHHMMSS(session.stop.totalInactivitySecs);
+    const inactivityStyle = Utils.computeInactivityStyle(session.stop.totalInactivitySecs);
     const navigation = this.props.navigation;
     const sessionID = session.id;
     return (
@@ -57,24 +58,22 @@ export default class SessionComponent extends ResponsiveComponent {
             </View>
             <View style={style.sessionContent}>
               <View style={style.columnContainer}>
-                <Icon type="MaterialIcons" name="ev-station" style={style.icon} />
+                <Icon type="MaterialIcons" name="ev-station" style={[style.icon, style.info]} />
                 <View style={style.rowContainer}>
-                  <Text style={style.labelValue}>{`${consumption} kW.h`}</Text>
+                  <Text style={[style.labelValue, style.info]}>{`${consumption} kW.h`}</Text>
                 </View>
               </View>
               <View style={style.columnContainer}>
-                <Icon type="MaterialIcons" name="timer" style={style.icon} />
-                <Text style={[style.labelValue]}>{duration}</Text>
+                <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
+                <Text style={[style.labelValue, style.info]}>{duration}</Text>
               </View>
               <View style={style.columnContainer}>
-                <Icon type="MaterialIcons" name="timer-off" style={style.icon} />
-                <Text style={[style.labelValue]}>{inactivity}</Text>
+                <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
+                <Text style={[style.labelValue, inactivityStyle]}>{inactivity}</Text>
               </View>
               <View style={style.columnContainer}>
-                <Icon type="FontAwesome" name="money" style={style.icon} />
-                <Text style={[style.labelValue]}>
-                  {price} {session.priceUnit}
-                </Text>
+                <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
+                <Text style={[style.labelValue, style.info]}>{price} {session.priceUnit}</Text>
               </View>
             </View>
           </View>

@@ -312,7 +312,7 @@ export default {
   tabFontSize: 15,
 
   // Text
-  textColor: dark,
+  textColor: primaryDark,
   headerTextColor: primaryDark,
   headerBgColor: backgroundHeader,
   headerBgColorLight: color(backgroundHeader).lighten(0.025).hex(),
