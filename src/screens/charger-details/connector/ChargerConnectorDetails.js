@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, TouchableOpacity, Image, Alert } from "react-native";
+import { ScrollView, TouchableOpacity, Image, Alert, RefreshControl } from "react-native";
 import { Container, Icon, View, Thumbnail, Text } from "native-base";
 import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
 import ConnectorStatusComponent from "../../../components/connector-status/ConnectorStatusComponent";
@@ -30,7 +30,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       inactivityFormatted: "-",
       startTransactionNbTrial: 0,
       isPricingActive: false,
-      buttonDisabled: true
+      buttonDisabled: true,
+      refreshing: false
     };
     // Set refresh period
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
@@ -150,6 +151,15 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     this._handleStartStopDisabledButton();
     // Refresh Duration
     this._refreshDurationInfos();
+  };
+
+  _manualRefresh = async () => {
+    // Display spinner
+    this.setState({ refreshing: true });
+    // Refresh
+    await this.refresh();
+    // Hide spinner
+    this.setState({ refreshing: false });
   };
 
   _startTransactionConfirm = () => {
@@ -527,7 +537,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
             }
           </View>
           {/* Details */}
-          <ScrollView style={style.scrollViewContainer}>
+          <ScrollView style={style.scrollViewContainer}
+              refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._manualRefresh} />}>
             <View style={style.detailsContainer}>
               <View style={style.rowContainer}>
                 {this._renderConnectorStatus(style)}
