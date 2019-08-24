@@ -200,7 +200,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
               canDisplayTransaction={canDisplayTransaction} canStartTransaction={canStartTransaction} canStopTransaction={canStopTransaction}
               navigation={navigation} />
           :
-            <Tabs tabBarPosition="bottom" locked={true} initialPage={0}>
+            <Tabs tabBarPosition="bottom" locked={false} initialPage={0}>
               <Tab
                 heading={
                   <TabHeading style={style.tabHeader}>
