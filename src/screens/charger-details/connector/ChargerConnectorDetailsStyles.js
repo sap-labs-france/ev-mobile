@@ -17,7 +17,7 @@ const commonStyles = ScaledSheet.create({
   },
   backgroundImage: {
     width: "100%",
-    height: "150@s"
+    height: "125@s"
   },
   transactionContainer: {
     justifyContent: "center",
@@ -57,7 +57,8 @@ const commonStyles = ScaledSheet.create({
     borderColor: commonColor.buttonDisabledBg
   },
   transactionDisabledIcon: {
-    color: commonColor.buttonDisabledBg
+    color: commonColor.buttonDisabledBg,
+    backgroundColor: "transparent"
   },
   scrollViewContainer: {
     marginTop: "-15@s"

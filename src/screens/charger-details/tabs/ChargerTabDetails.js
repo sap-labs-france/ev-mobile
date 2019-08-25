@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Tab, Tabs, TabHeading, Spinner, Icon } from "native-base";
-import { ScrollView, RefreshControl } from "react-native";
+import { ScrollView } from "react-native";
 import ChargerDetails from "../details/ChargerDetails";
 import SessionChart from "../../sessions/chart/SessionChart";
 import ChargerConnectorDetails from "../connector/ChargerConnectorDetails";
@@ -24,8 +24,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
       canStartTransaction: false,
       canStopTransaction: false,
       canDisplayTransaction: false,
-      isAdmin: false,
-      refreshing: false
+      isAdmin: false
     };
     // Set refresh period
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
@@ -67,15 +66,6 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
         isAdmin: securityProvider ? securityProvider.isAdmin() : false
       });
     }
-  };
-
-  _manualRefresh = async () => {
-    // Display spinner
-    this.setState({ refreshing: true });
-    // Refresh
-    await this.refresh();
-    // Hide spinner
-    this.setState({ refreshing: false });
   };
 
   _getCharger = async () => {
@@ -203,9 +193,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
         <Spinner style={style.spinner} />
       </Container>
     ) : (
-      <ScrollView
-        contentContainerStyle={style.container}
-        refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._manualRefresh} />}>
+      <ScrollView contentContainerStyle={style.container}>
         <BackgroundComponent active={false}>
           <HeaderComponent
             title={charger.id}
@@ -215,18 +203,12 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          {!isAdmin && !canStopTransaction ? (
-            <ChargerConnectorDetails
-              charger={charger}
-              connector={connector}
-              isAdmin={isAdmin}
-              canDisplayTransaction={canDisplayTransaction}
-              canStartTransaction={canStartTransaction}
-              canStopTransaction={canStopTransaction}
-              navigation={navigation}
-            />
-          ) : (
-            <Tabs tabBarPosition="bottom" locked={true} initialPage={0}>
+          {!isAdmin && !canStopTransaction ?
+            <ChargerConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin}
+              canDisplayTransaction={canDisplayTransaction} canStartTransaction={canStartTransaction} canStopTransaction={canStopTransaction}
+              navigation={navigation} />
+          :
+            <Tabs tabBarPosition="bottom" locked={false} initialPage={0}>
               <Tab
                 heading={
                   <TabHeading style={style.tabHeader}>
