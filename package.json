@@ -40,6 +40,7 @@
   "scripts": {
     "postinstall": "patch-package",
     "start": "react-native start",
+    "start:clean": "npm start -- --reset-cache",
     "android": "react-native run-android",
     "android:release": "cd android && ./gradlew assembleRelease",
     "android:jetify": "npx jetify",
@@ -56,7 +57,6 @@
     "clean-install-lin": "rm -rf ./node_modules && rm -f ./package-lock.json && npm cache clear --force && npm install",
     "ios:bundle": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
     "android:bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
-    "clean": "npm start -- --reset-cache",
     "clean:android": "cd android && ./gradlew clean",
     "version": "./version-ios.sh && ./version-android.sh",
     "npm-check": "npm-check",

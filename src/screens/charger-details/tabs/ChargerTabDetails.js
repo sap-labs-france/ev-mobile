@@ -249,7 +249,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
                 undefined
               )}
             </Tabs>
-          )}
+          }
         </BackgroundComponent>
       </ScrollView>
     );
