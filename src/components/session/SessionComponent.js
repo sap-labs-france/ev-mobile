@@ -25,8 +25,8 @@ export default class SessionComponent extends ResponsiveComponent {
     const { session, isAdmin } = this.props;
     const consumption = Math.round(session.stop.totalConsumption / 10) / 100;
     const price = Math.round(session.stop.price * 100) / 100;
-    const duration = Utils.formatDurationHHMMSS(session.stop.totalDurationSecs);
-    const inactivity = Utils.formatDurationHHMMSS(session.stop.totalInactivitySecs);
+    const duration = Utils.formatDurationHHMMSS(session.stop.totalDurationSecs, false);
+    const inactivity = Utils.formatDurationHHMMSS(session.stop.totalInactivitySecs, false);
     const inactivityStyle = Utils.computeInactivityStyle(session.stop.totalInactivitySecs);
     const navigation = this.props.navigation;
     const sessionID = session.id;
