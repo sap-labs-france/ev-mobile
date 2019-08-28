@@ -1,5 +1,4 @@
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import Constants from "../../utils/Constants";
 import { BackHandler } from "react-native";
 import ProviderFactory from "../../provider/ProviderFactory";
 
