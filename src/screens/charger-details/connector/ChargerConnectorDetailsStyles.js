@@ -22,12 +22,14 @@ const commonStyles = ScaledSheet.create({
   transactionContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: "-55@s"
+    marginTop: "-100@s",
+    backgroundColor: "transparent"
   },
   buttonTransaction: {
     borderRadius: "50@s",
     borderStyle: "solid",
     borderWidth: "4@s",
+    marginTop: "15@s",
     borderColor: commonColor.textColor,
     backgroundColor: commonColor.containerBgColor,
     width: "100@s",
@@ -36,7 +38,7 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center"
   },
   noButtonStopTransaction: {
-    height: "90@s"
+    height: "130@s"
   },
   startTransaction: {
     borderColor: commonColor.brandSuccess
@@ -61,7 +63,6 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: "transparent"
   },
   scrollViewContainer: {
-    marginTop: "-15@s"
   },
   detailsContainer: {
     flexDirection: "column",
@@ -71,7 +72,7 @@ const commonStyles = ScaledSheet.create({
   rowContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: "100@s"
+    height: "95@s"
   },
   columnContainer: {
     flexDirection: "column",

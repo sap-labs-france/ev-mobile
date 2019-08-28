@@ -305,7 +305,7 @@ export default {
   topTabBarTextColor: disabledLight,
   topTabBarActiveTextColor: light,
   topTabBarBorderColor: platform === PLATFORM.IOS ? borderColor : borderColor,
-  topTabBarActiveBorderColor: light,
+  topTabBarActiveBorderColor: borderColor,
 
   // Tabs
   tabBgColor: light,

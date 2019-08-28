@@ -15,7 +15,8 @@ export default class BackgroundComponent extends ResponsiveComponent {
     const style = computeStyleSheet();
     const { active, background } = this.props;
     return active ? (
-      <ImageBackground source={background || defaultBackground} style={style.background} imageStyle={style.imageBackground}>
+      <ImageBackground source={background || defaultBackground}
+          style={[style.background, this.props.style]} imageStyle={style.imageBackground}>
         {this.props.children}
       </ImageBackground>
     ) : (
@@ -26,9 +27,11 @@ export default class BackgroundComponent extends ResponsiveComponent {
 
 BackgroundComponent.propTypes = {
   active: PropTypes.bool,
-  background: PropTypes.object
+  background: PropTypes.object,
+  style: PropTypes.object
 };
 
 BackgroundComponent.defaultProps = {
-  active: true
+  active: true,
+  style: {}
 };
