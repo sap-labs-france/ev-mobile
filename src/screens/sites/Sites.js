@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, FlatList, RefreshControl } from "react-native";
+import { Platform, FlatList, RefreshControl, BackHandler, Alert } from "react-native";
 import { Container, Spinner, View } from "native-base";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
@@ -60,7 +60,15 @@ export default class Sites extends BaseAutoRefreshScreen {
   };
 
   onBack = () => {
-    // Do not bubble up
+    Alert.alert(
+      I18n.t("general.exitApp"),
+      I18n.t("general.exitAppConfirm"),
+      [
+        { text: I18n.t("general.no"), style: 'cancel' },
+        { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() },
+      ],
+      { cancelable: false }
+    );
     return true;
   };
 
