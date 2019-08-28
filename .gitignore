@@ -59,6 +59,9 @@ buck-out/
 /ios/Pods/
 /ios/Podfile.lock
 
+# Jest
+.jest/
+
 # Legacy Eclipse project files
 .classpath
 .project
