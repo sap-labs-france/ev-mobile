@@ -39,7 +39,6 @@ class SideBar extends BaseScreen {
     const userInfo = this.centralServerProvider.getUserInfo();
     const securityProvider = this.centralServerProvider.getSecurityProvider();
     // Add sites
-    // eslint-disable-next-line react/no-did-mount-set-state
     this.setState(
       {
         userName: userInfo ? `${userInfo.name} ${userInfo.firstName}` : "",
