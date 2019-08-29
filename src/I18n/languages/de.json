@@ -14,7 +14,8 @@
     "version": "Version",
     "search": "Suche",
     "exitApp": "Verlassen",
-    "exitAppConfirm": "Möchten Sie die Anwendung wirklich beenden?"
+    "exitAppConfirm": "Möchten Sie die Anwendung wirklich beenden?",
+    "noRecordFound": "Kein Eintrag gefunden"
   },
   "sidebar": {
     "sites": "Standorte",
