@@ -12,7 +12,9 @@
     "no": "Nein",
     "cancel": "Abbrechen",
     "version": "Version",
-    "search": "Suche"
+    "search": "Suche",
+    "exitApp": "Verlassen",
+    "exitAppConfirm": "Möchten Sie die Anwendung wirklich beenden?"
   },
   "sidebar": {
     "sites": "Standorte",
