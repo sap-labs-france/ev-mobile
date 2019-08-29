@@ -12,7 +12,9 @@
     "no": "Non",
     "cancel": "Annuler",
     "version": "Version",
-    "search": "Rechercher"
+    "search": "Rechercher",
+    "exitApp": "Quitter",
+    "exitAppConfirm": "Voulez-vous vraiment quitter l'application ?"
   },
   "sidebar": {
     "sites": "Sites",
