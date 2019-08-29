@@ -10,6 +10,8 @@ import computeStyleSheet from "./SiteAreasStyles";
 import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
+import ListEmptyTextComponent from "../../components/list-empty-text/ListEmptyTextComponent";
+
 
 export default class SiteAreas extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -143,6 +145,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
                 ListFooterComponent={this._footerList}
+                ListEmptyComponent={() => <ListEmptyTextComponent/>}
               />
             )}
           </View>

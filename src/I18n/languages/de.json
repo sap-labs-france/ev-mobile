@@ -14,12 +14,13 @@
     "version": "Version",
     "search": "Suche",
     "exitApp": "Verlassen",
-    "exitAppConfirm": "Möchten Sie die Anwendung wirklich beenden?"
+    "exitAppConfirm": "Möchten Sie die Anwendung wirklich beenden?",
+    "noRecordFound": "Kein Eintrag gefunden"
   },
   "sidebar": {
     "sites": "Standorte",
     "chargers": "Ladestationen",
-    "sessions": "Sitzungen"
+    "transactions": "Sitzungen"
   },
 	"authentication": {
     "mandatory_tenant": "Der Tenant ist notwendig",
@@ -59,8 +60,8 @@
     "passwordNotMatch": "Passwörter stimmen nicht miteinander überein",
     "tenant": "Wählen Sie einen Tenant"
   },
-  "sessions": {
-    "sessionsHistory": "Sitzungsverlauf",
+  "transactions": {
+    "transactionsHistory": "Sitzungsverlauf",
     "chargingCurve": "Sitzungsdiagramm"
   },
   "sites": {
@@ -138,7 +139,7 @@
     "cannotNavigate": "Kann nicht zum Bildschirm navigieren",
     "extraDataMissing": "Benachrichtigung nicht komplett",
     "incorrectTenant": "Falscher Tenant",
-    "notifyEndOfSession": {
+    "notifyEndOfTransaction": {
       "message": "Ihre Ladesitzung auf '{{chargeBoxID}}' wurde beendet.",
       "subMessage": "Ladesitzung beendet",
       "longMessage": "Ihre Ladesitzung auf '{{chargeBoxID}}' wurde soeben beendet."

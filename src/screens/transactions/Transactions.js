@@ -1,21 +1,22 @@
 import React from "react";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
-import { Container, Spinner, View, List } from "native-base";
+import { Container, Spinner, View } from "native-base";
 import { FlatList, RefreshControl, Platform } from "react-native";
 import Constants from "../../utils/Constants";
 import I18n from "../../I18n/I18n";
 import Utils from "../../utils/Utils";
-import computeStyleSheet from "./SessionsStyle";
+import computeStyleSheet from "./TransactionsStyle";
 import HeaderComponent from "../../components/header/HeaderComponent";
-import SessionComponent from "../../components/session/SessionComponent";
+import TransactionComponent from "../../components/transaction/TransactionComponent";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
+import ListEmptyTextComponent from "../../components/list-empty-text/ListEmptyTextComponent";
 
-export default class Sessions extends BaseAutoRefreshScreen {
+export default class Transactions extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     // Init State
     this.state = {
-      sessions: [],
+      transactions: [],
       loading: true,
       refreshing: false,
       skip: 0,
@@ -114,12 +115,12 @@ export default class Sessions extends BaseAutoRefreshScreen {
   render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin } = this.state;
+    const { loading, isAdmin, transactions } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
           <HeaderComponent
-            title={I18n.t("sessions.sessionsHistory")}
+            title={I18n.t("transactions.transactionsHistory")}
             showSearchAction={false}
             leftAction={this.onBack}
             leftActionIcon={"navigate-before"}
@@ -131,13 +132,14 @@ export default class Sessions extends BaseAutoRefreshScreen {
               <Spinner style={style.spinner} />
             ) : (
               <FlatList
-                data={this.state.transactions}
-                renderItem={({ item }) => <SessionComponent session={item} navigation={navigation} isAdmin={isAdmin} />}
+                data={transactions}
+                renderItem={({ item }) => <TransactionComponent transaction={item} navigation={navigation} isAdmin={isAdmin}/>}
                 keyExtractor={(item) => `${item.id}`}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
                 ListFooterComponent={this._footerList}
+                ListEmptyComponent={() => <ListEmptyTextComponent/>}
               />
             )}
           </View>

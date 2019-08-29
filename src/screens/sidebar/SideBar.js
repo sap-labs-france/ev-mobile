@@ -39,7 +39,6 @@ class SideBar extends BaseScreen {
     const userInfo = this.centralServerProvider.getUserInfo();
     const securityProvider = this.centralServerProvider.getSecurityProvider();
     // Add sites
-    // eslint-disable-next-line react/no-did-mount-set-state
     this.setState(
       {
         userName: userInfo ? `${userInfo.name} ${userInfo.firstName}` : "",
@@ -109,9 +108,9 @@ class SideBar extends BaseScreen {
                 <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
                 <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
               </ListItem>
-              <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Sessions")}>
+              <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Transactions")}>
                 <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="history" />
-                <Text style={style.linkText}>{I18n.t("sidebar.sessions")}</Text>
+                <Text style={style.linkText}>{I18n.t("sidebar.transactions")}</Text>
               </ListItem>
               {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
                 <Icon name="ios-settings-outline" />

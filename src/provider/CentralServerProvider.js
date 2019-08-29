@@ -214,6 +214,20 @@ export default class CentralServerProvider {
         headers: this._builHeaders()
       }
     );
+    // Clear the token and tenant
+    SecuredStorage.clearUserCredentials();
+    // Save
+    await SecuredStorage.saveUserCredentials({
+      email,
+      password: passwords.password,
+      tenant
+    });
+    // Keep them
+    _email = email;
+    _password = passwords.password;
+    _token = null;
+    _decodedToken = null;
+    _tenant = tenant;
     return result.data;
   }
 

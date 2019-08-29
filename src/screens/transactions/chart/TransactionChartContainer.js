@@ -1,19 +1,19 @@
 import React from "react";
 import BaseScreen from "../../base-screen/BaseScreen";
-import SessionChart from "./SessionChart";
+import TransactionChart from "./TransactionChart";
 import Utils from "../../../utils/Utils";
-import computeStyleSheet from "./SessionChartStyles";
+import computeStyleSheet from "./TransactionChartStyles";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import { Container } from "native-base";
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import I18n from "../../../I18n/I18n";
 
-export default class SessionChartContainer extends BaseScreen {
+export default class TransactionChartContainer extends BaseScreen {
   constructor(props) {
     super(props);
 
     this.state = {
-      sessionID: Utils.getParamFromNavigation(this.props.navigation, "sessionID", null)
+      transactionID: Utils.getParamFromNavigation(this.props.navigation, "transactionID", null)
     };
   }
 
@@ -38,13 +38,13 @@ export default class SessionChartContainer extends BaseScreen {
       <Container style={style.container}>
         <BackgroundComponent active={false}>
           <HeaderComponent
-            title={I18n.t("sessions.chargingCurve")}
-            leftAction={() => this.props.navigation.navigate("Sessions", {})}
+            title={I18n.t("transactions.chargingCurve")}
+            leftAction={() => this.props.navigation.navigate("Transactions", {})}
             leftActionIcon={"navigate-before"}
             rightAction={this.props.navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          <SessionChart sessionID={this.state.sessionID} navigation={this.props.navigation} showSessionDetails={true} />
+          <TransactionChart transactionID={this.state.transactionID} navigation={this.props.navigation} showTransactionDetails={true} />
         </BackgroundComponent>
       </Container>
     );
