@@ -5,17 +5,17 @@ import { FlatList, RefreshControl, Platform } from "react-native";
 import Constants from "../../utils/Constants";
 import I18n from "../../I18n/I18n";
 import Utils from "../../utils/Utils";
-import computeStyleSheet from "./SessionsStyle";
+import computeStyleSheet from "./TransactionsStyle";
 import HeaderComponent from "../../components/header/HeaderComponent";
-import SessionComponent from "../../components/session/SessionComponent";
+import TransactionComponent from "../../components/transaction/TransactionComponent";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 
-export default class Sessions extends BaseAutoRefreshScreen {
+export default class Transactions extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     // Init State
     this.state = {
-      sessions: [],
+      transactions: [],
       loading: true,
       refreshing: false,
       skip: 0,
@@ -119,7 +119,7 @@ export default class Sessions extends BaseAutoRefreshScreen {
       <Container style={style.container}>
         <BackgroundComponent active={false}>
           <HeaderComponent
-            title={I18n.t("sessions.sessionsHistory")}
+            title={I18n.t("transactions.transactionsHistory")}
             showSearchAction={false}
             leftAction={this.onBack}
             leftActionIcon={"navigate-before"}
@@ -132,7 +132,7 @@ export default class Sessions extends BaseAutoRefreshScreen {
             ) : (
               <FlatList
                 data={this.state.transactions}
-                renderItem={({ item }) => <SessionComponent session={item} navigation={navigation} isAdmin={isAdmin}/>}
+                renderItem={({ item }) => <TransactionComponent transaction={item} navigation={navigation} isAdmin={isAdmin}/>}
                 keyExtractor={(item) => `${item.id}`}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}

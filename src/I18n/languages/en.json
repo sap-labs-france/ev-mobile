@@ -19,7 +19,7 @@
   "sidebar": {
     "sites": "Sites",
     "chargers": "Chargers",
-    "sessions": "Sessions"
+    "transactions": "Sessions"
   },
 	"authentication": {
     "mandatory_tenant": "The Tenant is mandatory",
@@ -59,8 +59,8 @@
     "passwordNotMatch": "Password does not match",
     "tenant": "Choose a Tenant"
   },
-  "sessions": {
-    "sessionsHistory": "Sessions History",
+  "transactions": {
+    "transactionsHistory": "Sessions History",
     "chargingCurve": "Session Chart"
   },
   "sites": {
@@ -138,7 +138,7 @@
     "cannotNavigate": "Cannot navigate to the screen",
     "extraDataMissing": "Notification is corrupted",
     "incorrectTenant": "The tenant is incorrect",
-    "notifyEndOfSession": {
+    "notifyEndOfTransaction": {
       "message": "Your session on '{{chargeBoxID}}' has just finished.",
       "subMessage": "Session Finished",
       "longMessage": "Your session on '{{chargeBoxID}}' has just finished."

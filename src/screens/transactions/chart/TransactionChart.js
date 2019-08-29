@@ -4,7 +4,7 @@ import { Text } from "native-base";
 import { View, processColor } from "react-native";
 import Utils from "../../../utils/Utils";
 import I18n from "../../../I18n/I18n";
-import computeStyleSheet from "./SessionChartStyles";
+import computeStyleSheet from "./TransactionChartStyles";
 import { scale } from "react-native-size-matters";
 import commonColor from "../../../theme/variables/commonColor";
 import { LineChart } from "react-native-charts-wrapper";
@@ -14,11 +14,11 @@ import moment from "moment";
 
 const EMPTY_CHART = [{ x: 0, y: 0 }];
 
-export default class SessionChart extends BaseAutoRefreshScreen {
+export default class TransactionChart extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     this.state = {
-      sessionConsumption: null,
+      transactionConsumption: null,
       values: [],
       consumptionValues: EMPTY_CHART,
       stateOfChargeValues: EMPTY_CHART
@@ -38,13 +38,13 @@ export default class SessionChart extends BaseAutoRefreshScreen {
   }
 
   _getChargingStationConsumption = async () => {
-    const { sessionID } = this.props;
+    const { transactionID } = this.props;
     try {
       // Active Transaction?
-      if (sessionID) {
+      if (transactionID) {
         // Get the consumption
         const result = await this.centralServerProvider.getChargingStationConsumption({
-          TransactionId: sessionID
+          TransactionId: transactionID
         });
         // At least 2 values for the chart!!!
         if (result.values && result.values.length > 1) {
@@ -68,7 +68,7 @@ export default class SessionChart extends BaseAutoRefreshScreen {
           }
           // Set
           this.setState({
-            sessionConsumption: result,
+            transactionConsumption: result,
             values: result.values,
             consumptionValues,
             stateOfChargeValues
@@ -77,7 +77,7 @@ export default class SessionChart extends BaseAutoRefreshScreen {
       } else {
         // Clear
         this.setState({
-          sessionConsumption: null,
+          transactionConsumption: null,
           values: null,
           consumptionValues: EMPTY_CHART,
           stateOfChargeValues: EMPTY_CHART
@@ -93,9 +93,9 @@ export default class SessionChart extends BaseAutoRefreshScreen {
   };
 
   refresh = async () => {
-    const { sessionConsumption } = this.state;
+    const { transactionConsumption } = this.state;
     // Component Mounted?
-    if (this.isMounted() && (!sessionConsumption || !sessionConsumption.stop)) {
+    if (this.isMounted() && (!transactionConsumption || !transactionConsumption.stop)) {
       // Refresh Consumption
       await this._getChargingStationConsumption();
     }
@@ -212,22 +212,22 @@ export default class SessionChart extends BaseAutoRefreshScreen {
 
   render() {
     const style = computeStyleSheet();
-    const { sessionConsumption, consumptionValues, stateOfChargeValues } = this.state;
-    const { showSessionDetails } = this.props;
+    const { transactionConsumption, consumptionValues, stateOfChargeValues } = this.state;
+    const { showTransactionDetails } = this.props;
     const chartDefinition = this.computeChartDefinition(consumptionValues, stateOfChargeValues);
     return (
       <View style={style.container}>
         <BackgroundComponent active={false}>
-          { showSessionDetails && sessionConsumption ?
+          { showTransactionDetails && transactionConsumption ?
             <View style={style.header}>
-              <Text style={style.headerValue}>{moment(new Date(sessionConsumption.timestamp)).format("LLL")}</Text>
-              <Text style={style.headerValue}>{sessionConsumption.chargeBoxID}</Text>
+              <Text style={style.headerValue}>{moment(new Date(transactionConsumption.timestamp)).format("LLL")}</Text>
+              <Text style={style.headerValue}>{transactionConsumption.chargeBoxID}</Text>
             </View>
           :
             undefined
           }
           <LineChart
-            style={showSessionDetails && sessionConsumption ? style.chartWithHeader : style.chart }
+            style={showTransactionDetails && transactionConsumption ? style.chartWithHeader : style.chart }
             data={chartDefinition.data}
             chartDescription={{ text: "" }}
             noDataText={"No Data"}
@@ -269,11 +269,11 @@ export default class SessionChart extends BaseAutoRefreshScreen {
   }
 }
 
-SessionChart.propTypes = {
-  sessionID: PropTypes.number,
-  showSessionDetails: PropTypes.bool
+TransactionChart.propTypes = {
+  transactionID: PropTypes.number,
+  showTransactionDetails: PropTypes.bool
 };
 
-SessionChart.defaultProps = {
-  showSessionDetails: false
+TransactionChart.defaultProps = {
+  showTransactionDetails: false
 };

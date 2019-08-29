@@ -80,13 +80,13 @@ export default class NotificationManager {
     //   color = commonColor.brandInfo;
     // // Check the type of notification
     // switch (notification.sourceDescr) {
-    //   // End of Session
-    //   case "NotifyEndOfSession":
-    //     message = I18n.t("notifications.notifyEndOfSession.message", {
+    //   // End of Transaction
+    //   case "NotifyEndOfTransaction":
+    //     message = I18n.t("notifications.notifyEndOfTransaction.message", {
     //       chargeBoxID: notification.chargeBoxID
     //     });
-    //     subMessage = I18n.t("notifications.notifyEndOfSession.subMessage");
-    //     longMessage = I18n.t("notifications.notifyEndOfSession.longMessage", {
+    //     subMessage = I18n.t("notifications.notifyEndOfTransaction.subMessage");
+    //     longMessage = I18n.t("notifications.notifyEndOfTransaction.longMessage", {
     //       chargeBoxID: notification.chargeBoxID
     //     });
     //     break;
@@ -193,8 +193,8 @@ export default class NotificationManager {
     //       if (notification.extraData) {
     //         // Check
     //         switch (notification.extraData.sourceDescr) {
-    //           // End of Session
-    //           case "NotifyEndOfSession":
+    //           // End of Transaction
+    //           case "NotifyEndOfTransaction":
     //           case "NotifyEndOfCharge":
     //           case "NotifyOptimalChargeReached":
     //           case "NotifyChargingStationStatusError":

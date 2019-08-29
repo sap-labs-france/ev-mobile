@@ -19,7 +19,7 @@
   "sidebar": {
     "sites": "Sites",
     "chargers": "Bornes",
-    "sessions": "Sessions"
+    "transactions": "Sessions"
   },
   "authentication": {
     "mandatory_tenant": "Le Tenant est obligatoire",
@@ -59,8 +59,8 @@
     "passwordNotMatch": "Les mots de passes ne correspondent pas",
     "tenant": "Choisir un Tenant"
   },
-  "sessions": {
-    "sessionsHistory": "Historique Sessions",
+  "transactions": {
+    "transactionsHistory": "Historique Sessions",
     "chargingCurve": "Graphique Session"
   },
   "sites": {

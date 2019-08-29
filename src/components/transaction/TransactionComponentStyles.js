@@ -2,7 +2,6 @@ import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
 import commonColor from "../../theme/variables/commonColor";
 import { ScaledSheet } from "react-native-size-matters";
-import { Platform } from "react-native";
 
 const commonStyles = ScaledSheet.create({
   container: {
@@ -40,7 +39,7 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.headerTextColor,
     fontSize: "16@s"
   },
-  sessionContent: {
+  transactionContent: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-evenly",
