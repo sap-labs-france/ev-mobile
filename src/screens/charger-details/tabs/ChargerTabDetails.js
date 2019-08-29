@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Tab, Tabs, TabHeading, Spinner, Icon } from "native-base";
 import { ScrollView } from "react-native";
 import ChargerDetails from "../details/ChargerDetails";
-import SessionChart from "../../sessions/chart/SessionChart";
+import TransactionChart from "../../transactions/chart/TransactionChart";
 import ChargerConnectorDetails from "../connector/ChargerConnectorDetails";
 import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
 import HeaderComponent from "../../../components/header/HeaderComponent";
@@ -231,7 +231,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
                       <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
                     </TabHeading>
                   }>
-                  <SessionChart sessionID={connector.activeTransactionID} navigation={navigation} />
+                  <TransactionChart transactionID={connector.activeTransactionID} navigation={navigation} />
                 </Tab>
               ) : (
                 undefined
