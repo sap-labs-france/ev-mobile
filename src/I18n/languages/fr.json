@@ -14,7 +14,8 @@
     "version": "Version",
     "search": "Rechercher",
     "exitApp": "Quitter",
-    "exitAppConfirm": "Voulez-vous vraiment quitter l'application ?"
+    "exitAppConfirm": "Voulez-vous vraiment quitter l'application ?",
+    "noRecordFound": "Pas d'enregistrement trouvé"
   },
   "sidebar": {
     "sites": "Sites",

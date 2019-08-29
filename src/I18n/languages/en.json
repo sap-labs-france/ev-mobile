@@ -14,7 +14,8 @@
     "version": "Version",
     "search": "Search",
     "exitApp": "Exit App",
-    "exitAppConfirm": "Do you really want to exit the application?"
+    "exitAppConfirm": "Do you really want to exit the application?",
+    "noRecordFound": "No record found"
   },
   "sidebar": {
     "sites": "Sites",

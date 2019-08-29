@@ -1,6 +1,6 @@
 import React from "react";
 import { Platform, FlatList, RefreshControl } from "react-native";
-import { Container, View, Spinner, List } from "native-base";
+import { Container, View, Spinner } from "native-base";
 import ChargerComponent from "../../components/charger/ChargerComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
 import SearchHeaderComponent from "../../components/search-header/SearchHeaderComponent";
@@ -10,6 +10,7 @@ import computeStyleSheet from "./ChargersStyles";
 import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
+import ListEmptyTextComponent from "../../components/list-empty-text/ListEmptyTextComponent";
 
 export default class Chargers extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -139,9 +140,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { siteAreaID, loading } = this.state;
-    // Safe way to retrieve the Site ID to navigate back from a notification
-    const siteID = this._getSiteIDFromChargers();
+    const { siteAreaID, loading, chargers } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
@@ -167,13 +166,14 @@ export default class Chargers extends BaseAutoRefreshScreen {
               <Spinner style={style.spinner} />
             ) : (
               <FlatList
-                data={this.state.chargers}
+                data={chargers}
                 renderItem={({ item }) => <ChargerComponent charger={item} navigation={navigation} siteAreaID={siteAreaID} />}
                 keyExtractor={(item) => item.id}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
                 ListFooterComponent={this._footerList}
+                ListEmptyComponent={() => <ListEmptyTextComponent/>}
               />
             )}
           </View>
