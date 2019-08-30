@@ -2,6 +2,7 @@ import React from "react";
 import { Tab, Tabs, TabHeading, Icon } from "native-base";
 import { ScrollView } from "react-native";
 import TransactionsHistory from "./history/TransactionsHistory";
+import TransactionsInProgress from "./in-progress/TransactionsInProgress";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import I18n from "../../I18n/I18n";
 import computeStyleSheet from "./TransactionTabsStyles";
@@ -58,7 +59,7 @@ export default class TransactionTabs extends BaseAutoRefreshScreen {
                   <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
                 </TabHeading>
               }>
-              <TransactionsHistory navigation={navigation}/>
+              <TransactionsInProgress navigation={navigation}/>
             </Tab>
             <Tab heading={
                 <TabHeading style={style.tabHeader}>

@@ -62,6 +62,7 @@
   },
   "transactions": {
     "transactionsHistory": "Sessions History",
+    "transactionsInProgress": "Sessions In Progress",
     "chargingCurve": "Session Chart"
   },
   "sites": {
