@@ -30,7 +30,6 @@
     "flow-bin": "^0.98.1",
     "flow-typed": "^2.6.1",
     "jest": "24.9.0",
-    "jest-expo": "^34.0.1",
     "jetifier": "^1.6.4",
     "metro-react-native-babel-preset": "^0.56.0",
     "npm-check": "^5.9.0",
