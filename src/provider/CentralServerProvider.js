@@ -78,6 +78,7 @@ export default class CentralServerProvider {
     return [
       { subdomain: "slf", name: "SAP Labs France" },
       { subdomain: "slfcah", name: "SAP Labs France (Charge@Home)" },
+      { subdomain: "demo", name: "SAP Labs Demo" },
       { subdomain: "sapbelgium", name: "SAP Belgium" },
       { subdomain: "sapmarkdorf", name: "SAP Markdorf" },
       { subdomain: "sapnl", name: "SAP Netherland" }

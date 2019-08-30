@@ -17,6 +17,7 @@
     "babel-eslint": "^10.0.3",
     "babel-jest": "24.9.0",
     "babel-preset-react-native-stage-0": "^1.0.1",
+    "cross-env": "^5.2.0",
     "eslint": "^6.2.2",
     "eslint-config-prettier": "^6.1.0",
     "eslint-config-react": "^1.1.7",
@@ -36,6 +37,7 @@
     "patch-package": "^6.1.2",
     "prettier": "^1.18.2",
     "react-native-clean-project": "^3.2.4",
+    "react-native-debugger-open": "^0.3.20",
     "react-test-renderer": "16.8.6",
     "schedule": "^0.5.0",
     "typescript": "^3.6.2"
@@ -44,6 +46,7 @@
     "postinstall": "patch-package",
     "start": "react-native start",
     "start:clean": "npm start -- --reset-cache",
+    "start:debug": "cross-env REACT_DEBUGGER=\"rndebugger-open --open --port 8081\" npm start",
     "android": "react-native run-android",
     "android:release": "cd android && ./gradlew assembleRelease",
     "android:jetify": "npx jetify",
