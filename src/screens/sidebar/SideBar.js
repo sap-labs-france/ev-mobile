@@ -108,7 +108,7 @@ class SideBar extends BaseScreen {
                 <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
                 <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
               </ListItem>
-              <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Transactions")}>
+              <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("TransactionTabs")}>
                 <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="history" />
                 <Text style={style.linkText}>{I18n.t("sidebar.transactions")}</Text>
               </ListItem>
