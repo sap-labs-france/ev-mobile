@@ -39,7 +39,7 @@ export default class TransactionChartContainer extends BaseScreen {
         <BackgroundComponent active={false}>
           <HeaderComponent
             title={I18n.t("transactions.chargingCurve")}
-            leftAction={() => this.props.navigation.navigate("Transactions", {})}
+            leftAction={() => this.props.navigation.navigate("TransactionsHistory", {})}
             leftActionIcon={"navigate-before"}
             rightAction={this.props.navigation.openDrawer}
             rightActionIcon={"menu"}

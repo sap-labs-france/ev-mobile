@@ -10,6 +10,7 @@ import HeaderComponent from "../../../components/header/HeaderComponent";
 import TransactionComponent from "../../../components/transaction/TransactionComponent";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import ListEmptyTextComponent from "../../../components/list-empty-text/ListEmptyTextComponent";
+import PropTypes from "prop-types";
 
 export default class TransactionsHistory extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -148,3 +149,9 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen {
     );
   };
 }
+
+TransactionsHistory.propTypes = {
+  navigation: PropTypes.object.isRequired
+};
+
+TransactionsHistory.defaultProps = {};

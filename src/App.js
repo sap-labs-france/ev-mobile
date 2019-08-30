@@ -11,8 +11,8 @@ import Sites from "./screens/sites/Sites";
 import SiteAreas from "./screens/site-areas/SiteAreas";
 import Chargers from "./screens/chargers/Chargers";
 import AllChargers from "./screens/chargers/AllChargers";
-import TransactionsHistory from "./screens/transactions/history/TransactionsHistory";
-import ChargerTabDetails from "./screens/charger-details/tabs/ChargerTabDetails";
+import TransactionTabs from "./screens/transactions/TransactionTabs";
+import ChargerTabDetails from "./screens/charger-details/ChargerTabDetails";
 import TransactionChartContainer from "./screens/transactions/chart/TransactionChartContainer";
 import NotificationManager from "./notification/NotificationManager";
 import Utils from "./utils/Utils";
@@ -49,7 +49,7 @@ const AppDrawerNavigator = createDrawerNavigator(
     TransactionChartContainer: { screen: TransactionChartContainer },
     AllChargers: { screen: AllChargers },
     ChargerTabDetails: { screen: ChargerTabDetails },
-    Transactions: { screen: TransactionsHistory }
+    TransactionTabs: { screen: TransactionTabs }
   },
   {
     navigationOptions: {
