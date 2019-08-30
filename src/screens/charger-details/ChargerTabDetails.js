@@ -45,10 +45,12 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
   onBack = () => {
     const { siteAreaID } = this.state;
     // Safe way to retrieve the Site ID to navigate back from a notification
-    const siteID = this._getSiteIDFromChargers();
     if (siteAreaID) {
       // Back mobile button: Force navigation
-      this.props.navigation.navigate("SiteAreas", { siteID });
+      this.props.navigation.navigate("Chargers", { siteAreaID });
+    } else {
+      // Back mobile button: Force navigation
+      this.props.navigation.goBack();
     }
     // Do not bubble up
     return true;
@@ -174,7 +176,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
           <HeaderComponent
             title={charger.id}
             subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
-            leftAction={() => navigation.navigate("Chargers", { siteAreaID })}
+            leftAction={() => this.onBack()}
             leftActionIcon={"navigate-before"}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
