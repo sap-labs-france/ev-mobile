@@ -33,6 +33,11 @@ export default class Eula extends BaseScreen {
     this.refresh();
   }
 
+  async componentWillUnmount() {
+    // Call parent
+    await super.componentWillUnmount();
+  }
+
   refresh = async () => {
     // Call
     await this.endUserLicenseAgreement();
