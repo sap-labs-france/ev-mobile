@@ -19,7 +19,7 @@ import Sites from "./screens/sites/Sites";
 import SiteAreas from "./screens/site-areas/SiteAreas";
 import Chargers from "./screens/chargers/Chargers";
 import AllChargers from "./screens/chargers/AllChargers";
-import Transactions from "./screens/transactions/Transactions";
+import TransactionsHistory from "./screens/transactions/history/TransactionsHistory";
 import ChargerTabDetails from "./screens/charger-details/tabs/ChargerTabDetails";
 import TransactionChartContainer from "./screens/transactions/chart/TransactionChartContainer";
 import NotificationManager from "./notification/NotificationManager";
@@ -57,7 +57,7 @@ const AppDrawerNavigator = createDrawerNavigator(
     TransactionChartContainer: { screen: TransactionChartContainer },
     AllChargers: { screen: AllChargers },
     ChargerTabDetails: { screen: ChargerTabDetails },
-    Transactions: { screen: Transactions }
+    Transactions: { screen: TransactionsHistory }
   },
   {
     navigationOptions: {

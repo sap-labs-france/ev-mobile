@@ -1,17 +1,17 @@
 import React from "react";
-import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
+import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
 import { Container, Spinner, View } from "native-base";
 import { FlatList, RefreshControl, Platform } from "react-native";
-import Constants from "../../utils/Constants";
-import I18n from "../../I18n/I18n";
-import Utils from "../../utils/Utils";
-import computeStyleSheet from "./TransactionsStyle";
-import HeaderComponent from "../../components/header/HeaderComponent";
-import TransactionComponent from "../../components/transaction/TransactionComponent";
-import BackgroundComponent from "../../components/background/BackgroundComponent";
-import ListEmptyTextComponent from "../../components/list-empty-text/ListEmptyTextComponent";
+import Constants from "../../../utils/Constants";
+import I18n from "../../../I18n/I18n";
+import Utils from "../../../utils/Utils";
+import computeStyleSheet from "./TransactionsHistoryStyle";
+import HeaderComponent from "../../../components/header/HeaderComponent";
+import TransactionComponent from "../../../components/transaction/TransactionComponent";
+import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import ListEmptyTextComponent from "../../../components/list-empty-text/ListEmptyTextComponent";
 
-export default class Transactions extends BaseAutoRefreshScreen {
+export default class TransactionsHistory extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     // Init State
