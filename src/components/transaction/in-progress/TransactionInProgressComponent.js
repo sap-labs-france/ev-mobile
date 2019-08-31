@@ -3,7 +3,7 @@ import { ResponsiveComponent } from "react-native-responsive-ui";
 import { Text, View, Icon } from "native-base";
 import { TouchableOpacity } from "react-native";
 import moment from "moment";
-import computeStyleSheet from "../TransactionComponentStyles";
+import computeStyleSheet from "../TransactionComponentCommonStyles";
 import * as Animatable from "react-native-animatable";
 import Constants from "../../../utils/Constants";
 import Utils from "../../../utils/Utils";
@@ -21,7 +21,6 @@ export default class TransactionInProgressComponent extends ResponsiveComponent 
   render() {
     const style = computeStyleSheet();
     const { transaction, isAdmin, isPricingActive } = this.props;
-    console.log(transaction);
     const consumption = Math.round(transaction.currentTotalConsumption / 10) / 100;
     const price = transaction.currentCumulatedPrice ? Math.round(transaction.currentCumulatedPrice * 100) / 100 : 0;
     const duration = Utils.formatDurationHHMMSS(transaction.currentTotalDurationSecs, false);

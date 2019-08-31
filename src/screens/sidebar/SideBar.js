@@ -19,6 +19,7 @@ class SideBar extends BaseScreen {
       userName: "",
       userID: "",
       userImage: "",
+      tenantName: "",
       isComponentOrganizationActive: false
     };
   }
@@ -44,7 +45,8 @@ class SideBar extends BaseScreen {
       {
         userName: userInfo ? `${userInfo.name} ${userInfo.firstName}` : "",
         userID: userInfo ? `${userInfo.id}` : "",
-        isComponentOrganizationActive: securityProvider ? securityProvider.isComponentOrganizationActive() : false
+        isComponentOrganizationActive: securityProvider ? securityProvider.isComponentOrganizationActive() : false,
+        tenantName: userInfo.tenantName
       },
       async () => {
         await this._getUserImage();
@@ -82,13 +84,14 @@ class SideBar extends BaseScreen {
   render() {
     const style = computeStyleSheet();
     const navigation = this.props.navigation;
-    const { userName, userImage, isComponentOrganizationActive } = this.state;
+    const { userName, userImage, tenantName, isComponentOrganizationActive } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent>
           <Content style={style.drawerContent}>
             <Header style={style.header}>
               <Image source={logo} style={style.logo} />
+              <Text numberOfLines={1} style={style.tenantName}>{tenantName}</Text>
               <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
               {DeviceInfo.getLastUpdateTime() ? (
                 <Text style={style.versionDate}>{moment(DeviceInfo.getLastUpdateTime()).format("LL")}</Text>

@@ -3,7 +3,7 @@ import { ResponsiveComponent } from "react-native-responsive-ui";
 import { Text, View, Icon } from "native-base";
 import { TouchableOpacity } from "react-native";
 import moment from "moment";
-import computeStyleSheet from "../TransactionComponentStyles";
+import computeStyleSheet from "../TransactionComponentCommonStyles";
 import * as Animatable from "react-native-animatable";
 import Constants from "../../../utils/Constants";
 import Utils from "../../../utils/Utils";
