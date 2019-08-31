@@ -23,7 +23,7 @@ export default class TransactionHistoryComponent extends ResponsiveComponent {
     const style = computeStyleSheet();
     const { transaction, isAdmin, isPricingActive } = this.props;
     const consumption = Math.round(transaction.stop.totalConsumption / 10) / 100;
-    const price = price ? Math.round(transaction.stop.price * 100) / 100 : 0;
+    const price = transaction.stop.price ? Math.round(transaction.stop.price * 100) / 100 : 0;
     const duration = Utils.formatDurationHHMMSS(transaction.stop.totalDurationSecs, false);
     const inactivity = Utils.formatDurationHHMMSS(transaction.stop.totalInactivitySecs, false);
     const inactivityStyle = Utils.computeInactivityStyle(transaction.stop.totalInactivitySecs);
