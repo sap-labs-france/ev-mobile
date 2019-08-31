@@ -1,4 +1,4 @@
-// flow-typed signature: 59add3174c4f260e1bec3ba37ab243b9
+// flow-typed signature: 48662510de4cc55de6a569143b7aa42d
 // flow-typed version: 4141a9d353/react-native-webview_v6.x.x/flow_>=v0.88.x <=v0.103.x
 
 /*
