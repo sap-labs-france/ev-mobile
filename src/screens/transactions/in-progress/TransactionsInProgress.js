@@ -75,7 +75,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
 
   _footerList = () => {
     const { skip, count, limit } = this.state;
-    if ((skip + limit < count) || (count === -1)) {
+    if (skip + limit < count || count === -1) {
       return <Spinner />;
     }
     return null;
@@ -101,7 +101,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
   _onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
-    if ((skip + limit < count) || (count === -1)) {
+    if (skip + limit < count || count === -1) {
       // No: get next sites
       const transactions = await this._getTransationsInProgress("", skip + Constants.PAGING_SIZE, limit);
       // Add sites
