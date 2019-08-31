@@ -8,7 +8,9 @@
 
 import React from "react";
 import { StatusBar, Dimensions } from "react-native";
-import { createSwitchNavigator, createStackNavigator, createDrawerNavigator, createAppContainer } from "react-navigation";
+import { createSwitchNavigator, createAppContainer } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
+import { createDrawerNavigator } from "react-navigation-drawer";
 import { Root } from "native-base";
 import Login from "./screens/auth/login/Login";
 import Eula from "./screens/auth/eula/Eula";
