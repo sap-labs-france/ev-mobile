@@ -36,7 +36,7 @@ export default class TransactionHistoryComponent extends ResponsiveComponent {
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("TransactionChartContainer", { transactionID });
+            navigation.navigate("TransactionChart", { transactionID });
           }}>
           <View style={style.container}>
             <View style={style.headerContent}>

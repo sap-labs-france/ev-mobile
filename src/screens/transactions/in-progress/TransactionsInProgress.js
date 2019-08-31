@@ -58,8 +58,6 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
   };
 
   onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };
@@ -123,8 +121,6 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
           <HeaderComponent
             title={I18n.t("transactions.transactionsInProgress")}
             showSearchAction={false}
-            leftAction={this.onBack}
-            leftActionIcon={"navigate-before"}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />

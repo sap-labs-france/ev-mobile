@@ -48,7 +48,6 @@ export default class TransactionTabs extends BaseAutoRefreshScreen {
 
   render() {
     const style = computeStyleSheet();
-    const { isAdmin } = this.state;
     const { navigation } = this.props;
     return (
       <ScrollView contentContainerStyle={style.container}>

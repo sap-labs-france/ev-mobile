@@ -57,7 +57,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
 
   onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.goBack(null);
+    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };
@@ -113,6 +113,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading } = this.state;
+    console.log(navigation);
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
