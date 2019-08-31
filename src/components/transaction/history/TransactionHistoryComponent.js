@@ -3,16 +3,15 @@ import { ResponsiveComponent } from "react-native-responsive-ui";
 import { Text, View, Icon } from "native-base";
 import { TouchableOpacity } from "react-native";
 import moment from "moment";
-import computeStyleSheet from "./TransactionComponentStyles";
-import I18n from "../../I18n/I18n";
+import computeStyleSheet from "./TransactionHistoryComponentStyles";
+import I18n from "../../../I18n/I18n";
 import * as Animatable from "react-native-animatable";
-import Constants from "../../utils/Constants";
-import Utils from "../../utils/Utils";
-import ProviderFactory from "../../provider/ProviderFactory";
+import Constants from "../../../utils/Constants";
+import Utils from "../../../utils/Utils";
 import PropTypes from "prop-types";
 
 let counter = 0;
-export default class TransactionComponent extends ResponsiveComponent {
+export default class TransactionHistoryComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -81,11 +80,11 @@ export default class TransactionComponent extends ResponsiveComponent {
   }
 }
 
-TransactionComponent.propTypes = {
+TransactionHistoryComponent.propTypes = {
   navigation: PropTypes.object.isRequired,
   transaction: PropTypes.object.isRequired,
   isAdmin: PropTypes.bool.isRequired
 };
 
-TransactionComponent.defaultProps = {};
+TransactionHistoryComponent.defaultProps = {};
 

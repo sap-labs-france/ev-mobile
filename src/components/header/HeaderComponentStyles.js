@@ -17,7 +17,7 @@ const commonStyles = ScaledSheet.create({
     marginLeft: "5@s"
   },
   bodyHeader: {
-    flexGrow: 2,
+    flex: 3,
     paddingLeft: Platform.OS === "ios" ? 0 : "50@s"
   },
   rightHeader: {},
