@@ -5,7 +5,7 @@ import { FlatList, RefreshControl, Platform } from "react-native";
 import Constants from "../../../utils/Constants";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
-import computeStyleSheet from "./TransactionsHistoryStyle";
+import computeStyleSheet from "../TransactionsCommonStyle";
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import TransactionHistoryComponent from "../../../components/transaction/history/TransactionHistoryComponent";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
