@@ -79,16 +79,8 @@ export default class Chargers extends BaseAutoRefreshScreen {
   };
 
   onBack = () => {
-    const { siteAreaID } = this.state;
-    // Safe way to retrieve the Site ID to navigate back from a notification
-    const siteID = this._getSiteIDFromChargers();
-    if (siteAreaID) {
-      // Back mobile button: Force navigation
-      this.props.navigation.navigate("SiteAreas", { siteID });
-    } else {
-      // Back mobile button: Force navigation
-      this.props.navigation.goBack();
-    }
+    // Refresh All
+    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };
@@ -148,8 +140,8 @@ export default class Chargers extends BaseAutoRefreshScreen {
             title={I18n.t("chargers.title")}
             showSearchAction={true}
             searchRef={this.searchRef}
-            leftAction={this.onBack}
-            leftActionIcon={"navigate-before"}
+            leftAction={siteAreaID ? this.onBack : null}
+            leftActionIcon={siteAreaID ? "navigate-before" : null}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />

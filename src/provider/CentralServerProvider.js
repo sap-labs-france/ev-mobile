@@ -33,7 +33,6 @@ export default class CentralServerProvider {
     return _captchaSiteKey;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async initialize() {
     // Get stored data
     const credentials = await SecuredStorage.getUserCredentials();
@@ -413,6 +412,20 @@ export default class CentralServerProvider {
     this._buildOrdering(ordering, params);
     // Call
     const result = await axios.get(`${_centralRestServerServiceSecuredURL}/TransactionsCompleted`, {
+      headers: this._buildSecuredHeaders(),
+      params
+    });
+    return result.data;
+  }
+
+  async getTransactionsActive(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+    this.debug("getTransactionsActive");
+    // Build Paging
+    this._buildPaging(paging, params);
+    // Build Ordering
+    this._buildOrdering(ordering, params);
+    // Call
+    const result = await axios.get(`${_centralRestServerServiceSecuredURL}/TransactionsActive`, {
       headers: this._buildSecuredHeaders(),
       params
     });

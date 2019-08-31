@@ -97,18 +97,18 @@ class SideBar extends BaseScreen {
             </Header>
             <View style={style.linkContainer}>
               {isComponentOrganizationActive ? (
-                <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Sites")}>
+                <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("SitesNavigator")}>
                   <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
                   <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
                 </ListItem>
               ) : (
                 undefined
               )}
-              <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("AllChargers")}>
+              <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("ChargersNavigator")}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
                 <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
               </ListItem>
-              <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("Transactions")}>
+              <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("TransactionsNavigator")}>
                 <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="history" />
                 <Text style={style.linkText}>{I18n.t("sidebar.transactions")}</Text>
               </ListItem>

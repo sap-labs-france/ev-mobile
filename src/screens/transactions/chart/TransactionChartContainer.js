@@ -32,6 +32,13 @@ export default class TransactionChartContainer extends BaseScreen {
     await super.componentWillUnmount();
   }
 
+  onBack = () => {
+    // Back mobile button: Force navigation
+    this.props.navigation.goBack();
+    // Do not bubble up
+    return true;
+  };
+
   render() {
     const style = computeStyleSheet();
     return (
@@ -39,7 +46,7 @@ export default class TransactionChartContainer extends BaseScreen {
         <BackgroundComponent active={false}>
           <HeaderComponent
             title={I18n.t("transactions.chargingCurve")}
-            leftAction={() => this.props.navigation.navigate("Transactions", {})}
+            leftAction={this.onBack}
             leftActionIcon={"navigate-before"}
             rightAction={this.props.navigation.openDrawer}
             rightActionIcon={"menu"}

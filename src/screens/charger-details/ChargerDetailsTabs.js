@@ -1,18 +1,19 @@
 import React from "react";
 import { Container, Tab, Tabs, TabHeading, Spinner, Icon } from "native-base";
 import { ScrollView } from "react-native";
-import ChargerDetails from "../details/ChargerDetails";
-import TransactionChart from "../../transactions/chart/TransactionChart";
-import ChargerConnectorDetails from "../connector/ChargerConnectorDetails";
-import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
-import HeaderComponent from "../../../components/header/HeaderComponent";
-import I18n from "../../../I18n/I18n";
-import computeStyleSheet from "./ChargerTabDetailsStyles";
-import Utils from "../../../utils/Utils";
-import Constants from "../../../utils/Constants";
-import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import ChargerDetails from "./details/ChargerDetails";
+import TransactionChart from "../transactions/chart/TransactionChart";
+import ChargerConnectorDetails from "./connector/ChargerConnectorDetails";
+import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
+import HeaderComponent from "../../components/header/HeaderComponent";
+import I18n from "../../I18n/I18n";
+import computeStyleSheet from "./ChargerDetailsTabsStyles";
+import Utils from "../../utils/Utils";
+import Constants from "../../utils/Constants";
+import BackgroundComponent from "../../components/background/BackgroundComponent";
+import PropTypes from "prop-types";
 
-export default class ChargerTabDetails extends BaseAutoRefreshScreen {
+export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,7 +34,6 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();
-    // Safe way to retrieve the Site ID to navigate back from a notification
     // Refresh Charger
     await this.refresh();
   }
@@ -46,10 +46,12 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
   onBack = () => {
     const { siteAreaID } = this.state;
     // Safe way to retrieve the Site ID to navigate back from a notification
-    const siteID = this._getSiteIDFromChargers();
     if (siteAreaID) {
       // Back mobile button: Force navigation
-      this.props.navigation.navigate("SiteAreas", { siteID });
+      this.props.navigation.navigate("Chargers", { siteAreaID });
+    } else {
+      // Back mobile button: Force navigation
+      this.props.navigation.goBack(null);
     }
     // Do not bubble up
     return true;
@@ -100,76 +102,61 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
 
   _canStopTransaction = () => {
     const { charger, connector } = this.state;
-    try {
-      // Transaction?
-      if (connector.activeTransactionID !== 0) {
-        // Get the Security Provider
-        const securityProvider = this.centralServerProvider.getSecurityProvider();
-        // Check Auth
-        const isAuth = securityProvider.canStopTransaction(charger.siteArea, connector.activeTagID);
-        // Assign
-        this.setState({
-          canStopTransaction: isAuth
-        });
-      } else {
-        // Not Authorized
-        this.setState({
-          canStopTransaction: false
-        });
-      }
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+    // Transaction?
+    if (connector.activeTransactionID !== 0) {
+      // Get the Security Provider
+      const securityProvider = this.centralServerProvider.getSecurityProvider();
+      // Check Auth
+      const isAuth = securityProvider.canStopTransaction(charger.siteArea, connector.activeTagID);
+      // Assign
+      this.setState({
+        canStopTransaction: isAuth
+      });
+    } else {
+      // Not Authorized
+      this.setState({
+        canStopTransaction: false
+      });
     }
   };
 
   _canStartTransaction = () => {
     const { charger, connector } = this.state;
-    try {
-      // Transaction?
-      if (connector.activeTransactionID === 0) {
-        // Get the Security Provider
-        const securityProvider = this.centralServerProvider.getSecurityProvider();
-        // Check Auth
-        const isAuth = securityProvider.canStartTransaction(charger.siteArea);
-        // Assign
-        this.setState({
-          canStartTransaction: isAuth
-        });
-      } else {
-        // Not Authorized
-        this.setState({
-          canStartTransaction: false
-        });
-      }
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+    // Transaction?
+    if (connector.activeTransactionID === 0) {
+      // Get the Security Provider
+      const securityProvider = this.centralServerProvider.getSecurityProvider();
+      // Check Auth
+      const isAuth = securityProvider.canStartTransaction(charger.siteArea);
+      // Assign
+      this.setState({
+        canStartTransaction: isAuth
+      });
+    } else {
+      // Not Authorized
+      this.setState({
+        canStartTransaction: false
+      });
     }
   };
 
   _canReadTransaction = () => {
     const { charger, connector } = this.state;
-    try {
-      // Transaction?
-      if (connector.activeTransactionID !== 0) {
-        // Get the Security Provider
-        const securityProvider = this.centralServerProvider.getSecurityProvider();
-        // Check Auth
-        const isAuth = securityProvider.canReadTransaction(charger.siteArea, connector.activeTagID);
-        // Assign
-        this.setState({
-          canDisplayTransaction: isAuth
-        });
-      } else {
-        // Not Authorized
-        this.setState({
-          canDisplayTransaction: false
-        });
-      }
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+    // Transaction?
+    if (connector.activeTransactionID !== 0) {
+      // Get the Security Provider
+      const securityProvider = this.centralServerProvider.getSecurityProvider();
+      // Check Auth
+      const isAuth = securityProvider.canReadTransaction(charger.siteArea, connector.activeTagID);
+      // Assign
+      this.setState({
+        canDisplayTransaction: isAuth
+      });
+    } else {
+      // Not Authorized
+      this.setState({
+        canDisplayTransaction: false
+      });
     }
   };
 
@@ -198,7 +185,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
           <HeaderComponent
             title={charger.id}
             subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
-            leftAction={() => navigation.navigate("Chargers", { siteAreaID })}
+            leftAction={() => this.onBack()}
             leftActionIcon={"navigate-before"}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
