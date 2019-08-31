@@ -7,12 +7,13 @@ import ChargerConnectorDetails from "./connector/ChargerConnectorDetails";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import HeaderComponent from "../../components/header/HeaderComponent";
 import I18n from "../../I18n/I18n";
-import computeStyleSheet from "./ChargerTabDetailsStyles";
+import computeStyleSheet from "./ChargerDetailsTabsStyles";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
+import PropTypes from "prop-types";
 
-export default class ChargerTabDetails extends BaseAutoRefreshScreen {
+export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     this.state = {
@@ -222,7 +223,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
                 undefined
               )}
             </Tabs>
-            }
+          }
         </BackgroundComponent>
       </ScrollView>
     );

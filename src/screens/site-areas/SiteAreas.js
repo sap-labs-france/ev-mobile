@@ -11,7 +11,7 @@ import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import ListEmptyTextComponent from "../../components/list-empty-text/ListEmptyTextComponent";
-
+import PropTypes from "prop-types";
 
 export default class SiteAreas extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -57,7 +57,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
 
   onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate("Sites");
+    this.props.navigation.goBack(null);
     // Do not bubble up
     return true;
   };

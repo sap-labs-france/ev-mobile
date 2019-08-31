@@ -12,7 +12,7 @@ import SiteAreas from "./screens/site-areas/SiteAreas";
 import Chargers from "./screens/chargers/Chargers";
 import AllChargers from "./screens/chargers/AllChargers";
 import TransactionTabs from "./screens/transactions/TransactionTabs";
-import ChargerTabDetails from "./screens/charger-details/ChargerTabDetails";
+import ChargerDetailsTabs from "./screens/charger-details/ChargerDetailsTabs";
 import TransactionChartContainer from "./screens/transactions/chart/TransactionChartContainer";
 import NotificationManager from "./notification/NotificationManager";
 import Utils from "./utils/Utils";
@@ -48,7 +48,7 @@ const AppDrawerNavigator = createDrawerNavigator(
     Chargers: { screen: Chargers },
     TransactionChartContainer: { screen: TransactionChartContainer },
     AllChargers: { screen: AllChargers },
-    ChargerTabDetails: { screen: ChargerTabDetails },
+    ChargerDetailsTabs: { screen: ChargerDetailsTabs },
     TransactionTabs: { screen: TransactionTabs }
   },
   {

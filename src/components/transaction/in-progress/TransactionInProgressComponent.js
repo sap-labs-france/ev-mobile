@@ -36,7 +36,7 @@ export default class TransactionInProgressComponent extends ResponsiveComponent 
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("ChargerTabDetails", {
+            navigation.navigate("ChargerDetailsTabs", {
               chargerID: transaction.chargeBoxID,
               connectorID: transaction.connectorId
             })
