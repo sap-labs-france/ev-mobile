@@ -23,6 +23,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
       skip: 0,
       limit: Constants.PAGING_SIZE,
       count: 0,
+      isPricingActive: false,
       isAdmin: false
     };
   }
@@ -35,6 +36,11 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();
+    // Set
+    const securityProvider = this.centralServerProvider.getSecurityProvider();
+    this.setState({
+      isPricingActive: securityProvider.isComponentPricingActive()
+    });
     // Get the sites
     await this.refresh();
   }
@@ -114,7 +120,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
   render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin, transactions } = this.state;
+    const { loading, isAdmin, transactions, isPricingActive } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
@@ -130,7 +136,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
             ) : (
               <FlatList
                 data={transactions}
-                renderItem={({ item }) => <TransactionInProgressComponent transaction={item} navigation={navigation} isAdmin={isAdmin}/>}
+                renderItem={({ item }) => <TransactionInProgressComponent transaction={item} navigation={navigation}
+                  isAdmin={isAdmin} isPricingActive={isPricingActive}/>}
                 keyExtractor={(item) => `${item.id}`}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
