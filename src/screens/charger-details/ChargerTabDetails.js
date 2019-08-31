@@ -50,7 +50,7 @@ export default class ChargerTabDetails extends BaseAutoRefreshScreen {
       this.props.navigation.navigate("Chargers", { siteAreaID });
     } else {
       // Back mobile button: Force navigation
-      this.props.navigation.goBack();
+      this.props.navigation.goBack(null);
     }
     // Do not bubble up
     return true;

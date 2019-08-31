@@ -58,6 +58,7 @@ const AppDrawerNavigator = createDrawerNavigator(
     drawerWidth: Dimensions.get("window").width / 1.5,
     initialRouteName: "Sites",
     unmountInactiveRoutes: true,
+    // backBehavior: "none",
     drawerPosition: "right",
     contentComponent: (props) => <Sidebar {...props} />
   }
