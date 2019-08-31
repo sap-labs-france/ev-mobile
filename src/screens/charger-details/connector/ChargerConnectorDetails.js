@@ -338,13 +338,13 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     return (
       transaction ? (
         <View style={style.columnContainer}>
-          <Thumbnail style={[style.userImage, style.info]} source={userImage ? { uri: userImage } : noPhotoActive} />
+          <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhotoActive} />
           <Text style={[style.label, style.labelUser, style.info]}>{Utils.buildUserName(transaction.user)}</Text>
           {isAdmin ? <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text> : undefined}
         </View>
       ) : (
         <View style={style.columnContainer}>
-          <Thumbnail style={[style.userImage, style.disabled]} source={userImage ? { uri: userImage } : noPhoto} />
+          <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
           <Text style={[style.label, style.disabled]}>-</Text>
         </View>
       )
