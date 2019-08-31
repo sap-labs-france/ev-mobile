@@ -23,6 +23,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen {
       skip: 0,
       limit: Constants.PAGING_SIZE,
       count: 0,
+      isPricingActive: false,
       isAdmin: false
     };
   }
@@ -35,6 +36,11 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen {
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();
+    // Set
+    const securityProvider = this.centralServerProvider.getSecurityProvider();
+    this.setState({
+      isPricingActive: securityProvider.isComponentPricingActive()
+    });
     // Get the sites
     await this.refresh();
   }
@@ -58,8 +64,6 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen {
   };
 
   onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.goBack();
     // Do not bubble up
     true;
   };
@@ -116,15 +120,13 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen {
   render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin, transactions } = this.state;
+    const { loading, isAdmin, transactions, isPricingActive } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
           <HeaderComponent
             title={I18n.t("transactions.transactionsHistory")}
             showSearchAction={false}
-            leftAction={this.onBack}
-            leftActionIcon={"navigate-before"}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />
@@ -134,7 +136,8 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen {
             ) : (
               <FlatList
                 data={transactions}
-                renderItem={({ item }) => <TransactionHistoryComponent transaction={item} navigation={navigation} isAdmin={isAdmin}/>}
+                renderItem={({ item }) => <TransactionHistoryComponent transaction={item} navigation={navigation}
+                  isAdmin={isAdmin} isAdmin={isAdmin} isPricingActive={isPricingActive}/>}
                 keyExtractor={(item) => `${item.id}`}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}

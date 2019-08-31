@@ -11,6 +11,7 @@ import computeStyleSheet from "./SitesStyles";
 import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import ListEmptyTextComponent from "../../components/list-empty-text/ListEmptyTextComponent";
+import PropTypes from "prop-types";
 
 export default class Sites extends BaseAutoRefreshScreen {
   constructor(props) {

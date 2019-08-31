@@ -21,14 +21,13 @@ export default class TransactionInProgressComponent extends ResponsiveComponent 
 
   render() {
     const style = computeStyleSheet();
-    const { transaction, isAdmin } = this.props;
+    const { transaction, isAdmin, isPricingActive } = this.props;
     const consumption = Math.round(transaction.currentTotalConsumption / 10) / 100;
-    const price = Math.round(transaction.currentCumulatedPrice * 100) / 100;
+    const price = price ? Math.round(transaction.stop.price * 100) / 100 : 0;
     const duration = Utils.formatDurationHHMMSS(transaction.currentTotalDurationSecs, false);
     const inactivity = Utils.formatDurationHHMMSS(transaction.currentTotalInactivitySecs, false);
     const inactivityStyle = Utils.computeInactivityStyle(transaction.currentTotalInactivitySecs);
     const navigation = this.props.navigation;
-    const transactionID = transaction.id;
     return (
       <Animatable.View
         animation={counter++ % 2 === 0 ? "flipInX" : "flipInX"}
@@ -36,7 +35,7 @@ export default class TransactionInProgressComponent extends ResponsiveComponent 
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("ChargerTabDetails", {
+            navigation.navigate("ChargerDetailsTabs", {
               chargerID: transaction.chargeBoxID,
               connectorID: transaction.connectorId
             })
@@ -50,7 +49,7 @@ export default class TransactionInProgressComponent extends ResponsiveComponent 
             </View>
             <View style={style.subHeader}>
               <Text style={style.subHeaderName}>{transaction.chargeBoxID}</Text>
-              {isAdmin ?
+              {isAdmin && transaction.user ?
                 <Text style={style.subHeaderName}>{transaction.user.name} {transaction.user.firstName}</Text>
               :
                 undefined
@@ -71,10 +70,14 @@ export default class TransactionInProgressComponent extends ResponsiveComponent 
                 <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
                 <Text style={[style.labelValue, inactivityStyle]}>{inactivity}</Text>
               </View>
-              <View style={style.columnContainer}>
-                <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
-                <Text style={[style.labelValue, style.info]}>{price} {transaction.priceUnit}</Text>
-              </View>
+              {isPricingActive ?
+                <View style={style.columnContainer}>
+                  <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
+                  <Text style={[style.labelValue, style.info]}>{price} {transaction.priceUnit}</Text>
+                </View>
+              :
+                undefined
+              }
             </View>
           </View>
         </TouchableOpacity>
@@ -86,6 +89,7 @@ export default class TransactionInProgressComponent extends ResponsiveComponent 
 TransactionInProgressComponent.propTypes = {
   navigation: PropTypes.object.isRequired,
   transaction: PropTypes.object.isRequired,
+  isPricingActive: PropTypes.bool.isRequired,
   isAdmin: PropTypes.bool.isRequired
 };
 
