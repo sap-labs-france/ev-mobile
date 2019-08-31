@@ -218,7 +218,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
     return (
       <View style={style.container}>
         <BackgroundComponent active={false}>
-          { showTransactionDetails && transactionConsumption ?
+          {showTransactionDetails && transactionConsumption ?
             <View style={style.header}>
               <Text style={style.headerValue}>{moment(new Date(transactionConsumption.timestamp)).format("LLL")}</Text>
               <Text style={style.headerValue}>{transactionConsumption.chargeBoxID}</Text>
@@ -227,7 +227,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
             undefined
           }
           <LineChart
-            style={showTransactionDetails && transactionConsumption ? style.chartWithHeader : style.chart }
+            style={showTransactionDetails && transactionConsumption ? style.chartWithHeader : style.chart}
             data={chartDefinition.data}
             chartDescription={{ text: "" }}
             noDataText={"No Data"}

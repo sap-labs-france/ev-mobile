@@ -33,7 +33,6 @@ export default class CentralServerProvider {
     return _captchaSiteKey;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async initialize() {
     // Get stored data
     const credentials = await SecuredStorage.getUserCredentials();
