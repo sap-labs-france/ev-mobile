@@ -23,7 +23,7 @@ export default class TransactionInProgressComponent extends ResponsiveComponent 
     const style = computeStyleSheet();
     const { transaction, isAdmin, isPricingActive } = this.props;
     const consumption = Math.round(transaction.currentTotalConsumption / 10) / 100;
-    const price = Math.round(transaction.currentCumulatedPrice * 100) / 100;
+    const price = price ? Math.round(transaction.stop.price * 100) / 100 : 0;
     const duration = Utils.formatDurationHHMMSS(transaction.currentTotalDurationSecs, false);
     const inactivity = Utils.formatDurationHHMMSS(transaction.currentTotalInactivitySecs, false);
     const inactivityStyle = Utils.computeInactivityStyle(transaction.currentTotalInactivitySecs);
