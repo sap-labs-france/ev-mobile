@@ -11,16 +11,14 @@ import PropTypes from "prop-types";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import TransactionHeaderComponent from "../../../components/transaction/header/TransactionHeaderComponent";
 
-const EMPTY_CHART = [{ x: 0, y: 0 }];
-
 export default class TransactionChart extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
     this.state = {
       transactionConsumption: null,
       values: [],
-      consumptionValues: EMPTY_CHART,
-      stateOfChargeValues: EMPTY_CHART
+      consumptionValues: [],
+      stateOfChargeValues: []
     };
   }
 
@@ -78,8 +76,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
         this.setState({
           transactionConsumption: null,
           values: null,
-          consumptionValues: EMPTY_CHART,
-          stateOfChargeValues: EMPTY_CHART
+          consumptionValues: [],
+          stateOfChargeValues: []
         });
       }
     } catch (error) {
@@ -220,43 +218,46 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
           {showTransactionDetails && transactionConsumption &&
             <TransactionHeaderComponent transaction={transactionConsumption} isAdmin={isAdmin} displayNavigationIcon={false}/>
           }
-          <LineChart
-            style={showTransactionDetails && transactionConsumption ? style.chartWithHeader : style.chart}
-            data={chartDefinition.data}
-            chartDescription={{ text: "" }}
-            noDataText={"No Data"}
-            legend={{
-              enabled: true,
-              textSize: scale(8),
-              textColor: processColor(commonColor.brandPrimaryDark)
-            }}
-            marker={{
-              enabled: true,
-              markerColor: processColor(commonColor.brandPrimaryDark),
-              textSize: scale(12),
-              textColor: processColor(commonColor.inverseTextColor)
-            }}
-            xAxis={chartDefinition.xAxis}
-            yAxis={chartDefinition.yAxis}
-            autoScaleMinMaxEnabled={false}
-            animation={{
-              durationX: 1000,
-              durationY: 1000,
-              easingY: "EaseInOutQuart"
-            }}
-            drawGridBackground={false}
-            drawBorders={false}
-            touchEnabled={true}
-            dragEnabled={true}
-            scaleEnabled={false}
-            scaleXEnabled={true}
-            scaleYEnabled={false}
-            pinchZoom={true}
-            doubleTapToZoomEnabled={false}
-            dragDecelerationEnabled={true}
-            dragDecelerationFrictionCoef={0.99}
-            keepPositionOnRotation={false}
-          />
+          {consumptionValues && consumptionValues.length > 1 ?
+            <LineChart
+              style={showTransactionDetails && transactionConsumption ? style.chartWithHeader : style.chart }
+              data={chartDefinition.data}
+              chartDescription={{ text: "" }}
+              legend={{
+                enabled: true,
+                textSize: scale(8),
+                textColor: processColor(commonColor.brandPrimaryDark)
+              }}
+              marker={{
+                enabled: true,
+                markerColor: processColor(commonColor.brandPrimaryDark),
+                textSize: scale(12),
+                textColor: processColor(commonColor.inverseTextColor)
+              }}
+              xAxis={chartDefinition.xAxis}
+              yAxis={chartDefinition.yAxis}
+              autoScaleMinMaxEnabled={false}
+              animation={{
+                durationX: 1000,
+                durationY: 1000,
+                easingY: "EaseInOutQuart"
+              }}
+              drawGridBackground={false}
+              drawBorders={false}
+              touchEnabled={true}
+              dragEnabled={true}
+              scaleEnabled={false}
+              scaleXEnabled={true}
+              scaleYEnabled={false}
+              pinchZoom={true}
+              doubleTapToZoomEnabled={false}
+              dragDecelerationEnabled={true}
+              dragDecelerationFrictionCoef={0.99}
+              keepPositionOnRotation={false}
+            />
+          :
+            <Text style={style.notEnoughData}>{I18n.t("details.notEnoughData")}</Text>
+          }
         </BackgroundComponent>
       </View>
     );

@@ -138,7 +138,8 @@
     "instantPowerChartLabel": "Puissance Instantanée (kW)",
     "cumulatedChartLabel": "Cumulé (kW.h)",
     "batteryChartLabel": "Niveau Batterie (%)",
-    "connectorMax": "Connecteur Max Power (kW)"
+    "connectorMax": "Connecteur Max Power (kW)",
+    "notEnoughData": "Pas assez de données pour afficher la courbe"
   },
   "notifications": {
     "mustLogin": "Vous devez etre connecté",
