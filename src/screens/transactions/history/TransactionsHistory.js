@@ -5,7 +5,7 @@ import { FlatList, RefreshControl, Platform } from "react-native";
 import Constants from "../../../utils/Constants";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
-import computeStyleSheet from "../TransactionsCommonStyle";
+import computeStyleSheet from "../TransactionsCommonStyles";
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import TransactionHistoryComponent from "../../../components/transaction/history/TransactionHistoryComponent";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
@@ -143,7 +143,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen {
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
                 ListFooterComponent={this._footerList}
-                ListEmptyComponent={() => <ListEmptyTextComponent/>}
+                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("transactions.noTransactionsHistory")}/>}
               />
             )}
           </View>

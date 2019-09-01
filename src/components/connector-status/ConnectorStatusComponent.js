@@ -5,6 +5,7 @@ import computeStyleSheet from "./ConnectorStatusComponentStyles.js";
 import { Animated, Easing, Platform } from "react-native";
 import { Text, View } from "native-base";
 import Constants from "../../utils/Constants";
+import Utils from "../../utils/Utils";
 
 export default class ConnectorStatusComponent extends ResponsiveComponent {
   constructor(props) {
@@ -97,7 +98,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     // Get value
     const { value, connector } = this.props;
     if (connector) {
-      return String.fromCharCode(64 + connector.connectorId);
+      return Utils.getConnectorLetter(connector.connectorId);
     } else {
       return value;
     }
@@ -123,13 +124,15 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     const isAndroid = Platform.OS === "android";
     return (
       <View style={this.props.text ? style.containerWithDescription : style.containerWithNoDescription}>
-        {isAndroid ? (
+        {isAndroid ?
           <View>
             <View style={connectorStyles.container}>
-              <Text style={connectorStyles.value}>{value}</Text>
+              <Text style={connectorStyles.value}>
+                {value}
+              </Text>
             </View>
           </View>
-        ) : (
+        :
           <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
             <View style={connectorStyles.container}>
               <Animated.Text
@@ -140,8 +143,8 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
               </Animated.Text>
             </View>
           </Animated.View>
-        )}
-        {this.props.text ? <Text style={connectorStyles.description}>{this.props.text}</Text> : undefined}
+        }
+        {this.props.text && <Text style={connectorStyles.description}>{this.props.text}</Text>}
       </View>
     );
   }

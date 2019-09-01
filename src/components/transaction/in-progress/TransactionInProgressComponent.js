@@ -2,12 +2,12 @@ import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import { Text, View, Icon } from "native-base";
 import { TouchableOpacity } from "react-native";
-import moment from "moment";
 import computeStyleSheet from "../TransactionComponentCommonStyles";
 import * as Animatable from "react-native-animatable";
 import Constants from "../../../utils/Constants";
 import Utils from "../../../utils/Utils";
 import PropTypes from "prop-types";
+import TransactionHeaderComponent from "../header/TransactionHeaderComponent";
 
 let counter = 0;
 export default class TransactionInProgressComponent extends ResponsiveComponent {
@@ -40,20 +40,7 @@ export default class TransactionInProgressComponent extends ResponsiveComponent 
             })
           }}>
           <View style={style.container}>
-            <View style={style.headerContent}>
-              <View style={style.rowContainer}>
-                <Text style={style.headerName}>{moment(new Date(transaction.timestamp)).format("LLL")}</Text>
-              </View>
-              <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
-            </View>
-            <View style={style.subHeader}>
-              <Text style={[style.subHeaderName, style.subHeaderNameLeft]}>{transaction.chargeBoxID}</Text>
-              {isAdmin && transaction.user ?
-                <Text style={[style.subHeaderName, style.subHeaderNameRight]}>{transaction.user.name} {transaction.user.firstName}</Text>
-              :
-                undefined
-              }
-            </View>
+            <TransactionHeaderComponent transaction={transaction} isAdmin={isAdmin} />
             <View style={style.transactionContent}>
               <View style={style.columnContainer}>
                 <Icon type="MaterialIcons" name="ev-station" style={[style.icon, style.info]} />
@@ -69,13 +56,11 @@ export default class TransactionInProgressComponent extends ResponsiveComponent 
                 <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
                 <Text style={[style.labelValue, inactivityStyle]}>{inactivity}</Text>
               </View>
-              {isPricingActive ?
+              {isPricingActive &&
                 <View style={style.columnContainer}>
                   <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
                   <Text style={[style.labelValue, style.info]}>{price} {transaction.priceUnit}</Text>
                 </View>
-              :
-                undefined
               }
             </View>
           </View>

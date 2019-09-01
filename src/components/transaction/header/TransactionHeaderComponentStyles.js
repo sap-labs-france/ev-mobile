@@ -1,6 +1,6 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
-import commonColor from "../../theme/variables/commonColor";
+import commonColor from "../../../theme/variables/commonColor";
 import { ScaledSheet } from "react-native-size-matters";
 
 const commonStyles = ScaledSheet.create({
@@ -9,6 +9,40 @@ const commonStyles = ScaledSheet.create({
     flexDirection: "column",
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor
+  },
+  headerContent: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "5@s",
+    borderBottomWidth: 1,
+    borderBottomColor: commonColor.listBorderColor,
+    backgroundColor: commonColor.headerBgColor
+  },
+  headerName: {
+    color: commonColor.headerTextColor,
+    fontSize: "18@s",
+    marginLeft: "5@s",
+    marginRight: "5@s",
+    fontWeight: "bold"
+  },
+  subHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "5@s",
+    paddingLeft: "8@s",
+    paddingRight: "8@s",
+    backgroundColor: commonColor.headerBgColorLight
+  },
+  subHeaderName: {
+    color: commonColor.headerTextColor,
+    fontSize: "15@s",
+    width: "49%"
+  },
+  subHeaderNameLeft: {},
+  subHeaderNameRight: {
+    textAlign: "right"
   },
   transactionContent: {
     flex: 1,

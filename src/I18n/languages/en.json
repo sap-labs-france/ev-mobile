@@ -63,17 +63,21 @@
   "transactions": {
     "transactionsHistory": "Sessions History",
     "transactionsInProgress": "Sessions In Progress",
-    "chargingCurve": "Session Chart"
+    "chargingCurve": "Session Chart",
+    "noTransactionsInProgress": "No sessions in progress",
+    "noTransactionsHistory": "No sessions history"
   },
   "sites": {
     "freeChargers": "Free chargers",
     "chargePoint": "Charge Point",
     "free": "Free",
-    "occupied": "Occupied"
+    "occupied": "Occupied",
+    "noSites": "No Site found"
   },
   "siteAreas": {
     "title": "Site Areas",
-    "noChargers": "This Site Area has no Charger"
+    "noChargers": "This Site Area has no Charger",
+    "noSiteAreas": "No Site Area found"
   },
   "chargers": {
     "title": "Chargers",
@@ -85,7 +89,8 @@
     "resetSoft": "Reset",
     "resetSoftMessage": "Do you really want to reset '{{chargeBoxID}}'?",
     "clearCache": "Clear Cache",
-    "clearCacheMessage": "Do you really want to clear the cache of '{{chargeBoxID}}'?"
+    "clearCacheMessage": "Do you really want to clear the cache of '{{chargeBoxID}}'?",
+    "noChargers": "No Charging Station found"
   },
   "connector": {
     "occupied": "Occupied",

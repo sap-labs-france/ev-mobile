@@ -63,17 +63,21 @@
   "transactions": {
     "transactionsHistory": "Sitzungsverlauf",
     "transactionsInProgress": "Sitzung läuft",
-    "chargingCurve": "Sitzungsdiagramm"
+    "chargingCurve": "Sitzungsdiagramm",
+    "noTransactionsInProgress": "Es werden keine Sitzungen durchgeführt",
+    "noTransactionsHistory": "Kein Sitzungsverlauf"
   },
   "sites": {
     "freeChargers": "Freie Ladestationen",
     "chargePoint": "Ladepunkt",
     "free": "Frei",
-    "occupied": "Besetzt"
+    "occupied": "Besetzt",
+    "noSites": "Keine Seite gefunden"
   },
   "siteAreas": {
     "title": "Standortbereiche",
-    "noChargers": "Dieser Standortbereich hat keine Ladestationen"
+    "noChargers": "Dieser Standortbereich hat keine Ladestationen",
+    "noSiteAreas": "Kein Sitebereich gefunden"
   },
   "chargers": {
     "title": "Ladestationen",
@@ -85,7 +89,8 @@
     "resetSoft": "Reset",
     "resetSoftMessage": "Möchten Sie wirklich die Ladestation '{{chargeBoxID}}' zurücksetzen?",
     "clearCache": "Cache leeren",
-    "clearCacheMessage": "Möchten Sie wirklich den Cache der Ladestation '{{chargeBoxID}}' leeren?"
+    "clearCacheMessage": "Möchten Sie wirklich den Cache der Ladestation '{{chargeBoxID}}' leeren?",
+    "noChargers": "Keine Ladestation gefunden"
   },
   "connector": {
     "occupied": "Besetzt",

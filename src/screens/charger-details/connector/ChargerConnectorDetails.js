@@ -323,11 +323,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     return (
       <View style={style.columnContainer}>
         <ConnectorStatusComponent connector={connector} text={Utils.translateConnectorStatus(connector.status)} />
-        {isAdmin && connector.status === Constants.CONN_STATUS_FAULTED ? (
+        {isAdmin && connector.status === Constants.CONN_STATUS_FAULTED &&
           <Text style={[style.subLabel, style.subLabelStatusError]}>({connector.errorCode})</Text>
-        ) : (
-          undefined
-        )}
+        }
       </View>
     );
   };
@@ -339,7 +337,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       transaction ? (
         <View style={style.columnContainer}>
           <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhotoActive} />
-          <Text style={[style.label, style.labelUser, style.info]}>{Utils.buildUserName(transaction.user)}</Text>
+          <Text numberOfLines={1} style={[style.label, style.labelUser, style.info]}>{Utils.buildUserName(transaction.user)}</Text>
           {isAdmin ? <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text> : undefined}
         </View>
       ) : (
