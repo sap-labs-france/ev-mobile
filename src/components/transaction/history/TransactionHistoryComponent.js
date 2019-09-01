@@ -45,7 +45,7 @@ export default class TransactionHistoryComponent extends ResponsiveComponent {
               <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
             </View>
             <View style={style.subHeader}>
-              <Text numberOfLines={1} style={[style.subHeaderName, style.subHeaderNameLeft]}>{transaction.chargeBoxID}</Text>
+              <Text numberOfLines={1} style={[style.subHeaderName, style.subHeaderNameLeft]}>{transaction.chargeBoxID} - {String.fromCharCode(64 + transaction.connectorId)}</Text>
               {isAdmin && transaction.user ?
                 <Text numberOfLines={1} style={[style.subHeaderName, style.subHeaderNameRight]}>{transaction.user.name} {transaction.user.firstName}</Text>
               :

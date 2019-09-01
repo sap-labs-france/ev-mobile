@@ -47,7 +47,7 @@ export default class TransactionInProgressComponent extends ResponsiveComponent 
               <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
             </View>
             <View style={style.subHeader}>
-              <Text style={[style.subHeaderName, style.subHeaderNameLeft]}>{transaction.chargeBoxID}</Text>
+              <Text style={[style.subHeaderName, style.subHeaderNameLeft]}>{transaction.chargeBoxID} - {String.fromCharCode(64 + transaction.connectorId)}</Text>
               {isAdmin && transaction.user ?
                 <Text style={[style.subHeaderName, style.subHeaderNameRight]}>{transaction.user.name} {transaction.user.firstName}</Text>
               :
