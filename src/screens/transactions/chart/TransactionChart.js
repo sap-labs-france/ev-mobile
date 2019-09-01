@@ -218,10 +218,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
     return (
       <View style={style.container}>
         <BackgroundComponent active={false}>
-          { showTransactionDetails && transactionConsumption ?
+          { showTransactionDetails && transactionConsumption &&
             <TransactionHeaderComponent transaction={transactionConsumption} isAdmin={isAdmin} displayNavigationIcon={false}/>
-          :
-            undefined
           }
           <LineChart
             style={showTransactionDetails && transactionConsumption ? style.chartWithHeader : style.chart }

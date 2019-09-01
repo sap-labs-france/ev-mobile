@@ -28,11 +28,7 @@ export default class TransactionHeaderComponent extends ResponsiveComponent {
         </View>
         <View style={style.subHeader}>
           <Text numberOfLines={1} style={[style.subHeaderName, style.subHeaderNameLeft]}>{transaction.chargeBoxID} - {Utils.getConnectorLetter(transaction.connectorId)}</Text>
-          {isAdmin ?
-            <Text numberOfLines={1} style={[style.subHeaderName, style.subHeaderNameRight]}>{Utils.buildUserName(transaction.user)}</Text>
-          :
-            undefined
-          }
+          {isAdmin && <Text numberOfLines={1} style={[style.subHeaderName, style.subHeaderNameRight]}>{Utils.buildUserName(transaction.user)}</Text>}
         </View>
       </View>
     );

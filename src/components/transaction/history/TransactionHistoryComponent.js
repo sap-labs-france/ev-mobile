@@ -53,13 +53,11 @@ export default class TransactionHistoryComponent extends ResponsiveComponent {
                 <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
                 <Text style={[style.labelValue, inactivityStyle]}>{inactivity}</Text>
               </View>
-              {isPricingActive ?
+              {isPricingActive &&
                 <View style={style.columnContainer}>
                   <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
                   <Text style={[style.labelValue, style.info]}>{price} {transaction.priceUnit}</Text>
                 </View>
-              :
-                undefined
               }
             </View>
           </View>

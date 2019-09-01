@@ -93,21 +93,15 @@ class SideBar extends BaseScreen {
               <Image source={logo} style={style.logo} />
               <Text numberOfLines={1} style={style.tenantName}>{tenantName}</Text>
               <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
-              {DeviceInfo.getLastUpdateTime() ? (
-                <Text style={style.versionDate}>{moment(DeviceInfo.getLastUpdateTime()).format("LL")}</Text>
-              ) : (
-                undefined
-              )}
+              {DeviceInfo.getLastUpdateTime() && <Text style={style.versionDate}>{moment(DeviceInfo.getLastUpdateTime()).format("LL")}</Text>}
             </Header>
             <View style={style.linkContainer}>
-              {isComponentOrganizationActive ? (
+              {isComponentOrganizationActive &&
                 <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("SitesNavigator")}>
                   <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
                   <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
                 </ListItem>
-              ) : (
-                undefined
-              )}
+              }
               <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("ChargersNavigator")}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
                 <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>

@@ -191,7 +191,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
                   canStartTransaction={canStartTransaction} canStopTransaction={canStopTransaction}
                   navigation={navigation} />
               </Tab>
-              {canDisplayTransaction ? (
+              {canDisplayTransaction &&
                 <Tab
                   heading={
                     <TabHeading style={style.tabHeader}>
@@ -200,10 +200,8 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
                   }>
                   <TransactionChart transactionID={connector.activeTransactionID} navigation={navigation} isAdmin={isAdmin} />
                 </Tab>
-              ) : (
-                undefined
-              )}
-              {isAdmin ? (
+              }
+              {isAdmin &&
                 <Tab
                   heading={
                     <TabHeading style={style.tabHeader}>
@@ -212,9 +210,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
                   }>
                   <ChargerDetails charger={charger} connector={connector} navigation={navigation} />
                 </Tab>
-              ) : (
-                undefined
-              )}
+              }
             </Tabs>
           }
         </BackgroundComponent>
