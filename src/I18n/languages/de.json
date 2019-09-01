@@ -63,7 +63,9 @@
   "transactions": {
     "transactionsHistory": "Sitzungsverlauf",
     "transactionsInProgress": "Sitzung läuft",
-    "chargingCurve": "Sitzungsdiagramm"
+    "chargingCurve": "Sitzungsdiagramm",
+    "noTransactionsInProgress": "Es werden keine Sitzungen durchgeführt",
+    "noTransactionsHistory": "Kein Sitzungsverlauf"
   },
   "sites": {
     "freeChargers": "Freie Ladestationen",

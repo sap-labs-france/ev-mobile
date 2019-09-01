@@ -63,7 +63,9 @@
   "transactions": {
     "transactionsHistory": "Historique Sessions",
     "transactionsInProgress": "Sessions En Cours",
-    "chargingCurve": "Graphique Session"
+    "chargingCurve": "Graphique Session",
+    "noTransactionsInProgress": "Pas de sessions en cours",
+    "noTransactionsHistory": "Pas d'historique de sessions"
   },
   "sites": {
     "freeChargers": "Chargeurs disponibles",
