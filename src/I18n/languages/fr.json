@@ -71,11 +71,13 @@
     "freeChargers": "Chargeurs disponibles",
     "chargePoint": "Point de Charge",
     "free": "Libre(s)",
-    "occupied": "Occupé(s)"
+    "occupied": "Occupé(s)",
+    "noSites": "Aucun Site trouvé"
   },
   "siteAreas": {
     "title": "Zones",
-    "noChargers": "Cette Zone n'a pas de Borne"
+    "noChargers": "Cette Zone n'a pas de Borne",
+    "noSiteAreas": "Aucune Zone trouvée"
   },
   "chargers": {
     "title": "Bornes",
@@ -87,7 +89,8 @@
     "resetSoft": "Réinitialiser",
     "resetSoftMessage": "Voulez-vous vraiment réinitialiser '{{chargeBoxID}}'?",
     "clearCache": "Effacer le Cache",
-    "clearCacheMessage": "Voulez-vous vraiment le cache de '{{chargeBoxID}}'?"
+    "clearCacheMessage": "Voulez-vous vraiment le cache de '{{chargeBoxID}}'?",
+    "noChargers": "Aucune Borne trouvée"
   },
   "connector": {
     "occupied": "Occupé",

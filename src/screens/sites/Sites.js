@@ -155,7 +155,7 @@ export default class Sites extends BaseAutoRefreshScreen {
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
                 ListFooterComponent={this._footerList}
-                ListEmptyComponent={() => <ListEmptyTextComponent/>}
+                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("sites.noSites")}/>}
               />
             )}
           </View>
