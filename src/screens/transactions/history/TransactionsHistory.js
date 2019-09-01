@@ -136,14 +136,21 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen {
             ) : (
               <FlatList
                 data={transactions}
-                renderItem={({ item }) => <TransactionHistoryComponent transaction={item} navigation={navigation}
-                  isAdmin={isAdmin} isAdmin={isAdmin} isPricingActive={isPricingActive}/>}
+                renderItem={({ item }) => (
+                  <TransactionHistoryComponent
+                    transaction={item}
+                    navigation={navigation}
+                    isAdmin={isAdmin}
+                    isAdmin={isAdmin}
+                    isPricingActive={isPricingActive}
+                  />
+                )}
                 keyExtractor={(item) => `${item.id}`}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
                 ListFooterComponent={this._footerList}
-                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("transactions.noTransactionsHistory")}/>}
+                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("transactions.noTransactionsHistory")} />}
               />
             )}
           </View>

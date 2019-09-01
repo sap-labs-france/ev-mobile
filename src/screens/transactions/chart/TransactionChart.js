@@ -1,6 +1,7 @@
 import React from "react";
 import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
 import { View, processColor } from "react-native";
+import { Text } from "native-base";
 import Utils from "../../../utils/Utils";
 import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./TransactionChartStyles";
@@ -215,12 +216,12 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
     return (
       <View style={style.container}>
         <BackgroundComponent active={false}>
-          {showTransactionDetails && transactionConsumption &&
-            <TransactionHeaderComponent transaction={transactionConsumption} isAdmin={isAdmin} displayNavigationIcon={false}/>
-          }
-          {consumptionValues && consumptionValues.length > 1 ?
+          {showTransactionDetails && transactionConsumption && (
+            <TransactionHeaderComponent transaction={transactionConsumption} isAdmin={isAdmin} displayNavigationIcon={false} />
+          )}
+          {consumptionValues && consumptionValues.length > 1 ? (
             <LineChart
-              style={showTransactionDetails && transactionConsumption ? style.chartWithHeader : style.chart }
+              style={showTransactionDetails && transactionConsumption ? style.chartWithHeader : style.chart}
               data={chartDefinition.data}
               chartDescription={{ text: "" }}
               legend={{
@@ -255,9 +256,9 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
               dragDecelerationFrictionCoef={0.99}
               keepPositionOnRotation={false}
             />
-          :
+          ) : (
             <Text style={style.notEnoughData}>{I18n.t("details.notEnoughData")}</Text>
-          }
+          )}
         </BackgroundComponent>
       </View>
     );

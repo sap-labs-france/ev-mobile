@@ -53,19 +53,21 @@ export default class TransactionTabs extends BaseAutoRefreshScreen {
       <ScrollView contentContainerStyle={style.container}>
         <BackgroundComponent active={false}>
           <Tabs tabBarPosition="bottom" locked={false} initialPage={0}>
-            <Tab heading={
+            <Tab
+              heading={
                 <TabHeading style={style.tabHeader}>
                   <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
                 </TabHeading>
               }>
-              <TransactionsInProgress navigation={navigation}/>
+              <TransactionsInProgress navigation={navigation} />
             </Tab>
-            <Tab heading={
+            <Tab
+              heading={
                 <TabHeading style={style.tabHeader}>
                   <Icon style={style.tabIcon} type="MaterialIcons" name="history" />
                 </TabHeading>
               }>
-              <TransactionsHistory navigation={navigation}/>
+              <TransactionsHistory navigation={navigation} />
             </Tab>
           </Tabs>
         </BackgroundComponent>

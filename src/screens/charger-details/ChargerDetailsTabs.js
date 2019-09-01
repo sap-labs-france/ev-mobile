@@ -183,11 +183,17 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          {!isAdmin && !canStopTransaction ?
-            <ChargerConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin}
-              canDisplayTransaction={canDisplayTransaction} canStartTransaction={canStartTransaction} canStopTransaction={canStopTransaction}
-              navigation={navigation} />
-          :
+          {!isAdmin && !canStopTransaction ? (
+            <ChargerConnectorDetails
+              charger={charger}
+              connector={connector}
+              isAdmin={isAdmin}
+              canDisplayTransaction={canDisplayTransaction}
+              canStartTransaction={canStartTransaction}
+              canStopTransaction={canStopTransaction}
+              navigation={navigation}
+            />
+          ) : (
             <Tabs tabBarPosition="bottom" locked={false} initialPage={0}>
               <Tab
                 heading={
@@ -204,7 +210,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
                   navigation={navigation}
                 />
               </Tab>
-              {canDisplayTransaction &&
+              {canDisplayTransaction && (
                 <Tab
                   heading={
                     <TabHeading style={style.tabHeader}>
@@ -213,8 +219,8 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
                   }>
                   <TransactionChart transactionID={connector.activeTransactionID} navigation={navigation} isAdmin={isAdmin} />
                 </Tab>
-              }
-              {isAdmin &&
+              )}
+              {isAdmin && (
                 <Tab
                   heading={
                     <TabHeading style={style.tabHeader}>
@@ -223,9 +229,9 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
                   }>
                   <ChargerDetails charger={charger} connector={connector} navigation={navigation} />
                 </Tab>
-              }
+              )}
             </Tabs>
-          }
+          )}
         </BackgroundComponent>
       </ScrollView>
     );

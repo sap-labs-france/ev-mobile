@@ -62,8 +62,7 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.buttonDisabledBg,
     backgroundColor: "transparent"
   },
-  scrollViewContainer: {
-  },
+  scrollViewContainer: {},
   detailsContainer: {
     flexDirection: "column",
     justifyContent: "space-between",
@@ -94,8 +93,7 @@ const commonStyles = ScaledSheet.create({
     fontWeight: "bold"
   },
   labelUser: {
-    fontSize: "10@s",
-    // width: "50%"
+    fontSize: "10@s"
   },
   subLabel: {
     fontSize: "10@s",

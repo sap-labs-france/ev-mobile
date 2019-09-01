@@ -15,8 +15,10 @@ export default class BackgroundComponent extends ResponsiveComponent {
     const style = computeStyleSheet();
     const { active, background } = this.props;
     return active ? (
-      <ImageBackground source={background || defaultBackground}
-          style={[style.background, this.props.style]} imageStyle={style.imageBackground}>
+      <ImageBackground
+        source={background || defaultBackground}
+        style={[style.background, this.props.style]}
+        imageStyle={style.imageBackground}>
         {this.props.children}
       </ImageBackground>
     ) : (

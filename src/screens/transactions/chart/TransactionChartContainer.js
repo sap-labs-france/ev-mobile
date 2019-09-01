@@ -58,7 +58,12 @@ export default class TransactionChartContainer extends BaseScreen {
             rightAction={this.props.navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          <TransactionChart transactionID={this.state.transactionID} navigation={this.props.navigation} showTransactionDetails={true} isAdmin={isAdmin} />
+          <TransactionChart
+            transactionID={this.state.transactionID}
+            navigation={this.props.navigation}
+            showTransactionDetails={true}
+            isAdmin={isAdmin}
+          />
         </BackgroundComponent>
       </Container>
     );
