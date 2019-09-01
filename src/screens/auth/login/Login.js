@@ -135,9 +135,10 @@ export default class Login extends BaseScreen {
     }
   };
 
-  onBack = () =>
+  onBack = () => {
     // Do nothing
-    true;
+    return true;
+  };
 
   _navigateToSites() {
     // Navigate to App

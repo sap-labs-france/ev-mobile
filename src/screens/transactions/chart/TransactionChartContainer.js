@@ -13,7 +13,8 @@ export default class TransactionChartContainer extends BaseScreen {
     super(props);
 
     this.state = {
-      transactionID: Utils.getParamFromNavigation(this.props.navigation, "transactionID", null)
+      transactionID: Utils.getParamFromNavigation(this.props.navigation, "transactionID", null),
+      isAdmin: false
     };
   }
 
@@ -25,6 +26,11 @@ export default class TransactionChartContainer extends BaseScreen {
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();
+    // Refresh Admin
+    const securityProvider = this.centralServerProvider.getSecurityProvider();
+    this.setState({
+      isAdmin: securityProvider ? securityProvider.isAdmin() : false
+    });
   }
 
   async componentWillUnmount() {
@@ -41,6 +47,7 @@ export default class TransactionChartContainer extends BaseScreen {
 
   render() {
     const style = computeStyleSheet();
+    const { isAdmin } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
@@ -51,7 +58,7 @@ export default class TransactionChartContainer extends BaseScreen {
             rightAction={this.props.navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          <TransactionChart transactionID={this.state.transactionID} navigation={this.props.navigation} showTransactionDetails={true} />
+          <TransactionChart transactionID={this.state.transactionID} navigation={this.props.navigation} showTransactionDetails={true} isAdmin={isAdmin} />
         </BackgroundComponent>
       </Container>
     );

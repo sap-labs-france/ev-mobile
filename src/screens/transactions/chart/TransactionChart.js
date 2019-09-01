@@ -1,6 +1,5 @@
 import React from "react";
 import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
-import { Text } from "native-base";
 import { View, processColor } from "react-native";
 import Utils from "../../../utils/Utils";
 import I18n from "../../../I18n/I18n";
@@ -10,7 +9,7 @@ import commonColor from "../../../theme/variables/commonColor";
 import { LineChart } from "react-native-charts-wrapper";
 import PropTypes from "prop-types";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
-import moment from "moment";
+import TransactionHeaderComponent from "../../../components/transaction/header/TransactionHeaderComponent";
 
 const EMPTY_CHART = [{ x: 0, y: 0 }];
 
@@ -213,16 +212,14 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
   render() {
     const style = computeStyleSheet();
     const { transactionConsumption, consumptionValues, stateOfChargeValues } = this.state;
-    const { showTransactionDetails } = this.props;
+    const { showTransactionDetails, isAdmin } = this.props;
     const chartDefinition = this.computeChartDefinition(consumptionValues, stateOfChargeValues);
+    console.log(transactionConsumption);
     return (
       <View style={style.container}>
         <BackgroundComponent active={false}>
           { showTransactionDetails && transactionConsumption ?
-            <View style={style.header}>
-              <Text style={style.headerValue}>{moment(new Date(transactionConsumption.timestamp)).format("LLL")}</Text>
-              <Text style={style.headerValue}>{transactionConsumption.chargeBoxID}</Text>
-            </View>
+            <TransactionHeaderComponent transaction={transactionConsumption} isAdmin={isAdmin} displayNavigationIcon={false}/>
           :
             undefined
           }
@@ -271,9 +268,11 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
 
 TransactionChart.propTypes = {
   transactionID: PropTypes.number,
-  showTransactionDetails: PropTypes.bool
+  showTransactionDetails: PropTypes.bool,
+  isAdmin: PropTypes.bool
 };
 
 TransactionChart.defaultProps = {
-  showTransactionDetails: false
+  showTransactionDetails: false,
+  isAdmin: false
 };

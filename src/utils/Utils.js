@@ -134,6 +134,10 @@ export default class Utils {
     return formValid;
   }
 
+  static getConnectorLetter(connectorId) {
+    return String.fromCharCode(64 + connectorId);
+  }
+
   static translateConnectorStatus = (status) => {
     switch (status) {
       case Constants.CONN_STATUS_AVAILABLE:
