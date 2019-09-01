@@ -1,6 +1,6 @@
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
-import commonColor from "../../../theme/variables/commonColor";
+import commonColor from "../../theme/variables/commonColor";
 import { ScaledSheet } from "react-native-size-matters";
 
 const commonStyles = ScaledSheet.create({
@@ -37,7 +37,12 @@ const commonStyles = ScaledSheet.create({
   },
   subHeaderName: {
     color: commonColor.headerTextColor,
-    fontSize: "16@s"
+    fontSize: "15@s",
+    width: "49%"
+  },
+  subHeaderNameLeft: {},
+  subHeaderNameRight: {
+    textAlign: "right"
   },
   transactionContent: {
     flex: 1,

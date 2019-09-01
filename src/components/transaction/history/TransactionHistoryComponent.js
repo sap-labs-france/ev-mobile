@@ -3,8 +3,7 @@ import { ResponsiveComponent } from "react-native-responsive-ui";
 import { Text, View, Icon } from "native-base";
 import { TouchableOpacity } from "react-native";
 import moment from "moment";
-import computeStyleSheet from "./TransactionHistoryComponentStyles";
-import I18n from "../../../I18n/I18n";
+import computeStyleSheet from "../TransactionComponentCommonStyles";
 import * as Animatable from "react-native-animatable";
 import Constants from "../../../utils/Constants";
 import Utils from "../../../utils/Utils";
@@ -46,9 +45,9 @@ export default class TransactionHistoryComponent extends ResponsiveComponent {
               <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
             </View>
             <View style={style.subHeader}>
-              <Text style={style.subHeaderName}>{transaction.chargeBoxID}</Text>
+              <Text numberOfLines={1} style={[style.subHeaderName, style.subHeaderNameLeft]}>{transaction.chargeBoxID}</Text>
               {isAdmin && transaction.user ?
-                <Text style={style.subHeaderName}>{transaction.user.name} {transaction.user.firstName}</Text>
+                <Text numberOfLines={1} style={[style.subHeaderName, style.subHeaderNameRight]}>{transaction.user.name} {transaction.user.firstName}</Text>
               :
                 undefined
               }
