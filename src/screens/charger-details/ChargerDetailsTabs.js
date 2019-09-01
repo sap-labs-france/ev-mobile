@@ -44,15 +44,8 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
   }
 
   onBack = () => {
-    const { siteAreaID } = this.state;
-    // Safe way to retrieve the Site ID to navigate back from a notification
-    if (siteAreaID) {
-      // Back mobile button: Force navigation
-      this.props.navigation.navigate("Chargers", { siteAreaID });
-    } else {
-      // Back mobile button: Force navigation
-      this.props.navigation.goBack(null);
-    }
+    // Back mobile button: Force navigation
+    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };
@@ -174,7 +167,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
       canDisplayTransaction
     } = this.state;
     const { navigation } = this.props;
-    const connectorLetter = String.fromCharCode(64 + connectorID);
+    const connectorLetter = Utils.getConnectorLetter(connectorID);
     return firstLoad ? (
       <Container style={style.container}>
         <Spinner style={style.spinner} />
@@ -218,7 +211,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
                       <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
                     </TabHeading>
                   }>
-                  <TransactionChart transactionID={connector.activeTransactionID} navigation={navigation} />
+                  <TransactionChart transactionID={connector.activeTransactionID} navigation={navigation} isAdmin={isAdmin} />
                 </Tab>
               ) : (
                 undefined
