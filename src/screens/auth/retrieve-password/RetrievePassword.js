@@ -166,7 +166,7 @@ export default class RetrievePassword extends BaseScreen {
                 )}
               </Form>
             </KeyboardAvoidingView>
-            {captchaSiteKey && captchaBaseUrl ? (
+            {captchaSiteKey && captchaBaseUrl &&
               <ReCaptcha
                 containerStyle={style.recaptcha}
                 siteKey={captchaSiteKey}
@@ -175,9 +175,7 @@ export default class RetrievePassword extends BaseScreen {
                 reCaptchaType={1}
                 onExecute={this._recaptchaResponseToken}
               />
-            ) : (
-              undefined
-            )}
+            }
           </ScrollView>
           <Footer style={style.footer}>
             <Left>

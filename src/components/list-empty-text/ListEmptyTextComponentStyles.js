@@ -5,7 +5,7 @@ import { ScaledSheet } from "react-native-size-matters";
 const commonStyles = ScaledSheet.create({
   noRecordFound: {
     flex: 1,
-    paddingTop: "10@s",
+    paddingTop: "20@s",
     alignSelf: "center"
   }
 });
