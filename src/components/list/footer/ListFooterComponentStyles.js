@@ -4,7 +4,7 @@ import { ScaledSheet } from "react-native-size-matters";
 
 const commonStyles = ScaledSheet.create({
   spinnerContainer: {
-    paddingTop: "10@s",
+    padding: "10@s",
     alignSelf: "center"
   }
 });
