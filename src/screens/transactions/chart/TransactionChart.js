@@ -252,7 +252,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
               keepPositionOnRotation={false}
             />
           :
-            !consumptionValues && <Text style={style.notEnoughData}>{I18n.t("details.notEnoughData")}</Text>
+            consumptionValues && <Text style={style.notEnoughData}>{I18n.t("details.notEnoughData")}</Text>
           }
         </BackgroundComponent>
       </View>
