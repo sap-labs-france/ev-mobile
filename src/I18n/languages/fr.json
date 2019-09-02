@@ -61,11 +61,11 @@
     "tenant": "Choisir un Tenant"
   },
   "transactions": {
-    "transactionsHistory": "Historique Sessions",
+    "transactionsHistory": "Historique Des Sessions",
     "transactionsInProgress": "Sessions En Cours",
     "chargingCurve": "Graphique Session",
-    "noTransactionsInProgress": "Pas de sessions en cours",
-    "noTransactionsHistory": "Pas d'historique de sessions"
+    "noTransactionsInProgress": "Pas de Session en cours",
+    "noTransactionsHistory": "Pas d'historique de Session"
   },
   "sites": {
     "freeChargers": "Chargeurs disponibles",

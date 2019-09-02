@@ -64,8 +64,8 @@
     "transactionsHistory": "Sessions History",
     "transactionsInProgress": "Sessions In Progress",
     "chargingCurve": "Session Chart",
-    "noTransactionsInProgress": "No sessions in progress",
-    "noTransactionsHistory": "No sessions history"
+    "noTransactionsInProgress": "No Session in progress",
+    "noTransactionsHistory": "No Session history"
   },
   "sites": {
     "freeChargers": "Free chargers",
@@ -80,7 +80,7 @@
     "noSiteAreas": "No Site Area found"
   },
   "chargers": {
-    "title": "Chargers",
+    "title": "Charging Stations",
     "heartBeat": "Heartbeat",
     "heartBeatOkMessage": "'{{chargeBoxID}}' is working properly and reported its status a minute ago",
     "heartBeatKoMessage": "'{{chargeBoxID}}' is not working properly and hasn't reported its status since {{lastHeartBeat}}",
