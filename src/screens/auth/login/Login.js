@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { ScrollView, Image, Keyboard, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
+import { ScrollView, Image, Keyboard, KeyboardAvoidingView, Text as TextRN, TextInput, BackHandler, Alert } from "react-native";
 import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet, Footer, Left, Right } from "native-base";
 import Orientation from "react-native-orientation-locker";
 import * as Animatable from "react-native-animatable";
@@ -137,9 +137,20 @@ export default class Login extends BaseScreen {
     }
   };
 
-  onBack = () =>
-    // Do nothing
-    true;
+  onBack = () => {
+    // Exit?
+    Alert.alert(
+      I18n.t("general.exitApp"),
+      I18n.t("general.exitAppConfirm"),
+      [
+        { text: I18n.t("general.no"), style: 'cancel' },
+        { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() },
+      ],
+      { cancelable: false }
+    );
+    // Do not bubble up
+    return true;
+  };
 
   _navigateToSites() {
     // Navigate to App

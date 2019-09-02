@@ -18,8 +18,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
     this.state = {
       transactionConsumption: null,
       values: [],
-      consumptionValues: [],
-      stateOfChargeValues: []
+      consumptionValues: null,
+      stateOfChargeValues: null
     };
   }
 
@@ -28,11 +28,6 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
     await super.componentDidMount();
     // Get the Consumption
     this.refresh();
-  }
-
-  async componentWillUnmount() {
-    // Call parent
-    await super.componentWillUnmount();
   }
 
   _getChargingStationConsumption = async () => {
@@ -77,8 +72,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
         this.setState({
           transactionConsumption: null,
           values: null,
-          consumptionValues: [],
-          stateOfChargeValues: []
+          consumptionValues: null,
+          stateOfChargeValues: null
         });
       }
     } catch (error) {
@@ -216,12 +211,12 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
     return (
       <View style={style.container}>
         <BackgroundComponent active={false}>
-          {showTransactionDetails && transactionConsumption && (
-            <TransactionHeaderComponent transaction={transactionConsumption} isAdmin={isAdmin} displayNavigationIcon={false} />
-          )}
-          {consumptionValues && consumptionValues.length > 1 ? (
+          { showTransactionDetails && transactionConsumption &&
+            <TransactionHeaderComponent transaction={transactionConsumption} isAdmin={isAdmin} displayNavigationIcon={false}/>
+          }
+          {consumptionValues && consumptionValues.length > 1 ?
             <LineChart
-              style={showTransactionDetails && transactionConsumption ? style.chartWithHeader : style.chart}
+              style={showTransactionDetails && transactionConsumption ? style.chartWithHeader : style.chart }
               data={chartDefinition.data}
               chartDescription={{ text: "" }}
               legend={{
@@ -256,9 +251,9 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
               dragDecelerationFrictionCoef={0.99}
               keepPositionOnRotation={false}
             />
-          ) : (
-            <Text style={style.notEnoughData}>{I18n.t("details.notEnoughData")}</Text>
-          )}
+          :
+            consumptionValues && <Text style={style.notEnoughData}>{I18n.t("details.notEnoughData")}</Text>
+          }
         </BackgroundComponent>
       </View>
     );

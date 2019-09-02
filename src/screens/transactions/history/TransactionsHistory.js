@@ -9,8 +9,9 @@ import computeStyleSheet from "../TransactionsCommonStyles";
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import TransactionHistoryComponent from "../../../components/transaction/history/TransactionHistoryComponent";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
-import ListEmptyTextComponent from "../../../components/list-empty-text/ListEmptyTextComponent";
+import ListEmptyTextComponent from "../../../components/list/empty-text/ListEmptyTextComponent";
 import PropTypes from "prop-types";
+import ListFooterComponent from "../../../components/list/footer/ListFooterComponent";
 
 export default class TransactionsHistory extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -26,35 +27,22 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen {
       isPricingActive: false,
       isAdmin: false
     };
-  }
-
-  async componentWillMount() {
-    // Call parent
-    await super.componentWillMount();
+    // Set refresh period
+    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();
-    // Set
-    const securityProvider = this.centralServerProvider.getSecurityProvider();
-    this.setState({
-      isPricingActive: securityProvider.isComponentPricingActive()
-    });
     // Get the sites
     await this.refresh();
-  }
-
-  async componentWillUnmount() {
-    // Call parent
-    await super.componentWillUnmount();
   }
 
   _getTransations = async (searchText = "", skip, limit) => {
     let transactions = [];
     try {
       // Get the Sites
-      transactions = await this.centralServerProvider.getTransactions({}, { skip, limit });
+      transactions = await this.centralServerProvider.getTransactions( {}, { skip, limit });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
@@ -65,7 +53,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen {
 
   onBack = () => {
     // Do not bubble up
-    true;
+    return false;
   };
 
   _manualRefresh = async () => {
@@ -77,27 +65,20 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen {
     this.setState({ refreshing: false });
   };
 
-  _footerList = () => {
-    const { skip, count, limit } = this.state;
-    if (skip + limit < count || count === -1) {
-      return <Spinner />;
-    }
-    return null;
-  };
-
   refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
+      // Set
+      const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Refresh All
       const transactions = await this._getTransations("", 0, skip + limit);
-      // Refresh Admin
-      const securityProvider = this.centralServerProvider.getSecurityProvider();
       this.setState({
         loading: false,
         transactions: transactions.result,
         count: transactions.count,
-        isAdmin: securityProvider ? securityProvider.isAdmin() : false
+        isAdmin: securityProvider ? securityProvider.isAdmin() : false,
+        isPricingActive: securityProvider.isComponentPricingActive()
       });
     }
   };
@@ -120,7 +101,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen {
   render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin, transactions, isPricingActive } = this.state;
+    const { loading, isAdmin, transactions, isPricingActive, skip, count, limit } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
@@ -136,21 +117,14 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen {
             ) : (
               <FlatList
                 data={transactions}
-                renderItem={({ item }) => (
-                  <TransactionHistoryComponent
-                    transaction={item}
-                    navigation={navigation}
-                    isAdmin={isAdmin}
-                    isAdmin={isAdmin}
-                    isPricingActive={isPricingActive}
-                  />
-                )}
+                renderItem={({ item }) => <TransactionHistoryComponent transaction={item} navigation={navigation}
+                  isAdmin={isAdmin} isAdmin={isAdmin} isPricingActive={isPricingActive}/>}
                 keyExtractor={(item) => `${item.id}`}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
-                ListFooterComponent={this._footerList}
-                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("transactions.noTransactionsHistory")} />}
+                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit}/>}
+                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("transactions.noTransactionsHistory")}/>}
               />
             )}
           </View>

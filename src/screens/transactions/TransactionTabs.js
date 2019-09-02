@@ -1,12 +1,12 @@
 import React from "react";
 import { Tab, Tabs, TabHeading, Icon } from "native-base";
-import { ScrollView } from "react-native";
+import { ScrollView, BackHandler, Alert } from "react-native";
 import TransactionsHistory from "./history/TransactionsHistory";
 import TransactionsInProgress from "./in-progress/TransactionsInProgress";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
-import I18n from "../../I18n/I18n";
 import computeStyleSheet from "./TransactionTabsStyles";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
+import I18n from "../../I18n/I18n";
 
 export default class TransactionTabs extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -23,14 +23,17 @@ export default class TransactionTabs extends BaseAutoRefreshScreen {
     await this.refresh();
   }
 
-  async componentWillUnmount() {
-    // Call parent
-    await super.componentWillUnmount();
-  }
-
   onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.goBack();
+    // Exit?
+    Alert.alert(
+      I18n.t("general.exitApp"),
+      I18n.t("general.exitAppConfirm"),
+      [
+        { text: I18n.t("general.no"), style: 'cancel' },
+        { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() },
+      ],
+      { cancelable: false }
+    );
     // Do not bubble up
     return true;
   };

@@ -2,7 +2,7 @@ import React from "react";
 import { Text } from "native-base";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./ListEmptyTextComponentStyles";
-import I18n from "../../I18n/I18n";
+import I18n from "../../../I18n/I18n";
 import PropTypes from "prop-types";
 
 export default class ListEmptyTextComponent extends ResponsiveComponent {

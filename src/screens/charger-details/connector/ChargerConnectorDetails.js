@@ -33,19 +33,11 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       buttonDisabled: true,
       refreshing: false
     };
-    // Set refresh period
-    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
   }
 
   async componentWillMount() {
     // Call parent
     await super.componentWillMount();
-    // Get the provider
-    const centralServerProvider = await ProviderFactory.getProvider();
-    const securityProvider = centralServerProvider.getSecurityProvider();
-    this.setState({
-      isPricingActive: securityProvider.isComponentPricingActive()
-    });
   }
 
   async componentDidMount() {
@@ -151,6 +143,12 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     this._handleStartStopDisabledButton();
     // Refresh Duration
     this._refreshDurationInfos();
+    // Get the provider
+    const centralServerProvider = await ProviderFactory.getProvider();
+    const securityProvider = centralServerProvider.getSecurityProvider();
+    this.setState({
+      isPricingActive: securityProvider.isComponentPricingActive()
+    });
   };
 
   _manualRefresh = async () => {
@@ -540,7 +538,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
               </View>
               <View style={style.rowContainer}>
                 {this._renderBatteryLevel(style)}
-                {isPricingActive ? this._renderPrice(style) : undefined}
+                {isPricingActive ? this._renderPrice(style) : <View style={style.columnContainer} />}
               </View>
             </View>
           </ScrollView>

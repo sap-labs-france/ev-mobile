@@ -26,6 +26,7 @@ export default class TransactionHistoryComponent extends ResponsiveComponent {
     const duration = Utils.formatDurationHHMMSS(transaction.stop.totalDurationSecs, false);
     const inactivity = Utils.formatDurationHHMMSS(transaction.stop.totalInactivitySecs, false);
     const inactivityStyle = Utils.computeInactivityStyle(transaction.stop.totalInactivitySecs);
+    const batteryLevel = transaction.stateOfCharge ? `${transaction.stateOfCharge} > ${transaction.stop.stateOfCharge}` : "-";
     const navigation = this.props.navigation;
     return (
       <Animatable.View
@@ -41,26 +42,31 @@ export default class TransactionHistoryComponent extends ResponsiveComponent {
             <View style={style.transactionContent}>
               <View style={style.columnContainer}>
                 <Icon type="MaterialIcons" name="ev-station" style={[style.icon, style.info]} />
-                <View style={style.rowContainer}>
-                  <Text style={[style.labelValue, style.info]}>{`${consumption} kW.h`}</Text>
-                </View>
+                <Text style={[style.labelValue, style.info]}>{consumption}</Text>
+                <Text style={[style.subLabelValue, style.info]}>(kW.h)</Text>
               </View>
               <View style={style.columnContainer}>
                 <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
                 <Text style={[style.labelValue, style.info]}>{duration}</Text>
+                <Text style={[style.subLabelValue, style.info]}>(hh:mm)</Text>
               </View>
               <View style={style.columnContainer}>
                 <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
                 <Text style={[style.labelValue, inactivityStyle]}>{inactivity}</Text>
+                <Text style={[style.subLabelValue, inactivityStyle]}>(hh:mm)</Text>
               </View>
-              {isPricingActive && (
+              <View style={style.columnContainer}>
+                <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
+                <Text style={[style.labelValue, style.info]}>{batteryLevel}</Text>
+                <Text style={[style.subLabelValue, style.info]}>(%)</Text>
+              </View>
+              {isPricingActive &&
                 <View style={style.columnContainer}>
                   <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
-                  <Text style={[style.labelValue, style.info]}>
-                    {price} {transaction.priceUnit}
-                  </Text>
+                  <Text style={[style.labelValue, style.info]}>{price}</Text>
+                  <Text style={[style.subLabelValue, style.info]}>({transaction.priceUnit})</Text>
                 </View>
-              )}
+              }
             </View>
           </View>
         </TouchableOpacity>
@@ -77,3 +83,4 @@ TransactionHistoryComponent.propTypes = {
 };
 
 TransactionHistoryComponent.defaultProps = {};
+

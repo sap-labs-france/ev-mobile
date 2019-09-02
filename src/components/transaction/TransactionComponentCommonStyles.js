@@ -55,6 +55,9 @@ const commonStyles = ScaledSheet.create({
   },
   labelValue: {
     fontSize: "15@s"
+  },
+  subLabelValue: {
+    fontSize: "10@s"
   }
 });
 

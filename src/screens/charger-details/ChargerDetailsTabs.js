@@ -11,7 +11,6 @@ import computeStyleSheet from "./ChargerDetailsTabsStyles";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
-import PropTypes from "prop-types";
 
 export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -27,8 +26,6 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
       canDisplayTransaction: false,
       isAdmin: false
     };
-    // Set refresh period
-    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
   }
 
   async componentDidMount() {
@@ -36,11 +33,6 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
     await super.componentDidMount();
     // Refresh Charger
     await this.refresh();
-  }
-
-  async componentWillUnmount() {
-    // Call parent
-    await super.componentWillUnmount();
   }
 
   onBack = () => {
