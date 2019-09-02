@@ -21,7 +21,7 @@ export default class BaseAutoRefreshScreen extends BaseScreen {
     // Call parent
     await super.componentDidMount();
     // Start the timer
-    this._startRefreshTimer(true);
+    this._startRefreshTimer();
   }
 
   async componentWillUnmount() {
@@ -59,7 +59,10 @@ export default class BaseAutoRefreshScreen extends BaseScreen {
   }
 
   setRefreshPeriodMillis(refreshPeriodMillis) {
+    // Set new interval
     this.refreshPeriodMillis = refreshPeriodMillis;
+    // Restart the timer
+    this._restartTimer();
   }
 
   getRefreshPeriodMillis() {
@@ -71,30 +74,41 @@ export default class BaseAutoRefreshScreen extends BaseScreen {
     console.log("BaseAutoRefreshScreen: Refresh not implemented!!!");
   }
 
-  _startRefreshTimer(initial = false) {
-    // Restart the timer
-    if (!this.timerRefresh && this.timerRefreshActive) {
-      // Start the timer
-      this.timerRefresh = setInterval(() => {
+  _startRefreshTimer() {
+    // Start the timer
+    if (!this.timerRefresh) {
+      this.timerRefresh = setTimeout(() => {
         // Refresh
-        this._refreshFromTimer();
+        if (this.timerRefreshActive) {
+          // Component Mounted?
+          if (this.mounted) {
+            // Execute
+            this.refresh();
+            // Launch again
+            this._restartTimer();
+          }
+        }
       }, this.refreshPeriodMillis);
+    }
+  }
+
+  _restartTimer() {
+    // Already started
+    if (this.timerRefresh) {
+      // Clear the timer
+      this._clearRefreshTimer();
+      // Start the timer
+      this._startRefreshTimer();
     }
   }
 
   _clearRefreshTimer() {
     // Stop the timer
     if (this.timerRefresh) {
-      clearInterval(this.timerRefresh);
+      clearTimeout(this.timerRefresh);
+      this.timerRefresh = null;
     }
   }
-
-  _refreshFromTimer = async () => {
-    // Component Mounted?
-    if (this.mounted) {
-      this.refresh();
-    }
-  };
 
   _search(searchText) {
     // Set

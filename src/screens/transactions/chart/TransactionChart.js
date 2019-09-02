@@ -30,11 +30,6 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
     this.refresh();
   }
 
-  async componentWillUnmount() {
-    // Call parent
-    await super.componentWillUnmount();
-  }
-
   _getChargingStationConsumption = async () => {
     const { transactionID } = this.props;
     try {
@@ -213,7 +208,6 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
     const { transactionConsumption, consumptionValues, stateOfChargeValues } = this.state;
     const { showTransactionDetails, isAdmin } = this.props;
     const chartDefinition = this.computeChartDefinition(consumptionValues, stateOfChargeValues);
-    console.log(transactionConsumption);
     return (
       <View style={style.container}>
         <BackgroundComponent active={false}>

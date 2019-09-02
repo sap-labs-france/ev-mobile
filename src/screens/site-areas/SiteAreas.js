@@ -11,7 +11,6 @@ import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import ListEmptyTextComponent from "../../components/list-empty-text/ListEmptyTextComponent";
-import PropTypes from "prop-types";
 
 export default class SiteAreas extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -31,11 +30,6 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
     await super.componentDidMount();
     // Get the Site Areas
     await this.refresh();
-  }
-
-  async componentWillUnmount() {
-    // Call parent
-    await super.componentWillUnmount();
   }
 
   _getSiteAreas = async (searchText, skip, limit) => {

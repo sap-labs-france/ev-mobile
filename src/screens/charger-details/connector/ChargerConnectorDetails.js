@@ -40,12 +40,6 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
   async componentWillMount() {
     // Call parent
     await super.componentWillMount();
-    // Get the provider
-    const centralServerProvider = await ProviderFactory.getProvider();
-    const securityProvider = centralServerProvider.getSecurityProvider();
-    this.setState({
-      isPricingActive: securityProvider.isComponentPricingActive()
-    });
   }
 
   async componentDidMount() {
@@ -151,6 +145,12 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     this._handleStartStopDisabledButton();
     // Refresh Duration
     this._refreshDurationInfos();
+    // Get the provider
+    const centralServerProvider = await ProviderFactory.getProvider();
+    const securityProvider = centralServerProvider.getSecurityProvider();
+    this.setState({
+      isPricingActive: securityProvider.isComponentPricingActive()
+    });
   };
 
   _manualRefresh = async () => {

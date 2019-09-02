@@ -28,26 +28,11 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
     };
   }
 
-  async componentWillMount() {
-    // Call parent
-    await super.componentWillMount();
-  }
-
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();
-    // Set
-    const securityProvider = this.centralServerProvider.getSecurityProvider();
-    this.setState({
-      isPricingActive: securityProvider.isComponentPricingActive()
-    });
-    // Get the sites
+    // Get the sessions
     await this.refresh();
-  }
-
-  async componentWillUnmount() {
-    // Call parent
-    await super.componentWillUnmount();
   }
 
   _getTransationsInProgress = async (searchText = "", skip, limit) => {
@@ -97,7 +82,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
         loading: false,
         transactions: transactions.result,
         count: transactions.count,
-        isAdmin: securityProvider ? securityProvider.isAdmin() : false
+        isAdmin: securityProvider ? securityProvider.isAdmin() : false,
+        isPricingActive: securityProvider.isComponentPricingActive()
       });
     }
   };

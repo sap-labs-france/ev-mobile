@@ -34,16 +34,6 @@ export default class Chargers extends BaseAutoRefreshScreen {
     await this.refresh();
   }
 
-  async componentWillUnmount() {
-    // Call parent
-    await super.componentWillUnmount();
-  }
-
-  async componentDidFocus() {
-    // Call parent
-    await super.componentDidFocus();
-  }
-
   _getChargers = async (searchText, skip, limit) => {
     const { siteAreaID } = this.state;
     let chargers = [];

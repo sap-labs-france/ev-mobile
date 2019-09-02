@@ -26,28 +26,15 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen {
       isPricingActive: false,
       isAdmin: false
     };
-  }
-
-  async componentWillMount() {
-    // Call parent
-    await super.componentWillMount();
+    // Set refresh period
+    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();
-    // Set
-    const securityProvider = this.centralServerProvider.getSecurityProvider();
-    this.setState({
-      isPricingActive: securityProvider.isComponentPricingActive()
-    });
     // Get the sites
     await this.refresh();
-  }
-
-  async componentWillUnmount() {
-    // Call parent
-    await super.componentWillUnmount();
   }
 
   _getTransations = async (searchText = "", skip, limit) => {
@@ -89,15 +76,16 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen {
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
+      // Set
+      const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Refresh All
       const transactions = await this._getTransations("", 0, skip + limit);
-      // Refresh Admin
-      const securityProvider = this.centralServerProvider.getSecurityProvider();
       this.setState({
         loading: false,
         transactions: transactions.result,
         count: transactions.count,
-        isAdmin: securityProvider ? securityProvider.isAdmin() : false
+        isAdmin: securityProvider ? securityProvider.isAdmin() : false,
+        isPricingActive: securityProvider.isComponentPricingActive()
       });
     }
   };

@@ -38,11 +38,6 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
     await this.refresh();
   }
 
-  async componentWillUnmount() {
-    // Call parent
-    await super.componentWillUnmount();
-  }
-
   onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack();

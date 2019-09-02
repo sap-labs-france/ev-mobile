@@ -4,7 +4,6 @@ import { ScrollView } from "react-native";
 import TransactionsHistory from "./history/TransactionsHistory";
 import TransactionsInProgress from "./in-progress/TransactionsInProgress";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
-import I18n from "../../I18n/I18n";
 import computeStyleSheet from "./TransactionTabsStyles";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 
@@ -21,11 +20,6 @@ export default class TransactionTabs extends BaseAutoRefreshScreen {
     await super.componentDidMount();
     // Load Transactions
     await this.refresh();
-  }
-
-  async componentWillUnmount() {
-    // Call parent
-    await super.componentWillUnmount();
   }
 
   onBack = () => {
