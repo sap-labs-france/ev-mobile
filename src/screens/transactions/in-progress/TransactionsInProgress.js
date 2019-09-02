@@ -51,7 +51,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
 
   onBack = () => {
     // Do not bubble up
-    return true;
+    return false;
   };
 
   _manualRefresh = async () => {
