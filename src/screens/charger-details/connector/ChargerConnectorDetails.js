@@ -550,7 +550,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
               </View>
               <View style={style.rowContainer}>
                 {this._renderBatteryLevel(style)}
-                {isPricingActive ? this._renderPrice(style) : undefined}
+                {isPricingActive ? this._renderPrice(style) : <View style={style.columnContainer} />}
               </View>
             </View>
           </ScrollView>
