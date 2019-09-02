@@ -10,8 +10,8 @@ import BackgroundComponent from "../../components/background/BackgroundComponent
 import computeStyleSheet from "./SitesStyles";
 import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
-import ListEmptyTextComponent from "../../components/list-empty-text/ListEmptyTextComponent";
-import PropTypes from "prop-types";
+import ListEmptyTextComponent from "../../components/list/empty-text/ListEmptyTextComponent";
+import ListFooterComponent from "../../components/list/footer/ListFooterComponent";
 
 export default class Sites extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -113,18 +113,10 @@ export default class Sites extends BaseAutoRefreshScreen {
     }
   };
 
-  _footerList = () => {
-    const { skip, count, limit } = this.state;
-    if ((skip + limit < count) || (count === -1)) {
-      return <Spinner />;
-    }
-    return null;
-  };
-
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading } = this.state;
+    const { loading, skip, count, limit } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
@@ -155,7 +147,7 @@ export default class Sites extends BaseAutoRefreshScreen {
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
                 ListFooterComponent={this._footerList}
-                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("sites.noSites")}/>}
+                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit}/>}
               />
             )}
           </View>

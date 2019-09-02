@@ -9,8 +9,9 @@ import computeStyleSheet from "../TransactionsCommonStyles";
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import TransactionInProgressComponent from "../../../components/transaction/in-progress/TransactionInProgressComponent";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
-import ListEmptyTextComponent from "../../../components/list-empty-text/ListEmptyTextComponent";
+import ListEmptyTextComponent from "../../../components/list/empty-text/ListEmptyTextComponent";
 import PropTypes from "prop-types";
+import ListFooterComponent from "../../../components/list/footer/ListFooterComponent";
 
 export default class TransactionsInProgress extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -62,14 +63,6 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
     this.setState({ refreshing: false });
   };
 
-  _footerList = () => {
-    const { skip, count, limit } = this.state;
-    if ((skip + limit < count) || (count === -1)) {
-      return <Spinner />;
-    }
-    return null;
-  };
-
   refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
@@ -106,7 +99,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
   render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin, transactions, isPricingActive } = this.state;
+    const { loading, isAdmin, transactions, isPricingActive, skip, count, limit } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
@@ -128,7 +121,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
-                ListFooterComponent={this._footerList}
+                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit}/>}
                 ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("transactions.noTransactionsInProgress")}/>}
               />
             )}
