@@ -26,7 +26,7 @@ export default class TransactionHistoryComponent extends ResponsiveComponent {
     const duration = Utils.formatDurationHHMMSS(transaction.stop.totalDurationSecs, false);
     const inactivity = Utils.formatDurationHHMMSS(transaction.stop.totalInactivitySecs, false);
     const inactivityStyle = Utils.computeInactivityStyle(transaction.stop.totalInactivitySecs);
-    const batteryLevel = transaction.stateOfCharge ? `${transaction.stateOfCharge}>${transaction.stop.stateOfCharge}` : "-";
+    const batteryLevel = transaction.stateOfCharge ? `${transaction.stateOfCharge} > ${transaction.stop.stateOfCharge}` : "-";
     const navigation = this.props.navigation;
     return (
       <Animatable.View

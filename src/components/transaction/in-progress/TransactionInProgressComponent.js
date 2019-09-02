@@ -26,7 +26,7 @@ export default class TransactionInProgressComponent extends ResponsiveComponent 
     const duration = Utils.formatDurationHHMMSS(transaction.currentTotalDurationSecs, false);
     const inactivity = Utils.formatDurationHHMMSS(transaction.currentTotalInactivitySecs, false);
     const inactivityStyle = Utils.computeInactivityStyle(transaction.currentTotalInactivitySecs);
-    const batteryLevel = transaction.currentStateOfCharge ? transaction.currentStateOfCharge : "-";
+    const batteryLevel = transaction.stateOfCharge ? `${transaction.stateOfCharge} > ${transaction.currentStateOfCharge}` : "-";
     const navigation = this.props.navigation;
     return (
       <Animatable.View
