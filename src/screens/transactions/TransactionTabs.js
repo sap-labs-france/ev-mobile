@@ -28,10 +28,7 @@ export default class TransactionTabs extends BaseAutoRefreshScreen {
     Alert.alert(
       I18n.t("general.exitApp"),
       I18n.t("general.exitAppConfirm"),
-      [
-        { text: I18n.t("general.no"), style: 'cancel' },
-        { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() },
-      ],
+      [{ text: I18n.t("general.no"), style: "cancel" }, { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() }],
       { cancelable: false }
     );
     // Do not bubble up

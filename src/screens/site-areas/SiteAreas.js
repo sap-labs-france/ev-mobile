@@ -131,8 +131,8 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
-                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("siteAreas.noSiteAreas")}/>}
-                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit}/>}
+                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("siteAreas.noSiteAreas")} />}
+                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit} />}
               />
             )}
           </View>

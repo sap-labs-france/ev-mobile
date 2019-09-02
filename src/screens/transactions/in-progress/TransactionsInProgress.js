@@ -40,7 +40,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
     let transactions = [];
     try {
       // Get the Sites
-      transactions = await this.centralServerProvider.getTransactionsActive( {}, { skip, limit });
+      transactions = await this.centralServerProvider.getTransactionsActive({}, { skip, limit });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
@@ -49,10 +49,9 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
     return transactions;
   };
 
-  onBack = () => {
+  onBack = () =>
     // Do not bubble up
-    return false;
-  };
+    false;
 
   _manualRefresh = async () => {
     // Display spinner
@@ -115,14 +114,20 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
             ) : (
               <FlatList
                 data={transactions}
-                renderItem={({ item }) => <TransactionInProgressComponent transaction={item} navigation={navigation}
-                  isAdmin={isAdmin} isPricingActive={isPricingActive}/>}
+                renderItem={({ item }) => (
+                  <TransactionInProgressComponent
+                    transaction={item}
+                    navigation={navigation}
+                    isAdmin={isAdmin}
+                    isPricingActive={isPricingActive}
+                  />
+                )}
                 keyExtractor={(item) => `${item.id}`}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
-                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit}/>}
-                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("transactions.noTransactionsInProgress")}/>}
+                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit} />}
+                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("transactions.noTransactionsInProgress")} />}
               />
             )}
           </View>

@@ -65,10 +65,7 @@ export default class Sites extends BaseAutoRefreshScreen {
     Alert.alert(
       I18n.t("general.exitApp"),
       I18n.t("general.exitAppConfirm"),
-      [
-        { text: I18n.t("general.no"), style: 'cancel' },
-        { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() },
-      ],
+      [{ text: I18n.t("general.no"), style: "cancel" }, { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() }],
       { cancelable: false }
     );
     return true;
@@ -146,8 +143,8 @@ export default class Sites extends BaseAutoRefreshScreen {
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
-                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("sites.noSites")}/>}
-                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit}/>}
+                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("sites.noSites")} />}
+                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit} />}
               />
             )}
           </View>
