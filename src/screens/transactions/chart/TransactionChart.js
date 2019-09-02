@@ -18,8 +18,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
     this.state = {
       transactionConsumption: null,
       values: [],
-      consumptionValues: [],
-      stateOfChargeValues: []
+      consumptionValues: null,
+      stateOfChargeValues: null
     };
   }
 
@@ -72,8 +72,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
         this.setState({
           transactionConsumption: null,
           values: null,
-          consumptionValues: [],
-          stateOfChargeValues: []
+          consumptionValues: null,
+          stateOfChargeValues: null
         });
       }
     } catch (error) {
@@ -252,7 +252,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
               keepPositionOnRotation={false}
             />
           :
-            <Text style={style.notEnoughData}>{I18n.t("details.notEnoughData")}</Text>
+            !consumptionValues && <Text style={style.notEnoughData}>{I18n.t("details.notEnoughData")}</Text>
           }
         </BackgroundComponent>
       </View>
