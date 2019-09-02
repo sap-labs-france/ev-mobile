@@ -64,8 +64,8 @@
     "transactionsHistory": "Sessions History",
     "transactionsInProgress": "Sessions In Progress",
     "chargingCurve": "Session Chart",
-    "noTransactionsInProgress": "No sessions in progress",
-    "noTransactionsHistory": "No sessions history"
+    "noTransactionsInProgress": "No Session in progress",
+    "noTransactionsHistory": "No Session history"
   },
   "sites": {
     "freeChargers": "Free chargers",
