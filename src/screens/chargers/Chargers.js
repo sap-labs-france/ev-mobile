@@ -10,7 +10,8 @@ import computeStyleSheet from "./ChargersStyles";
 import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
-import ListEmptyTextComponent from "../../components/list-empty-text/ListEmptyTextComponent";
+import ListEmptyTextComponent from "../../components/list/empty-text/ListEmptyTextComponent";
+import ListFooterComponent from "../../components/list/footer/ListFooterComponent";
 
 export default class Chargers extends BaseAutoRefreshScreen {
   constructor(props) {
