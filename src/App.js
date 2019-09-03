@@ -97,6 +97,7 @@ const AppDrawerNavigator = createDrawerNavigator(
     drawerWidth: Dimensions.get("window").width / 1.5,
     initialRouteName: "SitesNavigator",
     unmountInactiveRoutes: true,
+    header: null,
     headerMode: "none",
     drawerPosition: "right",
     contentComponent: (props) => <Sidebar {...props} />
