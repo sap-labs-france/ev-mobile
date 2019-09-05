@@ -9,8 +9,9 @@ import computeStyleSheet from "../TransactionsCommonStyles";
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import TransactionInProgressComponent from "../../../components/transaction/in-progress/TransactionInProgressComponent";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
-import ListEmptyTextComponent from "../../../components/list-empty-text/ListEmptyTextComponent";
+import ListEmptyTextComponent from "../../../components/list/empty-text/ListEmptyTextComponent";
 import PropTypes from "prop-types";
+import ListFooterComponent from "../../../components/list/footer/ListFooterComponent";
 
 export default class TransactionsInProgress extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -28,33 +29,18 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
     };
   }
 
-  async componentWillMount() {
-    // Call parent
-    await super.componentWillMount();
-  }
-
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();
-    // Set
-    const securityProvider = this.centralServerProvider.getSecurityProvider();
-    this.setState({
-      isPricingActive: securityProvider.isComponentPricingActive()
-    });
-    // Get the sites
+    // Get the sessions
     await this.refresh();
-  }
-
-  async componentWillUnmount() {
-    // Call parent
-    await super.componentWillUnmount();
   }
 
   _getTransationsInProgress = async (searchText = "", skip, limit) => {
     let transactions = [];
     try {
       // Get the Sites
-      transactions = await this.centralServerProvider.getTransactionsActive( {}, { skip, limit });
+      transactions = await this.centralServerProvider.getTransactionsActive({}, { skip, limit });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
@@ -63,10 +49,9 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
     return transactions;
   };
 
-  onBack = () => {
+  onBack = () =>
     // Do not bubble up
-    return true;
-  };
+    false;
 
   _manualRefresh = async () => {
     // Display spinner
@@ -75,14 +60,6 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
     await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
-  };
-
-  _footerList = () => {
-    const { skip, count, limit } = this.state;
-    if (skip + limit < count || count === -1) {
-      return <Spinner />;
-    }
-    return null;
   };
 
   refresh = async () => {
@@ -97,7 +74,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
         loading: false,
         transactions: transactions.result,
         count: transactions.count,
-        isAdmin: securityProvider ? securityProvider.isAdmin() : false
+        isAdmin: securityProvider ? securityProvider.isAdmin() : false,
+        isPricingActive: securityProvider.isComponentPricingActive()
       });
     }
   };
@@ -120,7 +98,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
   render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin, transactions, isPricingActive } = this.state;
+    const { loading, isAdmin, transactions, isPricingActive, skip, count, limit } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
@@ -136,14 +114,20 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen {
             ) : (
               <FlatList
                 data={transactions}
-                renderItem={({ item }) => <TransactionInProgressComponent transaction={item} navigation={navigation}
-                  isAdmin={isAdmin} isPricingActive={isPricingActive}/>}
+                renderItem={({ item }) => (
+                  <TransactionInProgressComponent
+                    transaction={item}
+                    navigation={navigation}
+                    isAdmin={isAdmin}
+                    isPricingActive={isPricingActive}
+                  />
+                )}
                 keyExtractor={(item) => `${item.id}`}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
-                ListFooterComponent={this._footerList}
-                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("transactions.noTransactionsInProgress")}/>}
+                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit} />}
+                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("transactions.noTransactionsInProgress")} />}
               />
             )}
           </View>

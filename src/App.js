@@ -45,6 +45,7 @@ const AuthNavigator = createStackNavigator(
   },
   {
     initialRouteName: "Login",
+    header: null,
     headerMode: "none"
   }
 );
@@ -59,6 +60,7 @@ const SitesNavigator = createStackNavigator(
   },
   {
     initialRouteName: "Sites",
+    header: null,
     headerMode: "none"
   }
 );
@@ -71,6 +73,7 @@ const ChargersNavigator = createStackNavigator(
   },
   {
     initialRouteName: "Chargers",
+    header: null,
     headerMode: "none"
   }
 );
@@ -84,6 +87,7 @@ const TransactionsNavigator = createStackNavigator(
   },
   {
     initialRouteName: "TransactionTabs",
+    header: null,
     headerMode: "none"
   }
 );
@@ -107,6 +111,7 @@ const AppDrawerNavigator = createDrawerNavigator(
     drawerWidth: Dimensions.get("window").width / 1.5,
     initialRouteName: "SitesNavigator",
     unmountInactiveRoutes: true,
+    header: null,
     headerMode: "none",
     drawerPosition: "right",
     contentComponent: (props) => <Sidebar {...props} />
@@ -161,7 +166,7 @@ export default class App extends React.Component {
   render() {
     return (
       <Root>
-        <StatusBar hidden />
+        <StatusBar hidden={true} />
         <RootContainerPersists />
       </Root>
     );

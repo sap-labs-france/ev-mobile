@@ -24,23 +24,47 @@ const fiori3Primary2 = "#0a6ed1";
 const darkLightRatio = 0.5;
 
 const primary = fiori3Brand;
-const primaryLight = color(primary).lighten(darkLightRatio).hex();
-const primaryDark = color(primary).darken(darkLightRatio).hex();
+const primaryLight = color(primary)
+  .lighten(darkLightRatio)
+  .hex();
+const primaryDark = color(primary)
+  .darken(darkLightRatio)
+  .hex();
 const info = fiori3Primary2;
-const infoLight = color(info).lighten(darkLightRatio).hex();;
-const infoDark = color(info).darken(darkLightRatio).hex();
+const infoLight = color(info)
+  .lighten(darkLightRatio)
+  .hex();
+const infoDark = color(info)
+  .darken(darkLightRatio)
+  .hex();
 const success = fiori3Success;
-const successLight = color(success).lighten(darkLightRatio).hex();
-const successDark = color(success).darken(darkLightRatio).hex();
+const successLight = color(success)
+  .lighten(darkLightRatio)
+  .hex();
+const successDark = color(success)
+  .darken(darkLightRatio)
+  .hex();
 const danger = fiori3Error;
-const dangerLight = color(danger).lighten(darkLightRatio).hex();
-const dangerDark = color(danger).darken(darkLightRatio).hex();
+const dangerLight = color(danger)
+  .lighten(darkLightRatio)
+  .hex();
+const dangerDark = color(danger)
+  .darken(darkLightRatio)
+  .hex();
 const warning = "#FB8C00";
-const warningLight = color(warning).lighten(darkLightRatio).hex();
-const warningDark = color(warning).darken(darkLightRatio).hex();
+const warningLight = color(warning)
+  .lighten(darkLightRatio)
+  .hex();
+const warningDark = color(warning)
+  .darken(darkLightRatio)
+  .hex();
 const disabled = "#757575";
-const disabledLight = color(disabled).lighten(darkLightRatio).hex();
-const disabledDark = color(disabled).darken(darkLightRatio).hex();
+const disabledLight = color(disabled)
+  .lighten(darkLightRatio)
+  .hex();
+const disabledDark = color(disabled)
+  .darken(darkLightRatio)
+  .hex();
 const background = fiori3Bg;
 const backgroundHeader = "#E7E7E7";
 const borderColor = "#ccc";
@@ -315,8 +339,12 @@ export default {
   textColor: primaryDark,
   headerTextColor: primaryDark,
   headerBgColor: backgroundHeader,
-  headerBgColorLight: color(backgroundHeader).lighten(0.025).hex(),
-  headerBgColorDark: color(backgroundHeader).darken(0.025).hex(),
+  headerBgColorLight: color(backgroundHeader)
+    .lighten(0.025)
+    .hex(),
+  headerBgColorDark: color(backgroundHeader)
+    .darken(0.025)
+    .hex(),
   inverseTextColor: light,
   noteFontSize: 14,
   get defaultTextColor() {

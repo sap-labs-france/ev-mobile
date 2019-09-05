@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, FlatList, RefreshControl } from "react-native";
+import { Platform, FlatList, RefreshControl, BackHandler, Alert } from "react-native";
 import { Container, View, Spinner } from "native-base";
 import ChargerComponent from "../../components/charger/ChargerComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
@@ -10,7 +10,8 @@ import computeStyleSheet from "./ChargersStyles";
 import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
-import ListEmptyTextComponent from "../../components/list-empty-text/ListEmptyTextComponent";
+import ListEmptyTextComponent from "../../components/list/empty-text/ListEmptyTextComponent";
+import ListFooterComponent from "../../components/list/footer/ListFooterComponent";
 
 export default class Chargers extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -32,16 +33,6 @@ export default class Chargers extends BaseAutoRefreshScreen {
     await super.componentDidMount();
     // Get Chargers
     await this.refresh();
-  }
-
-  async componentWillUnmount() {
-    // Call parent
-    await super.componentWillUnmount();
-  }
-
-  async componentDidFocus() {
-    // Call parent
-    await super.componentDidFocus();
   }
 
   _getChargers = async (searchText, skip, limit) => {
@@ -79,8 +70,19 @@ export default class Chargers extends BaseAutoRefreshScreen {
   };
 
   onBack = () => {
-    // Refresh All
-    this.props.navigation.goBack();
+    const { siteAreaID } = this.state;
+    if (siteAreaID) {
+      // Go Back
+      this.props.navigation.goBack();
+    } else {
+      // Exit?
+      Alert.alert(
+        I18n.t("general.exitApp"),
+        I18n.t("general.exitAppConfirm"),
+        [{ text: I18n.t("general.no"), style: "cancel" }, { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() }],
+        { cancelable: false }
+      );
+    }
     // Do not bubble up
     return true;
   };
@@ -109,14 +111,6 @@ export default class Chargers extends BaseAutoRefreshScreen {
     this.setState({ refreshing: false });
   };
 
-  _footerList = () => {
-    const { skip, count, limit } = this.state;
-    if (skip + limit < count || count === -1) {
-      return <Spinner />;
-    }
-    return null;
-  };
-
   _getSiteIDFromChargers() {
     const { chargers } = this.state;
     // Find the first available Site ID
@@ -132,7 +126,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { siteAreaID, loading, chargers } = this.state;
+    const { siteAreaID, loading, chargers, skip, count, limit } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
@@ -164,8 +158,8 @@ export default class Chargers extends BaseAutoRefreshScreen {
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
-                ListFooterComponent={this._footerList}
-                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("chargers.noChargers")}/>}
+                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit} />}
+                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("chargers.noChargers")} />}
               />
             )}
           </View>

@@ -138,7 +138,8 @@
     "instantPowerChartLabel": "Momentane Leistung (kW)",
     "cumulatedChartLabel": "Kumuliert (kW.h)",
     "batteryChartLabel": "Batterieladestand (%)",
-    "connectorMax": "Max. Leistung Anschluss (kW)"
+    "connectorMax": "Max. Leistung Anschluss (kW)",
+    "notEnoughData": "Nicht genügend Daten, um das Diagramm anzuzeigen"
   },
   "notifications": {
     "mustLogin": "Sie müssen angemeldet sein",

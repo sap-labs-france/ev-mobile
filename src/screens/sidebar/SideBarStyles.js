@@ -36,6 +36,7 @@ const commonStyles = ScaledSheet.create({
     fontSize: "14@s",
     margin: "2@s",
     alignSelf: "center",
+    textAlign: "center",
     width: "90%"
   },
   versionText: {

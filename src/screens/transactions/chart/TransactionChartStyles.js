@@ -44,6 +44,10 @@ const commonStyles = ScaledSheet.create({
   subHeaderNameLeft: {},
   subHeaderNameRight: {
     textAlign: "right"
+  },
+  notEnoughData: {
+    marginTop: "20@s",
+    textAlign: "center"
   }
 });
 

@@ -148,6 +148,7 @@ const commonStyles = ScaledSheet.create({
   linksTextButton: {
     fontSize: "12@s",
     fontWeight: "bold",
+    paddingBottom: "15@s",
     color: commonColor.inverseTextColor
   },
   linksTextButtonRight: {
