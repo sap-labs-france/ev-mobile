@@ -166,7 +166,7 @@ export default class RetrievePassword extends BaseScreen {
                 )}
               </Form>
             </KeyboardAvoidingView>
-            {captchaSiteKey && captchaBaseUrl ? (
+            {captchaSiteKey && captchaBaseUrl &&
               <ReCaptcha
                 containerStyle={style.recaptcha}
                 siteKey={captchaSiteKey}
@@ -175,13 +175,11 @@ export default class RetrievePassword extends BaseScreen {
                 reCaptchaType={1}
                 onExecute={this._recaptchaResponseToken}
               />
-            ) : (
-              undefined
-            )}
+            }
           </ScrollView>
           <Footer style={style.footer}>
             <Left>
-              <Button small transparent style={style.linksButtonLeft} onPress={() => this.props.navigation.goBack()}>
+              <Button small transparent style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.props.navigation.goBack()}>
                 <TextRN style={[style.linksTextButton, style.linksTextButtonLeft]}>{I18n.t("authentication.backLogin")}</TextRN>
               </Button>
             </Left>

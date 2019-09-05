@@ -64,6 +64,9 @@ const commonStyles = ScaledSheet.create({
   subLabel: {
     color: commonColor.textColor,
     fontSize: "9@s"
+  },
+  icon: {
+    fontSize: "30@s"
   }
 });
 

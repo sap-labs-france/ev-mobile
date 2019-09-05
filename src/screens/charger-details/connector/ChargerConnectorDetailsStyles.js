@@ -17,17 +17,19 @@ const commonStyles = ScaledSheet.create({
   },
   backgroundImage: {
     width: "100%",
-    height: "150@s"
+    height: "125@s"
   },
   transactionContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: "-55@s"
+    marginTop: "-100@s",
+    backgroundColor: "transparent"
   },
   buttonTransaction: {
     borderRadius: "50@s",
     borderStyle: "solid",
     borderWidth: "4@s",
+    marginTop: "15@s",
     borderColor: commonColor.textColor,
     backgroundColor: commonColor.containerBgColor,
     width: "100@s",
@@ -36,7 +38,7 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center"
   },
   noButtonStopTransaction: {
-    height: "90@s"
+    height: "130@s"
   },
   startTransaction: {
     borderColor: commonColor.brandSuccess
@@ -57,10 +59,10 @@ const commonStyles = ScaledSheet.create({
     borderColor: commonColor.buttonDisabledBg
   },
   transactionDisabledIcon: {
-    color: commonColor.buttonDisabledBg
+    color: commonColor.buttonDisabledBg,
+    backgroundColor: "transparent"
   },
   scrollViewContainer: {
-    marginTop: "-15@s"
   },
   detailsContainer: {
     flexDirection: "column",
@@ -70,7 +72,7 @@ const commonStyles = ScaledSheet.create({
   rowContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: "100@s"
+    height: "95@s"
   },
   columnContainer: {
     flexDirection: "column",
@@ -84,19 +86,16 @@ const commonStyles = ScaledSheet.create({
   },
   label: {
     fontSize: "16@s",
-    color: commonColor.textColor,
+    color: commonColor.brandPrimaryDark,
     alignSelf: "center"
   },
   labelValue: {
-    fontSize: "30@s",
-    fontWeight: "bold"
-  },
-  labelTimeValue: {
     fontSize: "25@s",
     fontWeight: "bold"
   },
   labelUser: {
-    fontSize: "10@s"
+    fontSize: "10@s",
+    // width: "50%"
   },
   subLabel: {
     fontSize: "10@s",
@@ -123,6 +122,23 @@ const commonStyles = ScaledSheet.create({
     borderRadius: "26@s",
     borderWidth: "3@s",
     borderColor: commonColor.textColor
+  },
+  info: {
+    color: commonColor.brandPrimaryDark,
+    borderColor: commonColor.brandPrimaryDark
+  },
+  success: {
+    color: commonColor.brandSuccess
+  },
+  warning: {
+    color: commonColor.brandWarning
+  },
+  danger: {
+    color: commonColor.brandDanger
+  },
+  disabled: {
+    color: commonColor.buttonDisabledBg,
+    borderColor: commonColor.buttonDisabledBg
   }
 });
 

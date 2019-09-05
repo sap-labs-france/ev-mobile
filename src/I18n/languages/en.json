@@ -12,11 +12,15 @@
     "no": "No",
     "cancel": "Cancel",
     "version": "Version",
-    "search": "Search"
+    "search": "Search",
+    "exitApp": "Exit App",
+    "exitAppConfirm": "Do you really want to exit the application?",
+    "noRecordFound": "No record found"
   },
   "sidebar": {
     "sites": "Sites",
-    "chargers": "Chargers"
+    "chargers": "Chargers",
+    "transactions": "Sessions"
   },
 	"authentication": {
     "mandatory_tenant": "The Tenant is mandatory",
@@ -56,18 +60,27 @@
     "passwordNotMatch": "Password does not match",
     "tenant": "Choose a Tenant"
   },
+  "transactions": {
+    "transactionsHistory": "Sessions History",
+    "transactionsInProgress": "Sessions In Progress",
+    "chargingCurve": "Session Chart",
+    "noTransactionsInProgress": "No Session in progress",
+    "noTransactionsHistory": "No Session history"
+  },
   "sites": {
     "freeChargers": "Free chargers",
     "chargePoint": "Charge Point",
     "free": "Free",
-    "occupied": "Occupied"
+    "occupied": "Occupied",
+    "noSites": "No Site found"
   },
   "siteAreas": {
     "title": "Site Areas",
-    "noChargers": "This Site Area has no Charger"
+    "noChargers": "This Site Area has no Charger",
+    "noSiteAreas": "No Site Area found"
   },
   "chargers": {
-    "title": "Chargers",
+    "title": "Charging Stations",
     "heartBeat": "Heartbeat",
     "heartBeatOkMessage": "'{{chargeBoxID}}' is working properly and reported its status a minute ago",
     "heartBeatKoMessage": "'{{chargeBoxID}}' is not working properly and hasn't reported its status since {{lastHeartBeat}}",
@@ -76,14 +89,15 @@
     "resetSoft": "Reset",
     "resetSoftMessage": "Do you really want to reset '{{chargeBoxID}}'?",
     "clearCache": "Clear Cache",
-    "clearCacheMessage": "Do you really want to clear the cache of '{{chargeBoxID}}'?"
+    "clearCacheMessage": "Do you really want to clear the cache of '{{chargeBoxID}}'?",
+    "noChargers": "No Charging Station found"
   },
   "connector": {
     "occupied": "Occupied",
     "charging": "Charging",
     "available": "Available",
     "unavailable": "Unavailable",
-    "notCharging": "Not Charging",
+    "notCharging": "Inactive",
     "suspendedEV": "Suspended EV",
     "suspendedEVSE": "Suspended EVSE",
     "faulted": "Faulted",
@@ -110,6 +124,7 @@
     "accepted": "Request has been accepted",
     "noBadgeID": "No badge in your profile",
     "denied": "Request has been denied",
+    "duration": "(hh:mm)",
     "total": "Total",
     "maximum": "Maximum",
     "instant": "Instant",
@@ -123,14 +138,15 @@
     "instantPowerChartLabel": "Instant Power (kW)",
     "cumulatedChartLabel": "Cumulated (kW.h)",
     "batteryChartLabel": "Battery Level (%)",
-    "connectorMax": "Connector Max Power (kW)"
+    "connectorMax": "Connector Max Power (kW)",
+    "notEnoughData": "Not enough data to display the chart"
   },
   "notifications": {
     "mustLogin": "You must be logged in",
     "cannotNavigate": "Cannot navigate to the screen",
     "extraDataMissing": "Notification is corrupted",
     "incorrectTenant": "The tenant is incorrect",
-    "notifyEndOfSession": {
+    "notifyEndOfTransaction": {
       "message": "Your session on '{{chargeBoxID}}' has just finished.",
       "subMessage": "Session Finished",
       "longMessage": "Your session on '{{chargeBoxID}}' has just finished."

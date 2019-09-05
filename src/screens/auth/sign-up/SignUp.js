@@ -331,7 +331,7 @@ export default class SignUp extends BaseScreen {
                 )}
               </Form>
             </KeyboardAvoidingView>
-            {this.state.eula && captchaSiteKey && captchaBaseUrl ? (
+            {this.state.eula && captchaSiteKey && captchaBaseUrl &&
               <ReCaptcha
                 containerStyle={style.recaptcha}
                 siteKey={captchaSiteKey}
@@ -340,13 +340,11 @@ export default class SignUp extends BaseScreen {
                 reCaptchaType={1}
                 onExecute={this._recaptchaResponseToken}
               />
-            ) : (
-              undefined
-            )}
+            }
           </ScrollView>
           <Footer style={style.footer}>
             <Right>
-              <Button small transparent style={style.linksButtonRight} onPress={() => this.props.navigation.goBack()}>
+              <Button small transparent style={[style.linksButton, style.linksButtonRight]} onPress={() => this.props.navigation.goBack()}>
                 <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.backLogin")}</TextRN>
               </Button>
             </Right>

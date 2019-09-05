@@ -3,6 +3,7 @@ import Constants from "./Constants";
 import I18n from "../I18n/I18n";
 import validate from "validate.js";
 import { NativeModules, Platform } from "react-native";
+import commonColor from "../theme/variables/commonColor";
 
 const type2 = require("../../assets/connectorType/type2.gif");
 // const type2 = require("../../assets/connectorType/type-2.svg");
@@ -40,6 +41,18 @@ export default class Utils {
     return Utils.getLocale().substring(0, 2);
   }
 
+  static computeInactivityStyle(totalInactivitySecs) {
+    let style = { color: commonColor.brandInfo };
+    if (totalInactivitySecs < 1800) {
+      style = { color: commonColor.brandSuccess };
+    } else if (totalInactivitySecs < 3600) {
+      style = { color: commonColor.brandWarning };
+    } else {
+      style = { color: commonColor.brandDanger };
+    }
+    return style;
+  }
+
   static async handleHttpUnexpectedError(centralServerProvider, error, navigation, fctRefresh) {
     // Log in console
     console.log({ error });
@@ -75,7 +88,7 @@ export default class Utils {
     // User?
     if (user) {
       // Firstname provided?
-      if (user.name && user.firstName && `${user.name} ${user.firstName}`.length < 19) {
+      if (user.name && user.firstName) {
         return `${user.name} ${user.firstName}`;
       } else {
         return `${user.name}`;
@@ -119,6 +132,10 @@ export default class Utils {
     screen.setState(errorState);
     // Return
     return formValid;
+  }
+
+  static getConnectorLetter(connectorId) {
+    return String.fromCharCode(64 + connectorId);
   }
 
   static translateConnectorStatus = (status) => {
@@ -172,5 +189,38 @@ export default class Utils {
       default:
         return noConnector;
     }
+  };
+
+  static formatDurationHHMMSS = (durationSecs, withSecs = true) => {
+    if (durationSecs <= 0) {
+      return withSecs ? Constants.DEFAULT_DURATION_WITH_SECS : Constants.DEFAULT_DURATION;
+    }
+    // Set Hours
+    const hours = Math.trunc(durationSecs / 3600);
+    durationSecs -= hours * 3600;
+    // Set Mins
+    let minutes = 0;
+    if (durationSecs > 0) {
+      minutes = Math.trunc(durationSecs / 60);
+      durationSecs -= minutes * 60;
+    }
+    // Set Secs
+    if (withSecs) {
+      const seconds = Math.trunc(durationSecs);
+      // Format
+      return `${Utils._formatTimer(hours)}:${Utils._formatTimer(minutes)}:${this._formatTimer(seconds)}`;
+    }
+    // Format
+    return `${Utils._formatTimer(hours)}:${Utils._formatTimer(minutes)}`;
+  };
+
+  static _formatTimer = (val) => {
+    // Put 0 next to the digit if lower than 10
+    const valString = val + "";
+    if (valString.length < 2) {
+      return "0" + valString;
+    }
+    // Return new digit
+    return valString;
   };
 }

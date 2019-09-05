@@ -20,7 +20,7 @@ const commonStyles = ScaledSheet.create({
     borderBottomWidth: 1,
     backgroundColor: commonColor.headerBgColor
   },
-  name: {
+  headerName: {
     color: commonColor.headerTextColor,
     fontSize: "20@s",
     marginLeft: "5@s",

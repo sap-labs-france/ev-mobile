@@ -2,10 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./ConnectorStatusComponentStyles.js";
-import { Animated, Easing } from "react-native";
+import { Animated, Easing, Platform } from "react-native";
 import { Text, View } from "native-base";
 import Constants from "../../utils/Constants";
-import { Platform } from "react-native";
+import Utils from "../../utils/Utils";
+
 export default class ConnectorStatusComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);
@@ -97,7 +98,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     // Get value
     const { value, connector } = this.props;
     if (connector) {
-      return String.fromCharCode(64 + connector.connectorId);
+      return Utils.getConnectorLetter(connector.connectorId);
     } else {
       return value;
     }
@@ -143,7 +144,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
             </View>
           </Animated.View>
         }
-        {this.props.text ? <Text style={connectorStyles.description}>{this.props.text}</Text> : undefined}
+        {this.props.text && <Text style={connectorStyles.description}>{this.props.text}</Text>}
       </View>
     );
   }

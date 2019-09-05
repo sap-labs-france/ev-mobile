@@ -78,6 +78,7 @@ export default class CentralServerProvider {
     return [
       { subdomain: "slf", name: "SAP Labs France" },
       { subdomain: "slfcah", name: "SAP Labs France (Charge@Home)" },
+      { subdomain: "demo", name: "SAP Labs Demo" },
       { subdomain: "sapbelgium", name: "SAP Belgium" },
       { subdomain: "sapmarkdorf", name: "SAP Markdorf" },
       { subdomain: "sapnl", name: "SAP Netherland" }
@@ -188,10 +189,11 @@ export default class CentralServerProvider {
       tenant
     });
     // Keep them
+    _email = email;
+    _password = password;
     _token = result.data.token;
     _decodedToken = jwtDecode(_token);
     _tenant = tenant;
-    _initialized = true;
     this.securityProvider = new SecurityProvider(_decodedToken);
   }
 
@@ -213,12 +215,25 @@ export default class CentralServerProvider {
         headers: this._builHeaders()
       }
     );
+    // Clear the token and tenant
+    SecuredStorage.clearUserCredentials();
+    // Save
+    await SecuredStorage.saveUserCredentials({
+      email,
+      password: passwords.password,
+      tenant
+    });
+    // Keep them
+    _email = email;
+    _password = passwords.password;
+    _token = null;
+    _decodedToken = null;
+    _tenant = tenant;
     return result.data;
   }
 
   async retrievePassword(tenant, email, captcha) {
     this.debug("retrievePassword");
-    // Call
     const result = await axios.post(
       `${_centralRestServerServiceAuthURL}/Reset`,
       {
@@ -390,6 +405,34 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  async getTransactions(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+    this.debug("getTransactions");
+    // Build Paging
+    this._buildPaging(paging, params);
+    // Build Ordering
+    this._buildOrdering(ordering, params);
+    // Call
+    const result = await axios.get(`${_centralRestServerServiceSecuredURL}/TransactionsCompleted`, {
+      headers: this._buildSecuredHeaders(),
+      params
+    });
+    return result.data;
+  }
+
+  async getTransactionsActive(params = {}, paging = Constants.DEFAULT_PAGING, ordering = Constants.DEFAULT_ORDERING) {
+    this.debug("getTransactionsActive");
+    // Build Paging
+    this._buildPaging(paging, params);
+    // Build Ordering
+    this._buildOrdering(ordering, params);
+    // Call
+    const result = await axios.get(`${_centralRestServerServiceSecuredURL}/TransactionsActive`, {
+      headers: this._buildSecuredHeaders(),
+      params
+    });
+    return result.data;
+  }
+
   async getUserImage(params = {}) {
     this.debug("getUserImage");
     // Call
@@ -401,24 +444,24 @@ export default class CentralServerProvider {
   }
 
   async getSiteImage(id) {
-    this.debug("getSiteImage");
     // Check cache
-    let siteImage = _siteImages.find((siteImage) => siteImage.id === id);
-    if (!siteImage) {
+    let foundSiteImage = _siteImages.find((siteImage) => siteImage.id === id);
+    if (!foundSiteImage) {
+      this.debug("getSiteImage");
       // Call
       const result = await axios.get(`${_centralRestServerServiceSecuredURL}/SiteImage`, {
         headers: this._buildSecuredHeaders(),
         params: { ID: id }
       });
       // Set
-      siteImage = {
+      foundSiteImage = {
         id,
-        data: result.data
+        image: result.data
       };
       // Add
-      _siteImages.push(siteImage);
+      _siteImages.push(foundSiteImage);
     }
-    return siteImage.data;
+    return foundSiteImage.image;
   }
 
   async getPrice() {

@@ -24,14 +24,14 @@ const commonStyles = ScaledSheet.create({
     flexDirection: "column",
     justifyContent: "flex-end",
     alignItems: "center",
-    marginBottom: "10@s"
+    marginBottom: "5@s"
   },
   spinner: {
     flex: 1,
     color: commonColor.textColor
   },
   descriptionContainer: {
-    height: "75@s",
+    height: "65@s",
     justifyContent: "center",
     alignItems: "center"
   },
@@ -47,7 +47,7 @@ const commonStyles = ScaledSheet.create({
   },
   actionContainer: {
     width: "90%",
-    marginTop: "10@s",
+    marginTop: "5@s",
     justifyContent: "center"
   },
   actionButton: {

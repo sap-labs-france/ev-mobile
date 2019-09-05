@@ -12,11 +12,15 @@
     "no": "Non",
     "cancel": "Annuler",
     "version": "Version",
-    "search": "Rechercher"
+    "search": "Rechercher",
+    "exitApp": "Quitter",
+    "exitAppConfirm": "Voulez-vous vraiment quitter l'application ?",
+    "noRecordFound": "Pas d'enregistrement trouvé"
   },
   "sidebar": {
     "sites": "Sites",
-    "chargers": "Bornes"
+    "chargers": "Bornes",
+    "transactions": "Sessions"
   },
   "authentication": {
     "mandatory_tenant": "Le Tenant est obligatoire",
@@ -42,7 +46,7 @@
     "backLogin": "Se Connecter",
     "required": "Obligatoire",
     "acceptEula": "J'accepte les ",
-    "eula": "conditions d'utilisation",
+    "eula": "Conditions d'utilisation",
     "login": "S'identifier",
 		"registerSuccess": "Compte créé avec succès ! Vérifiez vos emails",
     "haveAlreadyAccount": "Avez-vous déjà un compte?",
@@ -56,15 +60,24 @@
     "passwordNotMatch": "Les mots de passes ne correspondent pas",
     "tenant": "Choisir un Tenant"
   },
+  "transactions": {
+    "transactionsHistory": "Historique Des Sessions",
+    "transactionsInProgress": "Sessions En Cours",
+    "chargingCurve": "Graphique Session",
+    "noTransactionsInProgress": "Pas de Session en cours",
+    "noTransactionsHistory": "Pas d'historique de Session"
+  },
   "sites": {
     "freeChargers": "Chargeurs disponibles",
     "chargePoint": "Point de Charge",
     "free": "Libre(s)",
-    "occupied": "Occupé(s)"
+    "occupied": "Occupé(s)",
+    "noSites": "Aucun Site trouvé"
   },
   "siteAreas": {
     "title": "Zones",
-    "noChargers": "Cette Zone n'a pas de Borne"
+    "noChargers": "Cette Zone n'a pas de Borne",
+    "noSiteAreas": "Aucune Zone trouvée"
   },
   "chargers": {
     "title": "Bornes",
@@ -76,14 +89,15 @@
     "resetSoft": "Réinitialiser",
     "resetSoftMessage": "Voulez-vous vraiment réinitialiser '{{chargeBoxID}}'?",
     "clearCache": "Effacer le Cache",
-    "clearCacheMessage": "Voulez-vous vraiment le cache de '{{chargeBoxID}}'?"
+    "clearCacheMessage": "Voulez-vous vraiment le cache de '{{chargeBoxID}}'?",
+    "noChargers": "Aucune Borne trouvée"
   },
   "connector": {
     "occupied": "Occupé",
     "charging": "En charge",
     "available": "Disponible",
     "unavailable": "Indisponible",
-    "notCharging": "Ne Charge Pas",
+    "notCharging": "Inactif",
     "suspendedEV": "EV Suspendu",
     "suspendedEVSE": "EVSE Suspendu",
     "faulted": "Erreur",
@@ -110,6 +124,7 @@
     "accepted": "La requête a été acceptée",
     "noBadgeID": "Pas de badge dans votre profile",
     "denied": "La requête a été refusée",
+    "duration": "(hh:mm)",
     "total": "Total",
     "maximum": "Maximum",
     "instant": "Instant.",
@@ -123,7 +138,8 @@
     "instantPowerChartLabel": "Puissance Instantanée (kW)",
     "cumulatedChartLabel": "Cumulé (kW.h)",
     "batteryChartLabel": "Niveau Batterie (%)",
-    "connectorMax": "Connecteur Max Power (kW)"
+    "connectorMax": "Connecteur Max Power (kW)",
+    "notEnoughData": "Pas assez de données pour afficher la courbe"
   },
   "notifications": {
     "mustLogin": "Vous devez etre connecté",

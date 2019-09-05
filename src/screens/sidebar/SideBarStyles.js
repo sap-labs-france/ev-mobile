@@ -20,7 +20,7 @@ const commonStyles = ScaledSheet.create({
     flexDirection: "column",
     borderColor: commonColor.inverseTextColor,
     borderBottomWidth: 1,
-    height: "100@s",
+    height: "120@s",
     paddingBottom: "10@s",
     marginTop: Platform.OS === "ios" ? "-5@s" : "10@s"
   },
@@ -30,6 +30,14 @@ const commonStyles = ScaledSheet.create({
     height: "50@s",
     alignSelf: "center",
     margin: "5@s"
+  },
+  tenantName: {
+    color: commonColor.inverseTextColor,
+    fontSize: "14@s",
+    margin: "2@s",
+    alignSelf: "center",
+    textAlign: "center",
+    width: "90%"
   },
   versionText: {
     color: commonColor.inverseTextColor,
@@ -49,10 +57,9 @@ const commonStyles = ScaledSheet.create({
   links: {
     borderBottomWidth: "0@s",
     borderBottomColor: "transparent",
-    height: Platform.OS === "ios" ? undefined : "25@s",
-    marginTop: "10@s",
-    paddingTop: "0@s",
-    paddingBottom: "0@s"
+    height: Platform.OS === "ios" ? undefined : "35@s",
+    paddingTop: "10@s",
+    paddingBottom: "10@s"
   },
   linkIcon: {
     fontSize: "16@s",

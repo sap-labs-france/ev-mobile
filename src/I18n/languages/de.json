@@ -12,11 +12,15 @@
     "no": "Nein",
     "cancel": "Abbrechen",
     "version": "Version",
-    "search": "Suche"
+    "search": "Suche",
+    "exitApp": "Beenden",
+    "exitAppConfirm": "Möchten Sie die Anwendung wirklich beenden?",
+    "noRecordFound": "Kein Eintrag gefunden"
   },
   "sidebar": {
     "sites": "Standorte",
-    "chargers": "Ladestationen"
+    "chargers": "Ladestationen",
+    "transactions": "Sitzungen"
   },
 	"authentication": {
     "mandatory_tenant": "Der Tenant ist notwendig",
@@ -56,15 +60,24 @@
     "passwordNotMatch": "Passwörter stimmen nicht miteinander überein",
     "tenant": "Wählen Sie einen Tenant"
   },
+  "transactions": {
+    "transactionsHistory": "Sitzungsverlauf",
+    "transactionsInProgress": "Sitzung läuft",
+    "chargingCurve": "Sitzungsdiagramm",
+    "noTransactionsInProgress": "Es werden keine Sitzungen durchgeführt",
+    "noTransactionsHistory": "Kein Sitzungsverlauf"
+  },
   "sites": {
     "freeChargers": "Freie Ladestationen",
     "chargePoint": "Ladepunkt",
     "free": "Frei",
-    "occupied": "Besetzt"
+    "occupied": "Besetzt",
+    "noSites": "Keine Seite gefunden"
   },
   "siteAreas": {
     "title": "Standortbereiche",
-    "noChargers": "Dieser Standortbereich hat keine Ladestationen"
+    "noChargers": "Dieser Standortbereich hat keine Ladestationen",
+    "noSiteAreas": "Kein Sitebereich gefunden"
   },
   "chargers": {
     "title": "Ladestationen",
@@ -76,14 +89,15 @@
     "resetSoft": "Reset",
     "resetSoftMessage": "Möchten Sie wirklich die Ladestation '{{chargeBoxID}}' zurücksetzen?",
     "clearCache": "Cache leeren",
-    "clearCacheMessage": "Möchten Sie wirklich den Cache der Ladestation '{{chargeBoxID}}' leeren?"
+    "clearCacheMessage": "Möchten Sie wirklich den Cache der Ladestation '{{chargeBoxID}}' leeren?",
+    "noChargers": "Keine Ladestation gefunden"
   },
   "connector": {
     "occupied": "Besetzt",
     "charging": "Lädt",
     "available": "Verfügbar",
     "unavailable": "Unverfügbar",
-    "notCharging": "Ladet nicht",
+    "notCharging": "Inaktiv",
     "suspendedEV": "EV angehalten",
     "suspendedEVSE": "EVSE angehalten",
     "faulted": "Fehlerhaft",
@@ -110,6 +124,7 @@
     "accepted": "Anfrage wurde angenommen",
     "noBadgeID": "Kein Badge in Ihrem Profil!",
     "denied": "Anfrage wurde abgelehnt",
+    "duration": "(hh:mm)",
     "total": "Summe",
     "maximum": "Maximum",
     "instant": "Momentan",
@@ -123,14 +138,15 @@
     "instantPowerChartLabel": "Momentane Leistung (kW)",
     "cumulatedChartLabel": "Kumuliert (kW.h)",
     "batteryChartLabel": "Batterieladestand (%)",
-    "connectorMax": "Max. Leistung Anschluss (kW)"
+    "connectorMax": "Max. Leistung Anschluss (kW)",
+    "notEnoughData": "Nicht genügend Daten, um das Diagramm anzuzeigen"
   },
   "notifications": {
     "mustLogin": "Sie müssen angemeldet sein",
     "cannotNavigate": "Kann nicht zum Bildschirm navigieren",
     "extraDataMissing": "Benachrichtigung nicht komplett",
     "incorrectTenant": "Falscher Tenant",
-    "notifyEndOfSession": {
+    "notifyEndOfTransaction": {
       "message": "Ihre Ladesitzung auf '{{chargeBoxID}}' wurde beendet.",
       "subMessage": "Ladesitzung beendet",
       "longMessage": "Ihre Ladesitzung auf '{{chargeBoxID}}' wurde soeben beendet."

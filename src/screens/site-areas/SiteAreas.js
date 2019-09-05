@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, RefreshControl } from "react-native";
+import { Platform, FlatList, RefreshControl } from "react-native";
 import { Container, Spinner, View } from "native-base";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
@@ -10,6 +10,8 @@ import computeStyleSheet from "./SiteAreasStyles";
 import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
+import ListEmptyTextComponent from "../../components/list/empty-text/ListEmptyTextComponent";
+import ListFooterComponent from "../../components/list/footer/ListFooterComponent";
 
 export default class SiteAreas extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -31,11 +33,6 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
     await this.refresh();
   }
 
-  async componentWillUnmount() {
-    // Call parent
-    await super.componentWillUnmount();
-  }
-
   _getSiteAreas = async (searchText, skip, limit) => {
     let siteAreas = [];
     const siteID = Utils.getParamFromNavigation(this.props.navigation, "siteID", null);
@@ -55,7 +52,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
 
   onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate("Sites");
+    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };
@@ -87,7 +84,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
   _onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
-    if (skip + limit < count) {
+    if ((skip + limit < count) || (count === -1)) {
       // No: get next sites
       const siteAreas = await this._getSiteAreas(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
@@ -99,18 +96,10 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
     }
   };
 
-  _footerList = () => {
-    const { skip, count, limit } = this.state;
-    if (skip + limit < count) {
-      return <Spinner />;
-    }
-    return null;
-  };
-
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading } = this.state;
+    const { loading, skip, count, limit } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
@@ -118,7 +107,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
             title={I18n.t("siteAreas.title")}
             showSearchAction={true}
             searchRef={this.searchRef}
-            leftAction={() => navigation.navigate("Sites")}
+            leftAction={this.onBack}
             leftActionIcon={"navigate-before"}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
@@ -141,8 +130,9 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
                 keyExtractor={(item) => item.id}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
-                onEndReachedThreshold={0.5}
-                ListFooterComponent={this._footerList}
+                onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
+                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("siteAreas.noSiteAreas")}/>}
+                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit}/>}
               />
             )}
           </View>

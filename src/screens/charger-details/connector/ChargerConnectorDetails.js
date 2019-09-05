@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, TouchableOpacity, Image, Alert } from "react-native";
+import { ScrollView, TouchableOpacity, Image, Alert, RefreshControl } from "react-native";
 import { Container, Icon, View, Thumbnail, Text } from "native-base";
 import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
 import ConnectorStatusComponent from "../../../components/connector-status/ConnectorStatusComponent";
@@ -10,8 +10,10 @@ import Constants from "../../../utils/Constants";
 import Message from "../../../utils/Message";
 import PropTypes from "prop-types";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import ProviderFactory from "../../../provider/ProviderFactory";
 
 const noPhoto = require("../../../../assets/no-photo.png");
+const noPhotoActive = require("../../../../assets/no-photo-active.png");
 const noSite = require("../../../../assets/no-site.png");
 
 const START_TRANSACTION_NB_TRIAL = 4;
@@ -23,13 +25,19 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
       transaction: null,
       userImageLoaded: false,
       userImage: null,
-      elapsedTimeFormatted: "00:00:00",
-      inactivityFormatted: "00:00:00",
+      elapsedTimeFormatted: "-",
+      totalInactivitySecs: 0,
+      inactivityFormatted: "-",
       startTransactionNbTrial: 0,
-      buttonDisabled: true
+      isPricingActive: false,
+      buttonDisabled: true,
+      refreshing: false
     };
-    // Set refresh period
-    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
+  }
+
+  async componentWillMount() {
+    // Call parent
+    await super.componentWillMount();
   }
 
   async componentDidMount() {
@@ -42,20 +50,11 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     }
     // Get Transaction
     await this.refresh();
-    // First/Next calls
-    this._refreshDurationInfos();
-    this.timerElapsedTime = setInterval(() => {
-      this._refreshDurationInfos();
-    }, 1000);
   }
 
   async componentWillUnmount() {
     // Call parent
     await super.componentWillUnmount();
-    // Clear
-    if (this.timerElapsedTime) {
-      clearInterval(this.timerElapsedTime);
-    }
   }
 
   _getSiteImage = async (siteID) => {
@@ -96,7 +95,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
         });
       } else {
         this.setState({
-          elapsedTimeFormatted: "00:00:00",
+          elapsedTimeFormatted: Constants.DEFAULT_DURATION_WITH_SECS,
           userImage: null,
           transaction: null
         });
@@ -142,6 +141,23 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     await this._getTransaction();
     // Check to enable the buttons after a certain period of time
     this._handleStartStopDisabledButton();
+    // Refresh Duration
+    this._refreshDurationInfos();
+    // Get the provider
+    const centralServerProvider = await ProviderFactory.getProvider();
+    const securityProvider = centralServerProvider.getSecurityProvider();
+    this.setState({
+      isPricingActive: securityProvider.isComponentPricingActive()
+    });
+  };
+
+  _manualRefresh = async () => {
+    // Display spinner
+    this.setState({ refreshing: true });
+    // Refresh
+    await this.refresh();
+    // Hide spinner
+    this.setState({ refreshing: false });
   };
 
   _startTransactionConfirm = () => {
@@ -254,43 +270,45 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     if (this.isMounted()) {
       // Transaction loaded?
       if (transaction) {
-        let elapsedTimeFormatted = "00:00:00";
-        let inactivityFormatted = "00:00:00";
+        let elapsedTimeFormatted = Constants.DEFAULT_DURATION;
+        let inactivityFormatted = Constants.DEFAULT_DURATION;
         // Elapsed Time?
         if (transaction.timestamp) {
           // Get duration
           const durationSecs = (Date.now() - transaction.timestamp.getTime()) / 1000;
           // Format
-          elapsedTimeFormatted = this._formatDurationHHMMSS(durationSecs);
+          elapsedTimeFormatted = Utils.formatDurationHHMMSS(durationSecs, false);
         }
         // Inactivity?
         if (transaction.currentTotalInactivitySecs) {
           // Format
-          inactivityFormatted = this._formatDurationHHMMSS(transaction.currentTotalInactivitySecs);
+          inactivityFormatted = Utils.formatDurationHHMMSS(transaction.currentTotalInactivitySecs, false);
         }
         // Set
         this.setState({
+          totalInactivitySecs: transaction.currentTotalInactivitySecs,
           elapsedTimeFormatted,
           inactivityFormatted
         });
       // Basic User: Use the connector data
       } else if (connector.activeTransactionID) {
-        let elapsedTimeFormatted = "00:00:00";
-        let inactivityFormatted = "00:00:00";
+        let elapsedTimeFormatted = Constants.DEFAULT_DURATION;
+        let inactivityFormatted = Constants.DEFAULT_DURATION;
         // Elapsed Time?
         if (connector.activeTransactionDate) {
           // Get duration
           const durationSecs = (Date.now() - new Date(connector.activeTransactionDate).getTime()) / 1000;
           // Format
-          elapsedTimeFormatted = this._formatDurationHHMMSS(durationSecs);
+          elapsedTimeFormatted = Utils.formatDurationHHMMSS(durationSecs, false);
         }
         // Inactivity?
         if (connector.totalInactivitySecs) {
           // Format
-          inactivityFormatted = this._formatDurationHHMMSS(connector.totalInactivitySecs);
+          inactivityFormatted = Utils.formatDurationHHMMSS(connector.totalInactivitySecs, false);
         }
         // Set
         this.setState({
+          totalInactivitySecs: connector.totalInactivitySecs,
           elapsedTimeFormatted,
           inactivityFormatted
         });
@@ -298,45 +316,14 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     }
   };
 
-  _formatDurationHHMMSS = (durationSecs) => {
-    if (durationSecs <= 0) {
-      return "00:00:00";
-    }
-    // Set Hours
-    const hours = Math.trunc(durationSecs / 3600);
-    durationSecs -= hours * 3600;
-    // Set Mins
-    let minutes = 0;
-    if (durationSecs > 0) {
-      minutes = Math.trunc(durationSecs / 60);
-      durationSecs -= minutes * 60;
-    }
-    // Set Secs
-    const seconds = Math.trunc(durationSecs);
-    // Format
-    return `${this._formatTimer(hours)}:${this._formatTimer(minutes)}:${this._formatTimer(seconds)}`;
-  };
-
-  _formatTimer = (val) => {
-    // Put 0 next to the digit if lower than 10
-    const valString = val + "";
-    if (valString.length < 2) {
-      return "0" + valString;
-    }
-    // Return new digit
-    return valString;
-  };
-
   _renderConnectorStatus = (style) => {
     const { connector, isAdmin } = this.props;
     return (
       <View style={style.columnContainer}>
         <ConnectorStatusComponent connector={connector} text={Utils.translateConnectorStatus(connector.status)} />
-        {isAdmin && connector.status === Constants.CONN_STATUS_FAULTED ? (
+        {isAdmin && connector.status === Constants.CONN_STATUS_FAULTED &&
           <Text style={[style.subLabel, style.subLabelStatusError]}>({connector.errorCode})</Text>
-        ) : (
-          undefined
-        )}
+        }
       </View>
     );
   };
@@ -345,36 +332,60 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     const { isAdmin } = this.props;
     const { userImage, transaction } = this.state;
     return (
-      <View style={style.columnContainer}>
-        <Thumbnail style={style.userImage} source={userImage ? { uri: userImage } : noPhoto} />
-        {transaction ? (
-          <View>
-            <Text style={[style.label, style.labelUser]}>{Utils.buildUserName(transaction.user)}</Text>
-            {isAdmin ? <Text style={[style.subLabel, style.subLabelUser]}>({transaction.tagID})</Text> : undefined}
-          </View>
-        ) : (
-          <Text style={style.label}>-</Text>
-        )}
-      </View>
+      transaction ? (
+        <View style={style.columnContainer}>
+          <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhotoActive} />
+          <Text numberOfLines={1} style={[style.label, style.labelUser, style.info]}>{Utils.buildUserName(transaction.user)}</Text>
+          {isAdmin ? <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text> : undefined}
+        </View>
+      ) : (
+        <View style={style.columnContainer}>
+          <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
+          <Text style={[style.label, style.disabled]}>-</Text>
+        </View>
+      )
+    );
+  };
+
+  _renderPrice = (style) => {
+    const { transaction } = this.state;
+    let price = 0;
+    if (transaction) {
+      price = Math.round(transaction.currentCumulatedPrice * 100) / 100;
+    }
+    return (
+      transaction ? (
+        <View style={style.columnContainer}>
+          <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
+          <Text style={[style.label, style.labelValue, style.info]}>{price}</Text>
+          <Text style={[style.subLabel, style.info]}>({transaction.priceUnit})</Text>
+        </View>
+      ) : (
+        <View style={style.columnContainer}>
+          <Icon type="FontAwesome" name="money" style={[style.icon, style.disabled]} />
+          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+        </View>
+      )
     );
   };
 
   _renderInstantPower = (style) => {
     const { connector } = this.props;
     return (
-      <View style={style.columnContainer}>
-        <Icon type="FontAwesome" name="bolt" style={style.icon} />
-        {connector.activeTransactionID === 0 ? (
-          <Text style={[style.label, style.labelValue]}>-</Text>
-        ) : (
-          <View>
-            <Text style={[style.label, style.labelValue]}>
-              {connector.currentConsumption / 1000 > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0}
-            </Text>
-            <Text style={style.subLabel}>{I18n.t("details.instant")} (kW)</Text>
-          </View>
-        )}
-      </View>
+      connector.activeTransactionID === 0 ? (
+        <View style={style.columnContainer}>
+          <Icon type="FontAwesome" name="bolt" style={[style.icon, style.disabled]} />
+          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+        </View>
+      ) : (
+        <View style={style.columnContainer}>
+          <Icon type="FontAwesome" name="bolt" style={[style.icon, style.info]} />
+          <Text style={[style.label, style.labelValue, style.info]}>
+            {connector.currentConsumption / 1000 > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0}
+          </Text>
+          <Text style={[style.subLabel, style.info]}>{I18n.t("details.instant")} (kW)</Text>
+        </View>
+      )
     );
   };
 
@@ -382,65 +393,74 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     const { elapsedTimeFormatted } = this.state;
     const { connector } = this.props;
     return (
-      <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="timer" style={style.icon} />
-        {connector.activeTransactionID ? (
-          <Text style={[style.label, style.labelTimeValue]}>{elapsedTimeFormatted}</Text>
-        ) : (
-          <Text style={[style.label, style.labelValue]}>- : - : -</Text>
-        )}
-      </View>
+      connector.activeTransactionID ? (
+        <View style={style.columnContainer}>
+          <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
+            <Text style={[style.label, style.labelValue, style.info]}>{elapsedTimeFormatted}</Text>
+            <Text style={[style.subLabel, style.info]}>{I18n.t("details.duration")}</Text>
+        </View>
+      ) : (
+        <View style={style.columnContainer}>
+          <Icon type="MaterialIcons" name="timer" style={[style.icon, style.disabled]} />
+          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+        </View>
+      )
     );
   };
 
   _renderInactivity = (style) => {
-    const { transaction, inactivityFormatted } = this.state;
+    const { inactivityFormatted, totalInactivitySecs } = this.state;
     const { connector } = this.props;
+    const inactivityStyle = Utils.computeInactivityStyle(totalInactivitySecs);
     return (
-      <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="timer-off" style={style.icon} />
-        {connector.activeTransactionID ? (
-          <Text style={[style.label, style.labelTimeValue]}>{inactivityFormatted}</Text>
-        ) : (
-          <Text style={[style.label, style.labelValue]}>- : - : -</Text>
-        )}
-      </View>
+      connector.activeTransactionID ? (
+        <View style={style.columnContainer}>
+          <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
+          <Text style={[style.label, style.labelValue, inactivityStyle]}>{inactivityFormatted}</Text>
+          <Text style={[style.subLabel, inactivityStyle]}>{I18n.t("details.duration")}</Text>
+        </View>
+      ) : (
+        <View style={style.columnContainer}>
+          <Icon type="MaterialIcons" name="timer-off" style={[style.icon, style.disabled]} />
+          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+        </View>
+      )
     );
   };
 
   _renderTotalConsumption = (style) => {
     const { connector } = this.props;
     return (
-      <View style={style.columnContainer}>
-        <Icon style={style.icon} type="MaterialIcons" name="trending-up" />
-        {(connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ? (
-          <Text style={[style.label, style.labelValue]}>-</Text>
-        ) : (
-          <View>
-            <Text style={[style.label, style.labelValue]}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
-            <Text style={style.subLabel}>{I18n.t("details.total")} (kW.h)</Text>
-          </View>
-        )}
-      </View>
+      (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ? (
+        <View style={style.columnContainer}>
+          <Icon style={[style.icon, style.disabled]} type="MaterialIcons" name="ev-station" />
+          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+        </View>
+      ) : (
+        <View style={style.columnContainer}>
+          <Icon style={[style.icon, style.info]} type="MaterialIcons" name="ev-station" />
+          <Text style={[style.label, style.labelValue, style.info]}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
+          <Text style={[style.subLabel, style.info]}>{I18n.t("details.total")} (kW.h)</Text>
+        </View>
+      )
     );
   };
 
   _renderBatteryLevel = (style) => {
     const { connector } = this.props;
     return (
-      <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="battery-charging-full" style={style.icon} />
-        {connector.currentStateOfCharge ? (
-          <View>
-            <Text style={[style.label, style.labelValue]}>{connector.currentStateOfCharge}</Text>
-            <Text style={style.subLabel}>(%)</Text>
-          </View>
-        ) : (
-          <View>
-            <Text style={[style.label, style.labelValue]}>-</Text>
-          </View>
-        )}
-      </View>
+      connector.currentStateOfCharge ? (
+        <View style={style.columnContainer}>
+          <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
+          <Text style={[style.label, style.labelValue, style.info]}>{connector.currentStateOfCharge}</Text>
+          <Text style={[style.subLabel, style.info]}>(%)</Text>
+        </View>
+      ) : (
+        <View style={style.columnContainer}>
+          <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.disabled]} />
+          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+        </View>
+      )
     );
   };
 
@@ -495,8 +515,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
   render() {
     const style = computeStyleSheet();
     const { connector, canStopTransaction, canStartTransaction } = this.props;
-    console.log(connector);
-    const { siteImage } = this.state;
+    const { siteImage, isPricingActive } = this.state;
     return (
       <Container style={style.container}>
         {/* Site Image */}
@@ -514,7 +533,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
             }
           </View>
           {/* Details */}
-          <ScrollView style={style.scrollViewContainer}>
+          <ScrollView style={style.scrollViewContainer}
+              refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._manualRefresh} />}>
             <View style={style.detailsContainer}>
               <View style={style.rowContainer}>
                 {this._renderConnectorStatus(style)}
@@ -528,7 +548,10 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
                 {this._renderElapsedTime(style)}
                 {this._renderInactivity(style)}
               </View>
-              {connector.currentStateOfCharge ? <View style={style.rowContainer}>{this._renderBatteryLevel(style)}</View> : undefined}
+              <View style={style.rowContainer}>
+                {this._renderBatteryLevel(style)}
+                {isPricingActive ? this._renderPrice(style) : <View style={style.columnContainer} />}
+              </View>
             </View>
           </ScrollView>
         </BackgroundComponent>

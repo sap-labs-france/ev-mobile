@@ -1,8 +1,7 @@
 import React from "react";
-import { ScrollView, Image, Keyboard, KeyboardAvoidingView, Text as TextRN, TextInput } from "react-native";
+import { ScrollView, Image, Keyboard, KeyboardAvoidingView, Text as TextRN, TextInput, BackHandler, Alert } from "react-native";
 import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet, Footer, Left, Right } from "native-base";
 import Orientation from "react-native-orientation-locker";
-import { ResponsiveComponent } from "react-native-responsive-ui";
 import * as Animatable from "react-native-animatable";
 import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
@@ -136,9 +135,20 @@ export default class Login extends BaseScreen {
     }
   };
 
-  onBack = () =>
-    // Do nothing
-    true;
+  onBack = () => {
+    // Exit?
+    Alert.alert(
+      I18n.t("general.exitApp"),
+      I18n.t("general.exitAppConfirm"),
+      [
+        { text: I18n.t("general.no"), style: 'cancel' },
+        { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() },
+      ],
+      { cancelable: false }
+    );
+    // Do not bubble up
+    return true;
+  };
 
   _navigateToSites() {
     // Navigate to App
@@ -303,12 +313,12 @@ export default class Login extends BaseScreen {
           </ScrollView>
           <Footer style={style.footer}>
             <Left>
-              <Button small transparent style={style.linksButtonLeft} onPress={() => this._newUser()}>
+              <Button small transparent style={[style.linksButton, style.linksButtonLeft]} onPress={() => this._newUser()}>
                 <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
               </Button>
             </Left>
             <Right>
-              <Button small transparent style={style.linksButtonRight} onPress={() => this._forgotPassword()}>
+              <Button small transparent style={[style.linksButton, style.linksButtonRight]} onPress={() => this._forgotPassword()}>
                 <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
               </Button>
             </Right>

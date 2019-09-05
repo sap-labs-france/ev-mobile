@@ -1,7 +1,6 @@
 import React from "react";
 import { ScrollView, Alert } from "react-native";
 import { Container, View, Text, Button } from "native-base";
-import { ResponsiveComponent } from "react-native-responsive-ui";
 import I18n from "../../../I18n/I18n";
 import computeStyleSheet from "./ChargerDetailsStyles";
 import PropTypes from "prop-types";

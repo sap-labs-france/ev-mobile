@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, RefreshControl } from "react-native";
+import { Platform, FlatList, RefreshControl, BackHandler, Alert } from "react-native";
 import { Container, Spinner, View } from "native-base";
 import Utils from "../../utils/Utils";
 import Constants from "../../utils/Constants";
@@ -10,6 +10,8 @@ import BackgroundComponent from "../../components/background/BackgroundComponent
 import computeStyleSheet from "./SitesStyles";
 import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
+import ListEmptyTextComponent from "../../components/list/empty-text/ListEmptyTextComponent";
+import ListFooterComponent from "../../components/list/footer/ListFooterComponent";
 
 export default class Sites extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -60,7 +62,15 @@ export default class Sites extends BaseAutoRefreshScreen {
   };
 
   onBack = () => {
-    // Do not bubble up
+    Alert.alert(
+      I18n.t("general.exitApp"),
+      I18n.t("general.exitAppConfirm"),
+      [
+        { text: I18n.t("general.no"), style: 'cancel' },
+        { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() },
+      ],
+      { cancelable: false }
+    );
     return true;
   };
 
@@ -91,7 +101,7 @@ export default class Sites extends BaseAutoRefreshScreen {
   _onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
-    if (skip + limit < count) {
+    if ((skip + limit < count) || (count === -1)) {
       // No: get next sites
       const sites = await this._getSites(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
@@ -103,18 +113,10 @@ export default class Sites extends BaseAutoRefreshScreen {
     }
   };
 
-  _footerList = () => {
-    const { skip, count, limit } = this.state;
-    if (skip + limit < count) {
-      return <Spinner />;
-    }
-    return null;
-  };
-
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading } = this.state;
+    const { loading, skip, count, limit } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
@@ -143,8 +145,9 @@ export default class Sites extends BaseAutoRefreshScreen {
                 keyExtractor={(item) => item.id}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
-                onEndReachedThreshold={0.5}
-                ListFooterComponent={this._footerList}
+                onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
+                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("sites.noSites")}/>}
+                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit}/>}
               />
             )}
           </View>

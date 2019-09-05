@@ -1,6 +1,6 @@
 import React from "react";
-import { Platform, FlatList, RefreshControl } from "react-native";
-import { Container, View, Spinner, List } from "native-base";
+import { Platform, FlatList, RefreshControl, BackHandler, Alert } from "react-native";
+import { Container, View, Spinner } from "native-base";
 import ChargerComponent from "../../components/charger/ChargerComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
 import SearchHeaderComponent from "../../components/search-header/SearchHeaderComponent";
@@ -10,6 +10,8 @@ import computeStyleSheet from "./ChargersStyles";
 import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
+import ListEmptyTextComponent from "../../components/list/empty-text/ListEmptyTextComponent";
+import ListFooterComponent from "../../components/list/footer/ListFooterComponent";
 
 export default class Chargers extends BaseAutoRefreshScreen {
   constructor(props) {
@@ -31,16 +33,6 @@ export default class Chargers extends BaseAutoRefreshScreen {
     await super.componentDidMount();
     // Get Chargers
     await this.refresh();
-  }
-
-  async componentWillUnmount() {
-    // Call parent
-    await super.componentWillUnmount();
-  }
-
-  async componentDidFocus() {
-    // Call parent
-    await super.componentDidFocus();
   }
 
   _getChargers = async (searchText, skip, limit) => {
@@ -65,7 +57,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
   _onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
-    if (skip + limit < count) {
+    if ((skip + limit < count) || (count === -1)) {
       // No: get next sites
       const chargers = await this._getChargers(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
@@ -79,11 +71,20 @@ export default class Chargers extends BaseAutoRefreshScreen {
 
   onBack = () => {
     const { siteAreaID } = this.state;
-    // Safe way to retrieve the Site ID to navigate back from a notification
-    const siteID = this._getSiteIDFromChargers();
     if (siteAreaID) {
-      // Back mobile button: Force navigation
-      this.props.navigation.navigate("SiteAreas", { siteID });
+      // Go Back
+      this.props.navigation.goBack();
+    } else {
+      // Exit?
+      Alert.alert(
+        I18n.t("general.exitApp"),
+        I18n.t("general.exitAppConfirm"),
+        [
+          { text: I18n.t("general.no"), style: 'cancel' },
+          { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() },
+        ],
+        { cancelable: false }
+      );
     }
     // Do not bubble up
     return true;
@@ -113,14 +114,6 @@ export default class Chargers extends BaseAutoRefreshScreen {
     this.setState({ refreshing: false });
   };
 
-  _footerList = () => {
-    const { skip, count, limit } = this.state;
-    if (skip + limit < count) {
-      return <Spinner />;
-    }
-    return null;
-  };
-
   _getSiteIDFromChargers() {
     const { chargers } = this.state;
     // Find the first available Site ID
@@ -136,9 +129,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
   render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { chargers, siteAreaID } = this.state;
-    // Safe way to retrieve the Site ID to navigate back from a notification
-    const siteID = this._getSiteIDFromChargers();
+    const { siteAreaID, loading, chargers, skip, count, limit } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent active={false}>
@@ -146,8 +137,8 @@ export default class Chargers extends BaseAutoRefreshScreen {
             title={I18n.t("chargers.title")}
             showSearchAction={true}
             searchRef={this.searchRef}
-            leftAction={siteAreaID ? () => navigation.navigate("SiteAreas", { siteID }) : undefined}
-            leftActionIcon={siteAreaID ? "navigate-before" : undefined}
+            leftAction={siteAreaID ? this.onBack : null}
+            leftActionIcon={siteAreaID ? "navigate-before" : null}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />
@@ -160,22 +151,18 @@ export default class Chargers extends BaseAutoRefreshScreen {
             navigation={navigation}
           />
           <View style={style.content}>
-            {this.state.loading ? (
+            {loading ? (
               <Spinner style={style.spinner} />
             ) : (
               <FlatList
-                data={this.state.chargers}
-                renderItem={({ item }) => (
-                  <List>
-                    <ChargerComponent charger={item} navigation={navigation} siteAreaID={siteAreaID} />
-                  </List>
-                )}
+                data={chargers}
+                renderItem={({ item }) => <ChargerComponent charger={item} navigation={navigation} siteAreaID={siteAreaID} />}
                 keyExtractor={(item) => item.id}
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
-                indicatorStyle={"white"}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
-                ListFooterComponent={this._footerList}
+                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit}/>}
+                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("chargers.noChargers")}/>}
               />
             )}
           </View>
