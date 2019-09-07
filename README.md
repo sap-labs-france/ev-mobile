@@ -2,7 +2,7 @@
 
 ## Summary
 
-This application is the Electric Vehicule Charging Station (EVSE) mobile application for Android and iOS.
+This application is the Electric Vehicle Charging Station (EVSE) mobile application for Android and iOS.
 
 ## Installation
 
@@ -42,12 +42,6 @@ to install some of the needed dependencies
 ## Running the application on a virtual device
 
 Open a terminal in the **ev-mobile** directory
-
-* Jetify the React Native libraries:
-
-  ```
-  npm run android:jetify
-  ```
 
 * Install CocoaPods on Mac OSX:
 
