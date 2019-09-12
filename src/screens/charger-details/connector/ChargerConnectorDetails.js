@@ -35,11 +35,6 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     };
   }
 
-  async componentWillMount() {
-    // Call parent
-    await super.componentWillMount();
-  }
-
   async componentDidMount() {
     const { charger } = this.props;
     // Call parent

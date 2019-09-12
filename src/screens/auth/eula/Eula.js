@@ -21,11 +21,6 @@ export default class Eula extends BaseScreen {
     };
   }
 
-  async componentWillMount() {
-    // Call parent
-    await super.componentWillMount();
-  }
-
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();

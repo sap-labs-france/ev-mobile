@@ -26,9 +26,9 @@ export default class Sites extends BaseAutoRefreshScreen {
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     // Call parent
-    await super.componentWillMount();
+    await super.componentDidMount();
     // No Site Management: Go to chargers
     const securityProvider = this.centralServerProvider.getSecurityProvider();
     if (securityProvider && !securityProvider.isComponentOrganizationActive()) {
