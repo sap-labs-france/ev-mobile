@@ -1,7 +1,6 @@
 // @flow
 
 import { PixelRatio, StatusBar } from "react-native";
-
 import variable from "./../variables/platform";
 import commonColor, { PLATFORM } from "./../variables/commonColor";
 

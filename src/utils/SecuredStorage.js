@@ -1,6 +1,5 @@
 import Constants from "./Constants";
 import RNSecureStorage, { ACCESSIBLE } from "rn-secure-storage";
-import DeviceInfo from "react-native-device-info";
 
 // Generate a new Id for persisting the navigation each time the app is launched first time
 let navigationID = new Date().getTime();
@@ -36,7 +35,7 @@ export default class SecuredStorage {
   static async clearUserCredentials() {
     const credentials = await SecuredStorage._getJson(Constants.KEY_CREDENTIALS);
     if (credentials) {
-      delete credentials.token;
+      Reflect.deleteProperty(credentials, "token");
       await SecuredStorage.saveUserCredentials(credentials);
     }
   }

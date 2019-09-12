@@ -55,6 +55,7 @@ export default class Utils {
 
   static async handleHttpUnexpectedError(centralServerProvider, error, navigation, fctRefresh) {
     // Log in console
+    // eslint-disable-next-line no-console
     console.log({ error });
     // Check if HTTP?
     if (error.request) {

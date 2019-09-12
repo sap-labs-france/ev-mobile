@@ -59,8 +59,10 @@ export default class HeaderComponent extends ResponsiveComponent {
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
         </Body>
         <Right style={style.rightHeader}>
-          {showSearchAction &&
-            <Button transparent style={style.rightButtonHeader}
+          {showSearchAction && (
+            <Button
+              transparent
+              style={style.rightButtonHeader}
               onPress={() => {
                 // Invert
                 this.searchIsVisible = !this.searchIsVisible;
@@ -71,7 +73,7 @@ export default class HeaderComponent extends ResponsiveComponent {
               }}>
               <Icon type={"MaterialIcons"} name={"search"} style={style.iconHeader} />
             </Button>
-          }
+          )}
           {rightAction ? (
             <Button transparent style={style.rightButtonHeader} onPress={() => rightAction()}>
               <Icon type={rightActionIconType} name={rightActionIcon} style={style.iconHeader} />

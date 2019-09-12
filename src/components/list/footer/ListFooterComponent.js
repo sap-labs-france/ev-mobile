@@ -12,7 +12,7 @@ export default class ListFooterComponent extends ResponsiveComponent {
   render() {
     const style = computeStyleSheet();
     const { skip, limit, count } = this.props;
-    if ((skip + limit < count) || (count === -1)) {
+    if (skip + limit < count || count === -1) {
       return (
         <View style={style.spinnerContainer}>
           <Spinner />
@@ -29,5 +29,4 @@ ListFooterComponent.propTypes = {
   count: PropTypes.number
 };
 
-ListFooterComponent.defaultProps = {
-};
+ListFooterComponent.defaultProps = {};

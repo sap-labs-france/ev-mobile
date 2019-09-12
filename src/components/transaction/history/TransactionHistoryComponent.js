@@ -60,13 +60,13 @@ export default class TransactionHistoryComponent extends ResponsiveComponent {
                 <Text style={[style.labelValue, style.info]}>{batteryLevel}</Text>
                 <Text style={[style.subLabelValue, style.info]}>(%)</Text>
               </View>
-              {isPricingActive &&
+              {isPricingActive && (
                 <View style={style.columnContainer}>
                   <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
                   <Text style={[style.labelValue, style.info]}>{price}</Text>
                   <Text style={[style.subLabelValue, style.info]}>({transaction.priceUnit})</Text>
                 </View>
-              }
+              )}
             </View>
           </View>
         </TouchableOpacity>
@@ -83,4 +83,3 @@ TransactionHistoryComponent.propTypes = {
 };
 
 TransactionHistoryComponent.defaultProps = {};
-

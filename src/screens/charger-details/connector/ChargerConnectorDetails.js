@@ -321,9 +321,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     return (
       <View style={style.columnContainer}>
         <ConnectorStatusComponent connector={connector} text={Utils.translateConnectorStatus(connector.status)} />
-        {isAdmin && connector.status === Constants.CONN_STATUS_FAULTED &&
+        {isAdmin && connector.status === Constants.CONN_STATUS_FAULTED && (
           <Text style={[style.subLabel, style.subLabelStatusError]}>({connector.errorCode})</Text>
-        }
+        )}
       </View>
     );
   };
@@ -331,19 +331,19 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
   _renderUserInfo = (style) => {
     const { isAdmin } = this.props;
     const { userImage, transaction } = this.state;
-    return (
-      transaction ? (
-        <View style={style.columnContainer}>
-          <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhotoActive} />
-          <Text numberOfLines={1} style={[style.label, style.labelUser, style.info]}>{Utils.buildUserName(transaction.user)}</Text>
-          {isAdmin ? <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text> : undefined}
-        </View>
-      ) : (
-        <View style={style.columnContainer}>
-          <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
-          <Text style={[style.label, style.disabled]}>-</Text>
-        </View>
-      )
+    return transaction ? (
+      <View style={style.columnContainer}>
+        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhotoActive} />
+        <Text numberOfLines={1} style={[style.label, style.labelUser, style.info]}>
+          {Utils.buildUserName(transaction.user)}
+        </Text>
+        {isAdmin ? <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text> : undefined}
+      </View>
+    ) : (
+      <View style={style.columnContainer}>
+        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
+        <Text style={[style.label, style.disabled]}>-</Text>
+      </View>
     );
   };
 
@@ -353,58 +353,52 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     if (transaction) {
       price = Math.round(transaction.currentCumulatedPrice * 100) / 100;
     }
-    return (
-      transaction ? (
-        <View style={style.columnContainer}>
-          <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
-          <Text style={[style.label, style.labelValue, style.info]}>{price}</Text>
-          <Text style={[style.subLabel, style.info]}>({transaction.priceUnit})</Text>
-        </View>
-      ) : (
-        <View style={style.columnContainer}>
-          <Icon type="FontAwesome" name="money" style={[style.icon, style.disabled]} />
-          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
-        </View>
-      )
+    return transaction ? (
+      <View style={style.columnContainer}>
+        <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
+        <Text style={[style.label, style.labelValue, style.info]}>{price}</Text>
+        <Text style={[style.subLabel, style.info]}>({transaction.priceUnit})</Text>
+      </View>
+    ) : (
+      <View style={style.columnContainer}>
+        <Icon type="FontAwesome" name="money" style={[style.icon, style.disabled]} />
+        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+      </View>
     );
   };
 
   _renderInstantPower = (style) => {
     const { connector } = this.props;
-    return (
-      connector.activeTransactionID === 0 ? (
-        <View style={style.columnContainer}>
-          <Icon type="FontAwesome" name="bolt" style={[style.icon, style.disabled]} />
-          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
-        </View>
-      ) : (
-        <View style={style.columnContainer}>
-          <Icon type="FontAwesome" name="bolt" style={[style.icon, style.info]} />
-          <Text style={[style.label, style.labelValue, style.info]}>
-            {connector.currentConsumption / 1000 > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0}
-          </Text>
-          <Text style={[style.subLabel, style.info]}>{I18n.t("details.instant")} (kW)</Text>
-        </View>
-      )
+    return connector.activeTransactionID === 0 ? (
+      <View style={style.columnContainer}>
+        <Icon type="FontAwesome" name="bolt" style={[style.icon, style.disabled]} />
+        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+      </View>
+    ) : (
+      <View style={style.columnContainer}>
+        <Icon type="FontAwesome" name="bolt" style={[style.icon, style.info]} />
+        <Text style={[style.label, style.labelValue, style.info]}>
+          {connector.currentConsumption / 1000 > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0}
+        </Text>
+        <Text style={[style.subLabel, style.info]}>{I18n.t("details.instant")} (kW)</Text>
+      </View>
     );
   };
 
   _renderElapsedTime = (style) => {
     const { elapsedTimeFormatted } = this.state;
     const { connector } = this.props;
-    return (
-      connector.activeTransactionID ? (
-        <View style={style.columnContainer}>
-          <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
-            <Text style={[style.label, style.labelValue, style.info]}>{elapsedTimeFormatted}</Text>
-            <Text style={[style.subLabel, style.info]}>{I18n.t("details.duration")}</Text>
-        </View>
-      ) : (
-        <View style={style.columnContainer}>
-          <Icon type="MaterialIcons" name="timer" style={[style.icon, style.disabled]} />
-          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
-        </View>
-      )
+    return connector.activeTransactionID ? (
+      <View style={style.columnContainer}>
+        <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
+        <Text style={[style.label, style.labelValue, style.info]}>{elapsedTimeFormatted}</Text>
+        <Text style={[style.subLabel, style.info]}>{I18n.t("details.duration")}</Text>
+      </View>
+    ) : (
+      <View style={style.columnContainer}>
+        <Icon type="MaterialIcons" name="timer" style={[style.icon, style.disabled]} />
+        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+      </View>
     );
   };
 
@@ -412,55 +406,49 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
     const { inactivityFormatted, totalInactivitySecs } = this.state;
     const { connector } = this.props;
     const inactivityStyle = Utils.computeInactivityStyle(totalInactivitySecs);
-    return (
-      connector.activeTransactionID ? (
-        <View style={style.columnContainer}>
-          <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
-          <Text style={[style.label, style.labelValue, inactivityStyle]}>{inactivityFormatted}</Text>
-          <Text style={[style.subLabel, inactivityStyle]}>{I18n.t("details.duration")}</Text>
-        </View>
-      ) : (
-        <View style={style.columnContainer}>
-          <Icon type="MaterialIcons" name="timer-off" style={[style.icon, style.disabled]} />
-          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
-        </View>
-      )
+    return connector.activeTransactionID ? (
+      <View style={style.columnContainer}>
+        <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
+        <Text style={[style.label, style.labelValue, inactivityStyle]}>{inactivityFormatted}</Text>
+        <Text style={[style.subLabel, inactivityStyle]}>{I18n.t("details.duration")}</Text>
+      </View>
+    ) : (
+      <View style={style.columnContainer}>
+        <Icon type="MaterialIcons" name="timer-off" style={[style.icon, style.disabled]} />
+        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+      </View>
     );
   };
 
   _renderTotalConsumption = (style) => {
     const { connector } = this.props;
-    return (
-      (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ? (
-        <View style={style.columnContainer}>
-          <Icon style={[style.icon, style.disabled]} type="MaterialIcons" name="ev-station" />
-          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
-        </View>
-      ) : (
-        <View style={style.columnContainer}>
-          <Icon style={[style.icon, style.info]} type="MaterialIcons" name="ev-station" />
-          <Text style={[style.label, style.labelValue, style.info]}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
-          <Text style={[style.subLabel, style.info]}>{I18n.t("details.total")} (kW.h)</Text>
-        </View>
-      )
+    return (connector.totalConsumption / 1000).toFixed(1) === 0.0 || connector.totalConsumption === 0 ? (
+      <View style={style.columnContainer}>
+        <Icon style={[style.icon, style.disabled]} type="MaterialIcons" name="ev-station" />
+        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+      </View>
+    ) : (
+      <View style={style.columnContainer}>
+        <Icon style={[style.icon, style.info]} type="MaterialIcons" name="ev-station" />
+        <Text style={[style.label, style.labelValue, style.info]}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
+        <Text style={[style.subLabel, style.info]}>{I18n.t("details.total")} (kW.h)</Text>
+      </View>
     );
   };
 
   _renderBatteryLevel = (style) => {
     const { connector } = this.props;
-    return (
-      connector.currentStateOfCharge ? (
-        <View style={style.columnContainer}>
-          <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
-          <Text style={[style.label, style.labelValue, style.info]}>{connector.currentStateOfCharge}</Text>
-          <Text style={[style.subLabel, style.info]}>(%)</Text>
-        </View>
-      ) : (
-        <View style={style.columnContainer}>
-          <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.disabled]} />
-          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
-        </View>
-      )
+    return connector.currentStateOfCharge ? (
+      <View style={style.columnContainer}>
+        <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
+        <Text style={[style.label, style.labelValue, style.info]}>{connector.currentStateOfCharge}</Text>
+        <Text style={[style.subLabel, style.info]}>(%)</Text>
+      </View>
+    ) : (
+      <View style={style.columnContainer}>
+        <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.disabled]} />
+        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+      </View>
     );
   };
 
@@ -523,18 +511,18 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen {
         <BackgroundComponent active={false}>
           {/* Start/Stop Transaction */}
           <View style={style.transactionContainer}>
-            {canStartTransaction && connector.activeTransactionID === 0 ?
+            {canStartTransaction && connector.activeTransactionID === 0 ? (
               this._renderStartTransactionButton(style)
-            :
-              canStopTransaction && connector.activeTransactionID > 0 ?
-                this._renderStopTransactionButton(style)
-              :
-                <View style={style.noButtonStopTransaction} />
-            }
+            ) : canStopTransaction && connector.activeTransactionID > 0 ? (
+              this._renderStopTransactionButton(style)
+            ) : (
+              <View style={style.noButtonStopTransaction} />
+            )}
           </View>
           {/* Details */}
-          <ScrollView style={style.scrollViewContainer}
-              refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._manualRefresh} />}>
+          <ScrollView
+            style={style.scrollViewContainer}
+            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this._manualRefresh} />}>
             <View style={style.detailsContainer}>
               <View style={style.rowContainer}>
                 {this._renderConnectorStatus(style)}

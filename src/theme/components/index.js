@@ -1,8 +1,6 @@
-/* eslint-disable no-param-reassign */
 // @flow
 
 import _ from "lodash";
-
 import bodyTheme from "./Body";
 import leftTheme from "./Left";
 import rightTheme from "./Right";

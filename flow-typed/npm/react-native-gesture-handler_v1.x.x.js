@@ -1,5 +1,5 @@
-// flow-typed signature: 7353ca6cbb54d66849ee90d56edef502
-// flow-typed version: 55b4213307/react-native-gesture-handler_v1.x.x/flow_>=v0.88.0
+// flow-typed signature: 815e8f15c68db30067a53f68ff1ec784
+// flow-typed version: 773d6936e4/react-native-gesture-handler_v1.x.x/flow_>=v0.88.0 <=v0.103.x
 
 // Since now there is no possibility to import types from other libraries I had to use such a crutch
 declare module 'react-native-gesture-handler/@react-native' {
@@ -334,6 +334,35 @@ declare module 'react-native-gesture-handler/GestureHandler' {
     onEnded?: ($Event<ExtraProps>) => mixed,
   |};
 
+  declare type HitSlop =
+    | number
+    | {|
+        left?: number,
+        top?: number,
+        right?: number,
+        bottom?: number,
+        vertical?: number,
+        horizontal?: number,
+        width?: number,
+        height?: number,
+      |}
+    | {|
+        width: number,
+        left: number,
+      |}
+    | {|
+        width: number,
+        right: number,
+      |}
+    | {|
+        height: number,
+        top: number,
+      |}
+    | {|
+        height: number,
+        bottom: number,
+      |};
+
   declare type $GestureHandlerProps<
     AdditionalProps: {},
     ExtraEventsProps: {}
@@ -346,18 +375,7 @@ declare module 'react-native-gesture-handler/GestureHandler' {
     simultaneousHandlers?: React$Ref<any> | Array<React$Ref<any>>,
     shouldCancelWhenOutside?: boolean,
     minPointers?: number,
-    hitSlop?:
-      | number
-      | {|
-          left?: number,
-          top?: number,
-          right?: number,
-          bottom?: number,
-          vertical?: number,
-          horizontal?: number,
-          width?: number,
-          height?: number,
-        |},
+    hitSlop?: HitSlop,
   |}>;
 
   /////////////////////////////////////////////////////////////////////////////

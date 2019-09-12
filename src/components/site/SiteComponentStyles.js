@@ -28,7 +28,7 @@ const commonStyles = ScaledSheet.create({
   },
   subHeaderContent: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   connectorContent: {
     flexDirection: "row",

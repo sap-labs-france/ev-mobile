@@ -57,7 +57,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
   _onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
-    if ((skip + limit < count) || (count === -1)) {
+    if (skip + limit < count || count === -1) {
       // No: get next sites
       const chargers = await this._getChargers(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
@@ -79,10 +79,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
       Alert.alert(
         I18n.t("general.exitApp"),
         I18n.t("general.exitAppConfirm"),
-        [
-          { text: I18n.t("general.no"), style: 'cancel' },
-          { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() },
-        ],
+        [{ text: I18n.t("general.no"), style: "cancel" }, { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() }],
         { cancelable: false }
       );
     }
@@ -161,8 +158,8 @@ export default class Chargers extends BaseAutoRefreshScreen {
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
-                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit}/>}
-                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("chargers.noChargers")}/>}
+                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit} />}
+                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("chargers.noChargers")} />}
               />
             )}
           </View>

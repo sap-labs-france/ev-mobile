@@ -84,7 +84,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
   _onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
-    if ((skip + limit < count) || (count === -1)) {
+    if (skip + limit < count || count === -1) {
       // No: get next sites
       const siteAreas = await this._getSiteAreas(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
@@ -131,8 +131,8 @@ export default class SiteAreas extends BaseAutoRefreshScreen {
                 refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this._onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
-                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("siteAreas.noSiteAreas")}/>}
-                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit}/>}
+                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("siteAreas.noSiteAreas")} />}
+                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit} />}
               />
             )}
           </View>

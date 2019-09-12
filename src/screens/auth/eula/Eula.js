@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import { ScrollView, BackHandler } from "react-native";
 import { Spinner, Container } from "native-base";

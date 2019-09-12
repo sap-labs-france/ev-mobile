@@ -1,5 +1,4 @@
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import Constants from "../../utils/Constants";
 import { BackHandler } from "react-native";
 import ProviderFactory from "../../provider/ProviderFactory";
 
@@ -37,6 +36,5 @@ export default class BaseScreen extends ResponsiveComponent {
     BackHandler.addEventListener("hardwareBackPress", this.onBack.bind(this));
   }
 
-  async componentDidBlur() {
-  }
+  async componentDidBlur() {}
 }

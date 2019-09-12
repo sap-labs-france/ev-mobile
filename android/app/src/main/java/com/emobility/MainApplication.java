@@ -1,26 +1,17 @@
 package com.emobility;
 
 import android.app.Application;
+import android.util.Log;
 
+import com.facebook.react.PackageList;
+import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
+import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.ReactApplication;
-import org.wonday.orientation.OrientationPackage;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.github.wuxudong.rncharts.MPAndroidChartPackage;
-import io.invertase.firebase.RNFirebasePackage;
-import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
-import com.horcrux.svg.SvgPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.taluttasgiran.rnsecurestorage.RNSecureStoragePackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
-import br.com.classapp.RNSensitiveInfo.RNSensitiveInfoPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -33,21 +24,11 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new SplashScreenReactPackage(),
-            new MPAndroidChartPackage(),
-            new RNFirebasePackage(),
-            new OrientationPackage(),
-            new ReactNativePushNotificationPackage(),
-            new SvgPackage(),
-            new VectorIconsPackage(),
-            new RNSecureStoragePackage(),
-            new RNGestureHandlerPackage(),
-            new RNDeviceInfo(),
-            new RNI18nPackage(),
-            new RNSensitiveInfoPackage()
-      );
+      @SuppressWarnings("UnnecessaryLocalVariable")
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      // Packages that cannot be autolinked yet can be added manually here, for example:
+      // packages.add(new MyReactNativePackage());
+      return packages;
     }
 
     @Override

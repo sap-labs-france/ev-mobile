@@ -38,7 +38,7 @@ export default class TransactionInProgressComponent extends ResponsiveComponent 
             navigation.navigate("ChargerDetailsTabs", {
               chargerID: transaction.chargeBoxID,
               connectorID: transaction.connectorId
-            })
+            });
           }}>
           <View style={style.container}>
             <TransactionHeaderComponent transaction={transaction} isAdmin={isAdmin} />
@@ -63,13 +63,13 @@ export default class TransactionInProgressComponent extends ResponsiveComponent 
                 <Text style={[style.labelValue, style.info]}>{batteryLevel}</Text>
                 <Text style={[style.subLabelValue, style.info]}>(%)</Text>
               </View>
-              {isPricingActive &&
+              {isPricingActive && (
                 <View style={style.columnContainer}>
                   <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
                   <Text style={[style.labelValue, style.info]}>{price}</Text>
                   <Text style={[style.subLabelValue, style.info]}>({transaction.priceUnit})</Text>
                 </View>
-              }
+              )}
             </View>
           </View>
         </TouchableOpacity>
@@ -86,4 +86,3 @@ TransactionInProgressComponent.propTypes = {
 };
 
 TransactionInProgressComponent.defaultProps = {};
-

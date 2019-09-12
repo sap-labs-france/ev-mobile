@@ -83,7 +83,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
     this._canStopTransaction();
     this._canStartTransaction();
     this._canReadTransaction();
-  }
+  };
 
   _canStopTransaction = () => {
     const { charger, connector } = this.state;
@@ -148,8 +148,16 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
   render() {
     const style = computeStyleSheet();
     const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
-    const { charger, connector, isAdmin, siteAreaID, firstLoad,
-      canStopTransaction, canStartTransaction, canDisplayTransaction } = this.state;
+    const {
+      charger,
+      connector,
+      isAdmin,
+      siteAreaID,
+      firstLoad,
+      canStopTransaction,
+      canStartTransaction,
+      canDisplayTransaction
+    } = this.state;
     const { navigation } = this.props;
     const connectorLetter = Utils.getConnectorLetter(connectorID);
     return firstLoad ? (
@@ -167,11 +175,17 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          {!isAdmin && !canStopTransaction ?
-            <ChargerConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin}
-              canDisplayTransaction={canDisplayTransaction} canStartTransaction={canStartTransaction} canStopTransaction={canStopTransaction}
-              navigation={navigation} />
-          :
+          {!isAdmin && !canStopTransaction ? (
+            <ChargerConnectorDetails
+              charger={charger}
+              connector={connector}
+              isAdmin={isAdmin}
+              canDisplayTransaction={canDisplayTransaction}
+              canStartTransaction={canStartTransaction}
+              canStopTransaction={canStopTransaction}
+              navigation={navigation}
+            />
+          ) : (
             <Tabs tabBarPosition="bottom" locked={false} initialPage={0}>
               <Tab
                 heading={
@@ -179,11 +193,16 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
                     <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
                   </TabHeading>
                 }>
-                <ChargerConnectorDetails charger={charger} connector={connector} isAdmin={isAdmin}
-                  canStartTransaction={canStartTransaction} canStopTransaction={canStopTransaction}
-                  navigation={navigation} />
+                <ChargerConnectorDetails
+                  charger={charger}
+                  connector={connector}
+                  isAdmin={isAdmin}
+                  canStartTransaction={canStartTransaction}
+                  canStopTransaction={canStopTransaction}
+                  navigation={navigation}
+                />
               </Tab>
-              {canDisplayTransaction &&
+              {canDisplayTransaction && (
                 <Tab
                   heading={
                     <TabHeading style={style.tabHeader}>
@@ -192,8 +211,8 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
                   }>
                   <TransactionChart transactionID={connector.activeTransactionID} navigation={navigation} isAdmin={isAdmin} />
                 </Tab>
-              }
-              {isAdmin &&
+              )}
+              {isAdmin && (
                 <Tab
                   heading={
                     <TabHeading style={style.tabHeader}>
@@ -202,9 +221,9 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
                   }>
                   <ChargerDetails charger={charger} connector={connector} navigation={navigation} />
                 </Tab>
-              }
+              )}
             </Tabs>
-          }
+          )}
         </BackgroundComponent>
       </ScrollView>
     );
