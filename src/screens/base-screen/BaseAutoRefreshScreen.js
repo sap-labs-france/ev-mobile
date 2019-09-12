@@ -12,11 +12,6 @@ export default class BaseAutoRefreshScreen extends BaseScreen {
     this.refreshPeriodMillis = Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS;
   }
 
-  async componentWillMount() {
-    // Call parent
-    await super.componentWillMount();
-  }
-
   async componentDidMount() {
     // Call parent
     await super.componentDidMount();
