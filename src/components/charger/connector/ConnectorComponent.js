@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import Constants from "../../../utils/Constants";
 import ConnectorStatusComponent from "../../connector-status/ConnectorStatusComponent";
 import SvgUri from "react-native-svg-uri";
-import { scale } from "react-native-size-matters";
+const type2 = require("../../../../assets/connectorType/type2.svg");
 
 export default class ConnectorComponent extends ResponsiveComponent {
   constructor(props) {
@@ -90,6 +90,9 @@ export default class ConnectorComponent extends ResponsiveComponent {
       </View>
     ) : (
       <View style={style.connectorDetail}>
+        {/* <SvgUri width="50" height="50" source={{uri:'http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg'}} /> */}
+        {/* <SvgUri width="50" height="50" source={{uri:'https://slf.evse.cfapps.eu10.hana.ondemand.com/assets/img/connectors/type1-ccs.svg'}} /> */}
+        {/* <SvgUri width="50" height="50" source={type2} /> */}
         <Image style={style.connectorImage} source={Utils.getConnectorTypeImage(connector.type)} />
         <Text style={style.labelImage}>{Utils.translateConnectorType(connector.type)}</Text>
       </View>

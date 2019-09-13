@@ -9,6 +9,7 @@ const type2 = require("../../assets/connectorType/type2.gif");
 // const type2 = require("../../assets/connectorType/type-2.svg");
 const combo = require("../../assets/connectorType/combo_ccs.gif");
 const chademo = require("../../assets/connectorType/chademo.gif");
+const domestic = require("../../assets/connectorType/domestic-ue.gif");
 const noConnector = require("../../assets/connectorType/no-connector.gif");
 
 export default class Utils {
@@ -167,6 +168,7 @@ export default class Utils {
   };
 
   static translateConnectorType = (type) => {
+    console.log(type);
     switch (type) {
       case Constants.CONN_TYPE_2:
         return I18n.t("connector.type2");
@@ -174,6 +176,8 @@ export default class Utils {
         return I18n.t("connector.comboCCS");
       case Constants.CONN_TYPE_CHADEMO:
         return I18n.t("connector.chademo");
+      case Constants.CONN_TYPE_DOMESTIC:
+        return I18n.t("connector.domestic");
       default:
         return I18n.t("connector.unknown");
     }
@@ -187,6 +191,8 @@ export default class Utils {
         return combo;
       case Constants.CONN_TYPE_CHADEMO:
         return chademo;
+      case Constants.CONN_TYPE_DOMESTIC:
+        return domestic;
       default:
         return noConnector;
     }

@@ -107,7 +107,8 @@
     "unknown": "Unbekannt",
     "type2": "Type 2",
     "comboCCS": "Kombo",
-    "chademo": "Chademo"
+    "chademo": "Chademo",
+    "domestic": "Hausanschluss"
   },
   "details": {
     "connector": "Anschluss",
