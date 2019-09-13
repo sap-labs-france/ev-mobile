@@ -96,7 +96,7 @@
     "react-native-calendars": "^1.212.0",
     "react-native-carousel-view": "^0.5.1",
     "react-native-charts-wrapper": "^0.5.5",
-    "react-native-device-info": "^3.0.0",
+    "react-native-device-info": "^2.3.2",
     "react-native-elements": "^1.2.0",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-google-maps-directions": "^2.1.0",
@@ -117,7 +117,7 @@
     "react-native-vector-icons": "^6.6.0",
     "react-native-webview": "^7.0.5",
     "react-navigation": "^4.0.4",
-    "react-navigation-drawer": "^2.2.0",
+    "react-navigation-drawer": "^2.2.1",
     "react-navigation-stack": "^1.7.3",
     "rn-secure-storage": "^2.0.2",
     "validate.js": "^0.13.1"
