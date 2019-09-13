@@ -45,6 +45,7 @@
     "start:debug": "cross-env REACT_DEBUGGER=\"rndebugger-open --open --port 8081\" npm start",
     "android": "react-native run-android",
     "android:release": "react-native run-android --variant=release",
+    "android:assembleRelease": "npm run android:jetify && cd android && ./gradlew assembleRelease",
     "android:jetify": "npx jetify",
     "ios": "react-native run-ios",
     "ios:release": "react-native run-ios --configuration Release",
