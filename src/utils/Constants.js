@@ -85,6 +85,7 @@ export default {
   CONN_TYPE_2: "T2",
   CONN_TYPE_COMBO_CCS: "CCS",
   CONN_TYPE_CHADEMO: "C",
+  CONN_TYPE_DOMESTIC: "D",
 
   // Components
   COMPONENTS: {
