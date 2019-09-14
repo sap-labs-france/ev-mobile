@@ -168,7 +168,6 @@ export default class Utils {
   };
 
   static translateConnectorType = (type) => {
-    console.log(type);
     switch (type) {
       case Constants.CONN_TYPE_2:
         return I18n.t("connector.type2");

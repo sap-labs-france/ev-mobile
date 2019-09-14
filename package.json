@@ -116,7 +116,7 @@
     "react-native-svg-uri": "^1.2.3",
     "react-native-vector-icons": "^6.6.0",
     "react-native-webview": "^7.0.5",
-    "react-navigation": "^4.0.4",
+    "react-navigation": "^4.0.5",
     "react-navigation-drawer": "^2.2.1",
     "react-navigation-stack": "^1.7.3",
     "rn-secure-storage": "^2.0.2",
