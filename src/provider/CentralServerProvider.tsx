@@ -40,6 +40,33 @@ export default class CentralServerProvider {
     }
   }
 
+  public async initialize() {
+    // Get stored data
+    const credentials = await SecuredStorage.getUserCredentials();
+    if (credentials) {
+      // Set
+      this.email = credentials.email;
+      this.password = credentials.password;
+      this.token = credentials.token;
+      this.tenant = credentials.tenant;
+    } else {
+      // Set
+      this.email = null;
+      this.password = null;
+      this.token = null;
+      this.tenant = null;
+    }
+    // Check Token
+    if (this.token) {
+      // Try to decode the token
+      try {
+        // Decode the token
+        this.decodedToken = jwtDecode(this.token);
+        this.securityProvider = new SecurityProvider(this.decodedToken);
+      } catch (error) {}
+    }
+  }
+
   public getCaptchaBaseUrl(): string {
     return this.captchaBaseUrl;
   }
@@ -477,33 +504,6 @@ export default class CentralServerProvider {
     if (this.debug) {
       // tslint:disable
       console.log(new Date().toISOString() + " - " + methodName);
-    }
-  }
-
-  private async _initialize() {
-    // Get stored data
-    const credentials = await SecuredStorage.getUserCredentials();
-    if (credentials) {
-      // Set
-      this.email = credentials.email;
-      this.password = credentials.password;
-      this.token = credentials.token;
-      this.tenant = credentials.tenant;
-    } else {
-      // Set
-      this.email = null;
-      this.password = null;
-      this.token = null;
-      this.tenant = null;
-    }
-    // Check Token
-    if (this.token) {
-      // Try to decode the token
-      try {
-        // Decode the token
-        this.decodedToken = jwtDecode(this.token);
-        this.securityProvider = new SecurityProvider(this.decodedToken);
-      } catch (error) {}
     }
   }
 }
