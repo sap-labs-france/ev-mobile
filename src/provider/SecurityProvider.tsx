@@ -1,6 +1,5 @@
 import Constants from "../utils/Constants";
 import UserToken from '../../../ev-server/src/types/UserToken';
-import { ComponentEnum } from 'app/services/component.service';
 import SiteArea from "../types/SiteArea";
 
 export default class SecurityProvider {
@@ -50,7 +49,7 @@ export default class SecurityProvider {
     return this.isComponentActive(Constants.COMPONENTS.ORGANIZATION);
   }
 
-  public isComponentActive(componentName: ComponentEnum): boolean {
+  public isComponentActive(componentName: string): boolean {
     if (this.loggedUser && this.loggedUser.activeComponents) {
       return this.loggedUser.activeComponents.includes(componentName);
     }
