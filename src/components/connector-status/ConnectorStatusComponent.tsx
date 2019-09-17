@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import computeStyleSheet from "./ConnectorStatusComponentStyles.js";
+import computeStyleSheet from "./ConnectorStatusComponentStyles";
 import { Animated, Easing, Platform } from "react-native";
 import { Text, View } from "native-base";
 import Constants from "../../utils/Constants";

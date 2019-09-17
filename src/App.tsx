@@ -1,11 +1,3 @@
-/**
- * eMobility React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React from "react";
 import { StatusBar, Dimensions } from "react-native";
 import { createSwitchNavigator, createAppContainer } from "react-navigation";
