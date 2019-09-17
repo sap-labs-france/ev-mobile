@@ -1,4 +1,4 @@
-import CreatedUpdatedProps from "./CreatedUpdatedProps";
+import CreatedUpdatedProps from './CreatedUpdatedProps';
 
 export default interface Setting extends CreatedUpdatedProps {
   id?: string;
@@ -17,12 +17,15 @@ export interface SettingContent {
   concur?: ConcurRefundSettings;
 }
 
-export interface SimplePricingSettings {
+export interface PricingSetting {
+}
+
+export interface SimplePricingSettings extends PricingSetting {
   price: number;
   currency: string;
 }
 
-export interface ConvergentChargingPricingSettings {
+export interface ConvergentChargingPricingSettings extends PricingSetting {
   url: string;
   chargeableItemName: string;
   user: string;
@@ -42,7 +45,7 @@ export interface OcpiSettings {
       type: string;
       width: string;
       height: string;
-    }
+    };
   };
 }
 
