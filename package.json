@@ -53,6 +53,7 @@
     "android": "react-native run-android",
     "android:release": "react-native run-android --variant=release",
     "android:assembleRelease": "npm run android:jetify && cd android && ./gradlew assembleRelease",
+    "android:bundleRelease": "npm run android:jetify && cd android && ./gradlew bundleRelease",
     "android:jetify": "npx jetify",
     "ios": "react-native run-ios",
     "ios:release": "react-native run-ios --configuration Release",
