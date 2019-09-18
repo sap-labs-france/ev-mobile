@@ -41,6 +41,9 @@
     "schedule": "^0.5.0",
     "ts-jest": "^24.1.0",
     "tslib": "^1.10.0",
+    "tslint": "^5.20.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^4.1.0",
     "typescript": "^3.6.3"
   },
   "scripts": {
@@ -61,7 +64,7 @@
     "flow:check": "flow check src",
     "flow:deps": "flow-typed install",
     "lint": "tslint -p tsconfig.json",
-    "lint:fix": "",
+    "tsc": "tsc",
     "clean-install-win": "rmdir node_modules /S /Q && del package-lock.json && npm cache clear --force && npm install",
     "clean-install-lin": "rm -rf ./node_modules && rm -f ./package-lock.json && npm cache clear --force && npm install",
     "ios:bundle": "react-native bundle --platform='ios' --dev=false --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --assets-dest='./ios'",

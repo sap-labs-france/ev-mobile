@@ -1,10 +1,8 @@
-import ChargingStationClient from '../client/ocpp/ChargingStationClient';
 import Connector from './Connector';
 import CreatedUpdatedProps from './CreatedUpdatedProps';
 import SiteArea from './SiteArea';
 
 export default interface ChargingStation extends CreatedUpdatedProps {
-
   id?: string;
   siteAreaID: string;
   chargePointSerialNumber: string;
