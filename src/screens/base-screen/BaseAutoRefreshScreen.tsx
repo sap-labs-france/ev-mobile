@@ -1,81 +1,76 @@
 import BaseScreen from "./BaseScreen";
 import Constants from "../../utils/Constants";
+import BaseProps from "../../types/BaseProps";
 
-export interface Props {
+export interface Props extends BaseProps {
 }
 
-interface State {
-}
+export default class BaseAutoRefreshScreen extends BaseScreen {
+  private timerRefresh: ReturnType<typeof setTimeout>;
+  private timerRefreshActive: boolean;
+  private refreshPeriodMillis: number;
 
-export default class BaseAutoRefreshScreen extends BaseScreen<Props, State> {
   constructor(props: Props) {
     super(props);
     // Init
-    this.searchText = "";
-    this.mounted = false;
     this.timerRefresh = null;
     this.timerRefreshActive = true;
     this.refreshPeriodMillis = Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS;
   }
 
-  async componentDidMount() {
-    // Call parent
+  public async componentDidMount() {
     await super.componentDidMount();
     // Start the timer
     this._startRefreshTimer();
   }
 
-  async componentWillUnmount() {
-    // Call parent
+  public async componentWillUnmount() {
     await super.componentWillUnmount();
     // Clear the timer
     this._clearRefreshTimer();
   }
 
-  async componentDidFocus() {
-    // Call parent
+  public async componentDidFocus() {
     await super.componentDidFocus();
     // Start the timer
     this._startRefreshTimer();
   }
 
-  async componentDidBlur() {
-    // Call parent
+  public async componentDidBlur() {
     await super.componentDidBlur();
     // Clear the timer
     this._clearRefreshTimer();
   }
 
-  onBack = () => {
+  public onBack = (): boolean => {
     // Not Handled: has to be taken in the sub-classes
-    false;
-  };
+    return false;
+  }
 
-  setActive(active) {
+  public setActive(active: boolean) {
     this.timerRefreshActive = active;
   }
 
-  isActive() {
+  public isActive(): boolean {
     return this.timerRefreshActive;
   }
 
-  setRefreshPeriodMillis(refreshPeriodMillis) {
+  public setRefreshPeriodMillis(refreshPeriodMillis: number) {
     // Set new interval
     this.refreshPeriodMillis = refreshPeriodMillis;
     // Restart the timer
     this._restartTimer();
   }
 
-  getRefreshPeriodMillis() {
+  public getRefreshPeriodMillis(): number {
     return this.refreshPeriodMillis;
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  refresh() {
+  public refresh() {
     console.log("BaseAutoRefreshScreen: Refresh not implemented!!!");
   }
 
-  _startRefreshTimer() {
+  private _startRefreshTimer() {
     // Start the timer
     if (!this.timerRefresh) {
       this.timerRefresh = setTimeout(() => {
@@ -93,7 +88,7 @@ export default class BaseAutoRefreshScreen extends BaseScreen<Props, State> {
     }
   }
 
-  _restartTimer() {
+  private _restartTimer() {
     // Already started
     if (this.timerRefresh) {
       // Clear the timer
@@ -103,18 +98,11 @@ export default class BaseAutoRefreshScreen extends BaseScreen<Props, State> {
     }
   }
 
-  _clearRefreshTimer() {
+  private _clearRefreshTimer() {
     // Stop the timer
     if (this.timerRefresh) {
       clearTimeout(this.timerRefresh);
       this.timerRefresh = null;
     }
-  }
-
-  _search(searchText) {
-    // Set
-    this.searchText = searchText;
-    // Refresh
-    this.refresh();
   }
 }
