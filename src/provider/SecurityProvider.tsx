@@ -1,15 +1,19 @@
 import Constants from "../utils/Constants";
+import UserToken from '../../../ev-server/src/types/UserToken';
+import SiteArea from "../types/SiteArea";
 
 export default class SecurityProvider {
-  constructor(loggedUser) {
+  private loggedUser: UserToken;
+
+  constructor(loggedUser: UserToken) {
     this.loggedUser = loggedUser;
   }
 
-  isAdmin() {
+  public isAdmin(): boolean {
     return this.loggedUser.role === Constants.ROLE_ADMIN;
   }
 
-  isSiteAdmin(siteID) {
+  public isSiteAdmin(siteID: string): boolean {
     if (this.isAdmin()) {
       return true;
     }
@@ -19,7 +23,7 @@ export default class SecurityProvider {
     return false;
   }
 
-  isSiteUser(siteID) {
+  public isSiteUser(siteID: string) {
     if (this.isAdmin()) {
       return true;
     }
@@ -29,34 +33,34 @@ export default class SecurityProvider {
     return false;
   }
 
-  isBasic() {
+  public isBasic(): boolean {
     return this.loggedUser.role === Constants.ROLE_BASIC;
   }
 
-  isDemo() {
+  public isDemo(): boolean {
     return this.loggedUser.role === Constants.ROLE_DEMO;
   }
 
-  isComponentPricingActive() {
+  public isComponentPricingActive(): boolean {
     return this.isComponentActive(Constants.COMPONENTS.PRICING);
   }
 
-  isComponentOrganizationActive() {
+  public isComponentOrganizationActive(): boolean {
     return this.isComponentActive(Constants.COMPONENTS.ORGANIZATION);
   }
 
-  isComponentActive(componentName) {
+  public isComponentActive(componentName: string): boolean {
     if (this.loggedUser && this.loggedUser.activeComponents) {
       return this.loggedUser.activeComponents.includes(componentName);
     }
     return false;
   }
 
-  canUpdateChargingStation() {
+  public canUpdateChargingStation(): boolean {
     return this.canAccess(Constants.ENTITY_CHARGING_STATION, Constants.ACTION_UPDATE);
   }
 
-  canStopTransaction(siteArea, badgeID) {
+  public canStopTransaction(siteArea: SiteArea, badgeID: string): boolean {
     if (this.canAccess(Constants.ENTITY_CHARGING_STATION, Constants.ACTION_REMOTE_STOP_TRANSACTION)) {
       if (this.loggedUser.tagIDs.includes(badgeID)) {
         return true;
@@ -69,20 +73,21 @@ export default class SecurityProvider {
     return false;
   }
 
-  canStartTransaction(siteArea) {
+  public canStartTransaction(siteArea: SiteArea): boolean {
     if (this.canAccess(Constants.ENTITY_CHARGING_STATION, Constants.ACTION_REMOTE_START_TRANSACTION)) {
       if (this.isComponentActive(Constants.COMPONENTS.ORGANIZATION)) {
         if (!siteArea) {
           return false;
         }
-        return !siteArea.accessControl || this.isSiteAdmin(siteArea.siteID) || this.loggedUser.sites.includes(siteArea.siteID);
+        return !siteArea.accessControl || this.isSiteAdmin(siteArea.siteID) ||
+          this.loggedUser.sites.includes(siteArea.siteID);
       }
       return true;
     }
     return false;
   }
 
-  canReadTransaction(siteArea, badgeID) {
+  public canReadTransaction(siteArea: SiteArea, badgeID: string): boolean {
     if (this.canAccess(Constants.ENTITY_TRANSACTION, Constants.ACTION_READ)) {
       if (this.loggedUser.tagIDs.includes(badgeID)) {
         return true;
@@ -95,7 +100,7 @@ export default class SecurityProvider {
     return false;
   }
 
-  canAccess(resource: String, action: String) {
+  public canAccess(resource: string, action: string): boolean {
     return this.loggedUser && this.loggedUser.scopes && this.loggedUser.scopes.includes(`${resource}:${action}`);
   }
 }
