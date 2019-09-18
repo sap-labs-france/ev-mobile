@@ -2,8 +2,14 @@ import { ResponsiveComponent } from "react-native-responsive-ui";
 import { BackHandler } from "react-native";
 import ProviderFactory from "../../provider/ProviderFactory";
 
-export default class BaseScreen extends ResponsiveComponent {
-  constructor(props) {
+export interface Props {
+}
+
+interface State {
+}
+
+export default class BaseScreen extends ResponsiveComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
     // Add listeners
     this.didFocus = this.props.navigation.addListener("didFocus", this.componentDidFocus.bind(this));

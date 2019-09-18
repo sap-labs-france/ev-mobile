@@ -4,10 +4,8 @@ import App from "../App";
 import getTheme from "../theme/components";
 import variables from "../theme/variables/commonColor";
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class Setup extends Component {
-  // eslint-disable-next-line class-methods-use-this
-  render() {
+  public render() {
     return (
       <StyleProvider style={getTheme(variables)}>
         <App />

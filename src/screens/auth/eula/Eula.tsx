@@ -1,5 +1,3 @@
-// @flow
-
 import React from "react";
 import { ScrollView, BackHandler } from "react-native";
 import { Spinner, Container } from "native-base";
@@ -11,33 +9,41 @@ import Utils from "../../../utils/Utils";
 import BaseScreen from "../../base-screen/BaseScreen";
 import HeaderComponent from "../../../components/header/HeaderComponent";
 
-export default class Eula extends BaseScreen {
-  constructor(props) {
+export interface Props {
+}
+
+interface State {
+  i18nLocale: string;
+  loading: boolean;
+  eulaTextHtml: string;
+}
+
+export default class Eula extends BaseScreen<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      I18nLocal: I18n.currentLocale().substr(0, 2),
+      i18nLocales: I18n.currentLocale().substr(0, 2),
       loading: true,
       eulaTextHtml: ""
     };
   }
 
-  async componentDidMount() {
+  public async componentDidMount() {
     // Call parent
     await super.componentDidMount();
     // Load
     this.refresh();
   }
 
-  refresh = async () => {
-    // Call
+  public refresh = async () => {
     await this.endUserLicenseAgreement();
   };
 
-  endUserLicenseAgreement = async () => {
-    const { I18nLocal } = this.state;
+  public endUserLicenseAgreement = async () => {
+    const { i18nLocale } = this.state;
     try {
       const result = await this.centralServerProvider.getEndUserLicenseAgreement({
-        Language: I18nLocal
+        Language: i18nLocale
       });
       this.setState({
         loading: false,
@@ -49,14 +55,14 @@ export default class Eula extends BaseScreen {
     }
   };
 
-  onBack = () => {
+  public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.navigate("Login");
     // Do not bubble up
     return true;
   };
 
-  render() {
+  public render() {
     const style = computeStyleSheet();
     const { eulaTextHtml, loading } = this.state;
     return (
