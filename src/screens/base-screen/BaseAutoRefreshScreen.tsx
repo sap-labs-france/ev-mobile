@@ -1,8 +1,14 @@
 import BaseScreen from "./BaseScreen";
 import Constants from "../../utils/Constants";
 
-export default class BaseAutoRefreshScreen extends BaseScreen {
-  constructor(props) {
+export interface Props {
+}
+
+interface State {
+}
+
+export default class BaseAutoRefreshScreen extends BaseScreen<Props, State> {
+  constructor(props: Props) {
     super(props);
     // Init
     this.searchText = "";
