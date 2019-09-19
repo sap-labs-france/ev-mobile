@@ -1,5 +1,5 @@
-import Toast from "native-base/Toast";
-import scale from "react-native-size-matters/scale";
+// import { Toast } from "native-base";
+// import { scale } from "react-native-size-matters";
 
 export default class Message {
   public static showError(message: string) {

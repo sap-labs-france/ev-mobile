@@ -1,5 +1,3 @@
-import commonColor from "./commonColor";
+import { CommonColor } from "./commonColor";
 
-export default {
-  ...commonColor
-};
+export default new CommonColor();

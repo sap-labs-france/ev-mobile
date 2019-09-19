@@ -1,5 +1,5 @@
 import variable from "./../variables/platform";
-import PLATFORM from "./../variables/commonColor/PLATFORM";
+import { PLATFORM } from "./../variables/commonColor";
 
 export default (variables /* : * */ = variable) => {
   const platform = variables.platform;

@@ -1,6 +1,6 @@
+import { Platform } from "react-native";
+import { PLATFORM } from "./../variables/commonColor";
 import variable from "./../variables/platform";
-import PLATFORM from "./../variables/commonColor/PLATFORM";
-import Platform from "react-native/Platform";
 
 export default (variables /* : * */ = variable) => {
   const subtitleTheme = {

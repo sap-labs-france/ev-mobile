@@ -1,8 +1,8 @@
 import variable from "./../variables/platform";
 import commonColor from "./../variables/commonColor";
-import PLATFORM from "./../variables/commonColor/PLATFORM";
-import scale from "react-native-size-matters/scale";
-import moderateScale from "react-native-size-matters/moderateScale";
+import { PLATFORM } from "./../variables/commonColor";
+import { scale } from "react-native-size-matters";
+import { moderateScale } from "react-native-size-matters";
 
 export default (variables /* : * */ = variable) => {
   const badgeTheme = {

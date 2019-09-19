@@ -1,12 +1,8 @@
 import moment from "moment";
-import Root from "native-base/Root";
+import { Root } from "native-base";
 import React from "react";
-import Dimensions from "react-native/Dimensions";
-import StatusBar from "react-native/StatusBar";
-import createAppContainer from "react-navigation/createAppContainer";
-import createDrawerNavigator from "react-navigation/createDrawerNavigator";
-import createStackNavigator from "react-navigation/createStackNavigator";
-import createSwitchNavigator from "react-navigation/createSwitchNavigator";
+import { Dimensions, StatusBar } from "react-native";
+import { createAppContainer, createDrawerNavigator, createStackNavigator, createSwitchNavigator } from "react-navigation";
 import NotificationManager from "./notification/NotificationManager";
 import Eula from "./screens/auth/eula/Eula";
 import Login from "./screens/auth/login/Login";

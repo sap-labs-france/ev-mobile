@@ -301,11 +301,12 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getEndUserLicenseAgreement(): Promise<string> {
+  public async getEndUserLicenseAgreement(params: { Language: string; }): Promise<string> {
     this._debugMethod("getEndUserLicenseAgreement");
     // Call
     const result = await axios.get(`${this.centralRestServerServiceAuthURL}/EndUserLicenseAgreement`, {
       headers: this._buildHeaders(),
+      params
     });
     return result.data;
   }
