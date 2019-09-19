@@ -1,15 +1,15 @@
 import { Container, Spinner } from "native-base";
 import React from "react";
-import HTMLView from "react-native-htmlview";
 import { ScrollView } from "react-native";
+import HTMLView from "react-native-htmlview";
+import BaseProps from "types/BaseProps";
 import HeaderComponent from "../../../components/header/HeaderComponent";
+import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import BaseScreen from "../../base-screen/BaseScreen";
 import computeStyleSheet from "./EulaStyles";
 
-import I18n from "../../../I18n/I18n";
-
-export interface Props {
+export interface Props extends BaseProps {
 }
 
 interface State {
@@ -18,20 +18,20 @@ interface State {
   eulaTextHtml: string;
 }
 
-export default class Eula extends BaseScreen<Props, State> {
+export default class Eula extends BaseScreen {
+  private state: State;
+
   constructor(props: Props) {
     super(props);
     this.state = {
-      i18nLocales: I18n.currentLocale().substr(0, 2),
+      eulaTextHtml: "",
+      i18nLocale: I18n.currentLocale().substr(0, 2),
       loading: true,
-      eulaTextHtml: ""
     };
   }
 
   public async componentDidMount() {
-    // Call parent
     await super.componentDidMount();
-    // Load
     this.refresh();
   }
 

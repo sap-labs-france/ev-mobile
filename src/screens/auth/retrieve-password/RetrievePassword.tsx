@@ -1,12 +1,12 @@
-import * as Animatable from "react-native-animatable";
-import * as TextRN from "react-native/Text";
 import { Button, Footer, Form, Icon, Item, Left, Spinner, Text, View } from "native-base";
-import { Image, KeyboardAvoidingView, ScrollView, TextInput } from "react-native";
 import React from "react";
+import { Image, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from "react-native";
+import * as Animatable from "react-native-animatable";
 import DeviceInfo from "react-native-device-info";
 import ReCaptcha from "react-native-recaptcha-v3";
 import { NavigationActions, StackActions } from "react-navigation";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import I18n from "../../../I18n/I18n";
 import commonColor from "../../../theme/variables/commonColor";
 import Constants from "../../../utils/Constants";
 import Message from "../../../utils/Message";
@@ -14,7 +14,6 @@ import Utils from "../../../utils/Utils";
 import BaseScreen from "../../base-screen/BaseScreen";
 import computeStyleSheet from "../AuthStyles";
 
-import I18n from "../../../I18n/I18n";
 const logo = require("../../../../assets/logo-low.png");
 
 const formValidationDef = {

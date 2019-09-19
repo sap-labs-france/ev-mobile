@@ -1,8 +1,7 @@
 import Constants from "./Constants";
-import RNSecureStorage from "rn-secure-storage";
-import ACCESSIBLE from "rn-secure-storage/ACCESSIBLE";
+import RNSecureStorage, { ACCESSIBLE } from "rn-secure-storage";
 import UserCredentials from "../types/User";
-import NavigationState from "react-navigation/NavigationState";
+import { NavigationState } from "react-navigation";
 
 // Generate a new Id for persisting the navigation each time the app is launched first time
 let navigationID: number = new Date().getTime();

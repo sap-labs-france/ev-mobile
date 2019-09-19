@@ -1,6 +1,6 @@
 import variable from "./../variables/platform";
-import commonColor from "./../variables/commonColor";
-import StyleSheet from "react-native/StyleSheet";
+import { PLATFORM } from "./../variables/commonColor";
+import { StyleSheet } from "react-native";
 
 export default (variables /* : * */ = variable) => {
   const platform = variables.platform;
