@@ -1,9 +1,7 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-import NavigationParams from "react-navigation/NavigationParams";
-import NavigationScreenProp from "react-navigation/NavigationScreenProp";
-import NavigationState from "react-navigation/NavigationState";
-import ActionResponse from "../types/ActionResponse/ActionResponse";
+import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
+import { ActionResponse } from "../types/ActionResponse";
 import ChargingStation from "../types/ChargingStation";
 import Consumption from "../types/Consumption";
 import PagingParams from "../types/PagingParams";

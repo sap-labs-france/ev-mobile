@@ -1,11 +1,7 @@
-import Button from "native-base/Button";
-import Container from "native-base/Container";
-import Text from "native-base/Text";
-import View from "native-base/View";
+import { Button, Container, Text, View } from "native-base";
 import PropTypes from "prop-types";
 import React from "react";
-import Alert from "react-native/Alert";
-import ScrollView from "react-native/ScrollView";
+import { Alert, ScrollView } from "react-native";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import Message from "../../../utils/Message";
 import Utils from "../../../utils/Utils";

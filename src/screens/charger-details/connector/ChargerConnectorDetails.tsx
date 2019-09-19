@@ -1,15 +1,7 @@
-import Container from "native-base/Container";
-import Icon from "native-base/Icon";
-import Text from "native-base/Text";
-import Thumbnail from "native-base/Thumbnail";
-import View from "native-base/View";
+import { Container, Icon, Text, Thumbnail, View } from "native-base";
 import PropTypes from "prop-types";
 import React from "react";
-import Alert from "react-native/Alert";
-import Image from "react-native/Image";
-import RefreshControl from "react-native/RefreshControl";
-import ScrollView from "react-native/ScrollView";
-import TouchableOpacity from "react-native/TouchableOpacity";
+import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from "react-native";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import ConnectorStatusComponent from "../../../components/connector-status/ConnectorStatusComponent";
 import ProviderFactory from "../../../provider/ProviderFactory";

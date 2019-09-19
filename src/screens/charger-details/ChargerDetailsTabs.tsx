@@ -1,11 +1,6 @@
-import Container from "native-base/Container";
-import Icon from "native-base/Icon";
-import Spinner from "native-base/Spinner";
-import Tab from "native-base/Tab";
-import TabHeading from "native-base/TabHeading";
-import Tabs from "native-base/Tabs";
+import { Container, Icon, Spinner, Tab, TabHeading, Tabs } from "native-base";
 import React from "react";
-import ScrollView from "react-native/ScrollView";
+import { ScrollView } from "react-native";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
 import Utils from "../../utils/Utils";

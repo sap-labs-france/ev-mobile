@@ -1,10 +1,6 @@
-import Container from "native-base/Container";
-import Spinner from "native-base/Spinner";
-import View from "native-base/View";
+import { Container, Spinner, View } from "native-base";
 import React from "react";
-import FlatList from "react-native/FlatList";
-import Platform from "react-native/Platform";
-import RefreshControl from "react-native/RefreshControl";
+import { FlatList, Platform, RefreshControl } from "react-native";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
 import ListEmptyTextComponent from "../../components/list/empty-text/ListEmptyTextComponent";

@@ -1,16 +1,7 @@
 import moment from "moment";
-import Container from "native-base/Container";
-import Content from "native-base/Content";
-import Header from "native-base/Header";
-import Icon from "native-base/Icon";
-import ListItem from "native-base/ListItem";
-import Text from "native-base/Text";
-import Thumbnail from "native-base/Thumbnail";
-import View from "native-base/View";
-import React from "react";
+import { Container, Content, Header, Icon, ListItem, Text, Thumbnail, View } from "native-base";
+import { Image, TouchableOpacity } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import Image from "react-native/Image";
-import TouchableOpacity from "react-native/TouchableOpacity";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import Constants from "../../utils/Constants";
 import BaseScreen from "../base-screen/BaseScreen";

@@ -1,4 +1,4 @@
-import Container from "native-base/Container";
+import { Container } from "native-base";
 import React from "react";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import HeaderComponent from "../../../components/header/HeaderComponent";

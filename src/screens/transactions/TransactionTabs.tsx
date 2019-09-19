@@ -1,11 +1,6 @@
-import Icon from "native-base/Icon";
-import Tab from "native-base/Tab";
-import TabHeading from "native-base/TabHeading";
-import Tabs from "native-base/Tabs";
+import { Icon, Tab, TabHeading, Tabs } from "native-base";
 import React from "react";
-import Alert from "react-native/Alert";
-import BackHandler from "react-native/BackHandler";
-import ScrollView from "react-native/ScrollView";
+import { Alert, BackHandler, ScrollView } from "react-native";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import TransactionsHistory from "./history/TransactionsHistory";

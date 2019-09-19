@@ -1,6 +1,6 @@
-import ResponsiveComponent from "react-native-responsive-ui/ResponsiveComponent";
-import BackHandler from "react-native/BackHandler";
-import NavigationEventSubscription from "react-navigation/NavigationEventSubscription";
+import { ResponsiveComponent } from "react-native-responsive-ui";
+import { BackHandler } from "react-native";
+import { NavigationEventSubscription } from "react-navigation";
 import CentralServerProvider from "../../provider/CentralServerProvider";
 import ProviderFactory from "../../provider/ProviderFactory";
 import BaseProps from "../../types/BaseProps";

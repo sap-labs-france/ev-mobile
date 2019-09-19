@@ -1,8 +1,7 @@
-import Container from "native-base/Container";
-import Spinner from "native-base/Spinner";
+import { Container, Spinner } from "native-base";
 import React from "react";
 import HTMLView from "react-native-htmlview";
-import ScrollView from "react-native/ScrollView";
+import { ScrollView } from "react-native";
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import Utils from "../../../utils/Utils";
 import BaseScreen from "../../base-screen/BaseScreen";

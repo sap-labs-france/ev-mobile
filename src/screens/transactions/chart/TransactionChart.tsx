@@ -1,10 +1,10 @@
-import Text from "native-base/Text";
+import { Text } from "native-base";
 import PropTypes from "prop-types";
 import React from "react";
-import LineChart from "react-native-charts-wrapper/LineChart";
-import scale from "react-native-size-matters/scale";
-import processColor from "react-native/processColor";
-import View from "react-native/View";
+import { processColor } from "react-native";
+import { View } from "react-native";
+import { LineChart } from "react-native-charts-wrapper";
+import { scale } from "react-native-size-matters";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import TransactionHeaderComponent from "../../../components/transaction/header/TransactionHeaderComponent";
 import commonColor from "../../../theme/variables/commonColor";
