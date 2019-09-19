@@ -1,18 +1,24 @@
+import Container from "native-base/Container";
+import Spinner from "native-base/Spinner";
+import View from "native-base/View";
 import React from "react";
-import { Platform, FlatList, RefreshControl, BackHandler, Alert } from "react-native";
-import { Container, View, Spinner } from "native-base";
+import Alert from "react-native/Alert";
+import BackHandler from "react-native/BackHandler";
+import FlatList from "react-native/FlatList";
+import Platform from "react-native/Platform";
+import RefreshControl from "react-native/RefreshControl";
+import BackgroundComponent from "../../components/background/BackgroundComponent";
 import ChargerComponent from "../../components/charger/ChargerComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
-import SearchHeaderComponent from "../../components/search-header/SearchHeaderComponent";
-import Utils from "../../utils/Utils";
-import Constants from "../../utils/Constants";
-import computeStyleSheet from "./ChargersStyles";
-import I18n from "../../I18n/I18n";
-import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
-import BackgroundComponent from "../../components/background/BackgroundComponent";
 import ListEmptyTextComponent from "../../components/list/empty-text/ListEmptyTextComponent";
 import ListFooterComponent from "../../components/list/footer/ListFooterComponent";
+import SearchHeaderComponent from "../../components/search-header/SearchHeaderComponent";
+import Constants from "../../utils/Constants";
+import Utils from "../../utils/Utils";
+import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
+import computeStyleSheet from "./ChargersStyles";
 
+import I18n from "../../I18n/I18n";
 export default class Chargers extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);

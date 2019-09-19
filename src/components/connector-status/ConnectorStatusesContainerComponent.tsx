@@ -1,13 +1,13 @@
-import React from "react";
+import View from "native-base/View";
 import PropTypes from "prop-types";
-import { ResponsiveComponent } from "react-native-responsive-ui";
-import computeStyleSheet from "./ConnectorStatusesContainerComponentStyles";
-import { View } from "native-base";
-import I18n from "../../I18n/I18n";
-import ConnectorStatusComponent from "./ConnectorStatusComponent";
+import React from "react";
+import ResponsiveComponent from "react-native-responsive-ui/ResponsiveComponent";
 import Constants from "../../utils/Constants";
 import Utils from "../../utils/Utils";
+import ConnectorStatusComponent from "./ConnectorStatusComponent";
+import computeStyleSheet from "./ConnectorStatusesContainerComponentStyles";
 
+import I18n from "../../I18n/I18n";
 const style = computeStyleSheet();
 
 export default class ConnectorStatusesContainerComponent extends ResponsiveComponent {

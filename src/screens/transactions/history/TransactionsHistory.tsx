@@ -1,18 +1,22 @@
-import React from "react";
-import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
-import { Container, Spinner, View } from "native-base";
-import { FlatList, RefreshControl, Platform } from "react-native";
-import Constants from "../../../utils/Constants";
-import I18n from "../../../I18n/I18n";
-import Utils from "../../../utils/Utils";
-import computeStyleSheet from "../TransactionsCommonStyles";
-import HeaderComponent from "../../../components/header/HeaderComponent";
-import TransactionHistoryComponent from "../../../components/transaction/history/TransactionHistoryComponent";
-import BackgroundComponent from "../../../components/background/BackgroundComponent";
-import ListEmptyTextComponent from "../../../components/list/empty-text/ListEmptyTextComponent";
+import Container from "native-base/Container";
+import Spinner from "native-base/Spinner";
+import View from "native-base/View";
 import PropTypes from "prop-types";
+import React from "react";
+import FlatList from "react-native/FlatList";
+import Platform from "react-native/Platform";
+import RefreshControl from "react-native/RefreshControl";
+import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import HeaderComponent from "../../../components/header/HeaderComponent";
+import ListEmptyTextComponent from "../../../components/list/empty-text/ListEmptyTextComponent";
 import ListFooterComponent from "../../../components/list/footer/ListFooterComponent";
+import TransactionHistoryComponent from "../../../components/transaction/history/TransactionHistoryComponent";
+import Constants from "../../../utils/Constants";
+import Utils from "../../../utils/Utils";
+import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
+import computeStyleSheet from "../TransactionsCommonStyles";
 
+import I18n from "../../../I18n/I18n";
 export default class TransactionsHistory extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);

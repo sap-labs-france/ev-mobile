@@ -1,11 +1,17 @@
+import Icon from "native-base/Icon";
+import Tab from "native-base/Tab";
+import TabHeading from "native-base/TabHeading";
+import Tabs from "native-base/Tabs";
 import React from "react";
-import { Tab, Tabs, TabHeading, Icon } from "native-base";
-import { ScrollView, BackHandler, Alert } from "react-native";
+import Alert from "react-native/Alert";
+import BackHandler from "react-native/BackHandler";
+import ScrollView from "react-native/ScrollView";
+import BackgroundComponent from "../../components/background/BackgroundComponent";
+import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import TransactionsHistory from "./history/TransactionsHistory";
 import TransactionsInProgress from "./in-progress/TransactionsInProgress";
-import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import computeStyleSheet from "./TransactionTabsStyles";
-import BackgroundComponent from "../../components/background/BackgroundComponent";
+
 import I18n from "../../I18n/I18n";
 
 export default class TransactionTabs extends BaseAutoRefreshScreen {

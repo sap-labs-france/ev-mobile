@@ -1,19 +1,32 @@
-import React from "react";
-import { ScrollView, Image, TextInput, KeyboardAvoidingView, Text as TextRN } from "react-native";
-import { Text, Form, Item, Button, Icon, View, Spinner, Footer, Left } from "native-base";
-import { NavigationActions, StackActions } from "react-navigation";
-import commonColor from "../../../theme/variables/commonColor";
-import I18n from "../../../I18n/I18n";
-import Utils from "../../../utils/Utils";
-import Message from "../../../utils/Message";
-import computeStyleSheet from "../AuthStyles";
 import * as Animatable from "react-native-animatable";
-import Constants from "../../../utils/Constants";
+import * as TextRN from "react-native/Text";
+import Button from "native-base/Button";
+import Footer from "native-base/Footer";
+import Form from "native-base/Form";
+import Icon from "native-base/Icon";
+import Item from "native-base/Item";
+import Left from "native-base/Left";
+import Spinner from "native-base/Spinner";
+import Text from "native-base/Text";
+import View from "native-base/View";
+import React from "react";
 import DeviceInfo from "react-native-device-info";
 import ReCaptcha from "react-native-recaptcha-v3";
-import BaseScreen from "../../base-screen/BaseScreen";
+import Image from "react-native/Image";
+import KeyboardAvoidingView from "react-native/KeyboardAvoidingView";
+import ScrollView from "react-native/ScrollView";
+import TextInput from "react-native/TextInput";
+import NavigationActions from "react-navigation/NavigationActions";
+import StackActions from "react-navigation/StackActions";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import commonColor from "../../../theme/variables/commonColor";
+import Constants from "../../../utils/Constants";
+import Message from "../../../utils/Message";
+import Utils from "../../../utils/Utils";
+import BaseScreen from "../../base-screen/BaseScreen";
+import computeStyleSheet from "../AuthStyles";
 
+import I18n from "../../../I18n/I18n";
 const logo = require("../../../../assets/logo-low.png");
 
 const formValidationDef = {

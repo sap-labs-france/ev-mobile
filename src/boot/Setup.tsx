@@ -1,5 +1,5 @@
+import StyleProvider from "native-base/StyleProvider";
 import React, { Component } from "react";
-import { StyleProvider } from "native-base";
 import App from "../App";
 import getTheme from "../theme/components";
 import variables from "../theme/variables/commonColor";

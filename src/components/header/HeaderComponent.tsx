@@ -1,9 +1,17 @@
-import React from "react";
-import { Image, BackHandler } from "react-native";
-import { Header, Left, Right, Body, Title, Subtitle, Button, Icon } from "native-base";
-import { ResponsiveComponent } from "react-native-responsive-ui";
-import computeStyleSheet from "./HeaderComponentStyles";
+import Body from "native-base/Body";
+import Button from "native-base/Button";
+import Header from "native-base/Header";
+import Icon from "native-base/Icon";
+import Left from "native-base/Left";
+import Right from "native-base/Right";
+import Subtitle from "native-base/Subtitle";
+import Title from "native-base/Title";
 import PropTypes from "prop-types";
+import React from "react";
+import ResponsiveComponent from "react-native-responsive-ui/ResponsiveComponent";
+import BackHandler from "react-native/BackHandler";
+import Image from "react-native/Image";
+import computeStyleSheet from "./HeaderComponentStyles";
 
 const logo = require("../../../assets/logo-low.png");
 

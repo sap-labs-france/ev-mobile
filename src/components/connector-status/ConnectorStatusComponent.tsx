@@ -1,11 +1,14 @@
-import React from "react";
+import Text from "native-base/Text";
+import View from "native-base/View";
 import PropTypes from "prop-types";
-import { ResponsiveComponent } from "react-native-responsive-ui";
-import computeStyleSheet from "./ConnectorStatusComponentStyles";
-import { Animated, Easing, Platform } from "react-native";
-import { Text, View } from "native-base";
+import React from "react";
+import ResponsiveComponent from "react-native-responsive-ui/ResponsiveComponent";
+import Animated from "react-native/Animated";
+import Easing from "react-native/Easing";
+import Platform from "react-native/Platform";
 import Constants from "../../utils/Constants";
 import Utils from "../../utils/Utils";
+import computeStyleSheet from "./ConnectorStatusComponentStyles";
 
 export default class ConnectorStatusComponent extends ResponsiveComponent {
   constructor(props) {

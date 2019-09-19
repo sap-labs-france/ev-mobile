@@ -1,18 +1,36 @@
-import React from "react";
-import { ScrollView, Image, Keyboard, KeyboardAvoidingView, Text as TextRN, TextInput, BackHandler, Alert } from "react-native";
-import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet, Footer, Left, Right } from "native-base";
-import Orientation from "react-native-orientation-locker";
 import * as Animatable from "react-native-animatable";
-import I18n from "../../../I18n/I18n";
-import Utils from "../../../utils/Utils";
+import * as TextRN from "react-native/Text";
+import ActionSheet from "native-base/ActionSheet";
+import Button from "native-base/Button";
+import CheckBox from "native-base/CheckBox";
+import Footer from "native-base/Footer";
+import Form from "native-base/Form";
+import Icon from "native-base/Icon";
+import Item from "native-base/Item";
+import Left from "native-base/Left";
+import Right from "native-base/Right";
+import Spinner from "native-base/Spinner";
+import Text from "native-base/Text";
+import View from "native-base/View";
+import React from "react";
+import DeviceInfo from "react-native-device-info";
+import Orientation from "react-native-orientation-locker";
+import Alert from "react-native/Alert";
+import BackHandler from "react-native/BackHandler";
+import Image from "react-native/Image";
+import Keyboard from "react-native/Keyboard";
+import KeyboardAvoidingView from "react-native/KeyboardAvoidingView";
+import ScrollView from "react-native/ScrollView";
+import TextInput from "react-native/TextInput";
+import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import commonColor from "../../../theme/variables/commonColor";
 import Constants from "../../../utils/Constants";
 import Message from "../../../utils/Message";
-import computeStyleSheet from "../AuthStyles";
-import commonColor from "../../../theme/variables/commonColor";
-import DeviceInfo from "react-native-device-info";
-import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import Utils from "../../../utils/Utils";
 import BaseScreen from "../../base-screen/BaseScreen";
+import computeStyleSheet from "../AuthStyles";
 
+import I18n from "../../../I18n/I18n";
 const logo = require("../../../../assets/logo-low.png");
 
 const formValidationDef = {

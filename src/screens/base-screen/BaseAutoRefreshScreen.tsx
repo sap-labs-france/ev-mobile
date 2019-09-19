@@ -1,6 +1,6 @@
-import BaseScreen from "./BaseScreen";
-import Constants from "../../utils/Constants";
 import BaseProps from "../../types/BaseProps";
+import Constants from "../../utils/Constants";
+import BaseScreen from "./BaseScreen";
 
 export interface Props extends BaseProps {
 }

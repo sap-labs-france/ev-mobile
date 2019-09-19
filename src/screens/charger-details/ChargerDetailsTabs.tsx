@@ -1,17 +1,21 @@
+import Container from "native-base/Container";
+import Icon from "native-base/Icon";
+import Spinner from "native-base/Spinner";
+import Tab from "native-base/Tab";
+import TabHeading from "native-base/TabHeading";
+import Tabs from "native-base/Tabs";
 import React from "react";
-import { Container, Tab, Tabs, TabHeading, Spinner, Icon } from "native-base";
-import { ScrollView } from "react-native";
-import ChargerDetails from "./details/ChargerDetails";
-import TransactionChart from "../transactions/chart/TransactionChart";
-import ChargerConnectorDetails from "./connector/ChargerConnectorDetails";
-import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
-import HeaderComponent from "../../components/header/HeaderComponent";
-import I18n from "../../I18n/I18n";
-import computeStyleSheet from "./ChargerDetailsTabsStyles";
-import Utils from "../../utils/Utils";
-import Constants from "../../utils/Constants";
+import ScrollView from "react-native/ScrollView";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
+import HeaderComponent from "../../components/header/HeaderComponent";
+import Utils from "../../utils/Utils";
+import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
+import TransactionChart from "../transactions/chart/TransactionChart";
+import computeStyleSheet from "./ChargerDetailsTabsStyles";
+import ChargerConnectorDetails from "./connector/ChargerConnectorDetails";
+import ChargerDetails from "./details/ChargerDetails";
 
+import I18n from "../../I18n/I18n";
 export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);

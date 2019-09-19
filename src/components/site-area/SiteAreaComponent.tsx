@@ -1,15 +1,17 @@
-import React from "react";
-import { ResponsiveComponent } from "react-native-responsive-ui";
-import { TouchableOpacity } from "react-native";
-import { Text, View, Icon } from "native-base";
-import computeStyleSheet from "./SiteAreaComponentStyles";
-import I18n from "../../I18n/I18n";
-import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
+import Icon from "native-base/Icon";
+import Text from "native-base/Text";
+import View from "native-base/View";
+import PropTypes from "prop-types";
+import React from "react";
+import ResponsiveComponent from "react-native-responsive-ui/ResponsiveComponent";
+import TouchableOpacity from "react-native/TouchableOpacity";
 import Constants from "../../utils/Constants";
 import Message from "../../utils/Message";
 import ConnectorStatusesContainerComponent from "../connector-status/ConnectorStatusesContainerComponent";
+import computeStyleSheet from "./SiteAreaComponentStyles";
 
+import I18n from "../../I18n/I18n";
 let counter = 0;
 
 export default class SiteAreaComponent extends ResponsiveComponent {

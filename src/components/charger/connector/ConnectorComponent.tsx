@@ -1,15 +1,18 @@
-import React from "react";
-import { Image, TouchableOpacity } from "react-native";
-import { Text, View, Icon } from "native-base";
-import { ResponsiveComponent } from "react-native-responsive-ui";
-import Utils from "../../../utils/Utils";
 import * as Animatable from "react-native-animatable";
-import I18n from "../../../I18n/I18n";
-import computeStyleSheet from "./ConnectorComponentStyles";
+import Icon from "native-base/Icon";
+import Text from "native-base/Text";
+import View from "native-base/View";
 import PropTypes from "prop-types";
+import React from "react";
+import ResponsiveComponent from "react-native-responsive-ui/ResponsiveComponent";
+import Image from "react-native/Image";
+import TouchableOpacity from "react-native/TouchableOpacity";
 import Constants from "../../../utils/Constants";
+import Utils from "../../../utils/Utils";
 import ConnectorStatusComponent from "../../connector-status/ConnectorStatusComponent";
-import SvgUri from "react-native-svg-uri";
+import computeStyleSheet from "./ConnectorComponentStyles";
+
+import I18n from "../../../I18n/I18n";
 const type2 = require("../../../../assets/connectorType/type2.svg");
 
 export default class ConnectorComponent extends ResponsiveComponent {

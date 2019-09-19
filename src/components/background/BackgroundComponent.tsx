@@ -1,11 +1,9 @@
-// @flow
-
-import React from "react";
-import { ImageBackground } from "react-native";
-import { View } from "native-base";
-import { ResponsiveComponent } from "react-native-responsive-ui";
-import computeStyleSheet from "./BackgroundComponentStyles";
+import View from "native-base/View";
 import PropTypes from "prop-types";
+import React from "react";
+import ResponsiveComponent from "react-native-responsive-ui/ResponsiveComponent";
+import ImageBackground from "react-native/ImageBackground";
+import computeStyleSheet from "./BackgroundComponentStyles";
 
 // const defaultBackground = require("../../../assets/bg.png");
 const defaultBackground = require("../../../assets/sidebar-transparent.png");

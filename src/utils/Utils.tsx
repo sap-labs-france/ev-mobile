@@ -2,7 +2,8 @@ import Message from "./Message";
 import Constants from "./Constants";
 import I18n from "../I18n/I18n";
 import validate from "validate.js";
-import { NativeModules, Platform } from "react-native";
+import NativeModules from "react-native/NativeModules";
+import Platform from "react-native/Platform";
 import commonColor from "../theme/variables/commonColor";
 
 const type2 = require("../../assets/connectorType/type2.gif");

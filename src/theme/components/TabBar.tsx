@@ -1,7 +1,5 @@
-// @flow
-
 import variable from "./../variables/platform";
-import { scale } from "react-native-size-matters";
+import scale from "react-native-size-matters/scale";
 
 export default (variables /* : * */ = variable) => {
   const tabBarTheme = {

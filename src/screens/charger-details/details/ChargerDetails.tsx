@@ -1,14 +1,18 @@
-import React from "react";
-import { ScrollView, Alert } from "react-native";
-import { Container, View, Text, Button } from "native-base";
-import I18n from "../../../I18n/I18n";
-import computeStyleSheet from "./ChargerDetailsStyles";
+import Button from "native-base/Button";
+import Container from "native-base/Container";
+import Text from "native-base/Text";
+import View from "native-base/View";
 import PropTypes from "prop-types";
+import React from "react";
+import Alert from "react-native/Alert";
+import ScrollView from "react-native/ScrollView";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
-import Utils from "../../../utils/Utils";
 import Message from "../../../utils/Message";
+import Utils from "../../../utils/Utils";
 import BaseScreen from "../../base-screen/BaseScreen";
+import computeStyleSheet from "./ChargerDetailsStyles";
 
+import I18n from "../../../I18n/I18n";
 export default class ChargerDetails extends BaseScreen {
   async componentDidMount() {
     // Call parent

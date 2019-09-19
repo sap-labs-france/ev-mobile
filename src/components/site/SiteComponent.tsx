@@ -1,13 +1,15 @@
-import React from "react";
-import { ResponsiveComponent } from "react-native-responsive-ui";
-import { TouchableOpacity } from "react-native";
-import { Text, View, Icon } from "native-base";
-import openMap from "react-native-open-maps";
-import computeStyleSheet from "./SiteComponentStyles";
-import PropTypes from "prop-types";
 import * as Animatable from "react-native-animatable";
+import Icon from "native-base/Icon";
+import Text from "native-base/Text";
+import View from "native-base/View";
+import PropTypes from "prop-types";
+import React from "react";
+import openMap from "react-native-open-maps";
+import ResponsiveComponent from "react-native-responsive-ui/ResponsiveComponent";
+import TouchableOpacity from "react-native/TouchableOpacity";
 import Constants from "../../utils/Constants";
 import ConnectorStatusesContainerComponent from "../connector-status/ConnectorStatusesContainerComponent";
+import computeStyleSheet from "./SiteComponentStyles";
 
 let counter = 0;
 export default class SiteComponent extends ResponsiveComponent {

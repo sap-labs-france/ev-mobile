@@ -1,17 +1,18 @@
-import React from "react";
-import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
-import { View, processColor } from "react-native";
-import { Text } from "native-base";
-import Utils from "../../../utils/Utils";
-import I18n from "../../../I18n/I18n";
-import computeStyleSheet from "./TransactionChartStyles";
-import { scale } from "react-native-size-matters";
-import commonColor from "../../../theme/variables/commonColor";
-import { LineChart } from "react-native-charts-wrapper";
+import Text from "native-base/Text";
 import PropTypes from "prop-types";
+import React from "react";
+import LineChart from "react-native-charts-wrapper/LineChart";
+import scale from "react-native-size-matters/scale";
+import processColor from "react-native/processColor";
+import View from "react-native/View";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import TransactionHeaderComponent from "../../../components/transaction/header/TransactionHeaderComponent";
+import commonColor from "../../../theme/variables/commonColor";
+import Utils from "../../../utils/Utils";
+import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
+import computeStyleSheet from "./TransactionChartStyles";
 
+import I18n from "../../../I18n/I18n";
 export default class TransactionChart extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);
