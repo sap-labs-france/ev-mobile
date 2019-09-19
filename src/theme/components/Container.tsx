@@ -1,8 +1,7 @@
-// @flow
-
-import { Platform, Dimensions } from "react-native";
 import variable from "./../variables/platform";
-import { PLATFORM } from "./../variables/commonColor";
+import PLATFORM from "./../variables/commonColor/PLATFORM";
+import Platform from "react-native/Platform";
+import Dimensions from "react-native/Dimensions";
 
 const deviceHeight = Dimensions.get("window").height;
 export default (variables /* : * */ = variable) => {

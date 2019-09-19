@@ -1,8 +1,6 @@
-// @flow
-
 import variable from "./../variables/platform";
-import { PLATFORM } from "./../variables/commonColor";
-import { scale } from "react-native-size-matters";
+import PLATFORM from "./../variables/commonColor/PLATFORM";
+import scale from "react-native-size-matters/scale";
 
 export default (variables /* : * */ = variable) => {
   const platformStyle = variables.platformStyle;

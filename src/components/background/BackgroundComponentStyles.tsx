@@ -1,5 +1,5 @@
-import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
+import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import { ScaledSheet } from "react-native-size-matters";
 
 const commonStyles = ScaledSheet.create({

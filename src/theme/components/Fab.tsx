@@ -1,5 +1,3 @@
-// @flow
-
 export default () => {
   const fabTheme = {
     "NativeBase.Button": {

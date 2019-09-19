@@ -1,6 +1,8 @@
 import color from "color";
-import { Platform, Dimensions, PixelRatio } from "react-native";
-import { scale } from "react-native-size-matters";
+import Platform from "react-native/Platform";
+import Dimensions from "react-native/Dimensions";
+import PixelRatio from "react-native/PixelRatio";
+import scale from "react-native-size-matters/scale";
 
 export const PLATFORM = {
   ANDROID: "android",

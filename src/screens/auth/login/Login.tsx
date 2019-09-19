@@ -1,18 +1,19 @@
-import React from "react";
-import { ScrollView, Image, Keyboard, KeyboardAvoidingView, Text as TextRN, TextInput, BackHandler, Alert } from "react-native";
-import { Text, Form, Item, Button, Icon, View, CheckBox, Spinner, ActionSheet, Footer, Left, Right } from "native-base";
-import Orientation from "react-native-orientation-locker";
 import * as Animatable from "react-native-animatable";
-import I18n from "../../../I18n/I18n";
-import Utils from "../../../utils/Utils";
+import * as TextRN from "react-native/Text";
+import { ActionSheet, Button, CheckBox, Footer, Form, Icon, Item, Left, Right, Spinner, Text, View } from "native-base";
+import { Alert, BackHandler, Image, Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from "react-native";
+import React from "react";
+import DeviceInfo from "react-native-device-info";
+import Orientation from "react-native-orientation-locker";
+import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import commonColor from "../../../theme/variables/commonColor";
 import Constants from "../../../utils/Constants";
 import Message from "../../../utils/Message";
-import computeStyleSheet from "../AuthStyles";
-import commonColor from "../../../theme/variables/commonColor";
-import DeviceInfo from "react-native-device-info";
-import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import Utils from "../../../utils/Utils";
 import BaseScreen from "../../base-screen/BaseScreen";
+import computeStyleSheet from "../AuthStyles";
 
+import I18n from "../../../I18n/I18n";
 const logo = require("../../../../assets/logo-low.png");
 
 const formValidationDef = {

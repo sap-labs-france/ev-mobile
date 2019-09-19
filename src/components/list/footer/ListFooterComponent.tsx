@@ -1,8 +1,8 @@
+import { Spinner, View } from "native-base";
+import PropTypes from "prop-types";
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./ListFooterComponentStyles";
-import PropTypes from "prop-types";
-import { View, Spinner } from "native-base";
 
 export default class ListFooterComponent extends ResponsiveComponent {
   constructor(props) {

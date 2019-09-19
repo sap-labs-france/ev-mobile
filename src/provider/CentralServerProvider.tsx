@@ -1,18 +1,18 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-import { NavigationScreenProp, NavigationState, NavigationParams } from "react-navigation";
-import Constants from "../utils/Constants";
-import SecurityProvider from "./SecurityProvider";
+import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
 import { ActionResponse } from "../types/ActionResponse";
-import SecuredStorage from "../utils/SecuredStorage";
-import Tenant from "../types/Tenant";
-import UserToken from "../types/UserToken";
-import PagingParams from "../types/PagingParams";
 import ChargingStation from "../types/ChargingStation";
-import Transaction from "../types/Transaction";
+import Consumption from "../types/Consumption";
+import PagingParams from "../types/PagingParams";
 import Site from "../types/Site";
 import SiteArea from "../types/SiteArea";
-import Consumption from "../types/Consumption";
+import Tenant from "../types/Tenant";
+import Transaction from "../types/Transaction";
+import UserToken from "../types/UserToken";
+import Constants from "../utils/Constants";
+import SecuredStorage from "../utils/SecuredStorage";
+import SecurityProvider from "./SecurityProvider";
 
 export default class CentralServerProvider {
   private debug: boolean = false;

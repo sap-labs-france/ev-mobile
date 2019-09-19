@@ -1,10 +1,10 @@
-import React from "react";
 import { Text } from "native-base";
+import PropTypes from "prop-types";
+import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./ListEmptyTextComponentStyles";
-import I18n from "../../../I18n/I18n";
-import PropTypes from "prop-types";
 
+import I18n from "../../../I18n/I18n";
 export default class ListEmptyTextComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);

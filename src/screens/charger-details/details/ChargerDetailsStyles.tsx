@@ -1,6 +1,5 @@
-import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import deepmerge from "deepmerge";
-import commonColor from "../../../theme/variables/commonColor";
+import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import { ScaledSheet } from "react-native-size-matters";
 
 const commonStyles = ScaledSheet.create({

@@ -1,12 +1,13 @@
-import React from "react";
-import { Text, View, Icon, Button } from "native-base";
-import { Alert } from "react-native";
-import moment from "moment";
-import { ResponsiveComponent } from "react-native-responsive-ui";
-import computeStyleSheet from "./ChargerComponentStyles";
 import * as Animatable from "react-native-animatable";
-import ConnectorComponent from "./connector/ConnectorComponent";
+import moment from "moment";
+import { Button, Icon, Text, View } from "native-base";
 import PropTypes from "prop-types";
+import React from "react";
+import { ResponsiveComponent } from "react-native-responsive-ui";
+import { Alert } from "react-native";
+import computeStyleSheet from "./ChargerComponentStyles";
+import ConnectorComponent from "./connector/ConnectorComponent";
+
 import I18n from "../../I18n/I18n";
 
 export default class ChargerComponent extends ResponsiveComponent {

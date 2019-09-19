@@ -1,13 +1,13 @@
+import * as Animatable from "react-native-animatable";
+import { Icon, Text, View } from "native-base";
+import PropTypes from "prop-types";
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import { Text, View, Icon } from "native-base";
 import { TouchableOpacity } from "react-native";
-import computeStyleSheet from "../TransactionComponentCommonStyles";
-import * as Animatable from "react-native-animatable";
 import Constants from "../../../utils/Constants";
 import Utils from "../../../utils/Utils";
-import PropTypes from "prop-types";
 import TransactionHeaderComponent from "../header/TransactionHeaderComponent";
+import computeStyleSheet from "../TransactionComponentCommonStyles";
 
 let counter = 0;
 export default class TransactionHistoryComponent extends ResponsiveComponent {

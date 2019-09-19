@@ -1,7 +1,5 @@
-// @flow
-
 import variable from "./../variables/platform";
-import { PLATFORM } from "./../variables/commonColor";
+import PLATFORM from "./../variables/commonColor/PLATFORM";
 
 export default (variables /* : * */ = variable) => {
   const platform = variables.platform;

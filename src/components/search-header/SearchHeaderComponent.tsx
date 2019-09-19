@@ -1,14 +1,14 @@
+import * as Animatable from "react-native-animatable";
+import { Icon } from "native-base";
+import PropTypes from "prop-types";
 import React from "react";
 import { ResponsiveComponent } from "react-native-responsive-ui";
-import { TextInput, Keyboard } from "react-native";
-import computeStyleSheet from "./SearchHeaderComponentStyles";
-import { Icon } from "native-base";
-import Constants from "../../utils/Constants";
-import I18n from "../../I18n/I18n";
-import PropTypes from "prop-types";
+import { Keyboard, TextInput } from "react-native";
 import commonColor from "../../theme/variables/commonColor";
-import * as Animatable from "react-native-animatable";
+import Constants from "../../utils/Constants";
+import computeStyleSheet from "./SearchHeaderComponentStyles";
 
+import I18n from "../../I18n/I18n";
 export default class SearchHeaderComponent extends ResponsiveComponent {
   constructor(props) {
     super(props);

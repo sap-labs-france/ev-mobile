@@ -1,13 +1,13 @@
+import { Container, Spinner } from "native-base";
 import React from "react";
-// import { ScrollView, BackHandler } from "react-native";
-import { Spinner, Container } from "native-base";
 import HTMLView from "react-native-htmlview";
-import computeStyleSheet from "./EulaStyles";
-import ProviderFactory from "../../../provider/ProviderFactory";
-import I18n from "../../../I18n/I18n";
+import { ScrollView } from "react-native";
+import HeaderComponent from "../../../components/header/HeaderComponent";
 import Utils from "../../../utils/Utils";
 import BaseScreen from "../../base-screen/BaseScreen";
-import HeaderComponent from "../../../components/header/HeaderComponent";
+import computeStyleSheet from "./EulaStyles";
+
+import I18n from "../../../I18n/I18n";
 
 export interface Props {
 }

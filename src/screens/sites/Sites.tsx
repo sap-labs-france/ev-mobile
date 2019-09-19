@@ -1,18 +1,18 @@
-import React from "react";
-import { Platform, FlatList, RefreshControl, BackHandler, Alert } from "react-native";
 import { Container, Spinner, View } from "native-base";
-import Utils from "../../utils/Utils";
-import Constants from "../../utils/Constants";
-import SiteComponent from "../../components/site/SiteComponent";
-import SearchHeaderComponent from "../../components/search-header/SearchHeaderComponent";
-import HeaderComponent from "../../components/header/HeaderComponent";
+import React from "react";
+import { Alert, BackHandler, FlatList, Platform, RefreshControl } from "react-native";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
-import computeStyleSheet from "./SitesStyles";
-import I18n from "../../I18n/I18n";
-import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
+import HeaderComponent from "../../components/header/HeaderComponent";
 import ListEmptyTextComponent from "../../components/list/empty-text/ListEmptyTextComponent";
 import ListFooterComponent from "../../components/list/footer/ListFooterComponent";
+import SearchHeaderComponent from "../../components/search-header/SearchHeaderComponent";
+import SiteComponent from "../../components/site/SiteComponent";
+import Constants from "../../utils/Constants";
+import Utils from "../../utils/Utils";
+import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
+import computeStyleSheet from "./SitesStyles";
 
+import I18n from "../../I18n/I18n";
 export default class Sites extends BaseAutoRefreshScreen {
   constructor(props) {
     super(props);

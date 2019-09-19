@@ -1,5 +1,5 @@
-import PushNotification from "react-native-push-notification";
 import DeviceInfo from "react-native-device-info";
+import PushNotification from "react-native-push-notification";
 
 export default class NotificationProvider {
   constructor(onRegister, onNotification) {
