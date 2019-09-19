@@ -1,8 +1,8 @@
-import View from "native-base/View";
+import { View } from "native-base";
 import PropTypes from "prop-types";
 import React from "react";
-import ResponsiveComponent from "react-native-responsive-ui/ResponsiveComponent";
-import ImageBackground from "react-native/ImageBackground";
+import { ResponsiveComponent } from "react-native-responsive-ui";
+import { ImageBackground } from "react-native";
 import computeStyleSheet from "./BackgroundComponentStyles";
 
 // const defaultBackground = require("../../../assets/bg.png");

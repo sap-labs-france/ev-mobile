@@ -1,11 +1,8 @@
-import Text from "native-base/Text";
-import View from "native-base/View";
+import { Text, View } from "native-base";
 import PropTypes from "prop-types";
 import React from "react";
-import ResponsiveComponent from "react-native-responsive-ui/ResponsiveComponent";
-import Animated from "react-native/Animated";
-import Easing from "react-native/Easing";
-import Platform from "react-native/Platform";
+import { ResponsiveComponent } from "react-native-responsive-ui";
+import { Animated, Easing, Platform } from "react-native";
 import Constants from "../../utils/Constants";
 import Utils from "../../utils/Utils";
 import computeStyleSheet from "./ConnectorStatusComponentStyles";

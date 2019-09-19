@@ -1,10 +1,9 @@
 import * as Animatable from "react-native-animatable";
-import Icon from "native-base/Icon";
+import { Icon } from "native-base";
 import PropTypes from "prop-types";
 import React from "react";
-import ResponsiveComponent from "react-native-responsive-ui/ResponsiveComponent";
-import Keyboard from "react-native/Keyboard";
-import TextInput from "react-native/TextInput";
+import { ResponsiveComponent } from "react-native-responsive-ui";
+import { Keyboard, TextInput } from "react-native";
 import commonColor from "../../theme/variables/commonColor";
 import Constants from "../../utils/Constants";
 import computeStyleSheet from "./SearchHeaderComponentStyles";

@@ -1,7 +1,7 @@
-import View from "native-base/View";
+import { View } from "native-base";
 import PropTypes from "prop-types";
 import React from "react";
-import ResponsiveComponent from "react-native-responsive-ui/ResponsiveComponent";
+import { ResponsiveComponent } from "react-native-responsive-ui";
 import Constants from "../../utils/Constants";
 import Utils from "../../utils/Utils";
 import ConnectorStatusComponent from "./ConnectorStatusComponent";

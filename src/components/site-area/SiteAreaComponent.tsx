@@ -1,11 +1,9 @@
 import * as Animatable from "react-native-animatable";
-import Icon from "native-base/Icon";
-import Text from "native-base/Text";
-import View from "native-base/View";
+import { Icon, Text, View } from "native-base";
 import PropTypes from "prop-types";
 import React from "react";
-import ResponsiveComponent from "react-native-responsive-ui/ResponsiveComponent";
-import TouchableOpacity from "react-native/TouchableOpacity";
+import { ResponsiveComponent } from "react-native-responsive-ui";
+import { TouchableOpacity } from "react-native";
 import Constants from "../../utils/Constants";
 import Message from "../../utils/Message";
 import ConnectorStatusesContainerComponent from "../connector-status/ConnectorStatusesContainerComponent";

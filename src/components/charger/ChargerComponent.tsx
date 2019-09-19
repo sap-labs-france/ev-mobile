@@ -1,13 +1,10 @@
 import * as Animatable from "react-native-animatable";
 import moment from "moment";
-import Button from "native-base/Button";
-import Icon from "native-base/Icon";
-import Text from "native-base/Text";
-import View from "native-base/View";
+import { Button, Icon, Text, View } from "native-base";
 import PropTypes from "prop-types";
 import React from "react";
-import ResponsiveComponent from "react-native-responsive-ui/ResponsiveComponent";
-import Alert from "react-native/Alert";
+import { ResponsiveComponent } from "react-native-responsive-ui";
+import { Alert } from "react-native";
 import computeStyleSheet from "./ChargerComponentStyles";
 import ConnectorComponent from "./connector/ConnectorComponent";
 

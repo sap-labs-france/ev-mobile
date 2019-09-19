@@ -1,7 +1,7 @@
-import Text from "native-base/Text";
+import { Text } from "native-base";
 import PropTypes from "prop-types";
 import React from "react";
-import ResponsiveComponent from "react-native-responsive-ui/ResponsiveComponent";
+import { ResponsiveComponent } from "react-native-responsive-ui";
 import computeStyleSheet from "./ListEmptyTextComponentStyles";
 
 import I18n from "../../../I18n/I18n";

@@ -1,10 +1,8 @@
 import moment from "moment";
-import Icon from "native-base/Icon";
-import Text from "native-base/Text";
-import View from "native-base/View";
+import { Icon, Text, View} from "native-base";
 import PropTypes from "prop-types";
 import React from "react";
-import ResponsiveComponent from "react-native-responsive-ui/ResponsiveComponent";
+import { ResponsiveComponent } from "react-native-responsive-ui";
 import Utils from "../../../utils/Utils";
 import computeStyleSheet from "./TransactionHeaderComponentStyles";
 
