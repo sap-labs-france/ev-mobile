@@ -1,5 +1,4 @@
 import Address from './Address';
-import ChargingStation from '../types/ChargingStation';
 import CreatedUpdatedProps from './CreatedUpdatedProps';
 import Site from '../types/Site';
 
@@ -12,7 +11,6 @@ export default interface SiteArea extends CreatedUpdatedProps {
   siteID: string;
   site: Site;
   accessControl: boolean;
-  chargingStations: ChargingStation[];
   availableChargers?: number;
   totalChargers?: number;
   availableConnectors?: number;

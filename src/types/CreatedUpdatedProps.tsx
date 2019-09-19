@@ -1,8 +1,8 @@
-import User from '../types/User';
+import UserMin from '../types/User';
 
 export default interface CreatedUpdatedProps {
-  createdBy: Partial<User>;
+  createdBy: UserMin;
   createdOn: Date;
-  lastChangedBy?: Partial<User>;
+  lastChangedBy?: UserMin;
   lastChangedOn?: Date;
 }
