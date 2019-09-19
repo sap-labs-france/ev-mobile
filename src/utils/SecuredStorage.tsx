@@ -1,15 +1,17 @@
 import Constants from "./Constants";
 import RNSecureStorage, { ACCESSIBLE } from "rn-secure-storage";
+import UserCredentials from "../types/User";
+import { NavigationState } from "react-navigation";
 
 // Generate a new Id for persisting the navigation each time the app is launched first time
-let navigationID = new Date().getTime();
+let navigationID: number = new Date().getTime();
 if (__DEV__) {
   // Keep the same key for dev
-  navigationID = "DEV_NAV_KEY";
+  navigationID = 123456;
 }
 
 export default class SecuredStorage {
-  static async getNavigationState() {
+  public static async getNavigationState(): Promise<NavigationState> {
     const navigationState = await SecuredStorage._getJson(Constants.KEY_NAVIGATION_STATE);
     // Check the key
     if (navigationState) {
@@ -20,19 +22,20 @@ export default class SecuredStorage {
     return null;
   }
 
-  static async saveNavigationState(navigationState) {
+  public static async saveNavigationState(navigationState: NavigationState) {
     // Add a key
-    navigationState = { key: navigationID, navigationState };
-    await RNSecureStorage.set(Constants.KEY_NAVIGATION_STATE, JSON.stringify(navigationState), {
-      accessible: ACCESSIBLE.WHEN_UNLOCKED
-    });
+    await RNSecureStorage.set(
+      Constants.KEY_NAVIGATION_STATE,
+      JSON.stringify({ key: `${navigationID}`, navigationState }),
+      { accessible: ACCESSIBLE.WHEN_UNLOCKED}
+    );
   }
 
-  static getUserCredentials() {
+  public static getUserCredentials(): Promise<UserCredentials> {
     return SecuredStorage._getJson(Constants.KEY_CREDENTIALS);
   }
 
-  static async clearUserCredentials() {
+  public static async clearUserCredentials() {
     const credentials = await SecuredStorage._getJson(Constants.KEY_CREDENTIALS);
     if (credentials) {
       Reflect.deleteProperty(credentials, "token");
@@ -40,17 +43,17 @@ export default class SecuredStorage {
     }
   }
 
-  static async deleteUserCredentials() {
+  public static async deleteUserCredentials() {
     await RNSecureStorage.remove(Constants.KEY_CREDENTIALS);
   }
 
-  static async saveUserCredentials(credentials) {
+  public static async saveUserCredentials(credentials: UserCredentials) {
     await RNSecureStorage.set(Constants.KEY_CREDENTIALS, JSON.stringify(credentials), {
       accessible: ACCESSIBLE.WHEN_UNLOCKED
     });
   }
 
-  static async _getJson(key) {
+  private static async _getJson(key: string) {
     try {
       const data = await RNSecureStorage.get(key);
       // Check

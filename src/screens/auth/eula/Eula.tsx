@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, BackHandler } from "react-native";
+// import { ScrollView, BackHandler } from "react-native";
 import { Spinner, Container } from "native-base";
 import HTMLView from "react-native-htmlview";
 import computeStyleSheet from "./EulaStyles";

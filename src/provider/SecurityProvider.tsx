@@ -1,5 +1,5 @@
 import Constants from "../utils/Constants";
-import UserToken from '../../../ev-server/src/types/UserToken';
+import UserToken from '../types/UserToken';
 import SiteArea from "../types/SiteArea";
 
 export default class SecurityProvider {

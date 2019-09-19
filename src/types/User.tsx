@@ -15,16 +15,12 @@ export default interface User extends CreatedUpdatedProps {
   notificationsActive?: boolean;
   iNumber?: string;
   costCenter?: string;
-
   deleted: boolean;
-
   eulaAcceptedHash: string;
   eulaAcceptedVersion: number;
   eulaAcceptedOn: Date;
-
   name: string;
   firstName: string;
-
   password: string;
   passwordResetHash: string;
   passwordWrongNbrTrials: number;
@@ -32,8 +28,20 @@ export default interface User extends CreatedUpdatedProps {
   verificationToken?: string;
   verifiedAt?: Date;
   errorCode?: string;
-
   tagIDs?: string[];
+}
+
+export interface UserCredentials {
+  email: string;
+  password: string;
+  tenant: string;
+  token?: string;
+}
+
+export interface UserMin {
+  id: string;
+  name: string;
+  firstName: string;
 }
 
 export interface UserSite {

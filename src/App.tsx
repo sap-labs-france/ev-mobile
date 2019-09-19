@@ -124,7 +124,7 @@ const RootNavigator = createSwitchNavigator(
 const RootContainer = createAppContainer(RootNavigator);
 
 // Handle persistence of navigation
-const persistNavigationState = async (navigationState) => {
+const persistNavigationState = async (navigationState: NavigationState) => {
   try {
     await SecuredStorage.saveNavigationState(navigationState);
   } catch (error) {
