@@ -10,7 +10,7 @@ import computeStyleSheet from "./TransactionHeaderComponentStyles";
 export interface Props extends BaseProps {
   transaction: Transaction;
   isAdmin: boolean;
-  displayNavigationIcon: boolean;
+  displayNavigationIcon?: boolean;
   initialVisibility?: boolean;
 }
 
@@ -28,7 +28,7 @@ export default class TransactionHeaderComponent extends BaseScreen<Props, State>
     };
   }
 
-  public setState = (state: State, callback?: () => void) => {
+  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
   }
 

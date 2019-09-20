@@ -26,7 +26,7 @@ export default class BackgroundComponent extends React.Component<Props, State> {
     this.props.style = {};
   }
 
-  public setState = (state: State, callback?: () => void) => {
+  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
   }
 

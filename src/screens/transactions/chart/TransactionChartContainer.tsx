@@ -29,7 +29,7 @@ export default class TransactionChartContainer extends BaseScreen<Props, State> 
     };
   }
 
-  public setState = (state: State, callback?: () => void) => {
+  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
   }
 

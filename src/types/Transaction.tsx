@@ -63,6 +63,7 @@ export default interface Transaction {
   currentConsumptionWh?: number;
   currentCumulatedPrice: number;
   currentTotalConsumption: number;
+  currentTotalDurationSecs: number;
   currentSignedData?: number;
   uniqueId?: string;
   errorCode?: number;

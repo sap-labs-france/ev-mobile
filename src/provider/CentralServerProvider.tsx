@@ -14,6 +14,7 @@ import Constants from "../utils/Constants";
 import SecuredStorage from "../utils/SecuredStorage";
 import SecurityProvider from "./SecurityProvider";
 import Eula from "types/Eula";
+import { DataResult } from "types/DataResult";
 
 export default class CentralServerProvider {
   private debug: boolean = false;
@@ -256,7 +257,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getChargers(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<ChargingStation[]> {
+  public async getChargers(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<ChargingStation>> {
     this._debugMethod("getChargers");
     // Build Paging
     this._buildPaging(paging, params);
@@ -278,7 +279,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getSites(params = {}, paging = Constants.DEFAULT_PAGING): Promise<Site> {
+  public async getSites(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Site>> {
     this._debugMethod("getSites");
     // Build Paging
     this._buildPaging(paging, params);
@@ -290,7 +291,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getSiteAreas(params = {}, paging = Constants.DEFAULT_PAGING): Promise<SiteArea[]> {
+  public async getSiteAreas(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<SiteArea>> {
     this._debugMethod("getSiteAreas");
     // Build Paging
     this._buildPaging(paging, params);
@@ -393,7 +394,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getTransactions(params = {}, paging = Constants.DEFAULT_PAGING): Promise<Transaction[]> {
+  public async getTransactions(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Transaction>> {
     this._debugMethod("getTransactions");
     // Build Paging
     this._buildPaging(paging, params);
@@ -405,7 +406,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getTransactionsActive(params = {}, paging = Constants.DEFAULT_PAGING): Promise<Transaction[]> {
+  public async getTransactionsActive(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Transaction>> {
     this._debugMethod("getTransactionsActive");
     // Build Paging
     this._buildPaging(paging, params);
