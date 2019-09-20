@@ -349,7 +349,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async reset(chargeBoxID: string, type: "soft"|"hard"): Promise<ActionResponse> {
+  public async reset(chargeBoxID: string, type: "Soft"|"Hard"): Promise<ActionResponse> {
     this._debugMethod("reset");
     // Call
     const result = await axios.post(
@@ -448,7 +448,7 @@ export default class CentralServerProvider {
     return foundSiteImage.image;
   }
 
-  public async getChargingStationConsumption(params = {}): Promise<Consumption[]> {
+  public async getTransactionConsumption(params = {}): Promise<Transaction> {
     this._debugMethod("getChargingStationConsumption");
     // Call
     const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationConsumptionFromTransaction`, {

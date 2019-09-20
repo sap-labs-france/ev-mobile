@@ -1,21 +1,45 @@
 import { Text } from "native-base";
-import PropTypes from "prop-types";
 import React from "react";
-import { processColor } from "react-native";
-import { View } from "react-native";
+import { processColor, View } from "react-native";
 import { LineChart } from "react-native-charts-wrapper";
 import { scale } from "react-native-size-matters";
+import BaseProps from "types/BaseProps";
+import Consumption from "types/Consumption";
+import Transaction from "types/Transaction";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import TransactionHeaderComponent from "../../../components/transaction/header/TransactionHeaderComponent";
+import I18n from "../../../I18n/I18n";
 import commonColor from "../../../theme/variables/commonColor";
 import Utils from "../../../utils/Utils";
 import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
 import computeStyleSheet from "./TransactionChartStyles";
 
-import I18n from "../../../I18n/I18n";
-export default class TransactionChart extends BaseAutoRefreshScreen {
-  constructor(props) {
+export interface Props extends BaseProps {
+  transactionID: number;
+  showTransactionDetails: boolean;
+  isAdmin: boolean;
+}
+
+interface State {
+  transactionConsumption: Transaction;
+  values: Consumption[];
+  consumptionValues: ChartPoint[];
+  stateOfChargeValues: ChartPoint[];
+}
+
+interface ChartPoint {
+  x: number;
+  y: number;
+} 
+
+export default class TransactionChart extends BaseAutoRefreshScreen<Props, State> {
+  public state: State;
+  public props: Props;
+
+  constructor(props: Props) {
     super(props);
+    props.showTransactionDetails = false;
+    props.isAdmin = false;
     this.state = {
       transactionConsumption: null,
       values: [],
@@ -24,34 +48,36 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
     };
   }
 
-  async componentDidMount() {
-    // Call parent
+  public setState = (state: State, callback?: () => void) => {
+    super.setState(state, callback);
+  }
+
+  public async componentDidMount() {
     await super.componentDidMount();
     // Get the Consumption
     this.refresh();
   }
 
-  _getChargingStationConsumption = async () => {
+  public getTransactionConsumption = async () => {
     const { transactionID } = this.props;
     try {
       // Active Transaction?
       if (transactionID) {
         // Get the consumption
-        const result = await this.centralServerProvider.getChargingStationConsumption({
+        const transaction = await this.centralServerProvider.getTransactionConsumption({
           TransactionId: transactionID
         });
         // At least 2 values for the chart!!!
-        if (result.values && result.values.length > 1) {
+        if (transaction.values && transaction.values.length > 1) {
           // Convert
-          const consumptionValues = [],
-            stateOfChargeValues = [];
-          for (let index = 0; index < result.values.length; index++) {
-            const value = result.values[index];
-            const date = new Date(value.date).getTime();
+          const consumptionValues: ChartPoint[] = [];
+          const stateOfChargeValues: ChartPoint[] = [];
+          for (const value of transaction.values) {
+            const date = new Date(value.startedAt).getTime();
             // Add
             consumptionValues.push({
               x: date,
-              y: value.value ? value.value / 1000 : 0
+              y: value.consumption ? value.consumption / 1000 : 0
             });
             if (value.stateOfCharge > 0) {
               stateOfChargeValues.push({
@@ -62,8 +88,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
           }
           // Set
           this.setState({
-            transactionConsumption: result,
-            values: result.values,
+            transactionConsumption: transaction,
+            values: transaction.values,
             consumptionValues,
             stateOfChargeValues
           });
@@ -86,17 +112,17 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
     }
   };
 
-  refresh = async () => {
+  public refresh = async () => {
     const { transactionConsumption } = this.state;
     // Component Mounted?
     if (this.isMounted() && (!transactionConsumption || !transactionConsumption.stop)) {
       // Refresh Consumption
-      await this._getChargingStationConsumption();
+      await this.getTransactionConsumption();
     }
   };
 
-  computeChartDefinition(consumptionValues, stateOfChargeValues) {
-    const chartDefinition = {};
+  public computeChartDefinition(consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[]) {
+    const chartDefinition: any = {};
     // Add Data
     chartDefinition.data = { dataSets: [] };
     // Check Consumptions
@@ -204,16 +230,16 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
     return chartDefinition;
   }
 
-  render() {
+  public render() {
     const style = computeStyleSheet();
     const { transactionConsumption, consumptionValues, stateOfChargeValues } = this.state;
-    const { showTransactionDetails, isAdmin } = this.props;
+    const { showTransactionDetails, isAdmin, navigation } = this.props;
     const chartDefinition = this.computeChartDefinition(consumptionValues, stateOfChargeValues);
     return (
       <View style={style.container}>
-        <BackgroundComponent active={false}>
+        <BackgroundComponent navigation={navigation} active={false}>
           {showTransactionDetails && transactionConsumption && (
-            <TransactionHeaderComponent transaction={transactionConsumption} isAdmin={isAdmin} displayNavigationIcon={false} />
+            <TransactionHeaderComponent navigation={navigation} transaction={transactionConsumption} isAdmin={isAdmin} displayNavigationIcon={false} />
           )}
           {consumptionValues && consumptionValues.length > 1 ? (
             <LineChart
@@ -260,14 +286,3 @@ export default class TransactionChart extends BaseAutoRefreshScreen {
     );
   }
 }
-
-TransactionChart.propTypes = {
-  transactionID: PropTypes.number,
-  showTransactionDetails: PropTypes.bool,
-  isAdmin: PropTypes.bool
-};
-
-TransactionChart.defaultProps = {
-  showTransactionDetails: false,
-  isAdmin: false
-};

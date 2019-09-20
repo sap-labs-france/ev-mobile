@@ -1,8 +1,8 @@
 import deepmerge from "deepmerge";
+import { Platform } from "react-native";
 import { ResponsiveStyleSheet } from "react-native-responsive-ui";
 import { ScaledSheet } from "react-native-size-matters";
 import commonColor from "../../theme/variables/commonColor";
-import { Platform } from "react-native";
 
 const commonStyles = ScaledSheet.create({
   noDisplay: {

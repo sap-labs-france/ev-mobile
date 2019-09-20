@@ -38,8 +38,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
     this.searchIsVisible = false;
   }
 
-  public setState = (state: State) => {
-    super.setState(state);
+  public setState = (state: State, callback?: () => void) => {
+    super.setState(state, callback);
   }
 
   public componentDidMount() {

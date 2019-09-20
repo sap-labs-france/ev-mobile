@@ -1,26 +1,39 @@
 import { Container } from "native-base";
 import React from "react";
+import BaseProps from "types/BaseProps";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import HeaderComponent from "../../../components/header/HeaderComponent";
+import I18n from "../../../I18n/I18n";
 import Utils from "../../../utils/Utils";
 import BaseScreen from "../../base-screen/BaseScreen";
 import TransactionChart from "./TransactionChart";
 import computeStyleSheet from "./TransactionChartStyles";
 
-import I18n from "../../../I18n/I18n";
+export interface Props extends BaseProps {
+}
 
-export default class TransactionChartContainer extends BaseScreen {
-  constructor(props) {
+interface State {
+  transactionID?: number;
+  isAdmin?: boolean;
+}
+
+export default class TransactionChartContainer extends BaseScreen<Props, State> {
+  public state: State;
+  public props: Props;
+
+  constructor(props: Props) {
     super(props);
-
     this.state = {
-      transactionID: Utils.getParamFromNavigation(this.props.navigation, "transactionID", null),
+      transactionID: parseInt(Utils.getParamFromNavigation(this.props.navigation, "transactionID", null), 10),
       isAdmin: false
     };
   }
 
-  async componentDidMount() {
-    // Call parent
+  public setState = (state: State, callback?: () => void) => {
+    super.setState(state, callback);
+  }
+
+  public async componentDidMount() {
     await super.componentDidMount();
     // Refresh Admin
     const securityProvider = this.centralServerProvider.getSecurityProvider();
@@ -29,25 +42,26 @@ export default class TransactionChartContainer extends BaseScreen {
     });
   }
 
-  async componentWillUnmount() {
-    // Call parent
+  public async componentWillUnmount() {
     await super.componentWillUnmount();
   }
 
-  onBack = () => {
+  public onBack = (): boolean => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };
 
-  render() {
+  public render() {
     const style = computeStyleSheet();
+    const { navigation } = this.props;
     const { isAdmin } = this.state;
     return (
       <Container style={style.container}>
-        <BackgroundComponent active={false}>
+        <BackgroundComponent navigation={navigation} active={false}>
           <HeaderComponent
+            navigation={navigation}
             title={I18n.t("transactions.chargingCurve")}
             leftAction={this.onBack}
             leftActionIcon={"navigate-before"}

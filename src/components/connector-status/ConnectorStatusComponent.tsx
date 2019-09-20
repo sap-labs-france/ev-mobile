@@ -1,14 +1,29 @@
 import { Text, View } from "native-base";
-import PropTypes from "prop-types";
 import React from "react";
-import { ResponsiveComponent } from "react-native-responsive-ui";
 import { Animated, Easing, Platform } from "react-native";
+import BaseProps from "types/BaseProps";
+import Connector from "types/Connector";
 import Constants from "../../utils/Constants";
 import Utils from "../../utils/Utils";
 import computeStyleSheet from "./ConnectorStatusComponentStyles";
 
-export default class ConnectorStatusComponent extends ResponsiveComponent {
-  constructor(props) {
+export interface Props extends BaseProps {
+  connector: Connector;
+  text: string;
+  value?: number;
+  type?: string;
+}
+
+interface State {
+}
+
+export default class ConnectorStatusComponent extends React.Component<Props, State> {
+  public state: State;
+  public props: Props;
+  private rotateClockwise: Animated.AnimatedInterpolation;
+  private rotateCounterClockwise: Animated.AnimatedInterpolation;
+
+  constructor(props: Props) {
     super(props);
     this.state = {};
     // Create
@@ -33,7 +48,7 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     });
   }
 
-  _getConnectorStyles(style) {
+  public getConnectorStyles(style: any) {
     const { type, connector } = this.props;
     // Get the type
     let connectorType;
@@ -76,7 +91,6 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
         status = "unavailable";
         break;
       // Suspending EV / EVSE
-      case Constants.CONN_STATUS_SUSPENDED:
       case Constants.CONN_STATUS_SUSPENDED_EVSE:
       case Constants.CONN_STATUS_SUSPENDED_EV:
         status = "suspended";
@@ -94,17 +108,17 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     return connectorStyles;
   }
 
-  _getConnectorValue() {
+  public getConnectorValue(): string {
     // Get value
     const { value, connector } = this.props;
     if (connector) {
       return Utils.getConnectorLetter(connector.connectorId);
     } else {
-      return value;
+      return '' + value;
     }
   }
 
-  _isAnimated() {
+  public isAnimated(): boolean {
     const { value, type, connector } = this.props;
     if (connector) {
       return connector.currentConsumption > 0;
@@ -113,14 +127,14 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     }
   }
 
-  render() {
+  public render() {
     const style = computeStyleSheet();
     // Get styling
-    const connectorStyles = this._getConnectorStyles(style);
+    const connectorStyles = this.getConnectorStyles(style);
     // Get value
-    const value = this._getConnectorValue();
+    const value = this.getConnectorValue();
     // Animated
-    const isAnimated = this._isAnimated();
+    const isAnimated = this.isAnimated();
     const isAndroid = Platform.OS === "android";
     return (
       <View style={this.props.text ? style.containerWithDescription : style.containerWithNoDescription}>
@@ -147,10 +161,3 @@ export default class ConnectorStatusComponent extends ResponsiveComponent {
     );
   }
 }
-
-ConnectorStatusComponent.propTypes = {
-  connector: PropTypes.object,
-  value: PropTypes.number,
-  text: PropTypes.string,
-  type: PropTypes.string
-};
