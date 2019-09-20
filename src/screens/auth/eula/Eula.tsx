@@ -13,9 +13,9 @@ export interface Props extends BaseProps {
 }
 
 interface State {
-  i18nLocale: string;
-  loading: boolean;
-  eulaTextHtml: string;
+  i18nLocale?: string;
+  loading?: boolean;
+  eulaTextHtml?: string;
 }
 
 export default class Eula extends BaseScreen<Props, State> {
@@ -29,6 +29,10 @@ export default class Eula extends BaseScreen<Props, State> {
       i18nLocale: I18n.currentLocale().substr(0, 2),
       loading: true,
     };
+  }
+
+  public setState = (state: State) => {
+    super.setState(state);
   }
 
   public async componentDidMount() {

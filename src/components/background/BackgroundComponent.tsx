@@ -1,15 +1,36 @@
 import { View } from "native-base";
-import PropTypes from "prop-types";
 import React from "react";
-import { ResponsiveComponent } from "react-native-responsive-ui";
 import { ImageBackground } from "react-native";
+import BaseProps from "types/BaseProps";
 import computeStyleSheet from "./BackgroundComponentStyles";
 
 // const defaultBackground = require("../../../assets/bg.png");
 const defaultBackground = require("../../../assets/sidebar-transparent.png");
 
-export default class BackgroundComponent extends ResponsiveComponent {
-  render() {
+export interface Props extends BaseProps {
+  active?: boolean;
+  background?: object;
+  style?: object;
+}
+
+interface State {
+}
+
+export default class BackgroundComponent extends React.Component<Props, State> {
+  public state: State;
+  public props: Props;
+
+  constructor(props: Props) {
+    super(props);
+    this.props.active = true;
+    this.props.style = {};
+  }
+
+  public setState = (state: State) => {
+    super.setState(state);
+  }
+
+  public render() {
     const style = computeStyleSheet();
     const { active, background } = this.props;
     return active ? (
@@ -24,14 +45,3 @@ export default class BackgroundComponent extends ResponsiveComponent {
     );
   }
 }
-
-BackgroundComponent.propTypes = {
-  active: PropTypes.bool,
-  background: PropTypes.object,
-  style: PropTypes.object
-};
-
-BackgroundComponent.defaultProps = {
-  active: true,
-  style: {}
-};

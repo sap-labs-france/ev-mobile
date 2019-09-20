@@ -38,6 +38,10 @@ export default class HeaderComponent extends React.Component<Props, State> {
     this.searchIsVisible = false;
   }
 
+  public setState = (state: State) => {
+    super.setState(state);
+  }
+
   public componentDidMount() {
     const { leftAction } = this.props;
     // Left Action is always Back

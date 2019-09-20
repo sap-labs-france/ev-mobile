@@ -60,7 +60,7 @@ export default class Utils {
   }
 
   public static async handleHttpUnexpectedError(centralServerProvider: CentralServerProvider,
-      error: RequestError, navigation: NavigationScreenProp<NavigationState, NavigationParams>, fctRefresh: Function) {
+      error: RequestError, navigation?: NavigationScreenProp<NavigationState, NavigationParams>, fctRefresh?: () => void) {
     // Log in console
     // tslint:disable-next-line: no-console
     console.log({ error });
