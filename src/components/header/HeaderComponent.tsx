@@ -1,19 +1,44 @@
+import SearchHeaderComponent from "components/search-header/SearchHeaderComponent";
 import { Body, Button, Header, Icon, Left, Right, Subtitle, Title } from "native-base";
-import PropTypes from "prop-types";
 import React from "react";
-import { ResponsiveComponent } from "react-native-responsive-ui";
 import { BackHandler, Image } from "react-native";
+import BaseProps from "types/BaseProps";
+import { IconType } from "types/Icon";
 import computeStyleSheet from "./HeaderComponentStyles";
 
 const logo = require("../../../assets/logo-low.png");
 
-export default class HeaderComponent extends ResponsiveComponent {
-  constructor(props) {
+export interface Props extends BaseProps {
+  title: string;
+  subTitle?: string;
+  leftAction?: () => void;
+  leftActionIcon?: string,
+  leftActionIconType?: IconType,
+  rightAction?: () => void,
+  rightActionIcon?: string,
+  rightActionIconType?: IconType,
+  showSearchAction?: boolean,
+  searchRef?: SearchHeaderComponent
+}
+
+interface State {
+}
+
+export default class HeaderComponent extends React.Component<Props, State> {
+  public state: State;
+  public props: Props;
+  private searchIsVisible: boolean;
+
+  constructor(props: Props) {
     super(props);
+    // Default values
+    props.leftActionIconType = "MaterialIcons";
+    props.rightActionIconType = "MaterialIcons";
+    props.showSearchAction = false;
     this.searchIsVisible = false;
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     const { leftAction } = this.props;
     // Left Action is always Back
     if (leftAction) {
@@ -21,33 +46,24 @@ export default class HeaderComponent extends ResponsiveComponent {
     }
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     const { leftAction } = this.props;
     // Left Action is always Back
     if (leftAction) {
-      BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+      BackHandler.removeEventListener("hardwareBackPress", leftAction);
     }
   }
 
-  render() {
+  public render() {
     const style = computeStyleSheet();
-    const {
-      title,
-      subTitle,
-      searchRef,
-      showSearchAction,
-      leftAction,
-      leftActionIcon,
-      leftActionIconType,
-      rightAction,
-      rightActionIcon,
-      rightActionIconType
+    const { title, subTitle, searchRef, showSearchAction, leftAction, leftActionIcon, leftActionIconType,
+      rightAction, rightActionIcon, rightActionIconType
     } = this.props;
     return (
       <Header style={style.header}>
         <Left style={style.leftHeader}>
           {leftAction ? (
-            <Button transparent style={style.leftButtonHeader} onPress={() => leftAction()}>
+            <Button transparent={true} style={style.leftButtonHeader} onPress={() => leftAction()}>
               <Icon type={leftActionIconType} name={leftActionIcon} style={[style.iconHeader, style.leftIconHeader]} />
             </Button>
           ) : (
@@ -61,7 +77,7 @@ export default class HeaderComponent extends ResponsiveComponent {
         <Right style={style.rightHeader}>
           {showSearchAction && (
             <Button
-              transparent
+              transparent={true}
               style={style.rightButtonHeader}
               onPress={() => {
                 // Invert
@@ -75,7 +91,7 @@ export default class HeaderComponent extends ResponsiveComponent {
             </Button>
           )}
           {rightAction ? (
-            <Button transparent style={style.rightButtonHeader} onPress={() => rightAction()}>
+            <Button transparent={true} style={style.rightButtonHeader} onPress={() => rightAction()}>
               <Icon type={rightActionIconType} name={rightActionIcon} style={style.iconHeader} />
             </Button>
           ) : (
@@ -86,22 +102,3 @@ export default class HeaderComponent extends ResponsiveComponent {
     );
   }
 }
-
-HeaderComponent.propTypes = {
-  title: PropTypes.string.isRequired,
-  subTitle: PropTypes.string,
-  leftAction: PropTypes.func,
-  leftActionIcon: PropTypes.string,
-  leftActionIconType: PropTypes.string,
-  rightAction: PropTypes.func,
-  rightActionIcon: PropTypes.string,
-  rightActionIconType: PropTypes.string,
-  showSearchAction: PropTypes.bool,
-  searchRef: PropTypes.object
-};
-
-HeaderComponent.defaultProps = {
-  leftActionIconType: "MaterialIcons",
-  rightActionIconType: "MaterialIcons",
-  showSearchAction: false
-};

@@ -13,6 +13,7 @@ import UserToken from "../types/UserToken";
 import Constants from "../utils/Constants";
 import SecuredStorage from "../utils/SecuredStorage";
 import SecurityProvider from "./SecurityProvider";
+import Eula from "types/Eula";
 
 export default class CentralServerProvider {
   private debug: boolean = false;
@@ -301,7 +302,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getEndUserLicenseAgreement(params: { Language: string; }): Promise<string> {
+  public async getEndUserLicenseAgreement(params: { Language: string; }): Promise<Eula> {
     this._debugMethod("getEndUserLicenseAgreement");
     // Call
     const result = await axios.get(`${this.centralRestServerServiceAuthURL}/EndUserLicenseAgreement`, {

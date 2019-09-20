@@ -18,8 +18,9 @@ interface State {
   eulaTextHtml: string;
 }
 
-export default class Eula extends BaseScreen {
-  private state: State;
+export default class Eula extends BaseScreen<Props, State> {
+  public state: State;
+  public props: Props;
 
   constructor(props: Props) {
     super(props);
@@ -42,7 +43,7 @@ export default class Eula extends BaseScreen {
   public endUserLicenseAgreement = async () => {
     const { i18nLocale } = this.state;
     try {
-      const result = await this.centralServerProvider.getEndUserLicenseAgreement({
+      const result: any = await this.centralServerProvider.getEndUserLicenseAgreement({
         Language: i18nLocale
       });
       this.setState({
@@ -68,6 +69,7 @@ export default class Eula extends BaseScreen {
     return (
       <Container>
         <HeaderComponent
+          navigation={this.props.navigation}
           title={I18n.t("authentication.eula")}
           leftAction={() => this.props.navigation.navigate("Login")}
           leftActionIcon={"navigate-before"}

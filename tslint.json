@@ -9,7 +9,8 @@
     "rules": {
         "interface-name" : [true, "never-prefix"],
         "no-empty-interface": false,
-        "object-literal-sort-keys": false
+        "object-literal-sort-keys": false,
+        "jsx-no-lambda": false
     },
     "rulesDirectory": []
 }
