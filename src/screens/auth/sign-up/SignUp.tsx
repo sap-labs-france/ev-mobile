@@ -98,7 +98,6 @@ interface State {
   errorName?: object[];
   errorFirstName?: object[];
   errorRepeatPassword?: object[];
-  
 }
 
 export default class SignUp extends BaseScreen<Props, State> {
