@@ -1,37 +1,57 @@
 import { Button, Container, Text, View } from "native-base";
-import PropTypes from "prop-types";
 import React from "react";
 import { Alert, ScrollView } from "react-native";
+import BaseProps from "types/BaseProps";
+import ChargingStation from "types/ChargingStation";
+import Connector from "types/Connector";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import I18n from "../../../I18n/I18n";
 import Message from "../../../utils/Message";
 import Utils from "../../../utils/Utils";
 import BaseScreen from "../../base-screen/BaseScreen";
 import computeStyleSheet from "./ChargerDetailsStyles";
 
-import I18n from "../../../I18n/I18n";
-export default class ChargerDetails extends BaseScreen {
-  async componentDidMount() {
-    // Call parent
+export interface Props extends BaseProps {
+  charger: ChargingStation;
+  connector: Connector;
+}
+
+interface State {
+}
+
+export default class ChargerDetails extends BaseScreen<Props, State> {
+  public state: State;
+  public props: Props;
+
+  constructor(props: Props) {
+    super(props);
+  }
+
+  public setState = (state: State, callback?: () => void) => {
+    super.setState(state, callback);
+  }
+
+  public async componentDidMount() {
     await super.componentDidMount();
   }
 
-  _resetHardConfirm() {
+  public resetHardConfirm() {
     const { charger } = this.props;
     Alert.alert(I18n.t("chargers.resetHard"), I18n.t("chargers.resetHardMessage", { chargeBoxID: charger.id }), [
-      { text: I18n.t("general.yes"), onPress: () => this._reset(charger.id, "Hard") },
+      { text: I18n.t("general.yes"), onPress: () => this.reset(charger.id, "Hard") },
       { text: I18n.t("general.cancel") }
     ]);
   }
 
-  _resetSoftConfirm() {
+  public resetSoftConfirm() {
     const { charger } = this.props;
     Alert.alert(I18n.t("chargers.resetSoft"), I18n.t("chargers.resetSoftMessage", { chargeBoxID: charger.id }), [
-      { text: I18n.t("general.yes"), onPress: () => this._reset(charger.id, "Soft") },
+      { text: I18n.t("general.yes"), onPress: () => this.reset(charger.id, "Soft") },
       { text: I18n.t("general.cancel") }
     ]);
   }
 
-  async _reset(chargeBoxID, type) {
+  public async reset(chargeBoxID: string, type: "Soft"|"Hard") {
     try {
       // Start the Transaction
       const status = await this.centralServerProvider.reset(chargeBoxID, type);
@@ -47,17 +67,17 @@ export default class ChargerDetails extends BaseScreen {
     }
   }
 
-  _clearCacheConfirm() {
+  public clearCacheConfirm() {
     const { charger } = this.props;
     Alert.alert(I18n.t("chargers.clearCache"), I18n.t("chargers.clearCacheMessage", { chargeBoxID: charger.id }), [
-      { text: I18n.t("general.yes"), onPress: () => this._clearCache(charger.id) },
+      { text: I18n.t("general.yes"), onPress: () => this.clearCache(charger.id) },
       { text: I18n.t("general.cancel") }
     ]);
   }
 
-  async _clearCache(chargeBoxID) {
+  public async clearCache(chargeBoxID: string) {
     try {
-      // Start the Transaction
+      // Clear Cache
       const status = await this.centralServerProvider.clearCache(chargeBoxID);
       // Check
       if (status.status && status.status === "Accepted") {
@@ -71,12 +91,12 @@ export default class ChargerDetails extends BaseScreen {
     }
   }
 
-  render() {
+  public render() {
     const style = computeStyleSheet();
     const { charger } = this.props;
     return (
       <Container style={style.container}>
-        <BackgroundComponent active={false}>
+        <BackgroundComponent navigation={this.props.navigation} active={false}>
           <ScrollView contentContainerStyle={style.scrollViewContainer}>
             <View style={style.topViewContainer}>
               <View style={style.descriptionContainer}>
@@ -98,21 +118,21 @@ export default class ChargerDetails extends BaseScreen {
             </View>
             <View style={style.bottomViewContainer}>
               <View style={style.actionContainer}>
-                <Button rounded danger style={style.actionButton} onPress={() => this._resetHardConfirm()}>
+                <Button rounded danger style={style.actionButton} onPress={() => this.resetHardConfirm()}>
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t("chargers.resetHard")}
                   </Text>
                 </Button>
               </View>
               <View style={style.actionContainer}>
-                <Button rounded warning style={style.actionButton} onPress={() => this._resetSoftConfirm()}>
+                <Button rounded warning style={style.actionButton} onPress={() => this.resetSoftConfirm()}>
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t("chargers.resetSoft")}
                   </Text>
                 </Button>
               </View>
               <View style={style.actionContainer}>
-                <Button rounded warning style={style.actionButton} onPress={() => this._clearCacheConfirm()}>
+                <Button rounded warning style={style.actionButton} onPress={() => this.clearCacheConfirm()}>
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t("chargers.clearCache")}
                   </Text>
@@ -125,11 +145,3 @@ export default class ChargerDetails extends BaseScreen {
     );
   }
 }
-
-ChargerDetails.propTypes = {
-  charger: PropTypes.object.isRequired,
-  connector: PropTypes.object.isRequired,
-  navigation: PropTypes.object.isRequired
-};
-
-ChargerDetails.defaultProps = {};

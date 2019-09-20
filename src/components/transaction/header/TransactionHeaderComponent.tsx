@@ -1,20 +1,38 @@
 import moment from "moment";
-import { Icon, Text, View} from "native-base";
-import PropTypes from "prop-types";
+import { Icon, Text, View } from "native-base";
 import React from "react";
-import { ResponsiveComponent } from "react-native-responsive-ui";
+import BaseScreen from "screens/base-screen/BaseScreen";
+import BaseProps from "types/BaseProps";
+import Transaction from "types/Transaction";
 import Utils from "../../../utils/Utils";
 import computeStyleSheet from "./TransactionHeaderComponentStyles";
 
-export default class TransactionHeaderComponent extends ResponsiveComponent {
-  constructor(props) {
+export interface Props extends BaseProps {
+  transaction: Transaction;
+  isAdmin: boolean;
+  displayNavigationIcon: boolean;
+  initialVisibility?: boolean;
+}
+
+interface State {
+}
+export default class TransactionHeaderComponent extends BaseScreen<Props, State> {
+  public state: State;
+  public props: Props;
+
+  constructor(props: Props) {
     super(props);
+    props.displayNavigationIcon = true;
     this.state = {
       isVisible: this.props.initialVisibility
     };
   }
 
-  render() {
+  public setState = (state: State, callback?: () => void) => {
+    super.setState(state, callback);
+  }
+
+  public render() {
     const style = computeStyleSheet();
     const { transaction, isAdmin, displayNavigationIcon } = this.props;
     return (
@@ -39,13 +57,3 @@ export default class TransactionHeaderComponent extends ResponsiveComponent {
     );
   }
 }
-
-TransactionHeaderComponent.propTypes = {
-  transaction: PropTypes.object.isRequired,
-  isAdmin: PropTypes.bool.isRequired,
-  displayNavigationIcon: PropTypes.bool.isRequired
-};
-
-TransactionHeaderComponent.defaultProps = {
-  displayNavigationIcon: true
-};

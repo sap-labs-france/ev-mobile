@@ -1,8 +1,12 @@
 import { Container, Icon, Spinner, Tab, TabHeading, Tabs } from "native-base";
 import React from "react";
 import { ScrollView } from "react-native";
+import BaseProps from "types/BaseProps";
+import ChargingStation from "types/ChargingStation";
+import Connector from "types/Connector";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
+import I18n from "../../I18n/I18n";
 import Utils from "../../utils/Utils";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import TransactionChart from "../transactions/chart/TransactionChart";
@@ -10,14 +14,30 @@ import computeStyleSheet from "./ChargerDetailsTabsStyles";
 import ChargerConnectorDetails from "./connector/ChargerConnectorDetails";
 import ChargerDetails from "./details/ChargerDetails";
 
-import I18n from "../../I18n/I18n";
-export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
-  constructor(props) {
+export interface Props extends BaseProps {
+}
+
+interface State {
+  charger?: ChargingStation;
+  connector?: Connector;
+  selectedTabIndex?: number;
+  firstLoad?: boolean;
+  canStartTransaction?: boolean;
+  canStopTransaction?: boolean;
+  canDisplayTransaction?: boolean;
+  isAdmin?: boolean;
+}
+
+
+export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, State> {
+  public state: State;
+  public props: Props;
+
+  constructor(props: Props) {
     super(props);
     this.state = {
       charger: null,
       connector: null,
-      siteAreaID: Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null),
       selectedTabIndex: 0,
       firstLoad: true,
       canStartTransaction: false,
@@ -27,24 +47,27 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
     };
   }
 
-  async componentDidMount() {
-    // Call parent
+  public setState = (state: State, callback?: () => void) => {
+    super.setState(state, callback);
+  }
+
+  public async componentDidMount() {
     await super.componentDidMount();
     // Refresh Charger
     await this.refresh();
   }
 
-  onBack = () => {
+  public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };
 
-  refresh = async () => {
+  public refresh = async () => {
     if (this.isMounted()) {
       // Get Charger
-      await this._getCharger();
+      await this.getCharger();
       // Refresh Admin
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       this.setState({
@@ -54,10 +77,10 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
     }
   };
 
-  _getCharger = async () => {
+  public getCharger = async () => {
     // Get IDs
     const chargerID = Utils.getParamFromNavigation(this.props.navigation, "chargerID", null);
-    const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
+    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, "connectorID", null), 10);
     try {
       // Get Charger
       const charger = await this.centralServerProvider.getCharger({ ID: chargerID });
@@ -68,7 +91,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
         },
         async () => {
           // Check Auth
-          this._computeAuths();
+          this.computeAuths();
         }
       );
     } catch (error) {
@@ -77,14 +100,14 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
     }
   };
 
-  _computeAuths = () => {
+  public computeAuths = () => {
     // Check Auth
-    this._canStopTransaction();
-    this._canStartTransaction();
-    this._canReadTransaction();
+    this.canStopTransaction();
+    this.canStartTransaction();
+    this.canReadTransaction();
   };
 
-  _canStopTransaction = () => {
+  public canStopTransaction = () => {
     const { charger, connector } = this.state;
     // Transaction?
     if (connector.activeTransactionID !== 0) {
@@ -104,7 +127,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
     }
   };
 
-  _canStartTransaction = () => {
+  public canStartTransaction = () => {
     const { charger, connector } = this.state;
     // Transaction?
     if (connector.activeTransactionID === 0) {
@@ -124,7 +147,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
     }
   };
 
-  _canReadTransaction = () => {
+  public canReadTransaction = () => {
     const { charger, connector } = this.state;
     // Transaction?
     if (connector.activeTransactionID !== 0) {
@@ -144,19 +167,10 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
     }
   };
 
-  render() {
+  public render() {
     const style = computeStyleSheet();
-    const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
-    const {
-      charger,
-      connector,
-      isAdmin,
-      siteAreaID,
-      firstLoad,
-      canStopTransaction,
-      canStartTransaction,
-      canDisplayTransaction
-    } = this.state;
+    const connectorID = parseInt(Utils.getParamFromNavigation(this.props.navigation, "connectorID", null), 10);
+    const { charger, connector, isAdmin, firstLoad, canStopTransaction, canStartTransaction, canDisplayTransaction } = this.state;
     const { navigation } = this.props;
     const connectorLetter = Utils.getConnectorLetter(connectorID);
     return firstLoad ? (
@@ -165,8 +179,9 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
       </Container>
     ) : (
       <ScrollView contentContainerStyle={style.container}>
-        <BackgroundComponent active={false}>
+        <BackgroundComponent navigation={navigation} active={false}>
           <HeaderComponent
+            navigation={this.props.navigation} 
             title={charger.id}
             subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
             leftAction={() => this.onBack()}
@@ -179,7 +194,6 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen {
               charger={charger}
               connector={connector}
               isAdmin={isAdmin}
-              canDisplayTransaction={canDisplayTransaction}
               canStartTransaction={canStartTransaction}
               canStopTransaction={canStopTransaction}
               navigation={navigation}

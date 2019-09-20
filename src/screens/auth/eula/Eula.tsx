@@ -31,8 +31,8 @@ export default class Eula extends BaseScreen<Props, State> {
     };
   }
 
-  public setState = (state: State) => {
-    super.setState(state);
+  public setState = (state: State, callback?: () => void) => {
+    super.setState(state, callback);
   }
 
   public async componentDidMount() {

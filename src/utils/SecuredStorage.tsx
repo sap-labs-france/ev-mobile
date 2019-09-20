@@ -1,6 +1,6 @@
 import { NavigationState } from "react-navigation";
 import RNSecureStorage, { ACCESSIBLE } from "rn-secure-storage";
-import UserCredentials from "../types/User";
+import { UserCredentials } from "../types/User";
 import Constants from "./Constants";
 
 // Generate a new Id for persisting the navigation each time the app is launched first time
