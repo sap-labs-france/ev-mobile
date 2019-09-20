@@ -5,7 +5,10 @@ import BaseScreen from "./BaseScreen";
 export interface Props extends BaseProps {
 }
 
-export default class BaseAutoRefreshScreen extends BaseScreen {
+interface State {
+}
+
+export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State> {
   private timerRefresh: ReturnType<typeof setTimeout>;
   private timerRefreshActive: boolean;
   private refreshPeriodMillis: number;
@@ -67,6 +70,7 @@ export default class BaseAutoRefreshScreen extends BaseScreen {
   }
 
   public refresh() {
+    // tslint:disable-next-line: no-console
     console.log("BaseAutoRefreshScreen: Refresh not implemented!!!");
   }
 

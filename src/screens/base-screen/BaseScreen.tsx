@@ -1,5 +1,5 @@
+import React from "react";
 import { BackHandler } from "react-native";
-import { ResponsiveComponent } from "react-native-responsive-ui";
 import { NavigationEventSubscription } from "react-navigation";
 import CentralServerProvider from "../../provider/CentralServerProvider";
 import ProviderFactory from "../../provider/ProviderFactory";
@@ -8,11 +8,14 @@ import BaseProps from "../../types/BaseProps";
 export interface Props extends BaseProps {
 }
 
-export default class BaseScreen extends ResponsiveComponent {
-  private didFocus: NavigationEventSubscription;
-  private didBlur: NavigationEventSubscription;
+interface State {
+}
+
+export default class BaseScreen<P, S> extends React.Component<Props, State> {
   protected mounted: boolean;
   protected centralServerProvider: CentralServerProvider;
+  private didFocus: NavigationEventSubscription;
+  private didBlur: NavigationEventSubscription;
 
   constructor(props: Props) {
     super(props);
@@ -35,8 +38,12 @@ export default class BaseScreen extends ResponsiveComponent {
   public async componentWillUnmount() {
     this.mounted = false;
     // Remove listeners
-    this.didFocus && this.didFocus.remove();
-    this.didBlur && this.didBlur.remove();
+    if (this.didFocus) {
+      this.didFocus.remove();
+    }
+    if (this.didBlur) {
+      this.didBlur.remove();
+    }
   }
 
   public onBack(): boolean {
@@ -48,5 +55,6 @@ export default class BaseScreen extends ResponsiveComponent {
     BackHandler.addEventListener("hardwareBackPress", this.onBack.bind(this));
   }
 
+  // tslint:disable-next-line: no-empty
   public async componentDidBlur() {}
 }
