@@ -62,7 +62,7 @@
   },
   "transactions": {
     "transactionsHistory": "Sitzungsverlauf",
-    "transactionsInProgress": "Sitzung läuft",
+    "transactionsInProgress": "Laufende Sitzungen",
     "chargingCurve": "Sitzungsdiagramm",
     "noTransactionsInProgress": "Es werden keine Sitzungen durchgeführt",
     "noTransactionsHistory": "Kein Sitzungsverlauf"
@@ -72,12 +72,12 @@
     "chargePoint": "Ladepunkt",
     "free": "Frei",
     "occupied": "Besetzt",
-    "noSites": "Keine Seite gefunden"
+    "noSites": "Kein Standort gefunden"
   },
   "siteAreas": {
     "title": "Standortbereiche",
     "noChargers": "Dieser Standortbereich hat keine Ladestationen",
-    "noSiteAreas": "Kein Sitebereich gefunden"
+    "noSiteAreas": "Kein Standortbereich gefunden"
   },
   "chargers": {
     "title": "Ladestationen",
@@ -115,7 +115,7 @@
     "informations": "Informationen",
     "graph": "Diagramm",
     "notAuthorized": "Persönliche Daten!",
-    "noTransaction": "Keine laufende Transaktionen",
+    "noTransaction": "Keine laufende Transaktion",
     "startTransaction": "Transaktion starten",
     "stopTransaction": "Transaktion stoppen",
     "startTransactionMessage": "Wollen Sie wirklich eine neue Ladesitzung auf '{{chargeBoxID}}' starten?",
