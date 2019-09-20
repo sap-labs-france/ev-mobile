@@ -2,11 +2,12 @@ import { PixelRatio, StatusBar } from "react-native";
 import { PLATFORM } from "./../variables/commonColor";
 import variable from "./../variables/platform";
 
-const buildTheme = (variables) => {
+const buildTheme = (variables: any) => {
+  // Forced to break up the theme to avoid typescript infinite run!
   const platformStyle = variables.platformStyle;
   const platform = variables.platform;
 
-  const headerTheme = {
+  const headerTheme: any = {
     backgroundColor: "transparent",
     flexDirection: "row",
     paddingLeft: platform === PLATFORM.IOS ? 5 : 0,
@@ -379,7 +380,6 @@ const buildTheme = (variables) => {
     flexDirection: "row",
     justifyContent: "flex-end"
   };
-  console.log(headerTheme);
   return headerTheme;
 };
 

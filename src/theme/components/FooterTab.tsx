@@ -1,11 +1,11 @@
-import variable from "./../variables/platform";
-import { PLATFORM } from "./../variables/commonColor";
 import { Platform } from "react-native";
+import { PLATFORM } from "./../variables/commonColor";
+import variable from "./../variables/platform";
 
 export default (variables /* : * */ = variable) => {
   const platform = variables.platform;
 
-  const footerTabTheme = {
+  const footerTabTheme: any = {
     "NativeBase.Button": {
       ".active": {
         "NativeBase.Text": {

@@ -1,6 +1,6 @@
 
 export default () => {
-  const contentTheme = {
+  const contentTheme: any = {
     flex: 1,
     backgroundColor: "transparent",
     "NativeBase.Segment": {

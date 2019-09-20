@@ -3,7 +3,7 @@ import { PLATFORM } from "./../variables/commonColor";
 import variable from "./../variables/platform";
 
 export default (variables /* : * */ = variable) => {
-  const radioTheme = {
+  const radioTheme: any = {
     ".selected": {
       "NativeBase.IconNB": {
         color: Platform.OS === PLATFORM.IOS ? variables.radioColor : variables.radioSelectedColorAndroid,

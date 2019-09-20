@@ -1,5 +1,5 @@
 export default () => {
-  const labelTheme = {
+  const labelTheme: any = {
     ".focused": {
       width: 0
     },

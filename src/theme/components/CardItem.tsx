@@ -1,10 +1,10 @@
-import variable from "./../variables/platform";
-import { PLATFORM } from "./../variables/commonColor";
 import { StyleSheet } from "react-native";
+import { PLATFORM } from "./../variables/commonColor";
+import variable from "./../variables/platform";
 
 export default (variables /* : * */ = variable) => {
   const platform = variables.platform;
-  const transparentBtnCommon = {
+  const transparentBtnCommon: any = {
     "NativeBase.Text": {
       fontSize: variables.DefaultFontSize - 3,
       color: variables.sTabBarActiveTextColor
@@ -22,7 +22,7 @@ export default (variables /* : * */ = variable) => {
     paddingHorizontal: null
   };
 
-  const cardItemTheme = {
+  const cardItemTheme: any = {
     "NativeBase.Left": {
       "NativeBase.Body": {
         "NativeBase.Text": {

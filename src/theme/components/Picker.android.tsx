@@ -1,5 +1,5 @@
 export default () => {
-  const pickerTheme = {
+  const pickerTheme: any = {
     ".note": {
       color: "#8F8E95"
     },

@@ -1,5 +1,5 @@
 export default () => {
-  const theme = {
+  const theme: any = {
     "NativeBase.Item": {
       ".fixedLabel": {
         "NativeBase.Label": {

@@ -82,7 +82,7 @@ export default (variables /* : * */ = variable) => {
       color: variables.buttonDangerBg
     }
   };
-  const buttonTheme = {
+  const buttonTheme: any = {
     ".disabled": {
       ".transparent": {
         backgroundColor: "transparent",

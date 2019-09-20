@@ -4,7 +4,7 @@ import { PLATFORM } from "./../variables/commonColor";
 export default (variables /* : * */ = variable) => {
   const platform = variables.platform;
 
-  const segmentTheme = {
+  const segmentTheme: any = {
     height: 45,
     borderColor: variables.segmentBorderColorMain,
     flexDirection: "row",

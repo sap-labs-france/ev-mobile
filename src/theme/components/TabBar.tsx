@@ -1,8 +1,8 @@
-import variable from "./../variables/platform";
 import { scale } from "react-native-size-matters";
+import variable from "./../variables/platform";
 
 export default (variables /* : * */ = variable) => {
-  const tabBarTheme = {
+  const tabBarTheme: any = {
     ".tabIcon": {
       height: undefined
     },

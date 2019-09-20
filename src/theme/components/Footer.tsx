@@ -20,7 +20,7 @@ export default (variables /* : * */ = variable) => {
       color: variables.tabBarActiveTextColor
     }
   };
-  const footerTheme = {
+  const footerTheme: any = {
     "NativeBase.Left": {
       "NativeBase.Button": {
         ".transparent": {

@@ -1,60 +1,60 @@
 import _ from "lodash";
+import variable from "./../variables/platform";
+import badgeTheme from "./Badge";
 import bodyTheme from "./Body";
-import leftTheme from "./Left";
-import rightTheme from "./Right";
-import headerTheme from "./Header";
-import switchTheme from "./Switch";
-import thumbnailTheme from "./Thumbnail";
+import buttonTheme from "./Button";
+import cardTheme from "./Card";
+import cardItemTheme from "./CardItem";
+import checkBoxTheme from "./CheckBox";
 import containerTheme from "./Container";
 import contentTheme from "./Content";
-import buttonTheme from "./Button";
-import titleTheme from "./Title";
-import subtitleTheme from "./Subtitle";
-import inputGroupTheme from "./InputGroup";
-import badgeTheme from "./Badge";
-import checkBoxTheme from "./CheckBox";
-import cardTheme from "./Card";
-import radioTheme from "./Radio";
-import h3Theme from "./H3";
-import h2Theme from "./H2";
-import h1Theme from "./H1";
+import fabTheme from "./Fab";
 import footerTheme from "./Footer";
 import footerTabTheme from "./FooterTab";
-import fabTheme from "./Fab";
+import formTheme from "./Form";
+import h1Theme from "./H1";
+import h2Theme from "./H2";
+import h3Theme from "./H3";
+import headerTheme from "./Header";
+import iconTheme from "./Icon";
+import inputTheme from "./Input";
+import inputGroupTheme from "./InputGroup";
 import itemTheme from "./Item";
 import labelTheme from "./Label";
-import textAreaTheme from "./Textarea";
-import textTheme from "./Text";
-import toastTheme from "./Toast";
+import leftTheme from "./Left";
+import listItemTheme from "./ListItem";
+import pickerTheme from "./Picker";
+import radioTheme from "./Radio";
+import rightTheme from "./Right";
+import segmentTheme from "./Segment";
+import separatorTheme from "./Separator";
+import spinnerTheme from "./Spinner";
+import subtitleTheme from "./Subtitle";
+import swipeRowTheme from "./SwipeRow";
+import switchTheme from "./Switch";
 import tabTheme from "./Tab";
 import tabBarTheme from "./TabBar";
 import tabContainerTheme from "./TabContainer";
-import viewTheme from "./View";
 import tabHeadingTheme from "./TabHeading";
-import iconTheme from "./Icon";
-import inputTheme from "./Input";
-import swipeRowTheme from "./SwipeRow";
-import segmentTheme from "./Segment";
-import spinnerTheme from "./Spinner";
-import cardItemTheme from "./CardItem";
-import listItemTheme from "./ListItem";
-import formTheme from "./Form";
-import separatorTheme from "./Separator";
-import pickerTheme from "./Picker";
-import variable from "./../variables/platform";
+import textTheme from "./Text";
+import textAreaTheme from "./Textarea";
+import thumbnailTheme from "./Thumbnail";
+import titleTheme from "./Title";
+import toastTheme from "./Toast";
+import viewTheme from "./View";
 
 export default class Theme {
   public static getTheme(variables = variable) {
     const theme = {
       variables,
       "NativeBase.Left": {
-        ...leftTheme(variables)
+        ...leftTheme()
       },
       "NativeBase.Right": {
-        ...rightTheme(variables)
+        ...rightTheme()
       },
       "NativeBase.Body": {
-        ...bodyTheme(variables)
+        ...bodyTheme()
       },
 
       "NativeBase.Header": {
@@ -114,14 +114,14 @@ export default class Theme {
         ...h3Theme(variables)
       },
       "NativeBase.Form": {
-        ...formTheme(variables)
+        ...formTheme()
       },
 
       "NativeBase.Container": {
         ...containerTheme(variables)
       },
       "NativeBase.Content": {
-        ...contentTheme(variables)
+        ...contentTheme()
       },
 
       "NativeBase.Footer": {
@@ -154,11 +154,11 @@ export default class Theme {
         ...textTheme(variables)
       },
       "NativeBase.Spinner": {
-        ...spinnerTheme(variables)
+        ...spinnerTheme()
       },
 
       "NativeBase.Fab": {
-        ...fabTheme(variables)
+        ...fabTheme()
       },
 
       "NativeBase.Item": {
@@ -166,7 +166,7 @@ export default class Theme {
       },
 
       "NativeBase.Label": {
-        ...labelTheme(variables)
+        ...labelTheme()
       },
 
       "NativeBase.Textarea": {
@@ -174,14 +174,14 @@ export default class Theme {
       },
 
       "NativeBase.PickerNB": {
-        ...pickerTheme(variables),
+        ...pickerTheme(),
         "NativeBase.Button": {
           "NativeBase.Text": {}
         }
       },
 
       "NativeBase.Tab": {
-        ...tabTheme(variables)
+        ...tabTheme()
       },
 
       "NativeBase.Segment": {
@@ -201,21 +201,21 @@ export default class Theme {
         ...tabContainerTheme(variables)
       },
       "NativeBase.Switch": {
-        ...switchTheme(variables)
+        ...switchTheme()
       },
       "NativeBase.Separator": {
         ...separatorTheme(variables)
       },
       "NativeBase.SwipeRow": {
-        ...swipeRowTheme(variables)
+        ...swipeRowTheme()
       },
       "NativeBase.Thumbnail": {
-        ...thumbnailTheme(variables)
+        ...thumbnailTheme()
       }
     };
 
-    const cssifyTheme = (grandparent, parent, parentKey) => {
-      _.forEach(parent, (style, styleName) => {
+    const cssifyTheme = (grandparent: any, parent: any, parentKey: any) => {
+      _.forEach(parent, (style: any, styleName: any) => {
         if (styleName.indexOf(".") === 0 && parentKey && parentKey.indexOf(".") === 0) {
           if (grandparent) {
             if (!grandparent[styleName]) {

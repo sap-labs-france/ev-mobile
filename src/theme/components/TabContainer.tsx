@@ -4,9 +4,7 @@ import { PLATFORM } from "./../variables/commonColor";
 import variable from "./../variables/platform";
 
 export default (variables /* : * */ = variable) => {
-  const platformStyle = variables.platformStyle;
-
-  const tabContainerTheme = {
+  const tabContainerTheme: any = {
     height: scale(50),
     flexDirection: "row",
     justifyContent: "space-around",

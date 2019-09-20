@@ -12,7 +12,7 @@ export const PLATFORM = {
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 const platform = Platform.OS;
-const platformStyle = undefined;
+const platformStyle: any = undefined;
 const isIphoneX = platform === PLATFORM.IOS && (deviceHeight === 812 || deviceWidth === 812 || deviceHeight === 896 || deviceWidth === 896);
 
 const fiori3Brand = "#0a6ed1";
@@ -309,5 +309,5 @@ export class CommonColor {
   constructor() {}
 };
 
-export default commonColor = new CommonColor();
+export default new CommonColor();
 

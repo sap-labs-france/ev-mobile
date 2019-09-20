@@ -1,7 +1,7 @@
 import variable from "./../variables/platform";
 
 export default (variables /* : * */ = variable) => {
-  const theme = {
+  const theme: any = {
     ".group": {
       height: 50,
       paddingVertical: variables.listItemPadding - 8,
