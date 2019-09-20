@@ -1,30 +1,43 @@
 import { Icon, Tab, TabHeading, Tabs } from "native-base";
 import React from "react";
 import { Alert, BackHandler, ScrollView } from "react-native";
+import BaseProps from "types/BaseProps";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
+import I18n from "../../I18n/I18n";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import TransactionsHistory from "./history/TransactionsHistory";
 import TransactionsInProgress from "./in-progress/TransactionsInProgress";
 import computeStyleSheet from "./TransactionTabsStyles";
 
-import I18n from "../../I18n/I18n";
+export interface Props extends BaseProps {
+}
 
-export default class TransactionTabs extends BaseAutoRefreshScreen {
-  constructor(props) {
+interface State {
+}
+
+export default class TransactionTabs extends BaseAutoRefreshScreen<Props, State> {
+  public state: State;
+  public props: Props;
+
+  constructor(props: Props) {
     super(props);
     this.state = {
       isAdmin: false
     };
   }
 
-  async componentDidMount() {
+  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+    super.setState(state, callback);
+  }
+
+  public async componentDidMount() {
     // Call parent
     await super.componentDidMount();
     // Load Transactions
     await this.refresh();
   }
 
-  onBack = () => {
+  public onBack = (): boolean => {
     // Exit?
     Alert.alert(
       I18n.t("general.exitApp"),
@@ -36,7 +49,7 @@ export default class TransactionTabs extends BaseAutoRefreshScreen {
     return true;
   };
 
-  refresh = async () => {
+  public refresh = async () => {
     if (this.isMounted()) {
       // Refresh Admin
       const securityProvider = this.centralServerProvider.getSecurityProvider();
@@ -47,12 +60,12 @@ export default class TransactionTabs extends BaseAutoRefreshScreen {
     }
   };
 
-  render() {
+  public render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
     return (
       <ScrollView contentContainerStyle={style.container}>
-        <BackgroundComponent active={false}>
+        <BackgroundComponent navigation={navigation} active={false}>
           <Tabs tabBarPosition="bottom" locked={false} initialPage={0}>
             <Tab
               heading={

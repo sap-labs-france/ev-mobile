@@ -1,24 +1,41 @@
-import * as Animatable from "react-native-animatable";
 import { Icon, Text, View } from "native-base";
-import PropTypes from "prop-types";
 import React from "react";
-import { ResponsiveComponent } from "react-native-responsive-ui";
 import { TouchableOpacity } from "react-native";
+import * as Animatable from "react-native-animatable";
+import BaseProps from "types/BaseProps";
+import Transaction from "types/Transaction";
 import Constants from "../../../utils/Constants";
 import Utils from "../../../utils/Utils";
 import TransactionHeaderComponent from "../header/TransactionHeaderComponent";
 import computeStyleSheet from "../TransactionComponentCommonStyles";
 
-let counter = 0;
-export default class TransactionHistoryComponent extends ResponsiveComponent {
-  constructor(props) {
+export interface Props extends BaseProps {
+  transaction: Transaction;
+  isPricingActive: boolean;
+  isAdmin: boolean;
+  initialVisibility?: boolean;
+}
+
+interface State {
+}
+
+export default class TransactionHistoryComponent extends React.Component<Props, State> {
+  public state: State;
+  public props: Props;
+  private counter: number = 0;
+  
+  constructor(props: Props) {
     super(props);
     this.state = {
       isVisible: this.props.initialVisibility
     };
   }
 
-  render() {
+  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+    super.setState(state, callback);
+  }
+
+  public render() {
     const style = computeStyleSheet();
     const { transaction, isAdmin, isPricingActive } = this.props;
     const consumption = Math.round(transaction.stop.totalConsumption / 10) / 100;
@@ -30,7 +47,7 @@ export default class TransactionHistoryComponent extends ResponsiveComponent {
     const navigation = this.props.navigation;
     return (
       <Animatable.View
-        animation={counter++ % 2 === 0 ? "flipInX" : "flipInX"}
+        animation={this.counter++ % 2 === 0 ? "flipInX" : "flipInX"}
         iterationCount={1}
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity
@@ -38,7 +55,7 @@ export default class TransactionHistoryComponent extends ResponsiveComponent {
             navigation.navigate("TransactionChart", { transactionID: transaction.id });
           }}>
           <View style={style.container}>
-            <TransactionHeaderComponent transaction={transaction} isAdmin={isAdmin} />
+            <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} />
             <View style={style.transactionContent}>
               <View style={style.columnContainer}>
                 <Icon type="MaterialIcons" name="ev-station" style={[style.icon, style.info]} />
@@ -74,12 +91,3 @@ export default class TransactionHistoryComponent extends ResponsiveComponent {
     );
   }
 }
-
-TransactionHistoryComponent.propTypes = {
-  navigation: PropTypes.object.isRequired,
-  transaction: PropTypes.object.isRequired,
-  isPricingActive: PropTypes.bool.isRequired,
-  isAdmin: PropTypes.bool.isRequired
-};
-
-TransactionHistoryComponent.defaultProps = {};
