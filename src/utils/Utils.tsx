@@ -1,9 +1,13 @@
-import Message from "./Message";
-import Constants from "./Constants";
-import I18n from "../I18n/I18n";
-import validate from "validate.js";
+import CentralServerProvider from "provider/CentralServerProvider";
 import { NativeModules, Platform } from "react-native";
+import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
+import { RequestError } from "types/RequestError";
+import User from "types/User";
+import validate from "validate.js";
+import I18n from "../I18n/I18n";
 import commonColor from "../theme/variables/commonColor";
+import Constants from "./Constants";
+import Message from "./Message";
 
 const type2 = require("../../assets/connectorType/type2.gif");
 // const type2 = require("../../assets/connectorType/type-2.svg");
@@ -13,7 +17,8 @@ const domestic = require("../../assets/connectorType/domestic-ue.gif");
 const noConnector = require("../../assets/connectorType/no-connector.gif");
 
 export default class Utils {
-  static getParamFromNavigation(navigation, name, defaultValue) {
+  public static getParamFromNavigation(navigation: NavigationScreenProp<NavigationState, NavigationParams>,
+      name: string, defaultValue: string): string {
     // Has param object?
     if (!navigation.state.params) {
       return defaultValue;
@@ -26,7 +31,7 @@ export default class Utils {
     return navigation.state.params[name];
   }
 
-  static getLocale() {
+  public static getLocale(): string {
     let deviceLanguage =
       Platform.OS === "ios" ? NativeModules.SettingsManager.settings.AppleLocale : NativeModules.I18nManager.localeIdentifier;
     // Filter only on supported languages
@@ -38,11 +43,11 @@ export default class Utils {
     return deviceLanguage;
   }
 
-  static getLocaleShort() {
+  public static getLocaleShort(): string {
     return Utils.getLocale().substring(0, 2);
   }
 
-  static computeInactivityStyle(totalInactivitySecs) {
+  public static computeInactivityStyle(totalInactivitySecs: number): object {
     let style = { color: commonColor.brandInfo };
     if (totalInactivitySecs < 1800) {
       style = { color: commonColor.brandSuccess };
@@ -54,9 +59,10 @@ export default class Utils {
     return style;
   }
 
-  static async handleHttpUnexpectedError(centralServerProvider, error, navigation, fctRefresh) {
+  public static async handleHttpUnexpectedError(centralServerProvider: CentralServerProvider,
+      error: RequestError, navigation: NavigationScreenProp<NavigationState, NavigationParams>, fctRefresh: Function) {
     // Log in console
-    // eslint-disable-next-line no-console
+    // tslint:disable-next-line: no-console
     console.log({ error });
     // Check if HTTP?
     if (error.request) {
@@ -85,7 +91,7 @@ export default class Utils {
     }
   }
 
-  static buildUserName(user) {
+  public static buildUserName(user: User): string {
     const userName = "-";
     // User?
     if (user) {
@@ -99,20 +105,20 @@ export default class Utils {
     return userName;
   }
 
-  static capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  public static capitalizeFirstLetter(word: string): string {
+    return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
-  static validateInput(screen, constraints) {
+  public static validateInput(screen: React.Component, constraints: object): boolean {
     let formValid = true;
-    const errorState = {};
+    const errorState: any = {};
     // Reset all errors
     for (const key in screen.state) {
       if (screen.state.hasOwnProperty(key)) {
         // Error?
         if (key.startsWith("error")) {
           // Clear
-          const clearError = {};
+          const clearError: any = {};
           clearError[key] = null;
           screen.setState(clearError);
         }
@@ -136,11 +142,11 @@ export default class Utils {
     return formValid;
   }
 
-  static getConnectorLetter(connectorId) {
+  public static getConnectorLetter(connectorId: number): string {
     return String.fromCharCode(64 + connectorId);
   }
 
-  static translateConnectorStatus = (status) => {
+  public static translateConnectorStatus = (status: string): string => {
     switch (status) {
       case Constants.CONN_STATUS_AVAILABLE:
         return I18n.t("connector.available");
@@ -167,7 +173,7 @@ export default class Utils {
     }
   };
 
-  static translateConnectorType = (type) => {
+  public static translateConnectorType = (type: string): string => {
     switch (type) {
       case Constants.CONN_TYPE_2:
         return I18n.t("connector.type2");
@@ -182,7 +188,7 @@ export default class Utils {
     }
   };
 
-  static getConnectorTypeImage = (type) => {
+  public static getConnectorTypeImage = (type: string): string => {
     switch (type) {
       case Constants.CONN_TYPE_2:
         return type2;
@@ -197,7 +203,7 @@ export default class Utils {
     }
   };
 
-  static formatDurationHHMMSS = (durationSecs, withSecs = true) => {
+  public static formatDurationHHMMSS = (durationSecs: number, withSecs: boolean = true): string => {
     if (durationSecs <= 0) {
       return withSecs ? Constants.DEFAULT_DURATION_WITH_SECS : Constants.DEFAULT_DURATION;
     }
@@ -214,13 +220,13 @@ export default class Utils {
     if (withSecs) {
       const seconds = Math.trunc(durationSecs);
       // Format
-      return `${Utils._formatTimer(hours)}:${Utils._formatTimer(minutes)}:${this._formatTimer(seconds)}`;
+      return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}:${Utils.formatTimer(seconds)}`;
     }
     // Format
-    return `${Utils._formatTimer(hours)}:${Utils._formatTimer(minutes)}`;
+    return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}`;
   };
 
-  static _formatTimer = (val) => {
+  private static formatTimer = (val: number): string => {
     // Put 0 next to the digit if lower than 10
     const valString = val + "";
     if (valString.length < 2) {

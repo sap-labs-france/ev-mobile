@@ -3,7 +3,7 @@ import { PLATFORM } from "./../variables/commonColor";
 import variable from "./../variables/platform";
 
 export default (variables /* : * */ = variable) => {
-  const titleTheme = {
+  const titleTheme: any = {
     fontSize: variables.titleFontSize,
     fontFamily: variables.titleFontfamily,
     color: variables.titleFontColor,

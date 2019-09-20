@@ -2,7 +2,7 @@ import moment from "moment";
 import { Root } from "native-base";
 import React from "react";
 import { Dimensions, StatusBar } from "react-native";
-import { createAppContainer, createDrawerNavigator, createStackNavigator, createSwitchNavigator } from "react-navigation";
+import { createAppContainer, createDrawerNavigator, createStackNavigator, createSwitchNavigator, NavigationContainer, NavigationState } from "react-navigation";
 import NotificationManager from "./notification/NotificationManager";
 import Eula from "./screens/auth/eula/Eula";
 import Login from "./screens/auth/login/Login";
@@ -26,7 +26,7 @@ require("moment/locale/en-gb");
 moment.locale(Utils.getLocaleShort());
 
 // Auth Stack Navigation
-const AuthNavigator = createStackNavigator(
+const AuthNavigator: NavigationContainer = createStackNavigator(
   {
     Login: { screen: Login },
     Eula: { screen: Eula },
@@ -35,13 +35,12 @@ const AuthNavigator = createStackNavigator(
   },
   {
     initialRouteName: "Login",
-    header: null,
     headerMode: "none"
   }
 );
 
 // Organizations Stack Navigation
-const SitesNavigator = createStackNavigator(
+const SitesNavigator: NavigationContainer = createStackNavigator(
   {
     Sites: { screen: Sites },
     SiteAreas: { screen: SiteAreas },
@@ -50,26 +49,24 @@ const SitesNavigator = createStackNavigator(
   },
   {
     initialRouteName: "Sites",
-    header: null,
     headerMode: "none"
   }
 );
 
 // Chargers Stack Navigation
-const ChargersNavigator = createStackNavigator(
+const ChargersNavigator: NavigationContainer = createStackNavigator(
   {
     Chargers: { screen: Chargers },
     ChargerDetailsTabs: { screen: ChargerDetailsTabs }
   },
   {
     initialRouteName: "Chargers",
-    header: null,
     headerMode: "none"
   }
 );
 
 // Transactions Stack Navigation
-const TransactionsNavigator = createStackNavigator(
+const TransactionsNavigator: NavigationContainer = createStackNavigator(
   {
     TransactionTabs: { screen: TransactionTabs },
     ChargerDetailsTabs: { screen: ChargerDetailsTabs },
@@ -77,18 +74,16 @@ const TransactionsNavigator = createStackNavigator(
   },
   {
     initialRouteName: "TransactionTabs",
-    header: null,
     headerMode: "none"
   }
 );
 
 // Get the Notification Scheduler
-const _notificationManager = NotificationManager.getInstance();
-// Initialize
-_notificationManager.initialize();
+const notificationManager: NotificationManager = NotificationManager.getInstance();
+notificationManager.initialize();
 
 // Drawer Navigation
-const AppDrawerNavigator = createDrawerNavigator(
+const AppDrawerNavigator: NavigationContainer = createDrawerNavigator(
   {
     SitesNavigator,
     ChargersNavigator,
@@ -101,14 +96,12 @@ const AppDrawerNavigator = createDrawerNavigator(
     drawerWidth: Dimensions.get("window").width / 1.5,
     initialRouteName: "SitesNavigator",
     unmountInactiveRoutes: true,
-    header: null,
-    headerMode: "none",
     drawerPosition: "right",
     contentComponent: (props) => <Sidebar {...props} />
   }
 );
 
-const RootNavigator = createSwitchNavigator(
+const RootNavigator: NavigationContainer = createSwitchNavigator(
   {
     AuthNavigator,
     AppDrawerNavigator
@@ -119,14 +112,14 @@ const RootNavigator = createSwitchNavigator(
 );
 
 // Create a container to wrap the main navigator
-const RootContainer = createAppContainer(RootNavigator);
+const RootContainer: NavigationContainer = createAppContainer(RootNavigator);
 
 // Handle persistence of navigation
 const persistNavigationState = async (navigationState: NavigationState) => {
   try {
     await SecuredStorage.saveNavigationState(navigationState);
   } catch (error) {
-    // eslint-disable-next-line no-console
+    // tslint:disable-next-line: no-console
     console.log(error);
   }
 };
@@ -142,18 +135,18 @@ const RootContainerPersists = () => (
 
 export default class App extends React.Component {
   // eslint-disable-next-line class-methods-use-this
-  async componentDidMount() {
+  public async componentDidMount() {
     // Activate
-    _notificationManager.setActive(true);
+    notificationManager.setActive(true);
   }
 
-  async componentWillUnmount() {
+  public async componentWillUnmount() {
     // Deactivate
-    this._notificationManager.setActive(false);
+    notificationManager.setActive(false);
   }
 
   // eslint-disable-next-line class-methods-use-this
-  render() {
+  public render() {
     return (
       <Root>
         <StatusBar hidden={true} />

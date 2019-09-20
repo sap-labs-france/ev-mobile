@@ -1,5 +1,5 @@
 export default () => {
-  const thumbnailTheme = {
+  const thumbnailTheme: any = {
     ".square": {
       borderRadius: 0,
       ".small": {

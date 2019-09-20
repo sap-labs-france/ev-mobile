@@ -14,7 +14,7 @@ export default (variables /* : * */ = variable) => {
     }
   };
 
-  const listItemTheme = {
+  const listItemTheme: any = {
     "NativeBase.InputGroup": {
       "NativeBase.Icon": {
         paddingRight: 5

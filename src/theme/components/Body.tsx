@@ -1,5 +1,5 @@
 export default () => {
-  const bodyTheme = {
+  const bodyTheme: any = {
     flex: 1,
     alignItems: "center",
     alignSelf: "center"

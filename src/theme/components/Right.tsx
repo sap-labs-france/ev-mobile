@@ -1,5 +1,5 @@
 export default () => {
-  const rightTheme = {
+  const rightTheme: any = {
     "NativeBase.Button": {
       alignSelf: null
     },

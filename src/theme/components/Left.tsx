@@ -1,5 +1,5 @@
 export default () => {
-  const leftTheme = {
+  const leftTheme: any = {
     flex: 1,
     alignSelf: "center",
     alignItems: "flex-start"

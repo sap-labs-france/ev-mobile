@@ -1,7 +1,7 @@
 import variable from "./../variables/platform";
 
 export default (variables /* : * */ = variable) => {
-  const textAreaTheme = {
+  const textAreaTheme: any = {
     ".underline": {
       borderBottomWidth: variables.borderWidth,
       marginTop: 5,

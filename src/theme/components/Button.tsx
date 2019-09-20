@@ -1,7 +1,7 @@
 import { scale } from "react-native-size-matters";
 import { PLATFORM } from "./../variables/commonColor";
 import variable from "./../variables/platform";
-console.log(variable);
+
 export default (variables /* : * */ = variable) => {
   const platformStyle = variables.platformStyle;
   const platform = variables.platform;
@@ -82,7 +82,7 @@ export default (variables /* : * */ = variable) => {
       color: variables.buttonDangerBg
     }
   };
-  const buttonTheme = {
+  const buttonTheme: any = {
     ".disabled": {
       ".transparent": {
         backgroundColor: "transparent",

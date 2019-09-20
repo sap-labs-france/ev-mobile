@@ -1,5 +1,5 @@
 export default () => {
-  const fabTheme = {
+  const fabTheme: any = {
     "NativeBase.Button": {
       alignItems: "center",
       padding: null,

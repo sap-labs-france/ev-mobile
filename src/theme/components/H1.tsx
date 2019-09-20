@@ -1,7 +1,7 @@
 import variable from "./../variables/platform";
 
 export default (variables /* : * */ = variable) => {
-  const h1Theme = {
+  const h1Theme: any = {
     color: variables.textColor,
     fontSize: variables.fontSizeH1,
     lineHeight: variables.lineHeightH1

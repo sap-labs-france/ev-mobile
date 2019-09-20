@@ -1,7 +1,7 @@
 import variable from "./../variables/platform";
 
 export default (variables /* : * */ = variable) => {
-  const inputGroupTheme = {
+  const inputGroupTheme: any = {
     "NativeBase.Icon": {
       fontSize: 24,
       color: variables.sTabBarActiveTextColor,

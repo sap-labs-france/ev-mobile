@@ -3,7 +3,7 @@ import { PLATFORM } from "./../variables/commonColor";
 import variable from "./../variables/platform";
 
 export default (variables /* : * */ = variable) => {
-  const itemTheme = {
+  const itemTheme: any = {
     ".floatingLabel": {
       "NativeBase.Input": {
         height: 50,
