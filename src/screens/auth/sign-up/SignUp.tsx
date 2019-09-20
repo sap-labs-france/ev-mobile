@@ -5,6 +5,7 @@ import * as Animatable from "react-native-animatable";
 import DeviceInfo from "react-native-device-info";
 import ReCaptcha from "react-native-recaptcha-v3";
 import { NavigationActions, StackActions } from "react-navigation";
+import BaseProps from "types/BaseProps";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import I18n from "../../../I18n/I18n";
 import commonColor from "../../../theme/variables/commonColor";
@@ -46,7 +47,7 @@ const formValidationDef = {
     equality: {
       attribute: "ghost",
       message: "^" + I18n.t("authentication.passwordRule"),
-      comparator(password, ghost) {
+      comparator(password: string, ghost: string) {
         // True if EULA is checked
         return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(password);
       }
@@ -66,15 +67,48 @@ const formValidationDef = {
     equality: {
       attribute: "ghost",
       message: I18n.t("authentication.eulaNotAccepted"),
-      comparator(eula, ghost) {
+      comparator(eula: boolean, ghost: boolean) {
         // True if EULA is checked
         return eula;
       }
     }
   }
 };
-export default class SignUp extends BaseScreen {
-  constructor(props) {
+
+export interface Props extends BaseProps {
+}
+
+interface State {
+  tenant?: string;
+  tenantName?: string;
+  name?: string;
+  firstName?: string;
+  email?: string;
+  password?: string;
+  repeatPassword?: string;
+  eula?: boolean;
+  captchaSiteKey?: string;
+  captchaBaseUrl?: string;
+  captcha?: string;
+  loading?: boolean;
+  errorEula?: object[];
+  errorPassword?: object[];
+  errorTenant?: object[];
+  errorEmail?: object[];
+  errorName?: object[];
+  errorFirstName?: object[];
+  errorRepeatPassword?: object[];
+}
+
+export default class SignUp extends BaseScreen<Props, State> {
+  public state: State;
+  public props: Props;
+  private passwordInput: TextInput;
+  private firstNameInput: TextInput;
+  private emailInput: TextInput;
+  private repeatPasswordInput: TextInput;
+
+  constructor(props: Props) {
     super(props);
     this.state = {
       tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
@@ -92,7 +126,11 @@ export default class SignUp extends BaseScreen {
     };
   }
 
-  async componentDidMount() {
+  public setState = (state: State) => {
+    super.setState(state);
+  }
+
+  public async componentDidMount() {
     // Call parent
     await super.componentDidMount();
     // Init
@@ -104,11 +142,11 @@ export default class SignUp extends BaseScreen {
     });
   }
 
-  _recaptchaResponseToken = (captcha) => {
+  public recaptchaResponseToken = (captcha: string) => {
     this.setState({ captcha });
   };
 
-  _signUp = async () => {
+  public signUp = async () => {
     // Check field
     const formIsValid = Utils.validateInput(this, formValidationDef);
     if (formIsValid) {
@@ -123,7 +161,7 @@ export default class SignUp extends BaseScreen {
         // Show
         Message.showSuccess(I18n.t("authentication.registerSuccess"));
         // Navigate
-        return this.props.navigation.dispatch(
+        this.props.navigation.dispatch(
           StackActions.reset({
             index: 0,
             actions: [
@@ -159,20 +197,20 @@ export default class SignUp extends BaseScreen {
     }
   };
 
-  onBack = () => {
+  public onBack = (): boolean => {
     // Back mobile button: Force navigation
     this.props.navigation.navigate("Login");
     // Do not bubble up
     return true;
   };
 
-  render() {
+  public render() {
     const style = computeStyleSheet();
     const navigation = this.props.navigation;
     const { eula, loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl } = this.state;
     return (
       <Animatable.View style={style.container} animation={"fadeIn"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
-        <BackgroundComponent>
+        <BackgroundComponent navigation={this.props.navigation}>
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
               <View style={style.formHeader}>
@@ -182,11 +220,9 @@ export default class SignUp extends BaseScreen {
                 <Text style={style.appTenantName}>{tenantName}</Text>
               </View>
               <Form style={style.form}>
-                <Item inlineLabel rounded style={style.inputGroup}>
-                  <Icon active name="person" style={style.inputIcon} />
+                <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+                  <Icon active={true} name="person" style={style.inputIcon} />
                   <TextInput
-                    name="name"
-                    type="text"
                     onSubmitEditing={() => this.firstNameInput.focus()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.name")}
@@ -206,11 +242,9 @@ export default class SignUp extends BaseScreen {
                     </Text>
                   ))}
 
-                <Item inlineLabel rounded style={style.inputGroup}>
-                  <Icon active name="person" style={style.inputIcon} />
+                <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+                  <Icon active={true} name="person" style={style.inputIcon} />
                   <TextInput
-                    name="firstName"
-                    type="text"
                     ref={(ref) => (this.firstNameInput = ref)}
                     onSubmitEditing={() => this.emailInput.focus()}
                     returnKeyType={"next"}
@@ -231,11 +265,9 @@ export default class SignUp extends BaseScreen {
                     </Text>
                   ))}
 
-                <Item inlineLabel rounded style={style.inputGroup}>
-                  <Icon active name="mail" style={style.inputIcon} />
+                <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+                  <Icon active={true} name="mail" style={style.inputIcon} />
                   <TextInput
-                    name="email"
-                    type="email"
                     ref={(ref) => (this.emailInput = ref)}
                     onSubmitEditing={() => this.passwordInput.focus()}
                     returnKeyType={"next"}
@@ -257,11 +289,9 @@ export default class SignUp extends BaseScreen {
                     </Text>
                   ))}
 
-                <Item inlineLabel rounded style={style.inputGroup}>
-                  <Icon active name="unlock" style={style.inputIcon} />
+                <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+                  <Icon active={true} name="unlock" style={style.inputIcon} />
                   <TextInput
-                    name="password"
-                    type="password"
                     ref={(ref) => (this.passwordInput = ref)}
                     onSubmitEditing={() => this.repeatPasswordInput.focus()}
                     returnKeyType={"next"}
@@ -282,11 +312,9 @@ export default class SignUp extends BaseScreen {
                       {errorMessage}
                     </Text>
                   ))}
-                <Item inlineLabel rounded style={style.inputGroup}>
-                  <Icon active name="unlock" style={style.inputIcon} />
+                <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+                  <Icon active={true} name="unlock" style={style.inputIcon} />
                   <TextInput
-                    name="repeatPassword"
-                    type="password"
                     ref={(ref) => (this.repeatPasswordInput = ref)}
                     onSubmitEditing={() => Keyboard.dismiss()}
                     returnKeyType={"next"}
@@ -325,7 +353,7 @@ export default class SignUp extends BaseScreen {
                 {loading || (!captcha && this.state.eula) ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
-                  <Button rounded primary block style={style.button} onPress={() => this._signUp()}>
+                  <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.signUp()}>
                     <TextRN style={style.buttonText}>{I18n.t("authentication.signUp")}</TextRN>
                   </Button>
                 )}
@@ -338,13 +366,13 @@ export default class SignUp extends BaseScreen {
                 url={captchaBaseUrl}
                 action="RegisterUser"
                 reCaptchaType={1}
-                onExecute={this._recaptchaResponseToken}
+                onExecute={this.recaptchaResponseToken}
               />
             )}
           </ScrollView>
           <Footer style={style.footer}>
             <Right>
-              <Button small transparent style={[style.linksButton, style.linksButtonRight]} onPress={() => this.props.navigation.goBack()}>
+              <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonRight]} onPress={() => this.props.navigation.goBack()}>
                 <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.backLogin")}</TextRN>
               </Button>
             </Right>

@@ -4,6 +4,8 @@ import { Alert, BackHandler, Image, Keyboard, KeyboardAvoidingView, ScrollView, 
 import * as Animatable from "react-native-animatable";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
+import BaseProps from "types/BaseProps";
+import Tenant from "types/Tenant";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import I18n from "../../../I18n/I18n";
 import commonColor from "../../../theme/variables/commonColor";
@@ -41,7 +43,7 @@ const formValidationDef = {
     equality: {
       attribute: "ghost",
       message: "^" + I18n.t("authentication.eulaNotAccepted"),
-      comparator(v1, v2) {
+      comparator(v1: boolean, v2: boolean) {
         // True if EULA is checked
         return v1;
       }
@@ -49,8 +51,30 @@ const formValidationDef = {
   }
 };
 
-export default class Login extends BaseScreen {
-  constructor(props) {
+export interface Props extends BaseProps {
+}
+
+interface State {
+  eula?: boolean;
+  password?: string;
+  email?: string;
+  tenant?: string;
+  tenantTitle?: string;
+  loading?: boolean;
+  display?: boolean;
+  errorEula?: object[];
+  errorPassword?: object[];
+  errorTenant?: object[];
+  errorEmail?: object[];
+}
+
+export default class Login extends BaseScreen<Props, State> {
+  public state: State;
+  public props: Props;
+  private tenants: Array<Partial<Tenant>>;
+  private passwordInput: TextInput;
+
+  constructor(props: Props) {
     super(props);
     this.state = {
       eula: false,
@@ -63,8 +87,11 @@ export default class Login extends BaseScreen {
     };
   }
 
-  async componentDidMount() {
-    // Call parent
+  public setState = (state: State) => {
+    super.setState(state);
+  }
+
+  public async componentDidMount() {
     await super.componentDidMount();
     // Get Tenants
     this.tenants = this.centralServerProvider.getTenants();
@@ -72,7 +99,6 @@ export default class Login extends BaseScreen {
     Orientation.lockToPortrait();
     const tenantSubmain = this.centralServerProvider.getUserTenant();
     const tenant = this.centralServerProvider.getTenant(tenantSubmain);
-    // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({
       email: this.centralServerProvider.getUserEmail(),
       password: this.centralServerProvider.getUserPassword(),
@@ -82,7 +108,7 @@ export default class Login extends BaseScreen {
     });
   }
 
-  _login = async () => {
+  public login = async () => {
     // Check field
     const formIsValid = Utils.validateInput(this, formValidationDef);
     // Ok?
@@ -91,13 +117,13 @@ export default class Login extends BaseScreen {
       const { password, email, eula, tenant } = this.state;
       try {
         // Loading
-        this.setState({ loading: true });
+        this.setState({ loading: true } as State);
         // Login
         await this.centralServerProvider.login(email, password, eula, tenant);
         // Login Success
         this.setState({ loading: false });
         // Navigate
-        this._navigateToSites();
+        this.navigateToSites();
       } catch (error) {
         // Login failed
         this.setState({ loading: false });
@@ -135,7 +161,7 @@ export default class Login extends BaseScreen {
     }
   };
 
-  onBack = () => {
+  public onBack = () => {
     // Exit?
     Alert.alert(
       I18n.t("general.exitApp"),
@@ -147,12 +173,12 @@ export default class Login extends BaseScreen {
     return true;
   };
 
-  _navigateToSites() {
+  public navigateToSites() {
     // Navigate to App
     this.props.navigation.navigate("AppDrawerNavigator");
   }
 
-  _setTenant = (buttonIndex) => {
+  public setTenant = (buttonIndex: number) => {
     // Provided?
     if (buttonIndex !== undefined) {
       // Set Tenant
@@ -163,7 +189,7 @@ export default class Login extends BaseScreen {
     }
   };
 
-  _newUser = () => {
+  public newUser = () => {
     const navigation = this.props.navigation;
     // Tenant selected?
     if (this.state.tenant) {
@@ -172,12 +198,11 @@ export default class Login extends BaseScreen {
         email: this.state.email
       });
     } else {
-      // Error
       Message.showError(I18n.t("authentication.mustSelectTenant"));
     }
   };
 
-  _forgotPassword = () => {
+  public forgotPassword = () => {
     const navigation = this.props.navigation;
     // Tenant selected?
     if (this.state.tenant) {
@@ -191,7 +216,7 @@ export default class Login extends BaseScreen {
     }
   };
 
-  render() {
+  public render() {
     const style = computeStyleSheet();
     const navigation = this.props.navigation;
     const { display, eula, loading } = this.state;
@@ -200,7 +225,7 @@ export default class Login extends BaseScreen {
       <View style={style.noDisplay} />
     ) : (
       <Animatable.View style={style.container} animation={"fadeIn"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
-        <BackgroundComponent>
+        <BackgroundComponent navigation={this.props.navigation}>
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
               <View style={style.formHeader}>
@@ -210,8 +235,8 @@ export default class Login extends BaseScreen {
               </View>
               <Form style={style.form}>
                 <Button
-                  rounded
-                  block
+                  rounded={true}
+                  block={true}
                   style={style.button}
                   onPress={() =>
                     ActionSheet.show(
@@ -220,7 +245,7 @@ export default class Login extends BaseScreen {
                         title: I18n.t("authentication.tenant")
                       },
                       (buttonIndex) => {
-                        this._setTenant(buttonIndex);
+                        this.setTenant(buttonIndex);
                       }
                     )
                   }>
@@ -232,11 +257,9 @@ export default class Login extends BaseScreen {
                       {errorMessage}
                     </Text>
                   ))}
-                <Item inlineLabel rounded style={style.inputGroup}>
-                  <Icon active name="mail" style={style.inputIcon} />
+                <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+                  <Icon active={true} name="mail" style={style.inputIcon} />
                   <TextInput
-                    name="email"
-                    type="email"
                     returnKeyType="next"
                     placeholder={I18n.t("authentication.email")}
                     placeholderTextColor={commonColor.placeholderTextColor}
@@ -257,11 +280,9 @@ export default class Login extends BaseScreen {
                       {errorMessage}
                     </Text>
                   ))}
-                <Item inlineLabel rounded style={style.inputGroup}>
-                  <Icon active name="unlock" style={[style.inputIcon, style.inputIconLock]} />
+                <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+                  <Icon active={true} name="unlock" style={[style.inputIcon, style.inputIconLock]} />
                   <TextInput
-                    name="password"
-                    type="password"
                     returnKeyType="go"
                     ref={(ref) => (this.passwordInput = ref)}
                     onSubmitEditing={() => Keyboard.dismiss()}
@@ -301,7 +322,7 @@ export default class Login extends BaseScreen {
                 {loading ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
-                  <Button rounded primary block style={style.button} onPress={() => this._login()}>
+                  <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.login()}>
                     <TextRN style={style.buttonText}>{I18n.t("authentication.login")}</TextRN>
                   </Button>
                 )}
@@ -310,12 +331,12 @@ export default class Login extends BaseScreen {
           </ScrollView>
           <Footer style={style.footer}>
             <Left>
-              <Button small transparent style={[style.linksButton, style.linksButtonLeft]} onPress={() => this._newUser()}>
+              <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.newUser()}>
                 <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
               </Button>
             </Left>
             <Right>
-              <Button small transparent style={[style.linksButton, style.linksButtonRight]} onPress={() => this._forgotPassword()}>
+              <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonRight]} onPress={() => this.forgotPassword()}>
                 <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
               </Button>
             </Right>
