@@ -148,7 +148,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     return null;
   }
 
-  public async search(searchText: string) {
+  public search = async (searchText: string) => {
     this.searchText = searchText;
     await this.refresh();
   }
