@@ -93,9 +93,6 @@ const commonStyles = ScaledSheet.create({
     width: "11%",
     fontSize: Platform.OS === "ios" ? "20@s" : "15@s"
   },
-  recaptcha: {
-    backgroundColor: "transparent"
-  },
   inputIconLock: {
     fontSize: "20@s"
   },
