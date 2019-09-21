@@ -11,7 +11,6 @@ import Constants from "../../utils/Constants";
 import Utils from "../../utils/Utils";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import computeStyleSheet from "./SiteAreasStyles";
-
 import I18n from "../../I18n/I18n";
 export default class SiteAreas extends BaseAutoRefreshScreen {
   constructor(props) {
