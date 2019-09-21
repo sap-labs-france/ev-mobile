@@ -1,9 +1,9 @@
 import { Icon, Tab, TabHeading, Tabs } from "native-base";
 import React from "react";
 import { Alert, BackHandler, ScrollView } from "react-native";
-import BaseProps from "types/BaseProps";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import I18n from "../../I18n/I18n";
+import BaseProps from "../../types/BaseProps";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import TransactionsHistory from "./history/TransactionsHistory";
 import TransactionsInProgress from "./in-progress/TransactionsInProgress";

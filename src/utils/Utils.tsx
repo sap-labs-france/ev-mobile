@@ -1,11 +1,11 @@
 import CentralServerProvider from "provider/CentralServerProvider";
-import { NativeModules, Platform, ImageSourcePropType } from "react-native";
+import { ImageSourcePropType, NativeModules, Platform } from "react-native";
 import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
-import { RequestError } from "types/RequestError";
-import User from "types/User";
 import validate from "validate.js";
 import I18n from "../I18n/I18n";
 import commonColor from "../theme/variables/commonColor";
+import { RequestError } from "../types/RequestError";
+import User from "../types/User";
 import Constants from "./Constants";
 import Message from "./Message";
 

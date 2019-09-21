@@ -3,9 +3,9 @@ import { Button, Icon, Text, View } from "native-base";
 import React from "react";
 import { Alert } from "react-native";
 import * as Animatable from "react-native-animatable";
-import BaseProps from "types/BaseProps";
-import ChargingStation from "types/ChargingStation";
 import I18n from "../../I18n/I18n";
+import BaseProps from "../../types/BaseProps";
+import ChargingStation from "../../types/ChargingStation";
 import computeStyleSheet from "./ChargerComponentStyles";
 import ConnectorComponent from "./connector/ConnectorComponent";
 

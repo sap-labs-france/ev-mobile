@@ -2,9 +2,9 @@ import { Icon } from "native-base";
 import React from "react";
 import { Keyboard, TextInput } from "react-native";
 import * as Animatable from "react-native-animatable";
-import BaseProps from "types/BaseProps";
 import I18n from "../../I18n/I18n";
 import commonColor from "../../theme/variables/commonColor";
+import BaseProps from "../../types/BaseProps";
 import Constants from "../../utils/Constants";
 import computeStyleSheet from "./SearchHeaderComponentStyles";
 

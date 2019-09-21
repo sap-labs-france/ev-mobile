@@ -2,8 +2,8 @@ import SearchHeaderComponent from "components/search-header/SearchHeaderComponen
 import { Body, Button, Header, Icon, Left, Right, Subtitle, Title } from "native-base";
 import React from "react";
 import { BackHandler, Image } from "react-native";
-import BaseProps from "types/BaseProps";
-import { IconType } from "types/Icon";
+import BaseProps from "../../types/BaseProps";
+import { IconType } from "../../types/Icon";
 import computeStyleSheet from "./HeaderComponentStyles";
 
 const logo = require("../../../assets/logo-low.png");

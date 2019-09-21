@@ -1,8 +1,8 @@
 import { View } from "native-base";
 import React from "react";
-import BaseProps from "types/BaseProps";
-import ConnectorStats from "types/ConnectorStats";
 import I18n from "../../I18n/I18n";
+import BaseProps from "../../types/BaseProps";
+import ConnectorStats from "../../types/ConnectorStats";
 import Constants from "../../utils/Constants";
 import Utils from "../../utils/Utils";
 import ConnectorStatusComponent from "./ConnectorStatusComponent";

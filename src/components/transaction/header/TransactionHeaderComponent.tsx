@@ -2,8 +2,8 @@ import moment from "moment";
 import { Icon, Text, View } from "native-base";
 import React from "react";
 import BaseScreen from "screens/base-screen/BaseScreen";
-import BaseProps from "types/BaseProps";
-import Transaction from "types/Transaction";
+import BaseProps from "../../../types/BaseProps";
+import Transaction from "../../../types/Transaction";
 import Utils from "../../../utils/Utils";
 import computeStyleSheet from "./TransactionHeaderComponentStyles";
 

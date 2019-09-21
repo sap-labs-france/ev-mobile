@@ -1,15 +1,15 @@
 import { Container, Spinner, View } from "native-base";
 import React from "react";
 import { FlatList, Platform, RefreshControl } from "react-native";
-import BaseProps from "types/BaseProps";
-import { DataResult } from "types/DataResult";
-import Transaction from "types/Transaction";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import ListEmptyTextComponent from "../../../components/list/empty-text/ListEmptyTextComponent";
 import ListFooterComponent from "../../../components/list/footer/ListFooterComponent";
 import TransactionInProgressComponent from "../../../components/transaction/in-progress/TransactionInProgressComponent";
 import I18n from "../../../I18n/I18n";
+import BaseProps from "../../../types/BaseProps";
+import { DataResult } from "../../../types/DataResult";
+import Transaction from "../../../types/Transaction";
 import Constants from "../../../utils/Constants";
 import Utils from "../../../utils/Utils";
 import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
