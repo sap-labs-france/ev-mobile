@@ -1,13 +1,24 @@
-import I18n from "react-native-i18n";
+import i18n from "i18n-js";
+import { I18nManager } from "react-native";
+import * as RNLocalize from "react-native-localize";
 
-// Enable fallbacks if you want `en-US` and `en-GB` to fallback to `en`
-I18n.fallbacks = true;
-
-// English language is the main language for fall back:
-I18n.translations = {
-  en: require("./languages/en.json"),
-  de: require("./languages/de.json"),
-  fr: require("./languages/fr.json")
+const translationGetters: any = {
+  en: () => require("./languages/en.json"),
+  de: () => require("./languages/de.json"),
+  fr: () => require("./languages/fr.json"),
 };
 
-export default I18n;
+// fallback if no available language fits
+const fallback = { languageTag: "en", isRTL: false };
+
+const { languageTag, isRTL } =
+  RNLocalize.findBestAvailableLanguage(Object.keys(translationGetters)) || fallback;
+
+// update layout direction
+I18nManager.forceRTL(isRTL);
+
+// set i18n-js config
+i18n.translations = { [languageTag]: translationGetters[languageTag]() };
+i18n.locale = languageTag;
+
+export default i18n;
