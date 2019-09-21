@@ -1,6 +1,7 @@
-import Address from './Address';
-import CreatedUpdatedProps from './CreatedUpdatedProps';
 import Site from '../types/Site';
+import Address from './Address';
+import ConnectorStats from './ConnectorStats';
+import CreatedUpdatedProps from './CreatedUpdatedProps';
 
 export default interface SiteArea extends CreatedUpdatedProps {
   id: string;
@@ -15,4 +16,5 @@ export default interface SiteArea extends CreatedUpdatedProps {
   totalChargers?: number;
   availableConnectors?: number;
   totalConnectors?: number;
+  connectorStats: ConnectorStats;
 }

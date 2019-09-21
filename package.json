@@ -18,6 +18,8 @@
     "@types/react-dom": "^16.9.0",
     "@types/react-native": "^0.60.15",
     "@types/react-native-htmlview": "^0.12.2",
+    "@types/react-native-i18n": "^2.0.0",
+    "@types/react-native-push-notification": "^3.0.6",
     "@types/react-navigation": "^3.0.8",
     "@types/react-test-renderer": "^16.9.0",
     "babel-jest": "24.8.0",

@@ -1,8 +1,10 @@
 import DeviceInfo from "react-native-device-info";
-import PushNotification from "react-native-push-notification";
+import PushNotification, { PushNotificationObject } from "react-native-push-notification";
 
 export default class NotificationProvider {
-  constructor(onRegister, onNotification) {
+  private lastId: number;
+
+  constructor(onRegister: () => void, onNotification: () => void) {
     // Configure
     this.configure(onRegister, onNotification);
     // Init message ID
@@ -10,7 +12,7 @@ export default class NotificationProvider {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  configure(onRegister, onNotification) {
+  configure(onRegister: () => void, onNotification: () => void) {
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister, //this._onRegister.bind(this),
@@ -36,21 +38,19 @@ export default class NotificationProvider {
     });
   }
 
-  async sendLocalNotification({
+  public async sendLocalNotification({
     id = ++this.lastId,
     title = "Title",
     message = "Message",
-    bigText,
-    subText,
+    bigText = "",
+    subText = "",
     color = "red",
     vibrate = true,
     vibrationMillis = 300,
-    playSound = true,
-    date,
-    extraData = ""
+    playSound = true
   }) {
     // Create notif object
-    const notification = {
+    const notification: PushNotificationObject = {
       /* iOS and Android properties */
       title, // (optional)
       message, // (required)
@@ -77,26 +77,20 @@ export default class NotificationProvider {
       /* iOS only properties */
       alertAction: "view", // (optional) default: view
       category: null, // (optional) default: null
-      extraData // (optional) default: null (object containing additional notification data)
     };
-    // Delayed?
-    if (date) {
-      // Yes: Add it
-      notification.date = new Date(date);
-    }
     // Send Notif
     await PushNotification.localNotification(notification);
   }
 
-  checkPermission(cbk) {
-    return PushNotification.checkPermissions(cbk);
+  public checkPermission(callback: () => void) {
+    return PushNotification.checkPermissions(callback);
   }
 
-  cancelNotif() {
+  public cancelNotif() {
     PushNotification.cancelLocalNotifications({ id: "" + this.lastId });
   }
 
-  cancelAll() {
+  public cancelAll() {
     PushNotification.cancelAllLocalNotifications();
   }
 }

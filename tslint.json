@@ -10,7 +10,8 @@
         "interface-name" : [true, "never-prefix"],
         "no-empty-interface": false,
         "object-literal-sort-keys": false,
-        "jsx-no-lambda": false
+        "jsx-no-lambda": false,
+        "member-ordering": false
     },
     "rulesDirectory": []
 }

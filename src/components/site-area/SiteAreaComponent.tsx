@@ -1,19 +1,36 @@
-import * as Animatable from "react-native-animatable";
 import { Icon, Text, View } from "native-base";
-import PropTypes from "prop-types";
 import React from "react";
-import { ResponsiveComponent } from "react-native-responsive-ui";
 import { TouchableOpacity } from "react-native";
+import * as Animatable from "react-native-animatable";
+import I18n from "../../I18n/I18n";
+import BaseProps from "../../types/BaseProps";
+import SiteArea from "../../types/SiteArea";
 import Constants from "../../utils/Constants";
 import Message from "../../utils/Message";
 import ConnectorStatusesContainerComponent from "../connector-status/ConnectorStatusesContainerComponent";
 import computeStyleSheet from "./SiteAreaComponentStyles";
 
-import I18n from "../../I18n/I18n";
-let counter = 0;
+export interface Props extends BaseProps {
+  siteArea: SiteArea;
+}
 
-export default class SiteAreaComponent extends ResponsiveComponent {
-  render() {
+interface State {
+}
+
+export default class SiteAreaComponent extends React.Component<Props, State> {
+  public state: State;
+  public props: Props;
+  private counter: number = 0;
+
+  constructor(props: Props) {
+    super(props);
+  }
+
+  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+    super.setState(state, callback);
+  }
+
+  public render() {
     const style = computeStyleSheet();
     const { siteArea, navigation } = this.props;
     let connectorStats;
@@ -29,7 +46,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
     }
     return (
       <Animatable.View
-        animation={counter++ % 2 === 0 ? "flipInX" : "flipInX"}
+        animation={this.counter++ % 2 === 0 ? "flipInX" : "flipInX"}
         iterationCount={1}
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity
@@ -48,7 +65,7 @@ export default class SiteAreaComponent extends ResponsiveComponent {
               <Icon style={siteArea.totalConnectors > 0 ? style.icon : style.iconHidden} type="MaterialIcons" name="navigate-next" />
             </View>
             <View style={style.connectorContent}>
-              <ConnectorStatusesContainerComponent connectorStats={connectorStats} />
+              <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={connectorStats} />
             </View>
           </View>
         </TouchableOpacity>
@@ -56,10 +73,3 @@ export default class SiteAreaComponent extends ResponsiveComponent {
     );
   }
 }
-
-SiteAreaComponent.propTypes = {
-  navigation: PropTypes.object.isRequired,
-  siteArea: PropTypes.object.isRequired
-};
-
-SiteAreaComponent.defaultProps = {};
