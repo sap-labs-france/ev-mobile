@@ -1,30 +1,43 @@
-import * as Animatable from "react-native-animatable";
 import moment from "moment";
 import { Button, Icon, Text, View } from "native-base";
-import PropTypes from "prop-types";
 import React from "react";
-import { ResponsiveComponent } from "react-native-responsive-ui";
 import { Alert } from "react-native";
+import * as Animatable from "react-native-animatable";
+import BaseProps from "types/BaseProps";
+import ChargingStation from "types/ChargingStation";
+import I18n from "../../I18n/I18n";
 import computeStyleSheet from "./ChargerComponentStyles";
 import ConnectorComponent from "./connector/ConnectorComponent";
 
-import I18n from "../../I18n/I18n";
+export interface Props extends BaseProps {
+  charger: ChargingStation;
+}
 
-export default class ChargerComponent extends ResponsiveComponent {
-  constructor(props) {
+interface State {
+  isChargerDead?: boolean;
+}
+
+export default class ChargerComponent extends React.Component<Props, State> {
+  public state: State;
+  public props: Props;
+
+  constructor(props: Props) {
     super(props);
     this.state = {
       isChargerDead: false
     };
   }
 
-  componentDidMount() {
-    const { charger } = this.props;
-    // Check if charger is dead
-    this._checkHeartbeat();
+  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+    super.setState(state, callback);
   }
 
-  _checkHeartbeat = () => {
+  public componentDidMount() {
+    // Check if charger is dead
+    this.checkHeartbeat();
+  }
+
+  public checkHeartbeat = () => {
     const { charger } = this.props;
     const lastHeartbeatMinutes = new Date(charger.lastHeartBeat).getMinutes();
     // Is last heartbeat has been sent more than 5 minutes ago ?
@@ -35,22 +48,22 @@ export default class ChargerComponent extends ResponsiveComponent {
     }
   };
 
-  _showHeartbeatStatus = () => {
+  public showHeartbeatStatus = () => {
     const { charger } = this.props;
     const { isChargerDead } = this.state;
     let message = I18n.t("chargers.heartBeatOkMessage", { chargeBoxID: charger.id });
     if (isChargerDead) {
       message = I18n.t("chargers.heartBeatKoMessage", {
         chargeBoxID: charger.id,
-        lastHeartBeat: moment(new Date(charger.lastHeartBeat), true).fromNow(true)
+        lastHeartBeat: moment(new Date(charger.lastHeartBeat),null, true).fromNow(true)
       });
     }
     Alert.alert(I18n.t("chargers.heartBeat"), message, [{ text: I18n.t("general.ok") }]);
   };
 
-  render() {
+  public render() {
     const style = computeStyleSheet();
-    const { charger, navigation, siteAreaID } = this.props;
+    const { charger, navigation } = this.props;
     const { isChargerDead } = this.state;
     return (
       <View style={style.container}>
@@ -58,10 +71,10 @@ export default class ChargerComponent extends ResponsiveComponent {
           <Text style={style.headerName}>{charger.id}</Text>
           {isChargerDead ? (
             <Button
-              transparent
+              transparent={true}
               style={style.heartbeatButton}
               onPress={() => {
-                this._showHeartbeatStatus();
+                this.showHeartbeatStatus();
               }}>
               <Animatable.Text animation="fadeIn" easing="ease-in-out" iterationCount="infinite" direction="alternate-reverse">
                 <Icon style={style.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
@@ -69,10 +82,10 @@ export default class ChargerComponent extends ResponsiveComponent {
             </Button>
           ) : (
             <Button
-              transparent
+              transparent={true}
               style={style.heartbeatButton}
               onPress={() => {
-                this._showHeartbeatStatus();
+                this.showHeartbeatStatus();
               }}>
               <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: "center" }}>
                 <Icon style={style.heartbeatIcon} type="FontAwesome" name="heartbeat" />
@@ -96,10 +109,3 @@ export default class ChargerComponent extends ResponsiveComponent {
     );
   }
 }
-
-ChargerComponent.propTypes = {
-  navigation: PropTypes.object.isRequired,
-  charger: PropTypes.object.isRequired
-};
-
-ChargerComponent.defaultProps = {};

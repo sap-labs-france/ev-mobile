@@ -8,7 +8,7 @@ import Utils from "../../utils/Utils";
 import computeStyleSheet from "./ConnectorStatusComponentStyles";
 
 export interface Props extends BaseProps {
-  connector: Connector;
+  connector?: Connector;
   text: string;
   value?: number;
   type?: string;
@@ -46,6 +46,10 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
       inputRange: [0, 1],
       outputRange: ["360deg", "0deg"]
     });
+  }
+
+  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+    super.setState(state, callback);
   }
 
   public getConnectorStyles(style: any) {

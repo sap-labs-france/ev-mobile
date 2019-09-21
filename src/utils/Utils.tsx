@@ -1,5 +1,5 @@
 import CentralServerProvider from "provider/CentralServerProvider";
-import { NativeModules, Platform } from "react-native";
+import { NativeModules, Platform, ImageSourcePropType } from "react-native";
 import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
 import { RequestError } from "types/RequestError";
 import User from "types/User";
@@ -188,7 +188,7 @@ export default class Utils {
     }
   };
 
-  public static getConnectorTypeImage = (type: string): string => {
+  public static getConnectorTypeImage = (type: string): ImageSourcePropType => {
     switch (type) {
       case Constants.CONN_TYPE_2:
         return type2;
