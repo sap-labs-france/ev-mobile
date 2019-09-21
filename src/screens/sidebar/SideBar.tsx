@@ -44,10 +44,9 @@ export default class SideBar extends BaseScreen<Props, State> {
   }
 
   public async componentDidMount() {
-    // Call parent
     await super.componentDidMount();
-    // Init User
-    await this.refresh();
+    // Init User (delay it)
+    setTimeout(this.refresh, 100);
   }
 
   public refresh = async () => {
@@ -119,16 +118,16 @@ export default class SideBar extends BaseScreen<Props, State> {
             </Header>
             <View style={style.linkContainer}>
               {isComponentOrganizationActive && (
-                <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo("SitesNavigator")}>
+                <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo("SitesNavigator")}>
                   <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
                   <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
                 </ListItem>
               )}
-              <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo("ChargersNavigator")}>
+              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo("ChargersNavigator")}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
                 <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
               </ListItem>
-              <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo("TransactionsNavigator")}>
+              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo("TransactionsNavigator")}>
                 <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="history" />
                 <Text style={style.linkText}>{I18n.t("sidebar.transactions")}</Text>
               </ListItem>
