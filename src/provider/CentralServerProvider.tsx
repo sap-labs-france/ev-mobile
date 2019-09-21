@@ -424,9 +424,6 @@ export default class CentralServerProvider {
       headers: this._buildSecuredHeaders(),
       params,
     });
-    console.log('====================================');
-    console.log(result.data);
-    console.log('====================================');
     return result.data.image;
   }
 

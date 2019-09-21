@@ -89,7 +89,6 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       if (!this.state.siteImage) {
         // Get it
         const image = await this.centralServerProvider.getSiteImage(siteID);
-        console.log(image);
         if (image) {
           this.setState({ siteImage: image });
         } else {

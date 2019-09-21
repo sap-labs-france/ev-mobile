@@ -4,10 +4,10 @@ import { UserCredentials } from "../types/User";
 import Constants from "./Constants";
 
 // Generate a new Id for persisting the navigation each time the app is launched first time
-let navigationID: number = new Date().getTime();
+let navigationID: string = '' + new Date().getTime();
 if (__DEV__) {
   // Keep the same key for dev
-  navigationID = 123456;
+  navigationID = '123456';
 }
 
 export default class SecuredStorage {
@@ -26,7 +26,7 @@ export default class SecuredStorage {
     // Add a key
     await RNSecureStorage.set(
       Constants.KEY_NAVIGATION_STATE,
-      JSON.stringify({ key: `${navigationID}`, navigationState }),
+      JSON.stringify({ key: navigationID, navigationState }),
       { accessible: ACCESSIBLE.WHEN_UNLOCKED}
     );
   }

@@ -117,7 +117,7 @@ const RootContainer: NavigationContainer = createAppContainer(RootNavigator);
 // Handle persistence of navigation
 const persistNavigationState = async (navigationState: NavigationState) => {
   try {
-    await SecuredStorage.saveNavigationState(navigationState);
+      await SecuredStorage.saveNavigationState(navigationState);
   } catch (error) {
     // tslint:disable-next-line: no-console
     console.log(error);
