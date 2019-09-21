@@ -3,6 +3,11 @@ declare module 'react-native-open-maps' {
       latitude: number;
       longitude: number;
       zoom: number;
+      provider?: "google"|"apple";
+      query?: string;
+      travelType?: "drive"|"walk"|"public_transport",
+      start?: string;
+      end?: string;
     }): void;
   }
   
