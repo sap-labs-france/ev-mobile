@@ -1,17 +1,25 @@
-import NotificationProvider from "./NotificationProvider";
-import Constants from "../utils/Constants";
-import I18n from "../I18n/I18n";
-import commonColor from "../theme/variables/commonColor";
-import DeviceInfo from "react-native-device-info";
+import CentralServerProvider from "provider/CentralServerProvider";
+import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
 import ProviderFactory from "../provider/ProviderFactory";
 // import Message from "../utils/Message";
 
-const _notifications = [];
-let _notificationManager;
-let _token;
-
 export default class NotificationManager {
-  async initialize() {
+  private static notificationManager: NotificationManager;
+  private token: string;
+  private notifications = [];
+  
+  private centralServerProvider: CentralServerProvider;
+  private active: boolean;
+
+  public static getInstance(): NotificationManager {
+    if (!this.notificationManager) {
+      // Create
+      this.notificationManager = new NotificationManager();
+    }
+    return this.notificationManager;
+  }
+
+  public async initialize() {
     this.centralServerProvider = await ProviderFactory.getProvider();
     // // Create the notif provider
     // this.notificationProvider = new NotificationProvider(this.onRegister, this.onNotify);
@@ -21,29 +29,21 @@ export default class NotificationManager {
     // this.notificationCheck = null;
   }
 
-  static getInstance() {
-    if (!_notificationManager) {
-      // Create
-      _notificationManager = new NotificationManager();
-    }
-    return _notificationManager;
-  }
-
-  setActive(active) {
+  public setActive(active: boolean) {
     // console.log("setActive = " + active);
     // this._active = active;
   }
 
-  isActive() {
-    // return this._active;
+  public isActive(): boolean {
+    return this.active;
   }
 
-  setNavigation(navigation) {
+  public setNavigation(navigation: NavigationScreenProp<NavigationState, NavigationParams>) {
     // console.log("setNavigation = " + navigation);
     // this.navigation = navigation;
   }
 
-  start() {
+  public start() {
     // console.log("start");
     // // Check
     // if (!this.notificationCheck) {
@@ -57,7 +57,7 @@ export default class NotificationManager {
     // }
   }
 
-  stop() {
+  public stop() {
     // console.log("stop");
     // // Check
     // if (this.notificationCheck) {
@@ -66,7 +66,7 @@ export default class NotificationManager {
     // }
   }
 
-  async sendLocalNotification(notification) {
+  public async sendLocalNotification(notification) {
     // console.log("triggerLocalNotification");
     // // Text?
     // if (typeof notification.extraData === "string") {
@@ -162,14 +162,14 @@ export default class NotificationManager {
     // }
   }
 
-  async processNotification() {
+  public async processNotification() {
     // let notification;
     // console.log("processNotification");
     // // Check if active
     // if (this.isActive()) {
     //   console.log("processNotification - active");
     //   // Process the notifications
-    //   while ((notification = _notifications.splice(0, 1)[0]) !== undefined) {
+    //   while ((notification = notifications.splice(0, 1)[0]) !== undefined) {
     //     console.log("processNotification - notification");
     //     console.log(notification);
     //     // Check if the app was opened
@@ -232,22 +232,21 @@ export default class NotificationManager {
     // }
   }
 
-  getToken() {
-    // return _token;
+  public getToken(): string {
+    return this.token;
   }
 
-  onRegister = (token) => {
-    // // Keep the token
-    // _token = token;
-    // // Do nothing
+  public onRegister = (token: string) => {
+    // Keep the token
+    token = token;
     // console.log("NOTIF TOKEN");
     // console.log(token);
   };
 
-  onNotify = async (notification) => {
+  public onNotify = async (notification) => {
     // console.log("NOTIF MESSAGE");
     // console.log(notification);
-    // // Add Notification
-    // _notifications.push(notification);
+    // Add Notification
+    this.notifications.push(notification);
   };
 }

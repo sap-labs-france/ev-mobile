@@ -1,17 +1,34 @@
-import * as Animatable from "react-native-animatable";
 import { Icon } from "native-base";
-import PropTypes from "prop-types";
 import React from "react";
-import { ResponsiveComponent } from "react-native-responsive-ui";
 import { Keyboard, TextInput } from "react-native";
+import * as Animatable from "react-native-animatable";
+import I18n from "../../I18n/I18n";
 import commonColor from "../../theme/variables/commonColor";
+import BaseProps from "../../types/BaseProps";
 import Constants from "../../utils/Constants";
 import computeStyleSheet from "./SearchHeaderComponentStyles";
 
-import I18n from "../../I18n/I18n";
-export default class SearchHeaderComponent extends ResponsiveComponent {
-  constructor(props) {
+export interface Props extends BaseProps {
+  initialVisibility?: boolean;
+  onChange: (search: string) => void,
+}
+
+interface State {
+  isVisible?: boolean;
+}
+
+export default class SearchHeaderComponent extends React.Component<Props, State> {
+  public state: State;
+  public props: Props;
+  private searchText: string;
+  private searchChanged: boolean;
+  private textInput: TextInput;
+  private timerCheckSearch: number;
+  private animRef: Animatable.View;
+
+  constructor(props: Props) {
     super(props);
+    this.props.initialVisibility = true;
     this.state = {
       isVisible: this.props.initialVisibility
     };
@@ -19,12 +36,16 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     this.searchChanged = false;
   }
 
-  componentWillUnmount() {
-    // Clear the timer
-    this._clearSearchTimer();
+  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+    super.setState(state, callback);
   }
 
-  _checkSearch() {
+  public componentWillUnmount() {
+    // Clear the timer
+    this.clearSearchTimer();
+  }
+
+  public checkSearch() {
     const { onChange } = this.props;
     if (this.searchChanged) {
       // Call the function
@@ -32,21 +53,21 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
       // Disable
       this.searchChanged = false;
       // Clear the timer
-      this._clearSearchTimer();
+      this.clearSearchTimer();
     }
   }
 
-  _searchChanged(searchText) {
+  public searchHasChanged(searchText: string) {
     // Keep it
     this.searchText = searchText;
     this.searchChanged = true;
     // Clear the timer
-    this._clearSearchTimer();
+    this.clearSearchTimer();
     // Launch timer
-    this._startSearchTimer();
+    this.startSearchTimer();
   }
 
-  _clearSearch() {
+  public clearSearch() {
     // Check
     if (this.searchText !== "") {
       // Clear
@@ -54,22 +75,22 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
       this.searchChanged = true;
       this.textInput.clear();
       // Search
-      this._checkSearch();
+      this.checkSearch();
     }
   }
 
-  _startSearchTimer() {
+  public startSearchTimer() {
     // Start the timer
     if (!this.timerCheckSearch) {
       // Start
       this.timerCheckSearch = setTimeout(() => {
         // Refresh
-        this._checkSearch();
+        this.checkSearch();
       }, Constants.SEARCH_CHECK_PERIOD_MILLIS);
     }
   }
 
-  _clearSearchTimer() {
+  public clearSearchTimer() {
     // Clear the timer
     if (this.timerCheckSearch) {
       clearTimeout(this.timerCheckSearch);
@@ -77,7 +98,7 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     }
   }
 
-  setVisible(isVisible) {
+  public setVisible(isVisible: boolean) {
     const style = computeStyleSheet();
     // Show/Hide
     this.setState({ isVisible });
@@ -99,11 +120,11 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
     }
   }
 
-  render() {
+  public render() {
     const style = computeStyleSheet();
     return (
       <Animatable.View
-        ref={(ref) => {
+        ref={(ref: any) => {
           this.animRef = ref;
         }}
         style={style.container}>
@@ -115,20 +136,10 @@ export default class SearchHeaderComponent extends ResponsiveComponent {
           style={style.inputField}
           placeholder={I18n.t("general.search")}
           placeholderTextColor={commonColor.placeholderTextColor}
-          onChangeText={(searchText) => this._searchChanged(searchText)}
+          onChangeText={(searchText) => this.searchHasChanged(searchText)}
         />
-        <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this._clearSearch()} />
+        <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this.clearSearch()} />
       </Animatable.View>
     );
   }
 }
-
-SearchHeaderComponent.propTypes = {
-  navigation: PropTypes.object.isRequired,
-  onChange: PropTypes.func.isRequired,
-  initialVisibility: PropTypes.bool
-};
-
-SearchHeaderComponent.defaultProps = {
-  initialVisibility: true
-};

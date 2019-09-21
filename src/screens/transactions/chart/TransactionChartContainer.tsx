@@ -1,9 +1,9 @@
 import { Container } from "native-base";
 import React from "react";
-import BaseProps from "types/BaseProps";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import I18n from "../../../I18n/I18n";
+import BaseProps from "../../../types/BaseProps";
 import Utils from "../../../utils/Utils";
 import BaseScreen from "../../base-screen/BaseScreen";
 import TransactionChart from "./TransactionChart";

@@ -1,12 +1,12 @@
 import { Container, Icon, Spinner, Tab, TabHeading, Tabs } from "native-base";
 import React from "react";
 import { ScrollView } from "react-native";
-import BaseProps from "types/BaseProps";
-import ChargingStation from "types/ChargingStation";
-import Connector from "types/Connector";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
 import I18n from "../../I18n/I18n";
+import BaseProps from "../../types/BaseProps";
+import ChargingStation from "../../types/ChargingStation";
+import Connector from "../../types/Connector";
 import Utils from "../../utils/Utils";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import TransactionChart from "../transactions/chart/TransactionChart";

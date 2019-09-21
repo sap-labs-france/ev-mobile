@@ -1,6 +1,6 @@
 import { Spinner, View } from "native-base";
 import React from "react";
-import BaseProps from "types/BaseProps";
+import BaseProps from "../../../types/BaseProps";
 import computeStyleSheet from "./ListFooterComponentStyles";
 
 export interface Props extends BaseProps {

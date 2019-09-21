@@ -3,7 +3,8 @@ import jwtDecode from "jwt-decode";
 import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
 import { ActionResponse } from "../types/ActionResponse";
 import ChargingStation from "../types/ChargingStation";
-import Consumption from "../types/Consumption";
+import { DataResult } from "../types/DataResult";
+import Eula from "../types/Eula";
 import PagingParams from "../types/PagingParams";
 import Site from "../types/Site";
 import SiteArea from "../types/SiteArea";
@@ -13,8 +14,6 @@ import UserToken from "../types/UserToken";
 import Constants from "../utils/Constants";
 import SecuredStorage from "../utils/SecuredStorage";
 import SecurityProvider from "./SecurityProvider";
-import Eula from "types/Eula";
-import { DataResult } from "types/DataResult";
 
 export default class CentralServerProvider {
   private debug: boolean = false;

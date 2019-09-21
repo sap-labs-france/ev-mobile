@@ -1,19 +1,34 @@
 import { Icon, Text, View } from "native-base";
-import PropTypes from "prop-types";
 import React from "react";
 import { Image, TouchableOpacity } from "react-native";
 import * as Animatable from "react-native-animatable";
-import { ResponsiveComponent } from "react-native-responsive-ui";
 import I18n from "../../../I18n/I18n";
+import BaseProps from "../../../types/BaseProps";
+import ChargingStation from "../../../types/ChargingStation";
+import Connector from "../../../types/Connector";
 import Constants from "../../../utils/Constants";
 import Utils from "../../../utils/Utils";
 import ConnectorStatusComponent from "../../connector-status/ConnectorStatusComponent";
 import computeStyleSheet from "./ConnectorComponentStyles";
 
-const type2 = require("../../../../assets/connectorType/type2.svg");
+// const type2 = require("../../../../assets/connectorType/type2.svg");
 
-export default class ConnectorComponent extends ResponsiveComponent {
-  constructor(props) {
+export interface Props extends BaseProps {
+  charger: ChargingStation;
+  connector: Connector;
+  siteAreaID: string;
+}
+
+interface State {
+  showBatteryLevel?: boolean;
+}
+
+export default class ConnectorComponent extends React.Component<Props, State> {
+  public state: State;
+  public props: Props;
+  private timerAnimation: number;
+
+  constructor(props: Props) {
     super(props);
     // Init State
     this.state = {
@@ -21,24 +36,26 @@ export default class ConnectorComponent extends ResponsiveComponent {
     };
   }
 
-  async componentDidMount() {
-    // Set
-    this.mounted = true;
+  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+    super.setState(state, callback);
+  }
+
+  public async componentDidMount() {
     // Refresh every minutes
     this.timerAnimation = setInterval(() => {
       // Animate
-      this._animate();
+      this.animate();
     }, Constants.ANIMATION_PERIOD_MILLIS);
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     // Stop the timer
     if (this.timerAnimation) {
       clearInterval(this.timerAnimation);
     }
   }
 
-  _animate() {
+  public animate() {
     const { connector } = this.props;
     if (connector && connector.currentStateOfCharge === 0) {
       // SoC not supported
@@ -50,11 +67,11 @@ export default class ConnectorComponent extends ResponsiveComponent {
     });
   }
 
-  _renderFirstConnectorDetails = (connector) => (
-    <ConnectorStatusComponent connector={connector} text={Utils.translateConnectorStatus(connector.status)} />
+  public renderFirstConnectorDetails = (connector: Connector) => (
+    <ConnectorStatusComponent navigation={this.props.navigation} connector={connector} text={Utils.translateConnectorStatus(connector.status)} />
   );
 
-  _renderSecondConnectorDetails = (connector, style) =>
+  public renderSecondConnectorDetails = (connector: Connector, style: any) =>
     connector.activeTransactionID !== 0 ? (
       <View style={style.connectorDetail}>
         <Animatable.View
@@ -98,7 +115,7 @@ export default class ConnectorComponent extends ResponsiveComponent {
       </View>
     );
 
-  _renderThirdConnectorDetails = (connector, style) =>
+  public renderThirdConnectorDetails = (connector: Connector, style: any) =>
     connector.activeTransactionID !== 0 ? (
       <View style={style.connectorDetail}>
         <Text style={style.connectorValues}>{Math.round(connector.totalConsumption / 1000)}</Text>
@@ -121,9 +138,9 @@ export default class ConnectorComponent extends ResponsiveComponent {
       </View>
     );
 
-  render() {
+  public render() {
     const style = computeStyleSheet();
-    const { connector, navigation, charger, index, siteAreaID } = this.props;
+    const { connector, navigation, charger, siteAreaID } = this.props;
     return (
       <TouchableOpacity
         style={style.container}
@@ -137,9 +154,9 @@ export default class ConnectorComponent extends ResponsiveComponent {
         <Animatable.View animation={"flipInX"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
           <View style={style.connectorContainer}>
             <View style={style.connectorDetailContainer}>
-              {this._renderFirstConnectorDetails(connector)}
-              {this._renderSecondConnectorDetails(connector, style)}
-              {this._renderThirdConnectorDetails(connector, style)}
+              {this.renderFirstConnectorDetails(connector)}
+              {this.renderSecondConnectorDetails(connector, style)}
+              {this.renderThirdConnectorDetails(connector, style)}
               <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
             </View>
           </View>
@@ -148,13 +165,3 @@ export default class ConnectorComponent extends ResponsiveComponent {
     );
   }
 }
-
-ConnectorComponent.propTypes = {
-  navigation: PropTypes.object.isRequired,
-  charger: PropTypes.object.isRequired,
-  connector: PropTypes.object.isRequired,
-  siteAreaID: PropTypes.string,
-  index: PropTypes.number
-};
-
-ConnectorComponent.defaultProps = {};

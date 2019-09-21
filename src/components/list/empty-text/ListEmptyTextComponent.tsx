@@ -1,7 +1,7 @@
 import { Text } from "native-base";
 import React from "react";
-import BaseProps from "types/BaseProps";
 import I18n from "../../../I18n/I18n";
+import BaseProps from "../../../types/BaseProps";
 import computeStyleSheet from "./ListEmptyTextComponentStyles";
 
 export interface Props extends BaseProps {

@@ -4,11 +4,11 @@ import { Alert, BackHandler, Image, Keyboard, KeyboardAvoidingView, ScrollView, 
 import * as Animatable from "react-native-animatable";
 import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
-import BaseProps from "types/BaseProps";
-import Tenant from "types/Tenant";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import I18n from "../../../I18n/I18n";
 import commonColor from "../../../theme/variables/commonColor";
+import BaseProps from "../../../types/BaseProps";
+import Tenant from "../../../types/Tenant";
 import Constants from "../../../utils/Constants";
 import Message from "../../../utils/Message";
 import Utils from "../../../utils/Utils";

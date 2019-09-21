@@ -1,11 +1,11 @@
 import { Button, Container, Text, View } from "native-base";
 import React from "react";
 import { Alert, ScrollView } from "react-native";
-import BaseProps from "types/BaseProps";
-import ChargingStation from "types/ChargingStation";
-import Connector from "types/Connector";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import I18n from "../../../I18n/I18n";
+import BaseProps from "../../../types/BaseProps";
+import ChargingStation from "../../../types/ChargingStation";
+import Connector from "../../../types/Connector";
 import Message from "../../../utils/Message";
 import Utils from "../../../utils/Utils";
 import BaseScreen from "../../base-screen/BaseScreen";
