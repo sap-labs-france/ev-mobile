@@ -12,13 +12,13 @@ export interface Props extends BaseProps {
   title: string;
   subTitle?: string;
   leftAction?: () => void;
-  leftActionIcon?: string,
-  leftActionIconType?: IconType,
-  rightAction?: () => void,
-  rightActionIcon?: string,
-  rightActionIconType?: IconType,
-  showSearchAction?: boolean,
-  searchRef?: SearchHeaderComponent
+  leftActionIcon?: string;
+  leftActionIconType?: IconType;
+  rightAction?: () => void;
+  rightActionIcon?: string;
+  rightActionIconType?: IconType;
+  showSearchAction?: boolean;
+  searchRef?: SearchHeaderComponent;
 }
 
 interface State {
@@ -28,13 +28,15 @@ export default class HeaderComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   private searchIsVisible: boolean;
-
+  public static defaultProps = {
+    leftActionIconType: "MaterialIcons",
+    rightActionIconType: "MaterialIcons",
+    showSearchAction: false
+  };
+  
   constructor(props: Props) {
     super(props);
     // Default values
-    props.leftActionIconType = "MaterialIcons";
-    props.rightActionIconType = "MaterialIcons";
-    props.showSearchAction = false;
     this.searchIsVisible = false;
   }
 
@@ -61,8 +63,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { title, subTitle, searchRef, showSearchAction, leftAction, leftActionIcon, leftActionIconType,
-      rightAction, rightActionIcon, rightActionIconType
-    } = this.props;
+      rightAction, rightActionIcon, rightActionIconType } = this.props;
     return (
       <Header style={style.header}>
         <Left style={style.leftHeader}>

@@ -1,5 +1,5 @@
 import deepmerge from "deepmerge";
-import { ResponsiveStyleSheet } from "react-native-responsive-ui";
+import ResponsiveStylesheet from "react-native-responsive-stylesheet"
 import { ScaledSheet } from "react-native-size-matters";
 import commonColor from "../../theme/variables/commonColor";
 
@@ -24,15 +24,9 @@ const portraitStyles = {};
 
 const landscapeStyles = {};
 
-export default function computeStyleSheet() {
-  return ResponsiveStyleSheet.select([
-    {
-      query: { orientation: "landscape" },
-      style: deepmerge(commonStyles, landscapeStyles)
-    },
-    {
-      query: { orientation: "portrait" },
-      style: deepmerge(commonStyles, portraitStyles)
-    }
-  ]);
+export default function computeStyleSheet(): any {
+  return ResponsiveStylesheet.createOriented({
+    landscape: deepmerge(commonStyles, landscapeStyles),
+    portrait: deepmerge(commonStyles, portraitStyles)
+  });
 }

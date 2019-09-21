@@ -19,11 +19,13 @@ interface State {
 export default class BackgroundComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
+  public static defaultProps = {
+    active: true,
+    style: {}
+  };
 
   constructor(props: Props) {
     super(props);
-    this.props.active = true;
-    this.props.style = {};
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {

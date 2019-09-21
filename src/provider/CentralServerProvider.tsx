@@ -424,7 +424,7 @@ export default class CentralServerProvider {
       headers: this._buildSecuredHeaders(),
       params,
     });
-    return result.data;
+    return result.data.image;
   }
 
   public async getSiteImage(id: string): Promise<string> {
@@ -440,7 +440,7 @@ export default class CentralServerProvider {
       // Set
       foundSiteImage = {
         id,
-        image: result.data,
+        image: result.data.image,
       };
       // Add
       this.siteImages.push(foundSiteImage);
