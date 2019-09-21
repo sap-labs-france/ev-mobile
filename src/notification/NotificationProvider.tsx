@@ -4,7 +4,8 @@ import PushNotification, { PushNotificationObject } from "react-native-push-noti
 export default class NotificationProvider {
   private lastId: number;
 
-  constructor(onRegister: () => void, onNotification: () => void) {
+  constructor(onRegister: (token: { os: string; token: string }) => void,
+      onNotification: (notification: any) => void) {
     // Configure
     this.configure(onRegister, onNotification);
     // Init message ID
@@ -12,7 +13,8 @@ export default class NotificationProvider {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  configure(onRegister: () => void, onNotification: () => void) {
+  public configure(onRegister: (token: { os: string; token: string }) => void,
+      onNotification: (notification: any) => void) {
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister, //this._onRegister.bind(this),

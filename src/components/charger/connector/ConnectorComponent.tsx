@@ -16,7 +16,6 @@ import computeStyleSheet from "./ConnectorComponentStyles";
 export interface Props extends BaseProps {
   charger: ChargingStation;
   connector: Connector;
-  siteAreaID: string;
 }
 
 interface State {
@@ -140,15 +139,14 @@ export default class ConnectorComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { connector, navigation, charger, siteAreaID } = this.props;
+    const { connector, navigation, charger } = this.props;
     return (
       <TouchableOpacity
         style={style.container}
         onPress={() =>
           navigation.navigate("ChargerDetailsTabs", {
             chargerID: charger.id,
-            connectorID: connector.connectorId,
-            siteAreaID
+            connectorID: connector.connectorId
           })
         }>
         <Animatable.View animation={"flipInX"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
