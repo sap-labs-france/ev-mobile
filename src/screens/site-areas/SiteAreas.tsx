@@ -56,7 +56,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     await this.refresh();
   }
 
-  public getSiteAreas = async (searchText: string, skip: number, limit: number) => {
+  public getSiteAreas = async (searchText: string, skip: number, limit: number): Promise<DataResult<SiteArea>> => {
     let siteAreas:DataResult<SiteArea>;
     const siteID = Utils.getParamFromNavigation(this.props.navigation, "siteID", null);
     try {
