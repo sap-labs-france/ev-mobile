@@ -79,7 +79,6 @@
     "ios:bundle": "react-native bundle --platform='ios' --dev=false --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --assets-dest='./ios'",
     "android:bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
     "android:clean": "cd android && ./gradlew clean",
-    "version": "./version-ios.sh && ./version-android.sh",
     "npm-check": "npm-check",
     "react-native:upgrade": "react-native upgrade",
     "react-native:link": "react-native link",
