@@ -135,7 +135,7 @@
     "react-native-push-notification": "^3.1.9",
     "react-native-reanimated": "^1.2.0",
     "react-native-recaptcha-v3": "0.0.16",
-    "react-native-responsive-ui": "^1.1.1",
+    "react-native-responsive-stylesheet": "^1.1.0",
     "react-native-sensitive-info": "^5.5.0",
     "react-native-size-matters": "^0.2.1",
     "react-native-splash-screen": "^3.2.0",

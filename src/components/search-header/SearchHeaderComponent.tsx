@@ -25,10 +25,12 @@ export default class SearchHeaderComponent extends React.Component<Props, State>
   private textInput: TextInput;
   private timerCheckSearch: number;
   private animRef: Animatable.View;
+  public static defaultProps = {
+    initialVisibility: true
+  };
 
   constructor(props: Props) {
     super(props);
-    this.props.initialVisibility = true;
     this.state = {
       isVisible: this.props.initialVisibility
     };
