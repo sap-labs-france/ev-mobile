@@ -99,8 +99,6 @@ export default class ChargerComponent extends React.Component<Props, State> {
               key={`${charger.id}~${connector.connectorId}`}
               charger={charger}
               connector={connector}
-              siteAreaID={siteAreaID}
-              index={index}
               navigation={navigation}
             />
           ))}

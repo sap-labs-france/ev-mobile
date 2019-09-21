@@ -28,7 +28,6 @@ interface State {
   isAdmin?: boolean;
 }
 
-
 export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;

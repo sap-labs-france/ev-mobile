@@ -1,14 +1,11 @@
-import CentralServerProvider from "provider/CentralServerProvider";
+import { PushNotification } from "react-native-push-notification";
 import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
-import ProviderFactory from "../provider/ProviderFactory";
 // import Message from "../utils/Message";
 
 export default class NotificationManager {
   private static notificationManager: NotificationManager;
   private token: string;
-  private notifications = [];
-  
-  private centralServerProvider: CentralServerProvider;
+  private notifications: PushNotification[] = [];
   private active: boolean;
 
   public static getInstance(): NotificationManager {
@@ -20,7 +17,6 @@ export default class NotificationManager {
   }
 
   public async initialize() {
-    this.centralServerProvider = await ProviderFactory.getProvider();
     // // Create the notif provider
     // this.notificationProvider = new NotificationProvider(this.onRegister, this.onNotify);
     // // Set inactive
@@ -66,7 +62,7 @@ export default class NotificationManager {
     // }
   }
 
-  public async sendLocalNotification(notification) {
+  public async sendLocalNotification(notification: PushNotification) {
     // console.log("triggerLocalNotification");
     // // Text?
     // if (typeof notification.extraData === "string") {
@@ -243,7 +239,7 @@ export default class NotificationManager {
     // console.log(token);
   };
 
-  public onNotify = async (notification) => {
+  public onNotify = async (notification: PushNotification) => {
     // console.log("NOTIF MESSAGE");
     // console.log(notification);
     // Add Notification

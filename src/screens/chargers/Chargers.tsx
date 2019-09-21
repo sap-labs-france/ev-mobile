@@ -7,14 +7,35 @@ import HeaderComponent from "../../components/header/HeaderComponent";
 import ListEmptyTextComponent from "../../components/list/empty-text/ListEmptyTextComponent";
 import ListFooterComponent from "../../components/list/footer/ListFooterComponent";
 import SearchHeaderComponent from "../../components/search-header/SearchHeaderComponent";
+import I18n from "../../I18n/I18n";
+import BaseProps from "../../types/BaseProps";
+import ChargingStation from "../../types/ChargingStation";
+import { DataResult } from "../../types/DataResult";
 import Constants from "../../utils/Constants";
 import Utils from "../../utils/Utils";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import computeStyleSheet from "./ChargersStyles";
 
-import I18n from "../../I18n/I18n";
-export default class Chargers extends BaseAutoRefreshScreen {
-  constructor(props) {
+export interface Props extends BaseProps {
+}
+
+interface State {
+  chargers?: ChargingStation[];
+  siteAreaID?: string;
+  loading?: boolean;
+  refreshing?: boolean;
+  skip?: number;
+  limit?: number;
+  count?: number;
+}
+
+export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
+  public state: State;
+  public props: Props;
+  private searchText: string;
+  private searchRef: SearchHeaderComponent;
+
+  constructor(props: Props) {
     super(props);
     // Init State
     this.state = {
@@ -28,16 +49,19 @@ export default class Chargers extends BaseAutoRefreshScreen {
     };
   }
 
-  async componentDidMount() {
-    // Call parent
+  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+    super.setState(state, callback);
+  }
+
+  public async componentDidMount() {
     await super.componentDidMount();
     // Get Chargers
     await this.refresh();
   }
 
-  _getChargers = async (searchText, skip, limit) => {
+  public getChargers = async (searchText: string, skip: number, limit: number): Promise<DataResult<ChargingStation>> => {
     const { siteAreaID } = this.state;
-    let chargers = [];
+    let chargers: DataResult<ChargingStation>;
     try {
       // Get Chargers
       if (siteAreaID) {
@@ -54,12 +78,12 @@ export default class Chargers extends BaseAutoRefreshScreen {
     return chargers;
   };
 
-  _onEndScroll = async () => {
+  public onEndScroll = async () => {
     const { count, skip, limit } = this.state;
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
-      const chargers = await this._getChargers(this.searchText, skip + Constants.PAGING_SIZE, limit);
+      const chargers = await this.getChargers(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState, props) => ({
         chargers: [...prevState.chargers, ...chargers.result],
@@ -69,7 +93,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
     }
   };
 
-  onBack = () => {
+  public onBack = (): boolean => {
     const { siteAreaID } = this.state;
     if (siteAreaID) {
       // Go Back
@@ -87,12 +111,12 @@ export default class Chargers extends BaseAutoRefreshScreen {
     return true;
   };
 
-  refresh = async () => {
+  public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
-      const chargers = await this._getChargers(this.searchText, 0, skip + limit);
+      const chargers = await this.getChargers(this.searchText, 0, skip + limit);
       // Add Chargers
       this.setState((prevState, props) => ({
         loading: false,
@@ -102,7 +126,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
     }
   };
 
-  _manualRefresh = async () => {
+  public manualRefresh = async () => {
     // Display spinner
     this.setState({ refreshing: true });
     // Refresh
@@ -111,7 +135,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
     this.setState({ refreshing: false });
   };
 
-  _getSiteIDFromChargers() {
+  public getSiteIDFromChargers(): string {
     const { chargers } = this.state;
     // Find the first available Site ID
     if (chargers && chargers.length > 0) {
@@ -121,16 +145,23 @@ export default class Chargers extends BaseAutoRefreshScreen {
         }
       }
     }
+    return null;
   }
 
-  render() {
+  public search = async (searchText: string) => {
+    this.searchText = searchText;
+    await this.refresh();
+  }
+
+  public render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { siteAreaID, loading, chargers, skip, count, limit } = this.state;
     return (
       <Container style={style.container}>
-        <BackgroundComponent active={false}>
+        <BackgroundComponent navigation={navigation} active={false}>
           <HeaderComponent
+            navigation={navigation}
             title={I18n.t("chargers.title")}
             showSearchAction={true}
             searchRef={this.searchRef}
@@ -144,7 +175,7 @@ export default class Chargers extends BaseAutoRefreshScreen {
             ref={(ref) => {
               this.searchRef = ref;
             }}
-            onChange={(searchText) => this._search(searchText)}
+            onChange={(searchText) => this.search(searchText)}
             navigation={navigation}
           />
           <View style={style.content}>
@@ -153,13 +184,13 @@ export default class Chargers extends BaseAutoRefreshScreen {
             ) : (
               <FlatList
                 data={chargers}
-                renderItem={({ item }) => <ChargerComponent charger={item} navigation={navigation} siteAreaID={siteAreaID} />}
+                renderItem={({ item }) => <ChargerComponent charger={item} navigation={navigation} />}
                 keyExtractor={(item) => item.id}
-                refreshControl={<RefreshControl onRefresh={this._manualRefresh} refreshing={this.state.refreshing} />}
-                onEndReached={this._onEndScroll}
+                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+                onEndReached={this.onEndScroll}
                 onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
-                ListFooterComponent={() => <ListFooterComponent skip={skip} count={count} limit={limit} />}
-                ListEmptyComponent={() => <ListEmptyTextComponent text={I18n.t("chargers.noChargers")} />}
+                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t("chargers.noChargers")} />}
               />
             )}
           </View>

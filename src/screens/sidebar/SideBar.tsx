@@ -5,6 +5,7 @@ import { Image, TouchableOpacity } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import I18n from "../../I18n/I18n";
+import BaseProps from "../../types/BaseProps";
 import Constants from "../../utils/Constants";
 import BaseScreen from "../base-screen/BaseScreen";
 import computeStyleSheet from "./SideBarStyles";
@@ -12,8 +13,22 @@ import computeStyleSheet from "./SideBarStyles";
 const noPhoto = require("../../../assets/no-photo-inverse.png");
 const logo = require("../../../assets/logo-low.png");
 
-class SideBar extends BaseScreen {
-  constructor(props) {
+export interface Props extends BaseProps {
+}
+
+interface State {
+  userName?: string;
+  userID?: string;
+  userImage?: string;
+  tenantName?: string;
+  isComponentOrganizationActive?: boolean;
+}
+
+export default class SideBar extends BaseScreen<Props, State> {
+  public state: State;
+  public props: Props;
+
+  constructor(props: Props) {
     super(props);
     this.state = {
       userName: "",
@@ -24,18 +39,22 @@ class SideBar extends BaseScreen {
     };
   }
 
-  async componentDidMount() {
+  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+    super.setState(state, callback);
+  }
+
+  public async componentDidMount() {
     // Call parent
     await super.componentDidMount();
     // Init User
     await this.refresh();
   }
 
-  refresh = async () => {
-    await this._getUserInfo();
+  public refresh = async () => {
+    await this.getUserInfo();
   };
 
-  _getUserInfo = async () => {
+  public getUserInfo = async () => {
     // Logoff
     const userInfo = this.centralServerProvider.getUserInfo();
     const securityProvider = this.centralServerProvider.getSecurityProvider();
@@ -48,17 +67,17 @@ class SideBar extends BaseScreen {
         tenantName: userInfo.tenantName
       },
       async () => {
-        await this._getUserImage();
+        await this.getUserImage();
       }
     );
   };
 
-  async _getUserImage() {
+  public async getUserImage() {
     const { userID } = this.state;
     try {
-      const result = await this.centralServerProvider.getUserImage({ ID: userID });
-      if (result) {
-        this.setState({ userImage: result.image });
+      const image = await this.centralServerProvider.getUserImage({ ID: userID });
+      if (image) {
+        this.setState({ userImage: image });
       }
     } catch (error) {
       // Other common Error
@@ -66,27 +85,27 @@ class SideBar extends BaseScreen {
     }
   }
 
-  async _logoff() {
+  public async logoff() {
     // Logoff
     this.centralServerProvider.logoff();
     // Back to login
     this.props.navigation.navigate("AuthNavigator");
   }
 
-  _navigateTo = (screen, params = {}) => {
+  public navigateTo = (screen: string, params = {}) => {
     // Navigate
     this.props.navigation.navigate({ routeName: screen, params });
     // Close
     this.props.navigation.closeDrawer();
   };
 
-  render() {
+  public render() {
     const style = computeStyleSheet();
-    const navigation = this.props.navigation;
+    const { navigation } = this.props;
     const { userName, userImage, tenantName, isComponentOrganizationActive } = this.state;
     return (
       <Container style={style.container}>
-        <BackgroundComponent>
+        <BackgroundComponent navigation={navigation}>
           <Content style={style.drawerContent}>
             <Header style={style.header}>
               <Image source={logo} style={style.logo} />
@@ -100,16 +119,16 @@ class SideBar extends BaseScreen {
             </Header>
             <View style={style.linkContainer}>
               {isComponentOrganizationActive && (
-                <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("SitesNavigator")}>
+                <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo("SitesNavigator")}>
                   <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
                   <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
                 </ListItem>
               )}
-              <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("ChargersNavigator")}>
+              <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo("ChargersNavigator")}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
                 <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
               </ListItem>
-              <ListItem style={style.links} button iconLeft onPress={() => this._navigateTo("TransactionsNavigator")}>
+              <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo("TransactionsNavigator")}>
                 <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="history" />
                 <Text style={style.linkText}>{I18n.t("sidebar.transactions")}</Text>
               </ListItem>
@@ -124,12 +143,12 @@ class SideBar extends BaseScreen {
             </View>
           </Content>
           <View style={style.logoutContainer}>
-            <View style={style.logoutButton} foregroundColor={"white"}>
+            <View style={style.logoutButton}>
               <View style={style.gridLogoutContainer}>
                 <View style={style.columnAccount}>
-                  <TouchableOpacity style={style.buttonLogout} onPress={() => this._logoff()}>
+                  <TouchableOpacity style={style.buttonLogout} onPress={() => this.logoff()}>
                     <Text style={style.logoutText}>{I18n.t("authentication.logOut")}</Text>
-                    <Text note style={style.userName}>
+                    <Text note={true} style={style.userName}>
                       {userName}
                     </Text>
                   </TouchableOpacity>
@@ -147,5 +166,3 @@ class SideBar extends BaseScreen {
     );
   }
 }
-
-export default SideBar;

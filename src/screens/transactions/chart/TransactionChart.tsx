@@ -16,8 +16,8 @@ import computeStyleSheet from "./TransactionChartStyles";
 
 export interface Props extends BaseProps {
   transactionID: number;
-  showTransactionDetails: boolean;
   isAdmin: boolean;
+  showTransactionDetails?: boolean;
 }
 
 interface State {
