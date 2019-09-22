@@ -17,7 +17,7 @@ import SecurityProvider from "./SecurityProvider";
 
 export default class CentralServerProvider {
   private debug: boolean = false;
-  private captchaBaseUrl: string = "https://evse.cfapps.eu10.hana.ondemand.com/";
+  private captchaBaseUrl: string = "https://evse.cfapps.eu10.hana.ondemand.com";
   private centralRestServerServiceBaseURL: string = "https://sap-ev-rest-server.cfapps.eu10.hana.ondemand.com";
   private centralRestServerServiceAuthURL: string = this.centralRestServerServiceBaseURL + "/client/auth";
   private centralRestServerServiceSecuredURL: string = this.centralRestServerServiceBaseURL + "/client/api";

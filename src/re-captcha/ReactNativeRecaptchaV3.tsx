@@ -14,25 +14,13 @@ const recaptchaHtml = `
             </style>
         </head>
         <body>
-            <div id="inline-badge"></div>
-            <script src="https://www.google.com/recaptcha/api.js?render=explicit&onload=onRecaptchaLoadCallback"></script>
+            <script src="https://www.google.com/recaptcha/api.js?render=SITEKEY"></script>
             <script>
-                function onRecaptchaLoadCallback() {
-                var clientId = grecaptcha.render('inline-badge', {
-                    'sitekey': '[SITEKEY]',
-                    'badge': 'inline',
-                    'size': 'invisible'
-                });
-
-                grecaptcha.ready(function () {
-                    grecaptcha.execute(clientId, {
-                        action: '[ACTION]'
-                    })
-                    .then(function (token) {
-                        window.ReactNativeWebView.postMessage(token, '*')
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('SITEKEY', {action: 'ACTION'}).then(function(token) {
+                        window.ReactNativeWebView.postMessage(token);
                     });
                 });
-                }
             </script>
         </body>
     </html>
@@ -54,11 +42,11 @@ class ReactNativeRecaptchaV3 extends PureComponent<Props> {
       
     public render() {
         const { onHandleToken, url, siteKey, action } = this.props;
-        const recaptchaHtmlWithKey = recaptchaHtml.replace('[SITEKEY]', siteKey).replace('[ACTION]', action);
+        const recaptchaHtmlWithKey = recaptchaHtml.replace(/SITEKEY/g, siteKey).replace(/ACTION/g, action);
         return (
             <WebView
                 originWhitelist={['*']}
-                style={{ width: 0, height: 0 }}
+                style={{ width: 0, height: 0, backgroundColor: "transparent" }}
                 startInLoadingState={false}
                 javaScriptEnabled={true}
                 source={{ html: recaptchaHtmlWithKey, baseUrl: url }}
