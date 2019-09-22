@@ -3,10 +3,10 @@ import React from "react";
 import { Image, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from "react-native";
 import * as Animatable from "react-native-animatable";
 import DeviceInfo from "react-native-device-info";
-import ReCaptcha from "react-native-recaptcha-v3";
 import { NavigationActions, StackActions } from "react-navigation";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import I18n from "../../../I18n/I18n";
+import ReactNativeRecaptchaV3 from "../../../re-captcha/ReactNativeRecaptchaV3";
 import commonColor from "../../../theme/variables/commonColor";
 import BaseProps from "../../../types/BaseProps";
 import Constants from "../../../utils/Constants";
@@ -187,13 +187,11 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
               </Form>
             </KeyboardAvoidingView>
             {captchaSiteKey && captchaBaseUrl && (
-              <ReCaptcha
-                containerStyle={style.recaptcha}
-                siteKey={captchaSiteKey}
-                url={captchaBaseUrl}
+              <ReactNativeRecaptchaV3
                 action="ResetPassword"
-                reCaptchaType={1}
-                onExecute={this.recaptchaResponseToken}
+                onHandleToken={this.recaptchaResponseToken}
+                url={captchaBaseUrl}
+                siteKey={captchaSiteKey} 
               />
             )}
           </ScrollView>
