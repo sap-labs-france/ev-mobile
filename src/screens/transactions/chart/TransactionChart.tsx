@@ -73,11 +73,11 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           const consumptionValues: ChartPoint[] = [];
           const stateOfChargeValues: ChartPoint[] = [];
           for (const value of transaction.values) {
-            const date = new Date(value.startedAt).getTime();
+            const date = new Date(value.date).getTime();
             // Add
             consumptionValues.push({
               x: date,
-              y: value.consumption ? value.consumption / 1000 : 0
+              y: value.value ? value.value / 1000 : 0
             });
             if (value.stateOfCharge > 0) {
               stateOfChargeValues.push({
