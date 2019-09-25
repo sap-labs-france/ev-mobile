@@ -39,7 +39,7 @@ class ReactNativeRecaptchaV3 extends PureComponent<Props> {
         rightActionIconType: "MaterialIcons",
         showSearchAction: false
     };
-      
+
     public render() {
         const { onHandleToken, url, siteKey, action } = this.props;
         const recaptchaHtmlWithKey = recaptchaHtml.replace(/SITEKEY/g, siteKey).replace(/ACTION/g, action);

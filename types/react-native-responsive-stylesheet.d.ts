@@ -7,4 +7,3 @@ declare module 'react-native-responsive-stylesheet' {
     static getOrientation():  "landscape"|"portrait";
   }
 }
-  

@@ -1,7 +1,6 @@
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
-import groovy.json.JsonSlurper
 
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
@@ -151,11 +150,11 @@ android {
             keyPassword 'android'
         }
         release {
-            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
-                storeFile file(MYAPP_UPLOAD_STORE_FILE)
-                storePassword MYAPP_UPLOAD_STORE_PASSWORD
-                keyAlias MYAPP_UPLOAD_KEY_ALIAS
-                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+            if (project.hasProperty('EMOBILITY_UPLOAD_STORE_FILE')) {
+                storeFile file(EMOBILITY_UPLOAD_STORE_FILE)
+                storePassword EMOBILITY_UPLOAD_STORE_PASSWORD
+                keyAlias EMOBILITY_UPLOAD_KEY_ALIAS
+                keyPassword EMOBILITY_UPLOAD_KEY_PASSWORD
             }
         }
     }
@@ -196,7 +195,6 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-localize')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
 

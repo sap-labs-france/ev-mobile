@@ -3,7 +3,6 @@ export interface DataResult<T> {
   result: T[];
 }
 
-
 export interface ImageResult {
   id: string;
   image: string;

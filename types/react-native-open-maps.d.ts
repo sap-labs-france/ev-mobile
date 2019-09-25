@@ -10,4 +10,3 @@ declare module 'react-native-open-maps' {
     end?: string;
   }): void;
 }
-  
