@@ -1,7 +1,6 @@
 # OSX
 #
 .DS_Store
-android/app/release.keystore
 
 # Xcode
 #
@@ -40,6 +39,8 @@ yarn-error.log
 # BUCK
 buck-out/
 \.buckd/
+android/app/*.keystore
+!android/app/debug.keystore
 
 # fastlane
 #
@@ -58,6 +59,9 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 /ios/Podfile.lock
+
+# Jest
+.jest/
 
 # Legacy Eclipse project files
 .classpath
@@ -91,7 +95,3 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-
-# Jest
-#
-.jest/

@@ -527,7 +527,7 @@ export default class CentralServerProvider {
 
   private _debugMethod(methodName: string) {
     if (this.debug) {
-      // tslint:disable
+      // tslint:disable-next-line: no-console
       console.log(new Date().toISOString() + " - " + methodName);
     }
   }
