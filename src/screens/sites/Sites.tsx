@@ -100,7 +100,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       this.setState({
         loading: false,
         count: sites.count,
-        sites: sites.result
+        sites: sites ? sites.result : []
       });
     }
   };
@@ -122,7 +122,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       const sites = await this.getSites(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState, props) => ({
-        sites: [...prevState.sites, ...sites.result],
+        sites: sites ? [...prevState.sites, ...sites.result] : prevState.sites,
         skip: prevState.skip + Constants.PAGING_SIZE,
         refreshing: false
       }));

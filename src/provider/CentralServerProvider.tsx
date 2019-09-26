@@ -4,7 +4,7 @@ import { NavigationParams, NavigationScreenProp, NavigationState } from "react-n
 import { ActionResponse } from "../types/ActionResponse";
 import ChargingStation from "../types/ChargingStation";
 import { DataResult } from "../types/DataResult";
-import Eula from "../types/Eula";
+import Eula, { EulaAccepted } from "../types/Eula";
 import PagingParams from "../types/PagingParams";
 import Site from "../types/Site";
 import SiteArea from "../types/SiteArea";
@@ -30,13 +30,16 @@ export default class CentralServerProvider {
   private password: string = null;
   private tenant: string = null;
   private siteImages: Array<{ id: string; image: string; }> = [];
+  private forcedLogOff: boolean = false;
 
   private securityProvider: SecurityProvider = null;
 
   constructor() {
     if (__DEV__) {
       // QA REST Server
-      // this.centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
+      this.centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
+      this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + "/client/auth";
+      this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + "/client/api";
       this.debug = true;
     }
   }
@@ -160,17 +163,26 @@ export default class CentralServerProvider {
     return this.tenant;
   }
 
+  public getUserToken(): string {
+    return this.token;
+  }
+
   public getUserInfo(): UserToken {
     return this.decodedToken;
   }
 
-  public logoff() {
+  public hasForcedLogOff() {
+    return this.forcedLogOff;
+  }
+
+  public logoff(forcedLogOff: boolean = false) {
     this._debugMethod("logoff");
     // Clear the token and tenant
     SecuredStorage.clearUserCredentials();
     // Clear local data
     this.token = null;
     this.decodedToken = null;
+    this.forcedLogOff = forcedLogOff;
   }
 
   public async login(email: string, password: string, acceptEula: boolean, tenant: string) {
@@ -202,6 +214,7 @@ export default class CentralServerProvider {
     this.decodedToken = jwtDecode(this.token);
     this.tenant = tenant;
     this.securityProvider = new SecurityProvider(this.decodedToken);
+    this.forcedLogOff = false;
   }
 
   public async register(tenant: string, name: string, firstName: string, email: string,
@@ -453,6 +466,16 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationConsumptionFromTransaction`, {
       headers: this._buildSecuredHeaders(),
+      params,
+    });
+    return result.data;
+  }
+
+  public async checkEndUserLicenseAgreement(params: {Email: string, Tenant: string;}): Promise<EulaAccepted> {
+    this._debugMethod("checkEndUserLicenseAgreement");
+    // Call
+    const result = await axios.get(`${this.centralRestServerServiceAuthURL}/CheckEndUserLicenseAgreement`, {
+      headers: this._buildHeaders(),
       params,
     });
     return result.data;

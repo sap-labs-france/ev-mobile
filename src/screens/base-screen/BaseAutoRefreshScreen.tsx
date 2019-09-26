@@ -11,6 +11,7 @@ interface State {
 export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State> {
   private timerRefresh: ReturnType<typeof setTimeout>;
   private timerRefreshActive: boolean;
+  private refreshOngoing: boolean = false;
   private refreshPeriodMillis: number;
 
   constructor(props: Props) {
@@ -30,7 +31,7 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
   public async componentWillUnmount() {
     await super.componentWillUnmount();
     // Clear the timer
-    this._clearRefreshTimer();
+    this.clearRefreshTimer();
   }
 
   public async componentDidFocus() {
@@ -42,7 +43,7 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
   public async componentDidBlur() {
     await super.componentDidBlur();
     // Clear the timer
-    this._clearRefreshTimer();
+    this.clearRefreshTimer();
   }
 
   public onBack = (): boolean => {
@@ -62,47 +63,55 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
     // Set new interval
     this.refreshPeriodMillis = refreshPeriodMillis;
     // Restart the timer
-    this._restartTimer();
+    this.restartTimer();
   }
 
   public getRefreshPeriodMillis(): number {
     return this.refreshPeriodMillis;
   }
 
-  public refresh() {
+  public async refresh() {
     // tslint:disable-next-line: no-console
     console.log("BaseAutoRefreshScreen: Refresh not implemented!!!");
   }
 
-  private _startRefreshTimer() {
+  private _startRefreshTimer() {    
     // Start the timer
     if (!this.timerRefresh) {
-      this.timerRefresh = setTimeout(() => {
+      this.timerRefresh = setTimeout(async () => {
         // Refresh
-        if (this.timerRefreshActive) {
+        if (this.timerRefreshActive && !this.refreshOngoing) {
+          // Start (necessary for the simulators)
+          this.refreshOngoing = true;
           // Component Mounted?
           if (this.mounted) {
-            // Execute
-            this.refresh();
-            // Launch again
-            this._restartTimer();
+            try {
+              // Execute
+              await this.refresh();              
+            } catch (error) {
+              // Ignore
+            }
           }
+          // Restart
+          this.restartTimer();  
+          // End
+          this.refreshOngoing = false;
         }
       }, this.refreshPeriodMillis);
     }
   }
 
-  private _restartTimer() {
+  private restartTimer = () => {
     // Already started
     if (this.timerRefresh) {
       // Clear the timer
-      this._clearRefreshTimer();
+      this.clearRefreshTimer();
       // Start the timer
       this._startRefreshTimer();
     }
   }
 
-  private _clearRefreshTimer() {
+  private clearRefreshTimer = () => {
     // Stop the timer
     if (this.timerRefresh) {
       clearTimeout(this.timerRefresh);
