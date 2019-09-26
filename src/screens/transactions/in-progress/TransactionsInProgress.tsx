@@ -94,7 +94,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       this.setState({
         loading: false,
-        transactions: transactions.result,
+        transactions: transactions ? transactions.result : [],
         count: transactions.count,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,
         isPricingActive: securityProvider.isComponentPricingActive()
@@ -106,11 +106,11 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     const { count, skip, limit } = this.state;
     // No reached the end?
     if (skip + limit < count || count === -1) {
-      // No: get next sites
+    // No: get next sites
       const transactions = await this.getTransationsInProgress("", skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState, props) => ({
-        transactions: [...prevState.transactions, ...transactions.result],
+        transactions: transactions ? [...prevState.transactions, ...transactions.result] : prevState.transactions,
         skip: prevState.skip + Constants.PAGING_SIZE,
         refreshing: false
       }));

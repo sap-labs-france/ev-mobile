@@ -5,7 +5,7 @@ export default class Constants {
   public static DEFAULT_DURATION_WITH_SECS = "00:00:00";
 
   // Auto Refresh
-  public static AUTO_REFRESH_ON_ERROR_PERIOD_MILLIS = 2 * 1000;
+  public static AUTO_REFRESH_ON_ERROR_PERIOD_MILLIS = 4 * 1000;
   public static AUTO_REFRESH_SHORT_PERIOD_MILLIS = 4 * 1000;
   public static AUTO_REFRESH_MEDIUM_PERIOD_MILLIS = 8 * 1000;
   public static AUTO_REFRESH_LONG_PERIOD_MILLIS = 16 * 1000;

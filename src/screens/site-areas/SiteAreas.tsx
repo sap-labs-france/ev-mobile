@@ -89,7 +89,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       // Set Site Areas
       this.setState({
         loading: false,
-        siteAreas: siteAreas.result,
+        siteAreas: siteAreas ? siteAreas.result : [],
         count: siteAreas.count
       });
     }

@@ -97,7 +97,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       const transactions = await this.getTransations("", 0, skip + limit);
       this.setState({
         loading: false,
-        transactions: transactions.result,
+        transactions: transactions ? transactions.result : [],
         count: transactions.count,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,
         isPricingActive: securityProvider.isComponentPricingActive()
@@ -113,7 +113,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       const transactions = await this.getTransations("", skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState) => ({
-        transactions: [...prevState.transactions, ...transactions.result],
+        transactions: transactions ? [...prevState.transactions, ...transactions.result] : prevState.transactions,
         skip: prevState.skip + Constants.PAGING_SIZE,
         refreshing: false
       }));
