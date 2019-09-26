@@ -95,17 +95,33 @@ export default class Login extends BaseScreen<Props, State> {
     await super.componentDidMount();
     // Get Tenants
     this.tenants = this.centralServerProvider.getTenants();
-    // Unlock all
+    // Lock
     Orientation.lockToPortrait();
-    const tenantSubmain = this.centralServerProvider.getUserTenant();
-    const tenant = this.centralServerProvider.getTenant(tenantSubmain);
+    const tenantSubDomain = this.centralServerProvider.getUserTenant();
+    const tenant = this.centralServerProvider.getTenant(tenantSubDomain);
+    const email = this.centralServerProvider.getUserEmail();
+    const password = this.centralServerProvider.getUserPassword();
+    // Set
     this.setState({
-      email: this.centralServerProvider.getUserEmail(),
-      password: this.centralServerProvider.getUserPassword(),
-      tenant: tenantSubmain,
+      email,
+      password,
+      tenant: tenantSubDomain,
       tenantTitle: tenant ? tenant.name : this.state.tenantTitle,
       display: true
     });
+    // Check if user can be logged
+    if (!this.centralServerProvider.hasForcedLogOff() && tenantSubDomain && email && password) {
+      try {
+        // Check EULA
+        const result = await this.centralServerProvider.checkEndUserLicenseAgreement({Email: email, Tenant: tenantSubDomain});
+        if (result.eulaAccepted) {
+          // Try to login
+          this.setState({eula: true}, () => this.login());
+        }        
+      } catch (error) {
+          // Do nothing: user must log on
+      }
+    }
   }
 
   public login = async () => {

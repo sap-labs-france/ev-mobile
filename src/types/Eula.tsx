@@ -5,3 +5,7 @@ export default interface Eula {
   text: string;
   hash: string;
 }
+
+export interface EulaAccepted {
+  eulaAccepted: boolean;
+}

@@ -34,9 +34,9 @@ export default class Utils {
     let deviceLanguage =
       Platform.OS === "ios" ? NativeModules.SettingsManager.settings.AppleLocale : NativeModules.I18nManager.localeIdentifier;
     // Filter only on supported languages
-    const shortDeviceLanguage = deviceLanguage.substring(0, 2);
-    if (shortDeviceLanguage !== "en" && shortDeviceLanguage !== "de" && shortDeviceLanguage !== "fr") {
-      // Default
+    const shortDeviceLanguage = deviceLanguage ? deviceLanguage.substring(0, 2) : null;
+    // Default
+    if (!shortDeviceLanguage || (shortDeviceLanguage !== "en" && shortDeviceLanguage !== "de" && shortDeviceLanguage !== "fr")) {
       deviceLanguage = "en-gb";
     }
     return deviceLanguage;
@@ -60,7 +60,11 @@ export default class Utils {
 
   public static async handleHttpUnexpectedError(centralServerProvider: CentralServerProvider,
       error: RequestError, navigation?: NavigationScreenProp<NavigationState, NavigationParams>, fctRefresh?: () => void) {
-    // Log in console
+    // Override
+    fctRefresh = () => {
+      // Delay the call
+      setTimeout(() => fctRefresh, 2000);
+    };
     // tslint:disable-next-line: no-console
     console.log({ error });
     // Check if HTTP?
