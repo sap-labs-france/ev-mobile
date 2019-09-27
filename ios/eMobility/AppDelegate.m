@@ -13,6 +13,7 @@
 #import <RNCPushNotificationIOS.h>
 #import "RNSplashScreen.h"
 #import "Orientation.h"
+#import <React/RCTLinkingManager.h>
 
 @implementation AppDelegate
 
@@ -75,4 +76,8 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
   [RNCPushNotificationIOS didReceiveLocalNotification:notification];
 }
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+  return [RCTLinkingManager application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
+}
 @end

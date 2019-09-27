@@ -28,10 +28,10 @@ moment.locale(Utils.getLocaleShort());
 // Auth Stack Navigation
 const AuthNavigator: NavigationContainer = createStackNavigator(
   {
-    Login: { screen: Login },
-    Eula: { screen: Eula },
-    SignUp: { screen: SignUp },
-    RetrievePassword: { screen: RetrievePassword }
+    Login: { screen: Login, path: 'login' },
+    Eula: { screen: Eula, path: 'eula' },
+    SignUp: { screen: SignUp, path: 'signUp' },
+    RetrievePassword: { screen: RetrievePassword, path: 'retrievePassword' }
   },
   {
     initialRouteName: "Login",
@@ -43,9 +43,9 @@ const AuthNavigator: NavigationContainer = createStackNavigator(
 const SitesNavigator: NavigationContainer = createStackNavigator(
   {
     Sites: { screen: Sites },
-    SiteAreas: { screen: SiteAreas },
-    Chargers: { screen: Chargers },
-    ChargerDetailsTabs: { screen: ChargerDetailsTabs }
+    SiteAreas: { screen: SiteAreas, path: 'siteAreas' },
+    Chargers: { screen: Chargers, path: 'chargers' },
+    ChargerDetailsTabs: { screen: ChargerDetailsTabs, path: 'chargerDetailsTabs' }
   },
   {
     initialRouteName: "Sites",
@@ -56,8 +56,8 @@ const SitesNavigator: NavigationContainer = createStackNavigator(
 // Chargers Stack Navigation
 const ChargersNavigator: NavigationContainer = createStackNavigator(
   {
-    Chargers: { screen: Chargers },
-    ChargerDetailsTabs: { screen: ChargerDetailsTabs }
+    Chargers: { screen: Chargers, path: 'chargers' },
+    ChargerDetailsTabs: { screen: ChargerDetailsTabs, path: 'chargerDetailsTabs' }
   },
   {
     initialRouteName: "Chargers",
@@ -68,9 +68,9 @@ const ChargersNavigator: NavigationContainer = createStackNavigator(
 // Transactions Stack Navigation
 const TransactionsNavigator: NavigationContainer = createStackNavigator(
   {
-    TransactionTabs: { screen: TransactionTabs },
-    ChargerDetailsTabs: { screen: ChargerDetailsTabs },
-    TransactionChart: { screen: TransactionChartContainer }
+    TransactionTabs: { screen: TransactionTabs, path: 'transactionTabs' },
+    ChargerDetailsTabs: { screen: ChargerDetailsTabs, path: 'chargerDetailsTabs' },
+    TransactionChart: { screen: TransactionChartContainer, path: 'transactionChart' }
   },
   {
     initialRouteName: "TransactionTabs",
@@ -85,9 +85,9 @@ notificationManager.initialize();
 // Drawer Navigation
 const AppDrawerNavigator: NavigationContainer = createDrawerNavigator(
   {
-    SitesNavigator,
-    ChargersNavigator,
-    TransactionsNavigator
+    SitesNavigator: { screen: SitesNavigator, path: 'sitesNav' },
+    ChargersNavigator: { screen: ChargersNavigator, path: 'chargersNav' },
+    TransactionsNavigator: { screen: TransactionsNavigator, path: 'transactionsNav' }
   },
   {
     navigationOptions: {
@@ -103,8 +103,8 @@ const AppDrawerNavigator: NavigationContainer = createDrawerNavigator(
 
 const RootNavigator: NavigationContainer = createSwitchNavigator(
   {
-    AuthNavigator,
-    AppDrawerNavigator
+    AuthNavigator: { screen: AuthNavigator, path: 'auth' },
+    AppDrawerNavigator: { screen: AppDrawerNavigator, path: 'drawer' }
   },
   {
     initialRouteName: "AuthNavigator"
@@ -130,7 +130,7 @@ const loadNavigationState = async () => {
 };
 
 const RootContainerPersists = () => (
-  <RootContainer persistNavigationState={persistNavigationState} loadNavigationState={loadNavigationState} />
+  <RootContainer persistNavigationState={persistNavigationState} loadNavigationState={loadNavigationState} uriPrefix={'eMobility://'} />
 );
 
 export default class App extends React.Component {
