@@ -21,10 +21,10 @@ const formValidationDef = {
   email: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_email")
+      message: "^" + I18n.t("authentication.mandatoryEmail")
     },
     email: {
-      message: "^" + I18n.t("authentication.invalid_email")
+      message: "^" + I18n.t("authentication.invalidEmail")
     }
   }
 };

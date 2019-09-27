@@ -23,14 +23,14 @@
     "transactions": "Sitzungen"
   },
 	"authentication": {
-    "mandatory_tenant": "Der Tenant ist notwendig",
-    "mandatory_name": "Der Name ist notwendig",
-    "mandatory_first_name": "Der Vorname ist notwendig",
-    "mandatory_email": "Die E-Mail ist notwendig",
-    "invalid_email": "Die E-Mail ist ungültig",
-    "mandatory_password": "Das Passwort ist notwendig",
+    "mandatoryTenant": "Die Organisation ist notwendig",
+    "mandatoryName": "Der Name ist notwendig",
+    "mandatoryFirstName": "Der Vorname ist notwendig",
+    "mandatoryEmail": "Die E-Mail ist notwendig",
+    "invalidEmail": "Die E-Mail ist ungültig",
+    "mandatoryPassword": "Das Passwort ist notwendig",
     "logOut": "Ausloggen",
-    "mustSelectTenant": "Wählen Sie einen Tenant",
+    "mustSelectTenant": "Wählen Sie eine Organisation",
     "wrongEmailOrPassword": "Falsche E-Mail oder Passwort",
     "authenticationFailed": "Authentifizierung gescheitert",
     "invalidCaptcha": "Ungültiges Captcha!",
@@ -58,7 +58,7 @@
     "signUp": "Konto erstellen",
 		"passwordRule": "Muss einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl, ein Sonderzeichen und mindestens 8 Zeichen beinhalten.",
     "passwordNotMatch": "Passwörter stimmen nicht miteinander überein",
-    "tenant": "Wählen Sie einen Tenant"
+    "tenant": "Wählen Sie eine Organisation"
   },
   "transactions": {
     "transactionsHistory": "Sitzungsverlauf",
@@ -146,7 +146,7 @@
     "mustLogin": "Sie müssen angemeldet sein",
     "cannotNavigate": "Kann nicht zum Bildschirm navigieren",
     "extraDataMissing": "Benachrichtigung nicht komplett",
-    "incorrectTenant": "Falscher Tenant",
+    "incorrectTenant": "Falsche Organisation",
     "notifyEndOfTransaction": {
       "message": "Ihre Ladesitzung auf '{{chargeBoxID}}' wurde beendet.",
       "subMessage": "Ladesitzung beendet",
