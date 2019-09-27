@@ -23,12 +23,12 @@
     "transactions": "Sessions"
   },
   "authentication": {
-    "mandatory_tenant": "L'organisation est obligatoire",
-    "mandatory_name": "Le Nom est obligatoire",
-    "mandatory_first_name": "Le Prénom est obligatoire",
-    "mandatory_email": "L'Email est obligatoire",
-    "invalid_email": "L'Email est invalide",
-    "mandatory_password": "Le Mot de Passe est obligatoire",
+    "mandatoryTenant": "L'organisation est obligatoire",
+    "mandatoryName": "Le Nom est obligatoire",
+    "mandatoryFirstName": "Le Prénom est obligatoire",
+    "mandatoryEmail": "L'Email est obligatoire",
+    "invalidEmail": "L'Email est invalide",
+    "mandatoryPassword": "Le Mot de Passe est obligatoire",
     "logOut": "Se déconnecter",
     "mustSelectTenant": "Selectionnez une Organisation",
     "wrongEmailOrPassword": "Mauvais email ou mot de passe",

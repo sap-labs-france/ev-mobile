@@ -21,28 +21,28 @@ const formValidationDef = {
   name: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_name")
+      message: "^" + I18n.t("authentication.mandatoryName")
     }
   },
   firstName: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_first_name")
+      message: "^" + I18n.t("authentication.mandatoryFirstName")
     }
   },
   email: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_email")
+      message: "^" + I18n.t("authentication.mandatoryEmail")
     },
     email: {
-      message: "^" + I18n.t("authentication.invalid_email")
+      message: "^" + I18n.t("authentication.invalidEmail")
     }
   },
   password: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_password")
+      message: "^" + I18n.t("authentication.mandatoryPassword")
     },
     equality: {
       attribute: "ghost",
@@ -56,7 +56,7 @@ const formValidationDef = {
   repeatPassword: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatory_password")
+      message: "^" + I18n.t("authentication.mandatoryPassword")
     },
     equality: {
       attribute: "password",
