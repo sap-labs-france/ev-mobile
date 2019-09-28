@@ -1,5 +1,5 @@
-import CreatedUpdatedProps from './CreatedUpdatedProps';
-import SiteArea from './SiteArea';
+import CreatedUpdatedProps from "./CreatedUpdatedProps";
+import SiteArea from "./SiteArea";
 
 export default interface RegistrationToken extends CreatedUpdatedProps {
   id?: string;

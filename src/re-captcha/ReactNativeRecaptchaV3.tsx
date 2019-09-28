@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import { WebView } from 'react-native-webview';
+import React, { PureComponent } from "react";
+import { WebView } from "react-native-webview";
 
 const recaptchaHtml = `
     <!DOCTYPE html>
@@ -45,7 +45,7 @@ class ReactNativeRecaptchaV3 extends PureComponent<Props> {
         const recaptchaHtmlWithKey = recaptchaHtml.replace(/SITEKEY/g, siteKey).replace(/ACTION/g, action);
         return (
             <WebView
-                originWhitelist={['*']}
+                originWhitelist={["*"]}
                 style={{ width: 0, height: 0, backgroundColor: "transparent" }}
                 startInLoadingState={false}
                 javaScriptEnabled={true}

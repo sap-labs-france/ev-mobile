@@ -1,7 +1,7 @@
-import Address from './Address';
-import Company from './Company';
-import ConnectorStats from './ConnectorStats';
-import CreatedUpdatedProps from './CreatedUpdatedProps';
+import Address from "./Address";
+import Company from "./Company";
+import ConnectorStats from "./ConnectorStats";
+import CreatedUpdatedProps from "./CreatedUpdatedProps";
 
 export default interface Site extends CreatedUpdatedProps {
   id: string;

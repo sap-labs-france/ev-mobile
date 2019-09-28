@@ -12,12 +12,17 @@
         "object-literal-sort-keys": false,
         "jsx-no-lambda": false,
         "member-ordering": false,
+        "quotemark": [
+          true,
+          "double"
+        ],
         "no-trailing-whitespace": true,
         "indent": [
           true,
           "spaces",
           2
         ],
+        "eofline": true,
         "linebreak-style": [
           true,
           "LF"

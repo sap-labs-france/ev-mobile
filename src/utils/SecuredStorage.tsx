@@ -4,10 +4,10 @@ import { UserCredentials } from "../types/User";
 import Constants from "./Constants";
 
 // Generate a new Id for persisting the navigation each time the app is launched first time
-let navigationID: string = '' + new Date().getTime();
+let navigationID: string = "" + new Date().getTime();
 if (__DEV__) {
   // Keep the same key for dev
-  navigationID = '123456';
+  navigationID = "123456";
 }
 
 export default class SecuredStorage {
