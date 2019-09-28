@@ -1,32 +1,36 @@
 {
-    "defaultSeverity": "error",
-    "extends": [
-        "tslint:recommended",
-        "tslint-react",
-        "tslint-config-prettier"
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended",
+    "tslint-react",
+    "tslint-config-prettier"
+  ],
+  "jsRules": {},
+  "rules": {
+    "interface-name": [
+      true,
+      "never-prefix"
     ],
-    "jsRules": {},
-    "rules": {
-        "interface-name" : [true, "never-prefix"],
-        "no-empty-interface": false,
-        "object-literal-sort-keys": false,
-        "jsx-no-lambda": false,
-        "member-ordering": false,
-        "quotemark": [
-          true,
-          "double"
-        ],
-        "no-trailing-whitespace": true,
-        "indent": [
-          true,
-          "spaces",
-          2
-        ],
-        "eofline": true,
-        "linebreak-style": [
-          true,
-          "LF"
-        ]
-    },
-    "rulesDirectory": []
+    "cyclomatic-complexity": true,
+    "no-empty-interface": false,
+    "object-literal-sort-keys": false,
+    "jsx-no-lambda": false,
+    "member-ordering": false,
+    "quotemark": [
+      true,
+      "double"
+    ],
+    "no-trailing-whitespace": true,
+    "indent": [
+      true,
+      "spaces",
+      2
+    ],
+    "eofline": true,
+    "linebreak-style": [
+      true,
+      "LF"
+    ]
+  },
+  "rulesDirectory": []
 }
