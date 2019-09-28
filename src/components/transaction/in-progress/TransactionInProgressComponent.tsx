@@ -23,7 +23,7 @@ export default class TransactionInProgressComponent extends React.Component<Prop
   public state: State;
   public props: Props;
   private counter: number = 0;
-  
+
   constructor(props: Props) {
     super(props);
     this.state = {

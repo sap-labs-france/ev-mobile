@@ -30,7 +30,7 @@ interface State {
 interface ChartPoint {
   x: number;
   y: number;
-} 
+}
 
 export default class TransactionChart extends BaseAutoRefreshScreen<Props, State> {
   public state: State;

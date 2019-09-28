@@ -180,7 +180,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
       <ScrollView contentContainerStyle={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>
           <HeaderComponent
-            navigation={this.props.navigation} 
+            navigation={this.props.navigation}
             title={charger.id}
             subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
             leftAction={() => this.onBack()}

@@ -33,7 +33,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
     rightActionIconType: "MaterialIcons",
     showSearchAction: false
   };
-  
+
   constructor(props: Props) {
     super(props);
     // Default values

@@ -117,7 +117,7 @@ export default class Login extends BaseScreen<Props, State> {
         if (result.eulaAccepted) {
           // Try to login
           this.setState({eula: true}, () => this.login());
-        }        
+        }
       } catch (error) {
           // Do nothing: user must log on
       }
