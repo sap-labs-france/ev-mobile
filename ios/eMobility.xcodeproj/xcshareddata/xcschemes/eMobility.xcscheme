@@ -100,7 +100,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "OS_ACTIVITY_MODE"
-            value = "disabled"
+            value = "default"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
