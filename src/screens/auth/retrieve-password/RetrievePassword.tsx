@@ -191,7 +191,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
                 action="ResetPassword"
                 onHandleToken={this.recaptchaResponseToken}
                 url={captchaBaseUrl}
-                siteKey={captchaSiteKey} 
+                siteKey={captchaSiteKey}
               />
             )}
           </ScrollView>

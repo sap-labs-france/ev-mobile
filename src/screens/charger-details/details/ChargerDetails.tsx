@@ -118,21 +118,21 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
             </View>
             <View style={style.bottomViewContainer}>
               <View style={style.actionContainer}>
-                <Button rounded danger style={style.actionButton} onPress={() => this.resetHardConfirm()}>
+                <Button rounded={true} danger={true} style={style.actionButton} onPress={() => this.resetHardConfirm()}>
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t("chargers.resetHard")}
                   </Text>
                 </Button>
               </View>
               <View style={style.actionContainer}>
-                <Button rounded warning style={style.actionButton} onPress={() => this.resetSoftConfirm()}>
+                <Button rounded={true} warning={true} style={style.actionButton} onPress={() => this.resetSoftConfirm()}>
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t("chargers.resetSoft")}
                   </Text>
                 </Button>
               </View>
               <View style={style.actionContainer}>
-                <Button rounded warning style={style.actionButton} onPress={() => this.clearCacheConfirm()}>
+                <Button rounded={true} warning={true} style={style.actionButton} onPress={() => this.clearCacheConfirm()}>
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t("chargers.clearCache")}
                   </Text>
