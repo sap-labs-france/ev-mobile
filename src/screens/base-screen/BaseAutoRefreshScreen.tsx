@@ -75,7 +75,7 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
     console.log("BaseAutoRefreshScreen: Refresh not implemented!!!");
   }
 
-  private _startRefreshTimer() {    
+  private _startRefreshTimer() {
     // Start the timer
     if (!this.timerRefresh) {
       this.timerRefresh = setTimeout(async () => {
@@ -87,13 +87,13 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
           if (this.mounted) {
             try {
               // Execute
-              await this.refresh();              
+              await this.refresh();
             } catch (error) {
               // Ignore
             }
           }
           // Restart
-          this.restartTimer();  
+          this.restartTimer();
           // End
           this.refreshOngoing = false;
         }

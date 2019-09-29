@@ -365,7 +365,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 action="RegisterUser"
                 onHandleToken={this.recaptchaResponseToken}
                 url={captchaBaseUrl}
-                siteKey={captchaSiteKey} 
+                siteKey={captchaSiteKey}
               />
             )}
           </ScrollView>
