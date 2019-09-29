@@ -99,7 +99,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       // Add sites
       this.setState({
         loading: false,
-        count: sites.count,
+        count: sites ? sites.count : 0,
         sites: sites ? sites.result : []
       });
     }

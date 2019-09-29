@@ -110,14 +110,14 @@ export default class Login extends BaseScreen<Props, State> {
       display: true
     });
     // Check if user can be logged
-    if (!this.centralServerProvider.hasForcedLogOff() && tenantSubDomain && email && password) {
+    if (Utils.canAutoLogin(this.centralServerProvider, this.props.navigation)) {
       try {
         // Check EULA
         const result = await this.centralServerProvider.checkEndUserLicenseAgreement({Email: email, Tenant: tenantSubDomain});
         if (result.eulaAccepted) {
           // Try to login
           this.setState({eula: true}, () => this.login());
-        }        
+        }
       } catch (error) {
           // Do nothing: user must log on
       }
