@@ -19,6 +19,7 @@ export default class DeepLinkingManager {
     this.centralServerProvider = centralServerProvider;
     // Activate Deep Linking
     DeepLinking.addScheme('eMobility://');
+    DeepLinking.addScheme('emobility://');
     // Init Route
     this.addResetPasswordRoute();
     // Init URL
@@ -35,7 +36,7 @@ export default class DeepLinkingManager {
   private addResetPasswordRoute = () => {
     // Add Route
     DeepLinking.addRoute('/resetPassword/:tenant/:hash', (response: {tenant: string, hash: string}) => {
-      // Check params
+        // Check params
       if (!response.tenant) {
         Message.showError(I18n.t("authentication.mandatoryTenant"));
       }

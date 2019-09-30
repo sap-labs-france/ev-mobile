@@ -97,6 +97,7 @@ export default class Login extends BaseScreen<Props, State> {
     this.tenants = this.centralServerProvider.getTenants();
     // Lock
     Orientation.lockToPortrait();
+    // Load User data
     const tenantSubDomain = this.centralServerProvider.getUserTenant();
     const tenant = this.centralServerProvider.getTenant(tenantSubDomain);
     const email = this.centralServerProvider.getUserEmail();

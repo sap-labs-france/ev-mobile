@@ -151,8 +151,8 @@ export default class CentralServerProvider {
     return false;
   }
 
-  public clearUserPassword() {
-    SecuredStorage.clearUserPassword();
+  public async clearUserPassword() {
+    await SecuredStorage.clearUserPassword();
   }
 
   public getUserEmail(): string {

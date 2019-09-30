@@ -24,6 +24,10 @@ export default class Utils {
     return !centralServerProvider.hasAutoLoginDisabled() && tenantSubDomain !== null && email !== null && password !== null;
   }
 
+  public static async sleep(millis: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, millis));
+  }
+
   public static getParamFromNavigation(navigation: NavigationScreenProp<NavigationState, NavigationParams>,
       name: string, defaultValue: string): string {
     // Has param object?

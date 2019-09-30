@@ -163,11 +163,11 @@ export default class App extends React.Component<Props, State> {
     this.centralServerProvider = await ProviderFactory.getProvider();
     // Init Deep Linking
     this.deepLinkingManager = DeepLinkingManager.getInstance();
-    this.deepLinkingManager.initialize(this.navigator, this.centralServerProvider);
-    // Activate Notifications
-    this.notificationManager.setActive(true);
+    this.deepLinkingManager.initialize(this.navigator, this.centralServerProvider);  
     // Activate Deep links
     this.deepLinkingManager.startListening();
+    // Activate Notifications
+    this.notificationManager.setActive(true);
   }
 
   public async componentWillUnmount() {

@@ -107,7 +107,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
         // Show
         Message.showSuccess(I18n.t("authentication.resetPasswordSuccess"));
         // Clear user's credentials
-        this.centralServerProvider.clearUserPassword();
+        await this.centralServerProvider.clearUserPassword();
         // Navigate
         this.props.navigation.dispatch(
           StackActions.reset({
