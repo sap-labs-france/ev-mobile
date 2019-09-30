@@ -98,7 +98,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       this.setState({
         loading: false,
         transactions: transactions ? transactions.result : [],
-        count: transactions.count,
+        count: transactions ? transactions.count : 0,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,
         isPricingActive: securityProvider.isComponentPricingActive()
       });

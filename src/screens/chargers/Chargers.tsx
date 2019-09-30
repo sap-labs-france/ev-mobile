@@ -118,10 +118,10 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       // Refresh All
       const chargers = await this.getChargers(this.searchText, 0, skip + limit);
       // Add Chargers
-      this.setState((prevState, props) => ({
+      this.setState(() => ({
         loading: false,
         chargers: chargers ? chargers.result : [],
-        count: chargers.count
+        count: chargers ? chargers.count : 0
       }));
     }
   };

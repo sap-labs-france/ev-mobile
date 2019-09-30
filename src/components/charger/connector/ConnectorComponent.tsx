@@ -143,6 +143,7 @@ export default class ConnectorComponent extends React.Component<Props, State> {
     return (
       <TouchableOpacity
         style={style.container}
+        disabled={charger.inactive}
         onPress={() =>
           navigation.navigate("ChargerDetailsTabs", {
             chargerID: charger.id,
@@ -155,7 +156,7 @@ export default class ConnectorComponent extends React.Component<Props, State> {
               {this.renderFirstConnectorDetails(connector)}
               {this.renderSecondConnectorDetails(connector, style)}
               {this.renderThirdConnectorDetails(connector, style)}
-              <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
+              {!charger.inactive && <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />}
             </View>
           </View>
         </Animatable.View>

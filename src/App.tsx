@@ -3,8 +3,9 @@ import { Root } from "native-base";
 import React from "react";
 import { Dimensions, StatusBar } from "react-native";
 import { createAppContainer, createSwitchNavigator, NavigationContainer, NavigationState } from "react-navigation";
-import { createDrawerNavigator } from "react-navigation-drawer";
-import { createStackNavigator } from "react-navigation-stack";
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import { createStackNavigator } from 'react-navigation-stack';
+import DeepLinkingManager from "./deeplinking/DeepLinkingManager";
 import NotificationManager from "./notification/NotificationManager";
 import Eula from "./screens/auth/eula/Eula";
 import Login from "./screens/auth/login/Login";
@@ -28,12 +29,12 @@ require("moment/locale/en-gb");
 moment.locale(Utils.getLocaleShort());
 
 // Auth Stack Navigation
-const AuthNavigator: NavigationContainer = createStackNavigator(
+const authNavigator: NavigationContainer = createStackNavigator(
   {
-    Login: { screen: Login, path: "login" },
-    Eula: { screen: Eula, path: "eula" },
-    SignUp: { screen: SignUp, path: "signUp" },
-    RetrievePassword: { screen: RetrievePassword, path: "retrievePassword" }
+    Login: { screen: Login },
+    Eula: { screen: Eula },
+    SignUp: { screen: SignUp },
+    RetrievePassword: { screen: RetrievePassword }
   },
   {
     initialRouteName: "Login",
@@ -42,12 +43,12 @@ const AuthNavigator: NavigationContainer = createStackNavigator(
 );
 
 // Organizations Stack Navigation
-const SitesNavigator: NavigationContainer = createStackNavigator(
+const sitesNavigator: NavigationContainer = createStackNavigator(
   {
     Sites: { screen: Sites },
-    SiteAreas: { screen: SiteAreas, path: "siteAreas" },
-    Chargers: { screen: Chargers, path: "chargers" },
-    ChargerDetailsTabs: { screen: ChargerDetailsTabs, path: "chargerDetailsTabs" }
+    SiteAreas: { screen: SiteAreas },
+    Chargers: { screen: Chargers },
+    ChargerDetailsTabs: { screen: ChargerDetailsTabs }
   },
   {
     initialRouteName: "Sites",
@@ -56,10 +57,10 @@ const SitesNavigator: NavigationContainer = createStackNavigator(
 );
 
 // Chargers Stack Navigation
-const ChargersNavigator: NavigationContainer = createStackNavigator(
+const chargersNavigator: NavigationContainer = createStackNavigator(
   {
-    Chargers: { screen: Chargers, path: "chargers" },
-    ChargerDetailsTabs: { screen: ChargerDetailsTabs, path: "chargerDetailsTabs" }
+    Chargers: { screen: Chargers },
+    ChargerDetailsTabs: { screen: ChargerDetailsTabs }
   },
   {
     initialRouteName: "Chargers",
@@ -68,11 +69,11 @@ const ChargersNavigator: NavigationContainer = createStackNavigator(
 );
 
 // Transactions Stack Navigation
-const TransactionsNavigator: NavigationContainer = createStackNavigator(
+const transactionsNavigator: NavigationContainer = createStackNavigator(
   {
-    TransactionTabs: { screen: TransactionTabs, path: "transactionTabs" },
-    ChargerDetailsTabs: { screen: ChargerDetailsTabs, path: "chargerDetailsTabs" },
-    TransactionChart: { screen: TransactionChartContainer, path: "transactionChart" }
+    TransactionTabs: { screen: TransactionTabs },
+    ChargerDetailsTabs: { screen: ChargerDetailsTabs },
+    TransactionChart: { screen: TransactionChartContainer }
   },
   {
     initialRouteName: "TransactionTabs",
@@ -80,16 +81,12 @@ const TransactionsNavigator: NavigationContainer = createStackNavigator(
   }
 );
 
-// Get the Notification Scheduler
-const notificationManager: NotificationManager = NotificationManager.getInstance();
-notificationManager.initialize();
-
 // Drawer Navigation
-const AppDrawerNavigator: NavigationContainer = createDrawerNavigator(
+const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
   {
-    SitesNavigator: { screen: SitesNavigator, path: "sitesNav" },
-    ChargersNavigator: { screen: ChargersNavigator, path: "chargersNav" },
-    TransactionsNavigator: { screen: TransactionsNavigator, path: "transactionsNav" }
+    SitesNavigator: { screen: sitesNavigator },
+    ChargersNavigator: { screen: chargersNavigator },
+    TransactionsNavigator: { screen: transactionsNavigator }
   },
   {
     navigationOptions: {
@@ -103,10 +100,10 @@ const AppDrawerNavigator: NavigationContainer = createDrawerNavigator(
   }
 );
 
-const RootNavigator: NavigationContainer = createSwitchNavigator(
+const rootNavigator: NavigationContainer = createSwitchNavigator(
   {
-    AuthNavigator: { screen: AuthNavigator, path: "auth" },
-    AppDrawerNavigator: { screen: AppDrawerNavigator, path: "drawer" }
+    AuthNavigator: { screen: authNavigator },
+    AppDrawerNavigator: { screen: appDrawerNavigator }
   },
   {
     initialRouteName: "AuthNavigator"
@@ -114,7 +111,7 @@ const RootNavigator: NavigationContainer = createSwitchNavigator(
 );
 
 // Create a container to wrap the main navigator
-const RootContainer: NavigationContainer = createAppContainer(RootNavigator);
+const RootContainer: NavigationContainer = createAppContainer(rootNavigator);
 
 // Handle persistence of navigation
 const persistNavigationState = async (navigationState: NavigationState) => {
@@ -131,20 +128,45 @@ const loadNavigationState = async () => {
   return navigationState;
 };
 
-const RootContainerPersists = () => (
-  <RootContainer persistNavigationState={persistNavigationState} loadNavigationState={loadNavigationState} uriPrefix={"eMobility://"} />
-);
+export interface Props {
+}
 
-export default class App extends React.Component {
+interface State {
+}
+
+export default class App extends React.Component<Props, State> {
+  public state: State;
+  public props: Props;
+  private notificationManager: NotificationManager;
+  private deepLinkingManager: DeepLinkingManager;
+
+  constructor(props: Props) {
+    super(props);
+    // Init Notification
+    this.notificationManager = NotificationManager.getInstance();
+    this.notificationManager.initialize();
+    // Init Deep Linking
+    this.deepLinkingManager = DeepLinkingManager.getInstance();
+    this.deepLinkingManager.initialize();
+  }
+
+  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+    super.setState(state, callback);
+  }
+
   // eslint-disable-next-line class-methods-use-this
   public async componentDidMount() {
-    // Activate
-    notificationManager.setActive(true);
+    // Activate Notifications
+    this.notificationManager.setActive(true);
+    // Activate Deep links
+    this.deepLinkingManager.startListening();
   }
 
   public async componentWillUnmount() {
-    // Deactivate
-    notificationManager.setActive(false);
+    // Deactivate Notifications
+    this.notificationManager.setActive(false);
+    // Deactivate Deep links
+    this.deepLinkingManager.stopListening();
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -152,7 +174,7 @@ export default class App extends React.Component {
     return (
       <Root>
         <StatusBar hidden={true} />
-        <RootContainerPersists />
+        <RootContainer persistNavigationState={persistNavigationState} loadNavigationState={loadNavigationState}/>
       </Root>
     );
   }

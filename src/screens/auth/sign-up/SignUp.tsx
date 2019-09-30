@@ -1,6 +1,6 @@
 import { Button, CheckBox, Footer, Form, Icon, Item, Right, Spinner, Text, View } from "native-base";
 import React from "react";
-import { Image, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from "react-native";
+import { Image, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput, Alert } from "react-native";
 import * as Animatable from "react-native-animatable";
 import DeviceInfo from "react-native-device-info";
 import { NavigationActions, StackActions } from "react-navigation";
@@ -110,6 +110,7 @@ export default class SignUp extends BaseScreen<Props, State> {
 
   constructor(props: Props) {
     super(props);
+    Alert.alert('Test', Utils.getParamFromNavigation(this.props.navigation, "hash", "nohash"));
     this.state = {
       tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
       tenantName: "",
