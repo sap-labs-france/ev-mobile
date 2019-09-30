@@ -35,10 +35,18 @@ export default class SecuredStorage {
     return SecuredStorage._getJson(Constants.KEY_CREDENTIALS);
   }
 
-  public static async clearUserCredentials() {
+  public static async clearUserToken() {
     const credentials = await SecuredStorage._getJson(Constants.KEY_CREDENTIALS);
     if (credentials) {
       Reflect.deleteProperty(credentials, "token");
+      await SecuredStorage.saveUserCredentials(credentials);
+    }
+  }
+
+  public static async clearUserPassword() {
+    const credentials: UserCredentials = await SecuredStorage._getJson(Constants.KEY_CREDENTIALS);
+    if (credentials) {
+      Reflect.deleteProperty(credentials, "password");
       await SecuredStorage.saveUserCredentials(credentials);
     }
   }

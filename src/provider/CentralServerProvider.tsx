@@ -30,7 +30,7 @@ export default class CentralServerProvider {
   private password: string = null;
   private tenant: string = null;
   private siteImages: Array<{ id: string; image: string; }> = [];
-  private forcedLogOff: boolean = false;
+  private autoLoginDisabled: boolean = false;
 
   private securityProvider: SecurityProvider = null;
 
@@ -151,6 +151,10 @@ export default class CentralServerProvider {
     return false;
   }
 
+  public clearUserPassword() {
+    SecuredStorage.clearUserPassword();
+  }
+
   public getUserEmail(): string {
     return this.email;
   }
@@ -171,18 +175,21 @@ export default class CentralServerProvider {
     return this.decodedToken;
   }
 
-  public hasForcedLogOff() {
-    return this.forcedLogOff;
+  public hasAutoLoginDisabled(): boolean {
+    return this.autoLoginDisabled;
   }
 
-  public logoff(forcedLogOff: boolean = false) {
+  public setAutoLoginDisabled(autoLoginDisabled: boolean) {
+    this.autoLoginDisabled = autoLoginDisabled;
+  }
+
+  public logoff() {
     this._debugMethod("logoff");
     // Clear the token and tenant
-    SecuredStorage.clearUserCredentials();
+    SecuredStorage.clearUserToken();
     // Clear local data
     this.token = null;
     this.decodedToken = null;
-    this.forcedLogOff = forcedLogOff;
   }
 
   public async login(email: string, password: string, acceptEula: boolean, tenant: string) {
@@ -214,7 +221,7 @@ export default class CentralServerProvider {
     this.decodedToken = jwtDecode(this.token);
     this.tenant = tenant;
     this.securityProvider = new SecurityProvider(this.decodedToken);
-    this.forcedLogOff = false;
+    this.autoLoginDisabled = false;
   }
 
   public async register(tenant: string, name: string, firstName: string, email: string,
@@ -237,7 +244,7 @@ export default class CentralServerProvider {
       },
     );
     // Clear the token and tenant
-    SecuredStorage.clearUserCredentials();
+    SecuredStorage.clearUserToken();
     // Save
     await SecuredStorage.saveUserCredentials({
       email,
@@ -258,9 +265,25 @@ export default class CentralServerProvider {
     const result = await axios.post(
       `${this.centralRestServerServiceAuthURL}/Reset`,
       {
+        tenant,
         captcha,
         email,
+      },
+      {
+        headers: this._buildHeaders(),
+      },
+    );
+    return result.data;
+  }
+
+  public async resetPassword(tenant: string, hash: string, passwords: {password: string; repeatPassword: string; }) {
+    this._debugMethod("resetPassword");
+    const result = await axios.post(
+      `${this.centralRestServerServiceAuthURL}/Reset`,
+      {
         tenant,
+        hash,
+        passwords,
       },
       {
         headers: this._buildHeaders(),

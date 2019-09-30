@@ -1,14 +1,17 @@
 import moment from "moment";
 import { Root } from "native-base";
+import CentralServerProvider from "provider/CentralServerProvider";
 import React from "react";
 import { Dimensions, StatusBar } from "react-native";
-import { createAppContainer, createSwitchNavigator, NavigationContainer, NavigationState } from "react-navigation";
+import { createAppContainer, createSwitchNavigator, NavigationContainer, NavigationContainerComponent, NavigationState } from "react-navigation";
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createStackNavigator } from 'react-navigation-stack';
 import DeepLinkingManager from "./deeplinking/DeepLinkingManager";
 import NotificationManager from "./notification/NotificationManager";
+import ProviderFactory from "./provider/ProviderFactory";
 import Eula from "./screens/auth/eula/Eula";
 import Login from "./screens/auth/login/Login";
+import ResetPassword from "./screens/auth/reset-password/ResetPassword";
 import RetrievePassword from "./screens/auth/retrieve-password/RetrievePassword";
 import SignUp from "./screens/auth/sign-up/SignUp";
 import ChargerDetailsTabs from "./screens/charger-details/ChargerDetailsTabs";
@@ -34,6 +37,7 @@ const authNavigator: NavigationContainer = createStackNavigator(
     Login: { screen: Login },
     Eula: { screen: Eula },
     SignUp: { screen: SignUp },
+    ResetPassword: { screen: ResetPassword },
     RetrievePassword: { screen: RetrievePassword }
   },
   {
@@ -139,15 +143,14 @@ export default class App extends React.Component<Props, State> {
   public props: Props;
   private notificationManager: NotificationManager;
   private deepLinkingManager: DeepLinkingManager;
+  private centralServerProvider: CentralServerProvider;
+  private navigator: NavigationContainerComponent;
 
   constructor(props: Props) {
     super(props);
     // Init Notification
     this.notificationManager = NotificationManager.getInstance();
     this.notificationManager.initialize();
-    // Init Deep Linking
-    this.deepLinkingManager = DeepLinkingManager.getInstance();
-    this.deepLinkingManager.initialize();
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
@@ -156,6 +159,11 @@ export default class App extends React.Component<Props, State> {
 
   // eslint-disable-next-line class-methods-use-this
   public async componentDidMount() {
+    // Get the central server
+    this.centralServerProvider = await ProviderFactory.getProvider();
+    // Init Deep Linking
+    this.deepLinkingManager = DeepLinkingManager.getInstance();
+    this.deepLinkingManager.initialize(this.navigator, this.centralServerProvider);
     // Activate Notifications
     this.notificationManager.setActive(true);
     // Activate Deep links
@@ -174,7 +182,12 @@ export default class App extends React.Component<Props, State> {
     return (
       <Root>
         <StatusBar hidden={true} />
-        <RootContainer persistNavigationState={persistNavigationState} loadNavigationState={loadNavigationState}/>
+        <RootContainer
+          ref={(navigatorRef) => {
+            this.navigator = navigatorRef
+          }}
+          persistNavigationState={persistNavigationState}
+          loadNavigationState={loadNavigationState}/>
       </Root>
     );
   }

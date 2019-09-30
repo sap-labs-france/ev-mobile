@@ -16,14 +16,14 @@ const domestic = require("../../assets/connectorType/domestic-ue.gif");
 const noConnector = require("../../assets/connectorType/no-connector.gif");
 
 export default class Utils {
-  static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
+  public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
     const tenantSubDomain = centralServerProvider.getUserTenant();
     const email = centralServerProvider.getUserEmail();
     const password = centralServerProvider.getUserPassword();
 
-    return !centralServerProvider.hasForcedLogOff() && tenantSubDomain !== null && email !== null && password !== null;
+    return !centralServerProvider.hasAutoLoginDisabled() && tenantSubDomain !== null && email !== null && password !== null;
   }
-  
+
   public static getParamFromNavigation(navigation: NavigationScreenProp<NavigationState, NavigationParams>,
       name: string, defaultValue: string): string {
     // Has param object?
