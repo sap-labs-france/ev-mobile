@@ -1,12 +1,11 @@
-import { Button, Footer, Form, Icon, Item, Left, Spinner, Text, View } from "native-base";
+import { Button, Footer, Form, Icon, Item, Right, Spinner, Text, View } from "native-base";
 import React from "react";
-import { Image, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from "react-native";
+import { Image, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from "react-native";
 import * as Animatable from "react-native-animatable";
 import DeviceInfo from "react-native-device-info";
 import { NavigationActions, StackActions } from "react-navigation";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import I18n from "../../../I18n/I18n";
-import ReactNativeRecaptchaV3 from "../../../re-captcha/ReactNativeRecaptchaV3";
 import commonColor from "../../../theme/variables/commonColor";
 import BaseProps from "../../../types/BaseProps";
 import Constants from "../../../utils/Constants";
@@ -18,13 +17,28 @@ import computeStyleSheet from "../AuthStyles";
 const logo = require("../../../../assets/logo-low.png");
 
 const formValidationDef = {
-  email: {
+  password: {
     presence: {
       allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatoryEmail")
+      message: "^" + I18n.t("authentication.mandatoryPassword")
     },
-    email: {
-      message: "^" + I18n.t("authentication.invalidEmail")
+    equality: {
+      attribute: "ghost",
+      message: "^" + I18n.t("authentication.passwordRule"),
+      comparator(password: string, ghost: string) {
+        // True if EULA is checked
+        return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(password);
+      }
+    }
+  },
+  repeatPassword: {
+    presence: {
+      allowEmpty: false,
+      message: "^" + I18n.t("authentication.mandatoryPassword")
+    },
+    equality: {
+      attribute: "password",
+      message: "^" + I18n.t("authentication.passwordNotMatch")
     }
   }
 };
@@ -35,27 +49,27 @@ export interface Props extends BaseProps {
 interface State {
   tenant?: string;
   tenantName?: string;
-  email?: string;
-  captchaSiteKey?: string;
-  captchaBaseUrl?: string;
-  captcha?: string;
+  hash?: string;
+  password?: string;
+  repeatPassword?: string;
+  errorPassword?: object[];
+  errorRepeatPassword?: object[];
   loading?: boolean;
-  errorEmail?: object[];
 }
 
-export default class RetrievePassword extends BaseScreen<Props, State> {
+export default class ResetPassword extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
+  private repeatPasswordInput: TextInput;
 
   constructor(props: Props) {
     super(props);
     this.state = {
       tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
+      hash:  Utils.getParamFromNavigation(this.props.navigation, "hash", null),
       tenantName: "",
-      email: Utils.getParamFromNavigation(this.props.navigation, "email", ""),
-      captchaSiteKey: null,
-      captchaBaseUrl: null,
-      captcha: null,
+      password: "",
+      repeatPassword: "",
       loading: false
     };
   }
@@ -70,9 +84,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
     // Init
     const tenant = this.centralServerProvider.getTenant(this.state.tenant);
     this.setState({
-      tenantName: tenant.name,
-      captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
-      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl()
+      tenantName: tenant ? tenant.name : ""
     });
   }
 
@@ -80,19 +92,22 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
     this.setState({ captcha });
   };
 
-  public retrievePassword = async () => {
+  public resetPassword = async () => {
     // Check field
     const formIsValid = Utils.validateInput(this, formValidationDef);
     if (formIsValid) {
-      const { tenant, email, captcha } = this.state;
+      const { tenant, password, repeatPassword, hash } = this.state;
       try {
+        // Loading
         this.setState({ loading: true });
-        // Login
-        await this.centralServerProvider.retrievePassword(tenant, email, captcha);
-        // Login Success
+        // Register
+        await this.centralServerProvider.resetPassword(tenant, hash, { password, repeatPassword });
+        // Reset
         this.setState({ loading: false });
         // Show
-        Message.showSuccess(I18n.t("authentication.resetSuccess"));
+        Message.showSuccess(I18n.t("authentication.resetPasswordSuccess"));
+        // Clear user's credentials
+        await this.centralServerProvider.clearUserPassword();
         // Navigate
         this.props.navigation.dispatch(
           StackActions.reset({
@@ -101,27 +116,22 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
               NavigationActions.navigate({
                 routeName: "Login",
                 params: {
-                  tenant: this.state.tenant,
-                  email: this.state.email
+                  tenant: this.state.tenant
                 }
               })
             ]
           })
         );
       } catch (error) {
-        // Login failed
+        // Reset
         this.setState({ loading: false });
         // Check request?
         if (error.request) {
           // Show error
           switch (error.request.status) {
-            // Invalid Captcha
-            case 530:
-              Message.showError(I18n.t("authentication.invalidCaptcha"));
-              break;
-            // Unknown Email
+            // Invalid Hash
             case 550:
-              Message.showError(I18n.t("authentication.wrongEmail"));
+              Message.showError(I18n.t("authentication.resetPasswordHashNotValid"));
               break;
             default:
               // Other common Error
@@ -134,7 +144,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
     }
   };
 
-  public onBack = () => {
+  public onBack = (): boolean => {
     // Back mobile button: Force navigation
     this.props.navigation.navigate("Login");
     // Do not bubble up
@@ -143,7 +153,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl } = this.state;
+    const { tenantName, loading } = this.state;
     return (
       <Animatable.View style={style.container} animation={"fadeIn"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <BackgroundComponent navigation={this.props.navigation}>
@@ -157,51 +167,68 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
               </View>
               <Form style={style.form}>
                 <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                  <Icon active={true} name="mail" style={style.inputIcon} />
+                  <Icon active={true} name="unlock" style={style.inputIcon} />
                   <TextInput
-                    returnKeyType={"next"}
                     selectionColor={commonColor.inverseTextColor}
-                    placeholder={I18n.t("authentication.email")}
+                    onSubmitEditing={() => this.repeatPasswordInput.focus()}
+                    returnKeyType={"next"}
+                    placeholder={I18n.t("authentication.password")}
                     placeholderTextColor={commonColor.placeholderTextColor}
                     style={style.inputField}
                     autoCapitalize="none"
                     blurOnSubmit={false}
                     autoCorrect={false}
-                    keyboardType={"email-address"}
-                    onChangeText={(text) => this.setState({ email: text })}
-                    value={this.state.email}
+                    keyboardType={"default"}
+                    onChangeText={(text) => this.setState({ password: text })}
+                    secureTextEntry={true}
                   />
                 </Item>
-                {this.state.errorEmail &&
-                  this.state.errorEmail.map((errorMessage, index) => (
+                {this.state.errorPassword &&
+                  this.state.errorPassword.map((errorMessage, index) => (
                     <Text style={style.formErrorText} key={index}>
                       {errorMessage}
                     </Text>
                   ))}
-                {loading || !captcha ? (
+                <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+                  <Icon active={true} name="unlock" style={style.inputIcon} />
+                  <TextInput
+                    ref={(ref) => (this.repeatPasswordInput = ref)}
+                    selectionColor={commonColor.inverseTextColor}
+                    onSubmitEditing={() => Keyboard.dismiss()}
+                    returnKeyType={"next"}
+                    placeholder={I18n.t("authentication.repeatPassword")}
+                    placeholderTextColor={commonColor.placeholderTextColor}
+                    style={style.inputField}
+                    autoCapitalize="none"
+                    blurOnSubmit={false}
+                    autoCorrect={false}
+                    keyboardType={"default"}
+                    onChangeText={(text) => this.setState({ repeatPassword: text })}
+                    secureTextEntry={true}
+                  />
+                </Item>
+                {this.state.errorRepeatPassword &&
+                  this.state.errorRepeatPassword.map((errorMessage, index) => (
+                    <Text style={style.formErrorText} key={index}>
+                      {errorMessage}
+                    </Text>
+                  ))}
+                {loading ? (
                   <Spinner style={style.spinner} color="white" />
                 ) : (
-                  <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.retrievePassword()}>
-                    <TextRN style={style.buttonText}>{I18n.t("authentication.retrievePassword")}</TextRN>
+                  <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.resetPassword()}>
+                    <TextRN style={style.buttonText}>{I18n.t("authentication.resetPassword")}</TextRN>
                   </Button>
                 )}
-              </Form>
+                </Form>
             </KeyboardAvoidingView>
-            {captchaSiteKey && captchaBaseUrl && (
-              <ReactNativeRecaptchaV3
-                action="ResetPassword"
-                onHandleToken={this.recaptchaResponseToken}
-                url={captchaBaseUrl}
-                siteKey={captchaSiteKey}
-              />
-            )}
           </ScrollView>
           <Footer style={style.footer}>
-            <Left>
-              <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.props.navigation.goBack()}>
-                <TextRN style={[style.linksTextButton, style.linksTextButtonLeft]}>{I18n.t("authentication.backLogin")}</TextRN>
+            <Right>
+              <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonRight]} onPress={() => this.props.navigation.goBack()}>
+                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.backLogin")}</TextRN>
               </Button>
-            </Left>
+            </Right>
           </Footer>
         </BackgroundComponent>
       </Animatable.View>

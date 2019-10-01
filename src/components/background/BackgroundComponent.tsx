@@ -5,7 +5,7 @@ import BaseProps from "../../types/BaseProps";
 import computeStyleSheet from "./BackgroundComponentStyles";
 
 // const defaultBackground = require("../../../assets/bg.png");
-const defaultBackground = require("../../../assets/sidebar-transparent.png");
+// const defaultBackground = require("../../../assets/sidebar-transparent.png");
 
 export interface Props extends BaseProps {
   active?: boolean;
@@ -37,7 +37,7 @@ export default class BackgroundComponent extends React.Component<Props, State> {
     const { active, background } = this.props;
     return active ? (
       <ImageBackground
-        source={background || defaultBackground}
+        source={background || null}
         style={[style.background, this.props.style]}
         imageStyle={style.imageBackground}>
         {this.props.children}

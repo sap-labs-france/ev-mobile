@@ -20,8 +20,24 @@ export default class Utils {
     const tenantSubDomain = centralServerProvider.getUserTenant();
     const email = centralServerProvider.getUserEmail();
     const password = centralServerProvider.getUserPassword();
+    return !centralServerProvider.hasAutoLoginDisabled() &&
+      !Utils.isNullOrEmptyString(tenantSubDomain) &&
+      !Utils.isNullOrEmptyString(email) &&
+      !Utils.isNullOrEmptyString(password);
+  }
 
-    return !centralServerProvider.hasForcedLogOff() && tenantSubDomain !== null && email !== null && password !== null;
+  public static isNullOrEmptyString(value: string) {
+    if (!value) {
+      return true;
+    }
+    if (value.length === 0) {
+      return true;
+    }
+    return false;
+  }
+
+  public static async sleep(millis: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, millis));
   }
 
   public static getParamFromNavigation(navigation: NavigationScreenProp<NavigationState, NavigationParams>,

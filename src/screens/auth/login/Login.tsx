@@ -97,6 +97,7 @@ export default class Login extends BaseScreen<Props, State> {
     this.tenants = this.centralServerProvider.getTenants();
     // Lock
     Orientation.lockToPortrait();
+    // Load User data
     const tenantSubDomain = this.centralServerProvider.getUserTenant();
     const tenant = this.centralServerProvider.getTenant(tenantSubDomain);
     const email = this.centralServerProvider.getUserEmail();
@@ -277,6 +278,7 @@ export default class Login extends BaseScreen<Props, State> {
                   <Icon active={true} name="mail" style={style.inputIcon} />
                   <TextInput
                     returnKeyType="next"
+                    selectionColor={commonColor.inverseTextColor}
                     placeholder={I18n.t("authentication.email")}
                     placeholderTextColor={commonColor.placeholderTextColor}
                     onSubmitEditing={() => this.passwordInput.focus()}
@@ -300,6 +302,7 @@ export default class Login extends BaseScreen<Props, State> {
                   <Icon active={true} name="unlock" style={[style.inputIcon, style.inputIconLock]} />
                   <TextInput
                     returnKeyType="go"
+                    selectionColor={commonColor.inverseTextColor}
                     ref={(ref) => (this.passwordInput = ref)}
                     onSubmitEditing={() => Keyboard.dismiss()}
                     placeholder={I18n.t("authentication.password")}

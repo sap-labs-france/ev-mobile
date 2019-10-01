@@ -1,6 +1,6 @@
 import { Button, CheckBox, Footer, Form, Icon, Item, Right, Spinner, Text, View } from "native-base";
 import React from "react";
-import { Alert, Image, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from "react-native";
+import { Image, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput, Alert } from "react-native";
 import * as Animatable from "react-native-animatable";
 import DeviceInfo from "react-native-device-info";
 import { NavigationActions, StackActions } from "react-navigation";
@@ -110,7 +110,6 @@ export default class SignUp extends BaseScreen<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    Alert.alert("Test", Utils.getParamFromNavigation(this.props.navigation, "hash", "nohash"));
     this.state = {
       tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
       tenantName: "",
@@ -225,6 +224,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   <Icon active={true} name="person" style={style.inputIcon} />
                   <TextInput
                     onSubmitEditing={() => this.firstNameInput.focus()}
+                    selectionColor={commonColor.inverseTextColor}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.name")}
                     placeholderTextColor={commonColor.placeholderTextColor}
@@ -247,6 +247,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   <Icon active={true} name="person" style={style.inputIcon} />
                   <TextInput
                     ref={(ref) => (this.firstNameInput = ref)}
+                    selectionColor={commonColor.inverseTextColor}
                     onSubmitEditing={() => this.emailInput.focus()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.firstName")}
@@ -270,6 +271,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   <Icon active={true} name="mail" style={style.inputIcon} />
                   <TextInput
                     ref={(ref) => (this.emailInput = ref)}
+                    selectionColor={commonColor.inverseTextColor}
                     onSubmitEditing={() => this.passwordInput.focus()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.email")}
@@ -294,6 +296,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   <Icon active={true} name="unlock" style={style.inputIcon} />
                   <TextInput
                     ref={(ref) => (this.passwordInput = ref)}
+                    selectionColor={commonColor.inverseTextColor}
                     onSubmitEditing={() => this.repeatPasswordInput.focus()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.password")}
@@ -317,6 +320,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   <Icon active={true} name="unlock" style={style.inputIcon} />
                   <TextInput
                     ref={(ref) => (this.repeatPasswordInput = ref)}
+                    selectionColor={commonColor.inverseTextColor}
                     onSubmitEditing={() => Keyboard.dismiss()}
                     returnKeyType={"next"}
                     placeholder={I18n.t("authentication.repeatPassword")}
