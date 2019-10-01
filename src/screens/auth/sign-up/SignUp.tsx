@@ -1,8 +1,7 @@
 import { Button, CheckBox, Footer, Form, Icon, Item, Right, Spinner, Text, View } from "native-base";
 import React from "react";
-import { Image, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput, Alert } from "react-native";
+import { Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from "react-native";
 import * as Animatable from "react-native-animatable";
-import DeviceInfo from "react-native-device-info";
 import { NavigationActions, StackActions } from "react-navigation";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import I18n from "../../../I18n/I18n";
@@ -13,9 +12,8 @@ import Constants from "../../../utils/Constants";
 import Message from "../../../utils/Message";
 import Utils from "../../../utils/Utils";
 import BaseScreen from "../../base-screen/BaseScreen";
+import AuthHeader from "../AuthHeader";
 import computeStyleSheet from "../AuthStyles";
-
-const logo = require("../../../../assets/logo-low.png");
 
 const formValidationDef = {
   name: {
@@ -213,12 +211,7 @@ export default class SignUp extends BaseScreen<Props, State> {
         <BackgroundComponent navigation={this.props.navigation}>
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
-              <View style={style.formHeader}>
-                <Image style={style.logo} source={logo} />
-                <Text style={style.appText}>e-Mobility</Text>
-                <Text style={style.appVersionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
-                <Text style={style.appTenantName}>{tenantName}</Text>
-              </View>
+              <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
               <Form style={style.form}>
                 <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
                   <Icon active={true} name="person" style={style.inputIcon} />
