@@ -1,6 +1,6 @@
-import ChargingStation from "../types/ChargingStation";
-import Consumption from "./Consumption";
-import User from "./User";
+import ChargingStation from '../types/ChargingStation';
+import Consumption from './Consumption';
+import User from './User';
 
 export default interface Transaction {
   id: number;

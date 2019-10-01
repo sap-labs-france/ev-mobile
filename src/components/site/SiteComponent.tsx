@@ -1,15 +1,15 @@
-import { Icon, Text, View } from "native-base";
-import React from "react";
-import { TouchableOpacity } from "react-native";
-import * as Animatable from "react-native-animatable";
-import openMap from "react-native-open-maps";
-import Address from "../../types/Address";
-import BaseProps from "../../types/BaseProps";
-import ConnectorStats from "../../types/ConnectorStats";
-import Site from "../../types/Site";
-import Constants from "../../utils/Constants";
-import ConnectorStatusesContainerComponent from "../connector-status/ConnectorStatusesContainerComponent";
-import computeStyleSheet from "./SiteComponentStyles";
+import { Icon, Text, View } from 'native-base';
+import React from 'react';
+import { TouchableOpacity } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import openMap from 'react-native-open-maps';
+import Address from '../../types/Address';
+import BaseProps from '../../types/BaseProps';
+import ConnectorStats from '../../types/ConnectorStats';
+import Site from '../../types/Site';
+import Constants from '../../utils/Constants';
+import ConnectorStatusesContainerComponent from '../connector-status/ConnectorStatusesContainerComponent';
+import computeStyleSheet from './SiteComponentStyles';
 
 export interface Props extends BaseProps {
   site: Site;
@@ -55,19 +55,19 @@ export default class SiteComponent extends React.Component<Props, State> {
     }
     return (
       <Animatable.View
-        animation={this.counter++ % 2 === 0 ? "flipInX" : "flipInX"}
+        animation={this.counter++ % 2 === 0 ? 'flipInX' : 'flipInX'}
         iterationCount={1}
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
-        <TouchableOpacity onPress={() => navigation.navigate("SiteAreas", { siteID: site.id })}>
+        <TouchableOpacity onPress={() => navigation.navigate('SiteAreas', { siteID: site.id })}>
           <View style={style.container}>
             <View style={style.headerContent}>
               <View style={style.subHeaderContent}>
                 <TouchableOpacity onPress={() => this.siteLocation(site.address)}>
-                  <Icon style={style.icon} name="pin" />
+                  <Icon style={style.icon} name='pin' />
                 </TouchableOpacity>
                 <Text style={style.headerName}>{site.name}</Text>
               </View>
-              <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
+              <Icon style={style.icon} type='MaterialIcons' name='navigate-next' />
             </View>
             <View style={style.connectorContent}>
               <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={connectorStats} />

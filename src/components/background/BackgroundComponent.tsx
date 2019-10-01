@@ -1,8 +1,8 @@
-import { View } from "native-base";
-import React from "react";
-import { ImageBackground } from "react-native";
-import BaseProps from "../../types/BaseProps";
-import computeStyleSheet from "./BackgroundComponentStyles";
+import { View } from 'native-base';
+import React from 'react';
+import { ImageBackground } from 'react-native';
+import BaseProps from '../../types/BaseProps';
+import computeStyleSheet from './BackgroundComponentStyles';
 
 // const defaultBackground = require("../../../assets/bg.png");
 // const defaultBackground = require("../../../assets/sidebar-transparent.png");

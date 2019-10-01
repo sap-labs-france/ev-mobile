@@ -1,47 +1,47 @@
-import deepmerge from "deepmerge";
-import ResponsiveStylesheet from "react-native-responsive-stylesheet"
-import { ScaledSheet } from "react-native-size-matters";
-import commonColor from "../../theme/variables/commonColor";
+import deepmerge from 'deepmerge';
+import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
+import { ScaledSheet } from 'react-native-size-matters';
+import commonColor from '../../theme/variables/commonColor';
 
 const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
+    flexDirection: 'column',
     borderBottomWidth: 1,
     borderBottomColor: commonColor.brandPrimaryDark
   },
   headerContent: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingLeft: "5@s",
-    paddingRight: "5@s",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: '5@s',
+    paddingRight: '5@s',
     borderBottomColor: commonColor.listBorderColor,
     borderBottomWidth: 1,
     backgroundColor: commonColor.headerBgColor
   },
   headerName: {
     color: commonColor.headerTextColor,
-    fontSize: "20@s",
-    marginLeft: "5@s",
-    fontWeight: "bold"
+    fontSize: '20@s',
+    marginLeft: '5@s',
+    fontWeight: 'bold'
   },
   heartbeatButton: {
-    marginRight: "5@s"
+    marginRight: '5@s'
   },
   heartbeatIcon: {
     color: commonColor.brandSuccess,
-    fontSize: "18@s"
+    fontSize: '18@s'
   },
   deadHeartbeatIcon: {
     color: commonColor.brandDanger,
-    fontSize: "18@s"
+    fontSize: '18@s'
   },
   connectorsContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    flexWrap: "wrap"
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexWrap: 'wrap'
   }
 });
 

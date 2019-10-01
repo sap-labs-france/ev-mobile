@@ -18,7 +18,7 @@
     "member-ordering": false,
     "quotemark": [
       true,
-      "double"
+      "single"
     ],
     "no-trailing-whitespace": true,
     "indent": [

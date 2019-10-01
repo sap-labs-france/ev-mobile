@@ -1,9 +1,9 @@
-import React from "react";
-import { BackHandler } from "react-native";
-import { NavigationEventSubscription } from "react-navigation";
-import CentralServerProvider from "../../provider/CentralServerProvider";
-import ProviderFactory from "../../provider/ProviderFactory";
-import BaseProps from "../../types/BaseProps";
+import React from 'react';
+import { BackHandler } from 'react-native';
+import { NavigationEventSubscription } from 'react-navigation';
+import CentralServerProvider from '../../provider/CentralServerProvider';
+import ProviderFactory from '../../provider/ProviderFactory';
+import BaseProps from '../../types/BaseProps';
 
 export interface Props extends BaseProps {
 }
@@ -21,8 +21,8 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     super(props);
     this.mounted = false;
     // Add listeners
-    this.didFocus = props.navigation.addListener("didFocus", this.componentDidFocus.bind(this));
-    this.didBlur = props.navigation.addListener("didBlur", this.componentDidBlur.bind(this));
+    this.didFocus = props.navigation.addListener('didFocus', this.componentDidFocus.bind(this));
+    this.didBlur = props.navigation.addListener('didBlur', this.componentDidBlur.bind(this));
   }
 
   public isMounted(): boolean {
@@ -32,7 +32,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   public async componentDidMount() {
     this.mounted = true;
     this.centralServerProvider = await ProviderFactory.getProvider();
-    BackHandler.removeEventListener("hardwareBackPress", this.onBack);
+    BackHandler.removeEventListener('hardwareBackPress', this.onBack);
   }
 
   public async componentWillUnmount() {
@@ -52,7 +52,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   }
 
   public async componentDidFocus() {
-    BackHandler.addEventListener("hardwareBackPress", this.onBack.bind(this));
+    BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
   }
 
   // tslint:disable-next-line: no-empty

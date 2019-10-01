@@ -1,5 +1,5 @@
-import Address from "./Address";
-import CreatedUpdatedProps from "./CreatedUpdatedProps";
+import Address from './Address';
+import CreatedUpdatedProps from './CreatedUpdatedProps';
 
 export default interface Company extends CreatedUpdatedProps {
   id: string;

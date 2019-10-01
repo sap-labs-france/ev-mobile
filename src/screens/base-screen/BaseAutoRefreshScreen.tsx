@@ -1,6 +1,6 @@
-import BaseProps from "../../types/BaseProps";
-import Constants from "../../utils/Constants";
-import BaseScreen from "./BaseScreen";
+import BaseProps from '../../types/BaseProps';
+import Constants from '../../utils/Constants';
+import BaseScreen from './BaseScreen';
 
 export interface Props extends BaseProps {
 }
@@ -72,7 +72,7 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
 
   public async refresh() {
     // tslint:disable-next-line: no-console
-    console.log("BaseAutoRefreshScreen: Refresh not implemented!!!");
+    console.log('BaseAutoRefreshScreen: Refresh not implemented!!!');
   }
 
   private _startRefreshTimer() {

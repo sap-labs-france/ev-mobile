@@ -1,41 +1,41 @@
 export default () => {
   const swipeRowTheme: any = {
-    "NativeBase.ListItem": {
-      ".list": {
-        backgroundColor: "#FFF"
+    'NativeBase.ListItem': {
+      '.list': {
+        backgroundColor: '#FFF'
       },
       marginLeft: 0
     },
-    "NativeBase.Left": {
+    'NativeBase.Left': {
       flex: 0,
       alignSelf: null,
       alignItems: null,
-      "NativeBase.Button": {
+      'NativeBase.Button': {
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        alignSelf: "stretch",
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'stretch',
         borderRadius: 0
       }
     },
-    "NativeBase.Right": {
+    'NativeBase.Right': {
       flex: 0,
       alignSelf: null,
       alignItems: null,
-      "NativeBase.Button": {
+      'NativeBase.Button': {
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        alignSelf: "stretch",
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'stretch',
         borderRadius: 0
       }
     },
-    "NativeBase.Button": {
+    'NativeBase.Button': {
       flex: 1,
       height: null,
-      alignItems: "center",
-      justifyContent: "center",
-      alignSelf: "stretch",
+      alignItems: 'center',
+      justifyContent: 'center',
+      alignSelf: 'stretch',
       borderRadius: 0
     }
   };

@@ -1,18 +1,18 @@
-import { Container, Icon, Spinner, Tab, TabHeading, Tabs } from "native-base";
-import React from "react";
-import { ScrollView } from "react-native";
-import BackgroundComponent from "../../components/background/BackgroundComponent";
-import HeaderComponent from "../../components/header/HeaderComponent";
-import I18n from "../../I18n/I18n";
-import BaseProps from "../../types/BaseProps";
-import ChargingStation from "../../types/ChargingStation";
-import Connector from "../../types/Connector";
-import Utils from "../../utils/Utils";
-import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
-import TransactionChart from "../transactions/chart/TransactionChart";
-import computeStyleSheet from "./ChargerDetailsTabsStyles";
-import ChargerConnectorDetails from "./connector/ChargerConnectorDetails";
-import ChargerDetails from "./details/ChargerDetails";
+import { Container, Icon, Spinner, Tab, TabHeading, Tabs } from 'native-base';
+import React from 'react';
+import { ScrollView } from 'react-native';
+import BackgroundComponent from '../../components/background/BackgroundComponent';
+import HeaderComponent from '../../components/header/HeaderComponent';
+import I18n from '../../I18n/I18n';
+import BaseProps from '../../types/BaseProps';
+import ChargingStation from '../../types/ChargingStation';
+import Connector from '../../types/Connector';
+import Utils from '../../utils/Utils';
+import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
+import TransactionChart from '../transactions/chart/TransactionChart';
+import computeStyleSheet from './ChargerDetailsTabsStyles';
+import ChargerConnectorDetails from './connector/ChargerConnectorDetails';
+import ChargerDetails from './details/ChargerDetails';
 
 export interface Props extends BaseProps {
 }
@@ -78,8 +78,8 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
 
   public getCharger = async () => {
     // Get IDs
-    const chargerID = Utils.getParamFromNavigation(this.props.navigation, "chargerID", null);
-    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, "connectorID", null), 10);
+    const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
+    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null), 10);
     try {
       // Get Charger
       const charger = await this.centralServerProvider.getCharger({ ID: chargerID });
@@ -168,7 +168,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
 
   public render() {
     const style = computeStyleSheet();
-    const connectorID = parseInt(Utils.getParamFromNavigation(this.props.navigation, "connectorID", null), 10);
+    const connectorID = parseInt(Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null), 10);
     const { charger, connector, isAdmin, firstLoad, canStopTransaction, canStartTransaction, canDisplayTransaction } = this.state;
     const { navigation } = this.props;
     const connectorLetter = Utils.getConnectorLetter(connectorID);
@@ -182,11 +182,11 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
           <HeaderComponent
             navigation={this.props.navigation}
             title={charger.id}
-            subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
+            subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
             leftAction={() => this.onBack()}
-            leftActionIcon={"navigate-before"}
+            leftActionIcon={'navigate-before'}
             rightAction={navigation.openDrawer}
-            rightActionIcon={"menu"}
+            rightActionIcon={'menu'}
           />
           {!isAdmin && !canStopTransaction ? (
             <ChargerConnectorDetails
@@ -198,11 +198,11 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
               navigation={navigation}
             />
           ) : (
-            <Tabs tabBarPosition="bottom" locked={false} initialPage={0}>
+            <Tabs tabBarPosition='bottom' locked={false} initialPage={0}>
               <Tab
                 heading={
                   <TabHeading style={style.tabHeader}>
-                    <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
+                    <Icon style={style.tabIcon} type='FontAwesome' name='bolt' />
                   </TabHeading>
                 }>
                 <ChargerConnectorDetails
@@ -218,7 +218,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
                 <Tab
                   heading={
                     <TabHeading style={style.tabHeader}>
-                      <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
+                      <Icon style={style.tabIcon} type='AntDesign' name='linechart' />
                     </TabHeading>
                   }>
                   <TransactionChart transactionID={connector.activeTransactionID} navigation={navigation} isAdmin={isAdmin} />
@@ -228,7 +228,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
                 <Tab
                   heading={
                     <TabHeading style={style.tabHeader}>
-                      <Icon style={style.tabIcon} type="MaterialIcons" name="info" />
+                      <Icon style={style.tabIcon} type='MaterialIcons' name='info' />
                     </TabHeading>
                   }>
                   <ChargerDetails charger={charger} connector={connector} navigation={navigation} />

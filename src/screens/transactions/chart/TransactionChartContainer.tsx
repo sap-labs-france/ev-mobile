@@ -1,13 +1,13 @@
-import { Container } from "native-base";
-import React from "react";
-import BackgroundComponent from "../../../components/background/BackgroundComponent";
-import HeaderComponent from "../../../components/header/HeaderComponent";
-import I18n from "../../../I18n/I18n";
-import BaseProps from "../../../types/BaseProps";
-import Utils from "../../../utils/Utils";
-import BaseScreen from "../../base-screen/BaseScreen";
-import TransactionChart from "./TransactionChart";
-import computeStyleSheet from "./TransactionChartStyles";
+import { Container } from 'native-base';
+import React from 'react';
+import BackgroundComponent from '../../../components/background/BackgroundComponent';
+import HeaderComponent from '../../../components/header/HeaderComponent';
+import I18n from '../../../I18n/I18n';
+import BaseProps from '../../../types/BaseProps';
+import Utils from '../../../utils/Utils';
+import BaseScreen from '../../base-screen/BaseScreen';
+import TransactionChart from './TransactionChart';
+import computeStyleSheet from './TransactionChartStyles';
 
 export interface Props extends BaseProps {
 }
@@ -24,7 +24,7 @@ export default class TransactionChartContainer extends BaseScreen<Props, State> 
   constructor(props: Props) {
     super(props);
     this.state = {
-      transactionID: parseInt(Utils.getParamFromNavigation(this.props.navigation, "transactionID", null), 10),
+      transactionID: parseInt(Utils.getParamFromNavigation(this.props.navigation, 'transactionID', null), 10),
       isAdmin: false
     };
   }
@@ -62,11 +62,11 @@ export default class TransactionChartContainer extends BaseScreen<Props, State> 
         <BackgroundComponent navigation={navigation} active={false}>
           <HeaderComponent
             navigation={navigation}
-            title={I18n.t("transactions.chargingCurve")}
+            title={I18n.t('transactions.chargingCurve')}
             leftAction={this.onBack}
-            leftActionIcon={"navigate-before"}
+            leftActionIcon={'navigate-before'}
             rightAction={this.props.navigation.openDrawer}
-            rightActionIcon={"menu"}
+            rightActionIcon={'menu'}
           />
           <TransactionChart
             transactionID={this.state.transactionID}

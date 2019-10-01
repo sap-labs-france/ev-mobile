@@ -1,11 +1,11 @@
-import deepmerge from "deepmerge";
-import ResponsiveStylesheet from "react-native-responsive-stylesheet"
-import { ScaledSheet } from "react-native-size-matters";
+import deepmerge from 'deepmerge';
+import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
+import { ScaledSheet } from 'react-native-size-matters';
 
 const commonStyles = ScaledSheet.create({
   spinnerContainer: {
-    padding: "10@s",
-    alignSelf: "center"
+    padding: '10@s',
+    alignSelf: 'center'
   }
 });
 

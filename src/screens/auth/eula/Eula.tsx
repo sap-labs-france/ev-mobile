@@ -1,13 +1,13 @@
-import { Container, Spinner } from "native-base";
-import React from "react";
-import { ScrollView } from "react-native";
-import HTMLView from "react-native-htmlview";
-import HeaderComponent from "../../../components/header/HeaderComponent";
-import I18n from "../../../I18n/I18n";
-import BaseProps from "../../../types/BaseProps";
-import Utils from "../../../utils/Utils";
-import BaseScreen from "../../base-screen/BaseScreen";
-import computeStyleSheet from "./EulaStyles";
+import { Container, Spinner } from 'native-base';
+import React from 'react';
+import { ScrollView } from 'react-native';
+import HTMLView from 'react-native-htmlview';
+import HeaderComponent from '../../../components/header/HeaderComponent';
+import I18n from '../../../I18n/I18n';
+import BaseProps from '../../../types/BaseProps';
+import Utils from '../../../utils/Utils';
+import BaseScreen from '../../base-screen/BaseScreen';
+import computeStyleSheet from './EulaStyles';
 
 export interface Props extends BaseProps {
 }
@@ -25,7 +25,7 @@ export default class Eula extends BaseScreen<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      eulaTextHtml: "",
+      eulaTextHtml: '',
       i18nLocale: I18n.currentLocale().substr(0, 2),
       loading: true,
     };
@@ -62,7 +62,7 @@ export default class Eula extends BaseScreen<Props, State> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate("Login");
+    this.props.navigation.navigate('Login');
     // Do not bubble up
     return true;
   };
@@ -74,12 +74,12 @@ export default class Eula extends BaseScreen<Props, State> {
       <Container>
         <HeaderComponent
           navigation={this.props.navigation}
-          title={I18n.t("authentication.eula")}
-          leftAction={() => this.props.navigation.navigate("Login")}
-          leftActionIcon={"navigate-before"}
+          title={I18n.t('authentication.eula')}
+          leftAction={() => this.props.navigation.navigate('Login')}
+          leftActionIcon={'navigate-before'}
         />
         {loading ? (
-          <Spinner style={style.spinner} color="white" />
+          <Spinner style={style.spinner} color='white' />
         ) : (
           <ScrollView style={style.container}>
             <HTMLView value={eulaTextHtml} />

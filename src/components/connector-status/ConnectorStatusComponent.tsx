@@ -1,11 +1,11 @@
-import { Text, View } from "native-base";
-import React from "react";
-import { Animated, Easing, Platform } from "react-native";
-import BaseProps from "../../types/BaseProps";
-import Connector from "../../types/Connector";
-import Constants from "../../utils/Constants";
-import Utils from "../../utils/Utils";
-import computeStyleSheet from "./ConnectorStatusComponentStyles";
+import { Text, View } from 'native-base';
+import React from 'react';
+import { Animated, Easing, Platform } from 'react-native';
+import BaseProps from '../../types/BaseProps';
+import Connector from '../../types/Connector';
+import Constants from '../../utils/Constants';
+import Utils from '../../utils/Utils';
+import computeStyleSheet from './ConnectorStatusComponentStyles';
 
 export interface Props extends BaseProps {
   connector?: Connector;
@@ -39,12 +39,12 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     // Second interpolate beginning and end values (in this case 0 and 1)
     this.rotateClockwise = spinValue.interpolate({
       inputRange: [0, 1],
-      outputRange: ["0deg", "360deg"]
+      outputRange: ['0deg', '360deg']
     });
 
     this.rotateCounterClockwise = spinValue.interpolate({
       inputRange: [0, 1],
-      outputRange: ["360deg", "0deg"]
+      outputRange: ['360deg', '0deg']
     });
   }
 
@@ -72,42 +72,42 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
       // Charging
       case Constants.CONN_STATUS_CHARGING:
       case Constants.CONN_STATUS_OCCUPIED:
-        status = "charging";
+        status = 'charging';
         break;
       // Preparing
       case Constants.CONN_STATUS_PREPARING:
-        status = "preparing";
+        status = 'preparing';
         break;
       // Preparing
       case Constants.CONN_STATUS_FINISHING:
-        status = "finishing";
+        status = 'finishing';
         break;
       // Reserved
       case Constants.CONN_STATUS_RESERVED:
-        status = "reserved";
+        status = 'reserved';
         break;
       // Faulted
       case Constants.CONN_STATUS_FAULTED:
-        status = "faulted";
+        status = 'faulted';
         break;
       // Unavailable
       case Constants.CONN_STATUS_UNAVAILABLE:
-        status = "unavailable";
+        status = 'unavailable';
         break;
       // Suspending EV / EVSE
       case Constants.CONN_STATUS_SUSPENDED_EVSE:
       case Constants.CONN_STATUS_SUSPENDED_EV:
-        status = "suspended";
+        status = 'suspended';
         break;
       // Available
       case Constants.CONN_STATUS_AVAILABLE:
-        status = "available";
+        status = 'available';
         break;
     }
     if (status) {
-      connectorStyles.container.push(style[status + "Connector"]);
-      connectorStyles.value.push(style[status + "ConnectorValue"]);
-      connectorStyles.description.push(style[status + "ConnectorDescription"]);
+      connectorStyles.container.push(style[status + 'Connector']);
+      connectorStyles.value.push(style[status + 'ConnectorValue']);
+      connectorStyles.description.push(style[status + 'ConnectorDescription']);
     }
     return connectorStyles;
   }
@@ -118,7 +118,7 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     if (connector) {
       return Utils.getConnectorLetter(connector.connectorId);
     } else {
-      return "" + value;
+      return '' + value;
     }
   }
 
@@ -139,7 +139,7 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     const value = this.getConnectorValue();
     // Animated
     const isAnimated = this.isAnimated();
-    const isAndroid = Platform.OS === "android";
+    const isAndroid = Platform.OS === 'android';
     return (
       <View style={this.props.text ? style.containerWithDescription : style.containerWithNoDescription}>
         {isAndroid ? (

@@ -1,12 +1,12 @@
-import { Icon } from "native-base";
-import React from "react";
-import { Keyboard, TextInput } from "react-native";
-import * as Animatable from "react-native-animatable";
-import I18n from "../../I18n/I18n";
-import commonColor from "../../theme/variables/commonColor";
-import BaseProps from "../../types/BaseProps";
-import Constants from "../../utils/Constants";
-import computeStyleSheet from "./SearchHeaderComponentStyles";
+import { Icon } from 'native-base';
+import React from 'react';
+import { Keyboard, TextInput } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import I18n from '../../I18n/I18n';
+import commonColor from '../../theme/variables/commonColor';
+import BaseProps from '../../types/BaseProps';
+import Constants from '../../utils/Constants';
+import computeStyleSheet from './SearchHeaderComponentStyles';
 
 export interface Props extends BaseProps {
   initialVisibility?: boolean;
@@ -34,7 +34,7 @@ export default class SearchHeaderComponent extends React.Component<Props, State>
     this.state = {
       isVisible: this.props.initialVisibility
     };
-    this.searchText = "";
+    this.searchText = '';
     this.searchChanged = false;
   }
 
@@ -71,9 +71,9 @@ export default class SearchHeaderComponent extends React.Component<Props, State>
 
   public clearSearch() {
     // Check
-    if (this.searchText !== "") {
+    if (this.searchText !== '') {
       // Clear
-      this.searchText = "";
+      this.searchText = '';
       this.searchChanged = true;
       this.textInput.clear();
       // Search
@@ -130,18 +130,18 @@ export default class SearchHeaderComponent extends React.Component<Props, State>
           this.animRef = ref;
         }}
         style={style.container}>
-        <Icon type="MaterialIcons" name="search" style={style.icon} />
+        <Icon type='MaterialIcons' name='search' style={style.icon} />
         <TextInput
           ref={(ref) => {
             this.textInput = ref;
           }}
           selectionColor={commonColor.inverseTextColor}
           style={style.inputField}
-          placeholder={I18n.t("general.search")}
+          placeholder={I18n.t('general.search')}
           placeholderTextColor={commonColor.placeholderTextColor}
           onChangeText={(searchText) => this.searchHasChanged(searchText)}
         />
-        <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this.clearSearch()} />
+        <Icon type='MaterialIcons' name='clear' style={style.icon} onPress={() => this.clearSearch()} />
       </Animatable.View>
     );
   }

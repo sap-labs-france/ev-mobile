@@ -1,20 +1,20 @@
-import { Container, Spinner, View } from "native-base";
-import React from "react";
-import { Alert, BackHandler, FlatList, Platform, RefreshControl } from "react-native";
-import BackgroundComponent from "../../components/background/BackgroundComponent";
-import HeaderComponent from "../../components/header/HeaderComponent";
-import ListEmptyTextComponent from "../../components/list/empty-text/ListEmptyTextComponent";
-import ListFooterComponent from "../../components/list/footer/ListFooterComponent";
-import SearchHeaderComponent from "../../components/search-header/SearchHeaderComponent";
-import SiteComponent from "../../components/site/SiteComponent";
-import I18n from "../../I18n/I18n";
-import BaseProps from "../../types/BaseProps";
-import { DataResult } from "../../types/DataResult";
-import Site from "../../types/Site";
-import Constants from "../../utils/Constants";
-import Utils from "../../utils/Utils";
-import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
-import computeStyleSheet from "./SitesStyles";
+import { Container, Spinner, View } from 'native-base';
+import React from 'react';
+import { Alert, BackHandler, FlatList, Platform, RefreshControl } from 'react-native';
+import BackgroundComponent from '../../components/background/BackgroundComponent';
+import HeaderComponent from '../../components/header/HeaderComponent';
+import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
+import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
+import SearchHeaderComponent from '../../components/search-header/SearchHeaderComponent';
+import SiteComponent from '../../components/site/SiteComponent';
+import I18n from '../../I18n/I18n';
+import BaseProps from '../../types/BaseProps';
+import { DataResult } from '../../types/DataResult';
+import Site from '../../types/Site';
+import Constants from '../../utils/Constants';
+import Utils from '../../utils/Utils';
+import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
+import computeStyleSheet from './SitesStyles';
 
 export interface Props extends BaseProps {
 }
@@ -56,7 +56,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     // No Site Management: Go to chargers
     const securityProvider = this.centralServerProvider.getSecurityProvider();
     if (securityProvider && !securityProvider.isComponentOrganizationActive()) {
-      this.props.navigation.navigate("Chargers");
+      this.props.navigation.navigate('Chargers');
     }
     // Get the sites
     await this.refresh();
@@ -67,7 +67,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     await super.componentWillUnmount();
   }
 
-  public getSites = async (searchText = "", skip: number, limit: number): Promise<DataResult<Site>> => {
+  public getSites = async (searchText = '', skip: number, limit: number): Promise<DataResult<Site>> => {
     let sites: DataResult<Site>;
     try {
       // Get the Sites
@@ -82,9 +82,9 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
 
   public onBack = () => {
     Alert.alert(
-      I18n.t("general.exitApp"),
-      I18n.t("general.exitAppConfirm"),
-      [{ text: I18n.t("general.no"), style: "cancel" }, { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() }],
+      I18n.t('general.exitApp'),
+      I18n.t('general.exitAppConfirm'),
+      [{ text: I18n.t('general.no'), style: 'cancel' }, { text: I18n.t('general.yes'), onPress: () => BackHandler.exitApp() }],
       { cancelable: false }
     );
     return true;
@@ -143,11 +143,11 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         <BackgroundComponent navigation={navigation} active={false}>
           <HeaderComponent
             navigation={navigation}
-            title={I18n.t("sidebar.sites")}
+            title={I18n.t('sidebar.sites')}
             showSearchAction={true}
             searchRef={this.searchRef}
             rightAction={navigation.openDrawer}
-            rightActionIcon={"menu"}
+            rightActionIcon={'menu'}
           />
           <SearchHeaderComponent
             initialVisibility={false}
@@ -167,8 +167,8 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
                 keyExtractor={(item) => item.id}
                 refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this.onEndScroll}
-                onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
-                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t("sites.noSites")} />}
+                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('sites.noSites')} />}
                 ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
               />
             )}

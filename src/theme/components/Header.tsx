@@ -1,6 +1,6 @@
-import { PixelRatio, StatusBar } from "react-native";
-import { PLATFORM } from "./../variables/commonColor";
-import variable from "./../variables/platform";
+import { PixelRatio, StatusBar } from 'react-native';
+import { PLATFORM } from './../variables/commonColor';
+import variable from './../variables/platform';
 
 const buildTheme = (variables: any) => {
   // Forced to break up the theme to avoid typescript infinite run!
@@ -8,11 +8,11 @@ const buildTheme = (variables: any) => {
   const platform = variables.platform;
 
   const headerTheme: any = {
-    backgroundColor: "transparent",
-    flexDirection: "row",
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
     paddingLeft: platform === PLATFORM.IOS ? 5 : 0,
     paddingRight: platform === PLATFORM.IOS ? 5 : 0,
-    justifyContent: "center",
+    justifyContent: 'center',
     paddingTop: platform === PLATFORM.IOS ? 18 : 0,
     borderBottomWidth: platform === PLATFORM.IOS ? 1 / PixelRatio.getPixelSizeForLayoutSize(1) : 0,
     borderBottomColor: variables.toolbarDefaultBorder,
@@ -25,43 +25,43 @@ const buildTheme = (variables: any) => {
     right: 0
   };
 
-  headerTheme[".span"] = {
+  headerTheme['.span'] = {
     height: 128,
-    "NativeBase.Left": {
-      alignSelf: "flex-start"
+    'NativeBase.Left': {
+      alignSelf: 'flex-start'
     },
-    "NativeBase.Body": {
-      alignSelf: "flex-end",
-      alignItems: "flex-start",
-      justifyContent: "center",
+    'NativeBase.Body': {
+      alignSelf: 'flex-end',
+      alignItems: 'flex-start',
+      justifyContent: 'center',
       paddingBottom: 26
     },
-    "NativeBase.Right": {
-      alignSelf: "flex-start"
+    'NativeBase.Right': {
+      alignSelf: 'flex-start'
     }
   };
 
-  headerTheme[".hasSubtitle"] = {
-    "NativeBase.Body": {
-      "NativeBase.Title": {
+  headerTheme['.hasSubtitle'] = {
+    'NativeBase.Body': {
+      'NativeBase.Title': {
         fontSize: variables.titleFontSize - 2,
         fontFamily: variables.titleFontfamily,
-        textAlign: "center",
-        fontWeight: "500",
+        textAlign: 'center',
+        fontWeight: '500',
         paddingBottom: 3
       },
-      "NativeBase.Subtitle": {
+      'NativeBase.Subtitle': {
         fontSize: variables.subTitleFontSize,
         fontFamily: variables.titleFontfamily,
         color: variables.subtitleColor,
-        textAlign: "center"
+        textAlign: 'center'
       }
     }
   };
 
-  headerTheme[".transparent"] = {
-    backgroundColor: "transparent",
-    borderBottomColor: "transparent",
+  headerTheme['.transparent'] = {
+    backgroundColor: 'transparent',
+    borderBottomColor: 'transparent',
     elevation: 0,
     shadowColor: null,
     shadowOffset: null,
@@ -71,7 +71,7 @@ const buildTheme = (variables: any) => {
     height: platform === PLATFORM.ANDROID ? variables.toolbarHeight + StatusBar.currentHeight : variables.toolbarHeight
   };
 
-  headerTheme[".noShadow"] = {
+  headerTheme['.noShadow'] = {
     elevation: 0,
     shadowColor: null,
     shadowOffset: null,
@@ -79,7 +79,7 @@ const buildTheme = (variables: any) => {
     shadowOpacity: null
   };
 
-  headerTheme[".hasTabs"] = {
+  headerTheme['.hasTabs'] = {
     elevation: 0,
     shadowColor: null,
     shadowOffset: null,
@@ -88,25 +88,25 @@ const buildTheme = (variables: any) => {
     borderBottomWidth: null
   };
 
-  headerTheme[".hasSegment"] = {
+  headerTheme['.hasSegment'] = {
     elevation: 0,
     shadowColor: null,
     shadowOffset: null,
     shadowRadius: null,
     shadowOpacity: null,
     borderBottomWidth: null,
-    "NativeBase.Left": {
+    'NativeBase.Left': {
       flex: 0.3
     },
-    "NativeBase.Right": {
+    'NativeBase.Right': {
       flex: 0.3
     },
-    "NativeBase.Body": {
+    'NativeBase.Body': {
       flex: 1,
-      "NativeBase.Segment": {
+      'NativeBase.Segment': {
         marginRight: 0,
-        alignSelf: "center",
-        "NativeBase.Button": {
+        alignSelf: 'center',
+        'NativeBase.Button': {
           paddingLeft: 0,
           paddingRight: 0
         }
@@ -114,34 +114,34 @@ const buildTheme = (variables: any) => {
     }
   };
 
-  headerTheme[".noLeft"] = {
-    "NativeBase.Left": {
+  headerTheme['.noLeft'] = {
+    'NativeBase.Left': {
       width: platform === PLATFORM.IOS ? undefined : 0,
       flex: platform === PLATFORM.IOS ? 1 : 0
     },
-    "NativeBase.Body": {
-      "NativeBase.Title": {
+    'NativeBase.Body': {
+      'NativeBase.Title': {
         paddingLeft: platform === PLATFORM.IOS ? undefined : 10
       },
-      "NativeBase.Subtitle": {
+      'NativeBase.Subtitle': {
         paddingLeft: platform === PLATFORM.IOS ? undefined : 10
       }
     }
   };
 
-  headerTheme["NativeBase.Button"] = {
-    justifyContent: "center",
-    alignSelf: "center",
-    alignItems: "center",
-    ".transparent": {
-      "NativeBase.Text": {
+  headerTheme['NativeBase.Button'] = {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    alignItems: 'center',
+    '.transparent': {
+      'NativeBase.Text': {
         color: variables.toolbarBtnTextColor,
-        fontWeight: "600"
+        fontWeight: '600'
       },
-      "NativeBase.Icon": {
+      'NativeBase.Icon': {
         color: variables.toolbarBtnColor
       },
-      "NativeBase.IconNB": {
+      'NativeBase.IconNB': {
         color: variables.toolbarBtnColor
       },
       paddingHorizontal: variables.buttonPadding
@@ -149,39 +149,39 @@ const buildTheme = (variables: any) => {
     paddingHorizontal: 15
   };
 
-  headerTheme[".searchBar"] = {
-    "NativeBase.Item": {
-      "NativeBase.Icon": {
-        backgroundColor: "transparent",
+  headerTheme['.searchBar'] = {
+    'NativeBase.Item': {
+      'NativeBase.Icon': {
+        backgroundColor: 'transparent',
         color: variables.dropdownLinkColor,
         fontSize: variables.toolbarSearchIconSize,
-        alignItems: "center",
+        alignItems: 'center',
         marginTop: 2,
         paddingRight: 10,
         paddingLeft: 10
       },
-      "NativeBase.IconNB": {
-        backgroundColor: "transparent",
+      'NativeBase.IconNB': {
+        backgroundColor: 'transparent',
         color: null,
-        alignSelf: "center"
+        alignSelf: 'center'
       },
-      "NativeBase.Input": {
-        alignSelf: "center",
+      'NativeBase.Input': {
+        alignSelf: 'center',
         lineHeight: null,
         height: variables.searchBarInputHeight
       },
-      alignSelf: "center",
-      alignItems: "center",
-      justifyContent: "flex-start",
+      alignSelf: 'center',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
       flex: 1,
       height: variables.searchBarHeight,
-      borderColor: "transparent",
+      borderColor: 'transparent',
       backgroundColor: variables.toolbarInputColor
     },
-    "NativeBase.Button": {
-      ".transparent": {
-        "NativeBase.Text": {
-          fontWeight: "500"
+    'NativeBase.Button': {
+      '.transparent': {
+        'NativeBase.Text': {
+          fontWeight: '500'
         },
         paddingHorizontal: null,
         paddingLeft: platform === PLATFORM.IOS ? 10 : null
@@ -192,31 +192,31 @@ const buildTheme = (variables: any) => {
     }
   };
 
-  headerTheme[".rounded"] = {
-    "NativeBase.Item": {
+  headerTheme['.rounded'] = {
+    'NativeBase.Item': {
       borderRadius: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? 25 : 3
     }
   };
 
-  headerTheme["NativeBase.Left"] = {
-    "NativeBase.Button": {
-      ".hasText": {
+  headerTheme['NativeBase.Left'] = {
+    'NativeBase.Button': {
+      '.hasText': {
         marginLeft: -10,
         height: 30,
-        "NativeBase.Icon": {
+        'NativeBase.Icon': {
           color: variables.toolbarBtnColor,
           fontSize: variables.iconHeaderSize,
           marginTop: 2,
           marginRight: 5,
           marginLeft: 2
         },
-        "NativeBase.Text": {
+        'NativeBase.Text': {
           color: variables.toolbarBtnTextColor,
           fontSize: platform === PLATFORM.IOS ? 17 : 0,
           marginLeft: 7,
           lineHeight: 19.5
         },
-        "NativeBase.IconNB": {
+        'NativeBase.IconNB': {
           color: variables.toolbarBtnColor,
           fontSize: variables.iconHeaderSize,
           marginTop: 2,
@@ -224,9 +224,9 @@ const buildTheme = (variables: any) => {
           marginLeft: 2
         }
       },
-      ".transparent": {
+      '.transparent': {
         marginLeft: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? -3 : 0,
-        "NativeBase.Icon": {
+        'NativeBase.Icon': {
           color: variables.toolbarBtnColor,
           fontSize:
             platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL
@@ -237,7 +237,7 @@ const buildTheme = (variables: any) => {
           marginLeft: 1,
           paddingTop: 1
         },
-        "NativeBase.IconNB": {
+        'NativeBase.IconNB': {
           color: variables.toolbarBtnColor,
           fontSize:
             platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL
@@ -248,14 +248,14 @@ const buildTheme = (variables: any) => {
           marginLeft: 1,
           paddingTop: 1
         },
-        "NativeBase.Text": {
+        'NativeBase.Text': {
           color: variables.toolbarBtnTextColor,
           fontSize: platform === PLATFORM.IOS ? 17 : 0,
           top: platform === PLATFORM.IOS ? 1 : -1.5,
           paddingLeft: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? 2 : 5,
           paddingRight: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? undefined : 10
         },
-        backgroundColor: "transparent",
+        backgroundColor: 'transparent',
         borderColor: null,
         elevation: 0,
         shadowColor: null,
@@ -263,10 +263,10 @@ const buildTheme = (variables: any) => {
         shadowRadius: null,
         shadowOpacity: null
       },
-      "NativeBase.Icon": {
+      'NativeBase.Icon': {
         color: variables.toolbarBtnColor
       },
-      "NativeBase.IconNB": {
+      'NativeBase.IconNB': {
         color: variables.toolbarBtnColor
       },
       alignSelf: null,
@@ -274,54 +274,54 @@ const buildTheme = (variables: any) => {
       paddingLeft: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? 4 : 8
     },
     flex: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? 1 : 0.4,
-    alignSelf: "center",
-    alignItems: "flex-start"
+    alignSelf: 'center',
+    alignItems: 'flex-start'
   };
 
-  headerTheme["NativeBase.Body"] = {
+  headerTheme['NativeBase.Body'] = {
     flex: 1,
-    alignItems: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? "center" : "center",
-    alignSelf: "center",
-    "NativeBase.Segment": {
+    alignItems: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? 'center' : 'center',
+    alignSelf: 'center',
+    'NativeBase.Segment': {
       borderWidth: 0,
-      alignSelf: "flex-end",
+      alignSelf: 'flex-end',
       marginRight: platform === PLATFORM.IOS ? -40 : -55
     },
-    "NativeBase.Button": {
-      alignSelf: "center",
-      ".transparent": {
-        backgroundColor: "transparent"
+    'NativeBase.Button': {
+      alignSelf: 'center',
+      '.transparent': {
+        backgroundColor: 'transparent'
       },
-      "NativeBase.Icon": {
+      'NativeBase.Icon': {
         color: variables.toolbarBtnColor
       },
-      "NativeBase.IconNB": {
+      'NativeBase.IconNB': {
         color: variables.toolbarBtnColor
       },
-      "NativeBase.Text": {
+      'NativeBase.Text': {
         color: variables.inverseTextColor,
-        backgroundColor: "transparent"
+        backgroundColor: 'transparent'
       }
     }
   };
 
-  headerTheme["NativeBase.Right"] = {
-    "NativeBase.Button": {
-      ".hasText": {
+  headerTheme['NativeBase.Right'] = {
+    'NativeBase.Button': {
+      '.hasText': {
         height: 30,
-        "NativeBase.Icon": {
+        'NativeBase.Icon': {
           color: variables.toolbarBtnColor,
           fontSize: variables.iconHeaderSize - 2,
           marginTop: 2,
           marginRight: 2,
           marginLeft: 5
         },
-        "NativeBase.Text": {
+        'NativeBase.Text': {
           color: variables.toolbarBtnTextColor,
           fontSize: platform === PLATFORM.IOS ? 17 : 14,
           lineHeight: 19.5
         },
-        "NativeBase.IconNB": {
+        'NativeBase.IconNB': {
           color: variables.toolbarBtnColor,
           fontSize: variables.iconHeaderSize - 2,
           marginTop: 2,
@@ -329,13 +329,13 @@ const buildTheme = (variables: any) => {
           marginLeft: 5
         }
       },
-      ".transparent": {
+      '.transparent': {
         marginRight: platform === PLATFORM.IOS ? -9 : -5,
         paddingLeft: 15,
         paddingRight: 12,
         paddingHorizontal: 15,
         borderRadius: 50,
-        "NativeBase.Icon": {
+        'NativeBase.Icon': {
           color: variables.toolbarBtnColor,
           fontSize: variables.iconHeaderSize - 2,
           marginTop: 0,
@@ -343,7 +343,7 @@ const buildTheme = (variables: any) => {
           marginRight: 0
           // paddingTop: 0
         },
-        "NativeBase.IconNB": {
+        'NativeBase.IconNB': {
           color: variables.toolbarBtnColor,
           fontSize: variables.iconHeaderSize - 2,
           marginTop: 0,
@@ -351,13 +351,13 @@ const buildTheme = (variables: any) => {
           marginRight: 0
           // paddingTop: 0
         },
-        "NativeBase.Text": {
+        'NativeBase.Text': {
           color: variables.toolbarBtnTextColor,
           fontSize: platform === PLATFORM.IOS ? 17 : 14,
           top: platform === PLATFORM.IOS ? 1 : -1.5,
           paddingRight: platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL ? 0 : undefined
         },
-        backgroundColor: "transparent",
+        backgroundColor: 'transparent',
         borderColor: null,
         elevation: 0,
         shadowColor: null,
@@ -365,20 +365,20 @@ const buildTheme = (variables: any) => {
         shadowRadius: null,
         shadowOpacity: null
       },
-      "NativeBase.Icon": {
+      'NativeBase.Icon': {
         color: variables.toolbarBtnColor
       },
-      "NativeBase.IconNB": {
+      'NativeBase.IconNB': {
         color: variables.toolbarBtnColor
       },
       alignSelf: null,
       paddingHorizontal: variables.buttonPadding
     },
     flex: 1,
-    alignSelf: "center",
-    alignItems: "flex-end",
-    flexDirection: "row",
-    justifyContent: "flex-end"
+    alignSelf: 'center',
+    alignItems: 'flex-end',
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
   };
   return headerTheme;
 };

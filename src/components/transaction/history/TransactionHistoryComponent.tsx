@@ -1,13 +1,13 @@
-import { Icon, Text, View } from "native-base";
-import React from "react";
-import { TouchableOpacity } from "react-native";
-import * as Animatable from "react-native-animatable";
-import BaseProps from "../../../types/BaseProps";
-import Transaction from "../../../types/Transaction";
-import Constants from "../../../utils/Constants";
-import Utils from "../../../utils/Utils";
-import TransactionHeaderComponent from "../header/TransactionHeaderComponent";
-import computeStyleSheet from "../TransactionComponentCommonStyles";
+import { Icon, Text, View } from 'native-base';
+import React from 'react';
+import { TouchableOpacity } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import BaseProps from '../../../types/BaseProps';
+import Transaction from '../../../types/Transaction';
+import Constants from '../../../utils/Constants';
+import Utils from '../../../utils/Utils';
+import TransactionHeaderComponent from '../header/TransactionHeaderComponent';
+import computeStyleSheet from '../TransactionComponentCommonStyles';
 
 export interface Props extends BaseProps {
   transaction: Transaction;
@@ -43,43 +43,43 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
     const duration = Utils.formatDurationHHMMSS(transaction.stop.totalDurationSecs, false);
     const inactivity = Utils.formatDurationHHMMSS(transaction.stop.totalInactivitySecs, false);
     const inactivityStyle = Utils.computeInactivityStyle(transaction.stop.totalInactivitySecs);
-    const batteryLevel = transaction.stateOfCharge ? `${transaction.stateOfCharge} > ${transaction.stop.stateOfCharge}` : "-";
+    const batteryLevel = transaction.stateOfCharge ? `${transaction.stateOfCharge} > ${transaction.stop.stateOfCharge}` : '-';
     const navigation = this.props.navigation;
     return (
       <Animatable.View
-        animation={this.counter++ % 2 === 0 ? "flipInX" : "flipInX"}
+        animation={this.counter++ % 2 === 0 ? 'flipInX' : 'flipInX'}
         iterationCount={1}
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("TransactionChart", { transactionID: transaction.id });
+            navigation.navigate('TransactionChart', { transactionID: transaction.id });
           }}>
           <View style={style.container}>
             <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} />
             <View style={style.transactionContent}>
               <View style={style.columnContainer}>
-                <Icon type="MaterialIcons" name="ev-station" style={[style.icon, style.info]} />
+                <Icon type='MaterialIcons' name='ev-station' style={[style.icon, style.info]} />
                 <Text style={[style.labelValue, style.info]}>{consumption}</Text>
                 <Text style={[style.subLabelValue, style.info]}>(kW.h)</Text>
               </View>
               <View style={style.columnContainer}>
-                <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
+                <Icon type='MaterialIcons' name='timer' style={[style.icon, style.info]} />
                 <Text style={[style.labelValue, style.info]}>{duration}</Text>
                 <Text style={[style.subLabelValue, style.info]}>(hh:mm)</Text>
               </View>
               <View style={style.columnContainer}>
-                <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
+                <Icon type='MaterialIcons' name='timer-off' style={[style.icon, inactivityStyle]} />
                 <Text style={[style.labelValue, inactivityStyle]}>{inactivity}</Text>
                 <Text style={[style.subLabelValue, inactivityStyle]}>(hh:mm)</Text>
               </View>
               <View style={style.columnContainer}>
-                <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
+                <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.info]} />
                 <Text style={[style.labelValue, style.info]}>{batteryLevel}</Text>
                 <Text style={[style.subLabelValue, style.info]}>(%)</Text>
               </View>
               {isPricingActive && (
                 <View style={style.columnContainer}>
-                  <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
+                  <Icon type='FontAwesome' name='money' style={[style.icon, style.info]} />
                   <Text style={[style.labelValue, style.info]}>{price}</Text>
                   <Text style={[style.subLabelValue, style.info]}>({transaction.priceUnit})</Text>
                 </View>

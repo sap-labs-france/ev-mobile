@@ -1,8 +1,8 @@
-import { Dimensions, Platform } from "react-native";
-import { PLATFORM } from "./../variables/commonColor";
-import variable from "./../variables/platform";
+import { Dimensions, Platform } from 'react-native';
+import { PLATFORM } from './../variables/commonColor';
+import variable from './../variables/platform';
 
-const deviceHeight = Dimensions.get("window").height;
+const deviceHeight = Dimensions.get('window').height;
 export default (variables /* : * */ = variable) => {
   const theme: any = {
     flex: 1,

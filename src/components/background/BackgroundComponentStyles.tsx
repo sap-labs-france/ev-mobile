@@ -1,13 +1,13 @@
-import deepmerge from "deepmerge";
-import ResponsiveStylesheet from "react-native-responsive-stylesheet"
-import { ScaledSheet } from "react-native-size-matters";
+import deepmerge from 'deepmerge';
+import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
+import { ScaledSheet } from 'react-native-size-matters';
 
 const commonStyles = ScaledSheet.create({
   background: {
     flex: 1
   },
   imageBackground: {
-    resizeMode: "cover"
+    resizeMode: 'cover'
   }
 });
 

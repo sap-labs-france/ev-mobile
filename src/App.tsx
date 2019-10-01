@@ -1,33 +1,33 @@
-import moment from "moment";
-import { Root } from "native-base";
-import CentralServerProvider from "provider/CentralServerProvider";
-import React from "react";
-import { Dimensions, StatusBar } from "react-native";
-import { createAppContainer, createSwitchNavigator, NavigationContainer, NavigationContainerComponent, NavigationState } from "react-navigation";
-import { createDrawerNavigator } from "react-navigation-drawer";
-import { createStackNavigator } from "react-navigation-stack";
-import DeepLinkingManager from "./deeplinking/DeepLinkingManager";
-import NotificationManager from "./notification/NotificationManager";
-import ProviderFactory from "./provider/ProviderFactory";
-import Eula from "./screens/auth/eula/Eula";
-import Login from "./screens/auth/login/Login";
-import ResetPassword from "./screens/auth/reset-password/ResetPassword";
-import RetrievePassword from "./screens/auth/retrieve-password/RetrievePassword";
-import SignUp from "./screens/auth/sign-up/SignUp";
-import ChargerDetailsTabs from "./screens/charger-details/ChargerDetailsTabs";
-import Chargers from "./screens/chargers/Chargers";
-import Sidebar from "./screens/sidebar/SideBar";
-import SiteAreas from "./screens/site-areas/SiteAreas";
-import Sites from "./screens/sites/Sites";
-import TransactionChartContainer from "./screens/transactions/chart/TransactionChartContainer";
-import TransactionTabs from "./screens/transactions/TransactionTabs";
-import SecuredStorage from "./utils/SecuredStorage";
-import Utils from "./utils/Utils";
+import moment from 'moment';
+import { Root } from 'native-base';
+import CentralServerProvider from 'provider/CentralServerProvider';
+import React from 'react';
+import { Dimensions, StatusBar } from 'react-native';
+import { createAppContainer, createSwitchNavigator, NavigationContainer, NavigationContainerComponent, NavigationState } from 'react-navigation';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import { createStackNavigator } from 'react-navigation-stack';
+import DeepLinkingManager from './deeplinking/DeepLinkingManager';
+import NotificationManager from './notification/NotificationManager';
+import ProviderFactory from './provider/ProviderFactory';
+import Eula from './screens/auth/eula/Eula';
+import Login from './screens/auth/login/Login';
+import ResetPassword from './screens/auth/reset-password/ResetPassword';
+import RetrievePassword from './screens/auth/retrieve-password/RetrievePassword';
+import SignUp from './screens/auth/sign-up/SignUp';
+import ChargerDetailsTabs from './screens/charger-details/ChargerDetailsTabs';
+import Chargers from './screens/chargers/Chargers';
+import Sidebar from './screens/sidebar/SideBar';
+import SiteAreas from './screens/site-areas/SiteAreas';
+import Sites from './screens/sites/Sites';
+import TransactionChartContainer from './screens/transactions/chart/TransactionChartContainer';
+import TransactionTabs from './screens/transactions/TransactionTabs';
+import SecuredStorage from './utils/SecuredStorage';
+import Utils from './utils/Utils';
 
 // Get the supported locales
-require("moment/locale/fr");
-require("moment/locale/de");
-require("moment/locale/en-gb");
+require('moment/locale/fr');
+require('moment/locale/de');
+require('moment/locale/en-gb');
 // Set the current locale
 moment.locale(Utils.getLocaleShort());
 
@@ -41,8 +41,8 @@ const authNavigator: NavigationContainer = createStackNavigator(
     RetrievePassword: { screen: RetrievePassword }
   },
   {
-    initialRouteName: "Login",
-    headerMode: "none"
+    initialRouteName: 'Login',
+    headerMode: 'none'
   }
 );
 
@@ -55,8 +55,8 @@ const sitesNavigator: NavigationContainer = createStackNavigator(
     ChargerDetailsTabs: { screen: ChargerDetailsTabs }
   },
   {
-    initialRouteName: "Sites",
-    headerMode: "none"
+    initialRouteName: 'Sites',
+    headerMode: 'none'
   }
 );
 
@@ -67,8 +67,8 @@ const chargersNavigator: NavigationContainer = createStackNavigator(
     ChargerDetailsTabs: { screen: ChargerDetailsTabs }
   },
   {
-    initialRouteName: "Chargers",
-    headerMode: "none"
+    initialRouteName: 'Chargers',
+    headerMode: 'none'
   }
 );
 
@@ -80,8 +80,8 @@ const transactionsNavigator: NavigationContainer = createStackNavigator(
     TransactionChart: { screen: TransactionChartContainer }
   },
   {
-    initialRouteName: "TransactionTabs",
-    headerMode: "none"
+    initialRouteName: 'TransactionTabs',
+    headerMode: 'none'
   }
 );
 
@@ -96,10 +96,10 @@ const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
     navigationOptions: {
       swipeEnabled: true
     },
-    drawerWidth: Dimensions.get("window").width / 1.5,
-    initialRouteName: "SitesNavigator",
+    drawerWidth: Dimensions.get('window').width / 1.5,
+    initialRouteName: 'SitesNavigator',
     unmountInactiveRoutes: true,
-    drawerPosition: "right",
+    drawerPosition: 'right',
     contentComponent: (props) => <Sidebar {...props} />
   }
 );
@@ -110,7 +110,7 @@ const rootNavigator: NavigationContainer = createSwitchNavigator(
     AppDrawerNavigator: { screen: appDrawerNavigator }
   },
   {
-    initialRouteName: "AuthNavigator"
+    initialRouteName: 'AuthNavigator'
   }
 );
 

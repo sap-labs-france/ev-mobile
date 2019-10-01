@@ -1,5 +1,5 @@
-import React, { PureComponent } from "react";
-import { WebView } from "react-native-webview";
+import React, { PureComponent } from 'react';
+import { WebView } from 'react-native-webview';
 
 const recaptchaHtml = `
     <!DOCTYPE html>
@@ -35,8 +35,8 @@ interface Props {
 
 class ReactNativeRecaptchaV3 extends PureComponent<Props> {
     public static defaultProps = {
-        leftActionIconType: "MaterialIcons",
-        rightActionIconType: "MaterialIcons",
+        leftActionIconType: 'MaterialIcons',
+        rightActionIconType: 'MaterialIcons',
         showSearchAction: false
     };
 
@@ -45,8 +45,8 @@ class ReactNativeRecaptchaV3 extends PureComponent<Props> {
         const recaptchaHtmlWithKey = recaptchaHtml.replace(/SITEKEY/g, siteKey).replace(/ACTION/g, action);
         return (
             <WebView
-                originWhitelist={["*"]}
-                style={{ width: 0, height: 0, backgroundColor: "transparent" }}
+                originWhitelist={['*']}
+                style={{ width: 0, height: 0, backgroundColor: 'transparent' }}
                 startInLoadingState={false}
                 javaScriptEnabled={true}
                 source={{ html: recaptchaHtmlWithKey, baseUrl: url }}

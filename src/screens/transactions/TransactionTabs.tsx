@@ -1,13 +1,13 @@
-import { Icon, Tab, TabHeading, Tabs } from "native-base";
-import React from "react";
-import { Alert, BackHandler, ScrollView } from "react-native";
-import BackgroundComponent from "../../components/background/BackgroundComponent";
-import I18n from "../../I18n/I18n";
-import BaseProps from "../../types/BaseProps";
-import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
-import TransactionsHistory from "./history/TransactionsHistory";
-import TransactionsInProgress from "./in-progress/TransactionsInProgress";
-import computeStyleSheet from "./TransactionTabsStyles";
+import { Icon, Tab, TabHeading, Tabs } from 'native-base';
+import React from 'react';
+import { Alert, BackHandler, ScrollView } from 'react-native';
+import BackgroundComponent from '../../components/background/BackgroundComponent';
+import I18n from '../../I18n/I18n';
+import BaseProps from '../../types/BaseProps';
+import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
+import TransactionsHistory from './history/TransactionsHistory';
+import TransactionsInProgress from './in-progress/TransactionsInProgress';
+import computeStyleSheet from './TransactionTabsStyles';
 
 export interface Props extends BaseProps {
 }
@@ -40,9 +40,9 @@ export default class TransactionTabs extends BaseAutoRefreshScreen<Props, State>
   public onBack = (): boolean => {
     // Exit?
     Alert.alert(
-      I18n.t("general.exitApp"),
-      I18n.t("general.exitAppConfirm"),
-      [{ text: I18n.t("general.no"), style: "cancel" }, { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() }],
+      I18n.t('general.exitApp'),
+      I18n.t('general.exitAppConfirm'),
+      [{ text: I18n.t('general.no'), style: 'cancel' }, { text: I18n.t('general.yes'), onPress: () => BackHandler.exitApp() }],
       { cancelable: false }
     );
     // Do not bubble up
@@ -66,11 +66,11 @@ export default class TransactionTabs extends BaseAutoRefreshScreen<Props, State>
     return (
       <ScrollView contentContainerStyle={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>
-          <Tabs tabBarPosition="bottom" locked={false} initialPage={0}>
+          <Tabs tabBarPosition='bottom' locked={false} initialPage={0}>
             <Tab
               heading={
                 <TabHeading style={style.tabHeader}>
-                  <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
+                  <Icon style={style.tabIcon} type='FontAwesome' name='bolt' />
                 </TabHeading>
               }>
               <TransactionsInProgress navigation={navigation} />
@@ -78,7 +78,7 @@ export default class TransactionTabs extends BaseAutoRefreshScreen<Props, State>
             <Tab
               heading={
                 <TabHeading style={style.tabHeader}>
-                  <Icon style={style.tabIcon} type="MaterialIcons" name="history" />
+                  <Icon style={style.tabIcon} type='MaterialIcons' name='history' />
                 </TabHeading>
               }>
               <TransactionsHistory navigation={navigation} />

@@ -1,30 +1,30 @@
-import deepmerge from "deepmerge";
-import ResponsiveStylesheet from "react-native-responsive-stylesheet"
-import { ScaledSheet } from "react-native-size-matters";
-import commonColor from "../../theme/variables/commonColor";
+import deepmerge from 'deepmerge';
+import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
+import { ScaledSheet } from 'react-native-size-matters';
+import commonColor from '../../theme/variables/commonColor';
 
 const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
+    flexDirection: 'column',
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor
   },
   transactionContent: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
-    paddingLeft: "5@s",
-    paddingRight: "5@s",
-    height: "80@s",
-    width: "100%"
+    paddingLeft: '5@s',
+    paddingRight: '5@s',
+    height: '80@s',
+    width: '100%'
   },
   label: {
     color: commonColor.textColor,
-    fontSize: "10@s",
-    marginTop: "-3@s"
+    fontSize: '10@s',
+    marginTop: '-3@s'
   },
   info: {
     color: commonColor.brandPrimaryDark
@@ -39,25 +39,25 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.brandDanger
   },
   columnContainer: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center"
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   rowContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center"
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   icon: {
     color: commonColor.textColor,
-    fontSize: "30@s",
-    justifyContent: "flex-end"
+    fontSize: '30@s',
+    justifyContent: 'flex-end'
   },
   labelValue: {
-    fontSize: "15@s"
+    fontSize: '15@s'
   },
   subLabelValue: {
-    fontSize: "10@s"
+    fontSize: '10@s'
   }
 });
 

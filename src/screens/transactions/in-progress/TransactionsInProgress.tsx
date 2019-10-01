@@ -1,19 +1,19 @@
-import { Container, Spinner, View } from "native-base";
-import React from "react";
-import { FlatList, Platform, RefreshControl } from "react-native";
-import BackgroundComponent from "../../../components/background/BackgroundComponent";
-import HeaderComponent from "../../../components/header/HeaderComponent";
-import ListEmptyTextComponent from "../../../components/list/empty-text/ListEmptyTextComponent";
-import ListFooterComponent from "../../../components/list/footer/ListFooterComponent";
-import TransactionInProgressComponent from "../../../components/transaction/in-progress/TransactionInProgressComponent";
-import I18n from "../../../I18n/I18n";
-import BaseProps from "../../../types/BaseProps";
-import { DataResult } from "../../../types/DataResult";
-import Transaction from "../../../types/Transaction";
-import Constants from "../../../utils/Constants";
-import Utils from "../../../utils/Utils";
-import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
-import computeStyleSheet from "../TransactionsCommonStyles";
+import { Container, Spinner, View } from 'native-base';
+import React from 'react';
+import { FlatList, Platform, RefreshControl } from 'react-native';
+import BackgroundComponent from '../../../components/background/BackgroundComponent';
+import HeaderComponent from '../../../components/header/HeaderComponent';
+import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
+import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
+import TransactionInProgressComponent from '../../../components/transaction/in-progress/TransactionInProgressComponent';
+import I18n from '../../../I18n/I18n';
+import BaseProps from '../../../types/BaseProps';
+import { DataResult } from '../../../types/DataResult';
+import Transaction from '../../../types/Transaction';
+import Constants from '../../../utils/Constants';
+import Utils from '../../../utils/Utils';
+import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
+import computeStyleSheet from '../TransactionsCommonStyles';
 
 export interface Props extends BaseProps {
 }
@@ -58,7 +58,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     await this.refresh();
   }
 
-  public getTransationsInProgress = async (searchText = "", skip: number, limit: number): Promise<DataResult<Transaction>> => {
+  public getTransationsInProgress = async (searchText = '', skip: number, limit: number): Promise<DataResult<Transaction>> => {
     let transactions;
     try {
       // Get the Sites
@@ -89,7 +89,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
-      const transactions = await this.getTransationsInProgress("", 0, skip + limit);
+      const transactions = await this.getTransationsInProgress('', 0, skip + limit);
       // Refresh Admin
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       this.setState({
@@ -107,7 +107,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     // No reached the end?
     if (skip + limit < count || count === -1) {
     // No: get next sites
-      const transactions = await this.getTransationsInProgress("", skip + Constants.PAGING_SIZE, limit);
+      const transactions = await this.getTransationsInProgress('', skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState, props) => ({
         transactions: transactions ? [...prevState.transactions, ...transactions.result] : prevState.transactions,
@@ -126,10 +126,10 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
         <BackgroundComponent navigation={navigation} active={false}>
           <HeaderComponent
             navigation={navigation}
-            title={I18n.t("transactions.transactionsInProgress")}
+            title={I18n.t('transactions.transactionsInProgress')}
             showSearchAction={false}
             rightAction={navigation.openDrawer}
-            rightActionIcon={"menu"}
+            rightActionIcon={'menu'}
           />
           <View style={style.content}>
             {loading ? (
@@ -148,9 +148,9 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
                 keyExtractor={(item) => `${item.id}`}
                 refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this.onEndScroll}
-                onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
+                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
                 ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t("transactions.noTransactionsInProgress")} />}
+                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('transactions.noTransactionsInProgress')} />}
               />
             )}
           </View>

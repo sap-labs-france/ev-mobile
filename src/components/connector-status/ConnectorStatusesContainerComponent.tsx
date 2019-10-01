@@ -1,12 +1,12 @@
-import { View } from "native-base";
-import React from "react";
-import I18n from "../../I18n/I18n";
-import BaseProps from "../../types/BaseProps";
-import ConnectorStats from "../../types/ConnectorStats";
-import Constants from "../../utils/Constants";
-import Utils from "../../utils/Utils";
-import ConnectorStatusComponent from "./ConnectorStatusComponent";
-import computeStyleSheet from "./ConnectorStatusesContainerComponentStyles";
+import { View } from 'native-base';
+import React from 'react';
+import I18n from '../../I18n/I18n';
+import BaseProps from '../../types/BaseProps';
+import ConnectorStats from '../../types/ConnectorStats';
+import Constants from '../../utils/Constants';
+import Utils from '../../utils/Utils';
+import ConnectorStatusComponent from './ConnectorStatusComponent';
+import computeStyleSheet from './ConnectorStatusesContainerComponentStyles';
 
 export interface Props extends BaseProps {
   connectorStats: ConnectorStats;
@@ -46,7 +46,7 @@ export default class ConnectorStatusesContainerComponent extends React.Component
             connectorStats.preparingConnectors +
             connectorStats.unavailableConnectors
           }
-          text={I18n.t("connector.notCharging")}
+          text={I18n.t('connector.notCharging')}
           type={Constants.CONN_STATUS_SUSPENDED_EVSE}
         />
         <ConnectorStatusComponent

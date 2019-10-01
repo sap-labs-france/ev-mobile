@@ -1,5 +1,5 @@
-import CreatedUpdatedProps from "./CreatedUpdatedProps";
-import Vehicle from "./Vehicle";
+import CreatedUpdatedProps from './CreatedUpdatedProps';
+import Vehicle from './Vehicle';
 
 export default interface VehicleManufacturer extends CreatedUpdatedProps {
   id: string;

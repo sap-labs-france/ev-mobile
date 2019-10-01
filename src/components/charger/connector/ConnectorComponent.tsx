@@ -1,15 +1,15 @@
-import { Icon, Text, View } from "native-base";
-import React from "react";
-import { Image, TouchableOpacity } from "react-native";
-import * as Animatable from "react-native-animatable";
-import I18n from "../../../I18n/I18n";
-import BaseProps from "../../../types/BaseProps";
-import ChargingStation from "../../../types/ChargingStation";
-import Connector from "../../../types/Connector";
-import Constants from "../../../utils/Constants";
-import Utils from "../../../utils/Utils";
-import ConnectorStatusComponent from "../../connector-status/ConnectorStatusComponent";
-import computeStyleSheet from "./ConnectorComponentStyles";
+import { Icon, Text, View } from 'native-base';
+import React from 'react';
+import { Image, TouchableOpacity } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import I18n from '../../../I18n/I18n';
+import BaseProps from '../../../types/BaseProps';
+import ChargingStation from '../../../types/ChargingStation';
+import Connector from '../../../types/Connector';
+import Constants from '../../../utils/Constants';
+import Utils from '../../../utils/Utils';
+import ConnectorStatusComponent from '../../connector-status/ConnectorStatusComponent';
+import computeStyleSheet from './ConnectorComponentStyles';
 
 // const type2 = require("../../../../assets/connectorType/type2.svg");
 
@@ -74,7 +74,7 @@ export default class ConnectorComponent extends React.Component<Props, State> {
     connector.activeTransactionID !== 0 ? (
       <View style={style.connectorDetail}>
         <Animatable.View
-          animation={!this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
+          animation={!this.state.showBatteryLevel ? 'fadeIn' : 'fadeOut'}
           style={style.connectorDetailAnimated}
           duration={Constants.ANIMATION_ROTATION_MILLIS}>
           <Text style={style.connectorValues}>
@@ -85,19 +85,19 @@ export default class ConnectorComponent extends React.Component<Props, State> {
               : Math.trunc(connector.currentConsumption / 1000)}
           </Text>
           <Text style={style.label} numberOfLines={1}>
-            {I18n.t("details.instant")}
+            {I18n.t('details.instant')}
           </Text>
           <Text style={style.subLabel} numberOfLines={1}>
             (kW)
           </Text>
         </Animatable.View>
         <Animatable.View
-          animation={this.state.showBatteryLevel ? "fadeIn" : "fadeOut"}
+          animation={this.state.showBatteryLevel ? 'fadeIn' : 'fadeOut'}
           style={style.connectorDetailAnimated}
           duration={Constants.ANIMATION_ROTATION_MILLIS}>
           <Text style={style.connectorValues}>{connector.currentStateOfCharge}</Text>
           <Text style={style.label} numberOfLines={1}>
-            {I18n.t("details.battery")}
+            {I18n.t('details.battery')}
           </Text>
           <Text style={style.subLabel} numberOfLines={1}>
             (%)
@@ -119,7 +119,7 @@ export default class ConnectorComponent extends React.Component<Props, State> {
       <View style={style.connectorDetail}>
         <Text style={style.connectorValues}>{Math.round(connector.totalConsumption / 1000)}</Text>
         <Text style={style.label} numberOfLines={1}>
-          {I18n.t("details.total")}
+          {I18n.t('details.total')}
         </Text>
         <Text style={style.subLabel} numberOfLines={1}>
           (kW.h)
@@ -129,7 +129,7 @@ export default class ConnectorComponent extends React.Component<Props, State> {
       <View style={style.connectorDetail}>
         <Text style={style.connectorValues}>{Math.trunc(connector.power / 1000)}</Text>
         <Text style={style.label} numberOfLines={1}>
-          {I18n.t("details.maximum")}
+          {I18n.t('details.maximum')}
         </Text>
         <Text style={style.subLabel} numberOfLines={1}>
           (kW)
@@ -145,18 +145,18 @@ export default class ConnectorComponent extends React.Component<Props, State> {
         style={style.container}
         disabled={charger.inactive}
         onPress={() =>
-          navigation.navigate("ChargerDetailsTabs", {
+          navigation.navigate('ChargerDetailsTabs', {
             chargerID: charger.id,
             connectorID: connector.connectorId
           })
         }>
-        <Animatable.View animation={"flipInX"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+        <Animatable.View animation={'flipInX'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
           <View style={style.connectorContainer}>
             <View style={style.connectorDetailContainer}>
               {this.renderFirstConnectorDetails(connector)}
               {this.renderSecondConnectorDetails(connector, style)}
               {this.renderThirdConnectorDetails(connector, style)}
-              {!charger.inactive && <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />}
+              {!charger.inactive && <Icon style={style.icon} type='MaterialIcons' name='navigate-next' />}
             </View>
           </View>
         </Animatable.View>

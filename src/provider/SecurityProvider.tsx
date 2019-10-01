@@ -1,6 +1,6 @@
-import SiteArea from "../types/SiteArea";
-import UserToken from "../types/UserToken";
-import Constants from "../utils/Constants";
+import SiteArea from '../types/SiteArea';
+import UserToken from '../types/UserToken';
+import Constants from '../utils/Constants';
 
 export default class SecurityProvider {
   private loggedUser: UserToken;

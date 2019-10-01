@@ -1,5 +1,5 @@
-import { PushNotification } from "react-native-push-notification";
-import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
+import { PushNotification } from 'react-native-push-notification';
+import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 // import Message from "../utils/Message";
 
 export default class NotificationManager {

@@ -1,6 +1,6 @@
 export default () => {
   const labelTheme: any = {
-    ".focused": {
+    '.focused': {
       width: 0
     },
     fontSize: 17

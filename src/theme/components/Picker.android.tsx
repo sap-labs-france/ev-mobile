@@ -1,7 +1,7 @@
 export default () => {
   const pickerTheme: any = {
-    ".note": {
-      color: "#8F8E95"
+    '.note': {
+      color: '#8F8E95'
     },
     // width: 90,
     marginRight: -4,

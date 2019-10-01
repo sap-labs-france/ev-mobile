@@ -1,14 +1,14 @@
-import CreatedUpdatedProps from "./CreatedUpdatedProps";
+import CreatedUpdatedProps from './CreatedUpdatedProps';
 
 export default interface Setting extends CreatedUpdatedProps {
   id?: string;
-  identifier: "pricing"|"analytics"|"refund"|"ocpi";
+  identifier: 'pricing'|'analytics'|'refund'|'ocpi';
   sensitiveData: string[];
   content: SettingContent;
 }
 
 export interface SettingContent {
-  type: "gireve"|"sac"|"concur"|"simple"|"convergentCharging";
+  type: 'gireve'|'sac'|'concur'|'simple'|'convergentCharging';
   ocpi?: OcpiSettings;
   simple?: SimplePricingSettings;
   convergentCharging?: ConvergentChargingPricingSettings;
