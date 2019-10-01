@@ -1,9 +1,9 @@
-import { Linking } from 'react-native';
-import DeepLinking from 'react-native-deep-linking';
-import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
+import { Linking } from "react-native";
+import DeepLinking from "react-native-deep-linking";
+import { NavigationActions, NavigationContainerComponent } from "react-navigation";
 import I18n from "../I18n/I18n";
-import CentralServerProvider from '../provider/CentralServerProvider';
-import Message from '../utils/Message';
+import CentralServerProvider from "../provider/CentralServerProvider";
+import Message from "../utils/Message";
 
 export default class DeepLinkingManager {
   private navigator: NavigationContainerComponent;
@@ -18,8 +18,8 @@ export default class DeepLinkingManager {
     this.navigator = navigator;
     this.centralServerProvider = centralServerProvider;
     // Activate Deep Linking
-    DeepLinking.addScheme('eMobility://');
-    DeepLinking.addScheme('emobility://');
+    DeepLinking.addScheme("eMobility://");
+    DeepLinking.addScheme("emobility://");
     // Init Route
     this.addResetPasswordRoute();
     // Init URL
@@ -29,13 +29,13 @@ export default class DeepLinkingManager {
       }
     }).catch((err) => {
       // tslint:disable-next-line: no-console
-      console.error('An error occurred', err)
+      console.error("An error occurred", err)
     });
   }
 
   private addResetPasswordRoute = () => {
     // Add Route
-    DeepLinking.addRoute('/resetPassword/:tenant/:hash', (response: {tenant: string, hash: string}) => {
+    DeepLinking.addRoute("/resetPassword/:tenant/:hash", (response: {tenant: string, hash: string}) => {
         // Check params
       if (!response.tenant) {
         Message.showError(I18n.t("authentication.mandatoryTenant"));
@@ -53,7 +53,7 @@ export default class DeepLinkingManager {
       // Navigate
       this.navigator.dispatch(
         NavigationActions.navigate({
-          routeName: 'ResetPassword',
+          routeName: "ResetPassword",
           params: { tenant: response.tenant, hash: response.hash }
         })
       );
@@ -61,11 +61,11 @@ export default class DeepLinkingManager {
   }
 
   public startListening() {
-    Linking.addEventListener('url', this.handleUrl);
+    Linking.addEventListener("url", this.handleUrl);
   }
 
   public stopListening() {
-    Linking.removeEventListener('url', this.handleUrl);
+    Linking.removeEventListener("url", this.handleUrl);
   }
 
   public handleUrl = ({ url }: { url: string }) => {

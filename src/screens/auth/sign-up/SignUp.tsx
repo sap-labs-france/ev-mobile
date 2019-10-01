@@ -1,6 +1,6 @@
 import { Button, CheckBox, Footer, Form, Icon, Item, Right, Spinner, Text, View } from "native-base";
 import React from "react";
-import { Image, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput, Alert } from "react-native";
+import { Alert, Image, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from "react-native";
 import * as Animatable from "react-native-animatable";
 import DeviceInfo from "react-native-device-info";
 import { NavigationActions, StackActions } from "react-navigation";

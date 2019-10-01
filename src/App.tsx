@@ -4,8 +4,8 @@ import CentralServerProvider from "provider/CentralServerProvider";
 import React from "react";
 import { Dimensions, StatusBar } from "react-native";
 import { createAppContainer, createSwitchNavigator, NavigationContainer, NavigationContainerComponent, NavigationState } from "react-navigation";
-import { createDrawerNavigator } from 'react-navigation-drawer';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from "react-navigation-drawer";
+import { createStackNavigator } from "react-navigation-stack";
 import DeepLinkingManager from "./deeplinking/DeepLinkingManager";
 import NotificationManager from "./notification/NotificationManager";
 import ProviderFactory from "./provider/ProviderFactory";
@@ -163,7 +163,7 @@ export default class App extends React.Component<Props, State> {
     this.centralServerProvider = await ProviderFactory.getProvider();
     // Init Deep Linking
     this.deepLinkingManager = DeepLinkingManager.getInstance();
-    this.deepLinkingManager.initialize(this.navigator, this.centralServerProvider);  
+    this.deepLinkingManager.initialize(this.navigator, this.centralServerProvider);
     // Activate Deep links
     this.deepLinkingManager.startListening();
     // Activate Notifications
