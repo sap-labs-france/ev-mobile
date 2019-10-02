@@ -153,6 +153,7 @@ export default class CentralServerProvider {
 
   public async clearUserPassword() {
     await SecuredStorage.clearUserPassword();
+    this.password = null;
   }
 
   public getUserEmail(): string {
