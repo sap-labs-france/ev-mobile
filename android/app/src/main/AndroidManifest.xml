@@ -47,9 +47,9 @@
                  android:value="e-Mobility notification channel"/>
       <!-- Change the resource name to your App's accent color - or any other color you want -->
       <meta-data android:name="com.dieam.reactnativepushnotification.notification_color"
-                 android:resource="@android:color/white"/>
+                 android:resource="@color/primary_dark"/>
       <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
-                 android:resource="@mipmap/ic_launcher" />
+                 android:resource="@drawable/ic_stat_ic_notification" />
       <!-- < Only if you're using GCM or localNotificationSchedule() > -->
       <receiver
           android:name="com.google.android.gms.gcm.GcmReceiver"
