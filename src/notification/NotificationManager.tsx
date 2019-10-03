@@ -1,162 +1,69 @@
-import { PushNotification } from "react-native-push-notification";
-import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
-// import Message from "../utils/Message";
+import PushNotificationIOS from "@react-native-community/push-notification-ios";
+import PushNotification, { PushNotification as PushNotificationMessage } from "react-native-push-notification";
+import { NavigationContainerComponent } from "react-navigation";
 
 export default class NotificationManager {
   private static notificationManager: NotificationManager;
   private token: string;
-  private notifications: PushNotification[] = [];
-  private active: boolean;
+  private navigation: NavigationContainerComponent;
 
   public static getInstance(): NotificationManager {
     if (!this.notificationManager) {
-      // Create
       this.notificationManager = new NotificationManager();
     }
     return this.notificationManager;
   }
 
-  public async initialize() {
-    // // Create the notif provider
-    // this.notificationProvider = new NotificationProvider(this.onRegister, this.onNotify);
-    // // Set inactive
-    // this._active = false;
-    // // No timer
-    // this.notificationCheck = null;
+  public async initialize(navigation: NavigationContainerComponent) {
+    // Keep    console.log("NOTIF TOKEN");
+    console.log("INIT NOTIFICATION");
+    this.navigation = navigation;
+    // PushNotificationIOS.addEventListener('register', (token) => {
+    //   console.log("NOTIF TOKEN IOS");
+    //   console.log(token);
+    //   this.token = token;
+    // });
+    // Init
+    PushNotification.configure({
+      // (optional) Called when Token is generated (iOS and Android)
+      onRegister: this.onRegister,
+      // (required) Called when a remote or local notification is opened or received
+      onNotification: this.onNotification,
+      // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
+      senderID: "49073993741",
+      // IOS ONLY (optional): default: all - Permissions to register.
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true
+      },
+      // Should the initial notification be popped automatically
+      popInitialNotification: true,
+      /**
+       * (optional) default: true
+       * - Specified if permissions (ios) and token (android and ios) will requested or not,
+       * - if not, you must call PushNotificationsHandler.requestPermissions() later
+       */
+      requestPermissions: true
+    });
   }
 
-  public setActive(active: boolean) {
-    // console.log("setActive = " + active);
-    // this._active = active;
-  }
+  public onRegister = (token: { os: string; token: string }) => {
+    console.log("NOTIF TOKEN");
+    console.log(token);
+    // Keep the token
+    this.token = token.token;
+  };
 
-  public isActive(): boolean {
-    return this.active;
-  }
-
-  public setNavigation(navigation: NavigationScreenProp<NavigationState, NavigationParams>) {
-    // console.log("setNavigation = " + navigation);
-    // this.navigation = navigation;
-  }
-
-  public start() {
-    // console.log("start");
-    // // Check
-    // if (!this.notificationCheck) {
-    //   // Refresh
-    //   this.processNotification();
-    //   // Check every minutes
-    //   this.notificationCheck = setInterval(() => {
-    //     // Refresh
-    //     this.processNotification();
-    //   }, Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
-    // }
-  }
-
-  public stop() {
-    // console.log("stop");
-    // // Check
-    // if (this.notificationCheck) {
-    //   clearInterval(this.notificationCheck);
-    //   this.notificationCheck = null;
-    // }
-  }
-
-  public async sendLocalNotification(notification: PushNotification) {
-    // console.log("triggerLocalNotification");
-    // // Text?
-    // if (typeof notification.extraData === "string") {
-    //   // Convert ot JSon
-    //   notification.extraData = JSON.parse(notification.extraData);
-    // }
-    // // Yes: meaning user clicked on the notification, then it should navigate
-    // let message = null,
-    //   subMessage = null,
-    //   longMessage = null,
-    //   color = commonColor.brandInfo;
-    // // Check the type of notification
-    // switch (notification.sourceDescr) {
-    //   // End of Transaction
-    //   case "NotifyEndOfTransaction":
-    //     message = I18n.t("notifications.notifyEndOfTransaction.message", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     subMessage = I18n.t("notifications.notifyEndOfTransaction.subMessage");
-    //     longMessage = I18n.t("notifications.notifyEndOfTransaction.longMessage", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     break;
-    //   // End of Charge
-    //   case "NotifyEndOfCharge":
-    //     message = I18n.t("notifications.notifyEndOfCharge.message", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     subMessage = I18n.t("notifications.notifyEndOfCharge.subMessage");
-    //     longMessage = I18n.t("notifications.notifyEndOfCharge.longMessage", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     break;
-    //   // Optimal Charge
-    //   case "NotifyOptimalChargeReached":
-    //     message = I18n.t("notifications.notifyOptimalChargeReached.message", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     subMessage = I18n.t("notifications.notifyOptimalChargeReached.subMessage");
-    //     longMessage = I18n.t("notifications.notifyOptimalChargeReached.longMessage", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     break;
-    //   // Charger in Error
-    //   case "NotifyChargingStationStatusError":
-    //     color = commonColor.brandDanger;
-    //     message = I18n.t("notifications.notifyChargingStationStatusError.message", {
-    //       chargeBoxID: notification.chargeBoxID,
-    //       connectorId: notification.data ? notification.data.connectorId : "Unknown",
-    //       error: notification.data ? notification.data.error : "Unknown"
-    //     });
-    //     subMessage = I18n.t("notifications.notifyChargingStationStatusError.subMessage");
-    //     longMessage = I18n.t("notifications.notifyChargingStationStatusError.longMessage", {
-    //       chargeBoxID: notification.chargeBoxID,
-    //       connectorId: notification.data ? notification.data.connectorId : "Unknown",
-    //       error: notification.data ? notification.data.error : "Unknown"
-    //     });
-    //     break;
-    //   // Charger just connected
-    //   case "NotifyChargingStationRegistered":
-    //     color = commonColor.brandDanger;
-    //     message = I18n.t("notifications.notifyChargingStationRegistered.message", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     subMessage = I18n.t("notifications.notifyChargingStationRegistered.subMessage");
-    //     longMessage = I18n.t("notifications.notifyChargingStationRegistered.longMessage", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     break;
-    //   // Unknown user
-    //   case "NotifyUnknownUserBadged":
-    //     color = commonColor.brandDanger;
-    //     message = I18n.t("notifications.notifyUnknownUserBadged.message", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     subMessage = I18n.t("notifications.notifyUnknownUserBadged.subMessage");
-    //     longMessage = I18n.t("notifications.notifyUnknownUserBadged.longMessage", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     break;
-    // }
-    // // Send the notification
-    // if (message) {
-    //   // Send
-    //   await this.notificationProvider.sendLocalNotification({
-    //     title: DeviceInfo.getApplicationName(),
-    //     message,
-    //     subText: subMessage,
-    //     bigText: longMessage,
-    //     color,
-    //     extraData: notification
-    //   });
-    // }
-  }
+  public onNotification = async (notification: PushNotificationMessage) => {
+    console.log("NOTIF MESSAGE");
+    console.log(notification);
+    if (notification.userInteraction) {
+      
+    }
+    // required on iOS only (see fetchCompletionHandler docs: https://github.com/react-native-community/react-native-push-notification-ios)
+    notification.finish(PushNotificationIOS.FetchResult.NoData);
+  };
 
   public async processNotification() {
     // let notification;
@@ -227,22 +134,4 @@ export default class NotificationManager {
     //   }
     // }
   }
-
-  public getToken(): string {
-    return this.token;
-  }
-
-  public onRegister = (token: string) => {
-    // Keep the token
-    token = token;
-    // console.log("NOTIF TOKEN");
-    // console.log(token);
-  };
-
-  public onNotify = async (notification: PushNotification) => {
-    // console.log("NOTIF MESSAGE");
-    // console.log(notification);
-    // Add Notification
-    this.notifications.push(notification);
-  };
 }

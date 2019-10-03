@@ -82,6 +82,7 @@
 		97B2D1169E0AE96EFDE8DED2 /* libPods-eMobilityTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B8644E7D65420A8D310AA2C /* libPods-eMobilityTests.a */; };
 		BC872348762AD536FA7A18B0 /* libPods-eMobility.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F0EBAD433D3B7462D2B8B4FD /* libPods-eMobility.a */; };
 		BCBF102FC038372023F0034E /* libPods-eMobility-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2171939E13F43B092A277E9F /* libPods-eMobility-tvOS.a */; };
+		D2B4488623460E54003E2F28 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2B4488523460E54003E2F28 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -192,6 +193,7 @@
 		B2E1D6CE67A1235B179E3F4A /* libPods-eMobility-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eMobility-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDD730DEC78016F30DCF6A0C /* Pods-eMobilityTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobilityTests.release.xcconfig"; path = "Target Support Files/Pods-eMobilityTests/Pods-eMobilityTests.release.xcconfig"; sourceTree = "<group>"; };
 		C71B50D6CAA0D2B949C6AFBC /* Pods-eMobility-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-eMobility-tvOSTests/Pods-eMobility-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		D2B4488523460E54003E2F28 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E6E5912AA42EBABA3FA889B8 /* Pods-eMobility-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-eMobility-tvOS/Pods-eMobility-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -254,6 +256,7 @@
 		13B07FAE1A68108700A75B9A /* eMobility */ = {
 			isa = PBXGroup;
 			children = (
+				D2B4488523460E54003E2F28 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -546,6 +549,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2B4488623460E54003E2F28 /* GoogleService-Info.plist in Resources */,
 				531074F3230782CC00116552 /* bar in Resources */,
 				531074EB230782CC00116552 /* line in Resources */,
 				531074F4230782CC00116552 /* formatters in Resources */,
