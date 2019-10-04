@@ -20,7 +20,7 @@ export default class NotificationProvider {
       onRegister, // this._onRegister.bind(this),
       // (required) Called when a remote or local notification is opened or received
       onNotification, // this._onNotification,
-      // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
+      // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is needed to receive remote push notifications)
       senderID: '49073993741',
       // IOS ONLY (optional): default: all - Permissions to register.
       permissions: {
