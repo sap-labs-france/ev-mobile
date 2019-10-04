@@ -1,6 +1,6 @@
-import PushNotificationIOS from "@react-native-community/push-notification-ios";
-import PushNotification, { PushNotification as PushNotificationMessage } from "react-native-push-notification";
-import { NavigationContainerComponent } from "react-navigation";
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import PushNotification, { PushNotification as PushNotificationMessage } from 'react-native-push-notification';
+import { NavigationContainerComponent } from 'react-navigation';
 
 export default class NotificationManager {
   private static notificationManager: NotificationManager;
@@ -17,7 +17,7 @@ export default class NotificationManager {
 
   public async initialize(navigation: NavigationContainerComponent) {
     // Keep    console.log("NOTIF TOKEN");
-    console.log("INIT NOTIFICATION");
+    console.log('INIT NOTIFICATION');
     this.navigation = navigation;
     // PushNotificationIOS.addEventListener('register', (token) => {
     //   console.log("NOTIF TOKEN IOS");
@@ -31,7 +31,7 @@ export default class NotificationManager {
       // (required) Called when a remote or local notification is opened or received
       onNotification: this.onNotification,
       // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
-      senderID: "49073993741",
+      senderID: '49073993741',
       // IOS ONLY (optional): default: all - Permissions to register.
       permissions: {
         alert: true,
@@ -58,7 +58,7 @@ export default class NotificationManager {
   }
 
   public onRegister = (token: { os: string; token: string }) => {
-    console.log("NOTIF TOKEN");
+    console.log('NOTIF TOKEN');
     console.log(token);
     // Keep the token
     this.token = token.token;
@@ -66,10 +66,10 @@ export default class NotificationManager {
   };
 
   public onNotification = async (notification: PushNotificationMessage) => {
-    console.log("NOTIF MESSAGE");
+    console.log('NOTIF MESSAGE');
     console.log(notification);
     if (notification.userInteraction) {
-      
+
     }
     // required on iOS only (see fetchCompletionHandler docs: https://github.com/react-native-community/react-native-push-notification-ios)
     notification.finish(PushNotificationIOS.FetchResult.NoData);

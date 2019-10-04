@@ -1,28 +1,28 @@
-import axios from "axios";
-import jwtDecode from "jwt-decode";
-import NotificationManager from "notification/NotificationManager";
-import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
-import { ActionResponse } from "../types/ActionResponse";
-import ChargingStation from "../types/ChargingStation";
-import { DataResult } from "../types/DataResult";
-import Eula, { EulaAccepted } from "../types/Eula";
-import PagingParams from "../types/PagingParams";
-import Site from "../types/Site";
-import SiteArea from "../types/SiteArea";
-import Tenant from "../types/Tenant";
-import Transaction from "../types/Transaction";
-import UserToken from "../types/UserToken";
-import Constants from "../utils/Constants";
-import SecuredStorage from "../utils/SecuredStorage";
-import SecurityProvider from "./SecurityProvider";
+import axios from 'axios';
+import jwtDecode from 'jwt-decode';
+import NotificationManager from 'notification/NotificationManager';
+import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
+import { ActionResponse } from '../types/ActionResponse';
+import ChargingStation from '../types/ChargingStation';
+import { DataResult } from '../types/DataResult';
+import Eula, { EulaAccepted } from '../types/Eula';
+import PagingParams from '../types/PagingParams';
+import Site from '../types/Site';
+import SiteArea from '../types/SiteArea';
+import Tenant from '../types/Tenant';
+import Transaction from '../types/Transaction';
+import UserToken from '../types/UserToken';
+import Constants from '../utils/Constants';
+import SecuredStorage from '../utils/SecuredStorage';
+import SecurityProvider from './SecurityProvider';
 
 export default class CentralServerProvider {
   private debug: boolean = false;
-  private captchaBaseUrl: string = "https://evse.cfapps.eu10.hana.ondemand.com";
-  private centralRestServerServiceBaseURL: string = "https://sap-ev-rest-server.cfapps.eu10.hana.ondemand.com";
-  private centralRestServerServiceAuthURL: string = this.centralRestServerServiceBaseURL + "/client/auth";
-  private centralRestServerServiceSecuredURL: string = this.centralRestServerServiceBaseURL + "/client/api";
-  private captchaSiteKey: string = "6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw";
+  private captchaBaseUrl: string = 'https://evse.cfapps.eu10.hana.ondemand.com';
+  private centralRestServerServiceBaseURL: string = 'https://sap-ev-rest-server.cfapps.eu10.hana.ondemand.com';
+  private centralRestServerServiceAuthURL: string = this.centralRestServerServiceBaseURL + '/client/auth';
+  private centralRestServerServiceSecuredURL: string = this.centralRestServerServiceBaseURL + '/client/api';
+  private captchaSiteKey: string = '6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw';
 
   // Paste the token below
   private token: string = null;
@@ -40,8 +40,8 @@ export default class CentralServerProvider {
     if (__DEV__) {
       // QA REST Server
       // this.centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
-      this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + "/client/auth";
-      this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + "/client/api";
+      this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + '/client/auth';
+      this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + '/client/api';
       this.debug = true;
       // Debug Axios
       axios.interceptors.request.use(request => {
@@ -114,7 +114,7 @@ export default class CentralServerProvider {
 
   public async triggerAutoLogin(
       navigation: NavigationScreenProp<NavigationState, NavigationParams>, fctRefresh: any) {
-    this._debugMethod("triggerAutoLogin");
+    this._debugMethod('triggerAutoLogin');
     try {
       // Force log the user
       await this.login(this.email, this.password, true, this.tenant);
@@ -127,23 +127,23 @@ export default class CentralServerProvider {
       await this.logoff();
       // Go to login page
       if (navigation) {
-        navigation.navigate("AuthNavigator");
+        navigation.navigate('AuthNavigator');
       }
     }
   }
 
   public hasUserConnectionExpired(): boolean {
-    this._debugMethod("hasUserConnectionExpired");
+    this._debugMethod('hasUserConnectionExpired');
     return this.isUserConnected() && !this.isUserConnectionValid();
   }
 
   public isUserConnected(): boolean {
-    this._debugMethod("isUserConnected");
+    this._debugMethod('isUserConnected');
     return !!this.token;
   }
 
   public isUserConnectionValid(): boolean {
-    this._debugMethod("isUserConnectionValid");
+    this._debugMethod('isUserConnectionValid');
     // Email and Password are mandatory
     if (!this.email || !this.password || !this.tenant) {
       return false;
@@ -202,7 +202,7 @@ export default class CentralServerProvider {
   }
 
   public logoff() {
-    this._debugMethod("logoff");
+    this._debugMethod('logoff');
     // Clear the token and tenant
     SecuredStorage.clearUserToken();
     // Clear local data
@@ -211,7 +211,7 @@ export default class CentralServerProvider {
   }
 
   public async login(email: string, password: string, acceptEula: boolean, tenant: string) {
-    this._debugMethod("login");
+    this._debugMethod('login');
     // Call
     const result = await axios.post(
       `${this.centralRestServerServiceAuthURL}/Login`,
@@ -249,13 +249,13 @@ export default class CentralServerProvider {
       });
     } catch (error) {
       // tslint:disable-next-line: no-console
-      console.log("Error saving Mobile Token:", error);
+      console.log('Error saving Mobile Token:', error);
     }
   }
 
   public async register(tenant: string, name: string, firstName: string, email: string,
                         passwords: {password: string; repeatPassword: string; }, acceptEula: boolean, captcha: string) {
-    this._debugMethod("register");
+    this._debugMethod('register');
     // Call
     const result = await axios.post(
       `${this.centralRestServerServiceAuthURL}/RegisterUser`,
@@ -290,7 +290,7 @@ export default class CentralServerProvider {
   }
 
   public async retrievePassword(tenant: string, email: string, captcha: string) {
-    this._debugMethod("retrievePassword");
+    this._debugMethod('retrievePassword');
     const result = await axios.post(
       `${this.centralRestServerServiceAuthURL}/Reset`,
       {
@@ -306,7 +306,7 @@ export default class CentralServerProvider {
   }
 
   public async resetPassword(tenant: string, hash: string, passwords: {password: string; repeatPassword: string; }) {
-    this._debugMethod("resetPassword");
+    this._debugMethod('resetPassword');
     const result = await axios.post(
       `${this.centralRestServerServiceAuthURL}/Reset`,
       {
@@ -322,7 +322,7 @@ export default class CentralServerProvider {
   }
 
   public async getChargers(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<ChargingStation>> {
-    this._debugMethod("getChargers");
+    this._debugMethod('getChargers');
     // Build Paging
     this._buildPaging(paging, params);
     // Call
@@ -334,7 +334,7 @@ export default class CentralServerProvider {
   }
 
   public async saveUserMobileToken(params: {id: string; mobileToken: string; mobileOS: string}): Promise<ActionResponse> {
-    this._debugMethod("saveUserMobileToken");
+    this._debugMethod('saveUserMobileToken');
     // Call
     const result = await axios.put(`${this.centralRestServerServiceSecuredURL}/UpdateUserMobileToken`, params, {
       headers: this._buildSecuredHeaders(),
@@ -343,7 +343,7 @@ export default class CentralServerProvider {
   }
 
   public async getCharger(params = {}): Promise<ChargingStation> {
-    this._debugMethod("getCharger");
+    this._debugMethod('getCharger');
     // Call
     const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStation`, {
       headers: this._buildSecuredHeaders(),
@@ -353,7 +353,7 @@ export default class CentralServerProvider {
   }
 
   public async getSites(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Site>> {
-    this._debugMethod("getSites");
+    this._debugMethod('getSites');
     // Build Paging
     this._buildPaging(paging, params);
     // Call
@@ -365,7 +365,7 @@ export default class CentralServerProvider {
   }
 
   public async getSiteAreas(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<SiteArea>> {
-    this._debugMethod("getSiteAreas");
+    this._debugMethod('getSiteAreas');
     // Build Paging
     this._buildPaging(paging, params);
     // Call
@@ -377,7 +377,7 @@ export default class CentralServerProvider {
   }
 
   public async getEndUserLicenseAgreement(params: { Language: string; }): Promise<Eula> {
-    this._debugMethod("getEndUserLicenseAgreement");
+    this._debugMethod('getEndUserLicenseAgreement');
     // Call
     const result = await axios.get(`${this.centralRestServerServiceAuthURL}/EndUserLicenseAgreement`, {
       headers: this._buildHeaders(),
@@ -387,7 +387,7 @@ export default class CentralServerProvider {
   }
 
   public async startTransaction(chargeBoxID: string, connectorID: number, tagID: string): Promise<ActionResponse> {
-    this._debugMethod("startTransaction");
+    this._debugMethod('startTransaction');
     // Call
     const result = await axios.post(
       `${this.centralRestServerServiceSecuredURL}/ChargingStationRemoteStartTransaction`,
@@ -406,7 +406,7 @@ export default class CentralServerProvider {
   }
 
   public async stopTransaction(chargeBoxID: string, transactionId: number): Promise<ActionResponse> {
-    this._debugMethod("stopTransaction");
+    this._debugMethod('stopTransaction');
     // Call
     const result = await axios.post(
       `${this.centralRestServerServiceSecuredURL}/ChargingStationRemoteStopTransaction`,
@@ -423,8 +423,8 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async reset(chargeBoxID: string, type: "Soft"|"Hard"): Promise<ActionResponse> {
-    this._debugMethod("reset");
+  public async reset(chargeBoxID: string, type: 'Soft'|'Hard'): Promise<ActionResponse> {
+    this._debugMethod('reset');
     // Call
     const result = await axios.post(
       `${this.centralRestServerServiceSecuredURL}/ChargingStationReset`,
@@ -442,7 +442,7 @@ export default class CentralServerProvider {
   }
 
   public async clearCache(chargeBoxID: string): Promise<ActionResponse> {
-    this._debugMethod("clearCache");
+    this._debugMethod('clearCache');
     // Call
     const result = await axios.post(
       `${this.centralRestServerServiceSecuredURL}/ChargingStationClearCache`,
@@ -458,7 +458,7 @@ export default class CentralServerProvider {
   }
 
   public async getTransaction(params = {}): Promise<Transaction> {
-    this._debugMethod("getTransaction");
+    this._debugMethod('getTransaction');
     // Call
     const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/Transaction`, {
       headers: this._buildSecuredHeaders(),
@@ -468,7 +468,7 @@ export default class CentralServerProvider {
   }
 
   public async getTransactions(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Transaction>> {
-    this._debugMethod("getTransactions");
+    this._debugMethod('getTransactions');
     // Build Paging
     this._buildPaging(paging, params);
     // Call
@@ -480,7 +480,7 @@ export default class CentralServerProvider {
   }
 
   public async getTransactionsActive(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Transaction>> {
-    this._debugMethod("getTransactionsActive");
+    this._debugMethod('getTransactionsActive');
     // Build Paging
     this._buildPaging(paging, params);
     // Call
@@ -492,7 +492,7 @@ export default class CentralServerProvider {
   }
 
   public async getUserImage(params = {}): Promise<string> {
-    this._debugMethod("getUserImage");
+    this._debugMethod('getUserImage');
     // Call
     const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/UserImage`, {
       headers: this._buildSecuredHeaders(),
@@ -505,7 +505,7 @@ export default class CentralServerProvider {
     // Check cache
     let foundSiteImage = this.siteImages.find((siteImage) => siteImage.id === id);
     if (!foundSiteImage) {
-      this._debugMethod("getSiteImage");
+      this._debugMethod('getSiteImage');
       // Call
       const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/SiteImage`, {
         headers: this._buildSecuredHeaders(),
@@ -523,7 +523,7 @@ export default class CentralServerProvider {
   }
 
   public async getTransactionConsumption(params = {}): Promise<Transaction> {
-    this._debugMethod("getChargingStationConsumption");
+    this._debugMethod('getChargingStationConsumption');
     // Call
     const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationConsumptionFromTransaction`, {
       headers: this._buildSecuredHeaders(),
@@ -533,7 +533,7 @@ export default class CentralServerProvider {
   }
 
   public async checkEndUserLicenseAgreement(params: {Email: string, Tenant: string;}): Promise<EulaAccepted> {
-    this._debugMethod("checkEndUserLicenseAgreement");
+    this._debugMethod('checkEndUserLicenseAgreement');
     // Call
     const result = await axios.get(`${this.centralRestServerServiceAuthURL}/CheckEndUserLicenseAgreement`, {
       headers: this._buildHeaders(),
@@ -575,21 +575,21 @@ export default class CentralServerProvider {
 
   private _buildHeaders(): object {
     return {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     };
   }
 
   private _buildSecuredHeaders(): object {
     return {
-      "Authorization": "Bearer " + this.token,
-      "Content-Type": "application/json",
+      'Authorization': 'Bearer ' + this.token,
+      'Content-Type': 'application/json',
     };
   }
 
   private _debugMethod(methodName: string) {
     if (this.debug) {
       // tslint:disable-next-line: no-console
-      console.log(new Date().toISOString() + " - " + methodName);
+      console.log(new Date().toISOString() + ' - ' + methodName);
     }
   }
 }
