@@ -161,6 +161,8 @@ export default class App extends React.Component<Props, State> {
     // Init Notification
     this.notificationManager = NotificationManager.getInstance();
     this.notificationManager.initialize(this.navigator);
+    // Assign
+    this.centralServerProvider.setNotificationManager(this.notificationManager);
     // Init Deep Linking
     this.deepLinkingManager = DeepLinkingManager.getInstance();
     this.deepLinkingManager.initialize(this.navigator, this.centralServerProvider);

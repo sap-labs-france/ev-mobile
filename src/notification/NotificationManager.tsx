@@ -5,6 +5,7 @@ import { NavigationContainerComponent } from "react-navigation";
 export default class NotificationManager {
   private static notificationManager: NotificationManager;
   private token: string;
+  private os: string;
   private navigation: NavigationContainerComponent;
 
   public static getInstance(): NotificationManager {
@@ -48,11 +49,20 @@ export default class NotificationManager {
     });
   }
 
+  public getToken(): string {
+    return this.token;
+  }
+
+  public getOS(): string {
+    return this.os;
+  }
+
   public onRegister = (token: { os: string; token: string }) => {
     console.log("NOTIF TOKEN");
     console.log(token);
     // Keep the token
     this.token = token.token;
+    this.os = token.os;
   };
 
   public onNotification = async (notification: PushNotificationMessage) => {
