@@ -39,7 +39,7 @@ export default class CentralServerProvider {
   constructor() {
     if (__DEV__) {
       // QA REST Server
-      this.centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
+      // this.centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
       this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + "/client/auth";
       this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + "/client/api";
       this.debug = true;
@@ -48,12 +48,12 @@ export default class CentralServerProvider {
         // tslint:disable-next-line: no-console
         console.log('Axios - Request:', request)
         return request;
-      })
+      });
       axios.interceptors.response.use(response => {
         // tslint:disable-next-line: no-console
         console.log('Axios - Response:', response)
         return response;
-      })
+      });
     }
   }
 
