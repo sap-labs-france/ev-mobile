@@ -1,5 +1,5 @@
 <resources>
-    <color name="primary_dark">#000000</color>
-    <color name="status_bar_color">#053768</color>
+    <color name="primary_dark">#00376C</color>
+    <color name="status_bar_color">#00376C</color>
     <color name="white">#FFF</color>
 </resources>

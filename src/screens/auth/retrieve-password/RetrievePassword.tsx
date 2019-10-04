@@ -72,6 +72,8 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
       captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
       captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl()
     });
+    // Disable Auto Login
+    this.centralServerProvider.setAutoLoginDisabled(true);
   }
 
   public recaptchaResponseToken = (captcha: string) => {

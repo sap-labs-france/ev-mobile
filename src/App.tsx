@@ -148,9 +148,6 @@ export default class App extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    // Init Notification
-    this.notificationManager = NotificationManager.getInstance();
-    this.notificationManager.initialize();
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
@@ -161,18 +158,19 @@ export default class App extends React.Component<Props, State> {
   public async componentDidMount() {
     // Get the central server
     this.centralServerProvider = await ProviderFactory.getProvider();
+    // Init Notification
+    this.notificationManager = NotificationManager.getInstance();
+    this.notificationManager.initialize(this.navigator);
+    // Assign
+    this.centralServerProvider.setNotificationManager(this.notificationManager);
     // Init Deep Linking
     this.deepLinkingManager = DeepLinkingManager.getInstance();
     this.deepLinkingManager.initialize(this.navigator, this.centralServerProvider);
     // Activate Deep links
     this.deepLinkingManager.startListening();
-    // Activate Notifications
-    this.notificationManager.setActive(true);
   }
 
   public async componentWillUnmount() {
-    // Deactivate Notifications
-    this.notificationManager.setActive(false);
     // Deactivate Deep links
     this.deepLinkingManager.stopListening();
   }

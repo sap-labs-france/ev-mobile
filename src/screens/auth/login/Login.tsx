@@ -60,6 +60,7 @@ interface State {
   email?: string;
   tenant?: string;
   tenantTitle?: string;
+  initialLoading?: boolean;
   loading?: boolean;
   display?: boolean;
   errorEula?: object[];
@@ -83,6 +84,7 @@ export default class Login extends BaseScreen<Props, State> {
       tenant: Utils.getParamFromNavigation(this.props.navigation, 'tenant', ''),
       tenantTitle: I18n.t('authentication.tenant'),
       loading: false,
+      initialLoading: true,
       display: false
     };
   }
@@ -123,6 +125,10 @@ export default class Login extends BaseScreen<Props, State> {
           // Do nothing: user must log on
       }
     }
+    // Set
+    this.setState({
+      initialLoading: false
+    });
   }
 
   public login = async () => {
@@ -236,9 +242,9 @@ export default class Login extends BaseScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const navigation = this.props.navigation;
-    const { display, eula, loading } = this.state;
+    const { display, eula, loading, initialLoading } = this.state;
     // Render
-    return !display ? (
+    return !display || initialLoading ? (
       <View style={style.noDisplay} />
     ) : (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>

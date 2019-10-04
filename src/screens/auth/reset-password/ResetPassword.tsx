@@ -86,6 +86,8 @@ export default class ResetPassword extends BaseScreen<Props, State> {
     this.setState({
       tenantName: tenant ? tenant.name : ''
     });
+    // Disable Auto Login
+    this.centralServerProvider.setAutoLoginDisabled(true);
   }
 
   public recaptchaResponseToken = (captcha: string) => {

@@ -90,7 +90,7 @@ export default class Utils {
       setTimeout(() => fctRefresh, 2000);
     };
     // tslint:disable-next-line: no-console
-    console.log({ error });
+    console.log("Request Error:", error);
     // Check if HTTP?
     if (error.request) {
       // Status?
