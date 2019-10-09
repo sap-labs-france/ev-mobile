@@ -31,7 +31,7 @@ target 'eMobility' do
   pod 'SwiftyJSON', '5.0'
   pod 'Charts', '3.3.0'
 
-  # add Firebase
+  # Add Firebase (FIXME: is it really needed?)
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
   pod 'Firebase/Analytics'
