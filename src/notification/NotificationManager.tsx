@@ -19,7 +19,7 @@ export default class NotificationManager {
     // Keep    console.log("NOTIF TOKEN");
     console.log("INIT NOTIFICATION");
     this.navigation = navigation;
-    // PushNotificationIOS.addEventListener('register', (token) => {
+    // PushNotificationIOS.addEventListener('register', (token: string) => {
     //   console.log("NOTIF TOKEN IOS");
     //   console.log(token);
     //   this.token = token;

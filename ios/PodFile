@@ -43,13 +43,3 @@ target 'eMobility' do
 
   use_native_modules!
 end
-
-target 'eMobility-tvOS' do
-  # Pods for eMobility-tvOS
-
-  target 'eMobility-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end
