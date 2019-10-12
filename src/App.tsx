@@ -161,6 +161,7 @@ export default class App extends React.Component<Props, State> {
     // Init Notification
     this.notificationManager = NotificationManager.getInstance();
     this.notificationManager.initialize(this.navigator);
+    await this.notificationManager.start();
     // Assign
     this.centralServerProvider.setNotificationManager(this.notificationManager);
     // Init Deep Linking
@@ -173,6 +174,8 @@ export default class App extends React.Component<Props, State> {
   public async componentWillUnmount() {
     // Deactivate Deep links
     this.deepLinkingManager.stopListening();
+    // Stop Notifications
+    await this.notificationManager.stop();
   }
 
   // eslint-disable-next-line class-methods-use-this

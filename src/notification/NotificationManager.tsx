@@ -1,12 +1,17 @@
-import PushNotificationIOS from "@react-native-community/push-notification-ios";
-import PushNotification, { PushNotification as PushNotificationMessage } from "react-native-push-notification";
+import firebase from 'react-native-firebase';
+import { Notification, NotificationOpen } from 'react-native-firebase/notifications';
 import { NavigationContainerComponent } from "react-navigation";
+// import type { Notification } from "react-native-firebase";
 
 export default class NotificationManager {
   private static notificationManager: NotificationManager;
   private token: string;
   private os: string;
   private navigation: NavigationContainerComponent;
+  private removeNotificationDisplayedListener: () => any;
+  private removeNotificationListener: () => any;
+  private removeNotificationOpenedListener: () => any;
+  private removeTokenRefreshListener: () => any;
 
   public static getInstance(): NotificationManager {
     if (!this.notificationManager) {
@@ -16,37 +21,107 @@ export default class NotificationManager {
   }
 
   public async initialize(navigation: NavigationContainerComponent) {
-    // Keep    console.log("NOTIF TOKEN");
-    console.log("INIT NOTIFICATION");
-    this.navigation = navigation;
-    // PushNotificationIOS.addEventListener('register', (token: string) => {
-    //   console.log("NOTIF TOKEN IOS");
-    //   console.log(token);
-    //   this.token = token;
+    const enabled = await firebase.messaging().hasPermission();
+    if (enabled) {
+      // user has permissions
+      console.log('====================================');
+      console.log("NOTIF: USER HAS PERMISSION");
+      console.log('====================================');
+    } else {
+      // user doesn't have permission
+      console.log('====================================');
+      console.log("NOTIF: USER HAS NO PERMISSION!!!!");
+      console.log('====================================');
+      // Request permission
+      try {
+        await firebase.messaging().requestPermission();
+        // User has authorised
+      } catch (error) {
+        // User has rejected permissions
+      }
+    }
+    // // Keep    console.log("NOTIF TOKEN");
+    // console.log("INIT NOTIFICATION");
+    // this.navigation = navigation;
+    // // PushNotificationIOS.addEventListener('register', (token: string) => {
+    // //   console.log("NOTIF TOKEN IOS");
+    // //   console.log(token);
+    // //   this.token = token;
+    // // });
+    // // Init
+    // PushNotification.configure({
+    //   // (optional) Called when Token is generated (iOS and Android)
+    //   onRegister: this.onRegister,
+    //   // (required) Called when a remote or local notification is opened or received
+    //   onNotification: this.onNotification,
+    //   // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
+    //   senderID: "49073993741",
+    //   // IOS ONLY (optional): default: all - Permissions to register.
+    //   permissions: {
+    //     alert: true,
+    //     badge: true,
+    //     sound: true
+    //   },
+    //   // Should the initial notification be popped automatically
+    //   popInitialNotification: true,
+    //   /**
+    //    * (optional) default: true
+    //    * - Specified if permissions (ios) and token (android and ios) will requested or not,
+    //    * - if not, you must call PushNotificationsHandler.requestPermissions() later
+    //    */
+    //   requestPermissions: true
     // });
-    // Init
-    PushNotification.configure({
-      // (optional) Called when Token is generated (iOS and Android)
-      onRegister: this.onRegister,
-      // (required) Called when a remote or local notification is opened or received
-      onNotification: this.onNotification,
-      // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
-      senderID: "49073993741",
-      // IOS ONLY (optional): default: all - Permissions to register.
-      permissions: {
-        alert: true,
-        badge: true,
-        sound: true
-      },
-      // Should the initial notification be popped automatically
-      popInitialNotification: true,
-      /**
-       * (optional) default: true
-       * - Specified if permissions (ios) and token (android and ios) will requested or not,
-       * - if not, you must call PushNotificationsHandler.requestPermissions() later
-       */
-      requestPermissions: true
+  }
+
+  public async start() {
+    this.removeNotificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification: Notification) => {
+      // Process your notification as required
+      // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
+      console.log('====================================');
+      console.log("NOTIFICATION: onNotificationDisplayed");
+      console.log(notification);
+      console.log('====================================');
     });
+    this.removeNotificationListener = firebase.notifications().onNotification((notification: Notification) => {
+      // Process your notification as required
+      console.log('====================================');
+      console.log("NOTIFICATION: onNotification");
+      console.log(notification);
+      console.log('====================================');
+    });
+    this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen: NotificationOpen) => {
+      // Get the action triggered by the notification being opened
+      const action = notificationOpen.action;
+      // Get information about the notification that was opened
+      const notification: Notification = notificationOpen.notification;
+      console.log('====================================');
+      console.log("NOTIFICATION: onNotificationOpened");
+      console.log(action);
+      console.log(notification);
+      console.log('====================================');
+    });
+    this.removeTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
+      // Process your token as required
+      console.log('====================================');
+      console.log("NOTIFICATION: onTokenRefresh");
+      console.log(fcmToken);
+      console.log('====================================');
+    });
+    const fcmToken = await firebase.messaging().getToken();
+    if (fcmToken) {
+        // user has a device token
+        console.log('====================================');
+        console.log("NOTIFICATION: Initial Token");
+        console.log(fcmToken);
+        console.log('====================================');
+    }
+  }
+
+  public async stop() {
+    this.removeNotificationDisplayedListener();
+    this.removeNotificationListener();
+    this.removeNotificationOpenedListener();
+    this.removeTokenRefreshListener();
   }
 
   public getToken(): string {
@@ -65,15 +140,14 @@ export default class NotificationManager {
     this.os = token.os;
   };
 
-  public onNotification = async (notification: PushNotificationMessage) => {
-    console.log("NOTIF MESSAGE");
-    console.log(notification);
-    if (notification.userInteraction) {
-      
-    }
-    // required on iOS only (see fetchCompletionHandler docs: https://github.com/react-native-community/react-native-push-notification-ios)
-    notification.finish(PushNotificationIOS.FetchResult.NoData);
-  };
+  // public onNotification = async (notification: PushNotificationMessage) => {
+  //   console.log("NOTIF MESSAGE");
+  //   console.log(notification);
+  //   if (notification.userInteraction) {
+  //   }
+  //   // required on iOS only (see fetchCompletionHandler docs: https://github.com/react-native-community/react-native-push-notification-ios)
+  //   notification.finish(PushNotificationIOS.FetchResult.NoData);
+  // };
 
   public async processNotification() {
     // let notification;
