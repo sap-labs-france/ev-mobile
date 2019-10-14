@@ -160,6 +160,7 @@ export default class App extends React.Component<Props, State> {
     this.centralServerProvider = await ProviderFactory.getProvider();
     // Init Notification
     this.notificationManager = NotificationManager.getInstance();
+    this.notificationManager.setCentralServerProvider(this.centralServerProvider);
     this.notificationManager.initialize(this.navigator);
     await this.notificationManager.start();
     // Assign
