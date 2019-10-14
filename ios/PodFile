@@ -31,15 +31,10 @@ target 'eMobility' do
   pod 'SwiftyJSON', '5.0'
   pod 'Charts', '3.3.0'
 
-  # Add Firebase (FIXME: is it really needed?)
+  # Add Firebase
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
   pod 'Firebase/Analytics'
-
-  target 'ReactPushNotificationsTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
 
   target 'eMobilityTests' do
     inherit! :search_paths
@@ -47,14 +42,4 @@ target 'eMobility' do
   end
 
   use_native_modules!
-end
-
-target 'eMobility-tvOS' do
-  # Pods for eMobility-tvOS
-
-  target 'eMobility-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
 end
