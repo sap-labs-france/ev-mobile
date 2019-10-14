@@ -1,6 +1,6 @@
 import firebase from 'react-native-firebase';
 import { Notification, NotificationOpen } from 'react-native-firebase/notifications';
-import { NavigationContainerComponent } from "react-navigation";
+import { NavigationContainerComponent } from 'react-navigation';
 // import type { Notification } from "react-native-firebase";
 
 export default class NotificationManager {
@@ -25,12 +25,12 @@ export default class NotificationManager {
     if (enabled) {
       // user has permissions
       console.log('====================================');
-      console.log("NOTIF: USER HAS PERMISSION");
+      console.log('NOTIF: USER HAS PERMISSION');
       console.log('====================================');
     } else {
       // user doesn't have permission
       console.log('====================================');
-      console.log("NOTIF: USER HAS NO PERMISSION!!!!");
+      console.log('NOTIF: USER HAS NO PERMISSION!!!!');
       console.log('====================================');
       // Request permission
       try {
@@ -78,14 +78,14 @@ export default class NotificationManager {
       // Process your notification as required
       // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
       console.log('====================================');
-      console.log("NOTIFICATION: onNotificationDisplayed");
+      console.log('NOTIFICATION: onNotificationDisplayed');
       console.log(notification);
       console.log('====================================');
     });
     this.removeNotificationListener = firebase.notifications().onNotification((notification: Notification) => {
       // Process your notification as required
       console.log('====================================');
-      console.log("NOTIFICATION: onNotification");
+      console.log('NOTIFICATION: onNotification');
       console.log(notification);
       console.log('====================================');
     });
@@ -95,7 +95,7 @@ export default class NotificationManager {
       // Get information about the notification that was opened
       const notification: Notification = notificationOpen.notification;
       console.log('====================================');
-      console.log("NOTIFICATION: onNotificationOpened");
+      console.log('NOTIFICATION: onNotificationOpened');
       console.log(action);
       console.log(notification);
       console.log('====================================');
@@ -103,7 +103,7 @@ export default class NotificationManager {
     this.removeTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
       // Process your token as required
       console.log('====================================');
-      console.log("NOTIFICATION: onTokenRefresh");
+      console.log('NOTIFICATION: onTokenRefresh');
       console.log(fcmToken);
       console.log('====================================');
     });
@@ -111,7 +111,7 @@ export default class NotificationManager {
     if (fcmToken) {
         // user has a device token
         console.log('====================================');
-        console.log("NOTIFICATION: Initial Token");
+        console.log('NOTIFICATION: Initial Token');
         console.log(fcmToken);
         console.log('====================================');
     }
@@ -133,7 +133,7 @@ export default class NotificationManager {
   }
 
   public onRegister = (token: { os: string; token: string }) => {
-    console.log("NOTIF TOKEN");
+    console.log('NOTIF TOKEN');
     console.log(token);
     // Keep the token
     this.token = token.token;
