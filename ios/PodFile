@@ -36,7 +36,7 @@ target 'eMobility' do
   pod 'Firebase/Messaging'
   pod 'Firebase/Analytics'
 
-  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
+  # pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
   target 'eMobilityTests' do
     inherit! :search_paths

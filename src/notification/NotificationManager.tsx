@@ -1,8 +1,8 @@
+import { Platform } from 'react-native';
 import firebase from 'react-native-firebase';
 import { Notification, NotificationOpen } from 'react-native-firebase/notifications';
-import { NavigationContainerComponent } from "react-navigation";
+import { NavigationContainerComponent } from 'react-navigation';
 import CentralServerProvider from '../provider/CentralServerProvider';
-import { Platform } from "react-native";
 
 export default class NotificationManager {
   private static notificationManager: NotificationManager;
@@ -108,7 +108,7 @@ export default class NotificationManager {
     this.removeTokenRefreshListener = firebase.messaging().onTokenRefresh(async (newFcmToken) => {
       // Process your token as required
       console.log('====================================');
-      console.log("NOTIFICATION: onTokenRefresh");
+      console.log('NOTIFICATION: onTokenRefresh');
       console.log(newFcmToken);
       this.token = newFcmToken;
       console.log('====================================');
@@ -126,14 +126,14 @@ export default class NotificationManager {
         }
       } catch (error) {
         // tslint:disable-next-line: no-console
-        console.log("Error saving Mobile Token:", error);
+        console.log('Error saving Mobile Token:', error);
       }
     });
     const fcmToken = await firebase.messaging().getToken();
     if (fcmToken) {
       // user has a device token
       console.log('====================================');
-      console.log("NOTIFICATION: Initial Token");
+      console.log('NOTIFICATION: Initial Token');
       console.log(fcmToken);
       console.log('====================================');
       this.token = fcmToken;
