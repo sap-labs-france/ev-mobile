@@ -1,23 +1,28 @@
 import firebase from 'react-native-firebase';
 import { Notification, NotificationOpen } from 'react-native-firebase/notifications';
-import { NavigationContainerComponent } from 'react-navigation';
-// import type { Notification } from "react-native-firebase";
+import { NavigationContainerComponent } from "react-navigation";
+import CentralServerProvider from '../provider/CentralServerProvider';
+import { Platform } from "react-native";
 
 export default class NotificationManager {
   private static notificationManager: NotificationManager;
   private token: string;
-  private os: string;
   private navigation: NavigationContainerComponent;
   private removeNotificationDisplayedListener: () => any;
   private removeNotificationListener: () => any;
   private removeNotificationOpenedListener: () => any;
   private removeTokenRefreshListener: () => any;
+  private centralServerProvider: CentralServerProvider;
 
   public static getInstance(): NotificationManager {
     if (!this.notificationManager) {
       this.notificationManager = new NotificationManager();
     }
     return this.notificationManager;
+  }
+
+  public setCentralServerProvider(centralServerProvider: CentralServerProvider) {
+    this.centralServerProvider = centralServerProvider;
   }
 
   public async initialize(navigation: NavigationContainerComponent) {
@@ -100,20 +105,38 @@ export default class NotificationManager {
       console.log(notification);
       console.log('====================================');
     });
-    this.removeTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken => {
+    this.removeTokenRefreshListener = firebase.messaging().onTokenRefresh(async (newFcmToken) => {
       // Process your token as required
       console.log('====================================');
-      console.log('NOTIFICATION: onTokenRefresh');
-      console.log(fcmToken);
+      console.log("NOTIFICATION: onTokenRefresh");
+      console.log(newFcmToken);
+      this.token = newFcmToken;
       console.log('====================================');
+      try {
+        // Save the User's token
+        if (this.centralServerProvider.isUserConnected()) {
+          console.log('====================================');
+          console.log('Save TOKEN');
+          console.log('====================================');
+          await this.centralServerProvider.saveUserMobileToken({
+            id: this.centralServerProvider.getUserInfo().id,
+            mobileToken: this.getToken(),
+            mobileOS: this.getOs()
+          });
+        }
+      } catch (error) {
+        // tslint:disable-next-line: no-console
+        console.log("Error saving Mobile Token:", error);
+      }
     });
     const fcmToken = await firebase.messaging().getToken();
     if (fcmToken) {
-        // user has a device token
-        console.log('====================================');
-        console.log('NOTIFICATION: Initial Token');
-        console.log(fcmToken);
-        console.log('====================================');
+      // user has a device token
+      console.log('====================================');
+      console.log("NOTIFICATION: Initial Token");
+      console.log(fcmToken);
+      console.log('====================================');
+      this.token = fcmToken;
     }
   }
 
@@ -128,26 +151,9 @@ export default class NotificationManager {
     return this.token;
   }
 
-  public getOS(): string {
-    return this.os;
+  public getOs(): string {
+    return Platform.OS;
   }
-
-  public onRegister = (token: { os: string; token: string }) => {
-    console.log('NOTIF TOKEN');
-    console.log(token);
-    // Keep the token
-    this.token = token.token;
-    this.os = token.os;
-  };
-
-  // public onNotification = async (notification: PushNotificationMessage) => {
-  //   console.log("NOTIF MESSAGE");
-  //   console.log(notification);
-  //   if (notification.userInteraction) {
-  //   }
-  //   // required on iOS only (see fetchCompletionHandler docs: https://github.com/react-native-community/react-native-push-notification-ios)
-  //   notification.finish(PushNotificationIOS.FetchResult.NoData);
-  // };
 
   public async processNotification() {
     // let notification;

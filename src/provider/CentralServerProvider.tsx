@@ -243,9 +243,9 @@ export default class CentralServerProvider {
     try {
       // Save the User's token
       await this.saveUserMobileToken({
-        id: this.decodedToken.id,
+        id: this.getUserInfo().id,
         mobileToken: this.notificationManager.getToken(),
-        mobileOS: this.notificationManager.getOS()
+        mobileOS: this.notificationManager.getOs()
       });
     } catch (error) {
       // tslint:disable-next-line: no-console
