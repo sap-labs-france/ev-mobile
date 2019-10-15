@@ -1,8 +1,8 @@
+import { Platform } from "react-native";
 import firebase from 'react-native-firebase';
 import { Notification, NotificationOpen } from 'react-native-firebase/notifications';
 import { NavigationContainerComponent } from "react-navigation";
 import CentralServerProvider from '../provider/CentralServerProvider';
-import { Platform } from "react-native";
 
 export default class NotificationManager {
   private static notificationManager: NotificationManager;
