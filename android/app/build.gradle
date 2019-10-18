@@ -204,7 +204,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.2.0'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
     implementation 'me.leolin:ShortcutBadger:1.1.21@aar' // <-- Add this line if you wish to use badge on Android
-    implementation project(':react-native-firebase')
     
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermesvm/android/";
