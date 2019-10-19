@@ -65,7 +65,7 @@ export default class Home extends BaseScreen<Props, State> {
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          <Content>
+          <Content style={style.content}>
             {isComponentOrganizationActive && (
               <Card>
                 <CardItem button={true} onPress={() => navigation.navigate({ routeName: "SitesNavigator" })}>
