@@ -52,7 +52,7 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('TransactionChart', { transactionID: transaction.id });
+            navigation.navigate('TransactionDetailsTabs', { transactionID: transaction.id });
           }}>
           <View style={style.container}>
             <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} />

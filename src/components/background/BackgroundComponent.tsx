@@ -19,6 +19,7 @@ interface State {
 export default class BackgroundComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
+
   public static defaultProps = {
     active: true,
     style: {}

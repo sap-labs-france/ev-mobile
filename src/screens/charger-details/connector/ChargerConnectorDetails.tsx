@@ -168,8 +168,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     await this.getTransaction();
     // Check to enable the buttons after a certain period of time
     this.handleStartStopDisabledButton();
-    // Refresh Duration
-    this.refreshDurationInfos();
+    // Compute Duration
+    this.computeDurationInfos();
     // Get the provider
     const centralServerProvider = await ProviderFactory.getProvider();
     const securityProvider = centralServerProvider.getSecurityProvider();
@@ -290,7 +290,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     }
   }
 
-  public refreshDurationInfos = () => {
+  public computeDurationInfos = () => {
     const { transaction } = this.state;
     const { connector } = this.props;
     // Component Mounted?
