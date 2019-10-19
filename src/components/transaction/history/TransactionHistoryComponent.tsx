@@ -43,7 +43,6 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
     const duration = Utils.formatDurationHHMMSS(transaction.stop.totalDurationSecs, false);
     const inactivity = Utils.formatDurationHHMMSS(transaction.stop.totalInactivitySecs, false);
     const inactivityStyle = Utils.computeInactivityStyle(transaction.stop.totalInactivitySecs);
-    const batteryLevel = transaction.stateOfCharge ? `${transaction.stateOfCharge} > ${transaction.stop.stateOfCharge}` : "-";
     const navigation = this.props.navigation;
     return (
       <Animatable.View
@@ -71,11 +70,6 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
                 <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
                 <Text style={[style.labelValue, inactivityStyle]}>{inactivity}</Text>
                 <Text style={[style.subLabelValue, inactivityStyle]}>(hh:mm)</Text>
-              </View>
-              <View style={style.columnContainer}>
-                <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
-                <Text style={[style.labelValue, style.info]}>{batteryLevel}</Text>
-                <Text style={[style.subLabelValue, style.info]}>(%)</Text>
               </View>
               {isPricingActive && (
                 <View style={style.columnContainer}>
