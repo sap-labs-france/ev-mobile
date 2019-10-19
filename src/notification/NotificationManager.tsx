@@ -45,72 +45,31 @@ export default class NotificationManager {
         // User has rejected permissions
       }
     }
-    // // Keep    console.log("NOTIF TOKEN");
-    // console.log("INIT NOTIFICATION");
-    // this.navigation = navigation;
-    // // PushNotificationIOS.addEventListener('register', (token: string) => {
-    // //   console.log("NOTIF TOKEN IOS");
-    // //   console.log(token);
-    // //   this.token = token;
-    // // });
-    // // Init
-    // PushNotification.configure({
-    //   // (optional) Called when Token is generated (iOS and Android)
-    //   onRegister: this.onRegister,
-    //   // (required) Called when a remote or local notification is opened or received
-    //   onNotification: this.onNotification,
-    //   // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
-    //   senderID: "49073993741",
-    //   // IOS ONLY (optional): default: all - Permissions to register.
-    //   permissions: {
-    //     alert: true,
-    //     badge: true,
-    //     sound: true
-    //   },
-    //   // Should the initial notification be popped automatically
-    //   popInitialNotification: true,
-    //   /**
-    //    * (optional) default: true
-    //    * - Specified if permissions (ios) and token (android and ios) will requested or not,
-    //    * - if not, you must call PushNotificationsHandler.requestPermissions() later
-    //    */
-    //   requestPermissions: true
-    // });
   }
 
   public async start() {
     this.removeNotificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification: Notification) => {
-      // Process your notification as required
+      // Process notification
+      this.processNotification(notification);
       // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
       console.log('====================================');
       console.log("NOTIFICATION: onNotificationDisplayed");
-      console.log(notification);
       console.log('====================================');
     });
     this.removeNotificationListener = firebase.notifications().onNotification((notification: Notification) => {
-      // Process your notification as required
-      console.log('====================================');
-      console.log("NOTIFICATION: onNotification");
-      console.log(notification);
-      console.log('====================================');
+      // Process notification
+      this.processNotification(notification);
     });
     this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen: NotificationOpen) => {
-      // Get the action triggered by the notification being opened
-      const action = notificationOpen.action;
-      // Get information about the notification that was opened
-      const notification: Notification = notificationOpen.notification;
-      console.log('====================================');
-      console.log("NOTIFICATION: onNotificationOpened");
-      console.log(action);
-      console.log(notification);
-      console.log('====================================');
+      // Process notification
+      this.processOpenedNotification(notificationOpen);
     });
     this.removeTokenRefreshListener = firebase.messaging().onTokenRefresh(async (newFcmToken) => {
       // Process your token as required
+      this.token = newFcmToken;
       console.log('====================================');
       console.log("NOTIFICATION: onTokenRefresh");
       console.log(newFcmToken);
-      this.token = newFcmToken;
       console.log('====================================');
       try {
         // Save the User's token
@@ -155,7 +114,23 @@ export default class NotificationManager {
     return Platform.OS;
   }
 
-  public async processNotification() {
+  public async processNotification(notification: Notification) {
+    console.log('====================================');
+    console.log("NOTIFICATION: onNotification");
+    console.log(notification);
+    console.log('====================================');
+  }
+
+  public async processOpenedNotification(notificationOpen: NotificationOpen) {
+    // Get the action triggered by the notification being opened
+    const action = notificationOpen.action;
+    // Get information about the notification that was opened
+    const notification: Notification = notificationOpen.notification;
+    console.log('====================================');
+    console.log("NOTIFICATION: onNotificationOpened");
+    console.log(action);
+    console.log(notification);
+    console.log('====================================');
     // let notification;
     // console.log("processNotification");
     // // Check if active
