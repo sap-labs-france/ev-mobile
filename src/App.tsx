@@ -19,7 +19,7 @@ import Chargers from "./screens/chargers/Chargers";
 import Sidebar from "./screens/sidebar/SideBar";
 import SiteAreas from "./screens/site-areas/SiteAreas";
 import Sites from "./screens/sites/Sites";
-import TransactionChartContainer from "./screens/transactions/chart/TransactionChartContainer";
+import TransactionDetailsTabs from "./screens/transaction-details/TransactionDetailsTabs";
 import TransactionTabs from "./screens/transactions/TransactionTabs";
 import SecuredStorage from "./utils/SecuredStorage";
 import Utils from "./utils/Utils";
@@ -77,7 +77,7 @@ const transactionsNavigator: NavigationContainer = createStackNavigator(
   {
     TransactionTabs: { screen: TransactionTabs },
     ChargerDetailsTabs: { screen: ChargerDetailsTabs },
-    TransactionChart: { screen: TransactionChartContainer }
+    TransactionDetailsTabs: { screen: TransactionDetailsTabs }
   },
   {
     initialRouteName: "TransactionTabs",
