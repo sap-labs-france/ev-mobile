@@ -4,6 +4,7 @@ import { ScrollView } from "react-native";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
 import I18n from "../../I18n/I18n";
+import TransactionChart from "../../screens/transactions/chart/TransactionChart";
 import BaseProps from "../../types/BaseProps";
 import Transaction from "../../types/Transaction";
 import Utils from "../../utils/Utils";
@@ -109,6 +110,14 @@ export default class TransactionDetailsTabs extends BaseScreen<Props, State> {
               }>
               <TransactionDetails transaction={transaction} isAdmin={isAdmin} navigation={navigation} />
             </Tab>
+              <Tab
+                heading={
+                  <TabHeading style={style.tabHeader}>
+                    <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
+                  </TabHeading>
+                }>
+                <TransactionChart transactionID={transaction.id} navigation={navigation} isAdmin={isAdmin} />
+              </Tab>
           </Tabs>
         </BackgroundComponent>
       </ScrollView>
