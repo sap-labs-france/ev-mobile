@@ -131,7 +131,8 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     // Component Mounted?
     if (this.isMounted()) {
       // Compute duration
-      const elapsedTimeFormatted = Utils.formatDurationHHMMSS(((Date.now() - new Date(transaction.timestamp).getTime()) / 1000), false);
+      const elapsedTimeFormatted = Utils.formatDurationHHMMSS(
+        ((new Date(transaction.stop.timestamp).getTime() - new Date(transaction.timestamp).getTime()) / 1000), false);
       // Compute Inactivity
       const totalInactivitySecs = transaction.stop.totalInactivitySecs +
         (transaction.stop.extraInactivitySecs ? transaction.stop.extraInactivitySecs : 0);
@@ -228,7 +229,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { navigation, transaction, isAdmin } = this.props;
+    const { transaction } = this.props;
     const { siteImage, isPricingActive } = this.state;
     return (
       <Container style={style.container}>
