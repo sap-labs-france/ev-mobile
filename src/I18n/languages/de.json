@@ -18,6 +18,7 @@
     "noRecordFound": "Kein Eintrag gefunden"
   },
   "sidebar": {
+    "home": "Home",
     "sites": "Standorte",
     "chargers": "Ladestationen",
     "transactions": "Sitzungen"

@@ -18,6 +18,7 @@
     "noRecordFound": "No record found"
   },
   "sidebar": {
+    "home": "Home",
     "sites": "Sites",
     "chargers": "Chargers",
     "transactions": "Sessions"

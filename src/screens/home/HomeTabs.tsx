@@ -1,13 +1,11 @@
 import { Icon, Tab, TabHeading, Tabs } from "native-base";
 import React from "react";
-import { Alert, BackHandler, ScrollView } from "react-native";
+import { Alert, BackHandler, ScrollView, View } from "react-native";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import I18n from "../../I18n/I18n";
 import BaseProps from "../../types/BaseProps";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
-import TransactionsHistory from "./history/TransactionsHistory";
-import TransactionsInProgress from "./in-progress/TransactionsInProgress";
-import computeStyleSheet from "./TransactionTabsStyles";
+import computeStyleSheet from "./HomeTabsStyles";
 
 export interface Props extends BaseProps {
 }
@@ -15,7 +13,7 @@ export interface Props extends BaseProps {
 interface State {
 }
 
-export default class TransactionTabs extends BaseAutoRefreshScreen<Props, State> {
+export default class HomeTabs extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
 
@@ -33,8 +31,12 @@ export default class TransactionTabs extends BaseAutoRefreshScreen<Props, State>
   public async componentDidMount() {
     // Call parent
     await super.componentDidMount();
-    // Refresh
-    await this.refresh();
+    // Refresh Admin
+    const securityProvider = this.centralServerProvider.getSecurityProvider();
+    this.setState({
+      firstLoad: false,
+      isAdmin: securityProvider ? securityProvider.isAdmin() : false
+    });
   }
 
   public onBack = (): boolean => {
@@ -47,17 +49,6 @@ export default class TransactionTabs extends BaseAutoRefreshScreen<Props, State>
     );
     // Do not bubble up
     return true;
-  };
-
-  public refresh = async () => {
-    if (this.isMounted()) {
-      // Refresh Admin
-      const securityProvider = this.centralServerProvider.getSecurityProvider();
-      this.setState({
-        firstLoad: false,
-        isAdmin: securityProvider ? securityProvider.isAdmin() : false
-      });
-    }
   };
 
   public render() {
@@ -73,15 +64,8 @@ export default class TransactionTabs extends BaseAutoRefreshScreen<Props, State>
                   <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
                 </TabHeading>
               }>
-              <TransactionsInProgress navigation={navigation} />
-            </Tab>
-            <Tab
-              heading={
-                <TabHeading style={style.tabHeader}>
-                  <Icon style={style.tabIcon} type="MaterialIcons" name="history" />
-                </TabHeading>
-              }>
-              <TransactionsHistory navigation={navigation} />
+              <View>
+              </View>
             </Tab>
           </Tabs>
         </BackgroundComponent>

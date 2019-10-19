@@ -18,6 +18,7 @@
     "noRecordFound": "Pas d'enregistrement trouvé"
   },
   "sidebar": {
+    "home": "Home",
     "sites": "Sites",
     "chargers": "Bornes",
     "transactions": "Sessions"

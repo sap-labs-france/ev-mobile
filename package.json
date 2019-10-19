@@ -43,7 +43,7 @@
   "scripts": {
     "postinstall": "patch-package",
     "start": "react-native start",
-    "start:clean": "npm start -- --reset-cache",
+    "clean": "npm start -- --reset-cache",
     "start:debug": "cross-env REACT_DEBUGGER=\"rndebugger-open --open --port 8081\" npm start",
     "android": "cross-env TSC_WATCHFILE=UseFsEventsWithFallbackDynamicPolling react-native run-android",
     "android:release": "react-native run-android --variant=release",
