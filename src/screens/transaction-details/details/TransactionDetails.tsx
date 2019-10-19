@@ -1,3 +1,4 @@
+import moment from "moment";
 import { Container, Icon, Text, Thumbnail, View } from "native-base";
 import React from "react";
 import { Image, ScrollView } from "react-native";
@@ -8,7 +9,6 @@ import BaseScreen from "../../../screens/base-screen/BaseScreen";
 import BaseProps from "../../../types/BaseProps";
 import Transaction from "../../../types/Transaction";
 import User from "../../../types/User";
-import Constants from "../../../utils/Constants";
 import Utils from "../../../utils/Utils";
 import computeStyleSheet from "./TransactionDetailsStyles";
 
@@ -228,12 +228,18 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
+    const { navigation, transaction, isAdmin } = this.props;
     const { siteImage, isPricingActive } = this.state;
     return (
       <Container style={style.container}>
         {/* Site Image */}
         <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
         <BackgroundComponent navigation={this.props.navigation} active={false}>
+          <View style={style.headerContent}>
+            <View style={style.headerRowContainer}>
+              <Text style={style.headerName}>{moment(new Date(transaction.timestamp)).format("LLL")}</Text>
+            </View>
+          </View>
           <ScrollView
             style={style.scrollViewContainer}>
             <View style={style.detailsContainer}>

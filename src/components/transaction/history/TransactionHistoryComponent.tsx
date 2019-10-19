@@ -37,13 +37,13 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
 
   public render() {
     const style = computeStyleSheet();
+    const { navigation } = this.props;
     const { transaction, isAdmin, isPricingActive } = this.props;
     const consumption = Math.round(transaction.stop.totalConsumption / 10) / 100;
     const price = transaction.stop.price ? Math.round(transaction.stop.price * 100) / 100 : 0;
     const duration = Utils.formatDurationHHMMSS(transaction.stop.totalDurationSecs, false);
     const inactivity = Utils.formatDurationHHMMSS(transaction.stop.totalInactivitySecs, false);
     const inactivityStyle = Utils.computeInactivityStyle(transaction.stop.totalInactivitySecs);
-    const navigation = this.props.navigation;
     return (
       <Animatable.View
         animation={this.counter++ % 2 === 0 ? "flipInX" : "flipInX"}

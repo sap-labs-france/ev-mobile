@@ -24,6 +24,27 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center",
     backgroundColor: "transparent"
   },
+  headerContent: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "5@s",
+    borderBottomWidth: 1,
+    borderBottomColor: commonColor.listBorderColor,
+    backgroundColor: commonColor.headerBgColor
+  },
+  headerRowContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  headerName: {
+    color: commonColor.headerTextColor,
+    fontSize: "18@s",
+    marginLeft: "5@s",
+    marginRight: "5@s",
+    fontWeight: "bold"
+  },
   scrollViewContainer: {
     marginTop: "20@s"
   },
