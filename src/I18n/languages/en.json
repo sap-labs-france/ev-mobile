@@ -72,6 +72,9 @@
     "noTransactionsInProgress": "No Session in progress",
     "noTransactionsHistory": "No Session history"
   },
+  "home": {
+    "title": "Home"
+  },
   "sites": {
     "freeChargers": "Free chargers",
     "chargePoint": "Charge Point",

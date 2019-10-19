@@ -1,10 +1,11 @@
 import { Icon, Tab, TabHeading, Tabs } from "native-base";
 import React from "react";
-import { Alert, BackHandler, ScrollView, View } from "react-native";
+import { Alert, BackHandler, ScrollView } from "react-native";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import I18n from "../../I18n/I18n";
 import BaseProps from "../../types/BaseProps";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
+import Home from "./home/Home";
 import computeStyleSheet from "./HomeTabsStyles";
 
 export interface Props extends BaseProps {
@@ -64,8 +65,7 @@ export default class HomeTabs extends BaseAutoRefreshScreen<Props, State> {
                   <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
                 </TabHeading>
               }>
-              <View>
-              </View>
+              <Home navigation={navigation} />
             </Tab>
           </Tabs>
         </BackgroundComponent>

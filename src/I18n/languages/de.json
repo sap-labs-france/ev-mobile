@@ -72,6 +72,9 @@
     "noTransactionsInProgress": "Es werden keine Sitzungen durchgeführt",
     "noTransactionsHistory": "Kein Sitzungsverlauf"
   },
+  "home": {
+    "title": "Home"
+  },
   "sites": {
     "freeChargers": "Freie Ladestationen",
     "chargePoint": "Ladepunkt",
