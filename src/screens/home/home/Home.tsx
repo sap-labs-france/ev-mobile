@@ -70,7 +70,7 @@ export default class Home extends BaseScreen<Props, State> {
               <Card>
                 <CardItem button={true} onPress={() => navigation.navigate({ routeName: "SitesNavigator" })}>
                   <Left>
-                    <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
+                    <Icon style={style.cardIcon} type="MaterialIcons" name="store-mall-directory" />
                     <Body>
                       <Text>{I18n.t("home.browseSites")}</Text>
                       <Text note={true}>{I18n.t("home.browseSitesNote")}</Text>
@@ -82,7 +82,7 @@ export default class Home extends BaseScreen<Props, State> {
             <Card>
               <CardItem button={true} onPress={() => navigation.navigate({ routeName: "ChargersNavigator" })}>
                 <Left>
-                  <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
+                  <Icon style={style.cardIcon} type="MaterialIcons" name="ev-station" />
                   <Body>
                     <Text>{I18n.t("home.browseChargers")}</Text>
                     <Text note={true}>{I18n.t("home.browseChargersNote")}</Text>
@@ -93,7 +93,7 @@ export default class Home extends BaseScreen<Props, State> {
             <Card>
               <CardItem button={true} onPress={() => navigation.navigate({ routeName: "TransactionsNavigator" })}>
                 <Left>
-                  <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="history" />
+                  <Icon style={style.cardIcon} type="MaterialCommunityIcons" name="history" />
                   <Body>
                     <Text>{I18n.t("home.browseSessions")}</Text>
                     <Text note={true}>{I18n.t("home.browseSessionsNote")}</Text>

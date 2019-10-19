@@ -14,9 +14,8 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.textColor
   },
   tabHeader: {},
-  tabIcon: {
-    fontSize: "20@s",
-    paddingBottom: "5@s"
+  cardIcon: {
+    fontSize: "50@s",
   }
 });
 
