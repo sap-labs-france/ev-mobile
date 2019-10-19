@@ -73,7 +73,12 @@
     "noTransactionsHistory": "Pas d'historique de Session"
   },
   "home": {
-    "title": "Home"
+    "browseSites": "Sites",
+    "browseSitesNote": "Naviguez vers les Sites et les Zones",
+    "browseChargers": "Bornes",
+    "browseChargersNote": "Naviguez vers les Bornes",
+    "browseSessions": "Sessions",
+    "browseSessionsNote": "Naviguez vers les Sessions"
   },
   "sites": {
     "freeChargers": "Chargeurs disponibles",

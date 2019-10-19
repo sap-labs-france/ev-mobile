@@ -73,10 +73,12 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     return transactions;
   };
 
-  public onBack = (): boolean => {
+  public onBack = () => {
+    // Back mobile button: Force navigation
+    this.props.navigation.navigate({ routeName: "HomeNavigator" });
     // Do not bubble up
-    return false;
-  }
+    return true;
+  };
 
   public manualRefresh = async () => {
     // Display spinner
@@ -131,6 +133,8 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
             navigation={navigation}
             title={I18n.t("transactions.transactionsHistory")}
             showSearchAction={false}
+            leftAction={this.onBack}
+            leftActionIcon={"navigate-before"}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />

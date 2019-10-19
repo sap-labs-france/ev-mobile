@@ -73,7 +73,12 @@
     "noTransactionsHistory": "Kein Sitzungsverlauf"
   },
   "home": {
-    "title": "Home"
+    "browseSites": "Sites",
+    "browseSitesNote": "Browse the Sites and Site Areas",
+    "browseChargers": "Charging Stations",
+    "browseChargersNote": "Browse the Charging Stations",
+    "browseSessions": "Sessions",
+    "browseSessionsNote": "Browse the Sessions"
   },
   "sites": {
     "freeChargers": "Freie Ladestationen",

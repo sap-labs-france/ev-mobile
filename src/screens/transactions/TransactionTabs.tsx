@@ -37,14 +37,9 @@ export default class TransactionTabs extends BaseAutoRefreshScreen<Props, State>
     await this.refresh();
   }
 
-  public onBack = (): boolean => {
-    // Exit?
-    Alert.alert(
-      I18n.t("general.exitApp"),
-      I18n.t("general.exitAppConfirm"),
-      [{ text: I18n.t("general.no"), style: "cancel" }, { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() }],
-      { cancelable: false }
-    );
+  public onBack = () => {
+    // Back mobile button: Force navigation
+    this.props.navigation.navigate({ routeName: "HomeNavigator" });
     // Do not bubble up
     return true;
   };

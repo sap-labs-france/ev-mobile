@@ -1,6 +1,6 @@
 import { Container, Spinner, View } from "native-base";
 import React from "react";
-import { Alert, BackHandler, FlatList, Platform, RefreshControl } from "react-native";
+import { FlatList, Platform, RefreshControl } from "react-native";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
 import ListEmptyTextComponent from "../../components/list/empty-text/ListEmptyTextComponent";
@@ -81,12 +81,9 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public onBack = () => {
-    Alert.alert(
-      I18n.t("general.exitApp"),
-      I18n.t("general.exitAppConfirm"),
-      [{ text: I18n.t("general.no"), style: "cancel" }, { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() }],
-      { cancelable: false }
-    );
+    // Back mobile button: Force navigation
+    this.props.navigation.navigate({ routeName: "HomeNavigator" });
+    // Do not bubble up
     return true;
   };
 
@@ -146,6 +143,8 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
             title={I18n.t("sidebar.sites")}
             showSearchAction={true}
             searchRef={this.searchRef}
+            leftAction={this.onBack}
+            leftActionIcon={"navigate-before"}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />

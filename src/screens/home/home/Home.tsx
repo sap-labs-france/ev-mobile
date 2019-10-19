@@ -1,5 +1,6 @@
-import { Container, View } from "native-base";
+import { Body, Card, CardItem, Container, Content, Icon, Left, Text } from "native-base";
 import React from "react";
+import { Alert, BackHandler } from "react-native";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import I18n from "../../../I18n/I18n";
@@ -11,11 +12,11 @@ export interface Props extends BaseProps {
 }
 
 interface State {
-  isPricingActive?: boolean;
   isAdmin?: boolean;
+  isComponentOrganizationActive?: boolean;
 }
 
-export default class TransactionsHistory extends BaseScreen<Props, State> {
+export default class Home extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
 
@@ -23,7 +24,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     super(props);
     // Init State
     this.state = {
-      isPricingActive: false,
+      isComponentOrganizationActive: false,
       isAdmin: false
     };
   }
@@ -34,29 +35,73 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     await super.componentDidMount();
+    const securityProvider = this.centralServerProvider.getSecurityProvider();
+    this.setState({
+      isComponentOrganizationActive: securityProvider ? securityProvider.isComponentOrganizationActive() : false,
+    });
   }
 
   public onBack = (): boolean => {
-    // Do not bubble up
-    return false;
+    Alert.alert(
+      I18n.t("general.exitApp"),
+      I18n.t("general.exitAppConfirm"),
+      [{ text: I18n.t("general.no"), style: "cancel" }, { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() }],
+      { cancelable: false }
+    );
+    return true;
   }
 
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { isAdmin, isPricingActive } = this.state;
+    const { isAdmin, isComponentOrganizationActive } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>
           <HeaderComponent
             navigation={navigation}
-            title={I18n.t("home.title")}
+            title={I18n.t("sidebar.home")}
             showSearchAction={false}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          <View style={style.content}>
-          </View>
+          <Content>
+            {isComponentOrganizationActive && (
+              <Card>
+                <CardItem button={true} onPress={() => navigation.navigate({ routeName: "SitesNavigator" })}>
+                  <Left>
+                    <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
+                    <Body>
+                      <Text>{I18n.t("home.browseSites")}</Text>
+                      <Text note={true}>{I18n.t("home.browseSitesNote")}</Text>
+                    </Body>
+                  </Left>
+                </CardItem>
+              </Card>
+            )}
+            <Card>
+              <CardItem button={true} onPress={() => navigation.navigate({ routeName: "ChargersNavigator" })}>
+                <Left>
+                  <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
+                  <Body>
+                    <Text>{I18n.t("home.browseChargers")}</Text>
+                    <Text note={true}>{I18n.t("home.browseChargersNote")}</Text>
+                  </Body>
+                </Left>
+              </CardItem>
+            </Card>
+            <Card>
+              <CardItem button={true} onPress={() => navigation.navigate({ routeName: "TransactionsNavigator" })}>
+                <Left>
+                  <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="history" />
+                  <Body>
+                    <Text>{I18n.t("home.browseSessions")}</Text>
+                    <Text note={true}>{I18n.t("home.browseSessionsNote")}</Text>
+                  </Body>
+                </Left>
+              </CardItem>
+            </Card>
+          </Content>
         </BackgroundComponent>
       </Container>
     );

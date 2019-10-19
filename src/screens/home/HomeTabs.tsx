@@ -62,7 +62,7 @@ export default class HomeTabs extends BaseAutoRefreshScreen<Props, State> {
             <Tab
               heading={
                 <TabHeading style={style.tabHeader}>
-                  <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
+                  <Icon style={style.tabIcon} type="MaterialIcons" name="home" />
                 </TabHeading>
               }>
               <Home navigation={navigation} />
