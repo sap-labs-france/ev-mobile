@@ -60,6 +60,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     const { transaction } = this.props;
+    console.log('====================================');
+    console.log(transaction);
+    console.log('====================================');
     await super.componentDidMount();
     // Get the Site Image
     if (transaction.siteID && this.isMounted()) {
@@ -205,7 +208,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     return (
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.info]} type="MaterialIcons" name="ev-station" />
-        <Text style={[style.label, style.labelValue, style.info]}>{(transaction.stop.totalConsumption / 1000).toFixed(1)}</Text>
+        <Text style={[style.label, style.labelValue, style.info]}>{Math.round(transaction.stop.totalConsumption / 10) / 100}</Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t("details.total")} (kW.h)</Text>
       </View>
     );

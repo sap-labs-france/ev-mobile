@@ -38,9 +38,6 @@ export default class TransactionInProgressComponent extends React.Component<Prop
   public render() {
     const style = computeStyleSheet();
     const { transaction, isAdmin, isPricingActive } = this.props;
-    console.log('====================================');
-    console.log(transaction);
-    console.log('====================================');
     const consumption = Math.round(transaction.currentConsumption / 10) / 100;
     const totalConsumption = Math.round(transaction.currentTotalConsumption / 10) / 100;
     const price = transaction.currentCumulatedPrice ? Math.round(transaction.currentCumulatedPrice * 100) / 100 : 0;
