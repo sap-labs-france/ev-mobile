@@ -71,9 +71,12 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     return transactions;
   };
 
-  public onBack = () =>
+  public onBack = () => {
+    // Back mobile button: Force navigation
+    this.props.navigation.navigate({ routeName: 'HomeNavigator' });
     // Do not bubble up
-    false;
+    return true;
+  };
 
   public manualRefresh = async () => {
     // Display spinner
@@ -128,6 +131,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
             navigation={navigation}
             title={I18n.t('transactions.transactionsInProgress')}
             showSearchAction={false}
+            leftAction={this.onBack}
+            leftActionIcon={'navigate-before'}
             rightAction={navigation.openDrawer}
             rightActionIcon={'menu'}
           />

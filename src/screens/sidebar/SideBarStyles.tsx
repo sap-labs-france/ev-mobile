@@ -62,7 +62,7 @@ const commonStyles = ScaledSheet.create({
     paddingBottom: '10@s'
   },
   linkIcon: {
-    fontSize: '16@s',
+    fontSize: '20@s',
     color: commonColor.inverseTextColor
   },
   linkText: {

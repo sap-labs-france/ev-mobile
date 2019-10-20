@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { Container, Icon, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Image, ScrollView } from 'react-native';
@@ -8,7 +9,6 @@ import BaseScreen from '../../../screens/base-screen/BaseScreen';
 import BaseProps from '../../../types/BaseProps';
 import Transaction from '../../../types/Transaction';
 import User from '../../../types/User';
-import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './TransactionDetailsStyles';
 
@@ -60,6 +60,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     const { transaction } = this.props;
+    console.log('====================================');
+    console.log(transaction);
+    console.log('====================================');
     await super.componentDidMount();
     // Get the Site Image
     if (transaction.siteID && this.isMounted()) {
@@ -131,7 +134,8 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     // Component Mounted?
     if (this.isMounted()) {
       // Compute duration
-      const elapsedTimeFormatted = Utils.formatDurationHHMMSS(((Date.now() - new Date(transaction.timestamp).getTime()) / 1000), false);
+      const elapsedTimeFormatted = Utils.formatDurationHHMMSS(
+        ((new Date(transaction.stop.timestamp).getTime() - new Date(transaction.timestamp).getTime()) / 1000), false);
       // Compute Inactivity
       const totalInactivitySecs = transaction.stop.totalInactivitySecs +
         (transaction.stop.extraInactivitySecs ? transaction.stop.extraInactivitySecs : 0);
@@ -204,7 +208,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     return (
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.info]} type='MaterialIcons' name='ev-station' />
-        <Text style={[style.label, style.labelValue, style.info]}>{(transaction.stop.totalConsumption / 1000).toFixed(1)}</Text>
+        <Text style={[style.label, style.labelValue, style.info]}>{Math.round(transaction.stop.totalConsumption / 10) / 100}</Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
     );
@@ -212,23 +216,34 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
 
   public renderBatteryLevel = (style: any) => {
     const { transaction } = this.props;
-    return (
+    return transaction.stateOfCharge ? (
       <View style={style.columnContainer}>
         <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>{transaction.stateOfCharge} > {transaction.stop.stateOfCharge}</Text>
         <Text style={[style.subLabel, style.info]}>(%)</Text>
+      </View>
+    ) : (
+      <View style={style.columnContainer}>
+        <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.disabled]} />
+        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
   };
 
   public render() {
     const style = computeStyleSheet();
+    const { transaction } = this.props;
     const { siteImage, isPricingActive } = this.state;
     return (
       <Container style={style.container}>
         {/* Site Image */}
         <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
         <BackgroundComponent navigation={this.props.navigation} active={false}>
+          <View style={style.headerContent}>
+            <View style={style.headerRowContainer}>
+              <Text style={style.headerName}>{moment(new Date(transaction.timestamp)).format('LLL')}</Text>
+            </View>
+          </View>
           <ScrollView
             style={style.scrollViewContainer}>
             <View style={style.detailsContainer}>

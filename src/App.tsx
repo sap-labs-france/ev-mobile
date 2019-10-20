@@ -16,6 +16,7 @@ import RetrievePassword from './screens/auth/retrieve-password/RetrievePassword'
 import SignUp from './screens/auth/sign-up/SignUp';
 import ChargerDetailsTabs from './screens/charger-details/ChargerDetailsTabs';
 import Chargers from './screens/chargers/Chargers';
+import HomeTabs from './screens/home/HomeTabs';
 import Sidebar from './screens/sidebar/SideBar';
 import SiteAreas from './screens/site-areas/SiteAreas';
 import Sites from './screens/sites/Sites';
@@ -42,6 +43,17 @@ const authNavigator: NavigationContainer = createStackNavigator(
   },
   {
     initialRouteName: 'Login',
+    headerMode: 'none'
+  }
+);
+
+// Home Stack Navigation
+const homeNavigator: NavigationContainer = createStackNavigator(
+  {
+    Home: { screen: HomeTabs }
+  },
+  {
+    initialRouteName: 'Home',
     headerMode: 'none'
   }
 );
@@ -88,6 +100,7 @@ const transactionsNavigator: NavigationContainer = createStackNavigator(
 // Drawer Navigation
 const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
   {
+    HomeNavigator: { screen: homeNavigator },
     SitesNavigator: { screen: sitesNavigator },
     ChargersNavigator: { screen: chargersNavigator },
     TransactionsNavigator: { screen: transactionsNavigator }
@@ -97,7 +110,7 @@ const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
       swipeEnabled: true
     },
     drawerWidth: Dimensions.get('window').width / 1.5,
-    initialRouteName: 'SitesNavigator',
+    initialRouteName: 'HomeNavigator',
     unmountInactiveRoutes: true,
     drawerPosition: 'right',
     contentComponent: (props) => <Sidebar {...props} />

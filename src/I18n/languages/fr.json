@@ -18,6 +18,7 @@
     "noRecordFound": "Pas d'enregistrement trouvé"
   },
   "sidebar": {
+    "home": "Home",
     "sites": "Sites",
     "chargers": "Bornes",
     "transactions": "Sessions"
@@ -70,6 +71,14 @@
     "chargingCurve": "Graphique Session",
     "noTransactionsInProgress": "Pas de Session en cours",
     "noTransactionsHistory": "Pas d'historique de Session"
+  },
+  "home": {
+    "browseSites": "Sites",
+    "browseSitesNote": "Naviguez vers les Sites et les Zones",
+    "browseChargers": "Bornes",
+    "browseChargersNote": "Naviguez vers les Bornes",
+    "browseSessions": "Sessions",
+    "browseSessionsNote": "Naviguez vers les Sessions"
   },
   "sites": {
     "freeChargers": "Chargeurs disponibles",

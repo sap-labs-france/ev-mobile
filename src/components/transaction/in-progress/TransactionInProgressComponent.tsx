@@ -38,7 +38,8 @@ export default class TransactionInProgressComponent extends React.Component<Prop
   public render() {
     const style = computeStyleSheet();
     const { transaction, isAdmin, isPricingActive } = this.props;
-    const consumption = Math.round(transaction.currentTotalConsumption / 10) / 100;
+    const consumption = Math.round(transaction.currentConsumption / 10) / 100;
+    const totalConsumption = Math.round(transaction.currentTotalConsumption / 10) / 100;
     const price = transaction.currentCumulatedPrice ? Math.round(transaction.currentCumulatedPrice * 100) / 100 : 0;
     const duration = Utils.formatDurationHHMMSS(transaction.currentTotalDurationSecs, false);
     const inactivity = Utils.formatDurationHHMMSS(transaction.currentTotalInactivitySecs, false);
@@ -61,11 +62,23 @@ export default class TransactionInProgressComponent extends React.Component<Prop
             <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} />
             <View style={style.transactionContent}>
               <View style={style.columnContainer}>
-                <Icon type='MaterialIcons' name='ev-station' style={[style.icon, style.info]} />
+                <Icon type='FontAwesome' name='bolt' style={[style.icon, style.info]} />
                 <Text style={[style.labelValue, style.info]}>{consumption}</Text>
+                <Text style={[style.subLabelValue, style.info]}>(kW)</Text>
+              </View>
+              <View style={style.columnContainer}>
+                <Icon type='MaterialIcons' name='ev-station' style={[style.icon, style.info]} />
+                <Text style={[style.labelValue, style.info]}>{totalConsumption}</Text>
                 <Text style={[style.subLabelValue, style.info]}>(kW.h)</Text>
               </View>
               <View style={style.columnContainer}>
+                <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.info]} />
+                <Text style={[style.labelValue, style.info]}>{batteryLevel}</Text>
+                <Text style={[style.subLabelValue, style.info]}>(%)</Text>
+              </View>
+            </View>
+            <View style={style.transactionContent}>
+            <View style={style.columnContainer}>
                 <Icon type='MaterialIcons' name='timer' style={[style.icon, style.info]} />
                 <Text style={[style.labelValue, style.info]}>{duration}</Text>
                 <Text style={[style.subLabelValue, style.info]}>(hh:mm)</Text>
@@ -74,11 +87,6 @@ export default class TransactionInProgressComponent extends React.Component<Prop
                 <Icon type='MaterialIcons' name='timer-off' style={[style.icon, inactivityStyle]} />
                 <Text style={[style.labelValue, inactivityStyle]}>{inactivity}</Text>
                 <Text style={[style.subLabelValue, inactivityStyle]}>(hh:mm)</Text>
-              </View>
-              <View style={style.columnContainer}>
-                <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.info]} />
-                <Text style={[style.labelValue, style.info]}>{batteryLevel}</Text>
-                <Text style={[style.subLabelValue, style.info]}>(%)</Text>
               </View>
               {isPricingActive && (
                 <View style={style.columnContainer}>
