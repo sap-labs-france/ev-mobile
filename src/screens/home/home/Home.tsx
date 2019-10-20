@@ -1,4 +1,4 @@
-import { Body, Card, CardItem, Container, Content, Icon, Left, Text } from "native-base";
+import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } from "native-base";
 import React from "react";
 import { Alert, BackHandler } from "react-native";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
@@ -12,6 +12,7 @@ export interface Props extends BaseProps {
 }
 
 interface State {
+  loading?: boolean;
   isAdmin?: boolean;
   isComponentOrganizationActive?: boolean;
 }
@@ -25,6 +26,7 @@ export default class Home extends BaseScreen<Props, State> {
     // Init State
     this.state = {
       isComponentOrganizationActive: false,
+      loading: true,
       isAdmin: false
     };
   }
@@ -37,6 +39,7 @@ export default class Home extends BaseScreen<Props, State> {
     await super.componentDidMount();
     const securityProvider = this.centralServerProvider.getSecurityProvider();
     this.setState({
+      loading: false,
       isComponentOrganizationActive: securityProvider ? securityProvider.isComponentOrganizationActive() : false,
     });
   }
@@ -54,7 +57,7 @@ export default class Home extends BaseScreen<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { isAdmin, isComponentOrganizationActive } = this.state;
+    const { loading, isComponentOrganizationActive } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>
@@ -65,43 +68,49 @@ export default class Home extends BaseScreen<Props, State> {
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          <Content style={style.content}>
-            {isComponentOrganizationActive && (
+          {loading ? (
+            <Container style={style.container}>
+              <Spinner style={style.spinner} />
+            </Container>
+          ) : (
+            <Content style={style.content}>
+              {isComponentOrganizationActive && (
+                <Card>
+                  <CardItem button={true} onPress={() => navigation.navigate({ routeName: "SitesNavigator" })}>
+                    <Left>
+                      <Icon style={style.cardIcon} type="MaterialIcons" name="store-mall-directory" />
+                      <Body>
+                        <Text>{I18n.t("home.browseSites")}</Text>
+                        <Text note={true}>{I18n.t("home.browseSitesNote")}</Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                </Card>
+              )}
               <Card>
-                <CardItem button={true} onPress={() => navigation.navigate({ routeName: "SitesNavigator" })}>
+                <CardItem button={true} onPress={() => navigation.navigate({ routeName: "ChargersNavigator" })}>
                   <Left>
-                    <Icon style={style.cardIcon} type="MaterialIcons" name="store-mall-directory" />
+                    <Icon style={style.cardIcon} type="MaterialIcons" name="ev-station" />
                     <Body>
-                      <Text>{I18n.t("home.browseSites")}</Text>
-                      <Text note={true}>{I18n.t("home.browseSitesNote")}</Text>
+                      <Text>{I18n.t("home.browseChargers")}</Text>
+                      <Text note={true}>{I18n.t("home.browseChargersNote")}</Text>
                     </Body>
                   </Left>
                 </CardItem>
               </Card>
-            )}
-            <Card>
-              <CardItem button={true} onPress={() => navigation.navigate({ routeName: "ChargersNavigator" })}>
-                <Left>
-                  <Icon style={style.cardIcon} type="MaterialIcons" name="ev-station" />
-                  <Body>
-                    <Text>{I18n.t("home.browseChargers")}</Text>
-                    <Text note={true}>{I18n.t("home.browseChargersNote")}</Text>
-                  </Body>
-                </Left>
-              </CardItem>
-            </Card>
-            <Card>
-              <CardItem button={true} onPress={() => navigation.navigate({ routeName: "TransactionsNavigator" })}>
-                <Left>
-                  <Icon style={style.cardIcon} type="MaterialCommunityIcons" name="history" />
-                  <Body>
-                    <Text>{I18n.t("home.browseSessions")}</Text>
-                    <Text note={true}>{I18n.t("home.browseSessionsNote")}</Text>
-                  </Body>
-                </Left>
-              </CardItem>
-            </Card>
+              <Card>
+                <CardItem button={true} onPress={() => navigation.navigate({ routeName: "TransactionsNavigator" })}>
+                  <Left>
+                    <Icon style={style.cardIcon} type="MaterialCommunityIcons" name="history" />
+                    <Body>
+                      <Text>{I18n.t("home.browseSessions")}</Text>
+                      <Text note={true}>{I18n.t("home.browseSessionsNote")}</Text>
+                    </Body>
+                  </Left>
+                </CardItem>
+              </Card>
           </Content>
+        )}
         </BackgroundComponent>
       </Container>
     );
