@@ -465,11 +465,14 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   };
 
   public renderBatteryLevel = (style: any) => {
+    const { transaction } = this.state;
     const { connector } = this.props;
     return connector.currentStateOfCharge ? (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>{connector.currentStateOfCharge}</Text>
+        <Text style={[style.label, style.labelValue, style.info]}>
+          {transaction ? `${transaction.stateOfCharge} > ${transaction.currentStateOfCharge}` : connector.currentStateOfCharge}
+        </Text>
         <Text style={[style.subLabel, style.info]}>(%)</Text>
       </View>
     ) : (
