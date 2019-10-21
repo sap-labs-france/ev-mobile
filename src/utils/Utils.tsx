@@ -5,6 +5,7 @@ import validate from "validate.js";
 import I18n from "../I18n/I18n";
 import commonColor from "../theme/variables/commonColor";
 import { RequestError } from "../types/RequestError";
+import { InactivityStatusLevel } from "../types/RequestError";
 import User from "../types/User";
 import Constants from "./Constants";
 import Message from "./Message";
@@ -70,16 +71,17 @@ export default class Utils {
     return Utils.getLocale().substring(0, 2);
   }
 
-  public static computeInactivityStyle(totalInactivitySecs: number): object {
-    let style = { color: commonColor.brandInfo };
-    if (totalInactivitySecs < 1800) {
-      style = { color: commonColor.brandSuccess };
-    } else if (totalInactivitySecs < 3600) {
-      style = { color: commonColor.brandWarning };
-    } else {
-      style = { color: commonColor.brandDanger };
+  public static computeInactivityStyle(inactivityStatusLevel: InactivityStatusLevel): object {
+    switch (inactivityStatusLevel) {
+      case 'info':
+        return { color: commonColor.brandSuccess };
+      case 'warning':
+        return { color: commonColor.brandWarning };
+      case 'danger':
+        return { color: commonColor.brandDanger };
+      default:
+        return { color: commonColor.brandInfo };
     }
-    return style;
   }
 
   public static async handleHttpUnexpectedError(centralServerProvider: CentralServerProvider,

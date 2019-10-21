@@ -431,9 +431,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   };
 
   public renderInactivity = (style: any) => {
-    const { inactivityFormatted, totalInactivitySecs } = this.state;
+    const { inactivityFormatted } = this.state;
     const { connector } = this.props;
-    const inactivityStyle = Utils.computeInactivityStyle(totalInactivitySecs);
+    const inactivityStyle = Utils.computeInactivityStyle(connector.inactivityStatusLevel);
     return connector.activeTransactionID ? (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
