@@ -78,7 +78,10 @@
     "browseChargers": "Charging Stations",
     "browseChargersNote": "Browse the Charging Stations",
     "browseSessions": "Sessions",
-    "browseSessionsNote": "Browse the Sessions"
+    "browseSessionsNote": "Browse the Sessions",
+    "ongoingSessions": "{{nbrSessions}} ongoing Session(s)",
+    "noOngoingSessions": "No ongoing Session",
+    "ongoingSessionsNote": "The number of ongoing Sessions"
   },
   "sites": {
     "freeChargers": "Freie Ladestationen",

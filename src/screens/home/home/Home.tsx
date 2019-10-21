@@ -1,11 +1,14 @@
 import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } from "native-base";
 import React from "react";
 import { Alert, BackHandler } from "react-native";
+import Transaction from "types/Transaction";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import I18n from "../../../I18n/I18n";
 import BaseProps from "../../../types/BaseProps";
-import BaseScreen from "../../base-screen/BaseAutoRefreshScreen";
+import Constants from "../../../utils/Constants";
+import Utils from "../../../utils/Utils";
+import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
 import computeStyleSheet from "./HomeStyles";
 
 export interface Props extends BaseProps {
@@ -15,9 +18,11 @@ interface State {
   loading?: boolean;
   isAdmin?: boolean;
   isComponentOrganizationActive?: boolean;
+  transactionsActive?: Transaction[];
+  transactionsActiveCount?: number;
 }
 
-export default class Home extends BaseScreen<Props, State> {
+export default class Home extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
 
@@ -27,7 +32,9 @@ export default class Home extends BaseScreen<Props, State> {
     this.state = {
       isComponentOrganizationActive: false,
       loading: true,
-      isAdmin: false
+      isAdmin: false,
+      transactionsActive: null,
+      transactionsActiveCount: 0
     };
   }
 
@@ -37,12 +44,37 @@ export default class Home extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     await super.componentDidMount();
+    // Refresh
+    await this.refresh();
+  }
+
+  public refresh = async () => {
+    // Get the security provider
     const securityProvider = this.centralServerProvider.getSecurityProvider();
+    // Get the ongoing Transaction
+    await this.getTransactionsActive();
+    // Set
     this.setState({
       loading: false,
       isComponentOrganizationActive: securityProvider ? securityProvider.isComponentOrganizationActive() : false,
     });
-  }
+  };
+
+  public getTransactionsActive = async () => {
+    try {
+      // Get active transaction
+      const transactionsActive = await this.centralServerProvider.getTransactionsActive({}, Constants.ONLY_ONE_PAGING);
+      this.setState({
+        transactionsActive : transactionsActive.result,
+        transactionsActiveCount: transactionsActive.count
+      });
+    } catch (error) {
+      // Check if HTTP?
+      if (!error.request || error.request.status !== 560) {
+        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      }
+    }
+  };
 
   public onBack = (): boolean => {
     Alert.alert(
@@ -54,10 +86,25 @@ export default class Home extends BaseScreen<Props, State> {
     return true;
   }
 
+  public navigateToOngoingSession = () => {
+    const { navigation } = this.props;
+    const { transactionsActive, transactionsActiveCount } = this.state;
+    if (transactionsActiveCount === 1) {
+      // Only One Session
+      navigation.navigate("ChargerDetailsTabs", {
+        chargerID: transactionsActive[0].chargeBoxID,
+        connectorID: transactionsActive[0].connectorId
+      });
+    } else if (transactionsActiveCount > 1) {
+      // Many Sessions
+      navigation.navigate({ routeName: "TransactionsNavigator" });
+    }
+  }
+
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isComponentOrganizationActive } = this.state;
+    const { loading, isComponentOrganizationActive, transactionsActiveCount } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>
@@ -105,6 +152,21 @@ export default class Home extends BaseScreen<Props, State> {
                     <Body>
                       <Text>{I18n.t("home.browseSessions")}</Text>
                       <Text note={true}>{I18n.t("home.browseSessionsNote")}</Text>
+                    </Body>
+                  </Left>
+                </CardItem>
+              </Card>
+              <Card>
+                <CardItem button={true} onPress={() => this.navigateToOngoingSession()}>
+                  <Left>
+                    <Icon style={style.cardIcon} type="MaterialCommunityIcons" name="play" />
+                    <Body>
+                      <Text>{transactionsActiveCount ?
+                        `${I18n.t("home.ongoingSessions", { nbrSessions: transactionsActiveCount })}`
+                      :
+                        `${I18n.t("home.noOngoingSessions")}`
+                      }</Text>
+                      <Text note={true}>{I18n.t("home.ongoingSessionsNote")}</Text>
                     </Body>
                   </Left>
                 </CardItem>
