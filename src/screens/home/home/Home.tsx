@@ -127,8 +127,8 @@ export default class Home extends BaseAutoRefreshScreen<Props, State> {
                     <Left>
                       <Icon style={style.cardIcon} type="MaterialIcons" name="store-mall-directory" />
                       <Body>
-                        <Text>{I18n.t("home.browseSites")}</Text>
-                        <Text note={true}>{I18n.t("home.browseSitesNote")}</Text>
+                        <Text style={style.cardText}>{I18n.t("home.browseSites")}</Text>
+                        <Text note={true} style={style.cardNote}>{I18n.t("home.browseSitesNote")}</Text>
                       </Body>
                     </Left>
                   </CardItem>
@@ -139,8 +139,8 @@ export default class Home extends BaseAutoRefreshScreen<Props, State> {
                   <Left>
                     <Icon style={style.cardIcon} type="MaterialIcons" name="ev-station" />
                     <Body>
-                      <Text>{I18n.t("home.browseChargers")}</Text>
-                      <Text note={true}>{I18n.t("home.browseChargersNote")}</Text>
+                      <Text style={style.cardText}>{I18n.t("home.browseChargers")}</Text>
+                      <Text note={true} style={style.cardNote}>{I18n.t("home.browseChargersNote")}</Text>
                     </Body>
                   </Left>
                 </CardItem>
@@ -150,8 +150,8 @@ export default class Home extends BaseAutoRefreshScreen<Props, State> {
                   <Left>
                     <Icon style={style.cardIcon} type="MaterialCommunityIcons" name="history" />
                     <Body>
-                      <Text>{I18n.t("home.browseSessions")}</Text>
-                      <Text note={true}>{I18n.t("home.browseSessionsNote")}</Text>
+                      <Text style={style.cardText}>{I18n.t("home.browseSessions")}</Text>
+                      <Text note={true} style={style.cardNote}>{I18n.t("home.browseSessionsNote")}</Text>
                     </Body>
                   </Left>
                 </CardItem>
@@ -161,12 +161,12 @@ export default class Home extends BaseAutoRefreshScreen<Props, State> {
                   <Left>
                     <Icon style={style.cardIcon} type="MaterialCommunityIcons" name="play" />
                     <Body>
-                      <Text>{transactionsActiveCount ?
+                      <Text style={style.cardText}>{transactionsActiveCount ?
                         `${I18n.t("home.ongoingSessions", { nbrSessions: transactionsActiveCount })}`
                       :
                         `${I18n.t("home.noOngoingSessions")}`
                       }</Text>
-                      <Text note={true}>{I18n.t("home.ongoingSessionsNote")}</Text>
+                      <Text note={true} style={style.cardNote}>{I18n.t("home.ongoingSessionsNote")}</Text>
                     </Body>
                   </Left>
                 </CardItem>
