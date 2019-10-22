@@ -43,7 +43,7 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
     const price = transaction.stop.price ? Math.round(transaction.stop.price * 100) / 100 : 0;
     const duration = Utils.formatDurationHHMMSS(transaction.stop.totalDurationSecs, false);
     const inactivity = Utils.formatDurationHHMMSS(transaction.stop.totalInactivitySecs, false);
-    const inactivityStyle = Utils.computeInactivityStyle(transaction.stop.totalInactivitySecs);
+    const inactivityStyle = Utils.computeInactivityStyle(transaction.stop.inactivityStatusLevel);
     return (
       <Animatable.View
         animation={this.counter++ % 2 === 0 ? 'flipInX' : 'flipInX'}

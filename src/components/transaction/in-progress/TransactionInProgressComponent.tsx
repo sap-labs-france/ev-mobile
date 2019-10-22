@@ -43,7 +43,7 @@ export default class TransactionInProgressComponent extends React.Component<Prop
     const price = transaction.currentCumulatedPrice ? Math.round(transaction.currentCumulatedPrice * 100) / 100 : 0;
     const duration = Utils.formatDurationHHMMSS(transaction.currentTotalDurationSecs, false);
     const inactivity = Utils.formatDurationHHMMSS(transaction.currentTotalInactivitySecs, false);
-    const inactivityStyle = Utils.computeInactivityStyle(transaction.currentTotalInactivitySecs);
+    const inactivityStyle = Utils.computeInactivityStyle(transaction.currentInactivityStatusLevel);
     const batteryLevel = transaction.stateOfCharge ? `${transaction.stateOfCharge} > ${transaction.currentStateOfCharge}` : '-';
     const navigation = this.props.navigation;
     return (

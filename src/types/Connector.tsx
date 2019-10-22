@@ -1,8 +1,11 @@
+import { InactivityStatusLevel } from './Transaction';
+
 export default interface Connector {
   connectorId: number;
   currentConsumption: number;
   currentStateOfCharge?: number;
   totalInactivitySecs?: number;
+  inactivityStatusLevel: InactivityStatusLevel;
   totalConsumption?: number;
   status: string;
   errorCode?: string;

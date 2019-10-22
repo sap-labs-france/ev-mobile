@@ -556,6 +556,10 @@ export default class CentralServerProvider {
       if (paging.skip) {
         queryString.Skip = paging.skip;
       }
+      // Record count
+      if (paging.onlyRecordCount) {
+        queryString.OnlyRecordCount = paging.onlyRecordCount;
+      }
     }
   }
 

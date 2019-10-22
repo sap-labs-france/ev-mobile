@@ -78,7 +78,10 @@
     "browseChargers": "Bornes",
     "browseChargersNote": "Naviguez vers les Bornes",
     "browseSessions": "Sessions",
-    "browseSessionsNote": "Naviguez vers les Sessions"
+    "browseSessionsNote": "Naviguez vers les Sessions",
+    "ongoingSessions": "{{nbrSessions}} ongoing Session(s)",
+    "noOngoingSessions": "Pas de Session en cours",
+    "ongoingSessionsNote": "The number of ongoing Sessions"
   },
   "sites": {
     "freeChargers": "Chargeurs disponibles",

@@ -19,6 +19,12 @@ const commonStyles = ScaledSheet.create({
   tabHeader: {},
   cardIcon: {
     fontSize: '50@s',
+  },
+  cardText: {
+    fontSize: '20@s',
+  },
+  cardNote: {
+    fontStyle: 'italic'
   }
 });
 
