@@ -81,7 +81,7 @@
     "browseSessionsNote": "Naviguez vers les Sessions",
     "ongoingSessions": "{{nbrSessions}} ongoing Session(s)",
     "noOngoingSessions": "Pas de Session en cours",
-    "ongoingSessionsNote": "The number of ongoing Sessions"
+    "ongoingSessionsNote": "Nombre de Session en cours"
   },
   "sites": {
     "freeChargers": "Chargeurs disponibles",

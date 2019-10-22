@@ -81,7 +81,7 @@
     "browseSessionsNote": "Browse the Sessions",
     "ongoingSessions": "{{nbrSessions}} ongoing Session(s)",
     "noOngoingSessions": "No ongoing Session",
-    "ongoingSessionsNote": "The number of ongoing Sessions"
+    "ongoingSessionsNote": "Number of ongoing Session"
   },
   "sites": {
     "freeChargers": "Freie Ladestationen",
