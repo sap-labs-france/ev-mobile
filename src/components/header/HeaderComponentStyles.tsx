@@ -6,7 +6,7 @@ import commonColor from "../../theme/variables/commonColor";
 
 const commonStyles = ScaledSheet.create({
   header: {
-    height: "45@s",
+    height: "50@s",
     paddingTop: "5@s",
     paddingBottom: "5@s",
     borderBottomWidth: 1,
@@ -36,7 +36,7 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.inverseTextColor,
     fontWeight: "bold",
     fontSize: "12@s",
-    marginTop: Platform.OS === "ios" ? "-2@s" : "-3@s"
+    marginTop: Platform.OS === "ios" ? 0 : "-3@s"
   },
   iconHeader: {
     color: commonColor.inverseTextColor,
