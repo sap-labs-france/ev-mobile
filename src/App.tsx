@@ -16,10 +16,11 @@ import RetrievePassword from "./screens/auth/retrieve-password/RetrievePassword"
 import SignUp from "./screens/auth/sign-up/SignUp";
 import ChargerDetailsTabs from "./screens/charger-details/ChargerDetailsTabs";
 import Chargers from "./screens/chargers/Chargers";
+import HomeTabs from "./screens/home/HomeTabs";
 import Sidebar from "./screens/sidebar/SideBar";
 import SiteAreas from "./screens/site-areas/SiteAreas";
 import Sites from "./screens/sites/Sites";
-import TransactionChartContainer from "./screens/transactions/chart/TransactionChartContainer";
+import TransactionDetailsTabs from "./screens/transaction-details/TransactionDetailsTabs";
 import TransactionTabs from "./screens/transactions/TransactionTabs";
 import SecuredStorage from "./utils/SecuredStorage";
 import Utils from "./utils/Utils";
@@ -42,6 +43,17 @@ const authNavigator: NavigationContainer = createStackNavigator(
   },
   {
     initialRouteName: "Login",
+    headerMode: "none"
+  }
+);
+
+// Home Stack Navigation
+const homeNavigator: NavigationContainer = createStackNavigator(
+  {
+    Home: { screen: HomeTabs }
+  },
+  {
+    initialRouteName: "Home",
     headerMode: "none"
   }
 );
@@ -77,7 +89,7 @@ const transactionsNavigator: NavigationContainer = createStackNavigator(
   {
     TransactionTabs: { screen: TransactionTabs },
     ChargerDetailsTabs: { screen: ChargerDetailsTabs },
-    TransactionChart: { screen: TransactionChartContainer }
+    TransactionDetailsTabs: { screen: TransactionDetailsTabs }
   },
   {
     initialRouteName: "TransactionTabs",
@@ -88,6 +100,7 @@ const transactionsNavigator: NavigationContainer = createStackNavigator(
 // Drawer Navigation
 const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
   {
+    HomeNavigator: { screen: homeNavigator },
     SitesNavigator: { screen: sitesNavigator },
     ChargersNavigator: { screen: chargersNavigator },
     TransactionsNavigator: { screen: transactionsNavigator }
@@ -97,7 +110,7 @@ const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
       swipeEnabled: true
     },
     drawerWidth: Dimensions.get("window").width / 1.5,
-    initialRouteName: "SitesNavigator",
+    initialRouteName: "HomeNavigator",
     unmountInactiveRoutes: true,
     drawerPosition: "right",
     contentComponent: (props) => <Sidebar {...props} />
@@ -148,9 +161,6 @@ export default class App extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    // Init Notification
-    this.notificationManager = NotificationManager.getInstance();
-    this.notificationManager.initialize();
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
@@ -161,20 +171,25 @@ export default class App extends React.Component<Props, State> {
   public async componentDidMount() {
     // Get the central server
     this.centralServerProvider = await ProviderFactory.getProvider();
+    // Init Notification
+    this.notificationManager = NotificationManager.getInstance();
+    this.notificationManager.setCentralServerProvider(this.centralServerProvider);
+    this.notificationManager.initialize(this.navigator);
+    await this.notificationManager.start();
+    // Assign
+    this.centralServerProvider.setNotificationManager(this.notificationManager);
     // Init Deep Linking
     this.deepLinkingManager = DeepLinkingManager.getInstance();
-    this.deepLinkingManager.initialize(this.navigator, this.centralServerProvider);  
+    this.deepLinkingManager.initialize(this.navigator, this.centralServerProvider);
     // Activate Deep links
     this.deepLinkingManager.startListening();
-    // Activate Notifications
-    this.notificationManager.setActive(true);
   }
 
   public async componentWillUnmount() {
-    // Deactivate Notifications
-    this.notificationManager.setActive(false);
     // Deactivate Deep links
     this.deepLinkingManager.stopListening();
+    // Stop Notifications
+    await this.notificationManager.stop();
   }
 
   // eslint-disable-next-line class-methods-use-this

@@ -28,6 +28,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   private searchIsVisible: boolean;
+
   public static defaultProps = {
     leftActionIconType: "MaterialIcons",
     rightActionIconType: "MaterialIcons",

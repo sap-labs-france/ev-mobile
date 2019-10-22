@@ -46,7 +46,8 @@ const commonStyles = ScaledSheet.create({
     paddingLeft: 0
   },
   rightButtonHeader: {
-    paddingLeft: 0
+    paddingLeft: 0,
+    marginTop: Platform.OS === "ios" ? "-5@s" : 0
   }
 });
 

@@ -76,7 +76,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     if (charger.siteArea && this.isMounted()) {
       await this.getSiteImage(charger.siteArea.siteID);
     }
-    // Get Transaction
+    // Refresh
     await this.refresh();
   }
 
@@ -168,8 +168,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     await this.getTransaction();
     // Check to enable the buttons after a certain period of time
     this.handleStartStopDisabledButton();
-    // Refresh Duration
-    this.refreshDurationInfos();
+    // Compute Duration
+    this.computeDurationInfos();
     // Get the provider
     const centralServerProvider = await ProviderFactory.getProvider();
     const securityProvider = centralServerProvider.getSecurityProvider();
@@ -290,7 +290,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     }
   }
 
-  public refreshDurationInfos = () => {
+  public computeDurationInfos = () => {
     const { transaction } = this.state;
     const { connector } = this.props;
     // Component Mounted?
@@ -406,7 +406,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       <View style={style.columnContainer}>
         <Icon type="FontAwesome" name="bolt" style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>
-          {connector.currentConsumption / 1000 > 0 ? (connector.currentConsumption / 1000).toFixed(1) : 0}
+          {connector.currentConsumption / 1000 > 0 ? Math.round(connector.currentConsumption / 10) / 100 : 0}
         </Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t("details.instant")} (kW)</Text>
       </View>
@@ -431,9 +431,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   };
 
   public renderInactivity = (style: any) => {
-    const { inactivityFormatted, totalInactivitySecs } = this.state;
+    const { inactivityFormatted } = this.state;
     const { connector } = this.props;
-    const inactivityStyle = Utils.computeInactivityStyle(totalInactivitySecs);
+    const inactivityStyle = Utils.computeInactivityStyle(connector.inactivityStatusLevel);
     return connector.activeTransactionID ? (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
@@ -458,18 +458,21 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     ) : (
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.info]} type="MaterialIcons" name="ev-station" />
-        <Text style={[style.label, style.labelValue, style.info]}>{(connector.totalConsumption / 1000).toFixed(1)}</Text>
+        <Text style={[style.label, style.labelValue, style.info]}>{Math.round(connector.totalConsumption / 10) / 100}</Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t("details.total")} (kW.h)</Text>
       </View>
     ));
   };
 
   public renderBatteryLevel = (style: any) => {
+    const { transaction } = this.state;
     const { connector } = this.props;
     return connector.currentStateOfCharge ? (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>{connector.currentStateOfCharge}</Text>
+        <Text style={[style.label, style.labelValue, style.info]}>
+          {transaction ? `${transaction.stateOfCharge} > ${transaction.currentStateOfCharge}` : connector.currentStateOfCharge}
+        </Text>
         <Text style={[style.subLabel, style.info]}>(%)</Text>
       </View>
     ) : (

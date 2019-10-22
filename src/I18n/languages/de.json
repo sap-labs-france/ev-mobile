@@ -18,6 +18,7 @@
     "noRecordFound": "Kein Eintrag gefunden"
   },
   "sidebar": {
+    "home": "Home",
     "sites": "Standorte",
     "chargers": "Ladestationen",
     "transactions": "Sitzungen"
@@ -70,6 +71,17 @@
     "chargingCurve": "Sitzungsdiagramm",
     "noTransactionsInProgress": "Es werden keine Sitzungen durchgeführt",
     "noTransactionsHistory": "Kein Sitzungsverlauf"
+  },
+  "home": {
+    "browseSites": "Sites",
+    "browseSitesNote": "Browse the Sites and Site Areas",
+    "browseChargers": "Charging Stations",
+    "browseChargersNote": "Browse the Charging Stations",
+    "browseSessions": "Sessions",
+    "browseSessionsNote": "Browse the Sessions",
+    "ongoingSessions": "{{nbrSessions}} ongoing Session(s)",
+    "noOngoingSessions": "No ongoing Session",
+    "ongoingSessionsNote": "Number of ongoing Session"
   },
   "sites": {
     "freeChargers": "Freie Ladestationen",

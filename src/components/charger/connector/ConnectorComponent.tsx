@@ -80,7 +80,7 @@ export default class ConnectorComponent extends React.Component<Props, State> {
           <Text style={style.connectorValues}>
             {connector.currentConsumption / 1000 < 10
               ? connector.currentConsumption > 0
-                ? (connector.currentConsumption / 1000).toFixed(1)
+                ? (Math.round(connector.currentConsumption / 10) / 100)
                 : 0
               : Math.trunc(connector.currentConsumption / 1000)}
           </Text>

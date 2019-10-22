@@ -1,164 +1,136 @@
-import { PushNotification } from "react-native-push-notification";
-import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
-// import Message from "../utils/Message";
+import { Platform } from "react-native";
+import firebase from 'react-native-firebase';
+import { Notification, NotificationOpen } from 'react-native-firebase/notifications';
+import { NavigationContainerComponent } from "react-navigation";
+import CentralServerProvider from '../provider/CentralServerProvider';
 
 export default class NotificationManager {
   private static notificationManager: NotificationManager;
   private token: string;
-  private notifications: PushNotification[] = [];
-  private active: boolean;
+  private navigation: NavigationContainerComponent;
+  private removeNotificationDisplayedListener: () => any;
+  private removeNotificationListener: () => any;
+  private removeNotificationOpenedListener: () => any;
+  private removeTokenRefreshListener: () => any;
+  private centralServerProvider: CentralServerProvider;
 
   public static getInstance(): NotificationManager {
     if (!this.notificationManager) {
-      // Create
       this.notificationManager = new NotificationManager();
     }
     return this.notificationManager;
   }
 
-  public async initialize() {
-    // // Create the notif provider
-    // this.notificationProvider = new NotificationProvider(this.onRegister, this.onNotify);
-    // // Set inactive
-    // this._active = false;
-    // // No timer
-    // this.notificationCheck = null;
+  public setCentralServerProvider(centralServerProvider: CentralServerProvider) {
+    this.centralServerProvider = centralServerProvider;
   }
 
-  public setActive(active: boolean) {
-    // console.log("setActive = " + active);
-    // this._active = active;
+  public async initialize(navigation: NavigationContainerComponent) {
+    const enabled = await firebase.messaging().hasPermission();
+    if (enabled) {
+      // user has permissions
+      console.log('====================================');
+      console.log("NOTIF: USER HAS PERMISSION");
+      console.log('====================================');
+    } else {
+      // user doesn't have permission
+      console.log('====================================');
+      console.log("NOTIF: USER HAS NO PERMISSION!!!!");
+      console.log('====================================');
+      // Request permission
+      try {
+        await firebase.messaging().requestPermission();
+        // User has authorised
+      } catch (error) {
+        // User has rejected permissions
+      }
+    }
   }
 
-  public isActive(): boolean {
-    return this.active;
+  public async start() {
+    this.removeNotificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification: Notification) => {
+      // Process notification
+      this.processNotification(notification);
+      // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
+      console.log('====================================');
+      console.log("NOTIFICATION: onNotificationDisplayed");
+      console.log('====================================');
+    });
+    this.removeNotificationListener = firebase.notifications().onNotification((notification: Notification) => {
+      // Process notification
+      this.processNotification(notification);
+    });
+    this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen: NotificationOpen) => {
+      // Process notification
+      this.processOpenedNotification(notificationOpen);
+    });
+    this.removeTokenRefreshListener = firebase.messaging().onTokenRefresh(async (newFcmToken) => {
+      // Process your token as required
+      this.token = newFcmToken;
+      console.log('====================================');
+      console.log("NOTIFICATION: onTokenRefresh");
+      console.log(newFcmToken);
+      console.log('====================================');
+      try {
+        // Save the User's token
+        if (this.centralServerProvider.isUserConnected()) {
+          console.log('====================================');
+          console.log('Save TOKEN');
+          console.log('====================================');
+          await this.centralServerProvider.saveUserMobileToken({
+            id: this.centralServerProvider.getUserInfo().id,
+            mobileToken: this.getToken(),
+            mobileOS: this.getOs()
+          });
+        }
+      } catch (error) {
+        // tslint:disable-next-line: no-console
+        console.log("Error saving Mobile Token:", error);
+      }
+    });
+    const fcmToken = await firebase.messaging().getToken();
+    if (fcmToken) {
+      // user has a device token
+      console.log('====================================');
+      console.log("NOTIFICATION: Initial Token");
+      console.log(fcmToken);
+      console.log('====================================');
+      this.token = fcmToken;
+    }
   }
 
-  public setNavigation(navigation: NavigationScreenProp<NavigationState, NavigationParams>) {
-    // console.log("setNavigation = " + navigation);
-    // this.navigation = navigation;
+  public async stop() {
+    this.removeNotificationDisplayedListener();
+    this.removeNotificationListener();
+    this.removeNotificationOpenedListener();
+    this.removeTokenRefreshListener();
   }
 
-  public start() {
-    // console.log("start");
-    // // Check
-    // if (!this.notificationCheck) {
-    //   // Refresh
-    //   this.processNotification();
-    //   // Check every minutes
-    //   this.notificationCheck = setInterval(() => {
-    //     // Refresh
-    //     this.processNotification();
-    //   }, Constants.AUTO_REFRESH_SHORT_PERIOD_MILLIS);
-    // }
+  public getToken(): string {
+    return this.token;
   }
 
-  public stop() {
-    // console.log("stop");
-    // // Check
-    // if (this.notificationCheck) {
-    //   clearInterval(this.notificationCheck);
-    //   this.notificationCheck = null;
-    // }
+  public getOs(): string {
+    return Platform.OS;
   }
 
-  public async sendLocalNotification(notification: PushNotification) {
-    // console.log("triggerLocalNotification");
-    // // Text?
-    // if (typeof notification.extraData === "string") {
-    //   // Convert ot JSon
-    //   notification.extraData = JSON.parse(notification.extraData);
-    // }
-    // // Yes: meaning user clicked on the notification, then it should navigate
-    // let message = null,
-    //   subMessage = null,
-    //   longMessage = null,
-    //   color = commonColor.brandInfo;
-    // // Check the type of notification
-    // switch (notification.sourceDescr) {
-    //   // End of Transaction
-    //   case "NotifyEndOfTransaction":
-    //     message = I18n.t("notifications.notifyEndOfTransaction.message", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     subMessage = I18n.t("notifications.notifyEndOfTransaction.subMessage");
-    //     longMessage = I18n.t("notifications.notifyEndOfTransaction.longMessage", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     break;
-    //   // End of Charge
-    //   case "NotifyEndOfCharge":
-    //     message = I18n.t("notifications.notifyEndOfCharge.message", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     subMessage = I18n.t("notifications.notifyEndOfCharge.subMessage");
-    //     longMessage = I18n.t("notifications.notifyEndOfCharge.longMessage", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     break;
-    //   // Optimal Charge
-    //   case "NotifyOptimalChargeReached":
-    //     message = I18n.t("notifications.notifyOptimalChargeReached.message", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     subMessage = I18n.t("notifications.notifyOptimalChargeReached.subMessage");
-    //     longMessage = I18n.t("notifications.notifyOptimalChargeReached.longMessage", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     break;
-    //   // Charger in Error
-    //   case "NotifyChargingStationStatusError":
-    //     color = commonColor.brandDanger;
-    //     message = I18n.t("notifications.notifyChargingStationStatusError.message", {
-    //       chargeBoxID: notification.chargeBoxID,
-    //       connectorId: notification.data ? notification.data.connectorId : "Unknown",
-    //       error: notification.data ? notification.data.error : "Unknown"
-    //     });
-    //     subMessage = I18n.t("notifications.notifyChargingStationStatusError.subMessage");
-    //     longMessage = I18n.t("notifications.notifyChargingStationStatusError.longMessage", {
-    //       chargeBoxID: notification.chargeBoxID,
-    //       connectorId: notification.data ? notification.data.connectorId : "Unknown",
-    //       error: notification.data ? notification.data.error : "Unknown"
-    //     });
-    //     break;
-    //   // Charger just connected
-    //   case "NotifyChargingStationRegistered":
-    //     color = commonColor.brandDanger;
-    //     message = I18n.t("notifications.notifyChargingStationRegistered.message", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     subMessage = I18n.t("notifications.notifyChargingStationRegistered.subMessage");
-    //     longMessage = I18n.t("notifications.notifyChargingStationRegistered.longMessage", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     break;
-    //   // Unknown user
-    //   case "NotifyUnknownUserBadged":
-    //     color = commonColor.brandDanger;
-    //     message = I18n.t("notifications.notifyUnknownUserBadged.message", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     subMessage = I18n.t("notifications.notifyUnknownUserBadged.subMessage");
-    //     longMessage = I18n.t("notifications.notifyUnknownUserBadged.longMessage", {
-    //       chargeBoxID: notification.chargeBoxID
-    //     });
-    //     break;
-    // }
-    // // Send the notification
-    // if (message) {
-    //   // Send
-    //   await this.notificationProvider.sendLocalNotification({
-    //     title: DeviceInfo.getApplicationName(),
-    //     message,
-    //     subText: subMessage,
-    //     bigText: longMessage,
-    //     color,
-    //     extraData: notification
-    //   });
-    // }
+  public async processNotification(notification: Notification) {
+    console.log('====================================');
+    console.log("NOTIFICATION: onNotification");
+    console.log(notification);
+    console.log('====================================');
   }
 
-  public async processNotification() {
+  public async processOpenedNotification(notificationOpen: NotificationOpen) {
+    // Get the action triggered by the notification being opened
+    const action = notificationOpen.action;
+    // Get information about the notification that was opened
+    const notification: Notification = notificationOpen.notification;
+    console.log('====================================');
+    console.log("NOTIFICATION: onNotificationOpened");
+    console.log(action);
+    console.log(notification);
+    console.log('====================================');
     // let notification;
     // console.log("processNotification");
     // // Check if active
@@ -227,22 +199,4 @@ export default class NotificationManager {
     //   }
     // }
   }
-
-  public getToken(): string {
-    return this.token;
-  }
-
-  public onRegister = (token: string) => {
-    // Keep the token
-    token = token;
-    // console.log("NOTIF TOKEN");
-    // console.log(token);
-  };
-
-  public onNotify = async (notification: PushNotification) => {
-    // console.log("NOTIF MESSAGE");
-    // console.log(notification);
-    // Add Notification
-    this.notifications.push(notification);
-  };
 }

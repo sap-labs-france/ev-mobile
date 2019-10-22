@@ -369,7 +369,7 @@ export default (variables /* : * */ = variable) => {
     borderRadius: variables.borderRadiusBase,
     borderColor: variables.buttonPrimaryBg,
     borderWidth: null,
-    height: scale(40),
+    height: scale(35),
     flexDirection: "row",
     elevation: 2,
     shadowColor: platformStyle === PLATFORM.MATERIAL ? variables.brandDark : undefined,

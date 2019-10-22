@@ -1,6 +1,6 @@
 import { Container, Spinner, View } from "native-base";
 import React from "react";
-import { Alert, BackHandler, FlatList, Platform, RefreshControl } from "react-native";
+import { FlatList, Platform, RefreshControl } from "react-native";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import ChargerComponent from "../../components/charger/ChargerComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
@@ -99,13 +99,8 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       // Go Back
       this.props.navigation.goBack();
     } else {
-      // Exit?
-      Alert.alert(
-        I18n.t("general.exitApp"),
-        I18n.t("general.exitAppConfirm"),
-        [{ text: I18n.t("general.no"), style: "cancel" }, { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() }],
-        { cancelable: false }
-      );
+      // Back mobile button: Force navigation
+      this.props.navigation.navigate({ routeName: "HomeNavigator" });
     }
     // Do not bubble up
     return true;
@@ -156,7 +151,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { siteAreaID, loading, chargers, skip, count, limit } = this.state;
+    const { loading, chargers, skip, count, limit } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>
@@ -165,8 +160,8 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
             title={I18n.t("chargers.title")}
             showSearchAction={true}
             searchRef={this.searchRef}
-            leftAction={siteAreaID ? this.onBack : null}
-            leftActionIcon={siteAreaID ? "navigate-before" : null}
+            leftAction={this.onBack}
+            leftActionIcon={"navigate-before"}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />

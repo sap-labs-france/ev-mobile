@@ -5,9 +5,8 @@ import BackgroundComponent from "../../components/background/BackgroundComponent
 import I18n from "../../I18n/I18n";
 import BaseProps from "../../types/BaseProps";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
-import TransactionsHistory from "./history/TransactionsHistory";
-import TransactionsInProgress from "./in-progress/TransactionsInProgress";
-import computeStyleSheet from "./TransactionTabsStyles";
+import Home from "./home/Home";
+import computeStyleSheet from "./HomeTabsStyles";
 
 export interface Props extends BaseProps {
 }
@@ -15,7 +14,7 @@ export interface Props extends BaseProps {
 interface State {
 }
 
-export default class TransactionTabs extends BaseAutoRefreshScreen<Props, State> {
+export default class HomeTabs extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
 
@@ -33,26 +32,24 @@ export default class TransactionTabs extends BaseAutoRefreshScreen<Props, State>
   public async componentDidMount() {
     // Call parent
     await super.componentDidMount();
-    // Refresh
-    await this.refresh();
+    // Refresh Admin
+    const securityProvider = this.centralServerProvider.getSecurityProvider();
+    this.setState({
+      firstLoad: false,
+      isAdmin: securityProvider ? securityProvider.isAdmin() : false
+    });
   }
 
-  public onBack = () => {
-    // Back mobile button: Force navigation
-    this.props.navigation.navigate({ routeName: "HomeNavigator" });
+  public onBack = (): boolean => {
+    // Exit?
+    Alert.alert(
+      I18n.t("general.exitApp"),
+      I18n.t("general.exitAppConfirm"),
+      [{ text: I18n.t("general.no"), style: "cancel" }, { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() }],
+      { cancelable: false }
+    );
     // Do not bubble up
     return true;
-  };
-
-  public refresh = async () => {
-    if (this.isMounted()) {
-      // Refresh Admin
-      const securityProvider = this.centralServerProvider.getSecurityProvider();
-      this.setState({
-        firstLoad: false,
-        isAdmin: securityProvider ? securityProvider.isAdmin() : false
-      });
-    }
   };
 
   public render() {
@@ -65,18 +62,10 @@ export default class TransactionTabs extends BaseAutoRefreshScreen<Props, State>
             <Tab
               heading={
                 <TabHeading style={style.tabHeader}>
-                  <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
+                  <Icon style={style.tabIcon} type="MaterialIcons" name="home" />
                 </TabHeading>
               }>
-              <TransactionsInProgress navigation={navigation} />
-            </Tab>
-            <Tab
-              heading={
-                <TabHeading style={style.tabHeader}>
-                  <Icon style={style.tabIcon} type="MaterialIcons" name="history" />
-                </TabHeading>
-              }>
-              <TransactionsHistory navigation={navigation} />
+              <Home navigation={navigation} />
             </Tab>
           </Tabs>
         </BackgroundComponent>

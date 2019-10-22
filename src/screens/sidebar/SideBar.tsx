@@ -112,12 +112,16 @@ export default class SideBar extends BaseScreen<Props, State> {
               <Text numberOfLines={1} style={style.tenantName}>
                 {tenantName}
               </Text>
-              <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
+              <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`} (Beta)</Text>
               {DeviceInfo.getLastUpdateTime() && (
                 <Text style={style.versionDate}>{moment(DeviceInfo.getLastUpdateTime()).format("LL")}</Text>
               )}
             </Header>
             <View style={style.linkContainer}>
+              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo("HomeNavigator")}>
+                <Icon style={style.linkIcon} type="MaterialIcons" name="home" />
+                <Text style={style.linkText}>{I18n.t("sidebar.home")}</Text>
+              </ListItem>
               {isComponentOrganizationActive && (
                 <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo("SitesNavigator")}>
                   <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />

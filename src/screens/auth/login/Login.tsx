@@ -1,8 +1,7 @@
 import { ActionSheet, Button, CheckBox, Footer, Form, Icon, Item, Left, Right, Spinner, Text, View } from "native-base";
 import React from "react";
-import { Alert, BackHandler, Image, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from "react-native";
+import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from "react-native";
 import * as Animatable from "react-native-animatable";
-import DeviceInfo from "react-native-device-info";
 import Orientation from "react-native-orientation-locker";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import I18n from "../../../I18n/I18n";
@@ -13,9 +12,8 @@ import Constants from "../../../utils/Constants";
 import Message from "../../../utils/Message";
 import Utils from "../../../utils/Utils";
 import BaseScreen from "../../base-screen/BaseScreen";
+import AuthHeader from "../AuthHeader";
 import computeStyleSheet from "../AuthStyles";
-
-const logo = require("../../../../assets/logo-low.png");
 
 const formValidationDef = {
   tenant: {
@@ -123,6 +121,10 @@ export default class Login extends BaseScreen<Props, State> {
           // Do nothing: user must log on
       }
     }
+    // Set
+    this.setState({
+      initialLoading: false
+    });
   }
 
   public login = async () => {
@@ -245,11 +247,7 @@ export default class Login extends BaseScreen<Props, State> {
         <BackgroundComponent navigation={this.props.navigation}>
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
-              <View style={style.formHeader}>
-                <Image style={style.logo} source={logo} />
-                <Text style={style.appText}>e-Mobility</Text>
-                <Text style={style.appVersionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
-              </View>
+              <AuthHeader navigation={this.props.navigation}/>
               <Form style={style.form}>
                 <Button
                   rounded={true}

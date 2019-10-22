@@ -1,5 +1,6 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import NotificationManager from "notification/NotificationManager";
 import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
 import { ActionResponse } from "../types/ActionResponse";
 import ChargingStation from "../types/ChargingStation";
@@ -31,17 +32,33 @@ export default class CentralServerProvider {
   private tenant: string = null;
   private siteImages: Array<{ id: string; image: string; }> = [];
   private autoLoginDisabled: boolean = false;
+  private notificationManager: NotificationManager;
 
   private securityProvider: SecurityProvider = null;
 
   constructor() {
     if (__DEV__) {
       // QA REST Server
-      this.centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
+      // this.centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
       this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + "/client/auth";
       this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + "/client/api";
       this.debug = true;
+      // Debug Axios
+      axios.interceptors.request.use(request => {
+        // tslint:disable-next-line: no-console
+        console.log('Axios - Request:', request)
+        return request;
+      });
+      axios.interceptors.response.use(response => {
+        // tslint:disable-next-line: no-console
+        console.log('Axios - Response:', response)
+        return response;
+      });
     }
+  }
+
+  public setNotificationManager(notificationManager: NotificationManager) {
+    this.notificationManager = notificationManager;
   }
 
   public async initialize() {
@@ -153,6 +170,7 @@ export default class CentralServerProvider {
 
   public async clearUserPassword() {
     await SecuredStorage.clearUserPassword();
+    this.password = null;
   }
 
   public getUserEmail(): string {
@@ -222,6 +240,17 @@ export default class CentralServerProvider {
     this.tenant = tenant;
     this.securityProvider = new SecurityProvider(this.decodedToken);
     this.autoLoginDisabled = false;
+    try {
+      // Save the User's token
+      await this.saveUserMobileToken({
+        id: this.getUserInfo().id,
+        mobileToken: this.notificationManager.getToken(),
+        mobileOS: this.notificationManager.getOs()
+      });
+    } catch (error) {
+      // tslint:disable-next-line: no-console
+      console.log("Error saving Mobile Token:", error);
+    }
   }
 
   public async register(tenant: string, name: string, firstName: string, email: string,
@@ -300,6 +329,15 @@ export default class CentralServerProvider {
     const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStations`, {
       headers: this._buildSecuredHeaders(),
       params,
+    });
+    return result.data;
+  }
+
+  public async saveUserMobileToken(params: {id: string; mobileToken: string; mobileOS: string}): Promise<ActionResponse> {
+    this._debugMethod("saveUserMobileToken");
+    // Call
+    const result = await axios.put(`${this.centralRestServerServiceSecuredURL}/UpdateUserMobileToken`, params, {
+      headers: this._buildSecuredHeaders(),
     });
     return result.data;
   }
@@ -517,6 +555,10 @@ export default class CentralServerProvider {
       // Skip
       if (paging.skip) {
         queryString.Skip = paging.skip;
+      }
+      // Record count
+      if (paging.onlyRecordCount) {
+        queryString.OnlyRecordCount = paging.onlyRecordCount;
       }
     }
   }
