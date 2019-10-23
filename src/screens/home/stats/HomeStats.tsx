@@ -153,7 +153,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                     <Icon style={style.cardIcon} type="MaterialIcons" name="history" />
                     <Body>
                       <Text style={style.cardText}>{I18n.t("home.numberOfSessions",
-                        { nbrSessions: I18n.toNumber(totalNumberOfSession, {precision: 0})})}</Text>
+                        { nbrSessions: I18n.toNumber(totalNumberOfSession, { strip_insignificant_zeros: true })})}</Text>
                       <Text note={true} style={style.cardNote}>{I18n.t("home.numberOfSessionsNote")}</Text>
                     </Body>
                   </Left>
@@ -165,7 +165,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                     <Icon style={style.cardIcon} type="FontAwesome" name="bolt" />
                     <Body>
                       <Text style={style.cardText}>{I18n.t("home.totalConsumptiom",
-                        { totalConsumptiom: I18n.toNumber(Math.round(totalConsumptionWattHours / 1000), {precision: 0})})}</Text>
+                        { totalConsumptiom: I18n.toNumber(Math.round(totalConsumptionWattHours / 1000), { strip_insignificant_zeros: true })})}</Text>
                       <Text note={true} style={style.cardNote}>{I18n.t("home.totalConsumptiomNote")}</Text>
                     </Body>
                   </Left>

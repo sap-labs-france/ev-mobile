@@ -80,9 +80,9 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
           <Text style={style.connectorValues}>
             {connector.currentConsumption / 1000 < 10
               ? connector.currentConsumption > 0
-                ? (I18n.toNumber(Math.round(connector.currentConsumption / 10) / 100))
+                ? (I18n.toNumber(Math.round(connector.currentConsumption / 10) / 100, { strip_insignificant_zeros: true }))
                 : 0
-              : I18n.toNumber(Math.trunc(connector.currentConsumption / 1000))}
+              : I18n.toNumber(Math.trunc(connector.currentConsumption / 1000), { strip_insignificant_zeros: true })}
           </Text>
           <Text style={style.label} numberOfLines={1}>
             {I18n.t("details.instant")}
