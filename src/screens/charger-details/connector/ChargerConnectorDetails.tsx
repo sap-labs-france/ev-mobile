@@ -301,9 +301,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
         let inactivityFormatted = Constants.DEFAULT_DURATION;
         // Elapsed Time?
         if (transaction.timestamp) {
-          // Get duration
-          const durationSecs = (Date.now() - transaction.timestamp.getTime()) / 1000;
           // Format
+          const durationSecs = (Date.now() - transaction.timestamp.getTime()) / 1000;
           elapsedTimeFormatted = Utils.formatDurationHHMMSS(durationSecs, false);
         }
         // Inactivity?
@@ -323,9 +322,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
         let inactivityFormatted = Constants.DEFAULT_DURATION;
         // Elapsed Time?
         if (connector.activeTransactionDate) {
-          // Get duration
-          const durationSecs = (Date.now() - new Date(connector.activeTransactionDate).getTime()) / 1000;
           // Format
+          const durationSecs = (Date.now() - new Date(connector.activeTransactionDate).getTime()) / 1000;
           elapsedTimeFormatted = Utils.formatDurationHHMMSS(durationSecs, false);
         }
         // Inactivity?

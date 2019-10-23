@@ -81,7 +81,19 @@
     "browseSessionsNote": "Browse the Sessions",
     "ongoingSessions": "{{nbrSessions}} ongoing Session(s)",
     "noOngoingSessions": "No ongoing Session",
-    "ongoingSessionsNote": "Number of ongoing Session"
+    "ongoingSessionsNote": "Number of ongoing Sessions",
+    "summary": "Summary",
+    "numberOfSessions": "{{nbrSessions}} sessions",
+    "noSessions": "No Session found",
+    "numberOfSessionsNote": "Total number of Sessions",
+    "totalConsumptiom": "{{totalConsumptiom}} kW.h",
+    "totalConsumptiomNote": "Total energy consumed",
+    "totalDuration": "{{totalDuration}}",
+    "totalDurationNote": "Total Sessions duration",
+    "totalInactivity": "{{totalInactivity}}",
+    "totalInactivityNote": "Total Inactivity duration",
+    "totalPrice": "{{totalPrice}}",
+    "totalPriceNote": "Total cost"
   },
   "sites": {
     "freeChargers": "Free chargers",
