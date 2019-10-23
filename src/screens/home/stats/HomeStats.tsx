@@ -6,6 +6,8 @@ import HeaderComponent from "../../../components/header/HeaderComponent";
 import I18n from "../../../I18n/I18n";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import BaseProps from "../../../types/BaseProps";
+import { ComponentEnum } from "../../../types/Component";
+import { SimplePricingSettings, SettingContentTypes } from "../../../types/Setting";
 import Constants from "../../../utils/Constants";
 import Utils from "../../../utils/Utils";
 import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
@@ -22,6 +24,7 @@ interface State {
   totalDurationSecs?: number;
   totalInactivitySecs?: number;
   totalPrice?: number;
+  priceCurrency?: string;
   isPricingActive?: boolean;
 }
 
@@ -40,6 +43,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
       totalDurationSecs: 0,
       totalInactivitySecs: 0,
       totalPrice: 0,
+      priceCurrency: '',
       isPricingActive: false
     };
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
@@ -61,6 +65,10 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
     const securityProvider = centralServerProvider.getSecurityProvider();
     // Get the ongoing Transaction
     await this.getTransactions();
+    // Get pricing info
+    if (securityProvider.isComponentPricingActive()) {
+      await this.getPricingSettings();
+    }
     // Set
     this.setState({
       isPricingActive: securityProvider.isComponentPricingActive(),
@@ -87,6 +95,28 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
     }
   };
 
+  public getPricingSettings = async () => {
+    try {
+      let priceCurrency = '';
+      // Get active transaction
+      const settings = await this.centralServerProvider.getSettings({ Identifier: ComponentEnum.PRICING });
+      // Simple pricing?
+      if (settings.count > 0 && settings.result[0].content.type === SettingContentTypes.SIMPLE) {
+        const pricingSettings: SimplePricingSettings = settings.result[0].content.simple;
+        // Set currency
+        priceCurrency = pricingSettings.currency + ' ';
+      }
+      this.setState({
+        priceCurrency
+      });
+    } catch (error) {
+      // Check if HTTP?
+      if (!error.request || error.request.status !== 560) {
+        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      }
+    }
+  };
+
   public onBack = (): boolean => {
     Alert.alert(
       I18n.t("general.exitApp"),
@@ -100,7 +130,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, totalNumberOfSession, totalConsumptionWattHours, totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive } = this.state;
+    const { loading, totalNumberOfSession, totalConsumptionWattHours, totalDurationSecs, totalInactivitySecs, totalPrice, priceCurrency, isPricingActive } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>
@@ -122,7 +152,8 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                   <Left>
                     <Icon style={style.cardIcon} type="MaterialIcons" name="history" />
                     <Body>
-                      <Text style={style.cardText}>{I18n.t("home.numberOfSessions", { nbrSessions: totalNumberOfSession})}</Text>
+                      <Text style={style.cardText}>{I18n.t("home.numberOfSessions",
+                        { nbrSessions: I18n.toNumber(totalNumberOfSession, {precision: 0})})}</Text>
                       <Text note={true} style={style.cardNote}>{I18n.t("home.numberOfSessionsNote")}</Text>
                     </Body>
                   </Left>
@@ -134,7 +165,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                     <Icon style={style.cardIcon} type="FontAwesome" name="bolt" />
                     <Body>
                       <Text style={style.cardText}>{I18n.t("home.totalConsumptiom",
-                        { totalConsumptiom: Math.round(totalConsumptionWattHours / 1000)})}</Text>
+                        { totalConsumptiom: I18n.toNumber(Math.round(totalConsumptionWattHours / 1000), {precision: 0})})}</Text>
                       <Text note={true} style={style.cardNote}>{I18n.t("home.totalConsumptiomNote")}</Text>
                     </Body>
                   </Left>
@@ -158,7 +189,8 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                     <Icon style={style.cardIcon} type="MaterialIcons" name="timer-off" />
                     <Body>
                       <Text style={style.cardText}>{I18n.t("home.totalInactivity",
-                        { totalInactivity: Utils.formatDuration(totalInactivitySecs) })}</Text>
+                        { totalInactivity: Utils.formatDuration(totalInactivitySecs),
+                          totalInactivityPercent: I18n.toPercentage(Math.round((totalInactivitySecs / totalDurationSecs) * 100), {precision: 0}) })}</Text>
                       <Text note={true} style={style.cardNote}>{I18n.t("home.totalInactivityNote")}</Text>
                     </Body>
                   </Left>
@@ -170,7 +202,8 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                     <Left>
                       <Icon style={style.cardIcon} type="FontAwesome" name="money" />
                       <Body>
-                        <Text style={style.cardText}>{I18n.t("home.totalPrice", { totalPrice: Math.round(totalPrice) }) }</Text>
+                        <Text style={style.cardText}>{I18n.t("home.totalPrice",
+                          { totalPrice: I18n.toCurrency(Math.round(totalPrice), {precision: 0, unit: priceCurrency}) }) }</Text>
                         <Text note={true} style={style.cardNote}>{I18n.t("home.totalPriceNote")}</Text>
                       </Body>
                     </Left>

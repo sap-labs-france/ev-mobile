@@ -98,7 +98,7 @@
     "totalConsumptiomNote": "Total energy consumed",
     "totalDuration": "{{totalDuration}}",
     "totalDurationNote": "Total Sessions duration",
-    "totalInactivity": "{{totalInactivity}}",
+    "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
     "totalInactivityNote": "Total Inactivity duration",
     "totalPrice": "{{totalPrice}}",
     "totalPriceNote": "Total cost"

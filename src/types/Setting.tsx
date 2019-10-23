@@ -7,6 +7,14 @@ export default interface Setting extends CreatedUpdatedProps {
   content: SettingContent;
 }
 
+export enum SettingContentTypes {
+  GIREVE = 'gireve',
+  SAC = 'sac',
+  CONCUR = 'concur',
+  SIMPLE = 'simple',
+  CONVERGENT_CHARGING = 'convergentCharging',
+}
+
 export interface SettingContent {
   type: 'gireve'|'sac'|'concur'|'simple'|'convergentCharging';
   ocpi?: OcpiSettings;

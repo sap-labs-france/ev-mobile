@@ -7,7 +7,7 @@ import I18n from "../../I18n/I18n";
 import BaseProps from "../../types/BaseProps";
 import ChargingStation from "../../types/ChargingStation";
 import computeStyleSheet from "./ChargerComponentStyles";
-import ConnectorComponent from "./connector/ConnectorComponent";
+import ChargerConnectorComponent from "./connector/ChargerConnectorComponent";
 
 export interface Props extends BaseProps {
   charger: ChargingStation;
@@ -73,7 +73,7 @@ export default class ChargerComponent extends React.Component<Props, State> {
         </View>
         <View style={style.connectorsContainer}>
           {charger.connectors.map((connector, index) => (
-            <ConnectorComponent
+            <ChargerConnectorComponent
               key={`${charger.id}~${connector.connectorId}`}
               charger={charger}
               connector={connector}

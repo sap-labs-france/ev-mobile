@@ -7,6 +7,7 @@ import ChargingStation from "../types/ChargingStation";
 import { DataResult, TransactionDataResult } from "../types/DataResult";
 import Eula, { EulaAccepted } from "../types/Eula";
 import PagingParams from "../types/PagingParams";
+import Setting from "../types/Setting";
 import Site from "../types/Site";
 import SiteArea from "../types/SiteArea";
 import Tenant from "../types/Tenant";
@@ -346,6 +347,16 @@ export default class CentralServerProvider {
     this.debugMethod("getCharger");
     // Call
     const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStation`, {
+      headers: this.buildSecuredHeaders(),
+      params,
+    });
+    return result.data;
+  }
+
+  public async getSettings(params: {} = {}): Promise<DataResult<Setting>> {
+    this.debugMethod("getCharger");
+    // Call
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/Settings`, {
       headers: this.buildSecuredHeaders(),
       params,
     });
