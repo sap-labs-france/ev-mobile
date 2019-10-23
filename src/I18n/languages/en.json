@@ -15,7 +15,15 @@
     "search": "Search",
     "exitApp": "Exit App",
     "exitAppConfirm": "Do you really want to exit the application?",
-    "noRecordFound": "No record found"
+    "noRecordFound": "No record found",
+    "days": "days",
+    "hours": "hours",
+    "minutes": "mins",
+    "seconds": "secs",
+    "day": "day",
+    "hour": "hour",
+    "minute": "min",
+    "second": "sec"
   },
   "sidebar": {
     "home": "Home",

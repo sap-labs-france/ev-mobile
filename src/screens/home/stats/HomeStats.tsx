@@ -146,7 +146,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                     <Icon style={style.cardIcon} type="MaterialIcons" name="timer" />
                     <Body>
                       <Text style={style.cardText}>{I18n.t("home.totalDuration",
-                        { totalDuration: totalDurationSecs })}</Text>
+                        { totalDuration: Utils.formatDuration(totalDurationSecs) })}</Text>
                       <Text note={true} style={style.cardNote}>{I18n.t("home.totalDurationNote")}</Text>
                     </Body>
                   </Left>
@@ -158,7 +158,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                     <Icon style={style.cardIcon} type="MaterialIcons" name="timer-off" />
                     <Body>
                       <Text style={style.cardText}>{I18n.t("home.totalInactivity",
-                        { totalInactivity: totalInactivitySecs })}</Text>
+                        { totalInactivity: Utils.formatDuration(totalInactivitySecs) })}</Text>
                       <Text note={true} style={style.cardNote}>{I18n.t("home.totalInactivityNote")}</Text>
                     </Body>
                   </Left>

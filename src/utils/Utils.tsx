@@ -5,7 +5,7 @@ import validate from "validate.js";
 import I18n from "../I18n/I18n";
 import commonColor from "../theme/variables/commonColor";
 import { RequestError } from "../types/RequestError";
-import { InactivityStatusLevel } from "../types/RequestError";
+import { InactivityStatusLevel } from "../types/Transaction";
 import User from "../types/User";
 import Constants from "./Constants";
 import Message from "./Message";
@@ -69,6 +69,50 @@ export default class Utils {
 
   public static getLocaleShort(): string {
     return Utils.getLocale().substring(0, 2);
+  }
+
+  public static formatDuration(durationSecs: number): string {
+    let result = '';
+    if (durationSecs === 0) {
+      return `0 ${I18n.t("general.second")}`;
+    }
+    const days = Math.floor(durationSecs / (3600 * 24));
+    durationSecs -= days * 3600 * 24;
+    const hours = Math.floor(durationSecs / 3600);
+    durationSecs -= hours * 3600;
+    const minutes = Math.floor(durationSecs / 60);
+    const seconds = Math.floor(durationSecs - (minutes * 60));
+    if (days !== 0) {
+      if (days === 1) {
+        result += `${days} ${I18n.t("general.day")} `;
+      } else {
+        result += `${days} ${I18n.t("general.days")} `;
+      }
+    }
+    if (((hours !== 0) || (days !== 0)) && (hours !== 0 || (minutes !== 0 && days === 0))) {
+      if (hours === 1) {
+        result += `${hours} ${I18n.t("general.hour")} `;
+      } else {
+        result += `${hours} ${I18n.t("general.hours")} `;
+      }
+    }
+    if (days === 0) {
+      if ((minutes !== 0) || (hours !== 0) && (minutes !== 0 || (seconds !== 0 && hours === 0))) {
+        if (minutes === 1) {
+          result += `${minutes} ${I18n.t("general.minute")} `;
+        } else {
+          result += `${minutes} ${I18n.t("general.minutes")} `;
+        }
+      }
+      if ((hours === 0) && (seconds !== 0)) {
+        if (seconds === 1) {
+          result += `${seconds} ${I18n.t("general.second")}`;
+        } else {
+          result += `${seconds} ${I18n.t("general.seconds")}`;
+        }
+      }
+    }
+    return result;
   }
 
   public static computeInactivityStyle(inactivityStatusLevel: InactivityStatusLevel): object {
