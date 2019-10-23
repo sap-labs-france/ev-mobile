@@ -2,6 +2,7 @@ import { Icon, Text, View } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import * as Animatable from "react-native-animatable";
+import I18n from "../../../I18n/I18n";
 import BaseProps from "../../../types/BaseProps";
 import Transaction from "../../../types/Transaction";
 import Constants from "../../../utils/Constants";
@@ -58,7 +59,7 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
             <View style={style.transactionContent}>
               <View style={style.columnContainer}>
                 <Icon type="MaterialIcons" name="ev-station" style={[style.icon, style.info]} />
-                <Text style={[style.labelValue, style.info]}>{consumption}</Text>
+                <Text style={[style.labelValue, style.info]}>{I18n.toNumber(consumption, { strip_insignificant_zeros: true })}</Text>
                 <Text style={[style.subLabelValue, style.info]}>(kW.h)</Text>
               </View>
               <View style={style.columnContainer}>
