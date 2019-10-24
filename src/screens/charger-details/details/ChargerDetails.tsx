@@ -1,8 +1,8 @@
+import I18n from "i18n-js";
 import { Button, Container, Text, View } from "native-base";
 import React from "react";
 import { Alert, ScrollView } from "react-native";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
-import I18n from "../../../I18n/I18n";
 import BaseProps from "../../../types/BaseProps";
 import ChargingStation from "../../../types/ChargingStation";
 import Connector from "../../../types/Connector";

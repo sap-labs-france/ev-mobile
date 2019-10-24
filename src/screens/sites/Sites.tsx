@@ -1,3 +1,4 @@
+import I18n from "i18n-js";
 import { Container, Spinner, View } from "native-base";
 import React from "react";
 import { FlatList, Platform, RefreshControl } from "react-native";
@@ -7,7 +8,6 @@ import ListEmptyTextComponent from "../../components/list/empty-text/ListEmptyTe
 import ListFooterComponent from "../../components/list/footer/ListFooterComponent";
 import SearchHeaderComponent from "../../components/search-header/SearchHeaderComponent";
 import SiteComponent from "../../components/site/SiteComponent";
-import I18n from "../../I18n/I18n";
 import BaseProps from "../../types/BaseProps";
 import { DataResult } from "../../types/DataResult";
 import Site from "../../types/Site";

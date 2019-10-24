@@ -1,8 +1,8 @@
+import I18n from "i18n-js";
 import { Text, View } from "native-base";
 import React from "react";
 import { Image } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import I18n from "../../I18n/I18n";
 import BaseProps from "../../types/BaseProps";
 import BaseScreen from "../base-screen/BaseScreen";
 import computeStyleSheet from "./AuthStyles";

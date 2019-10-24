@@ -1,9 +1,9 @@
+import I18n from "i18n-js";
 import { Container, Spinner } from "native-base";
 import React from "react";
 import { ScrollView } from "react-native";
 import HTMLView from "react-native-htmlview";
 import HeaderComponent from "../../../components/header/HeaderComponent";
-import I18n from "../../../I18n/I18n";
 import BaseProps from "../../../types/BaseProps";
 import Utils from "../../../utils/Utils";
 import BaseScreen from "../../base-screen/BaseScreen";

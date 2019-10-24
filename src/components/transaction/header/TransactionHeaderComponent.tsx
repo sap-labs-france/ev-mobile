@@ -1,6 +1,6 @@
-import moment from "moment";
 import { Icon, Text, View } from "native-base";
 import React from "react";
+import I18nManager from "../../../I18n/I18nManager";
 import BaseScreen from "../../../screens/base-screen/BaseScreen";
 import BaseProps from "../../../types/BaseProps";
 import Transaction from "../../../types/Transaction";
@@ -39,7 +39,7 @@ export default class TransactionHeaderComponent extends BaseScreen<Props, State>
       <View style={style.container}>
         <View style={style.headerContent}>
           <View style={style.rowContainer}>
-            <Text style={style.headerName}>{moment(new Date(transaction.timestamp)).format("LLL")}</Text>
+            <Text style={style.headerName}>{I18nManager.formatDateTime(transaction.timestamp)}</Text>
           </View>
           {displayNavigationIcon && <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />}
         </View>

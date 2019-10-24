@@ -1,8 +1,8 @@
+import I18n from "i18n-js";
 import { Icon, Text, View } from "native-base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import * as Animatable from "react-native-animatable";
-import I18n from "../../I18n/I18n";
 import BaseProps from "../../types/BaseProps";
 import SiteArea from "../../types/SiteArea";
 import Constants from "../../utils/Constants";

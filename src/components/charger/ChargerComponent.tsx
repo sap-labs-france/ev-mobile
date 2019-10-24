@@ -1,9 +1,9 @@
+import I18n from "i18n-js";
 import moment from "moment";
 import { Button, Icon, Text, View } from "native-base";
 import React from "react";
 import { Alert } from "react-native";
 import * as Animatable from "react-native-animatable";
-import I18n from "../../I18n/I18n";
 import BaseProps from "../../types/BaseProps";
 import ChargingStation from "../../types/ChargingStation";
 import computeStyleSheet from "./ChargerComponentStyles";

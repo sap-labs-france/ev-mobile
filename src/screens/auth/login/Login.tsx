@@ -1,10 +1,10 @@
+import I18n from "i18n-js";
 import { ActionSheet, Button, CheckBox, Footer, Form, Icon, Item, Left, Right, Spinner, Text, View } from "native-base";
 import React from "react";
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from "react-native";
 import * as Animatable from "react-native-animatable";
 import Orientation from "react-native-orientation-locker";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
-import I18n from "../../../I18n/I18n";
 import commonColor from "../../../theme/variables/commonColor";
 import BaseProps from "../../../types/BaseProps";
 import Tenant from "../../../types/Tenant";

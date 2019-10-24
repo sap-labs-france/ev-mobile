@@ -1,9 +1,10 @@
+import I18n from "i18n-js";
 import { Container, Icon, Text, Thumbnail, View } from "native-base";
 import React from "react";
 import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from "react-native";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import ConnectorStatusComponent from "../../../components/connector-status/ConnectorStatusComponent";
-import I18n from "../../../I18n/I18n";
+import I18nManager from "../../../I18n/I18nManager";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import BaseProps from "../../../types/BaseProps";
 import ChargingStation from "../../../types/ChargingStation";
@@ -112,8 +113,6 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
         });
         // Found?
         if (transaction) {
-          // Convert
-          transaction.timestamp = new Date(transaction.timestamp);
           // Get user image
           this.getUserImage(transaction.user);
         }
@@ -302,7 +301,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
         // Elapsed Time?
         if (transaction.timestamp) {
           // Format
-          const durationSecs = (Date.now() - transaction.timestamp.getTime()) / 1000;
+          const durationSecs = (Date.now() - new Date(transaction.timestamp).getTime()) / 1000;
           elapsedTimeFormatted = Utils.formatDurationHHMMSS(durationSecs, false);
         }
         // Inactivity?
@@ -405,7 +404,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
         <Icon type="FontAwesome" name="bolt" style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>
           {connector.currentConsumption / 1000 > 0 ?
-              I18n.toNumber(Math.round(connector.currentConsumption / 10) / 100, { strip_insignificant_zeros: true }) : 0}
+              I18nManager.formatNumber(Math.round(connector.currentConsumption / 10) / 100) : 0}
         </Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t("details.instant")} (kW)</Text>
       </View>
@@ -458,7 +457,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.info]} type="MaterialIcons" name="ev-station" />
         <Text style={[style.label, style.labelValue, style.info]}>
-          {I18n.toNumber(Math.round(connector.totalConsumption / 10) / 100, { strip_insignificant_zeros: true })}
+          {I18nManager.formatNumber(Math.round(connector.totalConsumption / 10) / 100)}
         </Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t("details.total")} (kW.h)</Text>
       </View>

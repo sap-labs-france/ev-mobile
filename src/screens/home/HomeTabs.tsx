@@ -1,13 +1,13 @@
+import I18n from "i18n-js";
 import { Icon, Tab, TabHeading, Tabs } from "native-base";
 import React from "react";
 import { Alert, BackHandler, ScrollView } from "react-native";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
-import I18n from "../../I18n/I18n";
 import BaseProps from "../../types/BaseProps";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
 import Home from "./home/Home";
-import HomeStats from "./stats/HomeStats";
 import computeStyleSheet from "./HomeTabsStyles";
+import HomeStats from "./stats/HomeStats";
 
 export interface Props extends BaseProps {
 }

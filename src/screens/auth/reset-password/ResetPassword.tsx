@@ -1,10 +1,10 @@
+import I18n from "i18n-js";
 import { Button, Footer, Form, Icon, Item, Right, Spinner, Text } from "native-base";
 import React from "react";
 import { Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { NavigationActions, StackActions } from "react-navigation";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
-import I18n from "../../../I18n/I18n";
 import commonColor from "../../../theme/variables/commonColor";
 import BaseProps from "../../../types/BaseProps";
 import Constants from "../../../utils/Constants";

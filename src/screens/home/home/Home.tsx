@@ -1,10 +1,10 @@
+import I18n from "i18n-js";
 import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } from "native-base";
 import React from "react";
 import { Alert, BackHandler } from "react-native";
 import Transaction from "types/Transaction";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import HeaderComponent from "../../../components/header/HeaderComponent";
-import I18n from "../../../I18n/I18n";
 import BaseProps from "../../../types/BaseProps";
 import Constants from "../../../utils/Constants";
 import Utils from "../../../utils/Utils";

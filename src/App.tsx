@@ -1,4 +1,3 @@
-import moment from "moment";
 import { Root } from "native-base";
 import CentralServerProvider from "provider/CentralServerProvider";
 import React from "react";
@@ -7,6 +6,7 @@ import { createAppContainer, createSwitchNavigator, NavigationContainer, Navigat
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createStackNavigator } from 'react-navigation-stack';
 import DeepLinkingManager from "./deeplinking/DeepLinkingManager";
+import I18nManager from "./I18n/I18nManager";
 import NotificationManager from "./notification/NotificationManager";
 import ProviderFactory from "./provider/ProviderFactory";
 import Eula from "./screens/auth/eula/Eula";
@@ -23,14 +23,9 @@ import Sites from "./screens/sites/Sites";
 import TransactionDetailsTabs from "./screens/transaction-details/TransactionDetailsTabs";
 import TransactionTabs from "./screens/transactions/TransactionTabs";
 import SecuredStorage from "./utils/SecuredStorage";
-import Utils from "./utils/Utils";
 
-// Get the supported locales
-require("moment/locale/fr");
-require("moment/locale/de");
-require("moment/locale/en-gb");
-// Set the current locale
-moment.locale(Utils.getLocaleShort());
+// Init i18n
+I18nManager.initialize();
 
 // Auth Stack Navigation
 const authNavigator: NavigationContainer = createStackNavigator(
