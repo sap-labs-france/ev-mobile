@@ -7,6 +7,7 @@ import BaseProps from '../../types/BaseProps';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import Home from './home/Home';
 import computeStyleSheet from './HomeTabsStyles';
+import HomeStats from './stats/HomeStats';
 
 export interface Props extends BaseProps {
 }
@@ -66,6 +67,14 @@ export default class HomeTabs extends BaseAutoRefreshScreen<Props, State> {
                 </TabHeading>
               }>
               <Home navigation={navigation} />
+            </Tab>
+            <Tab
+              heading={
+                <TabHeading style={style.tabHeader}>
+                  <Icon style={style.tabIcon} type='MaterialCommunityIcons' name='chart-bar' />
+                </TabHeading>
+              }>
+              <HomeStats navigation={navigation} />
             </Tab>
           </Tabs>
         </BackgroundComponent>

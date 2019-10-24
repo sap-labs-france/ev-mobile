@@ -60,9 +60,6 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     const { transaction } = this.props;
-    console.log('====================================');
-    console.log(transaction);
-    console.log('====================================');
     await super.componentDidMount();
     // Get the Site Image
     if (transaction.siteID && this.isMounted()) {

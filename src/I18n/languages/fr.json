@@ -15,7 +15,15 @@
     "search": "Rechercher",
     "exitApp": "Quitter",
     "exitAppConfirm": "Voulez-vous vraiment quitter l'application ?",
-    "noRecordFound": "Pas d'enregistrement trouvé"
+    "noRecordFound": "Pas d'enregistrement trouvé",
+    "days": "jours",
+    "hours": "heures",
+    "minutes": "mins",
+    "seconds": "secs",
+    "day": "jour",
+    "hour": "heure",
+    "minute": "min",
+    "second": "sec"
   },
   "sidebar": {
     "home": "Home",
@@ -81,7 +89,19 @@
     "browseSessionsNote": "Naviguez vers les Sessions",
     "ongoingSessions": "{{nbrSessions}} ongoing Session(s)",
     "noOngoingSessions": "Pas de Session en cours",
-    "ongoingSessionsNote": "Nombre de Session en cours"
+    "ongoingSessionsNote": "Nombre de Session en cours",
+    "summary": "Résumé",
+    "numberOfSessions": "{{nbrSessions}} sessions",
+    "noSessions": "Pas de Session trouvée",
+    "numberOfSessionsNote": "Nombre total de Sessions",
+    "totalConsumptiom": "{{totalConsumptiom}} kW.h",
+    "totalConsumptiomNote": "Energie totale consommée",
+    "totalDuration": "{{totalDuration}}",
+    "totalDurationNote": "Durée totale des Sessions",
+    "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
+    "totalInactivityNote": "Durée totale d'inactivité",
+    "totalPrice": "{{totalPrice}}",
+    "totalPriceNote": "Cout total"
   },
   "sites": {
     "freeChargers": "Chargeurs disponibles",

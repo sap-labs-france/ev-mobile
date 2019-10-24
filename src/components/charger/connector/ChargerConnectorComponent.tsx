@@ -9,7 +9,7 @@ import Connector from '../../../types/Connector';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import ConnectorStatusComponent from '../../connector-status/ConnectorStatusComponent';
-import computeStyleSheet from './ConnectorComponentStyles';
+import computeStyleSheet from './ChargerConnectorComponentStyles';
 
 // const type2 = require("../../../../assets/connectorType/type2.svg");
 
@@ -22,7 +22,7 @@ interface State {
   showBatteryLevel?: boolean;
 }
 
-export default class ConnectorComponent extends React.Component<Props, State> {
+export default class ChargerConnectorComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   private timerAnimation: number;
@@ -80,9 +80,9 @@ export default class ConnectorComponent extends React.Component<Props, State> {
           <Text style={style.connectorValues}>
             {connector.currentConsumption / 1000 < 10
               ? connector.currentConsumption > 0
-                ? (Math.round(connector.currentConsumption / 10) / 100)
+                ? (I18n.toNumber(Math.round(connector.currentConsumption / 10) / 100, { strip_insignificant_zeros: true }))
                 : 0
-              : Math.trunc(connector.currentConsumption / 1000)}
+              : I18n.toNumber(Math.trunc(connector.currentConsumption / 1000), { strip_insignificant_zeros: true })}
           </Text>
           <Text style={style.label} numberOfLines={1}>
             {I18n.t('details.instant')}

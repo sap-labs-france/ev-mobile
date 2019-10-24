@@ -19,8 +19,8 @@ const commonStyles = ScaledSheet.create({
   tabHeader: {},
   cardIcon: {
     textAlign: 'center',
-    fontSize: '50@s',
-    width: '55@s'
+    fontSize: '35@s',
+    width: '40@s'
   },
   cardText: {
     fontSize: '20@s',

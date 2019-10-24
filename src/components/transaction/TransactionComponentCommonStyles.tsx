@@ -42,7 +42,7 @@ const commonStyles = ScaledSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '50@s'
+    width: '60@s'
   },
   rowContainer: {
     flexDirection: 'row',

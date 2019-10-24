@@ -74,6 +74,11 @@ export default class Constants {
     limit: 1,
     skip: 0,
   };
+  public static readonly ONLY_RECORD_COUNT_PAGING: PagingParams = {
+    limit: 10,
+    skip: 0,
+    onlyRecordCount: true
+  };
   public static readonly PAGING_SIZE = 10;
 
   public static readonly CONN_STATUS_AVAILABLE = 'Available';

@@ -301,9 +301,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
         let inactivityFormatted = Constants.DEFAULT_DURATION;
         // Elapsed Time?
         if (transaction.timestamp) {
-          // Get duration
-          const durationSecs = (Date.now() - transaction.timestamp.getTime()) / 1000;
           // Format
+          const durationSecs = (Date.now() - transaction.timestamp.getTime()) / 1000;
           elapsedTimeFormatted = Utils.formatDurationHHMMSS(durationSecs, false);
         }
         // Inactivity?
@@ -323,9 +322,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
         let inactivityFormatted = Constants.DEFAULT_DURATION;
         // Elapsed Time?
         if (connector.activeTransactionDate) {
-          // Get duration
-          const durationSecs = (Date.now() - new Date(connector.activeTransactionDate).getTime()) / 1000;
           // Format
+          const durationSecs = (Date.now() - new Date(connector.activeTransactionDate).getTime()) / 1000;
           elapsedTimeFormatted = Utils.formatDurationHHMMSS(durationSecs, false);
         }
         // Inactivity?
@@ -406,7 +404,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       <View style={style.columnContainer}>
         <Icon type='FontAwesome' name='bolt' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>
-          {connector.currentConsumption / 1000 > 0 ? Math.round(connector.currentConsumption / 10) / 100 : 0}
+          {connector.currentConsumption / 1000 > 0 ?
+              I18n.toNumber(Math.round(connector.currentConsumption / 10) / 100, { strip_insignificant_zeros: true }) : 0}
         </Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.instant')} (kW)</Text>
       </View>
@@ -458,7 +457,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     ) : (
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.info]} type='MaterialIcons' name='ev-station' />
-        <Text style={[style.label, style.labelValue, style.info]}>{Math.round(connector.totalConsumption / 10) / 100}</Text>
+        <Text style={[style.label, style.labelValue, style.info]}>
+          {I18n.toNumber(Math.round(connector.totalConsumption / 10) / 100, { strip_insignificant_zeros: true })}
+        </Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
     ));

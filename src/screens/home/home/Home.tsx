@@ -171,8 +171,8 @@ export default class Home extends BaseAutoRefreshScreen<Props, State> {
                   </Left>
                 </CardItem>
               </Card>
-          </Content>
-        )}
+            </Content>
+          )}
         </BackgroundComponent>
       </Container>
     );
