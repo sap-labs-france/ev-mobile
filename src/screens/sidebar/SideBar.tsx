@@ -1,10 +1,10 @@
+import I18n from 'i18n-js';
 import moment from 'moment';
 import { Container, Content, Header, Icon, ListItem, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import BackgroundComponent from '../../components/background/BackgroundComponent';
-import I18n from '../../I18n/I18n';
 import BaseProps from '../../types/BaseProps';
 import Constants from '../../utils/Constants';
 import BaseScreen from '../base-screen/BaseScreen';

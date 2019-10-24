@@ -1,6 +1,6 @@
+import I18n from 'i18n-js';
 import { View } from 'native-base';
 import React from 'react';
-import I18n from '../../I18n/I18n';
 import BaseProps from '../../types/BaseProps';
 import ConnectorStats from '../../types/ConnectorStats';
 import Constants from '../../utils/Constants';

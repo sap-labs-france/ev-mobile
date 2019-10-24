@@ -1,8 +1,9 @@
+import I18n from 'i18n-js';
 import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import I18n from '../../../I18n/I18n';
+import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation from '../../../types/ChargingStation';
 import Connector from '../../../types/Connector';
@@ -80,9 +81,9 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
           <Text style={style.connectorValues}>
             {connector.currentConsumption / 1000 < 10
               ? connector.currentConsumption > 0
-                ? (I18n.toNumber(Math.round(connector.currentConsumption / 10) / 100, { strip_insignificant_zeros: true }))
+                ? (I18nManager.formatNumber(Math.round(connector.currentConsumption / 10) / 100))
                 : 0
-              : I18n.toNumber(Math.trunc(connector.currentConsumption / 1000), { strip_insignificant_zeros: true })}
+              : I18nManager.formatNumber(Math.trunc(connector.currentConsumption / 1000))}
           </Text>
           <Text style={style.label} numberOfLines={1}>
             {I18n.t('details.instant')}

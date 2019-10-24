@@ -1,8 +1,8 @@
+import I18n from 'i18n-js';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import { ImageSourcePropType, NativeModules, Platform } from 'react-native';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import validate from 'validate.js';
-import I18n from '../I18n/I18n';
 import commonColor from '../theme/variables/commonColor';
 import { RequestError } from '../types/RequestError';
 import { InactivityStatusLevel } from '../types/Transaction';

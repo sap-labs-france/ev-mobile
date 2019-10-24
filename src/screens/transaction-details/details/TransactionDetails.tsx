@@ -1,9 +1,9 @@
+import I18n from 'i18n-js';
 import moment from 'moment';
 import { Container, Icon, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Image, ScrollView } from 'react-native';
 import BackgroundComponent from '../../../components/background/BackgroundComponent';
-import I18n from '../../../I18n/I18n';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseScreen from '../../../screens/base-screen/BaseScreen';
 import BaseProps from '../../../types/BaseProps';

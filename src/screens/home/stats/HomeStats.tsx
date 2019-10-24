@@ -1,9 +1,10 @@
+import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } from 'native-base';
 import React from 'react';
 import { Alert, BackHandler } from 'react-native';
 import BackgroundComponent from '../../../components/background/BackgroundComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import I18n from '../../../I18n/I18n';
+import I18nManager from '../../../I18n/I18nManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import { ComponentEnum } from '../../../types/Component';
@@ -153,7 +154,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                     <Icon style={style.cardIcon} type='MaterialIcons' name='history' />
                     <Body>
                       <Text style={style.cardText}>{I18n.t('home.numberOfSessions',
-                        { nbrSessions: I18n.toNumber(totalNumberOfSession, { strip_insignificant_zeros: true })})}</Text>
+                        { nbrSessions: I18nManager.formatNumber(totalNumberOfSession)})}</Text>
                       <Text note={true} style={style.cardNote}>{I18n.t('home.numberOfSessionsNote')}</Text>
                     </Body>
                   </Left>
@@ -165,7 +166,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                     <Icon style={style.cardIcon} type='FontAwesome' name='bolt' />
                     <Body>
                       <Text style={style.cardText}>{I18n.t('home.totalConsumptiom',
-                        { totalConsumptiom: I18n.toNumber(Math.round(totalConsumptionWattHours / 1000), { strip_insignificant_zeros: true })})}</Text>
+                        { totalConsumptiom: I18nManager.formatNumber(Math.round(totalConsumptionWattHours / 1000))})}</Text>
                       <Text note={true} style={style.cardNote}>{I18n.t('home.totalConsumptiomNote')}</Text>
                     </Body>
                   </Left>
@@ -190,7 +191,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                     <Body>
                       <Text style={style.cardText}>{I18n.t('home.totalInactivity',
                         { totalInactivity: Utils.formatDuration(totalInactivitySecs),
-                          totalInactivityPercent: I18n.toPercentage(Math.round((totalInactivitySecs / totalDurationSecs) * 100), {precision: 0}) })}</Text>
+                          totalInactivityPercent: I18nManager.formatPercentage(Math.round((totalInactivitySecs / totalDurationSecs) * 100)) })}</Text>
                       <Text note={true} style={style.cardNote}>{I18n.t('home.totalInactivityNote')}</Text>
                     </Body>
                   </Left>
@@ -203,7 +204,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                       <Icon style={style.cardIcon} type='FontAwesome' name='money' />
                       <Body>
                         <Text style={style.cardText}>{I18n.t('home.totalPrice',
-                          { totalPrice: I18n.toCurrency(Math.round(totalPrice), {precision: 0, unit: priceCurrency}) }) }</Text>
+                          { totalPrice: I18nManager.formatCurrency(Math.round(totalPrice), { precision: 0, unit: priceCurrency }) }) }</Text>
                         <Text note={true} style={style.cardNote}>{I18n.t('home.totalPriceNote')}</Text>
                       </Body>
                     </Left>

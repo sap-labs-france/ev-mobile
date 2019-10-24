@@ -1,3 +1,4 @@
+import I18n from 'i18n-js';
 import { Text } from 'native-base';
 import React from 'react';
 import { processColor, View } from 'react-native';
@@ -5,7 +6,6 @@ import { LineChart } from 'react-native-charts-wrapper';
 import { scale } from 'react-native-size-matters';
 import BackgroundComponent from '../../../components/background/BackgroundComponent';
 import TransactionHeaderComponent from '../../../components/transaction/header/TransactionHeaderComponent';
-import I18n from '../../../I18n/I18n';
 import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import Consumption from '../../../types/Consumption';
