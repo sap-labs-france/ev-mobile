@@ -29,8 +29,8 @@ export default class I18nManager {
     // Update layout direction
     I18nReactNativeManager.forceRTL(isRTL);
     // Default
-    i18n.locale = 'fr';
-    moment.locale('fr');
+    i18n.locale = languageTag;
+    moment.locale(languageTag);
   }
 
   public static switchLocale(locale: string) {
