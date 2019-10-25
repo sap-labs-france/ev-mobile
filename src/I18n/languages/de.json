@@ -16,14 +16,10 @@
     "exitApp": "Beenden",
     "exitAppConfirm": "Möchten Sie die Anwendung wirklich beenden?",
     "noRecordFound": "Kein Eintrag gefunden",
-    "days": "days",
-    "hours": "hours",
-    "minutes": "mins",
-    "seconds": "secs",
-    "day": "day",
-    "hour": "hour",
-    "minute": "min",
-    "second": "sec"
+    "day": "d",
+    "hour": "h",
+    "minute": "m",
+    "second": "s"
   },
   "sidebar": {
     "home": "Home",

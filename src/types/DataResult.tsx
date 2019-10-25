@@ -8,6 +8,8 @@ export interface TransactionDataResult<T> {
   result: T[];
   stats: {
     count: number;
+    firstTimestamp?: Date;
+    lastTimestamp?: Date;
     totalConsumptionWattHours: number;
     totalDurationSecs: number;
     totalInactivitySecs: number;

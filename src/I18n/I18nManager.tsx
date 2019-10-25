@@ -9,10 +9,11 @@ import frJsonLanguage from './languages/fr.json';
 export default class I18nManager {
 
   public static async initialize() {
-    // Get the supported locales
+    // Get the supported locales for moment
     require('moment/locale/fr');
     require('moment/locale/de');
     require('moment/locale/en-gb');
+    // Translation files
     const translationGetters: any = {
       en: () => enJsonLanguage,
       fr: () => frJsonLanguage,

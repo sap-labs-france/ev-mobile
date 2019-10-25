@@ -20,6 +20,8 @@ export interface Props extends BaseProps {
 interface State {
   loading?: boolean;
   isAdmin?: boolean;
+  firstTimestamp?: Date;
+  lastTimestamp?: Date;
   totalNumberOfSession?: number;
   totalConsumptionWattHours?: number;
   totalDurationSecs?: number;
@@ -43,6 +45,8 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
       totalConsumptionWattHours: 0,
       totalDurationSecs: 0,
       totalInactivitySecs: 0,
+      firstTimestamp: new Date(),
+      lastTimestamp: new Date(),
       totalPrice: 0,
       priceCurrency: '',
       isPricingActive: false
@@ -82,6 +86,8 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
       // Get active transaction
       const transactions = await this.centralServerProvider.getTransactions({ Statistics: 'history' }, Constants.ONLY_RECORD_COUNT_PAGING);
       this.setState({
+        firstTimestamp: transactions.stats.firstTimestamp,
+        lastTimestamp: transactions.stats.lastTimestamp,
         totalNumberOfSession: transactions.stats.count,
         totalConsumptionWattHours: transactions.stats.totalConsumptionWattHours,
         totalDurationSecs: transactions.stats.totalDurationSecs,
