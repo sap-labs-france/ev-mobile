@@ -83,33 +83,17 @@ export default class Utils {
     const minutes = Math.floor(durationSecs / 60);
     const seconds = Math.floor(durationSecs - (minutes * 60));
     if (days !== 0) {
-      if (days === 1) {
-        result += `${days} ${I18n.t("general.day")} `;
-      } else {
-        result += `${days} ${I18n.t("general.days")} `;
-      }
+      result += `${days}${I18n.t("general.day")} `;
     }
     if (((hours !== 0) || (days !== 0)) && (hours !== 0 || (minutes !== 0 && days === 0))) {
-      if (hours === 1) {
-        result += `${hours} ${I18n.t("general.hour")} `;
-      } else {
-        result += `${hours} ${I18n.t("general.hours")} `;
-      }
+      result += `${hours}${I18n.t("general.hour")} `;
     }
     if (days === 0) {
       if ((minutes !== 0) || (hours !== 0) && (minutes !== 0 || (seconds !== 0 && hours === 0))) {
-        if (minutes === 1) {
-          result += `${minutes} ${I18n.t("general.minute")} `;
-        } else {
-          result += `${minutes} ${I18n.t("general.minutes")} `;
-        }
+        result += `${minutes}${I18n.t("general.minute")} `;
       }
       if ((hours === 0) && (seconds !== 0)) {
-        if (seconds === 1) {
-          result += `${seconds} ${I18n.t("general.second")}`;
-        } else {
-          result += `${seconds} ${I18n.t("general.seconds")}`;
-        }
+        result += `${seconds}${I18n.t("general.second")}`;
       }
     }
     return result;

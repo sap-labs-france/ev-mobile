@@ -16,14 +16,10 @@
     "exitApp": "Quitter",
     "exitAppConfirm": "Voulez-vous vraiment quitter l'application ?",
     "noRecordFound": "Pas d'enregistrement trouvé",
-    "days": "jours",
-    "hours": "heures",
-    "minutes": "mins",
-    "seconds": "secs",
-    "day": "jour",
-    "hour": "heure",
-    "minute": "min",
-    "second": "sec"
+    "day": "j",
+    "hour": "h",
+    "minute": "m",
+    "second": "s"
   },
   "sidebar": {
     "home": "Home",
