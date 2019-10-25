@@ -55,9 +55,10 @@ export default class Utils {
     return navigation.state.params[name];
   }
 
-  public static getLocale(): string {
-    let deviceLanguage =
-      Platform.OS === "ios" ? NativeModules.SettingsManager.settings.AppleLocale : NativeModules.I18nManager.localeIdentifier;
+  public static getDefaultLocale(): string {
+    let deviceLanguage = Platform.OS === "ios" ?
+      NativeModules.SettingsManager.settings.AppleLocale :
+      NativeModules.I18nManager.localeIdentifier;
     // Filter only on supported languages
     const shortDeviceLanguage = deviceLanguage ? deviceLanguage.substring(0, 2) : null;
     // Default
@@ -67,8 +68,17 @@ export default class Utils {
     return deviceLanguage;
   }
 
-  public static getLocaleShort(): string {
-    return Utils.getLocale().substring(0, 2);
+  public static getDefaultLanguage(): string {
+    return Utils.getDefaultLocale().substring(0, 2);
+  }
+
+  public static getLanguageFromLocale(locale: string) {
+    let language = null;
+    // Set the User's locale
+    if (locale && locale.length > 2) {
+      language = locale.substring(0, 2);
+    }
+    return language;
   }
 
   public static formatDuration(durationSecs: number): string {

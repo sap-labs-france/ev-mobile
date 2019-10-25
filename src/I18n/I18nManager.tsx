@@ -2,6 +2,7 @@ import i18n, { ToCurrencyOptions, ToNumberOptions, ToPercentageOptions } from "i
 import moment from "moment";
 import { I18nManager as I18nReactNativeManager } from "react-native";
 import * as RNLocalize from "react-native-localize";
+import Constants from "../utils/Constants";
 import deJsonLanguage from "./languages/de.json";
 import enJsonLanguage from "./languages/en.json";
 import frJsonLanguage from "./languages/fr.json";
@@ -20,7 +21,7 @@ export default class I18nManager {
       de: () => deJsonLanguage,
     };
     // Fallback if no available language fits
-    const fallback = { languageTag: 'en', isRTL: false };
+    const fallback = { languageTag: Constants.DEFAULT_LANGUAGE, isRTL: false };
     // Get current locale
     const { languageTag, isRTL } = RNLocalize.findBestAvailableLanguage(Object.keys(translationGetters)) || fallback;
     // Set tranlation files
@@ -34,9 +35,15 @@ export default class I18nManager {
     moment.locale(languageTag);
   }
 
-  public static switchLocale(locale: string) {
-    i18n.locale = locale;
-    moment.locale(locale);
+  public static switchLanguage(language: string = Constants.DEFAULT_LANGUAGE) {
+    // Supported languages?
+    if (Constants.SUPPORTED_LANGUAGES.includes(language)) {
+      console.log('====================================');
+      console.log(language);
+      console.log('====================================');
+      i18n.locale = language;
+      moment.locale(language);
+    }
   }
 
   public static formatNumber(value: number, options: ToNumberOptions = { strip_insignificant_zeros: true }): string {
