@@ -38,9 +38,6 @@ export default class I18nManager {
   public static switchLanguage(language: string = Constants.DEFAULT_LANGUAGE) {
     // Supported languages?
     if (Constants.SUPPORTED_LANGUAGES.includes(language)) {
-      console.log('====================================');
-      console.log(language);
-      console.log('====================================');
       i18n.locale = language;
       moment.locale(language);
     }

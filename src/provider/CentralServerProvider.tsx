@@ -262,15 +262,6 @@ export default class CentralServerProvider {
     });
     // Adjust the language according the last login info
     I18nManager.switchLanguage(this.getUserLanguage());
-    console.log('====================================');
-    console.log({
-      email,
-      password,
-      tenant,
-      token: result.data.token,
-      locale: this.decodedToken.locale
-    });
-    console.log('====================================');
     try {
       // Save the User's token
       await this.saveUserMobileToken({
