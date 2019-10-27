@@ -51,6 +51,7 @@ const commonStyles = ScaledSheet.create({
     justifyContent: "center"
   },
   actionButton: {
+    height: "40@s",
     justifyContent: "center"
   },
   actionButtonText: {

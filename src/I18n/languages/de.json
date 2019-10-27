@@ -87,7 +87,7 @@
     "noOngoingSessions": "No ongoing Session",
     "ongoingSessionsNote": "Number of ongoing Session",
     "summary": "Summary",
-    "numberOfSessions": "{{nbrSessions}} sessions",
+    "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "No Session found",
     "numberOfSessionsNote": "Total number of Sessions",
     "totalConsumptiom": "{{totalConsumptiom}} kW.h",

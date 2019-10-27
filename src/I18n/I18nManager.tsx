@@ -1,13 +1,17 @@
-import i18n, { ToCurrencyOptions, ToNumberOptions, ToPercentageOptions } from "i18n-js";
+import i18n from "i18n-js";
 import moment from "moment";
+import CentralServerProvider from "provider/CentralServerProvider";
 import { I18nManager as I18nReactNativeManager } from "react-native";
 import * as RNLocalize from "react-native-localize";
+import ProviderFactory from "../provider/ProviderFactory";
 import Constants from "../utils/Constants";
+import Utils from "../utils/Utils";
 import deJsonLanguage from "./languages/de.json";
 import enJsonLanguage from "./languages/en.json";
 import frJsonLanguage from "./languages/fr.json";
 
 export default class I18nManager {
+  private static centralServerProvider: CentralServerProvider;
 
   public static async initialize() {
     // Get the supported locales for moment
@@ -33,26 +37,42 @@ export default class I18nManager {
     // Default
     i18n.locale = languageTag;
     moment.locale(languageTag);
+    // Get the Provider (let it at the end of this method otherwise language switch won't work)
+    I18nManager.centralServerProvider = await ProviderFactory.getProvider();
   }
 
-  public static switchLanguage(language: string = Constants.DEFAULT_LANGUAGE) {
+  public static switchLocale(locale: string) {
+    if (locale) {
+      return I18nManager.switchLanguage(Utils.getLanguageFromLocale(locale));
+    }
+  }
+
+  public static switchLanguage(language: string) {
     // Supported languages?
-    if (Constants.SUPPORTED_LANGUAGES.includes(language)) {
+    if (language && Constants.SUPPORTED_LANGUAGES.includes(language)) {
       i18n.locale = language;
       moment.locale(language);
     }
   }
 
-  public static formatNumber(value: number, options: ToNumberOptions = { strip_insignificant_zeros: true }): string {
-    return i18n.toNumber(value, options);
+  public static formatNumber(value: number): string {
+    return new Intl.NumberFormat(i18n.locale).format(value);
   }
 
-  public static formatCurrency(value: number, options: ToCurrencyOptions = { precision: 0 }): string {
-    return i18n.toCurrency(value, options);
+  public static formatCurrency(value: number): string {
+    const currency = I18nManager.centralServerProvider.getUserCurrency();
+    // Format Currency
+    if (currency) {
+      return new Intl.NumberFormat(i18n.locale, { style: 'currency', currency }).format(value);
+    }
+    return I18nManager.formatNumber(Math.round(value * 100) / 100);
   }
 
-  public static formatPercentage(value: number, options: ToPercentageOptions = { precision: 0 }): string {
-    return i18n.toPercentage(value, options);
+  public static formatPercentage(value: number): string {
+    if (!isNaN(value)) {
+      return new Intl.NumberFormat(i18n.locale, { style: 'percent' }).format(value);
+    }
+    return '0';
   }
 
   public static formatDateTime(value: Date, format: string = 'LLL') {

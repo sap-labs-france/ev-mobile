@@ -4,6 +4,7 @@ export default interface UserToken {
   name?: string;
   firstName?: string;
   locale?: string;
+  currency?: string;
   language?: string;
   tagIDs?: string[];
   tenantID: string;

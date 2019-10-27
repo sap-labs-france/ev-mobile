@@ -75,7 +75,7 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
               {isPricingActive && (
                 <View style={style.columnContainer}>
                   <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
-                  <Text style={[style.labelValue, style.info]}>{price}</Text>
+                  <Text style={[style.labelValue, style.info]}>{I18nManager.formatCurrency(price)}</Text>
                   <Text style={[style.subLabelValue, style.info]}>({transaction.priceUnit})</Text>
                 </View>
               )}

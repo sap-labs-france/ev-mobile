@@ -70,7 +70,7 @@
     "tenant": "Choisir une Organisation"
   },
   "transactions": {
-    "transactionsHistory": "Historique Des Sessions",
+    "transactionsHistory": "Historique Sessions",
     "transactionsInProgress": "Sessions En Cours",
     "chargingCurve": "Graphique Session",
     "noTransactionsInProgress": "Pas de Session en cours",
@@ -87,7 +87,7 @@
     "noOngoingSessions": "Pas de Session en cours",
     "ongoingSessionsNote": "Nombre de Session en cours",
     "summary": "Résumé",
-    "numberOfSessions": "{{nbrSessions}} sessions",
+    "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "Pas de Session trouvée",
     "numberOfSessionsNote": "Nombre total de Sessions",
     "totalConsumptiom": "{{totalConsumptiom}} kW.h",

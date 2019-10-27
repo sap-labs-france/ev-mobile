@@ -118,7 +118,7 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
   public renderThirdConnectorDetails = (connector: Connector, style: any) =>
     connector.activeTransactionID !== 0 ? (
       <View style={style.connectorDetail}>
-        <Text style={style.connectorValues}>{Math.round(connector.totalConsumption / 1000)}</Text>
+        <Text style={style.connectorValues}>{I18nManager.formatNumber(Math.round(connector.totalConsumption / 1000))}</Text>
         <Text style={style.label} numberOfLines={1}>
           {I18n.t("details.total")}
         </Text>
@@ -128,7 +128,7 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
       </View>
     ) : (
       <View style={style.connectorDetail}>
-        <Text style={style.connectorValues}>{Math.trunc(connector.power / 1000)}</Text>
+        <Text style={style.connectorValues}>{I18nManager.formatNumber(Math.trunc(connector.power / 1000))}</Text>
         <Text style={style.label} numberOfLines={1}>
           {I18n.t("details.maximum")}
         </Text>
