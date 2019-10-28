@@ -3,6 +3,9 @@ import moment from 'moment';
 import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Image, ScrollView } from 'react-native';
+import noPhotoActive from '../../../../assets/no-photo-active.png';
+import noPhoto from '../../../../assets/no-photo.png';
+import noSite from '../../../../assets/no-site.png';
 import BackgroundComponent from '../../../components/background/BackgroundComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
@@ -12,10 +15,6 @@ import Transaction from '../../../types/Transaction';
 import User from '../../../types/User';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './TransactionDetailsStyles';
-
-const noPhoto = require('../../../../assets/no-photo.png');
-const noPhotoActive = require('../../../../assets/no-photo-active.png');
-const noSite = require('../../../../assets/no-site.png');
 
 export interface Props extends BaseProps {
   transaction: Transaction;

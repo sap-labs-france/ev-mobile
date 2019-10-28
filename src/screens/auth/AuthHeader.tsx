@@ -7,7 +7,7 @@ import BaseProps from '../../types/BaseProps';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './AuthStyles';
 
-const logo = require('../../../assets/logo-low.png');
+import logo from '../../../assets/logo-low.png';
 
 export interface Props extends BaseProps {
   tenantName?: string;

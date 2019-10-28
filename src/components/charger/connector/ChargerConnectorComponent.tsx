@@ -12,7 +12,7 @@ import Utils from '../../../utils/Utils';
 import ConnectorStatusComponent from '../../connector-status/ConnectorStatusComponent';
 import computeStyleSheet from './ChargerConnectorComponentStyles';
 
-// const type2 = require("../../../../assets/connectorType/type2.svg");
+// import type2 from "../../../../assets/connectorType/type2.svg";
 
 export interface Props extends BaseProps {
   charger: ChargingStation;

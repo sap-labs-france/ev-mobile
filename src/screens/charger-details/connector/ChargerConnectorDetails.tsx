@@ -2,6 +2,9 @@ import I18n from 'i18n-js';
 import { Container, Icon, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
+import noPhotoActive from '../../../../assets/no-photo-active.png';
+import noPhoto from '../../../../assets/no-photo.png';
+import noSite from '../../../../assets/no-site.png';
 import BackgroundComponent from '../../../components/background/BackgroundComponent';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import I18nManager from '../../../I18n/I18nManager';
@@ -16,10 +19,6 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargerConnectorDetailsStyles';
-
-const noPhoto = require('../../../../assets/no-photo.png');
-const noPhotoActive = require('../../../../assets/no-photo-active.png');
-const noSite = require('../../../../assets/no-site.png');
 
 const START_TRANSACTION_NB_TRIAL = 4;
 

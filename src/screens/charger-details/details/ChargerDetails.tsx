@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Button, Container, Text, View } from 'native-base';
+import { Button, Container, Icon, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, ScrollView } from 'react-native';
 import BackgroundComponent from '../../../components/background/BackgroundComponent';
@@ -118,21 +118,24 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
             </View>
             <View style={style.bottomViewContainer}>
               <View style={style.actionContainer}>
-                <Button rounded={true} danger={true} style={style.actionButton} onPress={() => this.resetHardConfirm()}>
+                <Button rounded={true} iconLeft={true} danger={true} style={style.actionButton} onPress={() => this.resetHardConfirm()}>
+                  <Icon type='MaterialIcons' name='repeat' />
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t('chargers.resetHard')}
                   </Text>
                 </Button>
               </View>
               <View style={style.actionContainer}>
-                <Button rounded={true} warning={true} style={style.actionButton} onPress={() => this.resetSoftConfirm()}>
+                <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.resetSoftConfirm()}>
+                  <Icon type='MaterialIcons' name='layers-clear' />
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t('chargers.resetSoft')}
                   </Text>
                 </Button>
               </View>
               <View style={style.actionContainer}>
-                <Button rounded={true} warning={true} style={style.actionButton} onPress={() => this.clearCacheConfirm()}>
+                <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.clearCacheConfirm()}>
+                  <Icon type='MaterialIcons' name='refresh' />
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t('chargers.clearCache')}
                   </Text>

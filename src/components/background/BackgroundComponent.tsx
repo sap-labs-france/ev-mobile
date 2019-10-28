@@ -4,8 +4,8 @@ import { ImageBackground } from 'react-native';
 import BaseProps from '../../types/BaseProps';
 import computeStyleSheet from './BackgroundComponentStyles';
 
-// const defaultBackground = require("../../../assets/bg.png");
-// const defaultBackground = require("../../../assets/sidebar-transparent.png");
+// import defaultBackground from "../../../assets/bg.png";
+// import defaultBackground from "../../../assets/sidebar-transparent.png";
 
 export interface Props extends BaseProps {
   active?: boolean;

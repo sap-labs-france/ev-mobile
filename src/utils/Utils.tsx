@@ -3,18 +3,17 @@ import CentralServerProvider from 'provider/CentralServerProvider';
 import { ImageSourcePropType, NativeModules, Platform } from 'react-native';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import validate from 'validate.js';
+import chademo from '../../assets/connectorType/chademo.gif';
+import combo from '../../assets/connectorType/combo_ccs.gif';
+import domestic from '../../assets/connectorType/domestic-ue.gif';
+import noConnector from '../../assets/connectorType/no-connector.gif';
+import type2 from '../../assets/connectorType/type2.gif';
 import commonColor from '../theme/variables/commonColor';
 import { RequestError } from '../types/RequestError';
 import { InactivityStatusLevel } from '../types/Transaction';
 import User from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
-
-const type2 = require('../../assets/connectorType/type2.gif');
-const combo = require('../../assets/connectorType/combo_ccs.gif');
-const chademo = require('../../assets/connectorType/chademo.gif');
-const domestic = require('../../assets/connectorType/domestic-ue.gif');
-const noConnector = require('../../assets/connectorType/no-connector.gif');
 
 export default class Utils {
   public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
