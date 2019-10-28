@@ -107,6 +107,7 @@
     "react-native-google-maps-directions": "^2.1.0",
     "react-native-htmlview": "^0.15.0",
     "react-native-localize": "^1.2.1",
+    "react-native-modal": "^11.4.0",
     "react-native-modalbox": "^1.7.1",
     "react-native-open-maps": "^0.3.3",
     "react-native-orientation-locker": "^1.1.6",

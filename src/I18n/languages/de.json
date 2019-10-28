@@ -19,7 +19,9 @@
     "day": "d",
     "hour": "h",
     "minute": "m",
-    "second": "s"
+    "second": "s",
+    "startDate": "Start Date",
+    "endDate": "End Date"
   },
   "sidebar": {
     "home": "Home",

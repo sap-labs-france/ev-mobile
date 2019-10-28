@@ -27,6 +27,14 @@ const commonStyles = ScaledSheet.create({
   },
   cardNote: {
     fontStyle: 'italic'
+  },
+  dateContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center"
+  },
+  dateValue: {
+    color: commonColor.textColor
   }
 });
 
