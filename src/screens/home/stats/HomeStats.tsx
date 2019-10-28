@@ -7,8 +7,6 @@ import HeaderComponent from '../../../components/header/HeaderComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
-import { ComponentEnum } from '../../../types/Component';
-import { SettingContentTypes, SimplePricingSettings } from '../../../types/Setting';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
@@ -48,7 +46,6 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
       firstTimestamp: new Date(),
       lastTimestamp: new Date(),
       totalPrice: 0,
-      priceCurrency: '',
       isPricingActive: false
     };
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
@@ -70,10 +67,6 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
     const securityProvider = centralServerProvider.getSecurityProvider();
     // Get the ongoing Transaction
     await this.getTransactions();
-    // Get pricing info
-    if (securityProvider.isComponentPricingActive()) {
-      await this.getPricingSettings();
-    }
     // Set
     this.setState({
       isPricingActive: securityProvider.isComponentPricingActive(),
@@ -85,6 +78,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
     try {
       // Get active transaction
       const transactions = await this.centralServerProvider.getTransactions({ Statistics: 'history' }, Constants.ONLY_RECORD_COUNT_PAGING);
+      // Format
       this.setState({
         firstTimestamp: transactions.stats.firstTimestamp,
         lastTimestamp: transactions.stats.lastTimestamp,
@@ -93,28 +87,6 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
         totalDurationSecs: transactions.stats.totalDurationSecs,
         totalInactivitySecs: transactions.stats.totalInactivitySecs,
         totalPrice: transactions.stats.totalPrice
-      });
-    } catch (error) {
-      // Check if HTTP?
-      if (!error.request || error.request.status !== 560) {
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
-      }
-    }
-  };
-
-  public getPricingSettings = async () => {
-    try {
-      let priceCurrency = '';
-      // Get active transaction
-      const settings = await this.centralServerProvider.getSettings({ Identifier: ComponentEnum.PRICING });
-      // Simple pricing?
-      if (settings.count > 0 && settings.result[0].content.type === SettingContentTypes.SIMPLE) {
-        const pricingSettings: SimplePricingSettings = settings.result[0].content.simple;
-        // Set currency
-        priceCurrency = pricingSettings.currency + ' ';
-      }
-      this.setState({
-        priceCurrency
       });
     } catch (error) {
       // Check if HTTP?
@@ -137,7 +109,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, totalNumberOfSession, totalConsumptionWattHours, totalDurationSecs, totalInactivitySecs, totalPrice, priceCurrency, isPricingActive } = this.state;
+    const { loading, totalNumberOfSession, totalConsumptionWattHours, totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>
@@ -197,7 +169,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                     <Body>
                       <Text style={style.cardText}>{I18n.t('home.totalInactivity',
                         { totalInactivity: Utils.formatDuration(totalInactivitySecs),
-                          totalInactivityPercent: I18nManager.formatPercentage(Math.round((totalInactivitySecs / totalDurationSecs) * 100)) })}</Text>
+                          totalInactivityPercent: I18nManager.formatPercentage((totalInactivitySecs / totalDurationSecs)) })}</Text>
                       <Text note={true} style={style.cardNote}>{I18n.t('home.totalInactivityNote')}</Text>
                     </Body>
                   </Left>
@@ -210,7 +182,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                       <Icon style={style.cardIcon} type='FontAwesome' name='money' />
                       <Body>
                         <Text style={style.cardText}>{I18n.t('home.totalPrice',
-                          { totalPrice: I18nManager.formatCurrency(Math.round(totalPrice), { precision: 0, unit: priceCurrency }) }) }</Text>
+                          { totalPrice: I18nManager.formatCurrency(totalPrice) }) }</Text>
                         <Text note={true} style={style.cardNote}>{I18n.t('home.totalPriceNote')}</Text>
                       </Body>
                     </Left>

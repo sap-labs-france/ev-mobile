@@ -1,6 +1,11 @@
 import PagingParams from '../types/PagingParams';
 
 export default class Constants {
+  public static readonly SUPPORTED_LOCALES = ['en_US', 'fr_FR'];
+  public static readonly SUPPORTED_LANGUAGES = ['en', 'fr', 'de'];
+  public static readonly DEFAULT_LOCALE = 'en_US';
+  public static readonly DEFAULT_LANGUAGE = 'en';
+
   public static readonly DEFAULT_DURATION = '00:00';
   public static readonly DEFAULT_DURATION_WITH_SECS = '00:00:00';
 

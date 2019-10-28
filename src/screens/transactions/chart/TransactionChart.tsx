@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Text } from 'native-base';
+import { Spinner, Text } from 'native-base';
 import React from 'react';
 import { processColor, View } from 'react-native';
 import { LineChart } from 'react-native-charts-wrapper';
@@ -21,10 +21,11 @@ export interface Props extends BaseProps {
 }
 
 interface State {
-  transactionConsumption: Transaction;
-  values: Consumption[];
-  consumptionValues: ChartPoint[];
-  stateOfChargeValues: ChartPoint[];
+  loading?: boolean;
+  transactionConsumption?: Transaction;
+  values?: Consumption[];
+  consumptionValues?: ChartPoint[];
+  stateOfChargeValues?: ChartPoint[];
 }
 
 interface ChartPoint {
@@ -41,6 +42,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     props.showTransactionDetails = false;
     props.isAdmin = false;
     this.state = {
+      loading: true,
       transactionConsumption: null,
       values: [],
       consumptionValues: null,
@@ -119,6 +121,9 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       // Refresh Consumption
       await this.getTransactionConsumption();
     }
+    this.setState({
+      loading: false
+    });
   };
 
   public computeChartDefinition(consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[]) {
@@ -232,57 +237,61 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
 
   public render() {
     const style = computeStyleSheet();
-    const { transactionConsumption, consumptionValues, stateOfChargeValues } = this.state;
+    const { loading, transactionConsumption, consumptionValues, stateOfChargeValues } = this.state;
     const { showTransactionDetails, isAdmin, navigation } = this.props;
     const chartDefinition = this.computeChartDefinition(consumptionValues, stateOfChargeValues);
     return (
-      <View style={style.container}>
-        <BackgroundComponent navigation={navigation} active={false}>
-          {showTransactionDetails && transactionConsumption && (
-            <TransactionHeaderComponent navigation={navigation} transaction={transactionConsumption} isAdmin={isAdmin} displayNavigationIcon={false} />
-          )}
-          {consumptionValues && consumptionValues.length > 1 ? (
-            <LineChart
-              style={showTransactionDetails && transactionConsumption ? style.chartWithHeader : style.chart}
-              data={chartDefinition.data}
-              chartDescription={{ text: '' }}
-              legend={{
-                enabled: true,
-                textSize: scale(8),
-                textColor: processColor(commonColor.brandPrimaryDark)
-              }}
-              marker={{
-                enabled: true,
-                markerColor: processColor(commonColor.brandPrimaryDark),
-                textSize: scale(12),
-                textColor: processColor(commonColor.inverseTextColor)
-              }}
-              xAxis={chartDefinition.xAxis}
-              yAxis={chartDefinition.yAxis}
-              autoScaleMinMaxEnabled={false}
-              animation={{
-                durationX: 1000,
-                durationY: 1000,
-                easingY: 'EaseInOutQuart'
-              }}
-              drawGridBackground={false}
-              drawBorders={false}
-              touchEnabled={true}
-              dragEnabled={true}
-              scaleEnabled={false}
-              scaleXEnabled={true}
-              scaleYEnabled={false}
-              pinchZoom={true}
-              doubleTapToZoomEnabled={false}
-              dragDecelerationEnabled={true}
-              dragDecelerationFrictionCoef={0.99}
-              keepPositionOnRotation={false}
-            />
-          ) : (
-            consumptionValues && <Text style={style.notEnoughData}>{I18n.t('details.notEnoughData')}</Text>
-          )}
-        </BackgroundComponent>
-      </View>
+      loading ? (
+        <Spinner style={style.spinner} />
+      ) : (
+        <View style={style.container}>
+          <BackgroundComponent navigation={navigation} active={false}>
+            {showTransactionDetails && transactionConsumption && (
+              <TransactionHeaderComponent navigation={navigation} transaction={transactionConsumption} isAdmin={isAdmin} displayNavigationIcon={false} />
+            )}
+            {consumptionValues && consumptionValues.length > 1 ? (
+              <LineChart
+                style={showTransactionDetails && transactionConsumption ? style.chartWithHeader : style.chart}
+                data={chartDefinition.data}
+                chartDescription={{ text: '' }}
+                legend={{
+                  enabled: true,
+                  textSize: scale(8),
+                  textColor: processColor(commonColor.brandPrimaryDark)
+                }}
+                marker={{
+                  enabled: true,
+                  markerColor: processColor(commonColor.brandPrimaryDark),
+                  textSize: scale(12),
+                  textColor: processColor(commonColor.inverseTextColor)
+                }}
+                xAxis={chartDefinition.xAxis}
+                yAxis={chartDefinition.yAxis}
+                autoScaleMinMaxEnabled={false}
+                animation={{
+                  durationX: 1000,
+                  durationY: 1000,
+                  easingY: 'EaseInOutQuart'
+                }}
+                drawGridBackground={false}
+                drawBorders={false}
+                touchEnabled={true}
+                dragEnabled={true}
+                scaleEnabled={false}
+                scaleXEnabled={true}
+                scaleYEnabled={false}
+                pinchZoom={true}
+                doubleTapToZoomEnabled={false}
+                dragDecelerationEnabled={true}
+                dragDecelerationFrictionCoef={0.99}
+                keepPositionOnRotation={false}
+              />
+            ) : (
+              consumptionValues && <Text style={style.notEnoughData}>{I18n.t('details.notEnoughData')}</Text>
+            )}
+          </BackgroundComponent>
+        </View>
+      )
     );
   }
 }

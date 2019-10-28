@@ -101,19 +101,19 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
             <View style={style.topViewContainer}>
               <View style={style.descriptionContainer}>
                 <Text style={style.label}>{I18n.t('details.vendor')}</Text>
-                <Text style={style.value}>{charger.chargePointVendor ? charger.chargePointVendor : '-'}</Text>
+                <Text style={style.value}>{charger && charger.chargePointVendor ? charger.chargePointVendor : '-'}</Text>
               </View>
               <View style={style.descriptionContainer}>
                 <Text style={style.label}>{I18n.t('details.model')}</Text>
-                <Text style={style.value}>{charger.chargePointModel ? charger.chargePointModel : '-'}</Text>
+                <Text style={style.value}>{charger && charger.chargePointModel ? charger.chargePointModel : '-'}</Text>
               </View>
               <View style={style.descriptionContainer}>
                 <Text style={style.label}>{I18n.t('details.ocppVersion')}</Text>
-                <Text style={style.value}>{charger.ocppVersion ? charger.ocppVersion : '-'}</Text>
+                <Text style={style.value}>{charger && charger.ocppVersion ? charger.ocppVersion : '-'}</Text>
               </View>
               <View style={style.descriptionContainer}>
                 <Text style={style.label}>{I18n.t('details.firmwareVersion')}</Text>
-                <Text style={style.value}>{charger.firmwareVersion ? charger.firmwareVersion : '-'}</Text>
+                <Text style={style.value}>{charger && charger.firmwareVersion ? charger.firmwareVersion : '-'}</Text>
               </View>
             </View>
             <View style={style.bottomViewContainer}>

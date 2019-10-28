@@ -1,13 +1,20 @@
 import CreatedUpdatedProps from './CreatedUpdatedProps';
 
+export enum IdentifierType {
+  PRICING = 'pricing',
+  ANALYTICS = 'analytics',
+  REFUND = 'refund',
+  OCPI = 'ocpi'
+}
+
 export default interface Setting extends CreatedUpdatedProps {
   id?: string;
-  identifier: 'pricing'|'analytics'|'refund'|'ocpi';
+  identifier: IdentifierType;
   sensitiveData: string[];
   content: SettingContent;
 }
 
-export enum SettingContentTypes {
+export enum SettingContentType {
   GIREVE = 'gireve',
   SAC = 'sac',
   CONCUR = 'concur',
@@ -16,7 +23,7 @@ export enum SettingContentTypes {
 }
 
 export interface SettingContent {
-  type: 'gireve'|'sac'|'concur'|'simple'|'convergentCharging';
+  type: SettingContentType;
   ocpi?: OcpiSettings;
   simple?: SimplePricingSettings;
   convergentCharging?: ConvergentChargingPricingSettings;

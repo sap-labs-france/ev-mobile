@@ -24,9 +24,6 @@ import TransactionDetailsTabs from './screens/transaction-details/TransactionDet
 import TransactionTabs from './screens/transactions/TransactionTabs';
 import SecuredStorage from './utils/SecuredStorage';
 
-// Init i18n
-I18nManager.initialize();
-
 // Auth Stack Navigation
 const authNavigator: NavigationContainer = createStackNavigator(
   {
@@ -164,6 +161,8 @@ export default class App extends React.Component<Props, State> {
 
   // eslint-disable-next-line class-methods-use-this
   public async componentDidMount() {
+    // Init i18n
+    await I18nManager.initialize();
     // Get the central server
     this.centralServerProvider = await ProviderFactory.getProvider();
     // Init Notification

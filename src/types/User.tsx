@@ -36,6 +36,8 @@ export interface UserCredentials {
   password: string;
   tenant: string;
   token?: string;
+  locale?: string;
+  currency?: string;
 }
 
 export interface UserMin {

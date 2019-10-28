@@ -106,7 +106,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     const { connector } = this.props;
     try {
       // Is their a transaction?
-      if (connector.activeTransactionID) {
+      if (connector && connector.activeTransactionID) {
         // Yes: Set data
         const transaction = await this.centralServerProvider.getTransaction({
           ID: connector.activeTransactionID
@@ -208,7 +208,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       // Start the Transaction
       const status = await this.centralServerProvider.startTransaction(charger.id, connector.connectorId, userInfo.tagIDs[0]);
       // Check
-      if (status.status && status.status === 'Accepted') {
+      if (status && status.status === 'Accepted') {
         // Show message
         Message.showSuccess(I18n.t('details.accepted'));
         // Nb trials the button stays disabled
@@ -244,7 +244,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       // Stop the Transaction
       const status = await this.centralServerProvider.stopTransaction(charger.id, connector.activeTransactionID);
       // Check
-      if (status.status && status.status === 'Accepted') {
+      if (status && status.status === 'Accepted') {
         Message.showSuccess(I18n.t('details.accepted'));
       } else {
         Message.showError(I18n.t('details.denied'));
@@ -259,9 +259,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     const { connector } = this.props;
     const { startTransactionNbTrial } = this.state;
     // Check if the Start/Stop Button should stay disabled
-    if (
-      (connector.status === Constants.CONN_STATUS_AVAILABLE && startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
-      (connector.status === Constants.CONN_STATUS_PREPARING && startTransactionNbTrial === 0)
+    if (connector &&
+      ((connector.status === Constants.CONN_STATUS_AVAILABLE && startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
+      (connector.status === Constants.CONN_STATUS_PREPARING && startTransactionNbTrial === 0))
     ) {
       // Button are set to available after the nbr of trials
       this.setState({
@@ -274,14 +274,14 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
         startTransactionNbTrial: startTransactionNbTrial > 0 ? startTransactionNbTrial - 1 : 0
       });
       // Transaction ongoing
-    } else if (connector.activeTransactionID !== 0) {
+    } else if (connector && connector.activeTransactionID !== 0) {
       // Transaction has started, enable the buttons again
       this.setState({
         startTransactionNbTrial: 0,
         buttonDisabled: false
       });
       // Transaction is stopped (activeTransactionID == 0)
-    } else if (connector.status === Constants.CONN_STATUS_FINISHING) {
+    } else if (connector && connector.status === Constants.CONN_STATUS_FINISHING) {
       // Disable the button until the user unplug the cable
       this.setState({
         buttonDisabled: true
@@ -316,7 +316,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
           inactivityFormatted
         });
       // Basic User: Use the connector data
-      } else if (connector.activeTransactionID) {
+      } else if (connector && connector.activeTransactionID) {
         let elapsedTimeFormatted = Constants.DEFAULT_DURATION;
         let inactivityFormatted = Constants.DEFAULT_DURATION;
         // Elapsed Time?
@@ -326,13 +326,13 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
           elapsedTimeFormatted = Utils.formatDurationHHMMSS(durationSecs, false);
         }
         // Inactivity?
-        if (connector.totalInactivitySecs) {
+        if (connector && connector.totalInactivitySecs) {
           // Format
           inactivityFormatted = Utils.formatDurationHHMMSS(connector.totalInactivitySecs, false);
         }
         // Set
         this.setState({
-          totalInactivitySecs: connector.totalInactivitySecs,
+          totalInactivitySecs: connector ? connector.totalInactivitySecs : 0,
           elapsedTimeFormatted,
           inactivityFormatted
         });
@@ -345,8 +345,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     return (
       <View style={style.columnContainer}>
         <ConnectorStatusComponent navigation={this.props.navigation} connector={connector}
-          text={Utils.translateConnectorStatus(connector.status)} />
-        {isAdmin && connector.status === Constants.CONN_STATUS_FAULTED && (
+          text={connector ? Utils.translateConnectorStatus(connector.status) : Constants.CONN_STATUS_UNAVAILABLE} />
+        {isAdmin && connector && connector.status === Constants.CONN_STATUS_FAULTED && (
           <Text style={[style.subLabel, style.subLabelStatusError]}>({connector.errorCode})</Text>
         )}
       </View>
@@ -394,7 +394,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
 
   public renderInstantPower = (style: any) => {
     const { connector } = this.props;
-    return connector.activeTransactionID === 0 ? (
+    return connector && connector.activeTransactionID === 0 ? (
       <View style={style.columnContainer}>
         <Icon type='FontAwesome' name='bolt' style={[style.icon, style.disabled]} />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
@@ -403,7 +403,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       <View style={style.columnContainer}>
         <Icon type='FontAwesome' name='bolt' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>
-          {connector.currentConsumption / 1000 > 0 ?
+          {connector && connector.currentConsumption / 1000 > 0 ?
               I18nManager.formatNumber(Math.round(connector.currentConsumption / 10) / 100) : 0}
         </Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.instant')} (kW)</Text>
@@ -414,7 +414,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   public renderElapsedTime = (style: any) => {
     const { elapsedTimeFormatted } = this.state;
     const { connector } = this.props;
-    return connector.activeTransactionID ? (
+    return connector && connector.activeTransactionID ? (
       <View style={style.columnContainer}>
         <Icon type='MaterialIcons' name='timer' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>{elapsedTimeFormatted}</Text>
@@ -431,8 +431,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   public renderInactivity = (style: any) => {
     const { inactivityFormatted } = this.state;
     const { connector } = this.props;
-    const inactivityStyle = Utils.computeInactivityStyle(connector.inactivityStatusLevel);
-    return connector.activeTransactionID ? (
+    const inactivityStyle = connector ? Utils.computeInactivityStyle(connector.inactivityStatusLevel) : '';
+    return connector && connector.activeTransactionID ? (
       <View style={style.columnContainer}>
         <Icon type='MaterialIcons' name='timer-off' style={[style.icon, inactivityStyle]} />
         <Text style={[style.label, style.labelValue, inactivityStyle]}>{inactivityFormatted}</Text>
@@ -448,7 +448,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
 
   public renderTotalConsumption = (style: any) => {
     const { connector } = this.props;
-    return (parseFloat((connector.totalConsumption / 1000).toFixed(1)) === 0.0 || connector.totalConsumption === 0 ? (
+    return (connector && (parseFloat((connector.totalConsumption / 1000).toFixed(1)) === 0.0 || connector.totalConsumption === 0) ? (
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.disabled]} type='MaterialIcons' name='ev-station' />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
@@ -457,7 +457,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.info]} type='MaterialIcons' name='ev-station' />
         <Text style={[style.label, style.labelValue, style.info]}>
-          {I18nManager.formatNumber(Math.round(connector.totalConsumption / 10) / 100)}
+          {connector ? I18nManager.formatNumber(Math.round(connector.totalConsumption / 10) / 100) : ''}
         </Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
@@ -467,7 +467,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   public renderBatteryLevel = (style: any) => {
     const { transaction } = this.state;
     const { connector } = this.props;
-    return connector.currentStateOfCharge ? (
+    return connector && connector.currentStateOfCharge ? (
       <View style={style.columnContainer}>
         <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>
@@ -542,9 +542,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
         <BackgroundComponent navigation={this.props.navigation} active={false}>
           {/* Start/Stop Transaction */}
           <View style={style.transactionContainer}>
-            {canStartTransaction && connector.activeTransactionID === 0 ? (
+            {canStartTransaction && connector && connector.activeTransactionID === 0 ? (
               this.renderStartTransactionButton(style)
-            ) : canStopTransaction && connector.activeTransactionID > 0 ? (
+            ) : canStopTransaction && connector && connector.activeTransactionID > 0 ? (
               this.renderStopTransactionButton(style)
             ) : (
               <View style={style.noButtonStopTransaction} />

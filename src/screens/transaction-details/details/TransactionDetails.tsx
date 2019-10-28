@@ -1,9 +1,10 @@
 import I18n from 'i18n-js';
 import moment from 'moment';
-import { Container, Icon, Text, Thumbnail, View } from 'native-base';
+import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Image, ScrollView } from 'react-native';
 import BackgroundComponent from '../../../components/background/BackgroundComponent';
+import I18nManager from '../../../I18n/I18nManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseScreen from '../../../screens/base-screen/BaseScreen';
 import BaseProps from '../../../types/BaseProps';
@@ -22,6 +23,7 @@ export interface Props extends BaseProps {
 }
 
 interface State {
+  loading?: boolean;
   userImageLoaded?: boolean;
   userImage?: string;
   siteImage?: string;
@@ -41,6 +43,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      loading: true,
       userImageLoaded: false,
       userImage: null,
       siteImage: null,
@@ -75,6 +78,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const centralServerProvider = await ProviderFactory.getProvider();
     const securityProvider = centralServerProvider.getSecurityProvider();
     this.setState({
+      loading: false,
       isPricingActive: securityProvider.isComponentPricingActive()
     });
   }
@@ -171,7 +175,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     return (
       <View style={style.columnContainer}>
         <Icon type='FontAwesome' name='money' style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>{price}</Text>
+        <Text style={[style.label, style.labelValue, style.info]}>{I18nManager.formatCurrency(price)}</Text>
         <Text style={[style.subLabel, style.info]}>({transaction.priceUnit})</Text>
       </View>
     );
@@ -206,7 +210,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     return (
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.info]} type='MaterialIcons' name='ev-station' />
-        <Text style={[style.label, style.labelValue, style.info]}>{Math.round(transaction.stop.totalConsumption / 10) / 100}</Text>
+        <Text style={[style.label, style.labelValue, style.info]}>{I18nManager.formatNumber(Math.round(transaction.stop.totalConsumption / 10) / 100)}</Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
     );
@@ -231,36 +235,39 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { transaction } = this.props;
-    const { siteImage, isPricingActive } = this.state;
+    const { loading, siteImage, isPricingActive } = this.state;
     return (
-      <Container style={style.container}>
-        {/* Site Image */}
-        <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
-        <BackgroundComponent navigation={this.props.navigation} active={false}>
-          <View style={style.headerContent}>
-            <View style={style.headerRowContainer}>
-              <Text style={style.headerName}>{moment(new Date(transaction.timestamp)).format('LLL')}</Text>
-            </View>
-          </View>
-          <ScrollView
-            style={style.scrollViewContainer}>
-            <View style={style.detailsContainer}>
-              <View style={style.rowContainer}>
-                {this.renderUserInfo(style)}
-                {this.renderTotalConsumption(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderElapsedTime(style)}
-                {this.renderInactivity(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderBatteryLevel(style)}
-                {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
+      loading ? (
+        <Spinner style={style.spinner} />
+      ) : (
+        <Container style={style.container}>
+          {/* Site Image */}
+          <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
+          <BackgroundComponent navigation={this.props.navigation} active={false}>
+            <View style={style.headerContent}>
+              <View style={style.headerRowContainer}>
+                <Text style={style.headerName}>{moment(new Date(transaction.timestamp)).format('LLL')}</Text>
               </View>
             </View>
-          </ScrollView>
-        </BackgroundComponent>
-      </Container>
+            <ScrollView style={style.scrollViewContainer}>
+              <View style={style.detailsContainer}>
+                <View style={style.rowContainer}>
+                  {this.renderUserInfo(style)}
+                  {this.renderTotalConsumption(style)}
+                </View>
+                <View style={style.rowContainer}>
+                  {this.renderElapsedTime(style)}
+                  {this.renderInactivity(style)}
+                </View>
+                <View style={style.rowContainer}>
+                  {this.renderBatteryLevel(style)}
+                  {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
+                </View>
+              </View>
+            </ScrollView>
+          </BackgroundComponent>
+        </Container>
+      )
     );
   }
 }

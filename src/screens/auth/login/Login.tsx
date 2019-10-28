@@ -59,7 +59,7 @@ interface State {
   tenant?: string;
   tenantTitle?: string;
   loading?: boolean;
-  display?: boolean;
+  initialLoading?: boolean;
   errorEula?: object[];
   errorPassword?: object[];
   errorTenant?: object[];
@@ -81,7 +81,7 @@ export default class Login extends BaseScreen<Props, State> {
       tenant: Utils.getParamFromNavigation(this.props.navigation, 'tenant', ''),
       tenantTitle: I18n.t('authentication.tenant'),
       loading: false,
-      display: false
+      initialLoading: true
     };
   }
 
@@ -105,8 +105,7 @@ export default class Login extends BaseScreen<Props, State> {
       email,
       password,
       tenant: tenantSubDomain,
-      tenantTitle: tenant ? tenant.name : this.state.tenantTitle,
-      display: true
+      tenantTitle: tenant ? tenant.name : this.state.tenantTitle
     });
     // Check if user can be logged
     if (Utils.canAutoLogin(this.centralServerProvider, this.props.navigation)) {
@@ -238,10 +237,10 @@ export default class Login extends BaseScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const navigation = this.props.navigation;
-    const { display, eula, loading } = this.state;
+    const { eula, loading, initialLoading } = this.state;
     // Render
-    return !display ? (
-      <View style={style.noDisplay} />
+    return initialLoading ? (
+      <Spinner style={style.spinner} />
     ) : (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <BackgroundComponent navigation={this.props.navigation}>

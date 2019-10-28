@@ -2,6 +2,7 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
+import I18nManager from '../I18n/I18nManager';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
@@ -15,6 +16,7 @@ import Transaction from '../types/Transaction';
 import UserToken from '../types/UserToken';
 import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
+import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
 
 export default class CentralServerProvider {
@@ -30,7 +32,9 @@ export default class CentralServerProvider {
   private decodedToken: UserToken = null;
   private email: string = null;
   private password: string = null;
+  private locale: string = null;
   private tenant: string = null;
+  private currency: string = null;
   private siteImages: Array<{ id: string; image: string; }> = [];
   private autoLoginDisabled: boolean = false;
   private notificationManager: NotificationManager;
@@ -71,12 +75,16 @@ export default class CentralServerProvider {
       this.password = credentials.password;
       this.token = credentials.token;
       this.tenant = credentials.tenant;
+      this.locale = credentials.locale;
+      this.currency = credentials.currency;
     } else {
       // Set
       this.email = null;
       this.password = null;
       this.token = null;
       this.tenant = null;
+      this.locale = null;
+      this.currency = null;
     }
     // Check Token
     if (this.token) {
@@ -87,6 +95,8 @@ export default class CentralServerProvider {
         this.securityProvider = new SecurityProvider(this.decodedToken);
       } catch (error) {}
     }
+    // Adjust the language according the last login info
+    I18nManager.switchLanguage(this.getUserLanguage());
   }
 
   public getCaptchaBaseUrl(): string {
@@ -178,6 +188,24 @@ export default class CentralServerProvider {
     return this.email;
   }
 
+  public getUserCurrency(): string {
+    return this.currency;
+  }
+
+  public getUserLocale(): string {
+    if (this.locale) {
+      return this.locale;
+    }
+    return Utils.getDefaultLocale();
+  }
+
+  public getUserLanguage(): string {
+    if (this.locale) {
+      return Utils.getLanguageFromLocale(this.locale);
+    }
+    return Utils.getDefaultLanguage();
+  }
+
   public getUserPassword(): string {
     return this.password;
   }
@@ -226,21 +254,27 @@ export default class CentralServerProvider {
         headers: this.buildHeaders(),
       },
     );
+    // Keep them
+    this.email = email;
+    this.password = password;
+    this.token = result.data.token;
+    this.decodedToken = jwtDecode(this.token);
+    this.locale = this.decodedToken.locale;
+    this.currency = this.decodedToken.currency;
+    this.tenant = tenant;
+    this.securityProvider = new SecurityProvider(this.decodedToken);
+    this.autoLoginDisabled = false;
     // Save
     await SecuredStorage.saveUserCredentials({
       email,
       password,
       tenant,
       token: result.data.token,
+      locale: this.decodedToken.locale,
+      currency: this.decodedToken.currency
     });
-    // Keep them
-    this.email = email;
-    this.password = password;
-    this.token = result.data.token;
-    this.decodedToken = jwtDecode(this.token);
-    this.tenant = tenant;
-    this.securityProvider = new SecurityProvider(this.decodedToken);
-    this.autoLoginDisabled = false;
+    // Adjust the language according the last login info
+    I18nManager.switchLanguage(this.getUserLanguage());
     try {
       // Save the User's token
       await this.saveUserMobileToken({
