@@ -6,7 +6,7 @@ import BaseProps from "../../types/BaseProps";
 import { IconType } from "../../types/Icon";
 import computeStyleSheet from "./HeaderComponentStyles";
 
-const logo = require("../../../assets/logo-low.png");
+import logo from "../../../assets/logo-low.png";
 
 export interface Props extends BaseProps {
   title: string;

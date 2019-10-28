@@ -4,14 +4,14 @@ import { Container, Content, Header, Icon, ListItem, Text, Thumbnail, View } fro
 import React from "react";
 import { Image, TouchableOpacity } from "react-native";
 import DeviceInfo from "react-native-device-info";
+import logo from "../../../assets/logo-low.png";
+import noPhoto from "../../../assets/no-photo-inverse.png";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import BaseProps from "../../types/BaseProps";
 import Constants from "../../utils/Constants";
 import BaseScreen from "../base-screen/BaseScreen";
 import computeStyleSheet from "./SideBarStyles";
 
-const noPhoto = require("../../../assets/no-photo-inverse.png");
-const logo = require("../../../assets/logo-low.png");
 
 export interface Props extends BaseProps {
 }
