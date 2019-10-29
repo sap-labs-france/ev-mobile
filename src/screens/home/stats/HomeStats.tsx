@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } from 'native-base';
+import { Body, Card, CardItem, Container, Content, DatePicker, Icon, Left, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, BackHandler } from 'react-native';
 import BackgroundComponent from '../../../components/background/BackgroundComponent';
@@ -18,8 +18,10 @@ export interface Props extends BaseProps {
 interface State {
   loading?: boolean;
   isAdmin?: boolean;
-  firstTimestamp?: Date;
-  lastTimestamp?: Date;
+  startDateFilter?: Date;
+  endDateFilter?: Date;
+  startDate?: Date;
+  endDate?: Date;
   totalNumberOfSession?: number;
   totalConsumptionWattHours?: number;
   totalDurationSecs?: number;
@@ -43,8 +45,8 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
       totalConsumptionWattHours: 0,
       totalDurationSecs: 0,
       totalInactivitySecs: 0,
-      firstTimestamp: new Date(),
-      lastTimestamp: new Date(),
+      startDate: null,
+      endDate: null,
       totalPrice: 0,
       isPricingActive: false
     };
@@ -74,14 +76,38 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
     });
   };
 
+  public setStartDate = (startDate: Date) => {
+    this.setState({
+      startDateFilter: startDate
+    });
+  }
+
+  public setEndDate = (endDate: Date) => {
+    this.setState({
+      endDateFilter: endDate
+    });
+  }
+
   public getTransactions = async () => {
     try {
       // Get active transaction
-      const transactions = await this.centralServerProvider.getTransactions({ Statistics: 'history' }, Constants.ONLY_RECORD_COUNT_PAGING);
-      // Format
+      const transactions = await this.centralServerProvider.getTransactions(
+        {
+          Statistics: 'history',
+          StartDateTime: this.state.startDateFilter ? this.state.startDateFilter.toISOString() : null,
+          EndDateTime: this.state.endDateFilter ? this.state.endDateFilter.toISOString() : null
+        },
+        Constants.ONLY_RECORD_COUNT_PAGING
+      );
+      console.log('====================================');
+      console.log(transactions);
+      console.log('====================================');
+      // Set
       this.setState({
-        firstTimestamp: transactions.stats.firstTimestamp,
-        lastTimestamp: transactions.stats.lastTimestamp,
+        startDateFilter: !this.state.startDateFilter ? new Date(transactions.stats.firstTimestamp) : this.state.startDateFilter,
+        endDateFilter: !this.state.endDateFilter ? new Date(transactions.stats.lastTimestamp) : this.state.endDateFilter,
+        startDate: !this.state.startDate ? new Date(transactions.stats.firstTimestamp) : this.state.startDate,
+        endDate: !this.state.endDate ? new Date(transactions.stats.lastTimestamp) : this.state.endDate,
         totalNumberOfSession: transactions.stats.count,
         totalConsumptionWattHours: transactions.stats.totalConsumptionWattHours,
         totalDurationSecs: transactions.stats.totalDurationSecs,
@@ -109,7 +135,9 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, totalNumberOfSession, totalConsumptionWattHours, totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive } = this.state;
+    const { loading, totalNumberOfSession, totalConsumptionWattHours,
+      startDateFilter, endDateFilter, startDate, endDate,
+      totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>
@@ -126,6 +154,41 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
             </Container>
           ) : (
             <Content style={style.content}>
+              <View style={style.dateContainer}>
+                <DatePicker
+                  defaultDate={startDateFilter}
+                  minimumDate={startDate}
+                  maximumDate={endDateFilter}
+                  locale={this.centralServerProvider.getUserLanguage()}
+                  timeZoneOffsetInMinutes={undefined}
+                  modalTransparent={false}
+                  animationType={'fade'}
+                  androidMode={'spinner'}
+                  placeHolderText={I18n.t('general.startDate')}
+                  textStyle={style.dateValue}
+                  placeHolderTextStyle={style.dateValue}
+                  onDateChange={this.setStartDate}
+                  disabled={false}
+                  formatChosenDate={(date) => I18nManager.formatDateTime(date, 'LL')}
+                />
+                <Text>></Text>
+                <DatePicker
+                  defaultDate={endDateFilter}
+                  minimumDate={startDateFilter}
+                  maximumDate={endDate}
+                  locale={this.centralServerProvider.getUserLanguage()}
+                  timeZoneOffsetInMinutes={undefined}
+                  modalTransparent={false}
+                  animationType={'fade'}
+                  androidMode={'spinner'}
+                  placeHolderText={I18n.t('general.endDate')}
+                  textStyle={style.dateValue}
+                  placeHolderTextStyle={style.dateValue}
+                  onDateChange={this.setEndDate}
+                  disabled={false}
+                  formatChosenDate={(date) => I18nManager.formatDateTime(date, 'LL')}
+                />
+              </View>
               <Card>
                 <CardItem>
                   <Left>
