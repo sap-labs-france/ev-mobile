@@ -1,5 +1,4 @@
 import I18n from "i18n-js";
-import { Icon } from "native-base";
 import React from "react";
 import { Keyboard, TextInput } from "react-native";
 import * as Animatable from "react-native-animatable";
@@ -20,13 +19,10 @@ interface State {
 export default class SearchHeaderComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
-  private searchText: string;
-  private searchChanged: boolean;
   private textInput: TextInput;
-  private timerCheckSearch: number;
   private animRef: Animatable.View;
   public static defaultProps = {
-    initialVisibility: true
+    initialVisibility: false
   };
 
   constructor(props: Props) {
@@ -34,70 +30,16 @@ export default class SearchHeaderComponent extends React.Component<Props, State>
     this.state = {
       isVisible: this.props.initialVisibility
     };
-    this.searchText = "";
-    this.searchChanged = false;
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
   }
 
-  public componentWillUnmount() {
-    // Clear the timer
-    this.clearSearchTimer();
-  }
-
-  public checkSearch() {
-    const { onChange } = this.props;
-    if (this.searchChanged) {
-      // Call the function
-      onChange(this.searchText);
-      // Disable
-      this.searchChanged = false;
-      // Clear the timer
-      this.clearSearchTimer();
-    }
-  }
-
   public searchHasChanged(searchText: string) {
-    // Keep it
-    this.searchText = searchText;
-    this.searchChanged = true;
-    // Clear the timer
-    this.clearSearchTimer();
-    // Launch timer
-    this.startSearchTimer();
-  }
-
-  public clearSearch() {
-    // Check
-    if (this.searchText !== "") {
-      // Clear
-      this.searchText = "";
-      this.searchChanged = true;
-      this.textInput.clear();
-      // Search
-      this.checkSearch();
-    }
-  }
-
-  public startSearchTimer() {
-    // Start the timer
-    if (!this.timerCheckSearch) {
-      // Start
-      this.timerCheckSearch = setTimeout(() => {
-        // Refresh
-        this.checkSearch();
-      }, Constants.SEARCH_CHECK_PERIOD_MILLIS);
-    }
-  }
-
-  public clearSearchTimer() {
-    // Clear the timer
-    if (this.timerCheckSearch) {
-      clearTimeout(this.timerCheckSearch);
-      this.timerCheckSearch = null;
-    }
+    const { onChange } = this.props;
+    // Call the function
+    onChange(searchText);
   }
 
   public setVisible(isVisible: boolean) {
@@ -130,7 +72,6 @@ export default class SearchHeaderComponent extends React.Component<Props, State>
           this.animRef = ref;
         }}
         style={style.container}>
-        <Icon type="MaterialIcons" name="search" style={style.icon} />
         <TextInput
           ref={(ref) => {
             this.textInput = ref;
@@ -141,7 +82,6 @@ export default class SearchHeaderComponent extends React.Component<Props, State>
           placeholderTextColor={commonColor.placeholderTextColor}
           onChangeText={(searchText) => this.searchHasChanged(searchText)}
         />
-        <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this.clearSearch()} />
       </Animatable.View>
     );
   }

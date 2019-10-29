@@ -86,9 +86,7 @@ export default class TransactionDetailsTabs extends BaseScreen<Props, State> {
     const { navigation } = this.props;
     const connectorLetter = transaction ? Utils.getConnectorLetter(transaction.connectorId) : '';
     return firstLoad ? (
-      <Container style={style.container}>
-        <Spinner style={style.spinner} />
-      </Container>
+      <Spinner style={style.spinner} />
     ) : (
       <ScrollView contentContainerStyle={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>

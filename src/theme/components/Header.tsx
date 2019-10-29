@@ -13,7 +13,7 @@ const buildTheme = (variables: any) => {
     paddingLeft: platform === PLATFORM.IOS ? 5 : 0,
     paddingRight: platform === PLATFORM.IOS ? 5 : 0,
     justifyContent: "center",
-    paddingTop: platform === PLATFORM.IOS ? 18 : 0,
+    // paddingTop: platform === PLATFORM.IOS ? 18 : 0,
     borderBottomWidth: platform === PLATFORM.IOS ? 1 / PixelRatio.getPixelSizeForLayoutSize(1) : 0,
     borderBottomColor: variables.toolbarDefaultBorder,
     height:
@@ -225,7 +225,6 @@ const buildTheme = (variables: any) => {
         }
       },
       ".transparent": {
-        marginLeft: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? -3 : 0,
         "NativeBase.Icon": {
           color: variables.toolbarBtnColor,
           fontSize:
@@ -255,6 +254,8 @@ const buildTheme = (variables: any) => {
           paddingLeft: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? 2 : 5,
           paddingRight: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? undefined : 10
         },
+        padding: 0,
+        marginLeft: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? -3 : 0,
         backgroundColor: "transparent",
         borderColor: null,
         elevation: 0,
@@ -330,11 +331,6 @@ const buildTheme = (variables: any) => {
         }
       },
       ".transparent": {
-        marginRight: platform === PLATFORM.IOS ? -9 : -5,
-        paddingLeft: 15,
-        paddingRight: 12,
-        paddingHorizontal: 15,
-        borderRadius: 50,
         "NativeBase.Icon": {
           color: variables.toolbarBtnColor,
           fontSize: variables.iconHeaderSize - 2,
@@ -357,6 +353,8 @@ const buildTheme = (variables: any) => {
           top: platform === PLATFORM.IOS ? 1 : -1.5,
           paddingRight: platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL ? 0 : undefined
         },
+        padding: 0,
+        marginLeft: platform === PLATFORM.IOS ? -9 : -5,
         backgroundColor: "transparent",
         borderColor: null,
         elevation: 0,

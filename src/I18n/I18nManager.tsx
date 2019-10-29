@@ -32,6 +32,9 @@ export default class I18nManager {
     i18n.translations['en'] = enJsonLanguage;
     i18n.translations['fr'] = frJsonLanguage;
     i18n.translations['de'] = deJsonLanguage;
+    console.log('====================================');
+    console.log(i18n.translations['en']);
+    console.log('====================================');
     // Update layout direction
     I18nReactNativeManager.forceRTL(isRTL);
     // Default
