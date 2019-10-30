@@ -17,8 +17,10 @@ export interface Props extends BaseProps {
   rightAction?: () => void;
   rightActionIcon?: string;
   rightActionIconType?: IconType;
+  showModalSearchAction?: boolean;
+  modalSearchAction?: () => void;
   showSearchAction?: boolean;
-  searchRef?: SearchHeaderComponent;
+  searchComponentRef?: SearchHeaderComponent;
 }
 
 interface State {
@@ -32,7 +34,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
   public static defaultProps = {
     leftActionIconType: 'MaterialIcons',
     rightActionIconType: 'MaterialIcons',
-    showSearchAction: false
+    showSearchAction: false,
+    showModalSearchAction: false
   };
 
   constructor(props: Props) {
@@ -63,8 +66,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { title, subTitle, searchRef, showSearchAction, leftAction, leftActionIcon, leftActionIconType,
-      rightAction, rightActionIcon, rightActionIconType } = this.props;
+    const { title, subTitle, searchComponentRef, showSearchAction, showModalSearchAction, modalSearchAction,
+      leftAction, leftActionIcon, leftActionIconType, rightAction, rightActionIcon, rightActionIconType } = this.props;
     return (
       <Header style={style.header}>
         <Left style={style.leftHeader}>
@@ -81,16 +84,21 @@ export default class HeaderComponent extends React.Component<Props, State> {
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
         </Body>
         <Right style={style.rightHeader}>
-          {showSearchAction && (
+          {(showSearchAction || showModalSearchAction) && (
             <Button
               transparent={true}
-              style={style.rightButtonHeader}
+              style={style.rightSearchButtonHeader}
               onPress={() => {
-                // Invert
-                this.searchIsVisible = !this.searchIsVisible;
-                // Set?
-                if (searchRef) {
-                  searchRef.setVisible(this.searchIsVisible);
+                // Check
+                if (showModalSearchAction && modalSearchAction) {
+                  // Call
+                  modalSearchAction();
+                } else {
+                  // Show simple text search
+                  this.searchIsVisible = !this.searchIsVisible;
+                  if (searchComponentRef) {
+                    searchComponentRef.setVisible(this.searchIsVisible);
+                  }
                 }
               }}>
               <Icon type={'MaterialIcons'} name={'search'} style={style.iconHeader} />

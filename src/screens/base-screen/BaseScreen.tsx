@@ -31,6 +31,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
 
   public async componentDidMount() {
     this.mounted = true;
+    // Get provider
     this.centralServerProvider = await ProviderFactory.getProvider();
     BackHandler.removeEventListener('hardwareBackPress', this.onBack);
   }

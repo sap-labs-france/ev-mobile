@@ -116,9 +116,7 @@ export default class Home extends BaseAutoRefreshScreen<Props, State> {
             rightActionIcon={'menu'}
           />
           {loading ? (
-            <Container style={style.container}>
-              <Spinner style={style.spinner} />
-            </Container>
+            <Spinner style={style.spinner} />
           ) : (
             <Content style={style.content}>
               {isComponentOrganizationActive && (

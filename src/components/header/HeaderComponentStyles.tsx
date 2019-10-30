@@ -6,24 +6,28 @@ import commonColor from '../../theme/variables/commonColor';
 
 const commonStyles = ScaledSheet.create({
   header: {
-    height: '50@s',
-    paddingTop: '5@s',
-    paddingBottom: '5@s',
+    height: '55@s',
+    padding: 0,
+    margin: 0,
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
     backgroundColor: commonColor.brandPrimaryDark
   },
   leftHeader: {
-    marginLeft: '5@s'
+  },
+  leftButtonHeader: {
+    paddingLeft: 0
+  },
+  rightHeader: {
+  },
+  rightButtonHeader: {
+  },
+  rightSearchButtonHeader: {
+    marginRight: '15@s'
   },
   bodyHeader: {
     flex: 3,
     paddingLeft: Platform.OS === 'ios' ? 0 : '50@s'
-  },
-  rightHeader: {},
-  logoHeader: {
-    width: '45@s',
-    resizeMode: 'contain'
   },
   titleHeader: {
     color: commonColor.inverseTextColor,
@@ -38,16 +42,13 @@ const commonStyles = ScaledSheet.create({
     fontSize: '12@s',
     marginTop: Platform.OS === 'ios' ? 0 : '-3@s'
   },
+  logoHeader: {
+    width: '45@s',
+    resizeMode: 'contain'
+  },
   iconHeader: {
     color: commonColor.inverseTextColor,
     fontSize: '30@s'
-  },
-  leftButtonHeader: {
-    paddingLeft: 0
-  },
-  rightButtonHeader: {
-    paddingLeft: 0,
-    marginTop: Platform.OS === 'ios' ? '-5@s' : 0
   }
 });
 

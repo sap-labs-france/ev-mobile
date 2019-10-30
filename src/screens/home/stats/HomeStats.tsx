@@ -1,7 +1,8 @@
 import I18n from 'i18n-js';
-import { Body, Card, CardItem, Container, Content, DatePicker, Icon, Left, Spinner, Text, View } from 'native-base';
+import { Body, Button, Card, CardItem, Container, Content, DatePicker, Icon, Left, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, BackHandler } from 'react-native';
+import Modal from 'react-native-modal';
 import BackgroundComponent from '../../../components/background/BackgroundComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import I18nManager from '../../../I18n/I18nManager';
@@ -29,6 +30,7 @@ interface State {
   totalPrice?: number;
   priceCurrency?: string;
   isPricingActive?: boolean;
+  showFilter?: boolean;
 }
 
 export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
@@ -48,7 +50,8 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
       startDate: null,
       endDate: null,
       totalPrice: 0,
-      isPricingActive: false
+      isPricingActive: false,
+      showFilter: false
     };
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
@@ -99,9 +102,6 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
         },
         Constants.ONLY_RECORD_COUNT_PAGING
       );
-      console.log('====================================');
-      console.log(transactions);
-      console.log('====================================');
       // Set
       this.setState({
         startDateFilter: !this.state.startDateFilter ? new Date(transactions.stats.firstTimestamp) : this.state.startDateFilter,
@@ -147,48 +147,53 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
             showSearchAction={false}
             rightAction={navigation.openDrawer}
             rightActionIcon={'menu'}
+            showModalSearchAction={true}
+            modalSearchAction={() => this.setState({ showFilter: !this.state.showFilter })}
           />
           {loading ? (
-            <Container style={style.container}>
-              <Spinner style={style.spinner} />
-            </Container>
+            <Spinner style={style.spinner} />
           ) : (
             <Content style={style.content}>
-              <View style={style.dateContainer}>
-                <DatePicker
-                  defaultDate={startDateFilter}
-                  minimumDate={startDate}
-                  maximumDate={endDateFilter}
-                  locale={this.centralServerProvider.getUserLanguage()}
-                  timeZoneOffsetInMinutes={undefined}
-                  modalTransparent={false}
-                  animationType={'fade'}
-                  androidMode={'spinner'}
-                  placeHolderText={I18n.t('general.startDate')}
-                  textStyle={style.dateValue}
-                  placeHolderTextStyle={style.dateValue}
-                  onDateChange={this.setStartDate}
-                  disabled={false}
-                  formatChosenDate={(date) => I18nManager.formatDateTime(date, 'LL')}
-                />
-                <Text>></Text>
-                <DatePicker
-                  defaultDate={endDateFilter}
-                  minimumDate={startDateFilter}
-                  maximumDate={endDate}
-                  locale={this.centralServerProvider.getUserLanguage()}
-                  timeZoneOffsetInMinutes={undefined}
-                  modalTransparent={false}
-                  animationType={'fade'}
-                  androidMode={'spinner'}
-                  placeHolderText={I18n.t('general.endDate')}
-                  textStyle={style.dateValue}
-                  placeHolderTextStyle={style.dateValue}
-                  onDateChange={this.setEndDate}
-                  disabled={false}
-                  formatChosenDate={(date) => I18nManager.formatDateTime(date, 'LL')}
-                />
-              </View>
+              <Modal isVisible={this.state.showFilter}>
+                <View style={style.contentModal}>
+                  <DatePicker
+                    defaultDate={startDateFilter}
+                    minimumDate={startDate}
+                    maximumDate={endDateFilter}
+                    locale={this.centralServerProvider.getUserLanguage()}
+                    timeZoneOffsetInMinutes={undefined}
+                    modalTransparent={false}
+                    animationType={'fade'}
+                    androidMode={'spinner'}
+                    placeHolderText={I18n.t('general.startDate')}
+                    textStyle={style.dateValue}
+                    placeHolderTextStyle={style.dateValue}
+                    onDateChange={this.setStartDate}
+                    disabled={false}
+                    formatChosenDate={(date) => I18nManager.formatDateTime(date, 'LL')}
+                  />
+                  <Text>></Text>
+                  <DatePicker
+                    defaultDate={endDateFilter}
+                    minimumDate={startDateFilter}
+                    maximumDate={endDate}
+                    locale={this.centralServerProvider.getUserLanguage()}
+                    timeZoneOffsetInMinutes={undefined}
+                    modalTransparent={false}
+                    animationType={'fade'}
+                    androidMode={'spinner'}
+                    placeHolderText={I18n.t('general.endDate')}
+                    textStyle={style.dateValue}
+                    placeHolderTextStyle={style.dateValue}
+                    onDateChange={this.setEndDate}
+                    disabled={false}
+                    formatChosenDate={(date) => I18nManager.formatDateTime(date, 'LL')}
+                  />
+                </View>
+                <Button style={style.buttonCloseModal} full={true} primary={true} onPress={() => this.setState({ showFilter: false })} >
+                  <Text style={style.textButtonCloseModal}>{I18n.t('general.close')}</Text>
+                </Button>
+              </Modal>
               <Card>
                 <CardItem>
                   <Left>

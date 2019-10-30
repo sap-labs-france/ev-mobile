@@ -114,7 +114,7 @@ export class CommonColor {
   public buttonDisabledBg = disabled;
   public buttonBg = transparentBg;
   public buttonPadding = 6;
-  public buttonPrimaryBg = primary;
+  public buttonPrimaryBg = primaryDark;
   public buttonPrimaryColor = light;
   public buttonInfoBg = info;
   public buttonInfoColor = light;
