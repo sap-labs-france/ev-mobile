@@ -1,26 +1,22 @@
 import I18n from "i18n-js";
+import { Icon } from "native-base";
 import React from "react";
-import { Keyboard, TextInput, TextInputComponent } from "react-native";
-import * as Animatable from "react-native-animatable";
+import { TextInput, View } from "react-native";
 import commonColor from "../../../theme/variables/commonColor";
 import BaseProps from "../../../types/BaseProps";
-import Constants from "../../../utils/Constants";
 import computeStyleSheet from "./SimpleSearchComponentStyles";
 
 export interface Props extends BaseProps {
-  visible?: boolean;
   onChange: (search: string) => void,
 }
 
 interface State {
-  visible?: boolean;
 }
 
 export default class SimpleSearchComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   private textInput: TextInput;
-  private animRef: Animatable.View;
   public static defaultProps = {
     visible: false
   };
@@ -28,7 +24,6 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
   constructor(props: Props) {
     super(props);
     this.state = {
-      visible: this.props.visible
     };
   }
 
@@ -42,38 +37,18 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
     onChange(searchText);
   }
 
-  public setVisible(visible: boolean) {
-    const style = computeStyleSheet();
-    // Show/Hide
-    this.setState({ visible });
-    // Check
-    if (visible) {
-      this.animRef.transitionTo(style.visible, Constants.ANIMATION_SHOW_HIDE_MILLIS);
-      // Set the focus
-      setTimeout(() => {
-        // Set the focus
-        if (this.textInput) {
-          this.textInput.focus();
-        }
-      }, 100);
-    } else {
-      // Hide
-      this.animRef.transitionTo(style.hidden, Constants.ANIMATION_SHOW_HIDE_MILLIS);
-      // Hide keyboard
-      Keyboard.dismiss();
-    }
+  public clearSearch() {
+    this.textInput.clear();
+    this.searchHasChanged("");
   }
 
   public render() {
     const style = computeStyleSheet();
     return (
-      <Animatable.View
-        ref={(ref: any) => {
-          this.animRef = ref;
-        }}
-        style={style.container}>
+      <View style={style.container}>
+        <Icon type="MaterialIcons" name="search" style={style.icon} />
         <TextInput
-          ref={(ref: TextInput) => {
+          ref={(ref) => {
             this.textInput = ref;
           }}
           selectionColor={commonColor.inverseTextColor}
@@ -82,7 +57,8 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
           placeholderTextColor={commonColor.placeholderTextColor}
           onChangeText={(searchText) => this.searchHasChanged(searchText)}
         />
-      </Animatable.View>
+        <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this.clearSearch()} />
+      </View>
     );
   }
 }

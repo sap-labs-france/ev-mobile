@@ -33,7 +33,6 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
-  private headerComponentRef: HeaderComponent;
 
   constructor(props: Props) {
     super(props);
@@ -156,9 +155,6 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       <Container style={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>
           <HeaderComponent
-            ref={(ref: HeaderComponent) => {
-              this.headerComponentRef = ref;
-            }}
             navigation={navigation}
             title={I18n.t("chargers.title")}
             leftAction={this.onBack}
@@ -167,11 +163,6 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
             rightActionIcon={"menu"}
           />
           <SimpleSearchComponent
-            ref={(ref: SimpleSearchComponent) => {
-              if (this.headerComponentRef) {
-                this.headerComponentRef.setSearchSimpleComponentRef(ref);
-              }
-            }}
             onChange={(searchText) => this.search(searchText)}
             navigation={navigation}
           />

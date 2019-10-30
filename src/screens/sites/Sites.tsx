@@ -139,9 +139,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       <Container style={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>
           <HeaderComponent
-            ref={(ref: HeaderComponent) => {
-              this.headerComponentRef = ref;
-            }}
             navigation={navigation}
             title={I18n.t("sidebar.sites")}
             leftAction={this.onBack}
@@ -150,12 +147,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
             rightActionIcon={"menu"}
           />
           <SimpleSearchComponent
-            visible={false}
-            ref={(ref: SimpleSearchComponent) => {
-              if (this.headerComponentRef) {
-                this.headerComponentRef.setSearchSimpleComponentRef(ref);
-              }
-            }}
             onChange={(searchText) => this.search(searchText)}
             navigation={navigation}
           />
