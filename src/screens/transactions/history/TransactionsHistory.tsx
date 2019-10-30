@@ -6,6 +6,7 @@ import BackgroundComponent from "../../../components/background/BackgroundCompon
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import ListEmptyTextComponent from "../../../components/list/empty-text/ListEmptyTextComponent";
 import ListFooterComponent from "../../../components/list/footer/ListFooterComponent";
+import SimpleSearchComponent from "../../../components/search/simple/SimpleSearchComponent";
 import TransactionHistoryComponent from "../../../components/transaction/history/TransactionHistoryComponent";
 import BaseProps from "../../../types/BaseProps";
 import { DataResult } from "../../../types/DataResult";
@@ -32,6 +33,7 @@ interface State {
 export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
+  private searchText: string;
 
   constructor(props: Props) {
     super(props);
@@ -60,11 +62,11 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     await this.refresh();
   }
 
-  public getTransations = async (searchText = "", skip: number, limit: number): Promise<DataResult<Transaction>> => {
+  public getTransations = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
     let transactions: DataResult<Transaction>;
     try {
       // Get the Sites
-      transactions = await this.centralServerProvider.getTransactions({}, { skip, limit });
+      transactions = await this.centralServerProvider.getTransactions({ Search: searchText }, { skip, limit });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
@@ -96,7 +98,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       // Set
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Refresh All
-      const transactions = await this.getTransations("", 0, skip + limit);
+      const transactions = await this.getTransations(this.searchText, 0, skip + limit);
       this.setState({
         loading: false,
         transactions: transactions ? transactions.result : [],
@@ -112,7 +114,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
-      const transactions = await this.getTransations("", skip + Constants.PAGING_SIZE, limit);
+      const transactions = await this.getTransations(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState) => ({
         transactions: transactions ? [...prevState.transactions, ...transactions.result] : prevState.transactions,
@@ -121,6 +123,11 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       }));
     }
   };
+
+  public search = async (searchText: string) => {
+    this.searchText = searchText;
+    await this.refresh();
+  }
 
   public render = () => {
     const style = computeStyleSheet();
@@ -136,6 +143,10 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
             leftActionIcon={"navigate-before"}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
+          />
+          <SimpleSearchComponent
+            onChange={(searchText) => this.search(searchText)}
+            navigation={navigation}
           />
           <View style={style.content}>
             {loading ? (
