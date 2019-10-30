@@ -35,7 +35,8 @@ const commonStyles = ScaledSheet.create({
     alignItems: "center"
   },
   textFilter: {
-    width: "30%"
+    width: "35%",
+    fontWeight: "bold"
   },
   dateContainer: {
     flexDirection: "row",

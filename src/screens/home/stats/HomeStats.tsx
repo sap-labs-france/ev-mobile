@@ -153,7 +153,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                 }}
               >
                 <View style={style.rowFilter}>
-                  <Text style={style.textFilter}>Date From:</Text>
+                  <Text style={style.textFilter}>{I18n.t("general.startDate")}</Text>
                   <DatePicker
                     defaultDate={this.filters.StartDateTime ? new Date(this.filters.StartDateTime) : startDate}
                     minimumDate={startDate}
@@ -171,7 +171,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                   />
                 </View>
                 <View style={style.rowFilter}>
-                  <Text style={style.textFilter}>Date To:</Text>
+                  <Text style={style.textFilter}>{I18n.t("general.endDate")}</Text>
                   <DatePicker
                     defaultDate={this.filters.EndDateTime ? new Date(this.filters.EndDateTime) : endDate}
                     minimumDate={this.filters.StartDateTime ? new Date(this.filters.StartDateTime) : startDate}

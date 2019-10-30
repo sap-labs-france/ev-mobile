@@ -19,11 +19,11 @@ export interface Props extends BaseProps {
   rightAction?: () => void;
   rightActionIcon?: string;
   rightActionIconType?: IconType;
-  searchSimpleComponentRef?: SimpleSearchComponent;
 }
 
 interface State {
-  searchComplexComponentRef?: ComplexFilterComponent
+  complexSearchComponentRef?: ComplexFilterComponent
+  simpleSearchComponentRef?: SimpleSearchComponent;
 }
 
 export default class HeaderComponent extends React.Component<Props, State> {
@@ -39,7 +39,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      searchComplexComponentRef: null
+      complexSearchComponentRef: null
     }
     // Default values
     this.searchIsVisible = false;
@@ -49,9 +49,15 @@ export default class HeaderComponent extends React.Component<Props, State> {
     super.setState(state, callback);
   }
 
-  public setSearchComplexComponentRef(searchComplexComponentRef: ComplexFilterComponent) {
+  public setSearchComplexComponentRef(complexSearchComponentRef: ComplexFilterComponent) {
     this.setState({
-      searchComplexComponentRef
+      complexSearchComponentRef
+    });
+  }
+
+  public setSearchSimpleComponentRef(simpleSearchComponentRef: SimpleSearchComponent) {
+    this.setState({
+      simpleSearchComponentRef
     });
   }
 
@@ -73,9 +79,9 @@ export default class HeaderComponent extends React.Component<Props, State> {
 
   public render = () => {
     const style = computeStyleSheet();
-    const { searchComplexComponentRef } = this.state;
-    const { title, subTitle, searchSimpleComponentRef,
-      leftAction, leftActionIcon, leftActionIconType, rightAction, rightActionIcon, rightActionIconType } = this.props;
+    const { complexSearchComponentRef, simpleSearchComponentRef } = this.state;
+    const { title, subTitle, leftAction, leftActionIcon, leftActionIconType,
+      rightAction, rightActionIcon, rightActionIconType } = this.props;
     return (
       <Header style={style.header}>
         <Left style={style.leftHeader}>
@@ -92,18 +98,18 @@ export default class HeaderComponent extends React.Component<Props, State> {
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
         </Body>
         <Right style={style.rightHeader}>
-          {(searchComplexComponentRef || searchSimpleComponentRef) && (
+          {(complexSearchComponentRef || simpleSearchComponentRef) && (
             <Button
               transparent={true}
               style={style.rightSearchButtonHeader}
               onPress={() => {
                 this.searchIsVisible = !this.searchIsVisible;
                 // Show Simple Text Search
-                if (searchSimpleComponentRef) {
-                  searchSimpleComponentRef.setVisible(this.searchIsVisible);
+                if (simpleSearchComponentRef) {
+                  simpleSearchComponentRef.setVisible(this.searchIsVisible);
                 // Show Simple Text Search
-                } else if (searchComplexComponentRef) {
-                  searchComplexComponentRef.setVisible(this.searchIsVisible);
+                } else if (complexSearchComponentRef) {
+                  complexSearchComponentRef.setVisible(this.searchIsVisible);
                 }
               }}>
               <Icon type={"MaterialIcons"} name={"search"} style={style.iconHeader} />
