@@ -108,7 +108,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
                   complexSearchComponentRef.setVisible(this.searchIsVisible);
                 }
               }}>
-              <Icon type={"MaterialIcons"} name={"search"} style={style.iconHeader} />
+              <Icon type={"AntDesign"} name={"filter"} style={style.iconHeader} />
             </Button>
           )}
           {rightAction ? (
