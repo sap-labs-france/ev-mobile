@@ -300,7 +300,7 @@ export default class Login extends BaseScreen<Props, State> {
                   <TextInput
                     returnKeyType="go"
                     selectionColor={commonColor.inverseTextColor}
-                    ref={(ref) => (this.passwordInput = ref)}
+                    ref={(ref: TextInput) => (this.passwordInput = ref)}
                     onSubmitEditing={() => Keyboard.dismiss()}
                     placeholder={I18n.t("authentication.password")}
                     placeholderTextColor={commonColor.placeholderTextColor}

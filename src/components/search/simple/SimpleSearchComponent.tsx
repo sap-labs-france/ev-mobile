@@ -1,34 +1,34 @@
 import I18n from "i18n-js";
 import React from "react";
-import { Keyboard, TextInput } from "react-native";
+import { Keyboard, TextInput, TextInputComponent } from "react-native";
 import * as Animatable from "react-native-animatable";
-import commonColor from "../../theme/variables/commonColor";
-import BaseProps from "../../types/BaseProps";
-import Constants from "../../utils/Constants";
-import computeStyleSheet from "./SearchHeaderComponentStyles";
+import commonColor from "../../../theme/variables/commonColor";
+import BaseProps from "../../../types/BaseProps";
+import Constants from "../../../utils/Constants";
+import computeStyleSheet from "./SimpleSearchComponentStyles";
 
 export interface Props extends BaseProps {
-  initialVisibility?: boolean;
+  visible?: boolean;
   onChange: (search: string) => void,
 }
 
 interface State {
-  isVisible?: boolean;
+  visible?: boolean;
 }
 
-export default class SearchHeaderComponent extends React.Component<Props, State> {
+export default class SimpleSearchComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   private textInput: TextInput;
   private animRef: Animatable.View;
   public static defaultProps = {
-    initialVisibility: false
+    visible: false
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      isVisible: this.props.initialVisibility
+      visible: this.props.visible
     };
   }
 
@@ -42,12 +42,12 @@ export default class SearchHeaderComponent extends React.Component<Props, State>
     onChange(searchText);
   }
 
-  public setVisible(isVisible: boolean) {
+  public setVisible(visible: boolean) {
     const style = computeStyleSheet();
     // Show/Hide
-    this.setState({ isVisible });
+    this.setState({ visible });
     // Check
-    if (isVisible) {
+    if (visible) {
       this.animRef.transitionTo(style.visible, Constants.ANIMATION_SHOW_HIDE_MILLIS);
       // Set the focus
       setTimeout(() => {
@@ -73,7 +73,7 @@ export default class SearchHeaderComponent extends React.Component<Props, State>
         }}
         style={style.container}>
         <TextInput
-          ref={(ref) => {
+          ref={(ref: TextInput) => {
             this.textInput = ref;
           }}
           selectionColor={commonColor.inverseTextColor}

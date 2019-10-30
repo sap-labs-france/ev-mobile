@@ -1,12 +1,14 @@
-import SearchHeaderComponent from "components/search-header/SearchHeaderComponent";
+
 import { Body, Button, Header, Icon, Left, Right, Subtitle, Title } from "native-base";
 import React from "react";
 import { BackHandler, Image } from "react-native";
+import logo from "../../../assets/logo-low.png";
+import SimpleSearchComponent from "../../components/search/simple/SimpleSearchComponent";
 import BaseProps from "../../types/BaseProps";
 import { IconType } from "../../types/Icon";
+import ComplexFilterComponent from "../search/complex/ComplexSearchComponent";
 import computeStyleSheet from "./HeaderComponentStyles";
 
-import logo from "../../../assets/logo-low.png";
 
 export interface Props extends BaseProps {
   title: string;
@@ -17,13 +19,11 @@ export interface Props extends BaseProps {
   rightAction?: () => void;
   rightActionIcon?: string;
   rightActionIconType?: IconType;
-  showModalSearchAction?: boolean;
-  modalSearchAction?: () => void;
-  showSearchAction?: boolean;
-  searchComponentRef?: SearchHeaderComponent;
+  searchSimpleComponentRef?: SimpleSearchComponent;
 }
 
 interface State {
+  searchComplexComponentRef?: ComplexFilterComponent
 }
 
 export default class HeaderComponent extends React.Component<Props, State> {
@@ -34,18 +34,25 @@ export default class HeaderComponent extends React.Component<Props, State> {
   public static defaultProps = {
     leftActionIconType: "MaterialIcons",
     rightActionIconType: "MaterialIcons",
-    showSearchAction: false,
-    showModalSearchAction: false
   };
 
   constructor(props: Props) {
     super(props);
+    this.state = {
+      searchComplexComponentRef: null
+    }
     // Default values
     this.searchIsVisible = false;
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
+  }
+
+  public setSearchComplexComponentRef(searchComplexComponentRef: ComplexFilterComponent) {
+    this.setState({
+      searchComplexComponentRef
+    });
   }
 
   public componentDidMount() {
@@ -64,9 +71,10 @@ export default class HeaderComponent extends React.Component<Props, State> {
     }
   }
 
-  public render() {
+  public render = () => {
     const style = computeStyleSheet();
-    const { title, subTitle, searchComponentRef, showSearchAction, showModalSearchAction, modalSearchAction,
+    const { searchComplexComponentRef } = this.state;
+    const { title, subTitle, searchSimpleComponentRef,
       leftAction, leftActionIcon, leftActionIconType, rightAction, rightActionIcon, rightActionIconType } = this.props;
     return (
       <Header style={style.header}>
@@ -84,21 +92,18 @@ export default class HeaderComponent extends React.Component<Props, State> {
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
         </Body>
         <Right style={style.rightHeader}>
-          {(showSearchAction || showModalSearchAction) && (
+          {(searchComplexComponentRef || searchSimpleComponentRef) && (
             <Button
               transparent={true}
               style={style.rightSearchButtonHeader}
               onPress={() => {
-                // Check
-                if (showModalSearchAction && modalSearchAction) {
-                  // Call
-                  modalSearchAction();
-                } else {
-                  // Show simple text search
-                  this.searchIsVisible = !this.searchIsVisible;
-                  if (searchComponentRef) {
-                    searchComponentRef.setVisible(this.searchIsVisible);
-                  }
+                this.searchIsVisible = !this.searchIsVisible;
+                // Show Simple Text Search
+                if (searchSimpleComponentRef) {
+                  searchSimpleComponentRef.setVisible(this.searchIsVisible);
+                // Show Simple Text Search
+                } else if (searchComplexComponentRef) {
+                  searchComplexComponentRef.setVisible(this.searchIsVisible);
                 }
               }}>
               <Icon type={"MaterialIcons"} name={"search"} style={style.iconHeader} />

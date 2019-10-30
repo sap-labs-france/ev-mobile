@@ -132,7 +132,6 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
           <HeaderComponent
             navigation={navigation}
             title={I18n.t("transactions.transactionsHistory")}
-            showSearchAction={false}
             leftAction={this.onBack}
             leftActionIcon={"navigate-before"}
             rightAction={navigation.openDrawer}

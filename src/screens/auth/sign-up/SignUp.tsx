@@ -241,7 +241,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
                   <Icon active={true} name="person" style={style.inputIcon} />
                   <TextInput
-                    ref={(ref) => (this.firstNameInput = ref)}
+                    ref={(ref: TextInput) => (this.firstNameInput = ref)}
                     selectionColor={commonColor.inverseTextColor}
                     onSubmitEditing={() => this.emailInput.focus()}
                     returnKeyType={"next"}
@@ -265,7 +265,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
                   <Icon active={true} name="mail" style={style.inputIcon} />
                   <TextInput
-                    ref={(ref) => (this.emailInput = ref)}
+                    ref={(ref: TextInput) => (this.emailInput = ref)}
                     selectionColor={commonColor.inverseTextColor}
                     onSubmitEditing={() => this.passwordInput.focus()}
                     returnKeyType={"next"}
@@ -290,7 +290,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
                   <Icon active={true} name="unlock" style={style.inputIcon} />
                   <TextInput
-                    ref={(ref) => (this.passwordInput = ref)}
+                    ref={(ref: TextInput) => (this.passwordInput = ref)}
                     selectionColor={commonColor.inverseTextColor}
                     onSubmitEditing={() => this.repeatPasswordInput.focus()}
                     returnKeyType={"next"}
@@ -314,7 +314,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
                   <Icon active={true} name="unlock" style={style.inputIcon} />
                   <TextInput
-                    ref={(ref) => (this.repeatPasswordInput = ref)}
+                    ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
                     selectionColor={commonColor.inverseTextColor}
                     onSubmitEditing={() => Keyboard.dismiss()}
                     returnKeyType={"next"}

@@ -1,10 +1,10 @@
 import I18n from "i18n-js";
-import { Body, Card, CardItem, Container, Content, DatePicker, Icon, Left, Spinner, Text, View, Button } from "native-base";
+import { Body, Card, CardItem, Container, Content, DatePicker, Icon, Left, Spinner, Text, View } from "native-base";
 import React from "react";
 import { Alert, BackHandler } from "react-native";
-import Modal from "react-native-modal";
 import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import HeaderComponent from "../../../components/header/HeaderComponent";
+import ComplexSearchComponent from "../../../components/search/complex/ComplexSearchComponent";
 import I18nManager from "../../../I18n/I18nManager";
 import ProviderFactory from "../../../provider/ProviderFactory";
 import BaseProps from "../../../types/BaseProps";
@@ -19,8 +19,6 @@ export interface Props extends BaseProps {
 interface State {
   loading?: boolean;
   isAdmin?: boolean;
-  startDateFilter?: Date;
-  endDateFilter?: Date;
   startDate?: Date;
   endDate?: Date;
   totalNumberOfSession?: number;
@@ -36,6 +34,9 @@ interface State {
 export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
+  private filters: { "StartDateTime"?: string; "EndDateTime"?: string } = {};
+  private headerComponentRef: HeaderComponent;
+  private searchComponentRef: ComplexSearchComponent;
 
   constructor(props: Props) {
     super(props);
@@ -79,33 +80,15 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
     });
   };
 
-  public setStartDate = (startDate: Date) => {
-    this.setState({
-      startDateFilter: startDate
-    });
-  }
-
-  public setEndDate = (endDate: Date) => {
-    this.setState({
-      endDateFilter: endDate
-    });
-  }
-
   public getTransactions = async () => {
     try {
       // Get active transaction
       const transactions = await this.centralServerProvider.getTransactions(
-        {
-          Statistics: 'history',
-          StartDateTime: this.state.startDateFilter ? this.state.startDateFilter.toISOString() : null,
-          EndDateTime: this.state.endDateFilter ? this.state.endDateFilter.toISOString() : null
-        },
+        { Statistics: 'history', ...this.filters },
         Constants.ONLY_RECORD_COUNT_PAGING
       );
       // Set
       this.setState({
-        startDateFilter: !this.state.startDateFilter ? new Date(transactions.stats.firstTimestamp) : this.state.startDateFilter,
-        endDateFilter: !this.state.endDateFilter ? new Date(transactions.stats.lastTimestamp) : this.state.endDateFilter,
         startDate: !this.state.startDate ? new Date(transactions.stats.firstTimestamp) : this.state.startDate,
         endDate: !this.state.endDate ? new Date(transactions.stats.lastTimestamp) : this.state.endDate,
         totalNumberOfSession: transactions.stats.count,
@@ -132,68 +115,80 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
     return true;
   }
 
+  public onFilterChanged = async (filters: any) => {
+    this.filters = filters;
+    // Refresh
+    await this.refresh();
+  }
+
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, totalNumberOfSession, totalConsumptionWattHours,
-      startDateFilter, endDateFilter, startDate, endDate,
+    const { loading, totalNumberOfSession, totalConsumptionWattHours, startDate, endDate,
       totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>
           <HeaderComponent
+            ref={(ref: HeaderComponent) => {
+              this.headerComponentRef = ref;
+            }}
             navigation={navigation}
             title={I18n.t("home.summary")}
-            showSearchAction={false}
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
-            showModalSearchAction={true}
-            modalSearchAction={() => this.setState({ showFilter: !this.state.showFilter })}
           />
           {loading ? (
             <Spinner style={style.spinner} />
           ) : (
             <Content style={style.content}>
-              <Modal isVisible={this.state.showFilter}>
-                <View style={style.contentModal}>
+              <ComplexSearchComponent
+                navigation={navigation}
+                onFilterChanged={this.onFilterChanged}
+                ref={(ref: ComplexSearchComponent) => {
+                  this.searchComponentRef = ref;
+                  if (this.headerComponentRef) {
+                    this.headerComponentRef.setSearchComplexComponentRef(ref);
+                  }
+                }}
+              >
+                <View style={style.rowFilter}>
+                  <Text style={style.textFilter}>Date From:</Text>
                   <DatePicker
-                    defaultDate={startDateFilter}
+                    defaultDate={this.filters.StartDateTime ? new Date(this.filters.StartDateTime) : startDate}
                     minimumDate={startDate}
-                    maximumDate={endDateFilter}
+                    maximumDate={this.filters.EndDateTime ? new Date(this.filters.EndDateTime) : endDate}
                     locale={this.centralServerProvider.getUserLanguage()}
                     timeZoneOffsetInMinutes={undefined}
                     modalTransparent={false}
                     animationType={"fade"}
                     androidMode={"spinner"}
-                    placeHolderText={I18n.t("general.startDate")}
                     textStyle={style.dateValue}
                     placeHolderTextStyle={style.dateValue}
-                    onDateChange={this.setStartDate}
+                    onDateChange={(date: Date) => this.searchComponentRef.setFilter("StartDateTime",  date.toISOString())}
                     disabled={false}
                     formatChosenDate={(date) => I18nManager.formatDateTime(date, 'LL')}
                   />
-                  <Text>></Text>
+                </View>
+                <View style={style.rowFilter}>
+                  <Text style={style.textFilter}>Date To:</Text>
                   <DatePicker
-                    defaultDate={endDateFilter}
-                    minimumDate={startDateFilter}
+                    defaultDate={this.filters.EndDateTime ? new Date(this.filters.EndDateTime) : endDate}
+                    minimumDate={this.filters.StartDateTime ? new Date(this.filters.StartDateTime) : startDate}
                     maximumDate={endDate}
                     locale={this.centralServerProvider.getUserLanguage()}
                     timeZoneOffsetInMinutes={undefined}
                     modalTransparent={false}
                     animationType={"fade"}
                     androidMode={"spinner"}
-                    placeHolderText={I18n.t("general.endDate")}
                     textStyle={style.dateValue}
                     placeHolderTextStyle={style.dateValue}
-                    onDateChange={this.setEndDate}
+                    onDateChange={(date: Date) => this.searchComponentRef.setFilter("EndDateTime",  date.toISOString())}
                     disabled={false}
                     formatChosenDate={(date) => I18nManager.formatDateTime(date, 'LL')}
                   />
                 </View>
-                <Button style={style.buttonCloseModal} full={true} primary={true} onPress={() => this.setState({ showFilter: false })} >
-                  <Text style={style.textButtonCloseModal}>{I18n.t("general.close")}</Text>
-                </Button>
-              </Modal>
+              </ComplexSearchComponent>
               <Card>
                 <CardItem>
                   <Left>

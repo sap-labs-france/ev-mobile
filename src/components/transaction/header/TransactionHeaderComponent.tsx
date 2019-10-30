@@ -11,7 +11,7 @@ export interface Props extends BaseProps {
   transaction: Transaction;
   isAdmin: boolean;
   displayNavigationIcon?: boolean;
-  initialVisibility?: boolean;
+  visible?: boolean;
 }
 
 interface State {
@@ -24,7 +24,7 @@ export default class TransactionHeaderComponent extends BaseScreen<Props, State>
     super(props);
     props.displayNavigationIcon = true;
     this.state = {
-      isVisible: this.props.initialVisibility
+      isVisible: this.props.visible
     };
   }
 

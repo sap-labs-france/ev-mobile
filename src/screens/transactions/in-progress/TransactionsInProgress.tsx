@@ -130,7 +130,6 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           <HeaderComponent
             navigation={navigation}
             title={I18n.t("transactions.transactionsInProgress")}
-            showSearchAction={false}
             leftAction={this.onBack}
             leftActionIcon={"navigate-before"}
             rightAction={navigation.openDrawer}
