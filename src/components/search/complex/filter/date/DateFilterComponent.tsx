@@ -60,7 +60,7 @@ export default class DateFilterComponent extends React.Component<Props, State> {
           androidMode={"spinner"}
           textStyle={style.filterValue}
           placeHolderTextStyle={style.filterValue}
-          onDateChange={(date: Date) => complexSearchComponentRef.setFilter(filterID,  date.toISOString())}
+          onDateChange={(newDate: Date) => complexSearchComponentRef.setFilter(filterID, newDate.toISOString())}
           disabled={false}
           formatChosenDate={(date) => I18nManager.formatDateTime(date, 'LL')}
         />

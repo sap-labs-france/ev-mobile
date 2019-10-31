@@ -22,7 +22,8 @@
     "minute": "m",
     "second": "s",
     "startDate": "Start Date",
-    "endDate": "End Date"
+    "endDate": "End Date",
+    "onlyMyTransactions": "My Sessions"
   },
   "sidebar": {
     "home": "Home",
