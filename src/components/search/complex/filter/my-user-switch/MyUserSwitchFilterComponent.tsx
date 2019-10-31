@@ -42,7 +42,11 @@ export default class MyUserSwitchFilterComponent extends React.Component<Props, 
     const { filterID, userID } = this.props;
     const { complexSearchComponentRef } = this.state;
     // Set Filter
-    complexSearchComponentRef.setFilter(filterID, newValue ? userID : null)
+    if (newValue) {
+      complexSearchComponentRef.setFilter(filterID, userID);
+    } else {
+      complexSearchComponentRef.deleteFilter(filterID);
+    }
     // Keep latest value
     this.currentValue = newValue;
   }

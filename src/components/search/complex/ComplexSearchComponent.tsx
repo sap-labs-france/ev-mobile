@@ -43,6 +43,12 @@ export default class ComplexSearchComponent extends React.Component<Props, State
     this.onFilterChanged(false);
   }
 
+  public deleteFilter(ID: string) {
+    delete this.filters[ID];
+    // Trigger notif
+    this.onFilterChanged(false);
+  }
+
   public getFilter(ID: string): string {
     return this.filters[ID];
   }
@@ -53,14 +59,8 @@ export default class ComplexSearchComponent extends React.Component<Props, State
 
   public onFilterChanged = (closed: boolean) => {
     const { onFilterChanged } = this.props;
-    let atLeastOneFilter = false;
-    for (const filter in this.filters) {
-      if (this.filters.hasOwnProperty(filter)) {
-        atLeastOneFilter = true;
-      }
-    }
     // Call method
-    if (atLeastOneFilter && onFilterChanged) {
+    if (onFilterChanged) {
       onFilterChanged(this.getFilters(), closed);
     }
   }
