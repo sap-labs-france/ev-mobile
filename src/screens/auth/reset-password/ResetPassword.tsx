@@ -187,7 +187,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                 <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
                   <Icon active={true} name='unlock' style={style.inputIcon} />
                   <TextInput
-                    ref={(ref) => (this.repeatPasswordInput = ref)}
+                    ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
                     selectionColor={commonColor.inverseTextColor}
                     onSubmitEditing={() => Keyboard.dismiss()}
                     returnKeyType={'next'}

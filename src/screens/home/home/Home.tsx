@@ -111,7 +111,6 @@ export default class Home extends BaseAutoRefreshScreen<Props, State> {
           <HeaderComponent
             navigation={navigation}
             title={I18n.t('sidebar.home')}
-            showSearchAction={false}
             rightAction={navigation.openDrawer}
             rightActionIcon={'menu'}
           />

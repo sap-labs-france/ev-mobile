@@ -1,12 +1,11 @@
-import SearchHeaderComponent from 'components/search-header/SearchHeaderComponent';
 import { Body, Button, Header, Icon, Left, Right, Subtitle, Title } from 'native-base';
 import React from 'react';
 import { BackHandler, Image } from 'react-native';
+import logo from '../../../assets/logo-low.png';
 import BaseProps from '../../types/BaseProps';
 import { IconType } from '../../types/Icon';
+import ComplexSearchComponent from '../search/complex/ComplexSearchComponent';
 import computeStyleSheet from './HeaderComponentStyles';
-
-import logo from '../../../assets/logo-low.png';
 
 export interface Props extends BaseProps {
   title: string;
@@ -17,13 +16,10 @@ export interface Props extends BaseProps {
   rightAction?: () => void;
   rightActionIcon?: string;
   rightActionIconType?: IconType;
-  showModalSearchAction?: boolean;
-  modalSearchAction?: () => void;
-  showSearchAction?: boolean;
-  searchComponentRef?: SearchHeaderComponent;
 }
 
 interface State {
+  complexSearchComponentRef?: ComplexSearchComponent
 }
 
 export default class HeaderComponent extends React.Component<Props, State> {
@@ -34,18 +30,25 @@ export default class HeaderComponent extends React.Component<Props, State> {
   public static defaultProps = {
     leftActionIconType: 'MaterialIcons',
     rightActionIconType: 'MaterialIcons',
-    showSearchAction: false,
-    showModalSearchAction: false
   };
 
   constructor(props: Props) {
     super(props);
+    this.state = {
+      complexSearchComponentRef: null
+    }
     // Default values
     this.searchIsVisible = false;
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
+  }
+
+  public setSearchComplexComponentRef(complexSearchComponentRef: ComplexSearchComponent) {
+    this.setState({
+      complexSearchComponentRef
+    });
   }
 
   public componentDidMount() {
@@ -64,10 +67,11 @@ export default class HeaderComponent extends React.Component<Props, State> {
     }
   }
 
-  public render() {
+  public render = () => {
     const style = computeStyleSheet();
-    const { title, subTitle, searchComponentRef, showSearchAction, showModalSearchAction, modalSearchAction,
-      leftAction, leftActionIcon, leftActionIconType, rightAction, rightActionIcon, rightActionIconType } = this.props;
+    const { complexSearchComponentRef } = this.state;
+    const { title, subTitle, leftAction, leftActionIcon, leftActionIconType,
+      rightAction, rightActionIcon, rightActionIconType } = this.props;
     return (
       <Header style={style.header}>
         <Left style={style.leftHeader}>
@@ -84,24 +88,18 @@ export default class HeaderComponent extends React.Component<Props, State> {
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
         </Body>
         <Right style={style.rightHeader}>
-          {(showSearchAction || showModalSearchAction) && (
+          {(complexSearchComponentRef) && (
             <Button
               transparent={true}
               style={style.rightSearchButtonHeader}
               onPress={() => {
-                // Check
-                if (showModalSearchAction && modalSearchAction) {
-                  // Call
-                  modalSearchAction();
-                } else {
-                  // Show simple text search
-                  this.searchIsVisible = !this.searchIsVisible;
-                  if (searchComponentRef) {
-                    searchComponentRef.setVisible(this.searchIsVisible);
-                  }
+                this.searchIsVisible = !this.searchIsVisible;
+                // Show Complex Search
+                if (complexSearchComponentRef) {
+                  complexSearchComponentRef.setVisible(this.searchIsVisible);
                 }
               }}>
-              <Icon type={'MaterialIcons'} name={'search'} style={style.iconHeader} />
+              <Icon type={'AntDesign'} name={'filter'} style={style.iconHeader} />
             </Button>
           )}
           {rightAction ? (

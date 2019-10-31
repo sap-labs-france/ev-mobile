@@ -36,8 +36,7 @@ interface Props {
 class ReactNativeRecaptchaV3 extends PureComponent<Props> {
     public static defaultProps = {
         leftActionIconType: 'MaterialIcons',
-        rightActionIconType: 'MaterialIcons',
-        showSearchAction: false
+        rightActionIconType: 'MaterialIcons'
     };
 
     public render() {

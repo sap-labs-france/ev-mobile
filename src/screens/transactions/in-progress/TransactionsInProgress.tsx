@@ -6,6 +6,7 @@ import BackgroundComponent from '../../../components/background/BackgroundCompon
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
+import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import TransactionInProgressComponent from '../../../components/transaction/in-progress/TransactionInProgressComponent';
 import BaseProps from '../../../types/BaseProps';
 import { DataResult } from '../../../types/DataResult';
@@ -32,6 +33,7 @@ interface State {
 export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
+  private searchText: string;
 
   constructor(props: Props) {
     super(props);
@@ -58,11 +60,11 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     await this.refresh();
   }
 
-  public getTransationsInProgress = async (searchText = '', skip: number, limit: number): Promise<DataResult<Transaction>> => {
+  public getTransationsInProgress = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
     let transactions;
     try {
       // Get the Sites
-      transactions = await this.centralServerProvider.getTransactionsActive({}, { skip, limit });
+      transactions = await this.centralServerProvider.getTransactionsActive({ Search: searchText }, { skip, limit });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
@@ -92,7 +94,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
-      const transactions = await this.getTransationsInProgress('', 0, skip + limit);
+      const transactions = await this.getTransationsInProgress(this.searchText, 0, skip + limit);
       // Refresh Admin
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       this.setState({
@@ -110,7 +112,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     // No reached the end?
     if (skip + limit < count || count === -1) {
     // No: get next sites
-      const transactions = await this.getTransationsInProgress('', skip + Constants.PAGING_SIZE, limit);
+      const transactions = await this.getTransationsInProgress(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState, props) => ({
         transactions: transactions ? [...prevState.transactions, ...transactions.result] : prevState.transactions,
@@ -119,6 +121,11 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
       }));
     }
   };
+
+  public search = async (searchText: string) => {
+    this.searchText = searchText;
+    await this.refresh();
+  }
 
   public render = () => {
     const style = computeStyleSheet();
@@ -130,11 +137,14 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           <HeaderComponent
             navigation={navigation}
             title={I18n.t('transactions.transactionsInProgress')}
-            showSearchAction={false}
             leftAction={this.onBack}
             leftActionIcon={'navigate-before'}
             rightAction={navigation.openDrawer}
             rightActionIcon={'menu'}
+          />
+          <SimpleSearchComponent
+            onChange={(searchText) => this.search(searchText)}
+            navigation={navigation}
           />
           <View style={style.content}>
             {loading ? (

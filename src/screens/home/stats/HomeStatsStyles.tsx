@@ -28,28 +28,6 @@ const commonStyles = ScaledSheet.create({
   },
   cardNote: {
     fontStyle: 'italic'
-  },
-  dateContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center'
-  },
-  dateValue: {
-    color: commonColor.textColor
-  },
-  contentModal: {
-    backgroundColor: 'white',
-    padding: '15@s',
-    justifyContent: 'flex-end',
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  buttonCloseModal: {
-    height: '50@s',
-  },
-  textButtonCloseModal: {
-    height: '100%',
-    marginTop: '15@s',
-    fontSize: '18@s'
   }
 });
 

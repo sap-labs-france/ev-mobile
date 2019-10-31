@@ -9,6 +9,8 @@ const commonStyles = ScaledSheet.create({
     height: '55@s',
     padding: 0,
     margin: 0,
+    paddingLeft: '10@s',
+    paddingRight: '10@s',
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
     backgroundColor: commonColor.brandPrimaryDark

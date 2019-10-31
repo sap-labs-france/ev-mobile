@@ -4,7 +4,7 @@ import React from 'react';
 import { Alert, BackHandler, ScrollView } from 'react-native';
 import BackgroundComponent from '../../components/background/BackgroundComponent';
 import BaseProps from '../../types/BaseProps';
-import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
+import BaseScreen from '../base-screen/BaseScreen';
 import Home from './home/Home';
 import computeStyleSheet from './HomeTabsStyles';
 import HomeStats from './stats/HomeStats';
@@ -15,7 +15,7 @@ export interface Props extends BaseProps {
 interface State {
 }
 
-export default class HomeTabs extends BaseAutoRefreshScreen<Props, State> {
+export default class HomeTabs extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
 

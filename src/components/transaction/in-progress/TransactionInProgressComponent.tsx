@@ -14,7 +14,7 @@ export interface Props extends BaseProps {
   transaction: Transaction;
   isPricingActive: boolean;
   isAdmin: boolean;
-  initialVisibility?: boolean;
+  visible?: boolean;
 }
 
 interface State {
@@ -28,7 +28,7 @@ export default class TransactionInProgressComponent extends React.Component<Prop
   constructor(props: Props) {
     super(props);
     this.state = {
-      isVisible: this.props.initialVisibility
+      isVisible: this.props.visible
     };
   }
 

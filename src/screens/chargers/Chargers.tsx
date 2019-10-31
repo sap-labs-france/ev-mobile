@@ -7,7 +7,7 @@ import ChargerComponent from '../../components/charger/ChargerComponent';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
-import SearchHeaderComponent from '../../components/search-header/SearchHeaderComponent';
+import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import BaseProps from '../../types/BaseProps';
 import ChargingStation from '../../types/ChargingStation';
 import { DataResult } from '../../types/DataResult';
@@ -33,7 +33,6 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
-  private searchComponentRef: SearchHeaderComponent;
 
   constructor(props: Props) {
     super(props);
@@ -158,18 +157,12 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
           <HeaderComponent
             navigation={navigation}
             title={I18n.t('chargers.title')}
-            showSearchAction={true}
-            searchComponentRef={this.searchComponentRef}
             leftAction={this.onBack}
             leftActionIcon={'navigate-before'}
             rightAction={navigation.openDrawer}
             rightActionIcon={'menu'}
           />
-          <SearchHeaderComponent
-            initialVisibility={false}
-            ref={(ref) => {
-              this.searchComponentRef = ref;
-            }}
+          <SimpleSearchComponent
             onChange={(searchText) => this.search(searchText)}
             navigation={navigation}
           />
