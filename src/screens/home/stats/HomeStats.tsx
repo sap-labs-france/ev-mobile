@@ -130,9 +130,6 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
     const { navigation } = this.props;
     const { loading, totalNumberOfSession, totalConsumptionWattHours, startDate, endDate,
       totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive, filters } = this.state;
-      console.log('====================================');
-      console.log(filters);
-      console.log('====================================');
     return (
       <Container style={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>
@@ -153,8 +150,8 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
                 navigation={navigation}
                 onFilterChanged={this.onFilterChanged}
                 ref={(ref: ComplexSearchComponent) => {
-                  this.complexSearchComponentRef = ref;
-                  if (this.headerComponentRef) {
+                  if (ref && this.headerComponentRef) {
+                    this.complexSearchComponentRef = ref;
                     this.headerComponentRef.setSearchComplexComponentRef(ref);
                   }
                 }}
