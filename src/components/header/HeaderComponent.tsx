@@ -5,6 +5,7 @@ import { BackHandler, Image } from "react-native";
 import logo from "../../../assets/logo-low.png";
 import BaseProps from "../../types/BaseProps";
 import { IconType } from "../../types/Icon";
+import Utils from "../../utils/Utils";
 import ComplexSearchComponent from "../search/complex/ComplexSearchComponent";
 import computeStyleSheet from "./HeaderComponentStyles";
 
@@ -74,6 +75,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
     const { complexSearchComponentRef } = this.state;
     const { title, subTitle, leftAction, leftActionIcon, leftActionIconType,
       rightAction, rightActionIcon, rightActionIconType } = this.props;
+    const numberOfFilters =
+      Utils.countJsonProps(complexSearchComponentRef ? complexSearchComponentRef.getFilters() : null);
     return (
       <Header style={style.header}>
         <Left style={style.leftHeader}>
@@ -101,7 +104,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
                   complexSearchComponentRef.setVisible(this.searchIsVisible);
                 }
               }}>
-              <Icon type={"AntDesign"} name={"filter"} style={style.iconHeader} />
+              <Icon type={"MaterialCommunityIcons"} name={numberOfFilters > 0 ? "filter" : "filter-outline"} style={style.iconHeader} />
             </Button>
           )}
           {rightAction ? (

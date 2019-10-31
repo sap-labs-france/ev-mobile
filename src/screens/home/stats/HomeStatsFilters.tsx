@@ -53,10 +53,6 @@ export default class HomeStatsFilters extends React.Component<Props, State> {
     if (closed) {
       onFilterChanged(filters);
     }
-    console.log('====================================');
-    console.log("HomeStatsFilters.onFilterChanged");
-    console.log(filters);
-    console.log('====================================');
   }
 
   public render = () => {
@@ -72,7 +68,7 @@ export default class HomeStatsFilters extends React.Component<Props, State> {
           }
         }}
       >
-        {isAdmin && 
+        {isAdmin &&
           <MyUserSwitchFilterComponent
             filterID={"UserID"}
             userID={initialFilters.UserID}

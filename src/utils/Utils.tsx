@@ -26,6 +26,19 @@ export default class Utils {
       !Utils.isNullOrEmptyString(password);
   }
 
+  public static countJsonProps(jsonDoc: object): number {
+    let count = 0;
+    if (!jsonDoc) {
+      return count;
+    }
+    for (const property in jsonDoc) {
+      if (jsonDoc.hasOwnProperty(property)) {
+        count++;
+      }
+    }
+    return count;
+  }
+
   public static isNullOrEmptyString(value: string) {
     if (!value) {
       return true;
