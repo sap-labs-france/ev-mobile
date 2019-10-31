@@ -5,22 +5,25 @@ import ComplexSearchComponent from "../../ComplexSearchComponent";
 import computeStyleSheet from "../FilterComponentStyles";
 
 export interface Props extends BaseFilterProps {
-  value?: boolean;
+  initialValue?: boolean;
+  userID: string;
 }
 
 interface State {
   complexSearchComponentRef?: ComplexSearchComponent;
 }
 
-export default class SwitchFilterComponent extends React.Component<Props, State> {
+export default class MyUserSwitchFilterComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
+  private currentValue: boolean = false;
   public static defaultProps = {
     value: false
   };
 
   constructor(props: Props) {
     super(props);
+    this.currentValue = this.props.initialValue;
     this.state = {
     };
   }
@@ -35,21 +38,25 @@ export default class SwitchFilterComponent extends React.Component<Props, State>
     });
   }
 
+  private onValueChanged = (newValue: boolean) => {
+    const { filterID, userID } = this.props;
+    const { complexSearchComponentRef } = this.state;
+    // Set Filter
+    complexSearchComponentRef.setFilter(filterID, newValue ? userID : null)
+    // Keep latest value
+    this.currentValue = newValue;
+  }
+
   public render = () => {
     const style = computeStyleSheet();
-    const { complexSearchComponentRef } = this.state;
-    const { filterID, label, value } = this.props;
-    let currentFilterValue: boolean = value;
-    if (complexSearchComponentRef) {
-      currentFilterValue = complexSearchComponentRef.getFilter(filterID) === "true";
-    }
+    const { label } = this.props;
     return (
       <View style={style.rowFilter}>
         <Text style={style.textFilter}>{label}</Text>
         <Switch
           style={style.switchFilter}
-          value={currentFilterValue}
-          onValueChange={(newValue: boolean) => complexSearchComponentRef.setFilter(filterID, newValue + '')}
+          value={this.currentValue}
+          onValueChange={this.onValueChanged}
         />
       </View>
     );

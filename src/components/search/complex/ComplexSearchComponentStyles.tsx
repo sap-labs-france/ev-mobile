@@ -5,7 +5,7 @@ import { ScaledSheet } from "react-native-size-matters";
 const commonStyles = ScaledSheet.create({
   contentFilter: {
     backgroundColor: "white",
-    padding: "20@s",
+    padding: "15@s",
     justifyContent: "flex-start",
     borderColor: "rgba(0, 0, 0, 0.1)",
   },

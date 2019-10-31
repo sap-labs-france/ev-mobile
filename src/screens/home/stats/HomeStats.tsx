@@ -76,6 +76,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
     // Set
     this.setState({
       isPricingActive: securityProvider.isComponentPricingActive(),
+      isAdmin: securityProvider.isAdmin(),
       loading: false
     });
   };
@@ -116,6 +117,11 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public onFilterChanged = async (filters: any) => {
+    console.log('====================================');
+    console.log("HomeStats.onFilterChanged");
+    console.log(filters);
+    console.log('====================================');
+    // Set Fitlers and Refresh
     this.setState({ filters }, () => this.refresh());
   }
 
@@ -123,7 +129,7 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading, totalNumberOfSession, totalConsumptionWattHours, startDate, endDate,
-      totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive } = this.state;
+      totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive, isAdmin } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>
@@ -142,9 +148,12 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
             <Content style={style.content}>
               <HomeStatsFilters
                 initialFilters={{
-                  StartDateTime: startDate.toISOString(),
-                  EndDateTime: endDate.toISOString(),
+                  StartDateTime: startDate ? startDate.toISOString() : null,
+                  EndDateTime: endDate ? endDate.toISOString() : null,
+                  UserID: this.centralServerProvider.getUserInfo().id
                 }}
+                locale={this.centralServerProvider.getUserLanguage()}
+                isAdmin={isAdmin}
                 onFilterChanged={this.onFilterChanged}
                 ref={(ref: HomeStatsFilters) => {
                   if (ref && this.headerComponentRef) {
