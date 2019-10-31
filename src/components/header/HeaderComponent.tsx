@@ -3,10 +3,9 @@ import { Body, Button, Header, Icon, Left, Right, Subtitle, Title } from "native
 import React from "react";
 import { BackHandler, Image } from "react-native";
 import logo from "../../../assets/logo-low.png";
-import SimpleSearchComponent from "../../components/search/simple/SimpleSearchComponent";
 import BaseProps from "../../types/BaseProps";
 import { IconType } from "../../types/Icon";
-import ComplexFilterComponent from "../search/complex/ComplexSearchComponent";
+import ComplexSearchComponent from "../search/complex/ComplexSearchComponent";
 import computeStyleSheet from "./HeaderComponentStyles";
 
 
@@ -22,7 +21,7 @@ export interface Props extends BaseProps {
 }
 
 interface State {
-  complexSearchComponentRef?: ComplexFilterComponent
+  complexSearchComponentRef?: ComplexSearchComponent
 }
 
 export default class HeaderComponent extends React.Component<Props, State> {
@@ -48,15 +47,9 @@ export default class HeaderComponent extends React.Component<Props, State> {
     super.setState(state, callback);
   }
 
-  public setSearchComplexComponentRef(complexSearchComponentRef: ComplexFilterComponent) {
+  public setSearchComplexComponentRef(complexSearchComponentRef: ComplexSearchComponent) {
     this.setState({
       complexSearchComponentRef
-    });
-  }
-
-  public setSearchSimpleComponentRef(simpleSearchComponentRef: SimpleSearchComponent) {
-    this.setState({
-      simpleSearchComponentRef
     });
   }
 

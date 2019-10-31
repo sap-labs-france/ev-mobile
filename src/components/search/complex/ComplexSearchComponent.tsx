@@ -37,8 +37,12 @@ export default class ComplexSearchComponent extends React.Component<Props, State
     this.setState({ visible });
   }
 
-  public setFilter(key: string, value: string) {
-    this.filters[key] = value;
+  public setFilter(ID: string, value: string) {
+    this.filters[ID] = value;
+  }
+
+  public getFilter(ID: string): string {
+    return this.filters[ID];
   }
 
   public getFilters(): any {

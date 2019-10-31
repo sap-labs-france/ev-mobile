@@ -28,23 +28,6 @@ const commonStyles = ScaledSheet.create({
   },
   cardNote: {
     fontStyle: 'italic'
-  },
-  rowFilter: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center"
-  },
-  textFilter: {
-    width: "35%",
-    fontWeight: "bold"
-  },
-  dateContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center"
-  },
-  dateValue: {
-    color: commonColor.textColor
   }
 });
 
