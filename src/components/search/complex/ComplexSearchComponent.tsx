@@ -2,12 +2,12 @@ import I18n from 'i18n-js';
 import { Button, Text, View } from 'native-base';
 import React from 'react';
 import Modal from 'react-native-modal';
-import BaseProps from '../../../types/BaseProps';
 import computeStyleSheet from './ComplexSearchComponentStyles';
 
-export interface Props extends BaseProps {
-  onFilterChanged?: (filters: any) => void;
+export interface Props {
+  onFilterChanged?: (filters: any, closed: boolean) => void;
   visible?: boolean;
+  children?: React.ReactNode;
 }
 
 interface State {
@@ -39,6 +39,8 @@ export default class ComplexSearchComponent extends React.Component<Props, State
 
   public setFilter(ID: string, value: string) {
     this.filters[ID] = value;
+    // Trigger notif
+    this.onFilterChanged(false);
   }
 
   public getFilter(ID: string): string {
@@ -49,7 +51,7 @@ export default class ComplexSearchComponent extends React.Component<Props, State
     return this.filters;
   }
 
-  public closeFiltersAndTriggerEvent = () => {
+  public onFilterChanged = (closed: boolean) => {
     const { onFilterChanged } = this.props;
     let atLeastOneFilter = false;
     for (const filter in this.filters) {
@@ -59,9 +61,14 @@ export default class ComplexSearchComponent extends React.Component<Props, State
     }
     // Call method
     if (atLeastOneFilter && onFilterChanged) {
-      onFilterChanged(this.getFilters());
+      onFilterChanged(this.getFilters(), closed);
     }
-    // Closd
+  }
+
+  public closeFiltersAndTriggerEvent = () => {
+    // Trigger notif
+    this.onFilterChanged(true);
+    // Close
     this.setVisible(false);
   }
 

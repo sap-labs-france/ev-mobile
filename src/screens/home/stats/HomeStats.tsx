@@ -4,14 +4,13 @@ import React from 'react';
 import { Alert, BackHandler } from 'react-native';
 import BackgroundComponent from '../../../components/background/BackgroundComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ComplexSearchComponent from '../../../components/search/complex/ComplexSearchComponent';
-import DateFilterComponent from '../../../components/search/complex/filter/date/DateFilterComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
+import HomeStatsFilters, { HomeStatsFiltersDef } from './HomeStatsFilters';
 import computeStyleSheet from './HomeStatsStyles';
 
 export interface Props extends BaseProps {
@@ -30,14 +29,13 @@ interface State {
   priceCurrency?: string;
   isPricingActive?: boolean;
   showFilter?: boolean;
-  filters: { 'StartDateTime'?: string; 'EndDateTime'?: string };
+  filters?: HomeStatsFiltersDef;
 }
 
 export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private headerComponentRef: HeaderComponent;
-  private complexSearchComponentRef: ComplexSearchComponent;
 
   constructor(props: Props) {
     super(props);
@@ -118,18 +116,14 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public onFilterChanged = async (filters: any) => {
-    this.setState({
-        filters
-      },
-      () => this.refresh()
-    );
+    this.setState({ filters }, () => this.refresh());
   }
 
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading, totalNumberOfSession, totalConsumptionWattHours, startDate, endDate,
-      totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive, filters } = this.state;
+      totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive } = this.state;
     return (
       <Container style={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>
@@ -146,43 +140,18 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
             <Spinner style={style.spinner} />
           ) : (
             <Content style={style.content}>
-              <ComplexSearchComponent
-                navigation={navigation}
+              <HomeStatsFilters
+                initialFilters={{
+                  StartDateTime: startDate.toISOString(),
+                  EndDateTime: endDate.toISOString(),
+                }}
                 onFilterChanged={this.onFilterChanged}
-                ref={(ref: ComplexSearchComponent) => {
+                ref={(ref: HomeStatsFilters) => {
                   if (ref && this.headerComponentRef) {
-                    this.complexSearchComponentRef = ref;
-                    this.headerComponentRef.setSearchComplexComponentRef(ref);
+                    ref.setHeaderComponentRef(this.headerComponentRef);
                   }
                 }}
-              >
-                <DateFilterComponent
-                  filterID={'StartDateTime'}
-                  label={I18n.t('general.startDate')}
-                  ref={(ref: DateFilterComponent) => {
-                    if (ref && this.complexSearchComponentRef) {
-                      ref.setSearchComplexComponentRef(this.complexSearchComponentRef);
-                    }
-                  }}
-                  locale={this.centralServerProvider.getUserLanguage()}
-                  defaultDate={filters.StartDateTime ? new Date(filters.StartDateTime) : startDate}
-                  minimumDate={startDate}
-                  maximumDate={filters.EndDateTime ? new Date(filters.EndDateTime) : endDate}
-                />
-                <DateFilterComponent
-                  filterID={'EndDateTime'}
-                  label={I18n.t('general.endDate')}
-                  ref={(ref: DateFilterComponent) => {
-                    if (ref && this.complexSearchComponentRef) {
-                      ref.setSearchComplexComponentRef(this.complexSearchComponentRef);
-                    }
-                  }}
-                  locale={this.centralServerProvider.getUserLanguage()}
-                  defaultDate={filters.EndDateTime ? new Date(filters.EndDateTime) : endDate}
-                  minimumDate={filters.StartDateTime ? new Date(filters.StartDateTime) : startDate}
-                  maximumDate={endDate}
-                />
-              </ComplexSearchComponent>
+              />
               <Card>
                 <CardItem>
                   <Left>
