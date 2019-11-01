@@ -37,24 +37,28 @@ export default class ComplexSearchComponent extends React.Component<Props, State
     this.setState({ visible });
   }
 
-  public setFilter(ID: string, value: string) {
+  public setFilter = (ID: string, value: string) => {
     this.filters[ID] = value;
     // Trigger notif
     this.onFilterChanged(false);
   }
 
-  public deleteFilter(ID: string) {
+  public deleteFilter = (ID: string) => {
     delete this.filters[ID];
     // Trigger notif
     this.onFilterChanged(false);
   }
 
-  public getFilter(ID: string): string {
+  public getFilter = (ID: string): string => {
     return this.filters[ID];
   }
 
-  public getFilters(): any {
+  public getFilters = (): any => {
     return this.filters;
+  }
+
+  public clearFilters = () => {
+    this.filters = {};
   }
 
   public onFilterChanged = (closed: boolean) => {
@@ -65,7 +69,16 @@ export default class ComplexSearchComponent extends React.Component<Props, State
     }
   }
 
-  public closeFiltersAndTriggerEvent = () => {
+  public applyFiltersAndNotify = () => {
+    // Trigger notif
+    this.onFilterChanged(true);
+    // Close
+    this.setVisible(false);
+  }
+
+  public clearFiltersAndNotify = () => {
+    // Clear
+    this.clearFilters();
     // Trigger notif
     this.onFilterChanged(true);
     // Close
@@ -80,9 +93,14 @@ export default class ComplexSearchComponent extends React.Component<Props, State
         <View style={style.contentFilter}>
           {this.props.children}
         </View>
-        <Button style={style.buttonCloseFilter} full={true} primary={true} onPress={this.closeFiltersAndTriggerEvent} >
-          <Text style={style.textButtonCloseFilter}>{I18n.t("general.close")}</Text>
-        </Button>
+        <View style={style.contentButton}>
+          <Button style={style.buttonFilter} full={true} danger={true} onPress={this.clearFiltersAndNotify} >
+            <Text style={style.textButtonCloseFilter}>{I18n.t("general.clear")}</Text>
+          </Button>
+          <Button style={style.buttonFilter} full={true} primary={true} onPress={this.applyFiltersAndNotify} >
+            <Text style={style.textButtonCloseFilter}>{I18n.t("general.close")}</Text>
+          </Button>
+        </View>
       </Modal>
     );
   }

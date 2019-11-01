@@ -117,10 +117,6 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public onFilterChanged = async (filters: any) => {
-    console.log('====================================');
-    console.log("HomeStats.onFilterChanged");
-    console.log(filters);
-    console.log('====================================');
     // Set Fitlers and Refresh
     this.setState({ filters }, () => this.refresh());
   }

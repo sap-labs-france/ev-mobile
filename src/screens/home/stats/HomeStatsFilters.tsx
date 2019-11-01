@@ -47,11 +47,15 @@ export default class HomeStatsFilters extends React.Component<Props, State> {
 
   public onFilterChanged = (filters: HomeStatsFiltersDef, closed: boolean) => {
     const { onFilterChanged } = this.props;
-    this.setState({
-      filters
-    });
     if (closed) {
+      this.setState({
+        filters
+      });
       onFilterChanged(filters);
+    } else {
+      this.setState({
+        filters
+      });
     }
   }
 

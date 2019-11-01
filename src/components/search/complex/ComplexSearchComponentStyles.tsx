@@ -9,12 +9,19 @@ const commonStyles = ScaledSheet.create({
     justifyContent: "flex-start",
     borderColor: "rgba(0, 0, 0, 0.1)",
   },
-  buttonCloseFilter: {
-    height: "50@s",
+  contentButton: {
+    flexDirection: "row",
+    width: "100%"
+  },
+  buttonFilter: {
+    height: "45@s",
+    width: "50%",
+    justifyContent: "center",
+    alignItems: "center"
   },
   textButtonCloseFilter: {
     height: "100%",
-    marginTop: "15@s",
+    marginTop: "12@s",
     fontSize: "18@s"
   }
 });
