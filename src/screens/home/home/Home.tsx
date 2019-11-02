@@ -95,7 +95,7 @@ export default class Home extends BaseAutoRefreshScreen<Props, State> {
         chargerID: transactionsActive[0].chargeBoxID,
         connectorID: transactionsActive[0].connectorId
       });
-    } else if (transactionsActiveCount > 1) {
+    } else if (transactionsActiveCount > 1 || transactionsActiveCount === 0) {
       // Many Sessions
       navigation.navigate({ routeName: "TransactionsNavigator" });
     }
