@@ -1,6 +1,7 @@
 import deepmerge from "deepmerge";
 import ResponsiveStylesheet from "react-native-responsive-stylesheet";
 import { ScaledSheet } from "react-native-size-matters";
+import commonColor from "../../../theme/variables/commonColor";
 
 const commonStyles = ScaledSheet.create({
   contentFilter: {
@@ -14,15 +15,16 @@ const commonStyles = ScaledSheet.create({
     width: "100%"
   },
   buttonFilter: {
-    height: "45@s",
+    height: "40@s",
     width: "50%",
     justifyContent: "center",
     alignItems: "center"
   },
-  textButtonCloseFilter: {
+  textButtonFilter: {
+    color: commonColor.inverseTextColor,
     height: "100%",
-    marginTop: "12@s",
-    fontSize: "18@s"
+    marginTop: "10@s",
+    fontSize: "15@s"
   }
 });
 

@@ -1,6 +1,7 @@
 import I18n from "i18n-js";
-import { Button, Text, View } from "native-base";
+import { Button, View } from "native-base";
 import React from "react";
+import { Text } from "react-native";
 import Modal from "react-native-modal";
 import computeStyleSheet from "./ComplexSearchComponentStyles";
 
@@ -95,10 +96,10 @@ export default class ComplexSearchComponent extends React.Component<Props, State
         </View>
         <View style={style.contentButton}>
           <Button style={style.buttonFilter} full={true} danger={true} onPress={this.clearFiltersAndNotify} >
-            <Text style={style.textButtonCloseFilter}>{I18n.t("general.clear")}</Text>
+            <Text style={style.textButtonFilter}>{I18n.t("general.clear")}</Text>
           </Button>
           <Button style={style.buttonFilter} full={true} primary={true} onPress={this.applyFiltersAndNotify} >
-            <Text style={style.textButtonCloseFilter}>{I18n.t("general.close")}</Text>
+            <Text style={style.textButtonFilter}>{I18n.t("general.close")}</Text>
           </Button>
         </View>
       </Modal>
