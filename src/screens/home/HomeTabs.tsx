@@ -35,7 +35,7 @@ export default class HomeTabs extends BaseScreen<Props, State> {
     // Call parent
     await super.componentDidMount();
     // Check Notif
-    setTimeout(async () => await NotificationManager.getInstance().checkOnHoldNotification(), 500);
+    setTimeout(async () => await NotificationManager.getInstance().checkOnHoldNotification(), 250);
     // Refresh Admin
     const securityProvider = this.centralServerProvider.getSecurityProvider();
     this.setState({

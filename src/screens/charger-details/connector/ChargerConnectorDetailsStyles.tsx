@@ -13,6 +13,7 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: commonColor.containerBgColor
   },
   spinner: {
+    flex: 1,
     color: commonColor.textColor
   },
   backgroundImage: {
@@ -97,7 +98,7 @@ const commonStyles = ScaledSheet.create({
   },
   subLabel: {
     fontSize: "10@s",
-    marginTop: Platform.OS === "ios" ? "0@s" : "-5@s",
+    marginTop: Platform.OS === "ios" ? "0@s" : "-2@s",
     color: commonColor.brandPrimaryDark,
     alignSelf: "center"
   },

@@ -181,7 +181,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
         <BackgroundComponent navigation={navigation} active={false}>
           <HeaderComponent
             navigation={this.props.navigation}
-            title={charger ? charger.id : ""}
+            title={charger ? charger.id : I18n.t("connector.unknown")}
             subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
             leftAction={() => this.onBack()}
             leftActionIcon={"navigate-before"}

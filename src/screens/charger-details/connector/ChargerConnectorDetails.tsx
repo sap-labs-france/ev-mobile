@@ -1,5 +1,5 @@
 import I18n from "i18n-js";
-import { Container, Icon, Text, Thumbnail, View } from "native-base";
+import { Container, Icon, Text, Thumbnail, View, Spinner } from "native-base";
 import React from "react";
 import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from "react-native";
 import noPhotoActive from "../../../../assets/no-photo-active.png";
@@ -31,6 +31,7 @@ export interface Props extends BaseProps {
 }
 
 interface State {
+  loading?: boolean;
   transaction?: Transaction;
   userImageLoaded?: boolean;
   userImage?: string;
@@ -51,6 +52,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   constructor(props: Props) {
     super(props);
     this.state = {
+      loading: true,
       transaction: null,
       userImageLoaded: false,
       userImage: null,
@@ -73,7 +75,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     const { charger } = this.props;
     await super.componentDidMount();
     // Get the Site Image (only first time)
-    if (charger.siteArea && this.isMounted()) {
+    if (charger && charger.siteArea && this.isMounted()) {
       await this.getSiteImage(charger.siteArea.siteID);
     }
     // Refresh
@@ -172,7 +174,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     const centralServerProvider = await ProviderFactory.getProvider();
     const securityProvider = centralServerProvider.getSecurityProvider();
     this.setState({
-      isPricingActive: securityProvider.isComponentPricingActive()
+      isPricingActive: securityProvider.isComponentPricingActive(),
+      loading: false
     });
   };
 
@@ -393,7 +396,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
 
   public renderInstantPower = (style: any) => {
     const { connector } = this.props;
-    return connector && connector.activeTransactionID === 0 ? (
+    return !connector || connector.activeTransactionID === 0 ? (
       <View style={style.columnContainer}>
         <Icon type="FontAwesome" name="bolt" style={[style.icon, style.disabled]} />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
@@ -447,7 +450,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
 
   public renderTotalConsumption = (style: any) => {
     const { connector } = this.props;
-    return (connector && (parseFloat((connector.totalConsumption / 1000).toFixed(1)) === 0.0 || connector.totalConsumption === 0) ? (
+    return (!connector || parseFloat((connector.totalConsumption / 1000).toFixed(1)) === 0.0 || connector.totalConsumption === 0 ? (
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.disabled]} type="MaterialIcons" name="ev-station" />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
@@ -533,47 +536,51 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   public render() {
     const style = computeStyleSheet();
     const { connector, canStopTransaction, canStartTransaction } = this.props;
-    const { siteImage, isPricingActive } = this.state;
+    const { loading, siteImage, isPricingActive } = this.state;
     return (
-      <Container style={style.container}>
-        {/* Site Image */}
-        <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
-        <BackgroundComponent navigation={this.props.navigation} active={false}>
-          {/* Start/Stop Transaction */}
-          <View style={style.transactionContainer}>
-            {canStartTransaction && connector && connector.activeTransactionID === 0 ? (
-              this.renderStartTransactionButton(style)
-            ) : canStopTransaction && connector && connector.activeTransactionID > 0 ? (
-              this.renderStopTransactionButton(style)
-            ) : (
-              <View style={style.noButtonStopTransaction} />
-            )}
-          </View>
-          {/* Details */}
-          <ScrollView
-            style={style.scrollViewContainer}
-            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
-            <View style={style.detailsContainer}>
-              <View style={style.rowContainer}>
-                {this.renderConnectorStatus(style)}
-                {this.renderUserInfo(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderInstantPower(style)}
-                {this.renderTotalConsumption(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderElapsedTime(style)}
-                {this.renderInactivity(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderBatteryLevel(style)}
-                {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
-              </View>
+      loading ? (
+        <Spinner style={style.spinner} />
+      ) : (
+        <Container style={style.container}>
+          {/* Site Image */}
+          <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
+          <BackgroundComponent navigation={this.props.navigation} active={false}>
+            {/* Start/Stop Transaction */}
+            <View style={style.transactionContainer}>
+              {canStartTransaction && connector && connector.activeTransactionID === 0 ? (
+                this.renderStartTransactionButton(style)
+              ) : canStopTransaction && connector && connector.activeTransactionID > 0 ? (
+                this.renderStopTransactionButton(style)
+              ) : (
+                <View style={style.noButtonStopTransaction} />
+              )}
             </View>
-          </ScrollView>
-        </BackgroundComponent>
-      </Container>
+            {/* Details */}
+            <ScrollView
+              style={style.scrollViewContainer}
+              refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
+              <View style={style.detailsContainer}>
+                <View style={style.rowContainer}>
+                  {this.renderConnectorStatus(style)}
+                  {this.renderUserInfo(style)}
+                </View>
+                <View style={style.rowContainer}>
+                  {this.renderInstantPower(style)}
+                  {this.renderTotalConsumption(style)}
+                </View>
+                <View style={style.rowContainer}>
+                  {this.renderElapsedTime(style)}
+                  {this.renderInactivity(style)}
+                </View>
+                <View style={style.rowContainer}>
+                  {this.renderBatteryLevel(style)}
+                  {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
+                </View>
+              </View>
+            </ScrollView>
+          </BackgroundComponent>
+        </Container>
+      )
     );
   }
 }

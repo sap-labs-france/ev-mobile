@@ -222,6 +222,9 @@ export default class Utils {
   }
 
   public static getConnectorLetter(connectorId: number): string {
+    if (!connectorId) {
+      return '-';
+    }
     return String.fromCharCode(64 + connectorId);
   }
 
