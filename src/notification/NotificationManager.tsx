@@ -95,6 +95,10 @@ export default class NotificationManager {
   }
 
   public async checkOnHoldNotification() {
+    console.log('====================================');
+    console.log("checkOnHoldNotification");
+    console.log(this.lastNotification);
+    console.log('====================================');
     if (this.lastNotification) {
       await this.processOpenedNotification(this.lastNotification);
       this.lastNotification = null;
@@ -103,14 +107,26 @@ export default class NotificationManager {
 
   public async processNotification(notification: Notification) {
     // Do nothing when notification is received but user has not pressed it
+    console.log('====================================');
+    console.log("processNotification");
+    console.log(notification);
+    console.log('====================================');
   }
 
   public async processOpenedNotification(notificationOpen: NotificationOpen) {
     // Get information about the notification that was opened
     const notification: Notification = notificationOpen.notification;
+    console.log('====================================');
+    console.log("processOpenedNotification");
+    console.log(notification);
+    console.log('====================================');
     // No: meaning the user got the notif and clicked on it, then navigate to the right screen
     // User must be logged and Navigation available
     if (!this.centralServerProvider.isUserConnectionValid() || !this.navigator) {
+      console.log('====================================');
+      console.log("PROCESS LATER");
+      console.log(notification);
+      console.log('====================================');
       // Process it later
       this.lastNotification = notificationOpen;
       return;
