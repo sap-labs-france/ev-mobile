@@ -44,6 +44,11 @@ export default class NotificationManager {
   }
 
   public async start() {
+    const notificationOpen: NotificationOpen = await firebase.notifications().getInitialNotification();
+    if (notificationOpen) {
+      // Process notification
+      this.processOpenedNotification(notificationOpen);
+    }
     this.removeNotificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification: Notification) => {
       // Process notification
       this.processNotification(notification);
