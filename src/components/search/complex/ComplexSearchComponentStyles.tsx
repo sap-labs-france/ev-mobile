@@ -1,21 +1,30 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
+import commonColor from '../../../theme/variables/commonColor';
 
 const commonStyles = ScaledSheet.create({
   contentFilter: {
     backgroundColor: 'white',
-    padding: '20@s',
+    padding: '15@s',
     justifyContent: 'flex-start',
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
-  buttonCloseFilter: {
-    height: '50@s',
+  contentButton: {
+    flexDirection: 'row',
+    width: '100%'
   },
-  textButtonCloseFilter: {
+  buttonFilter: {
+    height: '40@s',
+    width: '50%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  textButtonFilter: {
+    color: commonColor.inverseTextColor,
     height: '100%',
-    marginTop: '15@s',
-    fontSize: '18@s'
+    marginTop: '10@s',
+    fontSize: '15@s'
   }
 });
 

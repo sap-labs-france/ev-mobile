@@ -7,14 +7,18 @@ const commonStyles = ScaledSheet.create({
   rowFilter: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    height: '40@s',
     alignItems: 'center'
   },
   textFilter: {
-    width: '35%',
+    width: '40%',
     fontWeight: 'bold'
   },
   filterValue: {
     color: commonColor.textColor
+  },
+  switchFilter: {
+    marginLeft: '5@s'
   }
 });
 

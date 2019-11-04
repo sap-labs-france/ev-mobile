@@ -59,7 +59,7 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     let status;
     if (connector) {
       connectorType = connector.status;
-    } else {
+    } else if (type) {
       connectorType = type;
     }
     // Default CSS
@@ -103,7 +103,12 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
       case Constants.CONN_STATUS_AVAILABLE:
         status = 'available';
         break;
-    }
+      // Default
+      default:
+        case Constants.CONN_STATUS_UNAVAILABLE:
+          status = 'unavailable';
+          break;
+      }
     if (status) {
       connectorStyles.container.push(style[status + 'Connector']);
       connectorStyles.value.push(style[status + 'ConnectorValue']);
@@ -117,8 +122,10 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     const { value, connector } = this.props;
     if (connector) {
       return Utils.getConnectorLetter(connector.connectorId);
-    } else {
+    } else if (value) {
       return '' + value;
+    } else {
+      return '-';
     }
   }
 

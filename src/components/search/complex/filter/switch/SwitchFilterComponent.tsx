@@ -47,6 +47,7 @@ export default class SwitchFilterComponent extends React.Component<Props, State>
       <View style={style.rowFilter}>
         <Text style={style.textFilter}>{label}</Text>
         <Switch
+          style={style.switchFilter}
           value={currentFilterValue}
           onValueChange={(newValue: boolean) => complexSearchComponentRef.setFilter(filterID, newValue + '')}
         />

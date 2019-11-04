@@ -69,10 +69,10 @@ export default class I18nManager {
   }
 
   public static formatPercentage(value: number): string {
-    if (!isNaN(value)) {
-      return new Intl.NumberFormat(i18n.locale, { style: 'percent' }).format(value);
+    if (isNaN(value)) {
+      value = 0;
     }
-    return '0';
+    return new Intl.NumberFormat(i18n.locale, { style: 'percent' }).format(value);
   }
 
   public static formatDateTime(value: Date, format: string = 'LLL') {

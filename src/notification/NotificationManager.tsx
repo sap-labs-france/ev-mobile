@@ -1,18 +1,20 @@
 import { Platform } from 'react-native';
 import firebase from 'react-native-firebase';
 import { Notification, NotificationOpen } from 'react-native-firebase/notifications';
-import { NavigationContainerComponent } from 'react-navigation';
+import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
 import CentralServerProvider from '../provider/CentralServerProvider';
+import { UserNotificationType } from '../types/UserNotifications';
 
 export default class NotificationManager {
   private static notificationManager: NotificationManager;
   private token: string;
-  private navigation: NavigationContainerComponent;
+  private navigator: NavigationContainerComponent;
   private removeNotificationDisplayedListener: () => any;
   private removeNotificationListener: () => any;
   private removeNotificationOpenedListener: () => any;
   private removeTokenRefreshListener: () => any;
   private centralServerProvider: CentralServerProvider;
+  private lastNotification: NotificationOpen
 
   public static getInstance(): NotificationManager {
     if (!this.notificationManager) {
@@ -25,18 +27,12 @@ export default class NotificationManager {
     this.centralServerProvider = centralServerProvider;
   }
 
-  public async initialize(navigation: NavigationContainerComponent) {
+  public async initialize(navigator: NavigationContainerComponent) {
+    // Keep the nav
+    this.navigator = navigator;
+    // Check if user has given permission
     const enabled = await firebase.messaging().hasPermission();
-    if (enabled) {
-      // user has permissions
-      console.log('====================================');
-      console.log('NOTIF: USER HAS PERMISSION');
-      console.log('====================================');
-    } else {
-      // user doesn't have permission
-      console.log('====================================');
-      console.log('NOTIF: USER HAS NO PERMISSION!!!!');
-      console.log('====================================');
+    if (!enabled) {
       // Request permission
       try {
         await firebase.messaging().requestPermission();
@@ -48,13 +44,14 @@ export default class NotificationManager {
   }
 
   public async start() {
+    const initialNotificationOpen: NotificationOpen = await firebase.notifications().getInitialNotification();
+    if (initialNotificationOpen) {
+      // Process it later
+      this.lastNotification = initialNotificationOpen;
+    }
     this.removeNotificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification: Notification) => {
       // Process notification
       this.processNotification(notification);
-      // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
-      console.log('====================================');
-      console.log('NOTIFICATION: onNotificationDisplayed');
-      console.log('====================================');
     });
     this.removeNotificationListener = firebase.notifications().onNotification((notification: Notification) => {
       // Process notification
@@ -67,16 +64,9 @@ export default class NotificationManager {
     this.removeTokenRefreshListener = firebase.messaging().onTokenRefresh(async (newFcmToken) => {
       // Process your token as required
       this.token = newFcmToken;
-      console.log('====================================');
-      console.log('NOTIFICATION: onTokenRefresh');
-      console.log(newFcmToken);
-      console.log('====================================');
       try {
         // Save the User's token
         if (this.centralServerProvider.isUserConnected()) {
-          console.log('====================================');
-          console.log('Save TOKEN');
-          console.log('====================================');
           await this.centralServerProvider.saveUserMobileToken({
             id: this.centralServerProvider.getUserInfo().id,
             mobileToken: this.getToken(),
@@ -90,11 +80,6 @@ export default class NotificationManager {
     });
     const fcmToken = await firebase.messaging().getToken();
     if (fcmToken) {
-      // user has a device token
-      console.log('====================================');
-      console.log('NOTIFICATION: Initial Token');
-      console.log(fcmToken);
-      console.log('====================================');
       this.token = fcmToken;
     }
   }
@@ -114,89 +99,77 @@ export default class NotificationManager {
     return Platform.OS;
   }
 
+  public async checkOnHoldNotification() {
+    if (this.lastNotification) {
+      await this.processOpenedNotification(this.lastNotification);
+      this.lastNotification = null;
+    }
+  }
+
   public async processNotification(notification: Notification) {
-    console.log('====================================');
-    console.log('NOTIFICATION: onNotification');
-    console.log(notification);
-    console.log('====================================');
+    // Do nothing when notification is received but user has not pressed it
   }
 
   public async processOpenedNotification(notificationOpen: NotificationOpen) {
-    // Get the action triggered by the notification being opened
-    const action = notificationOpen.action;
     // Get information about the notification that was opened
     const notification: Notification = notificationOpen.notification;
-    console.log('====================================');
-    console.log('NOTIFICATION: onNotificationOpened');
-    console.log(action);
-    console.log(notification);
-    console.log('====================================');
-    // let notification;
-    // console.log("processNotification");
-    // // Check if active
-    // if (this.isActive()) {
-    //   console.log("processNotification - active");
-    //   // Process the notifications
-    //   while ((notification = notifications.splice(0, 1)[0]) !== undefined) {
-    //     console.log("processNotification - notification");
-    //     console.log(notification);
-    //     // Check if the app was opened
-    //     if (notification.foreground) {
-    //       console.log("Send Local Notif");
-    //       // Yes: meaning user didn't get the notif, then show a local one
-    //       this.sendLocalNotification(notification);
-    //     } else {
-    //       console.log("Remote Notif: Navigate");
-    //       // No: meaning the user got the notif and clicked on it, then navigate to the right screen
-    //       // User must be logged and Navigation available
-    //       if (!(await _provider.isUserConnectionValid()) || !this.navigation) {
-    //         return;
-    //       }
-    //       // Text?
-    //       if (typeof notification.extraData === "string") {
-    //         // Convert ot JSon
-    //         notification.extraData = JSON.parse(notification.extraData);
-    //       }
-    //       // Check the type of notification
-    //       if (notification.extraData) {
-    //         // Check
-    //         switch (notification.extraData.sourceDescr) {
-    //           // End of Transaction
-    //           case "NotifyEndOfTransaction":
-    //           case "NotifyEndOfCharge":
-    //           case "NotifyOptimalChargeReached":
-    //           case "NotifyChargingStationStatusError":
-    //             // Navigate
-    //             if (notification.extraData.data && notification.extraData.data.connectorId) {
-    //               // Navigate
-    //               if (this.navigation) {
-    //                 this.navigation.navigate("ChargerDetailsTabs", {
-    //                   chargerID: notification.extraData.chargeBoxID,
-    //                   connectorID: notification.extraData.data.connectorId
-    //                 });
-    //               }
-    //             }
-    //             break;
-    //           // Charger just connected
-    //           case "NotifyChargingStationRegistered":
-    //             // Navigate
-    //             if (notification.extraData.data) {
-    //               // Navigate
-    //               if (this.navigation) {
-    //                 this.navigation.navigate("ChargerDetailsTabs", {
-    //                   chargerID: notification.extraData.chargeBoxID,
-    //                   connectorID: 1
-    //                 });
-    //               }
-    //             }
-    //             break;
-    //           // Unknown user
-    //           case "NotifyUnknownUserBadged":
-    //             break;
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
+    // No: meaning the user got the notif and clicked on it, then navigate to the right screen
+    // User must be logged and Navigation available
+    if (!this.centralServerProvider.isUserConnectionValid() || !this.navigator) {
+      // Process it later
+      this.lastNotification = notificationOpen;
+      return;
+    }
+    // Check
+    switch (notification.data.notificationType) {
+      // End of Transaction
+      case UserNotificationType.END_OF_SESSION:
+        // Navigate
+        this.navigator.dispatch(
+          NavigationActions.navigate({
+            routeName: 'TransactionDetailsTabs',
+            params: {
+              transactionID: notification.data.transactionID
+            }
+          })
+        );
+        break;
+      // Session In Progress
+      case UserNotificationType.SESSION_STARTED:
+      case UserNotificationType.END_OF_CHARGE:
+      case UserNotificationType.OPTIMAL_CHARGE_REACHED:
+      // Error on Charger
+      case UserNotificationType.CHARGING_STATION_STATUS_ERROR:
+        // Navigate
+        this.navigator.dispatch(
+          NavigationActions.navigate({
+            routeName: 'ChargerDetailsTabs',
+            params: {
+              chargerID: notification.data.chargeBoxID,
+              connectorID: notification.data.connectorId
+            }
+          })
+        );
+        break;
+      // Charger just connected
+      case UserNotificationType.CHARGING_STATION_REGISTERED:
+        // Navigate
+        this.navigator.dispatch(
+          NavigationActions.navigate({
+            routeName: 'ChargerDetailsTabs',
+            params: {
+              chargerID: notification.data.chargeBoxID,
+              connectorID: 1
+            }
+          })
+        );
+        break;
+      // No need to navigate
+      case UserNotificationType.UNKNOWN_USER_BADGED:
+      case UserNotificationType.OCPI_PATCH_STATUS_ERROR:
+      case UserNotificationType.SMTP_AUTH_ERROR:
+      case UserNotificationType.USER_ACCOUNT_STATUS_CHANGED:
+        break;
+    }
   }
 }

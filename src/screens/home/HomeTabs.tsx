@@ -3,6 +3,7 @@ import { Icon, Tab, TabHeading, Tabs } from 'native-base';
 import React from 'react';
 import { Alert, BackHandler, ScrollView } from 'react-native';
 import BackgroundComponent from '../../components/background/BackgroundComponent';
+import NotificationManager from '../../notification/NotificationManager';
 import BaseProps from '../../types/BaseProps';
 import BaseScreen from '../base-screen/BaseScreen';
 import Home from './home/Home';
@@ -33,6 +34,8 @@ export default class HomeTabs extends BaseScreen<Props, State> {
   public async componentDidMount() {
     // Call parent
     await super.componentDidMount();
+    // Check Notif
+    setTimeout(async () => await NotificationManager.getInstance().checkOnHoldNotification(), 250);
     // Refresh Admin
     const securityProvider = this.centralServerProvider.getSecurityProvider();
     this.setState({

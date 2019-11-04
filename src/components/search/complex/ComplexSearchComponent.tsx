@@ -1,6 +1,7 @@
 import I18n from 'i18n-js';
-import { Button, Text, View } from 'native-base';
+import { Button, View } from 'native-base';
 import React from 'react';
+import { Text } from 'react-native';
 import Modal from 'react-native-modal';
 import computeStyleSheet from './ComplexSearchComponentStyles';
 
@@ -37,35 +38,48 @@ export default class ComplexSearchComponent extends React.Component<Props, State
     this.setState({ visible });
   }
 
-  public setFilter(ID: string, value: string) {
+  public setFilter = (ID: string, value: string) => {
     this.filters[ID] = value;
     // Trigger notif
     this.onFilterChanged(false);
   }
 
-  public getFilter(ID: string): string {
+  public deleteFilter = (ID: string) => {
+    delete this.filters[ID];
+    // Trigger notif
+    this.onFilterChanged(false);
+  }
+
+  public getFilter = (ID: string): string => {
     return this.filters[ID];
   }
 
-  public getFilters(): any {
+  public getFilters = (): any => {
     return this.filters;
+  }
+
+  public clearFilters = () => {
+    this.filters = {};
   }
 
   public onFilterChanged = (closed: boolean) => {
     const { onFilterChanged } = this.props;
-    let atLeastOneFilter = false;
-    for (const filter in this.filters) {
-      if (this.filters.hasOwnProperty(filter)) {
-        atLeastOneFilter = true;
-      }
-    }
     // Call method
-    if (atLeastOneFilter && onFilterChanged) {
+    if (onFilterChanged) {
       onFilterChanged(this.getFilters(), closed);
     }
   }
 
-  public closeFiltersAndTriggerEvent = () => {
+  public applyFiltersAndNotify = () => {
+    // Trigger notif
+    this.onFilterChanged(true);
+    // Close
+    this.setVisible(false);
+  }
+
+  public clearFiltersAndNotify = () => {
+    // Clear
+    this.clearFilters();
     // Trigger notif
     this.onFilterChanged(true);
     // Close
@@ -80,9 +94,14 @@ export default class ComplexSearchComponent extends React.Component<Props, State
         <View style={style.contentFilter}>
           {this.props.children}
         </View>
-        <Button style={style.buttonCloseFilter} full={true} primary={true} onPress={this.closeFiltersAndTriggerEvent} >
-          <Text style={style.textButtonCloseFilter}>{I18n.t('general.close')}</Text>
-        </Button>
+        <View style={style.contentButton}>
+          <Button style={style.buttonFilter} full={true} danger={true} onPress={this.clearFiltersAndNotify} >
+            <Text style={style.textButtonFilter}>{I18n.t('general.clear')}</Text>
+          </Button>
+          <Button style={style.buttonFilter} full={true} primary={true} onPress={this.applyFiltersAndNotify} >
+            <Text style={style.textButtonFilter}>{I18n.t('general.close')}</Text>
+          </Button>
+        </View>
       </Modal>
     );
   }

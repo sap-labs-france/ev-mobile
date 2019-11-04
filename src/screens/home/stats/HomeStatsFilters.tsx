@@ -3,11 +3,10 @@ import React from 'react';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ComplexSearchComponent from '../../../components/search/complex/ComplexSearchComponent';
 import DateFilterComponent from '../../../components/search/complex/filter/date/DateFilterComponent';
-import SwitchFilterComponent from '../../../components/search/complex/filter/switch/SwitchFilterComponent';
+import MyUserSwitchFilterComponent from '../../../components/search/complex/filter/my-user-switch/MyUserSwitchFilterComponent';
 
 export interface Props {
   onFilterChanged?: (filters: HomeStatsFiltersDef) => void;
-  visible?: boolean;
   isAdmin?: boolean;
   locale?: string;
   initialFilters?: HomeStatsFiltersDef;
@@ -48,16 +47,20 @@ export default class HomeStatsFilters extends React.Component<Props, State> {
 
   public onFilterChanged = (filters: HomeStatsFiltersDef, closed: boolean) => {
     const { onFilterChanged } = this.props;
-    this.setState({
-      filters
-    });
     if (closed) {
+      this.setState({
+        filters
+      });
       onFilterChanged(filters);
+    } else {
+      this.setState({
+        filters
+      });
     }
   }
 
   public render = () => {
-    const { locale, initialFilters } = this.props;
+    const { locale, initialFilters, isAdmin } = this.props;
     const { headerComponentRef, filters } = this.state;
     return (
       <ComplexSearchComponent
@@ -69,16 +72,19 @@ export default class HomeStatsFilters extends React.Component<Props, State> {
           }
         }}
       >
-        <SwitchFilterComponent
-          filterID={'UserID'}
-          label={'general.onlyMyTransactions'}
-          value={filters.UserID ? filters.UserID === 'true': false}
-          ref={(ref: SwitchFilterComponent) => {
-            if (ref && this.complexSearchComponentRef) {
-              ref.setSearchComplexComponentRef(this.complexSearchComponentRef);
-            }
-          }}
-        />
+        {isAdmin &&
+          <MyUserSwitchFilterComponent
+            filterID={'UserID'}
+            userID={initialFilters.UserID}
+            label={I18n.t('general.onlyMyTransactions')}
+            initialValue={filters.UserID ? true : false}
+            ref={(ref: MyUserSwitchFilterComponent) => {
+              if (ref && this.complexSearchComponentRef) {
+                ref.setSearchComplexComponentRef(this.complexSearchComponentRef);
+              }
+            }}
+          />
+        }
         <DateFilterComponent
           filterID={'StartDateTime'}
           label={I18n.t('general.startDate')}
