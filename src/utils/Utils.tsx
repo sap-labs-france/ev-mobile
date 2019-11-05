@@ -235,6 +235,10 @@ export default class Utils {
     return connectorLetter.charCodeAt(0) - 64;
   }
 
+  public static randomNumnber(): number {
+    return Math.random() * 10000000;
+  }
+
   public static translateConnectorStatus = (status: string): string => {
     switch (status) {
       case Constants.CONN_STATUS_AVAILABLE:
