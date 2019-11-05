@@ -109,7 +109,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
   public canStopTransaction = () => {
     const { charger, connector } = this.state;
     // Transaction?
-    if (connector.activeTransactionID !== 0) {
+    if (connector && connector.activeTransactionID !== 0) {
       // Get the Security Provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Check Auth
@@ -129,7 +129,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
   public canStartTransaction = () => {
     const { charger, connector } = this.state;
     // Transaction?
-    if (connector.activeTransactionID === 0) {
+    if (connector && connector.activeTransactionID === 0) {
       // Get the Security Provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Check Auth
@@ -149,7 +149,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
   public canReadTransaction = () => {
     const { charger, connector } = this.state;
     // Transaction?
-    if (connector.activeTransactionID !== 0) {
+    if (connector && connector.activeTransactionID !== 0) {
       // Get the Security Provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Check Auth
@@ -171,7 +171,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
     const connectorID = parseInt(Utils.getParamFromNavigation(this.props.navigation, "connectorID", null), 10);
     const { charger, connector, isAdmin, firstLoad, canStopTransaction, canStartTransaction, canDisplayTransaction } = this.state;
     const { navigation } = this.props;
-    const connectorLetter = Utils.getConnectorLetter(connectorID);
+    const connectorLetter = Utils.getConnectorLetterFromConnectorID(connectorID);
     return firstLoad ? (
       <Container style={style.container}>
         <Spinner style={style.spinner} />
@@ -221,7 +221,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
                       <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
                     </TabHeading>
                   }>
-                  <TransactionChart transactionID={connector.activeTransactionID} navigation={navigation} isAdmin={isAdmin} />
+                  <TransactionChart transactionID={connector ? connector.activeTransactionID : 0} navigation={navigation} isAdmin={isAdmin} />
                 </Tab>
               )}
               {isAdmin && (

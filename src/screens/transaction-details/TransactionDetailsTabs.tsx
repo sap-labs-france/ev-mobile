@@ -84,7 +84,7 @@ export default class TransactionDetailsTabs extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const { transaction, isAdmin, firstLoad } = this.state;
     const { navigation } = this.props;
-    const connectorLetter = transaction ? Utils.getConnectorLetter(transaction.connectorId) : '';
+    const connectorLetter = transaction ? Utils.getConnectorLetterFromConnectorID(transaction.connectorId) : '';
     return firstLoad ? (
       <Spinner style={style.spinner} />
     ) : (

@@ -121,7 +121,7 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     // Get value
     const { value, connector } = this.props;
     if (connector) {
-      return Utils.getConnectorLetter(connector.connectorId);
+      return Utils.getConnectorLetterFromConnectorID(connector.connectorId);
     } else if (value >= 0) {
       return '' + value;
     } else {
