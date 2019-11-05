@@ -15,18 +15,6 @@ import BaseScreen from "../../base-screen/BaseScreen";
 import AuthHeader from "../AuthHeader";
 import computeStyleSheet from "../AuthStyles";
 
-const formValidationDef = {
-  email: {
-    presence: {
-      allowEmpty: false,
-      message: "^" + I18n.t("authentication.mandatoryEmail")
-    },
-    email: {
-      message: "^" + I18n.t("authentication.invalidEmail")
-    }
-  }
-};
-
 export interface Props extends BaseProps {
 }
 
@@ -44,6 +32,17 @@ interface State {
 export default class RetrievePassword extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
+  private formValidationDef = {
+    email: {
+      presence: {
+        allowEmpty: false,
+        message: "^" + I18n.t("authentication.mandatoryEmail")
+      },
+      email: {
+        message: "^" + I18n.t("authentication.invalidEmail")
+      }
+    }
+  };
 
   constructor(props: Props) {
     super(props);
@@ -82,7 +81,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
 
   public retrievePassword = async () => {
     // Check field
-    const formIsValid = Utils.validateInput(this, formValidationDef);
+    const formIsValid = Utils.validateInput(this, this.formValidationDef);
     if (formIsValid) {
       const { tenant, email, captcha } = this.state;
       try {
