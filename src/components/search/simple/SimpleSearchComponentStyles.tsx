@@ -17,10 +17,11 @@ const commonStyles = ScaledSheet.create({
   },
   inputField: {
     flex: 1,
-    paddingLeft: '5@s',
     fontSize: '18@s'
   },
   icon: {
+    paddingLeft: '5@s',
+    paddingRight: '5@s',
     fontSize: '25@s'
   }
 });

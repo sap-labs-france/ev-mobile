@@ -4,6 +4,7 @@ import { Notification, NotificationOpen } from 'react-native-firebase/notificati
 import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
 import CentralServerProvider from '../provider/CentralServerProvider';
 import { UserNotificationType } from '../types/UserNotifications';
+import Utils from '../utils/Utils';
 
 export default class NotificationManager {
   private static notificationManager: NotificationManager;
@@ -128,8 +129,9 @@ export default class NotificationManager {
         this.navigator.dispatch(
           NavigationActions.navigate({
             routeName: 'TransactionDetailsTabs',
+            key: `${Utils.randomNumnber()}`,
             params: {
-              transactionID: notification.data.transactionID
+              transactionID: parseInt(notification.data.transactionID, 10)
             }
           })
         );
@@ -144,9 +146,10 @@ export default class NotificationManager {
         this.navigator.dispatch(
           NavigationActions.navigate({
             routeName: 'ChargerDetailsTabs',
+            key: `${Utils.randomNumnber()}`,
             params: {
               chargerID: notification.data.chargeBoxID,
-              connectorID: notification.data.connectorId
+              connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
             }
           })
         );
@@ -157,6 +160,7 @@ export default class NotificationManager {
         this.navigator.dispatch(
           NavigationActions.navigate({
             routeName: 'ChargerDetailsTabs',
+            key: `${Utils.randomNumnber()}`,
             params: {
               chargerID: notification.data.chargeBoxID,
               connectorID: 1

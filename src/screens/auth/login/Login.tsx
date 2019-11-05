@@ -15,40 +15,6 @@ import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 
-const formValidationDef = {
-  tenant: {
-    presence: {
-      allowEmpty: false,
-      message: '^' + I18n.t('authentication.mandatoryTenant')
-    }
-  },
-  email: {
-    presence: {
-      allowEmpty: false,
-      message: '^' + I18n.t('authentication.mandatoryEmail')
-    },
-    email: {
-      message: '^' + I18n.t('authentication.invalidEmail')
-    }
-  },
-  password: {
-    presence: {
-      allowEmpty: false,
-      message: '^' + I18n.t('authentication.mandatoryPassword')
-    }
-  },
-  eula: {
-    equality: {
-      attribute: 'ghost',
-      message: '^' + I18n.t('authentication.eulaNotAccepted'),
-      comparator(v1: boolean, v2: boolean) {
-        // True if EULA is checked
-        return v1;
-      }
-    }
-  }
-};
-
 export interface Props extends BaseProps {
 }
 
@@ -71,6 +37,39 @@ export default class Login extends BaseScreen<Props, State> {
   public props: Props;
   private tenants: Array<Partial<Tenant>>;
   private passwordInput: TextInput;
+  private formValidationDef = {
+    tenant: {
+      presence: {
+        allowEmpty: false,
+        message: '^' + I18n.t('authentication.mandatoryTenant')
+      }
+    },
+    email: {
+      presence: {
+        allowEmpty: false,
+        message: '^' + I18n.t('authentication.mandatoryEmail')
+      },
+      email: {
+        message: '^' + I18n.t('authentication.invalidEmail')
+      }
+    },
+    password: {
+      presence: {
+        allowEmpty: false,
+        message: '^' + I18n.t('authentication.mandatoryPassword')
+      }
+    },
+    eula: {
+      equality: {
+        attribute: 'ghost',
+        message: '^' + I18n.t('authentication.eulaNotAccepted'),
+        comparator(v1: boolean, v2: boolean) {
+          // True if EULA is checked
+          return v1;
+        }
+      }
+    }
+  };
 
   constructor(props: Props) {
     super(props);
@@ -128,7 +127,7 @@ export default class Login extends BaseScreen<Props, State> {
 
   public login = async () => {
     // Check field
-    const formIsValid = Utils.validateInput(this, formValidationDef);
+    const formIsValid = Utils.validateInput(this, this.formValidationDef);
     // Ok?
     if (formIsValid) {
       // Login

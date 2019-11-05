@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Icon } from 'native-base';
+import { Button, Icon } from 'native-base';
 import React from 'react';
 import { TextInput, View } from 'react-native';
 import commonColor from '../../../theme/variables/commonColor';
@@ -17,6 +17,7 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
   public state: State;
   public props: Props;
   private textInput: TextInput;
+  private currentSearchText: string;
   public static defaultProps = {
     visible: false
   };
@@ -32,6 +33,7 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
   }
 
   public searchHasChanged(searchText: string) {
+    this.currentSearchText = searchText;
     const { onChange } = this.props;
     // Call the function
     onChange(searchText);
@@ -57,7 +59,9 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
           placeholderTextColor={commonColor.placeholderTextColor}
           onChangeText={(searchText) => this.searchHasChanged(searchText)}
         />
-        <Icon type='MaterialIcons' name='clear' style={style.icon} onPress={() => this.clearSearch()} />
+        <Button disabled={!this.currentSearchText} style={style.iconButton} transparent={true}>
+          <Icon type='MaterialIcons' name='clear' style={style.icon} onPress={() => this.clearSearch()} />
+        </Button>
       </View>
     );
   }

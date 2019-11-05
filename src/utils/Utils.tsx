@@ -221,11 +221,22 @@ export default class Utils {
     return formValid;
   }
 
-  public static getConnectorLetter(connectorId: number): string {
-    if (!connectorId) {
+  public static getConnectorLetterFromConnectorID(connectorID: number): string {
+    if (!connectorID) {
       return '-';
     }
-    return String.fromCharCode(64 + connectorId);
+    return String.fromCharCode(65 + connectorID - 1);
+  }
+
+  public static getConnectorIDFromConnectorLetter(connectorLetter: string): number {
+    if (!connectorLetter) {
+      return 0;
+    }
+    return connectorLetter.charCodeAt(0) - 64;
+  }
+
+  public static randomNumnber(): number {
+    return Math.random() * 10000000;
   }
 
   public static translateConnectorStatus = (status: string): string => {

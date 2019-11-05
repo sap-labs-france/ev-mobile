@@ -15,64 +15,6 @@ import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 
-const formValidationDef = {
-  name: {
-    presence: {
-      allowEmpty: false,
-      message: '^' + I18n.t('authentication.mandatoryName')
-    }
-  },
-  firstName: {
-    presence: {
-      allowEmpty: false,
-      message: '^' + I18n.t('authentication.mandatoryFirstName')
-    }
-  },
-  email: {
-    presence: {
-      allowEmpty: false,
-      message: '^' + I18n.t('authentication.mandatoryEmail')
-    },
-    email: {
-      message: '^' + I18n.t('authentication.invalidEmail')
-    }
-  },
-  password: {
-    presence: {
-      allowEmpty: false,
-      message: '^' + I18n.t('authentication.mandatoryPassword')
-    },
-    equality: {
-      attribute: 'ghost',
-      message: '^' + I18n.t('authentication.passwordRule'),
-      comparator(password: string, ghost: string) {
-        // True if EULA is checked
-        return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(password);
-      }
-    }
-  },
-  repeatPassword: {
-    presence: {
-      allowEmpty: false,
-      message: '^' + I18n.t('authentication.mandatoryPassword')
-    },
-    equality: {
-      attribute: 'password',
-      message: '^' + I18n.t('authentication.passwordNotMatch')
-    }
-  },
-  eula: {
-    equality: {
-      attribute: 'ghost',
-      message: I18n.t('authentication.eulaNotAccepted'),
-      comparator(eula: boolean, ghost: boolean) {
-        // True if EULA is checked
-        return eula;
-      }
-    }
-  }
-};
-
 export interface Props extends BaseProps {
 }
 
@@ -105,6 +47,63 @@ export default class SignUp extends BaseScreen<Props, State> {
   private firstNameInput: TextInput;
   private emailInput: TextInput;
   private repeatPasswordInput: TextInput;
+  private formValidationDef = {
+    name: {
+      presence: {
+        allowEmpty: false,
+        message: '^' + I18n.t('authentication.mandatoryName')
+      }
+    },
+    firstName: {
+      presence: {
+        allowEmpty: false,
+        message: '^' + I18n.t('authentication.mandatoryFirstName')
+      }
+    },
+    email: {
+      presence: {
+        allowEmpty: false,
+        message: '^' + I18n.t('authentication.mandatoryEmail')
+      },
+      email: {
+        message: '^' + I18n.t('authentication.invalidEmail')
+      }
+    },
+    password: {
+      presence: {
+        allowEmpty: false,
+        message: '^' + I18n.t('authentication.mandatoryPassword')
+      },
+      equality: {
+        attribute: 'ghost',
+        message: '^' + I18n.t('authentication.passwordRule'),
+        comparator(password: string, ghost: string) {
+          // True if EULA is checked
+          return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(password);
+        }
+      }
+    },
+    repeatPassword: {
+      presence: {
+        allowEmpty: false,
+        message: '^' + I18n.t('authentication.mandatoryPassword')
+      },
+      equality: {
+        attribute: 'password',
+        message: '^' + I18n.t('authentication.passwordNotMatch')
+      }
+    },
+    eula: {
+      equality: {
+        attribute: 'ghost',
+        message: I18n.t('authentication.eulaNotAccepted'),
+        comparator(eula: boolean, ghost: boolean) {
+          // True if EULA is checked
+          return eula;
+        }
+      }
+    }
+  };
 
   constructor(props: Props) {
     super(props);
@@ -148,7 +147,7 @@ export default class SignUp extends BaseScreen<Props, State> {
 
   public signUp = async () => {
     // Check field
-    const formIsValid = Utils.validateInput(this, formValidationDef);
+    const formIsValid = Utils.validateInput(this, this.formValidationDef);
     if (formIsValid) {
       const { tenant, name, firstName, email, password, repeatPassword, eula, captcha } = this.state;
       try {

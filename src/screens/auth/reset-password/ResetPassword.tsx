@@ -14,33 +14,6 @@ import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 
-const formValidationDef = {
-  password: {
-    presence: {
-      allowEmpty: false,
-      message: '^' + I18n.t('authentication.mandatoryPassword')
-    },
-    equality: {
-      attribute: 'ghost',
-      message: '^' + I18n.t('authentication.passwordRule'),
-      comparator(password: string, ghost: string) {
-        // True if EULA is checked
-        return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(password);
-      }
-    }
-  },
-  repeatPassword: {
-    presence: {
-      allowEmpty: false,
-      message: '^' + I18n.t('authentication.mandatoryPassword')
-    },
-    equality: {
-      attribute: 'password',
-      message: '^' + I18n.t('authentication.passwordNotMatch')
-    }
-  }
-};
-
 export interface Props extends BaseProps {
 }
 
@@ -59,6 +32,32 @@ export default class ResetPassword extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
   private repeatPasswordInput: TextInput;
+  private formValidationDef = {
+    password: {
+      presence: {
+        allowEmpty: false,
+        message: '^' + I18n.t('authentication.mandatoryPassword')
+      },
+      equality: {
+        attribute: 'ghost',
+        message: '^' + I18n.t('authentication.passwordRule'),
+        comparator(password: string, ghost: string) {
+          // True if EULA is checked
+          return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(password);
+        }
+      }
+    },
+    repeatPassword: {
+      presence: {
+        allowEmpty: false,
+        message: '^' + I18n.t('authentication.mandatoryPassword')
+      },
+      equality: {
+        attribute: 'password',
+        message: '^' + I18n.t('authentication.passwordNotMatch')
+      }
+    }
+  };
 
   constructor(props: Props) {
     super(props);
@@ -94,7 +93,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
 
   public resetPassword = async () => {
     // Check field
-    const formIsValid = Utils.validateInput(this, formValidationDef);
+    const formIsValid = Utils.validateInput(this, this.formValidationDef);
     if (formIsValid) {
       const { tenant, password, repeatPassword, hash } = this.state;
       try {
