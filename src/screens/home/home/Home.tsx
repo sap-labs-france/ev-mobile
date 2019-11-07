@@ -95,7 +95,7 @@ export default class Home extends BaseAutoRefreshScreen<Props, State> {
         chargerID: transactionsActive[0].chargeBoxID,
         connectorID: transactionsActive[0].connectorId
       });
-    } else if (transactionsActiveCount > 1 || transactionsActiveCount === 0) {
+    } else if (transactionsActiveCount > 1) {
       // Many Sessions
       navigation.navigate({ routeName: "TransactionsNavigator" });
     }
@@ -153,21 +153,23 @@ export default class Home extends BaseAutoRefreshScreen<Props, State> {
                   </Left>
                 </CardItem>
               </Card>
-              <Card>
-                <CardItem button={true} onPress={() => this.navigateToOngoingSession()}>
-                  <Left>
-                    <Icon style={style.cardIcon} type="MaterialCommunityIcons" name="play" />
-                    <Body>
-                      <Text style={style.cardText}>{transactionsActiveCount ?
-                        `${I18n.t("home.ongoingSessions", { nbrSessions: transactionsActiveCount })}`
-                      :
-                        `${I18n.t("home.noOngoingSessions")}`
-                      }</Text>
-                      <Text note={true} style={style.cardNote}>{I18n.t("home.ongoingSessionsNote")}</Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
+              {transactionsActiveCount > 0 &&
+                <Card>
+                  <CardItem button={true} onPress={() => this.navigateToOngoingSession()}>
+                    <Left>
+                      <Icon style={style.cardIcon} type="MaterialCommunityIcons" name="play" />
+                      <Body>
+                        <Text style={style.cardText}>{transactionsActiveCount ?
+                          `${I18n.t("home.ongoingSessions", { nbrSessions: transactionsActiveCount })}`
+                        :
+                          `${I18n.t("home.noOngoingSessions")}`
+                        }</Text>
+                        <Text note={true} style={style.cardNote}>{I18n.t("home.ongoingSessionsNote")}</Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                </Card>
+              }
             </Content>
           )}
         </BackgroundComponent>
