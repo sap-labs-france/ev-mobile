@@ -122,7 +122,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
         });
       } else {
         this.setState({
-          elapsedTimeFormatted: Constants.DEFAULT_DURATION_WITH_SECS,
+          elapsedTimeFormatted: Constants.DEFAULT_DURATION,
           userImage: null,
           transaction: null
         });
@@ -450,12 +450,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
 
   public renderTotalConsumption = (style: any) => {
     const { connector } = this.props;
-    return (!connector || parseFloat((connector.totalConsumption / 1000).toFixed(1)) === 0.0 || connector.totalConsumption === 0 ? (
-      <View style={style.columnContainer}>
-        <Icon style={[style.icon, style.disabled]} type='MaterialIcons' name='ev-station' />
-        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
-      </View>
-    ) : (
+    return connector && connector.activeTransactionID ? (
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.info]} type='MaterialIcons' name='ev-station' />
         <Text style={[style.label, style.labelValue, style.info]}>
@@ -463,7 +458,12 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
         </Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
-    ));
+    ) : (
+      <View style={style.columnContainer}>
+        <Icon style={[style.icon, style.disabled]} type='MaterialIcons' name='ev-station' />
+        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+      </View>
+    );
   };
 
   public renderBatteryLevel = (style: any) => {
