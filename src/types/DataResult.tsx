@@ -1,11 +1,13 @@
+import Transaction from "./Transaction";
+
 export interface DataResult<T> {
   count: number;
   result: T[];
 }
 
-export interface TransactionDataResult<T> {
+export interface TransactionDataResult {
   count: number;
-  result: T[];
+  result: Transaction[];
   stats: {
     count: number;
     firstTimestamp?: Date;
