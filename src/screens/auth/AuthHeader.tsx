@@ -35,7 +35,8 @@ export default class AuthHeader extends BaseScreen<Props, State> {
       <View style={style.formHeader}>
         <Image style={style.logo} source={logo} />
         <Text style={style.appText}>e-Mobility</Text>
-        <Text style={style.appVersionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`} (Beta)</Text>
+        {/* <Text style={style.appVersionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`} (Beta)</Text> */}
+        <Text style={style.appVersionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
         <Text style={style.appTenantName}>{tenantName}</Text>
       </View>
     );
