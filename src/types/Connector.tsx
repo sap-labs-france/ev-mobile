@@ -5,7 +5,6 @@ export default interface Connector {
   currentConsumption: number;
   currentStateOfCharge?: number;
   totalInactivitySecs?: number;
-  inactivityStatusLevel: InactivityStatusLevel;
   totalConsumption?: number;
   status: string;
   errorCode?: string;
@@ -18,4 +17,5 @@ export default interface Connector {
   activeTransactionID: number;
   activeTransactionDate: Date;
   activeTagID: string;
+  inactivityStatusLevel: InactivityStatusLevel;
 }
