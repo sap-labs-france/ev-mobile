@@ -512,7 +512,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getTransactions(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<TransactionDataResult<Transaction>> {
+  public async getTransactions(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<TransactionDataResult> {
     this.debugMethod('getTransactions');
     // Build Paging
     this.buildPaging(paging, params);

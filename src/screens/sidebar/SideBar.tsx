@@ -12,6 +12,7 @@ import Constants from '../../utils/Constants';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './SideBarStyles';
 
+
 export interface Props extends BaseProps {
 }
 
@@ -111,7 +112,8 @@ export default class SideBar extends BaseScreen<Props, State> {
               <Text numberOfLines={1} style={style.tenantName}>
                 {tenantName}
               </Text>
-              <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`} (Beta)</Text>
+              {/* <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`} (Beta)</Text> */}
+              <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
               {DeviceInfo.getLastUpdateTime() && (
                 <Text style={style.versionDate}>{moment(DeviceInfo.getLastUpdateTime()).format('LL')}</Text>
               )}
