@@ -380,7 +380,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     if (transaction) {
       price = Math.round(transaction.currentCumulatedPrice * 100) / 100;
     }
-    return transaction ? (
+    return transaction && !isNaN(price) ? (
       <View style={style.columnContainer}>
         <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>{price}</Text>
@@ -396,19 +396,18 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
 
   public renderInstantPower = (style: any) => {
     const { connector } = this.props;
-    return !connector || connector.activeTransactionID === 0 ? (
-      <View style={style.columnContainer}>
-        <Icon type="FontAwesome" name="bolt" style={[style.icon, style.disabled]} />
-        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
-      </View>
-    ) : (
+    return connector && connector.activeTransactionID && !isNaN(connector.currentConsumption) ? (
       <View style={style.columnContainer}>
         <Icon type="FontAwesome" name="bolt" style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>
-          {connector && connector.currentConsumption / 1000 > 0 ?
-              I18nManager.formatNumber(Math.round(connector.currentConsumption / 10) / 100) : 0}
+          {connector.currentConsumption / 1000 > 0 ? I18nManager.formatNumber(Math.round(connector.currentConsumption / 10) / 100) : 0}
         </Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t("details.instant")} (kW)</Text>
+      </View>
+    ) : (
+      <View style={style.columnContainer}>
+        <Icon type="FontAwesome" name="bolt" style={[style.icon, style.disabled]} />
+        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
   };
@@ -450,7 +449,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
 
   public renderTotalConsumption = (style: any) => {
     const { connector } = this.props;
-    return connector && connector.activeTransactionID ? (
+    return connector && connector.activeTransactionID && !isNaN(connector.totalConsumption) ? (
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.info]} type="MaterialIcons" name="ev-station" />
         <Text style={[style.label, style.labelValue, style.info]}>
@@ -469,7 +468,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   public renderBatteryLevel = (style: any) => {
     const { transaction } = this.state;
     const { connector } = this.props;
-    return connector && connector.currentStateOfCharge ? (
+    return connector && connector.currentStateOfCharge && !isNaN(connector.currentStateOfCharge) ? (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>
