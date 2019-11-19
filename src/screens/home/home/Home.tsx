@@ -97,7 +97,9 @@ export default class Home extends BaseAutoRefreshScreen<Props, State> {
       });
     } else if (transactionsActiveCount > 1) {
       // Many Sessions
-      navigation.navigate({ routeName: "TransactionsNavigator" });
+      navigation.navigate("TransactionTabs", {
+        activeTab: "InProgress"
+      });
     }
   }
 

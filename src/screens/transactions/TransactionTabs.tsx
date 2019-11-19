@@ -3,7 +3,8 @@ import React from "react";
 import { ScrollView } from "react-native";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import BaseProps from "../../types/BaseProps";
-import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
+import Utils from "../../utils/Utils";
+import BaseScreen from "../base-screen/BaseScreen";
 import TransactionsHistory from "./history/TransactionsHistory";
 import TransactionsInProgress from "./in-progress/TransactionsInProgress";
 import computeStyleSheet from "./TransactionTabsStyles";
@@ -14,26 +15,20 @@ export interface Props extends BaseProps {
 interface State {
 }
 
-export default class TransactionTabs extends BaseAutoRefreshScreen<Props, State> {
+export default class TransactionTabs extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
+  private activeTab: string;
 
   constructor(props: Props) {
     super(props);
+    this.activeTab = Utils.getParamFromNavigation(this.props.navigation, "activeTab", ""),
     this.state = {
-      isAdmin: false
     };
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
-
-  public async componentDidMount() {
-    // Call parent
-    await super.componentDidMount();
-    // Refresh
-    await this.refresh();
   }
 
   public onBack = () => {
@@ -43,32 +38,16 @@ export default class TransactionTabs extends BaseAutoRefreshScreen<Props, State>
     return true;
   };
 
-  public refresh = async () => {
-    if (this.isMounted()) {
-      // Refresh Admin
-      const securityProvider = this.centralServerProvider.getSecurityProvider();
-      this.setState({
-        firstLoad: false,
-        isAdmin: securityProvider ? securityProvider.isAdmin() : false
-      });
-    }
-  };
-
   public render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
+    // Set and clear
+    const activeTab = this.activeTab;
+    this.activeTab = null;
     return (
       <ScrollView contentContainerStyle={style.container}>
         <BackgroundComponent navigation={navigation} active={false}>
-          <Tabs tabBarPosition="bottom" locked={false} initialPage={0}>
-            <Tab
-              heading={
-                <TabHeading style={style.tabHeader}>
-                  <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
-                </TabHeading>
-              }>
-              <TransactionsInProgress navigation={navigation} />
-            </Tab>
+          <Tabs tabBarPosition="bottom" locked={false} initialPage={activeTab === "InProgress" ? 1 : 0}>
             <Tab
               heading={
                 <TabHeading style={style.tabHeader}>
@@ -76,6 +55,14 @@ export default class TransactionTabs extends BaseAutoRefreshScreen<Props, State>
                 </TabHeading>
               }>
               <TransactionsHistory navigation={navigation} />
+            </Tab>
+            <Tab
+              heading={
+                <TabHeading style={style.tabHeader}>
+                  <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
+                </TabHeading>
+              }>
+              <TransactionsInProgress navigation={navigation} />
             </Tab>
           </Tabs>
         </BackgroundComponent>
