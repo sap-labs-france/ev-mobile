@@ -78,8 +78,6 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     if (charger && charger.siteArea && this.isMounted()) {
       await this.getSiteImage(charger.siteArea.siteID);
     }
-    // Refresh
-    await this.refresh();
   }
 
   public async componentWillUnmount() {

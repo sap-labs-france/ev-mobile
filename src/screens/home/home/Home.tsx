@@ -42,12 +42,6 @@ export default class Home extends BaseAutoRefreshScreen<Props, State> {
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
-    await super.componentDidMount();
-    // Refresh
-    await this.refresh();
-  }
-
   public refresh = async () => {
     // Get the security provider
     const securityProvider = this.centralServerProvider.getSecurityProvider();
@@ -159,7 +153,7 @@ export default class Home extends BaseAutoRefreshScreen<Props, State> {
                 <Card>
                   <CardItem button={true} onPress={() => this.navigateToOngoingSession()}>
                     <Left>
-                      <Icon style={style.cardIcon} type='MaterialCommunityIcons' name='play' />
+                      <Icon style={style.cardIcon} type='FontAwesome' name='bolt' />
                       <Body>
                         <Text style={style.cardText}>{transactionsActiveCount ?
                           `${I18n.t('home.ongoingSessions', { nbrSessions: transactionsActiveCount })}`

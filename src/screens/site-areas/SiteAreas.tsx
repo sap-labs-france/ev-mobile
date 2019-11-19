@@ -49,12 +49,6 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
-    await super.componentDidMount();
-    // Get the Site Areas
-    await this.refresh();
-  }
-
   public getSiteAreas = async (searchText: string, skip: number, limit: number): Promise<DataResult<SiteArea>> => {
     let siteAreas:DataResult<SiteArea>;
     const siteID = Utils.getParamFromNavigation(this.props.navigation, 'siteID', null);
