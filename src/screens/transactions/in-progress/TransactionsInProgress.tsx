@@ -60,7 +60,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     await this.refresh();
   }
 
-  public getTransationsInProgress = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
+  public getTransactionsInProgress = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
     let transactions;
     try {
       // Get the Sites
@@ -94,7 +94,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
-      const transactions = await this.getTransationsInProgress(this.searchText, 0, skip + limit);
+      const transactions = await this.getTransactionsInProgress(this.searchText, 0, skip + limit);
       // Refresh Admin
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       this.setState({
@@ -112,7 +112,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     // No reached the end?
     if (skip + limit < count || count === -1) {
     // No: get next sites
-      const transactions = await this.getTransationsInProgress(this.searchText, skip + Constants.PAGING_SIZE, limit);
+      const transactions = await this.getTransactionsInProgress(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState, props) => ({
         transactions: transactions ? [...prevState.transactions, ...transactions.result] : prevState.transactions,
