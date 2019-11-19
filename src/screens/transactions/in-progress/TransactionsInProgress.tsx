@@ -142,10 +142,10 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
             rightAction={navigation.openDrawer}
             rightActionIcon={'menu'}
           />
-          <SimpleSearchComponent
+          {/* <SimpleSearchComponent
             onChange={(searchText) => this.search(searchText)}
             navigation={navigation}
-          />
+          /> */}
           <View style={style.content}>
             {loading ? (
               <Spinner style={style.spinner} />
