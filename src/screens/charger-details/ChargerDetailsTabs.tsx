@@ -50,12 +50,6 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
-    await super.componentDidMount();
-    // Refresh Charger
-    await this.refresh();
-  }
-
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack();

@@ -52,12 +52,6 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
-    await super.componentDidMount();
-    // Get Chargers
-    await this.refresh();
-  }
-
   public getChargers = async (searchText: string, skip: number, limit: number): Promise<DataResult<ChargingStation>> => {
     const { siteAreaID } = this.state;
     let chargers: DataResult<ChargingStation>;

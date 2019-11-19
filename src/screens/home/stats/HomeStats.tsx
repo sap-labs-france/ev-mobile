@@ -61,12 +61,6 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
-    await super.componentDidMount();
-    // Refresh
-    await this.refresh();
-  }
-
   public refresh = async () => {
     // Get the provider
     const centralServerProvider = await ProviderFactory.getProvider();

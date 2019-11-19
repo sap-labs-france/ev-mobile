@@ -42,12 +42,6 @@ export default class Home extends BaseAutoRefreshScreen<Props, State> {
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
-    await super.componentDidMount();
-    // Refresh
-    await this.refresh();
-  }
-
   public refresh = async () => {
     // Get the security provider
     const securityProvider = this.centralServerProvider.getSecurityProvider();

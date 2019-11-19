@@ -32,7 +32,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
-  private headerComponentRef: HeaderComponent;
 
   constructor(props: Props) {
     super(props);
@@ -58,8 +57,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     if (securityProvider && !securityProvider.isComponentOrganizationActive()) {
       this.props.navigation.navigate("Chargers");
     }
-    // Get the sites
-    await this.refresh();
   }
 
   public async componentWillUnmount() {
