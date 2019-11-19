@@ -235,7 +235,7 @@ export default class Utils {
     return connectorLetter.charCodeAt(0) - 64;
   }
 
-  public static randomNumnber(): number {
+  public static randomNumber(): number {
     return Math.random() * 10000000;
   }
 
