@@ -37,7 +37,7 @@ export default class NotificationManager {
       // Request permission
       try {
         await firebase.messaging().requestPermission();
-        // User has authorised
+        // User has authorized
       } catch (error) {
         // User has rejected permissions
       }
