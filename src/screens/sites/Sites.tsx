@@ -59,11 +59,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     }
   }
 
-  public async componentWillUnmount() {
-    // Call parent
-    await super.componentWillUnmount();
-  }
-
   public getSites = async (searchText = "", skip: number, limit: number): Promise<DataResult<Site>> => {
     let sites: DataResult<Site>;
     try {

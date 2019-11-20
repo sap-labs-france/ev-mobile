@@ -31,7 +31,8 @@
     "home": "Home",
     "sites": "Sites",
     "chargers": "Chargers",
-    "transactions": "Sessions"
+    "transactions": "Sessions",
+    "statistics": "Statistics"
   },
 	"authentication": {
     "mandatoryTenant": "The Organization is mandatory",
@@ -89,10 +90,12 @@
     "browseChargersNote": "Navigate to Charging Stations",
     "browseSessions": "Sessions",
     "browseSessionsNote": "Navigate to Sessions",
+    "browseStatistics": "Statistics",
+    "browseStatisticsNote": "Navigate to Statistics",
     "ongoingSessions": "{{nbrSessions}} Session(s) In Progress",
     "noOngoingSessions": "No Session In Progress",
     "ongoingSessionsNote": "Number of Sessions in progress",
-    "summary": "Summary",
+    "statistics": "Statistics",
     "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "No Session found",
     "numberOfSessionsNote": "Total number of Sessions",

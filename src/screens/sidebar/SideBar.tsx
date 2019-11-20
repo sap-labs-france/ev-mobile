@@ -137,6 +137,10 @@ export default class SideBar extends BaseScreen<Props, State> {
                 <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="history" />
                 <Text style={style.linkText}>{I18n.t("sidebar.transactions")}</Text>
               </ListItem>
+              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo("StatisticsNavigator")}>
+                <Icon style={style.linkIcon} type="MaterialIcons" name="assessment" />
+                <Text style={style.linkText}>{I18n.t("sidebar.statistics")}</Text>
+              </ListItem>
               {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
                 <Icon name="ios-settings-outline" />
                 <Text style={style.linkText}>SETTINGS</Text>

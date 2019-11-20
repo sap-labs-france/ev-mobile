@@ -16,10 +16,11 @@ import RetrievePassword from "./screens/auth/retrieve-password/RetrievePassword"
 import SignUp from "./screens/auth/sign-up/SignUp";
 import ChargerDetailsTabs from "./screens/charger-details/ChargerDetailsTabs";
 import Chargers from "./screens/chargers/Chargers";
-import HomeTabs from "./screens/home/HomeTabs";
+import Home from "./screens/home/Home";
 import Sidebar from "./screens/sidebar/SideBar";
 import SiteAreas from "./screens/site-areas/SiteAreas";
 import Sites from "./screens/sites/Sites";
+import Statistics from "./screens/statistics/Statistics";
 import TransactionDetailsTabs from "./screens/transaction-details/TransactionDetailsTabs";
 import TransactionTabs from "./screens/transactions/TransactionTabs";
 import SecuredStorage from "./utils/SecuredStorage";
@@ -45,10 +46,20 @@ const authNavigator: NavigationContainer = createStackNavigator(
 // Home Stack Navigation
 const homeNavigator: NavigationContainer = createStackNavigator(
   {
-    Home: { screen: HomeTabs }
-  },
+    Home: { screen: Home }  },
   {
     initialRouteName: "Home",
+    headerMode: "none"
+  }
+);
+
+// Stats Stack Navigation
+const statisticsNavigator: NavigationContainer = createStackNavigator(
+  {
+    Statistics: { screen: Statistics }
+  },
+  {
+    initialRouteName: "Statistics",
     headerMode: "none"
   }
 );
@@ -98,7 +109,8 @@ const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
     HomeNavigator: { screen: homeNavigator },
     SitesNavigator: { screen: sitesNavigator },
     ChargersNavigator: { screen: chargersNavigator },
-    TransactionsNavigator: { screen: transactionsNavigator }
+    TransactionsNavigator: { screen: transactionsNavigator },
+    StatisticsNavigator: { screen: statisticsNavigator },
   },
   {
     navigationOptions: {
