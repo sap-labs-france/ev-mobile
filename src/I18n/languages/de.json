@@ -77,6 +77,8 @@
     "tenant": "Wählen Sie eine Organisation"
   },
   "transactions": {
+    "history": "History",
+    "in-progress": "In Progress",
     "transactionsHistory": "Sitzungsverlauf",
     "transactionsInProgress": "Laufende Sitzungen",
     "chargingCurve": "Sitzungsdiagramm",

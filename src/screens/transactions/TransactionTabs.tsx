@@ -1,4 +1,5 @@
-import { Icon, Tab, TabHeading, Tabs } from "native-base";
+import I18n from "i18n-js";
+import { Icon, Tab, TabHeading, Tabs, Text } from "native-base";
 import React from "react";
 import { ScrollView } from "react-native";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
@@ -46,6 +47,7 @@ export default class TransactionTabs extends BaseScreen<Props, State> {
               heading={
                 <TabHeading style={style.tabHeader}>
                   <Icon style={style.tabIcon} type="MaterialIcons" name="history" />
+                  <Text>{I18n.t("transactions.history")}</Text>
                 </TabHeading>
               }>
               <TransactionsHistory navigation={navigation} />
@@ -54,6 +56,7 @@ export default class TransactionTabs extends BaseScreen<Props, State> {
               heading={
                 <TabHeading style={style.tabHeader}>
                   <Icon style={style.tabIcon} type="FontAwesome" name="bolt" />
+                  <Text>{I18n.t("transactions.in-progress")}</Text>
                 </TabHeading>
               }>
               <TransactionsInProgress navigation={navigation} />

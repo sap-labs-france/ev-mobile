@@ -77,6 +77,8 @@
     "tenant": "Choose an Organization"
   },
   "transactions": {
+    "history": "History",
+    "in-progress": "In Progress",
     "transactionsHistory": "Sessions History",
     "transactionsInProgress": "Sessions In Progress",
     "chargingCurve": "Session Chart",
