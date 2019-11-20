@@ -53,7 +53,7 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
           ref={(ref) => {
             this.textInput = ref;
           }}
-          selectionColor={commonColor.inverseTextColor}
+          selectionColor={commonColor.textColor}
           style={style.inputField}
           placeholder={I18n.t('general.search')}
           placeholderTextColor={commonColor.placeholderTextColor}

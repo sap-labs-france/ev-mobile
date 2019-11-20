@@ -11,12 +11,23 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: commonColor.containerBgColor
   },
   spinner: {
+    flex: 1,
     color: commonColor.textColor
   },
+  content: {
+    padding: '5@s'
+  },
   tabHeader: {},
-  tabIcon: {
+  cardIcon: {
+    textAlign: 'center',
+    fontSize: '50@s',
+    width: '55@s'
+  },
+  cardText: {
     fontSize: '20@s',
-    paddingBottom: '5@s'
+  },
+  cardNote: {
+    fontStyle: 'italic'
   }
 });
 

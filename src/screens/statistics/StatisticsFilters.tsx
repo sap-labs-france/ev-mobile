@@ -1,18 +1,18 @@
 import I18n from 'i18n-js';
 import React from 'react';
-import HeaderComponent from '../../../components/header/HeaderComponent';
-import ComplexSearchComponent from '../../../components/search/complex/ComplexSearchComponent';
-import DateFilterComponent from '../../../components/search/complex/filter/date/DateFilterComponent';
-import MyUserSwitchFilterComponent from '../../../components/search/complex/filter/my-user-switch/MyUserSwitchFilterComponent';
+import HeaderComponent from '../../components/header/HeaderComponent';
+import ComplexSearchComponent from '../../components/search/complex/ComplexSearchComponent';
+import DateFilterComponent from '../../components/search/complex/filter/date/DateFilterComponent';
+import MyUserSwitchFilterComponent from '../../components/search/complex/filter/my-user-switch/MyUserSwitchFilterComponent';
 
 export interface Props {
-  onFilterChanged?: (filters: HomeStatsFiltersDef) => void;
+  onFilterChanged?: (filters: StatisticsFiltersDef) => void;
   isAdmin?: boolean;
   locale?: string;
-  initialFilters?: HomeStatsFiltersDef;
+  initialFilters?: StatisticsFiltersDef;
 }
 
-export interface HomeStatsFiltersDef {
+export interface StatisticsFiltersDef {
   'StartDateTime'?: string;
   'EndDateTime'?: string;
   'UserID'?: string;
@@ -20,10 +20,10 @@ export interface HomeStatsFiltersDef {
 
 interface State {
   headerComponentRef?: HeaderComponent;
-  filters?: HomeStatsFiltersDef;
+  filters?: StatisticsFiltersDef;
 }
 
-export default class HomeStatsFilters extends React.Component<Props, State> {
+export default class StatisticsFilters extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   private complexSearchComponentRef: ComplexSearchComponent;
@@ -45,7 +45,7 @@ export default class HomeStatsFilters extends React.Component<Props, State> {
     });
   }
 
-  public onFilterChanged = (filters: HomeStatsFiltersDef, closed: boolean) => {
+  public onFilterChanged = (filters: StatisticsFiltersDef, closed: boolean) => {
     const { onFilterChanged } = this.props;
     if (closed) {
       this.setState({

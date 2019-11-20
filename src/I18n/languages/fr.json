@@ -31,7 +31,8 @@
     "home": "Home",
     "sites": "Sites",
     "chargers": "Bornes",
-    "transactions": "Sessions"
+    "transactions": "Sessions",
+    "statistics": "Statistiques"
   },
   "authentication": {
     "mandatoryTenant": "L'organisation est obligatoire",
@@ -76,6 +77,8 @@
     "tenant": "Choisir une Organisation"
   },
   "transactions": {
+    "history": "Historique",
+    "in-progress": "En Cours",
     "transactionsHistory": "Historique Sessions",
     "transactionsInProgress": "Sessions En Cours",
     "chargingCurve": "Graphique Session",
@@ -89,10 +92,12 @@
     "browseChargersNote": "Naviguez vers les Bornes",
     "browseSessions": "Sessions",
     "browseSessionsNote": "Naviguez vers les Sessions",
+    "browseStatistics": "Statistiques",
+    "browseStatisticsNote": "Naviguez vers les Statistiques",
     "ongoingSessions": "{{nbrSessions}} ongoing Session(s)",
     "noOngoingSessions": "Pas de Session en cours",
     "ongoingSessionsNote": "Nombre de Session en cours",
-    "summary": "Résumé",
+    "statistics": "Statistiques",
     "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "Pas de Session trouvée",
     "numberOfSessionsNote": "Nombre total de Sessions",

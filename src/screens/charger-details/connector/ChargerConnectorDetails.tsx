@@ -373,12 +373,13 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   };
 
   public renderPrice = (style: any) => {
+    const { connector } = this.props;
     const { transaction } = this.state;
     let price = 0;
     if (transaction) {
       price = Math.round(transaction.currentCumulatedPrice * 100) / 100;
     }
-    return transaction && !isNaN(price) ? (
+    return connector && connector.activeTransactionID && transaction && !isNaN(price) ? (
       <View style={style.columnContainer}>
         <Icon type='FontAwesome' name='money' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>{price}</Text>

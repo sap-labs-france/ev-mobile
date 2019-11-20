@@ -31,10 +31,6 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
-    await super.componentDidMount();
-  }
-
   public resetHardConfirm() {
     const { charger } = this.props;
     Alert.alert(I18n.t('chargers.resetHard'), I18n.t('chargers.resetHardMessage', { chargeBoxID: charger.id }), [

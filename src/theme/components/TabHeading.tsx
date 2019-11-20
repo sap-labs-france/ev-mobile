@@ -18,7 +18,8 @@ export default (variables /* : * */ = variable) => {
     },
     'NativeBase.Text': {
       color: variables.topTabBarTextColor,
-      marginHorizontal: 7
+      marginHorizontal: 7,
+      marginTop: -5
     },
     'NativeBase.Icon': {
       color: variables.topTabBarTextColor,
@@ -27,7 +28,8 @@ export default (variables /* : * */ = variable) => {
     '.active': {
       'NativeBase.Text': {
         color: variables.topTabBarActiveTextColor,
-        fontWeight: '600'
+        fontWeight: '600',
+        marginTop: -5
       },
       'NativeBase.Icon': {
         color: variables.topTabBarActiveTextColor

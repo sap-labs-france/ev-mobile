@@ -2,16 +2,16 @@ import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } from 'native-base';
 import React from 'react';
 import { Alert, BackHandler } from 'react-native';
-import BackgroundComponent from '../../../components/background/BackgroundComponent';
-import HeaderComponent from '../../../components/header/HeaderComponent';
-import I18nManager from '../../../I18n/I18nManager';
-import ProviderFactory from '../../../provider/ProviderFactory';
-import BaseProps from '../../../types/BaseProps';
-import Constants from '../../../utils/Constants';
-import Utils from '../../../utils/Utils';
-import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
-import HomeStatsFilters, { HomeStatsFiltersDef } from './HomeStatsFilters';
-import computeStyleSheet from './HomeStatsStyles';
+import BackgroundComponent from '../../components/background/BackgroundComponent';
+import HeaderComponent from '../../components/header/HeaderComponent';
+import I18nManager from '../../I18n/I18nManager';
+import ProviderFactory from '../../provider/ProviderFactory';
+import BaseProps from '../../types/BaseProps';
+import Constants from '../../utils/Constants';
+import Utils from '../../utils/Utils';
+import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
+import HomeStatsFilters, { StatisticsFiltersDef } from './StatisticsFilters';
+import computeStyleSheet from './StatisticsStyles';
 
 export interface Props extends BaseProps {
 }
@@ -29,10 +29,10 @@ interface State {
   priceCurrency?: string;
   isPricingActive?: boolean;
   showFilter?: boolean;
-  filters?: HomeStatsFiltersDef;
+  filters?: StatisticsFiltersDef;
 }
 
-export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
+export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private headerComponentRef: HeaderComponent;
@@ -100,15 +100,12 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
     }
   };
 
-  public onBack = (): boolean => {
-    Alert.alert(
-      I18n.t('general.exitApp'),
-      I18n.t('general.exitAppConfirm'),
-      [{ text: I18n.t('general.no'), style: 'cancel' }, { text: I18n.t('general.yes'), onPress: () => BackHandler.exitApp() }],
-      { cancelable: false }
-    );
+  public onBack = () => {
+    // Back mobile button: Force navigation
+    this.props.navigation.navigate({ routeName: 'HomeNavigator' });
+    // Do not bubble up
     return true;
-  }
+  };
 
   public onFilterChanged = async (filters: any) => {
     // Set Fitlers and Refresh
@@ -128,7 +125,9 @@ export default class HomeStats extends BaseAutoRefreshScreen<Props, State> {
               this.headerComponentRef = ref;
             }}
             navigation={navigation}
-            title={I18n.t('home.summary')}
+            title={I18n.t('home.statistics')}
+            leftAction={() => this.onBack()}
+            leftActionIcon={'navigate-before'}
             rightAction={navigation.openDrawer}
             rightActionIcon={'menu'}
           />
