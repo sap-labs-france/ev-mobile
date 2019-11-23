@@ -8,6 +8,7 @@ export enum UserNotificationType {
   CHARGING_STATION_STATUS_ERROR = 'ChargingStationStatusError',
   CHARGING_STATION_REGISTERED = 'ChargingStationRegistered',
   OCPI_PATCH_STATUS_ERROR = 'OcpiPatchStatusError',
-  SMTP_AUTH_ERROR = 'SmtpAuthError'
+  SMTP_AUTH_ERROR = 'SmtpAuthError',
+  PREPARING_SESSION_NOT_STARTED = 'PreparingSessionNotStarted'
 };
 

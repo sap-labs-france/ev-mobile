@@ -140,8 +140,8 @@ export default class NotificationManager {
       case UserNotificationType.SESSION_STARTED:
       case UserNotificationType.END_OF_CHARGE:
       case UserNotificationType.OPTIMAL_CHARGE_REACHED:
-      // Error on Charger
       case UserNotificationType.CHARGING_STATION_STATUS_ERROR:
+      case UserNotificationType.PREPARING_SESSION_NOT_STARTED:
         // Navigate
         this.navigator.dispatch(
           NavigationActions.navigate({
