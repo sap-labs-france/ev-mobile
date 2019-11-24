@@ -1,9 +1,11 @@
+import I18n from 'i18n-js';
 import { Platform } from 'react-native';
 import firebase from 'react-native-firebase';
 import { Notification, NotificationOpen } from 'react-native-firebase/notifications';
 import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
 import CentralServerProvider from '../provider/CentralServerProvider';
 import { UserNotificationType } from '../types/UserNotifications';
+import Message from '../utils/Message';
 import Utils from '../utils/Utils';
 
 export default class NotificationManager {
@@ -121,6 +123,11 @@ export default class NotificationManager {
       this.lastNotification = notificationOpen;
       return;
     }
+    // Check Tenant
+    if (this.centralServerProvider.getUserInfo().tenantID !== notification.data.tenantID) {
+      Message.showError(I18n.t('general.wrongTenant'));
+      return;
+    }
     // Check
     switch (notification.data.notificationType) {
       // End of Transaction
@@ -136,12 +143,13 @@ export default class NotificationManager {
           })
         );
         break;
+
       // Session In Progress
       case UserNotificationType.SESSION_STARTED:
       case UserNotificationType.END_OF_CHARGE:
       case UserNotificationType.OPTIMAL_CHARGE_REACHED:
-      // Error on Charger
       case UserNotificationType.CHARGING_STATION_STATUS_ERROR:
+      case UserNotificationType.PREPARING_SESSION_NOT_STARTED:
         // Navigate
         this.navigator.dispatch(
           NavigationActions.navigate({
@@ -154,6 +162,7 @@ export default class NotificationManager {
           })
         );
         break;
+
       // Charger just connected
       case UserNotificationType.CHARGING_STATION_REGISTERED:
         // Navigate
@@ -168,11 +177,24 @@ export default class NotificationManager {
           })
         );
         break;
+
+      // Go to Charger list
+      case UserNotificationType.OFFLINE_CHARGING_STATION:
+        // Navigate
+        this.navigator.dispatch(
+          NavigationActions.navigate({
+            routeName: 'Chargers',
+            key: `${Utils.randomNumnber()}`
+          })
+        );
+        break;
+
       // No need to navigate
       case UserNotificationType.UNKNOWN_USER_BADGED:
       case UserNotificationType.OCPI_PATCH_STATUS_ERROR:
       case UserNotificationType.SMTP_AUTH_ERROR:
       case UserNotificationType.USER_ACCOUNT_STATUS_CHANGED:
+      case UserNotificationType.USER_ACCOUNT_INACTIVITY:
         break;
     }
   }

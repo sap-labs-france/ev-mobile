@@ -25,7 +25,8 @@
     "second": "s",
     "startDate": "Date Début",
     "endDate": "Date Fin",
-    "onlyMyTransactions": "Mes Sessions"
+    "onlyMyTransactions": "Mes Sessions",
+    "wrongTenant": "Vous êtes connecté sur la mauvaise organisation"
   },
   "sidebar": {
     "home": "Home",
