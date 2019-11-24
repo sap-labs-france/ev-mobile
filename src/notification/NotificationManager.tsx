@@ -195,6 +195,7 @@ export default class NotificationManager {
       case UserNotificationType.OCPI_PATCH_STATUS_ERROR:
       case UserNotificationType.SMTP_AUTH_ERROR:
       case UserNotificationType.USER_ACCOUNT_STATUS_CHANGED:
+      case UserNotificationType.USER_ACCOUNT_INACTIVITY:
         break;
     }
   }
