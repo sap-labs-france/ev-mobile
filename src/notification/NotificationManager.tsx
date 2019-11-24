@@ -156,6 +156,7 @@ export default class NotificationManager {
         break;
       // Charger just connected
       case UserNotificationType.CHARGING_STATION_REGISTERED:
+      case UserNotificationType.OFFLINE_CHARGING_STATION:
         // Navigate
         this.navigator.dispatch(
           NavigationActions.navigate({
