@@ -25,7 +25,8 @@
     "second": "s",
     "startDate": "Start Date",
     "endDate": "End Date",
-    "onlyMyTransactions": "My Sessions"
+    "onlyMyTransactions": "My Sessions",
+    "wrongTenant": "You are connected to the wrong tenant"
   },
   "sidebar": {
     "home": "Home",
