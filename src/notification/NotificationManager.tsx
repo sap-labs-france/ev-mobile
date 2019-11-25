@@ -105,29 +105,32 @@ export default class NotificationManager {
 
   public async checkOnHoldNotification() {
     if (this.lastNotification) {
-      await this.processOpenedNotification(this.lastNotification);
-      this.lastNotification = null;
+      const notificationProcessed = await this.processOpenedNotification(this.lastNotification);
+      if (notificationProcessed) {
+        this.lastNotification = null;
+      }
     }
   }
 
-  public async processNotification(notification: Notification) {
+  public async processNotification(notification: Notification): Promise<boolean> {
     // Do nothing when notification is received but user has not pressed it
+    return true;
   }
 
-  public async processOpenedNotification(notificationOpen: NotificationOpen) {
+  public async processOpenedNotification(notificationOpen: NotificationOpen): Promise<boolean> {
     // Get information about the notification that was opened
     const notification: Notification = notificationOpen.notification;
     // No: meaning the user got the notif and clicked on it, then navigate to the right screen
     // User must be logged and Navigation available
     if (!this.centralServerProvider.isUserConnectionValid() || !this.navigator) {
-      // Process it later
+        // Process it later
       this.lastNotification = notificationOpen;
-      return;
+      return false;
     }
     // Check Tenant
     if (this.centralServerProvider.getUserInfo().tenantID !== notification.data.tenantID) {
       Message.showError(I18n.t("general.wrongTenant"));
-      return;
+      return false;
     }
     // Check
     switch (notification.data.notificationType) {
@@ -198,5 +201,6 @@ export default class NotificationManager {
       case UserNotificationType.USER_ACCOUNT_INACTIVITY:
         break;
     }
+    return true;
   }
 }

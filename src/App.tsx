@@ -190,6 +190,8 @@ export default class App extends React.Component<Props, State> {
     this.deepLinkingManager.initialize(this.navigator, this.centralServerProvider);
     // Activate Deep links
     this.deepLinkingManager.startListening();
+    // Check on hold notification
+    this.notificationManager.checkOnHoldNotification();
   }
 
   public async componentWillUnmount() {
