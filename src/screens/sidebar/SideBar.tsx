@@ -46,7 +46,7 @@ export default class SideBar extends BaseScreen<Props, State> {
   public async componentDidMount() {
     await super.componentDidMount();
     // Init User (delay it)
-    setTimeout(this.refresh, 100);
+    setTimeout(this.refresh, 200);
   }
 
   public refresh = async () => {

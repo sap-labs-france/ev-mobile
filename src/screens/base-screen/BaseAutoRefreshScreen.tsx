@@ -37,7 +37,7 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
   public async componentDidFocus() {
     await super.componentDidFocus();
     // Reload
-    setTimeout(() => this.refresh(), 100);
+    setTimeout(() => this.refresh(), 200);
     // Start the timer
     this._startRefreshTimer();
   }
