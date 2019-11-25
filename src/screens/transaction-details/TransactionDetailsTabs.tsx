@@ -1,5 +1,5 @@
 import I18n from "i18n-js";
-import { Container, Icon, Spinner, Tab, TabHeading, Tabs } from "native-base";
+import { Icon, Spinner, Tab, TabHeading, Tabs } from "native-base";
 import React from "react";
 import { ScrollView } from "react-native";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
@@ -114,7 +114,7 @@ export default class TransactionDetailsTabs extends BaseScreen<Props, State> {
                     <Icon style={style.tabIcon} type="AntDesign" name="linechart" />
                   </TabHeading>
                 }>
-                <TransactionChart transactionID={transaction.id} navigation={navigation} isAdmin={isAdmin} />
+                <TransactionChart transactionID={transaction ? transaction.id : null} navigation={navigation} isAdmin={isAdmin} />
               </Tab>
           </Tabs>
         </BackgroundComponent>
