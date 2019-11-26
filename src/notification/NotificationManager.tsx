@@ -187,7 +187,7 @@ export default class NotificationManager {
         this.navigator.dispatch(
           NavigationActions.navigate({
             routeName: 'Chargers',
-            key: `${Utils.randomNumnber()}`
+            key: `${Utils.randomNumber()}`
           })
         );
         break;
