@@ -56,8 +56,13 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     super.setState(state, callback);
   }
 
+  public async componentDidMount() {
+    await super.componentDidMount();
+    // Refresh
+    await this.refresh();
+  }
+
   public getTransactions = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
-    console.log('TransactionsHistory getTransactions ====================================');
     let transactions: DataResult<Transaction>;
     try {
       // Get the Sites
@@ -71,7 +76,6 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
   };
 
   public onBack = () => {
-    console.log('TransactionsHistory onBack ====================================');
     // Back mobile button: Force navigation
     this.props.navigation.navigate({ routeName: "HomeNavigator" });
     // Do not bubble up
@@ -79,7 +83,6 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
   };
 
   public manualRefresh = async () => {
-    console.log('TransactionsHistory manualRefresh ====================================');
     // Display spinner
     this.setState({ refreshing: true });
     // Refresh
@@ -89,7 +92,6 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
   };
 
   public refresh = async () => {
-    console.log('TransactionsHistory refresh ====================================');
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
@@ -97,6 +99,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Refresh All
       const transactions = await this.getTransactions(this.searchText, 0, skip + limit);
+      // Set
       this.setState({
         loading: false,
         transactions: transactions ? transactions.result : [],
@@ -108,7 +111,6 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
   };
 
   public onEndScroll = async () => {
-    console.log('TransactionsHistory onEndScroll ====================================');
     const { count, skip, limit } = this.state;
     // No reached the end?
     if (skip + limit < count || count === -1) {
@@ -124,13 +126,11 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
   };
 
   public search = async (searchText: string) => {
-    console.log('TransactionsHistory search ====================================');
     this.searchText = searchText;
     await this.refresh();
   }
 
   public render = () => {
-    console.log('TransactionsHistory render ====================================');
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading, isAdmin, transactions, isPricingActive, skip, count, limit } = this.state;

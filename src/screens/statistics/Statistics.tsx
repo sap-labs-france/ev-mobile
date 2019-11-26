@@ -1,12 +1,12 @@
 import I18n from "i18n-js";
 import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } from "native-base";
 import React from "react";
-import { Alert, BackHandler } from "react-native";
 import BackgroundComponent from "../../components/background/BackgroundComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
 import I18nManager from "../../I18n/I18nManager";
 import ProviderFactory from "../../provider/ProviderFactory";
 import BaseProps from "../../types/BaseProps";
+import { TransactionDataResult } from "../../types/DataResult";
 import Constants from "../../utils/Constants";
 import Utils from "../../utils/Utils";
 import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
@@ -61,43 +61,47 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     super.setState(state, callback);
   }
 
+  public async componentDidMount() {
+    await super.componentDidMount();
+    // Refresh
+    await this.refresh();
+  }
+
   public refresh = async () => {
     // Get the provider
     const centralServerProvider = await ProviderFactory.getProvider();
     const securityProvider = centralServerProvider.getSecurityProvider();
     // Get the ongoing Transaction
-    await this.getTransactions();
+    const transactionStats = await this.getTransactionsStats();
     // Set
     this.setState({
+      startDate: !this.state.startDate ? new Date(transactionStats.stats.firstTimestamp) : this.state.startDate,
+      endDate: !this.state.endDate ? new Date(transactionStats.stats.lastTimestamp) : this.state.endDate,
+      totalNumberOfSession: transactionStats.stats.count,
+      totalConsumptionWattHours: transactionStats.stats.totalConsumptionWattHours,
+      totalDurationSecs: transactionStats.stats.totalDurationSecs,
+      totalInactivitySecs: transactionStats.stats.totalInactivitySecs,
+      totalPrice: transactionStats.stats.totalPrice,
       isPricingActive: securityProvider.isComponentPricingActive(),
       isAdmin: securityProvider.isAdmin(),
       loading: false
     });
   };
 
-  public getTransactions = async () => {
+  public getTransactionsStats = (): Promise<TransactionDataResult> => {
     try {
       // Get active transaction
-      const transactions = await this.centralServerProvider.getTransactions(
+      return this.centralServerProvider.getTransactions(
         { Statistics: 'history', ...this.state.filters },
         Constants.ONLY_RECORD_COUNT_PAGING
       );
-      // Set
-      this.setState({
-        startDate: !this.state.startDate ? new Date(transactions.stats.firstTimestamp) : this.state.startDate,
-        endDate: !this.state.endDate ? new Date(transactions.stats.lastTimestamp) : this.state.endDate,
-        totalNumberOfSession: transactions.stats.count,
-        totalConsumptionWattHours: transactions.stats.totalConsumptionWattHours,
-        totalDurationSecs: transactions.stats.totalDurationSecs,
-        totalInactivitySecs: transactions.stats.totalInactivitySecs,
-        totalPrice: transactions.stats.totalPrice
-      });
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== 560) {
         Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
       }
     }
+    return null;
   };
 
   public onBack = () => {

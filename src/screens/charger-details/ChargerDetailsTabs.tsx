@@ -50,6 +50,11 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
     super.setState(state, callback);
   }
 
+  public async componentDidMount() {
+    await super.componentDidMount();
+    await this.refresh();
+  }
+
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack();
@@ -59,105 +64,69 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
 
   public refresh = async () => {
     if (this.isMounted()) {
+      const chargerID = Utils.getParamFromNavigation(this.props.navigation, "chargerID", null);
+      const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, "connectorID", null), 10);
       // Get Charger
-      await this.getCharger();
+      const charger = await this.getCharger(chargerID);
+      const connector = charger ? charger.connectors[connectorID - 1] : null;
       // Refresh Admin
       const securityProvider = this.centralServerProvider.getSecurityProvider();
+      // Set
       this.setState({
-        firstLoad: false,
-        isAdmin: securityProvider ? securityProvider.isAdmin() : false
-      });
+          charger,
+          connector: charger ? charger.connectors[connectorID - 1] : null,
+          canDisplayTransaction: charger ? this.canDisplayTransaction(charger, connector) : false,
+          canStartTransaction: charger ? this.canStartTransaction(charger, connector) : false,
+          canStopTransaction: charger ? this.canStopTransaction(charger, connector) : false,
+          isAdmin: securityProvider ? securityProvider.isAdmin() : false,
+          firstLoad: false
+        }
+      );
     }
   };
 
-  public getCharger = async () => {
-    // Get IDs
-    const chargerID = Utils.getParamFromNavigation(this.props.navigation, "chargerID", null);
-    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, "connectorID", null), 10);
+  public getCharger = (id: string): Promise<ChargingStation> => {
     try {
       // Get Charger
-      const charger = await this.centralServerProvider.getCharger({ ID: chargerID });
-      this.setState(
-        {
-          charger,
-          connector: charger.connectors[connectorID - 1]
-        },
-        async () => {
-          // Check Auth
-          this.computeAuths();
-        }
-      );
+      return this.centralServerProvider.getCharger({ ID: id });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
+    return null;
   };
 
-  public computeAuths = () => {
-    // Check Auth
-    this.canStopTransaction();
-    this.canStartTransaction();
-    this.canReadTransaction();
-  };
-
-  public canStopTransaction = () => {
-    const { charger, connector } = this.state;
+  public canStopTransaction = (charger: ChargingStation, connector: Connector): boolean => {
     // Transaction?
     if (connector && connector.activeTransactionID !== 0) {
       // Get the Security Provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Check Auth
-      const isAuth = securityProvider.canStopTransaction(charger.siteArea, connector.activeTagID);
-      // Assign
-      this.setState({
-        canStopTransaction: isAuth
-      });
-    } else {
-      // Not Authorized
-      this.setState({
-        canStopTransaction: false
-      });
+      return securityProvider.canStopTransaction(charger.siteArea, connector.activeTagID);
     }
+    return false;
   };
 
-  public canStartTransaction = () => {
-    const { charger, connector } = this.state;
+  public canStartTransaction = (charger: ChargingStation, connector: Connector): boolean => {
     // Transaction?
     if (connector && connector.activeTransactionID === 0) {
       // Get the Security Provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Check Auth
-      const isAuth = securityProvider.canStartTransaction(charger.siteArea);
-      // Assign
-      this.setState({
-        canStartTransaction: isAuth
-      });
-    } else {
-      // Not Authorized
-      this.setState({
-        canStartTransaction: false
-      });
+      return securityProvider.canStartTransaction(charger.siteArea);
     }
+    return false;
   };
 
-  public canReadTransaction = () => {
-    const { charger, connector } = this.state;
+  public canDisplayTransaction = (charger: ChargingStation, connector: Connector): boolean => {
     // Transaction?
     if (connector && connector.activeTransactionID !== 0) {
       // Get the Security Provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Check Auth
-      const isAuth = securityProvider.canReadTransaction(charger.siteArea, connector.activeTagID);
-      // Assign
-      this.setState({
-        canDisplayTransaction: isAuth
-      });
-    } else {
-      // Not Authorized
-      this.setState({
-        canDisplayTransaction: false
-      });
+      return securityProvider.canReadTransaction(charger.siteArea, connector.activeTagID);
     }
+    return false;
   };
 
   public render() {

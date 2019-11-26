@@ -97,7 +97,7 @@ export default class CentralServerProvider {
       } catch (error) {}
     }
     // Adjust the language according the last login info
-    I18nManager.switchLanguage(this.getUserLanguage());
+    I18nManager.switchLanguage(this.getUserLanguage(), this.currency);
   }
 
   public getCaptchaBaseUrl(): string {
@@ -275,7 +275,7 @@ export default class CentralServerProvider {
       currency: this.decodedToken.currency
     });
     // Adjust the language according the last login info
-    I18nManager.switchLanguage(this.getUserLanguage());
+    I18nManager.switchLanguage(this.getUserLanguage(), this.currency);
     try {
       // Save the User's token
       await this.saveUserMobileToken({
@@ -550,10 +550,10 @@ export default class CentralServerProvider {
   }
 
   public async getSiteImage(id: string): Promise<string> {
+    this.debugMethod("getSiteImage");
     // Check cache
     let foundSiteImage = this.siteImages.find((siteImage) => siteImage.id === id);
     if (!foundSiteImage) {
-      this.debugMethod("getSiteImage");
       // Call
       const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/SiteImage`, {
         headers: this.buildSecuredHeaders(),

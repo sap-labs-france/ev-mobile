@@ -22,7 +22,7 @@ export interface Props extends BaseProps {
 
 interface State {
   loading?: boolean;
-  transactionConsumption?: Transaction;
+  transaction?: Transaction;
   values?: Consumption[];
   consumptionValues?: ChartPoint[];
   stateOfChargeValues?: ChartPoint[];
@@ -43,7 +43,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     props.isAdmin = false;
     this.state = {
       loading: true,
-      transactionConsumption: null,
+      transaction: null,
       values: [],
       consumptionValues: null,
       stateOfChargeValues: null
@@ -54,7 +54,14 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     super.setState(state, callback);
   }
 
-  public getTransactionConsumption = async () => {
+  public async componentDidMount() {
+    await super.componentDidMount();
+    // Refresh
+    await this.refresh();
+  }
+
+  public getTransactionConsumptions = async ():
+      Promise<{ transaction: Transaction; values: Consumption[], consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[] }> => {
     const { transactionID } = this.props;
     try {
       // Active Transaction?
@@ -83,21 +90,13 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
             }
           }
           // Set
-          this.setState({
-            transactionConsumption: transaction,
+          return {
+            transaction,
             values: transaction.values,
             consumptionValues,
             stateOfChargeValues
-          });
+          };
         }
-      } else {
-        // Clear
-        this.setState({
-          transactionConsumption: null,
-          values: null,
-          consumptionValues: null,
-          stateOfChargeValues: null
-        });
       }
     } catch (error) {
       // Check if HTTP?
@@ -106,17 +105,26 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
       }
     }
+    // Clear
+    return {
+      transaction: null,
+      values: null,
+      consumptionValues: null,
+      stateOfChargeValues: null
+    };
   };
 
   public refresh = async () => {
-    const { transactionConsumption } = this.state;
+    const { transaction } = this.state;
     // Component Mounted?
-    if (this.isMounted() && (!transactionConsumption || !transactionConsumption.stop)) {
+    let consumptions = {};
+    if (this.isMounted() && (!transaction || !transaction.stop)) {
       // Refresh Consumption
-      await this.getTransactionConsumption();
+      consumptions = await this.getTransactionConsumptions();
     }
     this.setState({
-      loading: false
+      loading: false,
+      ...consumptions
     });
   };
 
@@ -231,7 +239,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
 
   public render() {
     const style = computeStyleSheet();
-    const { loading, transactionConsumption, consumptionValues, stateOfChargeValues } = this.state;
+    const { loading, transaction, consumptionValues, stateOfChargeValues } = this.state;
     const { showTransactionDetails, isAdmin, navigation } = this.props;
     const chartDefinition = this.computeChartDefinition(consumptionValues, stateOfChargeValues);
     return (
@@ -240,12 +248,12 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       ) : (
         <View style={style.container}>
           <BackgroundComponent navigation={navigation} active={false}>
-            {showTransactionDetails && transactionConsumption && (
-              <TransactionHeaderComponent navigation={navigation} transaction={transactionConsumption} isAdmin={isAdmin} displayNavigationIcon={false} />
+            {showTransactionDetails && transaction && (
+              <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} displayNavigationIcon={false} />
             )}
             {consumptionValues && consumptionValues.length > 1 ? (
               <LineChart
-                style={showTransactionDetails && transactionConsumption ? style.chartWithHeader : style.chart}
+                style={showTransactionDetails && transaction ? style.chartWithHeader : style.chart}
                 data={chartDefinition.data}
                 chartDescription={{ text: "" }}
                 legend={{

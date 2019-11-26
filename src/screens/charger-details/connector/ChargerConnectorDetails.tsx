@@ -33,7 +33,6 @@ export interface Props extends BaseProps {
 interface State {
   loading?: boolean;
   transaction?: Transaction;
-  userImageLoaded?: boolean;
   userImage?: string;
   siteImage?: string;
   elapsedTimeFormatted?: string;
@@ -54,7 +53,6 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     this.state = {
       loading: true,
       transaction: null,
-      userImageLoaded: false,
       userImage: null,
       siteImage: null,
       elapsedTimeFormatted: "-",
@@ -72,105 +70,87 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   }
 
   public async componentDidMount() {
-    const { charger } = this.props;
     await super.componentDidMount();
-    // Get the Site Image (only first time)
-    if (charger && charger.siteArea && this.isMounted()) {
-      await this.getSiteImage(charger.siteArea.siteID);
-    }
+    // Refresh
+    await this.refresh();
   }
 
-  public getSiteImage = async (siteID: string) => {
+  public getSiteImage = async (siteID: string): Promise<string> => {
     try {
-      if (!this.state.siteImage) {
-        // Get it
-        const image = await this.centralServerProvider.getSiteImage(siteID);
-        if (image) {
-          this.setState({ siteImage: image });
-        } else {
-          this.setState({ siteImage: null });
-        }
-      }
+      return this.centralServerProvider.getSiteImage(siteID);
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
+    return null;
   };
 
-  public getTransaction = async () => {
-    const { connector } = this.props;
+  public getTransaction = async (transactionID: number): Promise<Transaction> => {
     try {
-      // Is their a transaction?
-      if (connector && connector.activeTransactionID) {
-        // Yes: Set data
-        const transaction = await this.centralServerProvider.getTransaction({
-          ID: connector.activeTransactionID
-        });
-        // Found?
-        if (transaction) {
-          // Get user image
-          this.getUserImage(transaction.user);
+      return this.centralServerProvider.getTransaction({
+          ID: transactionID
         }
-        this.setState({
-          transaction
-        });
-      } else {
-        this.setState({
-          elapsedTimeFormatted: Constants.DEFAULT_DURATION,
-          userImage: null,
-          transaction: null
-        });
-      }
+      );
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== 560) {
-        // Other common Error
         Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
       }
     }
+    return null;
   };
 
-  public getUserImage = async (user: User) => {
-    const { userImageLoaded } = this.state;
+  public getUserImage = async (user: User): Promise<string> => {
     try {
       // User provided?
       if (user) {
-        // Not already loaded?
-        if (!userImageLoaded) {
-          // Get it
-          const image = await this.centralServerProvider.getUserImage({ ID: user.id });
-          this.setState({
-            userImageLoaded: true,
-            userImage: image ? image : null
-          });
-        }
-      } else {
-        // Set
-        this.setState({
-          userImageLoaded: false,
-          userImage: null
-        });
+        return await this.centralServerProvider.getUserImage({ ID: user.id });
       }
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
+    return null;
   };
 
   public refresh = async () => {
-    // Get Current Transaction
-    await this.getTransaction();
-    // Check to enable the buttons after a certain period of time
-    this.handleStartStopDisabledButton();
-    // Compute Duration
-    this.computeDurationInfos();
-    // Get the provider
-    const centralServerProvider = await ProviderFactory.getProvider();
-    const securityProvider = centralServerProvider.getSecurityProvider();
-    this.setState({
-      isPricingActive: securityProvider.isComponentPricingActive(),
-      loading: false
-    });
+    const { charger, connector } = this.props;
+    let siteImage = null;
+    let userImage = null;
+    let transaction = null;
+    if (this.isMounted()) {
+      // Get the Site Image
+      if (charger && charger.siteArea && !this.state.siteImage) {
+        siteImage = await this.getSiteImage(charger.siteArea.siteID);
+      }
+      // Get Current Transaction
+      if (connector && connector.activeTransactionID) {
+        transaction = await this.getTransaction(connector.activeTransactionID);
+        if (transaction) {
+          // Get User Picture
+          if (!this.state.transaction || (transaction && transaction.id !== this.state.transaction.id)) {
+            userImage = await this.getUserImage(transaction.user);
+          }
+        }
+      }
+      // Check to enable the buttons after a certain period of time
+      const startStopTransactionButtonStatus = this.getStartStopTransactionButtonStatus();
+      // Compute Duration
+      const durationInfos = this.getDurationInfos();
+      // Get the provider
+      const centralServerProvider = await ProviderFactory.getProvider();
+      const securityProvider = centralServerProvider.getSecurityProvider();
+      // Set
+      this.setState({
+        transaction,
+        userImage: userImage ? userImage : this.state.userImage,
+        siteImage: siteImage ? siteImage : this.state.siteImage,
+        isPricingActive: securityProvider.isComponentPricingActive(),
+        ...startStopTransactionButtonStatus,
+        ...durationInfos,
+        loading: false
+      });
+    }
   };
 
   public manualRefresh = async () => {
@@ -251,7 +231,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     }
   };
 
-  public handleStartStopDisabledButton() {
+  public getStartStopTransactionButtonStatus(): { buttonDisabled?: boolean; startTransactionNbTrial?: number; } {
     const { connector } = this.props;
     const { startTransactionNbTrial } = this.state;
     // Check if the Start/Stop Button should stay disabled
@@ -260,32 +240,33 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       (connector.status === Constants.CONN_STATUS_PREPARING && startTransactionNbTrial === 0))
     ) {
       // Button are set to available after the nbr of trials
-      this.setState({
+      return {
         buttonDisabled: false
-      });
+      };
       // Still trials? (only for Start Transaction)
     } else if (startTransactionNbTrial > 0) {
       // Trial - 1
-      this.setState({
+      return {
         startTransactionNbTrial: startTransactionNbTrial > 0 ? startTransactionNbTrial - 1 : 0
-      });
+      };
       // Transaction ongoing
     } else if (connector && connector.activeTransactionID !== 0) {
       // Transaction has started, enable the buttons again
-      this.setState({
+      return {
         startTransactionNbTrial: 0,
         buttonDisabled: false
-      });
+      };
       // Transaction is stopped (activeTransactionID == 0)
     } else if (connector && connector.status === Constants.CONN_STATUS_FINISHING) {
       // Disable the button until the user unplug the cable
-      this.setState({
+      return {
         buttonDisabled: true
-      });
+      };
     }
+    return {};
   }
 
-  public computeDurationInfos = () => {
+  public getDurationInfos = (): {totalInactivitySecs?: number; elapsedTimeFormatted?: string; inactivityFormatted?: string;} => {
     const { transaction } = this.state;
     const { connector } = this.props;
     // Component Mounted?
@@ -306,11 +287,11 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
           inactivityFormatted = Utils.formatDurationHHMMSS(transaction.currentTotalInactivitySecs, false);
         }
         // Set
-        this.setState({
+        return {
           totalInactivitySecs: transaction.currentTotalInactivitySecs,
           elapsedTimeFormatted,
           inactivityFormatted
-        });
+        };
       // Basic User: Use the connector data
       } else if (connector && connector.activeTransactionID) {
         let elapsedTimeFormatted = Constants.DEFAULT_DURATION;
@@ -327,12 +308,15 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
           inactivityFormatted = Utils.formatDurationHHMMSS(connector.totalInactivitySecs, false);
         }
         // Set
-        this.setState({
+        return {
           totalInactivitySecs: connector ? connector.totalInactivitySecs : 0,
           elapsedTimeFormatted,
           inactivityFormatted
-        });
+        };
       }
+    }
+    return {
+      elapsedTimeFormatted: Constants.DEFAULT_DURATION
     }
   };
 

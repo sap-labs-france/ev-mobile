@@ -83,7 +83,7 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
     // Start the timer
     if (!this.timerRefresh) {
       // First refresh
-      setTimeout(() => this.refresh(), 100);
+      // setTimeout(() => this.refresh(), 200);
       // Timer
       this.timerRefresh = setTimeout(async () => {
         // Refresh

@@ -1,9 +1,7 @@
 import i18n from "i18n-js";
 import moment from "moment";
-import CentralServerProvider from "provider/CentralServerProvider";
 import { I18nManager as I18nReactNativeManager } from "react-native";
 import * as RNLocalize from "react-native-localize";
-import ProviderFactory from "../provider/ProviderFactory";
 import Constants from "../utils/Constants";
 import Utils from "../utils/Utils";
 import deJsonLanguage from "./languages/de.json";
@@ -11,7 +9,7 @@ import enJsonLanguage from "./languages/en.json";
 import frJsonLanguage from "./languages/fr.json";
 
 export default class I18nManager {
-  private static centralServerProvider: CentralServerProvider;
+  private static currency: string;
 
   public static async initialize() {
     // Get the supported locales for moment
@@ -37,22 +35,22 @@ export default class I18nManager {
     // Default
     i18n.locale = languageTag;
     moment.locale(languageTag);
-    // Get the Provider (let it at the end of this method otherwise language switch won't work)
-    I18nManager.centralServerProvider = await ProviderFactory.getProvider();
   }
 
-  public static switchLocale(locale: string) {
+  public static switchLocale(locale: string, currency: string) {
     if (locale) {
-      return I18nManager.switchLanguage(Utils.getLanguageFromLocale(locale));
+      return I18nManager.switchLanguage(Utils.getLanguageFromLocale(locale), currency);
     }
   }
 
-  public static switchLanguage(language: string) {
+  public static switchLanguage(language: string, currency: string) {
     // Supported languages?
     if (language && Constants.SUPPORTED_LANGUAGES.includes(language)) {
       i18n.locale = language;
       moment.locale(language);
     }
+    // Keep the currency
+    I18nManager.currency = currency;
   }
 
   public static formatNumber(value: number): string {
@@ -60,7 +58,7 @@ export default class I18nManager {
   }
 
   public static formatCurrency(value: number): string {
-    const currency = I18nManager.centralServerProvider.getUserCurrency();
+    const currency = I18nManager.currency;
     // Format Currency
     if (currency) {
       return new Intl.NumberFormat(i18n.locale, { style: 'currency', currency }).format(value);

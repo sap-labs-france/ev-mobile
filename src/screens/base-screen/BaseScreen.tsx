@@ -33,6 +33,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     this.mounted = true;
     // Get provider
     this.centralServerProvider = await ProviderFactory.getProvider();
+    // Remove Backhandler for Android
     BackHandler.removeEventListener("hardwareBackPress", this.onBack);
   }
 

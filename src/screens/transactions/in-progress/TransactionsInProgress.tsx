@@ -53,6 +53,12 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     super.setState(state, callback);
   }
 
+  public async componentDidMount() {
+    await super.componentDidMount();
+    // Refresh
+    await this.refresh();
+  }
+
   public getTransactionsInProgress = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
     let transactions;
     try {
@@ -90,6 +96,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
       const transactions = await this.getTransactionsInProgress(this.searchText, 0, skip + limit);
       // Refresh Admin
       const securityProvider = this.centralServerProvider.getSecurityProvider();
+      // Set
       this.setState({
         loading: false,
         transactions: transactions ? transactions.result : [],
@@ -107,7 +114,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     // No: get next sites
       const transactions = await this.getTransactionsInProgress(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
-      this.setState((prevState, props) => ({
+      this.setState((prevState) => ({
         transactions: transactions ? [...prevState.transactions, ...transactions.result] : prevState.transactions,
         skip: prevState.skip + Constants.PAGING_SIZE,
         refreshing: false
