@@ -10,6 +10,7 @@ import commonColor from "../../../theme/variables/commonColor";
 import BaseProps from "../../../types/BaseProps";
 import Consumption from "../../../types/Consumption";
 import Transaction from "../../../types/Transaction";
+import Constants from "../../../utils/Constants";
 import Utils from "../../../utils/Utils";
 import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
 import computeStyleSheet from "./TransactionChartStyles";
@@ -48,6 +49,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       consumptionValues: null,
       stateOfChargeValues: null
     };
+    // Set Refresh
+    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {

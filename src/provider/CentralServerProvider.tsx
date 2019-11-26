@@ -51,12 +51,12 @@ export default class CentralServerProvider {
       // Debug Axios
       axios.interceptors.request.use(request => {
         // tslint:disable-next-line: no-console
-        console.log('Axios - Request:', request)
+        console.log(new Date().toISOString() + ' - Axios - Request:', request)
         return request;
       });
       axios.interceptors.response.use(response => {
         // tslint:disable-next-line: no-console
-        console.log('Axios - Response:', response)
+        console.log(new Date().toISOString() + ' - Axios - Response:', response)
         return response;
       });
     }
