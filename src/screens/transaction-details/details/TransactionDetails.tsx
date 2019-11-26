@@ -41,7 +41,6 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    console.log('TransactionDetails constructor ====================================');
     this.state = {
       loading: true,
       userImage: null,
@@ -62,28 +61,21 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     const { transaction } = this.props;
-    console.log('TransactionDetails componentDidMount ====================================');
     await super.componentDidMount();
-    console.log('TransactionDetails componentDidMount ====================================');
     // Get the Site Image
     let siteImage = null;
     let userImage = null;
     if (transaction && transaction.siteID && this.isMounted()) {
-      console.log('TransactionDetails componentDidMount - getSiteImage ====================================');
       siteImage = await this.getSiteImage(transaction.siteID);
     }
     // Get the User Image
     if (transaction && transaction.user && this.isMounted()) {
-      console.log('TransactionDetails componentDidMount - getUserImage ====================================');
       userImage = await this.getUserImage(transaction.user);
     }
-    console.log('TransactionDetails componentDidMount - computeDurationInfos ====================================');
     // Compute Duration
     this.computeDurationInfos();
     // Get the provider
-    console.log('TransactionDetails componentDidMount - centralServerProvider ====================================');
     const centralServerProvider = await ProviderFactory.getProvider();
-    console.log('TransactionDetails componentDidMount - securityProvider ====================================');
     const securityProvider = centralServerProvider.getSecurityProvider();
     this.setState({
       loading: false,
