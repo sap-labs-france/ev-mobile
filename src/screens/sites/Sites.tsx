@@ -126,6 +126,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public render() {
+    console.log(this.constructor.name + ' render ====================================');
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading, skip, count, limit } = this.state;

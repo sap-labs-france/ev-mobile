@@ -211,6 +211,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   };
 
   public render() {
+    console.log(this.constructor.name + ' render ====================================');
     const style = computeStyleSheet();
     const { transaction } = this.props;
     const { loading, siteImage, isPricingActive } = this.state;

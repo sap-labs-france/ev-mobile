@@ -83,7 +83,9 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
     // Start the timer
     if (!this.timerRefresh) {
       // First refresh
-      // setTimeout(() => this.refresh(), 200);
+      if (this.props.navigation.isFocused()) {
+        setTimeout(() => this.refresh(), 250);
+      }
       // Timer
       this.timerRefresh = setTimeout(async () => {
         // Refresh
@@ -93,8 +95,13 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
           // Component Mounted?
           if (this.mounted) {
             try {
-              // Execute
-              await this.refresh();
+              if (this.props.navigation.isFocused()) {
+                // Execute
+                await this.refresh();
+              } else {
+                // Stop the timer
+                this.clearRefreshTimer();
+              }
             } catch (error) {
               // Ignore
             }

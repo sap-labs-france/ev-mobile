@@ -74,6 +74,7 @@ export default class TransactionDetailsTabs extends BaseScreen<Props, State> {
   };
 
   public render() {
+    console.log(this.constructor.name + ' render ====================================');
     const style = computeStyleSheet();
     const { transaction, isAdmin, firstLoad } = this.state;
     const { navigation } = this.props;

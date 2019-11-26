@@ -130,6 +130,7 @@ export default class ChargerDetailsTabs extends BaseAutoRefreshScreen<Props, Sta
   };
 
   public render() {
+    console.log(this.constructor.name + ' render ====================================');
     const style = computeStyleSheet();
     const connectorID = parseInt(Utils.getParamFromNavigation(this.props.navigation, "connectorID", null), 10);
     const { charger, connector, isAdmin, firstLoad, canStopTransaction, canStartTransaction, canDisplayTransaction } = this.state;

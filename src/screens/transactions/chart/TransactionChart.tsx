@@ -241,6 +241,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   }
 
   public render() {
+    console.log(this.constructor.name + ' render ====================================');
     const style = computeStyleSheet();
     const { loading, transaction, consumptionValues, stateOfChargeValues } = this.state;
     const { showTransactionDetails, isAdmin, navigation } = this.props;

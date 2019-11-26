@@ -143,8 +143,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       // Set
       this.setState({
         transaction,
-        userImage: userImage ? userImage : this.state.userImage,
         siteImage: siteImage ? siteImage : this.state.siteImage,
+        userImage: userImage ? userImage : transaction ? this.state.userImage : null,
         isPricingActive: securityProvider.isComponentPricingActive(),
         ...startStopTransactionButtonStatus,
         ...durationInfos,
@@ -512,6 +512,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   };
 
   public render() {
+    console.log(this.constructor.name + ' render ====================================');
     const style = computeStyleSheet();
     const { connector, canStopTransaction, canStartTransaction } = this.props;
     const { loading, siteImage, isPricingActive } = this.state;
