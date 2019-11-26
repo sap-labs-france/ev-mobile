@@ -69,12 +69,6 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
-    await super.componentDidMount();
-    // Refresh
-    await this.refresh();
-  }
-
   public getSiteImage = async (siteID: string): Promise<string> => {
     try {
       return this.centralServerProvider.getSiteImage(siteID);

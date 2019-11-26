@@ -57,8 +57,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     if (securityProvider && !securityProvider.isComponentOrganizationActive()) {
       this.props.navigation.navigate("Chargers");
     }
-    // Refresh
-    await this.refresh();
   }
 
   public getSites = async (searchText = "", skip: number, limit: number): Promise<DataResult<Site>> => {

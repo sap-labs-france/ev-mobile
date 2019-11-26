@@ -48,12 +48,6 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     };
   }
 
-  public async componentDidMount() {
-    await super.componentDidMount();
-    // Refresh
-    await this.refresh();
-  }
-
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
   }

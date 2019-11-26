@@ -1,3 +1,4 @@
+import moment from "moment";
 import BaseProps from "../../types/BaseProps";
 import Constants from "../../utils/Constants";
 import BaseScreen from "./BaseScreen";
@@ -13,6 +14,7 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
   private timerRefreshActive: boolean;
   private refreshOngoing: boolean = false;
   private refreshPeriodMillis: number;
+  private lastRefreshDate: Date;
 
   constructor(props: Props) {
     super(props);
@@ -25,6 +27,12 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
   public async componentDidMount() {
     await super.componentDidMount();
     console.log(this.constructor.name + ' componentDidMount ====================================');
+    // Refresh
+    if (this.props.navigation.isFocused() && this.canRefresh()) {
+      // Refresh
+      await this.refresh();
+      this.lastRefreshDate = new Date();
+    }
     // Start the timer
     this.startRefreshTimer();
   }
@@ -38,9 +46,24 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
 
   public async componentDidFocus() {
     await super.componentDidFocus();
+    console.log('componentDidFocus ====================================');
+    console.log(this.isMounted());
+    console.log('====================================');
     console.log(this.constructor.name + ' componentDidFocus ====================================');
+    // Refresh
+    if (this.isMounted() && this.props.navigation.isFocused() && this.canRefresh()) {
+      this.refresh();
+      this.lastRefreshDate = new Date();
+    }
     // Start the timer
     this.startRefreshTimer();
+  }
+
+  private canRefresh(): boolean {
+    if (!this.lastRefreshDate) {
+      return true;
+    }
+    return moment().diff(this.lastRefreshDate) > Constants.AUTO_REFRESH_DUPS_INTERVAL;
   }
 
   public async componentDidBlur() {
@@ -82,10 +105,6 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
   private startRefreshTimer() {
     // Start the timer
     if (!this.timerRefresh) {
-      // First refresh
-      if (this.props.navigation.isFocused()) {
-        setTimeout(() => this.refresh(), 250);
-      }
       // Timer
       this.timerRefresh = setTimeout(async () => {
         // Refresh
@@ -96,8 +115,12 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
           if (this.mounted) {
             try {
               if (this.props.navigation.isFocused()) {
-                // Execute
-                await this.refresh();
+                // Already refreshed?
+                if (this.canRefresh()) {
+                  // No: Refresh
+                  await this.refresh();
+                  this.lastRefreshDate = new Date();
+                }
               } else {
                 // Stop the timer
                 this.clearRefreshTimer();

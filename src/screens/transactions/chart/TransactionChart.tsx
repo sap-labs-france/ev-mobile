@@ -57,12 +57,6 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
-    await super.componentDidMount();
-    // Refresh
-    await this.refresh();
-  }
-
   public getTransactionConsumptions = async ():
       Promise<{ transaction: Transaction; values: Consumption[], consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[] }> => {
     const { transactionID } = this.props;

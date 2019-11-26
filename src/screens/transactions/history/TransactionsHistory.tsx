@@ -56,12 +56,6 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
-    await super.componentDidMount();
-    // Refresh
-    await this.refresh();
-  }
-
   public getTransactions = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
     let transactions: DataResult<Transaction>;
     try {

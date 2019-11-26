@@ -27,7 +27,6 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   }
 
   public async componentDidMount() {
-    this.mounted = true;
     // Add listeners
     this.didFocus = this.props.navigation.addListener("didFocus", this.componentDidFocus.bind(this));
     this.didBlur = this.props.navigation.addListener("didBlur", this.componentDidBlur.bind(this));
@@ -35,6 +34,8 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     this.centralServerProvider = await ProviderFactory.getProvider();
     // Remove Backhandler for Android
     BackHandler.removeEventListener("hardwareBackPress", this.onBack);
+    // Ok
+    this.mounted = true;
   }
 
   public async componentWillUnmount() {
