@@ -24,7 +24,6 @@ export interface Props extends BaseProps {
 
 interface State {
   loading?: boolean;
-  userImageLoaded?: boolean;
   userImage?: string;
   siteImage?: string;
   elapsedTimeFormatted?: string;
@@ -42,9 +41,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
 
   constructor(props: Props) {
     super(props);
+    console.log('TransactionDetails constructor ====================================');
     this.state = {
       loading: true,
-      userImageLoaded: false,
       userImage: null,
       siteImage: null,
       elapsedTimeFormatted: "-",
@@ -63,22 +62,33 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     const { transaction } = this.props;
+    console.log('TransactionDetails componentDidMount ====================================');
     await super.componentDidMount();
+    console.log('TransactionDetails componentDidMount ====================================');
     // Get the Site Image
-    if (transaction.siteID && this.isMounted()) {
-      await this.getSiteImage(transaction.siteID);
+    let siteImage = null;
+    let userImage = null;
+    if (transaction && transaction.siteID && this.isMounted()) {
+      console.log('TransactionDetails componentDidMount - getSiteImage ====================================');
+      siteImage = await this.getSiteImage(transaction.siteID);
     }
     // Get the User Image
-    if (transaction.user && this.isMounted()) {
-      await this.getUserImage(transaction.user);
+    if (transaction && transaction.user && this.isMounted()) {
+      console.log('TransactionDetails componentDidMount - getUserImage ====================================');
+      userImage = await this.getUserImage(transaction.user);
     }
+    console.log('TransactionDetails componentDidMount - computeDurationInfos ====================================');
     // Compute Duration
     this.computeDurationInfos();
     // Get the provider
+    console.log('TransactionDetails componentDidMount - centralServerProvider ====================================');
     const centralServerProvider = await ProviderFactory.getProvider();
+    console.log('TransactionDetails componentDidMount - securityProvider ====================================');
     const securityProvider = centralServerProvider.getSecurityProvider();
     this.setState({
       loading: false,
+      siteImage,
+      userImage,
       isPricingActive: securityProvider.isComponentPricingActive()
     });
   }
@@ -87,47 +97,23 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     await super.componentWillUnmount();
   }
 
-  public getSiteImage = async (siteID: string) => {
+  public getSiteImage = (siteID: string): Promise<string> => {
     try {
-      if (!this.state.siteImage) {
-        // Get it
-        const image = await this.centralServerProvider.getSiteImage(siteID);
-        if (image) {
-          this.setState({ siteImage: image });
-        } else {
-          this.setState({ siteImage: null });
-        }
-      }
+      return this.centralServerProvider.getSiteImage(siteID);
     } catch (error) {
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
     }
+    return null;
   };
 
-  public getUserImage = async (user: User) => {
-    const { userImageLoaded } = this.state;
+  public getUserImage = async (user: User): Promise<string> => {
     try {
-      // User provided?
-      if (user) {
-        // Not already loaded?
-        if (!userImageLoaded) {
-          // Get it
-          const image = await this.centralServerProvider.getUserImage({ ID: user.id });
-          this.setState({
-            userImageLoaded: true,
-            userImage: image ? image : null
-          });
-        }
-      } else {
-        // Set
-        this.setState({
-          userImageLoaded: false,
-          userImage: null
-        });
-      }
+      return this.centralServerProvider.getUserImage({ ID: user.id });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
     }
+    return null;
   };
 
   public computeDurationInfos = () => {

@@ -80,10 +80,6 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     }
   }
 
-  public async componentWillUnmount() {
-    await super.componentWillUnmount();
-  }
-
   public getSiteImage = async (siteID: string) => {
     try {
       if (!this.state.siteImage) {

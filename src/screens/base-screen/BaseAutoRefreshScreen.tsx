@@ -24,26 +24,28 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
 
   public async componentDidMount() {
     await super.componentDidMount();
+    console.log(this.constructor.name + ' componentDidMount ====================================');
     // Start the timer
-    this._startRefreshTimer();
+    this.startRefreshTimer();
   }
 
   public async componentWillUnmount() {
     await super.componentWillUnmount();
+    console.log(this.constructor.name + ' componentWillUnmount ====================================');
     // Clear the timer
     this.clearRefreshTimer();
   }
 
   public async componentDidFocus() {
     await super.componentDidFocus();
-    // Reload
-    setTimeout(() => this.refresh(), 200);
+    console.log(this.constructor.name + ' componentDidFocus ====================================');
     // Start the timer
-    this._startRefreshTimer();
+    this.startRefreshTimer();
   }
 
   public async componentDidBlur() {
     await super.componentDidBlur();
+    console.log(this.constructor.name + ' componentDidBlur ====================================');
     // Clear the timer
     this.clearRefreshTimer();
   }
@@ -77,9 +79,12 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
     console.log("BaseAutoRefreshScreen: Refresh not implemented!!!");
   }
 
-  private _startRefreshTimer() {
+  private startRefreshTimer() {
     // Start the timer
     if (!this.timerRefresh) {
+      // First refresh
+      setTimeout(() => this.refresh(), 100);
+      // Timer
       this.timerRefresh = setTimeout(async () => {
         // Refresh
         if (this.timerRefreshActive && !this.refreshOngoing) {
@@ -109,7 +114,7 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
       // Clear the timer
       this.clearRefreshTimer();
       // Start the timer
-      this._startRefreshTimer();
+      this.startRefreshTimer();
     }
   }
 

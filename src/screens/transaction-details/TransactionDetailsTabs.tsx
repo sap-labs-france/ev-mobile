@@ -40,12 +40,6 @@ export default class TransactionDetailsTabs extends BaseScreen<Props, State> {
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
-    await super.componentDidMount();
-    // Refresh Charger
-    await this.refresh();
-  }
-
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack();

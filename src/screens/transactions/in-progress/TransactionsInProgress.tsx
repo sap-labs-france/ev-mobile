@@ -6,7 +6,6 @@ import BackgroundComponent from "../../../components/background/BackgroundCompon
 import HeaderComponent from "../../../components/header/HeaderComponent";
 import ListEmptyTextComponent from "../../../components/list/empty-text/ListEmptyTextComponent";
 import ListFooterComponent from "../../../components/list/footer/ListFooterComponent";
-import SimpleSearchComponent from "../../../components/search/simple/SimpleSearchComponent";
 import TransactionInProgressComponent from "../../../components/transaction/in-progress/TransactionInProgressComponent";
 import BaseProps from "../../../types/BaseProps";
 import { DataResult } from "../../../types/DataResult";
@@ -136,10 +135,6 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
             rightAction={navigation.openDrawer}
             rightActionIcon={"menu"}
           />
-          {/* <SimpleSearchComponent
-            onChange={(searchText) => this.search(searchText)}
-            navigation={navigation}
-          /> */}
           <View style={style.content}>
             {loading ? (
               <Spinner style={style.spinner} />
