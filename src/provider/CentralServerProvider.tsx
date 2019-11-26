@@ -92,6 +92,7 @@ export default class CentralServerProvider {
       try {
         // Decode the token
         this.decodedToken = jwtDecode(this.token);
+        // Build Security Provider
         this.securityProvider = new SecurityProvider(this.decodedToken);
       } catch (error) {}
     }
@@ -286,6 +287,8 @@ export default class CentralServerProvider {
       // tslint:disable-next-line: no-console
       console.log('Error saving Mobile Token:', error);
     }
+    // Check on hold notification
+    this.notificationManager.checkOnHoldNotification();
   }
 
   public async register(tenant: string, name: string, firstName: string, email: string,
