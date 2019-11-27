@@ -4,11 +4,13 @@ import { Container, Content, Header, Icon, ListItem, Text, Thumbnail, View } fro
 import React from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+import { NavigationActions, StackActions } from 'react-navigation';
 import logo from '../../../assets/logo-low.png';
 import noPhoto from '../../../assets/no-photo-inverse.png';
 import BackgroundComponent from '../../components/background/BackgroundComponent';
 import BaseProps from '../../types/BaseProps';
 import Constants from '../../utils/Constants';
+import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './SideBarStyles';
 
@@ -94,12 +96,17 @@ export default class SideBar extends BaseScreen<Props, State> {
 
   public navigateTo = (screen: string, params = {}) => {
     // Navigate
-    this.props.navigation.navigate({ routeName: screen, params });
+    this.props.navigation.navigate({
+      routeName: screen,
+      // key: `${Utils.randomNumber()}`,
+      params
+    });
     // Close
     this.props.navigation.closeDrawer();
   };
 
   public render() {
+    console.log(this.constructor.name + ' render ====================================');
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { userName, userImage, tenantName, isComponentOrganizationActive } = this.state;

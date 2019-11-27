@@ -35,11 +35,6 @@ export default class Eula extends BaseScreen<Props, State> {
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
-    await super.componentDidMount();
-    this.refresh();
-  }
-
   public refresh = async () => {
     await this.endUserLicenseAgreement();
   };

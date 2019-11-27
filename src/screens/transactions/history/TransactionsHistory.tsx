@@ -93,12 +93,13 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Refresh All
       const transactions = await this.getTransactions(this.searchText, 0, skip + limit);
+      // Set
       this.setState({
         loading: false,
         transactions: transactions ? transactions.result : [],
         count: transactions ? transactions.count : 0,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,
-        isPricingActive: securityProvider.isComponentPricingActive()
+        isPricingActive: securityProvider ? securityProvider.isComponentPricingActive() : false
       });
     }
   };

@@ -10,10 +10,11 @@ export default class Constants {
   public static readonly DEFAULT_DURATION_WITH_SECS = '00:00:00';
 
   // Auto Refresh
+  public static readonly AUTO_REFRESH_DUPS_INTERVAL = 2 * 1000;
   public static readonly AUTO_REFRESH_ON_ERROR_PERIOD_MILLIS = 2 * 1000;
-  public static readonly AUTO_REFRESH_SHORT_PERIOD_MILLIS = 4 * 1000;
-  public static readonly AUTO_REFRESH_MEDIUM_PERIOD_MILLIS = 8 * 1000;
-  public static readonly AUTO_REFRESH_LONG_PERIOD_MILLIS = 16 * 1000;
+  public static readonly AUTO_REFRESH_SHORT_PERIOD_MILLIS = 3 * 1000;
+  public static readonly AUTO_REFRESH_MEDIUM_PERIOD_MILLIS = 10 * 1000;
+  public static readonly AUTO_REFRESH_LONG_PERIOD_MILLIS = 30 * 1000;
 
   public static readonly SEARCH_CHECK_PERIOD_MILLIS = 50;
   public static readonly ANIMATION_PERIOD_MILLIS = 5 * 1000;

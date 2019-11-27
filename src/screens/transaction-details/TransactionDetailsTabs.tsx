@@ -36,14 +36,20 @@ export default class TransactionDetailsTabs extends BaseScreen<Props, State> {
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
-    super.setState(state, callback);
-  }
-
   public async componentDidMount() {
     await super.componentDidMount();
-    // Refresh Charger
-    await this.refresh();
+    // Get Charger
+    await this.getTransaction();
+    // Refresh Admin
+    const securityProvider = this.centralServerProvider.getSecurityProvider();
+    this.setState({
+      firstLoad: false,
+      isAdmin: securityProvider ? securityProvider.isAdmin() : false
+    });
+  }
+
+  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+    super.setState(state, callback);
   }
 
   public onBack = () => {
@@ -51,19 +57,6 @@ export default class TransactionDetailsTabs extends BaseScreen<Props, State> {
     this.props.navigation.goBack();
     // Do not bubble up
     return true;
-  };
-
-  public refresh = async () => {
-    if (this.isMounted()) {
-      // Get Charger
-      await this.getTransaction();
-      // Refresh Admin
-      const securityProvider = this.centralServerProvider.getSecurityProvider();
-      this.setState({
-        firstLoad: false,
-        isAdmin: securityProvider ? securityProvider.isAdmin() : false
-      });
-    }
   };
 
   public getTransaction = async () => {
@@ -81,10 +74,14 @@ export default class TransactionDetailsTabs extends BaseScreen<Props, State> {
   };
 
   public render() {
+    console.log(this.constructor.name + ' render ====================================');
     const style = computeStyleSheet();
     const { transaction, isAdmin, firstLoad } = this.state;
     const { navigation } = this.props;
-    const connectorLetter = transaction ? Utils.getConnectorLetterFromConnectorID(transaction.connectorId) : '';
+    let connectorLetter = '-';
+    if (transaction) {
+      connectorLetter = transaction ? Utils.getConnectorLetterFromConnectorID(transaction.connectorId) : '';
+    }
     return firstLoad ? (
       <Spinner style={style.spinner} />
     ) : (

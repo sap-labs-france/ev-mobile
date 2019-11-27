@@ -20,9 +20,6 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.mounted = false;
-    // Add listeners
-    this.didFocus = props.navigation.addListener('didFocus', this.componentDidFocus.bind(this));
-    this.didBlur = props.navigation.addListener('didBlur', this.componentDidBlur.bind(this));
   }
 
   public isMounted(): boolean {
@@ -30,10 +27,15 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   }
 
   public async componentDidMount() {
-    this.mounted = true;
+    // Add listeners
+    this.didFocus = this.props.navigation.addListener('didFocus', this.componentDidFocus.bind(this));
+    this.didBlur = this.props.navigation.addListener('didBlur', this.componentDidBlur.bind(this));
     // Get provider
     this.centralServerProvider = await ProviderFactory.getProvider();
+    // Remove Backhandler for Android
     BackHandler.removeEventListener('hardwareBackPress', this.onBack);
+    // Ok
+    this.mounted = true;
   }
 
   public async componentWillUnmount() {
