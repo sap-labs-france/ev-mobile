@@ -1,10 +1,9 @@
 import I18n from "i18n-js";
-import { Button, CheckBox, Footer, Form, Icon, Item, Right, Spinner, Text, View } from "native-base";
+import { Button, CheckBox, Footer, Form, Icon, Item, Left, Spinner, Text, View } from "native-base";
 import React from "react";
 import { Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { NavigationActions, StackActions } from "react-navigation";
-import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import ReactNativeRecaptchaV3 from "../../../re-captcha/ReactNativeRecaptchaV3";
 import commonColor from "../../../theme/variables/commonColor";
 import BaseProps from "../../../types/BaseProps";
@@ -209,172 +208,170 @@ export default class SignUp extends BaseScreen<Props, State> {
     const { eula, loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl } = this.state;
     return (
       <Animatable.View style={style.container} animation={"fadeIn"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
-        <BackgroundComponent navigation={this.props.navigation}>
-          <ScrollView contentContainerStyle={style.scrollContainer}>
-            <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
-              <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
-              <Form style={style.form}>
-                <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                  <Icon active={true} name="person" style={style.inputIcon} />
-                  <TextInput
-                    onSubmitEditing={() => this.firstNameInput.focus()}
-                    selectionColor={commonColor.inverseTextColor}
-                    returnKeyType={"next"}
-                    placeholder={I18n.t("authentication.name")}
-                    placeholderTextColor={commonColor.placeholderTextColor}
-                    style={style.inputField}
-                    autoCapitalize="characters"
-                    blurOnSubmit={false}
-                    autoCorrect={false}
-                    onChangeText={(text) => this.setState({ name: text })}
-                    secureTextEntry={false}
-                  />
-                </Item>
-                {this.state.errorName &&
-                  this.state.errorName.map((errorMessage, index) => (
-                    <Text style={style.formErrorText} key={index}>
-                      {errorMessage}
-                    </Text>
-                  ))}
-
-                <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                  <Icon active={true} name="person" style={style.inputIcon} />
-                  <TextInput
-                    ref={(ref: TextInput) => (this.firstNameInput = ref)}
-                    selectionColor={commonColor.inverseTextColor}
-                    onSubmitEditing={() => this.emailInput.focus()}
-                    returnKeyType={"next"}
-                    placeholder={I18n.t("authentication.firstName")}
-                    placeholderTextColor={commonColor.placeholderTextColor}
-                    style={style.inputField}
-                    autoCapitalize="words"
-                    blurOnSubmit={false}
-                    autoCorrect={false}
-                    onChangeText={(text) => this.setState({ firstName: text })}
-                    secureTextEntry={false}
-                  />
-                </Item>
-                {this.state.errorFirstName &&
-                  this.state.errorFirstName.map((errorMessage, index) => (
-                    <Text style={style.formErrorText} key={index}>
-                      {errorMessage}
-                    </Text>
-                  ))}
-
-                <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                  <Icon active={true} name="mail" style={style.inputIcon} />
-                  <TextInput
-                    ref={(ref: TextInput) => (this.emailInput = ref)}
-                    selectionColor={commonColor.inverseTextColor}
-                    onSubmitEditing={() => this.passwordInput.focus()}
-                    returnKeyType={"next"}
-                    placeholder={I18n.t("authentication.email")}
-                    placeholderTextColor={commonColor.placeholderTextColor}
-                    style={style.inputField}
-                    autoCapitalize="none"
-                    blurOnSubmit={false}
-                    autoCorrect={false}
-                    keyboardType={"email-address"}
-                    onChangeText={(text) => this.setState({ email: text })}
-                    secureTextEntry={false}
-                  />
-                </Item>
-                {this.state.errorEmail &&
-                  this.state.errorEmail.map((errorMessage, index) => (
-                    <Text style={style.formErrorText} key={index}>
-                      {errorMessage}
-                    </Text>
-                  ))}
-
-                <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                  <Icon active={true} name="unlock" style={style.inputIcon} />
-                  <TextInput
-                    ref={(ref: TextInput) => (this.passwordInput = ref)}
-                    selectionColor={commonColor.inverseTextColor}
-                    onSubmitEditing={() => this.repeatPasswordInput.focus()}
-                    returnKeyType={"next"}
-                    placeholder={I18n.t("authentication.password")}
-                    placeholderTextColor={commonColor.placeholderTextColor}
-                    style={style.inputField}
-                    autoCapitalize="none"
-                    blurOnSubmit={false}
-                    autoCorrect={false}
-                    keyboardType={"default"}
-                    onChangeText={(text) => this.setState({ password: text })}
-                    secureTextEntry={true}
-                  />
-                </Item>
-                {this.state.errorPassword &&
-                  this.state.errorPassword.map((errorMessage, index) => (
-                    <Text style={style.formErrorText} key={index}>
-                      {errorMessage}
-                    </Text>
-                  ))}
-                <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                  <Icon active={true} name="unlock" style={style.inputIcon} />
-                  <TextInput
-                    ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
-                    selectionColor={commonColor.inverseTextColor}
-                    onSubmitEditing={() => Keyboard.dismiss()}
-                    returnKeyType={"next"}
-                    placeholder={I18n.t("authentication.repeatPassword")}
-                    placeholderTextColor={commonColor.placeholderTextColor}
-                    style={style.inputField}
-                    autoCapitalize="none"
-                    blurOnSubmit={false}
-                    autoCorrect={false}
-                    keyboardType={"default"}
-                    onChangeText={(text) => this.setState({ repeatPassword: text })}
-                    secureTextEntry={true}
-                  />
-                </Item>
-                {this.state.errorRepeatPassword &&
-                  this.state.errorRepeatPassword.map((errorMessage, index) => (
-                    <Text style={style.formErrorText} key={index}>
-                      {errorMessage}
-                    </Text>
-                  ))}
-                <View style={style.eulaContainer}>
-                  <CheckBox style={style.eulaCheckbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
-                  <Text style={style.eulaText}>
-                    {I18n.t("authentication.acceptEula")}
-                    <Text onPress={() => navigation.navigate("Eula")} style={style.eulaLink}>
-                      {I18n.t("authentication.eula")}
-                    </Text>
+        <ScrollView contentContainerStyle={style.scrollContainer}>
+          <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
+            <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
+            <Form style={style.form}>
+              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+                <Icon active={true} name="person" style={style.inputIcon} />
+                <TextInput
+                  onSubmitEditing={() => this.firstNameInput.focus()}
+                  selectionColor={commonColor.inverseTextColor}
+                  returnKeyType={"next"}
+                  placeholder={I18n.t("authentication.name")}
+                  placeholderTextColor={commonColor.placeholderTextColor}
+                  style={style.inputField}
+                  autoCapitalize="characters"
+                  blurOnSubmit={false}
+                  autoCorrect={false}
+                  onChangeText={(text) => this.setState({ name: text })}
+                  secureTextEntry={false}
+                />
+              </Item>
+              {this.state.errorName &&
+                this.state.errorName.map((errorMessage, index) => (
+                  <Text style={style.formErrorText} key={index}>
+                    {errorMessage}
                   </Text>
-                </View>
-                {this.state.errorEula &&
-                  this.state.errorEula.map((errorMessage, index) => (
-                    <Text style={[style.formErrorText, style.formErrorTextEula]} key={index}>
-                      {errorMessage}
-                    </Text>
-                  ))}
-                {loading || (!captcha && this.state.eula) ? (
-                  <Spinner style={style.spinner} color="white" />
-                ) : (
-                  <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.signUp()}>
-                    <TextRN style={style.buttonText}>{I18n.t("authentication.signUp")}</TextRN>
-                  </Button>
-                )}
-              </Form>
-            </KeyboardAvoidingView>
-            {this.state.eula && captchaSiteKey && captchaBaseUrl && (
-              <ReactNativeRecaptchaV3
-                action="RegisterUser"
-                onHandleToken={this.recaptchaResponseToken}
-                url={captchaBaseUrl}
-                siteKey={captchaSiteKey}
-              />
-            )}
-          </ScrollView>
-          <Footer style={style.footer}>
-            <Right>
-              <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonRight]} onPress={() => this.props.navigation.goBack()}>
-                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.backLogin")}</TextRN>
-              </Button>
-            </Right>
-          </Footer>
-        </BackgroundComponent>
+                ))}
+
+              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+                <Icon active={true} name="person" style={style.inputIcon} />
+                <TextInput
+                  ref={(ref: TextInput) => (this.firstNameInput = ref)}
+                  selectionColor={commonColor.inverseTextColor}
+                  onSubmitEditing={() => this.emailInput.focus()}
+                  returnKeyType={"next"}
+                  placeholder={I18n.t("authentication.firstName")}
+                  placeholderTextColor={commonColor.placeholderTextColor}
+                  style={style.inputField}
+                  autoCapitalize="words"
+                  blurOnSubmit={false}
+                  autoCorrect={false}
+                  onChangeText={(text) => this.setState({ firstName: text })}
+                  secureTextEntry={false}
+                />
+              </Item>
+              {this.state.errorFirstName &&
+                this.state.errorFirstName.map((errorMessage, index) => (
+                  <Text style={style.formErrorText} key={index}>
+                    {errorMessage}
+                  </Text>
+                ))}
+
+              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+                <Icon active={true} name="mail" style={style.inputIcon} />
+                <TextInput
+                  ref={(ref: TextInput) => (this.emailInput = ref)}
+                  selectionColor={commonColor.inverseTextColor}
+                  onSubmitEditing={() => this.passwordInput.focus()}
+                  returnKeyType={"next"}
+                  placeholder={I18n.t("authentication.email")}
+                  placeholderTextColor={commonColor.placeholderTextColor}
+                  style={style.inputField}
+                  autoCapitalize="none"
+                  blurOnSubmit={false}
+                  autoCorrect={false}
+                  keyboardType={"email-address"}
+                  onChangeText={(text) => this.setState({ email: text })}
+                  secureTextEntry={false}
+                />
+              </Item>
+              {this.state.errorEmail &&
+                this.state.errorEmail.map((errorMessage, index) => (
+                  <Text style={style.formErrorText} key={index}>
+                    {errorMessage}
+                  </Text>
+                ))}
+
+              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+                <Icon active={true} name="unlock" style={style.inputIcon} />
+                <TextInput
+                  ref={(ref: TextInput) => (this.passwordInput = ref)}
+                  selectionColor={commonColor.inverseTextColor}
+                  onSubmitEditing={() => this.repeatPasswordInput.focus()}
+                  returnKeyType={"next"}
+                  placeholder={I18n.t("authentication.password")}
+                  placeholderTextColor={commonColor.placeholderTextColor}
+                  style={style.inputField}
+                  autoCapitalize="none"
+                  blurOnSubmit={false}
+                  autoCorrect={false}
+                  keyboardType={"default"}
+                  onChangeText={(text) => this.setState({ password: text })}
+                  secureTextEntry={true}
+                />
+              </Item>
+              {this.state.errorPassword &&
+                this.state.errorPassword.map((errorMessage, index) => (
+                  <Text style={style.formErrorText} key={index}>
+                    {errorMessage}
+                  </Text>
+                ))}
+              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+                <Icon active={true} name="unlock" style={style.inputIcon} />
+                <TextInput
+                  ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
+                  selectionColor={commonColor.inverseTextColor}
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                  returnKeyType={"next"}
+                  placeholder={I18n.t("authentication.repeatPassword")}
+                  placeholderTextColor={commonColor.placeholderTextColor}
+                  style={style.inputField}
+                  autoCapitalize="none"
+                  blurOnSubmit={false}
+                  autoCorrect={false}
+                  keyboardType={"default"}
+                  onChangeText={(text) => this.setState({ repeatPassword: text })}
+                  secureTextEntry={true}
+                />
+              </Item>
+              {this.state.errorRepeatPassword &&
+                this.state.errorRepeatPassword.map((errorMessage, index) => (
+                  <Text style={style.formErrorText} key={index}>
+                    {errorMessage}
+                  </Text>
+                ))}
+              <View style={style.eulaContainer}>
+                <CheckBox style={style.eulaCheckbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
+                <Text style={style.eulaText}>
+                  {I18n.t("authentication.acceptEula")}
+                  <Text onPress={() => navigation.navigate("Eula")} style={style.eulaLink}>
+                    {I18n.t("authentication.eula")}
+                  </Text>
+                </Text>
+              </View>
+              {this.state.errorEula &&
+                this.state.errorEula.map((errorMessage, index) => (
+                  <Text style={[style.formErrorText, style.formErrorTextEula]} key={index}>
+                    {errorMessage}
+                  </Text>
+                ))}
+              {loading || (!captcha && this.state.eula) ? (
+                <Spinner style={style.spinner} color="white" />
+              ) : (
+                <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.signUp()}>
+                  <TextRN style={style.buttonText}>{I18n.t("authentication.signUp")}</TextRN>
+                </Button>
+              )}
+            </Form>
+          </KeyboardAvoidingView>
+          {this.state.eula && captchaSiteKey && captchaBaseUrl && (
+            <ReactNativeRecaptchaV3
+              action="RegisterUser"
+              onHandleToken={this.recaptchaResponseToken}
+              url={captchaBaseUrl}
+              siteKey={captchaSiteKey}
+            />
+          )}
+        </ScrollView>
+        <Footer style={style.footer}>
+          <Left>
+            <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.props.navigation.goBack()}>
+              <TextRN style={[style.linksTextButton, style.linksTextButtonLeft]}>{I18n.t("authentication.backLogin")}</TextRN>
+            </Button>
+          </Left>
+        </Footer>
       </Animatable.View>
     );
   }

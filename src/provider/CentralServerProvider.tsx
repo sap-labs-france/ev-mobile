@@ -570,7 +570,7 @@ export default class CentralServerProvider {
     return foundSiteImage.image;
   }
 
-  public async getTransactionConsumption(params = {}): Promise<Transaction> {
+  public async getTransactionWithConsumption(params = {}): Promise<Transaction> {
     this.debugMethod("getChargingStationConsumption");
     // Call
     const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationConsumptionFromTransaction`, {

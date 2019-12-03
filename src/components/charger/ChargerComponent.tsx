@@ -72,7 +72,7 @@ export default class ChargerComponent extends React.Component<Props, State> {
           )}
         </View>
         <View style={style.connectorsContainer}>
-          {charger.connectors.map((connector, index) => (
+          {charger.connectors.map((connector) => (
             <ChargerConnectorComponent
               key={`${charger.id}~${connector.connectorId}`}
               charger={charger}

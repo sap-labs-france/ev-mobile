@@ -4,7 +4,6 @@ import React from "react";
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from "react-native";
 import * as Animatable from "react-native-animatable";
 import Orientation from "react-native-orientation-locker";
-import BackgroundComponent from "../../../components/background/BackgroundComponent";
 import commonColor from "../../../theme/variables/commonColor";
 import BaseProps from "../../../types/BaseProps";
 import Tenant from "../../../types/Tenant";
@@ -242,121 +241,119 @@ export default class Login extends BaseScreen<Props, State> {
       <Spinner style={style.spinner} />
     ) : (
       <Animatable.View style={style.container} animation={"fadeIn"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
-        <BackgroundComponent navigation={this.props.navigation}>
-          <ScrollView contentContainerStyle={style.scrollContainer}>
-            <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
-              <AuthHeader navigation={this.props.navigation}/>
-              <Form style={style.form}>
-                <Button
-                  rounded={true}
-                  block={true}
-                  style={style.button}
-                  onPress={() =>
-                    ActionSheet.show(
-                      {
-                        options: this.tenants.map((tenant) => tenant.name),
-                        title: I18n.t("authentication.tenant")
-                      },
-                      (buttonIndex) => {
-                        this.setTenant(buttonIndex);
-                      }
-                    )
-                  }>
-                  <TextRN style={style.buttonText}>{this.state.tenantTitle}</TextRN>
-                </Button>
-                {this.state.errorTenant &&
-                  this.state.errorTenant.map((errorMessage, index) => (
-                    <Text style={style.formErrorText} key={index}>
-                      {errorMessage}
-                    </Text>
-                  ))}
-                <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                  <Icon active={true} name="mail" style={style.inputIcon} />
-                  <TextInput
-                    returnKeyType="next"
-                    selectionColor={commonColor.inverseTextColor}
-                    placeholder={I18n.t("authentication.email")}
-                    placeholderTextColor={commonColor.placeholderTextColor}
-                    onSubmitEditing={() => this.passwordInput.focus()}
-                    style={style.inputField}
-                    autoCapitalize="none"
-                    blurOnSubmit={false}
-                    autoCorrect={false}
-                    keyboardType={"email-address"}
-                    secureTextEntry={false}
-                    onChangeText={(text) => this.setState({ email: text })}
-                    value={this.state.email}
-                  />
-                </Item>
-                {this.state.errorEmail &&
-                  this.state.errorEmail.map((errorMessage, index) => (
-                    <Text style={style.formErrorText} key={index}>
-                      {errorMessage}
-                    </Text>
-                  ))}
-                <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                  <Icon active={true} name="unlock" style={[style.inputIcon, style.inputIconLock]} />
-                  <TextInput
-                    returnKeyType="go"
-                    selectionColor={commonColor.inverseTextColor}
-                    ref={(ref: TextInput) => (this.passwordInput = ref)}
-                    onSubmitEditing={() => Keyboard.dismiss()}
-                    placeholder={I18n.t("authentication.password")}
-                    placeholderTextColor={commonColor.placeholderTextColor}
-                    style={style.inputField}
-                    autoCapitalize="none"
-                    blurOnSubmit={false}
-                    autoCorrect={false}
-                    keyboardType={"default"}
-                    secureTextEntry={true}
-                    onChangeText={(text) => this.setState({ password: text })}
-                    value={this.state.password}
-                  />
-                </Item>
-                {this.state.errorPassword &&
-                  this.state.errorPassword.map((errorMessage, index) => (
-                    <Text style={style.formErrorText} key={index}>
-                      {errorMessage}
-                    </Text>
-                  ))}
-                <View style={style.eulaContainer}>
-                  <CheckBox style={style.eulaCheckbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
-                  <Text style={style.eulaText}>
-                    {I18n.t("authentication.acceptEula")}
-                    <Text onPress={() => navigation.navigate("Eula")} style={style.eulaLink}>
-                      {I18n.t("authentication.eula")}
-                    </Text>
+        <ScrollView contentContainerStyle={style.scrollContainer}>
+          <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
+            <AuthHeader navigation={this.props.navigation}/>
+            <Form style={style.form}>
+              <Button
+                rounded={true}
+                block={true}
+                style={style.button}
+                onPress={() =>
+                  ActionSheet.show(
+                    {
+                      options: this.tenants.map((tenant) => tenant.name),
+                      title: I18n.t("authentication.tenant")
+                    },
+                    (buttonIndex) => {
+                      this.setTenant(buttonIndex);
+                    }
+                  )
+                }>
+                <TextRN style={style.buttonText}>{this.state.tenantTitle}</TextRN>
+              </Button>
+              {this.state.errorTenant &&
+                this.state.errorTenant.map((errorMessage, index) => (
+                  <Text style={style.formErrorText} key={index}>
+                    {errorMessage}
                   </Text>
-                </View>
-                {this.state.errorEula &&
-                  this.state.errorEula.map((errorMessage, index) => (
-                    <Text style={[style.formErrorText, style.formErrorTextEula]} key={index}>
-                      {errorMessage}
-                    </Text>
-                  ))}
-                {loading ? (
-                  <Spinner style={style.spinner} color="white" />
-                ) : (
-                  <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.login()}>
-                    <TextRN style={style.buttonText}>{I18n.t("authentication.login")}</TextRN>
-                  </Button>
-                )}
-              </Form>
-            </KeyboardAvoidingView>
-          </ScrollView>
-          <Footer style={style.footer}>
-            <Left>
-              <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.newUser()}>
-                <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
-              </Button>
-            </Left>
-            <Right>
-              <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonRight]} onPress={() => this.forgotPassword()}>
-                <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
-              </Button>
-            </Right>
-          </Footer>
-        </BackgroundComponent>
+                ))}
+              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+                <Icon active={true} name="mail" style={style.inputIcon} />
+                <TextInput
+                  returnKeyType="next"
+                  selectionColor={commonColor.inverseTextColor}
+                  placeholder={I18n.t("authentication.email")}
+                  placeholderTextColor={commonColor.placeholderTextColor}
+                  onSubmitEditing={() => this.passwordInput.focus()}
+                  style={style.inputField}
+                  autoCapitalize="none"
+                  blurOnSubmit={false}
+                  autoCorrect={false}
+                  keyboardType={"email-address"}
+                  secureTextEntry={false}
+                  onChangeText={(text) => this.setState({ email: text })}
+                  value={this.state.email}
+                />
+              </Item>
+              {this.state.errorEmail &&
+                this.state.errorEmail.map((errorMessage, index) => (
+                  <Text style={style.formErrorText} key={index}>
+                    {errorMessage}
+                  </Text>
+                ))}
+              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+                <Icon active={true} name="unlock" style={[style.inputIcon, style.inputIconLock]} />
+                <TextInput
+                  returnKeyType="go"
+                  selectionColor={commonColor.inverseTextColor}
+                  ref={(ref: TextInput) => (this.passwordInput = ref)}
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                  placeholder={I18n.t("authentication.password")}
+                  placeholderTextColor={commonColor.placeholderTextColor}
+                  style={style.inputField}
+                  autoCapitalize="none"
+                  blurOnSubmit={false}
+                  autoCorrect={false}
+                  keyboardType={"default"}
+                  secureTextEntry={true}
+                  onChangeText={(text) => this.setState({ password: text })}
+                  value={this.state.password}
+                />
+              </Item>
+              {this.state.errorPassword &&
+                this.state.errorPassword.map((errorMessage, index) => (
+                  <Text style={style.formErrorText} key={index}>
+                    {errorMessage}
+                  </Text>
+                ))}
+              <View style={style.eulaContainer}>
+                <CheckBox style={style.eulaCheckbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
+                <Text style={style.eulaText}>
+                  {I18n.t("authentication.acceptEula")}
+                  <Text onPress={() => navigation.navigate("Eula")} style={style.eulaLink}>
+                    {I18n.t("authentication.eula")}
+                  </Text>
+                </Text>
+              </View>
+              {this.state.errorEula &&
+                this.state.errorEula.map((errorMessage, index) => (
+                  <Text style={[style.formErrorText, style.formErrorTextEula]} key={index}>
+                    {errorMessage}
+                  </Text>
+                ))}
+              {loading ? (
+                <Spinner style={style.spinner} color="white" />
+              ) : (
+                <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.login()}>
+                  <TextRN style={style.buttonText}>{I18n.t("authentication.login")}</TextRN>
+                </Button>
+              )}
+            </Form>
+          </KeyboardAvoidingView>
+        </ScrollView>
+        <Footer style={style.footer}>
+          <Left>
+            <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.newUser()}>
+              <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
+            </Button>
+          </Left>
+          <Right>
+            <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonRight]} onPress={() => this.forgotPassword()}>
+              <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
+            </Button>
+          </Right>
+        </Footer>
       </Animatable.View>
     );
   }

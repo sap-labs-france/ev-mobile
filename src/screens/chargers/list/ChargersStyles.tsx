@@ -1,22 +1,18 @@
 import deepmerge from "deepmerge";
 import ResponsiveStylesheet from "react-native-responsive-stylesheet"
 import { ScaledSheet } from "react-native-size-matters";
-import commonColor from "../../theme/variables/commonColor";
+import commonColor from "../../../theme/variables/commonColor";
 
 const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    height: "100%",
     backgroundColor: commonColor.containerBgColor
   },
-  spinner: {
-    color: commonColor.textColor
+  content: {
+    flex: 1
   },
-  tabHeader: {},
-  tabIcon: {
-    fontSize: "20@s",
-    paddingBottom: "5@s"
+  spinner: {
+    flex: 1
   }
 });
 

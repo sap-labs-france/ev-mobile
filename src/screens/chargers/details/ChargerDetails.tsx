@@ -1,8 +1,8 @@
 import I18n from "i18n-js";
-import { Button, Container, Icon, Text, View } from "native-base";
+import { Button, Container, Icon, Spinner, Text, View } from "native-base";
 import React from "react";
 import { Alert, ScrollView } from "react-native";
-import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import HeaderComponent from "../../../components/header/HeaderComponent";
 import BaseProps from "../../../types/BaseProps";
 import ChargingStation from "../../../types/ChargingStation";
 import Connector from "../../../types/Connector";
@@ -12,11 +12,12 @@ import BaseScreen from "../../base-screen/BaseScreen";
 import computeStyleSheet from "./ChargerDetailsStyles";
 
 export interface Props extends BaseProps {
-  charger: ChargingStation;
-  connector: Connector;
 }
 
 interface State {
+  loading?: boolean;
+  charger: ChargingStation;
+  connector: Connector;
 }
 
 export default class ChargerDetails extends BaseScreen<Props, State> {
@@ -25,14 +26,46 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
 
   constructor(props: Props) {
     super(props);
+    this.state = {
+      loading: true,
+      charger: null,
+      connector: null,
+    }
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
   }
 
+  public async componentDidMount() {
+    // Call parent
+    await super.componentDidMount();
+    const chargerID = Utils.getParamFromNavigation(this.props.navigation, "chargerID", null);
+    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, "connectorID", null), 10);
+    // Get Charger
+    const charger = await this.getCharger(chargerID);
+    // Set
+    this.setState({
+      loading: false,
+      charger,
+      connector: charger ? charger.connectors[connectorID - 1] : null,
+    });
+  }
+
+  public getCharger = async (chargerID: string): Promise<ChargingStation> => {
+    try {
+      // Get Charger
+      const charger = await this.centralServerProvider.getCharger({ ID: chargerID });
+      return charger;
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+    }
+    return null;
+  };
+
   public resetHardConfirm() {
-    const { charger } = this.props;
+    const { charger } = this.state;
     Alert.alert(I18n.t("chargers.resetHard"), I18n.t("chargers.resetHardMessage", { chargeBoxID: charger.id }), [
       { text: I18n.t("general.yes"), onPress: () => this.reset(charger.id, "Hard") },
       { text: I18n.t("general.cancel") }
@@ -40,7 +73,7 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
   }
 
   public resetSoftConfirm() {
-    const { charger } = this.props;
+    const { charger } = this.state;
     Alert.alert(I18n.t("chargers.resetSoft"), I18n.t("chargers.resetSoftMessage", { chargeBoxID: charger.id }), [
       { text: I18n.t("general.yes"), onPress: () => this.reset(charger.id, "Soft") },
       { text: I18n.t("general.cancel") }
@@ -64,7 +97,7 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
   }
 
   public clearCacheConfirm() {
-    const { charger } = this.props;
+    const { charger } = this.state;
     Alert.alert(I18n.t("chargers.clearCache"), I18n.t("chargers.clearCacheMessage", { chargeBoxID: charger.id }), [
       { text: I18n.t("general.yes"), onPress: () => this.clearCache(charger.id) },
       { text: I18n.t("general.cancel") }
@@ -87,13 +120,33 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
     }
   }
 
+  public onBack = () => {
+    // Back mobile button: Force navigation
+    this.props.navigation.goBack(null);
+    // Do not bubble up
+    return true;
+  };
+
   public render() {
     console.log(this.constructor.name + ' render ====================================');
+    const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { charger } = this.props;
+    const { loading, charger, connector } = this.state;
+    const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return (
-      <Container style={style.container}>
-        <BackgroundComponent navigation={this.props.navigation} active={false}>
+      loading ? (
+        <Spinner style={style.spinner} />
+      ) : (
+        <Container style={style.container}>
+          <HeaderComponent
+            navigation={this.props.navigation}
+            title={charger ? charger.id : I18n.t("connector.unknown")}
+            subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
+            leftAction={() => this.onBack()}
+            leftActionIcon={"navigate-before"}
+            rightAction={navigation.openDrawer}
+            rightActionIcon={"menu"}
+          />
           <ScrollView contentContainerStyle={style.scrollViewContainer}>
             <View style={style.topViewContainer}>
               <View style={style.descriptionContainer}>
@@ -140,8 +193,8 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
               </View>
             </View>
           </ScrollView>
-        </BackgroundComponent>
-      </Container>
+        </Container>
+      )
     );
   }
 }

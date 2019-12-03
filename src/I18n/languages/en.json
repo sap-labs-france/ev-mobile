@@ -78,6 +78,7 @@
     "tenant": "Choose an Organization"
   },
   "transactions": {
+    "transaction": "Session",
     "history": "History",
     "in-progress": "In Progress",
     "transactionsHistory": "Sessions History",
@@ -91,13 +92,13 @@
     "browseSitesNote": "Navigate to Sites and Site Areas",
     "browseChargers": "Charging Stations",
     "browseChargersNote": "Navigate to Charging Stations",
-    "browseSessions": "Sessions",
+    "browseSessions": "Sessions History",
     "browseSessionsNote": "Navigate to Sessions",
     "browseStatistics": "Statistics",
     "browseStatisticsNote": "Navigate to Statistics",
-    "ongoingSessions": "{{nbrSessions}} Session(s) In Progress",
+    "ongoingSessions": "Sessions In Progress",
     "noOngoingSessions": "No Session In Progress",
-    "ongoingSessionsNote": "Number of Sessions in progress",
+    "ongoingSessionsNote": "Navigate to Sessions in progress",
     "statistics": "Statistics",
     "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "No Session found",
@@ -158,7 +159,7 @@
     "connector": "Connector",
     "informations": "Informations",
     "graph": "Chart",
-    "notAuthorized": "Private data!",
+    "notAuthorized": "You are not authorized to read this session",
     "noTransaction": "No ongoing transaction",
     "startTransaction": "Start transaction",
     "stopTransaction": "Stop transaction",
@@ -184,7 +185,8 @@
     "cumulatedChartLabel": "Cumulated (kW.h)",
     "batteryChartLabel": "Battery Level (%)",
     "connectorMax": "Connector Max Power (kW)",
-    "notEnoughData": "Not enough data to display the chart"
+    "noData": "No Data",
+    "noSessionInProgress": "No Session in progress"
   },
   "notifications": {
     "mustLogin": "You must be logged in",

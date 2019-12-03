@@ -15,6 +15,7 @@ const commonStyles = ScaledSheet.create({
   },
   topViewContainer: {
     flex: 1,
+    marginTop: "15@s",
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center"

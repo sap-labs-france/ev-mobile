@@ -2,7 +2,6 @@ import I18n from "i18n-js";
 import { Container, Spinner, View } from "native-base";
 import React from "react";
 import { FlatList, Platform, RefreshControl } from "react-native";
-import BackgroundComponent from "../../components/background/BackgroundComponent";
 import HeaderComponent from "../../components/header/HeaderComponent";
 import ListEmptyTextComponent from "../../components/list/empty-text/ListEmptyTextComponent";
 import ListFooterComponent from "../../components/list/footer/ListFooterComponent";
@@ -124,36 +123,34 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const { loading, skip, count, limit } = this.state;
     return (
       <Container style={style.container}>
-        <BackgroundComponent navigation={navigation} active={false}>
-          <HeaderComponent
-            navigation={navigation}
-            title={I18n.t("siteAreas.title")}
-            leftAction={this.onBack}
-            leftActionIcon={"navigate-before"}
-            rightAction={navigation.openDrawer}
-            rightActionIcon={"menu"}
-          />
-          <SimpleSearchComponent
-            onChange={(searchText) => this.search(searchText)}
-            navigation={navigation}
-          />
-          <View style={style.content}>
-            {loading ? (
-              <Spinner style={style.spinner} />
-            ) : (
-              <FlatList
-                data={this.state.siteAreas}
-                renderItem={({ item }) => <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />}
-                keyExtractor={(item) => item.id}
-                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-                onEndReached={this.onEndScroll}
-                onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
-                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t("siteAreas.noSiteAreas")} />}
-                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-              />
-            )}
-          </View>
-        </BackgroundComponent>
+        <HeaderComponent
+          navigation={navigation}
+          title={I18n.t("siteAreas.title")}
+          leftAction={this.onBack}
+          leftActionIcon={"navigate-before"}
+          rightAction={navigation.openDrawer}
+          rightActionIcon={"menu"}
+        />
+        <SimpleSearchComponent
+          onChange={(searchText) => this.search(searchText)}
+          navigation={navigation}
+        />
+        <View style={style.content}>
+          {loading ? (
+            <Spinner style={style.spinner} />
+          ) : (
+            <FlatList
+              data={this.state.siteAreas}
+              renderItem={({ item }) => <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />}
+              keyExtractor={(item) => item.id}
+              refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+              onEndReached={this.onEndScroll}
+              onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
+              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t("siteAreas.noSiteAreas")} />}
+              ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+            />
+          )}
+        </View>
       </Container>
     );
   }

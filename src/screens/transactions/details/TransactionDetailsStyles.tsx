@@ -23,47 +23,33 @@ const commonStyles = ScaledSheet.create({
   transactionContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: "-100@s",
     backgroundColor: "transparent"
   },
-  buttonTransaction: {
-    borderRadius: "50@s",
-    borderStyle: "solid",
-    borderWidth: "4@s",
-    marginTop: "15@s",
-    borderColor: commonColor.textColor,
-    backgroundColor: commonColor.containerBgColor,
-    width: "100@s",
-    height: "100@s",
+  headerContent: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "5@s",
+    borderBottomWidth: 1,
+    borderBottomColor: commonColor.listBorderColor,
+    backgroundColor: commonColor.headerBgColor
+  },
+  headerRowContainer: {
+    width: "100%",
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center"
   },
-  noButtonStopTransaction: {
-    height: "130@s"
+  headerName: {
+    color: commonColor.headerTextColor,
+    fontSize: "18@s",
+    marginLeft: "5@s",
+    marginRight: "5@s",
+    fontWeight: "bold"
   },
-  startTransaction: {
-    borderColor: commonColor.brandSuccess
+  scrollViewContainer: {
+    marginTop: "20@s"
   },
-  stopTransaction: {
-    borderColor: commonColor.brandDanger
-  },
-  transactionIcon: {
-    fontSize: "75@s"
-  },
-  startTransactionIcon: {
-    color: commonColor.brandSuccess
-  },
-  stopTransactionIcon: {
-    color: commonColor.brandDanger
-  },
-  buttonTransactionDisabled: {
-    borderColor: commonColor.buttonDisabledBg
-  },
-  transactionDisabledIcon: {
-    color: commonColor.buttonDisabledBg,
-    backgroundColor: "transparent"
-  },
-  scrollViewContainer: {},
   detailsContainer: {
     flexDirection: "column",
     justifyContent: "space-between",
@@ -72,7 +58,7 @@ const commonStyles = ScaledSheet.create({
   rowContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: "95@s"
+    height: "100@s"
   },
   columnContainer: {
     flexDirection: "column",
@@ -98,7 +84,7 @@ const commonStyles = ScaledSheet.create({
   },
   subLabel: {
     fontSize: "10@s",
-    marginTop: Platform.OS === "ios" ? "0@s" : "-2@s",
+    marginTop: Platform.OS === "ios" ? "0@s" : "-5@s",
     color: commonColor.brandPrimaryDark,
     alignSelf: "center"
   },

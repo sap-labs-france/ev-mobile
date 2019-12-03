@@ -146,7 +146,7 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
         style={style.container}
         disabled={charger.inactive}
         onPress={() =>
-          navigation.navigate("ChargerDetailsTabs", {
+          navigation.navigate("ChargerDetailsTabsNavigator", {
             chargerID: charger.id,
             connectorID: connector.connectorId
           })
@@ -157,7 +157,11 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
               {this.renderFirstConnectorDetails(connector)}
               {this.renderSecondConnectorDetails(connector, style)}
               {this.renderThirdConnectorDetails(connector, style)}
-              {!charger.inactive && <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />}
+              {!charger.inactive ?
+                <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
+              :
+                <View style={style.noIcon} />
+              }
             </View>
           </View>
         </Animatable.View>

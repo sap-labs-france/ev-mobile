@@ -157,7 +157,7 @@ export default class NotificationManager {
         // Navigate
         this.navigator.dispatch(
           NavigationActions.navigate({
-            routeName: 'ChargerDetailsTabs',
+            routeName: 'ChargerDetailsTabsNavigator',
             key: `${Utils.randomNumnber()}`,
             params: {
               chargerID: notification.data.chargeBoxID,
@@ -172,7 +172,7 @@ export default class NotificationManager {
         // Navigate
         this.navigator.dispatch(
           NavigationActions.navigate({
-            routeName: 'ChargerDetailsTabs',
+            routeName: 'ChargerDetailsTabsNavigator',
             key: `${Utils.randomNumnber()}`,
             params: {
               chargerID: notification.data.chargeBoxID,

@@ -4,10 +4,12 @@ import React from "react";
 import { processColor, View } from "react-native";
 import { LineChart } from "react-native-charts-wrapper";
 import { scale } from "react-native-size-matters";
-import BackgroundComponent from "../../../components/background/BackgroundComponent";
+import HeaderComponent from "../../../components/header/HeaderComponent";
 import TransactionHeaderComponent from "../../../components/transaction/header/TransactionHeaderComponent";
 import commonColor from "../../../theme/variables/commonColor";
 import BaseProps from "../../../types/BaseProps";
+import ChargingStation from "../../../types/ChargingStation";
+import Connector from "../../../types/Connector";
 import Consumption from "../../../types/Consumption";
 import Transaction from "../../../types/Transaction";
 import Constants from "../../../utils/Constants";
@@ -16,17 +18,19 @@ import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
 import computeStyleSheet from "./TransactionChartStyles";
 
 export interface Props extends BaseProps {
-  transactionID: number;
-  isAdmin: boolean;
-  showTransactionDetails?: boolean;
 }
 
 interface State {
   loading?: boolean;
+  charger?: ChargingStation;
+  connector?: Connector;
   transaction?: Transaction;
   values?: Consumption[];
   consumptionValues?: ChartPoint[];
   stateOfChargeValues?: ChartPoint[];
+  showTransactionDetails?: boolean;
+  canDisplayTransaction?: boolean;
+  isAdmin: boolean;
 }
 
 interface ChartPoint {
@@ -40,14 +44,15 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
 
   constructor(props: Props) {
     super(props);
-    props.showTransactionDetails = false;
-    props.isAdmin = false;
     this.state = {
       loading: true,
+      isAdmin: false,
       transaction: null,
       values: [],
+      canDisplayTransaction: false,
       consumptionValues: null,
-      stateOfChargeValues: null
+      stateOfChargeValues: null,
+      showTransactionDetails: false
     };
     // Set Refresh
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
@@ -57,14 +62,25 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     super.setState(state, callback);
   }
 
-  public getTransactionConsumptions = async ():
+  public getCharger = async (chargerID: string): Promise<ChargingStation> => {
+    try {
+      // Get Charger
+      const charger = await this.centralServerProvider.getCharger({ ID: chargerID });
+      return charger;
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+    }
+    return null;
+  };
+
+  public getTransactionWithConsumptions = async (transactionID: number):
       Promise<{ transaction: Transaction; values: Consumption[], consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[] }> => {
-    const { transactionID } = this.props;
     try {
       // Active Transaction?
       if (transactionID) {
         // Get the consumption
-        const transaction = await this.centralServerProvider.getTransactionConsumption({
+        const transaction = await this.centralServerProvider.getTransactionWithConsumption({
           TransactionId: transactionID
         });
         // At least 2 values for the chart!!!
@@ -112,20 +128,64 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   };
 
   public refresh = async () => {
-    const { transaction } = this.state;
     // Component Mounted?
-    let consumptions = {};
-    if (this.isMounted() && (!transaction || !transaction.stop)) {
-      // Refresh Consumption
-      consumptions = await this.getTransactionConsumptions();
+    if (this.isMounted()) {
+      const chargerID = Utils.getParamFromNavigation(this.props.navigation, "chargerID", null);
+      const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
+      const transactionID = Utils.getParamFromNavigation(this.props.navigation, "transactionID", null);
+      let transactionWithConsumptions = null;
+      let charger = null;
+      let connector = null;
+      // Get Transaction and Charger
+      if (transactionID) {
+        transactionWithConsumptions = await this.getTransactionWithConsumptions(parseInt(transactionID, 10));
+        if (transactionWithConsumptions) {
+          charger = await this.getCharger(transactionWithConsumptions.transaction.chargeBoxID);
+          if (charger) {
+            connector = charger ? charger.connectors[transactionWithConsumptions.transaction.connectorId - 1] : null;
+          }
+        }
+      // Get Charger and Transaction
+      } else if (chargerID) {
+        // Get Charger
+        charger = await this.getCharger(chargerID);
+        if (charger) {
+          connector = charger ? charger.connectors[parseInt(connectorID, 10) - 1] : null;
+          // Refresh Consumption
+          if (connector.activeTransactionID && (!this.state.transaction || !this.state.transaction.stop)) {
+            transactionWithConsumptions = await this.getTransactionWithConsumptions(connector.activeTransactionID);
+          }
+        }
+      }
+      console.log('====================================');
+      console.log({transactionWithConsumptions});
+      console.log('====================================');
+      // Get the provider
+      const securityProvider = this.centralServerProvider.getSecurityProvider();
+      this.setState({
+        loading: false,
+        transaction: transactionWithConsumptions ? transactionWithConsumptions.transaction : this.state.transaction,
+        charger: !this.state.charger ? charger : this.state.charger,
+        connector,
+        isAdmin: securityProvider ? securityProvider.isAdmin() : false,
+        canDisplayTransaction: charger ? this.canDisplayTransaction(transactionWithConsumptions.transaction, charger, connector) : false,
+        ...transactionWithConsumptions
+      });
     }
-    this.setState({
-      loading: false,
-      ...consumptions
-    });
   };
 
-  public computeChartDefinition(consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[]) {
+  public canDisplayTransaction = (transaction: Transaction, charger: ChargingStation, connector: Connector): boolean => {
+    // Transaction?
+    if (charger) {
+      // Get the Security Provider
+      const securityProvider = this.centralServerProvider.getSecurityProvider();
+      // Check Auth
+      return securityProvider.canReadTransaction(charger.siteArea, transaction ? transaction.tagID : connector.activeTagID);
+    }
+    return false;
+  };
+
+  public createChart(consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[]) {
     const chartDefinition: any = {};
     // Add Data
     chartDefinition.data = { dataSets: [] };
@@ -234,62 +294,83 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     return chartDefinition;
   }
 
+  public onBack = () => {
+    // Back mobile button: Force navigation
+    this.props.navigation.goBack(null);
+    // Do not bubble up
+    return true;
+  };
+
   public render() {
     console.log(this.constructor.name + ' render ====================================');
+    const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { loading, transaction, consumptionValues, stateOfChargeValues } = this.state;
-    const { showTransactionDetails, isAdmin, navigation } = this.props;
-    const chartDefinition = this.computeChartDefinition(consumptionValues, stateOfChargeValues);
+    const { showTransactionDetails, isAdmin, loading, transaction, charger, connector, consumptionValues, stateOfChargeValues, canDisplayTransaction } = this.state;
+    const chartDefinition = this.createChart(consumptionValues, stateOfChargeValues);
+    const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return (
       loading ? (
         <Spinner style={style.spinner} />
       ) : (
         <View style={style.container}>
-          <BackgroundComponent navigation={navigation} active={false}>
-            {showTransactionDetails && transaction && (
-              <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} displayNavigationIcon={false} />
-            )}
-            {consumptionValues && consumptionValues.length > 1 ? (
-              <LineChart
-                style={showTransactionDetails && transaction ? style.chartWithHeader : style.chart}
-                data={chartDefinition.data}
-                chartDescription={{ text: "" }}
-                legend={{
-                  enabled: true,
-                  textSize: scale(8),
-                  textColor: processColor(commonColor.brandPrimaryDark)
-                }}
-                marker={{
-                  enabled: true,
-                  markerColor: processColor(commonColor.brandPrimaryDark),
-                  textSize: scale(12),
-                  textColor: processColor(commonColor.inverseTextColor)
-                }}
-                xAxis={chartDefinition.xAxis}
-                yAxis={chartDefinition.yAxis}
-                autoScaleMinMaxEnabled={false}
-                animation={{
-                  durationX: 1000,
-                  durationY: 1000,
-                  easingY: "EaseInOutQuart"
-                }}
-                drawGridBackground={false}
-                drawBorders={false}
-                touchEnabled={true}
-                dragEnabled={true}
-                scaleEnabled={false}
-                scaleXEnabled={true}
-                scaleYEnabled={false}
-                pinchZoom={true}
-                doubleTapToZoomEnabled={false}
-                dragDecelerationEnabled={true}
-                dragDecelerationFrictionCoef={0.99}
-                keepPositionOnRotation={false}
-              />
-            ) : (
-              consumptionValues && <Text style={style.notEnoughData}>{I18n.t("details.notEnoughData")}</Text>
-            )}
-          </BackgroundComponent>
+          <HeaderComponent
+            navigation={this.props.navigation}
+            title={charger ? charger.id : I18n.t("connector.unknown")}
+            subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
+            leftAction={() => this.onBack()}
+            leftActionIcon={"navigate-before"}
+            rightAction={navigation.openDrawer}
+            rightActionIcon={"menu"}
+          />
+          {showTransactionDetails && transaction && (
+            <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} displayNavigationIcon={false} />
+          )}
+          {transaction && consumptionValues && consumptionValues.length > 1 && canDisplayTransaction ? (
+            <LineChart
+              style={showTransactionDetails && transaction ? style.chartWithHeader : style.chart}
+              data={chartDefinition.data}
+              chartDescription={{ text: "" }}
+              legend={{
+                enabled: true,
+                textSize: scale(8),
+                textColor: processColor(commonColor.brandPrimaryDark)
+              }}
+              marker={{
+                enabled: true,
+                markerColor: processColor(commonColor.brandPrimaryDark),
+                textSize: scale(12),
+                textColor: processColor(commonColor.inverseTextColor)
+              }}
+              xAxis={chartDefinition.xAxis}
+              yAxis={chartDefinition.yAxis}
+              autoScaleMinMaxEnabled={false}
+              animation={{
+                durationX: 1000,
+                durationY: 1000,
+                easingY: "EaseInOutQuart"
+              }}
+              drawGridBackground={false}
+              drawBorders={false}
+              touchEnabled={true}
+              dragEnabled={true}
+              scaleEnabled={false}
+              scaleXEnabled={true}
+              scaleYEnabled={false}
+              pinchZoom={true}
+              doubleTapToZoomEnabled={false}
+              dragDecelerationEnabled={true}
+              dragDecelerationFrictionCoef={0.99}
+              keepPositionOnRotation={false}
+            />
+          ) : (
+            connector.activeTransactionID ?
+              canDisplayTransaction ?
+                <Text style={style.notData}>{I18n.t("details.noData")}</Text>
+              :
+                <Text style={style.notData}>{I18n.t("details.notAuthorized")}</Text>
+            :
+              <Text style={style.notData}>{I18n.t("details.noSessionInProgress")}</Text>
+          )}
         </View>
       )
     );
