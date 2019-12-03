@@ -78,7 +78,7 @@
     "tenant": "Choisir une Organisation"
   },
   "transactions": {
-    "transaction": "Transaction",
+    "transaction": "Session",
     "history": "Historique",
     "in-progress": "En Cours",
     "transactionsHistory": "Historique Sessions",
