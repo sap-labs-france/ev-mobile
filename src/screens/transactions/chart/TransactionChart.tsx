@@ -74,7 +74,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       // Get Transaction and Charger
       if (transactionID) {
         transactionWithConsumptions = await this.getTransactionWithConsumptions(parseInt(transactionID, 10));
-        if (transactionWithConsumptions) {
+        if (transactionWithConsumptions && transactionWithConsumptions.transaction) {
           charger = await this.getCharger(transactionWithConsumptions.transaction.chargeBoxID);
           if (charger) {
             connector = charger ? charger.connectors[transactionWithConsumptions.transaction.connectorId - 1] : null;
@@ -100,7 +100,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         charger: !this.state.charger ? charger : this.state.charger,
         connector,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,
-        canDisplayTransaction: charger ? this.canDisplayTransaction(transactionWithConsumptions.transaction, charger, connector) : false,
+        canDisplayTransaction: charger ? this.canDisplayTransaction(
+          transactionWithConsumptions ? transactionWithConsumptions.transaction : null, charger, connector) : false,
         ...transactionWithConsumptions
       });
     }
