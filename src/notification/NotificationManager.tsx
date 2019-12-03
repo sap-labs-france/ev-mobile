@@ -139,7 +139,7 @@ export default class NotificationManager {
         // Navigate
         this.navigator.dispatch(
           NavigationActions.navigate({
-            routeName: 'TransactionDetailsTabs',
+            routeName: 'TransactionDetailsTabsNavigator',
             key: `${Utils.randomNumnber()}`,
             params: {
               transactionID: parseInt(notification.data.transactionID, 10)
