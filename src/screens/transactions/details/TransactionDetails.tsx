@@ -6,23 +6,22 @@ import { Image, ScrollView } from 'react-native';
 import noPhotoActive from '../../../../assets/no-photo-active.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
-import BackgroundComponent from '../../../components/background/BackgroundComponent';
+import HeaderComponent from '../../../components/header/HeaderComponent';
 import I18nManager from '../../../I18n/I18nManager';
-import ProviderFactory from '../../../provider/ProviderFactory';
-import BaseScreen from '../../../screens/base-screen/BaseScreen';
 import BaseProps from '../../../types/BaseProps';
 import Transaction from '../../../types/Transaction';
 import User from '../../../types/User';
+import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
+import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './TransactionDetailsStyles';
 
 export interface Props extends BaseProps {
-  transaction: Transaction;
-  isAdmin: boolean;
 }
 
 interface State {
   loading?: boolean;
+  transaction?: Transaction;
   userImage?: string;
   siteImage?: string;
   elapsedTimeFormatted?: string;
@@ -32,6 +31,7 @@ interface State {
   isPricingActive?: boolean;
   buttonDisabled?: boolean;
   refreshing?: boolean;
+  isAdmin?: boolean;
 }
 
 export default class TransactionDetails extends BaseScreen<Props, State> {
@@ -59,11 +59,14 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   }
 
   public async componentDidMount() {
-    const { transaction } = this.props;
     await super.componentDidMount();
-    // Get the Site Image
     let siteImage = null;
     let userImage = null;
+    // Get IDs
+    const transactionID = Utils.getParamFromNavigation(this.props.navigation, 'transactionID', null);
+    // Get Transaction
+    const transaction = await this.getTransaction(transactionID);
+    // Get the Site Image
     if (transaction && transaction.siteID && this.isMounted()) {
       siteImage = await this.getSiteImage(transaction.siteID);
     }
@@ -74,23 +77,33 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     // Compute Duration
     this.computeDurationInfos();
     // Get the provider
-    const centralServerProvider = await ProviderFactory.getProvider();
-    const securityProvider = centralServerProvider.getSecurityProvider();
+    const securityProvider = this.centralServerProvider.getSecurityProvider();
+    // Set
     this.setState({
+      transaction,
       loading: false,
       siteImage,
       userImage,
+      isAdmin: securityProvider ? securityProvider.isAdmin() : false,
       isPricingActive: securityProvider.isComponentPricingActive()
     });
   }
 
-  public async componentWillUnmount() {
-    await super.componentWillUnmount();
-  }
-
-  public getSiteImage = (siteID: string): Promise<string> => {
+  public getTransaction = async (transactionID: string): Promise<Transaction> => {
     try {
-      return this.centralServerProvider.getSiteImage(siteID);
+      // Get Transaction
+      const transaction = await this.centralServerProvider.getTransaction({ ID: transactionID });
+      return transaction;
+    } catch (error) {
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+    }
+    return null;
+  };
+
+  public getSiteImage = async (siteID: string): Promise<string> => {
+    try {
+      const siteImage = await this.centralServerProvider.getSiteImage(siteID);
+      return siteImage;
     } catch (error) {
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
     }
@@ -99,7 +112,8 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
 
   public getUserImage = async (user: User): Promise<string> => {
     try {
-      return this.centralServerProvider.getUserImage({ ID: user.id });
+      const userImage = await this.centralServerProvider.getUserImage({ ID: user.id });
+      return userImage;
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
@@ -108,9 +122,8 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   };
 
   public computeDurationInfos = () => {
-    const { transaction } = this.props;
-    // Component Mounted?
-    if (this.isMounted()) {
+    const { transaction } = this.state;
+    if (transaction) {
       // Compute duration
       const elapsedTimeFormatted = Utils.formatDurationHHMMSS(
         ((new Date(transaction.stop.timestamp).getTime() - new Date(transaction.timestamp).getTime()) / 1000), false);
@@ -124,11 +137,18 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         elapsedTimeFormatted,
         inactivityFormatted
       });
+    } else {
+      // Set
+      this.setState({
+        totalInactivitySecs: 0,
+        elapsedTimeFormatted: Constants.DEFAULT_DURATION,
+        inactivityFormatted: Constants.DEFAULT_DURATION
+      });
     }
   };
 
   public renderUserInfo = (style: any) => {
-    const { transaction, isAdmin } = this.props;
+    const { transaction, isAdmin } = this.state;
     const { userImage } = this.state;
     return transaction ? (
       <View style={style.columnContainer}>
@@ -147,8 +167,8 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   };
 
   public renderPrice = (style: any) => {
-    const { transaction } = this.props;
-    const price = Math.round(transaction.stop.price * 100) / 100;
+    const { transaction } = this.state;
+    const price = transaction ? Math.round((transaction.stop.price * 100) / 100) : 0;
     return (
       <View style={style.columnContainer}>
         <Icon type='FontAwesome' name='money' style={[style.icon, style.info]} />
@@ -170,9 +190,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   };
 
   public renderInactivity = (style: any) => {
-    const { transaction } = this.props;
+    const { transaction } = this.state;
     const { inactivityFormatted } = this.state;
-    const inactivityStyle = Utils.computeInactivityStyle(transaction.stop.inactivityStatusLevel);
+    const inactivityStyle = Utils.computeInactivityStyle(transaction ? transaction.stop.inactivityStatusLevel : null);
     return (
       <View style={style.columnContainer}>
         <Icon type='MaterialIcons' name='timer-off' style={[style.icon, inactivityStyle]} />
@@ -183,18 +203,18 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   };
 
   public renderTotalConsumption = (style: any) => {
-    const { transaction } = this.props;
+    const { transaction } = this.state;
     return (
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.info]} type='MaterialIcons' name='ev-station' />
-        <Text style={[style.label, style.labelValue, style.info]}>{I18nManager.formatNumber(Math.round(transaction.stop.totalConsumption / 10) / 100)}</Text>
+        <Text style={[style.label, style.labelValue, style.info]}>{transaction ? I18nManager.formatNumber(Math.round(transaction.stop.totalConsumption / 10) / 100) : '-'}</Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
     );
   };
 
   public renderBatteryLevel = (style: any) => {
-    const { transaction } = this.props;
+    const { transaction } = this.state;
     return transaction.stateOfCharge ? (
       <View style={style.columnContainer}>
         <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.info]} />
@@ -209,41 +229,57 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     );
   };
 
+  public onBack = () => {
+    // Back mobile button: Force navigation
+    this.props.navigation.goBack(null);
+    // Do not bubble up
+    return true;
+  };
+
   public render() {
     console.log(this.constructor.name + ' render ====================================');
+    const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { transaction } = this.props;
+    const { transaction } = this.state;
     const { loading, siteImage, isPricingActive } = this.state;
+    const connectorLetter = Utils.getConnectorLetterFromConnectorID(transaction ? transaction.connectorId : null);
     return (
       loading ? (
         <Spinner style={style.spinner} />
       ) : (
         <Container style={style.container}>
+          <HeaderComponent
+            navigation={this.props.navigation}
+            title={transaction ? transaction.chargeBoxID : I18n.t('connector.unknown')}
+            subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
+            leftAction={() => this.onBack()}
+            leftActionIcon={'navigate-before'}
+            rightAction={navigation.openDrawer}
+            rightActionIcon={'menu'}
+          />
           {/* Site Image */}
           <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
-          <BackgroundComponent navigation={this.props.navigation} active={false}>
-            <View style={style.headerContent}>
-              <View style={style.headerRowContainer}>
-                <Text style={style.headerName}>{moment(new Date(transaction.timestamp)).format('LLL')}</Text>
+          <View style={style.headerContent}>
+            <View style={style.headerRowContainer}>
+              <Text style={style.headerName}>{moment(new Date(transaction.timestamp)).format('LLL')}</Text>
+            </View>
+          </View>
+          <ScrollView style={style.scrollViewContainer}>
+            <View style={style.detailsContainer}>
+              <View style={style.rowContainer}>
+                {this.renderUserInfo(style)}
+                {this.renderTotalConsumption(style)}
+              </View>
+              <View style={style.rowContainer}>
+                {this.renderElapsedTime(style)}
+                {this.renderInactivity(style)}
+              </View>
+              <View style={style.rowContainer}>
+                {this.renderBatteryLevel(style)}
+                {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
               </View>
             </View>
-            <ScrollView style={style.scrollViewContainer}>
-              <View style={style.detailsContainer}>
-                <View style={style.rowContainer}>
-                  {this.renderUserInfo(style)}
-                  {this.renderTotalConsumption(style)}
-                </View>
-                <View style={style.rowContainer}>
-                  {this.renderElapsedTime(style)}
-                  {this.renderInactivity(style)}
-                </View>
-                <View style={style.rowContainer}>
-                  {this.renderBatteryLevel(style)}
-                  {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
-                </View>
-              </View>
-            </ScrollView>
-          </BackgroundComponent>
+          </ScrollView>
         </Container>
       )
     );

@@ -4,16 +4,12 @@ import { Container, Content, Header, Icon, ListItem, Text, Thumbnail, View } fro
 import React from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import { NavigationActions, StackActions } from 'react-navigation';
 import logo from '../../../assets/logo-low.png';
 import noPhoto from '../../../assets/no-photo-inverse.png';
-import BackgroundComponent from '../../components/background/BackgroundComponent';
 import BaseProps from '../../types/BaseProps';
 import Constants from '../../utils/Constants';
-import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './SideBarStyles';
-
 
 export interface Props extends BaseProps {
 }
@@ -98,7 +94,7 @@ export default class SideBar extends BaseScreen<Props, State> {
     // Navigate
     this.props.navigation.navigate({
       routeName: screen,
-      // key: `${Utils.randomNumber()}`,
+      // key: `${Utils.randomNumnber()}`,
       params
     });
     // Close
@@ -112,72 +108,70 @@ export default class SideBar extends BaseScreen<Props, State> {
     const { userName, userImage, tenantName, isComponentOrganizationActive } = this.state;
     return (
       <Container style={style.container}>
-        <BackgroundComponent navigation={navigation}>
-          <Content style={style.drawerContent}>
-            <Header style={style.header}>
-              <Image source={logo} style={style.logo} />
-              <Text numberOfLines={1} style={style.tenantName}>
-                {tenantName}
-              </Text>
-              {/* <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`} (Beta)</Text> */}
-              <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
-              {DeviceInfo.getLastUpdateTime() && (
-                <Text style={style.versionDate}>{moment(DeviceInfo.getLastUpdateTime()).format('LL')}</Text>
-              )}
-            </Header>
-            <View style={style.linkContainer}>
-              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('HomeNavigator')}>
-                <Icon style={style.linkIcon} type='MaterialIcons' name='home' />
-                <Text style={style.linkText}>{I18n.t('sidebar.home')}</Text>
+        <Content style={style.drawerContent}>
+          <Header style={style.header}>
+            <Image source={logo} style={style.logo} />
+            <Text numberOfLines={1} style={style.tenantName}>
+              {tenantName}
+            </Text>
+            {/* <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`} (Beta)</Text> */}
+            <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
+            {DeviceInfo.getLastUpdateTime() && (
+              <Text style={style.versionDate}>{moment(DeviceInfo.getLastUpdateTime()).format('LL')}</Text>
+            )}
+          </Header>
+          <View style={style.linkContainer}>
+            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('HomeNavigator')}>
+              <Icon style={style.linkIcon} type='MaterialIcons' name='home' />
+              <Text style={style.linkText}>{I18n.t('sidebar.home')}</Text>
+            </ListItem>
+            {isComponentOrganizationActive && (
+              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('SitesNavigator')}>
+                <Icon style={style.linkIcon} type='MaterialIcons' name='store-mall-directory' />
+                <Text style={style.linkText}>{I18n.t('sidebar.sites')}</Text>
               </ListItem>
-              {isComponentOrganizationActive && (
-                <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('SitesNavigator')}>
-                  <Icon style={style.linkIcon} type='MaterialIcons' name='store-mall-directory' />
-                  <Text style={style.linkText}>{I18n.t('sidebar.sites')}</Text>
-                </ListItem>
-              )}
-              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('ChargersNavigator')}>
-                <Icon style={style.linkIcon} type='MaterialIcons' name='ev-station' />
-                <Text style={style.linkText}>{I18n.t('sidebar.chargers')}</Text>
-              </ListItem>
-              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('TransactionsNavigator')}>
-                <Icon style={style.linkIcon} type='MaterialCommunityIcons' name='history' />
-                <Text style={style.linkText}>{I18n.t('sidebar.transactions')}</Text>
-              </ListItem>
-              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('StatisticsNavigator')}>
-                <Icon style={style.linkIcon} type='MaterialIcons' name='assessment' />
-                <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
-              </ListItem>
-              {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
-                <Icon name="ios-settings-outline" />
-                <Text style={style.linkText}>SETTINGS</Text>
-              </ListItem> */}
-              {/* <ListItem button onPress={() => navigation.navigate("Feedback")} iconLeft style={style.links}>
-                <Icon name="ios-paper-outline" />
-                <Text style={style.linkText}>FEEDBACK</Text>
-              </ListItem> */}
-            </View>
-          </Content>
-          <View style={style.logoutContainer}>
-            <View style={style.logoutButton}>
-              <View style={style.gridLogoutContainer}>
-                <View style={style.columnAccount}>
-                  <TouchableOpacity style={style.buttonLogout} onPress={() => this.logoff()}>
-                    <Text style={style.logoutText}>{I18n.t('authentication.logOut')}</Text>
-                    <Text note={true} style={style.userName}>
-                      {userName}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={style.columnThumbnail}>
-                  <TouchableOpacity style={style.buttonThumbnail} onPress={() => navigation.navigate('Profile')}>
-                    <Thumbnail style={style.profilePic} source={userImage ? { uri: userImage } : noPhoto} />
-                  </TouchableOpacity>
-                </View>
+            )}
+            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('ChargersNavigator')}>
+              <Icon style={style.linkIcon} type='MaterialIcons' name='ev-station' />
+              <Text style={style.linkText}>{I18n.t('sidebar.chargers')}</Text>
+            </ListItem>
+            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('TransactionHistoryNavigator')}>
+              <Icon style={style.linkIcon} type='MaterialCommunityIcons' name='history' />
+              <Text style={style.linkText}>{I18n.t('sidebar.transactions')}</Text>
+            </ListItem>
+            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('StatisticsNavigator')}>
+              <Icon style={style.linkIcon} type='MaterialIcons' name='assessment' />
+              <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
+            </ListItem>
+            {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
+              <Icon name="ios-settings-outline" />
+              <Text style={style.linkText}>SETTINGS</Text>
+            </ListItem> */}
+            {/* <ListItem button onPress={() => navigation.navigate("Feedback")} iconLeft style={style.links}>
+              <Icon name="ios-paper-outline" />
+              <Text style={style.linkText}>FEEDBACK</Text>
+            </ListItem> */}
+          </View>
+        </Content>
+        <View style={style.logoutContainer}>
+          <View style={style.logoutButton}>
+            <View style={style.gridLogoutContainer}>
+              <View style={style.columnAccount}>
+                <TouchableOpacity style={style.buttonLogout} onPress={() => this.logoff()}>
+                  <Text style={style.logoutText}>{I18n.t('authentication.logOut')}</Text>
+                  <Text note={true} style={style.userName}>
+                    {userName}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View style={style.columnThumbnail}>
+                <TouchableOpacity style={style.buttonThumbnail} onPress={() => navigation.navigate('Profile')}>
+                  <Thumbnail style={style.profilePic} source={userImage ? { uri: userImage } : noPhoto} />
+                </TouchableOpacity>
               </View>
             </View>
           </View>
-        </BackgroundComponent>
+        </View>
       </Container>
     );
   }

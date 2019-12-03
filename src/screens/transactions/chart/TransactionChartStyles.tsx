@@ -15,10 +15,10 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.textColor
   },
   chart: {
-    height: '100%'
+    height: '90%'
   },
   chartWithHeader: {
-    height: '88%'
+    height: '78%'
   },
   notAuthorizedContainer: {
     flex: 1,
@@ -45,7 +45,7 @@ const commonStyles = ScaledSheet.create({
   subHeaderNameRight: {
     textAlign: 'right'
   },
-  notEnoughData: {
+  notData: {
     marginTop: '20@s',
     textAlign: 'center'
   }

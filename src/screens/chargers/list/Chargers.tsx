@@ -2,18 +2,17 @@ import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
-import BackgroundComponent from '../../components/background/BackgroundComponent';
-import ChargerComponent from '../../components/charger/ChargerComponent';
-import HeaderComponent from '../../components/header/HeaderComponent';
-import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
-import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
-import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
-import BaseProps from '../../types/BaseProps';
-import ChargingStation from '../../types/ChargingStation';
-import { DataResult } from '../../types/DataResult';
-import Constants from '../../utils/Constants';
-import Utils from '../../utils/Utils';
-import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
+import ChargerComponent from '../../../components/charger/ChargerComponent';
+import HeaderComponent from '../../../components/header/HeaderComponent';
+import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
+import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
+import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
+import BaseProps from '../../../types/BaseProps';
+import ChargingStation from '../../../types/ChargingStation';
+import { DataResult } from '../../../types/DataResult';
+import Constants from '../../../utils/Constants';
+import Utils from '../../../utils/Utils';
+import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargersStyles';
 
 export interface Props extends BaseProps {
@@ -92,8 +91,8 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       // Go Back
       this.props.navigation.goBack();
     } else {
-      // Back mobile button: Force navigation
-      this.props.navigation.navigate({ routeName: 'HomeNavigator' });
+      // Go back to the top
+      this.props.navigation.goBack(null);
     }
     // Do not bubble up
     return true;
@@ -148,36 +147,34 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     const { loading, chargers, skip, count, limit } = this.state;
     return (
       <Container style={style.container}>
-        <BackgroundComponent navigation={navigation} active={false}>
-          <HeaderComponent
-            navigation={navigation}
-            title={I18n.t('chargers.title')}
-            leftAction={this.onBack}
-            leftActionIcon={'navigate-before'}
-            rightAction={navigation.openDrawer}
-            rightActionIcon={'menu'}
-          />
-          <SimpleSearchComponent
-            onChange={(searchText) => this.search(searchText)}
-            navigation={navigation}
-          />
-          <View style={style.content}>
-            {loading ? (
-              <Spinner style={style.spinner} />
-            ) : (
-              <FlatList
-                data={chargers}
-                renderItem={({ item }) => <ChargerComponent charger={item} navigation={navigation} />}
-                keyExtractor={(item) => item.id}
-                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-                onEndReached={this.onEndScroll}
-                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargers')} />}
-              />
-            )}
-          </View>
-        </BackgroundComponent>
+        <HeaderComponent
+          navigation={navigation}
+          title={I18n.t('chargers.title')}
+          leftAction={this.onBack}
+          leftActionIcon={'navigate-before'}
+          rightAction={navigation.openDrawer}
+          rightActionIcon={'menu'}
+        />
+        <SimpleSearchComponent
+          onChange={(searchText) => this.search(searchText)}
+          navigation={navigation}
+        />
+        <View style={style.content}>
+          {loading ? (
+            <Spinner style={style.spinner} />
+          ) : (
+            <FlatList
+              data={chargers}
+              renderItem={({ item }) => <ChargerComponent charger={item} navigation={navigation} />}
+              keyExtractor={(item) => item.id}
+              refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+              onEndReached={this.onEndScroll}
+              onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+              ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargers')} />}
+            />
+          )}
+        </View>
       </Container>
     );
   }

@@ -157,7 +157,11 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
               {this.renderFirstConnectorDetails(connector)}
               {this.renderSecondConnectorDetails(connector, style)}
               {this.renderThirdConnectorDetails(connector, style)}
-              {!charger.inactive && <Icon style={style.icon} type='MaterialIcons' name='navigate-next' />}
+              {!charger.inactive ?
+                <Icon style={style.icon} type='MaterialIcons' name='navigate-next' />
+              :
+                <View style={style.noIcon} />
+              }
             </View>
           </View>
         </Animatable.View>

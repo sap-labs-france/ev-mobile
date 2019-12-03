@@ -7,6 +7,7 @@ import commonColor from '../../theme/variables/commonColor';
 const commonStyles = ScaledSheet.create({
   header: {
     height: '55@s',
+    width: '100%',
     padding: 0,
     margin: 0,
     paddingLeft: '10@s',

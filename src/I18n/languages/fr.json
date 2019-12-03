@@ -78,6 +78,7 @@
     "tenant": "Choisir une Organisation"
   },
   "transactions": {
+    "transaction": "Transaction",
     "history": "Historique",
     "in-progress": "En Cours",
     "transactionsHistory": "Historique Sessions",
@@ -91,13 +92,13 @@
     "browseSitesNote": "Naviguez vers les Sites et les Zones",
     "browseChargers": "Bornes",
     "browseChargersNote": "Naviguez vers les Bornes",
-    "browseSessions": "Sessions",
+    "browseSessions": "Historique Sessions",
     "browseSessionsNote": "Naviguez vers les Sessions",
     "browseStatistics": "Statistiques",
     "browseStatisticsNote": "Naviguez vers les Statistiques",
-    "ongoingSessions": "{{nbrSessions}} ongoing Session(s)",
+    "ongoingSessions": "Sessions En Cours",
     "noOngoingSessions": "Pas de Session en cours",
-    "ongoingSessionsNote": "Nombre de Session en cours",
+    "ongoingSessionsNote": "Naviguez vers les Session en cours",
     "statistics": "Statistiques",
     "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "Pas de Session trouvée",
@@ -158,7 +159,7 @@
     "connector": "Connecteur",
     "informations": "Informations",
     "graph": "Courbe",
-    "notAuthorized": "Données privées !",
+    "notAuthorized": "Vous n'êtes pas authorisé à lire cette session",
     "noTransaction": "Pas de transaction en cours",
     "startTransaction": "Démarrer transaction",
     "stopTransaction": "Stopper transaction",
@@ -184,7 +185,8 @@
     "cumulatedChartLabel": "Cumulé (kW.h)",
     "batteryChartLabel": "Niveau Batterie (%)",
     "connectorMax": "Connecteur Max Power (kW)",
-    "notEnoughData": "Pas assez de données pour afficher la courbe"
+    "noData": "Pas de données",
+    "noSessionInProgress": "Pas de session en cours"
   },
   "notifications": {
     "mustLogin": "Vous devez etre connecté",
