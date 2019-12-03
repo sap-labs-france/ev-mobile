@@ -157,9 +157,6 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           }
         }
       }
-      console.log('====================================');
-      console.log({transactionWithConsumptions});
-      console.log('====================================');
       // Get the provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       this.setState({
