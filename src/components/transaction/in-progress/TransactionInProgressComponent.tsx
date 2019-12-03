@@ -54,7 +54,7 @@ export default class TransactionInProgressComponent extends React.Component<Prop
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("ChargerDetailsTabsNavigator", {
+            navigation.navigate("ChargerDetailsTabs", {
               chargerID: transaction.chargeBoxID,
               connectorID: transaction.connectorId
             });

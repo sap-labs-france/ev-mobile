@@ -122,7 +122,7 @@ const sitesNavigator: NavigationContainer = createStackNavigator(
 const chargersNavigator: NavigationContainer = createStackNavigator(
   {
     Chargers: { screen: Chargers },
-    ChargerDetailsTabsNavigator: { screen: chargerDetailsTabsNavigator }
+    ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator }
   },
   {
     initialRouteName: "Chargers",
@@ -196,8 +196,8 @@ const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
     StatisticsNavigator: { screen: statisticsNavigator },
     TransactionHistoryNavigator: { screen: transactionHistoryNavigator },
     TransactionInProgressNavigator: { screen: transactionInProgressNavigator },
-    TransactionDetailsTabsNavigator: { screen: transactionDetailsTabsNavigator },
-    ChargerDetailsTabsNavigator: { screen: chargerDetailsTabsNavigator },
+    // TransactionDetailsTabsNavigator: { screen: transactionDetailsTabsNavigator },
+    // ChargerDetailsTabsNavigator: { screen: chargerDetailsTabsNavigator },
   },
   {
     navigationOptions: {
