@@ -94,6 +94,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       }
       // Get the provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
+      // Set
       this.setState({
         loading: false,
         transaction: transactionWithConsumptions ? transactionWithConsumptions.transaction : this.state.transaction,
