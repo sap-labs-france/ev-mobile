@@ -75,7 +75,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       userImage = await this.getUserImage(transaction.user);
     }
     // Compute Duration
-    this.computeDurationInfos();
+    this.computeDurationInfos(transaction);
     // Get the provider
     const securityProvider = this.centralServerProvider.getSecurityProvider();
     // Set
@@ -121,8 +121,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     return null;
   };
 
-  public computeDurationInfos = () => {
-    const { transaction } = this.state;
+  public computeDurationInfos = (transaction: Transaction) => {
     if (transaction) {
       // Compute duration
       const elapsedTimeFormatted = Utils.formatDurationHHMMSS(

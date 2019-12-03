@@ -62,6 +62,50 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     super.setState(state, callback);
   }
 
+  public refresh = async () => {
+    // Component Mounted?
+    if (this.isMounted()) {
+      const chargerID = Utils.getParamFromNavigation(this.props.navigation, "chargerID", null);
+      const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
+      const transactionID = Utils.getParamFromNavigation(this.props.navigation, "transactionID", null);
+      let transactionWithConsumptions = null;
+      let charger = null;
+      let connector = null;
+      // Get Transaction and Charger
+      if (transactionID) {
+        transactionWithConsumptions = await this.getTransactionWithConsumptions(parseInt(transactionID, 10));
+        if (transactionWithConsumptions) {
+          charger = await this.getCharger(transactionWithConsumptions.transaction.chargeBoxID);
+          if (charger) {
+            connector = charger ? charger.connectors[transactionWithConsumptions.transaction.connectorId - 1] : null;
+          }
+        }
+      // Get Charger and Transaction
+      } else if (chargerID) {
+        // Get Charger
+        charger = await this.getCharger(chargerID);
+        if (charger) {
+          connector = charger ? charger.connectors[parseInt(connectorID, 10) - 1] : null;
+          // Refresh Consumption
+          if (connector.activeTransactionID && (!this.state.transaction || !this.state.transaction.stop)) {
+            transactionWithConsumptions = await this.getTransactionWithConsumptions(connector.activeTransactionID);
+          }
+        }
+      }
+      // Get the provider
+      const securityProvider = this.centralServerProvider.getSecurityProvider();
+      this.setState({
+        loading: false,
+        transaction: transactionWithConsumptions ? transactionWithConsumptions.transaction : this.state.transaction,
+        charger: !this.state.charger ? charger : this.state.charger,
+        connector,
+        isAdmin: securityProvider ? securityProvider.isAdmin() : false,
+        canDisplayTransaction: charger ? this.canDisplayTransaction(transactionWithConsumptions.transaction, charger, connector) : false,
+        ...transactionWithConsumptions
+      });
+    }
+  };
+
   public getCharger = async (chargerID: string): Promise<ChargingStation> => {
     try {
       // Get Charger
@@ -125,50 +169,6 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       consumptionValues: null,
       stateOfChargeValues: null
     };
-  };
-
-  public refresh = async () => {
-    // Component Mounted?
-    if (this.isMounted()) {
-      const chargerID = Utils.getParamFromNavigation(this.props.navigation, "chargerID", null);
-      const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
-      const transactionID = Utils.getParamFromNavigation(this.props.navigation, "transactionID", null);
-      let transactionWithConsumptions = null;
-      let charger = null;
-      let connector = null;
-      // Get Transaction and Charger
-      if (transactionID) {
-        transactionWithConsumptions = await this.getTransactionWithConsumptions(parseInt(transactionID, 10));
-        if (transactionWithConsumptions) {
-          charger = await this.getCharger(transactionWithConsumptions.transaction.chargeBoxID);
-          if (charger) {
-            connector = charger ? charger.connectors[transactionWithConsumptions.transaction.connectorId - 1] : null;
-          }
-        }
-      // Get Charger and Transaction
-      } else if (chargerID) {
-        // Get Charger
-        charger = await this.getCharger(chargerID);
-        if (charger) {
-          connector = charger ? charger.connectors[parseInt(connectorID, 10) - 1] : null;
-          // Refresh Consumption
-          if (connector.activeTransactionID && (!this.state.transaction || !this.state.transaction.stop)) {
-            transactionWithConsumptions = await this.getTransactionWithConsumptions(connector.activeTransactionID);
-          }
-        }
-      }
-      // Get the provider
-      const securityProvider = this.centralServerProvider.getSecurityProvider();
-      this.setState({
-        loading: false,
-        transaction: transactionWithConsumptions ? transactionWithConsumptions.transaction : this.state.transaction,
-        charger: !this.state.charger ? charger : this.state.charger,
-        connector,
-        isAdmin: securityProvider ? securityProvider.isAdmin() : false,
-        canDisplayTransaction: charger ? this.canDisplayTransaction(transactionWithConsumptions.transaction, charger, connector) : false,
-        ...transactionWithConsumptions
-      });
-    }
   };
 
   public canDisplayTransaction = (transaction: Transaction, charger: ChargingStation, connector: Connector): boolean => {

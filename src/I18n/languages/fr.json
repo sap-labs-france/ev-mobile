@@ -32,7 +32,8 @@
     "home": "Home",
     "sites": "Sites",
     "chargers": "Bornes",
-    "transactions": "Sessions",
+    "transactionsHistory": "Historique Sessions",
+    "transactionsInProgress": "Sessions En Cours",
     "statistics": "Statistiques"
   },
   "authentication": {

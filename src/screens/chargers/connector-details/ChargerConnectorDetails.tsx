@@ -151,7 +151,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     // Check to enable the buttons after a certain period of time
     const startStopTransactionButtonStatus = this.getStartStopTransactionButtonStatus(connector);
     // Compute Duration
-    const durationInfos = this.getDurationInfos();
+    const durationInfos = this.getDurationInfos(transaction, connector);
     // Get the provider
     const securityProvider = this.centralServerProvider.getSecurityProvider();
     // Set
@@ -317,8 +317,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     return {};
   }
 
-  public getDurationInfos = (): {totalInactivitySecs?: number; elapsedTimeFormatted?: string; inactivityFormatted?: string;} => {
-    const { transaction, connector } = this.state;
+  public getDurationInfos = (transaction: Transaction, connector: Connector):
+      {totalInactivitySecs?: number; elapsedTimeFormatted?: string; inactivityFormatted?: string;} => {
     // Transaction loaded?
     if (transaction) {
       let elapsedTimeFormatted = Constants.DEFAULT_DURATION;

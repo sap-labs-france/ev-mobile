@@ -32,7 +32,8 @@
     "home": "Home",
     "sites": "Standorte",
     "chargers": "Ladestationen",
-    "transactions": "Sitzungen",
+    "transactionsHistory": "Sessions History",
+    "transactionsInProgress": "Sessions In Progress",
     "statistics": "Statistics"
   },
 	"authentication": {
