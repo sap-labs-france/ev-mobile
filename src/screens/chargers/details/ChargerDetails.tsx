@@ -16,6 +16,7 @@ export interface Props extends BaseProps {
 
 interface State {
   loading?: boolean;
+  isAdmin?: boolean;
   charger: ChargingStation;
   connector: Connector;
 }
@@ -28,6 +29,7 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
     super(props);
     this.state = {
       loading: true,
+      isAdmin: false,
       charger: null,
       connector: null,
     }
@@ -44,11 +46,14 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
     const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null), 10);
     // Get Charger
     const charger = await this.getCharger(chargerID);
+    // Get the provider
+    const securityProvider = this.centralServerProvider.getSecurityProvider();
     // Set
     this.setState({
       loading: false,
       charger,
       connector: charger ? charger.connectors[connectorID - 1] : null,
+      isAdmin: securityProvider ? securityProvider.isAdmin() : false
     });
   }
 
@@ -131,7 +136,7 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
     console.log(this.constructor.name + ' render ====================================');
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { loading, charger, connector } = this.state;
+    const { loading, isAdmin, charger, connector } = this.state;
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return (
       loading ? (
@@ -157,41 +162,47 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
                 <Text style={style.label}>{I18n.t('details.model')}</Text>
                 <Text style={style.value}>{charger && charger.chargePointModel ? charger.chargePointModel : '-'}</Text>
               </View>
-              <View style={style.descriptionContainer}>
-                <Text style={style.label}>{I18n.t('details.ocppVersion')}</Text>
-                <Text style={style.value}>{charger && charger.ocppVersion ? charger.ocppVersion : '-'}</Text>
-              </View>
-              <View style={style.descriptionContainer}>
-                <Text style={style.label}>{I18n.t('details.firmwareVersion')}</Text>
-                <Text style={style.value}>{charger && charger.firmwareVersion ? charger.firmwareVersion : '-'}</Text>
-              </View>
+              {isAdmin &&
+                <View>
+                  <View style={style.descriptionContainer}>
+                    <Text style={style.label}>{I18n.t('details.ocppVersion')}</Text>
+                    <Text style={style.value}>{charger && charger.ocppVersion ? charger.ocppVersion : '-'}</Text>
+                  </View>
+                  <View style={style.descriptionContainer}>
+                    <Text style={style.label}>{I18n.t('details.firmwareVersion')}</Text>
+                    <Text style={style.value}>{charger && charger.firmwareVersion ? charger.firmwareVersion : '-'}</Text>
+                  </View>
+                </View>
+              }
             </View>
-            <View style={style.bottomViewContainer}>
-              <View style={style.actionContainer}>
-                <Button rounded={true} iconLeft={true} danger={true} style={style.actionButton} onPress={() => this.resetHardConfirm()}>
-                  <Icon type='MaterialIcons' name='repeat' />
-                  <Text uppercase={false} style={style.actionButtonText}>
-                    {I18n.t('chargers.resetHard')}
-                  </Text>
-                </Button>
+            {isAdmin &&
+              <View style={style.bottomViewContainer}>
+                <View style={style.actionContainer}>
+                  <Button rounded={true} iconLeft={true} danger={true} style={style.actionButton} onPress={() => this.resetHardConfirm()}>
+                    <Icon type='MaterialIcons' name='repeat' />
+                    <Text uppercase={false} style={style.actionButtonText}>
+                      {I18n.t('chargers.resetHard')}
+                    </Text>
+                  </Button>
+                </View>
+                <View style={style.actionContainer}>
+                  <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.resetSoftConfirm()}>
+                    <Icon type='MaterialIcons' name='layers-clear' />
+                    <Text uppercase={false} style={style.actionButtonText}>
+                      {I18n.t('chargers.resetSoft')}
+                    </Text>
+                  </Button>
+                </View>
+                <View style={style.actionContainer}>
+                  <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.clearCacheConfirm()}>
+                    <Icon type='MaterialIcons' name='refresh' />
+                    <Text uppercase={false} style={style.actionButtonText}>
+                      {I18n.t('chargers.clearCache')}
+                    </Text>
+                  </Button>
+                </View>
               </View>
-              <View style={style.actionContainer}>
-                <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.resetSoftConfirm()}>
-                  <Icon type='MaterialIcons' name='layers-clear' />
-                  <Text uppercase={false} style={style.actionButtonText}>
-                    {I18n.t('chargers.resetSoft')}
-                  </Text>
-                </Button>
-              </View>
-              <View style={style.actionContainer}>
-                <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.clearCacheConfirm()}>
-                  <Icon type='MaterialIcons' name='refresh' />
-                  <Text uppercase={false} style={style.actionButtonText}>
-                    {I18n.t('chargers.clearCache')}
-                  </Text>
-                </Button>
-              </View>
-            </View>
+            }
           </ScrollView>
         </Container>
       )

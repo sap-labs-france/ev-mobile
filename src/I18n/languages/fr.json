@@ -32,7 +32,8 @@
     "home": "Home",
     "sites": "Sites",
     "chargers": "Bornes",
-    "transactions": "Sessions",
+    "transactionsHistory": "Historique Sessions",
+    "transactionsInProgress": "Sessions En Cours",
     "statistics": "Statistiques"
   },
   "authentication": {
@@ -78,7 +79,7 @@
     "tenant": "Choisir une Organisation"
   },
   "transactions": {
-    "transaction": "Transaction",
+    "transaction": "Session",
     "history": "Historique",
     "in-progress": "En Cours",
     "transactionsHistory": "Historique Sessions",

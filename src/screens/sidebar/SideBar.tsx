@@ -137,7 +137,11 @@ export default class SideBar extends BaseScreen<Props, State> {
             </ListItem>
             <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('TransactionHistoryNavigator')}>
               <Icon style={style.linkIcon} type='MaterialCommunityIcons' name='history' />
-              <Text style={style.linkText}>{I18n.t('sidebar.transactions')}</Text>
+              <Text style={style.linkText}>{I18n.t('sidebar.transactionsHistory')}</Text>
+            </ListItem>
+            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('TransactionInProgressNavigator')}>
+              <Icon style={style.linkIcon} type='MaterialIcons' name='play-arrow' />
+              <Text style={style.linkText}>{I18n.t('sidebar.transactionsInProgress')}</Text>
             </ListItem>
             <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('StatisticsNavigator')}>
               <Icon style={style.linkIcon} type='MaterialIcons' name='assessment' />

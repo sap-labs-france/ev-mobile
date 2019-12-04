@@ -32,7 +32,8 @@
     "home": "Home",
     "sites": "Sites",
     "chargers": "Chargers",
-    "transactions": "Sessions",
+    "transactionsHistory": "Sessions History",
+    "transactionsInProgress": "Sessions In Progress",
     "statistics": "Statistics"
   },
 	"authentication": {
