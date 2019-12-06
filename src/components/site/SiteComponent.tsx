@@ -8,6 +8,7 @@ import BaseProps from "../../types/BaseProps";
 import ConnectorStats from "../../types/ConnectorStats";
 import Site from "../../types/Site";
 import Constants from "../../utils/Constants";
+import Utils from "../../utils/Utils";
 import ConnectorStatusesContainerComponent from "../connector-status/ConnectorStatusesContainerComponent";
 import computeStyleSheet from "./SiteComponentStyles";
 
@@ -58,7 +59,15 @@ export default class SiteComponent extends React.Component<Props, State> {
         animation={this.counter++ % 2 === 0 ? "flipInX" : "flipInX"}
         iterationCount={1}
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
-        <TouchableOpacity onPress={() => navigation.navigate("SiteAreas", { siteID: site.id })}>
+        <TouchableOpacity onPress={() => {
+            navigation.navigate({
+              routeName: "SiteAreas",
+              params: {
+                siteID: site.id
+              },
+              key: `${Utils.randomNumnber()}`
+            })
+          }}>
           <View style={style.container}>
             <View style={style.headerContent}>
               <View style={style.subHeaderContent}>

@@ -146,9 +146,13 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
         style={style.container}
         disabled={charger.inactive}
         onPress={() =>
-          navigation.navigate("ChargerDetailsTabs", {
-            chargerID: charger.id,
-            connectorID: connector.connectorId
+          navigation.navigate({
+            routeName: "ChargerDetailsTabs",
+            params: {
+              chargerID: charger.id,
+              connectorID: connector.connectorId
+            },
+            key: `${Utils.randomNumnber()}`
           })
         }>
         <Animatable.View animation={"flipInX"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
