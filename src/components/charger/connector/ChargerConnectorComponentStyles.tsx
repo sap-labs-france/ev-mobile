@@ -67,9 +67,6 @@ const commonStyles = ScaledSheet.create({
   },
   icon: {
     fontSize: "30@s"
-  },
-  noIcon: { 
-    width: "30@s"
   }
 });
 

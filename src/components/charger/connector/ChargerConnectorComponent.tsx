@@ -158,7 +158,7 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
               {this.renderSecondConnectorDetails(connector, style)}
               {this.renderThirdConnectorDetails(connector, style)}
               {charger.inactive ?
-                <View style={style.noIcon} />
+                <Icon style={style.icon} type="MaterialIcons" name="not-interested" />
               :
                 <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
               }
