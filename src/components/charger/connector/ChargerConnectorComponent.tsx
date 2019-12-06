@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Icon, Text, View } from 'native-base';
+import { Button, Icon, Text, View } from 'native-base';
 import React from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -157,10 +157,10 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
               {this.renderFirstConnectorDetails(connector)}
               {this.renderSecondConnectorDetails(connector, style)}
               {this.renderThirdConnectorDetails(connector, style)}
-              {!charger.inactive ?
-                <Icon style={style.icon} type='MaterialIcons' name='navigate-next' />
-              :
+              {charger.inactive ?
                 <View style={style.noIcon} />
+              :
+                <Icon style={style.icon} type='MaterialIcons' name='navigate-next' />
               }
             </View>
           </View>
