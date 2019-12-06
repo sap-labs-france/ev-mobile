@@ -17,6 +17,7 @@ export default class NotificationManager {
   private removeNotificationListener: () => any;
   private removeNotificationOpenedListener: () => any;
   private removeTokenRefreshListener: () => any;
+  private messageListener: () => any;
   private centralServerProvider: CentralServerProvider;
   private lastNotification: NotificationOpen
 
@@ -35,7 +36,7 @@ export default class NotificationManager {
     // Keep the nav
     this.navigator = navigator;
     // Check if user has given permission
-    const enabled = await firebase.messaging().hasPermission();
+    let enabled = await firebase.messaging().hasPermission();
     if (!enabled) {
       // Request permission
       try {
@@ -45,29 +46,57 @@ export default class NotificationManager {
         // User has rejected permissions
       }
     }
+    // Check again
+    enabled = await firebase.messaging().hasPermission();
+    if (enabled) {
+      const fcmToken = await firebase.messaging().getToken();
+      if (fcmToken) {
+        this.token = fcmToken;
+        console.log('initialize ====================================');
+        console.log({fcmToken});
+        console.log('====================================');
+      }
+    }
   }
 
   public async start() {
-    const initialNotificationOpen: NotificationOpen = await firebase.notifications().getInitialNotification();
+    // Check Initial Notification
+    const initialNotificationOpen = await firebase.notifications().getInitialNotification();
     if (initialNotificationOpen) {
-      // Process it later
       this.lastNotification = initialNotificationOpen;
     }
+    // Notification Displayed
     this.removeNotificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification: Notification) => {
-      // Process notification
-      this.processNotification(notification);
+      console.log('onNotificationDisplayed ====================================');
+      console.log({notification});
+      console.log('====================================');
+        this.processNotification(notification);
     });
+    // Notification Received
     this.removeNotificationListener = firebase.notifications().onNotification((notification: Notification) => {
-      // Process notification
+      console.log('onNotification ====================================');
+      console.log({notification});
+      console.log('====================================');
       this.processNotification(notification);
     });
+    // Notification Received and User opened it
     this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen: NotificationOpen) => {
-      // Process notification
+      console.log('onNotificationOpened ====================================');
+      console.log({notificationOpen});
+      console.log('====================================');
       this.processOpenedNotification(notificationOpen);
     });
-    this.removeTokenRefreshListener = firebase.messaging().onTokenRefresh(async (newFcmToken) => {
+    // Get Firebase messages
+    this.messageListener = firebase.messaging().onMessage((message) => {
+      console.log(JSON.stringify(message));
+    });
+    // Token has changed
+     this.removeTokenRefreshListener = firebase.messaging().onTokenRefresh(async (newFcmToken) => {
       // Process your token as required
       this.token = newFcmToken;
+      console.log('onTokenRefresh ====================================');
+      console.log({newFcmToken});
+      console.log('====================================');
       try {
         // Save the User's token
         if (this.centralServerProvider.isUserConnected()) {
@@ -82,20 +111,21 @@ export default class NotificationManager {
         console.log("Error saving Mobile Token:", error);
       }
     });
-    const fcmToken = await firebase.messaging().getToken();
-    if (fcmToken) {
-      this.token = fcmToken;
-    }
   }
 
   public async stop() {
+    console.log('NotificationManager - Stop ====================================');
     this.removeNotificationDisplayedListener();
     this.removeNotificationListener();
     this.removeNotificationOpenedListener();
     this.removeTokenRefreshListener();
+    this.messageListener();
   }
 
   public getToken(): string {
+    console.log('NotificationManager - getToken ====================================');
+    console.log({token: this.token});
+    console.log('====================================');
     return this.token;
   }
 
@@ -104,6 +134,9 @@ export default class NotificationManager {
   }
 
   public async checkOnHoldNotification() {
+    console.log('NotificationManager - checkOnHoldNotification ====================================');
+    console.log({lastNotification: this.lastNotification});
+    console.log('====================================');
     if (this.lastNotification) {
       const notificationProcessed = await this.processOpenedNotification(this.lastNotification);
       if (notificationProcessed) {
@@ -114,10 +147,16 @@ export default class NotificationManager {
 
   public async processNotification(notification: Notification): Promise<boolean> {
     // Do nothing when notification is received but user has not pressed it
+    console.log('processNotification ====================================');
+    console.log({notification});
+    console.log('====================================');
     return true;
   }
 
   public async processOpenedNotification(notificationOpen: NotificationOpen): Promise<boolean> {
+    console.log('processOpenedNotification ====================================');
+    console.log({notificationOpen});
+    console.log('====================================');
     // Get information about the notification that was opened
     const notification: Notification = notificationOpen.notification;
     // No: meaning the user got the notif and clicked on it, then navigate to the right screen
