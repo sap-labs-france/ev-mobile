@@ -133,7 +133,6 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
   };
 
   public render() {
-    console.log(this.constructor.name + ' render ====================================');
     const { navigation } = this.props;
     const style = computeStyleSheet();
     const { loading, isAdmin, charger, connector } = this.state;

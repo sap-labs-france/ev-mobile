@@ -103,7 +103,6 @@ export default class SideBar extends BaseScreen<Props, State> {
   };
 
   public render() {
-    console.log(this.constructor.name + ' render ====================================');
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { userName, userImage, tenantName, isComponentOrganizationActive } = this.state;
