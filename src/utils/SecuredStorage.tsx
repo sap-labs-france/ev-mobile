@@ -7,7 +7,7 @@ import Constants from './Constants';
 let navigationID: string = '' + new Date().getTime();
 if (__DEV__) {
   // Keep the same key for dev
-  navigationID = '123456789';
+  navigationID = '1234556';
 }
 
 export default class SecuredStorage {

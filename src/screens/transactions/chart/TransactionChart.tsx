@@ -362,7 +362,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
               keepPositionOnRotation={false}
             />
           ) : (
-            connector.activeTransactionID ?
+            transaction || (connector && connector.activeTransactionID) ?
               canDisplayTransaction ?
                 <Text style={style.notData}>{I18n.t('details.noData')}</Text>
               :
