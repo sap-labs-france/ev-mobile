@@ -64,6 +64,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     let userImage = null;
     // Get IDs
     const transactionID = Utils.getParamFromNavigation(this.props.navigation, "transactionID", null);
+    console.log('====================================');
+    console.log({transactionID});
+    console.log('====================================');
     // Get Transaction
     const transaction = await this.getTransaction(transactionID);
     // Get the Site Image
@@ -172,7 +175,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       <View style={style.columnContainer}>
         <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>{I18nManager.formatCurrency(price)}</Text>
-        <Text style={[style.subLabel, style.info]}>({transaction.priceUnit})</Text>
+        <Text style={[style.subLabel, style.info]}>({transaction ? transaction.priceUnit : "-"})</Text>
       </View>
     );
   };
@@ -214,7 +217,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
 
   public renderBatteryLevel = (style: any) => {
     const { transaction } = this.state;
-    return transaction.stateOfCharge ? (
+    return transaction && transaction.stateOfCharge ? (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>{transaction.stateOfCharge} > {transaction.stop.stateOfCharge}</Text>
@@ -260,7 +263,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
           <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
           <View style={style.headerContent}>
             <View style={style.headerRowContainer}>
-              <Text style={style.headerName}>{moment(new Date(transaction.timestamp)).format("LLL")}</Text>
+              <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format("LLL") : ''}</Text>
             </View>
           </View>
           <ScrollView style={style.scrollViewContainer}>

@@ -8,7 +8,6 @@ import { UserNotificationType } from "../types/UserNotifications";
 import Message from "../utils/Message";
 import Utils from "../utils/Utils";
 
-
 export default class NotificationManager {
   private static notificationManager: NotificationManager;
   private token: string;
@@ -88,7 +87,9 @@ export default class NotificationManager {
     });
     // Get Firebase messages
     this.messageListener = firebase.messaging().onMessage((message) => {
+      console.log('onMessage ====================================');
       console.log(JSON.stringify(message));
+      console.log('====================================');
     });
     // Token has changed
      this.removeTokenRefreshListener = firebase.messaging().onTokenRefresh(async (newFcmToken) => {
@@ -178,11 +179,15 @@ export default class NotificationManager {
         // Navigate
         this.navigator.dispatch(
           NavigationActions.navigate({
-            routeName: 'TransactionDetailsTabsNavigator',
+            routeName: 'TransactionHistoryNavigator',
             key: `${Utils.randomNumnber()}`,
-            params: {
-              transactionID: parseInt(notification.data.transactionID, 10)
-            }
+            action: NavigationActions.navigate({
+              routeName: 'TransactionDetailsTabs',
+              key: `${Utils.randomNumnber()}`,
+              params: {
+                transactionID: parseInt(notification.data.transactionID, 10)
+              }
+            }),
           })
         );
         break;
@@ -191,17 +196,38 @@ export default class NotificationManager {
       case UserNotificationType.SESSION_STARTED:
       case UserNotificationType.END_OF_CHARGE:
       case UserNotificationType.OPTIMAL_CHARGE_REACHED:
+        // Navigate
+        this.navigator.dispatch(
+          NavigationActions.navigate({
+            routeName: 'TransactionInProgressNavigator',
+            key: `${Utils.randomNumnber()}`,
+            action: NavigationActions.navigate({
+              routeName: 'ChargerDetailsTabs',
+              key: `${Utils.randomNumnber()}`,
+              params: {
+                chargerID: notification.data.chargeBoxID,
+                connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+              }
+            }),
+          })
+        );
+        break;
+
       case UserNotificationType.CHARGING_STATION_STATUS_ERROR:
       case UserNotificationType.PREPARING_SESSION_NOT_STARTED:
         // Navigate
         this.navigator.dispatch(
           NavigationActions.navigate({
-            routeName: 'ChargerDetailsTabsNavigator',
+            routeName: 'ChargersNavigator',
             key: `${Utils.randomNumnber()}`,
-            params: {
-              chargerID: notification.data.chargeBoxID,
-              connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
-            }
+            action: NavigationActions.navigate({
+              routeName: 'ChargerDetailsTabs',
+              key: `${Utils.randomNumnber()}`,
+              params: {
+                chargerID: notification.data.chargeBoxID,
+                connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+              }
+            }),
           })
         );
         break;
@@ -211,12 +237,16 @@ export default class NotificationManager {
         // Navigate
         this.navigator.dispatch(
           NavigationActions.navigate({
-            routeName: 'ChargerDetailsTabsNavigator',
+            routeName: 'ChargersNavigator',
             key: `${Utils.randomNumnber()}`,
-            params: {
-              chargerID: notification.data.chargeBoxID,
-              connectorID: 1
-            }
+            action: NavigationActions.navigate({
+              routeName: 'ChargerDetailsTabs',
+              key: `${Utils.randomNumnber()}`,
+              params: {
+                chargerID: notification.data.chargeBoxID,
+                connectorID: 1
+              }
+            }),
           })
         );
         break;

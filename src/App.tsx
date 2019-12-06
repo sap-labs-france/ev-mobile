@@ -196,8 +196,6 @@ const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
     StatisticsNavigator: { screen: statisticsNavigator },
     TransactionHistoryNavigator: { screen: transactionHistoryNavigator },
     TransactionInProgressNavigator: { screen: transactionInProgressNavigator },
-    // TransactionDetailsTabsNavigator: { screen: transactionDetailsTabsNavigator },
-    // ChargerDetailsTabsNavigator: { screen: chargerDetailsTabsNavigator },
   },
   {
     navigationOptions: {
