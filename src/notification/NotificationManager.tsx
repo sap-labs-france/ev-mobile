@@ -51,9 +51,6 @@ export default class NotificationManager {
       const fcmToken = await firebase.messaging().getToken();
       if (fcmToken) {
         this.token = fcmToken;
-        console.log('initialize ====================================');
-        console.log({fcmToken});
-        console.log('====================================');
       }
     }
   }
@@ -66,38 +63,26 @@ export default class NotificationManager {
     }
     // Notification Displayed
     this.removeNotificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification: Notification) => {
-      console.log('onNotificationDisplayed ====================================');
-      console.log({notification});
-      console.log('====================================');
-        this.processNotification(notification);
+      // Do nothing
     });
     // Notification Received
-    this.removeNotificationListener = firebase.notifications().onNotification((notification: Notification) => {
-      console.log('onNotification ====================================');
-      console.log({notification});
-      console.log('====================================');
-      this.processNotification(notification);
+    this.removeNotificationListener = firebase.notifications().onNotification(async (notification: Notification) => {
+      // App in foreground: Display the notification
+      notification.setSound("default");
+      await firebase.notifications().displayNotification(notification);
     });
     // Notification Received and User opened it
     this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen: NotificationOpen) => {
-      console.log('onNotificationOpened ====================================');
-      console.log({notificationOpen});
-      console.log('====================================');
       this.processOpenedNotification(notificationOpen);
     });
     // Get Firebase messages
     this.messageListener = firebase.messaging().onMessage((message) => {
-      console.log('onMessage ====================================');
-      console.log(JSON.stringify(message));
-      console.log('====================================');
+      // Do nothing
     });
     // Token has changed
      this.removeTokenRefreshListener = firebase.messaging().onTokenRefresh(async (newFcmToken) => {
       // Process your token as required
       this.token = newFcmToken;
-      console.log('onTokenRefresh ====================================');
-      console.log({newFcmToken});
-      console.log('====================================');
       try {
         // Save the User's token
         if (this.centralServerProvider.isUserConnected()) {
@@ -115,7 +100,6 @@ export default class NotificationManager {
   }
 
   public async stop() {
-    console.log('NotificationManager - Stop ====================================');
     this.removeNotificationDisplayedListener();
     this.removeNotificationListener();
     this.removeNotificationOpenedListener();
@@ -124,9 +108,6 @@ export default class NotificationManager {
   }
 
   public getToken(): string {
-    console.log('NotificationManager - getToken ====================================');
-    console.log({token: this.token});
-    console.log('====================================');
     return this.token;
   }
 
@@ -135,9 +116,6 @@ export default class NotificationManager {
   }
 
   public async checkOnHoldNotification() {
-    console.log('NotificationManager - checkOnHoldNotification ====================================');
-    console.log({lastNotification: this.lastNotification});
-    console.log('====================================');
     if (this.lastNotification) {
       const notificationProcessed = await this.processOpenedNotification(this.lastNotification);
       if (notificationProcessed) {
@@ -146,18 +124,7 @@ export default class NotificationManager {
     }
   }
 
-  public async processNotification(notification: Notification): Promise<boolean> {
-    // Do nothing when notification is received but user has not pressed it
-    console.log('processNotification ====================================');
-    console.log({notification});
-    console.log('====================================');
-    return true;
-  }
-
-  public async processOpenedNotification(notificationOpen: NotificationOpen): Promise<boolean> {
-    console.log('processOpenedNotification ====================================');
-    console.log({notificationOpen});
-    console.log('====================================');
+  private async processOpenedNotification(notificationOpen: NotificationOpen): Promise<boolean> {
     // Get information about the notification that was opened
     const notification: Notification = notificationOpen.notification;
     // No: meaning the user got the notif and clicked on it, then navigate to the right screen
