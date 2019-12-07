@@ -64,9 +64,6 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     let userImage = null;
     // Get IDs
     const transactionID = Utils.getParamFromNavigation(this.props.navigation, 'transactionID', null);
-    console.log('====================================');
-    console.log({transactionID});
-    console.log('====================================');
     // Get Transaction
     const transaction = await this.getTransaction(transactionID);
     // Get the Site Image
@@ -239,7 +236,6 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   };
 
   public render() {
-    console.log(this.constructor.name + ' render ====================================');
     const { navigation } = this.props;
     const style = computeStyleSheet();
     const { transaction } = this.state;

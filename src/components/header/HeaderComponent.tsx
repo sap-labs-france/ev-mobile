@@ -35,9 +35,6 @@ export default class HeaderComponent extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    console.log('====================================');
-    console.log(props);
-    console.log('====================================');
     this.state = {
       complexSearchComponentRef: null
     }

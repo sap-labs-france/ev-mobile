@@ -561,7 +561,6 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   };
 
   public render() {
-    console.log(this.constructor.name + ' render ====================================');
     const { navigation } = this.props;
     const style = computeStyleSheet();
     const { connector, canStopTransaction, canStartTransaction, charger, loading, siteImage, isPricingActive } = this.state;

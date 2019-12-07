@@ -26,7 +26,6 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
 
   public async componentDidMount() {
     await super.componentDidMount();
-    console.log(this.constructor.name + ' componentDidMount ====================================');
     // Refresh
     if (this.props.navigation.isFocused() && this.canRefresh()) {
       // Refresh
@@ -39,17 +38,12 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
 
   public async componentWillUnmount() {
     await super.componentWillUnmount();
-    console.log(this.constructor.name + ' componentWillUnmount ====================================');
     // Clear the timer
     this.clearRefreshTimer();
   }
 
   public async componentDidFocus() {
     await super.componentDidFocus();
-    console.log('componentDidFocus ====================================');
-    console.log(this.isMounted());
-    console.log('====================================');
-    console.log(this.constructor.name + ' componentDidFocus ====================================');
     // Refresh
     if (this.isMounted() && this.props.navigation.isFocused() && this.canRefresh()) {
       this.refresh();
@@ -68,7 +62,6 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
 
   public async componentDidBlur() {
     await super.componentDidBlur();
-    console.log(this.constructor.name + ' componentDidBlur ====================================');
     // Clear the timer
     this.clearRefreshTimer();
   }

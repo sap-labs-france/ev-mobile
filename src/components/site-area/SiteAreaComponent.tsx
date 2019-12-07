@@ -7,6 +7,7 @@ import BaseProps from '../../types/BaseProps';
 import SiteArea from '../../types/SiteArea';
 import Constants from '../../utils/Constants';
 import Message from '../../utils/Message';
+import Utils from '../../utils/Utils';
 import ConnectorStatusesContainerComponent from '../connector-status/ConnectorStatusesContainerComponent';
 import computeStyleSheet from './SiteAreaComponentStyles';
 
@@ -52,8 +53,12 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
         <TouchableOpacity
           onPress={() => {
             if (siteArea.totalConnectors > 0) {
-              navigation.navigate('Chargers', {
+              navigation.navigate({
+                routeName: 'Chargers',
+                params: {
                 siteAreaID: siteArea.id
+                },
+                key: `${Utils.randomNumber()}`
               });
             } else {
               Message.showError(I18n.t('siteAreas.noChargers'));
