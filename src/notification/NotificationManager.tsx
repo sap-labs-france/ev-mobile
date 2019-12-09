@@ -69,7 +69,24 @@ export default class NotificationManager {
     this.removeNotificationListener = firebase.notifications().onNotification(async (notification: Notification) => {
       // App in foreground: Display the notification
       notification.setSound('default');
-      await firebase.notifications().displayNotification(notification);
+      // Check if notification has to be displayed
+      if (notification.data) {
+        // Check
+        switch (notification.data.notificationType) {
+          // Do nothing
+          case UserNotificationType.END_OF_SESSION:
+          case UserNotificationType.SESSION_STARTED:
+            break;
+
+          // Force display notif
+          default:
+            await firebase.notifications().displayNotification(notification);
+            break;
+        }
+      } else {
+        // Always display it
+        await firebase.notifications().displayNotification(notification);
+      }
     });
     // Notification Received and User opened it
     this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen: NotificationOpen) => {
