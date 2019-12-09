@@ -167,11 +167,10 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
 
   public renderPrice = (style: any) => {
     const { transaction } = this.state;
-    const price = transaction ? Math.round((transaction.stop.price * 100) / 100) : 0;
     return (
       <View style={style.columnContainer}>
         <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>{I18nManager.formatCurrency(price)}</Text>
+        <Text style={[style.label, style.labelValue, style.info]}>{I18nManager.formatCurrency(transaction.stop.price)}</Text>
         <Text style={[style.subLabel, style.info]}>({transaction ? transaction.priceUnit : "-"})</Text>
       </View>
     );
