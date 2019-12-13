@@ -40,7 +40,7 @@ export default class NotificationManager {
       // Request permission
       try {
         await firebase.messaging().requestPermission();
-        // User has authorized
+        // User has authorized permissions
       } catch (error) {
         // User has rejected permissions
       }
@@ -184,10 +184,10 @@ export default class NotificationManager {
         this.navigator.dispatch(
           NavigationActions.navigate({
             routeName: 'TransactionInProgressNavigator',
-            key: `${Utils.randomNumnber()}`,
+            key: `${Utils.randomNumber()}`,
             action: NavigationActions.navigate({
               routeName: 'ChargerDetailsTabs',
-              key: `${Utils.randomNumnber()}`,
+              key: `${Utils.randomNumber()}`,
               params: {
                 chargerID: notification.data.chargeBoxID,
                 connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)

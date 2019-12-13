@@ -152,7 +152,7 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
               chargerID: charger.id,
               connectorID: connector.connectorId
             },
-            key: `${Utils.randomNumnber()}`
+            key: `${Utils.randomNumber()}`
           })
         }>
         <Animatable.View animation={'flipInX'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
