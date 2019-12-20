@@ -1,11 +1,11 @@
 export default () => {
   const rightTheme: any = {
-    "NativeBase.Button": {
+    'NativeBase.Button': {
       alignSelf: null
     },
     flex: 1,
-    alignSelf: "center",
-    alignItems: "flex-end"
+    alignSelf: 'center',
+    alignItems: 'flex-end'
   };
 
   return rightTheme;

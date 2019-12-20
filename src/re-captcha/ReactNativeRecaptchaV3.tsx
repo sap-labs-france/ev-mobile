@@ -35,8 +35,8 @@ interface Props {
 
 class ReactNativeRecaptchaV3 extends PureComponent<Props> {
     public static defaultProps = {
-        leftActionIconType: "MaterialIcons",
-        rightActionIconType: "MaterialIcons"
+        leftActionIconType: 'MaterialIcons',
+        rightActionIconType: 'MaterialIcons'
     };
 
     public render() {
@@ -45,7 +45,7 @@ class ReactNativeRecaptchaV3 extends PureComponent<Props> {
         return (
             <WebView
                 originWhitelist={['*']}
-                style={{ width: 0, height: 0, backgroundColor: "transparent" }}
+                style={{ width: 0, height: 0, backgroundColor: 'transparent' }}
                 startInLoadingState={false}
                 javaScriptEnabled={true}
                 source={{ html: recaptchaHtmlWithKey, baseUrl: url }}

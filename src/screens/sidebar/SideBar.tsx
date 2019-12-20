@@ -1,18 +1,17 @@
-import I18n from "i18n-js";
-import moment from "moment";
-import { Container, Content, Header, Icon, ListItem, Text, Thumbnail, View } from "native-base";
-import React from "react";
-import { Image, TouchableOpacity } from "react-native";
-import DeviceInfo from "react-native-device-info";
-import { NavigationActions } from "react-navigation";
-import logo from "../../../assets/logo-low.png";
-import noPhoto from "../../../assets/no-photo-inverse.png";
-import BaseProps from "../../types/BaseProps";
-import Constants from "../../utils/Constants";
-import Utils from "../../utils/Utils";
-import BaseScreen from "../base-screen/BaseScreen";
-import computeStyleSheet from "./SideBarStyles";
-
+import I18n from 'i18n-js';
+import moment from 'moment';
+import { Container, Content, Header, Icon, ListItem, Text, Thumbnail, View } from 'native-base';
+import React from 'react';
+import { Image, TouchableOpacity } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
+import { NavigationActions } from 'react-navigation';
+import logo from '../../../assets/logo-low.png';
+import noPhoto from '../../../assets/no-photo-inverse.png';
+import BaseProps from '../../types/BaseProps';
+import Constants from '../../utils/Constants';
+import Utils from '../../utils/Utils';
+import BaseScreen from '../base-screen/BaseScreen';
+import computeStyleSheet from './SideBarStyles';
 
 export interface Props extends BaseProps {
 }
@@ -32,10 +31,10 @@ export default class SideBar extends BaseScreen<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      userName: "",
-      userID: "",
-      userImage: "",
-      tenantName: "",
+      userName: '',
+      userID: '',
+      userImage: '',
+      tenantName: '',
       isComponentOrganizationActive: false
     };
   }
@@ -61,8 +60,8 @@ export default class SideBar extends BaseScreen<Props, State> {
     // Add sites
     this.setState(
       {
-        userName: userInfo ? `${userInfo.name} ${userInfo.firstName}` : "",
-        userID: userInfo ? `${userInfo.id}` : "",
+        userName: userInfo ? `${userInfo.name} ${userInfo.firstName}` : '',
+        userID: userInfo ? `${userInfo.id}` : '',
         isComponentOrganizationActive: securityProvider ? securityProvider.isComponentOrganizationActive() : false,
         tenantName: userInfo.tenantName
       },
@@ -90,7 +89,7 @@ export default class SideBar extends BaseScreen<Props, State> {
     this.centralServerProvider.setAutoLoginDisabled(true);
     this.centralServerProvider.logoff();
     // Back to login
-    this.props.navigation.navigate("AuthNavigator");
+    this.props.navigation.navigate('AuthNavigator');
   }
 
   public navigateTo = (container: string, screen: string, params = {}) => {
@@ -98,17 +97,17 @@ export default class SideBar extends BaseScreen<Props, State> {
     this.props.navigation.dispatch(
       NavigationActions.navigate({
         routeName: container,
-        key: `${Utils.randomNumnber()}`,
+        key: `${Utils.randomNumber()}`,
         action: NavigationActions.navigate({
           routeName: screen,
-          key: `${Utils.randomNumnber()}`
+          key: `${Utils.randomNumber()}`
         }),
       })
     );
     // // Navigate
     // this.props.navigation.navigate({
     //   routeName: screen,
-    //   key: `${Utils.randomNumnber()}`,
+    //   key: `${Utils.randomNumber()}`,
     //   params
     // });
     // Close
@@ -128,37 +127,37 @@ export default class SideBar extends BaseScreen<Props, State> {
               {tenantName}
             </Text>
             {/* <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`} (Beta)</Text> */}
-            <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`}</Text>
+            <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
             {DeviceInfo.getLastUpdateTime() && (
-              <Text style={style.versionDate}>{moment(DeviceInfo.getLastUpdateTime()).format("LL")}</Text>
+              <Text style={style.versionDate}>{moment(DeviceInfo.getLastUpdateTime()).format('LL')}</Text>
             )}
           </Header>
           <View style={style.linkContainer}>
-            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo("HomeNavigator", "Home")}>
-              <Icon style={style.linkIcon} type="MaterialIcons" name="home" />
-              <Text style={style.linkText}>{I18n.t("sidebar.home")}</Text>
+            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('HomeNavigator', 'Home')}>
+              <Icon style={style.linkIcon} type='MaterialIcons' name='home' />
+              <Text style={style.linkText}>{I18n.t('sidebar.home')}</Text>
             </ListItem>
             {isComponentOrganizationActive && (
-              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo("SitesNavigator", "Sites")}>
-                <Icon style={style.linkIcon} type="MaterialIcons" name="store-mall-directory" />
-                <Text style={style.linkText}>{I18n.t("sidebar.sites")}</Text>
+              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('SitesNavigator', 'Sites')}>
+                <Icon style={style.linkIcon} type='MaterialIcons' name='store-mall-directory' />
+                <Text style={style.linkText}>{I18n.t('sidebar.sites')}</Text>
               </ListItem>
             )}
-            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo("ChargersNavigator", "Chargers")}>
-              <Icon style={style.linkIcon} type="MaterialIcons" name="ev-station" />
-              <Text style={style.linkText}>{I18n.t("sidebar.chargers")}</Text>
+            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('ChargersNavigator', 'Chargers')}>
+              <Icon style={style.linkIcon} type='MaterialIcons' name='ev-station' />
+              <Text style={style.linkText}>{I18n.t('sidebar.chargers')}</Text>
             </ListItem>
-            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo("TransactionHistoryNavigator", "TransactionsHistory")}>
-              <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="history" />
-              <Text style={style.linkText}>{I18n.t("sidebar.transactionsHistory")}</Text>
+            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('TransactionHistoryNavigator', 'TransactionsHistory')}>
+              <Icon style={style.linkIcon} type='MaterialCommunityIcons' name='history' />
+              <Text style={style.linkText}>{I18n.t('sidebar.transactionsHistory')}</Text>
             </ListItem>
-            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo("TransactionInProgressNavigator", "TransactionsInProgress")}>
-              <Icon style={style.linkIcon} type="MaterialIcons" name="play-arrow" />
-              <Text style={style.linkText}>{I18n.t("sidebar.transactionsInProgress")}</Text>
+            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('TransactionInProgressNavigator', 'TransactionsInProgress')}>
+              <Icon style={style.linkIcon} type='MaterialIcons' name='play-arrow' />
+              <Text style={style.linkText}>{I18n.t('sidebar.transactionsInProgress')}</Text>
             </ListItem>
-            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo("StatisticsNavigator", "Statistics")}>
-              <Icon style={style.linkIcon} type="MaterialIcons" name="assessment" />
-              <Text style={style.linkText}>{I18n.t("sidebar.statistics")}</Text>
+            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('StatisticsNavigator', 'Statistics')}>
+              <Icon style={style.linkIcon} type='MaterialIcons' name='assessment' />
+              <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
             </ListItem>
             {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
               <Icon name="ios-settings-outline" />
@@ -175,14 +174,14 @@ export default class SideBar extends BaseScreen<Props, State> {
             <View style={style.gridLogoutContainer}>
               <View style={style.columnAccount}>
                 <TouchableOpacity style={style.buttonLogout} onPress={() => this.logoff()}>
-                  <Text style={style.logoutText}>{I18n.t("authentication.logOut")}</Text>
+                  <Text style={style.logoutText}>{I18n.t('authentication.logOut')}</Text>
                   <Text note={true} style={style.userName}>
                     {userName}
                   </Text>
                 </TouchableOpacity>
               </View>
               <View style={style.columnThumbnail}>
-                <TouchableOpacity style={style.buttonThumbnail} onPress={() => navigation.navigate("Profile")}>
+                <TouchableOpacity style={style.buttonThumbnail} onPress={() => navigation.navigate('Profile')}>
                   <Thumbnail style={style.profilePic} source={userImage ? { uri: userImage } : noPhoto} />
                 </TouchableOpacity>
               </View>

@@ -1,13 +1,13 @@
-import I18n from "i18n-js";
-import moment from "moment";
-import { Button, Icon, Text, View } from "native-base";
-import React from "react";
-import { Alert } from "react-native";
-import * as Animatable from "react-native-animatable";
-import BaseProps from "../../types/BaseProps";
-import ChargingStation from "../../types/ChargingStation";
-import computeStyleSheet from "./ChargerComponentStyles";
-import ChargerConnectorComponent from "./connector/ChargerConnectorComponent";
+import I18n from 'i18n-js';
+import moment from 'moment';
+import { Button, Icon, Text, View } from 'native-base';
+import React from 'react';
+import { Alert } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import BaseProps from '../../types/BaseProps';
+import ChargingStation from '../../types/ChargingStation';
+import computeStyleSheet from './ChargerComponentStyles';
+import ChargerConnectorComponent from './connector/ChargerConnectorComponent';
 
 export interface Props extends BaseProps {
   charger: ChargingStation;
@@ -30,14 +30,14 @@ export default class ChargerComponent extends React.Component<Props, State> {
 
   public showHeartbeatStatus = () => {
     const { charger } = this.props;
-    let message = I18n.t("chargers.heartBeatOkMessage", { chargeBoxID: charger.id });
+    let message = I18n.t('chargers.heartBeatOkMessage', { chargeBoxID: charger.id });
     if (charger.inactive) {
-      message = I18n.t("chargers.heartBeatKoMessage", {
+      message = I18n.t('chargers.heartBeatKoMessage', {
         chargeBoxID: charger.id,
         lastHeartBeat: moment(new Date(charger.lastHeartBeat),null, true).fromNow(true)
       });
     }
-    Alert.alert(I18n.t("chargers.heartBeat"), message, [{ text: I18n.t("general.ok") }]);
+    Alert.alert(I18n.t('chargers.heartBeat'), message, [{ text: I18n.t('general.ok') }]);
   };
 
   public render() {
@@ -54,8 +54,8 @@ export default class ChargerComponent extends React.Component<Props, State> {
               onPress={() => {
                 this.showHeartbeatStatus();
               }}>
-              <Animatable.Text animation="fadeIn" easing="ease-in-out" iterationCount="infinite" direction="alternate-reverse">
-                <Icon style={style.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
+              <Animatable.Text animation='fadeIn' easing='ease-in-out' iterationCount='infinite' direction='alternate-reverse'>
+                <Icon style={style.deadHeartbeatIcon} type='FontAwesome' name='heartbeat' />
               </Animatable.Text>
             </Button>
           ) : (
@@ -65,8 +65,8 @@ export default class ChargerComponent extends React.Component<Props, State> {
               onPress={() => {
                 this.showHeartbeatStatus();
               }}>
-              <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: "center" }}>
-                <Icon style={style.heartbeatIcon} type="FontAwesome" name="heartbeat" />
+              <Animatable.Text animation='pulse' easing='ease-out' iterationCount='infinite' style={{ textAlign: 'center' }}>
+                <Icon style={style.heartbeatIcon} type='FontAwesome' name='heartbeat' />
               </Animatable.Text>
             </Button>
           )}

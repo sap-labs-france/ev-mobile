@@ -1,21 +1,21 @@
-import I18n from "i18n-js";
-import { Spinner, Text } from "native-base";
-import React from "react";
-import { processColor, View } from "react-native";
-import { LineChart } from "react-native-charts-wrapper";
-import { scale } from "react-native-size-matters";
-import HeaderComponent from "../../../components/header/HeaderComponent";
-import TransactionHeaderComponent from "../../../components/transaction/header/TransactionHeaderComponent";
-import commonColor from "../../../theme/variables/commonColor";
-import BaseProps from "../../../types/BaseProps";
-import ChargingStation from "../../../types/ChargingStation";
-import Connector from "../../../types/Connector";
-import Consumption from "../../../types/Consumption";
-import Transaction from "../../../types/Transaction";
-import Constants from "../../../utils/Constants";
-import Utils from "../../../utils/Utils";
-import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
-import computeStyleSheet from "./TransactionChartStyles";
+import I18n from 'i18n-js';
+import { Spinner, Text } from 'native-base';
+import React from 'react';
+import { processColor, View } from 'react-native';
+import { LineChart } from 'react-native-charts-wrapper';
+import { scale } from 'react-native-size-matters';
+import HeaderComponent from '../../../components/header/HeaderComponent';
+import TransactionHeaderComponent from '../../../components/transaction/header/TransactionHeaderComponent';
+import commonColor from '../../../theme/variables/commonColor';
+import BaseProps from '../../../types/BaseProps';
+import ChargingStation from '../../../types/ChargingStation';
+import Connector from '../../../types/Connector';
+import Consumption from '../../../types/Consumption';
+import Transaction from '../../../types/Transaction';
+import Constants from '../../../utils/Constants';
+import Utils from '../../../utils/Utils';
+import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
+import computeStyleSheet from './TransactionChartStyles';
 
 export interface Props extends BaseProps {
 }
@@ -65,9 +65,9 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
-      const chargerID = Utils.getParamFromNavigation(this.props.navigation, "chargerID", null);
-      const connectorID = Utils.getParamFromNavigation(this.props.navigation, "connectorID", null);
-      const transactionID = Utils.getParamFromNavigation(this.props.navigation, "transactionID", null);
+      const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
+      const connectorID = Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null);
+      const transactionID = Utils.getParamFromNavigation(this.props.navigation, 'transactionID', null);
       let transactionWithConsumptions = null;
       let charger = null;
       let connector = null;
@@ -192,16 +192,16 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     if (consumptionValues && consumptionValues.length > 1) {
       chartDefinition.data.dataSets.push({
         values: consumptionValues,
-        label: I18n.t("details.instantPowerChartLabel"),
+        label: I18n.t('details.instantPowerChartLabel'),
         config: {
-          mode: "LINEAR",
+          mode: 'LINEAR',
           drawValues: false,
           lineWidth: 2,
           drawCircles: false,
           circleColor: processColor(commonColor.brandInfo),
           drawCircleHole: false,
           circleRadius: 5,
-          highlightColor: processColor("white"),
+          highlightColor: processColor('white'),
           color: processColor(commonColor.brandInfo),
           drawFilled: true,
           fillAlpha: 65,
@@ -214,17 +214,17 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     if (stateOfChargeValues && stateOfChargeValues.length > 1) {
       chartDefinition.data.dataSets.push({
         values: stateOfChargeValues,
-        label: I18n.t("details.batteryChartLabel"),
+        label: I18n.t('details.batteryChartLabel'),
         config: {
-          axisDependency: "RIGHT",
-          mode: "LINEAR",
+          axisDependency: 'RIGHT',
+          mode: 'LINEAR',
           drawValues: false,
           lineWidth: 2,
           drawCircles: false,
           circleColor: processColor(commonColor.brandSuccess),
           drawCircleHole: false,
           circleRadius: 5,
-          highlightColor: processColor("white"),
+          highlightColor: processColor('white'),
           color: processColor(commonColor.brandSuccess),
           drawFilled: true,
           fillAlpha: 65,
@@ -239,13 +239,13 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       labelRotationAngle: -45,
       granularity: 1,
       drawLabels: true,
-      position: "BOTTOM",
+      position: 'BOTTOM',
       drawAxisLine: true,
       drawGridLines: false,
-      fontFamily: "HelveticaNeue-Medium",
-      fontWeight: "bold",
-      valueFormatter: "date",
-      valueFormatterPattern: "HH:mm",
+      fontFamily: 'HelveticaNeue-Medium',
+      fontWeight: 'bold',
+      valueFormatter: 'date',
+      valueFormatterPattern: 'HH:mm',
       textSize: scale(8),
       textColor: processColor(commonColor.brandInfo)
     };
@@ -255,7 +255,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     if (consumptionValues && consumptionValues.length > 1) {
       chartDefinition.yAxis.left = {
         enabled: true,
-        valueFormatter: "##0 kW",
+        valueFormatter: '##0 kW',
         axisMinimum: 0,
         textColor: processColor(commonColor.brandInfo),
         textSize: scale(8)
@@ -278,7 +278,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     if (stateOfChargeValues && stateOfChargeValues.length > 1) {
       chartDefinition.yAxis.right = {
         enabled: true,
-        valueFormatter: "##0",
+        valueFormatter: '##0',
         axisMinimum: 0,
         axisMaximum: 100,
         textColor: processColor(commonColor.brandSuccess),
@@ -313,12 +313,12 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         <View style={style.container}>
           <HeaderComponent
             navigation={this.props.navigation}
-            title={charger ? charger.id : I18n.t("connector.unknown")}
-            subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
+            title={charger ? charger.id : I18n.t('connector.unknown')}
+            subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
             leftAction={() => this.onBack()}
-            leftActionIcon={"navigate-before"}
+            leftActionIcon={'navigate-before'}
             rightAction={navigation.openDrawer}
-            rightActionIcon={"menu"}
+            rightActionIcon={'menu'}
           />
           {showTransactionDetails && transaction && (
             <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} displayNavigationIcon={false} />
@@ -327,7 +327,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
             <LineChart
               style={showTransactionDetails && transaction ? style.chartWithHeader : style.chart}
               data={chartDefinition.data}
-              chartDescription={{ text: "" }}
+              chartDescription={{ text: '' }}
               legend={{
                 enabled: true,
                 textSize: scale(8),
@@ -345,7 +345,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
               animation={{
                 durationX: 1000,
                 durationY: 1000,
-                easingY: "EaseInOutQuart"
+                easingY: 'EaseInOutQuart'
               }}
               drawGridBackground={false}
               drawBorders={false}
@@ -363,11 +363,11 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           ) : (
             transaction || (connector && connector.activeTransactionID) ?
               canDisplayTransaction ?
-                <Text style={style.notData}>{I18n.t("details.noData")}</Text>
+                <Text style={style.notData}>{I18n.t('details.noData')}</Text>
               :
-                <Text style={style.notData}>{I18n.t("details.notAuthorized")}</Text>
+                <Text style={style.notData}>{I18n.t('details.notAuthorized')}</Text>
             :
-              <Text style={style.notData}>{I18n.t("details.noSessionInProgress")}</Text>
+              <Text style={style.notData}>{I18n.t('details.noSessionInProgress')}</Text>
           )}
         </View>
       )

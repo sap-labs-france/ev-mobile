@@ -1,43 +1,43 @@
-import deepmerge from "deepmerge";
-import ResponsiveStylesheet from "react-native-responsive-stylesheet"
-import { ScaledSheet } from "react-native-size-matters";
-import commonColor from "../../theme/variables/commonColor";
+import deepmerge from 'deepmerge';
+import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
+import { ScaledSheet } from 'react-native-size-matters';
+import commonColor from '../../theme/variables/commonColor';
 
 const commonStyles = ScaledSheet.create({
   containerWithDescription: {
-    height: "60@s",
-    width: "100@s",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center"
+    height: '60@s',
+    width: '100@s',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   containerWithNoDescription: {
-    height: "55@s",
-    width: "60@s",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center"
+    height: '55@s',
+    width: '60@s',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   commonConnector: {
-    width: "44@s",
-    height: "44@s",
-    justifyContent: "center",
-    borderStyle: "solid",
-    alignItems: "center",
-    borderWidth: "4@s",
-    borderRadius: "22@s",
+    width: '44@s',
+    height: '44@s',
+    justifyContent: 'center',
+    borderStyle: 'solid',
+    alignItems: 'center',
+    borderWidth: '4@s',
+    borderRadius: '22@s',
     borderColor: commonColor.textColor,
-    backgroundColor: "transparent"
+    backgroundColor: 'transparent'
   },
   commonConnectorValue: {
-    fontSize: "22@s",
-    fontWeight: "bold",
+    fontSize: '22@s',
+    fontWeight: 'bold',
     color: commonColor.inverseTextColor
   },
   commonConnectorDescription: {
-    position: "absolute",
-    bottom: "-2@s",
-    fontSize: "12@s",
+    position: 'absolute',
+    bottom: '-2@s',
+    fontSize: '12@s',
     color: commonColor.textColor
   },
   faultedConnector: {

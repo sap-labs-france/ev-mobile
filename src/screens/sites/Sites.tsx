@@ -1,19 +1,19 @@
-import I18n from "i18n-js";
-import { Container, Spinner, View } from "native-base";
-import React from "react";
-import { FlatList, Platform, RefreshControl } from "react-native";
-import HeaderComponent from "../../components/header/HeaderComponent";
-import ListEmptyTextComponent from "../../components/list/empty-text/ListEmptyTextComponent";
-import ListFooterComponent from "../../components/list/footer/ListFooterComponent";
-import SimpleSearchComponent from "../../components/search/simple/SimpleSearchComponent";
-import SiteComponent from "../../components/site/SiteComponent";
-import BaseProps from "../../types/BaseProps";
-import { DataResult } from "../../types/DataResult";
-import Site from "../../types/Site";
-import Constants from "../../utils/Constants";
-import Utils from "../../utils/Utils";
-import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
-import computeStyleSheet from "./SitesStyles";
+import I18n from 'i18n-js';
+import { Container, Spinner, View } from 'native-base';
+import React from 'react';
+import { FlatList, Platform, RefreshControl } from 'react-native';
+import HeaderComponent from '../../components/header/HeaderComponent';
+import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
+import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
+import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
+import SiteComponent from '../../components/site/SiteComponent';
+import BaseProps from '../../types/BaseProps';
+import { DataResult } from '../../types/DataResult';
+import Site from '../../types/Site';
+import Constants from '../../utils/Constants';
+import Utils from '../../utils/Utils';
+import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
+import computeStyleSheet from './SitesStyles';
 
 export interface Props extends BaseProps {
 }
@@ -54,11 +54,11 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     // No Site Management: Go to chargers
     const securityProvider = this.centralServerProvider.getSecurityProvider();
     if (securityProvider && !securityProvider.isComponentOrganizationActive()) {
-      this.props.navigation.navigate("Chargers");
+      this.props.navigation.navigate('Chargers');
     }
   }
 
-  public getSites = async (searchText = "", skip: number, limit: number): Promise<DataResult<Site>> => {
+  public getSites = async (searchText = '', skip: number, limit: number): Promise<DataResult<Site>> => {
     let sites: DataResult<Site>;
     try {
       // Get the Sites
@@ -73,7 +73,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate({ routeName: "HomeNavigator" });
+    this.props.navigation.navigate({ routeName: 'HomeNavigator' });
     // Do not bubble up
     return true;
   };
@@ -130,11 +130,11 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       <Container style={style.container}>
         <HeaderComponent
           navigation={navigation}
-          title={I18n.t("sidebar.sites")}
+          title={I18n.t('sidebar.sites')}
           leftAction={this.onBack}
-          leftActionIcon={"navigate-before"}
+          leftActionIcon={'navigate-before'}
           rightAction={navigation.openDrawer}
-          rightActionIcon={"menu"}
+          rightActionIcon={'menu'}
         />
         <SimpleSearchComponent
           onChange={(searchText) => this.search(searchText)}
@@ -150,8 +150,8 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
               keyExtractor={(item) => item.id}
               refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
               onEndReached={this.onEndScroll}
-              onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
-              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t("sites.noSites")} />}
+              onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('sites.noSites')} />}
               ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
             />
           )}

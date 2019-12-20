@@ -1,8 +1,8 @@
-import { Switch, Text, View } from "native-base";
-import React from "react";
-import BaseFilterProps from "../../../../../types/BaseFilterProps";
-import ComplexSearchComponent from "../../ComplexSearchComponent";
-import computeStyleSheet from "../FilterComponentStyles";
+import { Switch, Text, View } from 'native-base';
+import React from 'react';
+import BaseFilterProps from '../../../../../types/BaseFilterProps';
+import ComplexSearchComponent from '../../ComplexSearchComponent';
+import computeStyleSheet from '../FilterComponentStyles';
 
 export interface Props extends BaseFilterProps {
   initialValue?: boolean;

@@ -1,21 +1,21 @@
-import i18n from "i18n-js";
-import moment from "moment";
-import { I18nManager as I18nReactNativeManager } from "react-native";
-import * as RNLocalize from "react-native-localize";
-import Constants from "../utils/Constants";
-import Utils from "../utils/Utils";
-import deJsonLanguage from "./languages/de.json";
-import enJsonLanguage from "./languages/en.json";
-import frJsonLanguage from "./languages/fr.json";
+import i18n from 'i18n-js';
+import moment from 'moment';
+import { I18nManager as I18nReactNativeManager } from 'react-native';
+import * as RNLocalize from 'react-native-localize';
+import Constants from '../utils/Constants';
+import Utils from '../utils/Utils';
+import deJsonLanguage from './languages/de.json';
+import enJsonLanguage from './languages/en.json';
+import frJsonLanguage from './languages/fr.json';
 
 export default class I18nManager {
   private static currency: string;
 
   public static async initialize() {
     // Get the supported locales for moment
-    require("moment/locale/fr");
-    require("moment/locale/de");
-    require("moment/locale/en-gb");
+    require('moment/locale/fr');
+    require('moment/locale/de');
+    require('moment/locale/en-gb');
     // Translation files
     const translationGetters: any = {
       en: () => enJsonLanguage,
@@ -27,9 +27,9 @@ export default class I18nManager {
     // Get current locale
     const { languageTag, isRTL } = RNLocalize.findBestAvailableLanguage(Object.keys(translationGetters)) || fallback;
     // Set tranlation files
-    i18n.translations['en'] = enJsonLanguage;
-    i18n.translations['fr'] = frJsonLanguage;
-    i18n.translations['de'] = deJsonLanguage;
+    i18n.translations.en = enJsonLanguage;
+    i18n.translations.fr = frJsonLanguage;
+    i18n.translations.de = deJsonLanguage;
     // Update layout direction
     I18nReactNativeManager.forceRTL(isRTL);
     // Default

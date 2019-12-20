@@ -1,8 +1,8 @@
-import deepmerge from "deepmerge";
-import { Platform } from "react-native";
-import ResponsiveStylesheet from "react-native-responsive-stylesheet"
-import { ScaledSheet } from "react-native-size-matters";
-import commonColor from "../../theme/variables/commonColor";
+import deepmerge from 'deepmerge';
+import { Platform } from 'react-native';
+import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
+import { ScaledSheet } from 'react-native-size-matters';
+import commonColor from '../../theme/variables/commonColor';
 
 const commonStyles = ScaledSheet.create({
   container: {
@@ -13,107 +13,107 @@ const commonStyles = ScaledSheet.create({
     flex: 1
   },
   drawerContent: {
-    paddingTop: "5@s",
+    paddingTop: '5@s',
     flex: 1
   },
   header: {
-    flexDirection: "column",
+    flexDirection: 'column',
     borderColor: commonColor.inverseTextColor,
     borderBottomWidth: 1,
-    height: "120@s",
-    paddingBottom: "10@s",
-    marginTop: Platform.OS === "ios" ? "-5@s" : "10@s"
+    height: '120@s',
+    paddingBottom: '10@s',
+    marginTop: Platform.OS === 'ios' ? '-5@s' : '10@s'
   },
   logo: {
-    resizeMode: "contain",
-    width: "100@s",
-    height: "50@s",
-    alignSelf: "center",
-    margin: "5@s"
+    resizeMode: 'contain',
+    width: '100@s',
+    height: '50@s',
+    alignSelf: 'center',
+    margin: '5@s'
   },
   tenantName: {
     color: commonColor.inverseTextColor,
-    fontSize: "14@s",
-    margin: "2@s",
-    alignSelf: "center",
-    textAlign: "center",
-    width: "90%"
+    fontSize: '14@s',
+    margin: '2@s',
+    alignSelf: 'center',
+    textAlign: 'center',
+    width: '90%'
   },
   versionText: {
     color: commonColor.inverseTextColor,
-    fontSize: "14@s",
-    margin: "2@s",
-    alignSelf: "center"
+    fontSize: '14@s',
+    margin: '2@s',
+    alignSelf: 'center'
   },
   versionDate: {
     color: commonColor.inverseTextColor,
-    fontSize: "14@s",
-    alignSelf: "center",
-    marginBottom: "2@s"
+    fontSize: '14@s',
+    alignSelf: 'center',
+    marginBottom: '2@s'
   },
   linkContainer: {
-    paddingTop: "10@s"
+    paddingTop: '10@s'
   },
   links: {
-    borderBottomWidth: "0@s",
-    borderBottomColor: "transparent",
-    height: Platform.OS === "ios" ? undefined : "35@s",
-    paddingTop: "10@s",
-    paddingBottom: "10@s"
+    borderBottomWidth: '0@s',
+    borderBottomColor: 'transparent',
+    height: Platform.OS === 'ios' ? undefined : '35@s',
+    paddingTop: '10@s',
+    paddingBottom: '10@s'
   },
   linkIcon: {
-    fontSize: "20@s",
+    fontSize: '20@s',
     color: commonColor.inverseTextColor
   },
   linkText: {
     color: commonColor.inverseTextColor,
-    fontSize: "16@s",
-    paddingLeft: "10@s"
+    fontSize: '16@s',
+    paddingLeft: '10@s'
   },
   logoutContainer: {
     padding: 30,
-    paddingTop: "0@s"
+    paddingTop: '0@s'
   },
   logoutButton: {
-    paddingTop: "10@s",
-    flexDirection: "row",
+    paddingTop: '10@s',
+    flexDirection: 'row',
     borderTopWidth: 1,
     borderTopColor: commonColor.inverseTextColor
   },
   gridLogoutContainer: {
     flex: 1,
-    flexDirection: "row"
+    flexDirection: 'row'
   },
   columnAccount: {
-    flexDirection: "column",
+    flexDirection: 'column',
     flexGrow: 2,
     flex: 1
   },
   buttonLogout: {
-    alignSelf: "flex-start",
-    backgroundColor: "transparent"
+    alignSelf: 'flex-start',
+    backgroundColor: 'transparent'
   },
   logoutText: {
-    fontWeight: "bold",
-    fontSize: "14@s",
+    fontWeight: 'bold',
+    fontSize: '14@s',
     color: commonColor.inverseTextColor
   },
   userName: {
-    paddingTop: "5@s",
-    fontSize: "14@s",
+    paddingTop: '5@s',
+    fontSize: '14@s',
     color: commonColor.inverseTextColor
   },
   columnThumbnail: {
     flex: 1,
-    flexDirection: "column"
+    flexDirection: 'column'
   },
   buttonThumbnail: {
-    alignSelf: "flex-end"
+    alignSelf: 'flex-end'
   },
   profilePic: {
-    width: "40@s",
-    height: "40@s",
-    borderRadius: "20@s"
+    width: '40@s',
+    height: '40@s',
+    borderRadius: '20@s'
   }
 });
 

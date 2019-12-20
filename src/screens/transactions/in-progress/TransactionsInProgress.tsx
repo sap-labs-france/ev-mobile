@@ -1,18 +1,18 @@
-import I18n from "i18n-js";
-import { Container, Spinner, View } from "native-base";
-import React from "react";
-import { FlatList, Platform, RefreshControl } from "react-native";
-import HeaderComponent from "../../../components/header/HeaderComponent";
-import ListEmptyTextComponent from "../../../components/list/empty-text/ListEmptyTextComponent";
-import ListFooterComponent from "../../../components/list/footer/ListFooterComponent";
-import TransactionInProgressComponent from "../../../components/transaction/in-progress/TransactionInProgressComponent";
-import BaseProps from "../../../types/BaseProps";
-import { DataResult } from "../../../types/DataResult";
-import Transaction from "../../../types/Transaction";
-import Constants from "../../../utils/Constants";
-import Utils from "../../../utils/Utils";
-import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
-import computeStyleSheet from "../TransactionsStyles";
+import I18n from 'i18n-js';
+import { Container, Spinner, View } from 'native-base';
+import React from 'react';
+import { FlatList, Platform, RefreshControl } from 'react-native';
+import HeaderComponent from '../../../components/header/HeaderComponent';
+import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
+import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
+import TransactionInProgressComponent from '../../../components/transaction/in-progress/TransactionInProgressComponent';
+import BaseProps from '../../../types/BaseProps';
+import { DataResult } from '../../../types/DataResult';
+import Transaction from '../../../types/Transaction';
+import Constants from '../../../utils/Constants';
+import Utils from '../../../utils/Utils';
+import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
+import computeStyleSheet from '../TransactionsStyles';
 
 export interface Props extends BaseProps {
 }
@@ -67,7 +67,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate({ routeName: "HomeNavigator" });
+    this.props.navigation.navigate({ routeName: 'HomeNavigator' });
     // Do not bubble up
     return true;
   };
@@ -128,11 +128,11 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
       <Container style={style.container}>
         <HeaderComponent
           navigation={navigation}
-          title={I18n.t("transactions.transactionsInProgress")}
+          title={I18n.t('transactions.transactionsInProgress')}
           leftAction={this.onBack}
-          leftActionIcon={"navigate-before"}
+          leftActionIcon={'navigate-before'}
           rightAction={navigation.openDrawer}
-          rightActionIcon={"menu"}
+          rightActionIcon={'menu'}
         />
         <View style={style.content}>
           {loading ? (
@@ -151,9 +151,9 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
               keyExtractor={(item) => `${item.id}`}
               refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
               onEndReached={this.onEndScroll}
-              onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
+              onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
               ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t("transactions.noTransactionsInProgress")} />}
+              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('transactions.noTransactionsInProgress')} />}
             />
           )}
         </View>

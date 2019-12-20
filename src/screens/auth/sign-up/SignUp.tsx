@@ -1,18 +1,18 @@
-import I18n from "i18n-js";
-import { Button, CheckBox, Footer, Form, Icon, Item, Left, Spinner, Text, View } from "native-base";
-import React from "react";
-import { Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from "react-native";
-import * as Animatable from "react-native-animatable";
-import { NavigationActions, StackActions } from "react-navigation";
-import ReactNativeRecaptchaV3 from "../../../re-captcha/ReactNativeRecaptchaV3";
-import commonColor from "../../../theme/variables/commonColor";
-import BaseProps from "../../../types/BaseProps";
-import Constants from "../../../utils/Constants";
-import Message from "../../../utils/Message";
-import Utils from "../../../utils/Utils";
-import BaseScreen from "../../base-screen/BaseScreen";
-import AuthHeader from "../AuthHeader";
-import computeStyleSheet from "../AuthStyles";
+import I18n from 'i18n-js';
+import { Button, CheckBox, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
+import React from 'react';
+import { Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import { NavigationActions, StackActions } from 'react-navigation';
+import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
+import commonColor from '../../../theme/variables/commonColor';
+import BaseProps from '../../../types/BaseProps';
+import Constants from '../../../utils/Constants';
+import Message from '../../../utils/Message';
+import Utils from '../../../utils/Utils';
+import BaseScreen from '../../base-screen/BaseScreen';
+import AuthHeader from '../AuthHeader';
+import computeStyleSheet from '../AuthStyles';
 
 export interface Props extends BaseProps {
 }
@@ -50,32 +50,32 @@ export default class SignUp extends BaseScreen<Props, State> {
     name: {
       presence: {
         allowEmpty: false,
-        message: "^" + I18n.t("authentication.mandatoryName")
+        message: '^' + I18n.t('authentication.mandatoryName')
       }
     },
     firstName: {
       presence: {
         allowEmpty: false,
-        message: "^" + I18n.t("authentication.mandatoryFirstName")
+        message: '^' + I18n.t('authentication.mandatoryFirstName')
       }
     },
     email: {
       presence: {
         allowEmpty: false,
-        message: "^" + I18n.t("authentication.mandatoryEmail")
+        message: '^' + I18n.t('authentication.mandatoryEmail')
       },
       email: {
-        message: "^" + I18n.t("authentication.invalidEmail")
+        message: '^' + I18n.t('authentication.invalidEmail')
       }
     },
     password: {
       presence: {
         allowEmpty: false,
-        message: "^" + I18n.t("authentication.mandatoryPassword")
+        message: '^' + I18n.t('authentication.mandatoryPassword')
       },
       equality: {
-        attribute: "ghost",
-        message: "^" + I18n.t("authentication.passwordRule"),
+        attribute: 'ghost',
+        message: '^' + I18n.t('authentication.passwordRule'),
         comparator(password: string, ghost: string) {
           // True if EULA is checked
           return /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!#@:;,<>\/''\$%\^&\*\.\?\-_\+\=\(\)])(?=.{8,})/.test(password);
@@ -85,17 +85,17 @@ export default class SignUp extends BaseScreen<Props, State> {
     repeatPassword: {
       presence: {
         allowEmpty: false,
-        message: "^" + I18n.t("authentication.mandatoryPassword")
+        message: '^' + I18n.t('authentication.mandatoryPassword')
       },
       equality: {
-        attribute: "password",
-        message: "^" + I18n.t("authentication.passwordNotMatch")
+        attribute: 'password',
+        message: '^' + I18n.t('authentication.passwordNotMatch')
       }
     },
     eula: {
       equality: {
-        attribute: "ghost",
-        message: I18n.t("authentication.eulaNotAccepted"),
+        attribute: 'ghost',
+        message: I18n.t('authentication.eulaNotAccepted'),
         comparator(eula: boolean, ghost: boolean) {
           // True if EULA is checked
           return eula;
@@ -107,13 +107,13 @@ export default class SignUp extends BaseScreen<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
-      tenantName: "",
-      name: "",
-      firstName: "",
-      email: Utils.getParamFromNavigation(this.props.navigation, "email", ""),
-      password: "",
-      repeatPassword: "",
+      tenant: Utils.getParamFromNavigation(this.props.navigation, 'tenant', ''),
+      tenantName: '',
+      name: '',
+      firstName: '',
+      email: Utils.getParamFromNavigation(this.props.navigation, 'email', ''),
+      password: '',
+      repeatPassword: '',
       eula: false,
       captchaSiteKey: null,
       captchaBaseUrl: null,
@@ -157,14 +157,14 @@ export default class SignUp extends BaseScreen<Props, State> {
         // Reset
         this.setState({ loading: false });
         // Show
-        Message.showSuccess(I18n.t("authentication.registerSuccess"));
+        Message.showSuccess(I18n.t('authentication.registerSuccess'));
         // Navigate
         this.props.navigation.dispatch(
           StackActions.reset({
             index: 0,
             actions: [
               NavigationActions.navigate({
-                routeName: "Login",
+                routeName: 'Login',
                 params: {
                   tenant: this.state.tenant,
                   email: this.state.email
@@ -182,14 +182,14 @@ export default class SignUp extends BaseScreen<Props, State> {
           switch (error.request.status) {
             // Invalid Captcha
             case 530:
-              Message.showError(I18n.t("authentication.invalidCaptcha"));
+              Message.showError(I18n.t('authentication.invalidCaptcha'));
               break;
             default:
               // Other common Error
               Utils.handleHttpUnexpectedError(this.centralServerProvider, error.request);
           }
         } else {
-          Message.showError(I18n.t("general.unexpectedError"));
+          Message.showError(I18n.t('general.unexpectedError'));
         }
       }
     }
@@ -197,7 +197,7 @@ export default class SignUp extends BaseScreen<Props, State> {
 
   public onBack = (): boolean => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate("Login");
+    this.props.navigation.navigate('Login');
     // Do not bubble up
     return true;
   };
@@ -207,21 +207,21 @@ export default class SignUp extends BaseScreen<Props, State> {
     const navigation = this.props.navigation;
     const { eula, loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl } = this.state;
     return (
-      <Animatable.View style={style.container} animation={"fadeIn"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+      <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
-          <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
+          <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
             <Form style={style.form}>
               <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                <Icon active={true} name="person" style={style.inputIcon} />
+                <Icon active={true} name='person' style={style.inputIcon} />
                 <TextInput
                   onSubmitEditing={() => this.firstNameInput.focus()}
                   selectionColor={commonColor.inverseTextColor}
-                  returnKeyType={"next"}
-                  placeholder={I18n.t("authentication.name")}
+                  returnKeyType={'next'}
+                  placeholder={I18n.t('authentication.name')}
                   placeholderTextColor={commonColor.placeholderTextColor}
                   style={style.inputField}
-                  autoCapitalize="characters"
+                  autoCapitalize='characters'
                   blurOnSubmit={false}
                   autoCorrect={false}
                   onChangeText={(text) => this.setState({ name: text })}
@@ -236,16 +236,16 @@ export default class SignUp extends BaseScreen<Props, State> {
                 ))}
 
               <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                <Icon active={true} name="person" style={style.inputIcon} />
+                <Icon active={true} name='person' style={style.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.firstNameInput = ref)}
                   selectionColor={commonColor.inverseTextColor}
                   onSubmitEditing={() => this.emailInput.focus()}
-                  returnKeyType={"next"}
-                  placeholder={I18n.t("authentication.firstName")}
+                  returnKeyType={'next'}
+                  placeholder={I18n.t('authentication.firstName')}
                   placeholderTextColor={commonColor.placeholderTextColor}
                   style={style.inputField}
-                  autoCapitalize="words"
+                  autoCapitalize='words'
                   blurOnSubmit={false}
                   autoCorrect={false}
                   onChangeText={(text) => this.setState({ firstName: text })}
@@ -260,19 +260,19 @@ export default class SignUp extends BaseScreen<Props, State> {
                 ))}
 
               <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                <Icon active={true} name="mail" style={style.inputIcon} />
+                <Icon active={true} name='mail' style={style.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.emailInput = ref)}
                   selectionColor={commonColor.inverseTextColor}
                   onSubmitEditing={() => this.passwordInput.focus()}
-                  returnKeyType={"next"}
-                  placeholder={I18n.t("authentication.email")}
+                  returnKeyType={'next'}
+                  placeholder={I18n.t('authentication.email')}
                   placeholderTextColor={commonColor.placeholderTextColor}
                   style={style.inputField}
-                  autoCapitalize="none"
+                  autoCapitalize='none'
                   blurOnSubmit={false}
                   autoCorrect={false}
-                  keyboardType={"email-address"}
+                  keyboardType={'email-address'}
                   onChangeText={(text) => this.setState({ email: text })}
                   secureTextEntry={false}
                 />
@@ -285,19 +285,19 @@ export default class SignUp extends BaseScreen<Props, State> {
                 ))}
 
               <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                <Icon active={true} name="unlock" style={style.inputIcon} />
+                <Icon active={true} name='unlock' style={style.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
                   selectionColor={commonColor.inverseTextColor}
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
-                  returnKeyType={"next"}
-                  placeholder={I18n.t("authentication.password")}
+                  returnKeyType={'next'}
+                  placeholder={I18n.t('authentication.password')}
                   placeholderTextColor={commonColor.placeholderTextColor}
                   style={style.inputField}
-                  autoCapitalize="none"
+                  autoCapitalize='none'
                   blurOnSubmit={false}
                   autoCorrect={false}
-                  keyboardType={"default"}
+                  keyboardType={'default'}
                   onChangeText={(text) => this.setState({ password: text })}
                   secureTextEntry={true}
                 />
@@ -309,19 +309,19 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                <Icon active={true} name="unlock" style={style.inputIcon} />
+                <Icon active={true} name='unlock' style={style.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
                   selectionColor={commonColor.inverseTextColor}
                   onSubmitEditing={() => Keyboard.dismiss()}
-                  returnKeyType={"next"}
-                  placeholder={I18n.t("authentication.repeatPassword")}
+                  returnKeyType={'next'}
+                  placeholder={I18n.t('authentication.repeatPassword')}
                   placeholderTextColor={commonColor.placeholderTextColor}
                   style={style.inputField}
-                  autoCapitalize="none"
+                  autoCapitalize='none'
                   blurOnSubmit={false}
                   autoCorrect={false}
-                  keyboardType={"default"}
+                  keyboardType={'default'}
                   onChangeText={(text) => this.setState({ repeatPassword: text })}
                   secureTextEntry={true}
                 />
@@ -335,9 +335,9 @@ export default class SignUp extends BaseScreen<Props, State> {
               <View style={style.eulaContainer}>
                 <CheckBox style={style.eulaCheckbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
                 <Text style={style.eulaText}>
-                  {I18n.t("authentication.acceptEula")}
-                  <Text onPress={() => navigation.navigate("Eula")} style={style.eulaLink}>
-                    {I18n.t("authentication.eula")}
+                  {I18n.t('authentication.acceptEula')}
+                  <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
+                    {I18n.t('authentication.eula')}
                   </Text>
                 </Text>
               </View>
@@ -348,17 +348,17 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               {loading || (!captcha && this.state.eula) ? (
-                <Spinner style={style.spinner} color="white" />
+                <Spinner style={style.spinner} color='white' />
               ) : (
                 <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.signUp()}>
-                  <TextRN style={style.buttonText}>{I18n.t("authentication.signUp")}</TextRN>
+                  <TextRN style={style.buttonText}>{I18n.t('authentication.signUp')}</TextRN>
                 </Button>
               )}
             </Form>
           </KeyboardAvoidingView>
           {this.state.eula && captchaSiteKey && captchaBaseUrl && (
             <ReactNativeRecaptchaV3
-              action="RegisterUser"
+              action='RegisterUser'
               onHandleToken={this.recaptchaResponseToken}
               url={captchaBaseUrl}
               siteKey={captchaSiteKey}
@@ -368,7 +368,7 @@ export default class SignUp extends BaseScreen<Props, State> {
         <Footer style={style.footer}>
           <Left>
             <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.props.navigation.goBack()}>
-              <TextRN style={[style.linksTextButton, style.linksTextButtonLeft]}>{I18n.t("authentication.backLogin")}</TextRN>
+              <TextRN style={[style.linksTextButton, style.linksTextButtonLeft]}>{I18n.t('authentication.backLogin')}</TextRN>
             </Button>
           </Left>
         </Footer>

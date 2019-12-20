@@ -1,12 +1,12 @@
-import deepmerge from "deepmerge";
-import ResponsiveStylesheet from "react-native-responsive-stylesheet"
-import { ScaledSheet } from "react-native-size-matters";
+import deepmerge from 'deepmerge';
+import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
+import { ScaledSheet } from 'react-native-size-matters';
 
 const commonStyles = ScaledSheet.create({
   noRecordFound: {
     flex: 1,
-    paddingTop: "20@s",
-    alignSelf: "center"
+    paddingTop: '20@s',
+    alignSelf: 'center'
   }
 });
 

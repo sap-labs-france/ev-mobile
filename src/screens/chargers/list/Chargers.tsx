@@ -1,19 +1,19 @@
-import I18n from "i18n-js";
-import { Container, Spinner, View } from "native-base";
-import React from "react";
-import { FlatList, Platform, RefreshControl } from "react-native";
-import ChargerComponent from "../../../components/charger/ChargerComponent";
-import HeaderComponent from "../../../components/header/HeaderComponent";
-import ListEmptyTextComponent from "../../../components/list/empty-text/ListEmptyTextComponent";
-import ListFooterComponent from "../../../components/list/footer/ListFooterComponent";
-import SimpleSearchComponent from "../../../components/search/simple/SimpleSearchComponent";
-import BaseProps from "../../../types/BaseProps";
-import ChargingStation from "../../../types/ChargingStation";
-import { DataResult } from "../../../types/DataResult";
-import Constants from "../../../utils/Constants";
-import Utils from "../../../utils/Utils";
-import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
-import computeStyleSheet from "./ChargersStyles";
+import I18n from 'i18n-js';
+import { Container, Spinner, View } from 'native-base';
+import React from 'react';
+import { FlatList, Platform, RefreshControl } from 'react-native';
+import ChargerComponent from '../../../components/charger/ChargerComponent';
+import HeaderComponent from '../../../components/header/HeaderComponent';
+import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
+import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
+import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
+import BaseProps from '../../../types/BaseProps';
+import ChargingStation from '../../../types/ChargingStation';
+import { DataResult } from '../../../types/DataResult';
+import Constants from '../../../utils/Constants';
+import Utils from '../../../utils/Utils';
+import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
+import computeStyleSheet from './ChargersStyles';
 
 export interface Props extends BaseProps {
 }
@@ -38,7 +38,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     // Init State
     this.state = {
       chargers: [],
-      siteAreaID: Utils.getParamFromNavigation(this.props.navigation, "siteAreaID", null),
+      siteAreaID: Utils.getParamFromNavigation(this.props.navigation, 'siteAreaID', null),
       loading: true,
       refreshing: false,
       skip: 0,
@@ -148,11 +148,11 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       <Container style={style.container}>
         <HeaderComponent
           navigation={navigation}
-          title={I18n.t("chargers.title")}
+          title={I18n.t('chargers.title')}
           leftAction={this.onBack}
-          leftActionIcon={"navigate-before"}
+          leftActionIcon={'navigate-before'}
           rightAction={navigation.openDrawer}
-          rightActionIcon={"menu"}
+          rightActionIcon={'menu'}
         />
         <SimpleSearchComponent
           onChange={(searchText) => this.search(searchText)}
@@ -168,9 +168,9 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
               keyExtractor={(item) => item.id}
               refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
               onEndReached={this.onEndScroll}
-              onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
+              onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
               ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t("chargers.noChargers")} />}
+              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargers')} />}
             />
           )}
         </View>

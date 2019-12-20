@@ -1,19 +1,19 @@
-import I18n from "i18n-js";
-import { Container, Spinner, View } from "native-base";
-import React from "react";
-import { FlatList, Platform, RefreshControl } from "react-native";
-import HeaderComponent from "../../components/header/HeaderComponent";
-import ListEmptyTextComponent from "../../components/list/empty-text/ListEmptyTextComponent";
-import ListFooterComponent from "../../components/list/footer/ListFooterComponent";
-import SimpleSearchComponent from "../../components/search/simple/SimpleSearchComponent";
-import SiteAreaComponent from "../../components/site-area/SiteAreaComponent";
-import BaseProps from "../../types/BaseProps";
-import { DataResult } from "../../types/DataResult";
-import SiteArea from "../../types/SiteArea";
-import Constants from "../../utils/Constants";
-import Utils from "../../utils/Utils";
-import BaseAutoRefreshScreen from "../base-screen/BaseAutoRefreshScreen";
-import computeStyleSheet from "./SiteAreasStyles";
+import I18n from 'i18n-js';
+import { Container, Spinner, View } from 'native-base';
+import React from 'react';
+import { FlatList, Platform, RefreshControl } from 'react-native';
+import HeaderComponent from '../../components/header/HeaderComponent';
+import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
+import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
+import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
+import SiteAreaComponent from '../../components/site-area/SiteAreaComponent';
+import BaseProps from '../../types/BaseProps';
+import { DataResult } from '../../types/DataResult';
+import SiteArea from '../../types/SiteArea';
+import Constants from '../../utils/Constants';
+import Utils from '../../utils/Utils';
+import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
+import computeStyleSheet from './SiteAreasStyles';
 
 export interface Props extends BaseProps {
 }
@@ -50,7 +50,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
 
   public getSiteAreas = async (searchText: string, skip: number, limit: number): Promise<DataResult<SiteArea>> => {
     let siteAreas:DataResult<SiteArea>;
-    const siteID = Utils.getParamFromNavigation(this.props.navigation, "siteID", null);
+    const siteID = Utils.getParamFromNavigation(this.props.navigation, 'siteID', null);
     try {
       // Get the Site Areas
       siteAreas = await this.centralServerProvider.getSiteAreas(
@@ -124,11 +124,11 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       <Container style={style.container}>
         <HeaderComponent
           navigation={navigation}
-          title={I18n.t("siteAreas.title")}
+          title={I18n.t('siteAreas.title')}
           leftAction={this.onBack}
-          leftActionIcon={"navigate-before"}
+          leftActionIcon={'navigate-before'}
           rightAction={navigation.openDrawer}
-          rightActionIcon={"menu"}
+          rightActionIcon={'menu'}
         />
         <SimpleSearchComponent
           onChange={(searchText) => this.search(searchText)}
@@ -144,8 +144,8 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
               keyExtractor={(item) => item.id}
               refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
               onEndReached={this.onEndScroll}
-              onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
-              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t("siteAreas.noSiteAreas")} />}
+              onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('siteAreas.noSiteAreas')} />}
               ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
             />
           )}

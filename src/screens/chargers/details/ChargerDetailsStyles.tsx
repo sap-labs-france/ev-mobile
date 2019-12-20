@@ -1,7 +1,7 @@
-import deepmerge from "deepmerge";
-import ResponsiveStylesheet from "react-native-responsive-stylesheet"
-import { ScaledSheet } from "react-native-size-matters";
-import commonColor from "../../../theme/variables/commonColor";
+import deepmerge from 'deepmerge';
+import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
+import { ScaledSheet } from 'react-native-size-matters';
+import commonColor from '../../../theme/variables/commonColor';
 
 const commonStyles = ScaledSheet.create({
   container: {
@@ -10,53 +10,53 @@ const commonStyles = ScaledSheet.create({
   },
   scrollViewContainer: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-between"
+    flexDirection: 'column',
+    justifyContent: 'space-between'
   },
   topViewContainer: {
     flex: 1,
-    marginTop: "15@s",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center"
+    marginTop: '15@s',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   bottomViewContainer: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    marginBottom: "5@s"
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginBottom: '5@s'
   },
   spinner: {
     flex: 1,
     color: commonColor.textColor
   },
   descriptionContainer: {
-    height: "65@s",
-    justifyContent: "center",
-    alignItems: "center"
+    height: '65@s',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   label: {
-    fontSize: "20@s",
-    fontWeight: "bold",
+    fontSize: '20@s',
+    fontWeight: 'bold',
     color: commonColor.textColor,
-    alignSelf: "center"
+    alignSelf: 'center'
   },
   value: {
-    fontSize: "20@s",
+    fontSize: '20@s',
     color: commonColor.textColor
   },
   actionContainer: {
-    width: "90%",
-    marginTop: "5@s",
-    justifyContent: "center"
+    width: '90%',
+    marginTop: '5@s',
+    justifyContent: 'center'
   },
   actionButton: {
-    height: "40@s",
-    justifyContent: "center"
+    height: '40@s',
+    justifyContent: 'center'
   },
   actionButtonText: {
-    fontSize: "18@s"
+    fontSize: '18@s'
   }
 });
 

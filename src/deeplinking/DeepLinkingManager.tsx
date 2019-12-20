@@ -1,4 +1,4 @@
-import I18n from "i18n-js";
+import I18n from 'i18n-js';
 import { Linking } from 'react-native';
 import DeepLinking from 'react-native-deep-linking';
 import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
@@ -38,15 +38,15 @@ export default class DeepLinkingManager {
     DeepLinking.addRoute('/resetPassword/:tenant/:hash', (response: {tenant: string, hash: string}) => {
       // Check params
       if (!response.tenant) {
-        Message.showError(I18n.t("authentication.mandatoryTenant"));
+        Message.showError(I18n.t('authentication.mandatoryTenant'));
       }
       // Get the Tenant
       const tenant = this.centralServerProvider.getTenant(response.tenant);
       if (!tenant) {
-        Message.showError(I18n.t("authentication.unknownTenant"));
+        Message.showError(I18n.t('authentication.unknownTenant'));
       }
       if (!response.hash) {
-        Message.showError(I18n.t("authentication.resetPasswordHashNotValid"));
+        Message.showError(I18n.t('authentication.resetPasswordHashNotValid'));
       }
       // Disable
       this.centralServerProvider.setAutoLoginDisabled(true);

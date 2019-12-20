@@ -1,35 +1,35 @@
-import I18n from "i18n-js";
-import { Icon, Root } from "native-base";
-import CentralServerProvider from "provider/CentralServerProvider";
-import React from "react";
-import { Dimensions, StatusBar } from "react-native";
-import { createAppContainer, createSwitchNavigator, NavigationContainer, NavigationContainerComponent, NavigationState } from "react-navigation";
+import I18n from 'i18n-js';
+import { Icon, Root } from 'native-base';
+import CentralServerProvider from 'provider/CentralServerProvider';
+import React from 'react';
+import { Dimensions, StatusBar } from 'react-native';
+import { createAppContainer, createSwitchNavigator, NavigationContainer, NavigationContainerComponent, NavigationState } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
-import DeepLinkingManager from "./deeplinking/DeepLinkingManager";
-import I18nManager from "./I18n/I18nManager";
-import NotificationManager from "./notification/NotificationManager";
-import ProviderFactory from "./provider/ProviderFactory";
-import Eula from "./screens/auth/eula/Eula";
-import Login from "./screens/auth/login/Login";
-import ResetPassword from "./screens/auth/reset-password/ResetPassword";
-import RetrievePassword from "./screens/auth/retrieve-password/RetrievePassword";
-import SignUp from "./screens/auth/sign-up/SignUp";
-import ChargerConnectorDetails from "./screens/chargers/connector-details/ChargerConnectorDetails";
-import ChargerDetails from "./screens/chargers/details/ChargerDetails";
-import Chargers from "./screens/chargers/list/Chargers";
-import Home from "./screens/home/Home";
-import Sidebar from "./screens/sidebar/SideBar";
-import SiteAreas from "./screens/site-areas/SiteAreas";
-import Sites from "./screens/sites/Sites";
-import Statistics from "./screens/statistics/Statistics";
-import TransactionChart from "./screens/transactions/chart/TransactionChart";
-import TransactionDetails from "./screens/transactions/details/TransactionDetails";
-import TransactionsInProgress from "./screens/transactions/in-progress/TransactionsInProgress";
-import TransactionsHistory from "./screens/transactions/list/TransactionsHistory";
-import commonColor from "./theme/variables/commonColor";
-import SecuredStorage from "./utils/SecuredStorage";
+import DeepLinkingManager from './deeplinking/DeepLinkingManager';
+import I18nManager from './I18n/I18nManager';
+import NotificationManager from './notification/NotificationManager';
+import ProviderFactory from './provider/ProviderFactory';
+import Eula from './screens/auth/eula/Eula';
+import Login from './screens/auth/login/Login';
+import ResetPassword from './screens/auth/reset-password/ResetPassword';
+import RetrievePassword from './screens/auth/retrieve-password/RetrievePassword';
+import SignUp from './screens/auth/sign-up/SignUp';
+import ChargerConnectorDetails from './screens/chargers/connector-details/ChargerConnectorDetails';
+import ChargerDetails from './screens/chargers/details/ChargerDetails';
+import Chargers from './screens/chargers/list/Chargers';
+import Home from './screens/home/Home';
+import Sidebar from './screens/sidebar/SideBar';
+import SiteAreas from './screens/site-areas/SiteAreas';
+import Sites from './screens/sites/Sites';
+import Statistics from './screens/statistics/Statistics';
+import TransactionChart from './screens/transactions/chart/TransactionChart';
+import TransactionDetails from './screens/transactions/details/TransactionDetails';
+import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
+import TransactionsHistory from './screens/transactions/list/TransactionsHistory';
+import commonColor from './theme/variables/commonColor';
+import SecuredStorage from './utils/SecuredStorage';
 
 // Init i18n
 I18nManager.initialize();
@@ -44,8 +44,8 @@ const authNavigator: NavigationContainer = createStackNavigator(
     RetrievePassword: { screen: RetrievePassword }
   },
   {
-    initialRouteName: "Login",
-    headerMode: "none"
+    initialRouteName: 'Login',
+    headerMode: 'none'
   }
 );
 
@@ -54,8 +54,8 @@ const homeNavigator: NavigationContainer = createStackNavigator(
   {
     Home: { screen: Home }  },
   {
-    initialRouteName: "Home",
-    headerMode: "none"
+    initialRouteName: 'Home',
+    headerMode: 'none'
   }
 );
 
@@ -65,8 +65,8 @@ const statisticsNavigator: NavigationContainer = createStackNavigator(
     Statistics: { screen: Statistics }
   },
   {
-    initialRouteName: "Statistics",
-    headerMode: "none"
+    initialRouteName: 'Statistics',
+    headerMode: 'none'
   }
 );
 
@@ -75,22 +75,22 @@ const chargerDetailsTabsNavigator = createMaterialBottomTabNavigator(
     ChargerConnectorDetails: {
       screen: ChargerConnectorDetails,
       navigationOptions: {
-        title: I18n.t("sites.chargePoint"),
-        tabBarIcon: (props) => createTabBarIcon(props, "FontAwesome", "bolt")
+        title: I18n.t('sites.chargePoint'),
+        tabBarIcon: (props) => createTabBarIcon(props, 'FontAwesome', 'bolt')
       },
     },
     TransactionChart: {
       screen: TransactionChart,
       navigationOptions: {
-        title: I18n.t("details.graph"),
-        tabBarIcon: (props) => createTabBarIcon(props, "AntDesign", "linechart")
+        title: I18n.t('details.graph'),
+        tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
       }
     },
     ChargerDetails: {
       screen: ChargerDetails,
       navigationOptions: {
-        title: I18n.t("details.informations"),
-        tabBarIcon: (props) => createTabBarIcon(props, "MaterialIcons", "info")
+        title: I18n.t('details.informations'),
+        tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'info')
       }
     }
   },
@@ -100,7 +100,7 @@ const chargerDetailsTabsNavigator = createMaterialBottomTabNavigator(
     barStyle: { backgroundColor: commonColor.brandPrimaryDark },
     labeled: true,
     backBehavior: 'none',
-    initialRouteName: "ChargerConnectorDetails",
+    initialRouteName: 'ChargerConnectorDetails',
   }
 );
 
@@ -113,8 +113,8 @@ const sitesNavigator: NavigationContainer = createStackNavigator(
     ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator }
   },
   {
-    initialRouteName: "Sites",
-    headerMode: "none"
+    initialRouteName: 'Sites',
+    headerMode: 'none'
   }
 );
 
@@ -125,13 +125,13 @@ const chargersNavigator: NavigationContainer = createStackNavigator(
     ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator }
   },
   {
-    initialRouteName: "Chargers",
-    headerMode: "none"
+    initialRouteName: 'Chargers',
+    headerMode: 'none'
   }
 );
 
 const createTabBarIcon = (props: { focused: boolean; tintColor?: string; horizontal?: boolean;},
-    type: "AntDesign" | "Entypo" | "EvilIcons" | "Feather" | "FontAwesome" | "FontAwesome5" | "Foundation" | "Ionicons" | "MaterialCommunityIcons" | "MaterialIcons" | "Octicons" | "SimpleLineIcons" | "Zocial",
+    type: 'AntDesign' | 'Entypo' | 'EvilIcons' | 'Feather' | 'FontAwesome' | 'FontAwesome5' | 'Foundation' | 'Ionicons' | 'MaterialCommunityIcons' | 'MaterialIcons' | 'Octicons' | 'SimpleLineIcons' | 'Zocial',
     name: string): React.ReactNode => {
   return <Icon style={{
       color: props.focused ? commonColor.topTabBarActiveTextColor : commonColor.topTabBarTextColor, paddingBottom: 5, fontSize: 23
@@ -143,15 +143,15 @@ const transactionDetailsTabsNavigator = createMaterialBottomTabNavigator(
     TransactionDetails: {
       screen: TransactionDetails,
       navigationOptions: {
-        title: I18n.t("transactions.transaction"),
-        tabBarIcon: (props) => createTabBarIcon(props, "FontAwesome", "bolt")
+        title: I18n.t('transactions.transaction'),
+        tabBarIcon: (props) => createTabBarIcon(props, 'FontAwesome', 'bolt')
       },
     },
     TransactionChart: {
       screen: TransactionChart,
       navigationOptions: {
-        title: I18n.t("details.graph"),
-        tabBarIcon: (props) => createTabBarIcon(props, "AntDesign", "linechart")
+        title: I18n.t('details.graph'),
+        tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
       }
     }
   },
@@ -161,7 +161,7 @@ const transactionDetailsTabsNavigator = createMaterialBottomTabNavigator(
     barStyle: { backgroundColor: commonColor.brandPrimaryDark },
     labeled: true,
     backBehavior: 'none',
-    initialRouteName: "TransactionDetails",
+    initialRouteName: 'TransactionDetails',
   }
 );
 
@@ -171,8 +171,8 @@ const transactionHistoryNavigator: NavigationContainer = createStackNavigator(
     TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator }
   },
   {
-    initialRouteName: "TransactionsHistory",
-    headerMode: "none"
+    initialRouteName: 'TransactionsHistory',
+    headerMode: 'none'
   }
 );
 
@@ -182,8 +182,8 @@ const transactionInProgressNavigator: NavigationContainer = createStackNavigator
     ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator }
   },
   {
-    initialRouteName: "TransactionsInProgress",
-    headerMode: "none"
+    initialRouteName: 'TransactionsInProgress',
+    headerMode: 'none'
   }
 );
 
@@ -201,10 +201,10 @@ const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
     navigationOptions: {
       swipeEnabled: true
     },
-    drawerWidth: Dimensions.get("window").width / 1.5,
-    initialRouteName: "HomeNavigator",
+    drawerWidth: Dimensions.get('window').width / 1.5,
+    initialRouteName: 'HomeNavigator',
     unmountInactiveRoutes: true,
-    drawerPosition: "right",
+    drawerPosition: 'right',
     // @ts-ignore
     contentComponent: (props) => <Sidebar {...props} />
   }
@@ -216,7 +216,7 @@ const rootNavigator: any = createSwitchNavigator(
     AppDrawerNavigator: { screen: appDrawerNavigator }
   },
   {
-    initialRouteName: "AuthNavigator"
+    initialRouteName: 'AuthNavigator'
   }
 );
 

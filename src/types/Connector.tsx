@@ -1,4 +1,4 @@
-import { InactivityStatusLevel } from "./Transaction";
+import { InactivityStatusLevel } from './Transaction';
 
 export default interface Connector {
   connectorId: number;

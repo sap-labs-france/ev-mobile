@@ -1,19 +1,19 @@
-import I18n from "i18n-js";
-import { Container, Spinner, View } from "native-base";
-import React from "react";
-import { FlatList, Platform, RefreshControl } from "react-native";
-import HeaderComponent from "../../../components/header/HeaderComponent";
-import ListEmptyTextComponent from "../../../components/list/empty-text/ListEmptyTextComponent";
-import ListFooterComponent from "../../../components/list/footer/ListFooterComponent";
-import SimpleSearchComponent from "../../../components/search/simple/SimpleSearchComponent";
-import TransactionHistoryComponent from "../../../components/transaction/history/TransactionHistoryComponent";
-import BaseProps from "../../../types/BaseProps";
-import { DataResult } from "../../../types/DataResult";
-import Transaction from "../../../types/Transaction";
-import Constants from "../../../utils/Constants";
-import Utils from "../../../utils/Utils";
-import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
-import computeStyleSheet from "../TransactionsStyles"
+import I18n from 'i18n-js';
+import { Container, Spinner, View } from 'native-base';
+import React from 'react';
+import { FlatList, Platform, RefreshControl } from 'react-native';
+import HeaderComponent from '../../../components/header/HeaderComponent';
+import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
+import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
+import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
+import TransactionHistoryComponent from '../../../components/transaction/history/TransactionHistoryComponent';
+import BaseProps from '../../../types/BaseProps';
+import { DataResult } from '../../../types/DataResult';
+import Transaction from '../../../types/Transaction';
+import Constants from '../../../utils/Constants';
+import Utils from '../../../utils/Utils';
+import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
+import computeStyleSheet from '../TransactionsStyles'
 
 export interface Props extends BaseProps {
 }
@@ -70,7 +70,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate({ routeName: "HomeNavigator" });
+    this.props.navigation.navigate({ routeName: 'HomeNavigator' });
     // Do not bubble up
     return true;
   };
@@ -131,11 +131,11 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       <Container style={style.container}>
         <HeaderComponent
           navigation={navigation}
-          title={I18n.t("transactions.transactionsHistory")}
+          title={I18n.t('transactions.transactionsHistory')}
           leftAction={this.onBack}
-          leftActionIcon={"navigate-before"}
+          leftActionIcon={'navigate-before'}
           rightAction={navigation.openDrawer}
-          rightActionIcon={"menu"}
+          rightActionIcon={'menu'}
         />
         <SimpleSearchComponent
           onChange={(searchText) => this.search(searchText)}
@@ -158,9 +158,9 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
               keyExtractor={(item) => `${item.id}`}
               refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
               onEndReached={this.onEndScroll}
-              onEndReachedThreshold={Platform.OS === "android" ? 1 : 0.1}
+              onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
               ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t("transactions.noTransactionsHistory")} />}
+              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('transactions.noTransactionsHistory')} />}
             />
           )}
         </View>

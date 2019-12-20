@@ -1,12 +1,12 @@
-import I18n from "i18n-js";
-import { Platform } from "react-native";
+import I18n from 'i18n-js';
+import { Platform } from 'react-native';
 import firebase from 'react-native-firebase';
 import { Notification, NotificationOpen } from 'react-native-firebase/notifications';
-import { NavigationActions, NavigationContainerComponent } from "react-navigation";
+import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
 import CentralServerProvider from '../provider/CentralServerProvider';
-import { UserNotificationType } from "../types/UserNotifications";
-import Message from "../utils/Message";
-import Utils from "../utils/Utils";
+import { UserNotificationType } from '../types/UserNotifications';
+import Message from '../utils/Message';
+import Utils from '../utils/Utils';
 
 export default class NotificationManager {
   private static notificationManager: NotificationManager;
@@ -40,7 +40,7 @@ export default class NotificationManager {
       // Request permission
       try {
         await firebase.messaging().requestPermission();
-        // User has authorised
+        // User has authorized permissions
       } catch (error) {
         // User has rejected permissions
       }
@@ -68,7 +68,7 @@ export default class NotificationManager {
     // Notification Received
     this.removeNotificationListener = firebase.notifications().onNotification(async (notification: Notification) => {
       // App in foreground: Display the notification
-      notification.setSound("default");
+      notification.setSound('default');
       // Check if notification has to be displayed
       if (notification.data) {
         // Check
@@ -111,7 +111,7 @@ export default class NotificationManager {
         }
       } catch (error) {
         // tslint:disable-next-line: no-console
-        console.log("Error saving Mobile Token:", error);
+        console.log('Error saving Mobile Token:', error);
       }
     });
   }
@@ -153,7 +153,7 @@ export default class NotificationManager {
     }
     // Check Tenant
     if (this.centralServerProvider.getUserInfo().tenantID !== notification.data.tenantID) {
-      Message.showError(I18n.t("general.wrongTenant"));
+      Message.showError(I18n.t('general.wrongTenant'));
       return false;
     }
     // Check
@@ -164,10 +164,10 @@ export default class NotificationManager {
         this.navigator.dispatch(
           NavigationActions.navigate({
             routeName: 'TransactionHistoryNavigator',
-            key: `${Utils.randomNumnber()}`,
+            key: `${Utils.randomNumber()}`,
             action: NavigationActions.navigate({
               routeName: 'TransactionDetailsTabs',
-              key: `${Utils.randomNumnber()}`,
+              key: `${Utils.randomNumber()}`,
               params: {
                 transactionID: parseInt(notification.data.transactionID, 10)
               }
@@ -184,10 +184,10 @@ export default class NotificationManager {
         this.navigator.dispatch(
           NavigationActions.navigate({
             routeName: 'TransactionInProgressNavigator',
-            key: `${Utils.randomNumnber()}`,
+            key: `${Utils.randomNumber()}`,
             action: NavigationActions.navigate({
               routeName: 'ChargerDetailsTabs',
-              key: `${Utils.randomNumnber()}`,
+              key: `${Utils.randomNumber()}`,
               params: {
                 chargerID: notification.data.chargeBoxID,
                 connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
@@ -203,10 +203,10 @@ export default class NotificationManager {
         this.navigator.dispatch(
           NavigationActions.navigate({
             routeName: 'ChargersNavigator',
-            key: `${Utils.randomNumnber()}`,
+            key: `${Utils.randomNumber()}`,
             action: NavigationActions.navigate({
               routeName: 'ChargerDetailsTabs',
-              key: `${Utils.randomNumnber()}`,
+              key: `${Utils.randomNumber()}`,
               params: {
                 chargerID: notification.data.chargeBoxID,
                 connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
@@ -222,10 +222,10 @@ export default class NotificationManager {
         this.navigator.dispatch(
           NavigationActions.navigate({
             routeName: 'ChargersNavigator',
-            key: `${Utils.randomNumnber()}`,
+            key: `${Utils.randomNumber()}`,
             action: NavigationActions.navigate({
               routeName: 'ChargerDetailsTabs',
-              key: `${Utils.randomNumnber()}`,
+              key: `${Utils.randomNumber()}`,
               params: {
                 chargerID: notification.data.chargeBoxID,
                 connectorID: 1
@@ -241,7 +241,7 @@ export default class NotificationManager {
         this.navigator.dispatch(
           NavigationActions.navigate({
             routeName: 'Chargers',
-            key: `${Utils.randomNumnber()}`
+            key: `${Utils.randomNumber()}`
           })
         );
         break;

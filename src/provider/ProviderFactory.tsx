@@ -1,5 +1,5 @@
-import Utils from "../utils/Utils";
-import CentralServerProvider from "./CentralServerProvider";
+import Utils from '../utils/Utils';
+import CentralServerProvider from './CentralServerProvider';
 
 export default class ProviderFactory {
   private static centralServerProvider: CentralServerProvider;

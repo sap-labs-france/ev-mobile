@@ -1,9 +1,9 @@
-import I18n from "i18n-js";
-import React from "react";
-import HeaderComponent from "../../components/header/HeaderComponent";
-import ComplexSearchComponent from "../../components/search/complex/ComplexSearchComponent";
-import DateFilterComponent from "../../components/search/complex/filter/date/DateFilterComponent";
-import MyUserSwitchFilterComponent from "../../components/search/complex/filter/my-user-switch/MyUserSwitchFilterComponent";
+import I18n from 'i18n-js';
+import React from 'react';
+import HeaderComponent from '../../components/header/HeaderComponent';
+import ComplexSearchComponent from '../../components/search/complex/ComplexSearchComponent';
+import DateFilterComponent from '../../components/search/complex/filter/date/DateFilterComponent';
+import MyUserSwitchFilterComponent from '../../components/search/complex/filter/my-user-switch/MyUserSwitchFilterComponent';
 
 export interface Props {
   onFilterChanged?: (filters: StatisticsFiltersDef) => void;
@@ -13,9 +13,9 @@ export interface Props {
 }
 
 export interface StatisticsFiltersDef {
-  "StartDateTime"?: string;
-  "EndDateTime"?: string;
-  "UserID"?: string;
+  'StartDateTime'?: string;
+  'EndDateTime'?: string;
+  'UserID'?: string;
 }
 
 interface State {
@@ -74,9 +74,9 @@ export default class StatisticsFilters extends React.Component<Props, State> {
       >
         {isAdmin &&
           <MyUserSwitchFilterComponent
-            filterID={"UserID"}
+            filterID={'UserID'}
             userID={initialFilters.UserID}
-            label={I18n.t("general.onlyMyTransactions")}
+            label={I18n.t('general.onlyMyTransactions')}
             initialValue={filters.UserID ? true : false}
             ref={(ref: MyUserSwitchFilterComponent) => {
               if (ref && this.complexSearchComponentRef) {
@@ -86,8 +86,8 @@ export default class StatisticsFilters extends React.Component<Props, State> {
           />
         }
         <DateFilterComponent
-          filterID={"StartDateTime"}
-          label={I18n.t("general.startDate")}
+          filterID={'StartDateTime'}
+          label={I18n.t('general.startDate')}
           ref={(ref: DateFilterComponent) => {
             if (ref && this.complexSearchComponentRef) {
               ref.setSearchComplexComponentRef(this.complexSearchComponentRef);
@@ -99,8 +99,8 @@ export default class StatisticsFilters extends React.Component<Props, State> {
           maximumDate={filters.EndDateTime ? new Date(filters.EndDateTime) : new Date(initialFilters.EndDateTime)}
         />
         <DateFilterComponent
-          filterID={"EndDateTime"}
-          label={I18n.t("general.endDate")}
+          filterID={'EndDateTime'}
+          label={I18n.t('general.endDate')}
           ref={(ref: DateFilterComponent) => {
             if (ref && this.complexSearchComponentRef) {
               ref.setSearchComplexComponentRef(this.complexSearchComponentRef);

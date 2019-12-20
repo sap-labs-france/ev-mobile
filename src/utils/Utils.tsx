@@ -1,19 +1,19 @@
-import I18n from "i18n-js";
-import CentralServerProvider from "provider/CentralServerProvider";
-import { ImageSourcePropType, NativeModules, Platform } from "react-native";
-import { NavigationParams, NavigationScreenProp, NavigationState } from "react-navigation";
-import validate from "validate.js";
-import chademo from "../../assets/connectorType/chademo.gif";
-import combo from "../../assets/connectorType/combo_ccs.gif";
-import domestic from "../../assets/connectorType/domestic-ue.gif";
-import noConnector from "../../assets/connectorType/no-connector.gif";
-import type2 from "../../assets/connectorType/type2.gif";
-import commonColor from "../theme/variables/commonColor";
-import { RequestError } from "../types/RequestError";
-import { InactivityStatusLevel } from "../types/Transaction";
-import User from "../types/User";
-import Constants from "./Constants";
-import Message from "./Message";
+import I18n from 'i18n-js';
+import CentralServerProvider from 'provider/CentralServerProvider';
+import { ImageSourcePropType, NativeModules, Platform } from 'react-native';
+import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
+import validate from 'validate.js';
+import chademo from '../../assets/connectorType/chademo.gif';
+import combo from '../../assets/connectorType/combo_ccs.gif';
+import domestic from '../../assets/connectorType/domestic-ue.gif';
+import noConnector from '../../assets/connectorType/no-connector.gif';
+import type2 from '../../assets/connectorType/type2.gif';
+import commonColor from '../theme/variables/commonColor';
+import { RequestError } from '../types/RequestError';
+import { InactivityStatusLevel } from '../types/Transaction';
+import User from '../types/User';
+import Constants from './Constants';
+import Message from './Message';
 
 export default class Utils {
   public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
@@ -68,14 +68,14 @@ export default class Utils {
   }
 
   public static getDefaultLocale(): string {
-    let deviceLanguage = Platform.OS === "ios" ?
+    let deviceLanguage = Platform.OS === 'ios' ?
       NativeModules.SettingsManager.settings.AppleLocale :
       NativeModules.I18nManager.localeIdentifier;
     // Filter only on supported languages
     const shortDeviceLanguage = deviceLanguage ? deviceLanguage.substring(0, 2) : null;
     // Default
-    if (!shortDeviceLanguage || (shortDeviceLanguage !== "en" && shortDeviceLanguage !== "de" && shortDeviceLanguage !== "fr")) {
-      deviceLanguage = "en-gb";
+    if (!shortDeviceLanguage || (shortDeviceLanguage !== 'en' && shortDeviceLanguage !== 'de' && shortDeviceLanguage !== 'fr')) {
+      deviceLanguage = 'en-gb';
     }
     return deviceLanguage;
   }
@@ -96,7 +96,7 @@ export default class Utils {
   public static formatDuration(durationSecs: number): string {
     let result = '';
     if (durationSecs === 0) {
-      return `0 ${I18n.t("general.second")}`;
+      return `0 ${I18n.t('general.second')}`;
     }
     const days = Math.floor(durationSecs / (3600 * 24));
     durationSecs -= days * 3600 * 24;
@@ -105,17 +105,17 @@ export default class Utils {
     const minutes = Math.floor(durationSecs / 60);
     const seconds = Math.floor(durationSecs - (minutes * 60));
     if (days !== 0) {
-      result += `${days}${I18n.t("general.day")} `;
+      result += `${days}${I18n.t('general.day')} `;
     }
     if (((hours !== 0) || (days !== 0)) && (hours !== 0 || (minutes !== 0 && days === 0))) {
-      result += `${hours}${I18n.t("general.hour")} `;
+      result += `${hours}${I18n.t('general.hour')} `;
     }
     if (days === 0) {
       if ((minutes !== 0) || (hours !== 0) && (minutes !== 0 || (seconds !== 0 && hours === 0))) {
-        result += `${minutes}${I18n.t("general.minute")} `;
+        result += `${minutes}${I18n.t('general.minute')} `;
       }
       if ((hours === 0) && (seconds !== 0)) {
-        result += `${seconds}${I18n.t("general.second")}`;
+        result += `${seconds}${I18n.t('general.second')}`;
       }
     }
     return result;
@@ -142,14 +142,14 @@ export default class Utils {
       setTimeout(() => fctRefresh, 2000);
     };
     // tslint:disable-next-line: no-console
-    console.log("Request Error:", error);
+    console.log('Request Error:', error);
     // Check if HTTP?
     if (error.request) {
       // Status?
       switch (error.request.status) {
         // Backend not available
         case 0:
-          Message.showError(I18n.t("general.cannotConnectBackend"));
+          Message.showError(I18n.t('general.cannotConnectBackend'));
           break;
         // Not logged in?
         case 401:
@@ -158,20 +158,20 @@ export default class Utils {
           break;
         // Other errors
         default:
-          Message.showError(I18n.t("general.unexpectedErrorBackend"));
+          Message.showError(I18n.t('general.unexpectedErrorBackend'));
           break;
       }
-    } else if (error.name === "InvalidTokenError") {
+    } else if (error.name === 'InvalidTokenError') {
       // Force auto login
       await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
     } else {
       // Error in code
-      Message.showError(I18n.t("general.unexpectedError"));
+      Message.showError(I18n.t('general.unexpectedError'));
     }
   }
 
   public static buildUserName(user: User): string {
-    const userName = "-";
+    const userName = '-';
     // User?
     if (user) {
       // Firstname provided?
@@ -195,7 +195,7 @@ export default class Utils {
     for (const key in screen.state) {
       if (screen.state.hasOwnProperty(key)) {
         // Error?
-        if (key.startsWith("error")) {
+        if (key.startsWith('error')) {
           // Clear
           const clearError: any = {};
           clearError[key] = null;
@@ -210,7 +210,7 @@ export default class Utils {
       // Set in state the errors
       for (const key in error) {
         if (error.hasOwnProperty(key)) {
-          errorState["error" + Utils.capitalizeFirstLetter(key)] = error[key];
+          errorState['error' + Utils.capitalizeFirstLetter(key)] = error[key];
         }
       }
       formValid = false;
@@ -235,49 +235,49 @@ export default class Utils {
     return connectorLetter.charCodeAt(0) - 64;
   }
 
-  public static randomNumnber(): number {
+  public static randomNumber(): number {
     return Math.random() * 10000000;
   }
 
   public static translateConnectorStatus = (status: string): string => {
     switch (status) {
       case Constants.CONN_STATUS_AVAILABLE:
-        return I18n.t("connector.available");
+        return I18n.t('connector.available');
       case Constants.CONN_STATUS_CHARGING:
-        return I18n.t("connector.charging");
+        return I18n.t('connector.charging');
       case Constants.CONN_STATUS_OCCUPIED:
-        return I18n.t("connector.occupied");
+        return I18n.t('connector.occupied');
       case Constants.CONN_STATUS_FAULTED:
-        return I18n.t("connector.faulted");
+        return I18n.t('connector.faulted');
       case Constants.CONN_STATUS_RESERVED:
-        return I18n.t("connector.reserved");
+        return I18n.t('connector.reserved');
       case Constants.CONN_STATUS_FINISHING:
-        return I18n.t("connector.finishing");
+        return I18n.t('connector.finishing');
       case Constants.CONN_STATUS_PREPARING:
-        return I18n.t("connector.preparing");
+        return I18n.t('connector.preparing');
       case Constants.CONN_STATUS_SUSPENDED_EVSE:
-        return I18n.t("connector.suspendedEVSE");
+        return I18n.t('connector.suspendedEVSE');
       case Constants.CONN_STATUS_SUSPENDED_EV:
-        return I18n.t("connector.suspendedEV");
+        return I18n.t('connector.suspendedEV');
       case Constants.CONN_STATUS_UNAVAILABLE:
-        return I18n.t("connector.unavailable");
+        return I18n.t('connector.unavailable');
       default:
-        return I18n.t("connector.unknown");
+        return I18n.t('connector.unknown');
     }
   };
 
   public static translateConnectorType = (type: string): string => {
     switch (type) {
       case Constants.CONN_TYPE_2:
-        return I18n.t("connector.type2");
+        return I18n.t('connector.type2');
       case Constants.CONN_TYPE_COMBO_CCS:
-        return I18n.t("connector.comboCCS");
+        return I18n.t('connector.comboCCS');
       case Constants.CONN_TYPE_CHADEMO:
-        return I18n.t("connector.chademo");
+        return I18n.t('connector.chademo');
       case Constants.CONN_TYPE_DOMESTIC:
-        return I18n.t("connector.domestic");
+        return I18n.t('connector.domestic');
       default:
-        return I18n.t("connector.unknown");
+        return I18n.t('connector.unknown');
     }
   };
 
@@ -321,9 +321,9 @@ export default class Utils {
 
   private static formatTimer = (val: number): string => {
     // Put 0 next to the digit if lower than 10
-    const valString = val + "";
+    const valString = val + '';
     if (valString.length < 2) {
-      return "0" + valString;
+      return '0' + valString;
     }
     // Return new digit
     return valString;

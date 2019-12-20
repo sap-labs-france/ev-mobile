@@ -1,18 +1,18 @@
-import I18n from "i18n-js";
-import { ActionSheet, Button, CheckBox, Footer, Form, Icon, Item, Left, Right, Spinner, Text, View } from "native-base";
-import React from "react";
-import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from "react-native";
-import * as Animatable from "react-native-animatable";
-import Orientation from "react-native-orientation-locker";
-import commonColor from "../../../theme/variables/commonColor";
-import BaseProps from "../../../types/BaseProps";
-import Tenant from "../../../types/Tenant";
-import Constants from "../../../utils/Constants";
-import Message from "../../../utils/Message";
-import Utils from "../../../utils/Utils";
-import BaseScreen from "../../base-screen/BaseScreen";
-import AuthHeader from "../AuthHeader";
-import computeStyleSheet from "../AuthStyles";
+import I18n from 'i18n-js';
+import { ActionSheet, Button, CheckBox, Footer, Form, Icon, Item, Left, Right, Spinner, Text, View } from 'native-base';
+import React from 'react';
+import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import Orientation from 'react-native-orientation-locker';
+import commonColor from '../../../theme/variables/commonColor';
+import BaseProps from '../../../types/BaseProps';
+import Tenant from '../../../types/Tenant';
+import Constants from '../../../utils/Constants';
+import Message from '../../../utils/Message';
+import Utils from '../../../utils/Utils';
+import BaseScreen from '../../base-screen/BaseScreen';
+import AuthHeader from '../AuthHeader';
+import computeStyleSheet from '../AuthStyles';
 
 export interface Props extends BaseProps {
 }
@@ -40,28 +40,28 @@ export default class Login extends BaseScreen<Props, State> {
     tenant: {
       presence: {
         allowEmpty: false,
-        message: "^" + I18n.t("authentication.mandatoryTenant")
+        message: '^' + I18n.t('authentication.mandatoryTenant')
       }
     },
     email: {
       presence: {
         allowEmpty: false,
-        message: "^" + I18n.t("authentication.mandatoryEmail")
+        message: '^' + I18n.t('authentication.mandatoryEmail')
       },
       email: {
-        message: "^" + I18n.t("authentication.invalidEmail")
+        message: '^' + I18n.t('authentication.invalidEmail')
       }
     },
     password: {
       presence: {
         allowEmpty: false,
-        message: "^" + I18n.t("authentication.mandatoryPassword")
+        message: '^' + I18n.t('authentication.mandatoryPassword')
       }
     },
     eula: {
       equality: {
-        attribute: "ghost",
-        message: "^" + I18n.t("authentication.eulaNotAccepted"),
+        attribute: 'ghost',
+        message: '^' + I18n.t('authentication.eulaNotAccepted'),
         comparator(v1: boolean, v2: boolean) {
           // True if EULA is checked
           return v1;
@@ -75,9 +75,9 @@ export default class Login extends BaseScreen<Props, State> {
     this.state = {
       eula: false,
       password: null,
-      email: Utils.getParamFromNavigation(this.props.navigation, "email", ""),
-      tenant: Utils.getParamFromNavigation(this.props.navigation, "tenant", ""),
-      tenantTitle: I18n.t("authentication.tenant"),
+      email: Utils.getParamFromNavigation(this.props.navigation, 'email', ''),
+      tenant: Utils.getParamFromNavigation(this.props.navigation, 'tenant', ''),
+      tenantTitle: I18n.t('authentication.tenant'),
       loading: false,
       initialLoading: true
     };
@@ -150,23 +150,23 @@ export default class Login extends BaseScreen<Props, State> {
             // Unknown Email
             case 500:
             case 550:
-              Message.showError(I18n.t("authentication.wrongEmailOrPassword"));
+              Message.showError(I18n.t('authentication.wrongEmailOrPassword'));
               break;
             // Account is locked
             case 570:
-              Message.showError(I18n.t("authentication.accountLocked"));
+              Message.showError(I18n.t('authentication.accountLocked'));
               break;
             // Account not Active
             case 580:
-              Message.showError(I18n.t("authentication.accountNotActive"));
+              Message.showError(I18n.t('authentication.accountNotActive'));
               break;
             // Account Pending
             case 590:
-              Message.showError(I18n.t("authentication.accountPending"));
+              Message.showError(I18n.t('authentication.accountPending'));
               break;
             // Eula no accepted
             case 520:
-              Message.showError(I18n.t("authentication.eulaNotAccepted"));
+              Message.showError(I18n.t('authentication.eulaNotAccepted'));
               break;
             default:
               // Other common Error
@@ -180,9 +180,9 @@ export default class Login extends BaseScreen<Props, State> {
   public onBack = () => {
     // Exit?
     Alert.alert(
-      I18n.t("general.exitApp"),
-      I18n.t("general.exitAppConfirm"),
-      [{ text: I18n.t("general.no"), style: "cancel" }, { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() }],
+      I18n.t('general.exitApp'),
+      I18n.t('general.exitAppConfirm'),
+      [{ text: I18n.t('general.no'), style: 'cancel' }, { text: I18n.t('general.yes'), onPress: () => BackHandler.exitApp() }],
       { cancelable: false }
     );
     // Do not bubble up
@@ -191,7 +191,7 @@ export default class Login extends BaseScreen<Props, State> {
 
   public navigateToSites() {
     // Navigate to App
-    this.props.navigation.navigate("AppDrawerNavigator");
+    this.props.navigation.navigate('AppDrawerNavigator');
   }
 
   public setTenant = (buttonIndex: number) => {
@@ -209,12 +209,12 @@ export default class Login extends BaseScreen<Props, State> {
     const navigation = this.props.navigation;
     // Tenant selected?
     if (this.state.tenant) {
-      navigation.navigate("SignUp", {
+      navigation.navigate('SignUp', {
         tenant: this.state.tenant,
         email: this.state.email
       });
     } else {
-      Message.showError(I18n.t("authentication.mustSelectTenant"));
+      Message.showError(I18n.t('authentication.mustSelectTenant'));
     }
   };
 
@@ -222,13 +222,13 @@ export default class Login extends BaseScreen<Props, State> {
     const navigation = this.props.navigation;
     // Tenant selected?
     if (this.state.tenant) {
-      navigation.navigate("RetrievePassword", {
+      navigation.navigate('RetrievePassword', {
         tenant: this.state.tenant,
         email: this.state.email
       });
     } else {
       // Error
-      Message.showError(I18n.t("authentication.mustSelectTenant"));
+      Message.showError(I18n.t('authentication.mustSelectTenant'));
     }
   };
 
@@ -240,9 +240,9 @@ export default class Login extends BaseScreen<Props, State> {
     return initialLoading ? (
       <Spinner style={style.spinner} />
     ) : (
-      <Animatable.View style={style.container} animation={"fadeIn"} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+      <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
-          <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
+          <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation}/>
             <Form style={style.form}>
               <Button
@@ -253,7 +253,7 @@ export default class Login extends BaseScreen<Props, State> {
                   ActionSheet.show(
                     {
                       options: this.tenants.map((tenant) => tenant.name),
-                      title: I18n.t("authentication.tenant")
+                      title: I18n.t('authentication.tenant')
                     },
                     (buttonIndex) => {
                       this.setTenant(buttonIndex);
@@ -269,18 +269,18 @@ export default class Login extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                <Icon active={true} name="mail" style={style.inputIcon} />
+                <Icon active={true} name='mail' style={style.inputIcon} />
                 <TextInput
-                  returnKeyType="next"
+                  returnKeyType='next'
                   selectionColor={commonColor.inverseTextColor}
-                  placeholder={I18n.t("authentication.email")}
+                  placeholder={I18n.t('authentication.email')}
                   placeholderTextColor={commonColor.placeholderTextColor}
                   onSubmitEditing={() => this.passwordInput.focus()}
                   style={style.inputField}
-                  autoCapitalize="none"
+                  autoCapitalize='none'
                   blurOnSubmit={false}
                   autoCorrect={false}
-                  keyboardType={"email-address"}
+                  keyboardType={'email-address'}
                   secureTextEntry={false}
                   onChangeText={(text) => this.setState({ email: text })}
                   value={this.state.email}
@@ -293,19 +293,19 @@ export default class Login extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                <Icon active={true} name="unlock" style={[style.inputIcon, style.inputIconLock]} />
+                <Icon active={true} name='unlock' style={[style.inputIcon, style.inputIconLock]} />
                 <TextInput
-                  returnKeyType="go"
+                  returnKeyType='go'
                   selectionColor={commonColor.inverseTextColor}
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
                   onSubmitEditing={() => Keyboard.dismiss()}
-                  placeholder={I18n.t("authentication.password")}
+                  placeholder={I18n.t('authentication.password')}
                   placeholderTextColor={commonColor.placeholderTextColor}
                   style={style.inputField}
-                  autoCapitalize="none"
+                  autoCapitalize='none'
                   blurOnSubmit={false}
                   autoCorrect={false}
-                  keyboardType={"default"}
+                  keyboardType={'default'}
                   secureTextEntry={true}
                   onChangeText={(text) => this.setState({ password: text })}
                   value={this.state.password}
@@ -320,9 +320,9 @@ export default class Login extends BaseScreen<Props, State> {
               <View style={style.eulaContainer}>
                 <CheckBox style={style.eulaCheckbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
                 <Text style={style.eulaText}>
-                  {I18n.t("authentication.acceptEula")}
-                  <Text onPress={() => navigation.navigate("Eula")} style={style.eulaLink}>
-                    {I18n.t("authentication.eula")}
+                  {I18n.t('authentication.acceptEula')}
+                  <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
+                    {I18n.t('authentication.eula')}
                   </Text>
                 </Text>
               </View>
@@ -333,10 +333,10 @@ export default class Login extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               {loading ? (
-                <Spinner style={style.spinner} color="white" />
+                <Spinner style={style.spinner} color='white' />
               ) : (
                 <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.login()}>
-                  <TextRN style={style.buttonText}>{I18n.t("authentication.login")}</TextRN>
+                  <TextRN style={style.buttonText}>{I18n.t('authentication.login')}</TextRN>
                 </Button>
               )}
             </Form>
@@ -345,12 +345,12 @@ export default class Login extends BaseScreen<Props, State> {
         <Footer style={style.footer}>
           <Left>
             <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.newUser()}>
-              <TextRN style={style.linksTextButton}>{I18n.t("authentication.newUser")}</TextRN>
+              <TextRN style={style.linksTextButton}>{I18n.t('authentication.newUser')}</TextRN>
             </Button>
           </Left>
           <Right>
             <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonRight]} onPress={() => this.forgotPassword()}>
-              <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t("authentication.forgotYourPassword")}</TextRN>
+              <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t('authentication.forgotYourPassword')}</TextRN>
             </Button>
           </Right>
         </Footer>

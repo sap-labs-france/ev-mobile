@@ -1,10 +1,10 @@
-import I18n from "i18n-js";
-import { Button, Icon } from "native-base";
-import React from "react";
-import { TextInput, View } from "react-native";
-import commonColor from "../../../theme/variables/commonColor";
-import BaseProps from "../../../types/BaseProps";
-import computeStyleSheet from "./SimpleSearchComponentStyles";
+import I18n from 'i18n-js';
+import { Button, Icon } from 'native-base';
+import React from 'react';
+import { TextInput, View } from 'react-native';
+import commonColor from '../../../theme/variables/commonColor';
+import BaseProps from '../../../types/BaseProps';
+import computeStyleSheet from './SimpleSearchComponentStyles';
 
 export interface Props extends BaseProps {
   onChange: (search: string) => void,
@@ -41,26 +41,26 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
 
   public clearSearch() {
     this.textInput.clear();
-    this.searchHasChanged("");
+    this.searchHasChanged('');
   }
 
   public render() {
     const style = computeStyleSheet();
     return (
       <View style={style.container}>
-        <Icon type="MaterialIcons" name="search" style={style.icon} />
+        <Icon type='MaterialIcons' name='search' style={style.icon} />
         <TextInput
           ref={(ref) => {
             this.textInput = ref;
           }}
           selectionColor={commonColor.textColor}
           style={style.inputField}
-          placeholder={I18n.t("general.search")}
+          placeholder={I18n.t('general.search')}
           placeholderTextColor={commonColor.placeholderTextColor}
           onChangeText={(searchText) => this.searchHasChanged(searchText)}
         />
         <Button disabled={!this.currentSearchText} style={style.iconButton} transparent={true}>
-          <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this.clearSearch()} />
+          <Icon type='MaterialIcons' name='clear' style={style.icon} onPress={() => this.clearSearch()} />
         </Button>
       </View>
     );

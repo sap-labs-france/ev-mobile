@@ -1,25 +1,25 @@
-import color from "color";
-import { Dimensions, PixelRatio, Platform } from "react-native";
-import { scale } from "react-native-size-matters";
+import color from 'color';
+import { Dimensions, PixelRatio, Platform } from 'react-native';
+import { scale } from 'react-native-size-matters';
 
 export const PLATFORM = {
-  ANDROID: "android",
-  IOS: "ios",
-  MATERIAL: "material",
-  WEB: "web"
+  ANDROID: 'android',
+  IOS: 'ios',
+  MATERIAL: 'material',
+  WEB: 'web'
 };
 
-const deviceHeight = Dimensions.get("window").height;
-const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
 const platform = Platform.OS;
 const platformStyle: any = undefined;
 const isIphoneX = platform === PLATFORM.IOS && (deviceHeight === 812 || deviceWidth === 812 || deviceHeight === 896 || deviceWidth === 896);
 
-const fiori3Brand = "#0a6ed1";
-const fiori3Success = "#16ab54";
-const fiori3Error = "#ee0000";
-const fiori3Bg = "#f7f7f7";
-const fiori3Primary2 = "#0a6ed1";
+const fiori3Brand = '#0a6ed1';
+const fiori3Success = '#16ab54';
+const fiori3Error = '#ee0000';
+const fiori3Bg = '#f7f7f7';
+const fiori3Primary2 = '#0a6ed1';
 
 const darkLightRatio = 0.5;
 
@@ -35,18 +35,18 @@ const successDark = color(success).darken(darkLightRatio).hex();
 const danger = fiori3Error;
 const dangerLight = color(danger).lighten(darkLightRatio).hex();
 const dangerDark = color(danger).darken(darkLightRatio).hex();
-const warning = "#FB8C00";
+const warning = '#FB8C00';
 const warningLight = color(warning).lighten(darkLightRatio).hex();
 const warningDark = color(warning).darken(darkLightRatio).hex();
-const disabled = "#757575";
+const disabled = '#757575';
 const disabledLight = color(disabled).lighten(darkLightRatio).hex();
 const disabledDark = color(disabled).darken(darkLightRatio).hex();
 const background = fiori3Bg;
-const backgroundHeader = "#E7E7E7";
-const borderColor = "#ccc";
-const transparentBg = "rgba(256,256,256,0.3)";
-const dark = "#000";
-const light = "#f4f4f4";
+const backgroundHeader = '#E7E7E7';
+const borderColor = '#ccc';
+const transparentBg = 'rgba(256,256,256,0.3)';
+const dark = '#000';
+const light = '#f4f4f4';
 const fontSize = scale(22);
 const fontSizeIconBase = platform === PLATFORM.IOS ? 30 : 28;
 
@@ -87,10 +87,10 @@ export class CommonColor {
 
   // ActionSheet
   public elevation = 4;
-  public containerTouchableBackgroundColor = "rgba(0,0,0,0.4)";
+  public containerTouchableBackgroundColor = 'rgba(0,0,0,0.4)';
   public innerTouchableBackgroundColor = light;
   public listItemHeight = 50;
-  public listItemBorderColor = "transparent";
+  public listItemBorderColor = 'transparent';
   public marginHorizontal = -15;
   public marginLeft = 14;
   public marginTop = 15;
@@ -101,7 +101,7 @@ export class CommonColor {
   // Android
   public androidRipple = true;
   public androidRippleColor = transparentBg;
-  public androidRippleColorDark = "rgba(0,0,0,0.15)";
+  public androidRippleColorDark = 'rgba(0,0,0,0.15)';
   public buttonUppercaseAndroidText = true;
 
   // Badge
@@ -110,7 +110,7 @@ export class CommonColor {
   public badgePadding = platform === PLATFORM.IOS ? 3 : 0;
 
   // Button
-  public buttonFontFamily = platform === PLATFORM.IOS ? "System" : "Roboto_medium";
+  public buttonFontFamily = platform === PLATFORM.IOS ? 'System' : 'Roboto_medium';
   public buttonDisabledBg = disabled;
   public buttonBg = transparentBg;
   public buttonPadding = 6;
@@ -148,21 +148,21 @@ export class CommonColor {
   public checkboxBgColor = light;
   public checkboxSize = scale(18);
   public checkboxTickColor = primaryDark;
-  public checkboxDefaultColor = "transparent";
+  public checkboxDefaultColor = 'transparent';
 
   // Container
   public containerBgColor = background;
 
   // Date Picker
   public datePickerTextColor = dark;
-  public datePickerBg = "transparent";
+  public datePickerBg = 'transparent';
 
   // FAB
   public fabWidth = 56;
 
   // Font
   public DefaultFontSize = 16;
-  public fontFamily = platform === PLATFORM.IOS ? "System" : "Roboto";
+  public fontFamily = platform === PLATFORM.IOS ? 'System' : 'Roboto';
   public fontSizeBase = fontSize;
   public fontSizeH1 = fontSize * 1.8;
   public fontSizeH2 = fontSize * 1.6;
@@ -190,13 +190,13 @@ export class CommonColor {
   public searchBarHeight = platform === PLATFORM.IOS ? 30 : 40;
   public searchBarInputHeight = platform === PLATFORM.IOS ? 30 : 50;
   public toolbarBtnTextColor = primaryDark;
-  public iosStatusbar = "dark-content";
+  public iosStatusbar = 'dark-content';
   public toolbarDefaultBorder = light;
   public statusBarColor = color(primary).darken(0.2).hex();
   public darkenHeader = color(light).darken(0.03).hex();
 
   // Icon
-  public iconFamily = "Ionicons";
+  public iconFamily = 'Ionicons';
   public iconFontSize = fontSizeIconBase;
   public iconHeaderSize = platform === PLATFORM.IOS ? 33 : 24;
 
@@ -219,7 +219,7 @@ export class CommonColor {
   public lineHeight = platform === PLATFORM.IOS ? 20 : 24;
 
   // List
-  public listBg = "transparent";
+  public listBg = 'transparent';
   public listBorderColor = borderColor;
   public listDividerBg = light;
   public listBtnUnderlayColor = disabledLight;
@@ -272,7 +272,7 @@ export class CommonColor {
   public defaultTextColor = primaryDark;
 
   // Title
-  public titleFontfamily = platform === PLATFORM.IOS ? "System" : "Roboto_medium";
+  public titleFontfamily = platform === PLATFORM.IOS ? 'System' : 'Roboto_medium';
   public titleFontSize = platform === PLATFORM.IOS ? 17 : 19;
   public subTitleFontSize = platform === PLATFORM.IOS ? 11 : 14;
   public subtitleColor = primaryDark;

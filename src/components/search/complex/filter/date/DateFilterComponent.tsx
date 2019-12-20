@@ -1,9 +1,9 @@
-import { DatePicker, Text, View } from "native-base";
-import React from "react";
-import I18nManager from "../../../../../I18n/I18nManager";
-import BaseFilterProps from "../../../../../types/BaseFilterProps";
-import ComplexSearchComponent from "../../ComplexSearchComponent";
-import computeStyleSheet from "../FilterComponentStyles";
+import { DatePicker, Text, View } from 'native-base';
+import React from 'react';
+import I18nManager from '../../../../../I18n/I18nManager';
+import BaseFilterProps from '../../../../../types/BaseFilterProps';
+import ComplexSearchComponent from '../../ComplexSearchComponent';
+import computeStyleSheet from '../FilterComponentStyles';
 
 export interface Props extends BaseFilterProps {
   defaultDate?: Date;
@@ -56,8 +56,8 @@ export default class DateFilterComponent extends React.Component<Props, State> {
           locale={locale}
           timeZoneOffsetInMinutes={undefined}
           modalTransparent={false}
-          animationType={"fade"}
-          androidMode={"spinner"}
+          animationType={'fade'}
+          androidMode={'spinner'}
           textStyle={style.filterValue}
           placeHolderTextStyle={style.filterValue}
           onDateChange={(newDate: Date) => complexSearchComponentRef.setFilter(filterID, newDate.toISOString())}

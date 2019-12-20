@@ -1,24 +1,24 @@
-import deepmerge from "deepmerge";
-import ResponsiveStylesheet from "react-native-responsive-stylesheet";
-import { ScaledSheet } from "react-native-size-matters";
-import commonColor from "../../../../theme/variables/commonColor";
+import deepmerge from 'deepmerge';
+import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
+import { ScaledSheet } from 'react-native-size-matters';
+import commonColor from '../../../../theme/variables/commonColor';
 
 const commonStyles = ScaledSheet.create({
   rowFilter: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    height: "40@s",
-    alignItems: "center"
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    height: '40@s',
+    alignItems: 'center'
   },
   textFilter: {
-    width: "40%",
-    fontWeight: "bold"
+    width: '40%',
+    fontWeight: 'bold'
   },
   filterValue: {
     color: commonColor.textColor
   },
   switchFilter: {
-    marginLeft: "5@s"
+    marginLeft: '5@s'
   }
 });
 

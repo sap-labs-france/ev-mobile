@@ -1,12 +1,12 @@
-import I18n from "i18n-js";
-import { Body, Card, CardItem, Container, Content, Icon, Left, Text } from "native-base";
-import React from "react";
-import { Alert, BackHandler } from "react-native";
-import Transaction from "types/Transaction";
-import HeaderComponent from "../../components/header/HeaderComponent";
-import BaseProps from "../../types/BaseProps";
-import BaseScreen from "../base-screen/BaseScreen";
-import computeStyleSheet from "./HomeStyles";
+import I18n from 'i18n-js';
+import { Body, Card, CardItem, Container, Content, Icon, Left, Text } from 'native-base';
+import React from 'react';
+import { Alert, BackHandler } from 'react-native';
+import Transaction from 'types/Transaction';
+import HeaderComponent from '../../components/header/HeaderComponent';
+import BaseProps from '../../types/BaseProps';
+import BaseScreen from '../base-screen/BaseScreen';
+import computeStyleSheet from './HomeStyles';
 
 export interface Props extends BaseProps {
 }
@@ -48,9 +48,9 @@ export default class Home extends BaseScreen<Props, State> {
 
   public onBack = (): boolean => {
     Alert.alert(
-      I18n.t("general.exitApp"),
-      I18n.t("general.exitAppConfirm"),
-      [{ text: I18n.t("general.no"), style: "cancel" }, { text: I18n.t("general.yes"), onPress: () => BackHandler.exitApp() }],
+      I18n.t('general.exitApp'),
+      I18n.t('general.exitAppConfirm'),
+      [{ text: I18n.t('general.no'), style: 'cancel' }, { text: I18n.t('general.yes'), onPress: () => BackHandler.exitApp() }],
       { cancelable: false }
     );
     return true;
@@ -64,64 +64,64 @@ export default class Home extends BaseScreen<Props, State> {
       <Container style={style.container}>
         <HeaderComponent
           navigation={navigation}
-          title={I18n.t("sidebar.home")}
+          title={I18n.t('sidebar.home')}
           rightAction={navigation.openDrawer}
-          rightActionIcon={"menu"}
+          rightActionIcon={'menu'}
         />
         <Content style={style.content}>
           {isComponentOrganizationActive && (
             <Card>
-              <CardItem button={true} onPress={() => navigation.navigate({ routeName: "SitesNavigator" })}>
+              <CardItem button={true} onPress={() => navigation.navigate({ routeName: 'SitesNavigator' })}>
                 <Left>
-                  <Icon style={style.cardIcon} type="MaterialIcons" name="store-mall-directory" />
+                  <Icon style={style.cardIcon} type='MaterialIcons' name='store-mall-directory' />
                   <Body>
-                    <Text style={style.cardText}>{I18n.t("home.browseSites")}</Text>
-                    <Text note={true} style={style.cardNote}>{I18n.t("home.browseSitesNote")}</Text>
+                    <Text style={style.cardText}>{I18n.t('home.browseSites')}</Text>
+                    <Text note={true} style={style.cardNote}>{I18n.t('home.browseSitesNote')}</Text>
                   </Body>
                 </Left>
               </CardItem>
             </Card>
           )}
           <Card>
-            <CardItem button={true} onPress={() => navigation.navigate({ routeName: "ChargersNavigator" })}>
+            <CardItem button={true} onPress={() => navigation.navigate({ routeName: 'ChargersNavigator' })}>
               <Left>
-                <Icon style={style.cardIcon} type="MaterialIcons" name="ev-station" />
+                <Icon style={style.cardIcon} type='MaterialIcons' name='ev-station' />
                 <Body>
-                  <Text style={style.cardText}>{I18n.t("home.browseChargers")}</Text>
-                  <Text note={true} style={style.cardNote}>{I18n.t("home.browseChargersNote")}</Text>
+                  <Text style={style.cardText}>{I18n.t('home.browseChargers')}</Text>
+                  <Text note={true} style={style.cardNote}>{I18n.t('home.browseChargersNote')}</Text>
                 </Body>
               </Left>
             </CardItem>
           </Card>
           <Card>
-            <CardItem button={true} onPress={() => navigation.navigate({ routeName: "TransactionHistoryNavigator" })}>
+            <CardItem button={true} onPress={() => navigation.navigate({ routeName: 'TransactionHistoryNavigator' })}>
               <Left>
-                <Icon style={style.cardIcon} type="MaterialCommunityIcons" name="history" />
+                <Icon style={style.cardIcon} type='MaterialCommunityIcons' name='history' />
                 <Body>
-                  <Text style={style.cardText}>{I18n.t("home.browseSessions")}</Text>
-                  <Text note={true} style={style.cardNote}>{I18n.t("home.browseSessionsNote")}</Text>
+                  <Text style={style.cardText}>{I18n.t('home.browseSessions')}</Text>
+                  <Text note={true} style={style.cardNote}>{I18n.t('home.browseSessionsNote')}</Text>
                 </Body>
               </Left>
             </CardItem>
           </Card>
           <Card>
-            <CardItem button={true} onPress={() => navigation.navigate({ routeName: "TransactionInProgressNavigator" })}>
+            <CardItem button={true} onPress={() => navigation.navigate({ routeName: 'TransactionInProgressNavigator' })}>
               <Left>
-                <Icon style={style.cardIcon} type="MaterialIcons" name="play-arrow" />
+                <Icon style={style.cardIcon} type='MaterialIcons' name='play-arrow' />
                 <Body>
-                  <Text style={style.cardText}>{I18n.t("home.ongoingSessions")}</Text>
-                  <Text note={true} style={style.cardNote}>{I18n.t("home.ongoingSessionsNote")}</Text>
+                  <Text style={style.cardText}>{I18n.t('home.ongoingSessions')}</Text>
+                  <Text note={true} style={style.cardNote}>{I18n.t('home.ongoingSessionsNote')}</Text>
                 </Body>
               </Left>
             </CardItem>
           </Card>
           <Card>
-            <CardItem button={true} onPress={() => navigation.navigate({ routeName: "StatisticsNavigator" })}>
+            <CardItem button={true} onPress={() => navigation.navigate({ routeName: 'StatisticsNavigator' })}>
               <Left>
-                <Icon style={style.cardIcon} type="MaterialIcons" name="assessment" />
+                <Icon style={style.cardIcon} type='MaterialIcons' name='assessment' />
                 <Body>
-                  <Text style={style.cardText}>{I18n.t("home.browseStatistics")}</Text>
-                  <Text note={true} style={style.cardNote}>{I18n.t("home.browseStatisticsNote")}</Text>
+                  <Text style={style.cardText}>{I18n.t('home.browseStatistics')}</Text>
+                  <Text note={true} style={style.cardNote}>{I18n.t('home.browseStatisticsNote')}</Text>
                 </Body>
               </Left>
             </CardItem>

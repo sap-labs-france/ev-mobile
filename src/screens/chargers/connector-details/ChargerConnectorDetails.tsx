@@ -1,23 +1,23 @@
-import I18n from "i18n-js";
-import { Container, Icon, Spinner, Text, Thumbnail, View } from "native-base";
-import React from "react";
-import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from "react-native";
-import noPhotoActive from "../../../../assets/no-photo-active.png";
-import noPhoto from "../../../../assets/no-photo.png";
-import noSite from "../../../../assets/no-site.png";
-import ConnectorStatusComponent from "../../../components/connector-status/ConnectorStatusComponent";
-import HeaderComponent from "../../../components/header/HeaderComponent";
-import I18nManager from "../../../I18n/I18nManager";
-import BaseProps from "../../../types/BaseProps";
-import ChargingStation from "../../../types/ChargingStation";
-import Connector from "../../../types/Connector";
-import Transaction from "../../../types/Transaction";
-import User from "../../../types/User";
-import Constants from "../../../utils/Constants";
-import Message from "../../../utils/Message";
-import Utils from "../../../utils/Utils";
-import BaseAutoRefreshScreen from "../../base-screen/BaseAutoRefreshScreen";
-import computeStyleSheet from "./ChargerConnectorDetailsStyles";
+import I18n from 'i18n-js';
+import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
+import React from 'react';
+import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
+import noPhotoActive from '../../../../assets/no-photo-active.png';
+import noPhoto from '../../../../assets/no-photo.png';
+import noSite from '../../../../assets/no-site.png';
+import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
+import HeaderComponent from '../../../components/header/HeaderComponent';
+import I18nManager from '../../../I18n/I18nManager';
+import BaseProps from '../../../types/BaseProps';
+import ChargingStation from '../../../types/ChargingStation';
+import Connector from '../../../types/Connector';
+import Transaction from '../../../types/Transaction';
+import User from '../../../types/User';
+import Constants from '../../../utils/Constants';
+import Message from '../../../utils/Message';
+import Utils from '../../../utils/Utils';
+import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
+import computeStyleSheet from './ChargerConnectorDetailsStyles';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -60,9 +60,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       canDisplayTransaction: false,
       userImage: null,
       siteImage: null,
-      elapsedTimeFormatted: "-",
+      elapsedTimeFormatted: '-',
       totalInactivitySecs: 0,
-      inactivityFormatted: "-",
+      inactivityFormatted: '-',
       startTransactionNbTrial: 0,
       isPricingActive: false,
       buttonDisabled: true,
@@ -129,8 +129,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     let siteImage = null;
     let userImage = null;
     let transaction = null;
-    const chargerID = Utils.getParamFromNavigation(this.props.navigation, "chargerID", null);
-    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, "connectorID", null), 10);
+    const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
+    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null), 10);
     // Get Charger
     const charger = await this.getCharger(chargerID);
     const connector = charger ? charger.connectors[connectorID - 1] : null;
@@ -216,9 +216,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
 
   public startTransactionConfirm = () => {
     const { charger } = this.state;
-    Alert.alert(I18n.t("details.startTransaction"), I18n.t("details.startTransactionMessage", { chargeBoxID: charger.id }), [
-      { text: I18n.t("general.yes"), onPress: () => this.startTransaction() },
-      { text: I18n.t("general.no") }
+    Alert.alert(I18n.t('details.startTransaction'), I18n.t('details.startTransactionMessage', { chargeBoxID: charger.id }), [
+      { text: I18n.t('general.yes'), onPress: () => this.startTransaction() },
+      { text: I18n.t('general.no') }
     ]);
   };
 
@@ -228,7 +228,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       // Check Tag ID
       const userInfo = this.centralServerProvider.getUserInfo();
       if (!userInfo.tagIDs || userInfo.tagIDs.length === 0) {
-        Message.showError(I18n.t("details.noBadgeID"));
+        Message.showError(I18n.t('details.noBadgeID'));
         return;
       }
       // Disable the button
@@ -236,16 +236,16 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       // Start the Transaction
       const status = await this.centralServerProvider.startTransaction(charger.id, connector.connectorId, userInfo.tagIDs[0]);
       // Check
-      if (status && status.status === "Accepted") {
+      if (status && status.status === 'Accepted') {
         // Show message
-        Message.showSuccess(I18n.t("details.accepted"));
+        Message.showSuccess(I18n.t('details.accepted'));
         // Nb trials the button stays disabled
         this.setState({ startTransactionNbTrial: START_TRANSACTION_NB_TRIAL });
       } else {
         // Enable the button
         this.setState({ buttonDisabled: false });
         // Show message
-        Message.showError(I18n.t("details.denied"));
+        Message.showError(I18n.t('details.denied'));
       }
     } catch (error) {
       // Enable the button
@@ -258,9 +258,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   public stopTransactionConfirm = async () => {
     const { charger } = this.state;
     // Confirm
-    Alert.alert(I18n.t("details.stopTransaction"), I18n.t("details.stopTransactionMessage", { chargeBoxID: charger.id }), [
-      { text: I18n.t("general.yes"), onPress: () => this.stopTransaction() },
-      { text: I18n.t("general.no") }
+    Alert.alert(I18n.t('details.stopTransaction'), I18n.t('details.stopTransactionMessage', { chargeBoxID: charger.id }), [
+      { text: I18n.t('general.yes'), onPress: () => this.stopTransaction() },
+      { text: I18n.t('general.no') }
     ]);
   };
 
@@ -272,10 +272,10 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       // Stop the Transaction
       const status = await this.centralServerProvider.stopTransaction(charger.id, connector.activeTransactionID);
       // Check
-      if (status && status.status === "Accepted") {
-        Message.showSuccess(I18n.t("details.accepted"));
+      if (status && status.status === 'Accepted') {
+        Message.showSuccess(I18n.t('details.accepted'));
       } else {
-        Message.showError(I18n.t("details.denied"));
+        Message.showError(I18n.t('details.denied'));
       }
     } catch (error) {
       // Other common Error
@@ -406,13 +406,13 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     }
     return connector && connector.activeTransactionID && transaction && !isNaN(price) ? (
       <View style={style.columnContainer}>
-        <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
+        <Icon type='FontAwesome' name='money' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>{price}</Text>
         <Text style={[style.subLabel, style.info]}>({transaction.priceUnit})</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Icon type="FontAwesome" name="money" style={[style.icon, style.disabled]} />
+        <Icon type='FontAwesome' name='money' style={[style.icon, style.disabled]} />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
@@ -422,15 +422,15 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     const { connector } = this.state;
     return connector && connector.activeTransactionID && !isNaN(connector.currentConsumption) ? (
       <View style={style.columnContainer}>
-        <Icon type="FontAwesome" name="bolt" style={[style.icon, style.info]} />
+        <Icon type='FontAwesome' name='bolt' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>
           {connector.currentConsumption / 1000 > 0 ? I18nManager.formatNumber(Math.round(connector.currentConsumption / 10) / 100) : 0}
         </Text>
-        <Text style={[style.subLabel, style.info]}>{I18n.t("details.instant")} (kW)</Text>
+        <Text style={[style.subLabel, style.info]}>{I18n.t('details.instant')} (kW)</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Icon type="FontAwesome" name="bolt" style={[style.icon, style.disabled]} />
+        <Icon type='FontAwesome' name='bolt' style={[style.icon, style.disabled]} />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
@@ -440,13 +440,13 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     const { elapsedTimeFormatted, connector } = this.state;
     return connector && connector.activeTransactionID ? (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
+        <Icon type='MaterialIcons' name='timer' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>{elapsedTimeFormatted}</Text>
-        <Text style={[style.subLabel, style.info]}>{I18n.t("details.duration")}</Text>
+        <Text style={[style.subLabel, style.info]}>{I18n.t('details.duration')}</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="timer" style={[style.icon, style.disabled]} />
+        <Icon type='MaterialIcons' name='timer' style={[style.icon, style.disabled]} />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
@@ -457,13 +457,13 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     const inactivityStyle = connector ? Utils.computeInactivityStyle(connector.inactivityStatusLevel) : '';
     return connector && connector.activeTransactionID ? (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
+        <Icon type='MaterialIcons' name='timer-off' style={[style.icon, inactivityStyle]} />
         <Text style={[style.label, style.labelValue, inactivityStyle]}>{inactivityFormatted}</Text>
-        <Text style={[style.subLabel, inactivityStyle]}>{I18n.t("details.duration")}</Text>
+        <Text style={[style.subLabel, inactivityStyle]}>{I18n.t('details.duration')}</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="timer-off" style={[style.icon, style.disabled]} />
+        <Icon type='MaterialIcons' name='timer-off' style={[style.icon, style.disabled]} />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
@@ -473,15 +473,15 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     const { connector } = this.state;
     return connector && connector.activeTransactionID && !isNaN(connector.totalConsumption) ? (
       <View style={style.columnContainer}>
-        <Icon style={[style.icon, style.info]} type="MaterialIcons" name="ev-station" />
+        <Icon style={[style.icon, style.info]} type='MaterialIcons' name='ev-station' />
         <Text style={[style.label, style.labelValue, style.info]}>
           {connector ? I18nManager.formatNumber(Math.round(connector.totalConsumption / 10) / 100) : ''}
         </Text>
-        <Text style={[style.subLabel, style.info]}>{I18n.t("details.total")} (kW.h)</Text>
+        <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Icon style={[style.icon, style.disabled]} type="MaterialIcons" name="ev-station" />
+        <Icon style={[style.icon, style.disabled]} type='MaterialIcons' name='ev-station' />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
@@ -491,7 +491,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     const { transaction, connector } = this.state;
     return connector && connector.currentStateOfCharge && !isNaN(connector.currentStateOfCharge) ? (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
+        <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>
           {transaction ? `${transaction.stateOfCharge} > ${transaction.currentStateOfCharge}` : connector.currentStateOfCharge}
         </Text>
@@ -499,7 +499,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.disabled]} />
+        <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.disabled]} />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
@@ -521,8 +521,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
                 ? [style.transactionIcon, style.startTransactionIcon, style.transactionDisabledIcon]
                 : [style.transactionIcon, style.startTransactionIcon]
             }
-            type="MaterialIcons"
-            name="play-arrow"
+            type='MaterialIcons'
+            name='play-arrow'
           />
         </View>
       </TouchableOpacity>
@@ -545,8 +545,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
                 ? [style.transactionIcon, style.stopTransactionIcon, style.transactionDisabledIcon]
                 : [style.transactionIcon, style.stopTransactionIcon]
             }
-            type="MaterialIcons"
-            name="stop"
+            type='MaterialIcons'
+            name='stop'
           />
         </View>
       </TouchableOpacity>
@@ -572,12 +572,12 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
         <Container style={style.container}>
           <HeaderComponent
             navigation={this.props.navigation}
-            title={charger ? charger.id : I18n.t("connector.unknown")}
-            subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
+            title={charger ? charger.id : I18n.t('connector.unknown')}
+            subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
             leftAction={() => this.onBack()}
-            leftActionIcon={"navigate-before"}
+            leftActionIcon={'navigate-before'}
             rightAction={navigation.openDrawer}
-            rightActionIcon={"menu"}
+            rightActionIcon={'menu'}
           />
           {/* Site Image */}
           <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />

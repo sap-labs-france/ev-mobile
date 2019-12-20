@@ -1,7 +1,7 @@
-import { NavigationState } from "react-navigation";
-import RNSecureStorage, { ACCESSIBLE } from "rn-secure-storage";
-import { UserCredentials } from "../types/User";
-import Constants from "./Constants";
+import { NavigationState } from 'react-navigation';
+import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
+import { UserCredentials } from '../types/User';
+import Constants from './Constants';
 
 // Generate a new Id for persisting the navigation each time the app is launched first time
 let navigationID: string = '' + new Date().getTime();
@@ -38,7 +38,7 @@ export default class SecuredStorage {
   public static async clearUserToken() {
     const credentials = await SecuredStorage._getJson(Constants.KEY_CREDENTIALS);
     if (credentials) {
-      Reflect.deleteProperty(credentials, "token");
+      Reflect.deleteProperty(credentials, 'token');
       await SecuredStorage.saveUserCredentials(credentials);
     }
   }
@@ -46,7 +46,7 @@ export default class SecuredStorage {
   public static async clearUserPassword() {
     const credentials: UserCredentials = await SecuredStorage._getJson(Constants.KEY_CREDENTIALS);
     if (credentials) {
-      Reflect.deleteProperty(credentials, "password");
+      Reflect.deleteProperty(credentials, 'password');
       await SecuredStorage.saveUserCredentials(credentials);
     }
   }

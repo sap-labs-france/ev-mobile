@@ -1,14 +1,12 @@
-
-import { Body, Button, Header, Icon, Left, Right, Subtitle, Title } from "native-base";
-import React from "react";
-import { BackHandler, Image } from "react-native";
-import logo from "../../../assets/logo-low.png";
-import BaseProps from "../../types/BaseProps";
-import { IconType } from "../../types/Icon";
-import Utils from "../../utils/Utils";
-import ComplexSearchComponent from "../search/complex/ComplexSearchComponent";
-import computeStyleSheet from "./HeaderComponentStyles";
-
+import { Body, Button, Header, Icon, Left, Right, Subtitle, Title } from 'native-base';
+import React from 'react';
+import { BackHandler, Image } from 'react-native';
+import logo from '../../../assets/logo-low.png';
+import BaseProps from '../../types/BaseProps';
+import { IconType } from '../../types/Icon';
+import Utils from '../../utils/Utils';
+import ComplexSearchComponent from '../search/complex/ComplexSearchComponent';
+import computeStyleSheet from './HeaderComponentStyles';
 
 export interface Props extends BaseProps {
   title: string;
@@ -31,8 +29,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
   private searchIsVisible: boolean;
 
   public static defaultProps = {
-    leftActionIconType: "MaterialIcons",
-    rightActionIconType: "MaterialIcons",
+    leftActionIconType: 'MaterialIcons',
+    rightActionIconType: 'MaterialIcons',
   };
 
   constructor(props: Props) {
@@ -58,7 +56,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
     const { leftAction } = this.props;
     // Left Action is always Back
     if (leftAction) {
-      BackHandler.addEventListener("hardwareBackPress", leftAction);
+      BackHandler.addEventListener('hardwareBackPress', leftAction);
     }
   }
 
@@ -66,7 +64,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
     const { leftAction } = this.props;
     // Left Action is always Back
     if (leftAction) {
-      BackHandler.removeEventListener("hardwareBackPress", leftAction);
+      BackHandler.removeEventListener('hardwareBackPress', leftAction);
     }
   }
 
@@ -104,7 +102,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
                   complexSearchComponentRef.setVisible(this.searchIsVisible);
                 }
               }}>
-              <Icon type={"MaterialCommunityIcons"} name={numberOfFilters > 0 ? "filter" : "filter-outline"} style={style.iconHeader} />
+              <Icon type={'MaterialCommunityIcons'} name={numberOfFilters > 0 ? 'filter' : 'filter-outline'} style={style.iconHeader} />
             </Button>
           )}
           {rightAction ? (

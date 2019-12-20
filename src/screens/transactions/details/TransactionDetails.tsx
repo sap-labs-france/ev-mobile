@@ -1,20 +1,20 @@
-import I18n from "i18n-js";
-import moment from "moment";
-import { Container, Icon, Spinner, Text, Thumbnail, View } from "native-base";
-import React from "react";
-import { Image, ScrollView } from "react-native";
-import noPhotoActive from "../../../../assets/no-photo-active.png";
-import noPhoto from "../../../../assets/no-photo.png";
-import noSite from "../../../../assets/no-site.png";
-import HeaderComponent from "../../../components/header/HeaderComponent";
-import I18nManager from "../../../I18n/I18nManager";
-import BaseProps from "../../../types/BaseProps";
-import Transaction from "../../../types/Transaction";
-import User from "../../../types/User";
-import Constants from "../../../utils/Constants";
-import Utils from "../../../utils/Utils";
-import BaseScreen from "../../base-screen/BaseScreen";
-import computeStyleSheet from "./TransactionDetailsStyles";
+import I18n from 'i18n-js';
+import moment from 'moment';
+import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
+import React from 'react';
+import { Image, ScrollView } from 'react-native';
+import noPhotoActive from '../../../../assets/no-photo-active.png';
+import noPhoto from '../../../../assets/no-photo.png';
+import noSite from '../../../../assets/no-site.png';
+import HeaderComponent from '../../../components/header/HeaderComponent';
+import I18nManager from '../../../I18n/I18nManager';
+import BaseProps from '../../../types/BaseProps';
+import Transaction from '../../../types/Transaction';
+import User from '../../../types/User';
+import Constants from '../../../utils/Constants';
+import Utils from '../../../utils/Utils';
+import BaseScreen from '../../base-screen/BaseScreen';
+import computeStyleSheet from './TransactionDetailsStyles';
 
 export interface Props extends BaseProps {
 }
@@ -44,9 +44,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       loading: true,
       userImage: null,
       siteImage: null,
-      elapsedTimeFormatted: "-",
+      elapsedTimeFormatted: '-',
       totalInactivitySecs: 0,
-      inactivityFormatted: "-",
+      inactivityFormatted: '-',
       startTransactionNbTrial: 0,
       isPricingActive: false,
       buttonDisabled: true,
@@ -63,7 +63,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     let siteImage = null;
     let userImage = null;
     // Get IDs
-    const transactionID = Utils.getParamFromNavigation(this.props.navigation, "transactionID", null);
+    const transactionID = Utils.getParamFromNavigation(this.props.navigation, 'transactionID', null);
     // Get Transaction
     const transaction = await this.getTransaction(transactionID);
     // Get the Site Image
@@ -169,9 +169,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const { transaction } = this.state;
     return (
       <View style={style.columnContainer}>
-        <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
+        <Icon type='FontAwesome' name='money' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>{I18nManager.formatCurrency(transaction.stop.price)}</Text>
-        <Text style={[style.subLabel, style.info]}>({transaction ? transaction.priceUnit : "-"})</Text>
+        <Text style={[style.subLabel, style.info]}>({transaction ? transaction.priceUnit : '-'})</Text>
       </View>
     );
   };
@@ -180,9 +180,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const { elapsedTimeFormatted } = this.state;
     return (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
+        <Icon type='MaterialIcons' name='timer' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>{elapsedTimeFormatted}</Text>
-        <Text style={[style.subLabel, style.info]}>{I18n.t("details.duration")}</Text>
+        <Text style={[style.subLabel, style.info]}>{I18n.t('details.duration')}</Text>
       </View>
     );
   };
@@ -193,9 +193,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const inactivityStyle = Utils.computeInactivityStyle(transaction ? transaction.stop.inactivityStatusLevel : null);
     return (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
+        <Icon type='MaterialIcons' name='timer-off' style={[style.icon, inactivityStyle]} />
         <Text style={[style.label, style.labelValue, inactivityStyle]}>{inactivityFormatted}</Text>
-        <Text style={[style.subLabel, inactivityStyle]}>{I18n.t("details.duration")}</Text>
+        <Text style={[style.subLabel, inactivityStyle]}>{I18n.t('details.duration')}</Text>
       </View>
     );
   };
@@ -204,9 +204,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const { transaction } = this.state;
     return (
       <View style={style.columnContainer}>
-        <Icon style={[style.icon, style.info]} type="MaterialIcons" name="ev-station" />
+        <Icon style={[style.icon, style.info]} type='MaterialIcons' name='ev-station' />
         <Text style={[style.label, style.labelValue, style.info]}>{transaction ? I18nManager.formatNumber(Math.round(transaction.stop.totalConsumption / 10) / 100) : '-'}</Text>
-        <Text style={[style.subLabel, style.info]}>{I18n.t("details.total")} (kW.h)</Text>
+        <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
     );
   };
@@ -215,13 +215,13 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const { transaction } = this.state;
     return transaction && transaction.stateOfCharge ? (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
+        <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>{transaction.stateOfCharge} > {transaction.stop.stateOfCharge}</Text>
         <Text style={[style.subLabel, style.info]}>(%)</Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.disabled]} />
+        <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.disabled]} />
         <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
       </View>
     );
@@ -247,18 +247,18 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         <Container style={style.container}>
           <HeaderComponent
             navigation={this.props.navigation}
-            title={transaction ? transaction.chargeBoxID : I18n.t("connector.unknown")}
-            subTitle={`(${I18n.t("details.connector")} ${connectorLetter})`}
+            title={transaction ? transaction.chargeBoxID : I18n.t('connector.unknown')}
+            subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
             leftAction={() => this.onBack()}
-            leftActionIcon={"navigate-before"}
+            leftActionIcon={'navigate-before'}
             rightAction={navigation.openDrawer}
-            rightActionIcon={"menu"}
+            rightActionIcon={'menu'}
           />
           {/* Site Image */}
           <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
           <View style={style.headerContent}>
             <View style={style.headerRowContainer}>
-              <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format("LLL") : ''}</Text>
+              <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format('LLL') : ''}</Text>
             </View>
           </View>
           <ScrollView style={style.scrollViewContainer}>
