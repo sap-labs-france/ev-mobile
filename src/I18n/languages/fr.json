@@ -160,7 +160,7 @@
     "connector": "Connecteur",
     "informations": "Informations",
     "graph": "Courbe",
-    "notAuthorized": "Vous n'êtes pas authorisé à lire cette session",
+    "notAuthorized": "Vous n'êtes pas autorisé à lire cette session",
     "noTransaction": "Pas de transaction en cours",
     "startTransaction": "Démarrer transaction",
     "stopTransaction": "Stopper transaction",
