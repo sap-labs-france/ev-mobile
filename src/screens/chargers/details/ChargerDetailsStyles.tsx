@@ -9,6 +9,7 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: commonColor.containerBgColor
   },
   scrollViewContainer: {
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between'
   },
