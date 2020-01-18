@@ -96,15 +96,12 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       const transaction = await this.centralServerProvider.getTransaction({ ID: transactionID });
       return transaction;
     } catch (error) {
-      // Check request?
-      if (error.request) {
-        switch (error.request.status) {
-          case 550:
-            Message.showError(I18n.t('transactions.transactionDoesNotExist'));
-            break;
-          default:
-            Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
-        }
+      switch (error.request.status) {
+        case 550:
+          Message.showError(I18n.t('transactions.transactionDoesNotExist'));
+          break;
+        default:
+          Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
       }
     }
     return null;
