@@ -894,7 +894,7 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/yoga\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
 				);
-				MARKETING_VERSION = 1.2.10;
+				MARKETING_VERSION = 1.2.11;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -964,7 +964,7 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/yoga\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
 				);
-				MARKETING_VERSION = 1.2.10;
+				MARKETING_VERSION = 1.2.11;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
