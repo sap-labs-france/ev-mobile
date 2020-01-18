@@ -196,7 +196,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   public renderInactivity = (style: any) => {
     const { transaction } = this.state;
     const { inactivityFormatted } = this.state;
-    const inactivityStyle = Utils.computeInactivityStyle(transaction ? transaction.stop.inactivityStatusLevel : null);
+    const inactivityStyle = Utils.computeInactivityStyle(transaction ? transaction.stop.inactivityStatus : null);
     return (
       <View style={style.columnContainer}>
         <Icon type='MaterialIcons' name='timer-off' style={[style.icon, inactivityStyle]} />

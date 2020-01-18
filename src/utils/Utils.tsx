@@ -10,7 +10,7 @@ import noConnector from '../../assets/connectorType/no-connector.gif';
 import type2 from '../../assets/connectorType/type2.gif';
 import commonColor from '../theme/variables/commonColor';
 import { RequestError } from '../types/RequestError';
-import { InactivityStatusLevel } from '../types/Transaction';
+import { InactivityStatus } from '../types/Transaction';
 import User from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
@@ -121,13 +121,13 @@ export default class Utils {
     return result;
   }
 
-  public static computeInactivityStyle(inactivityStatusLevel: InactivityStatusLevel): object {
-    switch (inactivityStatusLevel) {
-      case 'info':
+  public static computeInactivityStyle(inactivityStatus: InactivityStatus): object {
+    switch (inactivityStatus) {
+      case InactivityStatus.INFO:
         return { color: commonColor.brandSuccess };
-      case 'warning':
+      case InactivityStatus.WARNING:
         return { color: commonColor.brandWarning };
-      case 'danger':
+      case InactivityStatus.ERROR:
         return { color: commonColor.brandDanger };
       default:
         return { color: commonColor.brandInfo };
