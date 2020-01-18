@@ -84,6 +84,7 @@
     "in-progress": "En Cours",
     "transactionsHistory": "Historique Sessions",
     "transactionsInProgress": "Sessions En Cours",
+    "transactionDoesNotExist": "Session inéxistante",
     "chargingCurve": "Graphique Session",
     "noTransactionsInProgress": "Pas de Session en cours",
     "noTransactionsHistory": "Pas d'historique de Session"

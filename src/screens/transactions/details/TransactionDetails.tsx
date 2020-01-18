@@ -12,6 +12,7 @@ import BaseProps from '../../../types/BaseProps';
 import Transaction from '../../../types/Transaction';
 import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
+import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './TransactionDetailsStyles';
@@ -95,7 +96,16 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       const transaction = await this.centralServerProvider.getTransaction({ ID: transactionID });
       return transaction;
     } catch (error) {
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+      // Check request?
+      if (error.request) {
+        switch (error.request.status) {
+          case 550:
+            Message.showError(I18n.t('transactions.transactionDoesNotExist'));
+            break;
+          default:
+            Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+        }
+      }
     }
     return null;
   };
@@ -115,7 +125,6 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       const userImage = await this.centralServerProvider.getUserImage({ ID: user.id });
       return userImage;
     } catch (error) {
-      // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
     }
     return null;
@@ -170,7 +179,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     return (
       <View style={style.columnContainer}>
         <Icon type='FontAwesome' name='money' style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>{I18nManager.formatCurrency(transaction.stop.price)}</Text>
+        <Text style={[style.label, style.labelValue, style.info]}>{transaction ? I18nManager.formatCurrency(transaction.stop.price) : '-'}</Text>
         <Text style={[style.subLabel, style.info]}>({transaction ? transaction.priceUnit : '-'})</Text>
       </View>
     );

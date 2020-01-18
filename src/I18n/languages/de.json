@@ -84,6 +84,7 @@
     "in-progress": "In Progress",
     "transactionsHistory": "Sitzungsverlauf",
     "transactionsInProgress": "Laufende Sitzungen",
+    "transactionDoesNotExist": "Session does not exist",
     "chargingCurve": "Sitzungsdiagramm",
     "noTransactionsInProgress": "Es werden keine Sitzungen durchgeführt",
     "noTransactionsHistory": "Kein Sitzungsverlauf"
