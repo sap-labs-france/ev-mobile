@@ -104,12 +104,6 @@ export default class SideBar extends BaseScreen<Props, State> {
         }),
       })
     );
-    // // Navigate
-    // this.props.navigation.navigate({
-    //   routeName: screen,
-    //   key: `${Utils.randomNumber()}`,
-    //   params
-    // });
     // Close
     this.props.navigation.closeDrawer();
   };

@@ -174,11 +174,13 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
                 </View>
               }
             </View>
-            {isAdmin &&
+          </ScrollView>
+          {isAdmin &&
+            <ScrollView contentContainerStyle={style.scrollViewContainer}>
               <View style={style.bottomViewContainer}>
                 <View style={style.actionContainer}>
                   <Button rounded={true} iconLeft={true} danger={true} style={style.actionButton} onPress={() => this.resetHardConfirm()}>
-                    <Icon type='MaterialIcons' name='repeat' />
+                    <Icon style={style.actionButtonIcon} type='MaterialIcons' name='repeat' />
                     <Text uppercase={false} style={style.actionButtonText}>
                       {I18n.t('chargers.resetHard')}
                     </Text>
@@ -186,7 +188,7 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
                 </View>
                 <View style={style.actionContainer}>
                   <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.resetSoftConfirm()}>
-                    <Icon type='MaterialIcons' name='layers-clear' />
+                    <Icon style={style.actionButtonIcon} type='MaterialIcons' name='layers-clear' />
                     <Text uppercase={false} style={style.actionButtonText}>
                       {I18n.t('chargers.resetSoft')}
                     </Text>
@@ -194,15 +196,15 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
                 </View>
                 <View style={style.actionContainer}>
                   <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.clearCacheConfirm()}>
-                    <Icon type='MaterialIcons' name='refresh' />
+                    <Icon style={style.actionButtonIcon} type='MaterialIcons' name='refresh' />
                     <Text uppercase={false} style={style.actionButtonText}>
                       {I18n.t('chargers.clearCache')}
                     </Text>
                   </Button>
                 </View>
               </View>
-            }
-          </ScrollView>
+            </ScrollView>
+          }
         </Container>
       )
     );
