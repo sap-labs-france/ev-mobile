@@ -125,6 +125,30 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
     }
   }
 
+  public unlockConnectorConfirm() {
+    const { charger, connector } = this.state;
+    Alert.alert(I18n.t('chargers.unlockConnector'), I18n.t('chargers.unlockConnectorMessage', { chargeBoxID: charger.id }), [
+      { text: I18n.t('general.yes'), onPress: () => this.unlockConnector(charger.id, connector.connectorId) },
+      { text: I18n.t('general.cancel') }
+    ]);
+  }
+
+  public async unlockConnector(chargeBoxID: string, connectorID: number) {
+    try {
+      // Unlock Connector
+      const status = await this.centralServerProvider.unlockConnector(chargeBoxID, connectorID);
+      // Check
+      if (status.status && status.status === 'Accepted') {
+        Message.showSuccess(I18n.t('details.accepted'));
+      } else {
+        Message.showError(I18n.t('details.denied'));
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+    }
+  }
+
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack(null);
@@ -174,19 +198,29 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
                 </View>
               }
             </View>
-            {isAdmin &&
+          </ScrollView>
+          {isAdmin &&
+            <ScrollView contentContainerStyle={style.scrollViewContainer}>
               <View style={style.bottomViewContainer}>
                 <View style={style.actionContainer}>
                   <Button rounded={true} iconLeft={true} danger={true} style={style.actionButton} onPress={() => this.resetHardConfirm()}>
-                    <Icon type='MaterialIcons' name='repeat' />
+                    <Icon style={style.actionButtonIcon} type='MaterialIcons' name='repeat' />
                     <Text uppercase={false} style={style.actionButtonText}>
                       {I18n.t('chargers.resetHard')}
                     </Text>
                   </Button>
                 </View>
                 <View style={style.actionContainer}>
+                  <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.unlockConnectorConfirm()}>
+                    <Icon style={style.actionButtonIcon} type='MaterialIcons' name='lock-open' />
+                    <Text uppercase={false} style={style.actionButtonText}>
+                      {I18n.t('chargers.unlockConnector')}
+                    </Text>
+                  </Button>
+                </View>
+                <View style={style.actionContainer}>
                   <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.resetSoftConfirm()}>
-                    <Icon type='MaterialIcons' name='layers-clear' />
+                    <Icon style={style.actionButtonIcon} type='MaterialIcons' name='layers-clear' />
                     <Text uppercase={false} style={style.actionButtonText}>
                       {I18n.t('chargers.resetSoft')}
                     </Text>
@@ -194,15 +228,15 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
                 </View>
                 <View style={style.actionContainer}>
                   <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.clearCacheConfirm()}>
-                    <Icon type='MaterialIcons' name='refresh' />
+                    <Icon style={style.actionButtonIcon} type='MaterialIcons' name='refresh' />
                     <Text uppercase={false} style={style.actionButtonText}>
                       {I18n.t('chargers.clearCache')}
                     </Text>
                   </Button>
                 </View>
               </View>
-            }
-          </ScrollView>
+            </ScrollView>
+          }
         </Container>
       )
     );

@@ -84,6 +84,7 @@
     "in-progress": "En Cours",
     "transactionsHistory": "Historique Sessions",
     "transactionsInProgress": "Sessions En Cours",
+    "transactionDoesNotExist": "Session inéxistante",
     "chargingCurve": "Graphique Session",
     "noTransactionsInProgress": "Pas de Session en cours",
     "noTransactionsHistory": "Pas d'historique de Session"
@@ -134,6 +135,8 @@
     "resetHardMessage": "Voulez-vous vraiment redémarrer '{{chargeBoxID}}'?",
     "resetSoft": "Réinitialiser",
     "resetSoftMessage": "Voulez-vous vraiment réinitialiser '{{chargeBoxID}}'?",
+    "unlockConnector": "Dévérouiller le Connecteur",
+    "unlockConnectorMessage": "Voulez-vous vraiment dévérouiller le connecteur de '{{chargeBoxID}}'?",
     "clearCache": "Effacer le Cache",
     "clearCacheMessage": "Voulez-vous vraiment le cache de '{{chargeBoxID}}'?",
     "noChargers": "Aucune Borne trouvée"

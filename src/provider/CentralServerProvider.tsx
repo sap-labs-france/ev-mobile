@@ -44,7 +44,7 @@ export default class CentralServerProvider {
   constructor() {
     if (__DEV__) {
       // QA REST Server
-      // this.centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
+      this.centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
       this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + '/client/auth';
       this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + '/client/api';
       this.debug = true;
@@ -114,6 +114,17 @@ export default class CentralServerProvider {
 
   // eslint-disable-next-line class-methods-use-this
   public getTenants(): Array<Partial<Tenant>> {
+    if (__DEV__) {
+      return [
+        { subdomain: 'testcharger', name: 'Test Chargers' },
+        { subdomain: 'slf', name: 'SAP Labs France' },
+        { subdomain: 'slfcah', name: 'SAP Labs France (Charge@Home)' },
+        { subdomain: 'demo', name: 'SAP Labs Demo' },
+        { subdomain: 'sapbelgium', name: 'SAP Belgium' },
+        { subdomain: 'sapmarkdorf', name: 'SAP Markdorf' },
+        { subdomain: 'sapnl', name: 'SAP Netherland' },
+      ];
+    }
     return [
       { subdomain: 'slf', name: 'SAP Labs France' },
       { subdomain: 'slfcah', name: 'SAP Labs France (Charge@Home)' },
@@ -497,6 +508,24 @@ export default class CentralServerProvider {
       {
         args: {},
         chargeBoxID,
+      },
+      {
+        headers: this.buildSecuredHeaders(),
+      },
+    );
+    return result.data;
+  }
+
+  public async unlockConnector(chargeBoxID: string, connectorId: number): Promise<ActionResponse> {
+    this.debugMethod('clearCache');
+    // Call
+    const result = await axios.post(
+      `${this.centralRestServerServiceSecuredURL}/ChargingStationUnlockConnector`,
+      {
+        args: {
+          connectorId
+        },
+        chargeBoxID
       },
       {
         headers: this.buildSecuredHeaders(),

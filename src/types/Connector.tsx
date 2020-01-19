@@ -1,4 +1,4 @@
-import { InactivityStatusLevel } from './Transaction';
+import { InactivityStatus } from './Transaction';
 
 export default interface Connector {
   connectorId: number;
@@ -18,5 +18,5 @@ export default interface Connector {
   activeTransactionDate: Date;
   activeTagID: string;
   statusLastChangedOn?: Date;
-  inactivityStatusLevel: InactivityStatusLevel;
+  inactivityStatus: InactivityStatus;
 }

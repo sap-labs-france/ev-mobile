@@ -52,7 +52,8 @@ const commonStyles = ScaledSheet.create({
     marginBottom: '2@s'
   },
   linkContainer: {
-    paddingTop: '10@s'
+    paddingTop: '10@s',
+    paddingLeft: '10@s'
   },
   links: {
     borderBottomWidth: '0@s',

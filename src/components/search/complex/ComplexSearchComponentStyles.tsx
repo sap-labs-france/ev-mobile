@@ -23,7 +23,7 @@ const commonStyles = ScaledSheet.create({
   textButtonFilter: {
     color: commonColor.inverseTextColor,
     height: '100%',
-    marginTop: '10@s',
+    marginTop: '12@s',
     fontSize: '15@s'
   }
 });

@@ -2,11 +2,11 @@ import ChargingStation from '../types/ChargingStation';
 import Consumption from './Consumption';
 import User from './User';
 
-export type InactivityStatusLevel =
- 'info' |
- 'warning' |
- 'danger'
-;
+export enum InactivityStatus {
+  INFO = 'I',
+  WARNING = 'W',
+  ERROR = 'E'
+}
 
 export default interface Transaction {
   id: number;
@@ -30,7 +30,7 @@ export default interface Transaction {
     stateOfCharge: number;
     totalInactivitySecs: number;
     extraInactivitySecs: number;
-    inactivityStatusLevel: InactivityStatusLevel;
+    inactivityStatus?: InactivityStatus;
     totalConsumption: number;
     totalDurationSecs: number;
     timestamp: Date;
@@ -64,7 +64,7 @@ export default interface Transaction {
   timezone: string;
   lastUpdate?: Date;
   currentTotalInactivitySecs: number;
-  currentInactivityStatusLevel: InactivityStatusLevel;
+  currentInactivityStatus?: InactivityStatus;
   currentStateOfCharge: number;
   numberOfMeterValues: number;
   currentConsumption: number;

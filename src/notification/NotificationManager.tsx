@@ -169,7 +169,7 @@ export default class NotificationManager {
               routeName: 'TransactionDetailsTabs',
               key: `${Utils.randomNumber()}`,
               params: {
-                transactionID: parseInt(notification.data.transactionID, 10)
+                transactionID: parseInt(notification.data.transactionId, 10)
               }
             }),
           })

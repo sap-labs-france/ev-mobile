@@ -15,7 +15,7 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.textColor
   },
   chart: {
-    height: '90%'
+    height: '87%'
   },
   chartWithHeader: {
     height: '78%'
@@ -47,6 +47,7 @@ const commonStyles = ScaledSheet.create({
   },
   notData: {
     marginTop: '20@s',
+    fontSize: '12@s',
     textAlign: 'center'
   }
 });

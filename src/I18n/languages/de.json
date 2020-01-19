@@ -84,6 +84,7 @@
     "in-progress": "In Progress",
     "transactionsHistory": "Sitzungsverlauf",
     "transactionsInProgress": "Laufende Sitzungen",
+    "transactionDoesNotExist": "Session does not exist",
     "chargingCurve": "Sitzungsdiagramm",
     "noTransactionsInProgress": "Es werden keine Sitzungen durchgeführt",
     "noTransactionsHistory": "Kein Sitzungsverlauf"
@@ -134,6 +135,8 @@
     "resetHardMessage": "Möchten Sie wirklich die Ladestation '{{chargeBoxID}}' neu starten?",
     "resetSoft": "Reset",
     "resetSoftMessage": "Möchten Sie wirklich die Ladestation '{{chargeBoxID}}' zurücksetzen?",
+    "unlockConnector": "Unlock Connector",
+    "unlockConnectorMessage": "Do you really want to unlock the connector of '{{chargeBoxID}}'?",
     "clearCache": "Cache leeren",
     "clearCacheMessage": "Möchten Sie wirklich den Cache der Ladestation '{{chargeBoxID}}' leeren?",
     "noChargers": "Keine Ladestation gefunden"
