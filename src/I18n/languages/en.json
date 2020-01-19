@@ -135,6 +135,8 @@
     "resetHardMessage": "Do you really want to reboot '{{chargeBoxID}}'?",
     "resetSoft": "Reset",
     "resetSoftMessage": "Do you really want to reset '{{chargeBoxID}}'?",
+    "unlockConnector": "Unlock Connector",
+    "unlockConnectorMessage": "Do you really want to unlock the connector of '{{chargeBoxID}}'?",
     "clearCache": "Clear Cache",
     "clearCacheMessage": "Do you really want to clear the cache of '{{chargeBoxID}}'?",
     "noChargers": "No Charging Station found"
