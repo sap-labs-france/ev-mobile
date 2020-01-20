@@ -27,7 +27,7 @@ const commonStyles = ScaledSheet.create({
     fontSize: '20@s',
   },
   cardNote: {
-    fontSize: '10@s',
+    fontSize: '12@s',
     fontStyle: 'italic'
   }
 });
