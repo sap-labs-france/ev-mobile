@@ -4,7 +4,6 @@ import { BackHandler, Image } from 'react-native';
 import logo from '../../../assets/logo-low.png';
 import BaseProps from '../../types/BaseProps';
 import { IconType } from '../../types/Icon';
-import Utils from '../../utils/Utils';
 import ComplexSearchComponent from '../search/complex/ComplexSearchComponent';
 import computeStyleSheet from './HeaderComponentStyles';
 
@@ -17,26 +16,28 @@ export interface Props extends BaseProps {
   rightAction?: () => void;
   rightActionIcon?: string;
   rightActionIconType?: IconType;
+  hasComplexSearch?: boolean;
 }
 
 interface State {
-  complexSearchComponentRef?: ComplexSearchComponent
 }
 
 export default class HeaderComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   private searchIsVisible: boolean;
+  private complexSearchComponent: ComplexSearchComponent;
 
   public static defaultProps = {
     leftActionIconType: 'MaterialIcons',
     rightActionIconType: 'MaterialIcons',
+    hasComplexSearch: false,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      complexSearchComponentRef: null
+      complexSearchComponent: null
     }
     // Default values
     this.searchIsVisible = false;
@@ -46,10 +47,12 @@ export default class HeaderComponent extends React.Component<Props, State> {
     super.setState(state, callback);
   }
 
-  public setSearchComplexComponentRef(complexSearchComponentRef: ComplexSearchComponent) {
-    this.setState({
-      complexSearchComponentRef
-    });
+  public getSearchComplexComponent(): ComplexSearchComponent {
+    return this.complexSearchComponent;
+  }
+
+  public setSearchComplexComponent(complexSearchComponent: ComplexSearchComponent) {
+    this.complexSearchComponent = complexSearchComponent;
   }
 
   public componentDidMount() {
@@ -70,11 +73,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
 
   public render = () => {
     const style = computeStyleSheet();
-    const { complexSearchComponentRef } = this.state;
     const { title, subTitle, leftAction, leftActionIcon, leftActionIconType,
-      rightAction, rightActionIcon, rightActionIconType } = this.props;
-    const numberOfFilters =
-      Utils.countJsonProps(complexSearchComponentRef ? complexSearchComponentRef.getFilters() : null);
+      rightAction, rightActionIcon, rightActionIconType, hasComplexSearch } = this.props;
     return (
       <Header style={style.header}>
         <Left style={style.leftHeader}>
@@ -91,18 +91,18 @@ export default class HeaderComponent extends React.Component<Props, State> {
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
         </Body>
         <Right style={style.rightHeader}>
-          {(complexSearchComponentRef) && (
+          {hasComplexSearch && (
             <Button
               transparent={true}
               style={style.rightSearchButtonHeader}
               onPress={() => {
                 this.searchIsVisible = !this.searchIsVisible;
                 // Show Complex Search
-                if (complexSearchComponentRef) {
-                  complexSearchComponentRef.setVisible(this.searchIsVisible);
+                if (this.complexSearchComponent) {
+                  this.complexSearchComponent.setVisible(this.searchIsVisible);
                 }
               }}>
-              <Icon type={'MaterialCommunityIcons'} name={numberOfFilters > 0 ? 'filter' : 'filter-outline'} style={style.iconHeader} />
+              <Icon type={'MaterialCommunityIcons'} name={'filter-outline'} style={style.iconHeader} />
             </Button>
           )}
           {rightAction ? (

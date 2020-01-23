@@ -68,6 +68,7 @@ export default class Constants {
   public static readonly SHARED_PREFERENCES_NAME = 'eMobilityPreferences';
   public static readonly KEYCHAIN_SERVICE = 'eMobilityKeyChain';
 
+  public static readonly KEY_CURRENT_TENANT_SUB_DOMAIN = 'currentTenantSubDomain';
   public static readonly KEY_CREDENTIALS = 'credentials';
   public static readonly KEY_NAVIGATION_STATE = 'navigation-state';
 

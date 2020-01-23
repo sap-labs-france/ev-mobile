@@ -1,9 +1,10 @@
 import I18n from 'i18n-js';
 import React from 'react';
-import HeaderComponent from '../../components/header/HeaderComponent';
+import BaseFilters from '../../components/search/complex/BaseFilters';
 import ComplexSearchComponent from '../../components/search/complex/ComplexSearchComponent';
 import DateFilterComponent from '../../components/search/complex/filter/date/DateFilterComponent';
 import MyUserSwitchFilterComponent from '../../components/search/complex/filter/my-user-switch/MyUserSwitchFilterComponent';
+import { FilterGlobalInternalIDs } from '../../types/Filter';
 
 export interface Props {
   onFilterChanged?: (filters: StatisticsFiltersDef) => void;
@@ -19,14 +20,12 @@ export interface StatisticsFiltersDef {
 }
 
 interface State {
-  headerComponentRef?: HeaderComponent;
   filters?: StatisticsFiltersDef;
 }
 
-export default class StatisticsFilters extends React.Component<Props, State> {
+export default class StatisticsFilters extends BaseFilters {
   public state: State;
   public props: Props;
-  private complexSearchComponentRef: ComplexSearchComponent;
 
   constructor(props: Props) {
     super(props);
@@ -39,12 +38,6 @@ export default class StatisticsFilters extends React.Component<Props, State> {
     super.setState(state, callback);
   }
 
-  public setHeaderComponentRef(headerComponentRef: HeaderComponent) {
-    this.setState({
-      headerComponentRef
-    });
-  }
-
   public onFilterChanged = (filters: StatisticsFiltersDef, closed: boolean) => {
     const { onFilterChanged } = this.props;
     if (closed) {
@@ -52,45 +45,39 @@ export default class StatisticsFilters extends React.Component<Props, State> {
         filters
       });
       onFilterChanged(filters);
-    } else {
-      this.setState({
-        filters
-      });
     }
   }
 
   public render = () => {
     const { locale, initialFilters, isAdmin } = this.props;
-    const { headerComponentRef, filters } = this.state;
+    const { filters } = this.state;
     return (
       <ComplexSearchComponent
         onFilterChanged={this.onFilterChanged}
-        ref={(ref: ComplexSearchComponent) => {
-          if (ref && headerComponentRef) {
-            this.complexSearchComponentRef = ref;
-            headerComponentRef.setSearchComplexComponentRef(ref);
-          }
+        ref={(complexSearchComponent: ComplexSearchComponent) => {
+          this.setComplexSearchComponent(complexSearchComponent);
         }}
       >
         {isAdmin &&
           <MyUserSwitchFilterComponent
             filterID={'UserID'}
-            userID={initialFilters.UserID}
+            internalFilterID={FilterGlobalInternalIDs.MY_USER_FILTER}
+            initialValue={filters.UserID ? filters.UserID : initialFilters.UserID}
             label={I18n.t('general.onlyMyTransactions')}
-            initialValue={filters.UserID ? true : false}
-            ref={(ref: MyUserSwitchFilterComponent) => {
-              if (ref && this.complexSearchComponentRef) {
-                ref.setSearchComplexComponentRef(this.complexSearchComponentRef);
+            ref={async (myUserSwitchFilterComponent: MyUserSwitchFilterComponent) => {
+              if (myUserSwitchFilterComponent && this.getComplexSearchComponent()) {
+                await myUserSwitchFilterComponent.setComplexSearchComponent(this.getComplexSearchComponent());
               }
             }}
           />
         }
         <DateFilterComponent
           filterID={'StartDateTime'}
+          internalFilterID={FilterGlobalInternalIDs.STATISTICS_START_DATE_FILTER}
           label={I18n.t('general.startDate')}
-          ref={(ref: DateFilterComponent) => {
-            if (ref && this.complexSearchComponentRef) {
-              ref.setSearchComplexComponentRef(this.complexSearchComponentRef);
+          ref={async (dateFilterComponent: DateFilterComponent) => {
+            if (dateFilterComponent && this.getComplexSearchComponent()) {
+              await dateFilterComponent.setComplexSearchComponent(this.getComplexSearchComponent());
             }
           }}
           locale={locale}
@@ -100,10 +87,11 @@ export default class StatisticsFilters extends React.Component<Props, State> {
         />
         <DateFilterComponent
           filterID={'EndDateTime'}
+          internalFilterID={FilterGlobalInternalIDs.STATISTICS_END_DATE_FILTER}
           label={I18n.t('general.endDate')}
-          ref={(ref: DateFilterComponent) => {
-            if (ref && this.complexSearchComponentRef) {
-              ref.setSearchComplexComponentRef(this.complexSearchComponentRef);
+          ref={async (dateFilterComponent: DateFilterComponent) => {
+            if (dateFilterComponent && this.getComplexSearchComponent()) {
+              await dateFilterComponent.setComplexSearchComponent(this.getComplexSearchComponent());
             }
           }}
           locale={locale}

@@ -68,7 +68,7 @@ export default class CentralServerProvider {
 
   public async initialize() {
     // Get stored data
-    const credentials = await SecuredStorage.getUserCredentials();
+    const credentials = await SecuredStorage.getUserCredentials(this.tenant);
     if (credentials) {
       // Set
       this.email = credentials.email;
@@ -192,7 +192,7 @@ export default class CentralServerProvider {
   }
 
   public async clearUserPassword() {
-    await SecuredStorage.clearUserPassword();
+    await SecuredStorage.clearUserPassword(this.tenant);
     this.password = null;
   }
 
@@ -245,7 +245,7 @@ export default class CentralServerProvider {
   public logoff() {
     this.debugMethod('logoff');
     // Clear the token and tenant
-    SecuredStorage.clearUserToken();
+    SecuredStorage.clearUserToken(this.tenant);
     // Clear local data
     this.token = null;
     this.decodedToken = null;
@@ -277,7 +277,7 @@ export default class CentralServerProvider {
     this.securityProvider = new SecurityProvider(this.decodedToken);
     this.autoLoginDisabled = false;
     // Save
-    await SecuredStorage.saveUserCredentials({
+    await SecuredStorage.saveUserCredentials(tenant, {
       email,
       password,
       tenant,
@@ -322,9 +322,9 @@ export default class CentralServerProvider {
       },
     );
     // Clear the token and tenant
-    SecuredStorage.clearUserToken();
+    SecuredStorage.clearUserToken(tenant);
     // Save
-    await SecuredStorage.saveUserCredentials({
+    await SecuredStorage.saveUserCredentials(tenant, {
       email,
       password: passwords.password,
       tenant,

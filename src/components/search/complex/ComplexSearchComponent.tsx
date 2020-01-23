@@ -3,6 +3,8 @@ import { Button, View } from 'native-base';
 import React from 'react';
 import { Text } from 'react-native';
 import Modal from 'react-native-modal';
+import SecuredStorage from '../../../utils/SecuredStorage';
+import BaseFilterComponent from './BaseFilterComponent';
 import computeStyleSheet from './ComplexSearchComponentStyles';
 
 export interface Props {
@@ -18,7 +20,7 @@ interface State {
 export default class ComplexSearchComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
-  private filters: any = {};
+  private filterComponents: BaseFilterComponent[] = [];
   public static defaultProps = {
     visible: false
   };
@@ -38,52 +40,107 @@ export default class ComplexSearchComponent extends React.Component<Props, State
     this.setState({ visible });
   }
 
-  public setFilter = (ID: string, value: string) => {
-    this.filters[ID] = value;
-    // Trigger notif
-    this.onFilterChanged(false);
+  public async addFilter(newFilterComponent: BaseFilterComponent) {
+    // Search
+    for (const filterComponent of this.filterComponents) {
+      if (filterComponent.getID() === newFilterComponent.getID()) {
+        return;
+      }
+    }
+    // Add new
+    this.filterComponents.push(newFilterComponent);
   }
 
-  public deleteFilter = (ID: string) => {
-    delete this.filters[ID];
-    // Trigger notif
-    this.onFilterChanged(false);
+  public setFilterValue = async (filterID: string, filterValue: any) => {
+    // Search
+    for (const filterComponent of this.filterComponents) {
+      if (filterComponent.getID() === filterID) {
+        // Set
+        filterComponent.setValue(filterValue);
+        // Trigger notif
+        this.onFilterChanged(false);
+        break;
+      }
+    }
   }
 
-  public getFilter = (ID: string): string => {
-    return this.filters[ID];
+  public clearFilterValue = async (filterID: string) => {
+    // Search
+    for (const filterComponent of this.filterComponents) {
+      if (filterComponent.getID() === filterID) {
+        // Set
+        filterComponent.clearValue();
+        // Trigger notif
+        this.onFilterChanged(false);
+        break;
+      }
+    }
   }
 
-  public getFilters = (): any => {
-    return this.filters;
+  public getFilterValue = (ID: string): string => {
+    // Search
+    for (const filterComponent of this.filterComponents) {
+      if (filterComponent.getID() === ID) {
+        return filterComponent.getValue();
+      }
+    }
+    return null;
   }
 
-  public clearFilters = () => {
-    this.filters = {};
+  public getFilterValues = (): any => {
+    const filters: any = {};
+    // Build
+    for (const filterComponent of this.filterComponents) {
+      if (filterComponent.getValue()) {
+        filters[filterComponent.getID()] = filterComponent.getValue();
+      }
+    }
+    return filters;
   }
 
   public onFilterChanged = (closed: boolean) => {
     const { onFilterChanged } = this.props;
     // Call method
     if (onFilterChanged) {
-      onFilterChanged(this.getFilters(), closed);
+      onFilterChanged(this.getFilterValues(), closed);
     }
   }
 
-  public applyFiltersAndNotify = () => {
+  public applyFiltersAndNotify = async () => {
+    // Save
+    await this.saveFilterValues();
     // Trigger notif
     this.onFilterChanged(true);
     // Close
     this.setVisible(false);
   }
 
-  public clearFiltersAndNotify = () => {
+  public clearFilterValues() {
     // Clear
-    this.clearFilters();
+    for (const filterComponent of this.filterComponents) {
+      filterComponent.clearValue();
+    }
+  }
+
+  public clearFiltersAndNotify = async () => {
+    // Clear
+    await this.clearFilterValues();
+    // Save
+    await this.saveFilterValues();
     // Trigger notif
     this.onFilterChanged(true);
     // Close
     this.setVisible(false);
+  }
+
+  private async saveFilterValues() {
+    // Build
+    for (const filterComponent of this.filterComponents) {
+      // Save
+      if (filterComponent.canBeSaved()) {
+        await SecuredStorage.saveFilterValue(filterComponent.getInternalID(), filterComponent.getValue());
+      }
+    }
   }
 
   public render = () => {

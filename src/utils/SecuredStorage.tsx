@@ -31,45 +31,95 @@ export default class SecuredStorage {
     );
   }
 
-  public static getUserCredentials(): Promise<UserCredentials> {
-    return SecuredStorage._getJson(Constants.KEY_CREDENTIALS);
+  public static async getUserCredentials(tenantSubDomain: string): Promise<UserCredentials> {
+    // Get current domain
+    if (!tenantSubDomain) {
+      tenantSubDomain = await SecuredStorage.getCurrentTenantSubDomain();
+    }
+    // Get User Credentials
+    return SecuredStorage._getJson(`${tenantSubDomain}~${Constants.KEY_CREDENTIALS}`);
   }
 
-  public static async clearUserToken() {
-    const credentials = await SecuredStorage._getJson(Constants.KEY_CREDENTIALS);
+  public static async clearUserToken(tenantSubDomain: string) {
+    const credentials = await SecuredStorage._getJson(`${tenantSubDomain}~${Constants.KEY_CREDENTIALS}`);
     if (credentials) {
       Reflect.deleteProperty(credentials, 'token');
-      await SecuredStorage.saveUserCredentials(credentials);
+      await SecuredStorage.saveUserCredentials(tenantSubDomain, credentials);
     }
   }
 
-  public static async clearUserPassword() {
-    const credentials: UserCredentials = await SecuredStorage._getJson(Constants.KEY_CREDENTIALS);
+  public static async clearUserPassword(tenantSubDomain: string) {
+    const credentials: UserCredentials = await SecuredStorage._getJson(`${tenantSubDomain}~${Constants.KEY_CREDENTIALS}`);
     if (credentials) {
       Reflect.deleteProperty(credentials, 'password');
-      await SecuredStorage.saveUserCredentials(credentials);
+      await SecuredStorage.saveUserCredentials(tenantSubDomain, credentials);
     }
   }
 
-  public static async deleteUserCredentials() {
-    await RNSecureStorage.remove(Constants.KEY_CREDENTIALS);
+  public static async deleteUserCredentials(tenantSubDomain: string) {
+    await RNSecureStorage.remove(`${tenantSubDomain}~${Constants.KEY_CREDENTIALS}`);
   }
 
-  public static async saveUserCredentials(credentials: UserCredentials) {
-    await RNSecureStorage.set(Constants.KEY_CREDENTIALS, JSON.stringify(credentials), {
+  public static async saveUserCredentials(tenantSubDomain: string, credentials: UserCredentials) {
+    // Save last used domain
+    await SecuredStorage.saveCurrentTenantSubDomain(tenantSubDomain);
+    // Save Credentials
+    await RNSecureStorage.set(`${tenantSubDomain}~${Constants.KEY_CREDENTIALS}`, JSON.stringify(credentials), {
       accessible: ACCESSIBLE.WHEN_UNLOCKED
     });
   }
 
-  private static async _getJson(key: string) {
+  public static async saveFilterValue(filterInternalID: string, filterValue: string) {
+    // Get current domain
+    const tenantSubDomain = await SecuredStorage.getCurrentTenantSubDomain();
+    if (!filterValue) {
+      filterValue = 'null';
+    }
+    // Save
+    await RNSecureStorage.set(`${tenantSubDomain}~filter~${filterInternalID}`, filterValue, {
+      accessible: ACCESSIBLE.WHEN_UNLOCKED
+    });
+  }
+
+  public static async loadFilterValue(filterInternalID: string): Promise<string> {
+    // Get current domain
+    const tenantSubDomain = await SecuredStorage.getCurrentTenantSubDomain();
+    // Get
+    const value = await SecuredStorage._getString(`${tenantSubDomain}~filter~${filterInternalID}`);
+    if (value === 'null') {
+      return null;
+    }
+    return value;
+  }
+
+  private static getCurrentTenantSubDomain(): Promise<string> {
+    return SecuredStorage._getString(Constants.KEY_CURRENT_TENANT_SUB_DOMAIN);
+  }
+
+  private static async saveCurrentTenantSubDomain(tenantSubDomain: string) {
+    await RNSecureStorage.set(Constants.KEY_CURRENT_TENANT_SUB_DOMAIN, tenantSubDomain, {
+      accessible: ACCESSIBLE.WHEN_UNLOCKED
+    });
+  }
+
+  private static async _getJson(key: string): Promise<any> {
     try {
       const data = await RNSecureStorage.get(key);
-      // Check
       if (data) {
         return JSON.parse(data);
       }
     } catch (err) {
-      // Do nothing
+      // Key does not exist: do nothing
+    }
+    return null;
+  }
+
+  private static async _getString(key: string): Promise<string> {
+    try {
+      const data = await RNSecureStorage.get(key);
+      return data;
+    } catch (err) {
+      // Key does not exist: do nothing
     }
     return null;
   }

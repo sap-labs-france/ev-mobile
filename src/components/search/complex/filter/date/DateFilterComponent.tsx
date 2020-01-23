@@ -1,8 +1,7 @@
 import { DatePicker, Text, View } from 'native-base';
 import React from 'react';
 import I18nManager from '../../../../../I18n/I18nManager';
-import BaseFilterProps from '../../../../../types/BaseFilterProps';
-import ComplexSearchComponent from '../../ComplexSearchComponent';
+import BaseFilterComponent, { BaseFilterProps } from '../../BaseFilterComponent';
 import computeStyleSheet from '../FilterComponentStyles';
 
 export interface Props extends BaseFilterProps {
@@ -12,10 +11,9 @@ export interface Props extends BaseFilterProps {
 }
 
 interface State {
-  complexSearchComponentRef?: ComplexSearchComponent;
 }
 
-export default class DateFilterComponent extends React.Component<Props, State> {
+export default class DateFilterComponent extends BaseFilterComponent {
   public state: State;
   public props: Props;
   public static defaultProps = {
@@ -32,19 +30,12 @@ export default class DateFilterComponent extends React.Component<Props, State> {
     super.setState(state, callback);
   }
 
-  public setSearchComplexComponentRef(complexSearchComponentRef: ComplexSearchComponent) {
-    this.setState({
-      complexSearchComponentRef
-    });
-  }
-
   public render = () => {
     const style = computeStyleSheet();
-    const { complexSearchComponentRef } = this.state;
     const { filterID, label, defaultDate, minimumDate, maximumDate, locale } = this.props;
     let currentFilterValue: string = defaultDate ? defaultDate.toISOString() : new Date().toISOString();
-    if (complexSearchComponentRef) {
-      currentFilterValue = complexSearchComponentRef.getFilter(filterID);
+    if (this.getComplexSearchComponent()) {
+      currentFilterValue = this.getComplexSearchComponent().getFilterValue(filterID);
     }
     return (
       <View style={style.rowFilter}>
@@ -60,7 +51,7 @@ export default class DateFilterComponent extends React.Component<Props, State> {
           androidMode={'spinner'}
           textStyle={style.filterValue}
           placeHolderTextStyle={style.filterValue}
-          onDateChange={(newDate: Date) => complexSearchComponentRef.setFilter(filterID, newDate.toISOString())}
+          onDateChange={(newDate: Date) => this.getComplexSearchComponent().setFilterValue(this.getID(), newDate.toISOString())}
           disabled={false}
           formatChosenDate={(date) => I18nManager.formatDateTime(date, 'LL')}
         />

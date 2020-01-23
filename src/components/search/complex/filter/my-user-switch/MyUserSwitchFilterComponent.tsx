@@ -1,29 +1,23 @@
 import { Switch, Text, View } from 'native-base';
 import React from 'react';
-import BaseFilterProps from '../../../../../types/BaseFilterProps';
-import ComplexSearchComponent from '../../ComplexSearchComponent';
+import ProviderFactory from '../../../../../provider/ProviderFactory';
+import BaseFilterComponent, { BaseFilterProps } from '../../BaseFilterComponent';
 import computeStyleSheet from '../FilterComponentStyles';
 
 export interface Props extends BaseFilterProps {
-  initialValue?: boolean;
-  userID: string;
 }
 
 interface State {
-  complexSearchComponentRef?: ComplexSearchComponent;
+  switchValue?: boolean;
 }
 
-export default class MyUserSwitchFilterComponent extends React.Component<Props, State> {
+export default class MyUserSwitchFilterComponent extends BaseFilterComponent {
   public state: State;
   public props: Props;
-  private currentValue: boolean = false;
-  public static defaultProps = {
-    value: false
-  };
+  private userID: string;
 
   constructor(props: Props) {
     super(props);
-    this.currentValue = this.props.initialValue;
     this.state = {
     };
   }
@@ -32,34 +26,43 @@ export default class MyUserSwitchFilterComponent extends React.Component<Props, 
     super.setState(state, callback);
   }
 
-  public setSearchComplexComponentRef(complexSearchComponentRef: ComplexSearchComponent) {
-    this.setState({
-      complexSearchComponentRef
-    });
+  public canBeSaved() {
+    return true;
   }
 
-  private onValueChanged = (newValue: boolean) => {
-    const { filterID, userID } = this.props;
-    const { complexSearchComponentRef } = this.state;
+  public async componentDidMount() {
+    // Get provider
+    const centralServerProvider = await ProviderFactory.getProvider();
+    if (centralServerProvider) {
+      this.userID = centralServerProvider.getUserInfo().id;
+    }
+    // Set
+    this.setState({
+      switchValue: !!this.getValue()
+    })
+  }
+
+  private onValueChanged = async (newValue: boolean) => {
     // Set Filter
     if (newValue) {
-      complexSearchComponentRef.setFilter(filterID, userID);
+      await this.getComplexSearchComponent().setFilterValue(this.getID(), this.userID);
     } else {
-      complexSearchComponentRef.deleteFilter(filterID);
+      await this.getComplexSearchComponent().clearFilterValue(this.getID());
     }
-    // Keep latest value
-    this.currentValue = newValue;
+    // Update
+    this.setState({ switchValue: newValue });
   }
 
   public render = () => {
     const style = computeStyleSheet();
     const { label } = this.props;
+    const { switchValue } = this.state;
     return (
       <View style={style.rowFilter}>
         <Text style={style.textFilter}>{label}</Text>
         <Switch
           style={style.switchFilter}
-          value={this.currentValue}
+          value={switchValue}
           onValueChange={this.onValueChanged}
         />
       </View>
