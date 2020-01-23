@@ -6,10 +6,12 @@ import I18nManager from '../../I18n/I18nManager';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { TransactionDataResult } from '../../types/DataResult';
+import { FilterGlobalInternalIDs } from '../../types/Filter';
 import Constants from '../../utils/Constants';
+import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
-import HomeStatsFilters, { StatisticsFiltersDef } from './StatisticsFilters';
+import StatisticsFilters, { StatisticsFiltersDef } from './StatisticsFilters';
 import computeStyleSheet from './StatisticsStyles';
 
 export interface Props extends BaseProps {
@@ -18,6 +20,7 @@ export interface Props extends BaseProps {
 interface State {
   loading?: boolean;
   isAdmin?: boolean;
+  userID?: string;
   startDate?: Date;
   endDate?: Date;
   totalNumberOfSession?: number;
@@ -34,7 +37,7 @@ interface State {
 export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
-  private headerComponentRef: HeaderComponent;
+  private headerComponent: HeaderComponent;
 
   constructor(props: Props) {
     super(props);
@@ -46,6 +49,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
       totalConsumptionWattHours: 0,
       totalDurationSecs: 0,
       totalInactivitySecs: 0,
+      userID: null,
       startDate: null,
       endDate: null,
       totalPrice: 0,
@@ -60,11 +64,25 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     super.setState(state, callback);
   }
 
+  public async componentDidMount() {
+    // Get initial filters
+    const userID = await SecuredStorage.loadFilterValue(FilterGlobalInternalIDs.MY_USER_FILTER);
+    if (userID) {
+      this.setState({
+        userID,
+        filters: {
+          UserID: userID
+        }
+      });
+    }
+    await super.componentDidMount();
+  }
+
   public refresh = async () => {
     // Get the provider
     const centralServerProvider = await ProviderFactory.getProvider();
     const securityProvider = centralServerProvider.getSecurityProvider();
-    // Get the ongoing Transaction
+    // Get the ongoing Transaction stats
     const transactionStats = await this.getTransactionsStats();
     // Set
     this.setState({
@@ -113,13 +131,13 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, totalNumberOfSession, totalConsumptionWattHours, startDate, endDate,
+    const { loading, totalNumberOfSession, totalConsumptionWattHours, userID, startDate, endDate,
       totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive, isAdmin } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
-          ref={(ref: HeaderComponent) => {
-            this.headerComponentRef = ref;
+          ref={(headerComponent: HeaderComponent) => {
+            this.headerComponent = headerComponent;
           }}
           navigation={navigation}
           title={I18n.t('home.statistics')}
@@ -127,23 +145,24 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
           leftActionIcon={'navigate-before'}
           rightAction={navigation.openDrawer}
           rightActionIcon={'menu'}
+          hasComplexSearch={true}
         />
         {loading ? (
           <Spinner style={style.spinner} />
         ) : (
           <Content style={style.content}>
-            <HomeStatsFilters
+            <StatisticsFilters
               initialFilters={{
+                UserID: userID ? userID : null,
                 StartDateTime: startDate ? startDate.toISOString() : null,
-                EndDateTime: endDate ? endDate.toISOString() : null,
-                UserID: this.centralServerProvider.getUserInfo().id
+                EndDateTime: endDate ? endDate.toISOString() : null
               }}
               locale={this.centralServerProvider.getUserLanguage()}
               isAdmin={isAdmin}
               onFilterChanged={this.onFilterChanged}
-              ref={(ref: HomeStatsFilters) => {
-                if (ref && this.headerComponentRef) {
-                  ref.setHeaderComponentRef(this.headerComponentRef);
+              ref={(statisticsFilters: StatisticsFilters) => {
+                if (statisticsFilters && this.headerComponent) {
+                  statisticsFilters.setHeaderComponent(this.headerComponent);
                 }
               }}
             />
