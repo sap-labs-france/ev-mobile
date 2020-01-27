@@ -102,11 +102,11 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
   public getTransactionsStats = async (): Promise<TransactionDataResult> => {
     try {
       // Get active transaction
-      const transaction = await this.centralServerProvider.getTransactions(
+      const transactions = await this.centralServerProvider.getTransactions(
         { Statistics: 'history', ...this.state.filters },
         Constants.ONLY_RECORD_COUNT_PAGING
       );
-      return transaction;
+      return transactions;
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== 560) {

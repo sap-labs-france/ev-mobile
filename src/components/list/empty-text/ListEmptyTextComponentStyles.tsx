@@ -6,7 +6,7 @@ const commonStyles = ScaledSheet.create({
   noRecordFound: {
     flex: 1,
     paddingTop: '20@s',
-    fontSize: '12@s',
+    fontSize: '14@s',
     alignSelf: 'center'
   }
 });

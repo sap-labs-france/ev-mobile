@@ -47,7 +47,7 @@ const commonStyles = ScaledSheet.create({
   },
   notData: {
     marginTop: '20@s',
-    fontSize: '12@s',
+    fontSize: '14@s',
     textAlign: 'center'
   }
 });
