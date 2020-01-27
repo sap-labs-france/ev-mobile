@@ -370,6 +370,20 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  public async verifyEmail(tenant: string, email: string, token: string): Promise<ActionResponse> {
+    this.debugMethod('verifyEmail');
+    // Call
+    const result = await axios.get(`${this.centralRestServerServiceAuthURL}/VerifyEmail`, {
+      headers: this.buildHeaders(),
+      params:{
+        Tenant: tenant,
+        Email: email,
+        VerificationToken: token
+      },
+    });
+    return result.data;
+  }
+
   public async getChargers(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<ChargingStation>> {
     this.debugMethod('getChargers');
     // Build Paging
