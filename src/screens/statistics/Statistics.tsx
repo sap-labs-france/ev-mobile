@@ -19,7 +19,6 @@ export interface Props extends BaseProps {
 
 interface State {
   loading?: boolean;
-  isAdmin?: boolean;
   userID?: string;
   startDate?: Date;
   endDate?: Date;
@@ -44,7 +43,6 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     // Init State
     this.state = {
       loading: true,
-      isAdmin: false,
       totalNumberOfSession: 0,
       totalConsumptionWattHours: 0,
       totalDurationSecs: 0,
@@ -86,15 +84,14 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     const transactionStats = await this.getTransactionsStats();
     // Set
     this.setState({
-      startDate: !this.state.startDate ? new Date(transactionStats.stats.firstTimestamp) : this.state.startDate,
-      endDate: !this.state.endDate ? new Date(transactionStats.stats.lastTimestamp) : this.state.endDate,
+      startDate: this.state.startDate ? this.state.startDate : transactionStats.stats.firstTimestamp ? new Date(transactionStats.stats.firstTimestamp) : new Date(),
+      endDate: this.state.endDate ? this.state.endDate : transactionStats.stats.lastTimestamp ? new Date(transactionStats.stats.lastTimestamp) : new Date(),
       totalNumberOfSession: transactionStats.stats.count,
       totalConsumptionWattHours: transactionStats.stats.totalConsumptionWattHours,
       totalDurationSecs: transactionStats.stats.totalDurationSecs,
       totalInactivitySecs: transactionStats.stats.totalInactivitySecs,
       totalPrice: transactionStats.stats.totalPrice,
       isPricingActive: securityProvider.isComponentPricingActive(),
-      isAdmin: securityProvider.isAdmin(),
       loading: false
     });
   };
@@ -132,7 +129,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading, totalNumberOfSession, totalConsumptionWattHours, userID, startDate, endDate,
-      totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive, isAdmin } = this.state;
+      totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -157,8 +154,6 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
                 StartDateTime: startDate ? startDate.toISOString() : null,
                 EndDateTime: endDate ? endDate.toISOString() : null
               }}
-              locale={this.centralServerProvider.getUserLanguage()}
-              isAdmin={isAdmin}
               onFilterChanged={this.onFilterChanged}
               ref={(statisticsFilters: StatisticsFilters) => {
                 if (statisticsFilters && this.headerComponent) {
