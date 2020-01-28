@@ -17,7 +17,7 @@ export interface Props extends BaseProps {
 }
 
 interface State {
-  tenant?: string;
+  tenantSubDomain?: string;
   tenantName?: string;
   hash?: string;
   password?: string;
@@ -61,7 +61,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tenant: Utils.getParamFromNavigation(this.props.navigation, 'tenant', ''),
+      tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', ''),
       hash:  Utils.getParamFromNavigation(this.props.navigation, 'hash', null),
       tenantName: '',
       password: '',
@@ -78,12 +78,16 @@ export default class ResetPassword extends BaseScreen<Props, State> {
     // Call parent
     await super.componentDidMount();
     // Init
-    const tenant = this.centralServerProvider.getTenant(this.state.tenant);
+    const tenant = this.centralServerProvider.getTenant(this.state.tenantSubDomain);
     this.setState({
       tenantName: tenant ? tenant.name : ''
     });
     // Disable Auto Login
     this.centralServerProvider.setAutoLoginDisabled(true);
+    console.log('====================================');
+    console.log(tenant);
+    console.log(this.state);
+    console.log('====================================');
   }
 
   public recaptchaResponseToken = (captcha: string) => {
@@ -94,12 +98,12 @@ export default class ResetPassword extends BaseScreen<Props, State> {
     // Check field
     const formIsValid = Utils.validateInput(this, this.formValidationDef);
     if (formIsValid) {
-      const { tenant, password, repeatPassword, hash } = this.state;
+      const { tenantSubDomain, password, repeatPassword, hash } = this.state;
       try {
         // Loading
         this.setState({ loading: true });
         // Register
-        await this.centralServerProvider.resetPassword(tenant, hash, { password, repeatPassword });
+        await this.centralServerProvider.resetPassword(tenantSubDomain, hash, { password, repeatPassword });
         // Clear user's credentials
         await this.centralServerProvider.clearUserPassword();
         // Reset
@@ -114,7 +118,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
               NavigationActions.navigate({
                 routeName: 'Login',
                 params: {
-                  tenant: this.state.tenant
+                  tenantSubDomain: this.state.tenantSubDomain
                 }
               })
             ]

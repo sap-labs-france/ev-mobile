@@ -33,7 +33,7 @@ export default class CentralServerProvider {
   private email: string = null;
   private password: string = null;
   private locale: string = null;
-  private tenant: string = null;
+  private tenantSubDomain: string = null;
   private currency: string = null;
   private siteImages: Array<{ id: string; image: string; }> = [];
   private autoLoginDisabled: boolean = false;
@@ -68,13 +68,13 @@ export default class CentralServerProvider {
 
   public async initialize() {
     // Get stored data
-    const credentials = await SecuredStorage.getUserCredentials(this.tenant);
+    const credentials = await SecuredStorage.getUserCredentials(this.tenantSubDomain);
     if (credentials) {
       // Set
       this.email = credentials.email;
       this.password = credentials.password;
       this.token = credentials.token;
-      this.tenant = credentials.tenant;
+      this.tenantSubDomain = credentials.tenantSubDomain;
       this.locale = credentials.locale;
       this.currency = credentials.currency;
     } else {
@@ -82,7 +82,7 @@ export default class CentralServerProvider {
       this.email = null;
       this.password = null;
       this.token = null;
-      this.tenant = null;
+      this.tenantSubDomain = null;
       this.locale = null;
       this.currency = null;
     }
@@ -108,8 +108,8 @@ export default class CentralServerProvider {
     return this.captchaSiteKey;
   }
 
-  public getTenant(subdomain: string): Partial<Tenant> {
-    return this.getTenants().find((tenant: Partial<Tenant>) => tenant.subdomain === subdomain);
+  public getTenant(tenantSubDomain: string): Partial<Tenant> {
+    return this.getTenants().find((tenant: Partial<Tenant>) => tenant.subdomain === tenantSubDomain);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -122,16 +122,13 @@ export default class CentralServerProvider {
         { subdomain: 'demo', name: 'SAP Labs Demo' },
         { subdomain: 'sapbelgium', name: 'SAP Belgium' },
         { subdomain: 'sapmarkdorf', name: 'SAP Markdorf' },
-        { subdomain: 'sapnl', name: 'SAP Netherland' },
       ];
     }
     return [
       { subdomain: 'slf', name: 'SAP Labs France' },
       { subdomain: 'slfcah', name: 'SAP Labs France (Charge@Home)' },
-      { subdomain: 'demo', name: 'SAP Labs Demo' },
       { subdomain: 'sapbelgium', name: 'SAP Belgium' },
       { subdomain: 'sapmarkdorf', name: 'SAP Markdorf' },
-      { subdomain: 'sapnl', name: 'SAP Netherland' },
     ];
   }
 
@@ -140,7 +137,7 @@ export default class CentralServerProvider {
     this.debugMethod('triggerAutoLogin');
     try {
       // Force log the user
-      await this.login(this.email, this.password, true, this.tenant);
+      await this.login(this.email, this.password, true, this.tenantSubDomain);
       // Ok: Refresh
       if (fctRefresh) {
         fctRefresh();
@@ -168,7 +165,7 @@ export default class CentralServerProvider {
   public isUserConnectionValid(): boolean {
     this.debugMethod('isUserConnectionValid');
     // Email and Password are mandatory
-    if (!this.email || !this.password || !this.tenant) {
+    if (!this.email || !this.password || !this.tenantSubDomain) {
       return false;
     }
     // Check Token
@@ -192,7 +189,7 @@ export default class CentralServerProvider {
   }
 
   public async clearUserPassword() {
-    await SecuredStorage.clearUserPassword(this.tenant);
+    await SecuredStorage.clearUserPassword(this.tenantSubDomain);
     this.password = null;
   }
 
@@ -223,7 +220,7 @@ export default class CentralServerProvider {
   }
 
   public getUserTenant(): string {
-    return this.tenant;
+    return this.tenantSubDomain;
   }
 
   public getUserToken(): string {
@@ -245,13 +242,13 @@ export default class CentralServerProvider {
   public logoff() {
     this.debugMethod('logoff');
     // Clear the token and tenant
-    SecuredStorage.clearUserToken(this.tenant);
+    SecuredStorage.clearUserToken(this.tenantSubDomain);
     // Clear local data
     this.token = null;
     this.decodedToken = null;
   }
 
-  public async login(email: string, password: string, acceptEula: boolean, tenant: string) {
+  public async login(email: string, password: string, acceptEula: boolean, tenantSubDomain: string) {
     this.debugMethod('login');
     // Call
     const result = await axios.post(
@@ -260,7 +257,7 @@ export default class CentralServerProvider {
         acceptEula,
         email,
         password,
-        tenant,
+        tenant: tenantSubDomain,
       },
       {
         headers: this.buildHeaders(),
@@ -273,14 +270,14 @@ export default class CentralServerProvider {
     this.decodedToken = jwtDecode(this.token);
     this.locale = this.decodedToken.locale;
     this.currency = this.decodedToken.currency;
-    this.tenant = tenant;
+    this.tenantSubDomain = tenantSubDomain;
     this.securityProvider = new SecurityProvider(this.decodedToken);
     this.autoLoginDisabled = false;
     // Save
-    await SecuredStorage.saveUserCredentials(tenant, {
+    await SecuredStorage.saveUserCredentials(tenantSubDomain, {
       email,
       password,
-      tenant,
+      tenantSubDomain,
       token: result.data.token,
       locale: this.decodedToken.locale,
       currency: this.decodedToken.currency
@@ -302,7 +299,7 @@ export default class CentralServerProvider {
     this.notificationManager.checkOnHoldNotification();
   }
 
-  public async register(tenant: string, name: string, firstName: string, email: string,
+  public async register(tenantSubDomain: string, name: string, firstName: string, email: string,
                         passwords: {password: string; repeatPassword: string; }, acceptEula: boolean, captcha: string) {
     this.debugMethod('register');
     // Call
@@ -315,35 +312,35 @@ export default class CentralServerProvider {
         firstName,
         name,
         passwords,
-        tenant,
+        tenant: tenantSubDomain,
       },
       {
         headers: this.buildHeaders(),
       },
     );
     // Clear the token and tenant
-    SecuredStorage.clearUserToken(tenant);
+    SecuredStorage.clearUserToken(tenantSubDomain);
     // Save
-    await SecuredStorage.saveUserCredentials(tenant, {
+    await SecuredStorage.saveUserCredentials(tenantSubDomain, {
       email,
       password: passwords.password,
-      tenant,
+      tenantSubDomain,
     });
     // Keep them
     this.email = email;
     this.password = passwords.password;
     this.token = null;
     this.decodedToken = null;
-    this.tenant = tenant;
+    this.tenantSubDomain = tenantSubDomain;
     return result.data;
   }
 
-  public async retrievePassword(tenant: string, email: string, captcha: string) {
+  public async retrievePassword(tenantSubDomain: string, email: string, captcha: string) {
     this.debugMethod('retrievePassword');
     const result = await axios.post(
       `${this.centralRestServerServiceAuthURL}/Reset`,
       {
-        tenant,
+        tenant: tenantSubDomain,
         captcha,
         email,
       },
@@ -354,12 +351,12 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async resetPassword(tenant: string, hash: string, passwords: {password: string; repeatPassword: string; }) {
+  public async resetPassword(tenantSubDomain: string, hash: string, passwords: {password: string; repeatPassword: string; }) {
     this.debugMethod('resetPassword');
     const result = await axios.post(
       `${this.centralRestServerServiceAuthURL}/Reset`,
       {
-        tenant,
+        tenant: tenantSubDomain,
         hash,
         passwords,
       },
@@ -370,13 +367,13 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async verifyEmail(tenant: string, email: string, token: string): Promise<ActionResponse> {
+  public async verifyEmail(tenantSubDomain: string, email: string, token: string): Promise<ActionResponse> {
     this.debugMethod('verifyEmail');
     // Call
     const result = await axios.get(`${this.centralRestServerServiceAuthURL}/VerifyEmail`, {
       headers: this.buildHeaders(),
       params:{
-        Tenant: tenant,
+        Tenant: tenantSubDomain,
         Email: email,
         VerificationToken: token
       },
@@ -623,12 +620,15 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async checkEndUserLicenseAgreement(params: {Email: string, Tenant: string;}): Promise<EulaAccepted> {
+  public async checkEndUserLicenseAgreement(params: {email: string, tenantSubDomain: string;}): Promise<EulaAccepted> {
     this.debugMethod('checkEndUserLicenseAgreement');
     // Call
     const result = await axios.get(`${this.centralRestServerServiceAuthURL}/CheckEndUserLicenseAgreement`, {
       headers: this.buildHeaders(),
-      params,
+      params: {
+        Email: params.email,
+        Tenant: params.tenantSubDomain
+      },
     });
     return result.data;
   }

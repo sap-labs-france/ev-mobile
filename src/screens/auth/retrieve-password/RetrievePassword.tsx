@@ -18,7 +18,7 @@ export interface Props extends BaseProps {
 }
 
 interface State {
-  tenant?: string;
+  tenantSubDomain?: string;
   tenantName?: string;
   email?: string;
   captchaSiteKey?: string;
@@ -46,7 +46,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tenant: Utils.getParamFromNavigation(this.props.navigation, 'tenant', ''),
+      tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', ''),
       tenantName: '',
       email: Utils.getParamFromNavigation(this.props.navigation, 'email', ''),
       captchaSiteKey: null,
@@ -64,9 +64,9 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
     // Call parent
     await super.componentDidMount();
     // Init
-    const tenant = this.centralServerProvider.getTenant(this.state.tenant);
+    const tenant = this.centralServerProvider.getTenant(this.state.tenantSubDomain);
     this.setState({
-      tenantName: tenant.name,
+      tenantName: tenant ? tenant.name : '',
       captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
       captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl()
     });
@@ -82,11 +82,11 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
     // Check field
     const formIsValid = Utils.validateInput(this, this.formValidationDef);
     if (formIsValid) {
-      const { tenant, email, captcha } = this.state;
+      const { tenantSubDomain, email, captcha } = this.state;
       try {
         this.setState({ loading: true });
         // Login
-        await this.centralServerProvider.retrievePassword(tenant, email, captcha);
+        await this.centralServerProvider.retrievePassword(tenantSubDomain, email, captcha);
         // Login Success
         this.setState({ loading: false });
         // Show
@@ -99,7 +99,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
               NavigationActions.navigate({
                 routeName: 'Login',
                 params: {
-                  tenant: this.state.tenant,
+                  tenantSubDomain: this.state.tenantSubDomain,
                   email: this.state.email
                 }
               })

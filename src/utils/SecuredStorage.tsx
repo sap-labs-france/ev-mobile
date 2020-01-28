@@ -70,6 +70,13 @@ export default class SecuredStorage {
     });
   }
 
+  // public static async saveTenant(tenantSubDomain: string, tenantName: string) {
+  //   // Save
+  //   await RNSecureStorage.set(`${user.tenantID}~${user.id}~filter~${filterInternalID}`, filterValue, {
+  //     accessible: ACCESSIBLE.WHEN_UNLOCKED
+  //   });
+  // }
+
   public static async saveFilterValue(filterInternalID: string, filterValue: string) {
     // Get Provider
     const centralServerProvider = await ProviderFactory.getProvider();
