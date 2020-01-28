@@ -85,6 +85,13 @@ export default class DeepLinkingManager {
       // Disable
       this.centralServerProvider.setAutoLoginDisabled(true);
       this.centralServerProvider.logoff();
+      // Navigate to login page
+      this.navigator.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Login',
+          params: { tenant: response.tenant, email: response.email }
+        })
+      );
       // Call the backend
       try {
         // Validate Account
@@ -93,20 +100,12 @@ export default class DeepLinkingManager {
           // Ok
           Message.showSuccess(I18n.t('authentication.accountVerifiedSuccess'));
           // Check if user has to change his password
-          if (response.resetToken) {
+          if (response.resetToken && response.resetToken !== 'null') {
             // Change password
             this.navigator.dispatch(
               NavigationActions.navigate({
                 routeName: 'ResetPassword',
                 params: { tenant: response.tenant, hash: response.resetToken }
-              })
-            );
-          } else {
-            // Navigate to login page
-            this.navigator.dispatch(
-              NavigationActions.navigate({
-                routeName: 'AuthNavigator',
-                params: { tenant: response.tenant, email: response.email }
               })
             );
           }

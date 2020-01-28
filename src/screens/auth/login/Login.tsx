@@ -94,34 +94,44 @@ export default class Login extends BaseScreen<Props, State> {
     // Lock
     Orientation.lockToPortrait();
     // Load User data
-    const tenantSubDomain = this.centralServerProvider.getUserTenant();
-    const tenant = this.centralServerProvider.getTenant(tenantSubDomain);
-    const email = this.centralServerProvider.getUserEmail();
-    const password = this.centralServerProvider.getUserPassword();
-    // Set
-    this.setState({
-      email,
-      password,
-      tenant: tenantSubDomain,
-      tenantTitle: tenant ? tenant.name : this.state.tenantTitle
-    });
-    // Check if user can be logged
-    if (Utils.canAutoLogin(this.centralServerProvider, this.props.navigation)) {
-      try {
-        // Check EULA
-        const result = await this.centralServerProvider.checkEndUserLicenseAgreement({Email: email, Tenant: tenantSubDomain});
-        if (result.eulaAccepted) {
-          // Try to login
-          this.setState({eula: true}, () => this.login());
+    if (!this.state.email || !this.state.tenant) {
+      const tenantSubDomain = this.centralServerProvider.getUserTenant();
+      const tenant = this.centralServerProvider.getTenant(tenantSubDomain);
+      const email = this.centralServerProvider.getUserEmail();
+      const password = this.centralServerProvider.getUserPassword();
+      // Set
+      this.setState({
+        email,
+        password,
+        tenant: tenantSubDomain,
+        tenantTitle: tenant ? tenant.name : this.state.tenantTitle,
+        initialLoading: false
+      });
+      // Check if user can be logged
+      if (Utils.canAutoLogin(this.centralServerProvider, this.props.navigation)) {
+        try {
+          // Check EULA
+          const result = await this.centralServerProvider.checkEndUserLicenseAgreement({Email: email, Tenant: tenantSubDomain});
+          if (result.eulaAccepted) {
+            // Try to login
+            this.setState({eula: true}, () => this.login());
+          }
+        } catch (error) {
+            // Do nothing: user must log on
         }
-      } catch (error) {
-          // Do nothing: user must log on
       }
+    } else {
+      // Set Tenant title
+      let tenantTitle = I18n.t('authentication.tenant');
+      if (this.state.tenant) {
+        tenantTitle = this.centralServerProvider.getTenant(this.state.tenant).name;
+      }
+      // Set
+      this.setState({
+        initialLoading: false,
+        tenantTitle
+      });
     }
-    // Set
-    this.setState({
-      initialLoading: false
-    });
   }
 
   public login = async () => {

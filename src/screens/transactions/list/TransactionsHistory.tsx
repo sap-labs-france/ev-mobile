@@ -100,10 +100,6 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
         transactions.count = transactionsNbrRecordsOnly.count;
         transactions.stats = transactionsNbrRecordsOnly.stats;
       }
-      console.log('====================================');
-      console.log(this.state);
-      console.log(transactions);
-      console.log('====================================');
         return transactions;
     } catch (error) {
       // Check if HTTP?
