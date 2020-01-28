@@ -1,6 +1,8 @@
 import PagingParams from '../types/PagingParams';
 
 export default class Constants {
+  public static readonly REST_RESPONSE_SUCCESS = 'Success';
+
   public static readonly SUPPORTED_LOCALES = ['en_US', 'fr_FR'];
   public static readonly SUPPORTED_LANGUAGES = ['en', 'fr', 'de'];
   public static readonly DEFAULT_LOCALE = 'en_US';

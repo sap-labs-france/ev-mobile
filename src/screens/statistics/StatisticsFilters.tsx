@@ -1,6 +1,6 @@
 import I18n from 'i18n-js';
 import React from 'react';
-import BaseFilters from '../../components/search/complex/BaseFilters';
+import BaseFilters, { BaseFiltersState } from '../../components/search/complex/BaseFilters';
 import ComplexSearchComponent from '../../components/search/complex/ComplexSearchComponent';
 import DateFilterComponent from '../../components/search/complex/filter/date/DateFilterComponent';
 import MyUserSwitchFilterComponent from '../../components/search/complex/filter/my-user-switch/MyUserSwitchFilterComponent';
@@ -8,8 +8,6 @@ import { FilterGlobalInternalIDs } from '../../types/Filter';
 
 export interface Props {
   onFilterChanged?: (filters: StatisticsFiltersDef) => void;
-  isAdmin?: boolean;
-  locale?: string;
   initialFilters?: StatisticsFiltersDef;
 }
 
@@ -19,7 +17,7 @@ export interface StatisticsFiltersDef {
   'UserID'?: string;
 }
 
-interface State {
+interface State extends BaseFiltersState {
   filters?: StatisticsFiltersDef;
 }
 
@@ -49,7 +47,7 @@ export default class StatisticsFilters extends BaseFilters {
   }
 
   public render = () => {
-    const { locale, initialFilters, isAdmin } = this.props;
+    const { initialFilters } = this.props;
     const { filters } = this.state;
     return (
       <ComplexSearchComponent
@@ -58,7 +56,7 @@ export default class StatisticsFilters extends BaseFilters {
           this.setComplexSearchComponent(complexSearchComponent);
         }}
       >
-        {isAdmin &&
+        {this.state.isAdmin &&
           <MyUserSwitchFilterComponent
             filterID={'UserID'}
             internalFilterID={FilterGlobalInternalIDs.MY_USER_FILTER}
@@ -80,7 +78,7 @@ export default class StatisticsFilters extends BaseFilters {
               await dateFilterComponent.setComplexSearchComponent(this.getComplexSearchComponent());
             }
           }}
-          locale={locale}
+          locale={this.state.locale}
           minimumDate={new Date(initialFilters.StartDateTime)}
           defaultDate={filters.StartDateTime ? new Date(filters.StartDateTime) : new Date(initialFilters.StartDateTime)}
           maximumDate={filters.EndDateTime ? new Date(filters.EndDateTime) : new Date(initialFilters.EndDateTime)}
@@ -94,7 +92,7 @@ export default class StatisticsFilters extends BaseFilters {
               await dateFilterComponent.setComplexSearchComponent(this.getComplexSearchComponent());
             }
           }}
-          locale={locale}
+          locale={this.state.locale}
           minimumDate={filters.StartDateTime ? new Date(filters.StartDateTime) : new Date(initialFilters.StartDateTime)}
           defaultDate={filters.EndDateTime ? new Date(filters.EndDateTime) : new Date(initialFilters.EndDateTime)}
           maximumDate={new Date(initialFilters.EndDateTime)}

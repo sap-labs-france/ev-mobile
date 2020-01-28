@@ -1,5 +1,6 @@
 import { NavigationState } from 'react-navigation';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
+import ProviderFactory from '../provider/ProviderFactory';
 import { UserCredentials } from '../types/User';
 import Constants from './Constants';
 
@@ -70,22 +71,27 @@ export default class SecuredStorage {
   }
 
   public static async saveFilterValue(filterInternalID: string, filterValue: string) {
-    // Get current domain
-    const tenantSubDomain = await SecuredStorage.getCurrentTenantSubDomain();
+    // Get Provider
+    const centralServerProvider = await ProviderFactory.getProvider();
+    // Get Token
+    const user = await centralServerProvider.getUserInfo();
+    // null value not allowed
     if (!filterValue) {
       filterValue = 'null';
     }
     // Save
-    await RNSecureStorage.set(`${tenantSubDomain}~filter~${filterInternalID}`, filterValue, {
+    await RNSecureStorage.set(`${user.tenantID}~${user.id}~filter~${filterInternalID}`, filterValue, {
       accessible: ACCESSIBLE.WHEN_UNLOCKED
     });
   }
 
   public static async loadFilterValue(filterInternalID: string): Promise<string> {
-    // Get current domain
-    const tenantSubDomain = await SecuredStorage.getCurrentTenantSubDomain();
+    // Get Provider
+    const centralServerProvider = await ProviderFactory.getProvider();
+    // Get Token
+    const user = await centralServerProvider.getUserInfo();
     // Get
-    const value = await SecuredStorage._getString(`${tenantSubDomain}~filter~${filterInternalID}`);
+    const value = await SecuredStorage._getString(`${user.tenantID}~${user.id}~filter~${filterInternalID}`);
     if (value === 'null') {
       return null;
     }

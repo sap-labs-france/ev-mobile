@@ -17,8 +17,8 @@ import Constants from '../../../utils/Constants';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
-import TransactionsFilters from '../TransactionsFilters';
 import computeStyleSheet from '../TransactionsStyles';
+import TransactionsHistoryFilters from './TransactionsHistoryFilters';
 
 export interface Props extends BaseProps {
 }
@@ -100,7 +100,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
         transactions.count = transactionsNbrRecordsOnly.count;
         transactions.stats = transactionsNbrRecordsOnly.stats;
       }
-      return transactions;
+        return transactions;
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== 560) {
@@ -138,8 +138,8 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       this.setState({
         loading: false,
         transactions: transactions ? transactions.result : [],
-        startDate: !this.state.startDate ? new Date(transactions.stats.firstTimestamp) : this.state.startDate,
-        endDate: !this.state.endDate ? new Date(transactions.stats.lastTimestamp) : this.state.endDate,
+        startDate: this.state.startDate ? this.state.startDate : transactions.stats.firstTimestamp ? new Date(transactions.stats.firstTimestamp) : new Date(),
+        endDate: this.state.endDate ? this.state.endDate : transactions.stats.lastTimestamp ? new Date(transactions.stats.lastTimestamp) : new Date(),
         count: transactions ? transactions.count : 0,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,
         isPricingActive: securityProvider ? securityProvider.isComponentPricingActive() : false
@@ -185,7 +185,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
           }}
           navigation={navigation}
           title={I18n.t('transactions.transactionsHistory')}
-          subTitle={count > 0 ? '(' + I18nManager.formatNumber(count) + ')' : ' '}
+          subTitle={count > 0 ? '(' + I18nManager.formatNumber(count) + ')' : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
           rightAction={navigation.openDrawer}
@@ -200,18 +200,16 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
             <Spinner style={style.spinner} />
           ) : (
             <View style={style.content}>
-              <TransactionsFilters
+              <TransactionsHistoryFilters
                 initialFilters={{
                   UserID: userID ? userID : null,
                   StartDateTime: startDate ? startDate.toISOString() : null,
                   EndDateTime: endDate ? endDate.toISOString() : null
                 }}
-                locale={this.centralServerProvider.getUserLanguage()}
-                isAdmin={isAdmin}
                 onFilterChanged={this.onFilterChanged}
-                ref={(transactionsFilters: TransactionsFilters) => {
-                  if (transactionsFilters && this.headerComponent) {
-                    transactionsFilters.setHeaderComponent(this.headerComponent);
+                ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => {
+                  if (transactionsHistoryFilters && this.headerComponent) {
+                    transactionsHistoryFilters.setHeaderComponent(this.headerComponent);
                   }
                 }}
               />

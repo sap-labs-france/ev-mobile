@@ -6,13 +6,18 @@ import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
 import TransactionInProgressComponent from '../../../components/transaction/in-progress/TransactionInProgressComponent';
+import I18nManager from '../../../I18n/I18nManager';
+import { StatisticsFiltersDef } from '../../../screens/statistics/StatisticsFilters';
 import BaseProps from '../../../types/BaseProps';
 import { DataResult } from '../../../types/DataResult';
+import { FilterGlobalInternalIDs } from '../../../types/Filter';
 import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
+import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../TransactionsStyles';
+import TransactionsInProgressFilters from './TransactionsInProgressFilters';
 
 export interface Props extends BaseProps {
 }
@@ -21,17 +26,20 @@ interface State {
   transactions?: Transaction[];
   loading?: boolean;
   refreshing?: boolean;
+  userID?: string;
   skip?: number;
   limit?: number;
   count?: number;
   isPricingActive: boolean;
   isAdmin?: boolean;
+  filters?: StatisticsFiltersDef;
 }
 
 export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
+  private headerComponent: HeaderComponent;
 
   constructor(props: Props) {
     super(props);
@@ -40,11 +48,13 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
       transactions: [],
       loading: true,
       refreshing: false,
+      userID: null,
       skip: 0,
       limit: Constants.PAGING_SIZE,
       count: 0,
       isPricingActive: false,
-      isAdmin: false
+      isAdmin: false,
+      filters: {}
     };
   }
 
@@ -52,17 +62,40 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     super.setState(state, callback);
   }
 
+  public async componentDidMount() {
+    // Get initial filters
+    const userID = await SecuredStorage.loadFilterValue(FilterGlobalInternalIDs.MY_USER_FILTER);
+    if (userID) {
+      this.setState({
+        userID,
+        filters: {
+          UserID: userID
+        }
+      });
+    }
+    await super.componentDidMount();
+  }
+
   public getTransactionsInProgress = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
-    let transactions;
     try {
       // Get the Sites
-      transactions = await this.centralServerProvider.getTransactionsActive({ Search: searchText }, { skip, limit });
+      const transactions = await this.centralServerProvider.getTransactionsActive(
+        { ...this.state.filters, Search: searchText }, { skip, limit });
+      // Check
+      if (transactions.count === -1) {
+        // Request nbr of records
+        const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactionsActive(
+          { ...this.state.filters, Search: searchText }, Constants.ONLY_RECORD_COUNT_PAGING
+        );
+        // Set
+        transactions.count = transactionsNbrRecordsOnly.count;
+      }
+      return transactions;
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
     }
-    // Return
-    return transactions;
+    return null;
   };
 
   public onBack = () => {
@@ -120,24 +153,48 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     await this.refresh();
   }
 
+  public onFilterChanged = async (filters: any) => {
+    // Set Fitlers and Refresh
+    this.setState({ filters }, () => this.refresh());
+  }
+
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin, transactions, isPricingActive, skip, count, limit } = this.state;
+    const { loading, isAdmin, transactions, isPricingActive, userID,
+      skip, count, limit } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
+          ref={(headerComponent: HeaderComponent) => {
+            this.headerComponent = headerComponent;
+          }}
           navigation={navigation}
           title={I18n.t('transactions.transactionsInProgress')}
+          subTitle={count > 0 ? '(' + I18nManager.formatNumber(count) + ')' : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
           rightAction={navigation.openDrawer}
           rightActionIcon={'menu'}
+          hasComplexSearch={isAdmin ? true : false}
         />
-        <View style={style.content}>
-          {loading ? (
-            <Spinner style={style.spinner} />
-          ) : (
+        {loading ? (
+          <Spinner style={style.spinner} />
+        ) : (
+          <View style={style.content}>
+            {isAdmin &&
+              <TransactionsInProgressFilters
+                initialFilters={{
+                  UserID: userID ? userID : null
+                }}
+                onFilterChanged={this.onFilterChanged}
+                ref={(transactionsInProgressFilters: TransactionsInProgressFilters) => {
+                  if (transactionsInProgressFilters && this.headerComponent) {
+                    transactionsInProgressFilters.setHeaderComponent(this.headerComponent);
+                  }
+                }}
+              />
+            }
             <FlatList
               data={transactions}
               renderItem={({ item }) => (
@@ -155,8 +212,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
               ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
               ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('transactions.noTransactionsInProgress')} />}
             />
-          )}
-        </View>
+          </View>
+        )}
       </Container>
     );
   };

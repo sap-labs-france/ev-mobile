@@ -44,7 +44,7 @@ export default class CentralServerProvider {
   constructor() {
     if (__DEV__) {
       // QA REST Server
-      // this.centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
+      this.centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
       this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + '/client/auth';
       this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + '/client/api';
       this.debug = true;
@@ -367,6 +367,20 @@ export default class CentralServerProvider {
         headers: this.buildHeaders(),
       },
     );
+    return result.data;
+  }
+
+  public async verifyEmail(tenant: string, email: string, token: string): Promise<ActionResponse> {
+    this.debugMethod('verifyEmail');
+    // Call
+    const result = await axios.get(`${this.centralRestServerServiceAuthURL}/VerifyEmail`, {
+      headers: this.buildHeaders(),
+      params:{
+        Tenant: tenant,
+        Email: email,
+        VerificationToken: token
+      },
+    });
     return result.data;
   }
 
