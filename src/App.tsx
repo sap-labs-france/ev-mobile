@@ -70,7 +70,7 @@ const statisticsNavigator: NavigationContainer = createStackNavigator(
   }
 );
 
-const chargerDetailsTabsNavigator = createMaterialBottomTabNavigator(
+const chargerConnectorDetailsTabsNavigator = createMaterialBottomTabNavigator(
   {
     ChargerConnectorDetails: {
       screen: ChargerConnectorDetails,
@@ -110,7 +110,7 @@ const sitesNavigator: NavigationContainer = createStackNavigator(
     Sites: { screen: Sites },
     SiteAreas: { screen: SiteAreas },
     Chargers: { screen: Chargers },
-    ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator }
+    ChargerDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator }
   },
   {
     initialRouteName: 'Sites',
@@ -122,7 +122,7 @@ const sitesNavigator: NavigationContainer = createStackNavigator(
 const chargersNavigator: NavigationContainer = createStackNavigator(
   {
     Chargers: { screen: Chargers },
-    ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator }
+    ChargerDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator }
   },
   {
     initialRouteName: 'Chargers',
@@ -179,7 +179,7 @@ const transactionHistoryNavigator: NavigationContainer = createStackNavigator(
 const transactionInProgressNavigator: NavigationContainer = createStackNavigator(
   {
     TransactionsInProgress: { screen: TransactionsInProgress },
-    ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator }
+    ChargerDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator }
   },
   {
     initialRouteName: 'TransactionsInProgress',

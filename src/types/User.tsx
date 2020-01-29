@@ -34,7 +34,7 @@ export default interface User extends CreatedUpdatedProps {
 export interface UserCredentials {
   email: string;
   password: string;
-  tenant: string;
+  tenantSubDomain: string;
   token?: string;
   locale?: string;
   currency?: string;

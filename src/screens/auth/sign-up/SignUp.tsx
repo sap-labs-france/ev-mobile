@@ -18,7 +18,7 @@ export interface Props extends BaseProps {
 }
 
 interface State {
-  tenant?: string;
+  tenantSubDomain?: string;
   tenantName?: string;
   name?: string;
   firstName?: string;
@@ -107,7 +107,7 @@ export default class SignUp extends BaseScreen<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tenant: Utils.getParamFromNavigation(this.props.navigation, 'tenant', ''),
+      tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', ''),
       tenantName: '',
       name: '',
       firstName: '',
@@ -130,9 +130,9 @@ export default class SignUp extends BaseScreen<Props, State> {
     // Call parent
     await super.componentDidMount();
     // Init
-    const tenant = this.centralServerProvider.getTenant(this.state.tenant);
+    const tenant = this.centralServerProvider.getTenant(this.state.tenantSubDomain);
     this.setState({
-      tenantName: tenant.name,
+      tenantName: tenant ? tenant.name : '',
       captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
       captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl()
     });
@@ -148,12 +148,12 @@ export default class SignUp extends BaseScreen<Props, State> {
     // Check field
     const formIsValid = Utils.validateInput(this, this.formValidationDef);
     if (formIsValid) {
-      const { tenant, name, firstName, email, password, repeatPassword, eula, captcha } = this.state;
+      const { tenantSubDomain, name, firstName, email, password, repeatPassword, eula, captcha } = this.state;
       try {
         // Loading
         this.setState({ loading: true });
         // Register
-        await this.centralServerProvider.register(tenant, name, firstName, email, { password, repeatPassword }, eula, captcha);
+        await this.centralServerProvider.register(tenantSubDomain, name, firstName, email, { password, repeatPassword }, eula, captcha);
         // Reset
         this.setState({ loading: false });
         // Show
@@ -166,7 +166,7 @@ export default class SignUp extends BaseScreen<Props, State> {
               NavigationActions.navigate({
                 routeName: 'Login',
                 params: {
-                  tenant: this.state.tenant,
+                  tenantSubDomain: this.state.tenantSubDomain,
                   email: this.state.email
                 }
               })

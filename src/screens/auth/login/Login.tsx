@@ -21,7 +21,7 @@ interface State {
   eula?: boolean;
   password?: string;
   email?: string;
-  tenant?: string;
+  tenantSubDomain?: string;
   tenantTitle?: string;
   loading?: boolean;
   initialLoading?: boolean;
@@ -37,7 +37,7 @@ export default class Login extends BaseScreen<Props, State> {
   private tenants: Array<Partial<Tenant>>;
   private passwordInput: TextInput;
   private formValidationDef = {
-    tenant: {
+    tenantSubDomain: {
       presence: {
         allowEmpty: false,
         message: '^' + I18n.t('authentication.mandatoryTenant')
@@ -76,7 +76,7 @@ export default class Login extends BaseScreen<Props, State> {
       eula: false,
       password: null,
       email: Utils.getParamFromNavigation(this.props.navigation, 'email', ''),
-      tenant: Utils.getParamFromNavigation(this.props.navigation, 'tenant', ''),
+      tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', ''),
       tenantTitle: I18n.t('authentication.tenant'),
       loading: false,
       initialLoading: true
@@ -94,7 +94,7 @@ export default class Login extends BaseScreen<Props, State> {
     // Lock
     Orientation.lockToPortrait();
     // Load User data
-    if (!this.state.email || !this.state.tenant) {
+    if (!this.state.email || !this.state.tenantSubDomain) {
       const tenantSubDomain = this.centralServerProvider.getUserTenant();
       const tenant = this.centralServerProvider.getTenant(tenantSubDomain);
       const email = this.centralServerProvider.getUserEmail();
@@ -103,7 +103,7 @@ export default class Login extends BaseScreen<Props, State> {
       this.setState({
         email,
         password,
-        tenant: tenantSubDomain,
+        tenantSubDomain,
         tenantTitle: tenant ? tenant.name : this.state.tenantTitle,
         initialLoading: false
       });
@@ -111,7 +111,7 @@ export default class Login extends BaseScreen<Props, State> {
       if (Utils.canAutoLogin(this.centralServerProvider, this.props.navigation)) {
         try {
           // Check EULA
-          const result = await this.centralServerProvider.checkEndUserLicenseAgreement({Email: email, Tenant: tenantSubDomain});
+          const result = await this.centralServerProvider.checkEndUserLicenseAgreement({email, tenantSubDomain});
           if (result.eulaAccepted) {
             // Try to login
             this.setState({eula: true}, () => this.login());
@@ -123,8 +123,8 @@ export default class Login extends BaseScreen<Props, State> {
     } else {
       // Set Tenant title
       let tenantTitle = I18n.t('authentication.tenant');
-      if (this.state.tenant) {
-        tenantTitle = this.centralServerProvider.getTenant(this.state.tenant).name;
+      if (this.state.tenantSubDomain) {
+        tenantTitle = this.centralServerProvider.getTenant(this.state.tenantSubDomain).name;
       }
       // Set
       this.setState({
@@ -140,12 +140,12 @@ export default class Login extends BaseScreen<Props, State> {
     // Ok?
     if (formIsValid) {
       // Login
-      const { password, email, eula, tenant } = this.state;
+      const { password, email, eula, tenantSubDomain } = this.state;
       try {
         // Loading
         this.setState({ loading: true } as State);
         // Login
-        await this.centralServerProvider.login(email, password, eula, tenant);
+        await this.centralServerProvider.login(email, password, eula, tenantSubDomain);
         // Login Success
         this.setState({ loading: false });
         // Navigate
@@ -209,7 +209,7 @@ export default class Login extends BaseScreen<Props, State> {
     if (buttonIndex !== undefined) {
       // Set Tenant
       this.setState({
-        tenant: this.tenants[buttonIndex].subdomain,
+        tenantSubDomain: this.tenants[buttonIndex].subdomain,
         tenantTitle: this.tenants[buttonIndex].name
       });
     }
@@ -218,9 +218,9 @@ export default class Login extends BaseScreen<Props, State> {
   public newUser = () => {
     const navigation = this.props.navigation;
     // Tenant selected?
-    if (this.state.tenant) {
+    if (this.state.tenantSubDomain) {
       navigation.navigate('SignUp', {
-        tenant: this.state.tenant,
+        tenantSubDomain: this.state.tenantSubDomain,
         email: this.state.email
       });
     } else {
@@ -231,9 +231,9 @@ export default class Login extends BaseScreen<Props, State> {
   public forgotPassword = () => {
     const navigation = this.props.navigation;
     // Tenant selected?
-    if (this.state.tenant) {
+    if (this.state.tenantSubDomain) {
       navigation.navigate('RetrievePassword', {
-        tenant: this.state.tenant,
+        tenantSubDomain: this.state.tenantSubDomain,
         email: this.state.email
       });
     } else {

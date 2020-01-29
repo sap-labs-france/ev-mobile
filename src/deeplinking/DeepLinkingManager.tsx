@@ -57,7 +57,8 @@ export default class DeepLinkingManager {
       this.navigator.dispatch(
         NavigationActions.navigate({
           routeName: 'ResetPassword',
-          params: { tenant: response.tenant, hash: response.hash }
+          key: `${Utils.randomNumber()}`,
+          params: { tenantSubDomain: response.tenant, hash: response.hash }
         })
       );
     });
@@ -89,7 +90,8 @@ export default class DeepLinkingManager {
       this.navigator.dispatch(
         NavigationActions.navigate({
           routeName: 'Login',
-          params: { tenant: response.tenant, email: response.email }
+          key: `${Utils.randomNumber()}`,
+          params: { tenantSubDomain: response.tenant, email: response.email }
         })
       );
       // Call the backend
@@ -105,7 +107,8 @@ export default class DeepLinkingManager {
             this.navigator.dispatch(
               NavigationActions.navigate({
                 routeName: 'ResetPassword',
-                params: { tenant: response.tenant, hash: response.resetToken }
+                key: `${Utils.randomNumber()}`,
+                params: { tenantSubDomain: response.tenant, hash: response.resetToken }
               })
             );
           }
