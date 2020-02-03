@@ -12,6 +12,7 @@ import ChargerConnectorComponent from './connector/ChargerConnectorComponent';
 
 export interface Props extends BaseProps {
   charger: ChargingStation;
+  isAdmin: boolean;
 }
 
 interface State {
@@ -43,7 +44,7 @@ export default class ChargerComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { charger, navigation } = this.props;
+    const { charger, isAdmin, navigation } = this.props;
     return (
       <View style={style.container}>
         <View style={style.headerContent}>
@@ -61,20 +62,22 @@ export default class ChargerComponent extends React.Component<Props, State> {
             </Button>
           ) : (
             <View style={style.buttonContainer}>
-              <Button
-                transparent={true}
-                style={style.heartbeatButton}
-                onPress={() => {
-                  navigation.navigate({
-                    routeName: 'ChargerDetailsTabs',
-                    params: {
-                      chargerID: charger.id
-                    },
-                    key: `${Utils.randomNumber()}`
-                  })
-                }}>
-                <Icon style={style.icon} type='MaterialIcons' name='tune' />
-              </Button>
+              {isAdmin &&
+                <Button
+                  transparent={true}
+                  style={style.heartbeatButton}
+                  onPress={() => {
+                    navigation.navigate({
+                      routeName: 'ChargerDetailsTabs',
+                      params: {
+                        chargerID: charger.id
+                      },
+                      key: `${Utils.randomNumber()}`
+                    })
+                  }}>
+                  <Icon style={style.icon} type='MaterialIcons' name='tune' />
+                </Button>
+              }
               <Button
                 transparent={true}
                 style={style.heartbeatButton}
