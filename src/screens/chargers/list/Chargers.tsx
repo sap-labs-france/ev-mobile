@@ -23,6 +23,7 @@ interface State {
   siteAreaID?: string;
   loading?: boolean;
   refreshing?: boolean;
+  isAdmin?: boolean;
   skip?: number;
   limit?: number;
   count?: number;
@@ -41,6 +42,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       siteAreaID: Utils.getParamFromNavigation(this.props.navigation, 'siteAreaID', null),
       loading: true,
       refreshing: false,
+      isAdmin: false,
       skip: 0,
       limit: Constants.PAGING_SIZE,
       count: 0
@@ -104,11 +106,14 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       const { skip, limit } = this.state;
       // Refresh All
       const chargers = await this.getChargers(this.searchText, 0, skip + limit);
+      // Get the provider
+      const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Add Chargers
       this.setState(() => ({
         loading: false,
         chargers: chargers ? chargers.result : [],
-        count: chargers ? chargers.count : 0
+        count: chargers ? chargers.count : 0,
+        isAdmin: securityProvider ? securityProvider.isAdmin() : false
       }));
     }
   };
@@ -143,7 +148,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, chargers, skip, count, limit } = this.state;
+    const { loading, chargers, isAdmin, skip, count, limit } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -164,7 +169,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
           ) : (
             <FlatList
               data={chargers}
-              renderItem={({ item }) => <ChargerComponent charger={item} navigation={navigation} />}
+              renderItem={({ item }) => <ChargerComponent charger={item} isAdmin={isAdmin} navigation={navigation} />}
               keyExtractor={(item) => item.id}
               refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
               onEndReached={this.onEndScroll}

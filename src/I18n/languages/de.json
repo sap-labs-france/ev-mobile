@@ -85,6 +85,7 @@
   },
   "transactions": {
     "transaction": "Session",
+    "transactions": "Session(s)",
     "history": "History",
     "in-progress": "In Progress",
     "transactionsHistory": "Sitzungsverlauf",

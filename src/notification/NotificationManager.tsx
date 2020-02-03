@@ -186,7 +186,7 @@ export default class NotificationManager {
             routeName: 'TransactionInProgressNavigator',
             key: `${Utils.randomNumber()}`,
             action: NavigationActions.navigate({
-              routeName: 'ChargerDetailsTabs',
+              routeName: 'ChargerConnectorDetailsTabs',
               key: `${Utils.randomNumber()}`,
               params: {
                 chargerID: notification.data.chargeBoxID,
@@ -205,7 +205,7 @@ export default class NotificationManager {
             routeName: 'ChargersNavigator',
             key: `${Utils.randomNumber()}`,
             action: NavigationActions.navigate({
-              routeName: 'ChargerDetailsTabs',
+              routeName: 'ChargerConnectorDetailsTabs',
               key: `${Utils.randomNumber()}`,
               params: {
                 chargerID: notification.data.chargeBoxID,
@@ -224,7 +224,7 @@ export default class NotificationManager {
             routeName: 'ChargersNavigator',
             key: `${Utils.randomNumber()}`,
             action: NavigationActions.navigate({
-              routeName: 'ChargerDetailsTabs',
+              routeName: 'ChargerConnectorDetailsTabs',
               key: `${Utils.randomNumber()}`,
               params: {
                 chargerID: notification.data.chargeBoxID,

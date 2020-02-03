@@ -70,6 +70,26 @@ const statisticsNavigator: NavigationContainer = createStackNavigator(
   }
 );
 
+const chargerDetailsTabsNavigator = createMaterialBottomTabNavigator(
+  {
+    ChargerDetails: {
+      screen: ChargerDetails,
+      navigationOptions: {
+        title: I18n.t('details.informations'),
+        tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'info')
+      }
+    }
+  },
+  {
+    activeColor: commonColor.topTabBarActiveTextColor,
+    inactiveColor: commonColor.topTabBarTextColor,
+    barStyle: { backgroundColor: commonColor.brandPrimaryDark },
+    labeled: true,
+    backBehavior: 'none',
+    initialRouteName: 'ChargerDetails',
+  }
+);
+
 const chargerConnectorDetailsTabsNavigator = createMaterialBottomTabNavigator(
   {
     ChargerConnectorDetails: {
@@ -86,13 +106,6 @@ const chargerConnectorDetailsTabsNavigator = createMaterialBottomTabNavigator(
         tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
       }
     },
-    ChargerDetails: {
-      screen: ChargerDetails,
-      navigationOptions: {
-        title: I18n.t('details.informations'),
-        tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'info')
-      }
-    }
   },
   {
     activeColor: commonColor.topTabBarActiveTextColor,
@@ -110,7 +123,8 @@ const sitesNavigator: NavigationContainer = createStackNavigator(
     Sites: { screen: Sites },
     SiteAreas: { screen: SiteAreas },
     Chargers: { screen: Chargers },
-    ChargerDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator }
+    ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator },
+    ChargerConnectorDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator }
   },
   {
     initialRouteName: 'Sites',
@@ -122,7 +136,8 @@ const sitesNavigator: NavigationContainer = createStackNavigator(
 const chargersNavigator: NavigationContainer = createStackNavigator(
   {
     Chargers: { screen: Chargers },
-    ChargerDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator }
+    ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator },
+    ChargerConnectorDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator }
   },
   {
     initialRouteName: 'Chargers',
@@ -179,7 +194,8 @@ const transactionHistoryNavigator: NavigationContainer = createStackNavigator(
 const transactionInProgressNavigator: NavigationContainer = createStackNavigator(
   {
     TransactionsInProgress: { screen: TransactionsInProgress },
-    ChargerDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator }
+    ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator },
+    ChargerConnectorDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator }
   },
   {
     initialRouteName: 'TransactionsInProgress',

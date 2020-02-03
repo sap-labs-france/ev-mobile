@@ -147,7 +147,7 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
         disabled={charger.inactive}
         onPress={() =>
           navigation.navigate({
-            routeName: 'ChargerDetailsTabs',
+            routeName: 'ChargerConnectorDetailsTabs',
             params: {
               chargerID: charger.id,
               connectorID: connector.connectorId
