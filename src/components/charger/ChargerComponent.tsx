@@ -6,6 +6,7 @@ import { Alert } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import BaseProps from '../../types/BaseProps';
 import ChargingStation from '../../types/ChargingStation';
+import Utils from '../../utils/Utils';
 import computeStyleSheet from './ChargerComponentStyles';
 import ChargerConnectorComponent from './connector/ChargerConnectorComponent';
 
@@ -59,16 +60,32 @@ export default class ChargerComponent extends React.Component<Props, State> {
               </Animatable.Text>
             </Button>
           ) : (
-            <Button
-              transparent={true}
-              style={style.heartbeatButton}
-              onPress={() => {
-                this.showHeartbeatStatus();
-              }}>
-              <Animatable.Text animation='pulse' easing='ease-out' iterationCount='infinite' style={{ textAlign: 'center' }}>
-                <Icon style={style.heartbeatIcon} type='FontAwesome' name='heartbeat' />
-              </Animatable.Text>
-            </Button>
+            <View style={style.buttonContainer}>
+              <Button
+                transparent={true}
+                style={style.heartbeatButton}
+                onPress={() => {
+                  navigation.navigate({
+                    routeName: 'ChargerDetailsTabs',
+                    params: {
+                      chargerID: charger.id
+                    },
+                    key: `${Utils.randomNumber()}`
+                  })
+                }}>
+                <Icon style={style.icon} type='MaterialIcons' name='tune' />
+              </Button>
+              <Button
+                transparent={true}
+                style={style.heartbeatButton}
+                onPress={() => {
+                  this.showHeartbeatStatus();
+                }}>
+                <Animatable.Text animation='pulse' easing='ease-out' iterationCount='infinite' style={{ textAlign: 'center' }}>
+                  <Icon style={style.heartbeatIcon} type='FontAwesome' name='heartbeat' />
+                </Animatable.Text>
+              </Button>
+            </View>
           )}
         </View>
         <View style={style.connectorsContainer}>

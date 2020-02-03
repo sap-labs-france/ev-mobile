@@ -8,7 +8,7 @@ import Constants from './Constants';
 let navigationID: string = '' + new Date().getTime();
 if (__DEV__) {
   // Keep the same key for dev
-  navigationID = '1234556';
+  navigationID = '123456';
 }
 
 export default class SecuredStorage {
@@ -69,13 +69,6 @@ export default class SecuredStorage {
       accessible: ACCESSIBLE.WHEN_UNLOCKED
     });
   }
-
-  // public static async saveTenant(tenantSubDomain: string, tenantName: string) {
-  //   // Save
-  //   await RNSecureStorage.set(`${user.tenantID}~${user.id}~filter~${filterInternalID}`, filterValue, {
-  //     accessible: ACCESSIBLE.WHEN_UNLOCKED
-  //   });
-  // }
 
   public static async saveFilterValue(filterInternalID: string, filterValue: string) {
     // Get Provider

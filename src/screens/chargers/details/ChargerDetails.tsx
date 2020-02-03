@@ -5,7 +5,6 @@ import { Alert, ScrollView } from 'react-native';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation from '../../../types/ChargingStation';
-import Connector from '../../../types/Connector';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
@@ -18,7 +17,6 @@ interface State {
   loading?: boolean;
   isAdmin?: boolean;
   charger: ChargingStation;
-  connector: Connector;
 }
 
 export default class ChargerDetails extends BaseScreen<Props, State> {
@@ -31,7 +29,6 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
       loading: true,
       isAdmin: false,
       charger: null,
-      connector: null,
     }
   }
 
@@ -43,7 +40,6 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
     // Call parent
     await super.componentDidMount();
     const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
-    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null), 10);
     // Get Charger
     const charger = await this.getCharger(chargerID);
     // Get the provider
@@ -52,7 +48,6 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
     this.setState({
       loading: false,
       charger,
-      connector: charger ? charger.connectors[connectorID - 1] : null,
       isAdmin: securityProvider ? securityProvider.isAdmin() : false
     });
   }
@@ -126,11 +121,11 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
   }
 
   public unlockConnectorConfirm() {
-    const { charger, connector } = this.state;
-    Alert.alert(I18n.t('chargers.unlockConnector'), I18n.t('chargers.unlockConnectorMessage', { chargeBoxID: charger.id }), [
-      { text: I18n.t('general.yes'), onPress: () => this.unlockConnector(charger.id, connector.connectorId) },
-      { text: I18n.t('general.cancel') }
-    ]);
+    // const { charger, connector } = this.state;
+    // Alert.alert(I18n.t('chargers.unlockConnector'), I18n.t('chargers.unlockConnectorMessage', { chargeBoxID: charger.id }), [
+    //   { text: I18n.t('general.yes'), onPress: () => this.unlockConnector(charger.id, connector.connectorId) },
+    //   { text: I18n.t('general.cancel') }
+    // ]);
   }
 
   public async unlockConnector(chargeBoxID: string, connectorID: number) {
@@ -159,8 +154,8 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { loading, isAdmin, charger, connector } = this.state;
-    const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
+    const { loading, isAdmin, charger } = this.state;
+    // const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return (
       loading ? (
         <Spinner style={style.spinner} />
@@ -169,7 +164,6 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
           <HeaderComponent
             navigation={this.props.navigation}
             title={charger ? charger.id : I18n.t('connector.unknown')}
-            subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
             leftAction={() => this.onBack()}
             leftActionIcon={'navigate-before'}
             rightAction={navigation.openDrawer}

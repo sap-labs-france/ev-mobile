@@ -26,15 +26,25 @@ const commonStyles = ScaledSheet.create({
     marginLeft: '5@s',
     fontWeight: 'bold'
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
   heartbeatButton: {
     marginRight: '5@s'
   },
+  icon: {
+    fontSize: '20@s',
+    paddingLeft: '20@s',
+  },
   heartbeatIcon: {
     color: commonColor.brandSuccess,
+    paddingLeft: '20@s',
     fontSize: '18@s'
   },
   deadHeartbeatIcon: {
     color: commonColor.brandDanger,
+    paddingLeft: '20@s',
     fontSize: '18@s'
   },
   connectorsContainer: {
