@@ -9,13 +9,10 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: commonColor.containerBgColor
   },
   scrollViewContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between'
+    flexDirection: 'column'
   },
   viewContainer: {
     flex: 1,
-    marginTop: '5@s',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center'
@@ -25,19 +22,38 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.textColor
   },
   descriptionContainer: {
-    height: '60@s',
-    justifyContent: 'center',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     alignItems: 'center'
   },
   label: {
-    fontSize: '20@s',
+    width: '150@s',
+    marginLeft: '10@s',
+    fontSize: '15@s',
     fontWeight: 'bold',
     color: commonColor.textColor,
-    alignSelf: 'center'
+  },
+  scrollViewValue: {
+    marginTop: '5@s',
+    marginBottom: '5@s'
   },
   value: {
-    fontSize: '20@s',
+    fontSize: '15@s',
+    marginLeft: '15@s',
     color: commonColor.textColor
+  },
+  scrollViewValues: {
+    flexDirection: 'column'
+  },
+  values: {
+    fontSize: '15@s',
+    marginLeft: '15@s',
+    marginBottom: '5@s',
+    color: commonColor.textColor
+  },
+  rowBackground: {
+    backgroundColor: commonColor.listEvenRowBg
   },
 });
 

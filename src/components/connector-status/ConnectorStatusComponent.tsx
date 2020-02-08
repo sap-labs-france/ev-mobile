@@ -2,7 +2,7 @@ import { Text, View } from 'native-base';
 import React from 'react';
 import { Animated, Easing, Platform } from 'react-native';
 import BaseProps from '../../types/BaseProps';
-import Connector from '../../types/Connector';
+import { Connector } from '../../types/ChargingStation';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './ConnectorStatusComponentStyles';

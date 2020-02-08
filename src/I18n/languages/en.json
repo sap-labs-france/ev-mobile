@@ -26,7 +26,11 @@
     "startDate": "Start Date",
     "endDate": "End Date",
     "onlyMyTransactions": "My Sessions",
-    "wrongTenant": "You are connected to the wrong tenant"
+    "wrongTenant": "You are connected to the wrong tenant",
+    "createdOn": "Created On",
+    "createdBy": "Created By",
+    "lastChangedOn": "Last Changed On",
+    "lastChangedBy": "Last Changed By"
   },
   "sidebar": {
     "home": "Home",
@@ -199,7 +203,16 @@
     "batteryChartLabel": "Battery Level (%)",
     "connectorMax": "Connector Max Power (kW)",
     "noData": "No Data",
-    "noSessionInProgress": "No Session in progress"
+    "noSessionInProgress": "No Session in progress",
+    "serialNumber": "Serial Number",
+    "privateURL": "Private URL",
+    "publicURL": "Public URL",
+    "currentIP": "IP Route",
+    "lastReboot": "Last Reboot",
+    "capabilities": "Capabilities",
+    "ocppStandardParams": "OCPP Standard Params",
+    "ocppVendorParams": "OCPP Advanced Params",
+    "ocppAdvancedCommands": "OCPP Advanced Commands"
   },
   "notifications": {
     "mustLogin": "You must be logged in",

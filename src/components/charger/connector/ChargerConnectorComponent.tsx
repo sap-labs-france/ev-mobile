@@ -1,12 +1,11 @@
 import I18n from 'i18n-js';
-import { Button, Icon, Text, View } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation from '../../../types/ChargingStation';
-import Connector from '../../../types/Connector';
+import ChargingStation, { Connector } from '../../../types/ChargingStation';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import ConnectorStatusComponent from '../../connector-status/ConnectorStatusComponent';

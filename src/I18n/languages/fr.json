@@ -26,7 +26,11 @@
     "startDate": "Date Début",
     "endDate": "Date Fin",
     "onlyMyTransactions": "Mes Sessions",
-    "wrongTenant": "Vous êtes connecté sur la mauvaise organisation"
+    "wrongTenant": "Vous êtes connecté sur la mauvaise organisation",
+    "createdOn": "Créé le",
+    "createdBy": "Créé par",
+    "lastChangedOn": "Modifié le",
+    "lastChangedBy": "Modifié par"
   },
   "sidebar": {
     "home": "Home",
@@ -199,7 +203,16 @@
     "batteryChartLabel": "Niveau Batterie (%)",
     "connectorMax": "Connecteur Max Power (kW)",
     "noData": "Pas de données",
-    "noSessionInProgress": "Pas de session en cours"
+    "noSessionInProgress": "Pas de session en cours",
+    "serialNumber": "No Série",
+    "privateURL": "URL Privée",
+    "publicURL": "URL Public",
+    "currentIP": "Addressage IP",
+    "lastReboot": "Dernier Reboot",
+    "capabilities": "Capacitées",
+    "ocppStandardParams": "OCPP Params Standard",
+    "ocppVendorParams": "OCPP Params Avancés",
+    "ocppAdvancedCommands": "OCPP Commandes Avancées"
   },
   "notifications": {
     "mustLogin": "Vous devez etre connecté",
