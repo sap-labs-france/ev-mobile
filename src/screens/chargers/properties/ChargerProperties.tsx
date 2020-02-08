@@ -132,11 +132,6 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
     try {
       // Get Charger
       const charger = await this.centralServerProvider.getCharger({ ID: chargerID });
-      console.log('====================================');
-      console.log(charger.capabilities);
-      console.log(charger.ocppStandardParameters);
-      console.log(charger.ocppVendorParameters);
-      console.log('====================================');
       return charger;
     } catch (error) {
       // Other common Error

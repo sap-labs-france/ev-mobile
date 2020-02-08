@@ -29,6 +29,7 @@ const commonStyles = ScaledSheet.create({
   lastTransactionContainer: {
     marginTop: '-75@s',
     marginLeft: '-200@s',
+    paddingBottom: '25@s',
   },
   buttonTransaction: {
     width: '100@s',
@@ -82,7 +83,6 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: 'transparent'
   },
   scrollViewContainer: {
-    marginTop: '20@s'
   },
   detailsContainer: {
     flexDirection: 'column',

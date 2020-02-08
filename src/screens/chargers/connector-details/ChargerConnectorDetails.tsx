@@ -537,13 +537,17 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   };
 
   public renderShowLastTransactionButton = (style: any) => {
-    return (
-      <TouchableOpacity style={[style.lastTransactionContainer]} onPress={() => this.showLastTransaction()}>
-        <View style={[style.buttonLastTransaction]}>
-          <Icon style={style.lastTransactionIcon} type='MaterialCommunityIcons' name='history'/>
-        </View>
-      </TouchableOpacity>
-    );
+    const { isAdmin } = this.state;
+    if (isAdmin) {
+      return (
+        <TouchableOpacity style={[style.lastTransactionContainer]} onPress={() => this.showLastTransaction()}>
+          <View style={[style.buttonLastTransaction]}>
+            <Icon style={style.lastTransactionIcon} type='MaterialCommunityIcons' name='history'/>
+          </View>
+        </TouchableOpacity>
+      );
+    }
+    return null;
   };
 
   public renderStartTransactionButton = (style: any) => {

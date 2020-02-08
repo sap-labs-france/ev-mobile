@@ -131,9 +131,6 @@ export default class ChargerActions extends BaseScreen<Props, State> {
       // Unlock Connector
       const status = await this.centralServerProvider.unlockConnector(chargeBoxID, connectorID);
       // Check
-      console.log('====================================');
-      console.log(status);
-      console.log('====================================');
       if (status.status && status.status === 'Accepted') {
         Message.showSuccess(I18n.t('details.accepted'));
       } else {
