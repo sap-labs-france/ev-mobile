@@ -49,47 +49,40 @@ export default class ChargerComponent extends React.Component<Props, State> {
       <View style={style.container}>
         <View style={style.headerContent}>
           <Text style={style.headerName}>{charger.id}</Text>
-          {charger.inactive ? (
+          <View style={style.buttonContainer}>
+            {isAdmin &&
+              <Button
+                transparent={true}
+                style={style.button}
+                onPress={() => {
+                  navigation.navigate({
+                    routeName: 'ChargerDetailsTabs',
+                    params: {
+                      chargerID: charger.id
+                    },
+                    key: `${Utils.randomNumber()}`
+                  })
+                }}>
+                <Icon style={style.icon} type='MaterialIcons' name='tune' />
+              </Button>
+            }
             <Button
               transparent={true}
               style={style.button}
               onPress={() => {
                 this.showHeartbeatStatus();
               }}>
-              <Animatable.Text animation='fadeIn' easing='ease-in-out' iterationCount='infinite' direction='alternate-reverse'>
-                <Icon style={style.deadHeartbeatIcon} type='FontAwesome' name='heartbeat' />
-              </Animatable.Text>
-            </Button>
-          ) : (
-            <View style={style.buttonContainer}>
-              {isAdmin &&
-                <Button
-                  transparent={true}
-                  style={style.button}
-                  onPress={() => {
-                    navigation.navigate({
-                      routeName: 'ChargerDetailsTabs',
-                      params: {
-                        chargerID: charger.id
-                      },
-                      key: `${Utils.randomNumber()}`
-                    })
-                  }}>
-                  <Icon style={style.icon} type='MaterialIcons' name='tune' />
-                </Button>
-              }
-              <Button
-                transparent={true}
-                style={style.button}
-                onPress={() => {
-                  this.showHeartbeatStatus();
-                }}>
+              {charger.inactive ?
+                <Animatable.Text animation='fadeIn' easing='ease-in-out' iterationCount='infinite' direction='alternate-reverse'>
+                  <Icon style={style.deadHeartbeatIcon} type='FontAwesome' name='heartbeat' />
+                </Animatable.Text>
+              :
                 <Animatable.Text animation='pulse' easing='ease-out' iterationCount='infinite' style={{ textAlign: 'center' }}>
                   <Icon style={style.heartbeatIcon} type='FontAwesome' name='heartbeat' />
                 </Animatable.Text>
-              </Button>
-            </View>
-          )}
+              }
+            </Button>
+          </View>
         </View>
         <View style={style.connectorsContainer}>
           {charger.connectors.map((connector) => (

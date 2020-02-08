@@ -212,7 +212,6 @@ export class CommonColor {
   public inputColorPlaceholder = disabledDark;
 
   // Line Height
-  public listEvenRowBg = borderColor;
   public buttonLineHeight = 19;
   public lineHeightH1 = 32;
   public lineHeightH2 = 27;

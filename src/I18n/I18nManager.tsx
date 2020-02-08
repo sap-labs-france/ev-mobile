@@ -54,26 +54,38 @@ export default class I18nManager {
   }
 
   public static formatNumber(value: number): string {
-    return new Intl.NumberFormat(i18n.locale).format(value);
+    if (!isNaN(value)) {
+      return new Intl.NumberFormat(i18n.locale).format(value);
+    }
+    return '-';
   }
 
   public static formatCurrency(value: number): string {
-    const currency = I18nManager.currency;
-    // Format Currency
-    if (currency) {
-      return new Intl.NumberFormat(i18n.locale, { style: 'currency', currency }).format(value);
+    if (!isNaN(value)) {
+      const currency = I18nManager.currency;
+      if (currency) {
+        return new Intl.NumberFormat(i18n.locale, { style: 'currency', currency }).format(value);
+      }
+      return I18nManager.formatNumber(Math.round(value * 100) / 100);
     }
-    return I18nManager.formatNumber(Math.round(value * 100) / 100);
+    return '-';
   }
 
   public static formatPercentage(value: number): string {
-    if (isNaN(value)) {
-      value = 0;
+    if (!isNaN(value)) {
+      return new Intl.NumberFormat(i18n.locale, { style: 'percent' }).format(value);
     }
-    return new Intl.NumberFormat(i18n.locale, { style: 'percent' }).format(value);
+    return '-';
   }
 
+  private static isValidDate(date: Date): boolean {
+    return date instanceof Date && !isNaN(date.getTime());
+  }
+  
   public static formatDateTime(value: Date, format: string = 'LLL') {
-    return moment(value).format(format);
+    if (I18nManager.isValidDate(value)) {
+      return moment(value).format(format);
+    }
+    return '-';
   }
 }

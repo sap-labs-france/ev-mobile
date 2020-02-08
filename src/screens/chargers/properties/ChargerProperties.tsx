@@ -50,7 +50,7 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
           for (const key in capabilities) {
             if (capabilities.hasOwnProperty(key)) {
               // @ts-ignore
-            formatterValues.push(<Text style={style.values}>{`${key}: ${capabilities[key]}`}</Text>);
+              formatterValues.push(<Text style={style.values}>{`${key}: ${capabilities[key]}`}</Text>);
             }
           }
         }
@@ -133,6 +133,7 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
       // Get Charger
       const charger = await this.centralServerProvider.getCharger({ ID: chargerID });
       console.log('====================================');
+      console.log(charger.capabilities);
       console.log(charger.ocppStandardParameters);
       console.log(charger.ocppVendorParameters);
       console.log('====================================');
@@ -163,7 +164,7 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
       properties.push(
         <View style={bgStyleEven ? { ...style.descriptionContainer, ...style.rowBackground } : style.descriptionContainer}>
           <Text style={style.label}>{I18n.t(displayedProperty.title)}</Text>
-          {displayedProperty.formatter ?
+          {displayedProperty.formatter && value !== '-' ?
             displayedProperty.formatterWithComponents ?
               <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValues}>
                 {displayedProperty.formatter(value)}
@@ -195,6 +196,7 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
           <HeaderComponent
             navigation={this.props.navigation}
             title={charger ? charger.id : I18n.t('connector.unknown')}
+            subTitle={charger && charger.inactive ? `(${I18n.t('details.inactive')})` : null}
             leftAction={() => this.onBack()}
             leftActionIcon={'navigate-before'}
             rightAction={navigation.openDrawer}
