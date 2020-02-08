@@ -30,8 +30,8 @@ const commonStyles = ScaledSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
-  heartbeatButton: {
-    marginRight: '5@s'
+  button: {
+    marginRight: '15@s'
   },
   icon: {
     fontSize: '20@s',

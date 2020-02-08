@@ -8,18 +8,17 @@ import ChargingStation from '../../../types/ChargingStation';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
-import computeStyleSheet from './ChargerDetailsStyles';
+import computeStyleSheet from './ChargerActionsStyles';
 
 export interface Props extends BaseProps {
 }
 
 interface State {
   loading?: boolean;
-  isAdmin?: boolean;
   charger: ChargingStation;
 }
 
-export default class ChargerDetails extends BaseScreen<Props, State> {
+export default class ChargerActions extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
 
@@ -27,7 +26,6 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
     super(props);
     this.state = {
       loading: true,
-      isAdmin: false,
       charger: null,
     }
   }
@@ -42,13 +40,10 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
     const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
     // Get Charger
     const charger = await this.getCharger(chargerID);
-    // Get the provider
-    const securityProvider = this.centralServerProvider.getSecurityProvider();
     // Set
     this.setState({
       loading: false,
       charger,
-      isAdmin: securityProvider ? securityProvider.isAdmin() : false
     });
   }
 
@@ -154,8 +149,7 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { loading, isAdmin, charger } = this.state;
-    // const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
+    const { loading, charger } = this.state;
     return (
       loading ? (
         <Spinner style={style.spinner} />
@@ -170,67 +164,41 @@ export default class ChargerDetails extends BaseScreen<Props, State> {
             rightActionIcon={'menu'}
           />
           <ScrollView contentContainerStyle={style.scrollViewContainer}>
-            <View style={style.topViewContainer}>
-              <View style={style.descriptionContainer}>
-                <Text style={style.label}>{I18n.t('details.vendor')}</Text>
-                <Text style={style.value}>{charger && charger.chargePointVendor ? charger.chargePointVendor : '-'}</Text>
+            <View style={style.viewContainer}>
+              <View style={style.actionContainer}>
+                <Button rounded={true} iconLeft={true} danger={true} style={style.actionButton} onPress={() => this.resetHardConfirm()}>
+                  <Icon style={style.actionButtonIcon} type='MaterialIcons' name='repeat' />
+                  <Text uppercase={false} style={style.actionButtonText}>
+                    {I18n.t('chargers.resetHard')}
+                  </Text>
+                </Button>
               </View>
-              <View style={style.descriptionContainer}>
-                <Text style={style.label}>{I18n.t('details.model')}</Text>
-                <Text style={style.value}>{charger && charger.chargePointModel ? charger.chargePointModel : '-'}</Text>
+              <View style={style.actionContainer}>
+                <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.unlockConnectorConfirm()}>
+                  <Icon style={style.actionButtonIcon} type='MaterialIcons' name='lock-open' />
+                  <Text uppercase={false} style={style.actionButtonText}>
+                    {I18n.t('chargers.unlockConnector')}
+                  </Text>
+                </Button>
               </View>
-              {isAdmin &&
-                <View>
-                  <View style={style.descriptionContainer}>
-                    <Text style={style.label}>{I18n.t('details.ocppVersion')}</Text>
-                    <Text style={style.value}>{charger && charger.ocppVersion ? charger.ocppVersion : '-'}</Text>
-                  </View>
-                  <View style={style.descriptionContainer}>
-                    <Text style={style.label}>{I18n.t('details.firmwareVersion')}</Text>
-                    <Text style={style.value}>{charger && charger.firmwareVersion ? charger.firmwareVersion : '-'}</Text>
-                  </View>
-                </View>
-              }
+              <View style={style.actionContainer}>
+                <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.resetSoftConfirm()}>
+                  <Icon style={style.actionButtonIcon} type='MaterialIcons' name='layers-clear' />
+                  <Text uppercase={false} style={style.actionButtonText}>
+                    {I18n.t('chargers.resetSoft')}
+                  </Text>
+                </Button>
+              </View>
+              <View style={style.actionContainer}>
+                <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.clearCacheConfirm()}>
+                  <Icon style={style.actionButtonIcon} type='MaterialIcons' name='refresh' />
+                  <Text uppercase={false} style={style.actionButtonText}>
+                    {I18n.t('chargers.clearCache')}
+                  </Text>
+                </Button>
+              </View>
             </View>
           </ScrollView>
-          {isAdmin &&
-            <ScrollView contentContainerStyle={style.scrollViewContainer}>
-              <View style={style.bottomViewContainer}>
-                <View style={style.actionContainer}>
-                  <Button rounded={true} iconLeft={true} danger={true} style={style.actionButton} onPress={() => this.resetHardConfirm()}>
-                    <Icon style={style.actionButtonIcon} type='MaterialIcons' name='repeat' />
-                    <Text uppercase={false} style={style.actionButtonText}>
-                      {I18n.t('chargers.resetHard')}
-                    </Text>
-                  </Button>
-                </View>
-                <View style={style.actionContainer}>
-                  <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.unlockConnectorConfirm()}>
-                    <Icon style={style.actionButtonIcon} type='MaterialIcons' name='lock-open' />
-                    <Text uppercase={false} style={style.actionButtonText}>
-                      {I18n.t('chargers.unlockConnector')}
-                    </Text>
-                  </Button>
-                </View>
-                <View style={style.actionContainer}>
-                  <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.resetSoftConfirm()}>
-                    <Icon style={style.actionButtonIcon} type='MaterialIcons' name='layers-clear' />
-                    <Text uppercase={false} style={style.actionButtonText}>
-                      {I18n.t('chargers.resetSoft')}
-                    </Text>
-                  </Button>
-                </View>
-                <View style={style.actionContainer}>
-                  <Button rounded={true} iconLeft={true} warning={true} style={style.actionButton} onPress={() => this.clearCacheConfirm()}>
-                    <Icon style={style.actionButtonIcon} type='MaterialIcons' name='refresh' />
-                    <Text uppercase={false} style={style.actionButtonText}>
-                      {I18n.t('chargers.clearCache')}
-                    </Text>
-                  </Button>
-                </View>
-              </View>
-            </ScrollView>
-          }
         </Container>
       )
     );

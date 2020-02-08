@@ -54,7 +54,14 @@ const commonStyles = ScaledSheet.create({
 
 const portraitStyles = {};
 
-const landscapeStyles = {};
+const landscapeStyles = {
+  chart: {
+    height: '82%'
+  },
+  chartWithHeader: {
+    height: '73%'
+  },
+};
 
 export default function computeStyleSheet(): any {
   return ResponsiveStylesheet.createOriented({

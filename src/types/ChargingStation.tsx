@@ -1,6 +1,7 @@
-import Connector from './Connector';
 import CreatedUpdatedProps from './CreatedUpdatedProps';
+import { KeyValue } from './Global';
 import SiteArea from './SiteArea';
+import { InactivityStatus } from './Transaction';
 
 export default interface ChargingStation extends CreatedUpdatedProps {
   id?: string;
@@ -33,4 +34,52 @@ export default interface ChargingStation extends CreatedUpdatedProps {
   errorCode?: string;
   currentIPAddress?: string;
   siteArea?: SiteArea;
+  capabilities?: ChargingStationCapabilities;
+  ocppAdvancedCommands?: OcppAdvancedCommands[];
+  ocppStandardParameters?: KeyValue[];
+  ocppVendorParameters?: KeyValue[];
+  currentType: ChargingStationCurrentType;
+}
+
+export interface Connector {
+  connectorId: number;
+  currentConsumption: number;
+  currentStateOfCharge?: number;
+  totalInactivitySecs?: number;
+  totalConsumption?: number;
+  status: string;
+  errorCode?: string;
+  info?: string;
+  vendorErrorCode?: string;
+  power: number;
+  type: string;
+  voltage?: number;
+  amperage?: number;
+  activeTransactionID: number;
+  activeTransactionDate: Date;
+  activeTagID: string;
+  statusLastChangedOn?: Date;
+  inactivityStatus: InactivityStatus;
+}
+
+export enum ChargingStationCurrentType {
+  AC = 'AC',
+  DC = 'DC',
+  AC_DC = 'AC/DC',
+}
+
+export interface ChargingStationCapabilities {
+  supportStaticLimitationForChargingStation?: boolean;
+  supportStaticLimitationPerConnector?: boolean;
+  supportChargingProfiles?: boolean;
+  supportTxDefaultProfile?: boolean;
+}
+
+export interface OcppCommand {
+  command: string;
+  parameters: string[];
+}
+
+export interface OcppAdvancedCommands {
+  command: string | OcppCommand;
 }

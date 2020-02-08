@@ -16,8 +16,9 @@ import Login from './screens/auth/login/Login';
 import ResetPassword from './screens/auth/reset-password/ResetPassword';
 import RetrievePassword from './screens/auth/retrieve-password/RetrievePassword';
 import SignUp from './screens/auth/sign-up/SignUp';
+import ChargerActions from './screens/chargers/actions/ChargerActions';
 import ChargerConnectorDetails from './screens/chargers/connector-details/ChargerConnectorDetails';
-import ChargerDetails from './screens/chargers/details/ChargerDetails';
+import ChargerProperties from './screens/chargers/properties/ChargerProperties';
 import Chargers from './screens/chargers/list/Chargers';
 import Home from './screens/home/Home';
 import Sidebar from './screens/sidebar/SideBar';
@@ -72,11 +73,18 @@ const statisticsNavigator: NavigationContainer = createStackNavigator(
 
 const chargerDetailsTabsNavigator = createMaterialBottomTabNavigator(
   {
-    ChargerDetails: {
-      screen: ChargerDetails,
+    ChargerProperties: {
+      screen: ChargerProperties,
       navigationOptions: {
-        title: I18n.t('details.informations'),
+        title: I18n.t('chargers.properties'),
         tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'info')
+      }
+    },
+    ChargerActions: {
+      screen: ChargerActions,
+      navigationOptions: {
+        title: I18n.t('chargers.actions'),
+        tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'build')
       }
     }
   },
@@ -86,7 +94,7 @@ const chargerDetailsTabsNavigator = createMaterialBottomTabNavigator(
     barStyle: { backgroundColor: commonColor.brandPrimaryDark },
     labeled: true,
     backBehavior: 'none',
-    initialRouteName: 'ChargerDetails',
+    initialRouteName: 'ChargerProperties',
   }
 );
 
@@ -217,7 +225,7 @@ const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
     navigationOptions: {
       swipeEnabled: true
     },
-    drawerWidth: Dimensions.get('window').width / 1.5,
+    drawerWidth: 250,
     initialRouteName: 'HomeNavigator',
     unmountInactiveRoutes: true,
     drawerPosition: 'right',
