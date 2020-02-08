@@ -31,7 +31,8 @@ const commonStyles = ScaledSheet.create({
     justifyContent: 'flex-end',
   },
   button: {
-    marginRight: '15@s'
+    marginLeft: '10@s',
+    marginRight: '10@s'
   },
   icon: {
     fontSize: '20@s',
