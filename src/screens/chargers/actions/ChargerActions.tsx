@@ -115,12 +115,15 @@ export default class ChargerActions extends BaseScreen<Props, State> {
     }
   }
 
-  public unlockConnectorConfirm() {
-    // const { charger, connector } = this.state;
-    // Alert.alert(I18n.t('chargers.unlockConnector'), I18n.t('chargers.unlockConnectorMessage', { chargeBoxID: charger.id }), [
-    //   { text: I18n.t('general.yes'), onPress: () => this.unlockConnector(charger.id, connector.connectorId) },
-    //   { text: I18n.t('general.cancel') }
-    // ]);
+  public unlockConnectorConfirm(connectorId: number) {
+    const { charger } = this.state;
+    Alert.alert
+      (I18n.t('chargers.unlockConnector', { connectorId: Utils.getConnectorLetterFromConnectorID(connectorId) }),
+      I18n.t('chargers.unlockConnectorMessage',
+        { chargeBoxID: charger.id, connectorId: Utils.getConnectorLetterFromConnectorID(connectorId) }), [
+      { text: I18n.t('general.yes'), onPress: () => this.unlockConnector(charger.id, connectorId) },
+      { text: I18n.t('general.cancel') }
+    ]);
   }
 
   public async unlockConnector(chargeBoxID: string, connectorID: number) {
@@ -128,6 +131,9 @@ export default class ChargerActions extends BaseScreen<Props, State> {
       // Unlock Connector
       const status = await this.centralServerProvider.unlockConnector(chargeBoxID, connectorID);
       // Check
+      console.log('====================================');
+      console.log(status);
+      console.log('====================================');
       if (status.status && status.status === 'Accepted') {
         Message.showSuccess(I18n.t('details.accepted'));
       } else {
@@ -174,14 +180,17 @@ export default class ChargerActions extends BaseScreen<Props, State> {
                   </Text>
                 </Button>
               </View>
-              <View style={style.actionContainer}>
-                <Button disabled={charger.inactive} rounded={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton} onPress={() => this.unlockConnectorConfirm()}>
-                  <Icon style={style.actionButtonIcon} type='MaterialIcons' name='lock-open' />
-                  <Text uppercase={false} style={style.actionButtonText}>
-                    {I18n.t('chargers.unlockConnector')}
-                  </Text>
-                </Button>
-              </View>
+              { charger && charger.connectors.map((connector) =>
+                <View key={connector.connectorId} style={style.actionContainer}>
+                  <Button disabled={charger.inactive} rounded={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton}
+                      onPress={() => this.unlockConnectorConfirm(connector.connectorId)}>
+                    <Icon style={style.actionButtonIcon} type='MaterialIcons' name='lock-open' />
+                    <Text uppercase={false} style={style.actionButtonText}>
+                      {I18n.t('chargers.unlockConnector', { connectorId: Utils.getConnectorLetterFromConnectorID(connector.connectorId) } )}
+                    </Text>
+                  </Button>
+                </View>
+              )}
               <View style={style.actionContainer}>
                 <Button disabled={charger.inactive} rounded={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton} onPress={() => this.resetSoftConfirm()}>
                   <Icon style={style.actionButtonIcon} type='MaterialIcons' name='layers-clear' />
