@@ -16,6 +16,7 @@ import Login from './screens/auth/login/Login';
 import ResetPassword from './screens/auth/reset-password/ResetPassword';
 import RetrievePassword from './screens/auth/retrieve-password/RetrievePassword';
 import SignUp from './screens/auth/sign-up/SignUp';
+import ChargerActions from './screens/chargers/actions/ChargerActions';
 import ChargerConnectorDetails from './screens/chargers/connector-details/ChargerConnectorDetails';
 import ChargerDetails from './screens/chargers/details/ChargerDetails';
 import Chargers from './screens/chargers/list/Chargers';
@@ -75,8 +76,15 @@ const chargerDetailsTabsNavigator = createMaterialBottomTabNavigator(
     ChargerDetails: {
       screen: ChargerDetails,
       navigationOptions: {
-        title: I18n.t('details.informations'),
+        title: I18n.t('chargers.properties'),
         tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'info')
+      }
+    },
+    ChargerActions: {
+      screen: ChargerActions,
+      navigationOptions: {
+        title: I18n.t('chargers.actions'),
+        tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'build')
       }
     }
   },

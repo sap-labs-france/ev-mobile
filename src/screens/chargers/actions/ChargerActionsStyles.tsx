@@ -24,21 +24,21 @@ const commonStyles = ScaledSheet.create({
     flex: 1,
     color: commonColor.textColor
   },
-  descriptionContainer: {
-    height: '60@s',
-    justifyContent: 'center',
-    alignItems: 'center'
+  actionContainer: {
+    width: '90%',
+    marginTop: '5@s',
+    justifyContent: 'center'
   },
-  label: {
+  actionButton: {
+    height: '40@s',
+    justifyContent: 'center'
+  },
+  actionButtonIcon: {
     fontSize: '20@s',
-    fontWeight: 'bold',
-    color: commonColor.textColor,
-    alignSelf: 'center'
   },
-  value: {
-    fontSize: '20@s',
-    color: commonColor.textColor
-  },
+  actionButtonText: {
+    fontSize: '18@s'
+  }
 });
 
 const portraitStyles = {};

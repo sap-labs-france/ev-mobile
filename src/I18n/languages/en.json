@@ -145,7 +145,10 @@
     "unlockConnectorMessage": "Do you really want to unlock the connector of '{{chargeBoxID}}'?",
     "clearCache": "Clear Cache",
     "clearCacheMessage": "Do you really want to clear the cache of '{{chargeBoxID}}'?",
-    "noChargers": "No Charging Station found"
+    "noChargers": "No Charging Station found",
+    "properties": "Properties",
+    "ocpp": "OCPP",
+    "actions": "Actions"
   },
   "connector": {
     "occupied": "Occupied",

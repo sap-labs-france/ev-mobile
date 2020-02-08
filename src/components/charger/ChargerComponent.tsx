@@ -52,7 +52,7 @@ export default class ChargerComponent extends React.Component<Props, State> {
           {charger.inactive ? (
             <Button
               transparent={true}
-              style={style.heartbeatButton}
+              style={style.button}
               onPress={() => {
                 this.showHeartbeatStatus();
               }}>
@@ -65,7 +65,7 @@ export default class ChargerComponent extends React.Component<Props, State> {
               {isAdmin &&
                 <Button
                   transparent={true}
-                  style={style.heartbeatButton}
+                  style={style.button}
                   onPress={() => {
                     navigation.navigate({
                       routeName: 'ChargerDetailsTabs',
@@ -80,7 +80,7 @@ export default class ChargerComponent extends React.Component<Props, State> {
               }
               <Button
                 transparent={true}
-                style={style.heartbeatButton}
+                style={style.button}
                 onPress={() => {
                   this.showHeartbeatStatus();
                 }}>

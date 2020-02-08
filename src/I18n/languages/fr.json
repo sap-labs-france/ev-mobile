@@ -145,7 +145,10 @@
     "unlockConnectorMessage": "Voulez-vous vraiment dévérouiller le connecteur de '{{chargeBoxID}}'?",
     "clearCache": "Effacer le Cache",
     "clearCacheMessage": "Voulez-vous vraiment le cache de '{{chargeBoxID}}'?",
-    "noChargers": "Aucune Borne trouvée"
+    "noChargers": "Aucune Borne trouvée",
+    "properties": "Propriétées",
+    "ocpp": "OCPP",
+    "actions": "Actions"
   },
   "connector": {
     "occupied": "Occupé",
