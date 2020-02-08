@@ -19,6 +19,7 @@ import SignUp from './screens/auth/sign-up/SignUp';
 import ChargerActions from './screens/chargers/actions/ChargerActions';
 import ChargerConnectorDetails from './screens/chargers/connector-details/ChargerConnectorDetails';
 import Chargers from './screens/chargers/list/Chargers';
+import ChargerOcppParameters from './screens/chargers/ocpp/ChargerOcppParameters';
 import ChargerProperties from './screens/chargers/properties/ChargerProperties';
 import Home from './screens/home/Home';
 import Sidebar from './screens/sidebar/SideBar';
@@ -85,6 +86,13 @@ const chargerDetailsTabsNavigator = createMaterialBottomTabNavigator(
       navigationOptions: {
         title: I18n.t('chargers.actions'),
         tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'build')
+      }
+    },
+    ChargerOcppParameters: {
+      screen: ChargerOcppParameters,
+      navigationOptions: {
+        title: I18n.t('chargers.ocpp'),
+        tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'format-list-bulleted')
       }
     }
   },

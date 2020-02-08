@@ -4,7 +4,7 @@ import NotificationManager from 'notification/NotificationManager';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import I18nManager from '../I18n/I18nManager';
 import { ActionResponse } from '../types/ActionResponse';
-import ChargingStation from '../types/ChargingStation';
+import ChargingStation, { ChargingStationConfiguration } from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
 import Eula, { EulaAccepted } from '../types/Eula';
 import PagingParams from '../types/PagingParams';
@@ -408,6 +408,14 @@ export default class CentralServerProvider {
     const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStation`, {
       headers: this.buildSecuredHeaders(),
       params,
+    });
+    return result.data;
+  }
+
+  public async getChargerConfiguration(id: string): Promise<ChargingStationConfiguration> {
+    // Call
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationConfiguration?ChargeBoxID=${id}`, {
+      headers: this.buildSecuredHeaders()
     });
     return result.data;
   }
