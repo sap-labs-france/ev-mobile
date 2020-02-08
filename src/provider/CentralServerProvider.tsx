@@ -555,6 +555,25 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  public async getLastTransaction(chargeBoxID: string, connectorId: number): Promise<Transaction> {
+    const params: { [param: string]: string } = {};
+    params['ChargeBoxID'] = chargeBoxID;
+    params['ConnectorId'] = connectorId + '';
+    params['Limit'] = '1';
+    params['Skip'] = '0';
+    params['SortFields'] = 'timestamp';
+    params['SortDirs'] = '-1';
+    // Call
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationTransactions`, {
+      headers: this.buildSecuredHeaders(),
+      params,
+    });
+    if (result.data.count > 0) {
+      return result.data.result[0];
+    }
+    return null;
+  }
+
   public async getTransactions(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<TransactionDataResult> {
     this.debugMethod('getTransactions');
     // Build Paging

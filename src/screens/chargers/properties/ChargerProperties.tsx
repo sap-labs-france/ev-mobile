@@ -162,7 +162,7 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
       // @ts-ignore
       const value = charger && charger[displayedProperty.key] ? charger[displayedProperty.key] : '-';
       properties.push(
-        <View style={bgStyleEven ? { ...style.descriptionContainer, ...style.rowBackground } : style.descriptionContainer}>
+        <View style={bgStyleEven ? [style.descriptionContainer, style.rowBackground] : style.descriptionContainer}>
           <Text style={style.label}>{I18n.t(displayedProperty.title)}</Text>
           {displayedProperty.formatter && value !== '-' ?
             displayedProperty.formatterWithComponents ?

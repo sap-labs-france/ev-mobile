@@ -66,12 +66,7 @@ export default class ChargerComponent extends React.Component<Props, State> {
                 <Icon style={style.icon} type='MaterialIcons' name='tune' />
               </Button>
             }
-            <Button
-              transparent={true}
-              style={style.button}
-              onPress={() => {
-                this.showHeartbeatStatus();
-              }}>
+            <Button transparent={true} style={style.button} onPress={() => { this.showHeartbeatStatus(); }}>
               {charger.inactive ?
                 <Animatable.Text animation='fadeIn' easing='ease-in-out' iterationCount='infinite' direction='alternate-reverse'>
                   <Icon style={style.deadHeartbeatIcon} type='FontAwesome' name='heartbeat' />

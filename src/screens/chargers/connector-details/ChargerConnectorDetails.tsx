@@ -111,6 +111,20 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     return null;
   };
 
+  public getLastTransaction = async (chargeBoxID: string, connectorId: number): Promise<Transaction> => {
+    try {
+      // Get Transaction
+      const transaction = await this.centralServerProvider.getLastTransaction(chargeBoxID, connectorId);
+      return transaction;
+    } catch (error) {
+      // Check if HTTP?
+      if (!error.request || error.request.status !== 560) {
+        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      }
+    }
+    return null;
+  };
+
   public getUserImage = async (user: User): Promise<string> => {
     try {
       // User provided?
@@ -123,6 +137,24 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     }
     return null;
   };
+
+  public showLastTransaction = async () => {
+    const { navigation } = this.props;
+    const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
+    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null), 10);
+    // Get the last session
+    const transaction = await this.getLastTransaction(chargerID, connectorID);
+    if (transaction) {
+      // Navigate
+      navigation.navigate({
+        routeName: 'TransactionDetailsTabs',
+        params: { transactionID: transaction.id },
+        key: `${Utils.randomNumber()}`
+      });
+    } else {
+      Alert.alert(I18n.t('chargers.noSession'), I18n.t('chargers.noSessionMessage'));
+    }
+  }
 
   public refresh = async () => {
     let siteImage = null;
@@ -504,6 +536,16 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     );
   };
 
+  public renderShowLastTransactionButton = (style: any) => {
+    return (
+      <TouchableOpacity style={[style.lastTransactionContainer]} onPress={() => this.showLastTransaction()}>
+        <View style={[style.buttonLastTransaction]}>
+          <Icon style={style.lastTransactionIcon} type='MaterialCommunityIcons' name='history'/>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   public renderStartTransactionButton = (style: any) => {
     const { buttonDisabled } = this.state;
     return (
@@ -580,10 +622,12 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
           />
           {/* Site Image */}
           <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
+          {/* Last Transaction */}
           {/* Start/Stop Transaction */}
           {canStartTransaction && connector && connector.activeTransactionID === 0 ? (
             <View style={style.transactionContainer}>
               {this.renderStartTransactionButton(style)}
+              {this.renderShowLastTransactionButton(style)}
             </View>
           ) : canStopTransaction && connector && connector.activeTransactionID > 0 ? (
             <View style={style.transactionContainer}>
@@ -593,8 +637,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
             <View style={style.noButtonStopTransaction} />
           )}
           {/* Details */}
-          <ScrollView
-            style={style.scrollViewContainer}
+          <ScrollView style={style.scrollViewContainer}
             refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
             <View style={style.detailsContainer}>
               <View style={style.rowContainer}>

@@ -79,7 +79,7 @@ export default class I18nManager {
   }
 
   private static isValidDate(date: Date): boolean {
-    return date instanceof Date && !isNaN(date.getTime());
+    return !isNaN(new Date(date).getTime());
   }
   
   public static formatDateTime(value: Date, format: string = 'LLL') {

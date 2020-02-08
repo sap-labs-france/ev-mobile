@@ -2,7 +2,7 @@ import I18n from 'i18n-js';
 import { Icon, Root } from 'native-base';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import React from 'react';
-import { Dimensions, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 import { createAppContainer, createSwitchNavigator, NavigationContainer, NavigationContainerComponent, NavigationState } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
@@ -18,8 +18,8 @@ import RetrievePassword from './screens/auth/retrieve-password/RetrievePassword'
 import SignUp from './screens/auth/sign-up/SignUp';
 import ChargerActions from './screens/chargers/actions/ChargerActions';
 import ChargerConnectorDetails from './screens/chargers/connector-details/ChargerConnectorDetails';
-import ChargerProperties from './screens/chargers/properties/ChargerProperties';
 import Chargers from './screens/chargers/list/Chargers';
+import ChargerProperties from './screens/chargers/properties/ChargerProperties';
 import Home from './screens/home/Home';
 import Sidebar from './screens/sidebar/SideBar';
 import SiteAreas from './screens/site-areas/SiteAreas';
@@ -125,42 +125,6 @@ const chargerConnectorDetailsTabsNavigator = createMaterialBottomTabNavigator(
   }
 );
 
-// Organizations Stack Navigation
-const sitesNavigator: NavigationContainer = createStackNavigator(
-  {
-    Sites: { screen: Sites },
-    SiteAreas: { screen: SiteAreas },
-    Chargers: { screen: Chargers },
-    ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator },
-    ChargerConnectorDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator }
-  },
-  {
-    initialRouteName: 'Sites',
-    headerMode: 'none'
-  }
-);
-
-// Chargers Stack Navigation
-const chargersNavigator: NavigationContainer = createStackNavigator(
-  {
-    Chargers: { screen: Chargers },
-    ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator },
-    ChargerConnectorDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator }
-  },
-  {
-    initialRouteName: 'Chargers',
-    headerMode: 'none'
-  }
-);
-
-const createTabBarIcon = (props: { focused: boolean; tintColor?: string; horizontal?: boolean;},
-    type: 'AntDesign' | 'Entypo' | 'EvilIcons' | 'Feather' | 'FontAwesome' | 'FontAwesome5' | 'Foundation' | 'Ionicons' | 'MaterialCommunityIcons' | 'MaterialIcons' | 'Octicons' | 'SimpleLineIcons' | 'Zocial',
-    name: string): React.ReactNode => {
-  return <Icon style={{
-      color: props.focused ? commonColor.topTabBarActiveTextColor : commonColor.topTabBarTextColor, paddingBottom: 5, fontSize: 23
-    }} type={type} name={name} />
-};
-
 const transactionDetailsTabsNavigator = createMaterialBottomTabNavigator(
   {
     TransactionDetails: {
@@ -187,6 +151,44 @@ const transactionDetailsTabsNavigator = createMaterialBottomTabNavigator(
     initialRouteName: 'TransactionDetails',
   }
 );
+
+// Organizations Stack Navigation
+const sitesNavigator: NavigationContainer = createStackNavigator(
+  {
+    Sites: { screen: Sites },
+    SiteAreas: { screen: SiteAreas },
+    Chargers: { screen: Chargers },
+    ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator },
+    ChargerConnectorDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator },
+    TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator }
+  },
+  {
+    initialRouteName: 'Sites',
+    headerMode: 'none'
+  }
+);
+
+// Chargers Stack Navigation
+const chargersNavigator: NavigationContainer = createStackNavigator(
+  {
+    Chargers: { screen: Chargers },
+    ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator },
+    ChargerConnectorDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator },
+    TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator }
+  },
+  {
+    initialRouteName: 'Chargers',
+    headerMode: 'none'
+  }
+);
+
+const createTabBarIcon = (props: { focused: boolean; tintColor?: string; horizontal?: boolean;},
+    type: 'AntDesign' | 'Entypo' | 'EvilIcons' | 'Feather' | 'FontAwesome' | 'FontAwesome5' | 'Foundation' | 'Ionicons' | 'MaterialCommunityIcons' | 'MaterialIcons' | 'Octicons' | 'SimpleLineIcons' | 'Zocial',
+    name: string): React.ReactNode => {
+  return <Icon style={{
+      color: props.focused ? commonColor.topTabBarActiveTextColor : commonColor.topTabBarTextColor, paddingBottom: 5, fontSize: 23
+    }} type={type} name={name} />
+};
 
 const transactionHistoryNavigator: NavigationContainer = createStackNavigator(
   {
