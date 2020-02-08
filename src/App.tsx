@@ -18,8 +18,8 @@ import RetrievePassword from './screens/auth/retrieve-password/RetrievePassword'
 import SignUp from './screens/auth/sign-up/SignUp';
 import ChargerActions from './screens/chargers/actions/ChargerActions';
 import ChargerConnectorDetails from './screens/chargers/connector-details/ChargerConnectorDetails';
-import ChargerProperties from './screens/chargers/properties/ChargerProperties';
 import Chargers from './screens/chargers/list/Chargers';
+import ChargerProperties from './screens/chargers/properties/ChargerProperties';
 import Home from './screens/home/Home';
 import Sidebar from './screens/sidebar/SideBar';
 import SiteAreas from './screens/site-areas/SiteAreas';
