@@ -81,7 +81,7 @@ export default class I18nManager {
   private static isValidDate(date: Date): boolean {
     return date instanceof Date && !isNaN(date.getTime());
   }
-  
+
   public static formatDateTime(value: Date, format: string = 'LLL') {
     if (I18nManager.isValidDate(value)) {
       return moment(value).format(format);
