@@ -30,6 +30,8 @@ const commonStyles = ScaledSheet.create({
   label: {
     width: '150@s',
     marginLeft: '10@s',
+    marginTop: '5@s',
+    marginBottom: '5@s',
     fontSize: '15@s',
     fontWeight: 'bold',
     color: commonColor.textColor,
@@ -44,7 +46,8 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.textColor
   },
   scrollViewValues: {
-    flexDirection: 'column'
+    flexDirection: 'column',
+    marginTop: '5@s'
   },
   values: {
     fontSize: '15@s',
@@ -53,7 +56,7 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.textColor
   },
   rowBackground: {
-    backgroundColor: commonColor.listEvenRowBg
+    backgroundColor: commonColor.headerBgColor
   },
 });
 
