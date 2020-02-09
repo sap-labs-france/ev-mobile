@@ -9,6 +9,7 @@ import domestic from '../../assets/connectorType/domestic-ue.gif';
 import noConnector from '../../assets/connectorType/no-connector.gif';
 import type2 from '../../assets/connectorType/type2.gif';
 import commonColor from '../theme/variables/commonColor';
+import { ChargePointStatus, ConnectorType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
 import { InactivityStatus } from '../types/Transaction';
 import User from '../types/User';
@@ -241,25 +242,25 @@ export default class Utils {
 
   public static translateConnectorStatus = (status: string): string => {
     switch (status) {
-      case Constants.CONN_STATUS_AVAILABLE:
+      case ChargePointStatus.AVAILABLE:
         return I18n.t('connector.available');
-      case Constants.CONN_STATUS_CHARGING:
+      case ChargePointStatus.CHARGING:
         return I18n.t('connector.charging');
-      case Constants.CONN_STATUS_OCCUPIED:
+      case ChargePointStatus.OCCUPIED:
         return I18n.t('connector.occupied');
-      case Constants.CONN_STATUS_FAULTED:
+      case ChargePointStatus.FAULTED:
         return I18n.t('connector.faulted');
-      case Constants.CONN_STATUS_RESERVED:
+      case ChargePointStatus.RESERVED:
         return I18n.t('connector.reserved');
-      case Constants.CONN_STATUS_FINISHING:
+      case ChargePointStatus.FINISHING:
         return I18n.t('connector.finishing');
-      case Constants.CONN_STATUS_PREPARING:
+      case ChargePointStatus.PREPARING:
         return I18n.t('connector.preparing');
-      case Constants.CONN_STATUS_SUSPENDED_EVSE:
+      case ChargePointStatus.SUSPENDED_EVSE:
         return I18n.t('connector.suspendedEVSE');
-      case Constants.CONN_STATUS_SUSPENDED_EV:
+      case ChargePointStatus.SUSPENDED_EV:
         return I18n.t('connector.suspendedEV');
-      case Constants.CONN_STATUS_UNAVAILABLE:
+      case ChargePointStatus.UNAVAILABLE:
         return I18n.t('connector.unavailable');
       default:
         return I18n.t('connector.unknown');
@@ -268,28 +269,28 @@ export default class Utils {
 
   public static translateConnectorType = (type: string): string => {
     switch (type) {
-      case Constants.CONN_TYPE_2:
+      case ConnectorType.TYPE_2:
         return I18n.t('connector.type2');
-      case Constants.CONN_TYPE_COMBO_CCS:
+      case ConnectorType.COMBO_CCS:
         return I18n.t('connector.comboCCS');
-      case Constants.CONN_TYPE_CHADEMO:
+      case ConnectorType.CHADEMO:
         return I18n.t('connector.chademo');
-      case Constants.CONN_TYPE_DOMESTIC:
+      case ConnectorType.DOMESTIC:
         return I18n.t('connector.domestic');
       default:
         return I18n.t('connector.unknown');
     }
   };
 
-  public static getConnectorTypeImage = (type: string): ImageSourcePropType => {
+  public static getConnectorTypeImage = (type: ConnectorType): ImageSourcePropType => {
     switch (type) {
-      case Constants.CONN_TYPE_2:
+      case ConnectorType.TYPE_2:
         return type2;
-      case Constants.CONN_TYPE_COMBO_CCS:
+      case ConnectorType.COMBO_CCS:
         return combo;
-      case Constants.CONN_TYPE_CHADEMO:
+      case ConnectorType.CHADEMO:
         return chademo;
-      case Constants.CONN_TYPE_DOMESTIC:
+      case ConnectorType.DOMESTIC:
         return domestic;
       default:
         return noConnector;

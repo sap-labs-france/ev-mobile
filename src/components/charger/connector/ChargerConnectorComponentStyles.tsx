@@ -54,6 +54,7 @@ const commonStyles = ScaledSheet.create({
   },
   labelImage: {
     color: commonColor.textColor,
+    paddingTop: '2@s',
     fontSize: '10@s'
   },
   label: {

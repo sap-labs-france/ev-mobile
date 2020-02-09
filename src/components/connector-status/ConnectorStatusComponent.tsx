@@ -2,7 +2,7 @@ import { Text, View } from 'native-base';
 import React from 'react';
 import { Animated, Easing, Platform } from 'react-native';
 import BaseProps from '../../types/BaseProps';
-import { Connector } from '../../types/ChargingStation';
+import { ChargePointStatus, Connector } from '../../types/ChargingStation';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './ConnectorStatusComponentStyles';
@@ -70,42 +70,42 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     };
     switch (connectorType) {
       // Charging
-      case Constants.CONN_STATUS_CHARGING:
-      case Constants.CONN_STATUS_OCCUPIED:
+      case ChargePointStatus.CHARGING:
+      case ChargePointStatus.OCCUPIED:
         status = 'charging';
         break;
       // Preparing
-      case Constants.CONN_STATUS_PREPARING:
+      case ChargePointStatus.PREPARING:
         status = 'preparing';
         break;
       // Preparing
-      case Constants.CONN_STATUS_FINISHING:
+      case ChargePointStatus.FINISHING:
         status = 'finishing';
         break;
       // Reserved
-      case Constants.CONN_STATUS_RESERVED:
+      case ChargePointStatus.RESERVED:
         status = 'reserved';
         break;
       // Faulted
-      case Constants.CONN_STATUS_FAULTED:
+      case ChargePointStatus.FAULTED:
         status = 'faulted';
         break;
       // Unavailable
-      case Constants.CONN_STATUS_UNAVAILABLE:
+      case ChargePointStatus.UNAVAILABLE:
         status = 'unavailable';
         break;
       // Suspending EV / EVSE
-      case Constants.CONN_STATUS_SUSPENDED_EVSE:
-      case Constants.CONN_STATUS_SUSPENDED_EV:
+      case ChargePointStatus.SUSPENDED_EVSE:
+      case ChargePointStatus.SUSPENDED_EV:
         status = 'suspended';
         break;
       // Available
-      case Constants.CONN_STATUS_AVAILABLE:
+      case ChargePointStatus.AVAILABLE:
         status = 'available';
         break;
       // Default
       default:
-        case Constants.CONN_STATUS_UNAVAILABLE:
+        case ChargePointStatus.UNAVAILABLE:
           status = 'unavailable';
           break;
       }
@@ -134,7 +134,7 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     if (connector) {
       return connector.currentConsumption > 0;
     } else {
-      return type === Constants.CONN_STATUS_CHARGING && value > 0;
+      return type === ChargePointStatus.CHARGING && value > 0;
     }
   }
 

@@ -1,3 +1,5 @@
+import { Action, Entity, Role } from '../types/Authorization';
+import { ComponentType } from '../types/Setting';
 import SiteArea from '../types/SiteArea';
 import UserToken from '../types/UserToken';
 import Constants from '../utils/Constants';
@@ -10,14 +12,14 @@ export default class SecurityProvider {
   }
 
   public isAdmin(): boolean {
-    return this.loggedUser.role === Constants.ROLE_ADMIN;
+    return this.loggedUser.role === Role.ADMIN;
   }
 
   public isSiteAdmin(siteID: string): boolean {
     if (this.isAdmin()) {
       return true;
     }
-    if (this.canAccess(Constants.ENTITY_SITE, Constants.ACTION_UPDATE)) {
+    if (this.canAccess(Entity.SITE, Action.UPDATE)) {
       return this.loggedUser.sitesAdmin && this.loggedUser.sitesAdmin.includes(siteID);
     }
     return false;
@@ -27,26 +29,26 @@ export default class SecurityProvider {
     if (this.isAdmin()) {
       return true;
     }
-    if (this.canAccess(Constants.ENTITY_SITE, Constants.ACTION_READ)) {
+    if (this.canAccess(Entity.SITE, Action.READ)) {
       return this.loggedUser.sites && this.loggedUser.sites.includes(siteID);
     }
     return false;
   }
 
   public isBasic(): boolean {
-    return this.loggedUser.role === Constants.ROLE_BASIC;
+    return this.loggedUser.role === Role.BASIC;
   }
 
   public isDemo(): boolean {
-    return this.loggedUser.role === Constants.ROLE_DEMO;
+    return this.loggedUser.role === Role.DEMO;
   }
 
   public isComponentPricingActive(): boolean {
-    return this.isComponentActive(Constants.COMPONENTS.PRICING);
+    return this.isComponentActive(ComponentType.PRICING);
   }
 
   public isComponentOrganizationActive(): boolean {
-    return this.isComponentActive(Constants.COMPONENTS.ORGANIZATION);
+    return this.isComponentActive(ComponentType.ORGANIZATION);
   }
 
   public isComponentActive(componentName: string): boolean {
@@ -57,15 +59,15 @@ export default class SecurityProvider {
   }
 
   public canUpdateChargingStation(): boolean {
-    return this.canAccess(Constants.ENTITY_CHARGING_STATION, Constants.ACTION_UPDATE);
+    return this.canAccess(Entity.CHARGING_STATION, Action.UPDATE);
   }
 
   public canStopTransaction(siteArea: SiteArea, badgeID: string): boolean {
-    if (this.canAccess(Constants.ENTITY_CHARGING_STATION, Constants.ACTION_REMOTE_STOP_TRANSACTION)) {
+    if (this.canAccess(Entity.CHARGING_STATION, Action.REMOTE_STOP_TRANSACTION)) {
       if (this.loggedUser.tagIDs.includes(badgeID)) {
         return true;
       }
-      if (this.isComponentActive(Constants.COMPONENTS.ORGANIZATION)) {
+      if (this.isComponentActive(ComponentType.ORGANIZATION)) {
         return siteArea && this.isSiteAdmin(siteArea.siteID);
       }
       return this.isAdmin();
@@ -74,8 +76,8 @@ export default class SecurityProvider {
   }
 
   public canStartTransaction(siteArea: SiteArea): boolean {
-    if (this.canAccess(Constants.ENTITY_CHARGING_STATION, Constants.ACTION_REMOTE_START_TRANSACTION)) {
-      if (this.isComponentActive(Constants.COMPONENTS.ORGANIZATION)) {
+    if (this.canAccess(Entity.CHARGING_STATION, Action.REMOTE_START_TRANSACTION)) {
+      if (this.isComponentActive(ComponentType.ORGANIZATION)) {
         if (!siteArea) {
           return false;
         }
@@ -88,11 +90,11 @@ export default class SecurityProvider {
   }
 
   public canReadTransaction(siteArea: SiteArea, badgeID: string): boolean {
-    if (this.canAccess(Constants.ENTITY_TRANSACTION, Constants.ACTION_READ)) {
+    if (this.canAccess(Entity.TRANSACTION, Action.READ)) {
       if (this.loggedUser.tagIDs.includes(badgeID)) {
         return true;
       }
-      if (this.isComponentActive(Constants.COMPONENTS.ORGANIZATION) && siteArea) {
+      if (this.isComponentActive(ComponentType.ORGANIZATION) && siteArea) {
         return this.isSiteAdmin(siteArea.siteID) || (this.isDemo() && this.isSiteUser(siteArea.siteID));
       }
       return this.isAdmin() || this.isDemo();

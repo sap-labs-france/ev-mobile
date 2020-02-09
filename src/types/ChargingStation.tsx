@@ -47,12 +47,12 @@ export interface Connector {
   currentStateOfCharge?: number;
   totalInactivitySecs?: number;
   totalConsumption?: number;
-  status: string;
+  status: ChargePointStatus;
   errorCode?: string;
   info?: string;
   vendorErrorCode?: string;
   power: number;
-  type: string;
+  type: ConnectorType;
   voltage?: number;
   amperage?: number;
   activeTransactionID: number;
@@ -60,6 +60,29 @@ export interface Connector {
   activeTagID: string;
   statusLastChangedOn?: Date;
   inactivityStatus: InactivityStatus;
+}
+
+export enum ChargePointStatus {
+  AVAILABLE = 'Available',
+  PREPARING = 'Preparing',
+  CHARGING = 'Charging',
+  OCCUPIED = 'Occupied',
+  SUSPENDED_EVSE = 'SuspendedEVSE',
+  SUSPENDED_EV = 'SuspendedEV',
+  FINISHING = 'Finishing',
+  RESERVED = 'Reserved',
+  UNAVAILABLE = 'Unavailable',
+  FAULTED = 'Faulted',
+}
+
+export enum ConnectorType {
+  TYPE_2 = 'T2',
+  COMBO_CCS = 'CCS',
+  CHADEMO = 'C',
+  TYPE_1 = 'T1',
+  TYPE_1_CCS = 'T1CCS',
+  DOMESTIC = 'D',
+  UNKNOWN = 'U',
 }
 
 export enum ChargingStationCurrentType {

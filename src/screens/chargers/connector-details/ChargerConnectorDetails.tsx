@@ -9,7 +9,7 @@ import ConnectorStatusComponent from '../../../components/connector-status/Conne
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation, { Connector } from '../../../types/ChargingStation';
+import ChargingStation, { Connector, ChargePointStatus } from '../../../types/ChargingStation';
 import Transaction from '../../../types/Transaction';
 import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
@@ -318,8 +318,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     const { startTransactionNbTrial } = this.state;
     // Check if the Start/Stop Button should stay disabled
     if (connector &&
-      ((connector.status === Constants.CONN_STATUS_AVAILABLE && startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
-      (connector.status === Constants.CONN_STATUS_PREPARING && startTransactionNbTrial === 0))
+      ((connector.status === ChargePointStatus.AVAILABLE && startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
+      (connector.status === ChargePointStatus.PREPARING && startTransactionNbTrial === 0))
     ) {
       // Button are set to available after the nbr of trials
       return {
@@ -339,7 +339,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
         buttonDisabled: false
       };
       // Transaction is stopped (activeTransactionID == 0)
-    } else if (connector && connector.status === Constants.CONN_STATUS_FINISHING) {
+    } else if (connector && connector.status === ChargePointStatus.FINISHING) {
       // Disable the button until the user unplug the cable
       return {
         buttonDisabled: true
@@ -403,8 +403,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     return (
       <View style={style.columnContainer}>
         <ConnectorStatusComponent navigation={this.props.navigation} connector={connector}
-          text={connector ? Utils.translateConnectorStatus(connector.status) : Constants.CONN_STATUS_UNAVAILABLE} />
-        {isAdmin && connector && connector.status === Constants.CONN_STATUS_FAULTED && (
+          text={connector ? Utils.translateConnectorStatus(connector.status) : ChargePointStatus.UNAVAILABLE} />
+        {isAdmin && connector && connector.status === ChargePointStatus.FAULTED && (
           <Text style={[style.subLabel, style.subLabelStatusError]}>({connector.errorCode})</Text>
         )}
       </View>

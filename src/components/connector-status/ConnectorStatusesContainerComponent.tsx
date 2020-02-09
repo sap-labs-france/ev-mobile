@@ -2,6 +2,7 @@ import I18n from 'i18n-js';
 import { View } from 'native-base';
 import React from 'react';
 import BaseProps from '../../types/BaseProps';
+import { ChargePointStatus } from '../../types/ChargingStation';
 import ConnectorStats from '../../types/ConnectorStats';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
@@ -35,8 +36,8 @@ export default class ConnectorStatusesContainerComponent extends React.Component
         <ConnectorStatusComponent
           navigation={navigation}
           value={connectorStats.availableConnectors}
-          text={Utils.translateConnectorStatus(Constants.CONN_STATUS_AVAILABLE)}
-          type={Constants.CONN_STATUS_AVAILABLE}
+          text={Utils.translateConnectorStatus(ChargePointStatus.AVAILABLE)}
+          type={ChargePointStatus.AVAILABLE}
         />
         <ConnectorStatusComponent
           navigation={navigation}
@@ -47,13 +48,13 @@ export default class ConnectorStatusesContainerComponent extends React.Component
             connectorStats.unavailableConnectors
           }
           text={I18n.t('connector.notCharging')}
-          type={Constants.CONN_STATUS_SUSPENDED_EVSE}
+          type={ChargePointStatus.SUSPENDED_EVSE}
         />
         <ConnectorStatusComponent
           navigation={navigation}
           value={connectorStats.chargingConnectors}
-          text={Utils.translateConnectorStatus(Constants.CONN_STATUS_CHARGING)}
-          type={Constants.CONN_STATUS_CHARGING}
+          text={Utils.translateConnectorStatus(ChargePointStatus.CHARGING)}
+          type={ChargePointStatus.CHARGING}
         />
       </View>
     );
