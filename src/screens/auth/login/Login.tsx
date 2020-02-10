@@ -27,7 +27,7 @@ interface State {
   initialLoading?: boolean;
   errorEula?: object[];
   errorPassword?: object[];
-  errorTenant?: object[];
+  errorTenantSubDomain?: object[];
   errorEmail?: object[];
 }
 
@@ -284,8 +284,8 @@ export default class Login extends BaseScreen<Props, State> {
                 }>
                 <TextRN style={style.buttonText}>{this.state.tenantTitle}</TextRN>
               </Button>
-              {this.state.errorTenant &&
-                this.state.errorTenant.map((errorMessage, index) => (
+              {this.state.errorTenantSubDomain &&
+                this.state.errorTenantSubDomain.map((errorMessage, index) => (
                   <Text style={style.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
