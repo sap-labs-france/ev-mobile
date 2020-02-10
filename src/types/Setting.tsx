@@ -1,5 +1,16 @@
 import CreatedUpdatedProps from './CreatedUpdatedProps';
 
+export enum ComponentType {
+  OCPI = 'ocpi',
+  ORGANIZATION = 'organization',
+  PRICING = 'pricing',
+  BILLING = 'billing',
+  REFUND = 'refund',
+  STATISTICS = 'statistics',
+  ANALYTICS = 'analytics',
+  SMART_CHARGING = 'smartCharging'
+}
+
 export enum IdentifierType {
   PRICING = 'pricing',
   ANALYTICS = 'analytics',

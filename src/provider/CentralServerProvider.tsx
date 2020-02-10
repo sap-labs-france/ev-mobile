@@ -4,7 +4,7 @@ import NotificationManager from 'notification/NotificationManager';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import I18nManager from '../I18n/I18nManager';
 import { ActionResponse } from '../types/ActionResponse';
-import ChargingStation from '../types/ChargingStation';
+import ChargingStation, { ChargingStationConfiguration } from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
 import Eula, { EulaAccepted } from '../types/Eula';
 import PagingParams from '../types/PagingParams';
@@ -412,6 +412,14 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  public async getChargerConfiguration(id: string): Promise<ChargingStationConfiguration> {
+    // Call
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationConfiguration?ChargeBoxID=${id}`, {
+      headers: this.buildSecuredHeaders()
+    });
+    return result.data;
+  }
+
   public async getSettings(params: {} = {}): Promise<DataResult<Setting>> {
     this.debugMethod('getCharger');
     // Call
@@ -553,6 +561,25 @@ export default class CentralServerProvider {
       params,
     });
     return result.data;
+  }
+
+  public async getLastTransaction(chargeBoxID: string, connectorId: number): Promise<Transaction> {
+    const params: { [param: string]: string } = {};
+    params.ChargeBoxID = chargeBoxID;
+    params.ConnectorId = connectorId + '';
+    params.Limit = '1';
+    params.Skip = '0';
+    params.SortFields = 'timestamp';
+    params.SortDirs = '-1';
+    // Call
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationTransactions`, {
+      headers: this.buildSecuredHeaders(),
+      params,
+    });
+    if (result.data.count > 0) {
+      return result.data.result[0];
+    }
+    return null;
   }
 
   public async getTransactions(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<TransactionDataResult> {

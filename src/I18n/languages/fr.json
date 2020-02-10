@@ -152,7 +152,9 @@
     "noChargers": "Aucune Borne trouvée",
     "properties": "Propriétées",
     "ocpp": "OCPP",
-    "actions": "Actions"
+    "actions": "Actions",
+    "noSession": "Aucune Session",
+    "noSessionMessage": "Auncune session n'a été faite sur ce connecteur"
   },
   "connector": {
     "occupied": "Occupé",

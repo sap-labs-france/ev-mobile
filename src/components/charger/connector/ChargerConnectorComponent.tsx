@@ -1,17 +1,22 @@
 import I18n from 'i18n-js';
 import { Icon, Text, View } from 'native-base';
 import React from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import Chademo from '../../../../assets/connectorType/chademo.svg';
+import ComboCCS from '../../../../assets/connectorType/combo-ccs.svg';
+import Domestic from '../../../../assets/connectorType/domestic-ue.svg';
+import NoConnector from '../../../../assets/connectorType/no-connector.svg';
+import Type1CCS from '../../../../assets/connectorType/type1-ccs.svg';
+import Type1 from '../../../../assets/connectorType/type1.svg';
+import Type2 from '../../../../assets/connectorType/type2.svg';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation, { Connector } from '../../../types/ChargingStation';
+import ChargingStation, { Connector, ConnectorType } from '../../../types/ChargingStation';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import ConnectorStatusComponent from '../../connector-status/ConnectorStatusComponent';
 import computeStyleSheet from './ChargerConnectorComponentStyles';
-
-// import type2 from "../../../../assets/connectorType/type2.svg";
 
 export interface Props extends BaseProps {
   charger: ChargingStation;
@@ -70,8 +75,26 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
     <ConnectorStatusComponent navigation={this.props.navigation} connector={connector} text={Utils.translateConnectorStatus(connector.status)} />
   );
 
-  public renderSecondConnectorDetails = (connector: Connector, style: any) =>
-    connector.activeTransactionID !== 0 ? (
+  private getConnectorTypeSVG = (connectorType: ConnectorType): Element => {
+    switch (connectorType) {
+      case ConnectorType.CHADEMO:
+        return <Chademo width={50} height={50}/>;
+      case ConnectorType.TYPE_2:
+        return <Type2 width={50} height={50} stroke={'#F00'}/>;
+      case ConnectorType.COMBO_CCS:
+        return <ComboCCS width={50} height={50}/>;
+      case ConnectorType.DOMESTIC:
+        return <Domestic width={50} height={50}/>;
+      case ConnectorType.TYPE_1:
+        return <Type1 width={50} height={50}/>;
+      case ConnectorType.TYPE_1_CCS:
+        return <Type1CCS width={50} height={50}/>;
+    }
+    return <NoConnector width={50} height={50}/>;
+  }
+
+  public renderSecondConnectorDetails = (connector: Connector, style: any) => {
+    return connector.activeTransactionID !== 0 ? (
       <View style={style.connectorDetail}>
         <Animatable.View
           animation={!this.state.showBatteryLevel ? 'fadeIn' : 'fadeOut'}
@@ -106,13 +129,12 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
       </View>
     ) : (
       <View style={style.connectorDetail}>
-        {/* <SvgUri width="50" height="50" source={{uri:'http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg'}} /> */}
-        {/* <SvgUri width="50" height="50" source={{uri:'https://slf.evse.cfapps.eu10.hana.ondemand.com/assets/img/connectors/type1-ccs.svg'}} /> */}
-        {/* <SvgUri width="50" height="50" source={type2} /> */}
-        <Image style={style.connectorImage} source={Utils.getConnectorTypeImage(connector.type)} />
+        {/* <Image style={style.connectorImage} source={Utils.getConnectorTypeImage(connector.type)} /> */}
+        {this.getConnectorTypeSVG(connector.type)}
         <Text style={style.labelImage}>{Utils.translateConnectorType(connector.type)}</Text>
       </View>
     );
+  }
 
   public renderThirdConnectorDetails = (connector: Connector, style: any) =>
     connector.activeTransactionID !== 0 ? (

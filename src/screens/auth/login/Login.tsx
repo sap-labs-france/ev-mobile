@@ -3,12 +3,12 @@ import { ActionSheet, Button, CheckBox, Footer, Form, Icon, Item, Left, Right, S
 import React from 'react';
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import Orientation from 'react-native-orientation-locker';
 import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import Tenant from '../../../types/Tenant';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
+import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
@@ -27,7 +27,7 @@ interface State {
   initialLoading?: boolean;
   errorEula?: object[];
   errorPassword?: object[];
-  errorTenant?: object[];
+  errorTenantSubDomain?: object[];
   errorEmail?: object[];
 }
 
@@ -204,14 +204,26 @@ export default class Login extends BaseScreen<Props, State> {
     this.props.navigation.navigate('AppDrawerNavigator');
   }
 
-  public setTenant = (buttonIndex: number) => {
+  public setTenant = async (buttonIndex: number) => {
     // Provided?
     if (buttonIndex !== undefined) {
-      // Set Tenant
-      this.setState({
-        tenantSubDomain: this.tenants[buttonIndex].subdomain,
-        tenantTitle: this.tenants[buttonIndex].name
-      });
+      // Get stored data
+      const credentials = await SecuredStorage.getUserCredentials(this.tenants[buttonIndex].subdomain);
+      if (credentials) {
+        // Set Tenant
+        this.setState({
+          email: credentials.email,
+          password: credentials.password,
+          tenantSubDomain: this.tenants[buttonIndex].subdomain,
+          tenantTitle: this.tenants[buttonIndex].name
+        });
+      } else {
+        // Set Tenant
+        this.setState({
+          tenantSubDomain: this.tenants[buttonIndex].subdomain,
+          tenantTitle: this.tenants[buttonIndex].name
+        });
+      }
     }
   };
 
@@ -272,8 +284,8 @@ export default class Login extends BaseScreen<Props, State> {
                 }>
                 <TextRN style={style.buttonText}>{this.state.tenantTitle}</TextRN>
               </Button>
-              {this.state.errorTenant &&
-                this.state.errorTenant.map((errorMessage, index) => (
+              {this.state.errorTenantSubDomain &&
+                this.state.errorTenantSubDomain.map((errorMessage, index) => (
                   <Text style={style.formErrorText} key={index}>
                     {errorMessage}
                   </Text>

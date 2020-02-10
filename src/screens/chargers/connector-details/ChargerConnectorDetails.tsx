@@ -9,7 +9,7 @@ import ConnectorStatusComponent from '../../../components/connector-status/Conne
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation, { Connector } from '../../../types/ChargingStation';
+import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import Transaction from '../../../types/Transaction';
 import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
@@ -111,6 +111,20 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     return null;
   };
 
+  public getLastTransaction = async (chargeBoxID: string, connectorId: number): Promise<Transaction> => {
+    try {
+      // Get Transaction
+      const transaction = await this.centralServerProvider.getLastTransaction(chargeBoxID, connectorId);
+      return transaction;
+    } catch (error) {
+      // Check if HTTP?
+      if (!error.request || error.request.status !== 560) {
+        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      }
+    }
+    return null;
+  };
+
   public getUserImage = async (user: User): Promise<string> => {
     try {
       // User provided?
@@ -123,6 +137,24 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     }
     return null;
   };
+
+  public showLastTransaction = async () => {
+    const { navigation } = this.props;
+    const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
+    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null), 10);
+    // Get the last session
+    const transaction = await this.getLastTransaction(chargerID, connectorID);
+    if (transaction) {
+      // Navigate
+      navigation.navigate({
+        routeName: 'TransactionDetailsTabs',
+        params: { transactionID: transaction.id },
+        key: `${Utils.randomNumber()}`
+      });
+    } else {
+      Alert.alert(I18n.t('chargers.noSession'), I18n.t('chargers.noSessionMessage'));
+    }
+  }
 
   public refresh = async () => {
     let siteImage = null;
@@ -286,8 +318,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     const { startTransactionNbTrial } = this.state;
     // Check if the Start/Stop Button should stay disabled
     if (connector &&
-      ((connector.status === Constants.CONN_STATUS_AVAILABLE && startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
-      (connector.status === Constants.CONN_STATUS_PREPARING && startTransactionNbTrial === 0))
+      ((connector.status === ChargePointStatus.AVAILABLE && startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
+      (connector.status === ChargePointStatus.PREPARING && startTransactionNbTrial === 0))
     ) {
       // Button are set to available after the nbr of trials
       return {
@@ -307,7 +339,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
         buttonDisabled: false
       };
       // Transaction is stopped (activeTransactionID == 0)
-    } else if (connector && connector.status === Constants.CONN_STATUS_FINISHING) {
+    } else if (connector && connector.status === ChargePointStatus.FINISHING) {
       // Disable the button until the user unplug the cable
       return {
         buttonDisabled: true
@@ -371,8 +403,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     return (
       <View style={style.columnContainer}>
         <ConnectorStatusComponent navigation={this.props.navigation} connector={connector}
-          text={connector ? Utils.translateConnectorStatus(connector.status) : Constants.CONN_STATUS_UNAVAILABLE} />
-        {isAdmin && connector && connector.status === Constants.CONN_STATUS_FAULTED && (
+          text={connector ? Utils.translateConnectorStatus(connector.status) : ChargePointStatus.UNAVAILABLE} />
+        {isAdmin && connector && connector.status === ChargePointStatus.FAULTED && (
           <Text style={[style.subLabel, style.subLabelStatusError]}>({connector.errorCode})</Text>
         )}
       </View>
@@ -504,6 +536,20 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     );
   };
 
+  public renderShowLastTransactionButton = (style: any) => {
+    const { isAdmin } = this.state;
+    if (isAdmin) {
+      return (
+        <TouchableOpacity style={[style.lastTransactionContainer]} onPress={() => this.showLastTransaction()}>
+          <View style={[style.buttonLastTransaction]}>
+            <Icon style={style.lastTransactionIcon} type='MaterialCommunityIcons' name='history'/>
+          </View>
+        </TouchableOpacity>
+      );
+    }
+    return null;
+  };
+
   public renderStartTransactionButton = (style: any) => {
     const { buttonDisabled } = this.state;
     return (
@@ -584,6 +630,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
           {canStartTransaction && connector && connector.activeTransactionID === 0 ? (
             <View style={style.transactionContainer}>
               {this.renderStartTransactionButton(style)}
+              {this.renderShowLastTransactionButton(style)}
             </View>
           ) : canStopTransaction && connector && connector.activeTransactionID > 0 ? (
             <View style={style.transactionContainer}>
@@ -593,8 +640,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
             <View style={style.noButtonStopTransaction} />
           )}
           {/* Details */}
-          <ScrollView
-            style={style.scrollViewContainer}
+          <ScrollView style={style.scrollViewContainer}
             refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
             <View style={style.detailsContainer}>
               <View style={style.rowContainer}>

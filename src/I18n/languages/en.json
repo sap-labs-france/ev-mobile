@@ -152,7 +152,9 @@
     "noChargers": "No Charging Station found",
     "properties": "Properties",
     "ocpp": "OCPP",
-    "actions": "Actions"
+    "actions": "Actions",
+    "noSession": "No Session",
+    "noSessionMessage": "No session has been done on that connector"
   },
   "connector": {
     "occupied": "Occupied",
