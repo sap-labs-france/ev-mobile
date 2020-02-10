@@ -44,7 +44,7 @@ export default class CentralServerProvider {
   constructor() {
     if (__DEV__) {
       // QA REST Server
-      this.centralRestServerServiceBaseURL = "https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com";
+      this.centralRestServerServiceBaseURL = 'https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com';
       this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + '/client/auth';
       this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + '/client/api';
       this.debug = true;
@@ -565,12 +565,12 @@ export default class CentralServerProvider {
 
   public async getLastTransaction(chargeBoxID: string, connectorId: number): Promise<Transaction> {
     const params: { [param: string]: string } = {};
-    params['ChargeBoxID'] = chargeBoxID;
-    params['ConnectorId'] = connectorId + '';
-    params['Limit'] = '1';
-    params['Skip'] = '0';
-    params['SortFields'] = 'timestamp';
-    params['SortDirs'] = '-1';
+    params.ChargeBoxID = chargeBoxID;
+    params.ConnectorId = connectorId + '';
+    params.Limit = '1';
+    params.Skip = '0';
+    params.SortFields = 'timestamp';
+    params.SortDirs = '-1';
     // Call
     const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationTransactions`, {
       headers: this.buildSecuredHeaders(),

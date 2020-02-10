@@ -9,7 +9,7 @@ import ConnectorStatusComponent from '../../../components/connector-status/Conne
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation, { Connector, ChargePointStatus } from '../../../types/ChargingStation';
+import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import Transaction from '../../../types/Transaction';
 import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
