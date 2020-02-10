@@ -80,7 +80,7 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
       case ConnectorType.CHADEMO:
         return <Chademo width={50} height={50}/>;
       case ConnectorType.TYPE_2:
-        return <Type2 width={50} height={50}/>;
+        return <Type2 width={50} height={50} stroke={'#F00'}/>;
       case ConnectorType.COMBO_CCS:
         return <ComboCCS width={50} height={50}/>;
       case ConnectorType.DOMESTIC:

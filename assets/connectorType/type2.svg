@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="170" height="170" viewBox="0 0 45 45">
-  <g transform="matrix(.2626 0 0 .24592 -3.5 -22.7)" fill="none" stroke="#000">
+  <g transform="matrix(.2626 0 0 .24592 -3.5 -22.7)" fill="none" stroke="#053768">
     <ellipse cx="120.3" cy="215" rx="13.3" ry="13.1" stroke-width="9.2"></ellipse>
     <ellipse ry="13.1" rx="13.3" cy="215" cx="77.7" stroke-width="9.2"></ellipse>
     <ellipse cx="57.6" cy="179.5" rx="13.3" ry="13.1" stroke-width="9.2"></ellipse>
