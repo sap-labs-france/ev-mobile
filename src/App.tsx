@@ -7,6 +7,7 @@ import { createAppContainer, createSwitchNavigator, NavigationContainer, Navigat
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
+import computeStyleSheet from './AppStyles';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
 import I18nManager from './I18n/I18nManager';
 import NotificationManager from './notification/NotificationManager';
@@ -35,6 +36,8 @@ import SecuredStorage from './utils/SecuredStorage';
 
 // Init i18n
 I18nManager.initialize();
+
+const appStyles = computeStyleSheet();
 
 // Auth Stack Navigation
 const authNavigator: NavigationContainer = createStackNavigator(
@@ -235,7 +238,7 @@ const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
     navigationOptions: {
       swipeEnabled: true
     },
-    drawerWidth: 250,
+    drawerWidth: appStyles.sideMenu.width,
     initialRouteName: 'HomeNavigator',
     unmountInactiveRoutes: true,
     drawerPosition: 'right',

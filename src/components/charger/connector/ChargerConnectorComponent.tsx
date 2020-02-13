@@ -75,22 +75,22 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
     <ConnectorStatusComponent navigation={this.props.navigation} connector={connector} text={Utils.translateConnectorStatus(connector.status)} />
   );
 
-  private getConnectorTypeSVG = (connectorType: ConnectorType): Element => {
+  private getConnectorTypeSVG = (connectorType: ConnectorType, style: any): Element => {
     switch (connectorType) {
       case ConnectorType.CHADEMO:
-        return <Chademo width={50} height={50}/>;
+        return <Chademo width={style.connectorImage.width} height={style.connectorImage.height}/>;
       case ConnectorType.TYPE_2:
-        return <Type2 width={50} height={50} stroke={'#F00'}/>;
+        return <Type2 width={style.connectorImage.width} height={style.connectorImage.height}/>;
       case ConnectorType.COMBO_CCS:
-        return <ComboCCS width={50} height={50}/>;
+        return <ComboCCS width={style.connectorImage.width} height={style.connectorImage.height}/>;
       case ConnectorType.DOMESTIC:
-        return <Domestic width={50} height={50}/>;
+        return <Domestic width={style.connectorImage.width} height={style.connectorImage.height}/>;
       case ConnectorType.TYPE_1:
-        return <Type1 width={50} height={50}/>;
+        return <Type1 width={style.connectorImage.width} height={style.connectorImage.height}/>;
       case ConnectorType.TYPE_1_CCS:
-        return <Type1CCS width={50} height={50}/>;
+        return <Type1CCS width={style.connectorImage.width} height={style.connectorImage.height}/>;
     }
-    return <NoConnector width={50} height={50}/>;
+    return <NoConnector width={style.connectorImage.width} height={style.connectorImage.height}/>;
   }
 
   public renderSecondConnectorDetails = (connector: Connector, style: any) => {
@@ -130,7 +130,7 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
     ) : (
       <View style={style.connectorDetail}>
         {/* <Image style={style.connectorImage} source={Utils.getConnectorTypeImage(connector.type)} /> */}
-        {this.getConnectorTypeSVG(connector.type)}
+        {this.getConnectorTypeSVG(connector.type, style)}
         <Text style={style.labelImage}>{Utils.translateConnectorType(connector.type)}</Text>
       </View>
     );
