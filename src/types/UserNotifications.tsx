@@ -11,6 +11,8 @@ export enum UserNotificationType {
   SMTP_AUTH_ERROR = 'SmtpAuthError',
   PREPARING_SESSION_NOT_STARTED = 'PreparingSessionNotStarted',
   USER_ACCOUNT_INACTIVITY = 'UserAccountInactivity',
-  OFFLINE_CHARGING_STATION = 'OfflineChargingStation'
+  OFFLINE_CHARGING_STATION = 'OfflineChargingStation',
+  BILLING_USER_SYNCHRONIZATION_FAILED = 'BillingUserSynchronizationFailed',
+  SESSION_NOT_STARTED_AFTER_AUTHORIZE = 'SessionNotStartedAfterAuthorize'
 };
 
