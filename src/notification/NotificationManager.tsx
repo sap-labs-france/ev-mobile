@@ -217,6 +217,7 @@ export default class NotificationManager {
         break;
 
       // Charger just connected
+      case UserNotificationType.SESSION_NOT_STARTED_AFTER_AUTHORIZE:
       case UserNotificationType.CHARGING_STATION_REGISTERED:
         // Navigate
         this.navigator.dispatch(
@@ -252,6 +253,7 @@ export default class NotificationManager {
       case UserNotificationType.SMTP_AUTH_ERROR:
       case UserNotificationType.USER_ACCOUNT_STATUS_CHANGED:
       case UserNotificationType.USER_ACCOUNT_INACTIVITY:
+      case UserNotificationType.BILLING_USER_SYNCHRONIZATION_FAILED:
         break;
     }
     return true;

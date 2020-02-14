@@ -8,7 +8,8 @@ export enum ComponentType {
   REFUND = 'refund',
   STATISTICS = 'statistics',
   ANALYTICS = 'analytics',
-  SMART_CHARGING = 'smartCharging'
+  SMART_CHARGING = 'smartCharging',
+  BUILDING = 'building'
 }
 
 export enum IdentifierType {
