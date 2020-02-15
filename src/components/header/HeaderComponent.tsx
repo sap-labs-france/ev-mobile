@@ -16,7 +16,7 @@ export interface Props extends BaseProps {
   rightAction?: () => void;
   rightActionIcon?: string;
   rightActionIconType?: IconType;
-  hasComplexSearch?: boolean;
+  hasFilter?: boolean;
 }
 
 interface State {
@@ -31,7 +31,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
   public static defaultProps = {
     leftActionIconType: 'MaterialIcons',
     rightActionIconType: 'MaterialIcons',
-    hasComplexSearch: false,
+    hasFilter: false,
   };
 
   constructor(props: Props) {
@@ -74,7 +74,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const { title, subTitle, leftAction, leftActionIcon, leftActionIconType,
-      rightAction, rightActionIcon, rightActionIconType, hasComplexSearch } = this.props;
+      rightAction, rightActionIcon, rightActionIconType, hasFilter } = this.props;
     return (
       <Header style={style.header}>
         <Left style={style.leftHeader}>
@@ -91,10 +91,10 @@ export default class HeaderComponent extends React.Component<Props, State> {
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
         </Body>
         <Right style={style.rightHeader}>
-          {hasComplexSearch && (
+          {hasFilter && (
             <Button
               transparent={true}
-              style={style.rightSearchButtonHeader}
+              style={style.rightFilterButtonHeader}
               onPress={() => {
                 this.searchIsVisible = !this.searchIsVisible;
                 // Show Complex Search

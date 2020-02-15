@@ -176,7 +176,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           leftActionIcon={'navigate-before'}
           rightAction={navigation.openDrawer}
           rightActionIcon={'menu'}
-          hasComplexSearch={isAdmin ? true : false}
+          hasFilter={isAdmin ? true : false}
         />
         {loading ? (
           <Spinner style={style.spinner} />

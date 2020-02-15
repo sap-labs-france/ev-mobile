@@ -190,7 +190,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
           leftActionIcon={'navigate-before'}
           rightAction={navigation.openDrawer}
           rightActionIcon={'menu'}
-          hasComplexSearch={true}
+          hasFilter={true}
         />
         <SimpleSearchComponent
           onChange={(searchText) => this.search(searchText)}

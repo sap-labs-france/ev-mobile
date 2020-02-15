@@ -142,7 +142,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
           leftActionIcon={'navigate-before'}
           rightAction={navigation.openDrawer}
           rightActionIcon={'menu'}
-          hasComplexSearch={true}
+          hasFilter={true}
         />
         {loading ? (
           <Spinner style={style.spinner} />
