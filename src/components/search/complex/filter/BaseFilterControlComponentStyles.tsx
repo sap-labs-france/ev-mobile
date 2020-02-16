@@ -11,7 +11,7 @@ const commonStyles = ScaledSheet.create({
     alignItems: 'center'
   },
   textFilter: {
-    width: '40%',
+    width: '50%',
     fontSize: '14@s',
     fontWeight: 'bold'
   },
