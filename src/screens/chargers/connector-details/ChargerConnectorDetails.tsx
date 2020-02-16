@@ -17,6 +17,7 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargerConnectorDetailsStyles';
+import { DrawerActions } from 'react-navigation-drawer';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -621,7 +622,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
             subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
             leftAction={() => this.onBack()}
             leftActionIcon={'navigate-before'}
-            rightAction={navigation.openDrawer}
+            rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
             rightActionIcon={'menu'}
           />
           {/* Site Image */}

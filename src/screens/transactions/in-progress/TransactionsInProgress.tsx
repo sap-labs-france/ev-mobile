@@ -18,6 +18,7 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../TransactionsStyles';
 import TransactionsInProgressFilters from './TransactionsInProgressFilters';
+import { DrawerActions } from 'react-navigation-drawer';
 
 export interface Props extends BaseProps {
 }
@@ -174,7 +175,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('transactions.transactions')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
-          rightAction={navigation.openDrawer}
+          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
           hasFilter={isAdmin ? true : false}
         />

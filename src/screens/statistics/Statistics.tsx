@@ -13,6 +13,7 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import StatisticsFilters, { StatisticsFiltersDef } from './StatisticsFilters';
 import computeStyleSheet from './StatisticsStyles';
+import { DrawerActions } from 'react-navigation-drawer';
 
 export interface Props extends BaseProps {
 }
@@ -140,7 +141,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
           title={I18n.t('home.statistics')}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
-          rightAction={navigation.openDrawer}
+          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
           hasFilter={true}
         />

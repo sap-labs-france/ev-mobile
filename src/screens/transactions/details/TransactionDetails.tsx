@@ -16,6 +16,7 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './TransactionDetailsStyles';
+import { DrawerActions } from 'react-navigation-drawer';
 
 export interface Props extends BaseProps {
 }
@@ -257,7 +258,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
             subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
             leftAction={() => this.onBack()}
             leftActionIcon={'navigate-before'}
-            rightAction={navigation.openDrawer}
+            rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
             rightActionIcon={'menu'}
           />
           {/* Site Image */}
