@@ -9,17 +9,16 @@ import ListFooterComponent from '../../../components/list/footer/ListFooterCompo
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import TransactionHistoryComponent from '../../../components/transaction/history/TransactionHistoryComponent';
 import I18nManager from '../../../I18n/I18nManager';
-import { StatisticsFiltersDef } from '../../../screens/statistics/StatisticsFilters';
 import BaseProps from '../../../types/BaseProps';
 import { TransactionDataResult } from '../../../types/DataResult';
-import { FilterGlobalInternalIDs } from '../../../types/Filter';
+import { GlobalFilters } from '../../../types/Filter';
 import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../TransactionsStyles';
-import TransactionsHistoryFilters from './TransactionsHistoryFilters';
+import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from './TransactionsHistoryFilters';
 
 export interface Props extends BaseProps {
 }
@@ -28,15 +27,13 @@ interface State {
   transactions?: Transaction[];
   loading?: boolean,
   refreshing?: boolean;
-  userID?: string;
-  startDate?: Date;
-  endDate?: Date;
   skip?: number;
   limit?: number;
   count?: number;
   isPricingActive?: boolean;
   isAdmin?: boolean;
-  filters?: StatisticsFiltersDef;
+  initialFilters?: TransactionsHistoryFiltersDef;
+  filters?: TransactionsHistoryFiltersDef;
 }
 
 export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, State> {
@@ -55,11 +52,9 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       skip: 0,
       limit: Constants.PAGING_SIZE,
       count: 0,
-      userID: null,
-      startDate: null,
-      endDate: null,
       isPricingActive: false,
       isAdmin: false,
+      initialFilters: {},
       filters: {}
     };
     // Set refresh period
@@ -67,15 +62,11 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
   }
 
   public async loadInitialFilters() {
-    const userID = await SecuredStorage.loadFilterValue(FilterGlobalInternalIDs.MY_USER_FILTER);
-    if (userID) {
-      this.setState({
-        userID,
-        filters: {
-          UserID: userID
-        }
-      });
-    }
+    const userID = await SecuredStorage.loadFilterValue(GlobalFilters.MY_USER_FILTER);
+    this.setState({
+      initialFilters: { userID },
+      filters: { userID }
+    });
   }
 
   public async componentDidMount() {
@@ -92,20 +83,32 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     try {
       // Get active transaction
       const transactions = await this.centralServerProvider.getTransactions(
-        { Statistics: 'history', ...this.state.filters, Search: searchText },
+        {
+          Statistics: 'history',
+          UserID: this.state.filters.userID,
+          StartDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime.toISOString() : null,
+          EndDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime.toISOString() : null,
+          Search: searchText
+        },
         { skip, limit }
       );
       // Check
       if (transactions.count === -1) {
         // Request nbr of records
         const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactions(
-          { Statistics: 'history', ...this.state.filters, Search: searchText }, Constants.ONLY_RECORD_COUNT_PAGING
+          {
+            Statistics: 'history',
+            UserID: this.state.filters.userID,
+            StartDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime.toISOString() : null,
+            EndDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime.toISOString() : null,
+            Search: searchText
+          }, Constants.ONLY_RECORD_COUNT_PAGING
         );
         // Set
         transactions.count = transactionsNbrRecordsOnly.count;
         transactions.stats = transactionsNbrRecordsOnly.stats;
       }
-        return transactions;
+      return transactions;
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== 560) {
@@ -143,8 +146,20 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       this.setState({
         loading: false,
         transactions: transactions ? transactions.result : [],
-        startDate: this.state.startDate ? this.state.startDate : transactions.stats.firstTimestamp ? new Date(transactions.stats.firstTimestamp) : new Date(),
-        endDate: this.state.endDate ? this.state.endDate : transactions.stats.lastTimestamp ? new Date(transactions.stats.lastTimestamp) : new Date(),
+        filters: {
+          ...this.state.filters,
+          startDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime :
+            transactions.stats.firstTimestamp ? new Date(transactions.stats.firstTimestamp) : new Date(),
+          endDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime :
+            transactions.stats.lastTimestamp ? new Date(transactions.stats.lastTimestamp) : new Date(),
+        },
+        initialFilters: {
+          ...this.state.initialFilters,
+          startDateTime: this.state.initialFilters.startDateTime ? this.state.initialFilters.startDateTime :
+            transactions.stats.firstTimestamp ? new Date(transactions.stats.firstTimestamp) : new Date(),
+          endDateTime: this.state.initialFilters.endDateTime ? this.state.initialFilters.endDateTime :
+            transactions.stats.lastTimestamp ? new Date(transactions.stats.lastTimestamp) : new Date(),
+        },
         count: transactions ? transactions.count : 0,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,
         isPricingActive: securityProvider ? securityProvider.isComponentPricingActive() : false
@@ -175,8 +190,8 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin, transactions, isPricingActive, userID,
-      startDate, endDate, skip, count, limit } = this.state;
+    const { loading, isAdmin, transactions, isPricingActive,
+      skip, count, limit, initialFilters } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -200,12 +215,8 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
           ) : (
             <View style={style.content}>
               <TransactionsHistoryFilters
-                initialFilters={{
-                  UserID: userID ? userID : null,
-                  StartDateTime: startDate ? startDate.toISOString() : null,
-                  EndDateTime: endDate ? endDate.toISOString() : null
-                }}
-                onFilterChanged={(filters: any) => this.setState({ filters }, () => this.refresh())}
+                initialFilters={initialFilters}
+                onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
                 ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => {
                   if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterContainerComponent()) {
                     this.headerComponent.setFilterContainerComponent(transactionsHistoryFilters.getFilterContainerComponent());

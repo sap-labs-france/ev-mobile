@@ -33,15 +33,16 @@ export default class DateFilterControlComponent extends BaseFilterControlCompone
   public render = () => {
     const style = computeStyleSheet();
     const { filterID, label, defaultDate, minimumDate, maximumDate, locale } = this.props;
-    let currentFilterValue: string = defaultDate ? defaultDate.toISOString() : new Date().toISOString();
+    let currentDate = defaultDate;
+    // Override if already defined
     if (this.getFilterContainerComponent()) {
-      currentFilterValue = this.getFilterContainerComponent().getFilterValue(filterID);
+      currentDate = new Date(this.getFilterContainerComponent().getFilterValue(filterID));
     }
     return (
       <View style={style.rowFilter}>
         <Text style={style.textFilter}>{label}</Text>
         <DatePicker
-          defaultDate={new Date(currentFilterValue)}
+          defaultDate={currentDate}
           minimumDate={minimumDate}
           maximumDate={maximumDate}
           locale={locale}
@@ -51,7 +52,7 @@ export default class DateFilterControlComponent extends BaseFilterControlCompone
           androidMode={'spinner'}
           textStyle={style.filterValue}
           placeHolderTextStyle={style.filterValue}
-          onDateChange={(newDate: Date) => this.getFilterContainerComponent().setFilterValue(this.getID(), newDate.toISOString())}
+          onDateChange={(newDate: Date) => this.getFilterContainerComponent().setFilterValue(this.getID(), newDate)}
           disabled={false}
           formatChosenDate={(date) => I18nManager.formatDateTime(date, 'LL')}
         />

@@ -11,7 +11,9 @@ import SimpleSearchComponent from '../../../components/search/simple/SimpleSearc
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation from '../../../types/ChargingStation';
 import { DataResult } from '../../../types/DataResult';
+import { GlobalFilters } from '../../../types/Filter';
 import Constants from '../../../utils/Constants';
+import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargersStyles';
@@ -52,6 +54,18 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
+  }
+
+  public async loadInitialFilters() {
+    const connectorStatus = await SecuredStorage.loadFilterValue(GlobalFilters.ONLY_AVAILABLE_CHARGERS);
+    if (connectorStatus) {
+      this.setState({
+        connectorStatus,
+        filters: {
+          ConnectorStatus: connectorStatus
+        }
+      });
+    }
   }
 
   public getChargers = async (searchText: string, skip: number, limit: number): Promise<DataResult<ChargingStation>> => {

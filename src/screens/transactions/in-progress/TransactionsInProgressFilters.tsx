@@ -3,19 +3,19 @@ import React from 'react';
 import BaseScreenFilters, { BaseScreenFiltersState } from '../../../components/search/complex/BaseScreenFilters';
 import MyUserSwitchFilterControlComponent from '../../../components/search/complex/filter/my-user-switch/MyUserSwitchFilterControlComponent';
 import FilterContainerComponent from '../../../components/search/complex/FilterContainerComponent';
-import { FilterGlobalInternalIDs } from '../../../types/Filter';
+import { GlobalFilters } from '../../../types/Filter';
 
 export interface Props {
-  onFilterChanged?: (filters: TransactionsFiltersDef) => void;
-  initialFilters?: TransactionsFiltersDef;
+  onFilterChanged?: (filters: TransactionsInProgressFiltersDef) => void;
+  initialFilters?: TransactionsInProgressFiltersDef;
 }
 
-export interface TransactionsFiltersDef {
-  'UserID'?: string;
+export interface TransactionsInProgressFiltersDef {
+  userID?: string;
 }
 
 interface State extends BaseScreenFiltersState {
-  filters?: TransactionsFiltersDef;
+  filters?: TransactionsInProgressFiltersDef;
 }
 
 export default class TransactionsInProgressFilters extends BaseScreenFilters {
@@ -33,13 +33,16 @@ export default class TransactionsInProgressFilters extends BaseScreenFilters {
     super.setState(state, callback);
   }
 
-  public onFilterChanged = (filters: TransactionsFiltersDef, closed: boolean) => {
+  public onFilterChanged = (newFilters: TransactionsInProgressFiltersDef, closed: boolean) => {
     const { onFilterChanged } = this.props;
+    console.log('====================================');
+    console.log('TransactionsInProgress.onFilterChanged');
+    console.log(newFilters);
+    console.log('====================================');
     if (closed) {
       this.setState({
-        filters
-      });
-      onFilterChanged(filters);
+        filters: newFilters
+      }, () => onFilterChanged(newFilters));
     }
   }
 
@@ -55,9 +58,9 @@ export default class TransactionsInProgressFilters extends BaseScreenFilters {
       >
         {this.state.isAdmin &&
           <MyUserSwitchFilterControlComponent
-            filterID={'UserID'}
-            internalFilterID={FilterGlobalInternalIDs.MY_USER_FILTER}
-            initialValue={filters.UserID ? filters.UserID : initialFilters.UserID}
+            filterID={'userID'}
+            internalFilterID={GlobalFilters.MY_USER_FILTER}
+            initialValue={filters.userID ? filters.userID : initialFilters.userID}
             label={I18n.t('general.onlyMyTransactions')}
             ref={async (myUserSwitchFilterComponent: MyUserSwitchFilterControlComponent) => {
               if (myUserSwitchFilterComponent && this.getFilterContainerComponent()) {
