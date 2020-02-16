@@ -4,8 +4,8 @@ import React from 'react';
 import { Text } from 'react-native';
 import Modal from 'react-native-modal';
 import SecuredStorage from '../../../utils/SecuredStorage';
-import BaseFilterComponent from './BaseFilterComponent';
-import computeStyleSheet from './ComplexSearchComponentStyles';
+import BaseFilterComponent from './filter/BaseFilterControlComponent';
+import computeStyleSheet from './FilterContainerComponentStyles';
 
 export interface Props {
   onFilterChanged?: (filters: any, closed: boolean) => void;
@@ -17,7 +17,7 @@ interface State {
   visible?: boolean;
 }
 
-export default class ComplexSearchComponent extends React.Component<Props, State> {
+export default class FilterContainerComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   private filterComponents: BaseFilterComponent[] = [];
@@ -42,8 +42,8 @@ export default class ComplexSearchComponent extends React.Component<Props, State
 
   public async addFilter(newFilterComponent: BaseFilterComponent) {
     // Search
-    for (const filterComponent of this.filterComponents) {
-      if (filterComponent.getID() === newFilterComponent.getID()) {
+    for (const filterContainerComponent of this.filterComponents) {
+      if (filterContainerComponent.getID() === newFilterComponent.getID()) {
         return;
       }
     }
@@ -53,10 +53,10 @@ export default class ComplexSearchComponent extends React.Component<Props, State
 
   public setFilterValue = async (filterID: string, filterValue: any) => {
     // Search
-    for (const filterComponent of this.filterComponents) {
-      if (filterComponent.getID() === filterID) {
+    for (const filterContainerComponent of this.filterComponents) {
+      if (filterContainerComponent.getID() === filterID) {
         // Set
-        filterComponent.setValue(filterValue);
+        filterContainerComponent.setValue(filterValue);
         // Trigger notif
         this.onFilterChanged(false);
         break;
@@ -66,10 +66,10 @@ export default class ComplexSearchComponent extends React.Component<Props, State
 
   public clearFilterValue = async (filterID: string) => {
     // Search
-    for (const filterComponent of this.filterComponents) {
-      if (filterComponent.getID() === filterID) {
+    for (const filterContainerComponent of this.filterComponents) {
+      if (filterContainerComponent.getID() === filterID) {
         // Set
-        filterComponent.clearValue();
+        filterContainerComponent.clearValue();
         // Trigger notif
         this.onFilterChanged(false);
         break;
@@ -79,9 +79,9 @@ export default class ComplexSearchComponent extends React.Component<Props, State
 
   public getFilterValue = (ID: string): string => {
     // Search
-    for (const filterComponent of this.filterComponents) {
-      if (filterComponent.getID() === ID) {
-        return filterComponent.getValue();
+    for (const filterContainerComponent of this.filterComponents) {
+      if (filterContainerComponent.getID() === ID) {
+        return filterContainerComponent.getValue();
       }
     }
     return null;
@@ -90,9 +90,9 @@ export default class ComplexSearchComponent extends React.Component<Props, State
   public getFilterValues = (): any => {
     const filters: any = {};
     // Build
-    for (const filterComponent of this.filterComponents) {
-      if (filterComponent.getValue()) {
-        filters[filterComponent.getID()] = filterComponent.getValue();
+    for (const filterContainerComponent of this.filterComponents) {
+      if (filterContainerComponent.getValue()) {
+        filters[filterContainerComponent.getID()] = filterContainerComponent.getValue();
       }
     }
     return filters;
@@ -117,8 +117,8 @@ export default class ComplexSearchComponent extends React.Component<Props, State
 
   public clearFilterValues() {
     // Clear
-    for (const filterComponent of this.filterComponents) {
-      filterComponent.clearValue();
+    for (const filterContainerComponent of this.filterComponents) {
+      filterContainerComponent.clearValue();
     }
   }
 
@@ -135,10 +135,10 @@ export default class ComplexSearchComponent extends React.Component<Props, State
 
   private async saveFilterValues() {
     // Build
-    for (const filterComponent of this.filterComponents) {
+    for (const filterContainerComponent of this.filterComponents) {
       // Save
-      if (filterComponent.canBeSaved()) {
-        await SecuredStorage.saveFilterValue(filterComponent.getInternalID(), filterComponent.getValue());
+      if (filterContainerComponent.canBeSaved()) {
+        await SecuredStorage.saveFilterValue(filterContainerComponent.getInternalID(), filterContainerComponent.getValue());
       }
     }
   }

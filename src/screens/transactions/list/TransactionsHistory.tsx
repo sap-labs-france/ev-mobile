@@ -66,8 +66,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
-  public async componentDidMount() {
-    // Get initial filters
+  public async loadInitialFilters() {
     const userID = await SecuredStorage.loadFilterValue(FilterGlobalInternalIDs.MY_USER_FILTER);
     if (userID) {
       this.setState({
@@ -77,6 +76,11 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
         }
       });
     }
+  }
+
+  public async componentDidMount() {
+    // Get initial filters
+    await this.loadInitialFilters();
     await super.componentDidMount();
   }
 
@@ -168,11 +172,6 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     await this.refresh();
   }
 
-  public onFilterChanged = async (filters: any) => {
-    // Set Fitlers and Refresh
-    this.setState({ filters }, () => this.refresh());
-  }
-
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
@@ -191,7 +190,6 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
           leftActionIcon={'navigate-before'}
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
-          hasFilter={true}
         />
         <SimpleSearchComponent
           onChange={(searchText) => this.search(searchText)}
@@ -207,10 +205,10 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
                   StartDateTime: startDate ? startDate.toISOString() : null,
                   EndDateTime: endDate ? endDate.toISOString() : null
                 }}
-                onFilterChanged={this.onFilterChanged}
+                onFilterChanged={(filters: any) => this.setState({ filters }, () => this.refresh())}
                 ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => {
-                  if (transactionsHistoryFilters && this.headerComponent) {
-                    transactionsHistoryFilters.setHeaderComponent(this.headerComponent);
+                  if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterContainerComponent()) {
+                    this.headerComponent.setFilterContainerComponent(transactionsHistoryFilters.getFilterContainerComponent());
                   }
                 }}
               />

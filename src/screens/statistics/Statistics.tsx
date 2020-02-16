@@ -1,6 +1,7 @@
 import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } from 'native-base';
 import React from 'react';
+import { DrawerActions } from 'react-navigation-drawer';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import I18nManager from '../../I18n/I18nManager';
 import ProviderFactory from '../../provider/ProviderFactory';
@@ -13,7 +14,6 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import StatisticsFilters, { StatisticsFiltersDef } from './StatisticsFilters';
 import computeStyleSheet from './StatisticsStyles';
-import { DrawerActions } from 'react-navigation-drawer';
 
 export interface Props extends BaseProps {
 }
@@ -63,8 +63,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
-    // Get initial filters
+  public async loadInitialFilters() {
     const userID = await SecuredStorage.loadFilterValue(FilterGlobalInternalIDs.MY_USER_FILTER);
     if (userID) {
       this.setState({
@@ -74,6 +73,11 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
         }
       });
     }
+  }
+
+  public async componentDidMount() {
+    // Get initial filters
+    await this.loadInitialFilters();
     await super.componentDidMount();
   }
 
@@ -121,11 +125,6 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     return true;
   };
 
-  public onFilterChanged = async (filters: any) => {
-    // Set Fitlers and Refresh
-    this.setState({ filters }, () => this.refresh());
-  }
-
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
@@ -143,7 +142,6 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
           leftActionIcon={'navigate-before'}
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
-          hasFilter={true}
         />
         {loading ? (
           <Spinner style={style.spinner} />
@@ -155,10 +153,10 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
                 StartDateTime: startDate ? startDate.toISOString() : null,
                 EndDateTime: endDate ? endDate.toISOString() : null
               }}
-              onFilterChanged={this.onFilterChanged}
+              onFilterChanged={(filters: any) => this.setState({ filters }, () => this.refresh())}
               ref={(statisticsFilters: StatisticsFilters) => {
-                if (statisticsFilters && this.headerComponent) {
-                  statisticsFilters.setHeaderComponent(this.headerComponent);
+                if (this.headerComponent && statisticsFilters && statisticsFilters.getFilterContainerComponent()) {
+                  this.headerComponent.setFilterContainerComponent(statisticsFilters.getFilterContainerComponent());
                 }
               }}
             />

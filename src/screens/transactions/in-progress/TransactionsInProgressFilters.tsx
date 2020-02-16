@@ -1,8 +1,8 @@
 import I18n from 'i18n-js';
 import React from 'react';
-import BaseFilters, { BaseFiltersState } from '../../../components/search/complex/BaseFilters';
-import ComplexSearchComponent from '../../../components/search/complex/ComplexSearchComponent';
-import MyUserSwitchFilterComponent from '../../../components/search/complex/filter/my-user-switch/MyUserSwitchFilterComponent';
+import BaseScreenFilters, { BaseScreenFiltersState } from '../../../components/search/complex/BaseScreenFilters';
+import MyUserSwitchFilterControlComponent from '../../../components/search/complex/filter/my-user-switch/MyUserSwitchFilterControlComponent';
+import FilterContainerComponent from '../../../components/search/complex/FilterContainerComponent';
 import { FilterGlobalInternalIDs } from '../../../types/Filter';
 
 export interface Props {
@@ -14,11 +14,11 @@ export interface TransactionsFiltersDef {
   'UserID'?: string;
 }
 
-interface State extends BaseFiltersState {
+interface State extends BaseScreenFiltersState {
   filters?: TransactionsFiltersDef;
 }
 
-export default class TransactionsInProgressFilters extends BaseFilters {
+export default class TransactionsInProgressFilters extends BaseScreenFilters {
   public state: State;
   public props: Props;
 
@@ -47,26 +47,26 @@ export default class TransactionsInProgressFilters extends BaseFilters {
     const { initialFilters } = this.props;
     const { filters } = this.state;
     return (
-      <ComplexSearchComponent
+      <FilterContainerComponent
         onFilterChanged={this.onFilterChanged}
-        ref={(complexSearchComponent: ComplexSearchComponent) => {
-          this.setComplexSearchComponent(complexSearchComponent);
+        ref={(filterContainerComponent: FilterContainerComponent) => {
+          this.setFilterContainerComponent(filterContainerComponent);
         }}
       >
         {this.state.isAdmin &&
-          <MyUserSwitchFilterComponent
+          <MyUserSwitchFilterControlComponent
             filterID={'UserID'}
             internalFilterID={FilterGlobalInternalIDs.MY_USER_FILTER}
             initialValue={filters.UserID ? filters.UserID : initialFilters.UserID}
             label={I18n.t('general.onlyMyTransactions')}
-            ref={async (myUserSwitchFilterComponent: MyUserSwitchFilterComponent) => {
-              if (myUserSwitchFilterComponent && this.getComplexSearchComponent()) {
-                await myUserSwitchFilterComponent.setComplexSearchComponent(this.getComplexSearchComponent());
+            ref={async (myUserSwitchFilterComponent: MyUserSwitchFilterControlComponent) => {
+              if (myUserSwitchFilterComponent && this.getFilterContainerComponent()) {
+                await myUserSwitchFilterComponent.setFilterContainerComponent(this.getFilterContainerComponent());
               }
             }}
           />
         }
-      </ComplexSearchComponent>
+      </FilterContainerComponent>
     );
   };
 }

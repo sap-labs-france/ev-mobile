@@ -1,10 +1,10 @@
 import { DatePicker, Text, View } from 'native-base';
 import React from 'react';
 import I18nManager from '../../../../../I18n/I18nManager';
-import BaseFilterComponent, { BaseFilterProps } from '../../BaseFilterComponent';
-import computeStyleSheet from '../FilterComponentStyles';
+import BaseFilterControlComponent, { BaseFilterControlProps } from '../BaseFilterControlComponent';
+import computeStyleSheet from '../BaseFilterControlComponentStyles';
 
-export interface Props extends BaseFilterProps {
+export interface Props extends BaseFilterControlProps {
   defaultDate?: Date;
   minimumDate?: Date;
   maximumDate?: Date;
@@ -13,7 +13,7 @@ export interface Props extends BaseFilterProps {
 interface State {
 }
 
-export default class DateFilterComponent extends BaseFilterComponent {
+export default class DateFilterControlComponent extends BaseFilterControlComponent {
   public state: State;
   public props: Props;
   public static defaultProps = {
@@ -34,8 +34,8 @@ export default class DateFilterComponent extends BaseFilterComponent {
     const style = computeStyleSheet();
     const { filterID, label, defaultDate, minimumDate, maximumDate, locale } = this.props;
     let currentFilterValue: string = defaultDate ? defaultDate.toISOString() : new Date().toISOString();
-    if (this.getComplexSearchComponent()) {
-      currentFilterValue = this.getComplexSearchComponent().getFilterValue(filterID);
+    if (this.getFilterContainerComponent()) {
+      currentFilterValue = this.getFilterContainerComponent().getFilterValue(filterID);
     }
     return (
       <View style={style.rowFilter}>
@@ -51,7 +51,7 @@ export default class DateFilterComponent extends BaseFilterComponent {
           androidMode={'spinner'}
           textStyle={style.filterValue}
           placeHolderTextStyle={style.filterValue}
-          onDateChange={(newDate: Date) => this.getComplexSearchComponent().setFilterValue(this.getID(), newDate.toISOString())}
+          onDateChange={(newDate: Date) => this.getFilterContainerComponent().setFilterValue(this.getID(), newDate.toISOString())}
           disabled={false}
           formatChosenDate={(date) => I18nManager.formatDateTime(date, 'LL')}
         />

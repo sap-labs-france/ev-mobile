@@ -2,6 +2,7 @@ import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
+import { DrawerActions } from 'react-navigation-drawer';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
@@ -18,7 +19,6 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../TransactionsStyles';
 import TransactionsInProgressFilters from './TransactionsInProgressFilters';
-import { DrawerActions } from 'react-navigation-drawer';
 
 export interface Props extends BaseProps {
 }
@@ -63,8 +63,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
-    // Get initial filters
+  public async loadInitialFilters() {
     const userID = await SecuredStorage.loadFilterValue(FilterGlobalInternalIDs.MY_USER_FILTER);
     if (userID) {
       this.setState({
@@ -74,6 +73,11 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
         }
       });
     }
+  }
+
+  public async componentDidMount() {
+    // Get initial filters
+    await this.loadInitialFilters();
     await super.componentDidMount();
   }
 
@@ -154,11 +158,6 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     await this.refresh();
   }
 
-  public onFilterChanged = async (filters: any) => {
-    // Set Fitlers and Refresh
-    this.setState({ filters }, () => this.refresh());
-  }
-
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
@@ -177,7 +176,6 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           leftActionIcon={'navigate-before'}
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
-          hasFilter={isAdmin ? true : false}
         />
         {loading ? (
           <Spinner style={style.spinner} />
@@ -188,10 +186,10 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
                 initialFilters={{
                   UserID: userID ? userID : null
                 }}
-                onFilterChanged={this.onFilterChanged}
+                onFilterChanged={(filters: any) => this.setState({ filters }, () => this.refresh())}
                 ref={(transactionsInProgressFilters: TransactionsInProgressFilters) => {
-                  if (transactionsInProgressFilters && this.headerComponent) {
-                    transactionsInProgressFilters.setHeaderComponent(this.headerComponent);
+                  if (this.headerComponent && transactionsInProgressFilters && transactionsInProgressFilters.getFilterContainerComponent()) {
+                    this.headerComponent.setFilterContainerComponent(transactionsInProgressFilters.getFilterContainerComponent());
                   }
                 }}
               />
