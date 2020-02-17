@@ -32,7 +32,7 @@ const commonStyles = ScaledSheet.create({
     marginLeft: '10@s',
     marginTop: '5@s',
     marginBottom: '5@s',
-    fontSize: '15@s',
+    fontSize: '12@s',
     fontWeight: 'bold',
     color: commonColor.textColor,
   },
@@ -41,7 +41,7 @@ const commonStyles = ScaledSheet.create({
     marginBottom: '5@s'
   },
   value: {
-    fontSize: '15@s',
+    fontSize: '12@s',
     marginLeft: '15@s',
     color: commonColor.textColor
   },
@@ -50,7 +50,7 @@ const commonStyles = ScaledSheet.create({
     marginTop: '5@s'
   },
   values: {
-    fontSize: '15@s',
+    fontSize: '12@s',
     marginLeft: '15@s',
     marginBottom: '5@s',
     color: commonColor.textColor

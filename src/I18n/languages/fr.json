@@ -141,6 +141,7 @@
     "title": "Bornes",
     "heartBeat": "Heartbeat",
     "noOCPPParameters": "Pas de parametre OCPP",
+    "noChargerParameters": "Pas de parametre",
     "heartBeatOkMessage": "'{{chargeBoxID}}' fonctionne correctement et a reporté son statut il y a moins d'une minute",
     "heartBeatKoMessage": "'{{chargeBoxID}}' ne fonctionne pas correctement et n'a pas reporté son statut depuis {{lastHeartBeat}}",
     "resetHard": "Redémarrer",

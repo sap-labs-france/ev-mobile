@@ -140,7 +140,8 @@
   "chargers": {
     "title": "Charging Stations",
     "heartBeat": "Heartbeat",
-    "noOCPPParameters": "No OCPP parameters",
+    "noOCPPParameters": "No OCPP parameter",
+    "noChargerParameters": "No Charging Station parameter",
     "heartBeatOkMessage": "'{{chargeBoxID}}' is working properly and reported its status a minute ago",
     "heartBeatKoMessage": "'{{chargeBoxID}}' is not working properly and hasn't reported its status since {{lastHeartBeat}}",
     "resetHard": "Reboot",

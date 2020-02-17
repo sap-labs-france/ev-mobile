@@ -1,9 +1,10 @@
 import I18n from 'i18n-js';
 import { Container, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { FlatList, RefreshControl, ScrollView } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
 import HeaderComponent from '../../../components/header/HeaderComponent';
+import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargingStationCapabilities, OcppAdvancedCommands, OcppCommand } from '../../../types/ChargingStation';
@@ -17,6 +18,7 @@ export interface Props extends BaseProps {
 
 interface State {
   loading?: boolean;
+  refreshing?: boolean;
   charger: ChargingStation;
 }
 
@@ -108,7 +110,8 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
     super(props);
     this.state = {
       loading: true,
-      charger: null
+      refreshing: false,
+      charger: null,
     }
   }
 
@@ -119,15 +122,25 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
   public async componentDidMount() {
     // Call parent
     await super.componentDidMount();
-    const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
-    // Get Charger
-    const charger = await this.getCharger(chargerID);
-    // Set
-    this.setState({
-      loading: false,
-      charger,
-    });
+    await this.refresh();
   }
+
+  public refresh = async () => {
+    // Component Mounted?
+    if (this.isMounted()) {
+      const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
+      // Get Charger
+      const charger = await this.getCharger(chargerID);
+      // Build props
+      const chargerProperties = this.buildChargerProperties(charger);
+      // Set
+      this.setState({
+        loading: false,
+        charger,
+        chargerProperties,
+      });
+    }
+  };
 
   public getCharger = async (chargerID: string): Promise<ChargingStation> => {
     try {
@@ -141,6 +154,15 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
     return null;
   };
 
+  public manualRefresh = async () => {
+    // Display spinner
+    this.setState({ refreshing: true });
+    // Refresh
+    await this.refresh();
+    // Hide spinner
+    this.setState({ refreshing: false });
+  };
+
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack(null);
@@ -148,36 +170,13 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
     return true;
   };
 
-  private displayProperties(): Element[] {
-    const properties: Element[] = [];
-    const { charger } = this.state;
-    const style = computeStyleSheet();
-    let bgStyleEven = false;
-    for (const displayedProperty of this.displayedProperties) {
-      bgStyleEven = !bgStyleEven;
-      // @ts-ignore
-      const value = charger && charger[displayedProperty.key] ? charger[displayedProperty.key] : '-';
-      properties.push(
-        <View style={bgStyleEven ? [style.descriptionContainer, style.rowBackground] : style.descriptionContainer}>
-          <Text style={style.label}>{I18n.t(displayedProperty.title)}</Text>
-          {displayedProperty.formatter && value !== '-' ?
-            displayedProperty.formatterWithComponents ?
-              <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValues}>
-                {displayedProperty.formatter(value)}
-              </ScrollView>
-            :
-              <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
-                <Text style={style.value}>{displayedProperty.formatter(value)}</Text>
-              </ScrollView>
-          :
-            <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
-              <Text style={style.value}>{value}</Text>
-            </ScrollView>
-          }
-        </View>
-      );
+  private buildChargerProperties(charger: ChargingStation) {
+    if (charger) {
+      for (const displayedProperty of this.displayedProperties) {
+        // @ts-ignore
+        displayedProperty.value = charger && charger[displayedProperty.key] ? charger[displayedProperty.key] : '-';
+      }
     }
-    return properties;
   }
 
   public render() {
@@ -185,26 +184,46 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const { loading, charger } = this.state;
     return (
-      loading ? (
-        <Spinner style={style.spinner} />
-      ) : (
-        <Container style={style.container}>
-          <HeaderComponent
-            navigation={this.props.navigation}
-            title={charger ? charger.id : I18n.t('connector.unknown')}
-            subTitle={charger && charger.inactive ? `(${I18n.t('details.inactive')})` : null}
-            leftAction={() => this.onBack()}
-            leftActionIcon={'navigate-before'}
-            rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
-            rightActionIcon={'menu'}
+      <Container style={style.container}>
+        <HeaderComponent
+          navigation={this.props.navigation}
+          title={charger ? charger.id : I18n.t('connector.unknown')}
+          subTitle={charger && charger.inactive ? `(${I18n.t('details.inactive')})` : null}
+          leftAction={() => this.onBack()}
+          leftActionIcon={'navigate-before'}
+          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+          rightActionIcon={'menu'}
+        />
+        {loading ? (
+          <Spinner style={style.spinner} />
+        ) : (
+          <FlatList
+            data={this.displayedProperties}
+            renderItem={({ item, index }) => (
+              <View style={index % 2 ? [style.descriptionContainer, style.rowBackground] : style.descriptionContainer}>
+                <Text style={style.label}>{I18n.t(item.title)}</Text>
+                {item.formatter && item.value !== '-' ?
+                  item.formatterWithComponents ?
+                    <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValues}>
+                      {item.formatter(item.value)}
+                    </ScrollView>
+                  :
+                    <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
+                      <Text style={style.value}>{item.formatter(item.value)}</Text>
+                    </ScrollView>
+                :
+                  <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
+                    <Text style={style.value}>{item.value}</Text>
+                  </ScrollView>
+                }
+              </View>
+            )}
+            keyExtractor={(item) => `${item.key}`}
+            refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+            ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargerParameters')} />}
           />
-          <ScrollView contentContainerStyle={style.scrollViewContainer} alwaysBounceVertical={false}>
-            <View style={style.viewContainer}>
-              {this.displayProperties()}
-            </View>
-          </ScrollView>
-        </Container>
-      )
+        )}
+      </Container>
     );
   }
 }
