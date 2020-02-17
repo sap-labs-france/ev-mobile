@@ -13,6 +13,7 @@ import ChargerConnectorComponent from './connector/ChargerConnectorComponent';
 export interface Props extends BaseProps {
   charger: ChargingStation;
   isAdmin: boolean;
+  isSiteAdmin: boolean;
 }
 
 interface State {
@@ -44,13 +45,13 @@ export default class ChargerComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { charger, isAdmin, navigation } = this.props;
+    const { charger, isAdmin, isSiteAdmin, navigation } = this.props;
     return (
       <View style={style.container}>
         <View style={style.headerContent}>
           <Text style={style.headerName}>{charger.id}</Text>
           <View style={style.buttonContainer}>
-            {isAdmin &&
+            {(isAdmin || isSiteAdmin) &&
               <Button
                 transparent={true}
                 style={style.button}

@@ -53,19 +53,17 @@ export default class ChargersFilters extends BaseScreenFilters {
           this.setFilterContainerComponent(filterContainerComponent);
         }}
       >
-        {this.state.isAdmin &&
-          <OnlyAvailableChargerFilterControlComponent
-            filterID={'connectorStatus'}
-            internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGERS}
-            initialValue={filters.connectorStatus ? filters.connectorStatus : initialFilters.connectorStatus}
-            label={I18n.t('general.onlyAvailableChargers')}
-            ref={async (onlyAvailableChargerFilterComponent: OnlyAvailableChargerFilterControlComponent) => {
-              if (onlyAvailableChargerFilterComponent && this.getFilterContainerComponent()) {
-                await onlyAvailableChargerFilterComponent.setFilterContainerComponent(this.getFilterContainerComponent());
-              }
-            }}
-          />
-        }
+        <OnlyAvailableChargerFilterControlComponent
+          filterID={'connectorStatus'}
+          internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGERS}
+          initialValue={filters.connectorStatus ? filters.connectorStatus : initialFilters.connectorStatus}
+          label={I18n.t('general.onlyAvailableChargers')}
+          ref={async (onlyAvailableChargerFilterComponent: OnlyAvailableChargerFilterControlComponent) => {
+            if (onlyAvailableChargerFilterComponent && this.getFilterContainerComponent()) {
+              await onlyAvailableChargerFilterComponent.setFilterContainerComponent(this.getFilterContainerComponent());
+            }
+          }}
+        />
       </FilterContainerComponent>
     );
   };

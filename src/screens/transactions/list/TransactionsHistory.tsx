@@ -230,6 +230,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
                     navigation={navigation}
                     transaction={item}
                     isAdmin={isAdmin}
+                    isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteID)}
                     isPricingActive={isPricingActive}
                   />
                 )}

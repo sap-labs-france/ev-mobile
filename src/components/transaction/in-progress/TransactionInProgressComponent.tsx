@@ -14,6 +14,7 @@ export interface Props extends BaseProps {
   transaction: Transaction;
   isPricingActive: boolean;
   isAdmin: boolean;
+  isSiteAdmin: boolean;
   visible?: boolean;
 }
 
@@ -38,7 +39,7 @@ export default class TransactionInProgressComponent extends React.Component<Prop
 
   public render() {
     const style = computeStyleSheet();
-    const { transaction, isAdmin, isPricingActive } = this.props;
+    const { transaction, isAdmin, isSiteAdmin, isPricingActive } = this.props;
     const consumption = Math.round(transaction.currentConsumption / 10) / 100;
     const totalConsumption = Math.round(transaction.currentTotalConsumption / 10) / 100;
     const price = transaction.currentCumulatedPrice ? Math.round(transaction.currentCumulatedPrice * 100) / 100 : 0;
@@ -64,7 +65,7 @@ export default class TransactionInProgressComponent extends React.Component<Prop
             });
           }}>
           <View style={style.container}>
-            <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} />
+            <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} />
             <View style={style.transactionContent}>
               <View style={style.columnContainer}>
                 <Icon type='FontAwesome' name='bolt' style={[style.icon, style.info]} />

@@ -213,7 +213,9 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
               />
               <FlatList
                 data={chargers}
-                renderItem={({ item }) => <ChargerComponent charger={item} isAdmin={isAdmin} navigation={navigation} />}
+                renderItem={({ item }) =>
+                  <ChargerComponent charger={item} isAdmin={isAdmin} navigation={navigation}
+                    isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteArea.siteID)} />}
                 keyExtractor={(item) => item.id}
                 refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this.onEndScroll}

@@ -199,6 +199,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
                   transaction={item}
                   navigation={navigation}
                   isAdmin={isAdmin}
+                  isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteID)}
                   isPricingActive={isPricingActive}
                 />
               )}

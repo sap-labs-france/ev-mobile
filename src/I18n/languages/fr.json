@@ -177,6 +177,8 @@
   },
   "details": {
     "connector": "Connecteur",
+    "stoppedAt": "Stoppée le",
+    "stoppedBy": "Stoppée par",
     "inactive": "Borne Déconnectée",
     "informations": "Informations",
     "graph": "Courbe",

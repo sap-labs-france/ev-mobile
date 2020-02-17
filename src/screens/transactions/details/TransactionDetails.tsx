@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Image, ScrollView } from 'react-native';
+import { DrawerActions } from 'react-navigation-drawer';
 import noPhotoActive from '../../../../assets/no-photo-active.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
@@ -16,7 +17,6 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './TransactionDetailsStyles';
-import { DrawerActions } from 'react-navigation-drawer';
 
 export interface Props extends BaseProps {
 }
@@ -34,6 +34,7 @@ interface State {
   buttonDisabled?: boolean;
   refreshing?: boolean;
   isAdmin?: boolean;
+  isSiteAdmin?: boolean;
 }
 
 export default class TransactionDetails extends BaseScreen<Props, State> {
@@ -46,6 +47,8 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       loading: true,
       userImage: null,
       siteImage: null,
+      isAdmin: false,
+      isSiteAdmin: false,
       elapsedTimeFormatted: '-',
       totalInactivitySecs: 0,
       inactivityFormatted: '-',
@@ -87,6 +90,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       siteImage,
       userImage,
       isAdmin: securityProvider ? securityProvider.isAdmin() : false,
+      isSiteAdmin: securityProvider && transaction && transaction.siteID ? securityProvider.isSiteAdmin(transaction.siteID) : false,
       isPricingActive: securityProvider.isComponentPricingActive()
     });
   }
@@ -154,7 +158,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   };
 
   public renderUserInfo = (style: any) => {
-    const { transaction, isAdmin } = this.state;
+    const { transaction, isAdmin, isSiteAdmin } = this.state;
     const { userImage } = this.state;
     return transaction ? (
       <View style={style.columnContainer}>
@@ -162,7 +166,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         <Text numberOfLines={1} style={[style.label, style.labelUser, style.info]}>
           {Utils.buildUserName(transaction.user)}
         </Text>
-        {isAdmin ? <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text> : undefined}
+        {(isAdmin || isSiteAdmin) && <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text>}
       </View>
     ) : (
       <View style={style.columnContainer}>
@@ -266,6 +270,10 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
           <View style={style.headerContent}>
             <View style={style.headerRowContainer}>
               <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format('LLL') : ''}</Text>
+              <Text style={style.subHeaderName}>{transaction ? moment(new Date(transaction.stop.timestamp)).format('LLL') : ''}</Text>
+              {(transaction.userID !== transaction.stop.userID) &&
+                <Text style={style.subSubHeaderName}>({I18n.t('details.stoppedBy')} {Utils.buildUserName(transaction.stop.user)})</Text>
+              }
             </View>
           </View>
           <ScrollView style={style.scrollViewContainer}>

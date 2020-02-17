@@ -31,6 +31,7 @@ interface State {
   showTransactionDetails?: boolean;
   canDisplayTransaction?: boolean;
   isAdmin: boolean;
+  isSiteAdmin?: boolean;
 }
 
 interface ChartPoint {
@@ -47,6 +48,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     this.state = {
       loading: true,
       isAdmin: false,
+      isSiteAdmin: false,
       transaction: null,
       values: [],
       canDisplayTransaction: false,
@@ -62,6 +64,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     super.setState(state, callback);
   }
 
+  // tslint:disable-next-line: cyclomatic-complexity
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
@@ -101,6 +104,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         charger: !this.state.charger ? charger : this.state.charger,
         connector,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,
+        isSiteAdmin: securityProvider && charger && charger.siteArea ? securityProvider.isSiteAdmin(charger.siteArea.siteID) : false,
         canDisplayTransaction: charger ? this.canDisplayTransaction(
           transactionWithConsumptions ? transactionWithConsumptions.transaction : null, charger, connector) : false,
         ...transactionWithConsumptions
@@ -303,7 +307,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { showTransactionDetails, isAdmin, loading, transaction, charger, connector, consumptionValues, stateOfChargeValues, canDisplayTransaction } = this.state;
+    const { showTransactionDetails, isAdmin, isSiteAdmin, loading, transaction, charger,
+      connector, consumptionValues, stateOfChargeValues, canDisplayTransaction } = this.state;
     const chartDefinition = this.createChart(consumptionValues, stateOfChargeValues);
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return (
@@ -321,7 +326,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
             rightActionIcon={'menu'}
           />
           {showTransactionDetails && transaction && (
-            <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} displayNavigationIcon={false} />
+            <TransactionHeaderComponent navigation={navigation} transaction={transaction}
+              isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} displayNavigationIcon={false} />
           )}
           {transaction && consumptionValues && consumptionValues.length > 1 && canDisplayTransaction ? (
             <LineChart

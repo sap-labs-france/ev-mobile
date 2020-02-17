@@ -177,6 +177,8 @@
   },
   "details": {
     "connector": "Connector",
+    "stoppedAt": "Stopped on",
+    "stoppedBy": "Stopped by",
     "inactive": "Disconnected Charger",
     "informations": "Informations",
     "graph": "Chart",
