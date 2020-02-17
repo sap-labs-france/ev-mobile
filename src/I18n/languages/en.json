@@ -148,6 +148,8 @@
     "resetHardMessage": "Do you really want to reboot '{{chargeBoxID}}'?",
     "resetSoft": "Reset",
     "resetSoftMessage": "Do you really want to reset '{{chargeBoxID}}'?",
+    "requestConfiguration": "Request Configuration",
+    "requestConfigurationMessage": "Do you really want to request the configuration of '{{chargeBoxID}}'?",
     "unlockConnector": "Unlock Connector {{connectorId}}",
     "unlockConnectorMessage": "Do you really want to unlock the connector {{connectorId}} of '{{chargeBoxID}}'?",
     "clearCache": "Clear Cache",

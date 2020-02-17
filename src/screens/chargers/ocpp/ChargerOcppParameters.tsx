@@ -1,12 +1,13 @@
 import I18n from 'i18n-js';
-import { Container, Spinner, Text, View } from 'native-base';
+import { Button, Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import { FlatList, RefreshControl, ScrollView } from 'react-native';
+import { Alert, FlatList, RefreshControl, ScrollView } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargingStationConfiguration } from '../../../types/ChargingStation';
+import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './ChargerOcppParametersStyles';
@@ -120,6 +121,39 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
     return true;
   };
 
+  public requestConfigurationConfirm() {
+    const { charger } = this.state;
+    Alert.alert
+      (I18n.t('chargers.requestConfiguration', { chargeBoxID: charger.id }),
+      I18n.t('chargers.requestConfigurationMessage', { chargeBoxID: charger.id }), [
+      { text: I18n.t('general.yes'), onPress: () => this.requestConfiguration(charger.id) },
+      { text: I18n.t('general.cancel') }
+    ]);
+  }
+
+  public async requestConfiguration(chargeBoxID: string) {
+    try {
+      console.log('====================================');
+      console.log(chargeBoxID);
+      console.log('====================================');
+      // Unlock Connector
+      const status = await this.centralServerProvider.requestChargingStationOCPPConfiguration(chargeBoxID);
+      // Check
+      console.log('====================================');
+      console.log(status);
+      console.log('====================================');
+      if (status.status && status.status === 'Accepted') {
+        Message.showSuccess(I18n.t('details.accepted'));
+        await this.refresh();
+      } else {
+        Message.showError(I18n.t('details.denied'));
+      }
+    } catch (error) {
+      // Other common Error
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+    }
+  }
+
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
@@ -135,6 +169,12 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
         />
+        <Button disabled={charger ? charger.inactive : true} block={true} iconLeft={true} style={style.actionButton} onPress={() => this.requestConfigurationConfirm()}>
+          <Icon style={style.actionButtonIcon} type='MaterialIcons' name='get-app' />
+          <Text uppercase={false} style={style.actionButtonText}>
+            {I18n.t('chargers.requestConfiguration')}
+          </Text>
+        </Button>
         {loading ? (
           <Spinner style={style.spinner} />
         ) : (

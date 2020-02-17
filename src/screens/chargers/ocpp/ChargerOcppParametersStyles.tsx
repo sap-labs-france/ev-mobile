@@ -21,6 +21,14 @@ const commonStyles = ScaledSheet.create({
     flex: 1,
     color: commonColor.textColor
   },
+  actionButton: {
+  },
+  actionButtonIcon: {
+    fontSize: '20@s'
+  },
+  actionButtonText: {
+    fontSize: '15@s'
+  },
   descriptionContainer: {
     width: '100%',
     flexDirection: 'row',

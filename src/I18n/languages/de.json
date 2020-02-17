@@ -148,6 +148,8 @@
     "resetHardMessage": "Möchten Sie wirklich die Ladestation '{{chargeBoxID}}' neu starten?",
     "resetSoft": "Reset",
     "resetSoftMessage": "Möchten Sie wirklich die Ladestation '{{chargeBoxID}}' zurücksetzen?",
+    "requestConfiguration": "Request Configuration",
+    "requestConfigurationMessage": "Do you really want to request the configuration of '{{chargeBoxID}}'?",
     "unlockConnector": "Unlock Connector {{connectorId}}",
     "unlockConnectorMessage": "Do you really want to unlock the connector {{connectorId}} of '{{chargeBoxID}}'?",
     "clearCache": "Cache leeren",

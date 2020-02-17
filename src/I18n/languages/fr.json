@@ -148,6 +148,8 @@
     "resetHardMessage": "Voulez-vous vraiment redémarrer '{{chargeBoxID}}'?",
     "resetSoft": "Réinitialiser",
     "resetSoftMessage": "Voulez-vous vraiment réinitialiser '{{chargeBoxID}}'?",
+    "requestConfiguration": "Récupérer la Configuration",
+    "requestConfigurationMessage": "Voulez-vous vraiment récupérer la configuration de la borne '{{chargeBoxID}}'?",
     "unlockConnector": "Dévérouiller Connecteur {{connectorId}}",
     "unlockConnectorMessage": "Voulez-vous vraiment dévérouiller le connecteur {{connectorId}} de '{{chargeBoxID}}'?",
     "clearCache": "Effacer le Cache",
