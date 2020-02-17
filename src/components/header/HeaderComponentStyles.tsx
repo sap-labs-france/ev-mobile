@@ -16,6 +16,9 @@ const commonStyles = ScaledSheet.create({
     borderBottomColor: commonColor.listBorderColor,
     backgroundColor: commonColor.brandPrimaryDark
   },
+  buttonRow: {
+    flexDirection: 'row',
+  },
   leftHeader: {
   },
   leftButtonHeader: {
