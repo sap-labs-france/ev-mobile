@@ -184,7 +184,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading, isAdmin, transactions, isPricingActive,
-      skip, count, limit, initialFilters } = this.state;
+      skip, count, limit, initialFilters, filters } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -198,6 +198,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
           leftActionIcon={'navigate-before'}
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
+          filters={filters}
         />
         <SimpleSearchComponent
           onChange={(searchText) => this.search(searchText)}

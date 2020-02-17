@@ -51,7 +51,7 @@ export default class FilterContainerComponent extends React.Component<Props, Sta
     this.filterComponents.push(newFilterComponent);
   }
 
-  public setFilterValue = async (filterID: string, filterValue: any) => {
+  public setFilter = async (filterID: string, filterValue: any) => {
     // Search
     for (const filterContainerComponent of this.filterComponents) {
       if (filterContainerComponent.getID() === filterID) {
@@ -64,7 +64,7 @@ export default class FilterContainerComponent extends React.Component<Props, Sta
     }
   }
 
-  public clearFilterValue = async (filterID: string) => {
+  public clearFilter = async (filterID: string) => {
     // Search
     for (const filterContainerComponent of this.filterComponents) {
       if (filterContainerComponent.getID() === filterID) {
@@ -77,7 +77,7 @@ export default class FilterContainerComponent extends React.Component<Props, Sta
     }
   }
 
-  public getFilterValue = (ID: string): string => {
+  public getFilter = (ID: string): string => {
     // Search
     for (const filterContainerComponent of this.filterComponents) {
       if (filterContainerComponent.getID() === ID) {
@@ -87,7 +87,7 @@ export default class FilterContainerComponent extends React.Component<Props, Sta
     return null;
   }
 
-  public getFilterValues = (): any => {
+  public getFilters = (): any => {
     const filters: any = {};
     // Build
     for (const filterContainerComponent of this.filterComponents) {
@@ -100,40 +100,49 @@ export default class FilterContainerComponent extends React.Component<Props, Sta
 
   public onFilterChanged = (closed: boolean) => {
     const { onFilterChanged } = this.props;
-    // Call method
     if (onFilterChanged) {
-      onFilterChanged(this.getFilterValues(), closed);
+      onFilterChanged(this.getFilters(), closed);
     }
   }
 
   public applyFiltersAndNotify = async () => {
     // Save
-    await this.saveFilterValues();
+    await this.saveFilters();
     // Trigger notif
     this.onFilterChanged(true);
     // Close
     this.setVisible(false);
   }
 
-  public clearFilterValues() {
+  public clearFilters() {
     // Clear
     for (const filterContainerComponent of this.filterComponents) {
       filterContainerComponent.clearValue();
     }
   }
 
+  public getNumberOfFilters(): number {
+    let numberOfFilter = 0
+    for (const filterContainerComponent of this.filterComponents) {
+      if (filterContainerComponent.getValue()) {
+        numberOfFilter++;
+      }
+    }
+    return numberOfFilter;
+  }
+
   public clearFiltersAndNotify = async () => {
     // Clear
-    await this.clearFilterValues();
+    await this.clearFilters();
     // Save
-    await this.saveFilterValues();
+    await this.saveFilters();
     // Trigger notif
     this.onFilterChanged(true);
     // Close
     this.setVisible(false);
   }
 
-  private async saveFilterValues() {
+  private async saveFilters() {
     // Build
     for (const filterContainerComponent of this.filterComponents) {
       // Save

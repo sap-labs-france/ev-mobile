@@ -16,6 +16,7 @@ export interface Props extends BaseProps {
   rightAction?: () => void;
   rightActionIcon?: string;
   rightActionIconType?: IconType;
+  filters?: any;
 }
 
 interface State {
@@ -73,6 +74,17 @@ export default class HeaderComponent extends React.Component<Props, State> {
     }
   }
 
+  private getNumberOfFilters(): number {
+    const { filters } = this.props;
+    let numberOfFilters = 0;
+    for (const filter in filters) {
+      if (filters[filter]) {
+        numberOfFilters++;
+      }
+    }
+    return numberOfFilters;
+  }
+
   public render = () => {
     const style = computeStyleSheet();
     const { title, subTitle, leftAction, leftActionIcon, leftActionIconType,
@@ -105,7 +117,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
                   this.filterContainerComponent.setVisible(this.searchIsVisible);
                 }
               }}>
-              <Icon type={'MaterialCommunityIcons'} name={'filter-outline'} style={style.iconHeader} />
+              <Icon type={'MaterialCommunityIcons'} name={this.getNumberOfFilters() > 0 ? 'filter' : 'filter-outline'} style={style.iconHeader} />
             </Button>
           )}
           {rightAction ? (

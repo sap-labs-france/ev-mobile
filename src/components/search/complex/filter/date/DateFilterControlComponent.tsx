@@ -36,7 +36,7 @@ export default class DateFilterControlComponent extends BaseFilterControlCompone
     let currentDate = defaultDate;
     // Override if already defined
     if (this.getFilterContainerComponent()) {
-      currentDate = new Date(this.getFilterContainerComponent().getFilterValue(filterID));
+      currentDate = new Date(this.getFilterContainerComponent().getFilter(filterID));
     }
     return (
       <View style={style.rowFilter}>
@@ -52,7 +52,7 @@ export default class DateFilterControlComponent extends BaseFilterControlCompone
           androidMode={'spinner'}
           textStyle={style.filterValue}
           placeHolderTextStyle={style.filterValue}
-          onDateChange={(newDate: Date) => this.getFilterContainerComponent().setFilterValue(this.getID(), newDate)}
+          onDateChange={(newDate: Date) => this.getFilterContainerComponent().setFilter(this.getID(), newDate)}
           disabled={false}
           formatChosenDate={(date) => I18nManager.formatDateTime(date, 'LL')}
         />
