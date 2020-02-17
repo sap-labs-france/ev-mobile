@@ -1,17 +1,17 @@
 import { Switch, Text, View } from 'native-base';
 import React from 'react';
 import ProviderFactory from '../../../../../provider/ProviderFactory';
-import BaseFilterComponent, { BaseFilterProps } from '../../BaseFilterComponent';
-import computeStyleSheet from '../FilterComponentStyles';
+import BaseFilterControlComponent, { BaseFilterControlProps } from '../BaseFilterControlComponent';
+import computeStyleSheet from '../BaseFilterControlComponentStyles';
 
-export interface Props extends BaseFilterProps {
+export interface Props extends BaseFilterControlProps {
 }
 
 interface State {
   switchValue?: boolean;
 }
 
-export default class MyUserSwitchFilterComponent extends BaseFilterComponent {
+export default class MyUserSwitchFilterControlComponent extends BaseFilterControlComponent {
   public state: State;
   public props: Props;
   private userID: string;
@@ -45,9 +45,9 @@ export default class MyUserSwitchFilterComponent extends BaseFilterComponent {
   private onValueChanged = async (newValue: boolean) => {
     // Set Filter
     if (newValue) {
-      await this.getComplexSearchComponent().setFilterValue(this.getID(), this.userID);
+      await this.getFilterContainerComponent().setFilterValue(this.getID(), this.userID);
     } else {
-      await this.getComplexSearchComponent().clearFilterValue(this.getID());
+      await this.getFilterContainerComponent().clearFilterValue(this.getID());
     }
     // Update
     this.setState({ switchValue: newValue });

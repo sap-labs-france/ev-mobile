@@ -2,6 +2,7 @@ import I18n from 'i18n-js';
 import { Container, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { ScrollView } from 'react-native';
+import { DrawerActions } from 'react-navigation-drawer';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargingStationConfiguration } from '../../../types/ChargingStation';
@@ -116,7 +117,7 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
             subTitle={charger && charger.inactive ? `(${I18n.t('details.inactive')})` : null}
             leftAction={() => this.onBack()}
             leftActionIcon={'navigate-before'}
-            rightAction={navigation.openDrawer}
+            rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
             rightActionIcon={'menu'}
           />
           <ScrollView contentContainerStyle={style.scrollViewContainer} alwaysBounceVertical={false}>

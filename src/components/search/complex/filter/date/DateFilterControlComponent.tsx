@@ -1,10 +1,10 @@
 import { DatePicker, Text, View } from 'native-base';
 import React from 'react';
 import I18nManager from '../../../../../I18n/I18nManager';
-import BaseFilterComponent, { BaseFilterProps } from '../../BaseFilterComponent';
-import computeStyleSheet from '../FilterComponentStyles';
+import BaseFilterControlComponent, { BaseFilterControlProps } from '../BaseFilterControlComponent';
+import computeStyleSheet from '../BaseFilterControlComponentStyles';
 
-export interface Props extends BaseFilterProps {
+export interface Props extends BaseFilterControlProps {
   defaultDate?: Date;
   minimumDate?: Date;
   maximumDate?: Date;
@@ -13,7 +13,7 @@ export interface Props extends BaseFilterProps {
 interface State {
 }
 
-export default class DateFilterComponent extends BaseFilterComponent {
+export default class DateFilterControlComponent extends BaseFilterControlComponent {
   public state: State;
   public props: Props;
   public static defaultProps = {
@@ -33,15 +33,16 @@ export default class DateFilterComponent extends BaseFilterComponent {
   public render = () => {
     const style = computeStyleSheet();
     const { filterID, label, defaultDate, minimumDate, maximumDate, locale } = this.props;
-    let currentFilterValue: string = defaultDate ? defaultDate.toISOString() : new Date().toISOString();
-    if (this.getComplexSearchComponent()) {
-      currentFilterValue = this.getComplexSearchComponent().getFilterValue(filterID);
+    let currentDate = defaultDate;
+    // Override if already defined
+    if (this.getFilterContainerComponent()) {
+      currentDate = new Date(this.getFilterContainerComponent().getFilterValue(filterID));
     }
     return (
       <View style={style.rowFilter}>
         <Text style={style.textFilter}>{label}</Text>
         <DatePicker
-          defaultDate={new Date(currentFilterValue)}
+          defaultDate={currentDate}
           minimumDate={minimumDate}
           maximumDate={maximumDate}
           locale={locale}
@@ -51,7 +52,7 @@ export default class DateFilterComponent extends BaseFilterComponent {
           androidMode={'spinner'}
           textStyle={style.filterValue}
           placeHolderTextStyle={style.filterValue}
-          onDateChange={(newDate: Date) => this.getComplexSearchComponent().setFilterValue(this.getID(), newDate.toISOString())}
+          onDateChange={(newDate: Date) => this.getFilterContainerComponent().setFilterValue(this.getID(), newDate)}
           disabled={false}
           formatChosenDate={(date) => I18nManager.formatDateTime(date, 'LL')}
         />

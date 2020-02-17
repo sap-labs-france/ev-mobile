@@ -4,7 +4,7 @@ import { BackHandler, Image } from 'react-native';
 import logo from '../../../assets/logo-low.png';
 import BaseProps from '../../types/BaseProps';
 import { IconType } from '../../types/Icon';
-import ComplexSearchComponent from '../search/complex/ComplexSearchComponent';
+import FilterContainerComponent from '../search/complex/FilterContainerComponent';
 import computeStyleSheet from './HeaderComponentStyles';
 
 export interface Props extends BaseProps {
@@ -16,28 +16,27 @@ export interface Props extends BaseProps {
   rightAction?: () => void;
   rightActionIcon?: string;
   rightActionIconType?: IconType;
-  hasComplexSearch?: boolean;
 }
 
 interface State {
+  hasFilter?: boolean;
 }
 
 export default class HeaderComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   private searchIsVisible: boolean;
-  private complexSearchComponent: ComplexSearchComponent;
+  private filterContainerComponent: FilterContainerComponent;
 
   public static defaultProps = {
     leftActionIconType: 'MaterialIcons',
     rightActionIconType: 'MaterialIcons',
-    hasComplexSearch: false,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      complexSearchComponent: null
+      hasFilter: false
     }
     // Default values
     this.searchIsVisible = false;
@@ -47,12 +46,15 @@ export default class HeaderComponent extends React.Component<Props, State> {
     super.setState(state, callback);
   }
 
-  public getSearchComplexComponent(): ComplexSearchComponent {
-    return this.complexSearchComponent;
+  public getFilterContainerComponent(): FilterContainerComponent {
+    return this.filterContainerComponent;
   }
 
-  public setSearchComplexComponent(complexSearchComponent: ComplexSearchComponent) {
-    this.complexSearchComponent = complexSearchComponent;
+  public setFilterContainerComponent(filterContainerComponent: FilterContainerComponent) {
+    this.filterContainerComponent = filterContainerComponent;
+    this.setState({
+      hasFilter: true
+    });
   }
 
   public componentDidMount() {
@@ -74,7 +76,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const { title, subTitle, leftAction, leftActionIcon, leftActionIconType,
-      rightAction, rightActionIcon, rightActionIconType, hasComplexSearch } = this.props;
+      rightAction, rightActionIcon, rightActionIconType } = this.props;
+    const { hasFilter } = this.state;
     return (
       <Header style={style.header}>
         <Left style={style.leftHeader}>
@@ -91,15 +94,15 @@ export default class HeaderComponent extends React.Component<Props, State> {
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
         </Body>
         <Right style={style.rightHeader}>
-          {hasComplexSearch && (
+          {hasFilter && (
             <Button
               transparent={true}
-              style={style.rightSearchButtonHeader}
+              style={style.rightFilterButtonHeader}
               onPress={() => {
                 this.searchIsVisible = !this.searchIsVisible;
                 // Show Complex Search
-                if (this.complexSearchComponent) {
-                  this.complexSearchComponent.setVisible(this.searchIsVisible);
+                if (this.filterContainerComponent) {
+                  this.filterContainerComponent.setVisible(this.searchIsVisible);
                 }
               }}>
               <Icon type={'MaterialCommunityIcons'} name={'filter-outline'} style={style.iconHeader} />

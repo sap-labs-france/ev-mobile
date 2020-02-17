@@ -2,17 +2,21 @@ import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
+import { DrawerActions } from 'react-navigation-drawer';
 import ChargerComponent from '../../../components/charger/ChargerComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation from '../../../types/ChargingStation';
+import ChargingStation, { ChargePointStatus } from '../../../types/ChargingStation';
 import { DataResult } from '../../../types/DataResult';
+import { GlobalFilters } from '../../../types/Filter';
 import Constants from '../../../utils/Constants';
+import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
+import ChargersFilters, { ChargersFiltersDef } from './ChargersFilters';
 import computeStyleSheet from './ChargersStyles';
 
 export interface Props extends BaseProps {
@@ -27,12 +31,15 @@ interface State {
   skip?: number;
   limit?: number;
   count?: number;
+  initialFilters?: ChargersFiltersDef;
+  filters?: ChargersFiltersDef;
 }
 
 export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
+  private headerComponent: HeaderComponent;
 
   constructor(props: Props) {
     super(props);
@@ -43,6 +50,8 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       loading: true,
       refreshing: false,
       isAdmin: false,
+      initialFilters: {},
+      filters: {},
       skip: 0,
       limit: Constants.PAGING_SIZE,
       count: 0
@@ -53,6 +62,20 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     super.setState(state, callback);
   }
 
+  public async loadInitialFilters() {
+    const connectorStatus = await SecuredStorage.loadFilterValue(GlobalFilters.ONLY_AVAILABLE_CHARGERS) as ChargePointStatus;
+    this.setState({
+      initialFilters: { connectorStatus },
+      filters: { connectorStatus }
+    });
+  }
+
+  public async componentDidMount() {
+    // Get initial filters
+    await this.loadInitialFilters();
+    await super.componentDidMount();
+  }
+
   public getChargers = async (searchText: string, skip: number, limit: number): Promise<DataResult<ChargingStation>> => {
     const { siteAreaID } = this.state;
     let chargers: DataResult<ChargingStation>;
@@ -60,10 +83,17 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       // Get Chargers
       if (siteAreaID) {
         // Get with the Site Area
-        chargers = await this.centralServerProvider.getChargers({ Search: searchText, SiteAreaID: siteAreaID }, { skip, limit });
+        chargers = await this.centralServerProvider.getChargers({
+          Search: searchText,
+          ConnectorStatus: this.state.filters.connectorStatus,
+          SiteAreaID: siteAreaID
+        }, { skip, limit });
       } else {
         // Get without the Site
-        chargers = await this.centralServerProvider.getChargers({ Search: searchText }, { skip, limit });
+        chargers = await this.centralServerProvider.getChargers({
+          Search: searchText,
+          ConnectorStatus: this.state.filters.connectorStatus
+        }, { skip, limit });
       }
     } catch (error) {
       // Other common Error
@@ -148,15 +178,19 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, chargers, isAdmin, skip, count, limit } = this.state;
+    const { loading, chargers, isAdmin, initialFilters,
+      skip, count, limit } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
+          ref={(headerComponent: HeaderComponent) => {
+            this.headerComponent = headerComponent;
+          }}
           navigation={navigation}
           title={I18n.t('chargers.title')}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
-          rightAction={navigation.openDrawer}
+          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
         />
         <SimpleSearchComponent
@@ -167,16 +201,27 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
           {loading ? (
             <Spinner style={style.spinner} />
           ) : (
-            <FlatList
-              data={chargers}
-              renderItem={({ item }) => <ChargerComponent charger={item} isAdmin={isAdmin} navigation={navigation} />}
-              keyExtractor={(item) => item.id}
-              refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-              onEndReached={this.onEndScroll}
-              onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-              ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargers')} />}
-            />
+            <View style={style.content}>
+              <ChargersFilters
+                initialFilters={initialFilters}
+                onFilterChanged={(newFilters: ChargersFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
+                ref={(chargersFilters: ChargersFilters) => {
+                  if (this.headerComponent && chargersFilters && chargersFilters.getFilterContainerComponent()) {
+                    this.headerComponent.setFilterContainerComponent(chargersFilters.getFilterContainerComponent());
+                  }
+                }}
+              />
+              <FlatList
+                data={chargers}
+                renderItem={({ item }) => <ChargerComponent charger={item} isAdmin={isAdmin} navigation={navigation} />}
+                keyExtractor={(item) => item.id}
+                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+                onEndReached={this.onEndScroll}
+                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargers')} />}
+              />
+            </View>
           )}
         </View>
       </Container>

@@ -25,7 +25,7 @@ const commonStyles = ScaledSheet.create({
   },
   rightButtonHeader: {
   },
-  rightSearchButtonHeader: {
+  rightFilterButtonHeader: {
     marginRight: '15@s'
   },
   bodyHeader: {

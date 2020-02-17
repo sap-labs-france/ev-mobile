@@ -1,24 +1,25 @@
 import I18n from 'i18n-js';
 import React from 'react';
 import BaseScreenFilters, { BaseScreenFiltersState } from '../../../components/search/complex/BaseScreenFilters';
-import MyUserSwitchFilterControlComponent from '../../../components/search/complex/filter/my-user-switch/MyUserSwitchFilterControlComponent';
+import OnlyAvailableChargerFilterControlComponent from '../../../components/search/complex/filter/only-available-chargers/OnlyAvailableChargerFilterControlComponent';
 import FilterContainerComponent from '../../../components/search/complex/FilterContainerComponent';
+import { ChargePointStatus } from '../../../types/ChargingStation';
 import { GlobalFilters } from '../../../types/Filter';
 
 export interface Props {
-  onFilterChanged?: (filters: TransactionsInProgressFiltersDef) => void;
-  initialFilters?: TransactionsInProgressFiltersDef;
+  onFilterChanged?: (filters: ChargersFiltersDef) => void;
+  initialFilters?: ChargersFiltersDef;
 }
 
-export interface TransactionsInProgressFiltersDef {
-  userID?: string;
+export interface ChargersFiltersDef {
+  connectorStatus?: ChargePointStatus;
 }
 
 interface State extends BaseScreenFiltersState {
-  filters?: TransactionsInProgressFiltersDef;
+  filters?: ChargersFiltersDef;
 }
 
-export default class TransactionsInProgressFilters extends BaseScreenFilters {
+export default class ChargersFilters extends BaseScreenFilters {
   public state: State;
   public props: Props;
 
@@ -33,7 +34,7 @@ export default class TransactionsInProgressFilters extends BaseScreenFilters {
     super.setState(state, callback);
   }
 
-  public onFilterChanged = (newFilters: TransactionsInProgressFiltersDef, closed: boolean) => {
+  public onFilterChanged = (newFilters: ChargersFiltersDef, closed: boolean) => {
     const { onFilterChanged } = this.props;
     if (closed) {
       this.setState({
@@ -53,14 +54,14 @@ export default class TransactionsInProgressFilters extends BaseScreenFilters {
         }}
       >
         {this.state.isAdmin &&
-          <MyUserSwitchFilterControlComponent
-            filterID={'userID'}
-            internalFilterID={GlobalFilters.MY_USER_FILTER}
-            initialValue={filters.userID ? filters.userID : initialFilters.userID}
-            label={I18n.t('general.onlyMyTransactions')}
-            ref={async (myUserSwitchFilterComponent: MyUserSwitchFilterControlComponent) => {
-              if (myUserSwitchFilterComponent && this.getFilterContainerComponent()) {
-                await myUserSwitchFilterComponent.setFilterContainerComponent(this.getFilterContainerComponent());
+          <OnlyAvailableChargerFilterControlComponent
+            filterID={'connectorStatus'}
+            internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGERS}
+            initialValue={filters.connectorStatus ? filters.connectorStatus : initialFilters.connectorStatus}
+            label={I18n.t('general.onlyAvailableChargers')}
+            ref={async (onlyAvailableChargerFilterComponent: OnlyAvailableChargerFilterControlComponent) => {
+              if (onlyAvailableChargerFilterComponent && this.getFilterContainerComponent()) {
+                await onlyAvailableChargerFilterComponent.setFilterContainerComponent(this.getFilterContainerComponent());
               }
             }}
           />

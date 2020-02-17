@@ -1,10 +1,11 @@
 import I18n from 'i18n-js';
+import moment from 'moment';
 import React from 'react';
-import BaseFilters, { BaseFiltersState } from '../../components/search/complex/BaseFilters';
-import ComplexSearchComponent from '../../components/search/complex/ComplexSearchComponent';
-import DateFilterComponent from '../../components/search/complex/filter/date/DateFilterComponent';
-import MyUserSwitchFilterComponent from '../../components/search/complex/filter/my-user-switch/MyUserSwitchFilterComponent';
-import { FilterGlobalInternalIDs } from '../../types/Filter';
+import BaseScreenFilters, { BaseScreenFiltersState } from '../../components/search/complex/BaseScreenFilters';
+import DateFilterControlComponent from '../../components/search/complex/filter/date/DateFilterControlComponent';
+import MyUserSwitchFilterControlComponent from '../../components/search/complex/filter/my-user-switch/MyUserSwitchFilterControlComponent';
+import FilterContainerComponent from '../../components/search/complex/FilterContainerComponent';
+import { GlobalFilters } from '../../types/Filter';
 
 export interface Props {
   onFilterChanged?: (filters: StatisticsFiltersDef) => void;
@@ -12,16 +13,16 @@ export interface Props {
 }
 
 export interface StatisticsFiltersDef {
-  'StartDateTime'?: string;
-  'EndDateTime'?: string;
-  'UserID'?: string;
+  startDateTime?: Date;
+  endDateTime?: Date;
+  userID?: string;
 }
 
-interface State extends BaseFiltersState {
+interface State extends BaseScreenFiltersState {
   filters?: StatisticsFiltersDef;
 }
 
-export default class StatisticsFilters extends BaseFilters {
+export default class StatisticsFilters extends BaseScreenFilters {
   public state: State;
   public props: Props;
 
@@ -36,13 +37,23 @@ export default class StatisticsFilters extends BaseFilters {
     super.setState(state, callback);
   }
 
-  public onFilterChanged = (filters: StatisticsFiltersDef, closed: boolean) => {
+  public onFilterChanged = (newFilters: StatisticsFiltersDef, closed: boolean) => {
     const { onFilterChanged } = this.props;
     if (closed) {
+      // User ID has been changed: Clear Start/End Date
+      if ((this.state.filters.userID || newFilters.userID) && this.state.filters.userID !== newFilters.userID) {
+        delete newFilters.startDateTime;
+        delete newFilters.endDateTime;
+      }
+      if (newFilters.startDateTime) {
+        newFilters.startDateTime = moment(newFilters.startDateTime).startOf('day').toDate();
+      }
+      if (newFilters.endDateTime) {
+        newFilters.endDateTime = moment(newFilters.endDateTime).endOf('day').toDate();
+      }
       this.setState({
-        filters
-      });
-      onFilterChanged(filters);
+        filters: newFilters
+      }, () => onFilterChanged(newFilters));
     }
   }
 
@@ -50,54 +61,54 @@ export default class StatisticsFilters extends BaseFilters {
     const { initialFilters } = this.props;
     const { filters } = this.state;
     return (
-      <ComplexSearchComponent
+      <FilterContainerComponent
         onFilterChanged={this.onFilterChanged}
-        ref={(complexSearchComponent: ComplexSearchComponent) => {
-          this.setComplexSearchComponent(complexSearchComponent);
+        ref={(filterContainerComponent: FilterContainerComponent) => {
+          this.setFilterContainerComponent(filterContainerComponent);
         }}
       >
         {this.state.isAdmin &&
-          <MyUserSwitchFilterComponent
-            filterID={'UserID'}
-            internalFilterID={FilterGlobalInternalIDs.MY_USER_FILTER}
-            initialValue={filters.UserID ? filters.UserID : initialFilters.UserID}
+          <MyUserSwitchFilterControlComponent
+            filterID={'userID'}
+            internalFilterID={GlobalFilters.MY_USER_FILTER}
+            initialValue={filters.userID ? filters.userID : initialFilters.userID}
             label={I18n.t('general.onlyMyTransactions')}
-            ref={async (myUserSwitchFilterComponent: MyUserSwitchFilterComponent) => {
-              if (myUserSwitchFilterComponent && this.getComplexSearchComponent()) {
-                await myUserSwitchFilterComponent.setComplexSearchComponent(this.getComplexSearchComponent());
+            ref={async (myUserSwitchFilterComponent: MyUserSwitchFilterControlComponent) => {
+              if (myUserSwitchFilterComponent && this.getFilterContainerComponent()) {
+                await myUserSwitchFilterComponent.setFilterContainerComponent(this.getFilterContainerComponent());
               }
             }}
           />
         }
-        <DateFilterComponent
-          filterID={'StartDateTime'}
-          internalFilterID={FilterGlobalInternalIDs.STATISTICS_START_DATE_FILTER}
+        <DateFilterControlComponent
+          filterID={'startDateTime'}
+          internalFilterID={GlobalFilters.STATISTICS_START_DATE_FILTER}
           label={I18n.t('general.startDate')}
-          ref={async (dateFilterComponent: DateFilterComponent) => {
-            if (dateFilterComponent && this.getComplexSearchComponent()) {
-              await dateFilterComponent.setComplexSearchComponent(this.getComplexSearchComponent());
+          ref={async (dateFilterComponent: DateFilterControlComponent) => {
+            if (dateFilterComponent && this.getFilterContainerComponent()) {
+              await dateFilterComponent.setFilterContainerComponent(this.getFilterContainerComponent());
             }
           }}
           locale={this.state.locale}
-          minimumDate={new Date(initialFilters.StartDateTime)}
-          defaultDate={filters.StartDateTime ? new Date(filters.StartDateTime) : new Date(initialFilters.StartDateTime)}
-          maximumDate={filters.EndDateTime ? new Date(filters.EndDateTime) : new Date(initialFilters.EndDateTime)}
+          minimumDate={new Date(initialFilters.startDateTime)}
+          defaultDate={filters.startDateTime ? new Date(filters.startDateTime) : new Date(initialFilters.startDateTime)}
+          maximumDate={filters.endDateTime ? new Date(filters.endDateTime) : new Date(initialFilters.endDateTime)}
         />
-        <DateFilterComponent
-          filterID={'EndDateTime'}
-          internalFilterID={FilterGlobalInternalIDs.STATISTICS_END_DATE_FILTER}
+        <DateFilterControlComponent
+          filterID={'endDateTime'}
+          internalFilterID={GlobalFilters.STATISTICS_END_DATE_FILTER}
           label={I18n.t('general.endDate')}
-          ref={async (dateFilterComponent: DateFilterComponent) => {
-            if (dateFilterComponent && this.getComplexSearchComponent()) {
-              await dateFilterComponent.setComplexSearchComponent(this.getComplexSearchComponent());
+          ref={async (dateFilterComponent: DateFilterControlComponent) => {
+            if (dateFilterComponent && this.getFilterContainerComponent()) {
+              await dateFilterComponent.setFilterContainerComponent(this.getFilterContainerComponent());
             }
           }}
           locale={this.state.locale}
-          minimumDate={filters.StartDateTime ? new Date(filters.StartDateTime) : new Date(initialFilters.StartDateTime)}
-          defaultDate={filters.EndDateTime ? new Date(filters.EndDateTime) : new Date(initialFilters.EndDateTime)}
-          maximumDate={new Date(initialFilters.EndDateTime)}
+          minimumDate={filters.startDateTime ? new Date(filters.startDateTime) : new Date(initialFilters.startDateTime)}
+          defaultDate={filters.endDateTime ? new Date(filters.endDateTime) : new Date(initialFilters.endDateTime)}
+          maximumDate={new Date(initialFilters.endDateTime)}
         />
-      </ComplexSearchComponent>
+      </FilterContainerComponent>
     );
   };
 }

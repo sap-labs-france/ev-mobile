@@ -1,12 +1,13 @@
 import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } from 'native-base';
 import React from 'react';
+import { DrawerActions } from 'react-navigation-drawer';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import I18nManager from '../../I18n/I18nManager';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { TransactionDataResult } from '../../types/DataResult';
-import { FilterGlobalInternalIDs } from '../../types/Filter';
+import { GlobalFilters } from '../../types/Filter';
 import Constants from '../../utils/Constants';
 import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
@@ -19,9 +20,6 @@ export interface Props extends BaseProps {
 
 interface State {
   loading?: boolean;
-  userID?: string;
-  startDate?: Date;
-  endDate?: Date;
   totalNumberOfSession?: number;
   totalConsumptionWattHours?: number;
   totalDurationSecs?: number;
@@ -30,6 +28,7 @@ interface State {
   priceCurrency?: string;
   isPricingActive?: boolean;
   showFilter?: boolean;
+  initialFilters?: StatisticsFiltersDef;
   filters?: StatisticsFiltersDef;
 }
 
@@ -47,12 +46,10 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
       totalConsumptionWattHours: 0,
       totalDurationSecs: 0,
       totalInactivitySecs: 0,
-      userID: null,
-      startDate: null,
-      endDate: null,
       totalPrice: 0,
       isPricingActive: false,
       showFilter: false,
+      initialFilters: {},
       filters: {}
     };
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
@@ -62,17 +59,17 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     super.setState(state, callback);
   }
 
+  public async loadInitialFilters() {
+    const userID = await SecuredStorage.loadFilterValue(GlobalFilters.MY_USER_FILTER);
+    this.setState({
+      initialFilters: { userID },
+      filters: { userID }
+    });
+  }
+
   public async componentDidMount() {
     // Get initial filters
-    const userID = await SecuredStorage.loadFilterValue(FilterGlobalInternalIDs.MY_USER_FILTER);
-    if (userID) {
-      this.setState({
-        userID,
-        filters: {
-          UserID: userID
-        }
-      });
-    }
+    await this.loadInitialFilters();
     await super.componentDidMount();
   }
 
@@ -84,8 +81,20 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     const transactionStats = await this.getTransactionsStats();
     // Set
     this.setState({
-      startDate: this.state.startDate ? this.state.startDate : transactionStats.stats.firstTimestamp ? new Date(transactionStats.stats.firstTimestamp) : new Date(),
-      endDate: this.state.endDate ? this.state.endDate : transactionStats.stats.lastTimestamp ? new Date(transactionStats.stats.lastTimestamp) : new Date(),
+      filters: {
+        ...this.state.filters,
+        startDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime :
+          transactionStats.stats.firstTimestamp ? new Date(transactionStats.stats.firstTimestamp) : new Date(),
+        endDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime :
+          transactionStats.stats.lastTimestamp ? new Date(transactionStats.stats.lastTimestamp) : new Date(),
+      },
+      initialFilters: {
+        ...this.state.initialFilters,
+        startDateTime: this.state.initialFilters.startDateTime ? this.state.initialFilters.startDateTime :
+          transactionStats.stats.firstTimestamp ? new Date(transactionStats.stats.firstTimestamp) : new Date(),
+        endDateTime: this.state.initialFilters.endDateTime ? this.state.initialFilters.endDateTime :
+          transactionStats.stats.lastTimestamp ? new Date(transactionStats.stats.lastTimestamp) : new Date(),
+      },
       totalNumberOfSession: transactionStats.stats.count,
       totalConsumptionWattHours: transactionStats.stats.totalConsumptionWattHours,
       totalDurationSecs: transactionStats.stats.totalDurationSecs,
@@ -100,7 +109,12 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     try {
       // Get active transaction
       const transactions = await this.centralServerProvider.getTransactions(
-        { Statistics: 'history', ...this.state.filters },
+        {
+          Statistics: 'history',
+          UserID: this.state.filters.userID,
+          StartDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime.toISOString() : null,
+          EndDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime.toISOString() : null,
+        },
         Constants.ONLY_RECORD_COUNT_PAGING
       );
       return transactions;
@@ -120,15 +134,10 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     return true;
   };
 
-  public onFilterChanged = async (filters: any) => {
-    // Set Fitlers and Refresh
-    this.setState({ filters }, () => this.refresh());
-  }
-
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, totalNumberOfSession, totalConsumptionWattHours, userID, startDate, endDate,
+    const { loading, totalNumberOfSession, totalConsumptionWattHours, initialFilters,
       totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive } = this.state;
     return (
       <Container style={style.container}>
@@ -140,24 +149,19 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
           title={I18n.t('home.statistics')}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
-          rightAction={navigation.openDrawer}
+          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
-          hasComplexSearch={true}
         />
         {loading ? (
           <Spinner style={style.spinner} />
         ) : (
           <Content style={style.content}>
             <StatisticsFilters
-              initialFilters={{
-                UserID: userID ? userID : null,
-                StartDateTime: startDate ? startDate.toISOString() : null,
-                EndDateTime: endDate ? endDate.toISOString() : null
-              }}
-              onFilterChanged={this.onFilterChanged}
+              initialFilters={initialFilters}
+              onFilterChanged={(newFilters: StatisticsFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
               ref={(statisticsFilters: StatisticsFilters) => {
-                if (statisticsFilters && this.headerComponent) {
-                  statisticsFilters.setHeaderComponent(this.headerComponent);
+                if (this.headerComponent && statisticsFilters && statisticsFilters.getFilterContainerComponent()) {
+                  this.headerComponent.setFilterContainerComponent(statisticsFilters.getFilterContainerComponent());
                 }
               }}
             />

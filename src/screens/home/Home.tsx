@@ -2,6 +2,7 @@ import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Text } from 'native-base';
 import React from 'react';
 import { Alert, BackHandler } from 'react-native';
+import { DrawerActions } from 'react-navigation-drawer';
 import Transaction from 'types/Transaction';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import BaseProps from '../../types/BaseProps';
@@ -65,7 +66,7 @@ export default class Home extends BaseScreen<Props, State> {
         <HeaderComponent
           navigation={navigation}
           title={I18n.t('sidebar.home')}
-          rightAction={navigation.openDrawer}
+          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
         />
         <Content style={style.content}>

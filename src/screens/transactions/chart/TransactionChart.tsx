@@ -4,6 +4,7 @@ import React from 'react';
 import { processColor, View } from 'react-native';
 import { LineChart } from 'react-native-charts-wrapper';
 import { scale } from 'react-native-size-matters';
+import { DrawerActions } from 'react-navigation-drawer';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import TransactionHeaderComponent from '../../../components/transaction/header/TransactionHeaderComponent';
 import commonColor from '../../../theme/variables/commonColor';
@@ -316,7 +317,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
             subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
             leftAction={() => this.onBack()}
             leftActionIcon={'navigate-before'}
-            rightAction={navigation.openDrawer}
+            rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
             rightActionIcon={'menu'}
           />
           {showTransactionDetails && transaction && (

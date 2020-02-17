@@ -26,6 +26,7 @@
     "startDate": "Date Début",
     "endDate": "Date Fin",
     "onlyMyTransactions": "Mes Sessions",
+    "onlyAvailableChargers": "Bornes Disponibles",
     "wrongTenant": "Vous êtes connecté sur la mauvaise organisation",
     "createdOn": "Créé le",
     "createdBy": "Créé par",
