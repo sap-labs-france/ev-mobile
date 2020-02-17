@@ -56,6 +56,21 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
       }
       // Get Charger Config
       const chargerConfiguration = await this.getChargerConfiguration(charger.id);
+      // Sort
+      if (chargerConfiguration && chargerConfiguration.configuration) {
+        chargerConfiguration.configuration.sort((a, b) => {
+          // ignore upper and lowercase
+          const keyA = a.key.toUpperCase();
+          const keyB = b.key.toUpperCase();
+          if (keyA < keyB) {
+            return -1;
+          }
+          if (keyA > keyB) {
+            return 1;
+          }
+          return 0;
+        });
+      }
       // Set
       this.setState({
         loading: false,
