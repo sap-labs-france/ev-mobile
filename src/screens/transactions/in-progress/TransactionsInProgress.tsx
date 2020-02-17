@@ -31,6 +31,7 @@ interface State {
   count?: number;
   isPricingActive: boolean;
   isAdmin?: boolean;
+  hasSiteAdmin: boolean;
   initialFilters?: TransactionsInProgressFiltersDef;
   filters?: TransactionsInProgressFiltersDef;
 }
@@ -53,6 +54,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
       count: 0,
       isPricingActive: false,
       isAdmin: false,
+      hasSiteAdmin: false,
       initialFilters: {},
       filters: {}
     };
@@ -133,6 +135,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
         transactions: transactions ? transactions.result : [],
         count: transactions ? transactions.count : 0,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,
+        hasSiteAdmin: securityProvider ? securityProvider.hasSiteAdmin() : false,
         isPricingActive: securityProvider.isComponentPricingActive()
       });
     }
@@ -161,7 +164,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin, transactions, isPricingActive,
+    const { loading, isAdmin, hasSiteAdmin, transactions, isPricingActive,
       skip, count, limit, initialFilters } = this.state;
     return (
       <Container style={style.container}>
@@ -181,7 +184,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           <Spinner style={style.spinner} />
         ) : (
           <View style={style.content}>
-            {isAdmin &&
+            {(isAdmin || hasSiteAdmin) &&
               <TransactionsInProgressFilters
                 initialFilters={initialFilters}
                 onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}

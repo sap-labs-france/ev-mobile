@@ -5,6 +5,7 @@ import { DrawerActions } from 'react-navigation-drawer';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import I18nManager from '../../I18n/I18nManager';
 import ProviderFactory from '../../provider/ProviderFactory';
+import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from '../../screens/transactions/list/TransactionsHistoryFilters';
 import BaseProps from '../../types/BaseProps';
 import { TransactionDataResult } from '../../types/DataResult';
 import { GlobalFilters } from '../../types/Filter';
@@ -12,7 +13,6 @@ import Constants from '../../utils/Constants';
 import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
-import StatisticsFilters, { StatisticsFiltersDef } from './StatisticsFilters';
 import computeStyleSheet from './StatisticsStyles';
 
 export interface Props extends BaseProps {
@@ -28,8 +28,8 @@ interface State {
   priceCurrency?: string;
   isPricingActive?: boolean;
   showFilter?: boolean;
-  initialFilters?: StatisticsFiltersDef;
-  filters?: StatisticsFiltersDef;
+  initialFilters?: TransactionsHistoryFiltersDef;
+  filters?: TransactionsHistoryFiltersDef;
 }
 
 export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
@@ -156,12 +156,12 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
           <Spinner style={style.spinner} />
         ) : (
           <Content style={style.content}>
-            <StatisticsFilters
+            <TransactionsHistoryFilters
               initialFilters={initialFilters}
-              onFilterChanged={(newFilters: StatisticsFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-              ref={(statisticsFilters: StatisticsFilters) => {
-                if (this.headerComponent && statisticsFilters && statisticsFilters.getFilterContainerComponent()) {
-                  this.headerComponent.setFilterContainerComponent(statisticsFilters.getFilterContainerComponent());
+              onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
+              ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => {
+                if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterContainerComponent()) {
+                  this.headerComponent.setFilterContainerComponent(transactionsHistoryFilters.getFilterContainerComponent());
                 }
               }}
             />
