@@ -130,7 +130,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, totalNumberOfSession, totalConsumptionWattHours, initialFilters,
+    const { loading, totalNumberOfSession, totalConsumptionWattHours, initialFilters, filters,
       totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive } = this.state;
     return (
       <Container style={style.container}>
@@ -144,6 +144,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
           leftActionIcon={'navigate-before'}
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
+          filters={filters}
         />
         {loading ? (
           <Spinner style={style.spinner} />

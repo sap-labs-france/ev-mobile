@@ -165,7 +165,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading, isAdmin, hasSiteAdmin, transactions, isPricingActive,
-      skip, count, limit, initialFilters } = this.state;
+      skip, count, limit, initialFilters, filters } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -179,6 +179,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           leftActionIcon={'navigate-before'}
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
+          filters={filters}
         />
         {loading ? (
           <Spinner style={style.spinner} />

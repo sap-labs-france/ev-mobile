@@ -179,7 +179,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading, chargers, isAdmin, initialFilters,
-      skip, count, limit } = this.state;
+      skip, count, limit, filters } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -192,6 +192,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
           leftActionIcon={'navigate-before'}
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
+          filters={filters}
         />
         <SimpleSearchComponent
           onChange={(searchText) => this.search(searchText)}
