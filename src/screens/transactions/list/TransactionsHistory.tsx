@@ -204,39 +204,39 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
           onChange={(searchText) => this.search(searchText)}
           navigation={navigation}
         />
-          {loading ? (
-            <Spinner style={style.spinner} />
-          ) : (
-            <View style={style.content}>
-              <TransactionsHistoryFilters
-                initialFilters={initialFilters}
-                onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-                ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => {
-                  if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterContainerComponent()) {
-                    this.headerComponent.setFilterContainerComponent(transactionsHistoryFilters.getFilterContainerComponent());
-                  }
-                }}
-              />
-              <FlatList
-                data={transactions}
-                renderItem={({ item }) => (
-                  <TransactionHistoryComponent
-                    navigation={navigation}
-                    transaction={item}
-                    isAdmin={isAdmin}
-                    isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteID)}
-                    isPricingActive={isPricingActive}
-                  />
-                )}
-                keyExtractor={(item) => `${item.id}`}
-                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-                onEndReached={this.onEndScroll}
-                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('transactions.noTransactionsHistory')} />}
-              />
-            </View>
-          )}
+        {loading ? (
+          <Spinner style={style.spinner} />
+        ) : (
+          <View style={style.content}>
+            <TransactionsHistoryFilters
+              initialFilters={initialFilters}
+              onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
+              ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => {
+                if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterContainerComponent()) {
+                  this.headerComponent.setFilterContainerComponent(transactionsHistoryFilters.getFilterContainerComponent());
+                }
+              }}
+            />
+            <FlatList
+              data={transactions}
+              renderItem={({ item }) => (
+                <TransactionHistoryComponent
+                  navigation={navigation}
+                  transaction={item}
+                  isAdmin={isAdmin}
+                  isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteID)}
+                  isPricingActive={isPricingActive}
+                />
+              )}
+              keyExtractor={(item) => `${item.id}`}
+              refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+              onEndReached={this.onEndScroll}
+              onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+              ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('transactions.noTransactionsHistory')} />}
+            />
+          </View>
+        )}
       </Container>
     );
   };
