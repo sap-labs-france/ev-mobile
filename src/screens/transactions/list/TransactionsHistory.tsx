@@ -61,14 +61,6 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
-  public async loadInitialFilters() {
-    const userID = await SecuredStorage.loadFilterValue(GlobalFilters.MY_USER_FILTER);
-    this.setState({
-      initialFilters: { userID },
-      filters: { userID }
-    });
-  }
-
   public async componentDidMount() {
     // Get initial filters
     await this.loadInitialFilters();
@@ -77,6 +69,14 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
+  }
+
+  public async loadInitialFilters() {
+    const userID = await SecuredStorage.loadFilterValue(GlobalFilters.MY_USER_FILTER);
+    this.setState({
+      initialFilters: { userID },
+      filters: { userID }
+    });
   }
 
   public getTransactions = async (searchText: string, skip: number, limit: number): Promise<TransactionDataResult> => {
@@ -146,19 +146,12 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       this.setState({
         loading: false,
         transactions: transactions ? transactions.result : [],
-        filters: {
-          ...this.state.filters,
-          startDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime :
-            transactions.stats.firstTimestamp ? new Date(transactions.stats.firstTimestamp) : new Date(),
-          endDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime :
-            transactions.stats.lastTimestamp ? new Date(transactions.stats.lastTimestamp) : new Date(),
-        },
         initialFilters: {
           ...this.state.initialFilters,
           startDateTime: this.state.initialFilters.startDateTime ? this.state.initialFilters.startDateTime :
-            transactions.stats.firstTimestamp ? new Date(transactions.stats.firstTimestamp) : new Date(),
+            transactions.stats.firstTimestamp ? new Date(transactions.stats.firstTimestamp) : null,
           endDateTime: this.state.initialFilters.endDateTime ? this.state.initialFilters.endDateTime :
-            transactions.stats.lastTimestamp ? new Date(transactions.stats.lastTimestamp) : new Date(),
+            transactions.stats.lastTimestamp ? new Date(transactions.stats.lastTimestamp) : null,
         },
         count: transactions ? transactions.count : 0,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,

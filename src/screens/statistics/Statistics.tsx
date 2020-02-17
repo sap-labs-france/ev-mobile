@@ -55,6 +55,12 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
+  public async componentDidMount() {
+    // Get initial filters
+    await this.loadInitialFilters();
+    await super.componentDidMount();
+  }
+
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
   }
@@ -67,12 +73,6 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     });
   }
 
-  public async componentDidMount() {
-    // Get initial filters
-    await this.loadInitialFilters();
-    await super.componentDidMount();
-  }
-
   public refresh = async () => {
     // Get the provider
     const centralServerProvider = await ProviderFactory.getProvider();
@@ -81,13 +81,6 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     const transactionStats = await this.getTransactionsStats();
     // Set
     this.setState({
-      filters: {
-        ...this.state.filters,
-        startDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime :
-          transactionStats.stats.firstTimestamp ? new Date(transactionStats.stats.firstTimestamp) : new Date(),
-        endDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime :
-          transactionStats.stats.lastTimestamp ? new Date(transactionStats.stats.lastTimestamp) : new Date(),
-      },
       initialFilters: {
         ...this.state.initialFilters,
         startDateTime: this.state.initialFilters.startDateTime ? this.state.initialFilters.startDateTime :

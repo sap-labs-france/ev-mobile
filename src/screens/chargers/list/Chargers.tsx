@@ -58,6 +58,12 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     };
   }
 
+  public async componentDidMount() {
+    // Get initial filters
+    await this.loadInitialFilters();
+    await super.componentDidMount();
+  }
+
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
   }
@@ -68,12 +74,6 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       initialFilters: { connectorStatus },
       filters: { connectorStatus }
     });
-  }
-
-  public async componentDidMount() {
-    // Get initial filters
-    await this.loadInitialFilters();
-    await super.componentDidMount();
   }
 
   public getChargers = async (searchText: string, skip: number, limit: number): Promise<DataResult<ChargingStation>> => {

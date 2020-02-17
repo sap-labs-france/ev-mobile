@@ -71,7 +71,7 @@ export default class TransactionsHistoryFilters extends BaseScreenFilters {
           <MyUserSwitchFilterControlComponent
             filterID={'userID'}
             internalFilterID={GlobalFilters.MY_USER_FILTER}
-            initialValue={initialFilters.userID}
+            initialValue={filters.userID ? filters.userID : initialFilters.userID}
             label={I18n.t('general.onlyMyTransactions')}
             ref={async (myUserSwitchFilterComponent: MyUserSwitchFilterControlComponent) => {
               if (myUserSwitchFilterComponent && this.getFilterContainerComponent()) {
