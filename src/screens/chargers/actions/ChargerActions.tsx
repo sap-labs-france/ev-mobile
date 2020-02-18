@@ -171,7 +171,7 @@ export default class ChargerActions extends BaseScreen<Props, State> {
           <ScrollView contentContainerStyle={style.scrollViewContainer}>
             <View style={style.viewContainer}>
               <View style={style.actionContainer}>
-                <Button disabled={charger.inactive} rounded={true} danger={!charger.inactive} iconLeft={true} style={style.actionButton} onPress={() => this.resetHardConfirm()}>
+                <Button disabled={charger.inactive} block={true} danger={!charger.inactive} iconLeft={true} style={style.actionButton} onPress={() => this.resetHardConfirm()}>
                   <Icon style={style.actionButtonIcon} type='MaterialIcons' name='repeat' />
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t('chargers.resetHard')}
@@ -180,7 +180,7 @@ export default class ChargerActions extends BaseScreen<Props, State> {
               </View>
               { charger && charger.connectors.map((connector) =>
                 <View key={connector.connectorId} style={style.actionContainer}>
-                  <Button disabled={charger.inactive} rounded={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton}
+                  <Button disabled={charger.inactive} block={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton}
                       onPress={() => this.unlockConnectorConfirm(connector.connectorId)}>
                     <Icon style={style.actionButtonIcon} type='MaterialIcons' name='lock-open' />
                     <Text uppercase={false} style={style.actionButtonText}>
@@ -190,7 +190,7 @@ export default class ChargerActions extends BaseScreen<Props, State> {
                 </View>
               )}
               <View style={style.actionContainer}>
-                <Button disabled={charger.inactive} rounded={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton} onPress={() => this.resetSoftConfirm()}>
+                <Button disabled={charger.inactive} block={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton} onPress={() => this.resetSoftConfirm()}>
                   <Icon style={style.actionButtonIcon} type='MaterialIcons' name='layers-clear' />
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t('chargers.resetSoft')}
@@ -198,7 +198,7 @@ export default class ChargerActions extends BaseScreen<Props, State> {
                 </Button>
               </View>
               <View style={style.actionContainer}>
-                <Button disabled={charger.inactive} rounded={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton} onPress={() => this.clearCacheConfirm()}>
+                <Button disabled={charger.inactive} block={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton} onPress={() => this.clearCacheConfirm()}>
                   <Icon style={style.actionButtonIcon} type='MaterialIcons' name='refresh' />
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t('chargers.clearCache')}

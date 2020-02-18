@@ -1,4 +1,4 @@
-import { Body, Button, Header, Icon, Left, Right, Subtitle, Title } from 'native-base';
+import { Body, Button, Header, Icon, Left, Right, Subtitle, Title, View } from 'native-base';
 import React from 'react';
 import { BackHandler, Image } from 'react-native';
 import logo from '../../../assets/logo-low.png';
@@ -16,6 +16,7 @@ export interface Props extends BaseProps {
   rightAction?: () => void;
   rightActionIcon?: string;
   rightActionIconType?: IconType;
+  filters?: any;
 }
 
 interface State {
@@ -73,18 +74,35 @@ export default class HeaderComponent extends React.Component<Props, State> {
     }
   }
 
+  private getNumberOfFilters(): number {
+    const { filters } = this.props;
+    let numberOfFilters = 0;
+    for (const filter in filters) {
+      if (filters[filter]) {
+        numberOfFilters++;
+      }
+    }
+    return numberOfFilters;
+  }
+
   public render = () => {
     const style = computeStyleSheet();
     const { title, subTitle, leftAction, leftActionIcon, leftActionIconType,
-      rightAction, rightActionIcon, rightActionIconType } = this.props;
+      rightAction, rightActionIcon, rightActionIconType, navigation } = this.props;
     const { hasFilter } = this.state;
     return (
       <Header style={style.header}>
         <Left style={style.leftHeader}>
           {leftAction ? (
-            <Button transparent={true} style={style.leftButtonHeader} onPress={() => leftAction()}>
-              <Icon type={leftActionIconType} name={leftActionIcon} style={[style.iconHeader, style.leftIconHeader]} />
-            </Button>
+            <View style={style.buttonRow}>
+              <Button transparent={true} style={style.leftButtonHeader} onPress={() => leftAction()}>
+                <Icon type={leftActionIconType} name={leftActionIcon} style={[style.iconHeader, style.leftIconHeader]} />
+              </Button>
+              <Button transparent={true} style={style.leftButtonHeader}
+                  onPress={() => { navigation.navigate({ routeName: 'HomeNavigator' });}}>
+                <Icon type='MaterialIcons' name='home' style={[style.iconHeader, style.leftIconHeader]} />
+              </Button>
+            </View>
           ) : (
             <Image source={logo} style={style.logoHeader} />
           )}
@@ -105,7 +123,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
                   this.filterContainerComponent.setVisible(this.searchIsVisible);
                 }
               }}>
-              <Icon type={'MaterialCommunityIcons'} name={'filter-outline'} style={style.iconHeader} />
+              <Icon type={'MaterialCommunityIcons'} name={this.getNumberOfFilters() > 0 ? 'filter' : 'filter-outline'} style={style.iconHeader} />
             </Button>
           )}
           {rightAction ? (

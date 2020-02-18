@@ -44,7 +44,7 @@ export default class TransactionsInProgressFilters extends BaseScreenFilters {
 
   public render = () => {
     const { initialFilters } = this.props;
-    const { filters } = this.state;
+    const { filters, isAdmin, hasSiteAdmin } = this.state;
     return (
       <FilterContainerComponent
         onFilterChanged={this.onFilterChanged}
@@ -52,7 +52,7 @@ export default class TransactionsInProgressFilters extends BaseScreenFilters {
           this.setFilterContainerComponent(filterContainerComponent);
         }}
       >
-        {this.state.isAdmin &&
+        {(isAdmin || hasSiteAdmin) &&
           <MyUserSwitchFilterControlComponent
             filterID={'userID'}
             internalFilterID={GlobalFilters.MY_USER_FILTER}

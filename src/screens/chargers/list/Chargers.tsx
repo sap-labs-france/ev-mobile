@@ -58,6 +58,12 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     };
   }
 
+  public async componentDidMount() {
+    // Get initial filters
+    await this.loadInitialFilters();
+    await super.componentDidMount();
+  }
+
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
   }
@@ -68,12 +74,6 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       initialFilters: { connectorStatus },
       filters: { connectorStatus }
     });
-  }
-
-  public async componentDidMount() {
-    // Get initial filters
-    await this.loadInitialFilters();
-    await super.componentDidMount();
   }
 
   public getChargers = async (searchText: string, skip: number, limit: number): Promise<DataResult<ChargingStation>> => {
@@ -179,7 +179,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading, chargers, isAdmin, initialFilters,
-      skip, count, limit } = this.state;
+      skip, count, limit, filters } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -192,6 +192,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
           leftActionIcon={'navigate-before'}
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
+          filters={filters}
         />
         <SimpleSearchComponent
           onChange={(searchText) => this.search(searchText)}
@@ -213,7 +214,9 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
               />
               <FlatList
                 data={chargers}
-                renderItem={({ item }) => <ChargerComponent charger={item} isAdmin={isAdmin} navigation={navigation} />}
+                renderItem={({ item }) =>
+                  <ChargerComponent charger={item} isAdmin={isAdmin} navigation={navigation}
+                    isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteArea.siteID)} />}
                 keyExtractor={(item) => item.id}
                 refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this.onEndScroll}

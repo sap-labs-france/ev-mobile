@@ -10,6 +10,7 @@ import computeStyleSheet from './TransactionHeaderComponentStyles';
 export interface Props extends BaseProps {
   transaction: Transaction;
   isAdmin: boolean;
+  isSiteAdmin: boolean;
   displayNavigationIcon?: boolean;
   visible?: boolean;
 }
@@ -34,7 +35,7 @@ export default class TransactionHeaderComponent extends BaseScreen<Props, State>
 
   public render() {
     const style = computeStyleSheet();
-    const { transaction, isAdmin, displayNavigationIcon } = this.props;
+    const { transaction, isAdmin, isSiteAdmin, displayNavigationIcon } = this.props;
     return (
       <View style={style.container}>
         <View style={style.headerContent}>
@@ -47,7 +48,7 @@ export default class TransactionHeaderComponent extends BaseScreen<Props, State>
           <Text numberOfLines={1} style={[style.subHeaderName, style.subHeaderNameLeft]}>
             {transaction.chargeBoxID} - {Utils.getConnectorLetterFromConnectorID(transaction.connectorId)}
           </Text>
-          {isAdmin && (
+          {(isAdmin || isSiteAdmin) && (
             <Text numberOfLines={1} style={[style.subHeaderName, style.subHeaderNameRight]}>
               {Utils.buildUserName(transaction.user)}
             </Text>

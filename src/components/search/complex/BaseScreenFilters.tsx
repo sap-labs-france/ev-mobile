@@ -9,6 +9,7 @@ export interface BaseScreenFiltersProps {
 
 export interface BaseScreenFiltersState {
   isAdmin?: boolean;
+  hasSiteAdmin?: boolean;
   locale?: string;
 }
 
@@ -23,6 +24,7 @@ export default class BaseScreenFilters extends React.Component<BaseScreenFilters
     super(props);
     this.state = {
       isAdmin: false,
+      hasSiteAdmin: false,
       locale: null
     };
   }
@@ -30,6 +32,7 @@ export default class BaseScreenFilters extends React.Component<BaseScreenFilters
   public async componentDidMount() {
     let locale = null;
     let isAdmin = false;
+    let hasSiteAdmin = false;
     // Get Provider
     this.centralServerProvider = await ProviderFactory.getProvider();
     if (this.centralServerProvider) {
@@ -38,10 +41,12 @@ export default class BaseScreenFilters extends React.Component<BaseScreenFilters
       this.securityProvider = this.centralServerProvider.getSecurityProvider();
       if (this.securityProvider) {
         isAdmin = this.securityProvider.isAdmin();
+        hasSiteAdmin = this.securityProvider.hasSiteAdmin();
       }
     }
     this.setState({
       isAdmin,
+      hasSiteAdmin,
       locale
     });
   }

@@ -36,7 +36,7 @@ const commonStyles = ScaledSheet.create({
   },
   headerRowContainer: {
     width: '100%',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -46,6 +46,18 @@ const commonStyles = ScaledSheet.create({
     marginLeft: '5@s',
     marginRight: '5@s',
     fontWeight: 'bold'
+  },
+  subHeaderName: {
+    color: commonColor.headerTextColor,
+    fontSize: '14@s',
+    marginLeft: '5@s',
+    marginRight: '5@s',
+  },
+  subSubHeaderName: {
+    color: commonColor.headerTextColor,
+    fontSize: '12@s',
+    marginLeft: '5@s',
+    marginRight: '5@s',
   },
   scrollViewContainer: {
     marginTop: '20@s'

@@ -14,6 +14,7 @@ export interface Props extends BaseProps {
   transaction: Transaction;
   isPricingActive: boolean;
   isAdmin: boolean;
+  isSiteAdmin: boolean;
   visible?: boolean;
 }
 
@@ -39,7 +40,7 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
   public render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { transaction, isAdmin, isPricingActive } = this.props;
+    const { transaction, isAdmin, isSiteAdmin, isPricingActive } = this.props;
     const consumption = Math.round(transaction.stop.totalConsumption / 10) / 100;
     const price = transaction.stop.price ? Math.round(transaction.stop.price * 100) / 100 : 0;
     const duration = Utils.formatDurationHHMMSS(transaction.stop.totalDurationSecs, false);
@@ -59,7 +60,7 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
             });
           }}>
           <View style={style.container}>
-            <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} />
+            <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} />
             <View style={style.transactionContent}>
               <View style={style.columnContainer}>
                 <Icon type='MaterialIcons' name='ev-station' style={[style.icon, style.info]} />

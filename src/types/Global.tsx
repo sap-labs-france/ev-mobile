@@ -6,7 +6,7 @@ export interface KeyValue {
 export interface PropertyDisplay {
   key: string;
   title: string;
-  value?: string;
+  value?: string|Element|Element[]|null;
   formatter?: (value: any) => string|Element|Element[]|null;
   formatterWithComponents?: boolean;
 }

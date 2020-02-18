@@ -594,6 +594,20 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  public async requestChargingStationOCPPConfiguration(id: string): Promise<ActionResponse> {
+    this.debugMethod('requestChargingStationOCPPConfiguration');
+    // Call
+    const result = await axios.post(`${this.centralRestServerServiceSecuredURL}/ChargingStationRequestConfiguration`,
+      {
+        chargeBoxID: id,
+        forceUpdateOCPPParamsFromTemplate: false,
+      }, {
+        headers: this.buildSecuredHeaders(),
+      }
+    );
+    return result.data;
+  }
+
   public async getTransactionsActive(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Transaction>> {
     this.debugMethod('getTransactionsActive');
     // Build Paging

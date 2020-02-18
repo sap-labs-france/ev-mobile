@@ -61,14 +61,6 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
-  public async loadInitialFilters() {
-    const userID = await SecuredStorage.loadFilterValue(GlobalFilters.MY_USER_FILTER);
-    this.setState({
-      initialFilters: { userID },
-      filters: { userID }
-    });
-  }
-
   public async componentDidMount() {
     // Get initial filters
     await this.loadInitialFilters();
@@ -77,6 +69,14 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
+  }
+
+  public async loadInitialFilters() {
+    const userID = await SecuredStorage.loadFilterValue(GlobalFilters.MY_USER_FILTER);
+    this.setState({
+      initialFilters: { userID },
+      filters: { userID }
+    });
   }
 
   public getTransactions = async (searchText: string, skip: number, limit: number): Promise<TransactionDataResult> => {
@@ -146,19 +146,12 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       this.setState({
         loading: false,
         transactions: transactions ? transactions.result : [],
-        filters: {
-          ...this.state.filters,
-          startDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime :
-            transactions.stats.firstTimestamp ? new Date(transactions.stats.firstTimestamp) : new Date(),
-          endDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime :
-            transactions.stats.lastTimestamp ? new Date(transactions.stats.lastTimestamp) : new Date(),
-        },
         initialFilters: {
           ...this.state.initialFilters,
           startDateTime: this.state.initialFilters.startDateTime ? this.state.initialFilters.startDateTime :
-            transactions.stats.firstTimestamp ? new Date(transactions.stats.firstTimestamp) : new Date(),
+            transactions.stats.firstTimestamp ? new Date(transactions.stats.firstTimestamp) : null,
           endDateTime: this.state.initialFilters.endDateTime ? this.state.initialFilters.endDateTime :
-            transactions.stats.lastTimestamp ? new Date(transactions.stats.lastTimestamp) : new Date(),
+            transactions.stats.lastTimestamp ? new Date(transactions.stats.lastTimestamp) : null,
         },
         count: transactions ? transactions.count : 0,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,
@@ -191,7 +184,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading, isAdmin, transactions, isPricingActive,
-      skip, count, limit, initialFilters } = this.state;
+      skip, count, limit, initialFilters, filters } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -205,43 +198,45 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
           leftActionIcon={'navigate-before'}
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
+          filters={filters}
         />
         <SimpleSearchComponent
           onChange={(searchText) => this.search(searchText)}
           navigation={navigation}
         />
-          {loading ? (
-            <Spinner style={style.spinner} />
-          ) : (
-            <View style={style.content}>
-              <TransactionsHistoryFilters
-                initialFilters={initialFilters}
-                onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-                ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => {
-                  if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterContainerComponent()) {
-                    this.headerComponent.setFilterContainerComponent(transactionsHistoryFilters.getFilterContainerComponent());
-                  }
-                }}
-              />
-              <FlatList
-                data={transactions}
-                renderItem={({ item }) => (
-                  <TransactionHistoryComponent
-                    navigation={navigation}
-                    transaction={item}
-                    isAdmin={isAdmin}
-                    isPricingActive={isPricingActive}
-                  />
-                )}
-                keyExtractor={(item) => `${item.id}`}
-                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-                onEndReached={this.onEndScroll}
-                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('transactions.noTransactionsHistory')} />}
-              />
-            </View>
-          )}
+        {loading ? (
+          <Spinner style={style.spinner} />
+        ) : (
+          <View style={style.content}>
+            <TransactionsHistoryFilters
+              initialFilters={initialFilters}
+              onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
+              ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => {
+                if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterContainerComponent()) {
+                  this.headerComponent.setFilterContainerComponent(transactionsHistoryFilters.getFilterContainerComponent());
+                }
+              }}
+            />
+            <FlatList
+              data={transactions}
+              renderItem={({ item }) => (
+                <TransactionHistoryComponent
+                  navigation={navigation}
+                  transaction={item}
+                  isAdmin={isAdmin}
+                  isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteID)}
+                  isPricingActive={isPricingActive}
+                />
+              )}
+              keyExtractor={(item) => `${item.id}`}
+              refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+              onEndReached={this.onEndScroll}
+              onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+              ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('transactions.noTransactionsHistory')} />}
+            />
+          </View>
+        )}
       </Container>
     );
   };

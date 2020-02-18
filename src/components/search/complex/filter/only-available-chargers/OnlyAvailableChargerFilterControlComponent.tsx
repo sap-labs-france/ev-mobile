@@ -40,9 +40,9 @@ export default class OnlyAvailableChargerFilterControlComponent extends BaseFilt
   private onValueChanged = async (newValue: boolean) => {
     // Set Filter
     if (newValue) {
-      await this.getFilterContainerComponent().setFilterValue(this.getID(), this.status);
+      await this.getFilterContainerComponent().setFilter(this.getID(), this.status);
     } else {
-      await this.getFilterContainerComponent().clearFilterValue(this.getID());
+      await this.getFilterContainerComponent().clearFilter(this.getID());
     }
     // Update
     this.setState({ switchValue: newValue });

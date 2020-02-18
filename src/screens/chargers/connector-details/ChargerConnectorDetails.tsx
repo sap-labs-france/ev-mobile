@@ -2,6 +2,7 @@ import I18n from 'i18n-js';
 import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
+import { DrawerActions } from 'react-navigation-drawer';
 import noPhotoActive from '../../../../assets/no-photo-active.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
@@ -17,7 +18,6 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargerConnectorDetailsStyles';
-import { DrawerActions } from 'react-navigation-drawer';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -30,6 +30,7 @@ interface State {
   connector?: Connector;
   transaction?: Transaction;
   isAdmin?: boolean;
+  isSiteAdmin?: boolean;
   canStartTransaction?: boolean;
   canStopTransaction?: boolean;
   canDisplayTransaction?: boolean;
@@ -55,6 +56,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       charger: null,
       connector: null,
       transaction: null,
+      isAdmin: false,
+      isSiteAdmin: false,
       canStartTransaction: false,
       canStopTransaction: false,
       canDisplayTransaction: false,
@@ -157,6 +160,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     }
   }
 
+  // tslint:disable-next-line: cyclomatic-complexity
   public refresh = async () => {
     let siteImage = null;
     let userImage = null;
@@ -194,6 +198,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       siteImage: siteImage ? siteImage : this.state.siteImage,
       userImage: userImage ? userImage : transaction ? this.state.userImage : null,
       isAdmin: securityProvider ? securityProvider.isAdmin() : false,
+      isSiteAdmin: securityProvider && charger && charger.siteArea ? securityProvider.isSiteAdmin(charger.siteArea.siteID) : false,
       canDisplayTransaction: charger ? this.canDisplayTransaction(charger, connector) : false,
       canStartTransaction: charger ? this.canStartTransaction(charger, connector) : false,
       canStopTransaction: charger ? this.canStopTransaction(charger, connector) : false,
@@ -400,12 +405,12 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   };
 
   public renderConnectorStatus = (style: any) => {
-    const { connector, isAdmin } = this.state;
+    const { connector, isAdmin, isSiteAdmin } = this.state;
     return (
       <View style={style.columnContainer}>
         <ConnectorStatusComponent navigation={this.props.navigation} connector={connector}
           text={connector ? Utils.translateConnectorStatus(connector.status) : ChargePointStatus.UNAVAILABLE} />
-        {isAdmin && connector && connector.status === ChargePointStatus.FAULTED && (
+        {(isAdmin || isSiteAdmin) && connector && connector.status === ChargePointStatus.FAULTED && (
           <Text style={[style.subLabel, style.subLabelStatusError]}>({connector.errorCode})</Text>
         )}
       </View>
@@ -413,14 +418,14 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   };
 
   public renderUserInfo = (style: any) => {
-    const { userImage, transaction, isAdmin } = this.state;
+    const { userImage, transaction, isAdmin, isSiteAdmin } = this.state;
     return transaction ? (
       <View style={style.columnContainer}>
         <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhotoActive} />
         <Text numberOfLines={1} style={[style.label, style.labelUser, style.info]}>
           {Utils.buildUserName(transaction.user)}
         </Text>
-        {isAdmin ? <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text> : undefined}
+        {(isAdmin || isSiteAdmin) && <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text>}
       </View>
     ) : (
       <View style={style.columnContainer}>
@@ -538,8 +543,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   };
 
   public renderShowLastTransactionButton = (style: any) => {
-    const { isAdmin } = this.state;
-    if (isAdmin) {
+    const { isAdmin, isSiteAdmin } = this.state;
+    if (isAdmin || isSiteAdmin) {
       return (
         <TouchableOpacity style={[style.lastTransactionContainer]} onPress={() => this.showLastTransaction()}>
           <View style={[style.buttonLastTransaction]}>

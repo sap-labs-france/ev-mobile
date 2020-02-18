@@ -45,9 +45,9 @@ export default class MyUserSwitchFilterControlComponent extends BaseFilterContro
   private onValueChanged = async (newValue: boolean) => {
     // Set Filter
     if (newValue) {
-      await this.getFilterContainerComponent().setFilterValue(this.getID(), this.userID);
+      await this.getFilterContainerComponent().setFilter(this.getID(), this.userID);
     } else {
-      await this.getFilterContainerComponent().clearFilterValue(this.getID());
+      await this.getFilterContainerComponent().clearFilter(this.getID());
     }
     // Update
     this.setState({ switchValue: newValue });

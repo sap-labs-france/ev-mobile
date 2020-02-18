@@ -15,6 +15,13 @@ export default class SecurityProvider {
     return this.loggedUser.role === Role.ADMIN;
   }
 
+  public hasSiteAdmin(): boolean {
+    if (this.isAdmin()) {
+      return true;
+    }
+    return this.loggedUser.sitesAdmin && this.loggedUser.sitesAdmin.length > 0;
+  }
+
   public isSiteAdmin(siteID: string): boolean {
     if (this.isAdmin()) {
       return true;
