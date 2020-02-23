@@ -4,7 +4,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import Modal from 'react-native-modal';
 import BaseFilterContainerComponent, { BaseFilterContainerComponentProps } from './BaseFilterContainerComponent';
-import computeStyleSheet from './FilterModalContainerComponentStyles';
+import computeStyleSheet from './FilterContainerComponentStyles';
 
 export interface Props extends BaseFilterContainerComponentProps {
   visible?: boolean;
@@ -56,7 +56,7 @@ export default class FilterModalContainerComponent extends BaseFilterContainerCo
     const { visible } = this.state;
     return (
       <Modal isVisible={visible} onBackdropPress={() => this.setState({ visible: false })}>
-        <View style={style.contentFilter}>
+        <View style={style.contentModalFilter}>
           {this.props.children}
         </View>
         <View style={style.contentButton}>

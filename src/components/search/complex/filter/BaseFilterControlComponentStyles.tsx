@@ -6,7 +6,7 @@ import commonColor from '../../../../theme/variables/commonColor';
 const commonStyles = ScaledSheet.create({
   rowFilter: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     height: '40@s',
     alignItems: 'center'
   },
