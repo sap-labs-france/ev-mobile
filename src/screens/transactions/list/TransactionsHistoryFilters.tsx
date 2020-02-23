@@ -4,7 +4,7 @@ import React from 'react';
 import BaseScreenFilters, { BaseScreenFiltersState } from '../../../components/search/complex/BaseScreenFilters';
 import DateFilterControlComponent from '../../../components/search/complex/filter/date/DateFilterControlComponent';
 import MyUserSwitchFilterControlComponent from '../../../components/search/complex/filter/my-user-switch/MyUserSwitchFilterControlComponent';
-import FilterContainerComponent from '../../../components/search/complex/FilterContainerComponent';
+import FilterModalContainerComponent from '../../../components/search/complex/FilterModalContainerComponent';
 import { GlobalFilters } from '../../../types/Filter';
 
 export interface Props {
@@ -61,9 +61,9 @@ export default class TransactionsHistoryFilters extends BaseScreenFilters {
     const { initialFilters } = this.props;
     const { filters, isAdmin, hasSiteAdmin } = this.state;
     return (
-      <FilterContainerComponent
+      <FilterModalContainerComponent
         onFilterChanged={this.onFilterChanged}
-        ref={(filterContainerComponent: FilterContainerComponent) => {
+        ref={(filterContainerComponent: FilterModalContainerComponent) => {
           this.setFilterContainerComponent(filterContainerComponent);
         }}
       >
@@ -108,7 +108,7 @@ export default class TransactionsHistoryFilters extends BaseScreenFilters {
           defaultDate={filters.endDateTime ? filters.endDateTime : initialFilters.endDateTime}
           maximumDate={initialFilters.endDateTime}
         />
-      </FilterContainerComponent>
+      </FilterModalContainerComponent>
     );
   };
 }

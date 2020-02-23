@@ -5,7 +5,7 @@ import { Text } from 'react-native';
 import Modal from 'react-native-modal';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import BaseFilterComponent from './filter/BaseFilterControlComponent';
-import computeStyleSheet from './FilterContainerComponentStyles';
+import computeStyleSheet from './FilterModalContainerComponentStyles';
 
 export interface Props {
   onFilterChanged?: (filters: any, closed: boolean) => void;
@@ -17,7 +17,7 @@ interface State {
   visible?: boolean;
 }
 
-export default class FilterContainerComponent extends React.Component<Props, State> {
+export default class FilterModalContainerComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   private filterComponents: BaseFilterComponent[] = [];
