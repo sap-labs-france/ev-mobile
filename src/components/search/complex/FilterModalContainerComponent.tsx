@@ -3,12 +3,10 @@ import { Button, View } from 'native-base';
 import React from 'react';
 import { Text } from 'react-native';
 import Modal from 'react-native-modal';
-import SecuredStorage from '../../../utils/SecuredStorage';
-import BaseFilterComponent from './filter/BaseFilterControlComponent';
+import BaseFilterContainerComponent, { BaseFilterContainerComponentProps } from './BaseFilterContainerComponent';
 import computeStyleSheet from './FilterModalContainerComponentStyles';
 
-export interface Props {
-  onFilterChanged?: (filters: any, closed: boolean) => void;
+export interface Props extends BaseFilterContainerComponentProps {
   visible?: boolean;
   children?: React.ReactNode;
 }
@@ -17,10 +15,9 @@ interface State {
   visible?: boolean;
 }
 
-export default class FilterModalContainerComponent extends React.Component<Props, State> {
+export default class FilterModalContainerComponent extends BaseFilterContainerComponent<Props, State> {
   public state: State;
   public props: Props;
-  private filterComponents: BaseFilterComponent[] = [];
   public static defaultProps = {
     visible: false
   };
@@ -40,125 +37,25 @@ export default class FilterModalContainerComponent extends React.Component<Props
     this.setState({ visible });
   }
 
-  public async addFilter(newFilterComponent: BaseFilterComponent) {
-    // Search
-    for (const filterContainerComponent of this.filterComponents) {
-      if (filterContainerComponent.getID() === newFilterComponent.getID()) {
-        return;
-      }
-    }
-    // Add new
-    this.filterComponents.push(newFilterComponent);
-  }
-
-  public setFilter = async (filterID: string, filterValue: any) => {
-    // Search
-    for (const filterContainerComponent of this.filterComponents) {
-      if (filterContainerComponent.getID() === filterID) {
-        // Set
-        filterContainerComponent.setValue(filterValue);
-        // Trigger notif
-        this.onFilterChanged(false);
-        break;
-      }
-    }
-  }
-
-  public clearFilter = async (filterID: string) => {
-    // Search
-    for (const filterContainerComponent of this.filterComponents) {
-      if (filterContainerComponent.getID() === filterID) {
-        // Set
-        filterContainerComponent.clearValue();
-        // Trigger notif
-        this.onFilterChanged(false);
-        break;
-      }
-    }
-  }
-
-  public getFilter = (ID: string): string => {
-    // Search
-    for (const filterContainerComponent of this.filterComponents) {
-      if (filterContainerComponent.getID() === ID) {
-        return filterContainerComponent.getValue();
-      }
-    }
-    return null;
-  }
-
-  public getFilters = (): any => {
-    const filters: any = {};
-    // Build
-    for (const filterContainerComponent of this.filterComponents) {
-      if (filterContainerComponent.getValue()) {
-        filters[filterContainerComponent.getID()] = filterContainerComponent.getValue();
-      }
-    }
-    return filters;
-  }
-
-  public onFilterChanged = (closed: boolean) => {
-    const { onFilterChanged } = this.props;
-    if (onFilterChanged) {
-      onFilterChanged(this.getFilters(), closed);
-    }
-  }
-
   public applyFiltersAndNotify = async () => {
-    // Save
-    await this.saveFilters();
-    // Trigger notif
-    this.onFilterChanged(true);
+    // Super
+    await super.applyFiltersAndNotify();
     // Close
     this.setVisible(false);
-  }
-
-  public clearFilters() {
-    // Clear
-    for (const filterContainerComponent of this.filterComponents) {
-      filterContainerComponent.clearValue();
-    }
-  }
-
-  public getNumberOfFilters(): number {
-    let numberOfFilter = 0
-    for (const filterContainerComponent of this.filterComponents) {
-      if (filterContainerComponent.getValue()) {
-        numberOfFilter++;
-      }
-    }
-    return numberOfFilter;
   }
 
   public clearFiltersAndNotify = async () => {
-    // Clear
-    await this.clearFilters();
-    // Save
-    await this.saveFilters();
-    // Trigger notif
-    this.onFilterChanged(true);
+    // Super
+    await super.clearFiltersAndNotify();
     // Close
     this.setVisible(false);
-  }
-
-  private async saveFilters() {
-    // Build
-    for (const filterContainerComponent of this.filterComponents) {
-      // Save
-      if (filterContainerComponent.canBeSaved()) {
-        await SecuredStorage.saveFilterValue(filterContainerComponent.getInternalID(), filterContainerComponent.getValue());
-      }
-    }
   }
 
   public render = () => {
     const style = computeStyleSheet();
     const { visible } = this.state;
     return (
-      <Modal isVisible={visible}
-        onBackdropPress={() => this.setState({ visible: false })}
-      >
+      <Modal isVisible={visible} onBackdropPress={() => this.setState({ visible: false })}>
         <View style={style.contentFilter}>
           {this.props.children}
         </View>
