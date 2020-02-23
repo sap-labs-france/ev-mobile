@@ -156,7 +156,9 @@ export default class FilterContainerComponent extends React.Component<Props, Sta
     const style = computeStyleSheet();
     const { visible } = this.state;
     return (
-      <Modal isVisible={visible}>
+      <Modal isVisible={visible}
+        onBackdropPress={() => this.setState({ visible: false })}
+      >
         <View style={style.contentFilter}>
           {this.props.children}
         </View>
