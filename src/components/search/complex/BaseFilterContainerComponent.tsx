@@ -75,9 +75,7 @@ export default class BaseFilterContainerComponent<P, S> extends React.Component<
     const filters: any = {};
     // Build
     for (const filterContainerComponent of this.filterComponents) {
-      if (filterContainerComponent.getValue()) {
-        filters[filterContainerComponent.getID()] = filterContainerComponent.getValue();
-      }
+      filters[filterContainerComponent.getID()] = filterContainerComponent.getValue();
     }
     return filters;
   }

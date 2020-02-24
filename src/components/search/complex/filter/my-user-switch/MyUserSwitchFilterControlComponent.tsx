@@ -19,6 +19,7 @@ export default class MyUserSwitchFilterControlComponent extends BaseFilterContro
   constructor(props: Props) {
     super(props);
     this.state = {
+      switchValue: !!this.getValue()
     };
   }
 
@@ -31,15 +32,11 @@ export default class MyUserSwitchFilterControlComponent extends BaseFilterContro
   }
 
   public async componentDidMount() {
-    // Get provider
+    // Get corresponding
     const centralServerProvider = await ProviderFactory.getProvider();
     if (centralServerProvider) {
       this.userID = centralServerProvider.getUserInfo().id;
     }
-    // Set
-    this.setState({
-      switchValue: !!this.getValue()
-    })
   }
 
   private onValueChanged = async (newValue: boolean) => {

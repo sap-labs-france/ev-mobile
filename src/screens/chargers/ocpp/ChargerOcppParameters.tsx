@@ -133,15 +133,9 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
 
   public async requestConfiguration(chargeBoxID: string) {
     try {
-      console.log('====================================');
-      console.log(chargeBoxID);
-      console.log('====================================');
       // Unlock Connector
       const status = await this.centralServerProvider.requestChargingStationOCPPConfiguration(chargeBoxID);
       // Check
-      console.log('====================================');
-      console.log(status);
-      console.log('====================================');
       if (status.status && status.status === 'Accepted') {
         Message.showSuccess(I18n.t('details.accepted'));
         await this.refresh();

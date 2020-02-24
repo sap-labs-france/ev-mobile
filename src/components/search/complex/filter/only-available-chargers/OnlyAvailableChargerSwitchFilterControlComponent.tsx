@@ -11,7 +11,7 @@ interface State {
   switchValue?: boolean;
 }
 
-export default class OnlyAvailableChargerFilterControlComponent extends BaseFilterControlComponent {
+export default class OnlyAvailableChargerSwitchFilterControlComponent extends BaseFilterControlComponent {
   public state: State;
   public props: Props;
   private status: ChargePointStatus = ChargePointStatus.AVAILABLE;
@@ -19,6 +19,7 @@ export default class OnlyAvailableChargerFilterControlComponent extends BaseFilt
   constructor(props: Props) {
     super(props);
     this.state = {
+      switchValue: !!this.getValue()
     };
   }
 
@@ -28,13 +29,6 @@ export default class OnlyAvailableChargerFilterControlComponent extends BaseFilt
 
   public canBeSaved() {
     return true;
-  }
-
-  public async componentDidMount() {
-    // Set
-    this.setState({
-      switchValue: !!this.getValue()
-    })
   }
 
   private onValueChanged = async (newValue: boolean) => {

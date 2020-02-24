@@ -2,9 +2,8 @@ import I18n from 'i18n-js';
 import { View } from 'native-base';
 import React from 'react';
 import BaseScreenFilters, { BaseScreenFiltersState } from '../../../components/search/complex/BaseScreenFilters';
-import OnlyAvailableChargerFilterControlComponent from '../../../components/search/complex/filter/only-available-chargers/OnlyAvailableChargerFilterControlComponent';
+import OnlyAvailableChargerSwitchFilterControlComponent from '../../../components/search/complex/filter/only-available-chargers/OnlyAvailableChargerSwitchFilterControlComponent';
 import FilterModalContainerComponent from '../../../components/search/complex/FilterModalContainerComponent';
-import FilterVisibleContainerComponent from '../../../components/search/complex/FilterVisibleContainerComponent';
 import { ChargePointStatus } from '../../../types/ChargingStation';
 import { GlobalFilters } from '../../../types/Filter';
 
@@ -50,31 +49,31 @@ export default class ChargersFilters extends BaseScreenFilters {
     const { filters } = this.state;
     return (
       <View>
-        <FilterVisibleContainerComponent>
-          <OnlyAvailableChargerFilterControlComponent
+        {/* <FilterVisibleContainerComponent>
+          <OnlyAvailableChargerSwitchFilterControlComponent
               filterID={'connectorStatus'}
               internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGERS}
               initialValue={filters.connectorStatus ? filters.connectorStatus : initialFilters.connectorStatus}
               label={I18n.t('general.onlyAvailableChargers')}
-              ref={async (onlyAvailableChargerFilterComponent: OnlyAvailableChargerFilterControlComponent) => {
+              ref={async (onlyAvailableChargerFilterComponent: OnlyAvailableChargerSwitchFilterControlComponent) => {
                 if (onlyAvailableChargerFilterComponent && this.getFilterContainerComponent()) {
                   await onlyAvailableChargerFilterComponent.setFilterContainerComponent(this.getFilterContainerComponent());
                 }
               }}
             />
-        </FilterVisibleContainerComponent>
+        </FilterVisibleContainerComponent> */}
         <FilterModalContainerComponent
           onFilterChanged={this.onFilterChanged}
           ref={(filterContainerComponent: FilterModalContainerComponent) => {
             this.setFilterContainerComponent(filterContainerComponent);
           }}
         >
-          <OnlyAvailableChargerFilterControlComponent
+          <OnlyAvailableChargerSwitchFilterControlComponent
             filterID={'connectorStatus'}
             internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGERS}
-            initialValue={filters.connectorStatus ? filters.connectorStatus : initialFilters.connectorStatus}
+            initialValue={filters.hasOwnProperty('connectorStatus') ? filters.connectorStatus : initialFilters.connectorStatus}
             label={I18n.t('general.onlyAvailableChargers')}
-            ref={async (onlyAvailableChargerFilterComponent: OnlyAvailableChargerFilterControlComponent) => {
+            ref={async (onlyAvailableChargerFilterComponent: OnlyAvailableChargerSwitchFilterControlComponent) => {
               if (onlyAvailableChargerFilterComponent && this.getFilterContainerComponent()) {
                 await onlyAvailableChargerFilterComponent.setFilterContainerComponent(this.getFilterContainerComponent());
               }
