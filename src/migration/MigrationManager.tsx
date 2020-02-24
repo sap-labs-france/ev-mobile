@@ -14,8 +14,9 @@ export default class MigrationManager {
 
   private async checkInitialFilters() {
     // Available chargers
-    const connectorStatus = await SecuredStorage.loadFilterValue(GlobalFilters.ONLY_AVAILABLE_CHARGERS) as ChargePointStatus;
-    if (!connectorStatus) {
+    const filterExists = await SecuredStorage.filterExists(GlobalFilters.ONLY_AVAILABLE_CHARGERS);
+    if (!filterExists) {
+      // Create initial default value
       await SecuredStorage.saveFilterValue(GlobalFilters.ONLY_AVAILABLE_CHARGERS, ChargePointStatus.AVAILABLE);
     }
   }

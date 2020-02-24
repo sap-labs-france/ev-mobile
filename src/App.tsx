@@ -10,7 +10,6 @@ import { createStackNavigator } from 'react-navigation-stack';
 import computeStyleSheet from './AppStyles';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
 import I18nManager from './I18n/I18nManager';
-import MigrationManager from './migration/MigrationManager';
 import NotificationManager from './notification/NotificationManager';
 import ProviderFactory from './provider/ProviderFactory';
 import Eula from './screens/auth/eula/Eula';
@@ -316,9 +315,6 @@ export default class App extends React.Component<Props, State> {
     this.deepLinkingManager.startListening();
     // Check on hold notification
     this.notificationManager.checkOnHoldNotification();
-    // Migration
-    const migrationManager = MigrationManager.getInstance();
-    await migrationManager.migrate();
   }
 
   public async componentWillUnmount() {

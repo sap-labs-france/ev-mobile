@@ -3,6 +3,7 @@ import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import I18nManager from '../I18n/I18nManager';
+import MigrationManager from '../migration/MigrationManager';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation, { ChargingStationConfiguration } from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
@@ -295,6 +296,9 @@ export default class CentralServerProvider {
       // tslint:disable-next-line: no-console
       console.log('Error saving Mobile Token:', error);
     }
+    // Check migration for logged user
+    const migrationManager = MigrationManager.getInstance();
+    await migrationManager.migrate();
     // Check on hold notification
     this.notificationManager.checkOnHoldNotification();
   }

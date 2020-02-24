@@ -85,6 +85,22 @@ export default class SecuredStorage {
     });
   }
 
+  public static async filterExists(filterInternalID: string): Promise<boolean> {
+    try {
+      // Get Provider
+      const centralServerProvider = await ProviderFactory.getProvider();
+      // Get Token
+      const user = await centralServerProvider.getUserInfo();
+      // Check
+      const result = await RNSecureStorage.exists(`${user.tenantID}~${user.id}~filter~${filterInternalID}`);
+      // Returned result is a number, not a boolean! 0 = not found and 1 = found!
+      return result;
+    } catch (err) {
+      // Key does not exist: do nothing
+    }
+    return false;
+  }
+
   public static async loadFilterValue(filterInternalID: string): Promise<string> {
     // Get Provider
     const centralServerProvider = await ProviderFactory.getProvider();
