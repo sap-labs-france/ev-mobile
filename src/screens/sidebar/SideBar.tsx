@@ -105,9 +105,7 @@ export default class SideBar extends BaseScreen<Props, State> {
       })
     );
     // Close
-    this.props.navigation.dispatch(
-      DrawerActions.closeDrawer()
-    );
+    this.props.navigation.closeDrawer();
   };
 
   public render() {
