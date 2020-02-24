@@ -2,7 +2,7 @@ import CentralServerProvider from 'provider/CentralServerProvider';
 import React from 'react';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import SecurityProvider from '../../../provider/SecurityProvider';
-import FilterContainerComponent from './FilterContainerComponent';
+import FilterModalContainerComponent from './FilterModalContainerComponent';
 
 export interface BaseScreenFiltersProps {
 }
@@ -16,7 +16,7 @@ export interface BaseScreenFiltersState {
 export default class BaseScreenFilters extends React.Component<BaseScreenFiltersProps, BaseScreenFiltersState> {
   public state: BaseScreenFiltersState;
   public props: BaseScreenFiltersProps;
-  private filterContainerComponent: FilterContainerComponent;
+  private filterContainerComponent: FilterModalContainerComponent;
   private centralServerProvider: CentralServerProvider;
   private securityProvider: SecurityProvider;
 
@@ -55,11 +55,11 @@ export default class BaseScreenFilters extends React.Component<BaseScreenFilters
     super.setState(state, callback);
   }
 
-  public getFilterContainerComponent(): FilterContainerComponent {
+  public getFilterContainerComponent(): FilterModalContainerComponent {
     return this.filterContainerComponent;
   }
 
-  public setFilterContainerComponent(filterContainerComponent: FilterContainerComponent) {
+  public setFilterContainerComponent(filterContainerComponent: FilterModalContainerComponent) {
     this.filterContainerComponent = filterContainerComponent;
   }
 }

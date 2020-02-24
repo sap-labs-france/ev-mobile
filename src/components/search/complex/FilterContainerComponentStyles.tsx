@@ -4,9 +4,16 @@ import { ScaledSheet } from 'react-native-size-matters';
 import commonColor from '../../../theme/variables/commonColor';
 
 const commonStyles = ScaledSheet.create({
-  contentFilter: {
+  contentModalFilter: {
     backgroundColor: 'white',
     padding: '15@s',
+    justifyContent: 'flex-start',
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  contentVisibleFilter: {
+    backgroundColor: 'white',
+    paddingLeft: '15@s',
+    paddingRight: '15@s',
     justifyContent: 'flex-start',
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },

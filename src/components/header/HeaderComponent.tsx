@@ -4,7 +4,7 @@ import { BackHandler, Image } from 'react-native';
 import logo from '../../../assets/logo-low.png';
 import BaseProps from '../../types/BaseProps';
 import { IconType } from '../../types/Icon';
-import FilterContainerComponent from '../search/complex/FilterContainerComponent';
+import FilterModalContainerComponent from '../search/complex/FilterModalContainerComponent';
 import computeStyleSheet from './HeaderComponentStyles';
 
 export interface Props extends BaseProps {
@@ -27,7 +27,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   private searchIsVisible: boolean;
-  private filterContainerComponent: FilterContainerComponent;
+  private filterContainerComponent: FilterModalContainerComponent;
 
   public static defaultProps = {
     leftActionIconType: 'MaterialIcons',
@@ -47,11 +47,11 @@ export default class HeaderComponent extends React.Component<Props, State> {
     super.setState(state, callback);
   }
 
-  public getFilterContainerComponent(): FilterContainerComponent {
+  public getFilterContainerComponent(): FilterModalContainerComponent {
     return this.filterContainerComponent;
   }
 
-  public setFilterContainerComponent(filterContainerComponent: FilterContainerComponent) {
+  public setFilterContainerComponent(filterContainerComponent: FilterModalContainerComponent) {
     this.filterContainerComponent = filterContainerComponent;
     this.setState({
       hasFilter: true

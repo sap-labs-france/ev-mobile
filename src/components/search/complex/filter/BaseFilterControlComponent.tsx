@@ -1,5 +1,5 @@
 import React from 'react';
-import FilterContainerComponent from '../FilterContainerComponent';
+import FilterModalContainerComponent from '../FilterModalContainerComponent';
 
 export interface BaseFilterControlProps {
   internalFilterID: string;
@@ -16,7 +16,7 @@ export default class BaseFilterControlComponent extends React.Component<BaseFilt
   public state: BaseFilterControlState;
   public props: BaseFilterControlProps;
   private value: any = null;
-  private filterContainerComponent: FilterContainerComponent;
+  private filterContainerComponent: FilterModalContainerComponent;
 
   constructor(props: BaseFilterControlProps) {
     super(props);
@@ -25,14 +25,14 @@ export default class BaseFilterControlComponent extends React.Component<BaseFilt
     };
   }
 
-  public async setFilterContainerComponent(filterContainerComponent: FilterContainerComponent) {
+  public async setFilterContainerComponent(filterContainerComponent: FilterModalContainerComponent) {
     // Add filter
     await filterContainerComponent.addFilter(this);
     // Update
     this.filterContainerComponent = filterContainerComponent;
   }
 
-  public getFilterContainerComponent(): FilterContainerComponent {
+  public getFilterContainerComponent(): FilterModalContainerComponent {
     return this.filterContainerComponent;
   }
 
