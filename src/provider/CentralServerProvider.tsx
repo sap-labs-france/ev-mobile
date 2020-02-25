@@ -36,7 +36,7 @@ export default class CentralServerProvider {
   private locale: string = null;
   private tenantSubDomain: string = null;
   private currency: string = null;
-  private siteImages: Array<{ id: string; image: string; }> = [];
+  private siteImages: { id: string; image: string; }[] = [];
   private autoLoginDisabled: boolean = false;
   private notificationManager: NotificationManager;
 
@@ -114,7 +114,7 @@ export default class CentralServerProvider {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  public getTenants(): Array<Partial<Tenant>> {
+  public getTenants(): Partial<Tenant>[] {
     if (__DEV__) {
       return [
         { subdomain: 'testcharger', name: 'Test Chargers' },
