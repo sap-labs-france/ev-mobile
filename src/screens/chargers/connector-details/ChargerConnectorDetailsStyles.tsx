@@ -20,28 +20,13 @@ const commonStyles = ScaledSheet.create({
     width: '100%',
     height: '125@s'
   },
-  transactionContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: '-100@s',
-    backgroundColor: 'transparent'
-  },
   lastTransactionContainer: {
-    marginTop: '-75@s',
-    marginLeft: '-200@s',
-    paddingBottom: '25@s',
-  },
-  buttonTransaction: {
-    width: '100@s',
-    height: '100@s',
-    borderRadius: '50@s',
-    borderStyle: 'solid',
-    borderWidth: '4@s',
-    marginTop: '15@s',
-    borderColor: commonColor.textColor,
-    backgroundColor: commonColor.containerBgColor,
-    justifyContent: 'center',
-    alignItems: 'center'
+    width: '50@s',
+    height: '50@s',
+    marginTop: '-90@s',
+    marginLeft: '-220@s',
+    marginBottom: '25@s',
+    backgroundColor: 'transparent',
   },
   buttonLastTransaction: {
     width: '50@s',
@@ -53,6 +38,27 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: commonColor.containerBgColor,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  transactionContainer: {
+    width: '100@s',
+    height: '100@s',
+    padding: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '-70@s',
+    backgroundColor: 'transparent',
+    zIndex: 1,
+  },
+  buttonTransaction: {
+    width: '100@s',
+    height: '100@s',
+    borderRadius: '50@s',
+    borderStyle: 'solid',
+    borderWidth: '4@s',
+    borderColor: commonColor.textColor,
+    backgroundColor: commonColor.containerBgColor,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   noButtonStopTransaction: {
     height: '15@s'
@@ -83,22 +89,24 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: 'transparent'
   },
   scrollViewContainer: {
+    marginTop: '-15@s',
   },
   detailsContainer: {
     flexDirection: 'column',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingTop: '10@s',
   },
   rowContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: '95@s'
+    height: '90@s',
   },
   columnContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '50%'
+    width: '50%',
   },
   connectorLetter: {
     marginTop: '5@s',

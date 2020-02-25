@@ -632,11 +632,14 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
           />
           {/* Site Image */}
           <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
+          {/* Show Last Transaction */}
+          {canStartTransaction && connector && connector.activeTransactionID === 0 &&
+            this.renderShowLastTransactionButton(style)
+          }
           {/* Start/Stop Transaction */}
           {canStartTransaction && connector && connector.activeTransactionID === 0 ? (
             <View style={style.transactionContainer}>
               {this.renderStartTransactionButton(style)}
-              {this.renderShowLastTransactionButton(style)}
             </View>
           ) : canStopTransaction && connector && connector.activeTransactionID > 0 ? (
             <View style={style.transactionContainer}>
