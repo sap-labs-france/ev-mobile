@@ -34,7 +34,7 @@ interface State {
 export default class Login extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
-  private tenants: Array<Partial<Tenant>>;
+  private tenants: Partial<Tenant>[];
   private passwordInput: TextInput;
   private formValidationDef = {
     tenantSubDomain: {
