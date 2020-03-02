@@ -2,9 +2,9 @@ import { Body, Button, Header, Icon, Left, Right, Subtitle, Title, View } from '
 import React from 'react';
 import { BackHandler, Image } from 'react-native';
 import logo from '../../../assets/logo-low.png';
+import FilterAggregatorContainerComponent from '../../components/search/filter/aggregators/FilterAggregatorContainerComponent';
 import BaseProps from '../../types/BaseProps';
 import { IconType } from '../../types/Icon';
-import FilterModalContainerComponent from '../search/complex/FilterModalContainerComponent';
 import computeStyleSheet from './HeaderComponentStyles';
 
 export interface Props extends BaseProps {
@@ -27,7 +27,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   private searchIsVisible: boolean;
-  private filterContainerComponent: FilterModalContainerComponent;
+  private filterAggregatorContainerComponent: FilterAggregatorContainerComponent;
 
   public static defaultProps = {
     leftActionIconType: 'MaterialIcons',
@@ -47,12 +47,12 @@ export default class HeaderComponent extends React.Component<Props, State> {
     super.setState(state, callback);
   }
 
-  public getFilterContainerComponent(): FilterModalContainerComponent {
-    return this.filterContainerComponent;
+  public getFilterAggregatorContainerComponent(): FilterAggregatorContainerComponent {
+    return this.filterAggregatorContainerComponent;
   }
 
-  public setFilterContainerComponent(filterContainerComponent: FilterModalContainerComponent) {
-    this.filterContainerComponent = filterContainerComponent;
+  public setFilterAggregatorContainerComponent(filterAggregatorContainerComponent: FilterAggregatorContainerComponent) {
+    this.filterAggregatorContainerComponent = filterAggregatorContainerComponent;
     this.setState({
       hasFilter: true
     });
@@ -119,8 +119,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
               onPress={() => {
                 this.searchIsVisible = !this.searchIsVisible;
                 // Show Complex Search
-                if (this.filterContainerComponent) {
-                  this.filterContainerComponent.setVisible(this.searchIsVisible);
+                if (this.filterAggregatorContainerComponent) {
+                  this.filterAggregatorContainerComponent.setVisible(this.searchIsVisible);
                 }
               }}>
               <Icon type={'MaterialCommunityIcons'} name={this.getNumberOfFilters() > 0 ? 'filter' : 'filter-outline'} style={style.iconHeader} />

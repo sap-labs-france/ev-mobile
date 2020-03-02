@@ -1,9 +1,10 @@
+import FilterControlComponent from 'components/search/filter/controls/FilterControlComponent';
 import I18n from 'i18n-js';
-import { View } from 'native-base';
 import React from 'react';
-import BaseScreenFilters, { BaseScreenFiltersState } from '../../../components/search/complex/BaseScreenFilters';
-import OnlyAvailableChargerSwitchFilterControlComponent from '../../../components/search/complex/filter/only-available-chargers/OnlyAvailableChargerSwitchFilterControlComponent';
-import FilterModalContainerComponent from '../../../components/search/complex/FilterModalContainerComponent';
+import FilterAggregatorContainerComponent from '../../../components/search/filter/aggregators/FilterAggregatorContainerComponent';
+import FilterModalContainerComponent from '../../../components/search/filter/containers/FilterModalContainerComponent';
+import OnlyAvailableChargerSwitchFilterControlComponent from '../../../components/search/filter/controls/only-available-chargers/OnlyAvailableChargerSwitchFilterControlComponent';
+import ScreenFilters, { ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
 import { ChargePointStatus } from '../../../types/ChargingStation';
 import { GlobalFilters } from '../../../types/Filter';
 
@@ -12,15 +13,15 @@ export interface Props {
   initialFilters?: ChargersFiltersDef;
 }
 
+interface State extends ScreenFiltersState {
+  filters?: ChargersFiltersDef;
+}
+
 export interface ChargersFiltersDef {
   connectorStatus?: ChargePointStatus;
 }
 
-interface State extends BaseScreenFiltersState {
-  filters?: ChargersFiltersDef;
-}
-
-export default class ChargersFilters extends BaseScreenFilters {
+export default class ChargersFilters extends ScreenFilters {
   public state: State;
   public props: Props;
 
@@ -35,20 +36,25 @@ export default class ChargersFilters extends BaseScreenFilters {
     super.setState(state, callback);
   }
 
-  public onFilterChanged = (newFilters: ChargersFiltersDef, closed: boolean) => {
+  public onFilterChanged = (newFilters: ChargersFiltersDef) => {
     const { onFilterChanged } = this.props;
-    if (closed) {
-      this.setState({
-        filters: newFilters
-      }, () => onFilterChanged(newFilters));
-    }
+    this.setState({
+      filters: newFilters
+    }, () => onFilterChanged(newFilters));
   }
 
   public render = () => {
     const { initialFilters } = this.props;
     const { filters } = this.state;
     return (
-      <View>
+      <FilterAggregatorContainerComponent
+          onFilterChanged={this.onFilterChanged}
+          ref={(filterAggregatorContainerComponent: FilterAggregatorContainerComponent) => {
+            if (filterAggregatorContainerComponent) {
+              this.setFilterAggregatorContainerComponent(filterAggregatorContainerComponent);
+            }
+          }}
+        >
         {/* <FilterVisibleContainerComponent>
           <OnlyAvailableChargerSwitchFilterControlComponent
               filterID={'connectorStatus'}
@@ -63,9 +69,12 @@ export default class ChargersFilters extends BaseScreenFilters {
             />
         </FilterVisibleContainerComponent> */}
         <FilterModalContainerComponent
-          onFilterChanged={this.onFilterChanged}
-          ref={(filterContainerComponent: FilterModalContainerComponent) => {
-            this.setFilterContainerComponent(filterContainerComponent);
+          containerID='ChargersFiltersModal'
+          ref={(filterModalContainerComponent: FilterModalContainerComponent) => {
+            if (filterModalContainerComponent && this.getFilterAggregatorContainerComponent()) {
+              filterModalContainerComponent.setFilterAggregatorContainerComponent(this.getFilterAggregatorContainerComponent());
+              this.getFilterAggregatorContainerComponent().addFilterContainerComponent(filterModalContainerComponent);
+            }
           }}
         >
           <OnlyAvailableChargerSwitchFilterControlComponent
@@ -73,14 +82,18 @@ export default class ChargersFilters extends BaseScreenFilters {
             internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGERS}
             initialValue={filters.hasOwnProperty('connectorStatus') ? filters.connectorStatus : initialFilters.connectorStatus}
             label={I18n.t('general.onlyAvailableChargers')}
-            ref={async (onlyAvailableChargerFilterComponent: OnlyAvailableChargerSwitchFilterControlComponent) => {
-              if (onlyAvailableChargerFilterComponent && this.getFilterContainerComponent()) {
-                await onlyAvailableChargerFilterComponent.setFilterContainerComponent(this.getFilterContainerComponent());
+            ref={async (filterControlComponent: FilterControlComponent<any>) => {
+              if (filterControlComponent && this.getFilterAggregatorContainerComponent()) {
+                const filterContainerComponent = this.getFilterAggregatorContainerComponent().getFilterContainerComponent('ChargersFiltersModal');
+                if (filterContainerComponent) {
+                  filterControlComponent.setFilterContainerComponent(filterContainerComponent);
+                  filterContainerComponent.addFilter(filterControlComponent);
+                }
               }
             }}
           />
         </FilterModalContainerComponent>
-      </View>
+      </FilterAggregatorContainerComponent>
     );
   };
 }

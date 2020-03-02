@@ -1,9 +1,6 @@
-import I18n from 'i18n-js';
+import { View } from 'native-base';
 import React from 'react';
-import BaseScreenFilters, { BaseScreenFiltersState } from '../../../components/search/complex/BaseScreenFilters';
-import MyUserSwitchFilterControlComponent from '../../../components/search/complex/filter/my-user-switch/MyUserSwitchFilterControlComponent';
-import FilterModalContainerComponent from '../../../components/search/complex/FilterModalContainerComponent';
-import { GlobalFilters } from '../../../types/Filter';
+import ScreenFilters, { ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
 
 export interface Props {
   onFilterChanged?: (filters: TransactionsInProgressFiltersDef) => void;
@@ -14,11 +11,11 @@ export interface TransactionsInProgressFiltersDef {
   userID?: string;
 }
 
-interface State extends BaseScreenFiltersState {
+interface State extends ScreenFiltersState {
   filters?: TransactionsInProgressFiltersDef;
 }
 
-export default class TransactionsInProgressFilters extends BaseScreenFilters {
+export default class TransactionsInProgressFilters extends ScreenFilters {
   public state: State;
   public props: Props;
 
@@ -43,29 +40,30 @@ export default class TransactionsInProgressFilters extends BaseScreenFilters {
   }
 
   public render = () => {
-    const { initialFilters } = this.props;
-    const { filters, isAdmin, hasSiteAdmin } = this.state;
+    // const { initialFilters } = this.props;
+    // const { filters, isAdmin, hasSiteAdmin } = this.state;
     return (
-      <FilterModalContainerComponent
-        onFilterChanged={this.onFilterChanged}
-        ref={(filterContainerComponent: FilterModalContainerComponent) => {
-          this.setFilterContainerComponent(filterContainerComponent);
-        }}
-      >
-        {(isAdmin || hasSiteAdmin) &&
-          <MyUserSwitchFilterControlComponent
-            filterID={'userID'}
-            internalFilterID={GlobalFilters.MY_USER_FILTER}
-            initialValue={filters.userID ? filters.userID : initialFilters.userID}
-            label={I18n.t('general.onlyMyTransactions')}
-            ref={async (myUserSwitchFilterComponent: MyUserSwitchFilterControlComponent) => {
-              if (myUserSwitchFilterComponent && this.getFilterContainerComponent()) {
-                await myUserSwitchFilterComponent.setFilterContainerComponent(this.getFilterContainerComponent());
-              }
-            }}
-          />
-        }
-      </FilterModalContainerComponent>
+      <View/>
+       // <FilterModalContainerComponent
+      //   onFilterChanged={this.onFilterChanged}
+      //   ref={(filterContainerComponent: FilterModalContainerComponent) => {
+      //     this.setFilterContainerComponent(filterContainerComponent);
+      //   }}
+      // >
+      //   {(isAdmin || hasSiteAdmin) &&
+      //     <MyUserSwitchFilterControlComponent
+      //       filterID={'userID'}
+      //       internalFilterID={GlobalFilters.MY_USER_FILTER}
+      //       initialValue={filters.userID ? filters.userID : initialFilters.userID}
+      //       label={I18n.t('general.onlyMyTransactions')}
+      //       ref={async (myUserSwitchFilterComponent: MyUserSwitchFilterControlComponent) => {
+      //         if (myUserSwitchFilterComponent && this.getFilterContainerComponent()) {
+      //           await myUserSwitchFilterComponent.setFilterContainerComponent(this.getFilterContainerComponent());
+      //         }
+      //       }}
+      //     />
+      //   }
+      // </FilterModalContainerComponent>
     );
   };
 }

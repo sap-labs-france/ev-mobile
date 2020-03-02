@@ -3,19 +3,18 @@ import { Button, View } from 'native-base';
 import React from 'react';
 import { Text } from 'react-native';
 import Modal from 'react-native-modal';
-import BaseFilterContainerComponent, { BaseFilterContainerComponentProps } from './BaseFilterContainerComponent';
+import FilterContainerComponent, { FilterContainerComponentProps } from './FilterContainerComponent';
 import computeStyleSheet from './FilterContainerComponentStyles';
 
-export interface Props extends BaseFilterContainerComponentProps {
+export interface Props extends FilterContainerComponentProps {
   visible?: boolean;
-  children?: React.ReactNode;
 }
 
 interface State {
   visible?: boolean;
 }
 
-export default class FilterModalContainerComponent extends BaseFilterContainerComponent<Props, State> {
+export default class FilterModalContainerComponent extends FilterContainerComponent {
   public state: State;
   public props: Props;
   public static defaultProps = {
@@ -37,16 +36,26 @@ export default class FilterModalContainerComponent extends BaseFilterContainerCo
     this.setState({ visible });
   }
 
+  public notifyFilterChanged(): void {
+    // Do nothing if filter is changed, only when button close/clear is clicked for Modal
+  }
+
   public applyFiltersAndNotify = async () => {
-    // Super
-    await super.applyFiltersAndNotify();
+    // Notify
+    if (this.getFilterAggregatorContainerComponent()) {
+      this.getFilterAggregatorContainerComponent().applyFiltersAndNotify();
+    }
     // Close
     this.setVisible(false);
   }
 
   public clearFiltersAndNotify = async () => {
-    // Super
-    await super.clearFiltersAndNotify();
+    // Clear
+    this.clearFilters();
+    // Notify
+    if (this.getFilterAggregatorContainerComponent()) {
+      this.getFilterAggregatorContainerComponent().applyFiltersAndNotify();
+    }
     // Close
     this.setVisible(false);
   }

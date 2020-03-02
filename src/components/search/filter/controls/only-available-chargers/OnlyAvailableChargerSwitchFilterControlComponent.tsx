@@ -1,17 +1,17 @@
 import { Switch, Text, View } from 'native-base';
 import React from 'react';
 import { ChargePointStatus } from '../../../../../types/ChargingStation';
-import BaseFilterControlComponent, { BaseFilterControlProps } from '../BaseFilterControlComponent';
-import computeStyleSheet from '../BaseFilterControlComponentStyles';
+import FilterControlComponent, { FilterControlComponentProps } from '../FilterControlComponent';
+import computeStyleSheet from '../FilterControlComponentStyles';
 
-export interface Props extends BaseFilterControlProps {
+export interface Props extends FilterControlComponentProps<ChargePointStatus> {
 }
 
 interface State {
   switchValue?: boolean;
 }
 
-export default class OnlyAvailableChargerSwitchFilterControlComponent extends BaseFilterControlComponent {
+export default class OnlyAvailableChargerSwitchFilterControlComponent extends FilterControlComponent<ChargePointStatus> {
   public state: State;
   public props: Props;
   private status: ChargePointStatus = ChargePointStatus.AVAILABLE;
@@ -33,10 +33,13 @@ export default class OnlyAvailableChargerSwitchFilterControlComponent extends Ba
 
   private onValueChanged = async (newValue: boolean) => {
     // Set Filter
-    if (newValue) {
-      await this.getFilterContainerComponent().setFilter(this.getID(), this.status);
-    } else {
-      await this.getFilterContainerComponent().clearFilter(this.getID());
+    if (this.getFilterContainerComponent()) {
+      if (newValue) {
+        this.getFilterContainerComponent().setFilter(this.getID(), this.status);
+      } else {
+        this.getFilterContainerComponent().clearFilter(this.getID());
+      }
+      this.getFilterContainerComponent().notifyFilterChanged();
     }
     // Update
     this.setState({ switchValue: newValue });

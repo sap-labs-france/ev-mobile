@@ -1,10 +1,10 @@
 import { DatePicker, Text, View } from 'native-base';
 import React from 'react';
 import I18nManager from '../../../../../I18n/I18nManager';
-import BaseFilterControlComponent, { BaseFilterControlProps } from '../BaseFilterControlComponent';
-import computeStyleSheet from '../BaseFilterControlComponentStyles';
+import FilterControlComponent, { FilterControlComponentProps } from '../FilterControlComponent';
+import computeStyleSheet from '../FilterControlComponentStyles';
 
-export interface Props extends BaseFilterControlProps {
+export interface Props extends FilterControlComponentProps<Date> {
   defaultDate?: Date;
   minimumDate?: Date;
   maximumDate?: Date;
@@ -13,7 +13,7 @@ export interface Props extends BaseFilterControlProps {
 interface State {
 }
 
-export default class DateFilterControlComponent extends BaseFilterControlComponent {
+export default class DateFilterControlComponent extends FilterControlComponent<Date> {
   public state: State;
   public props: Props;
   public static defaultProps = {
@@ -32,11 +32,11 @@ export default class DateFilterControlComponent extends BaseFilterControlCompone
 
   public render = () => {
     const style = computeStyleSheet();
-    const { filterID, label, defaultDate, minimumDate, maximumDate, locale } = this.props;
+    const { label, defaultDate, minimumDate, maximumDate, locale } = this.props;
     let currentDate = defaultDate;
     // Override if already defined
     if (this.getFilterContainerComponent()) {
-      currentDate = new Date(this.getFilterContainerComponent().getFilter(filterID));
+      currentDate = new Date(this.getValue());
     }
     return (
       <View style={style.rowFilter}>
