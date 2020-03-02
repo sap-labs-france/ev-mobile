@@ -190,8 +190,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
                 initialFilters={initialFilters}
                 onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
                 ref={(transactionsInProgressFilters: TransactionsInProgressFilters) => {
-                  if (this.headerComponent && transactionsInProgressFilters && transactionsInProgressFilters.getFilterContainerComponent()) {
-                    this.headerComponent.setFilterContainerComponent(transactionsInProgressFilters.getFilterContainerComponent());
+                  if (this.headerComponent && transactionsInProgressFilters && transactionsInProgressFilters.getFilterAggregatorContainerComponent()) {
+                    this.headerComponent.setFilterAggregatorContainerComponent(transactionsInProgressFilters.getFilterAggregatorContainerComponent());
                   }
                 }}
               />

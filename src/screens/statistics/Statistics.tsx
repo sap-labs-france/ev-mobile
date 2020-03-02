@@ -154,8 +154,8 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
               initialFilters={initialFilters}
               onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
               ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => {
-                if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterContainerComponent()) {
-                  this.headerComponent.setFilterContainerComponent(transactionsHistoryFilters.getFilterContainerComponent());
+                if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterAggregatorContainerComponent()) {
+                  this.headerComponent.setFilterAggregatorContainerComponent(transactionsHistoryFilters.getFilterAggregatorContainerComponent());
                 }
               }}
             />

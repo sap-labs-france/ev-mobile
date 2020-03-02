@@ -212,8 +212,8 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
               initialFilters={initialFilters}
               onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
               ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => {
-                if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterContainerComponent()) {
-                  this.headerComponent.setFilterContainerComponent(transactionsHistoryFilters.getFilterContainerComponent());
+                if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterAggregatorContainerComponent()) {
+                  this.headerComponent.setFilterAggregatorContainerComponent(transactionsHistoryFilters.getFilterAggregatorContainerComponent());
                 }
               }}
             />

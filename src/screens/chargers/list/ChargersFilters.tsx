@@ -82,12 +82,12 @@ export default class ChargersFilters extends ScreenFilters {
             internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGERS}
             initialValue={filters.hasOwnProperty('connectorStatus') ? filters.connectorStatus : initialFilters.connectorStatus}
             label={I18n.t('general.onlyAvailableChargers')}
-            ref={async (filterControlComponent: FilterControlComponent<any>) => {
-              if (filterControlComponent && this.getFilterAggregatorContainerComponent()) {
+            ref={async (onlyAvailableChargerSwitchFilterControlComponent: OnlyAvailableChargerSwitchFilterControlComponent) => {
+              if (onlyAvailableChargerSwitchFilterControlComponent && this.getFilterAggregatorContainerComponent()) {
                 const filterContainerComponent = this.getFilterAggregatorContainerComponent().getFilterContainerComponent('ChargersFiltersModal');
                 if (filterContainerComponent) {
-                  filterControlComponent.setFilterContainerComponent(filterContainerComponent);
-                  filterContainerComponent.addFilter(filterControlComponent);
+                  onlyAvailableChargerSwitchFilterControlComponent.setFilterContainerComponent(filterContainerComponent);
+                  filterContainerComponent.addFilter(onlyAvailableChargerSwitchFilterControlComponent);
                 }
               }
             }}
