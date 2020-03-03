@@ -50,9 +50,6 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
     if (newFilters.endDateTime) {
       newFilters.endDateTime = moment(newFilters.endDateTime).endOf('day').toDate();
     }
-    console.log('TransactionsHistoryFilters.onFilterChanged ====================================');
-    console.log(newFilters);
-    console.log('====================================');
     this.setState({
       filters: { ...this.state.filters, ...newFilters }
     }, () => onFilterChanged(newFilters));
@@ -62,8 +59,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
     const { initialFilters } = this.props;
     const { filters, isAdmin, hasSiteAdmin } = this.state;
     console.log('====================================');
-    console.log({initialFilters});
-    console.log({filters});
+    console.log(filters);
     console.log('====================================');
     return (
       <FilterModalContainerComponent
@@ -78,7 +74,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
           <MyUserSwitchFilterControlComponent
             filterID={'userID'}
             internalFilterID={GlobalFilters.MY_USER_FILTER}
-            initialValue={filters.userID ? filters.userID : initialFilters.userID}
+            initialValue={filters.hasOwnProperty('userID') ? filters.userID : initialFilters.userID}
             label={I18n.t('general.onlyMyTransactions')}
             onFilterChanged={(id: string, value: string) => {
               this.getFilterModalContainerComponent().setFilter(id, value);

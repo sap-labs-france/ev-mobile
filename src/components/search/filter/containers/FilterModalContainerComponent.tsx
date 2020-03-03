@@ -37,9 +37,6 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
   }
 
   public async notifyFilterChanged() {
-    console.log('FilterModalContainerComponent.notifyFilterChanged ====================================');
-    console.log(this.getFilters());
-    console.log('====================================');
     // Do nothing if filter is changed in Modal, only when button close/clear is clicked
   }
 

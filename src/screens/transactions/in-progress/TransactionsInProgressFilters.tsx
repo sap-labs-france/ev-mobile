@@ -56,7 +56,7 @@ export default class TransactionsInProgressFilters extends ScreenFilters {
           <MyUserSwitchFilterControlComponent
             filterID={'userID'}
             internalFilterID={GlobalFilters.MY_USER_FILTER}
-            initialValue={filters.userID ? filters.userID : initialFilters.userID}
+            initialValue={filters.hasOwnProperty('userID') ? filters.userID : initialFilters.userID}
             label={I18n.t('general.onlyMyTransactions')}
             onFilterChanged={(id: string, value: string) => {
               this.getFilterModalContainerComponent().setFilter(id, value);
