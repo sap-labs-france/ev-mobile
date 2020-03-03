@@ -33,11 +33,17 @@ export default class TransactionsInProgressFilters extends ScreenFilters {
     super.setState(state, callback);
   }
 
-  public onFilterChanged = (newFilters: TransactionsInProgressFiltersDef) => {
+  public onFilterChanged = (newFilters: TransactionsInProgressFiltersDef, applyFilters: boolean) => {
     const { onFilterChanged } = this.props;
-    this.setState({
-      filters: { ...this.state.filters, ...newFilters }
-    }, () => onFilterChanged(newFilters));
+    if (applyFilters) {
+      this.setState({
+        filters: { ...this.state.filters, ...newFilters }
+      }, () => onFilterChanged(newFilters));
+    } else {
+      this.setState({
+        filters: { ...this.state.filters, ...newFilters }
+      });
+    }
   }
 
   public render = () => {

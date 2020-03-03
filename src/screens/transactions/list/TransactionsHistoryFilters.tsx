@@ -40,9 +40,12 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
   public onFilterChanged = (newFilters: TransactionsHistoryFiltersDef, applyFilters: boolean) => {
     const { onFilterChanged } = this.props;
     // User ID has been changed: Clear Start/End Date
-    if ((this.state.filters.userID || newFilters.userID) && this.state.filters.userID !== newFilters.userID) {
-      delete newFilters.startDateTime;
-      delete newFilters.endDateTime;
+    if (!applyFilters) {
+      delete newFilters.userID;
+    }
+    if (applyFilters && this.state.filters.userID !== newFilters.userID) {
+      newFilters.startDateTime = null;
+      newFilters.endDateTime = null;
     }
     if (newFilters.startDateTime) {
       newFilters.startDateTime = moment(newFilters.startDateTime).startOf('day').toDate();

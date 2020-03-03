@@ -138,7 +138,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
-      const { skip, limit } = this.state;
+      const { skip, limit, filters } = this.state;
       // Set
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Refresh All
@@ -149,8 +149,8 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
         transactions: transactions ? transactions.result : [],
         initialFilters: {
           ...this.state.initialFilters,
-          startDateTime: !this.state.initialFilters.startDateTime ?  new Date(transactions.stats.firstTimestamp) : this.state.initialFilters.startDateTime,
-          endDateTime: !this.state.initialFilters.endDateTime ?  new Date(transactions.stats.lastTimestamp) : this.state.initialFilters.endDateTime,
+          startDateTime: filters.startDateTime ? this.state.initialFilters.startDateTime : new Date(transactions.stats.firstTimestamp),
+          endDateTime: filters.endDateTime ? this.state.initialFilters.endDateTime : new Date(transactions.stats.lastTimestamp),
         },
         count: transactions ? transactions.count : 0,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,

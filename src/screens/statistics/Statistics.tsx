@@ -74,7 +74,8 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public refresh = async () => {
-    // Get the provider
+      const { filters } = this.state;
+      // Get the provider
     const centralServerProvider = await ProviderFactory.getProvider();
     const securityProvider = centralServerProvider.getSecurityProvider();
     // Get the ongoing Transaction stats
@@ -83,9 +84,9 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     this.setState({
       initialFilters: {
         ...this.state.initialFilters,
-        startDateTime: !this.state.initialFilters.startDateTime ?  new Date(transactionStats.stats.firstTimestamp) : this.state.initialFilters.startDateTime,
-        endDateTime: !this.state.initialFilters.endDateTime ?  new Date(transactionStats.stats.lastTimestamp) : this.state.initialFilters.endDateTime,
-      },
+        startDateTime: filters.startDateTime ? this.state.initialFilters.startDateTime : new Date(transactionStats.stats.firstTimestamp),
+        endDateTime: filters.endDateTime ? this.state.initialFilters.endDateTime : new Date(transactionStats.stats.lastTimestamp),
+    },
       totalNumberOfSession: transactionStats.stats.count,
       totalConsumptionWattHours: transactionStats.stats.totalConsumptionWattHours,
       totalDurationSecs: transactionStats.stats.totalDurationSecs,
