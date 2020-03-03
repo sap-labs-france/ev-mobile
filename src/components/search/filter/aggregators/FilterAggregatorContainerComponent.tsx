@@ -1,5 +1,5 @@
 import { View } from 'native-base';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import FilterContainerComponent from '../containers/FilterContainerComponent';
 
 export interface Props {
@@ -27,8 +27,11 @@ export default class FilterAggregatorContainerComponent extends React.Component<
 
   public async addFilterContainerComponent(newFilterContainerComponent: FilterContainerComponent) {
     // Search
-    for (const filterContainerComponent of this.filterContainerComponents) {
+    for (let index = 0; index < this.filterContainerComponents.length; index++) {
+      const filterContainerComponent = this.filterContainerComponents[index];
       if (filterContainerComponent.getID() === newFilterContainerComponent.getID()) {
+        // Replace
+        this.filterContainerComponents.splice(index, 1, newFilterContainerComponent);
         return;
       }
     }
@@ -80,9 +83,8 @@ export default class FilterAggregatorContainerComponent extends React.Component<
   }
 
   private saveFilters = async () => {
-    // Build
+    // Save
     for (const filterContainerComponent of this.filterContainerComponents) {
-      // Save
       await filterContainerComponent.saveFilters();
     }
   }

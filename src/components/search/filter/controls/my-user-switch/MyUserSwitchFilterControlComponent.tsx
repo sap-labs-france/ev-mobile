@@ -40,15 +40,16 @@ export default class MyUserSwitchFilterControlComponent extends FilterControlCom
   }
 
   private onValueChanged = async (newValue: boolean) => {
+    const { onFilterChanged } = this.props;
     // Set Filter
-    if (this.getFilterContainerComponent()) {
+    if (onFilterChanged) {
       if (newValue) {
-        // Due to multiple intantiation during the rendering of this component, only the container can be trusted
-        this.getFilterContainerComponent().setFilter(this.getID(), this.userID);
+        this.setValue(this.userID);
+        onFilterChanged(this.getID(), this.userID);
       } else {
-        this.getFilterContainerComponent().clearFilter(this.getID());
+        this.clearValue();
+        onFilterChanged(this.getID(), null);
       }
-      this.getFilterContainerComponent().notifyFilterChanged();
     }
     // Update
     this.setState({ switchValue: newValue });

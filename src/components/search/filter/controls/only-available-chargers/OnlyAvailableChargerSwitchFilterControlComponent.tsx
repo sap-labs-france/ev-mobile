@@ -32,14 +32,16 @@ export default class OnlyAvailableChargerSwitchFilterControlComponent extends Fi
   }
 
   private onValueChanged = async (newValue: boolean) => {
+    const { onFilterChanged } = this.props;
     // Set Filter
-    if (this.getFilterContainerComponent()) {
+    if (onFilterChanged) {
       if (newValue) {
-        this.getFilterContainerComponent().setFilter(this.getID(), this.status);
+        this.setValue(this.status);
+        onFilterChanged(this.getID(), this.status);
       } else {
-        this.getFilterContainerComponent().clearFilter(this.getID());
+        this.clearValue();
+        onFilterChanged(this.getID(), null);
       }
-      this.getFilterContainerComponent().notifyFilterChanged();
     }
     // Update
     this.setState({ switchValue: newValue });

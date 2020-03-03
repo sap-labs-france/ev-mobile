@@ -2,7 +2,7 @@ import { Body, Button, Header, Icon, Left, Right, Subtitle, Title, View } from '
 import React from 'react';
 import { BackHandler, Image } from 'react-native';
 import logo from '../../../assets/logo-low.png';
-import FilterAggregatorContainerComponent from '../../components/search/filter/aggregators/FilterAggregatorContainerComponent';
+import FilterModalContainerComponent from '../../components/search/filter/containers/FilterModalContainerComponent';
 import BaseProps from '../../types/BaseProps';
 import { IconType } from '../../types/Icon';
 import computeStyleSheet from './HeaderComponentStyles';
@@ -27,7 +27,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   private searchIsVisible: boolean;
-  private filterAggregatorContainerComponent: FilterAggregatorContainerComponent;
+  private filterModalContainerComponent: FilterModalContainerComponent;
 
   public static defaultProps = {
     leftActionIconType: 'MaterialIcons',
@@ -47,12 +47,12 @@ export default class HeaderComponent extends React.Component<Props, State> {
     super.setState(state, callback);
   }
 
-  public getFilterAggregatorContainerComponent(): FilterAggregatorContainerComponent {
-    return this.filterAggregatorContainerComponent;
+  public getFilterModalContainerComponent(): FilterModalContainerComponent {
+    return this.filterModalContainerComponent;
   }
 
-  public setFilterAggregatorContainerComponent(filterAggregatorContainerComponent: FilterAggregatorContainerComponent) {
-    this.filterAggregatorContainerComponent = filterAggregatorContainerComponent;
+  public setFilterModalContainerComponent(filterModalContainerComponent: FilterModalContainerComponent) {
+    this.filterModalContainerComponent = filterModalContainerComponent;
     this.setState({
       hasFilter: true
     });
@@ -87,9 +87,9 @@ export default class HeaderComponent extends React.Component<Props, State> {
 
   public render = () => {
     const style = computeStyleSheet();
+    const { hasFilter } = this.state;
     const { title, subTitle, leftAction, leftActionIcon, leftActionIconType,
       rightAction, rightActionIcon, rightActionIconType, navigation } = this.props;
-    const { hasFilter } = this.state;
     return (
       <Header style={style.header}>
         <Left style={style.leftHeader}>
@@ -118,9 +118,9 @@ export default class HeaderComponent extends React.Component<Props, State> {
               style={style.rightFilterButtonHeader}
               onPress={() => {
                 this.searchIsVisible = !this.searchIsVisible;
-                // Show Complex Search
-                if (this.filterAggregatorContainerComponent) {
-                  this.filterAggregatorContainerComponent.setVisible(this.searchIsVisible);
+                // Show Filter Search
+                if (this.filterModalContainerComponent) {
+                  this.filterModalContainerComponent.setVisible(this.searchIsVisible);
                 }
               }}>
               <Icon type={'MaterialCommunityIcons'} name={this.getNumberOfFilters() > 0 ? 'filter' : 'filter-outline'} style={style.iconHeader} />

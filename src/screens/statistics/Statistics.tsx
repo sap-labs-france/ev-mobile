@@ -83,10 +83,8 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     this.setState({
       initialFilters: {
         ...this.state.initialFilters,
-        startDateTime: this.state.initialFilters.startDateTime ? this.state.initialFilters.startDateTime :
-          transactionStats.stats.firstTimestamp ? new Date(transactionStats.stats.firstTimestamp) : new Date(),
-        endDateTime: this.state.initialFilters.endDateTime ? this.state.initialFilters.endDateTime :
-          transactionStats.stats.lastTimestamp ? new Date(transactionStats.stats.lastTimestamp) : new Date(),
+        startDateTime: !this.state.initialFilters.startDateTime ?  new Date(transactionStats.stats.firstTimestamp) : this.state.initialFilters.startDateTime,
+        endDateTime: !this.state.initialFilters.endDateTime ?  new Date(transactionStats.stats.lastTimestamp) : this.state.initialFilters.endDateTime,
       },
       totalNumberOfSession: transactionStats.stats.count,
       totalConsumptionWattHours: transactionStats.stats.totalConsumptionWattHours,
@@ -154,8 +152,8 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
               initialFilters={initialFilters}
               onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
               ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => {
-                if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterAggregatorContainerComponent()) {
-                  this.headerComponent.setFilterAggregatorContainerComponent(transactionsHistoryFilters.getFilterAggregatorContainerComponent());
+                if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterModalContainerComponent()) {
+                  this.headerComponent.setFilterModalContainerComponent(transactionsHistoryFilters.getFilterModalContainerComponent());
                 }
               }}
             />

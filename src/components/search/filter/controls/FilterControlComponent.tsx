@@ -1,5 +1,4 @@
 import React from 'react';
-import FilterContainerComponent from '../containers/FilterContainerComponent';
 
 export interface FilterControlComponentProps<T> {
   internalFilterID: string;
@@ -7,6 +6,7 @@ export interface FilterControlComponentProps<T> {
   label: string;
   locale?: string;
   initialValue?: T;
+  onFilterChanged: (id: string, value: T) => void;
 }
 
 interface FilterControlComponentState {
@@ -16,21 +16,12 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
   public state: FilterControlComponentState;
   public props: FilterControlComponentProps<T>;
   private value: T = null;
-  private filterContainerComponent: FilterContainerComponent;
 
   constructor(props: FilterControlComponentProps<T>) {
     super(props);
     this.value = this.props.initialValue;
     this.state = {
     };
-  }
-
-  public async setFilterContainerComponent(filterContainerComponent: FilterContainerComponent) {
-    this.filterContainerComponent = filterContainerComponent;
-  }
-
-  public getFilterContainerComponent(): FilterContainerComponent {
-    return this.filterContainerComponent;
   }
 
   public setState = (state: FilterControlComponentState | ((prevState: Readonly<FilterControlComponentState>, props: Readonly<FilterControlComponentProps<T>>) => FilterControlComponentState | Pick<FilterControlComponentState, never>) | Pick<FilterControlComponentState, never>, callback?: () => void) => {

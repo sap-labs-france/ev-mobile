@@ -3,6 +3,7 @@ import SecuredStorage from '../../../../utils/SecuredStorage';
 import FilterControlComponent from '../controls/FilterControlComponent';
 
 export interface FilterAggregatorComponentProps {
+  onFilterChanged?: (filters: any) => void;
 }
 
 interface FilterAggregatorComponentState {
@@ -28,9 +29,11 @@ export default abstract class FilterAggregatorComponent extends React.Component<
   public async addFilter(newFilterComponent: FilterControlComponent<any>) {
     // Search
     if (this.filterControlComponents) {
-      for (const filterControlComponent of this.filterControlComponents) {
+      for (let index = 0; index < this.filterControlComponents.length; index++) {
+        const filterControlComponent = this.filterControlComponents[index];
         if (filterControlComponent.getID() === newFilterComponent.getID()) {
-          // Already exists
+          // Replace
+          this.filterControlComponents.splice(index, 1, filterControlComponent);
           return;
         }
       }

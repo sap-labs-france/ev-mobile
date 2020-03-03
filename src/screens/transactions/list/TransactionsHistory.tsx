@@ -19,6 +19,7 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../TransactionsStyles';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from './TransactionsHistoryFilters';
+import moment from 'moment';
 
 export interface Props extends BaseProps {
 }
@@ -148,10 +149,8 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
         transactions: transactions ? transactions.result : [],
         initialFilters: {
           ...this.state.initialFilters,
-          startDateTime: this.state.initialFilters.startDateTime ? this.state.initialFilters.startDateTime :
-            transactions.stats.firstTimestamp ? new Date(transactions.stats.firstTimestamp) : null,
-          endDateTime: this.state.initialFilters.endDateTime ? this.state.initialFilters.endDateTime :
-            transactions.stats.lastTimestamp ? new Date(transactions.stats.lastTimestamp) : null,
+          startDateTime: !this.state.initialFilters.startDateTime ?  new Date(transactions.stats.firstTimestamp) : this.state.initialFilters.startDateTime,
+          endDateTime: !this.state.initialFilters.endDateTime ?  new Date(transactions.stats.lastTimestamp) : this.state.initialFilters.endDateTime,
         },
         count: transactions ? transactions.count : 0,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,
@@ -212,8 +211,8 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
               initialFilters={initialFilters}
               onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
               ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => {
-                if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterAggregatorContainerComponent()) {
-                  this.headerComponent.setFilterAggregatorContainerComponent(transactionsHistoryFilters.getFilterAggregatorContainerComponent());
+                if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterModalContainerComponent()) {
+                  this.headerComponent.setFilterModalContainerComponent(transactionsHistoryFilters.getFilterModalContainerComponent());
                 }
               }}
             />

@@ -1,8 +1,9 @@
-import CentralServerProvider from 'provider/CentralServerProvider';
 import React from 'react';
+import CentralServerProvider from '../../../../provider/CentralServerProvider';
 import ProviderFactory from '../../../../provider/ProviderFactory';
 import SecurityProvider from '../../../../provider/SecurityProvider';
-import FilterAggregatorContainerComponent from '../aggregators/FilterAggregatorContainerComponent';
+import FilterModalContainerComponent from '../containers/FilterModalContainerComponent';
+import FilterVisibleContainerComponent from '../containers/FilterVisibleContainerComponent';
 
 export interface ScreenFiltersProps {
 }
@@ -16,7 +17,8 @@ export interface ScreenFiltersState {
 export default class ScreenFilters extends React.Component<ScreenFiltersProps, ScreenFiltersState> {
   public state: ScreenFiltersState;
   public props: ScreenFiltersProps;
-  private filterAggregatorContainerComponent: FilterAggregatorContainerComponent;
+  private filterVisibleContainerComponent: FilterVisibleContainerComponent;
+  private filterModalContainerComponent: FilterModalContainerComponent;
   private centralServerProvider: CentralServerProvider;
   private securityProvider: SecurityProvider;
 
@@ -55,11 +57,19 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
     super.setState(state, callback);
   }
 
-  public getFilterAggregatorContainerComponent(): FilterAggregatorContainerComponent {
-    return this.filterAggregatorContainerComponent;
+  public getFilterModalContainerComponent(): FilterModalContainerComponent {
+    return this.filterModalContainerComponent;
   }
 
-  public setFilterAggregatorContainerComponent(filterAggregatorContainerComponent: FilterAggregatorContainerComponent) {
-    this.filterAggregatorContainerComponent = filterAggregatorContainerComponent;
+  public setFilterModalContainerComponent(filterModalContainerComponent: FilterModalContainerComponent) {
+    this.filterModalContainerComponent = filterModalContainerComponent;
+  }
+
+  public getFilterVisibleContainerComponent(): FilterVisibleContainerComponent {
+    return this.filterVisibleContainerComponent;
+  }
+
+  public setFilterVisibleContainerComponent(filterVisibleContainerComponent: FilterVisibleContainerComponent) {
+    this.filterVisibleContainerComponent = filterVisibleContainerComponent;
   }
 }

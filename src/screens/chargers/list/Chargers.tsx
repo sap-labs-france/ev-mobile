@@ -207,8 +207,8 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
                 initialFilters={initialFilters}
                 onFilterChanged={(newFilters: ChargersFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
                 ref={(chargersFilters: ChargersFilters) => {
-                  if (this.headerComponent && chargersFilters && chargersFilters.getFilterAggregatorContainerComponent()) {
-                    this.headerComponent.setFilterAggregatorContainerComponent(chargersFilters.getFilterAggregatorContainerComponent());
+                  if (this.headerComponent && chargersFilters && chargersFilters.getFilterModalContainerComponent()) {
+                    this.headerComponent.setFilterModalContainerComponent(chargersFilters.getFilterModalContainerComponent());
                   }
                 }}
               />

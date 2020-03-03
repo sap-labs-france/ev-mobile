@@ -1,7 +1,6 @@
 import I18n from 'i18n-js';
 import moment from 'moment';
 import React from 'react';
-import FilterAggregatorContainerComponent from '../../../components/search/filter/aggregators/FilterAggregatorContainerComponent';
 import FilterModalContainerComponent from '../../../components/search/filter/containers/FilterModalContainerComponent';
 import DateFilterControlComponent from '../../../components/search/filter/controls/date/DateFilterControlComponent';
 import MyUserSwitchFilterControlComponent from '../../../components/search/filter/controls/my-user-switch/MyUserSwitchFilterControlComponent';
@@ -51,87 +50,87 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
     if (newFilters.endDateTime) {
       newFilters.endDateTime = moment(newFilters.endDateTime).endOf('day').toDate();
     }
+    console.log('TransactionsHistoryFilters.onFilterChanged ====================================');
+    console.log(newFilters);
+    console.log('====================================');
     this.setState({
-      filters: newFilters
+      filters: { ...this.state.filters, ...newFilters }
     }, () => onFilterChanged(newFilters));
   }
 
   public render = () => {
     const { initialFilters } = this.props;
     const { filters, isAdmin, hasSiteAdmin } = this.state;
+    console.log('====================================');
+    console.log({initialFilters});
+    console.log({filters});
+    console.log('====================================');
     return (
-      <FilterAggregatorContainerComponent
-          onFilterChanged={this.onFilterChanged}
-          ref={(filterAggregatorContainerComponent: FilterAggregatorContainerComponent) => {
-            if (filterAggregatorContainerComponent) {
-              this.setFilterAggregatorContainerComponent(filterAggregatorContainerComponent);
-            }
-          }}
-        >
-        <FilterModalContainerComponent
-          containerID='TransactionsHistoryFiltersModal'
-          ref={(filterModalContainerComponent: FilterModalContainerComponent) => {
-            if (filterModalContainerComponent && this.getFilterAggregatorContainerComponent()) {
-              filterModalContainerComponent.setFilterAggregatorContainerComponent(this.getFilterAggregatorContainerComponent());
-              this.getFilterAggregatorContainerComponent().addFilterContainerComponent(filterModalContainerComponent);
-            }
-          }}
-        >
-          {(isAdmin || hasSiteAdmin) &&
-            <MyUserSwitchFilterControlComponent
-              filterID={'userID'}
-              internalFilterID={GlobalFilters.MY_USER_FILTER}
-              initialValue={filters.hasOwnProperty('userID') ? filters.userID : initialFilters.userID}
-              label={I18n.t('general.onlyMyTransactions')}
-              ref={async (myUserSwitchFilterControlComponent: MyUserSwitchFilterControlComponent) => {
-                if (myUserSwitchFilterControlComponent && this.getFilterAggregatorContainerComponent()) {
-                  const filterContainerComponent = this.getFilterAggregatorContainerComponent().getFilterContainerComponent('TransactionsHistoryFiltersModal');
-                  if (filterContainerComponent) {
-                    myUserSwitchFilterControlComponent.setFilterContainerComponent(filterContainerComponent);
-                    filterContainerComponent.addFilter(myUserSwitchFilterControlComponent);
-                  }
-                }
-              }}
-            />
+      <FilterModalContainerComponent
+        onFilterChanged={this.onFilterChanged}
+        ref={(filterModalContainerComponent: FilterModalContainerComponent) => {
+          if (filterModalContainerComponent) {
+            this.setFilterModalContainerComponent(filterModalContainerComponent);
           }
-          <DateFilterControlComponent
-            filterID={'startDateTime'}
-            internalFilterID={GlobalFilters.STATISTICS_START_DATE_FILTER}
-            label={I18n.t('general.startDate')}
-            ref={async (dateFilterControlComponent: DateFilterControlComponent) => {
-              if (dateFilterControlComponent && this.getFilterAggregatorContainerComponent()) {
-                const filterContainerComponent = this.getFilterAggregatorContainerComponent().getFilterContainerComponent('TransactionsHistoryFiltersModal');
-                if (filterContainerComponent) {
-                  dateFilterControlComponent.setFilterContainerComponent(filterContainerComponent);
-                  filterContainerComponent.addFilter(dateFilterControlComponent);
-                }
-              }
-          }}
-            locale={this.state.locale}
-            minimumDate={initialFilters.startDateTime}
-            defaultDate={filters.startDateTime ? filters.startDateTime : initialFilters.startDateTime}
-            maximumDate={filters.endDateTime ? filters.endDateTime : initialFilters.endDateTime}
-          />
-          <DateFilterControlComponent
-            filterID={'endDateTime'}
-            internalFilterID={GlobalFilters.STATISTICS_END_DATE_FILTER}
-            label={I18n.t('general.endDate')}
-            ref={async (dateFilterControlComponent: DateFilterControlComponent) => {
-              if (dateFilterControlComponent && this.getFilterAggregatorContainerComponent()) {
-                const filterContainerComponent = this.getFilterAggregatorContainerComponent().getFilterContainerComponent('TransactionsHistoryFiltersModal');
-                if (filterContainerComponent) {
-                  dateFilterControlComponent.setFilterContainerComponent(filterContainerComponent);
-                  filterContainerComponent.addFilter(dateFilterControlComponent);
-                }
+        }}
+      >
+        {(isAdmin || hasSiteAdmin) &&
+          <MyUserSwitchFilterControlComponent
+            filterID={'userID'}
+            internalFilterID={GlobalFilters.MY_USER_FILTER}
+            initialValue={filters.userID ? filters.userID : initialFilters.userID}
+            label={I18n.t('general.onlyMyTransactions')}
+            onFilterChanged={(id: string, value: string) => {
+              this.getFilterModalContainerComponent().setFilter(id, value);
+              this.getFilterModalContainerComponent().notifyFilterChanged();
+            }}
+            ref={(myUserSwitchFilterControlComponent: MyUserSwitchFilterControlComponent) => {
+              const filterContainerComponent = this.getFilterModalContainerComponent();
+              if (filterContainerComponent && myUserSwitchFilterControlComponent) {
+                filterContainerComponent.addFilter(myUserSwitchFilterControlComponent);
               }
             }}
-            locale={this.state.locale}
-            minimumDate={filters.startDateTime ? filters.startDateTime : initialFilters.startDateTime}
-            defaultDate={filters.endDateTime ? filters.endDateTime : initialFilters.endDateTime}
-            maximumDate={initialFilters.endDateTime}
           />
-        </FilterModalContainerComponent>
-      </FilterAggregatorContainerComponent>
+        }
+        <DateFilterControlComponent
+          filterID={'startDateTime'}
+          internalFilterID={GlobalFilters.STATISTICS_START_DATE_FILTER}
+          label={I18n.t('general.startDate')}
+          onFilterChanged={(id: string, value: Date) => {
+            this.getFilterModalContainerComponent().setFilter(id, value);
+            this.getFilterModalContainerComponent().notifyFilterChanged();
+          }}
+          ref={(dateFilterControlComponent: DateFilterControlComponent) => {
+            const filterContainerComponent = this.getFilterModalContainerComponent();
+            if (filterContainerComponent && dateFilterControlComponent) {
+              filterContainerComponent.addFilter(dateFilterControlComponent);
+            }
+          }}
+          locale={this.state.locale}
+          minimumDate={initialFilters.startDateTime}
+          defaultDate={filters.startDateTime ? filters.startDateTime : initialFilters.startDateTime}
+          maximumDate={filters.endDateTime ? filters.endDateTime : initialFilters.endDateTime}
+        />
+        <DateFilterControlComponent
+          filterID={'endDateTime'}
+          internalFilterID={GlobalFilters.STATISTICS_END_DATE_FILTER}
+          label={I18n.t('general.endDate')}
+          onFilterChanged={(id: string, value: Date) => {
+            this.getFilterModalContainerComponent().setFilter(id, value);
+            this.getFilterModalContainerComponent().notifyFilterChanged();
+          }}
+          ref={(dateFilterControlComponent: DateFilterControlComponent) => {
+            const filterContainerComponent = this.getFilterModalContainerComponent();
+            if (filterContainerComponent && dateFilterControlComponent) {
+              filterContainerComponent.addFilter(dateFilterControlComponent);
+            }
+          }}
+          locale={this.state.locale}
+          minimumDate={filters.startDateTime ? filters.startDateTime : initialFilters.startDateTime}
+          defaultDate={filters.endDateTime ? filters.endDateTime : initialFilters.endDateTime}
+          maximumDate={initialFilters.endDateTime}
+        />
+      </FilterModalContainerComponent>
     );
   };
 }
