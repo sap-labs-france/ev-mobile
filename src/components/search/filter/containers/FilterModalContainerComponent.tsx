@@ -77,7 +77,7 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
             <Text style={style.textButtonFilter}>{I18n.t('general.clear')}</Text>
           </Button>
           <Button style={style.buttonFilter} full={true} primary={true} onPress={this.applyFiltersAndNotify} >
-            <Text style={style.textButtonFilter}>{I18n.t('general.close')}</Text>
+            <Text style={style.textButtonFilter}>{I18n.t('general.apply')}</Text>
           </Button>
         </View>
       </Modal>
