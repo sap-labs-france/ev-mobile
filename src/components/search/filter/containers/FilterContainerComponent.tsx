@@ -29,6 +29,6 @@ export default abstract class FilterContainerComponent extends FilterAggregatorC
     // Save
     await this.saveFilters();
     // Notify
-    onFilterChanged(this.getFilters());
+    onFilterChanged(this.getFilters(), true);
   }
 }

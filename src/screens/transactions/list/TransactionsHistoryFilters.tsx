@@ -37,7 +37,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
     super.setState(state, callback);
   }
 
-  public onFilterChanged = (newFilters: TransactionsHistoryFiltersDef) => {
+  public onFilterChanged = (newFilters: TransactionsHistoryFiltersDef, applyFilters: boolean) => {
     const { onFilterChanged } = this.props;
     // User ID has been changed: Clear Start/End Date
     if ((this.state.filters.userID || newFilters.userID) && this.state.filters.userID !== newFilters.userID) {
@@ -50,17 +50,20 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
     if (newFilters.endDateTime) {
       newFilters.endDateTime = moment(newFilters.endDateTime).endOf('day').toDate();
     }
-    this.setState({
-      filters: { ...this.state.filters, ...newFilters }
-    }, () => onFilterChanged(newFilters));
+    if (applyFilters) {
+      this.setState({
+        filters: { ...this.state.filters, ...newFilters }
+      }, () => onFilterChanged(newFilters));
+    } else {
+      this.setState({
+        filters: { ...this.state.filters, ...newFilters }
+      });
+    }
   }
 
   public render = () => {
     const { initialFilters } = this.props;
     const { filters, isAdmin, hasSiteAdmin } = this.state;
-    console.log('====================================');
-    console.log(filters);
-    console.log('====================================');
     return (
       <FilterModalContainerComponent
         onFilterChanged={this.onFilterChanged}
@@ -76,10 +79,8 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
             internalFilterID={GlobalFilters.MY_USER_FILTER}
             initialValue={filters.hasOwnProperty('userID') ? filters.userID : initialFilters.userID}
             label={I18n.t('general.onlyMyTransactions')}
-            onFilterChanged={(id: string, value: string) => {
-              this.getFilterModalContainerComponent().setFilter(id, value);
-              this.getFilterModalContainerComponent().notifyFilterChanged();
-            }}
+            onFilterChanged={(id: string, value: string) =>
+              this.getFilterModalContainerComponent().setFilter(id, value)}
             ref={(myUserSwitchFilterControlComponent: MyUserSwitchFilterControlComponent) => {
               const filterContainerComponent = this.getFilterModalContainerComponent();
               if (filterContainerComponent && myUserSwitchFilterControlComponent) {
@@ -92,10 +93,8 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
           filterID={'startDateTime'}
           internalFilterID={GlobalFilters.STATISTICS_START_DATE_FILTER}
           label={I18n.t('general.startDate')}
-          onFilterChanged={(id: string, value: Date) => {
-            this.getFilterModalContainerComponent().setFilter(id, value);
-            this.getFilterModalContainerComponent().notifyFilterChanged();
-          }}
+          onFilterChanged={(id: string, value: Date) =>
+            this.getFilterModalContainerComponent().setFilter(id, value)}
           ref={(dateFilterControlComponent: DateFilterControlComponent) => {
             const filterContainerComponent = this.getFilterModalContainerComponent();
             if (filterContainerComponent && dateFilterControlComponent) {
@@ -111,10 +110,8 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
           filterID={'endDateTime'}
           internalFilterID={GlobalFilters.STATISTICS_END_DATE_FILTER}
           label={I18n.t('general.endDate')}
-          onFilterChanged={(id: string, value: Date) => {
-            this.getFilterModalContainerComponent().setFilter(id, value);
-            this.getFilterModalContainerComponent().notifyFilterChanged();
-          }}
+          onFilterChanged={(id: string, value: Date) =>
+            this.getFilterModalContainerComponent().setFilter(id, value)}
           ref={(dateFilterControlComponent: DateFilterControlComponent) => {
             const filterContainerComponent = this.getFilterModalContainerComponent();
             if (filterContainerComponent && dateFilterControlComponent) {

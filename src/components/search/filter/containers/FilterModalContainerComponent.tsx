@@ -37,7 +37,9 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
   }
 
   public async notifyFilterChanged() {
-    // Do nothing if filter is changed in Modal, only when button close/clear is clicked
+    const { onFilterChanged } = this.props;
+    // Notify
+    onFilterChanged(this.getFilters(), false);
   }
 
   public applyFiltersAndNotify = async () => {
@@ -45,7 +47,7 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
     // Save
     await this.saveFilters();
     // Notify
-    onFilterChanged(this.getFilters());
+    onFilterChanged(this.getFilters(), true);
     // Close
     this.setVisible(false);
   }
@@ -57,7 +59,7 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
     // Save
     await this.saveFilters();
     // Notify
-    onFilterChanged(this.getFilters());
+    onFilterChanged(this.getFilters(), true);
     // Close
     this.setVisible(false);
   }

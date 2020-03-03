@@ -58,10 +58,8 @@ export default class TransactionsInProgressFilters extends ScreenFilters {
             internalFilterID={GlobalFilters.MY_USER_FILTER}
             initialValue={filters.hasOwnProperty('userID') ? filters.userID : initialFilters.userID}
             label={I18n.t('general.onlyMyTransactions')}
-            onFilterChanged={(id: string, value: string) => {
-              this.getFilterModalContainerComponent().setFilter(id, value);
-              this.getFilterModalContainerComponent().notifyFilterChanged();
-            }}
+            onFilterChanged={(id: string, value: string) => 
+              this.getFilterModalContainerComponent().setFilter(id, value)}
             ref={(myUserSwitchFilterControlComponent: MyUserSwitchFilterControlComponent) => {
               const filterContainerComponent = this.getFilterModalContainerComponent();
               if (filterContainerComponent && myUserSwitchFilterControlComponent) {

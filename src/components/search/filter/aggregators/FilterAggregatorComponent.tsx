@@ -3,7 +3,7 @@ import SecuredStorage from '../../../../utils/SecuredStorage';
 import FilterControlComponent from '../controls/FilterControlComponent';
 
 export interface FilterAggregatorComponentProps {
-  onFilterChanged?: (filters: any) => void;
+  onFilterChanged?: (filters: any, applyFilters: boolean) => void;
 }
 
 interface FilterAggregatorComponentState {
@@ -45,9 +45,10 @@ export default abstract class FilterAggregatorComponent extends React.Component<
   public setFilter = async (filterID: string, filterValue: any) => {
     // Search
     for (const filterControlComponent of this.filterControlComponents) {
+      // Set
       if (filterControlComponent.getID() === filterID) {
-        // Set
         filterControlComponent.setValue(filterValue);
+        this.notifyFilterChanged();
         break;
       }
     }
@@ -59,15 +60,16 @@ export default abstract class FilterAggregatorComponent extends React.Component<
       if (filterControlComponent.getID() === filterID) {
         // Set
         filterControlComponent.clearValue();
+        this.notifyFilterChanged();
         break;
       }
     }
   }
 
-  public getFilter = (ID: string): string => {
+  public getFilter = (id: string): any => {
     // Search
     for (const filterControlComponent of this.filterControlComponents) {
-      if (filterControlComponent.getID() === ID) {
+      if (filterControlComponent.getID() === id) {
         return filterControlComponent.getValue();
       }
     }

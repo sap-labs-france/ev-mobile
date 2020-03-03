@@ -34,7 +34,7 @@ export default class ChargersFilters extends ScreenFilters {
     super.setState(state, callback);
   }
 
-  public onFilterChanged = (newFilters: ChargersFiltersDef) => {
+  public onFilterChanged = (newFilters: ChargersFiltersDef, applyFilters: boolean) => {
     const { onFilterChanged } = this.props;
     this.setState({
       filters: { ...this.state.filters, ...newFilters }
@@ -58,10 +58,8 @@ export default class ChargersFilters extends ScreenFilters {
           internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGERS}
           initialValue={filters.hasOwnProperty('connectorStatus') ? filters.connectorStatus : initialFilters.connectorStatus}
           label={I18n.t('general.onlyAvailableChargers')}
-          onFilterChanged={(id: string, value: ChargePointStatus) => {
-            this.getFilterVisibleContainerComponent().setFilter(id, value);
-            this.getFilterVisibleContainerComponent().notifyFilterChanged();
-          }}
+          onFilterChanged={(id: string, value: ChargePointStatus) =>
+            this.getFilterVisibleContainerComponent().setFilter(id, value)}
           ref={(onlyAvailableChargerSwitchFilterControlComponent: OnlyAvailableChargerSwitchFilterControlComponent) => {
             const filterContainerComponent = this.getFilterVisibleContainerComponent();
             if (filterContainerComponent && onlyAvailableChargerSwitchFilterControlComponent) {
