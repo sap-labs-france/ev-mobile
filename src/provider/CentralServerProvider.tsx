@@ -468,14 +468,14 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async startTransaction(chargeBoxID: string, connectorID: number, tagID: string): Promise<ActionResponse> {
+  public async startTransaction(chargeBoxID: string, connectorId: number, tagID: string): Promise<ActionResponse> {
     this.debugMethod('startTransaction');
     // Call
     const result = await axios.post(
       `${this.centralRestServerServiceSecuredURL}/ChargingStationRemoteStartTransaction`,
       {
         args: {
-          connectorID,
+          connectorId,
           tagID,
         },
         chargeBoxID,
