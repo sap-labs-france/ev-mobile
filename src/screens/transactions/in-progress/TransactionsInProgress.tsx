@@ -100,7 +100,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
       return transactions;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+        'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
   };

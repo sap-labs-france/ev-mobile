@@ -132,10 +132,11 @@ export default class DeepLinkingManager {
               break;
             // Other common Error
             default:
-              Utils.handleHttpUnexpectedError(this.centralServerProvider, error.request);
+              Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+                'authentication.activationUnexpectedError');
           }
         } else {
-          Message.showError(I18n.t('general.unexpectedError'));
+          Message.showError(I18n.t('authentication.activationUnexpectedError'));
         }
       }
     });

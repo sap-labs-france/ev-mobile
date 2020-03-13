@@ -88,7 +88,8 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
       return charger;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+        'chargers.chargerUnexpectedError', this.props.navigation);
     }
     return null;
   };
@@ -100,7 +101,8 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
       return chargerConfiguration;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+        'chargers.chargerConfigurationUnexpectedError', this.props.navigation);
     }
     return null;
   };
@@ -144,7 +146,8 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+        'chargers.chargerConfigurationUnexpectedError', this.props.navigation);
     }
   }
 

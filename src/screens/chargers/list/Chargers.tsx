@@ -97,7 +97,8 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+        'chargers.chargerUnexpectedError', this.props.navigation, this.refresh);
     }
     return chargers;
   };

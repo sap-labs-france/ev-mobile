@@ -113,7 +113,8 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== 560) {
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+        Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+          'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
       }
     }
     return null;

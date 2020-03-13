@@ -55,7 +55,8 @@ export default class ChargerActions extends BaseScreen<Props, State> {
       return charger;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+        'chargers.chargerUnexpectedError', this.props.navigation);
     }
     return null;
   };
@@ -88,7 +89,9 @@ export default class ChargerActions extends BaseScreen<Props, State> {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+        type === 'Hard' ? 'chargers.chargerRebootUnexpectedError' : 'chargers.chargerResetUnexpectedError',
+        this.props.navigation);
     }
   }
 
@@ -112,7 +115,8 @@ export default class ChargerActions extends BaseScreen<Props, State> {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+        'chargers.chargerClearCacheUnexpectedError', this.props.navigation);
     }
   }
 
@@ -139,7 +143,8 @@ export default class ChargerActions extends BaseScreen<Props, State> {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+        'chargers.chargerUnlockUnexpectedError', this.props.navigation);
     }
   }
 

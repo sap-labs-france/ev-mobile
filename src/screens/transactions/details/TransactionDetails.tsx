@@ -106,7 +106,8 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
           Message.showError(I18n.t('transactions.transactionDoesNotExist'));
           break;
         default:
-          Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+          Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+            'transactions.transactionUnexpectedError', this.props.navigation);
       }
     }
     return null;
@@ -117,7 +118,8 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       const siteImage = await this.centralServerProvider.getSiteImage(siteID);
       return siteImage;
     } catch (error) {
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+        'sites.siteUnexpectedError', this.props.navigation);
     }
     return null;
   };
@@ -127,7 +129,8 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       const userImage = await this.centralServerProvider.getUserImage({ ID: user.id });
       return userImage;
     } catch (error) {
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+        'users.userUnexpectedError', this.props.navigation);
     }
     return null;
   };

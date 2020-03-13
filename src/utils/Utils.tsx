@@ -136,14 +136,13 @@ export default class Utils {
   }
 
   public static async handleHttpUnexpectedError(centralServerProvider: CentralServerProvider,
-      error: RequestError, navigation?: NavigationScreenProp<NavigationState, NavigationParams>, fctRefresh?: () => void) {
+      error: RequestError, defaultErrorMessage: string, navigation?: NavigationScreenProp<NavigationState, NavigationParams>, fctRefresh?: () => void) {
     // Override
     fctRefresh = () => {
-      // Delay the call
       setTimeout(() => fctRefresh, 2000);
     };
     // tslint:disable-next-line: no-console
-    console.log('Request Error:', error);
+    console.log(`HTTP request error`, error);
     // Check if HTTP?
     if (error.request) {
       // Status?
@@ -159,7 +158,7 @@ export default class Utils {
           break;
         // Other errors
         default:
-          Message.showError(I18n.t('general.unexpectedErrorBackend'));
+          Message.showError(I18n.t(defaultErrorMessage ? defaultErrorMessage : 'general.unexpectedErrorBackend'));
           break;
       }
     } else if (error.name === 'InvalidTokenError') {
@@ -167,7 +166,7 @@ export default class Utils {
       await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
     } else {
       // Error in code
-      Message.showError(I18n.t('general.unexpectedError'));
+      Message.showError(I18n.t('general.unexpectedErrorBackend'));
     }
   }
 

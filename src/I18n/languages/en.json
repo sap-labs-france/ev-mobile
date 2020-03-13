@@ -1,12 +1,13 @@
 {
   "general": {
     "cannotConnectBackend": "Connection has been lost",
-    "unexpectedErrorBackend": "Application Error",
-    "unexpectedError": "Application Error",
+    "unexpectedErrorBackend": "Unexpected Backend Error",
+    "unexpectedError": "Unexpected Error",
     "sessionExpired": "Session has expired",
     "numbers": "Enter a valid number",
     "email": "Enter a valid email address",
     "mandatory": "is mandatory",
+    "eulaUnexpectedError": "Cannot load the EULA",
     "ok": "Ok",
     "yes": "Yes",
     "no": "No",
@@ -55,6 +56,8 @@
     "authenticationFailed": "Authentication Failed",
     "invalidCaptcha": "The Captcha has been refused (security)!",
     "wrongEmail": "Wrong email!",
+    "emailAlreadyExists": "Email already exist",
+    "registerUnexpectedError": "Cannot create account",
     "accountLocked": "Your account is locked",
     "accountNotActive": "Your account is not active",
     "accountAlreadyActive": "Your account is already active",
@@ -62,6 +65,8 @@
     "accountPending": "Your account is pending! Check your e-mail",
     "activationTokenNotValid": "Your account's activation link is no longer valid",
     "activationEmailNotValid": "This Email does not exist anymore",
+    "activationUnexpectedError": "Cannot activate account",
+    "loginUnexpectedError": "Cannot login",
     "resetSuccess": "Request accepted! Check your e-mail",
     "eulaNotAccepted": "You must accept the End-User License Agreement",
     "newUser": "New User?",
@@ -75,6 +80,7 @@
     "login": "Login",
 		"registerSuccess": "Account created with success! Check your email",
 		"resetPasswordSuccess": "Password updated with success!",
+    "resetPasswordUnexpectedError": "Cannot reset password",
     "resetPasswordHashNotValid": "Request no longer valid, request a new password again",    
     "verifyAccountTokenNotValid": "Request no longer valid, request a new account validation",
     "haveAlreadyAccount": "Already have an account?",
@@ -88,6 +94,9 @@
     "passwordNotMatch": "Password does not match",
     "tenant": "Choose an Organization"
   },
+  "users": {
+    "userUnexpectedError": "Cannot read the user"
+  },
   "transactions": {
     "transaction": "Session",
     "transactions": "Session(s)",
@@ -98,7 +107,11 @@
     "transactionDoesNotExist": "Session does not exist",
     "chargingCurve": "Session Chart",
     "noTransactionsInProgress": "No Session in progress",
-    "noTransactionsHistory": "No Session history"
+    "noTransactionsHistory": "No Session history",
+    "transactionUnexpectedError": "Cannot read the session",
+    "transactionStatsUnexpectedError": "Cannot read the statistics",
+    "transactionStartUnexpectedError": "Cannot start the session",
+    "transactionStopUnexpectedError": "Cannot stop the session"
   },
   "home": {
     "browseSites": "Sites",
@@ -130,18 +143,26 @@
     "chargePoint": "Charge Point",
     "free": "Free",
     "occupied": "Occupied",
-    "noSites": "No Site found"
+    "noSites": "No Site found",
+    "siteUnexpectedError": "Cannot read the site"
   },
   "siteAreas": {
     "title": "Site Areas",
     "noChargers": "This Site Area has no Charger",
-    "noSiteAreas": "No Site Area found"
+    "noSiteAreas": "No Site Area found",
+    "siteAreaUnexpectedError": "Cannot read the site area"
   },
   "chargers": {
     "title": "Charging Stations",
     "heartBeat": "Heartbeat",
     "noOCPPParameters": "No OCPP parameter",
     "noChargerParameters": "No Charging Station parameter",
+    "chargerConfigurationUnexpectedError": "Cannot read the configuration of the charging station",
+    "chargerUnexpectedError": "Cannot read the charging station",
+    "chargerResetUnexpectedError": "Cannot reset the charging station",
+    "chargerRebootUnexpectedError": "Cannot reboot the charging station",
+    "chargerClearCacheUnexpectedError": "Cannot clear the cache of the charging station",
+    "chargerUnlockUnexpectedError": "Cannot unlock the connector",
     "heartBeatOkMessage": "'{{chargeBoxID}}' is working properly and reported its status a minute ago",
     "heartBeatKoMessage": "'{{chargeBoxID}}' is not working properly and hasn't reported its status since {{lastHeartBeat}}",
     "resetHard": "Reboot",
