@@ -80,20 +80,18 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
 
   public getTransactionsInProgress = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
     try {
-      // Get the Sites
-      const transactions = await this.centralServerProvider.getTransactionsActive(
-        {
-          UserID: this.state.filters.userID,
-          Search: searchText
-        }, { skip, limit });
+      // Get the Transactions
+      const transactions = await this.centralServerProvider.getTransactionsActive({
+        UserID: this.state.filters.userID,
+        Search: searchText
+      }, { skip, limit });
       // Check
       if (transactions.count === -1) {
         // Request nbr of records
         const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactionsActive({
-            UserID: this.state.filters.userID,
-            Search: searchText
-          }, Constants.ONLY_RECORD_COUNT_PAGING
-        );
+          UserID: this.state.filters.userID,
+          Search: searchText
+        }, Constants.ONLY_RECORD_COUNT_PAGING);
         // Set
         transactions.count = transactionsNbrRecordsOnly.count;
       }

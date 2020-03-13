@@ -153,6 +153,7 @@ export default class Utils {
           break;
         // Not logged in?
         case 401:
+        case 403:
           // Force auto login
           await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;
