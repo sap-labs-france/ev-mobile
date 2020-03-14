@@ -1,6 +1,7 @@
 import I18n from 'i18n-js';
+import { View } from 'native-base';
 import React from 'react';
-import FilterModalContainerComponent from '../../../components/search/filter/containers/FilterModalContainerComponent';
+import FilterVisibleContainerComponent from '../../../components/search/filter/containers/FilterVisibleContainerComponent';
 import MyUserSwitchFilterControlComponent from '../../../components/search/filter/controls/my-user-switch/MyUserSwitchFilterControlComponent';
 import ScreenFilters, { ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
 import { GlobalFilters } from '../../../types/Filter';
@@ -50,31 +51,26 @@ export default class TransactionsInProgressFilters extends ScreenFilters {
     const { initialFilters } = this.props;
     const { filters, isAdmin, hasSiteAdmin } = this.state;
     return (
-      <FilterModalContainerComponent
-        onFilterChanged={this.onFilterChanged}
-        ref={(filterModalContainerComponent: FilterModalContainerComponent) => {
-          if (filterModalContainerComponent) {
-            this.setFilterModalContainerComponent(filterModalContainerComponent);
-          }
-        }}
-      >
+      <View>
         {(isAdmin || hasSiteAdmin) &&
-          <MyUserSwitchFilterControlComponent
-            filterID={'userID'}
-            internalFilterID={GlobalFilters.MY_USER_FILTER}
-            initialValue={filters.hasOwnProperty('userID') ? filters.userID : initialFilters.userID}
-            label={I18n.t('general.onlyMyTransactions')}
-            onFilterChanged={(id: string, value: string) =>
-              this.getFilterModalContainerComponent().setFilter(id, value)}
-            ref={(myUserSwitchFilterControlComponent: MyUserSwitchFilterControlComponent) => {
-              const filterContainerComponent = this.getFilterModalContainerComponent();
-              if (filterContainerComponent && myUserSwitchFilterControlComponent) {
-                filterContainerComponent.addFilter(myUserSwitchFilterControlComponent);
-              }
-            }}
-          />
+          <FilterVisibleContainerComponent
+            onFilterChanged={this.onFilterChanged}
+            ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) =>
+              this.setFilterVisibleContainerComponent(filterVisibleContainerComponent)}
+          >
+            <MyUserSwitchFilterControlComponent
+              filterID={'userID'}
+              internalFilterID={GlobalFilters.MY_USER_FILTER}
+              initialValue={filters.hasOwnProperty('userID') ? filters.userID : initialFilters.userID}
+              label={I18n.t('general.onlyMyTransactions')}
+              onFilterChanged={(id: string, value: string) =>
+                this.getFilterVisibleContainerComponent().setFilter(id, value)}
+              ref={(myUserSwitchFilterControlComponent: MyUserSwitchFilterControlComponent) =>
+                this.addVisibleFilter(myUserSwitchFilterControlComponent)}
+            />
+          </FilterVisibleContainerComponent>
         }
-      </FilterModalContainerComponent>
+      </View>
     );
-  };
+  }
 }

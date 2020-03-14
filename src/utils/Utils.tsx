@@ -40,6 +40,10 @@ export default class Utils {
     return count;
   }
 
+  public static cloneJSonDocument(jsonDocument: object): object {
+    return JSON.parse(JSON.stringify(jsonDocument));
+  }
+
   public static isNullOrEmptyString(value: string) {
     if (!value) {
       return true;

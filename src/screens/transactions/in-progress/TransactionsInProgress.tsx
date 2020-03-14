@@ -40,7 +40,6 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
   public state: State;
   public props: Props;
   private searchText: string;
-  private headerComponent: HeaderComponent;
 
   constructor(props: Props) {
     super(props);
@@ -168,9 +167,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     return (
       <Container style={style.container}>
         <HeaderComponent
-          ref={(headerComponent: HeaderComponent) => {
-            this.headerComponent = headerComponent;
-          }}
+          ref={(headerComponent: HeaderComponent) => 
+            this.setHeaderComponent(headerComponent)}
           navigation={navigation}
           title={I18n.t('transactions.transactionsInProgress')}
           subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('transactions.transactions')}` : null}
@@ -188,11 +186,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
               <TransactionsInProgressFilters
                 initialFilters={initialFilters}
                 onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-                ref={(transactionsInProgressFilters: TransactionsInProgressFilters) => {
-                  if (this.headerComponent && transactionsInProgressFilters && transactionsInProgressFilters.getFilterModalContainerComponent()) {
-                    this.headerComponent.setFilterModalContainerComponent(transactionsInProgressFilters.getFilterModalContainerComponent());
-                  }
-                }}
+                ref={(transactionsInProgressFilters: TransactionsInProgressFilters) => 
+                  this.setScreenFilters(transactionsInProgressFilters)}
               />
             }
             <FlatList

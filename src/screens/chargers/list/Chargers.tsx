@@ -39,7 +39,6 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
-  private headerComponent: HeaderComponent;
 
   constructor(props: Props) {
     super(props);
@@ -184,9 +183,8 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     return (
       <Container style={style.container}>
         <HeaderComponent
-          ref={(headerComponent: HeaderComponent) => {
-            this.headerComponent = headerComponent;
-          }}
+          ref={(headerComponent: HeaderComponent) => 
+            this.setHeaderComponent(headerComponent)}
           navigation={navigation}
           title={I18n.t('chargers.title')}
           leftAction={this.onBack}
@@ -207,11 +205,8 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
               <ChargersFilters
                 initialFilters={initialFilters}
                 onFilterChanged={(newFilters: ChargersFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-                ref={(chargersFilters: ChargersFilters) => {
-                  if (this.headerComponent && chargersFilters && chargersFilters.getFilterModalContainerComponent()) {
-                    this.headerComponent.setFilterModalContainerComponent(chargersFilters.getFilterModalContainerComponent());
-                  }
-                }}
+                ref={(chargersFilters: ChargersFilters) =>
+                  this.setScreenFilters(chargersFilters)}
               />
               <FlatList
                 data={chargers}

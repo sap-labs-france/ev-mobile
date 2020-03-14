@@ -35,7 +35,6 @@ interface State {
 export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
-  private headerComponent: HeaderComponent;
 
   constructor(props: Props) {
     super(props);
@@ -135,9 +134,8 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     return (
       <Container style={style.container}>
         <HeaderComponent
-          ref={(headerComponent: HeaderComponent) => {
-            this.headerComponent = headerComponent;
-          }}
+          ref={(headerComponent: HeaderComponent) =>
+            this.setHeaderComponent(headerComponent)}
           navigation={navigation}
           title={I18n.t('home.statistics')}
           leftAction={() => this.onBack()}
@@ -153,11 +151,8 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
             <TransactionsHistoryFilters
               initialFilters={initialFilters}
               onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-              ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => {
-                if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterModalContainerComponent()) {
-                  this.headerComponent.setFilterModalContainerComponent(transactionsHistoryFilters.getFilterModalContainerComponent());
-                }
-              }}
+              ref={(transactionsHistoryFilters: TransactionsHistoryFilters) =>
+                this.setScreenFilters(transactionsHistoryFilters)}
             />
             <Card>
               <CardItem>

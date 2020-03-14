@@ -4,6 +4,7 @@ import ProviderFactory from '../../../../provider/ProviderFactory';
 import SecurityProvider from '../../../../provider/SecurityProvider';
 import FilterModalContainerComponent from '../containers/FilterModalContainerComponent';
 import FilterVisibleContainerComponent from '../containers/FilterVisibleContainerComponent';
+import FilterControlComponent from '../controls/FilterControlComponent';
 
 export interface ScreenFiltersProps {
 }
@@ -21,6 +22,8 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
   private filterModalContainerComponent: FilterModalContainerComponent;
   private centralServerProvider: CentralServerProvider;
   private securityProvider: SecurityProvider;
+  private filterModalControlComponents: Array<FilterControlComponent<any>> = [];
+  private filterVisibleControlComponents: Array<FilterControlComponent<any>> = [];
 
   constructor(props: ScreenFiltersProps) {
     super(props);
@@ -62,7 +65,10 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
   }
 
   public setFilterModalContainerComponent(filterModalContainerComponent: FilterModalContainerComponent) {
-    this.filterModalContainerComponent = filterModalContainerComponent;
+    if (filterModalContainerComponent) {
+      this.filterModalContainerComponent = filterModalContainerComponent;
+      this.filterModalContainerComponent.setFilterControlComponents(this.filterModalControlComponents);
+    }
   }
 
   public getFilterVisibleContainerComponent(): FilterVisibleContainerComponent {
@@ -70,6 +76,37 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
   }
 
   public setFilterVisibleContainerComponent(filterVisibleContainerComponent: FilterVisibleContainerComponent) {
-    this.filterVisibleContainerComponent = filterVisibleContainerComponent;
+    if (filterVisibleContainerComponent) {
+      this.filterVisibleContainerComponent = filterVisibleContainerComponent;
+      this.filterVisibleContainerComponent.setFilterControlComponents(this.filterVisibleControlComponents);
+    }
+  }
+
+  public async addModalFilter(newFilterComponent: FilterControlComponent<any>) {
+    if (newFilterComponent) {
+      this.addFilter(this.filterModalControlComponents, newFilterComponent);
+    }
+  }
+
+  public async addVisibleFilter(newFilterComponent: FilterControlComponent<any>) {
+    if (newFilterComponent) {
+      this.addFilter(this.filterVisibleControlComponents, newFilterComponent);
+    }
+  }
+
+  private async addFilter(filterControlComponents: Array<FilterControlComponent<any>>, newFilterComponent: FilterControlComponent<any>) {
+    // Search
+    if (filterControlComponents) {
+      for (let index = 0; index < filterControlComponents.length; index++) {
+        const filterControlComponent = filterControlComponents[index];
+        if (filterControlComponent.getID() === newFilterComponent.getID()) {
+          // Replace
+          filterControlComponents.splice(index, 1, filterControlComponent);
+          return;
+        }
+      }
+      // Add new
+      filterControlComponents.push(newFilterComponent);
+    }
   }
 }

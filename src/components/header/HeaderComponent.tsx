@@ -37,7 +37,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      hasFilter: false
+      hasFilter: false,
     }
     // Default values
     this.searchIsVisible = false;
@@ -72,17 +72,6 @@ export default class HeaderComponent extends React.Component<Props, State> {
     if (leftAction) {
       BackHandler.removeEventListener('hardwareBackPress', leftAction);
     }
-  }
-
-  private getNumberOfFilters(): number {
-    const { filters } = this.props;
-    let numberOfFilters = 0;
-    for (const filter in filters) {
-      if (filters[filter]) {
-        numberOfFilters++;
-      }
-    }
-    return numberOfFilters;
   }
 
   public render = () => {
@@ -123,7 +112,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
                   this.filterModalContainerComponent.setVisible(this.searchIsVisible);
                 }
               }}>
-              <Icon type={'MaterialCommunityIcons'} name={this.getNumberOfFilters() > 0 ? 'filter' : 'filter-outline'} style={style.iconHeader} />
+              <Icon type={'MaterialCommunityIcons'} name={this.filterModalContainerComponent &&
+                this.filterModalContainerComponent.getNumberOfFilters() > 0 ? 'filter' : 'filter-outline'} style={style.iconHeader} />
             </Button>
           )}
           {rightAction ? (
