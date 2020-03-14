@@ -1,6 +1,8 @@
 import React from 'react';
 import { BackHandler } from 'react-native';
 import { NavigationEventSubscription } from 'react-navigation';
+import HeaderComponent from '../../components/header/HeaderComponent';
+import ScreenFilters from '../../components/search/filter/screen/ScreenFilters';
 import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
@@ -16,6 +18,8 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   protected centralServerProvider: CentralServerProvider;
   private didFocus: NavigationEventSubscription;
   private didBlur: NavigationEventSubscription;
+  private headerComponent: HeaderComponent;
+  private screenFilters: ScreenFilters;
 
   constructor(props: Props) {
     super(props);
@@ -47,6 +51,34 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     if (this.didBlur) {
       this.didBlur.remove();
     }
+  }
+
+  public setHeaderComponent(headerComponent: HeaderComponent) {
+    if (headerComponent) {
+      this.headerComponent = headerComponent;
+      // Set modal filter component
+      if (this.headerComponent && this.screenFilters && this.screenFilters.getFilterModalContainerComponent()) {
+        this.headerComponent.setFilterModalContainerComponent(this.screenFilters.getFilterModalContainerComponent());
+      }
+    }
+  }
+
+  public getHeaderComponent(): HeaderComponent {
+    return this.headerComponent;
+  }
+
+  public setScreenFilters(screenFilters: ScreenFilters) {
+    if (screenFilters) {
+      this.screenFilters = screenFilters;
+      // Set modal filter component
+      if (this.headerComponent && this.screenFilters.getFilterModalContainerComponent()) {
+        this.headerComponent.setFilterModalContainerComponent(this.screenFilters.getFilterModalContainerComponent());
+      }
+    }
+  }
+
+  public getScreenFilters(): ScreenFilters {
+    return this.screenFilters;
   }
 
   public onBack(): boolean {

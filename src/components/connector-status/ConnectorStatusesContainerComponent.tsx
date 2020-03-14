@@ -4,7 +4,6 @@ import React from 'react';
 import BaseProps from '../../types/BaseProps';
 import { ChargePointStatus } from '../../types/ChargingStation';
 import ConnectorStats from '../../types/ConnectorStats';
-import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import ConnectorStatusComponent from './ConnectorStatusComponent';
 import computeStyleSheet from './ConnectorStatusesContainerComponentStyles';

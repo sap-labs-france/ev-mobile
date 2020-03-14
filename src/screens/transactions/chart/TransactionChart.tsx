@@ -119,7 +119,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       return charger;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+        'chargers.chargerUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
   };
@@ -165,7 +166,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       // Check if HTTP?
       if (!error.request || error.request.status !== 560) {
         // Other common Error
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+        Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+          'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
       }
     }
     // Clear

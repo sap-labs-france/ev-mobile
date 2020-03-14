@@ -149,7 +149,8 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
       return charger;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+        'chargers.chargerUnexpectedError', this.props.navigation);
     }
     return null;
   };

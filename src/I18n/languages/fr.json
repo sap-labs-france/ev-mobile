@@ -1,12 +1,13 @@
 {
   "general": {
     "cannotConnectBackend": "La connexion a été perdue",
-    "unexpectedErrorBackend": "Erreur Applicative",
+    "unexpectedErrorBackend": "Erreur Backend Inattendue",
     "unexpectedError": "Erreur Applicative",
     "sessionExpired": "La session a expirée",
     "numbers": "Entrez un nombre valide",
     "email": "Entrez une adresse email valide",
     "mandatory": "est obligatoire",
+    "eulaUnexpectedError": "Impossible de charger les CGUs",
     "ok": "Ok",
     "yes": "Oui",
     "no": "Non",
@@ -55,6 +56,8 @@
     "authenticationFailed": "Authentification Echouée",
     "invalidCaptcha": "Le Captcha a été refusé (sécurité)!",
     "wrongEmail": "Email inconnu !",
+    "emailAlreadyExists": "Cet Email existe déjà",
+    "registerUnexpectedError": "Impossible de créer le compte",
     "accountLocked": "Votre compte est bloqué",
     "accountNotActive": "Votre compte est inactif",
     "accountAlreadyActive": "Votre compte a déjà été activé",
@@ -62,6 +65,8 @@
     "accountPending": "Votre compte n'est pas activé! Vérifiez vos e-mails",
     "activationTokenNotValid": "Le lien d'activation de votre compte n'est plus valide",
     "activationEmailNotValid": "Cet Email n'existe plus",
+    "activationUnexpectedError": "Impossible d'activer le compte",
+    "loginUnexpectedError": "Connexion impossible",
     "resetSuccess": "Requête acceptée ! Vérifiez vos e-mails",
     "eulaNotAccepted": "Vous devez accepter les conditions d'utilisation",
     "newUser": "Nouvel Utilisateur ?",
@@ -76,6 +81,7 @@
 		"registerSuccess": "Compte créé avec succès ! Vérifiez vos emails",
     "resetPasswordSuccess": "Mot de passe mis à jour avec succès !",
     "resetPasswordHashNotValid": "La requete n'est plus valide, refaites une demande de mot de passe",
+    "resetPasswordUnexpectedError": "Impossible de réinitialiser le mot de passe",
     "verifyAccountTokenNotValid": "La requete n'est plus valide, refaites une demande d'activation de compte",
     "haveAlreadyAccount": "Avez-vous déjà un compte?",
     "name": "Nom",
@@ -88,6 +94,9 @@
     "passwordNotMatch": "Les mots de passes ne correspondent pas",
     "tenant": "Choisir une Organisation"
   },
+  "users": {
+    "userUnexpectedError": "Impossible de lire l'utilisateur"
+  },
   "transactions": {
     "transaction": "Session",
     "transactions": "Session(s)",
@@ -98,7 +107,11 @@
     "transactionDoesNotExist": "Session inéxistante",
     "chargingCurve": "Graphique Session",
     "noTransactionsInProgress": "Pas de Session en cours",
-    "noTransactionsHistory": "Pas d'historique de Session"
+    "noTransactionsHistory": "Pas d'historique de Session",
+    "transactionUnexpectedError": "Impossible de lire la session",
+    "transactionStatsUnexpectedError": "Impossible de lire les statistiques",
+    "transactionStartUnexpectedError": "Impossible de démarrer la session",
+    "transactionStopUnexpectedError": "Impossible de stopper la session"
   },
   "home": {
     "browseSites": "Sites",
@@ -130,18 +143,26 @@
     "chargePoint": "Point de Charge",
     "free": "Libre(s)",
     "occupied": "Occupé(s)",
-    "noSites": "Aucun Site trouvé"
+    "noSites": "Aucun Site trouvé",
+    "siteUnexpectedError": "Impossible de lire le site"
   },
   "siteAreas": {
     "title": "Zones",
     "noChargers": "Cette Zone n'a pas de Borne",
-    "noSiteAreas": "Aucune Zone trouvée"
+    "noSiteAreas": "Aucune Zone trouvée",
+    "siteAreaUnexpectedError": "Cannot read the site area"
   },
   "chargers": {
     "title": "Bornes",
     "heartBeat": "Heartbeat",
     "noOCPPParameters": "Pas de parametre OCPP",
     "noChargerParameters": "Pas de parametre",
+    "chargerConfigurationUnexpectedError": "Impossible de lire la configuration de la borne",
+    "chargerUnexpectedError": "Impossible de lire la borne",
+    "chargerResetUnexpectedError": "Impossible de réinitialiser la borne",
+    "chargerRebootUnexpectedError": "Impossible de redémarrer la borne",
+    "chargerClearCacheUnexpectedError": "Impossible d'effacer le cache de la borne",
+    "chargerUnlockUnexpectedError": "Impossible de dévérouiller le connecteur",
     "heartBeatOkMessage": "'{{chargeBoxID}}' fonctionne correctement et a reporté son statut il y a moins d'une minute",
     "heartBeatKoMessage": "'{{chargeBoxID}}' ne fonctionne pas correctement et n'a pas reporté son statut depuis {{lastHeartBeat}}",
     "resetHard": "Redémarrer",

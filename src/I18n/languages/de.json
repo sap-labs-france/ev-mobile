@@ -1,12 +1,13 @@
 {
   "general": {
     "cannotConnectBackend": "Die Verbindung wurde unterbrochen",
-    "unexpectedErrorBackend": "Die Verbindung wurde unterbrochen",
-    "unexpectedError": "Die Verbindung wurde unterbrochen",
+    "unexpectedErrorBackend": "Unexpected Backend Error",
+    "unexpectedError": "Unexpected Error",
     "sessionExpired": "Sitzung abgelaufen",
     "numbers": "Geben Sie eine gültige Zahl ein",
     "email": "Geben Sie eine gültige E-Mail ein",
     "mandatory": "ist notwendig",
+    "eulaUnexpectedError": "Cannot load the EULA",
     "ok": "Ok",
     "yes": "Ja",
     "no": "Nein",
@@ -56,12 +57,16 @@
     "invalidCaptcha": "Ungültiges Captcha!",
     "wrongEmail": "Ungültige E-Mail!",
     "accountLocked": "Ihr Konto ist gesperrt.",
+    "registerUnexpectedError": "Cannot create account",
+    "emailAlreadyExists": "Email already exist",
     "accountNotActive": "Ihr Konto ist nicht aktiv",
     "accountAlreadyActive": "Your account is already active",
     "accountVerifiedSuccess": "Your account has been activated with success!",
     "accountPending": "Ihr Konto wurde noch nicht aktiviert, überprüfen Sie Ihre E-Mails!",
     "activationTokenNotValid": "Your account's activation link is no longer valid",
     "activationEmailNotValid": "This Email does not exist anymore",
+    "activationUnexpectedError": "Cannot activate account",
+    "loginUnexpectedError": "Cannot login",
     "resetSuccess": "Anfrage angenommen, überprüfen Sie Ihre E-Mails!",
     "eulaNotAccepted": "Sie müssen den Endnutzer-Lizenzvertrag annehmen",
     "newUser": "Neuer Benutzer?",
@@ -76,6 +81,7 @@
 		"registerSuccess": "Konto erfolgreich erstellt, überprüfen Sie bitte Ihre E-Mails!",
 		"resetPasswordSuccess": "Passwort erfolgreich aktualisiert!",
     "resetPasswordHashNotValid": "Anfrage nicht mehr gültig, fordern Sie erneut ein neues Passwort an",    
+    "resetPasswordUnexpectedError": "Cannot reset password",
     "verifyAccountTokenNotValid": "Request no longer valid, request a new account validation",
     "haveAlreadyAccount": "Haben Sie bereits ein Konto?",
     "name": "Name",
@@ -88,6 +94,9 @@
     "passwordNotMatch": "Passwörter stimmen nicht miteinander überein",
     "tenant": "Wählen Sie eine Organisation"
   },
+  "users": {
+    "userUnexpectedError": "Cannot read the user"
+  },
   "transactions": {
     "transaction": "Session",
     "transactions": "Session(s)",
@@ -98,7 +107,11 @@
     "transactionDoesNotExist": "Session does not exist",
     "chargingCurve": "Sitzungsdiagramm",
     "noTransactionsInProgress": "Es werden keine Sitzungen durchgeführt",
-    "noTransactionsHistory": "Kein Sitzungsverlauf"
+    "noTransactionsHistory": "Kein Sitzungsverlauf",
+    "transactionUnexpectedError": "Cannot read the session",
+    "transactionStatsUnexpectedError": "Cannot read the statistics",
+    "transactionStartUnexpectedError": "Cannot start the session",
+    "transactionStopUnexpectedError": "Cannot stop the session"
   },
   "home": {
     "browseSites": "Sites",
@@ -130,18 +143,26 @@
     "chargePoint": "Ladepunkt",
     "free": "Frei",
     "occupied": "Besetzt",
-    "noSites": "Kein Standort gefunden"
+    "noSites": "Kein Standort gefunden",
+    "siteUnexpectedError": "Cannot read the site"
   },
   "siteAreas": {
     "title": "Standortbereiche",
     "noChargers": "Dieser Standortbereich hat keine Ladestationen",
-    "noSiteAreas": "Kein Standortbereich gefunden"
+    "noSiteAreas": "Kein Standortbereich gefunden",
+    "siteAreaUnexpectedError": "Cannot read the site area"
   },
   "chargers": {
     "title": "Ladestationen",
     "heartBeat": "Herzschlag",
     "noOCPPParameters": "No OCPP parameter",
     "noChargerParameters": "No Charging Station parameter",
+    "chargerConfigurationUnexpectedError": "Cannot read the configuration of the charging station",
+    "chargerUnexpectedError": "Cannot read the charging station",
+    "chargerResetUnexpectedError": "Cannot reset the charging station",
+    "chargerRebootUnexpectedError": "Cannot reboot the charging station",
+    "chargerClearCacheUnexpectedError": "Cannot clear the cache of the charging station",
+    "chargerUnlockUnexpectedError": "Cannot unlock the connector",
     "heartBeatOkMessage": "'{{chargeBoxID}}' funktioniert ordentlich und hat vor einer Minute einen Herzschlag gesendet",
     "heartBeatKoMessage": "'{{chargeBoxID}}' ist fehlerhaft und hat zuletzt {{lastHeartBeat}} einen Herzschlag gesendet",
     "resetHard": "Neubooten",

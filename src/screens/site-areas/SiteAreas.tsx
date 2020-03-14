@@ -60,7 +60,8 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       );
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+        'siteAreas.siteAreaUnexpectedError', this.props.navigation, this.refresh);
     }
     // Return
     return siteAreas;

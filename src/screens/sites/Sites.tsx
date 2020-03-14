@@ -66,7 +66,8 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       sites = await this.centralServerProvider.getSites({ Search: searchText, WithAvailableChargers: true }, { skip, limit });
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+        'sites.siteUnexpectedError', this.props.navigation, this.refresh);
     }
     // Return
     return sites;

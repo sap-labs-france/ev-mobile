@@ -1,4 +1,5 @@
 import I18n from 'i18n-js';
+import { View } from 'native-base';
 import React from 'react';
 import FilterVisibleContainerComponent from '../../../components/search/filter/containers/FilterVisibleContainerComponent';
 import OnlyAvailableChargerSwitchFilterControlComponent from '../../../components/search/filter/controls/only-available-chargers/OnlyAvailableChargerSwitchFilterControlComponent';
@@ -45,29 +46,24 @@ export default class ChargersFilters extends ScreenFilters {
     const { initialFilters } = this.props;
     const { filters } = this.state;
     return (
-      <FilterVisibleContainerComponent
-        onFilterChanged={this.onFilterChanged}
-        ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) => {
-          if (filterVisibleContainerComponent) {
-            this.setFilterVisibleContainerComponent(filterVisibleContainerComponent);
-          }
-        }}
-      >
-        <OnlyAvailableChargerSwitchFilterControlComponent
-          filterID={'connectorStatus'}
-          internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGERS}
-          initialValue={filters.hasOwnProperty('connectorStatus') ? filters.connectorStatus : initialFilters.connectorStatus}
-          label={I18n.t('general.onlyAvailableChargers')}
-          onFilterChanged={(id: string, value: ChargePointStatus) =>
-            this.getFilterVisibleContainerComponent().setFilter(id, value)}
-          ref={(onlyAvailableChargerSwitchFilterControlComponent: OnlyAvailableChargerSwitchFilterControlComponent) => {
-            const filterContainerComponent = this.getFilterVisibleContainerComponent();
-            if (filterContainerComponent && onlyAvailableChargerSwitchFilterControlComponent) {
-              filterContainerComponent.addFilter(onlyAvailableChargerSwitchFilterControlComponent);
-            }
-          }}
-        />
-      </FilterVisibleContainerComponent>
+      <View>
+        <FilterVisibleContainerComponent
+          onFilterChanged={this.onFilterChanged}
+          ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) => 
+            this.setFilterVisibleContainerComponent(filterVisibleContainerComponent)}
+        >
+          <OnlyAvailableChargerSwitchFilterControlComponent
+            filterID={'connectorStatus'}
+            internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGERS}
+            initialValue={filters.hasOwnProperty('connectorStatus') ? filters.connectorStatus : initialFilters.connectorStatus}
+            label={I18n.t('general.onlyAvailableChargers')}
+            onFilterChanged={(id: string, value: ChargePointStatus) =>
+              this.getFilterVisibleContainerComponent().setFilter(id, value)}
+            ref={(onlyAvailableChargerSwitchFilterControlComponent: OnlyAvailableChargerSwitchFilterControlComponent) =>
+              this.addVisibleFilter(onlyAvailableChargerSwitchFilterControlComponent)}
+          />
+        </FilterVisibleContainerComponent>
+      </View>
     );
   };
 }

@@ -19,7 +19,6 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../TransactionsStyles';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from './TransactionsHistoryFilters';
-import moment from 'moment';
 
 export interface Props extends BaseProps {
 }
@@ -41,7 +40,6 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
   public state: State;
   public props: Props;
   private searchText: string;
-  private headerComponent: HeaderComponent;
 
   constructor(props: Props) {
     super(props);
@@ -113,7 +111,8 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== 560) {
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+        Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+          'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
       }
     }
     return null;
@@ -188,7 +187,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       <Container style={style.container}>
         <HeaderComponent
           ref={(headerComponent: HeaderComponent) => {
-            this.headerComponent = headerComponent;
+            this.setHeaderComponent(headerComponent);
           }}
           navigation={navigation}
           title={I18n.t('transactions.transactionsHistory')}
@@ -209,12 +208,10 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
           <View style={style.content}>
             <TransactionsHistoryFilters
               initialFilters={initialFilters}
-              onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-              ref={(transactionsHistoryFilters: TransactionsHistoryFilters) => {
-                if (this.headerComponent && transactionsHistoryFilters && transactionsHistoryFilters.getFilterModalContainerComponent()) {
-                  this.headerComponent.setFilterModalContainerComponent(transactionsHistoryFilters.getFilterModalContainerComponent());
-                }
-              }}
+              onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) =>
+                this.setState({ filters: newFilters }, () => this.refresh())}
+              ref={(transactionsHistoryFilters: TransactionsHistoryFilters) =>
+                this.setScreenFilters(transactionsHistoryFilters)}
             />
             <FlatList
               data={transactions}

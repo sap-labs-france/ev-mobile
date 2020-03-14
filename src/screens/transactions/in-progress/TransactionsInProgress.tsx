@@ -40,7 +40,6 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
   public state: State;
   public props: Props;
   private searchText: string;
-  private headerComponent: HeaderComponent;
 
   constructor(props: Props) {
     super(props);
@@ -80,27 +79,26 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
 
   public getTransactionsInProgress = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
     try {
-      // Get the Sites
-      const transactions = await this.centralServerProvider.getTransactionsActive(
-        {
-          UserID: this.state.filters.userID,
-          Search: searchText
-        }, { skip, limit });
+      // Get the Transactions
+      const transactions = await this.centralServerProvider.getTransactionsActive({
+        UserID: this.state.filters.userID,
+        Search: searchText
+      }, { skip, limit });
       // Check
       if (transactions.count === -1) {
         // Request nbr of records
         const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactionsActive({
-            UserID: this.state.filters.userID,
-            Search: searchText
-          }, Constants.ONLY_RECORD_COUNT_PAGING
-        );
+          UserID: this.state.filters.userID,
+          Search: searchText
+        }, Constants.ONLY_RECORD_COUNT_PAGING);
         // Set
         transactions.count = transactionsNbrRecordsOnly.count;
       }
       return transactions;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+        'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
   };
@@ -169,9 +167,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     return (
       <Container style={style.container}>
         <HeaderComponent
-          ref={(headerComponent: HeaderComponent) => {
-            this.headerComponent = headerComponent;
-          }}
+          ref={(headerComponent: HeaderComponent) => 
+            this.setHeaderComponent(headerComponent)}
           navigation={navigation}
           title={I18n.t('transactions.transactionsInProgress')}
           subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('transactions.transactions')}` : null}
@@ -189,11 +186,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
               <TransactionsInProgressFilters
                 initialFilters={initialFilters}
                 onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-                ref={(transactionsInProgressFilters: TransactionsInProgressFilters) => {
-                  if (this.headerComponent && transactionsInProgressFilters && transactionsInProgressFilters.getFilterModalContainerComponent()) {
-                    this.headerComponent.setFilterModalContainerComponent(transactionsInProgressFilters.getFilterModalContainerComponent());
-                  }
-                }}
+                ref={(transactionsInProgressFilters: TransactionsInProgressFilters) => 
+                  this.setScreenFilters(transactionsInProgressFilters)}
               />
             }
             <FlatList
