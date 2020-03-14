@@ -12,8 +12,8 @@ const commonStyles = ScaledSheet.create({
   },
   contentVisibleFilter: {
     backgroundColor: 'white',
-    paddingLeft: '15@s',
-    paddingRight: '15@s',
+    paddingLeft: '10@s',
+    paddingRight: '10@s',
     justifyContent: 'flex-start',
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
@@ -31,7 +31,7 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.inverseTextColor,
     height: '100%',
     marginTop: '12@s',
-    fontSize: '15@s'
+    fontSize: '16@s'
   }
 });
 

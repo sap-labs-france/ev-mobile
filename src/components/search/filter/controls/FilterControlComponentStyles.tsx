@@ -11,16 +11,14 @@ const commonStyles = ScaledSheet.create({
     alignItems: 'center'
   },
   textFilter: {
-    width: '50%',
-    fontSize: '14@s',
+    fontSize: '18@s',
     fontWeight: 'bold'
   },
   filterValue: {
-    fontSize: '14@s',
+    fontSize: '18@s',
     color: commonColor.textColor
   },
   switchFilter: {
-    marginLeft: '5@s'
   }
 });
 
