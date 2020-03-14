@@ -273,7 +273,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
           <View style={style.headerContent}>
             <View style={style.headerRowContainer}>
               <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format('LLL') : ''}</Text>
-              <Text style={style.subHeaderName}>{transaction ? moment(new Date(transaction.stop.timestamp)).format('LLL') : ''}</Text>
+              <Text style={style.subHeaderName}>({transaction ? moment(new Date(transaction.stop.timestamp)).format('LLL') : ''})</Text>
               {(transaction.userID !== transaction.stop.userID) &&
                 <Text style={style.subSubHeaderName}>({I18n.t('details.stoppedBy')} {Utils.buildUserName(transaction.stop.user)})</Text>
               }
