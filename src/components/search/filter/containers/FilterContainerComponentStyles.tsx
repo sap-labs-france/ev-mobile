@@ -32,6 +32,10 @@ const commonStyles = ScaledSheet.create({
     height: '100%',
     marginTop: '12@s',
     fontSize: '16@s'
+  },
+  modal: {
+    justifyContent: 'flex-end',
+    margin: 0
   }
 });
 
