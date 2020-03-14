@@ -13,7 +13,7 @@ interface FilterContainerComponentState {
 export default abstract class FilterContainerComponent extends React.Component<FilterContainerComponentProps, FilterContainerComponentState> {
   public state: FilterContainerComponentState;
   public props: FilterContainerComponentProps;
-  private filterControlComponents: Array<FilterControlComponent<any>> = [];
+  private filterControlComponents: FilterControlComponent<any>[] = [];
 
   constructor(props: FilterContainerComponentProps) {
     super(props);
@@ -35,7 +35,7 @@ export default abstract class FilterContainerComponent extends React.Component<F
     onFilterChanged(this.getFilters(), true);
   }
 
-  public async setFilterControlComponents(filterControlComponents: Array<FilterControlComponent<any>>) {
+  public async setFilterControlComponents(filterControlComponents: FilterControlComponent<any>[]) {
     this.filterControlComponents = filterControlComponents;
   }
 

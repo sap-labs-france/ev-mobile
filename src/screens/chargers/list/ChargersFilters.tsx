@@ -49,7 +49,7 @@ export default class ChargersFilters extends ScreenFilters {
       <View>
         <FilterVisibleContainerComponent
           onFilterChanged={this.onFilterChanged}
-          ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) => 
+          ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) =>
             this.setFilterVisibleContainerComponent(filterVisibleContainerComponent)}
         >
           <OnlyAvailableChargerSwitchFilterControlComponent

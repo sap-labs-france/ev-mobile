@@ -22,8 +22,8 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
   private filterModalContainerComponent: FilterModalContainerComponent;
   private centralServerProvider: CentralServerProvider;
   private securityProvider: SecurityProvider;
-  private filterModalControlComponents: Array<FilterControlComponent<any>> = [];
-  private filterVisibleControlComponents: Array<FilterControlComponent<any>> = [];
+  private filterModalControlComponents: FilterControlComponent<any>[] = [];
+  private filterVisibleControlComponents: FilterControlComponent<any>[] = [];
 
   constructor(props: ScreenFiltersProps) {
     super(props);
@@ -94,7 +94,7 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
     }
   }
 
-  private async addFilter(filterControlComponents: Array<FilterControlComponent<any>>, newFilterComponent: FilterControlComponent<any>) {
+  private async addFilter(filterControlComponents: FilterControlComponent<any>[], newFilterComponent: FilterControlComponent<any>) {
     // Search
     if (filterControlComponents) {
       for (let index = 0; index < filterControlComponents.length; index++) {

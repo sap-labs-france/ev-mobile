@@ -36,7 +36,7 @@ export default class CentralServerProvider {
   private locale: string = null;
   private tenantSubDomain: string = null;
   private currency: string = null;
-  private siteImages: Array<{id: string; image: string;}> = [];
+  private siteImages: {id: string; image: string;}[] = [];
   private autoLoginDisabled: boolean = false;
   private notificationManager: NotificationManager;
 

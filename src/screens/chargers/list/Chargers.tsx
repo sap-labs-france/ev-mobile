@@ -183,7 +183,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     return (
       <Container style={style.container}>
         <HeaderComponent
-          ref={(headerComponent: HeaderComponent) => 
+          ref={(headerComponent: HeaderComponent) =>
             this.setHeaderComponent(headerComponent)}
           navigation={navigation}
           title={I18n.t('chargers.title')}
