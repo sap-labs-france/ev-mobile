@@ -18,7 +18,7 @@ const commonStyles = ScaledSheet.create({
   },
   backgroundImage: {
     width: '100%',
-    height: '125@s'
+    height: '125@s',
   },
   lastTransactionContainer: {
     width: '50@s',
@@ -43,11 +43,12 @@ const commonStyles = ScaledSheet.create({
     width: '100@s',
     height: '100@s',
     padding: 0,
+    paddingBottom: '25@s',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: '-70@s',
+    marginTop: '-85@s',
     backgroundColor: 'transparent',
-    zIndex: 1,
+    // zIndex: 1,
   },
   buttonTransaction: {
     width: '100@s',
@@ -89,18 +90,15 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: 'transparent'
   },
   scrollViewContainer: {
-    marginTop: '-15@s',
-  },
-  detailsContainer: {
+    flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: '10@s',
+    justifyContent: 'space-evenly',
+    alignItems: 'center'
   },
   rowContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: '90@s',
+    height: '100@s'
   },
   columnContainer: {
     flexDirection: 'column',

@@ -60,11 +60,9 @@ const commonStyles = ScaledSheet.create({
     marginRight: '5@s',
   },
   scrollViewContainer: {
-    marginTop: '20@s'
-  },
-  detailsContainer: {
+    flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     alignItems: 'center'
   },
   rowContainer: {

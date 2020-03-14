@@ -279,20 +279,18 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
               }
             </View>
           </View>
-          <ScrollView style={style.scrollViewContainer}>
-            <View style={style.detailsContainer}>
-              <View style={style.rowContainer}>
-                {this.renderUserInfo(style)}
-                {this.renderTotalConsumption(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderElapsedTime(style)}
-                {this.renderInactivity(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderBatteryLevel(style)}
-                {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
-              </View>
+          <ScrollView contentContainerStyle={style.scrollViewContainer}>
+            <View style={style.rowContainer}>
+              {this.renderUserInfo(style)}
+              {this.renderTotalConsumption(style)}
+            </View>
+            <View style={style.rowContainer}>
+              {this.renderElapsedTime(style)}
+              {this.renderInactivity(style)}
+            </View>
+            <View style={style.rowContainer}>
+              {this.renderBatteryLevel(style)}
+              {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
             </View>
           </ScrollView>
         </Container>
