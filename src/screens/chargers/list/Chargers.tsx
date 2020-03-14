@@ -8,6 +8,7 @@ import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
+import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus } from '../../../types/ChargingStation';
 import { DataResult } from '../../../types/DataResult';
@@ -79,20 +80,22 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     const { siteAreaID } = this.state;
     let chargers: DataResult<ChargingStation>;
     try {
-      // Get Chargers
-      if (siteAreaID) {
-        // Get with the Site Area
-        chargers = await this.centralServerProvider.getChargers({
-          Search: searchText,
-          ConnectorStatus: this.state.filters.connectorStatus,
-          SiteAreaID: siteAreaID
-        }, { skip, limit });
-      } else {
-        // Get without the Site
-        chargers = await this.centralServerProvider.getChargers({
-          Search: searchText,
-          ConnectorStatus: this.state.filters.connectorStatus
-        }, { skip, limit });
+      // Get with the Site Area
+      chargers = await this.centralServerProvider.getChargers({
+        Search: searchText,
+        SiteAreaID: siteAreaID,
+        ConnectorStatus: this.state.filters.connectorStatus
+      }, { skip, limit });
+      // Check
+      if (chargers.count === -1) {
+        // Request nbr of records
+        const chargersNbrRecordsOnly = await this.centralServerProvider.getChargers({
+            Search: searchText,
+            SiteAreaID: siteAreaID,
+            ConnectorStatus: this.state.filters.connectorStatus
+          }, Constants.ONLY_RECORD_COUNT_PAGING);
+        // Set
+        chargers.count = chargersNbrRecordsOnly.count;
       }
     } catch (error) {
       // Other common Error
@@ -138,6 +141,9 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       const chargers = await this.getChargers(this.searchText, 0, skip + limit);
       // Get the provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
+      console.log('====================================');
+      console.log(chargers.count);
+      console.log('====================================');
       // Add Chargers
       this.setState(() => ({
         loading: false,
@@ -187,6 +193,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
             this.setHeaderComponent(headerComponent)}
           navigation={navigation}
           title={I18n.t('chargers.title')}
+          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('chargers.chargers')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
