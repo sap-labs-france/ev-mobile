@@ -13,6 +13,14 @@ const commonStyles = ScaledSheet.create({
   },
   spinner: {
     flex: 1
+  },
+  filtersExpanded: {
+    opacity: 1,
+    height: '35@s',
+  },
+  filtersHidden: {
+    opacity: 0,
+    height: 0
   }
 });
 

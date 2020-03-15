@@ -48,14 +48,14 @@ export default class OnlyAvailableChargerSwitchFilterControlComponent extends Fi
   }
 
   public render = () => {
-    const style = computeStyleSheet();
-    const { label } = this.props;
+    const internalStyle = computeStyleSheet();
+    const { label, style } = this.props;
     const { switchValue } = this.state;
     return (
-      <View style={style.rowFilter}>
-        <Text style={style.textFilter}>{label}</Text>
+      <View style={{...internalStyle.rowFilter, ...style}}>
+        <Text style={internalStyle.textFilter}>{label}</Text>
         <Switch
-          style={style.switchFilter}
+          style={internalStyle.switchFilter}
           value={switchValue}
           onValueChange={this.onValueChanged}
         />

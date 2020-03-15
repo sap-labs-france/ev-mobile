@@ -203,6 +203,7 @@
   },
   "details": {
     "connector": "Connector",
+    "connectors": "Connectors",
     "stoppedAt": "Stopped on",
     "stoppedBy": "Stopped by",
     "inactive": "Disconnected Charger",

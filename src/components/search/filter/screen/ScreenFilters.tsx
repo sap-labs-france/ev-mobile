@@ -5,6 +5,8 @@ import SecurityProvider from '../../../../provider/SecurityProvider';
 import FilterModalContainerComponent from '../containers/FilterModalContainerComponent';
 import FilterVisibleContainerComponent from '../containers/FilterVisibleContainerComponent';
 import FilterControlComponent from '../controls/FilterControlComponent';
+import { View } from 'native-base';
+import * as Animatable from 'react-native-animatable';
 
 export interface ScreenFiltersProps {
 }
@@ -13,6 +15,7 @@ export interface ScreenFiltersState {
   isAdmin?: boolean;
   hasSiteAdmin?: boolean;
   locale?: string;
+  expanded?: boolean;
 }
 
 export default class ScreenFilters extends React.Component<ScreenFiltersProps, ScreenFiltersState> {
@@ -22,15 +25,17 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
   private filterModalContainerComponent: FilterModalContainerComponent;
   private centralServerProvider: CentralServerProvider;
   private securityProvider: SecurityProvider;
-  private filterModalControlComponents: Array<FilterControlComponent<any>> = [];
-  private filterVisibleControlComponents: Array<FilterControlComponent<any>> = [];
+  private filterModalControlComponents: FilterControlComponent<any>[] = [];
+  private filterVisibleControlComponents: FilterControlComponent<any>[] = [];
+  private expandableView: any;
 
   constructor(props: ScreenFiltersProps) {
     super(props);
     this.state = {
       isAdmin: false,
       hasSiteAdmin: false,
-      locale: null
+      locale: null,
+      expanded: false,
     };
   }
 
@@ -54,6 +59,21 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
       hasSiteAdmin,
       locale
     });
+  }
+
+  public setViewExpanded = (expanded: boolean, styleFrom?: object, styleTo?: object) => {
+    if (expanded && styleFrom && styleTo) {
+      this.expandableView.animate({ from: styleFrom, to: styleTo }, 250);
+    } else {
+      this.expandableView.animate({ from: styleTo, to: styleFrom }, 250);
+    }
+    this.setState({expanded});
+  }
+
+  public setExpandableView = (expandableView: any) => {
+    if (expandableView) {
+      this.expandableView = expandableView;
+    }
   }
 
   public setState = (state: ScreenFiltersState | ((prevState: Readonly<ScreenFiltersState>, props: Readonly<ScreenFiltersProps>) => ScreenFiltersState | Pick<ScreenFiltersState, never>) | Pick<ScreenFiltersState, never>, callback?: () => void) => {
@@ -94,7 +114,7 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
     }
   }
 
-  private async addFilter(filterControlComponents: Array<FilterControlComponent<any>>, newFilterComponent: FilterControlComponent<any>) {
+  private async addFilter(filterControlComponents: FilterControlComponent<any>[], newFilterComponent: FilterControlComponent<any>) {
     // Search
     if (filterControlComponents) {
       for (let index = 0; index < filterControlComponents.length; index++) {
