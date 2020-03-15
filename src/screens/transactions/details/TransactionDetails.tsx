@@ -273,26 +273,24 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
           <View style={style.headerContent}>
             <View style={style.headerRowContainer}>
               <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format('LLL') : ''}</Text>
-              <Text style={style.subHeaderName}>{transaction ? moment(new Date(transaction.stop.timestamp)).format('LLL') : ''}</Text>
+              <Text style={style.subHeaderName}>({transaction ? moment(new Date(transaction.stop.timestamp)).format('LLL') : ''})</Text>
               {(transaction.userID !== transaction.stop.userID) &&
                 <Text style={style.subSubHeaderName}>({I18n.t('details.stoppedBy')} {Utils.buildUserName(transaction.stop.user)})</Text>
               }
             </View>
           </View>
-          <ScrollView style={style.scrollViewContainer}>
-            <View style={style.detailsContainer}>
-              <View style={style.rowContainer}>
-                {this.renderUserInfo(style)}
-                {this.renderTotalConsumption(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderElapsedTime(style)}
-                {this.renderInactivity(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderBatteryLevel(style)}
-                {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
-              </View>
+          <ScrollView contentContainerStyle={style.scrollViewContainer}>
+            <View style={style.rowContainer}>
+              {this.renderUserInfo(style)}
+              {this.renderTotalConsumption(style)}
+            </View>
+            <View style={style.rowContainer}>
+              {this.renderElapsedTime(style)}
+              {this.renderInactivity(style)}
+            </View>
+            <View style={style.rowContainer}>
+              {this.renderBatteryLevel(style)}
+              {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
             </View>
           </ScrollView>
         </Container>

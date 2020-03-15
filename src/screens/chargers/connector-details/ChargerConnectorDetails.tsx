@@ -550,8 +550,8 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   };
 
   public renderShowLastTransactionButton = (style: any) => {
-    const { isAdmin, isSiteAdmin } = this.state;
-    if (isAdmin || isSiteAdmin) {
+    const { isAdmin, isSiteAdmin, connector, canStartTransaction } = this.state;
+    if ((isAdmin || isSiteAdmin) && canStartTransaction && connector && connector.activeTransactionID === 0) {
       return (
         <TouchableOpacity style={[style.lastTransactionContainer]} onPress={() => this.showLastTransaction()}>
           <View style={[style.buttonLastTransaction]}>
@@ -560,7 +560,9 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
         </TouchableOpacity>
       );
     }
-    return null;
+    return (
+      <View style={[style.lastTransactionContainer]}/>
+    );
   };
 
   public renderStartTransactionButton = (style: any) => {
@@ -640,9 +642,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
           {/* Site Image */}
           <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
           {/* Show Last Transaction */}
-          {canStartTransaction && connector && connector.activeTransactionID === 0 &&
-            this.renderShowLastTransactionButton(style)
-          }
+          {this.renderShowLastTransactionButton(style)}
           {/* Start/Stop Transaction */}
           {canStartTransaction && connector && connector.activeTransactionID === 0 ? (
             <View style={style.transactionContainer}>
@@ -656,25 +656,23 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
             <View style={style.noButtonStopTransaction} />
           )}
           {/* Details */}
-          <ScrollView style={style.scrollViewContainer}
-            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
-            <View style={style.detailsContainer}>
-              <View style={style.rowContainer}>
-                {this.renderConnectorStatus(style)}
-                {this.renderUserInfo(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderInstantPower(style)}
-                {this.renderTotalConsumption(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderElapsedTime(style)}
-                {this.renderInactivity(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderBatteryLevel(style)}
-                {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
-              </View>
+          <ScrollView contentContainerStyle={style.scrollViewContainer}
+              refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
+            <View style={style.rowContainer}>
+              {this.renderConnectorStatus(style)}
+              {this.renderUserInfo(style)}
+            </View>
+            <View style={style.rowContainer}>
+              {this.renderInstantPower(style)}
+              {this.renderTotalConsumption(style)}
+            </View>
+            <View style={style.rowContainer}>
+              {this.renderElapsedTime(style)}
+              {this.renderInactivity(style)}
+            </View>
+            <View style={style.rowContainer}>
+              {this.renderBatteryLevel(style)}
+              {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
             </View>
           </ScrollView>
         </Container>

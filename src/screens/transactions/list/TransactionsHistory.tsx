@@ -81,28 +81,23 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
   public getTransactions = async (searchText: string, skip: number, limit: number): Promise<TransactionDataResult> => {
     try {
       // Get active transaction
-      const transactions = await this.centralServerProvider.getTransactions(
-        {
+    const transactions = await this.centralServerProvider.getTransactions({
+        Statistics: 'history',
+        UserID: this.state.filters.userID,
+        StartDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime.toISOString() : null,
+        EndDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime.toISOString() : null,
+        Search: searchText
+      }, { skip, limit });
+      // Check
+      if (transactions.count === -1) {
+        // Request nbr of records
+        const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactions({
           Statistics: 'history',
           UserID: this.state.filters.userID,
           StartDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime.toISOString() : null,
           EndDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime.toISOString() : null,
           Search: searchText
-        },
-        { skip, limit }
-      );
-      // Check
-      if (transactions.count === -1) {
-        // Request nbr of records
-        const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactions(
-          {
-            Statistics: 'history',
-            UserID: this.state.filters.userID,
-            StartDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime.toISOString() : null,
-            EndDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime.toISOString() : null,
-            Search: searchText
-          }, Constants.ONLY_RECORD_COUNT_PAGING
-        );
+        }, Constants.ONLY_RECORD_COUNT_PAGING);
         // Set
         transactions.count = transactionsNbrRecordsOnly.count;
         transactions.stats = transactionsNbrRecordsOnly.stats;

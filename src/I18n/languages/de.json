@@ -155,6 +155,7 @@
   "chargers": {
     "title": "Ladestationen",
     "heartBeat": "Herzschlag",
+    "chargers": "Charging Station(s)",
     "noOCPPParameters": "No OCPP parameter",
     "noChargerParameters": "No Charging Station parameter",
     "chargerConfigurationUnexpectedError": "Cannot read the configuration of the charging station",
