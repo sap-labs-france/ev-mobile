@@ -4,20 +4,26 @@ import FilterControlComponent from '../controls/FilterControlComponent';
 
 export interface FilterContainerComponentProps {
   onFilterChanged?: (filters: any, applyFilters: boolean) => void;
+  visible?: boolean;
   children?: React.ReactNode;
 }
 
-interface FilterContainerComponentState {
+export interface FilterContainerComponentState {
+  visible?: boolean;
 }
 
 export default abstract class FilterContainerComponent extends React.Component<FilterContainerComponentProps, FilterContainerComponentState> {
   public state: FilterContainerComponentState;
   public props: FilterContainerComponentProps;
+  public static defaultProps = {
+    visible: false
+  };
   private filterControlComponents: FilterControlComponent<any>[] = [];
 
   constructor(props: FilterContainerComponentProps) {
     super(props);
     this.state = {
+      visible: props.visible ? props.visible : false
     };
   }
 
@@ -25,7 +31,9 @@ export default abstract class FilterContainerComponent extends React.Component<F
     super.setState(state, callback);
   }
 
-  public abstract setVisible(visible: boolean): void;
+  public setVisible = (visible: boolean) => {
+    this.setState({ visible });
+  }
 
   public async notifyFilterChanged() {
     const { onFilterChanged } = this.props;

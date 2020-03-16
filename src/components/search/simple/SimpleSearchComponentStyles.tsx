@@ -8,16 +8,16 @@ const commonStyles = ScaledSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: '45@s',
-    paddingLeft: '10@s',
-    paddingRight: '10@s',
+    height: '35@s',
+    paddingLeft: '5@s',
+    paddingRight: '5@s',
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
     backgroundColor: commonColor.containerBgColor
   },
   inputField: {
     flex: 1,
-    fontSize: '18@s'
+    fontSize: '16@s'
   },
   icon: {
     paddingLeft: '5@s',

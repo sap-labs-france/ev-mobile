@@ -17,6 +17,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
   public state: State;
   public props: Props;
   public static defaultProps = {
+    style: {},
     defaultDate: new Date()
   };
 
@@ -45,11 +46,11 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
   }
 
   public render = () => {
-    const style = computeStyleSheet();
-    const { label, defaultDate, minimumDate, maximumDate, locale } = this.props;
+    const internalStyle = computeStyleSheet();
+    const { label, style, defaultDate, minimumDate, maximumDate, locale } = this.props;
     return (
-      <View style={style.rowFilter}>
-        <Text style={style.textFilter}>{label}</Text>
+      <View style={{...internalStyle.rowFilter, ...style}}>
+        <Text style={internalStyle.textFilter}>{label}</Text>
         <DatePicker
           defaultDate={defaultDate}
           minimumDate={minimumDate}
@@ -59,8 +60,8 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
           modalTransparent={false}
           animationType={'fade'}
           androidMode={'spinner'}
-          textStyle={style.filterValue}
-          placeHolderTextStyle={style.filterValue}
+          textStyle={internalStyle.filterValue}
+          placeHolderTextStyle={internalStyle.filterValue}
           onDateChange={this.onValueChanged}
           disabled={false}
           formatChosenDate={(date) => I18nManager.formatDateTime(date, 'LL')}

@@ -59,8 +59,8 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
           placeholderTextColor={commonColor.placeholderTextColor}
           onChangeText={(searchText) => this.searchHasChanged(searchText)}
         />
-        <Button disabled={!this.currentSearchText} style={style.iconButton} transparent={true}>
-          <Icon type='MaterialIcons' name='clear' style={style.icon} onPress={() => this.clearSearch()} />
+        <Button disabled={!this.currentSearchText} style={style.iconButton} transparent={true} onPress={() => this.clearSearch()}>
+          <Icon type='MaterialIcons' name='clear' style={style.icon} />
         </Button>
       </View>
     );

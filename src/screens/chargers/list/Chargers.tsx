@@ -69,10 +69,13 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public async loadInitialFilters() {
-    const connectorStatus = await SecuredStorage.loadFilterValue(GlobalFilters.ONLY_AVAILABLE_CHARGERS) as ChargePointStatus;
+    const connectorStatus = await SecuredStorage.loadFilterValue(
+      GlobalFilters.ONLY_AVAILABLE_CHARGERS) as ChargePointStatus;
+    const connectorType = await SecuredStorage.loadFilterValue(
+      GlobalFilters.CONNECTOR_TYPES) as string;
     this.setState({
-      initialFilters: { connectorStatus },
-      filters: { connectorStatus }
+      initialFilters: { connectorStatus, connectorType },
+      filters: { connectorStatus, connectorType}
     });
   }
 
@@ -84,7 +87,8 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       chargers = await this.centralServerProvider.getChargers({
         Search: searchText,
         SiteAreaID: siteAreaID,
-        ConnectorStatus: this.state.filters.connectorStatus
+        ConnectorStatus: this.state.filters.connectorStatus,
+        ConnectorType: this.state.filters.connectorType
       }, { skip, limit });
       // Check
       if (chargers.count === -1) {
@@ -141,9 +145,6 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       const chargers = await this.getChargers(this.searchText, 0, skip + limit);
       // Get the provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
-      console.log('====================================');
-      console.log(chargers.count);
-      console.log('====================================');
       // Add Chargers
       this.setState(() => ({
         loading: false,

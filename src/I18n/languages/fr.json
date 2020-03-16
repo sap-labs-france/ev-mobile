@@ -203,6 +203,7 @@
   },
   "details": {
     "connector": "Connecteur",
+    "connectors": "Connecteurs",
     "stoppedAt": "Stoppée le",
     "stoppedBy": "Stoppée par",
     "inactive": "Borne Déconnectée",

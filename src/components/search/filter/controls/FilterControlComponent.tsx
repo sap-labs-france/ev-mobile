@@ -6,6 +6,7 @@ export interface FilterControlComponentProps<T> {
   label: string;
   locale?: string;
   initialValue?: T;
+  style?: object;
   onFilterChanged: (id: string, value: T) => void;
 }
 
@@ -15,6 +16,9 @@ interface FilterControlComponentState {
 export default class FilterControlComponent<T> extends React.Component<FilterControlComponentProps<T>, FilterControlComponentState> {
   public state: FilterControlComponentState;
   public props: FilterControlComponentProps<T>;
+  public static defaultProps = {
+    style: {}
+  };
   private value: T = null;
 
   constructor(props: FilterControlComponentProps<T>) {
