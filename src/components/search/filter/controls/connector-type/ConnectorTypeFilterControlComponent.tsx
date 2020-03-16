@@ -15,14 +15,16 @@ export interface Props extends FilterControlComponentProps<string> {
 interface State {
 }
 
+const connectorStyle = computeStyleSheet();
+
 export default class ConnectorTypeFilterControlComponent extends FilterControlComponent<string> {
   public state: State;
   public props: Props;
   private connectors: {type: ConnectorType; element: Element; selected: boolean;}[] = [
-    { type: ConnectorType.TYPE_2, element: <Type2 width={30} height={30}/>, selected: false },
-    { type: ConnectorType.COMBO_CCS, element: <ComboCCS width={30} height={30}/>, selected: false },
-    { type: ConnectorType.CHADEMO, element: <Chademo width={30} height={30}/>, selected: false },
-    { type: ConnectorType.DOMESTIC, element: <Domestic width={30} height={30}/>, selected: false },
+    { type: ConnectorType.TYPE_2, element: <Type2 width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height}/>, selected: false },
+    { type: ConnectorType.COMBO_CCS, element: <ComboCCS width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height}/>, selected: false },
+    { type: ConnectorType.CHADEMO, element: <Chademo width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height}/>, selected: false },
+    { type: ConnectorType.DOMESTIC, element: <Domestic width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height}/>, selected: false },
   ]
 
   constructor(props: Props) {
@@ -77,11 +79,12 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
     const internalStyle = computeStyleSheet();
     const { style, label } = this.props;
     return (
-      <View style={{...internalStyle.rowFilter, ...style}}>
+      <View style={{...internalStyle.columnFilterContainer, ...style}}>
         <Text style={internalStyle.textFilter}>{label}</Text>
-        <View style={internalStyle.connectorTypeFilter}>
+        <View style={internalStyle.connectorTypeFilterContainer}>
           {this.connectors.map((connector) =>
             <ToggleButton
+              style={internalStyle.connectorTypeButton}
               key={connector.type}
               icon={() => connector.element}
               value='bluetooth'

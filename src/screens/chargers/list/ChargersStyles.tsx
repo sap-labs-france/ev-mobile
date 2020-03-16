@@ -16,7 +16,7 @@ const commonStyles = ScaledSheet.create({
   },
   filtersExpanded: {
     opacity: 1,
-    height: '35@s',
+    height: '100@s',
   },
   filtersHidden: {
     opacity: 0,

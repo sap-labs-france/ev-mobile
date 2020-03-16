@@ -49,7 +49,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
     const internalStyle = computeStyleSheet();
     const { label, style, defaultDate, minimumDate, maximumDate, locale } = this.props;
     return (
-      <View style={{...internalStyle.rowFilter, ...style}}>
+      <View style={{...internalStyle.rowFilterContainer, ...style}}>
         <Text style={internalStyle.textFilter}>{label}</Text>
         <DatePicker
           defaultDate={defaultDate}

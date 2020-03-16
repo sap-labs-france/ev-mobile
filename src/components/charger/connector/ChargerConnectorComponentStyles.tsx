@@ -48,7 +48,7 @@ const commonStyles = ScaledSheet.create({
     fontWeight: 'bold',
     textAlign: 'center'
   },
-  connectorImage: {
+  connectorSVG: {
     width: '40@s',
     height: '40@s'
   },
