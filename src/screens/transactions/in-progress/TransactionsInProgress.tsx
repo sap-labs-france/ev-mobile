@@ -167,7 +167,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     return (
       <Container style={style.container}>
         <HeaderComponent
-          ref={(headerComponent: HeaderComponent) => 
+          ref={(headerComponent: HeaderComponent) =>
             this.setHeaderComponent(headerComponent)}
           navigation={navigation}
           title={I18n.t('transactions.transactionsInProgress')}
@@ -186,7 +186,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
               <TransactionsInProgressFilters
                 initialFilters={initialFilters}
                 onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-                ref={(transactionsInProgressFilters: TransactionsInProgressFilters) => 
+                ref={(transactionsInProgressFilters: TransactionsInProgressFilters) =>
                   this.setScreenFilters(transactionsInProgressFilters)}
               />
             }

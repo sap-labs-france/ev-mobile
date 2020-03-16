@@ -98,7 +98,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
             label={I18n.t('general.startDate')}
             onFilterChanged={(id: string, value: Date) =>
               this.getFilterModalContainerComponent().setFilter(id, value)}
-            ref={(dateFilterControlComponent: DateFilterControlComponent) => 
+            ref={(dateFilterControlComponent: DateFilterControlComponent) =>
               this.addModalFilter(dateFilterControlComponent)}
             locale={this.state.locale}
             minimumDate={initialFilters.startDateTime}

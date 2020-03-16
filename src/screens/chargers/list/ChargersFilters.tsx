@@ -57,7 +57,7 @@ export default class ChargersFilters extends ScreenFilters {
         <FilterVisibleContainerComponent
           onExpand={(expanded: boolean) => this.setViewExpanded(expanded, style.filtersHidden, style.filtersExpanded)}
           onFilterChanged={this.onFilterChanged}
-          ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) => 
+          ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) =>
             this.setFilterVisibleContainerComponent(filterVisibleContainerComponent)}
         >
           <OnlyAvailableChargerSwitchFilterControlComponent
