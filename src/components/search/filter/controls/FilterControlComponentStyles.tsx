@@ -16,13 +16,15 @@ const commonStyles = ScaledSheet.create({
   },
   textFilter: {
     fontSize: '14@s',
-    // fontWeight: 'bold'
   },
   filterValue: {
     fontSize: '14@s',
     color: commonColor.textColor
   },
   switchFilter: {
+  },
+  connectorTypeFilter: {
+    flexDirection: 'row',
   }
 });
 

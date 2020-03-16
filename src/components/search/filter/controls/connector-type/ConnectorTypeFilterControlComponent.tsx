@@ -2,6 +2,9 @@ import { Text, View } from 'native-base';
 import React from 'react';
 import { ToggleButton } from 'react-native-paper';
 import ComboCCS from '../../../../../../assets/connectorType/combo-ccs.svg';
+import Chademo from '../../../../../../assets/connectorType/chademo.svg';
+import Domestic from '../../../../../../assets/connectorType/domestic-ue.svg';
+import Type2 from '../../../../../../assets/connectorType/type2.svg';
 import { ConnectorType } from '../../../../../types/ChargingStation';
 import FilterControlComponent, { FilterControlComponentProps } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
@@ -16,7 +19,10 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
   public state: State;
   public props: Props;
   private connectors: {type: ConnectorType; element: Element; selected: boolean;}[] = [
-    { type: ConnectorType.COMBO_CCS, element: <ComboCCS width={30} height={30}/>, selected: false }
+    { type: ConnectorType.TYPE_2, element: <Type2 width={30} height={30}/>, selected: false },
+    { type: ConnectorType.COMBO_CCS, element: <ComboCCS width={30} height={30}/>, selected: false },
+    { type: ConnectorType.CHADEMO, element: <Chademo width={30} height={30}/>, selected: false },
+    { type: ConnectorType.DOMESTIC, element: <Domestic width={30} height={30}/>, selected: false },
   ]
 
   constructor(props: Props) {
@@ -73,18 +79,20 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
     return (
       <View style={{...internalStyle.rowFilter, ...style}}>
         <Text style={internalStyle.textFilter}>{label}</Text>
-        {this.connectors.map((connector) =>
-          <ToggleButton
-            key={connector.type}
-            icon={() => connector.element}
-            value='bluetooth'
-            status={connector.selected ? 'checked' : 'unchecked'}
-            onPress={() => {
-              connector.selected = !connector.selected;
-              this.onValueChanged();
-            }}
-          />
-        )}
+        <View style={internalStyle.connectorTypeFilter}>
+          {this.connectors.map((connector) =>
+            <ToggleButton
+              key={connector.type}
+              icon={() => connector.element}
+              value='bluetooth'
+              status={connector.selected ? 'checked' : 'unchecked'}
+              onPress={() => {
+                connector.selected = !connector.selected;
+                this.onValueChanged();
+              }}
+            />
+          )}
+        </View>
       </View>
     );
   }

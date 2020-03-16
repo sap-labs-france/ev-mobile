@@ -5,8 +5,8 @@ import computeStyleSheet from './FilterContainerComponentStyles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export interface Props extends FilterContainerComponentProps {
-  expanded: boolean;
-  onExpand: (expanded: boolean) => void
+  expanded?: boolean;
+  onExpand?: (expanded: boolean) => void
 }
 
 interface State extends FilterContainerComponentState {
