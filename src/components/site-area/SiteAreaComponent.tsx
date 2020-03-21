@@ -34,17 +34,7 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { siteArea, navigation } = this.props;
-    let connectorStats;
     // New backend?
-    if (siteArea.connectorStats) {
-      // Override
-      connectorStats = siteArea.connectorStats;
-    } else {
-      connectorStats = {
-        totalConnectors: siteArea.totalConnectors,
-        availableConnectors: siteArea.availableConnectors
-      };
-    }
     return (
       <Animatable.View
         animation={this.counter++ % 2 === 0 ? 'flipInX' : 'flipInX'}
@@ -52,7 +42,7 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity
           onPress={() => {
-            if (siteArea.totalConnectors > 0) {
+            if (siteArea.connectorStats.totalConnectors > 0) {
               navigation.navigate({
                 routeName: 'Chargers',
                 params: {
@@ -67,10 +57,10 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
           <View style={style.container}>
             <View style={style.headerContent}>
               <Text style={style.headerName}>{siteArea.name}</Text>
-              <Icon style={siteArea.totalConnectors > 0 ? style.icon : style.iconHidden} type='MaterialIcons' name='navigate-next' />
+              <Icon style={siteArea.connectorStats.totalConnectors > 0 ? style.icon : style.iconHidden} type='MaterialIcons' name='navigate-next' />
             </View>
             <View style={style.connectorContent}>
-              <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={connectorStats} />
+              <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={siteArea.connectorStats} />
             </View>
           </View>
         </TouchableOpacity>

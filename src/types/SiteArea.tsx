@@ -12,9 +12,5 @@ export default interface SiteArea extends CreatedUpdatedProps {
   siteID: string;
   site: Site;
   accessControl: boolean;
-  availableChargers?: number;
-  totalChargers?: number;
-  availableConnectors?: number;
-  totalConnectors?: number;
   connectorStats: ConnectorStats;
 }
