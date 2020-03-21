@@ -52,11 +52,11 @@ export default class FilterVisibleContainerComponent extends FilterContainerComp
       <View style={style.visibleContainer}>
         {this.props.children}
         {onExpand &&
-          <TouchableOpacity style={style.visibleExpandContainer} onPress={this.toggleExpanded}>
+          <TouchableOpacity style={style.visibleExpandedContainer} onPress={this.toggleExpanded}>
             {expanded ?
-              <Icon style={style.visbleExpandIcon} type='MaterialIcons' name='keyboard-arrow-up' />
+              <Icon style={style.visibleExpandedIcon} type='MaterialIcons' name='keyboard-arrow-up' />
             :
-              <Icon style={style.visbleExpandIcon} type='MaterialIcons' name='keyboard-arrow-down' />
+              <Icon style={style.visibleExpandedIcon} type='MaterialIcons' name='keyboard-arrow-down' />
             }
           </TouchableOpacity>
         }

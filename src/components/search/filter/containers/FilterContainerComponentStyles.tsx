@@ -5,8 +5,6 @@ import commonColor from '../../../../theme/variables/commonColor';
 
 const commonStyles = ScaledSheet.create({
   modalContainer: {
-    // justifyContent: 'flex-end',
-    // margin: 0
   },
   modalFiltersContainer: {
     backgroundColor: 'white',
@@ -37,14 +35,15 @@ const commonStyles = ScaledSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
     backgroundColor: commonColor.containerBgColor
   },
-  visibleExpandContainer: {
+  visibleExpandedContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     borderTopWidth: 1,
     borderTopColor: commonColor.listBorderColor,
     backgroundColor: commonColor.containerBgColor
   },
-  visbleExpandIcon: {
+  visibleExpandedIcon: {
+    fontSize: '25@s'
   }
 });
 
