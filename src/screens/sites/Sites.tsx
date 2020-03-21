@@ -63,7 +63,11 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     let sites: DataResult<Site>;
     try {
       // Get the Sites
-      sites = await this.centralServerProvider.getSites({ Search: searchText, WithAvailableChargers: true }, { skip, limit });
+      sites = await this.centralServerProvider.getSites({
+        Search: searchText,
+        Issuer: true,
+        WithAvailableChargers: true
+      }, { skip, limit });
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,

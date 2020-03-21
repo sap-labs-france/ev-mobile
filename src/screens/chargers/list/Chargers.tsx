@@ -87,6 +87,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       chargers = await this.centralServerProvider.getChargers({
         Search: searchText,
         SiteAreaID: siteAreaID,
+        Issuer: true,
         ConnectorStatus: this.state.filters.connectorStatus,
         ConnectorType: this.state.filters.connectorType
       }, { skip, limit });
@@ -96,6 +97,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
         const chargersNbrRecordsOnly = await this.centralServerProvider.getChargers({
             Search: searchText,
             SiteAreaID: siteAreaID,
+            Issuer: true,
             ConnectorStatus: this.state.filters.connectorStatus
           }, Constants.ONLY_RECORD_COUNT_PAGING);
         // Set

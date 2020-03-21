@@ -54,8 +54,12 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const siteID = Utils.getParamFromNavigation(this.props.navigation, 'siteID', null);
     try {
       // Get the Site Areas
-      siteAreas = await this.centralServerProvider.getSiteAreas(
-        { Search: searchText, SiteID: siteID, WithAvailableChargers: true },
+      siteAreas = await this.centralServerProvider.getSiteAreas({
+          Search: searchText,
+          SiteID: siteID,
+          Issuer: true,
+          WithAvailableChargers: true
+        },
         { skip, limit }
       );
     } catch (error) {
