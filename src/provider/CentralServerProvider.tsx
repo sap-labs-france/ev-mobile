@@ -45,7 +45,7 @@ export default class CentralServerProvider {
   constructor() {
     if (__DEV__) {
       // QA REST Server
-      // this.centralRestServerServiceBaseURL = 'https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com';
+      this.centralRestServerServiceBaseURL = 'https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com';
       this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + '/client/auth';
       this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + '/client/api';
       this.debug = true;
@@ -123,7 +123,6 @@ export default class CentralServerProvider {
         { subdomain: 'proviridis', name: 'Proviridis' },
         { subdomain: 'demo', name: 'SAP Labs Demo' },
         { subdomain: 'sapbelgium', name: 'SAP Belgium' },
-        { subdomain: 'sapmarkdorf', name: 'SAP Markdorf' },
       ];
     }
     return [
@@ -131,7 +130,6 @@ export default class CentralServerProvider {
       { subdomain: 'slfcah', name: 'SAP Labs France (Charge@Home)' },
       { subdomain: 'proviridis', name: 'Proviridis' },
       { subdomain: 'sapbelgium', name: 'SAP Belgium' },
-      { subdomain: 'sapmarkdorf', name: 'SAP Markdorf' },
     ];
   }
 
