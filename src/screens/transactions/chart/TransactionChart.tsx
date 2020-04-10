@@ -144,7 +144,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
             // Add
             consumptionValues.push({
               x: date,
-              y: value.value ? value.value / 1000 : 0
+              y: value.instantPower ? value.instantPower / 1000 : 0
             });
             if (value.stateOfCharge > 0) {
               stateOfChargeValues.push({
