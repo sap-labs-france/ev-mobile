@@ -1,7 +1,6 @@
 {
   "name": "eMobility",
   "version": "1.2.4",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/LucasBrazi06/ev-mobile.git"
