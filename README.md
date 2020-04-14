@@ -1,4 +1,4 @@
-# Charge-Angels React Native Mobile App
+# eMobility React Native Mobile App
 
 ## Summary
 
@@ -61,3 +61,9 @@ Open a terminal in the **ev-mobile** directory
   ```
   npm run ios
   ```
+
+## License
+
+This file and all other files in this repository are licensed under the Apache Software License, v.2 under the copyright in [NOTICE file](NOTICE) except as noted otherwise in the [LICENSE file](LICENSE).
+
+Please note that the mobile application can contain other software which may be licensed under different licenses.
