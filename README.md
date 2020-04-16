@@ -3,6 +3,7 @@
 ## Summary
 
 This application is the Electric Vehicle Charging Station (EVSE) mobile application for Android and iOS.
+It's linked to the ev-server backend: https://github.com/LucasBrazi06/ev-server
 
 ## Installation
 
