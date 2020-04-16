@@ -1,4 +1,4 @@
-# eMobility React Native Mobile App
+# e-Mobility React Native Mobile App
 
 ## Summary
 
