@@ -23,7 +23,7 @@ import SecurityProvider from './SecurityProvider';
 export default class CentralServerProvider {
   private debug: boolean = false;
   private captchaBaseUrl: string = 'https://evse.cfapps.eu10.hana.ondemand.com';
-  private centralRestServerServiceBaseURL: string = 'https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com';
+  private centralRestServerServiceBaseURL: string = 'https://sap-ev-rest-server.cfapps.eu10.hana.ondemand.com';
   private centralRestServerServiceAuthURL: string = this.centralRestServerServiceBaseURL + '/client/auth';
   private centralRestServerServiceSecuredURL: string = this.centralRestServerServiceBaseURL + '/client/api';
   private captchaSiteKey: string = '6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw';
@@ -45,7 +45,7 @@ export default class CentralServerProvider {
   constructor() {
     if (__DEV__) {
       // QA REST Server
-      // this.centralRestServerServiceBaseURL = 'https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com';
+      this.centralRestServerServiceBaseURL = 'https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com';
       this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + '/client/auth';
       this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + '/client/api';
       this.debug = true;
