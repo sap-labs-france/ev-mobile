@@ -131,9 +131,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       // Active Transaction?
       if (transactionID) {
         // Get the consumption
-        const transaction = await this.centralServerProvider.getTransactionWithConsumption({
-          TransactionId: transactionID
-        });
+        const transaction = await this.centralServerProvider.getTransactionConsumption(transactionID);
         // At least 2 values for the chart!!!
         if (transaction.values && transaction.values.length > 1) {
           // Convert

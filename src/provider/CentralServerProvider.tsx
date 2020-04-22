@@ -23,7 +23,7 @@ import SecurityProvider from './SecurityProvider';
 export default class CentralServerProvider {
   private debug: boolean = false;
   private captchaBaseUrl: string = 'https://evse.cfapps.eu10.hana.ondemand.com';
-  private centralRestServerServiceBaseURL: string = 'https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com';
+  private centralRestServerServiceBaseURL: string = 'https://sap-ev-rest-server.cfapps.eu10.hana.ondemand.com';
   private centralRestServerServiceAuthURL: string = this.centralRestServerServiceBaseURL + '/client/auth';
   private centralRestServerServiceSecuredURL: string = this.centralRestServerServiceBaseURL + '/client/api';
   private captchaSiteKey: string = '6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw';
@@ -655,17 +655,17 @@ export default class CentralServerProvider {
     return foundSiteImage.image;
   }
 
-  public async getTransactionWithConsumption(params = {}): Promise<Transaction> {
+  public async getTransactionConsumption(transactionId: number): Promise<Transaction> {
     this.debugMethod('getChargingStationConsumption');
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationConsumptionFromTransaction`, {
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/TransactionConsumption`, {
       headers: this.buildSecuredHeaders(),
-      params,
+      params: { TransactionId: transactionId },
     });
     return result.data;
   }
 
-  public async checkEndUserLicenseAgreement(params: {email: string, tenantSubDomain: string;}): Promise<EulaAccepted> {
+  public async checkEndUserLicenseAgreement(params: { email: string; tenantSubDomain: string; }): Promise<EulaAccepted> {
     this.debugMethod('checkEndUserLicenseAgreement');
     // Call
     const result = await axios.get(`${this.centralRestServerServiceAuthURL}/CheckEndUserLicenseAgreement`, {
