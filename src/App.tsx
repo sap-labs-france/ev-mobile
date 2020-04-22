@@ -77,13 +77,6 @@ const statisticsNavigator: NavigationContainer = createStackNavigator(
 
 const chargerDetailsTabsNavigator = createMaterialBottomTabNavigator(
   {
-    ChargerProperties: {
-      screen: ChargerProperties,
-      navigationOptions: {
-        title: I18n.t('chargers.properties'),
-        tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'info')
-      }
-    },
     ChargerActions: {
       screen: ChargerActions,
       navigationOptions: {
@@ -96,6 +89,13 @@ const chargerDetailsTabsNavigator = createMaterialBottomTabNavigator(
       navigationOptions: {
         title: I18n.t('chargers.ocpp'),
         tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'format-list-bulleted')
+      }
+    },
+    ChargerProperties: {
+      screen: ChargerProperties,
+      navigationOptions: {
+        title: I18n.t('chargers.properties'),
+        tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'info')
       }
     }
   },
