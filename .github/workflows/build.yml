@@ -24,7 +24,7 @@ jobs:
         expo-version: ${{ matrix.expo-version }}
         expo-packager: npm
     - name: npm install and expo build:android
-     run: |
+      run: |
         npm ci
         expo build:android
       env:
