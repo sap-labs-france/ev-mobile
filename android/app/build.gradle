@@ -1,6 +1,10 @@
 apply plugin: "com.android.application"
 
-apply from: file("../release.gradle")
+if (file("../release.gradle").exists()) {
+  apply from: file("../release.gradle")
+} else {
+  apply from: file("../release-template.gradle")
+}
 
 import com.android.build.OutputFile
 
@@ -217,4 +221,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
 
 apply plugin: 'com.google.gms.google-services'
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-

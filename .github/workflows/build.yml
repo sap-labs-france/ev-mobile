@@ -1,0 +1,48 @@
+name: Build CI
+
+on: [pull_request, push]
+
+jobs:
+  build-android:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install and npm run android:assembleDebug
+      run: |
+        npm ci
+        npm run android:assembleDebug
+      env:
+        CI: true
+
+  build-ios:
+
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install, npm run pod:install and xcodebuild
+      run: |
+        npm ci
+        npm run pod:install
+        cd ios && xcodebuild -workspace eMobility.xcworkspace -scheme eMobility -configuration Debug CODE_SIGNING_ALLOWED=NO
+      env:
+        CI: true
+
