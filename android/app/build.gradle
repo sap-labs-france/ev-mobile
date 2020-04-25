@@ -1,6 +1,10 @@
 apply plugin: "com.android.application"
 
-apply from: file("../release.gradle")
+if (file("../release.gradle").exists()) {
+  apply from: file("../release.gradle")
+} else {
+  apply from: file("../release-template.gradle")
+}
 
 import com.android.build.OutputFile
 
