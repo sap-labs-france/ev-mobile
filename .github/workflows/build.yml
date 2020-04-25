@@ -10,7 +10,6 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
-        expo-version: [3.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -18,15 +17,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Use Expo ${{ matrix.expo-version }}
-      uses: expo/expo-github-action@v5
-      with:
-        expo-version: ${{ matrix.expo-version }}
-        expo-packager: npm
-    - name: npm install and expo build:android
+    - name: npm install and npm run android:assembleDebug
       run: |
         npm ci
-        expo build:android
+        npm run android:assembleDebug
       env:
         CI: true
 
