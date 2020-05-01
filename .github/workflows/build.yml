@@ -4,6 +4,8 @@ on: [pull_request, push]
 
 jobs:
   build-android:
+    env:
+      CI: true
 
     runs-on: ubuntu-latest
 
@@ -17,14 +19,14 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install and npm run android:assembleDebug
-      run: |
-        npm ci
-        npm run android:assembleDebug
-      env:
-        CI: true
+    - name: npm install
+      run: npm ci
+    - name: npm run android:assembleDebug
+      run: npm run android:assembleDebug
 
   build-ios:
+    env:
+      CI: true
 
     runs-on: macos-latest
 
@@ -38,11 +40,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install, npm run pod:install and xcodebuild
-      run: |
-        npm ci
-        npm run pod:install
-        cd ios && xcodebuild -workspace eMobility.xcworkspace -scheme eMobility -configuration Debug CODE_SIGNING_ALLOWED=NO
-      env:
-        CI: true
+    - name: npm install
+      run: npm ci
+    - name: npm run pod:install
+      run: npm run pod:install
+    - name: xcodebuild
+      run: cd ios && xcodebuild -workspace eMobility.xcworkspace -scheme eMobility -configuration Debug CODE_SIGNING_ALLOWED=NO
 
