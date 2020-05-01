@@ -1,6 +1,14 @@
 name: Build CI
 
-on: [pull_request, push]
+on:
+  push:
+    branches-ignore:
+      - master
+      - master-qa
+  pull_request:
+    branches:
+      - master
+      - master-qa
 
 jobs:
   build-android:
