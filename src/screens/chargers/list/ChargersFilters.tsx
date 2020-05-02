@@ -3,13 +3,13 @@ import { View } from 'native-base';
 import React from 'react';
 import * as Animatable from 'react-native-animatable';
 import FilterVisibleContainerComponent from '../../../components/search/filter/containers/FilterVisibleContainerComponent';
+import computeControlStyleSheet from '../../../components/search/filter/controls/FilterControlComponentStyles';
 import ConnectorTypeFilterControlComponent from '../../../components/search/filter/controls/connector-type/ConnectorTypeFilterControlComponent';
 import OnlyAvailableChargerSwitchFilterControlComponent from '../../../components/search/filter/controls/only-available-chargers/OnlyAvailableChargerSwitchFilterControlComponent';
 import ScreenFilters, { ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
 import { ChargePointStatus } from '../../../types/ChargingStation';
 import { GlobalFilters } from '../../../types/Filter';
 import computeStyleSheet from './ChargersStyles';
-import computeControlStyleSheet from '../../../components/search/filter/controls/FilterControlComponentStyles';
 
 export interface Props {
   onFilterChanged?: (filters: ChargersFiltersDef) => void;
