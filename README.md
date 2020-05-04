@@ -34,12 +34,19 @@ It's linked to the ev-server backend: https://github.com/LucasBrazi06/ev-server
 * Clone this GitHub project
 * Go into the **ev-mobile** directory and run **npm install** or **yarn install**
 
-**NOTE**: On Windows with **chocolatey** (https://chocolatey.org/),
-do as an administrator:
+**NOTE**:
+
+* On Windows with **chocolatey** (https://chocolatey.org/), do as an administrator:
+
 ```
 choco install -y nodejs-lts python2 jdk8 androidstudio
 ```
-to install some of the needed dependencies
+
+* On Mac OSX with **Homebrew** (https://brew.sh/), do:
+
+```
+brew install node openjdk cocoapods react-native-cli watchman && brew cask install android-studio
+```
 
 ## Running the application on a virtual device
 
