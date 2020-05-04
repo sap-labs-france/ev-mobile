@@ -5,6 +5,7 @@ import { View, processColor } from 'react-native';
 import { LineChart } from 'react-native-charts-wrapper';
 import { scale } from 'react-native-size-matters';
 import { DrawerActions } from 'react-navigation-drawer';
+
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import TransactionHeaderComponent from '../../../components/transaction/header/TransactionHeaderComponent';
 import commonColor from '../../../theme/variables/commonColor';
