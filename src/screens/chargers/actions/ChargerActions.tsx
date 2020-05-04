@@ -101,24 +101,22 @@ export default class ChargerActions extends BaseScreen<Props, State> {
   public async reset(chargeBoxID: string, type: 'Soft'|'Hard') {
     try {
       if (type === 'Hard') {
-      this.setState ({ spinnerResetHard:true })
-    } else {
-      this.setState ({ spinnerResetSoft:true })}
+        this.setState ({ spinnerResetHard:true });
+      } else {
+        this.setState ({ spinnerResetSoft:true });
+      }
       // Start the Transaction
       const status = await this.centralServerProvider.reset(chargeBoxID, type);
       // Check
       if (status.status && status.status === 'Accepted') {
         Message.showSuccess(I18n.t('details.accepted'));
-
       } else {
         Message.showError(I18n.t('details.denied'));
-
       }
       this.setState({
         spinnerResetHard:false,
         spinnerResetSoft:false
        })
-
     } catch (error) {
       this.setState({
         spinnerResetHard:false,
