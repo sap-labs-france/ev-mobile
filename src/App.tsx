@@ -243,7 +243,6 @@ const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
     initialRouteName: 'HomeNavigator',
     unmountInactiveRoutes: true,
     drawerPosition: 'right',
-    // @ts-ignore
     contentComponent: (props) => <Sidebar {...props} />
   }
 );
