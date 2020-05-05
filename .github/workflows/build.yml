@@ -11,9 +11,6 @@ on:
 
 jobs:
   build-android:
-    env:
-      CI: true
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -32,9 +29,6 @@ jobs:
       run: npm run android:assembleDebug
 
   build-ios:
-    env:
-      CI: true
-
     runs-on: macos-latest
 
     strategy:
