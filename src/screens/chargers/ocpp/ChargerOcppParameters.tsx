@@ -3,10 +3,12 @@ import { Button, Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, FlatList, RefreshControl, ScrollView } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
+import { DataResult } from 'types/DataResult';
+import { KeyValue } from 'types/Global';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation, { ChargingStationConfiguration } from '../../../types/ChargingStation';
+import ChargingStation from '../../../types/ChargingStation';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
@@ -19,7 +21,7 @@ interface State {
   loading?: boolean;
   refreshing?: boolean;
   charger: ChargingStation;
-  chargerConfiguration?: ChargingStationConfiguration;
+  chargerConfigurationKeyValues?: KeyValue[];
 }
 
 export default class ChargerOcppParameters extends BaseScreen<Props, State> {
@@ -32,7 +34,7 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
       charger: null,
       loading: true,
       refreshing: false,
-      chargerConfiguration: null
+      chargerConfigurationKeyValues: null
     }
   }
 
@@ -49,6 +51,7 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
+      let chargerConfigurationKeyValues: KeyValue[] = [];
       // Get Charger
       let charger = this.state.charger;
       if (!charger) {
@@ -56,27 +59,17 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
         charger = await this.getCharger(chargerID);
       }
       // Get Charger Config
-      const chargerConfiguration = await this.getChargerConfiguration(charger.id);
+      const chargerConfiguration = await this.getChargerOcppParameters(charger.id);
       // Sort
-      if (chargerConfiguration && chargerConfiguration.configuration) {
-        chargerConfiguration.configuration.sort((a, b) => {
-          // ignore upper and lowercase
-          const keyA = a.key.toUpperCase();
-          const keyB = b.key.toUpperCase();
-          if (keyA < keyB) {
-            return -1;
-          }
-          if (keyA > keyB) {
-            return 1;
-          }
-          return 0;
-        });
+      if (chargerConfiguration && chargerConfiguration.count > 0) {
+        chargerConfiguration.result.sort(Utils.sortArrayOfKeyValue);
+        chargerConfigurationKeyValues = chargerConfiguration.result;
       }
       // Set
       this.setState({
         loading: false,
         charger,
-        chargerConfiguration
+        chargerConfigurationKeyValues
       });
     }
   };
@@ -94,10 +87,10 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
     return null;
   };
 
-  public getChargerConfiguration = async (chargerID: string): Promise<ChargingStationConfiguration> => {
+  public getChargerOcppParameters = async (chargerID: string): Promise<DataResult<KeyValue>> => {
     try {
       // Get Charger
-      const chargerConfiguration = await this.centralServerProvider.getChargerConfiguration(chargerID);
+      const chargerConfiguration = await this.centralServerProvider.getChargerOcppParameters(chargerID);
       return chargerConfiguration;
     } catch (error) {
       // Other common Error
@@ -123,20 +116,20 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
     return true;
   };
 
-  public requestConfigurationConfirm() {
+  public requestChargerOcppParametersConfirm() {
     const { charger } = this.state;
     Alert.alert
       (I18n.t('chargers.requestConfiguration', { chargeBoxID: charger.id }),
       I18n.t('chargers.requestConfigurationMessage', { chargeBoxID: charger.id }), [
-      { text: I18n.t('general.yes'), onPress: () => this.requestConfiguration(charger.id) },
+      { text: I18n.t('general.yes'), onPress: () => this.requestChargerOcppParameters(charger.id) },
       { text: I18n.t('general.cancel') }
     ]);
   }
 
-  public async requestConfiguration(chargeBoxID: string) {
+  public async requestChargerOcppParameters(chargeBoxID: string) {
     try {
       // Unlock Connector
-      const status = await this.centralServerProvider.requestChargingStationOCPPConfiguration(chargeBoxID);
+      const status = await this.centralServerProvider.requestChargerOcppParameters(chargeBoxID);
       // Check
       if (status.status && status.status === 'Accepted') {
         Message.showSuccess(I18n.t('details.accepted'));
@@ -154,7 +147,7 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { loading, charger, chargerConfiguration } = this.state;
+    const { loading, charger, chargerConfigurationKeyValues } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -166,7 +159,7 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
         />
-        <Button disabled={charger ? charger.inactive : true} block={true} iconLeft={true} style={style.actionButton} onPress={() => this.requestConfigurationConfirm()}>
+        <Button disabled={charger ? charger.inactive : true} block={true} iconLeft={true} style={style.actionButton} onPress={() => this.requestChargerOcppParametersConfirm()}>
           <Icon style={style.actionButtonIcon} type='MaterialIcons' name='get-app' />
           <Text uppercase={false} style={style.actionButtonText}>
             {I18n.t('chargers.requestConfiguration')}
@@ -176,7 +169,7 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
           <Spinner style={style.spinner} />
         ) : (
           <FlatList
-            data={chargerConfiguration ? chargerConfiguration.configuration : null}
+            data={chargerConfigurationKeyValues}
             renderItem={({ item, index }) => (
               <View style={index % 2 ? [style.descriptionContainer, style.rowBackground] : style.descriptionContainer}>
                 <Text style={style.label}>{item.key}</Text>

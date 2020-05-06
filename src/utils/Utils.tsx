@@ -15,6 +15,7 @@ import { InactivityStatus } from '../types/Transaction';
 import User from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
+import { KeyValue } from 'types/Global';
 
 export default class Utils {
   public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
@@ -137,6 +138,19 @@ export default class Utils {
       default:
         return { color: commonColor.brandInfo };
     }
+  }
+
+  public static sortArrayOfKeyValue(element1: KeyValue, element2: KeyValue) {
+    // ignore upper and lowercase
+    const keyA = element1.key.toUpperCase();
+    const keyB = element2.key.toUpperCase();
+    if (keyA < keyB) {
+      return -1;
+    }
+    if (keyA > keyB) {
+      return 1;
+    }
+    return 0;
   }
 
   public static async handleHttpUnexpectedError(centralServerProvider: CentralServerProvider,
