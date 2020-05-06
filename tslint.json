@@ -15,7 +15,18 @@
     "no-empty-interface": false,
     "object-literal-sort-keys": false,
     "jsx-no-lambda": false,
-    "member-ordering": false,
+    "member-access": true,
+    "member-ordering": [
+      true,
+      {
+        "order": [
+          "static-field",
+          "instance-field",
+          "static-method",
+          "instance-method"
+        ]
+      }
+    ],
     "ordered-imports": [
       true,
       {

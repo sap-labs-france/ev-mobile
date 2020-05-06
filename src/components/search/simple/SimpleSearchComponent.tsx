@@ -2,6 +2,7 @@ import I18n from 'i18n-js';
 import { Button, Icon } from 'native-base';
 import React from 'react';
 import { TextInput, View } from 'react-native';
+
 import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import computeStyleSheet from './SimpleSearchComponentStyles';
@@ -14,19 +15,20 @@ interface State {
 }
 
 export default class SimpleSearchComponent extends React.Component<Props, State> {
-  public state: State;
-  public props: Props;
-  private textInput: TextInput;
-  private currentSearchText: string;
-  public static defaultProps = {
-    visible: false
-  };
 
   constructor(props: Props) {
     super(props);
     this.state = {
     };
   }
+
+  public static defaultProps = {
+    visible: false
+  };
+  public state: State;
+  public props: Props;
+  private textInput: TextInput;
+  private currentSearchText: string;
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);

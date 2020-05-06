@@ -1,5 +1,6 @@
 import { DatePicker, Text, View } from 'native-base';
 import React from 'react';
+
 import I18nManager from '../../../../../I18n/I18nManager';
 import FilterControlComponent, { FilterControlComponentProps } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
@@ -14,18 +15,19 @@ interface State {
 }
 
 export default class DateFilterControlComponent extends FilterControlComponent<Date> {
-  public state: State;
-  public props: Props;
-  public static defaultProps = {
-    style: {},
-    defaultDate: new Date()
-  };
 
   constructor(props: Props) {
     super(props);
     this.state = {
     };
   }
+
+  public static defaultProps = {
+    style: {},
+    defaultDate: new Date()
+  };
+  public state: State;
+  public props: Props;
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);

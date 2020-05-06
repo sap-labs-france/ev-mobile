@@ -3,6 +3,7 @@ import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import { KeyValue } from 'types/Global';
+
 import I18nManager from '../I18n/I18nManager';
 import MigrationManager from '../migration/MigrationManager';
 import { ActionResponse } from '../types/ActionResponse';
@@ -118,12 +119,10 @@ export default class CentralServerProvider {
   public getTenants(): Partial<Tenant>[] {
     if (__DEV__) {
       return [
-        { subdomain: 'testcharger', name: 'Test Chargers' },
-        { subdomain: 'slf', name: 'SAP Labs France' },
-        { subdomain: 'slfcah', name: 'SAP Labs France (Charge@Home)' },
-        { subdomain: 'proviridis', name: 'Proviridis' },
-        { subdomain: 'demo', name: 'SAP Labs Demo' },
-        { subdomain: 'sapbelgium', name: 'SAP Belgium' },
+        { subdomain: 'testcharger', name: 'SAP Labs New Charging Stations Tests' },
+        { subdomain: 'testperf', name: 'SAP Labs Performance Tests' },
+        { subdomain: 'demopricing', name: 'SAP Labs Demo for Pricing' },
+        { subdomain: 'demobilling', name: 'SAP Labs Demo for Billing' },
       ];
     }
     return [
