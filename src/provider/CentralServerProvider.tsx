@@ -2,10 +2,11 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
+import { KeyValue } from 'types/Global';
 import I18nManager from '../I18n/I18nManager';
 import MigrationManager from '../migration/MigrationManager';
 import { ActionResponse } from '../types/ActionResponse';
-import ChargingStation, { ChargingStationConfiguration } from '../types/ChargingStation';
+import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
 import Eula, { EulaAccepted } from '../types/Eula';
 import PagingParams from '../types/PagingParams';
@@ -416,9 +417,9 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getChargerConfiguration(id: string): Promise<ChargingStationConfiguration> {
+  public async getChargerOcppParameters(id: string): Promise<DataResult<KeyValue>> {
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationConfiguration?ChargeBoxID=${id}`, {
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationOcppParameters?ChargeBoxID=${id}`, {
       headers: this.buildSecuredHeaders()
     });
     return result.data;
@@ -585,7 +586,6 @@ export default class CentralServerProvider {
     }
     return null;
   }
-
   public async getTransactions(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<TransactionDataResult> {
     this.debugMethod('getTransactions');
     // Build Paging
@@ -598,10 +598,10 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async requestChargingStationOCPPConfiguration(id: string): Promise<ActionResponse> {
+  public async requestChargerOcppParameters(id: string): Promise<ActionResponse> {
     this.debugMethod('requestChargingStationOCPPConfiguration');
     // Call
-    const result = await axios.post(`${this.centralRestServerServiceSecuredURL}/ChargingStationRequestConfiguration`,
+    const result = await axios.post(`${this.centralRestServerServiceSecuredURL}/ChargingStationRequestOcppParameters`,
       {
         chargeBoxID: id,
         forceUpdateOCPPParamsFromTemplate: false,

@@ -91,12 +91,6 @@ export enum ChargingStationCurrentType {
   AC_DC = 'AC/DC',
 }
 
-export interface ChargingStationConfiguration {
-  id: string;
-  timestamp: Date;
-  configuration: KeyValue[];
-}
-
 export interface ChargingStationCapabilities {
   supportStaticLimitationForChargingStation?: boolean;
   supportStaticLimitationPerConnector?: boolean;
