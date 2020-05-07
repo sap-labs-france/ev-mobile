@@ -2,7 +2,9 @@ import I18n from 'i18n-js';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import { ImageSourcePropType, NativeModules, Platform } from 'react-native';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
+import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
+
 import chademo from '../../assets/connectorType/chademo.gif';
 import combo from '../../assets/connectorType/combo_ccs.gif';
 import domestic from '../../assets/connectorType/domestic-ue.gif';
@@ -15,7 +17,6 @@ import { InactivityStatus } from '../types/Transaction';
 import User from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
-import { KeyValue } from 'types/Global';
 
 export default class Utils {
   public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {

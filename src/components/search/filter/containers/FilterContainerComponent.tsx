@@ -1,4 +1,5 @@
 import React from 'react';
+
 import SecuredStorage from '../../../../utils/SecuredStorage';
 import FilterControlComponent from '../controls/FilterControlComponent';
 
@@ -13,12 +14,6 @@ export interface FilterContainerComponentState {
 }
 
 export default abstract class FilterContainerComponent extends React.Component<FilterContainerComponentProps, FilterContainerComponentState> {
-  public state: FilterContainerComponentState;
-  public props: FilterContainerComponentProps;
-  public static defaultProps = {
-    visible: false
-  };
-  private filterControlComponents: FilterControlComponent<any>[] = [];
 
   constructor(props: FilterContainerComponentProps) {
     super(props);
@@ -26,6 +21,13 @@ export default abstract class FilterContainerComponent extends React.Component<F
       visible: props.visible ? props.visible : false
     };
   }
+
+  public static defaultProps = {
+    visible: false
+  };
+  public state: FilterContainerComponentState;
+  public props: FilterContainerComponentProps;
+  private filterControlComponents: FilterControlComponent<any>[] = [];
 
   public setState = (state: FilterContainerComponentState | ((prevState: Readonly<FilterContainerComponentState>, props: Readonly<FilterContainerComponentProps>) => FilterContainerComponentState | Pick<FilterContainerComponentState, never>) | Pick<FilterContainerComponentState, never>, callback?: () => void) => {
     super.setState(state, callback);

@@ -50,6 +50,7 @@ const light = '#f4f4f4';
 const fontSize = scale(22);
 const fontSizeIconBase = platform === PLATFORM.IOS ? 30 : 28;
 
+// tslint:disable-next-line: cyclomatic-complexity
 export class CommonColor {
   public platformStyle = platformStyle;
   public platform = platform;
