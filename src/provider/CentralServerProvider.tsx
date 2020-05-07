@@ -123,6 +123,8 @@ export default class CentralServerProvider {
         { subdomain: 'testperf', name: 'SAP Labs Performance Tests' },
         { subdomain: 'demopricing', name: 'SAP Labs Demo for Pricing' },
         { subdomain: 'demobilling', name: 'SAP Labs Demo for Billing' },
+        { subdomain: 'slf', name: 'SAP Labs France (prod)' },
+        { subdomain: 'slfcah', name: 'SAP Labs France (Charge@Home) (prod)' },
       ];
     }
     return [
