@@ -98,3 +98,7 @@ local.properties
 
 #
 production/
+
+# Firebase
+android/app/google-services.json
+ios/eMobility/GoogleService-Info.plist
