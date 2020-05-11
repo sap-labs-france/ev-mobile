@@ -1,6 +1,7 @@
 import { Text, View } from 'native-base';
 import React from 'react';
 import { Animated, Easing, Platform } from 'react-native';
+
 import BaseProps from '../../types/BaseProps';
 import { ChargePointStatus, Connector } from '../../types/ChargingStation';
 import Utils from '../../utils/Utils';

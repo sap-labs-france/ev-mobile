@@ -2,6 +2,7 @@ import I18n from 'i18n-js';
 import moment from 'moment';
 import { View } from 'native-base';
 import React from 'react';
+
 import FilterModalContainerComponent from '../../../components/search/filter/containers/FilterModalContainerComponent';
 import FilterVisibleContainerComponent from '../../../components/search/filter/containers/FilterVisibleContainerComponent';
 import DateFilterControlComponent from '../../../components/search/filter/controls/date/DateFilterControlComponent';

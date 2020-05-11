@@ -3,6 +3,7 @@ import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { ScrollView } from 'react-native';
 import HTMLView from 'react-native-htmlview';
+
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';
 import Utils from '../../../utils/Utils';

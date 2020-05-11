@@ -1,5 +1,6 @@
 import { Icon, Text, View } from 'native-base';
 import React from 'react';
+
 import I18nManager from '../../../I18n/I18nManager';
 import BaseScreen from '../../../screens/base-screen/BaseScreen';
 import BaseProps from '../../../types/BaseProps';

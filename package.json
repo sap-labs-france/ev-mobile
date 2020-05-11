@@ -52,7 +52,8 @@
     "react-native:log-ios": "react-native log-ios",
     "react-native:log-android": "react-native log-android",
     "react-native:clean-project-auto": "react-native clean-project-auto",
-    "build:prepare": "if [ ! -f android/app/google-services.json ]; then cp assets/google-services-template.json android/app/google-services.json; fi && if [ ! -f ios/GoogleService-Info.plist ]; then cp assets/GoogleService-Info-template.plist ios/GoogleService-Info.plist; fi"
+    "build:prepare": "if [ ! -f android/app/google-services.json ]; then cp assets/google-services-template.json android/app/google-services.json; fi && if [ ! -f ios/GoogleService-Info.plist ]; then cp assets/GoogleService-Info-template.plist ios/GoogleService-Info.plist; fi",
+    "import-sort": "npx import-sort-cli --write 'src/**/*.ts{,x}' '__tests__/**/*.ts{,x}' 'types/**/*.ts{,x}'"
   },
   "jest": {
     "preset": "react-native"
@@ -133,6 +134,7 @@
     "cross-env": "^6.0.3",
     "flow-bin": "^0.105.0",
     "import-sort-parser-typescript": "^6.0.0",
+    "import-sort-style-module": "^6.0.0",
     "jest": "^24.9.0",
     "jetifier": "^1.6.5",
     "metro-config": "^0.59.0",

@@ -1,6 +1,7 @@
 import I18n from 'i18n-js';
 import { Text } from 'native-base';
 import React from 'react';
+
 import BaseProps from '../../../types/BaseProps';
 import computeStyleSheet from './ListEmptyTextComponentStyles';
 

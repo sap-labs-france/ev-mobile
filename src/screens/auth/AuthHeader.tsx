@@ -3,11 +3,11 @@ import { Text, View } from 'native-base';
 import React from 'react';
 import { Image } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+
+import logo from '../../../assets/logo-low.png';
 import BaseProps from '../../types/BaseProps';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './AuthStyles';
-
-import logo from '../../../assets/logo-low.png';
 
 export interface Props extends BaseProps {
   tenantName?: string;

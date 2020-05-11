@@ -1,4 +1,5 @@
 import { PixelRatio, StatusBar } from 'react-native';
+
 import { PLATFORM } from './../variables/commonColor';
 import variable from './../variables/platform';
 

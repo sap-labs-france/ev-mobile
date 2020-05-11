@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import firebase from 'react-native-firebase';
 import { Notification, NotificationOpen } from 'react-native-firebase/notifications';
 import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
+
 import CentralServerProvider from '../provider/CentralServerProvider';
 import { UserNotificationType } from '../types/UserNotifications';
 import Message from '../utils/Message';

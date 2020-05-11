@@ -1,4 +1,5 @@
 import _ from 'lodash';
+
 import variable from './../variables/platform';
 import badgeTheme from './Badge';
 import bodyTheme from './Body';

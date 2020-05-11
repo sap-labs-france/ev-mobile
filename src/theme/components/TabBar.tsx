@@ -1,4 +1,5 @@
 import { scale } from 'react-native-size-matters';
+
 import variable from './../variables/platform';
 
 export default (variables /* : * */ = variable) => {

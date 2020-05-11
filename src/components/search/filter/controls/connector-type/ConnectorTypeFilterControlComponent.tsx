@@ -1,6 +1,7 @@
 import { Text, View } from 'native-base';
 import React from 'react';
 import { ToggleButton } from 'react-native-paper';
+
 import Chademo from '../../../../../../assets/connectorType/chademo.svg';
 import ComboCCS from '../../../../../../assets/connectorType/combo-ccs.svg';
 import Domestic from '../../../../../../assets/connectorType/domestic-ue.svg';

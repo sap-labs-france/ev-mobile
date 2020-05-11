@@ -3,6 +3,7 @@ import { Button, Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, ScrollView } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
+
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation from '../../../types/ChargingStation';

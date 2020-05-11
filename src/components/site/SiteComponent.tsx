@@ -3,6 +3,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import openMap from 'react-native-open-maps';
+
 import Address from '../../types/Address';
 import BaseProps from '../../types/BaseProps';
 import ConnectorStats from '../../types/ConnectorStats';
