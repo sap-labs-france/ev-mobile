@@ -51,7 +51,8 @@
     "react-native:uninstall": "react-native uninstall",
     "react-native:log-ios": "react-native log-ios",
     "react-native:log-android": "react-native log-android",
-    "react-native:clean-project-auto": "react-native clean-project-auto"
+    "react-native:clean-project-auto": "react-native clean-project-auto",
+    "build:prepare": "if [ ! -f android/app/google-services.json ]; then cp assets/google-services-template.json android/app/google-services.json; fi && if [ ! -f ios/eMobility/GoogleService-Info.plist ]; then cp assets/GoogleService-Info-template.plist ios/eMobility/GoogleService-Info.plist; fi"
   },
   "jest": {
     "preset": "react-native"
