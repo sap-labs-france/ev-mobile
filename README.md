@@ -6,6 +6,13 @@ This application is the Electric Vehicle Charging Station (EVSE) mobile applicat
 
 It's linked to the ev-server backend: https://github.com/LucasBrazi06/ev-server
 
+**App Stores**
+
+<a href="https://play.google.com/store/apps/details?id=com.emobility" target="_blank">Google Play</a>
+
+<a href="https://apps.apple.com/us/app/e-mobility/id1443813480?ls=1" target="_blank">Apple Store</a>
+
+
 ## Installation
 
 * Install NodeJS: https://nodejs.org/ (install the LTS version)
