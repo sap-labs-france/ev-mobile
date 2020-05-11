@@ -5,7 +5,7 @@ import { Alert, ScrollView } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation from '../../../types/ChargingStation';
+import ChargingStation, { ChargePointStatus } from '../../../types/ChargingStation';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
@@ -22,6 +22,7 @@ interface State {
   spinnerClearCache?: boolean;
   spinnerConnectors: Map< number, boolean>;
   connectorsInactive?: boolean;
+  connectorAvailable: Map <number, boolean>;
 }
 
 export default class ChargerActions extends BaseScreen<Props, State> {
@@ -37,7 +38,8 @@ export default class ChargerActions extends BaseScreen<Props, State> {
       spinnerResetSoft: false,
       spinnerClearCache: false,
       spinnerConnectors: new Map(),
-      connectorsInactive:false
+      connectorsInactive: false,
+      connectorAvailable: new Map()
     }
   }
 
@@ -53,9 +55,16 @@ export default class ChargerActions extends BaseScreen<Props, State> {
     const charger = await this.getCharger(chargerID);
 
     const spinnerConnectors = new Map();
+    const connectorAvailable = new Map();
     charger.connectors.map((connector)=>{
       spinnerConnectors.set(connector.connectorId, false);
+      if (connector.status === ChargePointStatus.AVAILABLE) {
+        connectorAvailable.set(connector.connectorId, true);
+      }else{
+        connectorAvailable.set(connector.connectorId, false);
+      }
     });
+
 
     // Set
     this.setState({
@@ -65,7 +74,8 @@ export default class ChargerActions extends BaseScreen<Props, State> {
       spinnerResetSoft: false,
       spinnerClearCache: false,
       spinnerConnectors,
-      connectorsInactive:false
+      connectorsInactive: false,
+      connectorAvailable
     });
   }
 
@@ -213,7 +223,7 @@ export default class ChargerActions extends BaseScreen<Props, State> {
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { loading, charger, spinnerResetHard, spinnerResetSoft, spinnerConnectors , spinnerClearCache, connectorsInactive} = this.state;
+    const { loading, charger, spinnerResetHard, spinnerResetSoft, spinnerConnectors , spinnerClearCache, connectorsInactive, connectorAvailable} = this.state;
 
 
     return (
@@ -243,7 +253,7 @@ export default class ChargerActions extends BaseScreen<Props, State> {
               </View>
               { charger && charger.connectors.map((connector) =>
                 <View key={connector.connectorId} style={style.actionContainer}>
-                  <Button disabled={charger.inactive || spinnerResetHard|| spinnerResetSoft || spinnerClearCache || spinnerConnectors.get(connector.connectorId)} block={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton}
+                  <Button disabled={charger.inactive || spinnerResetHard|| spinnerResetSoft || spinnerClearCache || spinnerConnectors.get(connector.connectorId) || connectorAvailable.get(connector.connectorId) } block={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton}
                       onPress={() => this.unlockConnectorConfirm(connector.connectorId)}>
                       {spinnerConnectors.get(connector.connectorId) ? ( <Spinner  color= 'white' /> ) : ( <Icon style={style.actionButtonIcon} type='MaterialIcons' name='lock-open'/> ) }
                     <Text uppercase={false} style={style.actionButtonText}>
