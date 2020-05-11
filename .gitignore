@@ -101,4 +101,4 @@ production/
 
 # Firebase
 android/app/google-services.json
-ios/eMobility/GoogleService-Info.plist
+ios/GoogleService-Info.plist
