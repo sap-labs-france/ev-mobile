@@ -66,15 +66,16 @@ Open a terminal in the **ev-mobile** directory
   ```
 
 * Run on Android:
-  Setup and start an Android virtual device in Android Studio
 
   ```
+  npm run build:prepare
   npm run android
   ```
 
 * Run on iOS:
 
   ```
+  npm run build:prepare
   npm run ios
   ```
 

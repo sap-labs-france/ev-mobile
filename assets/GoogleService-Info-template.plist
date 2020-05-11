@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>49073993741-eqd431narshe8vonisdb3vdp5a3a33k6.apps.googleusercontent.com</string>
+	<string></string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.49073993741-eqd431narshe8vonisdb3vdp5a3a33k6</string>
+	<string></string>
 	<key>API_KEY</key>
-	<string>AIzaSyBGw2GDzE6YdOZrbC3X6SeGz-rQbpb6Mfc</string>
+	<string>1234567890123456789012345678901234567890</string>
 	<key>GCM_SENDER_ID</key>
-	<string>49073993741</string>
+	<string>12345678901</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.e-Mobility</string>
 	<key>PROJECT_ID</key>
-	<string>emobility-9d380</string>
+	<string>emobility-12345</string>
 	<key>STORAGE_BUCKET</key>
-	<string>emobility-9d380.appspot.com</string>
+	<string></string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:49073993741:ios:aaf5445e10e25ae3</string>
+	<string>1:12345678901:ios:1234567890123456</string>
 	<key>DATABASE_URL</key>
-	<string>https://emobility-9d380.firebaseio.com</string>
+	<string></string>
 </dict>
 </plist>

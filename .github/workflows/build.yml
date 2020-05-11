@@ -26,7 +26,9 @@ jobs:
     - name: npm install
       run: npm ci
     - name: npm run android:assembleDebug
-      run: npm run android:assembleDebug
+      run: |
+        npm run build:prepare
+        npm run android:assembleDebug
 
   build-ios:
     runs-on: macos-latest
@@ -46,5 +48,7 @@ jobs:
     - name: npm run pod:install
       run: npm run pod:install
     - name: xcodebuild
-      run: cd ios && xcodebuild -workspace eMobility.xcworkspace -scheme eMobility -configuration Debug CODE_SIGNING_ALLOWED=NO
+      run: |
+        npm run build:prepare
+        cd ios && xcodebuild -workspace eMobility.xcworkspace -scheme eMobility -configuration Debug CODE_SIGNING_ALLOWED=NO
 
