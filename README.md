@@ -6,6 +6,13 @@ This application is the Electric Vehicle Charging Station (EVSE) mobile applicat
 
 It's linked to the ev-server backend: https://github.com/LucasBrazi06/ev-server
 
+**App Stores**
+
+<a href="https://play.google.com/store/apps/details?id=com.emobility" target="_blank">Google Play</a>
+
+<a href="https://apps.apple.com/us/app/e-mobility/id1443813480?ls=1" target="_blank">Apple Store</a>
+
+
 ## Installation
 
 * Install NodeJS: https://nodejs.org/ (install the LTS version)
@@ -34,12 +41,19 @@ It's linked to the ev-server backend: https://github.com/LucasBrazi06/ev-server
 * Clone this GitHub project
 * Go into the **ev-mobile** directory and run **npm install** or **yarn install**
 
-**NOTE**: On Windows with **chocolatey** (https://chocolatey.org/),
-do as an administrator:
+**NOTE**:
+
+* On Windows with **chocolatey** (https://chocolatey.org/), do as an administrator:
+
 ```
 choco install -y nodejs-lts python2 jdk8 androidstudio
 ```
-to install some of the needed dependencies
+
+* On Mac OSX with **Homebrew** (https://brew.sh/), do:
+
+```
+brew install node openjdk cocoapods react-native-cli watchman && brew cask install android-studio
+```
 
 ## Running the application on a virtual device
 
@@ -52,20 +66,21 @@ Open a terminal in the **ev-mobile** directory
   ```
 
 * Run on Android:
-  Setup and start an Android virtual device in Android Studio
 
   ```
+  npm run build:prepare
   npm run android
   ```
 
 * Run on iOS:
 
   ```
+  npm run build:prepare
   npm run ios
   ```
 
 ## License
 
-This file and all other files in this repository are licensed under the Apache Software License, v.2 and copyrighted under the copyright in [NOTICE file](NOTICE), except as noted otherwise in the [LICENSE file](LICENSE).
+This file and all other files in this repository are licensed under the Apache Software License, v.2 and copyrighted under the copyright in [NOTICE](NOTICE) file, except as noted otherwise in the [LICENSE](LICENSE) file.
 
 Please note that the mobile application can contain other software which may be licensed under different licenses.

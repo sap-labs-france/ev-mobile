@@ -3,13 +3,14 @@ import { Icon, Root } from 'native-base';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { createAppContainer, createSwitchNavigator, NavigationContainer, NavigationContainerComponent, NavigationState } from 'react-navigation';
+import { NavigationContainer, NavigationContainerComponent, NavigationState, createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
+
 import computeStyleSheet from './AppStyles';
-import DeepLinkingManager from './deeplinking/DeepLinkingManager';
 import I18nManager from './I18n/I18nManager';
+import DeepLinkingManager from './deeplinking/DeepLinkingManager';
 import NotificationManager from './notification/NotificationManager';
 import ProviderFactory from './provider/ProviderFactory';
 import Eula from './screens/auth/eula/Eula';
@@ -77,13 +78,6 @@ const statisticsNavigator: NavigationContainer = createStackNavigator(
 
 const chargerDetailsTabsNavigator = createMaterialBottomTabNavigator(
   {
-    ChargerProperties: {
-      screen: ChargerProperties,
-      navigationOptions: {
-        title: I18n.t('chargers.properties'),
-        tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'info')
-      }
-    },
     ChargerActions: {
       screen: ChargerActions,
       navigationOptions: {
@@ -96,6 +90,13 @@ const chargerDetailsTabsNavigator = createMaterialBottomTabNavigator(
       navigationOptions: {
         title: I18n.t('chargers.ocpp'),
         tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'format-list-bulleted')
+      }
+    },
+    ChargerProperties: {
+      screen: ChargerProperties,
+      navigationOptions: {
+        title: I18n.t('chargers.properties'),
+        tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'info')
       }
     }
   },
@@ -242,7 +243,6 @@ const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
     initialRouteName: 'HomeNavigator',
     unmountInactiveRoutes: true,
     drawerPosition: 'right',
-    // @ts-ignore
     contentComponent: (props) => <Sidebar {...props} />
   }
 );

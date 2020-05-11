@@ -17,6 +17,11 @@ export interface Props extends BaseProps {
 interface State {
   loading?: boolean;
   charger: ChargingStation;
+  spinnerResetHard?: boolean;
+  spinnerResetSoft?: boolean;
+  spinnerClearCache?: boolean;
+  spinnerConnectors: Map< number, boolean>;
+  connectorsInactive?: boolean;
 }
 
 export default class ChargerActions extends BaseScreen<Props, State> {
@@ -28,6 +33,11 @@ export default class ChargerActions extends BaseScreen<Props, State> {
     this.state = {
       loading: true,
       charger: null,
+      spinnerResetHard: false,
+      spinnerResetSoft: false,
+      spinnerClearCache: false,
+      spinnerConnectors: new Map(),
+      connectorsInactive:false
     }
   }
 
@@ -41,10 +51,21 @@ export default class ChargerActions extends BaseScreen<Props, State> {
     const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
     // Get Charger
     const charger = await this.getCharger(chargerID);
+
+    const spinnerConnectors = new Map();
+    charger.connectors.map((connector)=>{
+      spinnerConnectors.set(connector.connectorId, false);
+    });
+
     // Set
     this.setState({
       loading: false,
       charger,
+      spinnerResetHard: false,
+      spinnerResetSoft: false,
+      spinnerClearCache: false,
+      spinnerConnectors,
+      connectorsInactive:false
     });
   }
 
@@ -79,6 +100,11 @@ export default class ChargerActions extends BaseScreen<Props, State> {
 
   public async reset(chargeBoxID: string, type: 'Soft'|'Hard') {
     try {
+      if (type === 'Hard') {
+        this.setState ({ spinnerResetHard:true });
+      } else {
+        this.setState ({ spinnerResetSoft:true });
+      }
       // Start the Transaction
       const status = await this.centralServerProvider.reset(chargeBoxID, type);
       // Check
@@ -87,7 +113,15 @@ export default class ChargerActions extends BaseScreen<Props, State> {
       } else {
         Message.showError(I18n.t('details.denied'));
       }
+      this.setState({
+        spinnerResetHard:false,
+        spinnerResetSoft:false
+       })
     } catch (error) {
+      this.setState({
+        spinnerResetHard:false,
+        spinnerResetSoft:false
+      })
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
         type === 'Hard' ? 'chargers.chargerRebootUnexpectedError' : 'chargers.chargerResetUnexpectedError',
@@ -105,6 +139,7 @@ export default class ChargerActions extends BaseScreen<Props, State> {
 
   public async clearCache(chargeBoxID: string) {
     try {
+      this.setState({ spinnerClearCache:true })
       // Clear Cache
       const status = await this.centralServerProvider.clearCache(chargeBoxID);
       // Check
@@ -113,7 +148,9 @@ export default class ChargerActions extends BaseScreen<Props, State> {
       } else {
         Message.showError(I18n.t('details.denied'));
       }
+      this.setState({ spinnerClearCache:false })
     } catch (error) {
+      this.setState({ spinnerClearCache:false })
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
         'chargers.chargerClearCacheUnexpectedError', this.props.navigation);
@@ -132,7 +169,13 @@ export default class ChargerActions extends BaseScreen<Props, State> {
   }
 
   public async unlockConnector(chargeBoxID: string, connectorID: number) {
+    const spinnerConnectors = this.state.spinnerConnectors;
     try {
+      spinnerConnectors.set(connectorID, true);
+      this.setState({
+        spinnerConnectors,
+        connectorsInactive: true
+      })
       // Unlock Connector
       const status = await this.centralServerProvider.unlockConnector(chargeBoxID, connectorID);
       // Check
@@ -141,7 +184,17 @@ export default class ChargerActions extends BaseScreen<Props, State> {
       } else {
         Message.showError(I18n.t('details.denied'));
       }
+      spinnerConnectors.set(connectorID, false);
+      this.setState({
+        spinnerConnectors,
+        connectorsInactive: false
+      })
     } catch (error) {
+      spinnerConnectors.set(connectorID, false);
+      this.setState({
+        spinnerConnectors,
+        connectorsInactive: false
+      })
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
         'chargers.chargerUnlockUnexpectedError', this.props.navigation);
@@ -155,10 +208,14 @@ export default class ChargerActions extends BaseScreen<Props, State> {
     return true;
   };
 
+
+  // tslint:disable-next-line: cyclomatic-complexity
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { loading, charger } = this.state;
+    const { loading, charger, spinnerResetHard, spinnerResetSoft, spinnerConnectors , spinnerClearCache, connectorsInactive} = this.state;
+
+
     return (
       loading ? (
         <Spinner style={style.spinner} />
@@ -176,8 +233,9 @@ export default class ChargerActions extends BaseScreen<Props, State> {
           <ScrollView contentContainerStyle={style.scrollViewContainer}>
             <View style={style.viewContainer}>
               <View style={style.actionContainer}>
-                <Button disabled={charger.inactive} block={true} danger={!charger.inactive} iconLeft={true} style={style.actionButton} onPress={() => this.resetHardConfirm()}>
-                  <Icon style={style.actionButtonIcon} type='MaterialIcons' name='repeat' />
+                <Button disabled={charger.inactive || spinnerResetHard|| spinnerResetSoft || spinnerClearCache || connectorsInactive} block={true} danger={!charger.inactive} iconLeft={true} style={style.actionButton}
+                onPress={() => this.resetHardConfirm()}>
+                 {spinnerResetHard ? (<Spinner  color= 'white'/> ) : ( <Icon style={style.actionButtonIcon} type='MaterialIcons' name='repeat'/> ) }
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t('chargers.resetHard')}
                   </Text>
@@ -185,9 +243,9 @@ export default class ChargerActions extends BaseScreen<Props, State> {
               </View>
               { charger && charger.connectors.map((connector) =>
                 <View key={connector.connectorId} style={style.actionContainer}>
-                  <Button disabled={charger.inactive} block={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton}
+                  <Button disabled={charger.inactive || spinnerResetHard|| spinnerResetSoft || spinnerClearCache || spinnerConnectors.get(connector.connectorId)} block={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton}
                       onPress={() => this.unlockConnectorConfirm(connector.connectorId)}>
-                    <Icon style={style.actionButtonIcon} type='MaterialIcons' name='lock-open' />
+                      {spinnerConnectors.get(connector.connectorId) ? ( <Spinner  color= 'white' /> ) : ( <Icon style={style.actionButtonIcon} type='MaterialIcons' name='lock-open'/> ) }
                     <Text uppercase={false} style={style.actionButtonText}>
                       {I18n.t('chargers.unlockConnector', { connectorId: Utils.getConnectorLetterFromConnectorID(connector.connectorId) } )}
                     </Text>
@@ -195,16 +253,18 @@ export default class ChargerActions extends BaseScreen<Props, State> {
                 </View>
               )}
               <View style={style.actionContainer}>
-                <Button disabled={charger.inactive} block={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton} onPress={() => this.resetSoftConfirm()}>
-                  <Icon style={style.actionButtonIcon} type='MaterialIcons' name='layers-clear' />
+                <Button disabled={charger.inactive || spinnerResetHard|| spinnerResetSoft || spinnerClearCache || connectorsInactive} block={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton}
+                onPress={() => this.resetSoftConfirm()}>
+                  {spinnerResetSoft ? (<Spinner  color= 'white' /> ) : ( <Icon style={style.actionButtonIcon} type='MaterialIcons' name='layers-clear'/> ) }
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t('chargers.resetSoft')}
                   </Text>
                 </Button>
               </View>
               <View style={style.actionContainer}>
-                <Button disabled={charger.inactive} block={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton} onPress={() => this.clearCacheConfirm()}>
-                  <Icon style={style.actionButtonIcon} type='MaterialIcons' name='refresh' />
+                <Button disabled={charger.inactive || spinnerResetHard|| spinnerResetSoft || spinnerClearCache || connectorsInactive} block={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton}
+                onPress={() => this.clearCacheConfirm()}>
+                {spinnerClearCache ? (<Spinner  color= 'white' /> ) : ( <Icon style={style.actionButtonIcon} type='MaterialIcons' name='refresh'/> ) }
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t('chargers.clearCache')}
                   </Text>

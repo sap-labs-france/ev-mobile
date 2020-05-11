@@ -1,8 +1,9 @@
-import { View, Icon } from 'native-base';
+import { Icon, View } from 'native-base';
 import React from 'react';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
 import computeStyleSheet from './FilterContainerComponentStyles';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export interface Props extends FilterContainerComponentProps {
   expanded?: boolean;
@@ -14,13 +15,6 @@ interface State extends FilterContainerComponentState {
 }
 
 export default class FilterVisibleContainerComponent extends FilterContainerComponent {
-  public state: State;
-  public props: Props;
-  public static defaultProps = {
-    visible: false,
-    showExpandControl: false,
-    expanded: false
-  };
 
   constructor(props: Props) {
     super(props);
@@ -28,6 +22,14 @@ export default class FilterVisibleContainerComponent extends FilterContainerComp
       expanded: props.expanded ? props.expanded : false
     };
   }
+
+  public static defaultProps = {
+    visible: false,
+    showExpandControl: false,
+    expanded: false
+  };
+  public state: State;
+  public props: Props;
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);

@@ -13,48 +13,16 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0"
     }
   ],
-  "devDependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/runtime": "^7.6.3",
-    "@types/color": "^3.0.0",
-    "@types/i18n-js": "^3.0.1",
-    "@types/jest": "^24.0.19",
-    "@types/jwt-decode": "^2.2.1",
-    "@types/lodash": "^4.14.144",
-    "@types/react": "^16.9.22",
-    "@types/react-dom": "^16.9.2",
-    "@types/react-native": "^0.60.21",
-    "@types/react-native-htmlview": "^0.12.2",
-    "@types/react-test-renderer": "^16.9.1",
-    "babel-jest": "^24.9.0",
-    "babel-preset-react-native-stage-0": "^1.0.1",
-    "cross-env": "^6.0.3",
-    "flow-bin": "^0.105.0",
-    "jest": "^24.9.0",
-    "jetifier": "^1.6.4",
-    "metro-react-native-babel-preset": "^0.56.0",
-    "npm-check": "^5.9.2",
-    "patch-package": "^6.2.0",
-    "prettier": "^1.18.2",
-    "react-native-clean-project": "^3.3.0",
-    "react-native-debugger-open": "^0.3.24",
-    "react-native-svg-transformer": "^0.14.3",
-    "react-test-renderer": "16.8.6",
-    "schedule": "^0.5.0",
-    "tslint": "^6.1.1",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-react": "^4.2.0",
-    "typescript": "^3.8.3"
-  },
   "scripts": {
     "postinstall": "patch-package",
     "start": "react-native start",
-    "clean": "npm start -- --reset-cache",
+    "start:clean": "npm start -- --reset-cache",
     "start:debug": "cross-env REACT_DEBUGGER=\"rndebugger-open --open --port 8081\" npm start",
     "android": "cross-env TSC_WATCHFILE=UseFsEventsWithFallbackDynamicPolling react-native run-android",
     "android:release": "react-native run-android --variant=release",
-    "android:assembleRelease": "npm run android:jetify && cd android && ./gradlew assembleRelease",
     "android:bundleRelease": "npm run android:jetify && cd android && ./gradlew bundleRelease",
+    "android:assembleRelease": "npm run android:jetify && cd android && ./gradlew assembleRelease",
+    "android:assembleDebug": "npm run android:jetify && cd android && ./gradlew assembleDebug",
     "android:jetify": "npx jetify",
     "list-ios": "xcrun simctl list devices",
     "ios": "cross-env TSC_WATCHFILE=UseFsEventsWithFallbackDynamicPolling react-native run-ios",
@@ -83,10 +51,23 @@
     "react-native:uninstall": "react-native uninstall",
     "react-native:log-ios": "react-native log-ios",
     "react-native:log-android": "react-native log-android",
-    "react-native:clean-project-auto": "react-native clean-project-auto"
+    "react-native:clean-project-auto": "react-native clean-project-auto",
+    "build:prepare": "if [ ! -f android/app/google-services.json ]; then cp assets/google-services-template.json android/app/google-services.json; fi && if [ ! -f ios/eMobility/GoogleService-Info.plist ]; then cp assets/GoogleService-Info-template.plist ios/eMobility/GoogleService-Info.plist; fi"
   },
   "jest": {
     "preset": "react-native"
+  },
+  "importSort": {
+    ".js, .jsx, .es6, .es, .mjs": {
+      "parser": "babylon",
+      "style": "module",
+      "options": {}
+    },
+    ".ts, .tsx": {
+      "parser": "typescript",
+      "style": "module",
+      "options": {}
+    }
   },
   "dependencies": {
     "add": "^2.0.6",
@@ -133,5 +114,40 @@
     "react-navigation-tabs": "^2.7.0",
     "rn-secure-storage": "^2.0.2",
     "validate.js": "^0.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/runtime": "^7.6.3",
+    "@types/color": "^3.0.0",
+    "@types/i18n-js": "^3.0.1",
+    "@types/jest": "^24.0.19",
+    "@types/jwt-decode": "^2.2.1",
+    "@types/lodash": "^4.14.144",
+    "@types/react": "^16.9.22",
+    "@types/react-dom": "^16.9.2",
+    "@types/react-native": "^0.60.21",
+    "@types/react-native-htmlview": "^0.12.2",
+    "@types/react-test-renderer": "^16.9.1",
+    "babel-jest": "^24.9.0",
+    "babel-preset-react-native-stage-0": "^1.0.1",
+    "cross-env": "^6.0.3",
+    "flow-bin": "^0.105.0",
+    "import-sort-parser-typescript": "^6.0.0",
+    "jest": "^24.9.0",
+    "jetifier": "^1.6.5",
+    "metro-config": "^0.59.0",
+    "metro-react-native-babel-preset": "^0.56.0",
+    "npm-check": "^5.9.2",
+    "patch-package": "^6.2.0",
+    "prettier": "^1.18.2",
+    "react-native-clean-project": "^3.3.0",
+    "react-native-debugger-open": "^0.3.24",
+    "react-native-svg-transformer": "^0.14.3",
+    "react-test-renderer": "16.8.6",
+    "schedule": "^0.5.0",
+    "tslint": "^6.1.2",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^5.0.0",
+    "typescript": "^3.8.3"
   }
 }

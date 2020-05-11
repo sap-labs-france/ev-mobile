@@ -2,10 +2,12 @@ import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
+import { KeyValue } from 'types/Global';
+
 import I18nManager from '../I18n/I18nManager';
 import MigrationManager from '../migration/MigrationManager';
 import { ActionResponse } from '../types/ActionResponse';
-import ChargingStation, { ChargingStationConfiguration } from '../types/ChargingStation';
+import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
 import Eula, { EulaAccepted } from '../types/Eula';
 import PagingParams from '../types/PagingParams';
@@ -45,7 +47,7 @@ export default class CentralServerProvider {
   constructor() {
     if (__DEV__) {
       // QA REST Server
-      // this.centralRestServerServiceBaseURL = 'https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com';
+      this.centralRestServerServiceBaseURL = 'https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com';
       this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + '/client/auth';
       this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + '/client/api';
       this.debug = true;
@@ -117,12 +119,12 @@ export default class CentralServerProvider {
   public getTenants(): Partial<Tenant>[] {
     if (__DEV__) {
       return [
-        { subdomain: 'testcharger', name: 'Test Chargers' },
-        { subdomain: 'slf', name: 'SAP Labs France' },
-        { subdomain: 'slfcah', name: 'SAP Labs France (Charge@Home)' },
-        { subdomain: 'proviridis', name: 'Proviridis' },
-        { subdomain: 'demo', name: 'SAP Labs Demo' },
-        { subdomain: 'sapbelgium', name: 'SAP Belgium' },
+        { subdomain: 'testcharger', name: 'SAP Labs New Charging Stations Tests' },
+        { subdomain: 'testperf', name: 'SAP Labs Performance Tests' },
+        { subdomain: 'demopricing', name: 'SAP Labs Demo for Pricing' },
+        { subdomain: 'demobilling', name: 'SAP Labs Demo for Billing' },
+        { subdomain: 'slf', name: 'SAP Labs France (prod)' },
+        { subdomain: 'slfcah', name: 'SAP Labs France (Charge@Home) (prod)' },
       ];
     }
     return [
@@ -416,9 +418,9 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getChargerConfiguration(id: string): Promise<ChargingStationConfiguration> {
+  public async getChargerOcppParameters(id: string): Promise<DataResult<KeyValue>> {
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationConfiguration?ChargeBoxID=${id}`, {
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationOcppParameters?ChargeBoxID=${id}`, {
       headers: this.buildSecuredHeaders()
     });
     return result.data;
@@ -585,7 +587,6 @@ export default class CentralServerProvider {
     }
     return null;
   }
-
   public async getTransactions(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<TransactionDataResult> {
     this.debugMethod('getTransactions');
     // Build Paging
@@ -598,10 +599,10 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async requestChargingStationOCPPConfiguration(id: string): Promise<ActionResponse> {
+  public async requestChargerOcppParameters(id: string): Promise<ActionResponse> {
     this.debugMethod('requestChargingStationOCPPConfiguration');
     // Call
-    const result = await axios.post(`${this.centralRestServerServiceSecuredURL}/ChargingStationRequestConfiguration`,
+    const result = await axios.post(`${this.centralRestServerServiceSecuredURL}/ChargingStationRequestOcppParameters`,
       {
         chargeBoxID: id,
         forceUpdateOCPPParamsFromTemplate: false,
@@ -655,17 +656,17 @@ export default class CentralServerProvider {
     return foundSiteImage.image;
   }
 
-  public async getTransactionWithConsumption(params = {}): Promise<Transaction> {
+  public async getTransactionConsumption(transactionId: number): Promise<Transaction> {
     this.debugMethod('getChargingStationConsumption');
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationConsumptionFromTransaction`, {
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/TransactionConsumption`, {
       headers: this.buildSecuredHeaders(),
-      params,
+      params: { TransactionId: transactionId },
     });
     return result.data;
   }
 
-  public async checkEndUserLicenseAgreement(params: {email: string, tenantSubDomain: string;}): Promise<EulaAccepted> {
+  public async checkEndUserLicenseAgreement(params: { email: string; tenantSubDomain: string; }): Promise<EulaAccepted> {
     this.debugMethod('checkEndUserLicenseAgreement');
     // Call
     const result = await axios.get(`${this.centralRestServerServiceAuthURL}/CheckEndUserLicenseAgreement`, {

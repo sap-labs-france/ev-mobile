@@ -1,12 +1,12 @@
+import { View } from 'native-base';
 import React from 'react';
+import * as Animatable from 'react-native-animatable';
 import CentralServerProvider from '../../../../provider/CentralServerProvider';
 import ProviderFactory from '../../../../provider/ProviderFactory';
 import SecurityProvider from '../../../../provider/SecurityProvider';
 import FilterModalContainerComponent from '../containers/FilterModalContainerComponent';
 import FilterVisibleContainerComponent from '../containers/FilterVisibleContainerComponent';
 import FilterControlComponent from '../controls/FilterControlComponent';
-import { View } from 'native-base';
-import * as Animatable from 'react-native-animatable';
 
 export interface ScreenFiltersProps {
 }
