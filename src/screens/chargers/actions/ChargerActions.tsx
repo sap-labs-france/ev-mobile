@@ -58,7 +58,6 @@ export default class ChargerActions extends BaseScreen<Props, State> {
       spinnerConnectors.set(connector.connectorId, false);
     });
 
-
     // Set
     this.setState({
       loading: false,
@@ -210,13 +209,11 @@ export default class ChargerActions extends BaseScreen<Props, State> {
     return true;
   };
 
-
   // tslint:disable-next-line: cyclomatic-complexity
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
     const { loading, charger, spinnerResetHard, spinnerResetSoft, spinnerConnectors , spinnerClearCache, connectorsInactive } = this.state;
-
 
     return (
       loading ? (
