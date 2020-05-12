@@ -38,7 +38,7 @@ export default class ChargerActions extends BaseScreen<Props, State> {
       spinnerResetSoft: false,
       spinnerClearCache: false,
       spinnerConnectors: new Map(),
-      connectorsInactive:false
+      connectorsInactive: false
     }
   }
 
@@ -58,6 +58,7 @@ export default class ChargerActions extends BaseScreen<Props, State> {
       spinnerConnectors.set(connector.connectorId, false);
     });
 
+
     // Set
     this.setState({
       loading: false,
@@ -66,7 +67,7 @@ export default class ChargerActions extends BaseScreen<Props, State> {
       spinnerResetSoft: false,
       spinnerClearCache: false,
       spinnerConnectors,
-      connectorsInactive:false
+      connectorsInactive: false
     });
   }
 
@@ -214,7 +215,7 @@ export default class ChargerActions extends BaseScreen<Props, State> {
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { loading, charger, spinnerResetHard, spinnerResetSoft, spinnerConnectors , spinnerClearCache, connectorsInactive} = this.state;
+    const { loading, charger, spinnerResetHard, spinnerResetSoft, spinnerConnectors , spinnerClearCache, connectorsInactive } = this.state;
 
 
     return (
@@ -244,7 +245,7 @@ export default class ChargerActions extends BaseScreen<Props, State> {
               </View>
               { charger && charger.connectors.map((connector) =>
                 <View key={connector.connectorId} style={style.actionContainer}>
-                  <Button disabled={charger.inactive || spinnerResetHard|| spinnerResetSoft || spinnerClearCache || spinnerConnectors.get(connector.connectorId)} block={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton}
+                  <Button disabled={charger.inactive || spinnerResetHard|| spinnerResetSoft || spinnerClearCache || spinnerConnectors.get(connector.connectorId) || connector.status === 'Available'} block={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton}
                       onPress={() => this.unlockConnectorConfirm(connector.connectorId)}>
                       {spinnerConnectors.get(connector.connectorId) ? ( <Spinner  color= 'white' /> ) : ( <Icon style={style.actionButtonIcon} type='MaterialIcons' name='lock-open'/> ) }
                     <Text uppercase={false} style={style.actionButtonText}>
