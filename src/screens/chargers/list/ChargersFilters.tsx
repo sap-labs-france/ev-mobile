@@ -2,6 +2,7 @@ import I18n from 'i18n-js';
 import { View } from 'native-base';
 import React from 'react';
 import * as Animatable from 'react-native-animatable';
+
 import FilterVisibleContainerComponent from '../../../components/search/filter/containers/FilterVisibleContainerComponent';
 import computeControlStyleSheet from '../../../components/search/filter/controls/FilterControlComponentStyles';
 import ConnectorTypeFilterControlComponent from '../../../components/search/filter/controls/connector-type/ConnectorTypeFilterControlComponent';

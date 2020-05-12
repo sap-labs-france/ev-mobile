@@ -1,4 +1,5 @@
 import { PixelRatio, Platform } from 'react-native';
+
 import { PLATFORM } from './../variables/commonColor';
 import variable from './../variables/platform';
 import pickerTheme from './Picker';

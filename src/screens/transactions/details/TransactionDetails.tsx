@@ -4,6 +4,7 @@ import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Image, ScrollView } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
+
 import noPhotoActive from '../../../../assets/no-photo-active.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';

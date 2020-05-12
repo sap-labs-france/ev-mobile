@@ -1,6 +1,7 @@
 import React from 'react';
 import { BackHandler } from 'react-native';
 import { NavigationEventSubscription } from 'react-navigation';
+
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ScreenFilters from '../../components/search/filter/screen/ScreenFilters';
 import CentralServerProvider from '../../provider/CentralServerProvider';

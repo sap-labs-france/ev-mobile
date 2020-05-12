@@ -2,6 +2,7 @@ import i18n from 'i18n-js';
 import moment from 'moment';
 import { I18nManager as I18nReactNativeManager } from 'react-native';
 import * as RNLocalize from 'react-native-localize';
+
 import Constants from '../utils/Constants';
 import Utils from '../utils/Utils';
 import deJsonLanguage from './languages/de.json';

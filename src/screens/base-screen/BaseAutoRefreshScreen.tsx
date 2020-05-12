@@ -1,4 +1,5 @@
 import moment from 'moment';
+
 import BaseProps from '../../types/BaseProps';
 import Constants from '../../utils/Constants';
 import BaseScreen from './BaseScreen';

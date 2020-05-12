@@ -2,6 +2,7 @@ import I18n from 'i18n-js';
 import { Linking } from 'react-native';
 import DeepLinking from 'react-native-deep-linking';
 import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
+
 import CentralServerProvider from '../provider/CentralServerProvider';
 import Constants from '../utils/Constants';
 import Message from '../utils/Message';
