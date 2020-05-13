@@ -106,7 +106,7 @@ const chargerDetailsTabsNavigator = createMaterialBottomTabNavigator(
     barStyle: { backgroundColor: commonColor.brandPrimaryDark },
     labeled: true,
     backBehavior: 'none',
-    initialRouteName: 'ChargerProperties',
+    initialRouteName: 'ChargerActions',
   }
 );
 
