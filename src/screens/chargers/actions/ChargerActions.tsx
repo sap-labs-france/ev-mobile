@@ -6,7 +6,7 @@ import { DrawerActions } from 'react-navigation-drawer';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation from '../../../types/ChargingStation';
+import ChargingStation, { ChargePointStatus } from '../../../types/ChargingStation';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
@@ -216,8 +216,8 @@ export default class ChargerActions extends BaseScreen<Props, State> {
     const { navigation } = this.props;
     const style = computeStyleSheet();
     const { loading, charger, spinnerResetHard, spinnerResetSoft, spinnerConnectors , spinnerClearCache, connectorsInactive } = this.state;
-
-
+    const chargingStationIsDisabled = charger ?
+      charger.inactive || spinnerResetHard || spinnerResetSoft || spinnerClearCache || connectorsInactive : false;
     return (
       loading ? (
         <Spinner style={style.spinner} />
@@ -235,9 +235,9 @@ export default class ChargerActions extends BaseScreen<Props, State> {
           <ScrollView contentContainerStyle={style.scrollViewContainer}>
             <View style={style.viewContainer}>
               <View style={style.actionContainer}>
-                <Button disabled={charger.inactive || spinnerResetHard|| spinnerResetSoft || spinnerClearCache || connectorsInactive} block={true} danger={!charger.inactive} iconLeft={true} style={style.actionButton}
-                onPress={() => this.resetHardConfirm()}>
-                 {spinnerResetHard ? (<Spinner  color= 'white'/> ) : ( <Icon style={style.actionButtonIcon} type='MaterialIcons' name='repeat'/> ) }
+                <Button disabled={chargingStationIsDisabled} block={true} danger={!chargingStationIsDisabled} iconLeft={true} style={style.actionButton}
+                    onPress={() => this.resetHardConfirm()}>
+                    {spinnerResetHard ? <Spinner  color= 'white'/> : <Icon style={style.actionButtonIcon} type='MaterialIcons' name='repeat'/> }
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t('chargers.resetHard')}
                   </Text>
@@ -245,9 +245,11 @@ export default class ChargerActions extends BaseScreen<Props, State> {
               </View>
               { charger && charger.connectors.map((connector) =>
                 <View key={connector.connectorId} style={style.actionContainer}>
-                  <Button disabled={charger.inactive || spinnerResetHard|| spinnerResetSoft || spinnerClearCache || spinnerConnectors.get(connector.connectorId) || connector.status === 'Available'} block={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton}
+                  <Button
+                      disabled={chargingStationIsDisabled || connector.status === ChargePointStatus.AVAILABLE}
+                      block={true} iconLeft={true} warning={!chargingStationIsDisabled && connector.status !== ChargePointStatus.AVAILABLE} style={style.actionButton}
                       onPress={() => this.unlockConnectorConfirm(connector.connectorId)}>
-                      {spinnerConnectors.get(connector.connectorId) ? ( <Spinner  color= 'white' /> ) : ( <Icon style={style.actionButtonIcon} type='MaterialIcons' name='lock-open'/> ) }
+                      {spinnerConnectors.get(connector.connectorId) ? ( <Spinner color= 'white' /> ) : ( <Icon style={style.actionButtonIcon} type='MaterialIcons' name='lock-open'/> ) }
                     <Text uppercase={false} style={style.actionButtonText}>
                       {I18n.t('chargers.unlockConnector', { connectorId: Utils.getConnectorLetterFromConnectorID(connector.connectorId) } )}
                     </Text>
@@ -255,18 +257,18 @@ export default class ChargerActions extends BaseScreen<Props, State> {
                 </View>
               )}
               <View style={style.actionContainer}>
-                <Button disabled={charger.inactive || spinnerResetHard|| spinnerResetSoft || spinnerClearCache || connectorsInactive} block={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton}
-                onPress={() => this.resetSoftConfirm()}>
-                  {spinnerResetSoft ? (<Spinner  color= 'white' /> ) : ( <Icon style={style.actionButtonIcon} type='MaterialIcons' name='layers-clear'/> ) }
+                <Button disabled={chargingStationIsDisabled} block={true} iconLeft={true} warning={!chargingStationIsDisabled} style={style.actionButton}
+                    onPress={() => this.resetSoftConfirm()}>
+                    {spinnerResetSoft ? <Spinner  color= 'white' /> : <Icon style={style.actionButtonIcon} type='MaterialIcons' name='layers-clear'/> }
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t('chargers.resetSoft')}
                   </Text>
                 </Button>
               </View>
               <View style={style.actionContainer}>
-                <Button disabled={charger.inactive || spinnerResetHard|| spinnerResetSoft || spinnerClearCache || connectorsInactive} block={true} iconLeft={true} warning={!charger.inactive} style={style.actionButton}
-                onPress={() => this.clearCacheConfirm()}>
-                {spinnerClearCache ? (<Spinner  color= 'white' /> ) : ( <Icon style={style.actionButtonIcon} type='MaterialIcons' name='refresh'/> ) }
+                <Button disabled={chargingStationIsDisabled} block={true} iconLeft={true} warning={!chargingStationIsDisabled} style={style.actionButton}
+                    onPress={() => this.clearCacheConfirm()}>
+                    {spinnerClearCache ? <Spinner  color= 'white' /> : <Icon style={style.actionButtonIcon} type='MaterialIcons' name='refresh'/> }
                   <Text uppercase={false} style={style.actionButtonText}>
                     {I18n.t('chargers.clearCache')}
                   </Text>
