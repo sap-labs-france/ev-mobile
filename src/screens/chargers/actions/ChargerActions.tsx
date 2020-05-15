@@ -9,8 +9,8 @@ import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus } from '../../../types/ChargingStation';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
-import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './ChargerActionsStyles';
+import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 
 export interface Props extends BaseProps {
 }
@@ -25,7 +25,7 @@ interface State {
   connectorsInactive?: boolean;
 }
 
-export default class ChargerActions extends BaseScreen<Props, State> {
+export default class ChargerActions extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
 
@@ -49,24 +49,14 @@ export default class ChargerActions extends BaseScreen<Props, State> {
   public async componentDidMount() {
     // Call parent
     await super.componentDidMount();
-    const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
-    // Get Charger
-    const charger = await this.getCharger(chargerID);
-
-    const spinnerConnectors = new Map();
-    charger.connectors.map((connector)=>{
-      spinnerConnectors.set(connector.connectorId, false);
-    });
 
 
     // Set
     this.setState({
       loading: false,
-      charger,
       spinnerResetHard: false,
       spinnerResetSoft: false,
       spinnerClearCache: false,
-      spinnerConnectors,
       connectorsInactive: false
     });
   }
@@ -79,7 +69,7 @@ export default class ChargerActions extends BaseScreen<Props, State> {
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'chargers.chargerUnexpectedError', this.props.navigation);
+        'chargers.chargerUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
   };
@@ -210,6 +200,22 @@ export default class ChargerActions extends BaseScreen<Props, State> {
     return true;
   };
 
+  public refresh = async () => {
+    if (this.isMounted()) {
+      // Add Chargers
+      const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
+      // Get Charger
+      const charger = await this.getCharger(chargerID);
+      const spinnerConnectors = new Map();
+      charger.connectors.map((connector)=>{
+        spinnerConnectors.set(connector.connectorId, false);
+      });
+      this.setState(() => ({
+        charger,
+        spinnerConnectors
+      }));
+    }
+  };
 
   // tslint:disable-next-line: cyclomatic-complexity
   public render() {
