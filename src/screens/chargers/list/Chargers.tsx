@@ -26,7 +26,6 @@ export interface Props extends BaseProps {
 
 interface State {
   chargers?: ChargingStation[];
-  siteAreaID?: string;
   loading?: boolean;
   refreshing?: boolean;
   isAdmin?: boolean;
@@ -41,13 +40,13 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
+  private siteAreaID: string;
 
   constructor(props: Props) {
     super(props);
     // Init State
     this.state = {
       chargers: [],
-      siteAreaID: Utils.getParamFromNavigation(this.props.navigation, 'siteAreaID', null),
       loading: true,
       refreshing: false,
       isAdmin: false,
@@ -62,6 +61,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
   public async componentDidMount() {
     // Get initial filters
     await this.loadInitialFilters();
+    this.siteAreaID = Utils.getParamFromNavigation(this.props.navigation, 'siteAreaID', null);
     await super.componentDidMount();
   }
 
@@ -81,13 +81,12 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public getChargers = async (searchText: string, skip: number, limit: number): Promise<DataResult<ChargingStation>> => {
-    const { siteAreaID } = this.state;
     let chargers: DataResult<ChargingStation>;
     try {
       // Get with the Site Area
       chargers = await this.centralServerProvider.getChargers({
         Search: searchText,
-        SiteAreaID: siteAreaID,
+        SiteAreaID: this.siteAreaID,
         Issuer: true,
         ConnectorStatus: this.state.filters.connectorStatus,
         ConnectorType: this.state.filters.connectorType
@@ -97,7 +96,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
         // Request nbr of records
         const chargersNbrRecordsOnly = await this.centralServerProvider.getChargers({
             Search: searchText,
-            SiteAreaID: siteAreaID,
+            SiteAreaID: this.siteAreaID,
             Issuer: true,
             ConnectorStatus: this.state.filters.connectorStatus
           }, Constants.ONLY_RECORD_COUNT_PAGING);
@@ -128,8 +127,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public onBack = (): boolean => {
-    const { siteAreaID } = this.state;
-    if (siteAreaID) {
+    if (this.siteAreaID) {
       // Go Back
       this.props.navigation.goBack();
     } else {

@@ -9,7 +9,7 @@ import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus } from '../../../types/ChargingStation';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
-import BaseScreen from '../../base-screen/BaseScreen';
+import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargerActionsStyles';
 
 export interface Props extends BaseProps {
@@ -25,9 +25,10 @@ interface State {
   connectorsInactive?: boolean;
 }
 
-export default class ChargerActions extends BaseScreen<Props, State> {
+export default class ChargerActions extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
+  private chargerID: string;
 
   constructor(props: Props) {
     super(props);
@@ -47,38 +48,20 @@ export default class ChargerActions extends BaseScreen<Props, State> {
   }
 
   public async componentDidMount() {
-    // Call parent
+    // Add Chargers
+    this.chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
     await super.componentDidMount();
-    const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
-    // Get Charger
-    const charger = await this.getCharger(chargerID);
-
-    const spinnerConnectors = new Map();
-    charger.connectors.map((connector)=>{
-      spinnerConnectors.set(connector.connectorId, false);
-    });
-
-    // Set
-    this.setState({
-      loading: false,
-      charger,
-      spinnerResetHard: false,
-      spinnerResetSoft: false,
-      spinnerClearCache: false,
-      spinnerConnectors,
-      connectorsInactive: false
-    });
   }
 
-  public getCharger = async (chargerID: string): Promise<ChargingStation> => {
+  public getCharger = async (): Promise<ChargingStation> => {
     try {
       // Get Charger
-      const charger = await this.centralServerProvider.getCharger({ ID: chargerID });
+      const charger = await this.centralServerProvider.getCharger({ ID: this.chargerID });
       return charger;
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'chargers.chargerUnexpectedError', this.props.navigation);
+        'chargers.chargerUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
   };
@@ -207,6 +190,24 @@ export default class ChargerActions extends BaseScreen<Props, State> {
     this.props.navigation.goBack(null);
     // Do not bubble up
     return true;
+  };
+
+  public refresh = async () => {
+    if (this.isMounted()) {
+      const spinnerConnectors = new Map();
+      // Get Charger
+      const charger = await this.getCharger();
+      if (charger) {
+        charger.connectors.map((connector)=>{
+          spinnerConnectors.set(connector.connectorId, false);
+        });
+        this.setState(() => ({
+          loading: false,
+          charger,
+          spinnerConnectors
+        }));
+      }
+    }
   };
 
   // tslint:disable-next-line: cyclomatic-complexity
