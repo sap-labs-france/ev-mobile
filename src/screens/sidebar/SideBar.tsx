@@ -5,6 +5,7 @@ import React from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import { DrawerActions, NavigationActions } from 'react-navigation';
+
 import logo from '../../../assets/logo-low.png';
 import noPhoto from '../../../assets/no-photo-inverse.png';
 import BaseProps from '../../types/BaseProps';

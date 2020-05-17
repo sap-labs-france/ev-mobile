@@ -1,6 +1,7 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
+
 import commonColor from '../../../theme/variables/commonColor';
 
 const commonStyles = ScaledSheet.create({
@@ -30,7 +31,7 @@ const commonStyles = ScaledSheet.create({
     justifyContent: 'center'
   },
   actionButton: {
-    height: '40@s',
+    height: '45@s',
     justifyContent: 'center'
   },
   actionButtonIcon: {

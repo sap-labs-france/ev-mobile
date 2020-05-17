@@ -1,5 +1,6 @@
 import { Switch, Text, View } from 'native-base';
 import React from 'react';
+
 import { ChargePointStatus } from '../../../../../types/ChargingStation';
 import FilterControlComponent, { FilterControlComponentProps } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';

@@ -1,4 +1,5 @@
 import { moderateScale, scale } from 'react-native-size-matters';
+
 import commonColor from './../variables/commonColor';
 import variable from './../variables/platform';
 

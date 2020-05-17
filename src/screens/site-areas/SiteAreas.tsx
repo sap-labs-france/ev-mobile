@@ -3,6 +3,7 @@ import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
+
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
@@ -32,6 +33,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
+  private siteID: string;
 
   constructor(props: Props) {
     super(props);
@@ -49,14 +51,19 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     super.setState(state, callback);
   }
 
+  public async componentDidMount() {
+    // Get initial filters
+    this.siteID = Utils.getParamFromNavigation(this.props.navigation, 'siteID', null);
+    await super.componentDidMount();
+  }
+
   public getSiteAreas = async (searchText: string, skip: number, limit: number): Promise<DataResult<SiteArea>> => {
     let siteAreas:DataResult<SiteArea>;
-    const siteID = Utils.getParamFromNavigation(this.props.navigation, 'siteID', null);
     try {
       // Get the Site Areas
       siteAreas = await this.centralServerProvider.getSiteAreas({
           Search: searchText,
-          SiteID: siteID,
+          SiteID: this.siteID,
           Issuer: true,
           WithAvailableChargers: true
         },

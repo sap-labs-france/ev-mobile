@@ -4,6 +4,7 @@ import { Button, Icon, Text, View } from 'native-base';
 import React from 'react';
 import { Alert } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+
 import BaseProps from '../../types/BaseProps';
 import ChargingStation from '../../types/ChargingStation';
 import Utils from '../../utils/Utils';

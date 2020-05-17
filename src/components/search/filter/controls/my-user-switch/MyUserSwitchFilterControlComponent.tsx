@@ -1,5 +1,6 @@
 import { Switch, Text, View } from 'native-base';
 import React from 'react';
+
 import ProviderFactory from '../../../../../provider/ProviderFactory';
 import FilterControlComponent, { FilterControlComponentProps } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';

@@ -1,5 +1,6 @@
 import { Platform } from 'react-native';
 import { scale } from 'react-native-size-matters';
+
 import { PLATFORM } from './../variables/commonColor';
 import variable from './../variables/platform';
 

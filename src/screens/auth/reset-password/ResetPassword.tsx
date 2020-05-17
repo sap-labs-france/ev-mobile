@@ -4,6 +4,7 @@ import React from 'react';
 import { Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
+
 import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import Constants from '../../../utils/Constants';

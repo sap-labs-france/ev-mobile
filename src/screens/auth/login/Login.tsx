@@ -3,6 +3,7 @@ import { ActionSheet, Button, CheckBox, Footer, Form, Icon, Item, Left, Right, S
 import React from 'react';
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+
 import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import Tenant from '../../../types/Tenant';
