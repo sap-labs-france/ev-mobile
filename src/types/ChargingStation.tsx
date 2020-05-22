@@ -1,7 +1,7 @@
 import CreatedUpdatedProps from './CreatedUpdatedProps';
+import { InactivityStatus } from './Transaction';
 import { KeyValue } from './Global';
 import SiteArea from './SiteArea';
-import { InactivityStatus } from './Transaction';
 
 export default interface ChargingStation extends CreatedUpdatedProps {
   id?: string;
@@ -24,21 +24,36 @@ export default interface ChargingStation extends CreatedUpdatedProps {
   inactive: boolean;
   lastReboot: Date;
   chargingStationURL: string;
-  numberOfConnectedPhase: number;
   maximumPower: number;
-  cannotChargeInParallel: boolean;
+  voltage: number;
+  excludeFromPowerLimitation?: boolean;
   powerLimitUnit: string;
-  latitude: number;
-  longitude: number;
+  coordinates: number[];
+  chargePoints: ChargePoint[];
   connectors: Connector[];
-  errorCode?: string;
   currentIPAddress?: string;
   siteArea?: SiteArea;
   capabilities?: ChargingStationCapabilities;
-  ocppAdvancedCommands?: OcppAdvancedCommands[];
   ocppStandardParameters?: KeyValue[];
   ocppVendorParameters?: KeyValue[];
-  currentType: ChargingStationCurrentType;
+}
+
+export enum CurrentType {
+  AC = 'AC',
+  DC = 'DC'
+}
+
+export interface ChargePoint {
+  currentType: CurrentType;
+  voltage: number;
+  amperage: number;
+  numberOfConnectedPhase: number;
+  cannotChargeInParallel: boolean;
+  sharePowerToAllConnectors: boolean;
+  excludeFromPowerLimitation: boolean;
+  power: number;
+  efficiency: number;
+  connectorIDs: number[];
 }
 
 export interface Connector {
@@ -85,12 +100,6 @@ export enum ConnectorType {
   UNKNOWN = 'U',
 }
 
-export enum ChargingStationCurrentType {
-  AC = 'AC',
-  DC = 'DC',
-  AC_DC = 'AC/DC',
-}
-
 export interface ChargingStationCapabilities {
   supportStaticLimitationForChargingStation?: boolean;
   supportStaticLimitationPerConnector?: boolean;
@@ -101,8 +110,4 @@ export interface ChargingStationCapabilities {
 export interface OcppCommand {
   command: string;
   parameters: string[];
-}
-
-export interface OcppAdvancedCommands {
-  command: string | OcppCommand;
 }
