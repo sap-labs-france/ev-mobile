@@ -141,7 +141,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       // Compute duration
       const elapsedTimeFormatted = Utils.formatDurationHHMMSS(
         ((new Date(transaction.stop.timestamp).getTime() - new Date(transaction.timestamp).getTime()) / 1000), false);
-      // Compute Inactivity
+      // Compute inactivity
       const totalInactivitySecs = transaction.stop.totalInactivitySecs +
         (transaction.stop.extraInactivitySecs ? transaction.stop.extraInactivitySecs : 0);
       const inactivityFormatted = Utils.formatDurationHHMMSS(totalInactivitySecs, false);
