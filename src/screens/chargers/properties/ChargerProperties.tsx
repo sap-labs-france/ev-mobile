@@ -1,17 +1,17 @@
-import ChargingStation, { ChargingStationCapabilities, OcppCommand } from '../../../types/ChargingStation';
-import { Container, Spinner, Text, View } from 'native-base';
-import { FlatList, RefreshControl, ScrollView } from 'react-native';
-import { KeyValue, PropertyDisplay } from '../../../types/Global';
-
-import BaseProps from '../../../types/BaseProps';
-import BaseScreen from '../../base-screen/BaseScreen';
-import { DrawerActions } from 'react-navigation-drawer';
-import HeaderComponent from '../../../components/header/HeaderComponent';
 import I18n from 'i18n-js';
-import I18nManager from '../../../I18n/I18nManager';
-import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
+import { Container, Spinner, Text, View } from 'native-base';
 import React from 'react';
+import { FlatList, RefreshControl, ScrollView } from 'react-native';
+import { DrawerActions } from 'react-navigation-drawer';
+
+import I18nManager from '../../../I18n/I18nManager';
+import HeaderComponent from '../../../components/header/HeaderComponent';
+import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
+import BaseProps from '../../../types/BaseProps';
+import ChargingStation, { ChargingStationCapabilities, OcppCommand } from '../../../types/ChargingStation';
+import { KeyValue, PropertyDisplay } from '../../../types/Global';
 import Utils from '../../../utils/Utils';
+import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './ChargerPropertiesStyles';
 
 export interface Props extends BaseProps {
