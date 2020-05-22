@@ -1,24 +1,24 @@
-import I18n from 'i18n-js';
-import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
-import React from 'react';
 import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
-import { DrawerActions } from 'react-navigation-drawer';
-
-import noPhotoActive from '../../../../assets/no-photo-active.png';
-import noPhoto from '../../../../assets/no-photo.png';
-import noSite from '../../../../assets/no-site.png';
-import I18nManager from '../../../I18n/I18nManager';
-import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
-import HeaderComponent from '../../../components/header/HeaderComponent';
-import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
+import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
+
+import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
+import BaseProps from '../../../types/BaseProps';
+import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
+import Constants from '../../../utils/Constants';
+import { DrawerActions } from 'react-navigation-drawer';
+import HeaderComponent from '../../../components/header/HeaderComponent';
+import I18n from 'i18n-js';
+import I18nManager from '../../../I18n/I18nManager';
+import Message from '../../../utils/Message';
+import React from 'react';
 import Transaction from '../../../types/Transaction';
 import User from '../../../types/User';
-import Constants from '../../../utils/Constants';
-import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
-import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargerConnectorDetailsStyles';
+import noPhoto from '../../../../assets/no-photo.png';
+import noPhotoActive from '../../../../assets/no-photo-active.png';
+import noSite from '../../../../assets/no-site.png';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -175,7 +175,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null), 10);
     // Get Charger
     const charger = await this.getCharger(chargerID);
-    const connector = charger ? charger.connectors[connectorID - 1] : null;
+    const connector = charger ? Utils.getChargingStationConnectorFromID(charger, connectorID) : null;
     // Get the Site Image
     if (charger && charger.siteArea && !this.state.siteImage) {
       siteImage = await this.getSiteImage(charger.siteArea.siteID);
@@ -199,7 +199,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     // Set
     this.setState({
       charger,
-      connector: charger ? charger.connectors[connectorID - 1] : null,
+      connector: charger ? Utils.getChargingStationConnectorFromID(charger, connectorID) : null,
       transaction,
       siteImage: siteImage ? siteImage : this.state.siteImage,
       userImage: userImage ? userImage : transaction ? this.state.userImage : null,

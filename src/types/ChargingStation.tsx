@@ -26,7 +26,6 @@ export default interface ChargingStation extends CreatedUpdatedProps {
   chargingStationURL: string;
   maximumPower: number;
   voltage: number;
-  excludeFromPowerLimitation?: boolean;
   powerLimitUnit: string;
   coordinates: number[];
   chargePoints: ChargePoint[];
@@ -44,6 +43,7 @@ export enum CurrentType {
 }
 
 export interface ChargePoint {
+  chargePointID: number;
   currentType: CurrentType;
   voltage: number;
   amperage: number;
@@ -51,6 +51,7 @@ export interface ChargePoint {
   cannotChargeInParallel: boolean;
   sharePowerToAllConnectors: boolean;
   excludeFromPowerLimitation: boolean;
+  ocppParamForPowerLimitation: string;
   power: number;
   efficiency: number;
   connectorIDs: number[];
@@ -70,11 +71,15 @@ export interface Connector {
   type: ConnectorType;
   voltage?: number;
   amperage?: number;
+  amperageLimit?: number;
   activeTransactionID: number;
   activeTransactionDate: Date;
   activeTagID: string;
   statusLastChangedOn?: Date;
   inactivityStatus: InactivityStatus;
+  numberOfConnectedPhase?: number;
+  currentType?: CurrentType;
+  chargePointID?: number;
 }
 
 export enum ChargePointStatus {
