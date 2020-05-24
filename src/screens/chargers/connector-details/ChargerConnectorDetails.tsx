@@ -1,24 +1,24 @@
-import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
-import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
-import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
-
-import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
-import BaseProps from '../../../types/BaseProps';
-import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
-import Constants from '../../../utils/Constants';
-import { DrawerActions } from 'react-navigation-drawer';
-import HeaderComponent from '../../../components/header/HeaderComponent';
 import I18n from 'i18n-js';
-import I18nManager from '../../../I18n/I18nManager';
-import Message from '../../../utils/Message';
+import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
+import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
+import { DrawerActions } from 'react-navigation-drawer';
+
+import noPhotoActive from '../../../../assets/no-photo-active.png';
+import noPhoto from '../../../../assets/no-photo.png';
+import noSite from '../../../../assets/no-site.png';
+import I18nManager from '../../../I18n/I18nManager';
+import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
+import HeaderComponent from '../../../components/header/HeaderComponent';
+import BaseProps from '../../../types/BaseProps';
+import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import Transaction from '../../../types/Transaction';
 import User from '../../../types/User';
+import Constants from '../../../utils/Constants';
+import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
+import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargerConnectorDetailsStyles';
-import noPhoto from '../../../../assets/no-photo.png';
-import noPhotoActive from '../../../../assets/no-photo-active.png';
-import noSite from '../../../../assets/no-site.png';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 

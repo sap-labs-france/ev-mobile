@@ -1,22 +1,22 @@
-import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType } from '../types/ChargingStation';
+import I18n from 'i18n-js';
+import CentralServerProvider from 'provider/CentralServerProvider';
 import { ImageSourcePropType, NativeModules, Platform } from 'react-native';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
-
-import CentralServerProvider from 'provider/CentralServerProvider';
-import Constants from './Constants';
-import I18n from 'i18n-js';
-import { InactivityStatus } from '../types/Transaction';
 import { KeyValue } from 'types/Global';
-import Message from './Message';
-import { RequestError } from '../types/RequestError';
-import User from '../types/User';
+import validate from 'validate.js';
+
 import chademo from '../../assets/connectorType/chademo.gif';
 import combo from '../../assets/connectorType/combo_ccs.gif';
-import commonColor from '../theme/variables/commonColor';
 import domestic from '../../assets/connectorType/domestic-ue.gif';
 import noConnector from '../../assets/connectorType/no-connector.gif';
 import type2 from '../../assets/connectorType/type2.gif';
-import validate from 'validate.js';
+import commonColor from '../theme/variables/commonColor';
+import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType } from '../types/ChargingStation';
+import { RequestError } from '../types/RequestError';
+import { InactivityStatus } from '../types/Transaction';
+import User from '../types/User';
+import Constants from './Constants';
+import Message from './Message';
 
 export default class Utils {
   public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
