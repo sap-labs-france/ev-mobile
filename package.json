@@ -52,7 +52,7 @@
     "react-native:log-android": "react-native log-android",
     "react-native:clean-project-auto": "react-native clean-project-auto",
     "build:prepare": "if [ ! -f android/app/google-services.json ]; then cp assets/google-services-template.json android/app/google-services.json; fi && if [ ! -f ios/GoogleService-Info.plist ]; then cp assets/GoogleService-Info-template.plist ios/GoogleService-Info.plist; fi",
-    "import-sort": "npx import-sort-cli --write 'src/**/*.ts{,x}' '__tests__/**/*.ts{,x}' 'types/**/*.ts{,x}'"
+    "import-sort": "npx import-sort-cli --write '{src,__tests__,types}/**/*.ts{,x}' *.ts{,x}"
   },
   "jest": {
     "preset": "react-native"
