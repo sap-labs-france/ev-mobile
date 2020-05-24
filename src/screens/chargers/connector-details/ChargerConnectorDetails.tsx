@@ -175,7 +175,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null), 10);
     // Get Charger
     const charger = await this.getCharger(chargerID);
-    const connector = charger ? Utils.getChargingStationConnectorFromID(charger, connectorID) : null;
+    const connector = charger ? Utils.getConnectorFromID(charger, connectorID) : null;
     // Get the Site Image
     if (charger && charger.siteArea && !this.state.siteImage) {
       siteImage = await this.getSiteImage(charger.siteArea.siteID);
@@ -199,7 +199,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     // Set
     this.setState({
       charger,
-      connector: charger ? Utils.getChargingStationConnectorFromID(charger, connectorID) : null,
+      connector: charger ? Utils.getConnectorFromID(charger, connectorID) : null,
       transaction,
       siteImage: siteImage ? siteImage : this.state.siteImage,
       userImage: userImage ? userImage : transaction ? this.state.userImage : null,

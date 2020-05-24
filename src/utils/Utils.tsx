@@ -29,11 +29,11 @@ export default class Utils {
       !Utils.isNullOrEmptyString(password);
   }
 
-  public static getChargingStationChargePointFromID(chargingStation: ChargingStation, chargePointID: number): ChargePoint {
+  public static getChargePointFromID(chargingStation: ChargingStation, chargePointID: number): ChargePoint {
     return chargingStation.chargePoints.find((chargePoint) => chargePoint.chargePointID === chargePointID);
   }
 
-  public static getChargingStationConnectorFromID(chargingStation: ChargingStation, connectorID: number): Connector {
+  public static getConnectorFromID(chargingStation: ChargingStation, connectorID: number): Connector {
     return chargingStation.connectors.find((connector) => connector.connectorId === connectorID);
   }
 
