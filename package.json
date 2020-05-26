@@ -113,6 +113,7 @@
     "react-navigation-stack": "^1.10.3",
     "react-navigation-tabs": "^2.7.0",
     "rn-secure-storage": "^2.0.2",
+    "tslib": "^2.0.0",
     "validate.js": "^0.13.1"
   },
   "devDependencies": {
@@ -152,6 +153,6 @@
     "tslint": "^6.1.2",
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^5.0.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.3"
   }
 }
