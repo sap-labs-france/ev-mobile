@@ -1,7 +1,7 @@
 import CreatedUpdatedProps from './CreatedUpdatedProps';
-import { InactivityStatus } from './Transaction';
 import { KeyValue } from './Global';
 import SiteArea from './SiteArea';
+import { InactivityStatus } from './Transaction';
 import User from './User';
 
 export default interface ChargingStation extends CreatedUpdatedProps {
