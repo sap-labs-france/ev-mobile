@@ -8,10 +8,13 @@ import commonColor from '../../../theme/variables/commonColor';
 const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
+    backgroundColor: commonColor.containerBgColor
+  },
+  viewContainer: {
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: commonColor.containerBgColor
+    alignItems: 'center'
   },
   spinner: {
     flex: 1,
