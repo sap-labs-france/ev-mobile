@@ -1,7 +1,7 @@
 import CreatedUpdatedProps from './CreatedUpdatedProps';
-import { InactivityStatus } from './Transaction';
 import { KeyValue } from './Global';
 import SiteArea from './SiteArea';
+import { InactivityStatus } from './Transaction';
 import User from './User';
 
 export default interface ChargingStation extends CreatedUpdatedProps {
@@ -60,10 +60,14 @@ export interface ChargePoint {
 
 export interface Connector {
   connectorId: number;
-  currentConsumption: number;
+  currentInstantWatts: number;
   currentStateOfCharge?: number;
-  totalInactivitySecs?: number;
-  totalConsumption?: number;
+  currentTotalConsumptionWh?: number;
+  currentTotalInactivitySecs?: number;
+  currentInactivityStatus: InactivityStatus;
+  currentTransactionID: number;
+  currentTransactionDate: Date;
+  currentTagID: string;
   status: ChargePointStatus;
   errorCode?: string;
   info?: string;
@@ -75,11 +79,7 @@ export interface Connector {
   userID?: string;
   user?: User;
   amperageLimit?: number;
-  activeTransactionID: number;
-  activeTransactionDate: Date;
-  activeTagID: string;
   statusLastChangedOn?: Date;
-  inactivityStatus: InactivityStatus;
   numberOfConnectedPhase?: number;
   currentType?: CurrentType;
   chargePointID?: number;

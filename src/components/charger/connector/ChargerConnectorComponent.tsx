@@ -95,18 +95,18 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
   }
 
   public renderSecondConnectorDetails = (connector: Connector, style: any) => {
-    return connector.activeTransactionID !== 0 ? (
+    return connector.currentTransactionID !== 0 ? (
       <View style={style.connectorDetail}>
         <Animatable.View
           animation={!this.state.showBatteryLevel ? 'fadeIn' : 'fadeOut'}
           style={style.connectorDetailAnimated}
           duration={Constants.ANIMATION_ROTATION_MILLIS}>
           <Text style={style.connectorValues}>
-            {connector.currentConsumption / 1000 < 10
-              ? connector.currentConsumption > 0
-                ? (I18nManager.formatNumber(Math.round(connector.currentConsumption / 10) / 100))
+            {connector.currentInstantWatts / 1000 < 10
+              ? connector.currentInstantWatts > 0
+                ? (I18nManager.formatNumber(Math.round(connector.currentInstantWatts / 10) / 100))
                 : 0
-              : I18nManager.formatNumber(Math.trunc(connector.currentConsumption / 1000))}
+              : I18nManager.formatNumber(Math.trunc(connector.currentInstantWatts / 1000))}
           </Text>
           <Text style={style.label} numberOfLines={1}>
             {I18n.t('details.instant')}
@@ -138,9 +138,9 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
   }
 
   public renderThirdConnectorDetails = (connector: Connector, style: any) =>
-    connector.activeTransactionID !== 0 ? (
+    connector.currentTransactionID !== 0 ? (
       <View style={style.connectorDetail}>
-        <Text style={style.connectorValues}>{I18nManager.formatNumber(Math.round(connector.totalConsumption / 1000))}</Text>
+        <Text style={style.connectorValues}>{I18nManager.formatNumber(Math.round(connector.currentTotalConsumptionWh / 1000))}</Text>
         <Text style={style.label} numberOfLines={1}>
           {I18n.t('details.total')}
         </Text>

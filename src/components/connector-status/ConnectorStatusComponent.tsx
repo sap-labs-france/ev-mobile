@@ -132,7 +132,7 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
   public isAnimated(): boolean {
     const { value, type, connector } = this.props;
     if (connector) {
-      return connector.currentConsumption > 0;
+      return connector.currentInstantWatts > 0;
     } else {
       return type === ChargePointStatus.CHARGING && value > 0;
     }

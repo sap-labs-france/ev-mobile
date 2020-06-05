@@ -1,9 +1,9 @@
 
 export default interface Consumption {
   date: Date;
-  instantPower: number;
+  instantWatts: number;
   instantAmps: number;
-  cumulatedConsumption: number;
+  cumulatedConsumptionWh: number;
   cumulatedConsumptionAmps: number;
   stateOfCharge: number;
   cumulatedAmount: number;

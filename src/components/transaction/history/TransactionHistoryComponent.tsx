@@ -8,8 +8,8 @@ import BaseProps from '../../../types/BaseProps';
 import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
-import computeStyleSheet from '../TransactionComponentCommonStyles';
 import TransactionHeaderComponent from '../header/TransactionHeaderComponent';
+import computeStyleSheet from '../TransactionComponentCommonStyles';
 
 export interface Props extends BaseProps {
   transaction: Transaction;
@@ -42,7 +42,7 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { transaction, isAdmin, isSiteAdmin, isPricingActive } = this.props;
-    const consumption = Math.round(transaction.stop.totalConsumption / 10) / 100;
+    const consumption = Math.round(transaction.stop.totalConsumptionWh / 10) / 100;
     const price = transaction.stop.price ? Math.round(transaction.stop.price * 100) / 100 : 0;
     const duration = Utils.formatDurationHHMMSS(transaction.stop.totalDurationSecs, false);
     const inactivity = Utils.formatDurationHHMMSS(transaction.stop.totalInactivitySecs, false);
