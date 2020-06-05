@@ -8,10 +8,13 @@ import commonColor from '../../../theme/variables/commonColor';
 const commonStyles = ScaledSheet.create({
   container: {
     flex: 1,
+    backgroundColor: commonColor.containerBgColor
+  },
+  viewContainer: {
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: commonColor.containerBgColor
+    alignItems: 'center'
   },
   spinner: {
     flex: 1,
@@ -19,15 +22,15 @@ const commonStyles = ScaledSheet.create({
   },
   backgroundImage: {
     width: '100%',
-    height: '125@s',
+    height: '125@s'
   },
   lastTransactionContainer: {
     width: '50@s',
     height: '50@s',
     marginTop: '-90@s',
-    marginLeft: '-220@s',
+    paddingLeft: '35@s',
     marginBottom: '25@s',
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent'
   },
   buttonLastTransaction: {
     width: '50@s',
@@ -43,13 +46,12 @@ const commonStyles = ScaledSheet.create({
   transactionContainer: {
     width: '100@s',
     height: '100@s',
-    padding: 0,
+    padding: '0@s',
     paddingBottom: '25@s',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignSelf: 'center',
     marginTop: '-85@s',
-    backgroundColor: 'transparent',
-    // zIndex: 1,
+    backgroundColor: 'transparent'
   },
   buttonTransaction: {
     width: '100@s',
@@ -60,7 +62,7 @@ const commonStyles = ScaledSheet.create({
     borderColor: commonColor.textColor,
     backgroundColor: commonColor.containerBgColor,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   noButtonStopTransaction: {
     height: '15@s'
@@ -105,7 +107,7 @@ const commonStyles = ScaledSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '50%',
+    width: '50%'
   },
   connectorLetter: {
     marginTop: '5@s',
