@@ -49,10 +49,6 @@ export default interface Transaction {
     reportId?: string;
     status?: any;
   };
-  lastMeterValue?: {
-    value: number;
-    timestamp: Date;
-  };
   chargeBox?: ChargingStation;
   meterStart: number;
   timestamp: Date;
