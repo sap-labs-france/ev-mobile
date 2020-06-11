@@ -69,6 +69,11 @@ export default interface Transaction {
   currentTotalConsumptionWh: number;
   currentTotalDurationSecs: number;
   currentSignedData?: number;
+  currentVoltage?: number;
+  currentVoltageL1?: number;
+  currentVoltageL2?: number;
+  currentVoltageL3?: number;
+  currentVoltageDC?: number;
   uniqueId?: string;
   errorCode?: number;
   values?: Consumption[]
