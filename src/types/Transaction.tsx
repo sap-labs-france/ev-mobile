@@ -1,5 +1,4 @@
 import ChargingStation from '../types/ChargingStation';
-import Consumption from './Consumption';
 import User from './User';
 
 export enum InactivityStatus {
@@ -81,5 +80,27 @@ export default interface Transaction {
   currentAmperageDC?: number;
   uniqueId?: string;
   errorCode?: number;
-  values?: Consumption[]
+  values?: TransactionConsumption[]
+}
+
+export interface TransactionConsumption {
+  date: Date;
+  instantWatts: number;
+  instantAmps: number;
+  limitWatts: number;
+  limitAmps: number;
+  cumulatedConsumptionWh: number;
+  cumulatedConsumptionAmps: number;
+  stateOfCharge: number;
+  cumulatedAmount: number;
+  voltage: number;
+  voltageL1: number;
+  voltageL2: number;
+  voltageL3: number;
+  voltageDC: number;
+  amperage: number;
+  amperageL1: number;
+  amperageL2: number;
+  amperageL3: number;
+  amperageDC: number;
 }
