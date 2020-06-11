@@ -74,6 +74,11 @@ export default interface Transaction {
   currentVoltageL2?: number;
   currentVoltageL3?: number;
   currentVoltageDC?: number;
+  currentAmperage?: number;
+  currentAmperageL1?: number;
+  currentAmperageL2?: number;
+  currentAmperageL3?: number;
+  currentAmperageDC?: number;
   uniqueId?: string;
   errorCode?: number;
   values?: Consumption[]
