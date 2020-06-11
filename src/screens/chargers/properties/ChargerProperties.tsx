@@ -8,7 +8,7 @@ import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation, { ChargingStationCapabilities, OcppAdvancedCommands, OcppCommand } from '../../../types/ChargingStation';
+import ChargingStation, { ChargingStationCapabilities, OcppCommand } from '../../../types/ChargingStation';
 import { KeyValue, PropertyDisplay } from '../../../types/Global';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
@@ -82,24 +82,6 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
           const style = computeStyleSheet();
           for (const ocppVendorParameter of ocppVendorParameters) {
               formatterValues.push(<Text style={style.values}>{`${ocppVendorParameter.key}: ${ocppVendorParameter.value}`}</Text>);
-          }
-        }
-        return formatterValues;
-      },
-    },
-    {
-      key: 'ocppAdvancedCommands', title: 'details.ocppAdvancedCommands', formatterWithComponents: true,
-      formatter: (ocppAdvancedCommands: OcppAdvancedCommands[]): Element[] => {
-        const formatterValues: Element[] = [];
-        if (ocppAdvancedCommands) {
-          const style = computeStyleSheet();
-          for (const ocppAdvancedCommand of ocppAdvancedCommands) {
-            if (typeof ocppAdvancedCommand === 'object') {
-              const advancedCommand = ocppAdvancedCommand as OcppCommand;
-              formatterValues.push(<Text style={style.values}>{`${advancedCommand.command} ${advancedCommand.parameters ? '(' + advancedCommand.parameters.join(', ') + ')' : ''}`}</Text>);
-            } else {
-              formatterValues.push(<Text style={style.values}>{ocppAdvancedCommand}</Text>);
-            }
           }
         }
         return formatterValues;

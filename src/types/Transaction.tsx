@@ -31,7 +31,7 @@ export default interface Transaction {
     totalInactivitySecs: number;
     extraInactivitySecs: number;
     inactivityStatus?: InactivityStatus;
-    totalConsumption: number;
+    totalConsumptionWh: number;
     totalDurationSecs: number;
     timestamp: Date;
     transactionData?: any;
@@ -49,10 +49,6 @@ export default interface Transaction {
     reportId?: string;
     status?: any;
   };
-  lastMeterValue?: {
-    value: number;
-    timestamp: Date;
-  };
   chargeBox?: ChargingStation;
   meterStart: number;
   timestamp: Date;
@@ -62,15 +58,15 @@ export default interface Transaction {
   pricingSource: string;
   stateOfCharge: number;
   timezone: string;
-  lastUpdate?: Date;
+  currentTimestamp?: Date;
   currentTotalInactivitySecs: number;
   currentInactivityStatus?: InactivityStatus;
   currentStateOfCharge: number;
   numberOfMeterValues: number;
-  currentConsumption: number;
+  currentInstantWatts: number;
   currentConsumptionWh?: number;
   currentCumulatedPrice: number;
-  currentTotalConsumption: number;
+  currentTotalConsumptionWh: number;
   currentTotalDurationSecs: number;
   currentSignedData?: number;
   uniqueId?: string;

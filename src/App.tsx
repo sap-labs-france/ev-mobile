@@ -41,7 +41,7 @@ I18nManager.initialize();
 const appStyles = computeStyleSheet();
 
 // Auth Stack Navigation
-const authNavigator: NavigationContainer = createStackNavigator(
+const authNavigator = createStackNavigator(
   {
     Login: { screen: Login },
     Eula: { screen: Eula },
@@ -56,7 +56,7 @@ const authNavigator: NavigationContainer = createStackNavigator(
 );
 
 // Home Stack Navigation
-const homeNavigator: NavigationContainer = createStackNavigator(
+const homeNavigator = createStackNavigator(
   {
     Home: { screen: Home }  },
   {
@@ -66,7 +66,7 @@ const homeNavigator: NavigationContainer = createStackNavigator(
 );
 
 // Stats Stack Navigation
-const statisticsNavigator: NavigationContainer = createStackNavigator(
+const statisticsNavigator = createStackNavigator(
   {
     Statistics: { screen: Statistics }
   },
@@ -165,7 +165,7 @@ const transactionDetailsTabsNavigator = createMaterialBottomTabNavigator(
 );
 
 // Organizations Stack Navigation
-const sitesNavigator: NavigationContainer = createStackNavigator(
+const sitesNavigator = createStackNavigator(
   {
     Sites: { screen: Sites },
     SiteAreas: { screen: SiteAreas },
@@ -181,7 +181,7 @@ const sitesNavigator: NavigationContainer = createStackNavigator(
 );
 
 // Chargers Stack Navigation
-const chargersNavigator: NavigationContainer = createStackNavigator(
+const chargersNavigator = createStackNavigator(
   {
     Chargers: { screen: Chargers },
     ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator },
@@ -202,7 +202,7 @@ const createTabBarIcon = (props: { focused: boolean; tintColor?: string; horizon
     }} type={type} name={name} />
 };
 
-const transactionHistoryNavigator: NavigationContainer = createStackNavigator(
+const transactionHistoryNavigator = createStackNavigator(
   {
     TransactionsHistory: { screen: TransactionsHistory },
     TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator }
@@ -213,7 +213,7 @@ const transactionHistoryNavigator: NavigationContainer = createStackNavigator(
   }
 );
 
-const transactionInProgressNavigator: NavigationContainer = createStackNavigator(
+const transactionInProgressNavigator = createStackNavigator(
   {
     TransactionsInProgress: { screen: TransactionsInProgress },
     ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator },
@@ -247,7 +247,7 @@ const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
   }
 );
 
-const rootNavigator: any = createSwitchNavigator(
+const rootNavigator = createSwitchNavigator(
   {
     AuthNavigator: { screen: authNavigator },
     AppDrawerNavigator: { screen: appDrawerNavigator }

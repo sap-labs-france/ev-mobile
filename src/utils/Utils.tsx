@@ -11,7 +11,7 @@ import domestic from '../../assets/connectorType/domestic-ue.gif';
 import noConnector from '../../assets/connectorType/no-connector.gif';
 import type2 from '../../assets/connectorType/type2.gif';
 import commonColor from '../theme/variables/commonColor';
-import { ChargePointStatus, ConnectorType } from '../types/ChargingStation';
+import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
 import { InactivityStatus } from '../types/Transaction';
 import User from '../types/User';
@@ -27,6 +27,14 @@ export default class Utils {
       !Utils.isNullOrEmptyString(tenantSubDomain) &&
       !Utils.isNullOrEmptyString(email) &&
       !Utils.isNullOrEmptyString(password);
+  }
+
+  public static getChargePointFromID(chargingStation: ChargingStation, chargePointID: number): ChargePoint {
+    return chargingStation.chargePoints.find((chargePoint) => chargePoint.chargePointID === chargePointID);
+  }
+
+  public static getConnectorFromID(chargingStation: ChargingStation, connectorID: number): Connector {
+    return chargingStation.connectors.find((connector) => connector.connectorId === connectorID);
   }
 
   public static countJsonProps(jsonDoc: object): number {

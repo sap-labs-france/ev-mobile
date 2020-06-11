@@ -141,7 +141,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       // Compute duration
       const elapsedTimeFormatted = Utils.formatDurationHHMMSS(
         ((new Date(transaction.stop.timestamp).getTime() - new Date(transaction.timestamp).getTime()) / 1000), false);
-      // Compute Inactivity
+      // Compute inactivity
       const totalInactivitySecs = transaction.stop.totalInactivitySecs +
         (transaction.stop.extraInactivitySecs ? transaction.stop.extraInactivitySecs : 0);
       const inactivityFormatted = Utils.formatDurationHHMMSS(totalInactivitySecs, false);
@@ -220,7 +220,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     return (
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.info]} type='MaterialIcons' name='ev-station' />
-        <Text style={[style.label, style.labelValue, style.info]}>{transaction ? I18nManager.formatNumber(Math.round(transaction.stop.totalConsumption / 10) / 100) : '-'}</Text>
+        <Text style={[style.label, style.labelValue, style.info]}>{transaction ? I18nManager.formatNumber(Math.round(transaction.stop.totalConsumptionWh / 10) / 100) : '-'}</Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
     );
