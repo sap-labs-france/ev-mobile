@@ -117,24 +117,29 @@ export default class CentralServerProvider {
 
   // eslint-disable-next-line class-methods-use-this
   public getTenants(): Partial<Tenant>[] {
-    if (__DEV__) {
-      return [
-        { subdomain: 'testcharger', name: 'SAP Labs New Charging Stations Tests' },
-        { subdomain: 'testperf', name: 'SAP Labs Performance Tests' },
-        { subdomain: 'demopricing', name: 'SAP Labs Demo for Pricing' },
-        { subdomain: 'demobilling', name: 'SAP Labs Demo for Billing' },
-        { subdomain: 'slf', name: 'SAP Labs France (prod)' },
-        { subdomain: 'slfcah', name: 'SAP Labs France (Charge@Home) (prod)' },
+    let tenants = SecuredStorage.getTenants();
+    if (tenants) {
+      if (__DEV__) {
+        tenants = [
+          { subdomain: 'testcharger', name: 'SAP Labs New Charging Stations Tests' },
+          { subdomain: 'testperf', name: 'SAP Labs Performance Tests' },
+          { subdomain: 'demopricing', name: 'SAP Labs Demo for Pricing' },
+          { subdomain: 'demobilling', name: 'SAP Labs Demo for Billing' },
+          { subdomain: 'slf', name: 'SAP Labs France (prod)' },
+          { subdomain: 'slfcah', name: 'SAP Labs France (Charge@Home) (prod)' }
+        ];
+      }
+      tenants = [
+        { subdomain: 'slf', name: 'SAP Labs France' },
+        { subdomain: 'slfcah', name: 'SAP Labs France (charge@home)' },
+        { subdomain: 'sapse', name: 'SAP SE' },
+        { subdomain: 'sapsecah', name: 'SAP SE (charge@home)' },
+        { subdomain: 'proviridis', name: 'Proviridis' },
+        { subdomain: 'sapbelgium', name: 'SAP Belgium' },
       ];
+      SecuredStorage.saveTenants(tenants);
     }
-    return [
-      { subdomain: 'slf', name: 'SAP Labs France' },
-      { subdomain: 'slfcah', name: 'SAP Labs France (charge@home)' },
-      { subdomain: 'sapse', name: 'SAP SE' },
-      { subdomain: 'sapsecah', name: 'SAP SE (charge@home)' },
-      { subdomain: 'proviridis', name: 'Proviridis' },
-      { subdomain: 'sapbelgium', name: 'SAP Belgium' },
-    ];
+    return tenants;
   }
 
   public async triggerAutoLogin(

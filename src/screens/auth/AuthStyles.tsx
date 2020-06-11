@@ -71,6 +71,11 @@ const commonStyles = ScaledSheet.create({
     marginBottom: '10@s',
     backgroundColor: commonColor.buttonBg
   },
+  iconContainer: {
+    flexDirection: 'row',
+    width: '83%',
+    justifyContent: 'flex-end'
+  },
   buttonText: {
     width: '100%',
     textAlign: 'center',

@@ -4,6 +4,8 @@ import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import ProviderFactory from '../provider/ProviderFactory';
 import { UserCredentials } from '../types/User';
 import Constants from './Constants';
+import Tenant from 'types/Tenant';
+import CentralServerProvider from 'provider/CentralServerProvider';
 
 // Generate a new Id for persisting the navigation each time the app is launched first time
 let navigationID: string = '' + new Date().getTime();
@@ -145,5 +147,14 @@ export default class SecuredStorage {
       // Key does not exist: do nothing
     }
     return null;
+  }
+
+  public static async saveTenants(tenants:Partial<Tenant>[]) {
+    if (tenants) {
+      tenants = SecuredStorage.getTenants();
+    }
+  }
+
+  public static async getTenants(): Partial<Tenant>[] {
   }
 }

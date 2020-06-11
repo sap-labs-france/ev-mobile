@@ -4,6 +4,8 @@ import React from 'react';
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
+import Modal from 'react-native-modal';
+import ModalSyleSheet from '../../../ModalSyleSheet';
 import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import Tenant from '../../../types/Tenant';
@@ -30,6 +32,10 @@ interface State {
   errorPassword?: object[];
   errorTenantSubDomain?: object[];
   errorEmail?: object[];
+  visible?: boolean;
+  addTenantTitle?: string;
+  subdomain?: any;
+  name?: any;
 }
 
 export default class Login extends BaseScreen<Props, State> {
@@ -80,7 +86,10 @@ export default class Login extends BaseScreen<Props, State> {
       tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', ''),
       tenantTitle: I18n.t('authentication.tenant'),
       loading: false,
-      initialLoading: true
+      visible: false,
+      addTenantTitle: I18n.t('authentication.addTenantTitle'),
+      subdomain: '',
+      name: '',
     };
   }
 
@@ -206,6 +215,43 @@ export default class Login extends BaseScreen<Props, State> {
     this.props.navigation.navigate('AppDrawerNavigator');
   }
 
+  private addTenant() {
+    const foundTenant = this.tenants.filter(tenant => {
+      return this.state.subdomain === tenant.subdomain;
+    })
+    if (!foundTenant) {
+      Alert.alert(
+        I18n.t('general.error'),
+        I18n.t('general.tenantExists'),
+        [{ text: I18n.t('general.ok'), style: 'cancel' }],
+        { cancelable: false }
+      );
+    }else{
+      this.tenants.push({subdomain: this.state.subdomain.toString(), name: this.state.name.toString()});
+      SecuredStorage.saveTenants(this.tenants);
+    }
+  };
+
+  private deleteTenant(){
+    Alert.alert(
+      I18n.t('general.deleteTenant'),
+      I18n.t('general.deleteTenantConfirm', {TenantID: this.state.tenantTitle}),
+      [{ text: I18n.t('general.no'), style: 'cancel'}, { text: I18n.t('general.yes'), onPress: () => {
+        for ( let i=0; i < this.tenants.length; i++){
+        if(this.tenants[i].subdomain === this.state.tenantSubDomain){
+          this.tenants.splice(i, 1);
+          SecuredStorage.saveTenants(this.tenants)
+          break;
+        }
+      }
+      this.setState({
+          tenantSubDomain: null,
+          tenantTitle: I18n.t('authentication.tenant')
+        });
+      }}],
+    );
+  };
+
   public setTenant = async (buttonIndex: number) => {
     // Provided?
     if (buttonIndex !== undefined) {
@@ -258,8 +304,9 @@ export default class Login extends BaseScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
+    const modalStyle = ModalSyleSheet();
     const navigation = this.props.navigation;
-    const { eula, loading, initialLoading } = this.state;
+    const { eula, loading, initialLoading, visible } = this.state;
     // Render
     return initialLoading ? (
       <Spinner style={style.spinner} />
@@ -269,6 +316,14 @@ export default class Login extends BaseScreen<Props, State> {
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation}/>
             <Form style={style.form}>
+              <View style ={style.iconContainer}>
+                <Button onPress={() => { this.setState({ visible:true , subdomain: null, name: null })}}>
+                  <Icon type={'MaterialIcons'} name='add' />
+                </Button>
+                <Button disabled={this.state.tenantTitle === I18n.t('authentication.tenant') } onPress={() => {this.deleteTenant() }}>
+                  <Icon type={'MaterialIcons'} name='remove' />
+                </Button>
+              </View>
               <Button
                 rounded={true}
                 block={true}
@@ -286,6 +341,34 @@ export default class Login extends BaseScreen<Props, State> {
                 }>
                 <TextRN style={style.buttonText}>{this.state.tenantTitle}</TextRN>
               </Button>
+              <Modal style ={modalStyle.modalContainer} isVisible={visible} onBackdropPress={() => this.setState({ visible:false })}>
+                <View style ={modalStyle.modalHeaderContainer}>
+                  <TextRN style={modalStyle.modalTextHeader}> {this.state.addTenantTitle}</TextRN>
+                </View>
+                <View style={modalStyle.modalFiltersContainer}>
+                  {this.props.children}
+                  <TextInput
+                    placeholder={I18n.t('authentication.tenantSubdomain')}
+                    placeholderTextColor={commonColor.defaultTextColor}
+                    style={modalStyle.inputFieldModal}
+                    onChangeText={(TextInputValue) => this.setState({ subdomain: TextInputValue })}
+                  />
+                  <TextInput
+                    placeholder={I18n.t('authentication.tenantName')}
+                    placeholderTextColor={commonColor.defaultTextColor}
+                    style={modalStyle.inputFieldModal}
+                    onChangeText={(TextInputValue) => this.setState({ name: TextInputValue })}
+                  />
+                </View>
+                <View style={modalStyle.modalButtonsContainer}>
+                  <Button disabled={!this.state.subdomain || !this.state.name} style={modalStyle.modalButton} full={true}  onPress={() => {this.addTenant(), this.setState({visible:false})}} >
+                    <Text style={modalStyle.modalTextButton}>{I18n.t('general.create')}</Text>
+                  </Button>
+                  <Button style={modalStyle.modalButton} full={true} danger={true} onPress={() => {this.setState({visible:false})}} >
+                    <Text style={modalStyle.modalTextButton}>{I18n.t('general.cancel')}</Text>
+                  </Button>
+                </View>
+              </Modal>
               {this.state.errorTenantSubDomain &&
                 this.state.errorTenantSubDomain.map((errorMessage, index) => (
                   <Text style={style.formErrorText} key={index}>

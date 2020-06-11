@@ -5,7 +5,7 @@ import { Text } from 'react-native';
 import Modal from 'react-native-modal';
 
 import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
-import computeStyleSheet from './FilterContainerComponentStyles';
+import computeStyleSheet from '../../../../ModalSyleSheet';
 
 export interface Props extends FilterContainerComponentProps {
 }

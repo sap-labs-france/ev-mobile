@@ -11,14 +11,18 @@
     "ok": "Ok",
     "yes": "Oui",
     "no": "Non",
+    "create": "Créer",
     "clear": "Effacer",
     "close": "Fermer",
     "cancel": "Annuler",
     "apply": "Appliquer",
     "version": "Version",
     "search": "Rechercher",
+    "error": "Erreur",
     "exitApp": "Quitter",
     "exitAppConfirm": "Voulez-vous vraiment quitter l'application ?",
+    "deleteTenant": "Delete tenant",
+    "deleteTenantConfirm": "Voulez-vous supprimer le tenant: '{{TenantID}}'?",
     "noRecordFound": "Pas d'enregistrement trouvé",
     "day": "j",
     "hour": "h",
@@ -29,6 +33,7 @@
     "onlyMyTransactions": "Mes Sessions",
     "onlyAvailableChargers": "Bornes Disponibles",
     "wrongTenant": "Vous êtes connecté sur la mauvaise organisation",
+    "tenantExists": "Le tenant existe déjà.",
     "createdOn": "Créé le",
     "createdBy": "Créé par",
     "lastChangedOn": "Modifié le",
@@ -92,7 +97,10 @@
     "signUp": "S'enregistrer",
 		"passwordRule": "Doit contenir 1 char. minuscule et majuscule, 1 nombre, 1 char. spécial et une longueur minimum de 8",
     "passwordNotMatch": "Les mots de passes ne correspondent pas",
-    "tenant": "Choisir une Organisation"
+    "tenant": "Choisir une Organisation",
+    "addTenantTitle": "Créer un tenant",
+    "tenantSubdomain": "Sous domaine",
+    "tenantName": "Nom"
   },
   "users": {
     "userUnexpectedError": "Impossible de lire l'utilisateur"
