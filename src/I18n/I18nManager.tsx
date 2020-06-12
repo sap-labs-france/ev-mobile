@@ -7,6 +7,7 @@ import Constants from '../utils/Constants';
 import Utils from '../utils/Utils';
 import deJsonLanguage from './languages/de.json';
 import enJsonLanguage from './languages/en.json';
+import esJsonLanguage from './languages/es.json';
 import frJsonLanguage from './languages/fr.json';
 
 export default class I18nManager {
@@ -17,11 +18,13 @@ export default class I18nManager {
     require('moment/locale/fr');
     require('moment/locale/de');
     require('moment/locale/en-gb');
+    require('moment/locale/es');
     // Translation files
     const translationGetters: any = {
       en: () => enJsonLanguage,
       fr: () => frJsonLanguage,
       de: () => deJsonLanguage,
+      es: () => esJsonLanguage,
     };
     // Fallback if no available language fits
     const fallback = { languageTag: Constants.DEFAULT_LANGUAGE, isRTL: false };
@@ -31,6 +34,7 @@ export default class I18nManager {
     i18n.translations.en = enJsonLanguage;
     i18n.translations.fr = frJsonLanguage;
     i18n.translations.de = deJsonLanguage;
+    i18n.translations.es = esJsonLanguage;
     // Update layout direction
     I18nReactNativeManager.forceRTL(isRTL);
     // Default

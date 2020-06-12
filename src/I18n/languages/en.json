@@ -81,7 +81,7 @@
 		"registerSuccess": "Account created with success! Check your email",
 		"resetPasswordSuccess": "Password updated with success!",
     "resetPasswordUnexpectedError": "Cannot reset password",
-    "resetPasswordHashNotValid": "Request no longer valid, request a new password again",    
+    "resetPasswordHashNotValid": "Request no longer valid, request a new password again",
     "verifyAccountTokenNotValid": "Request no longer valid, request a new account validation",
     "haveAlreadyAccount": "Already have an account?",
     "name": "Name",
