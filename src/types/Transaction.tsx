@@ -1,5 +1,4 @@
 import ChargingStation from '../types/ChargingStation';
-import Consumption from './Consumption';
 import User from './User';
 
 export enum InactivityStatus {
@@ -31,7 +30,7 @@ export default interface Transaction {
     totalInactivitySecs: number;
     extraInactivitySecs: number;
     inactivityStatus?: InactivityStatus;
-    totalConsumption: number;
+    totalConsumptionWh: number;
     totalDurationSecs: number;
     timestamp: Date;
     transactionData?: any;
@@ -49,10 +48,6 @@ export default interface Transaction {
     reportId?: string;
     status?: any;
   };
-  lastMeterValue?: {
-    value: number;
-    timestamp: Date;
-  };
   chargeBox?: ChargingStation;
   meterStart: number;
   timestamp: Date;
@@ -62,18 +57,50 @@ export default interface Transaction {
   pricingSource: string;
   stateOfCharge: number;
   timezone: string;
-  lastUpdate?: Date;
+  currentTimestamp?: Date;
   currentTotalInactivitySecs: number;
   currentInactivityStatus?: InactivityStatus;
   currentStateOfCharge: number;
   numberOfMeterValues: number;
-  currentConsumption: number;
+  currentInstantWatts: number;
   currentConsumptionWh?: number;
   currentCumulatedPrice: number;
-  currentTotalConsumption: number;
+  currentTotalConsumptionWh: number;
   currentTotalDurationSecs: number;
   currentSignedData?: number;
+  currentVoltage?: number;
+  currentVoltageL1?: number;
+  currentVoltageL2?: number;
+  currentVoltageL3?: number;
+  currentVoltageDC?: number;
+  currentAmperage?: number;
+  currentAmperageL1?: number;
+  currentAmperageL2?: number;
+  currentAmperageL3?: number;
+  currentAmperageDC?: number;
   uniqueId?: string;
   errorCode?: number;
-  values?: Consumption[]
+  values?: TransactionConsumption[]
+}
+
+export interface TransactionConsumption {
+  date: Date;
+  instantWatts: number;
+  instantAmps: number;
+  limitWatts: number;
+  limitAmps: number;
+  cumulatedConsumptionWh: number;
+  cumulatedConsumptionAmps: number;
+  stateOfCharge: number;
+  cumulatedAmount: number;
+  voltage: number;
+  voltageL1: number;
+  voltageL2: number;
+  voltageL3: number;
+  voltageDC: number;
+  amperage: number;
+  amperageL1: number;
+  amperageL2: number;
+  amperageL3: number;
+  amperageDC: number;
 }

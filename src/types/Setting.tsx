@@ -9,7 +9,7 @@ export enum ComponentType {
   STATISTICS = 'statistics',
   ANALYTICS = 'analytics',
   SMART_CHARGING = 'smartCharging',
-  BUILDING = 'building'
+  ASSET = 'asset'
 }
 
 export enum IdentifierType {

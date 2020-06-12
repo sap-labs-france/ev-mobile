@@ -91,8 +91,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         if (charger) {
           connector = charger ? charger.connectors[parseInt(connectorID, 10) - 1] : null;
           // Refresh Consumption
-          if (connector.activeTransactionID && (!this.state.transaction || !this.state.transaction.stop)) {
-            transactionWithConsumptions = await this.getTransactionWithConsumptions(connector.activeTransactionID);
+          if (connector.currentTransactionID && (!this.state.transaction || !this.state.transaction.stop)) {
+            transactionWithConsumptions = await this.getTransactionWithConsumptions(connector.currentTransactionID);
           }
         }
       }
@@ -143,7 +143,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
             // Add
             consumptionValues.push({
               x: date,
-              y: value.instantPower ? value.instantPower / 1000 : 0
+              y: value.instantWatts ? value.instantWatts / 1000 : 0
             });
             if (value.stateOfCharge > 0) {
               stateOfChargeValues.push({
@@ -184,7 +184,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       // Get the Security Provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Check Auth
-      return securityProvider.canReadTransaction(charger.siteArea, transaction ? transaction.tagID : connector.activeTagID);
+      return securityProvider.canReadTransaction(charger.siteArea, transaction ? transaction.tagID : connector.currentTagID);
     }
     return false;
   };
@@ -368,7 +368,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
               keepPositionOnRotation={false}
             />
           ) : (
-            transaction || (connector && connector.activeTransactionID) ?
+            transaction || (connector && connector.currentTransactionID) ?
               canDisplayTransaction ?
                 <Text style={style.notData}>{I18n.t('details.noData')}</Text>
               :
