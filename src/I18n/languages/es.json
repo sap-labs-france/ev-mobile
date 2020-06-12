@@ -42,7 +42,7 @@
     "transactionsInProgress": "Sesiones en progreso",
     "statistics": "Estadísticas"
   },
-	"authentication": {
+  "authentication": {
     "mandatoryTenant": "La organización es obligatoria",
     "unknownTenant": "¡Organización desconocida!",
     "mandatoryName": "El apellido es obligatorio",
@@ -78,8 +78,8 @@
     "acceptEula": "Acepto el ",
     "eula": "Acuerdo de Licencia de usuario final",
     "login": "Iniciar sesión",
-		"registerSuccess": "¡Cuenta creada exitosamente! Revise su correo electrónico",
-		"resetPasswordSuccess": "¡Su contraseña ha sido cambiada exitosamente!",
+    "registerSuccess": "¡Cuenta creada exitosamente! Revise su correo electrónico",
+    "resetPasswordSuccess": "¡Su contraseña ha sido cambiada exitosamente!",
     "resetPasswordUnexpectedError": "No se ha podido reestablecer su contraseña",
     "resetPasswordHashNotValid": "La solicitud ya no es válida, solicite nuevamente una contraseña",
     "verifyAccountTokenNotValid": "La solicitud ya no es válida, solicite nuevamente una validación de cuenta",
@@ -90,7 +90,7 @@
     "password": "Contraseña",
     "repeatPassword": "Repita la contraseña",
     "signUp": "Registrarse",
-		"passwordRule": "Debe contener al menos 8 caracteres; 1 letra minúscula, 1 mayúscula, 1 número y 1 símbolo especial",
+    "passwordRule": "Debe contener al menos 8 caracteres; 1 letra minúscula, 1 mayúscula, 1 número y 1 símbolo especial",
     "passwordNotMatch": "Las contraseñas no coinciden",
     "tenant": "Escoja una organización"
   },

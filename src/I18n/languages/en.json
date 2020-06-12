@@ -42,7 +42,7 @@
     "transactionsInProgress": "Sessions In Progress",
     "statistics": "Statistics"
   },
-	"authentication": {
+  "authentication": {
     "mandatoryTenant": "The Organization is mandatory",
     "unknownTenant": "Unknown Organization!",
     "mandatoryName": "The Name is mandatory",
@@ -78,10 +78,10 @@
     "acceptEula": "I accept the ",
     "eula": "End-User License Agreement",
     "login": "Login",
-		"registerSuccess": "Account created with success! Check your email",
-		"resetPasswordSuccess": "Password updated with success!",
+    "registerSuccess": "Account created with success! Check your email",
+    "resetPasswordSuccess": "Password updated with success!",
     "resetPasswordUnexpectedError": "Cannot reset password",
-    "resetPasswordHashNotValid": "Request no longer valid, request a new password again",    
+    "resetPasswordHashNotValid": "Request no longer valid, request a new password again",
     "verifyAccountTokenNotValid": "Request no longer valid, request a new account validation",
     "haveAlreadyAccount": "Already have an account?",
     "name": "Name",
@@ -90,7 +90,7 @@
     "password": "Password",
     "repeatPassword": "Repeat password",
     "signUp": "Sign Up",
-		"passwordRule": "Must contain 1 letter lowercase and uppercase, 1 number, 1 special char and 8 chars long",
+    "passwordRule": "Must contain 1 letter lowercase and uppercase, 1 number, 1 special char and 8 chars long",
     "passwordNotMatch": "Password does not match",
     "tenant": "Choose an Organization"
   },
