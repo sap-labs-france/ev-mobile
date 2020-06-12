@@ -42,7 +42,7 @@
     "transactionsInProgress": "Sessions In Progress",
     "statistics": "Statistics"
   },
-	"authentication": {
+  "authentication": {
     "mandatoryTenant": "Die Organisation ist notwendig",
     "unknownTenant": "Unbekannte Organisation!",
     "mandatoryName": "Der Name ist notwendig",
@@ -78,9 +78,9 @@
     "acceptEula": "Ich bestätige den ",
     "eula": "Endnutzer-Lizenzvertrag",
     "login": "Anmelden",
-		"registerSuccess": "Konto erfolgreich erstellt, überprüfen Sie bitte Ihre E-Mails!",
-		"resetPasswordSuccess": "Passwort erfolgreich aktualisiert!",
-    "resetPasswordHashNotValid": "Anfrage nicht mehr gültig, fordern Sie erneut ein neues Passwort an",    
+    "registerSuccess": "Konto erfolgreich erstellt, überprüfen Sie bitte Ihre E-Mails!",
+    "resetPasswordSuccess": "Passwort erfolgreich aktualisiert!",
+    "resetPasswordHashNotValid": "Anfrage nicht mehr gültig, fordern Sie erneut ein neues Passwort an",
     "resetPasswordUnexpectedError": "Cannot reset password",
     "verifyAccountTokenNotValid": "Request no longer valid, request a new account validation",
     "haveAlreadyAccount": "Haben Sie bereits ein Konto?",
@@ -90,7 +90,7 @@
     "password": "Passwort",
     "repeatPassword": "Passwort wiederholen",
     "signUp": "Konto erstellen",
-		"passwordRule": "Muss einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl, ein Sonderzeichen und mindestens 8 Zeichen beinhalten.",
+    "passwordRule": "Muss einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl, ein Sonderzeichen und mindestens 8 Zeichen beinhalten.",
     "passwordNotMatch": "Passwörter stimmen nicht miteinander überein",
     "tenant": "Wählen Sie eine Organisation"
   },
