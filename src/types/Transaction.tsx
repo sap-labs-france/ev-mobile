@@ -86,6 +86,10 @@ export default interface Transaction {
 export interface TransactionConsumption {
   date: Date;
   instantWatts: number;
+  instantWattsL1: number;
+  instantWattsL2: number;
+  instantWattsL3: number;
+  instantWattsDC: number;
   instantAmps: number;
   instantAmpsL1: number;
   instantAmpsL2: number;
