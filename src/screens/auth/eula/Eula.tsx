@@ -79,10 +79,10 @@ export default class Eula extends BaseScreen<Props, State> {
         {loading ? (
           <Spinner style={style.spinner} color='white' />
         ) : (
-          <ScrollView style={style.container}>
-            <HTMLView value={eulaTextHtml} />
-          </ScrollView>
-        )}
+            <ScrollView style={style.container}>
+              <HTMLView value={eulaTextHtml} />
+            </ScrollView>
+          )}
       </Container>
     );
   }
