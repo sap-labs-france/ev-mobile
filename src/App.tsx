@@ -58,7 +58,8 @@ const authNavigator = createStackNavigator(
 // Home Stack Navigation
 const homeNavigator = createStackNavigator(
   {
-    Home: { screen: Home }  },
+    Home: { screen: Home }
+  },
   {
     initialRouteName: 'Home',
     headerMode: 'none'
@@ -194,12 +195,12 @@ const chargersNavigator = createStackNavigator(
   }
 );
 
-const createTabBarIcon = (props: { focused: boolean; tintColor?: string; horizontal?: boolean;},
-    type: 'AntDesign' | 'Entypo' | 'EvilIcons' | 'Feather' | 'FontAwesome' | 'FontAwesome5' | 'Foundation' | 'Ionicons' | 'MaterialCommunityIcons' | 'MaterialIcons' | 'Octicons' | 'SimpleLineIcons' | 'Zocial',
-    name: string): React.ReactNode => {
+const createTabBarIcon = (props: { focused: boolean; tintColor?: string; horizontal?: boolean; },
+  type: 'AntDesign' | 'Entypo' | 'EvilIcons' | 'Feather' | 'FontAwesome' | 'FontAwesome5' | 'Foundation' | 'Ionicons' | 'MaterialCommunityIcons' | 'MaterialIcons' | 'Octicons' | 'SimpleLineIcons' | 'Zocial',
+  name: string): React.ReactNode => {
   return <Icon style={{
-      color: props.focused ? commonColor.topTabBarActiveTextColor : commonColor.topTabBarTextColor, paddingBottom: 5, fontSize: 23
-    }} type={type} name={name} />
+    color: props.focused ? commonColor.topTabBarActiveTextColor : commonColor.topTabBarTextColor, paddingBottom: 5, fontSize: 23
+  }} type={type} name={name} />
 };
 
 const transactionHistoryNavigator = createStackNavigator(
@@ -297,7 +298,6 @@ export default class App extends React.Component<Props, State> {
     super.setState(state, callback);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public async componentDidMount() {
     // Get the central server
     this.centralServerProvider = await ProviderFactory.getProvider();
@@ -324,7 +324,6 @@ export default class App extends React.Component<Props, State> {
     await this.notificationManager.stop();
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public render() {
     return (
       <Root>
@@ -334,7 +333,7 @@ export default class App extends React.Component<Props, State> {
             this.navigator = navigatorRef
           }}
           persistNavigationState={persistNavigationState}
-          loadNavigationState={loadNavigationState}/>
+          loadNavigationState={loadNavigationState} />
       </Root>
     );
   }

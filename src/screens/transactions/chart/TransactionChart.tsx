@@ -84,7 +84,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
             connector = charger ? charger.connectors[transactionWithConsumptions.transaction.connectorId - 1] : null;
           }
         }
-      // Get Charger and Transaction
+        // Get Charger and Transaction
       } else if (chargerID) {
         // Get Charger
         charger = await this.getCharger(chargerID);
@@ -127,7 +127,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   };
 
   public getTransactionWithConsumptions = async (transactionID: number):
-      Promise<{ transaction: Transaction; values: Consumption[], consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[] }> => {
+    Promise<{ transaction: Transaction; values: Consumption[], consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[] }> => {
     try {
       // Active Transaction?
       if (transactionID) {
@@ -316,68 +316,68 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       loading ? (
         <Spinner style={style.spinner} />
       ) : (
-        <View style={style.container}>
-          <HeaderComponent
-            navigation={this.props.navigation}
-            title={charger ? charger.id : I18n.t('connector.unknown')}
-            subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
-            leftAction={() => this.onBack()}
-            leftActionIcon={'navigate-before'}
-            rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
-            rightActionIcon={'menu'}
-          />
-          {showTransactionDetails && transaction && (
-            <TransactionHeaderComponent navigation={navigation} transaction={transaction}
-              isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} displayNavigationIcon={false} />
-          )}
-          {transaction && consumptionValues && consumptionValues.length > 1 && canDisplayTransaction ? (
-            <LineChart
-              style={showTransactionDetails && transaction ? style.chartWithHeader : style.chart}
-              data={chartDefinition.data}
-              chartDescription={{ text: '' }}
-              legend={{
-                enabled: true,
-                textSize: scale(8),
-                textColor: processColor(commonColor.brandPrimaryDark)
-              }}
-              marker={{
-                enabled: true,
-                markerColor: processColor(commonColor.brandPrimaryDark),
-                textSize: scale(12),
-                textColor: processColor(commonColor.inverseTextColor)
-              }}
-              xAxis={chartDefinition.xAxis}
-              yAxis={chartDefinition.yAxis}
-              autoScaleMinMaxEnabled={false}
-              animation={{
-                durationX: 1000,
-                durationY: 1000,
-                easingY: 'EaseInOutQuart'
-              }}
-              drawGridBackground={false}
-              drawBorders={false}
-              touchEnabled={true}
-              dragEnabled={true}
-              scaleEnabled={false}
-              scaleXEnabled={true}
-              scaleYEnabled={false}
-              pinchZoom={true}
-              doubleTapToZoomEnabled={false}
-              dragDecelerationEnabled={true}
-              dragDecelerationFrictionCoef={0.99}
-              keepPositionOnRotation={false}
+          <View style={style.container}>
+            <HeaderComponent
+              navigation={this.props.navigation}
+              title={charger ? charger.id : I18n.t('connector.unknown')}
+              subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
+              leftAction={() => this.onBack()}
+              leftActionIcon={'navigate-before'}
+              rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+              rightActionIcon={'menu'}
             />
-          ) : (
-            transaction || (connector && connector.currentTransactionID) ?
-              canDisplayTransaction ?
-                <Text style={style.notData}>{I18n.t('details.noData')}</Text>
-              :
-                <Text style={style.notData}>{I18n.t('details.notAuthorized')}</Text>
-            :
-              <Text style={style.notData}>{I18n.t('details.noSessionInProgress')}</Text>
-          )}
-        </View>
-      )
+            {showTransactionDetails && transaction && (
+              <TransactionHeaderComponent navigation={navigation} transaction={transaction}
+                isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} displayNavigationIcon={false} />
+            )}
+            {transaction && consumptionValues && consumptionValues.length > 1 && canDisplayTransaction ? (
+              <LineChart
+                style={showTransactionDetails && transaction ? style.chartWithHeader : style.chart}
+                data={chartDefinition.data}
+                chartDescription={{ text: '' }}
+                legend={{
+                  enabled: true,
+                  textSize: scale(8),
+                  textColor: processColor(commonColor.brandPrimaryDark)
+                }}
+                marker={{
+                  enabled: true,
+                  markerColor: processColor(commonColor.brandPrimaryDark),
+                  textSize: scale(12),
+                  textColor: processColor(commonColor.inverseTextColor)
+                }}
+                xAxis={chartDefinition.xAxis}
+                yAxis={chartDefinition.yAxis}
+                autoScaleMinMaxEnabled={false}
+                animation={{
+                  durationX: 1000,
+                  durationY: 1000,
+                  easingY: 'EaseInOutQuart'
+                }}
+                drawGridBackground={false}
+                drawBorders={false}
+                touchEnabled={true}
+                dragEnabled={true}
+                scaleEnabled={false}
+                scaleXEnabled={true}
+                scaleYEnabled={false}
+                pinchZoom={true}
+                doubleTapToZoomEnabled={false}
+                dragDecelerationEnabled={true}
+                dragDecelerationFrictionCoef={0.99}
+                keepPositionOnRotation={false}
+              />
+            ) : (
+                transaction || (connector && connector.currentTransactionID) ?
+                  canDisplayTransaction ?
+                    <Text style={style.notData}>{I18n.t('details.noData')}</Text>
+                    :
+                    <Text style={style.notData}>{I18n.t('details.notAuthorized')}</Text>
+                  :
+                  <Text style={style.notData}>{I18n.t('details.noSessionInProgress')}</Text>
+              )}
+          </View>
+        )
     );
   }
 }

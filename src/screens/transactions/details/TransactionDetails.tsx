@@ -173,11 +173,11 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         {(isAdmin || isSiteAdmin) && <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text>}
       </View>
     ) : (
-      <View style={style.columnContainer}>
-        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
-        <Text style={[style.label, style.disabled]}>-</Text>
-      </View>
-    );
+        <View style={style.columnContainer}>
+          <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
+          <Text style={[style.label, style.disabled]}>-</Text>
+        </View>
+      );
   };
 
   public renderPrice = (style: any) => {
@@ -235,11 +235,11 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         <Text style={[style.subLabel, style.info]}>(%)</Text>
       </View>
     ) : (
-      <View style={style.columnContainer}>
-        <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.disabled]} />
-        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
-      </View>
-    );
+        <View style={style.columnContainer}>
+          <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.disabled]} />
+          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+        </View>
+      );
   };
 
   public onBack = () => {
@@ -259,43 +259,43 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       loading ? (
         <Spinner style={style.spinner} />
       ) : (
-        <Container style={style.container}>
-          <HeaderComponent
-            navigation={this.props.navigation}
-            title={transaction ? transaction.chargeBoxID : I18n.t('connector.unknown')}
-            subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
-            leftAction={() => this.onBack()}
-            leftActionIcon={'navigate-before'}
-            rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
-            rightActionIcon={'menu'}
-          />
-          {/* Site Image */}
-          <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
-          <View style={style.headerContent}>
-            <View style={style.headerRowContainer}>
-              <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format('LLL') : ''}</Text>
-              <Text style={style.subHeaderName}>({transaction ? moment(new Date(transaction.stop.timestamp)).format('LLL') : ''})</Text>
-              {(transaction.userID !== transaction.stop.userID) &&
-                <Text style={style.subSubHeaderName}>({I18n.t('details.stoppedBy')} {Utils.buildUserName(transaction.stop.user)})</Text>
-              }
+          <Container style={style.container}>
+            <HeaderComponent
+              navigation={this.props.navigation}
+              title={transaction ? transaction.chargeBoxID : I18n.t('connector.unknown')}
+              subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
+              leftAction={() => this.onBack()}
+              leftActionIcon={'navigate-before'}
+              rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+              rightActionIcon={'menu'}
+            />
+            {/* Site Image */}
+            <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
+            <View style={style.headerContent}>
+              <View style={style.headerRowContainer}>
+                <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format('LLL') : ''}</Text>
+                <Text style={style.subHeaderName}>({transaction ? moment(new Date(transaction.stop.timestamp)).format('LLL') : ''})</Text>
+                {(transaction.userID !== transaction.stop.userID) &&
+                  <Text style={style.subSubHeaderName}>({I18n.t('details.stoppedBy')} {Utils.buildUserName(transaction.stop.user)})</Text>
+                }
+              </View>
             </View>
-          </View>
-          <ScrollView contentContainerStyle={style.scrollViewContainer}>
-            <View style={style.rowContainer}>
-              {this.renderUserInfo(style)}
-              {this.renderTotalConsumption(style)}
-            </View>
-            <View style={style.rowContainer}>
-              {this.renderElapsedTime(style)}
-              {this.renderInactivity(style)}
-            </View>
-            <View style={style.rowContainer}>
-              {this.renderBatteryLevel(style)}
-              {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
-            </View>
-          </ScrollView>
-        </Container>
-      )
+            <ScrollView contentContainerStyle={style.scrollViewContainer}>
+              <View style={style.rowContainer}>
+                {this.renderUserInfo(style)}
+                {this.renderTotalConsumption(style)}
+              </View>
+              <View style={style.rowContainer}>
+                {this.renderElapsedTime(style)}
+                {this.renderInactivity(style)}
+              </View>
+              <View style={style.rowContainer}>
+                {this.renderBatteryLevel(style)}
+                {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
+              </View>
+            </ScrollView>
+          </Container>
+        )
     );
   }
 }

@@ -14,7 +14,7 @@ export interface Props extends BaseProps {
 }
 
 interface State {
-  i18nLocale?: string;
+  i18nLanguage?: string;
   loading?: boolean;
   eulaTextHtml?: string;
 }
@@ -27,7 +27,7 @@ export default class Eula extends BaseScreen<Props, State> {
     super(props);
     this.state = {
       eulaTextHtml: '',
-      i18nLocale: I18n.currentLocale().substr(0, 2),
+      i18nLanguage: Utils.getLanguageFromLocale(I18n.currentLocale()),
       loading: true,
     };
   }
@@ -42,10 +42,10 @@ export default class Eula extends BaseScreen<Props, State> {
   };
 
   public loadEndUserLicenseAgreement = async () => {
-    const { i18nLocale } = this.state;
+    const { i18nLanguage: i18nLanguage } = this.state;
     try {
       const result: any = await this.centralServerProvider.getEndUserLicenseAgreement({
-        Language: i18nLocale
+        Language: i18nLanguage
       });
       this.setState({
         loading: false,

@@ -1,1 +1,3 @@
-export default class Configuration {}
+export default class Configuration {
+  public static isServerLocalePreferred: boolean = false;
+}

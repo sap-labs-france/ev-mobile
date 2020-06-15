@@ -4,7 +4,6 @@ import { I18nManager as I18nReactNativeManager } from 'react-native';
 import * as RNLocalize from 'react-native-localize';
 
 import Constants from '../utils/Constants';
-import Utils from '../utils/Utils';
 import deJsonLanguage from './languages/de.json';
 import enJsonLanguage from './languages/en.json';
 import esJsonLanguage from './languages/es.json';
@@ -42,15 +41,9 @@ export default class I18nManager {
     moment.locale(languageTag);
   }
 
-  public static switchLocale(locale: string, currency: string) {
-    if (locale) {
-      return I18nManager.switchLanguage(Utils.getLanguageFromLocale(locale), currency);
-    }
-  }
-
   public static switchLanguage(language: string, currency: string) {
     // Supported languages?
-    if (language && Constants.SUPPORTED_LANGUAGES.includes(language)) {
+    if (Constants.SUPPORTED_LANGUAGES.includes(language)) {
       i18n.locale = language;
       moment.locale(language);
     }

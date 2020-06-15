@@ -29,7 +29,7 @@ export default class SecuredStorage {
     await RNSecureStorage.set(
       Constants.KEY_NAVIGATION_STATE,
       JSON.stringify({ key: navigationID, navigationState }),
-      { accessible: ACCESSIBLE.WHEN_UNLOCKED}
+      { accessible: ACCESSIBLE.WHEN_UNLOCKED }
     );
   }
 

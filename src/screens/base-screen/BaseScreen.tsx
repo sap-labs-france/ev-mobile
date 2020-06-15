@@ -92,5 +92,5 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   }
 
   // tslint:disable-next-line: no-empty
-  public async componentDidBlur() {}
+  public async componentDidBlur() { }
 }
