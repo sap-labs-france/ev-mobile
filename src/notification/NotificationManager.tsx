@@ -28,7 +28,7 @@ export default class NotificationManager {
     if (!NotificationManager.instance) {
       NotificationManager.instance = new NotificationManager();
     }
-    return this.instance;
+    return NotificationManager.instance;
   }
 
   public setCentralServerProvider(centralServerProvider: CentralServerProvider) {
