@@ -148,7 +148,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
-            <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
+            <AuthHeader navigation={this.props.navigation} tenantName={tenantName} />
             <Form style={style.form}>
               <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
                 <Icon active={true} name='mail' style={style.inputIcon} />
@@ -175,10 +175,10 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
               {loading || !captcha ? (
                 <Spinner style={style.spinner} color='white' />
               ) : (
-                <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.retrievePassword()}>
-                  <TextRN style={style.buttonText}>{I18n.t('authentication.retrievePassword')}</TextRN>
-                </Button>
-              )}
+                  <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.retrievePassword()}>
+                    <TextRN style={style.buttonText}>{I18n.t('authentication.retrievePassword')}</TextRN>
+                  </Button>
+                )}
             </Form>
           </KeyboardAvoidingView>
           {captchaSiteKey && captchaBaseUrl && (
