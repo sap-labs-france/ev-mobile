@@ -10,7 +10,7 @@ import Message from '../utils/Message';
 import Utils from '../utils/Utils';
 
 export default class NotificationManager {
-  private static notificationManager: NotificationManager;
+  private static instance: NotificationManager;
   private token: string;
   private navigator: NavigationContainerComponent;
   private removeNotificationDisplayedListener: () => any;
@@ -21,11 +21,14 @@ export default class NotificationManager {
   private centralServerProvider: CentralServerProvider;
   private lastNotification: NotificationOpen
 
+  private constructor() {
+  }
+
   public static getInstance(): NotificationManager {
-    if (!this.notificationManager) {
-      this.notificationManager = new NotificationManager();
+    if (!NotificationManager.instance) {
+      NotificationManager.instance = new NotificationManager();
     }
-    return this.notificationManager;
+    return NotificationManager.instance;
   }
 
   public setCentralServerProvider(centralServerProvider: CentralServerProvider) {
@@ -98,7 +101,7 @@ export default class NotificationManager {
       // Do nothing
     });
     // Token has changed
-     this.removeTokenRefreshListener = firebase.messaging().onTokenRefresh(async (newFcmToken) => {
+    this.removeTokenRefreshListener = firebase.messaging().onTokenRefresh(async (newFcmToken) => {
       // Process your token as required
       this.token = newFcmToken;
       try {
@@ -148,7 +151,7 @@ export default class NotificationManager {
     // No: meaning the user got the notif and clicked on it, then navigate to the right screen
     // User must be logged and Navigation available
     if (!this.centralServerProvider.isUserConnectionValid() || !this.navigator) {
-        // Process it later
+      // Process it later
       this.lastNotification = notificationOpen;
       return false;
     }

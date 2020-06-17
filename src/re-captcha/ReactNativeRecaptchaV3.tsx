@@ -27,32 +27,32 @@ const recaptchaHtml = `
 `;
 
 interface Props {
-    url: string;
-    siteKey: string;
-    action: string;
-    onHandleToken?: (token: string) => void;
+  url: string;
+  siteKey: string;
+  action: string;
+  onHandleToken?: (token: string) => void;
 }
 
 class ReactNativeRecaptchaV3 extends PureComponent<Props> {
-    public static defaultProps = {
-        leftActionIconType: 'MaterialIcons',
-        rightActionIconType: 'MaterialIcons'
-    };
+  public static defaultProps = {
+    leftActionIconType: 'MaterialIcons',
+    rightActionIconType: 'MaterialIcons'
+  };
 
-    public render() {
-        const { onHandleToken, url, siteKey, action } = this.props;
-        const recaptchaHtmlWithKey = recaptchaHtml.replace(/SITEKEY/g, siteKey).replace(/ACTION/g, action);
-        return (
-            <WebView
-                originWhitelist={['*']}
-                style={{ width: 0, height: 0, backgroundColor: 'transparent' }}
-                startInLoadingState={false}
-                javaScriptEnabled={true}
-                source={{ html: recaptchaHtmlWithKey, baseUrl: url }}
-                onMessage={event => onHandleToken(event.nativeEvent.data)}
-            />
-        );
-    }
+  public render() {
+    const { onHandleToken, url, siteKey, action } = this.props;
+    const recaptchaHtmlWithKey = recaptchaHtml.replace(/SITEKEY/g, siteKey).replace(/ACTION/g, action);
+    return (
+      <WebView
+        originWhitelist={['*']}
+        style={{ width: 0, height: 0, backgroundColor: 'transparent' }}
+        startInLoadingState={false}
+        javaScriptEnabled={true}
+        source={{ html: recaptchaHtmlWithKey, baseUrl: url }}
+        onMessage={event => onHandleToken(event.nativeEvent.data)}
+      />
+    );
+  }
 }
 
 export default ReactNativeRecaptchaV3;

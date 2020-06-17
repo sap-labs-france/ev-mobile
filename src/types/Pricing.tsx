@@ -5,5 +5,5 @@ export class PricedConsumption {
     readonly cumulatedAmount: number,
     readonly roundedAmount: number,
     readonly currencyCode: string,
-    readonly pricingSource: string) {}
+    readonly pricingSource: string) { }
 }

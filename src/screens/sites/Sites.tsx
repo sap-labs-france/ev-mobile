@@ -151,17 +151,17 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           {loading ? (
             <Spinner style={style.spinner} />
           ) : (
-            <FlatList
-              data={this.state.sites}
-              renderItem={({ item }) => <SiteComponent site={item} navigation={this.props.navigation} />}
-              keyExtractor={(item) => item.id}
-              refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-              onEndReached={this.onEndScroll}
-              onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('sites.noSites')} />}
-              ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-            />
-          )}
+              <FlatList
+                data={this.state.sites}
+                renderItem={({ item }) => <SiteComponent site={item} navigation={this.props.navigation} />}
+                keyExtractor={(item) => item.id}
+                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+                onEndReached={this.onEndScroll}
+                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('sites.noSites')} />}
+                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+              />
+            )}
         </View>
       </Container>
     );

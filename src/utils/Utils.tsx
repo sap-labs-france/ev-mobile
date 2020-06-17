@@ -69,7 +69,7 @@ export default class Utils {
   }
 
   public static getParamFromNavigation(navigation: NavigationScreenProp<NavigationState, NavigationParams>,
-      name: string, defaultValue: string): string {
+    name: string, defaultValue: string): string {
     // Has param object?
     if (!navigation.state.params) {
       return defaultValue;
@@ -82,30 +82,41 @@ export default class Utils {
     return navigation.state.params[name];
   }
 
-  public static getDefaultLocale(): string {
-    let deviceLanguage = Platform.OS === 'ios' ?
-      NativeModules.SettingsManager.settings.AppleLocale :
-      NativeModules.I18nManager.localeIdentifier;
-    // Filter only on supported languages
-    const shortDeviceLanguage = deviceLanguage ? deviceLanguage.substring(0, 2) : null;
-    // Default
-    if (!shortDeviceLanguage || (shortDeviceLanguage !== 'en' && shortDeviceLanguage !== 'de' && shortDeviceLanguage !== 'fr' && shortDeviceLanguage !== 'es')) {
-      deviceLanguage = 'en-gb';
-    }
-    return deviceLanguage;
-  }
-
-  public static getDefaultLanguage(): string {
-    return Utils.getDefaultLocale().substring(0, 2);
-  }
-
   public static getLanguageFromLocale(locale: string) {
     let language = null;
-    // Set the User's locale
+    // Set the user's locale
     if (locale && locale.length > 2) {
       language = locale.substring(0, 2);
     }
     return language;
+  }
+
+  private static getDeviceLocale(): string {
+    return Platform.OS === 'ios' ?
+      NativeModules.SettingsManager.settings.AppleLocale :
+      NativeModules.I18nManager.localeIdentifier;
+  }
+
+  private static getDeviceLanguage(): string {
+    return Utils.getLanguageFromLocale(Utils.getDeviceLocale());
+  }
+
+  public static getDeviceDefaultSupportedLocale(): string {
+    const deviceLocale = Utils.getDeviceLocale();
+    // Filter only on supported locales
+    if (Constants.SUPPORTED_LOCALES.includes(deviceLocale)) {
+      return deviceLocale;
+    }
+    return Constants.DEFAULT_LOCALE;
+  }
+
+  public static getDeviceDefaultSupportedLanguage(): string {
+    const deviceLanguage = Utils.getDeviceLanguage();
+    // Filter only on supported languages
+    if (Constants.SUPPORTED_LANGUAGES.includes(deviceLanguage)) {
+      return deviceLanguage;
+    }
+    return Constants.DEFAULT_LANGUAGE;
   }
 
   public static formatDuration(durationSecs: number): string {
@@ -163,7 +174,7 @@ export default class Utils {
   }
 
   public static async handleHttpUnexpectedError(centralServerProvider: CentralServerProvider,
-      error: RequestError, defaultErrorMessage: string, navigation?: NavigationScreenProp<NavigationState, NavigationParams>, fctRefresh?: () => void) {
+    error: RequestError, defaultErrorMessage: string, navigation?: NavigationScreenProp<NavigationState, NavigationParams>, fctRefresh?: () => void) {
     // Override
     fctRefresh = () => {
       setTimeout(() => fctRefresh, 2000);

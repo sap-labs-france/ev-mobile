@@ -154,7 +154,7 @@ export default class SignUp extends BaseScreen<Props, State> {
         // Loading
         this.setState({ loading: true });
         // Register
-        await this.centralServerProvider.register(tenantSubDomain, name, firstName, email, { password, repeatPassword }, eula, captcha);
+        await this.centralServerProvider.register(tenantSubDomain, name, firstName, email, Utils.getDeviceDefaultSupportedLocale(), { password, repeatPassword }, eula, captcha);
         // Reset
         this.setState({ loading: false });
         // Show
@@ -216,7 +216,7 @@ export default class SignUp extends BaseScreen<Props, State> {
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
-            <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
+            <AuthHeader navigation={this.props.navigation} tenantName={tenantName} />
             <Form style={style.form}>
               <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
                 <Icon active={true} name='person' style={style.inputIcon} />
@@ -356,10 +356,10 @@ export default class SignUp extends BaseScreen<Props, State> {
               {loading || (!captcha && this.state.eula) ? (
                 <Spinner style={style.spinner} color='white' />
               ) : (
-                <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.signUp()}>
-                  <TextRN style={style.buttonText}>{I18n.t('authentication.signUp')}</TextRN>
-                </Button>
-              )}
+                  <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.signUp()}>
+                    <TextRN style={style.buttonText}>{I18n.t('authentication.signUp')}</TextRN>
+                  </Button>
+                )}
             </Form>
           </KeyboardAvoidingView>
           {this.state.eula && captchaSiteKey && captchaBaseUrl && (

@@ -85,7 +85,7 @@ export default class TransactionInProgressComponent extends React.Component<Prop
               </View>
             </View>
             <View style={style.transactionContent}>
-            <View style={style.columnContainer}>
+              <View style={style.columnContainer}>
                 <Icon type='MaterialIcons' name='timer' style={[style.icon, style.info]} />
                 <Text style={[style.labelValue, style.info]}>{duration}</Text>
                 <Text style={[style.subLabelValue, style.info]}>(hh:mm)</Text>

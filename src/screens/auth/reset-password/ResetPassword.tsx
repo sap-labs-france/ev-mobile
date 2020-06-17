@@ -63,7 +63,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
     super(props);
     this.state = {
       tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', ''),
-      hash:  Utils.getParamFromNavigation(this.props.navigation, 'hash', null),
+      hash: Utils.getParamFromNavigation(this.props.navigation, 'hash', null),
       tenantName: '',
       password: '',
       repeatPassword: '',
@@ -158,7 +158,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
-            <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
+            <AuthHeader navigation={this.props.navigation} tenantName={tenantName} />
             <Form style={style.form}>
               <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
                 <Icon active={true} name='unlock' style={style.inputIcon} />
@@ -210,11 +210,11 @@ export default class ResetPassword extends BaseScreen<Props, State> {
               {loading ? (
                 <Spinner style={style.spinner} color='white' />
               ) : (
-                <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.resetPassword()}>
-                  <TextRN style={style.buttonText}>{I18n.t('authentication.resetPassword')}</TextRN>
-                </Button>
-              )}
-              </Form>
+                  <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.resetPassword()}>
+                    <TextRN style={style.buttonText}>{I18n.t('authentication.resetPassword')}</TextRN>
+                  </Button>
+                )}
+            </Form>
           </KeyboardAvoidingView>
         </ScrollView>
         <Footer style={style.footer}>

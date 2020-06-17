@@ -5,6 +5,7 @@ import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-n
 import { KeyValue } from 'types/Global';
 
 import I18nManager from '../I18n/I18nManager';
+import Configuration from '../config/Configuration';
 import MigrationManager from '../migration/MigrationManager';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
@@ -38,7 +39,7 @@ export default class CentralServerProvider {
   private locale: string = null;
   private tenantSubDomain: string = null;
   private currency: string = null;
-  private siteImages: {id: string; image: string;}[] = [];
+  private siteImages: { id: string; image: string; }[] = [];
   private autoLoginDisabled: boolean = false;
   private notificationManager: NotificationManager;
 
@@ -97,9 +98,9 @@ export default class CentralServerProvider {
         this.decodedToken = jwtDecode(this.token);
         // Build Security Provider
         this.securityProvider = new SecurityProvider(this.decodedToken);
-      } catch (error) {}
+      } catch (error) { }
     }
-    // Adjust the language according the last login info
+    // Adjust the language according the device default
     I18nManager.switchLanguage(this.getUserLanguage(), this.currency);
   }
 
@@ -115,7 +116,6 @@ export default class CentralServerProvider {
     return this.getTenants().find((tenant: Partial<Tenant>) => tenant.subdomain === tenantSubDomain);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public getTenants(): Partial<Tenant>[] {
     if (__DEV__) {
       return [
@@ -138,7 +138,7 @@ export default class CentralServerProvider {
   }
 
   public async triggerAutoLogin(
-      navigation: NavigationScreenProp<NavigationState, NavigationParams>, fctRefresh: any) {
+    navigation: NavigationScreenProp<NavigationState, NavigationParams>, fctRefresh: any) {
     this.debugMethod('triggerAutoLogin');
     try {
       // Force log the user
@@ -207,17 +207,17 @@ export default class CentralServerProvider {
   }
 
   public getUserLocale(): string {
-    if (this.locale) {
+    if (Configuration.isServerLocalePreferred && this.locale && Constants.SUPPORTED_LOCALES.includes(this.locale)) {
       return this.locale;
     }
-    return Utils.getDefaultLocale();
+    return Utils.getDeviceDefaultSupportedLocale();
   }
 
   public getUserLanguage(): string {
-    if (this.locale) {
+    if (Configuration.isServerLocalePreferred && this.locale && Constants.SUPPORTED_LANGUAGES.includes(Utils.getLanguageFromLocale(this.locale))) {
       return Utils.getLanguageFromLocale(this.locale);
     }
-    return Utils.getDefaultLanguage();
+    return Utils.getDeviceDefaultSupportedLanguage();
   }
 
   public getUserPassword(): string {
@@ -287,7 +287,7 @@ export default class CentralServerProvider {
       locale: this.decodedToken.locale,
       currency: this.decodedToken.currency
     });
-    // Adjust the language according the last login info
+    // Adjust the language according the device default
     I18nManager.switchLanguage(this.getUserLanguage(), this.currency);
     try {
       // Save the User's token
@@ -307,8 +307,8 @@ export default class CentralServerProvider {
     this.notificationManager.checkOnHoldNotification();
   }
 
-  public async register(tenantSubDomain: string, name: string, firstName: string, email: string,
-                        passwords: {password: string; repeatPassword: string; }, acceptEula: boolean, captcha: string) {
+  public async register(tenantSubDomain: string, name: string, firstName: string, email: string, locale: string,
+    passwords: { password: string; repeatPassword: string; }, acceptEula: boolean, captcha: string) {
     this.debugMethod('register');
     // Call
     const result = await axios.post(
@@ -319,6 +319,7 @@ export default class CentralServerProvider {
         email,
         firstName,
         name,
+        locale,
         passwords,
         tenant: tenantSubDomain,
       },
@@ -359,7 +360,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async resetPassword(tenantSubDomain: string, hash: string, passwords: {password: string; repeatPassword: string; }) {
+  public async resetPassword(tenantSubDomain: string, hash: string, passwords: { password: string; repeatPassword: string; }) {
     this.debugMethod('resetPassword');
     const result = await axios.post(
       `${this.centralRestServerServiceAuthURL}/Reset`,
@@ -380,7 +381,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${this.centralRestServerServiceAuthURL}/VerifyEmail`, {
       headers: this.buildHeaders(),
-      params:{
+      params: {
         Tenant: tenantSubDomain,
         Email: email,
         VerificationToken: token
@@ -401,7 +402,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async saveUserMobileToken(params: {id: string; mobileToken: string; mobileOS: string}): Promise<ActionResponse> {
+  public async saveUserMobileToken(params: { id: string; mobileToken: string; mobileOS: string }): Promise<ActionResponse> {
     this.debugMethod('saveUserMobileToken');
     // Call
     const result = await axios.put(`${this.centralRestServerServiceSecuredURL}/UpdateUserMobileToken`, params, {
@@ -509,7 +510,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async reset(chargeBoxID: string, type: 'Soft'|'Hard'): Promise<ActionResponse> {
+  public async reset(chargeBoxID: string, type: 'Soft' | 'Hard'): Promise<ActionResponse> {
     this.debugMethod('reset');
     // Call
     const result = await axios.post(
@@ -609,8 +610,8 @@ export default class CentralServerProvider {
         chargeBoxID: id,
         forceUpdateOCPPParamsFromTemplate: false,
       }, {
-        headers: this.buildSecuredHeaders(),
-      }
+      headers: this.buildSecuredHeaders(),
+    }
     );
     return result.data;
   }
@@ -702,8 +703,7 @@ export default class CentralServerProvider {
     }
   }
 
-  // // eslint-disable-next-line class-methods-use-this
-  // _buildOrdering(ordering, queryString) {
+  // public _buildOrdering(ordering, queryString) {
   //   if (ordering && ordering.length) {
   //     if (!queryString.SortFields) {
   //       queryString.SortFields = [];
