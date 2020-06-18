@@ -415,15 +415,15 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getSettings(params: {} = {}): Promise<DataResult<Setting>> {
-    this.debugMethod('getCharger');
-    // Call
-    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/Settings`, {
-      headers: this.buildSecuredHeaders(),
-      params,
-    });
-    return result.data;
-  }
+  // public async getSettings(params: {} = {}): Promise<DataResult<Setting>> {
+  //   this.debugMethod('getCharger');
+  //   // Call
+  //   const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/Settings`, {
+  //     headers: this.buildSecuredHeaders(),
+  //     params,
+  //   });
+  //   return result.data;
+  // }
 
   public async getSites(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Site>> {
     this.debugMethod('getSites');
@@ -454,7 +454,7 @@ export default class CentralServerProvider {
     // Call
     const result = await axios.get(`${this.centralRestServerServiceAuthURL}/EndUserLicenseAgreement`, {
       headers: this.buildHeaders(),
-      params
+      params,
     });
     return result.data;
   }

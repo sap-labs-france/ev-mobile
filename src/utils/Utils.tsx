@@ -85,7 +85,7 @@ export default class Utils {
   public static getLanguageFromLocale(locale: string) {
     let language = null;
     // Set the user's locale
-    if (locale && locale.length > 2) {
+    if (locale && locale.length >= 2) {
       language = locale.substring(0, 2);
     }
     return language;
