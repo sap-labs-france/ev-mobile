@@ -64,7 +64,7 @@
     "accountVerifiedSuccess": "Your account has been activated with success!",
     "accountPending": "Your account is pending! Check your e-mail",
     "activationTokenNotValid": "Your account's activation link is no longer valid",
-    "activationEmailNotValid": "This Email does not exist anymore",
+    "activationEmailNotValid": "This Email does not exist",
     "activationUnexpectedError": "Cannot activate account",
     "loginUnexpectedError": "Cannot login",
     "resetSuccess": "Request accepted! Check your e-mail",
