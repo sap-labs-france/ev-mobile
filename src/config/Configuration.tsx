@@ -19,5 +19,5 @@ export default class Configuration {
     { subdomain: 'slf', name: 'SAP Labs France (prod)' },
     { subdomain: 'slfcah', name: 'SAP Labs France (Charge@Home) (prod)' },
   ];
-  public static isServerLocalePreferred: boolean = false;
+  public static isServerLocalePreferred: boolean = true;
 }
