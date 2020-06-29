@@ -63,10 +63,10 @@ export default interface Transaction {
   currentStateOfCharge: number;
   numberOfMeterValues: number;
   currentInstantWatts: number;
-  currentInstanWattsL1?: number;
-  currentInstanWattsL2?: number;
-  currentInstanWattsL3?: number;
-  currentInstanWattsDC?: number;
+  currentInstantWattsL1?: number;
+  currentInstantWattsL2?: number;
+  currentInstantWattsL3?: number;
+  currentInstantWattsDC?: number;
   currentConsumptionWh?: number;
   currentCumulatedPrice: number;
   currentTotalConsumptionWh: number;
