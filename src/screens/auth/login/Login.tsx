@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { ActionSheet, Button, CheckBox, Footer, Form, Icon, Item, Left, Right, Spinner, Text, View, Fab } from 'native-base';
+import { ActionSheet, Button, CheckBox, Form, Icon, Item, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -462,13 +462,13 @@ export default class Login extends BaseScreen<Props, State> {
                   </View>
                 </View>
                 <View style={modalStyles.modalButtonsContainer}>
-                  <Button style={[modalStyles.modalButton, modalStyles.modalButtonCreate]} full={true} danger={true}
+                  <Button style={[modalStyles.modalButton]} full={true} danger={true}
                       onPress={() => {
                         this.createTenant(this.state.newTenantSubDomain, this.state.newTenantName);
                       }} >
                     <Text style={modalStyles.modalTextButton}>{I18n.t('general.create')}</Text>
                   </Button>
-                  <Button style={[modalStyles.modalButton, modalStyles.modalButtonCancel]} full={true} light={true}
+                  <Button style={[modalStyles.modalButton]} full={true} light={true}
                       onPress={() => {
                         this.setState({ visible: false })
                       }} >

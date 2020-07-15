@@ -66,7 +66,7 @@ const commonStyles = ScaledSheet.create({
     height: '100%',
     marginTop: 12,
     fontSize: '14@s',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
 });
 

@@ -6,7 +6,7 @@ import { DrawerActions } from 'react-navigation-drawer';
 import I18nManager from '../../I18n/I18nManager';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ProviderFactory from '../../provider/ProviderFactory';
-import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from '../../screens/transactions/list/TransactionsHistoryFilters';
+import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from '../../screens/transactions/history/TransactionsHistoryFilters';
 import BaseProps from '../../types/BaseProps';
 import { TransactionDataResult } from '../../types/DataResult';
 import { GlobalFilters } from '../../types/Filter';

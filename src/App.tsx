@@ -3,14 +3,13 @@ import { Icon, Root } from 'native-base';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { NavigationContainer, NavigationContainerComponent, NavigationState, createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator, NavigationContainer, NavigationContainerComponent, NavigationState } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
-
 import computeStyleSheet from './AppStyles';
-import I18nManager from './I18n/I18nManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
+import I18nManager from './I18n/I18nManager';
 import NotificationManager from './notification/NotificationManager';
 import ProviderFactory from './provider/ProviderFactory';
 import Eula from './screens/auth/eula/Eula';
@@ -30,10 +29,11 @@ import Sites from './screens/sites/Sites';
 import Statistics from './screens/statistics/Statistics';
 import TransactionChart from './screens/transactions/chart/TransactionChart';
 import TransactionDetails from './screens/transactions/details/TransactionDetails';
+import TransactionsHistory from './screens/transactions/history/TransactionsHistory';
 import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
-import TransactionsHistory from './screens/transactions/list/TransactionsHistory';
 import commonColor from './theme/variables/commonColor';
 import SecuredStorage from './utils/SecuredStorage';
+
 
 // Init i18n
 I18nManager.initialize();

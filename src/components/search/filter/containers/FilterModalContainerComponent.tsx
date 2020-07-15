@@ -1,7 +1,6 @@
 import I18n from 'i18n-js';
-import { Button, View } from 'native-base';
+import { Button, Text, View } from 'native-base';
 import React from 'react';
-import { Text } from 'react-native';
 import Modal from 'react-native-modal';
 import computeStyleSheet from '../../../../ModalStyles';
 import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
@@ -59,15 +58,15 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
     const { visible } = this.state;
     return (
       <Modal style={style.modalContainer} isVisible={visible} onBackdropPress={() => this.setState({ visible: false })}>
-        <View style={style.modalFiltersContainer}>
+        <View style={style.modalContentContainer}>
           {this.props.children}
         </View>
         <View style={style.modalButtonsContainer}>
+          <Button style={style.modalButton} full={true} light={true} onPress={this.applyFiltersAndNotify} >
+            <Text style={style.modalTextButton}>{I18n.t('general.apply')}</Text>
+          </Button>
           <Button style={style.modalButton} full={true} danger={true} onPress={this.clearFiltersAndNotify} >
             <Text style={style.modalTextButton}>{I18n.t('general.clear')}</Text>
-          </Button>
-          <Button style={style.modalButton} full={true} primary={true} onPress={this.applyFiltersAndNotify} >
-            <Text style={style.modalTextButton}>{I18n.t('general.apply')}</Text>
           </Button>
         </View>
       </Modal>
