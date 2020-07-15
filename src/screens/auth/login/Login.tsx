@@ -33,6 +33,8 @@ interface State {
   errorPassword?: object[];
   errorTenantSubDomain?: object[];
   errorEmail?: object[];
+  errorNewTenantName?: object[];
+  errorNewTenantSubDomain?: object[];
   visible?: boolean;
 }
 
@@ -74,6 +76,20 @@ export default class Login extends BaseScreen<Props, State> {
         }
       }
     }
+  };
+  private formCreateTenantValidationDef = {
+    newTenantSubDomain: {
+      presence: {
+        allowEmpty: false,
+        message: '^' + I18n.t('authentication.mandatoryTenantSubDomain')
+      }
+    },
+    newTenantName: {
+      presence: {
+        allowEmpty: false,
+        message: '^' + I18n.t('authentication.mandatoryTenantName')
+      },
+    },
   };
 
   constructor(props: Props) {
@@ -210,27 +226,31 @@ export default class Login extends BaseScreen<Props, State> {
   }
 
   private createTenant = async (subdomain: string, name: string) => {
-    const foundTenant = this.tenants.find(tenant => tenant.subdomain === subdomain)
-    // Already exists
-    if (foundTenant) {
-      Alert.alert(
-        I18n.t('general.error'),
-        I18n.t('general.tenantExists'),
-        [{ text: I18n.t('general.ok'), style: 'cancel' }],
-        { cancelable: false }
-      );
-    // Add new Tenant and Save
-    } else {
-      this.tenants.push({
-        subdomain,
-        name
-      });
-      // Save
-      await SecuredStorage.saveTenants(this.tenants);
-      // Hide Modal
-      this.setState({
-        visible: false
-      })
+    // Check field
+    const formIsValid = Utils.validateInput(this, this.formCreateTenantValidationDef);
+    if (formIsValid) {
+      const foundTenant = this.tenants.find(tenant => tenant.subdomain === subdomain)
+      // Already exists
+      if (foundTenant) {
+        Alert.alert(
+          I18n.t('general.error'),
+          I18n.t('general.tenantExists'),
+          [{ text: I18n.t('general.ok'), style: 'cancel' }],
+          { cancelable: false }
+        );
+      // Add new Tenant and Save
+      } else {
+        this.tenants.push({
+          subdomain,
+          name
+        });
+        // Save
+        await SecuredStorage.saveTenants(this.tenants);
+        // Hide Modal
+        this.setState({
+          visible: false
+        })
+      }
     }
   };
 
@@ -410,6 +430,14 @@ export default class Login extends BaseScreen<Props, State> {
                       onChangeText={(value) => this.setState({ newTenantSubDomain: value.toLowerCase() })}
                     />
                   </View>
+                  <View style={modalStyles.modalRowError}>
+                    {this.state.errorNewTenantSubDomain &&
+                      this.state.errorNewTenantSubDomain.map((errorMessage, index) => (
+                        <Text style={modalStyles.modalErrorText} key={index}>
+                          {errorMessage}
+                        </Text>
+                      ))}
+                  </View>
                   <View style={modalStyles.modalRow}>
                     <Text style={modalStyles.modalLabel}>{I18n.t('authentication.tenantName')}:</Text>
                     <TextInput
@@ -418,6 +446,14 @@ export default class Login extends BaseScreen<Props, State> {
                       style={modalStyles.modalInputField}
                       onChangeText={(value) => this.setState({ newTenantName: value })}
                     />
+                  </View>
+                  <View style={modalStyles.modalRowError}>
+                    {this.state.errorNewTenantName &&
+                      this.state.errorNewTenantName.map((errorMessage, index) => (
+                        <Text style={modalStyles.modalErrorText} key={index}>
+                          {errorMessage}
+                        </Text>
+                      ))}
                   </View>
                 </View>
                 <View style={modalStyles.modalButtonsContainer}>

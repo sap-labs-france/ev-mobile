@@ -33,6 +33,14 @@ const commonStyles = ScaledSheet.create({
     height: '35@s',
     alignItems: 'center',
   },
+  modalRowError: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+  modalErrorText: {
+    fontSize: '12@s',
+    color: commonColor.brandDangerLight,
+  },
   modalLabel: {
     fontSize: '14@s',
   },

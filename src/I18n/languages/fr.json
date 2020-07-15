@@ -50,6 +50,8 @@
     "statistics": "Statistiques"
   },
   "authentication": {
+    "mandatoryTenantSubDomain": "The Organization subdomain is mandatory",
+    "mandatoryTenantName": "The Organization name is mandatory",
     "mandatoryTenant": "L'organisation est obligatoire",
     "unknownTenant": "Organisation inconnue!",
     "mandatoryName": "Le Nom est obligatoire",
