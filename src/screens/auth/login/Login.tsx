@@ -4,7 +4,7 @@ import React from 'react';
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Modal from 'react-native-modal';
-import ModalSyles from '../../../ModalSyles';
+import ModalStyles from '../../../ModalStyles';
 import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import Tenant from '../../../types/Tenant';
@@ -303,7 +303,7 @@ export default class Login extends BaseScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const modalStyles = ModalSyles();
+    const modalStyles = ModalStyles();
     const navigation = this.props.navigation;
     const { eula, loading, initialLoading, visible } = this.state;
     // Render

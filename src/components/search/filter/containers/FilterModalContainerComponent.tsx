@@ -3,7 +3,7 @@ import { Button, View } from 'native-base';
 import React from 'react';
 import { Text } from 'react-native';
 import Modal from 'react-native-modal';
-import computeStyleSheet from '../../../../ModalSyles';
+import computeStyleSheet from '../../../../ModalStyles';
 import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
 
 export interface Props extends FilterContainerComponentProps {
