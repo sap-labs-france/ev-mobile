@@ -113,7 +113,10 @@ export default class CentralServerProvider {
 
   public async getTenant(tenantSubDomain: string): Promise<Partial<Tenant>> {
     const tenants = await this.getTenants();
-    return tenants.find((tenant: Partial<Tenant>) => tenant.subdomain === tenantSubDomain);
+    if (tenants) {
+      return tenants.find((tenant: Partial<Tenant>) => tenant.subdomain === tenantSubDomain);
+    }
+    return null;
   }
 
   public async getTenants(): Promise<Partial<Tenant>[]> {

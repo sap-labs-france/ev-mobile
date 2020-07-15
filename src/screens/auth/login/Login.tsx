@@ -96,8 +96,6 @@ export default class Login extends BaseScreen<Props, State> {
     await super.componentDidMount();
     // Get Tenants
     this.tenants = await this.centralServerProvider.getTenants();
-    // Lock
-    // Orientation.lockToPortrait();
     // Load User data
     if (!this.state.email || !this.state.tenantSubDomain) {
       const tenantSubDomain = this.centralServerProvider.getUserTenant();
@@ -122,7 +120,7 @@ export default class Login extends BaseScreen<Props, State> {
             this.setState({eula: true}, () => this.login());
           }
         } catch (error) {
-            // Do nothing: user must log on
+          // Do nothing: user must log on
         }
       }
     } else {
@@ -143,9 +141,7 @@ export default class Login extends BaseScreen<Props, State> {
   public login = async () => {
     // Check field
     const formIsValid = Utils.validateInput(this, this.formValidationDef);
-    // Ok?
     if (formIsValid) {
-      // Login
       const { password, email, eula, tenantSubDomain } = this.state;
       try {
         // Loading
@@ -213,6 +209,7 @@ export default class Login extends BaseScreen<Props, State> {
 
   private addTenant = async (subdomain: string, name: string) => {
     const foundTenant = this.tenants.filter(tenant => tenant.subdomain === subdomain)
+    // Already exists
     if (foundTenant) {
       Alert.alert(
         I18n.t('general.error'),
@@ -236,37 +233,44 @@ export default class Login extends BaseScreen<Props, State> {
   };
 
   private deleteTenant = (subdomain: string) => {
-    Alert.alert(
-      I18n.t('general.deleteTenant'),
-      I18n.t('general.deleteTenantConfirm', { name: this.state.tenantName, subDomain: this.state.tenantSubDomain }), [
-        { text: I18n.t('general.no'), style: 'cancel' },
-        { text: I18n.t('general.yes'), onPress: async () => {
-          // Remove from list and Save
-          for (let i = 0; i < this.tenants.length; i++) {
-            const tenant = this.tenants[i];
-            if (tenant.subdomain === subdomain) {
-              // Remove
-              this.tenants.splice(i, 1);
-              // Save
-              await SecuredStorage.saveTenants(this.tenants)
-              // Init
-              this.setState({
-                tenantSubDomain: null,
-                tenantName: I18n.t('authentication.tenant')
-              });
-              break;
+    // Not selected
+    if (!this.state.tenantSubDomain) {
+      Message.showError(I18n.t('authentication.mustSelectTenant'));
+    // Delete
+    } else {
+      Alert.alert(
+        I18n.t('general.deleteTenant'),
+        I18n.t('general.deleteTenantConfirm', { name: this.state.tenantName, subDomain: this.state.tenantSubDomain }), [
+          { text: I18n.t('general.no'), style: 'cancel' },
+          { text: I18n.t('general.yes'), onPress: async () => {
+            // Remove from list and Save
+            for (let i = 0; i < this.tenants.length; i++) {
+              const tenant = this.tenants[i];
+              if (tenant.subdomain === subdomain) {
+                // Remove
+                this.tenants.splice(i, 1);
+                // Save
+                await SecuredStorage.saveTenants(this.tenants)
+                // Init
+                this.setState({
+                  tenantSubDomain: null,
+                  tenantName: I18n.t('authentication.tenant')
+                });
+                break;
+              }
             }
           }
-        }
-      }],
-    );
+        }],
+      );
+    }
   };
 
   public setTenant = async (buttonIndex: number) => {
     // Provided?
     if (buttonIndex !== undefined) {
       // Get stored data
-      const credentials = await SecuredStorage.getUserCredentials(this.tenants[buttonIndex].subdomain);
+      const credentials = await SecuredStorage.getUserCredentials(
+        this.tenants[buttonIndex].subdomain);
       if (credentials) {
         // Set Tenant
         this.setState({
@@ -330,7 +334,7 @@ export default class Login extends BaseScreen<Props, State> {
                 <Button onPress={() => { this.setState({ visible: true , subdomain: null, name: null })}}>
                   <Icon type={'MaterialIcons'} name='add' />
                 </Button>
-                <Button disabled={this.state.tenantName === I18n.t('authentication.tenant') }
+                <Button
                     onPress={() => {
                       this.deleteTenant(this.state.tenantSubDomain);
                     }}>
@@ -342,8 +346,12 @@ export default class Login extends BaseScreen<Props, State> {
                 onPress={() =>
                   ActionSheet.show(
                     {
-                      options: this.tenants.map((tenant) => tenant.name),
-                      title: I18n.t('authentication.tenant')
+                      options: [
+                        ...this.tenants,
+                        { name: I18n.t('general.cancel'), subdomain: '' }
+                      ].map((tenant: Partial<Tenant>) => tenant.name),
+                      title: I18n.t('authentication.tenant'),
+                      cancelButtonIndex: this.tenants.length,
                     },
                     (buttonIndex) => {
                       this.setTenant(buttonIndex);
@@ -355,7 +363,7 @@ export default class Login extends BaseScreen<Props, State> {
               <Modal style ={modalStyles.modalContainer} isVisible={visible}
                   onBackdropPress={() => this.setState({ visible: false })}>
                 <View style ={modalStyles.modalHeaderContainer}>
-                  <TextRN style={modalStyles.modalTextHeader}> {I18n.t('authentication.addtenantName')}</TextRN>
+                  <TextRN style={modalStyles.modalTextHeader}> {I18n.t('authentication.addTenantTitle')}</TextRN>
                 </View>
                 <View style={modalStyles.modalFiltersContainer}>
                   {this.props.children}

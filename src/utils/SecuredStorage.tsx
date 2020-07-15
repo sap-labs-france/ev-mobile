@@ -1,8 +1,8 @@
 import { NavigationState } from 'react-navigation';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
-import { SecuredStorageKey } from 'types/SecuredStorageKeys';
-import Tenant from 'types/Tenant';
 import ProviderFactory from '../provider/ProviderFactory';
+import { SecuredStorageKey } from '../types/SecuredStorageKeys';
+import Tenant from '../types/Tenant';
 import { UserCredentials } from '../types/User';
 
 
@@ -153,7 +153,7 @@ export default class SecuredStorage {
     // Add a key
     await RNSecureStorage.set(
       SecuredStorageKey.TENANTS,
-      JSON.stringify({ tenants }),
+      JSON.stringify(tenants),
       { accessible: ACCESSIBLE.WHEN_UNLOCKED }
     );
   }
