@@ -54,12 +54,6 @@ const commonStyles = ScaledSheet.create({
     alignItems: 'center',
     borderRadius: '5@s',
   },
-  modalButtonCreate: {
-    color: commonColor.buttonDangerColor,
-    backgroundColor: commonColor.buttonDangerBg,
-  },
-  modalButtonCancel: {
-  },
   modalTextButton: {
     height: '100%',
     marginTop: 12,

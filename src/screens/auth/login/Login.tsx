@@ -209,8 +209,8 @@ export default class Login extends BaseScreen<Props, State> {
     this.props.navigation.navigate('AppDrawerNavigator');
   }
 
-  private addTenant = async (subdomain: string, name: string) => {
-    const foundTenant = this.tenants.filter(tenant => tenant.subdomain === subdomain)
+  private createTenant = async (subdomain: string, name: string) => {
+    const foundTenant = this.tenants.find(tenant => tenant.subdomain === subdomain)
     // Already exists
     if (foundTenant) {
       Alert.alert(
@@ -394,7 +394,7 @@ export default class Login extends BaseScreen<Props, State> {
               <Modal style ={modalStyles.modalContainer} isVisible={visible}
                   onBackdropPress={() => this.setState({ visible: false })}>
                 <View style ={modalStyles.modalHeaderContainer}>
-                  <TextRN style={modalStyles.modalTextHeader}>{I18n.t('authentication.addTenantTitle')}</TextRN>
+                  <TextRN style={modalStyles.modalTextHeader}>{I18n.t('authentication.createTenantTitle')}</TextRN>
                 </View>
                 <View style={modalStyles.modalContentContainer}>
                   <View style={modalStyles.modalRow}>
@@ -421,13 +421,13 @@ export default class Login extends BaseScreen<Props, State> {
                   </View>
                 </View>
                 <View style={modalStyles.modalButtonsContainer}>
-                  <Button style={[modalStyles.modalButton, modalStyles.modalButtonCreate]} full={true}
+                  <Button style={[modalStyles.modalButton, modalStyles.modalButtonCreate]} full={true} danger={true}
                       onPress={() => {
-                        this.addTenant(this.state.newTenantSubDomain, this.state.newTenantName);
+                        this.createTenant(this.state.newTenantSubDomain, this.state.newTenantName);
                       }} >
                     <Text style={modalStyles.modalTextButton}>{I18n.t('general.create')}</Text>
                   </Button>
-                  <Button style={[modalStyles.modalButton, modalStyles.modalButtonCancel]} full={true}
+                  <Button style={[modalStyles.modalButton, modalStyles.modalButtonCancel]} full={true} light={true}
                       onPress={() => {
                         this.setState({ visible: false })
                       }} >

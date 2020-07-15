@@ -100,7 +100,7 @@
 		"passwordRule": "Muss einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl, ein Sonderzeichen und mindestens 8 Zeichen beinhalten.",
     "passwordNotMatch": "Passwörter stimmen nicht miteinander überein",
     "tenant": "Wählen Sie eine Organisation",
-    "addTenantTitle": "Organisation Erstellen",
+    "createTenantTitle": "Organisation Erstellen",
     "tenantSubdomain": "Subdomain",
     "tenantName": "Name"
   },

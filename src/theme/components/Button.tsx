@@ -372,10 +372,10 @@ export default (variables /* : * */ = variable) => {
     height: scale(35),
     flexDirection: 'row',
     elevation: 2,
-    shadowColor: platformStyle === PLATFORM.MATERIAL ? variables.brandDark : undefined,
-    shadowOffset: platformStyle === PLATFORM.MATERIAL ? { width: 0, height: 2 } : undefined,
-    shadowOpacity: platformStyle === PLATFORM.MATERIAL ? 0.2 : undefined,
-    shadowRadius: platformStyle === PLATFORM.MATERIAL ? 1.2 : undefined,
+    shadowColor: variables.brandDark,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.2,
     alignItems: 'center',
     justifyContent: 'space-between'
   };
