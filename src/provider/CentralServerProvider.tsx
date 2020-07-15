@@ -111,18 +111,19 @@ export default class CentralServerProvider {
     return this.captchaSiteKey;
   }
 
-  public getTenant(tenantSubDomain: string): Partial<Tenant> {
-    return this.getTenants().find((tenant: Partial<Tenant>) => tenant.subdomain === tenantSubDomain);
+  public async getTenant(tenantSubDomain: string): Promise<Partial<Tenant>> {
+    const tenants = await this.getTenants();
+    return tenants.find((tenant: Partial<Tenant>) => tenant.subdomain === tenantSubDomain);
   }
 
-  public getTenants(): Partial<Tenant>[] {
+  public async getTenants(): Promise<Partial<Tenant>[]> {
     // Get the tenants from the storage first
-    let tenants = SecuredStorage.getTenants();
+    let tenants = await SecuredStorage.getTenants();
     if (!tenants) {
       // Get initial tenants
       tenants = this.getInitialTenants();
       // Save them
-      SecuredStorage.saveTenants(tenants);
+      await SecuredStorage.saveTenants(tenants);
     }
     return tenants;
   }

@@ -95,13 +95,13 @@ export default class Login extends BaseScreen<Props, State> {
   public async componentDidMount() {
     await super.componentDidMount();
     // Get Tenants
-    this.tenants = this.centralServerProvider.getTenants();
+    this.tenants = await this.centralServerProvider.getTenants();
     // Lock
     // Orientation.lockToPortrait();
     // Load User data
     if (!this.state.email || !this.state.tenantSubDomain) {
       const tenantSubDomain = this.centralServerProvider.getUserTenant();
-      const tenant = this.centralServerProvider.getTenant(tenantSubDomain);
+      const tenant = await this.centralServerProvider.getTenant(tenantSubDomain);
       const email = this.centralServerProvider.getUserEmail();
       const password = this.centralServerProvider.getUserPassword();
       // Set
@@ -129,7 +129,8 @@ export default class Login extends BaseScreen<Props, State> {
       // Set Tenant title
       let tenantName = I18n.t('authentication.tenant');
       if (this.state.tenantSubDomain) {
-        tenantName = this.centralServerProvider.getTenant(this.state.tenantSubDomain).name;
+        const tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
+        tenantName = tenant.name;
       }
       // Set
       this.setState({

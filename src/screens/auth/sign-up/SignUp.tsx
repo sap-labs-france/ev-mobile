@@ -131,7 +131,7 @@ export default class SignUp extends BaseScreen<Props, State> {
     // Call parent
     await super.componentDidMount();
     // Init
-    const tenant = this.centralServerProvider.getTenant(this.state.tenantSubDomain);
+    const tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
     this.setState({
       tenantName: tenant ? tenant.name : '',
       captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
