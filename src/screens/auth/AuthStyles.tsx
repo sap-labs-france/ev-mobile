@@ -54,15 +54,21 @@ const commonStyles = ScaledSheet.create({
   },
   appVersionText: {
     color: commonColor.inverseTextColor,
-    marginTop: '-5@s',
     fontSize: '15@s'
+  },
+  appTenant: {
+    color: commonColor.inverseTextColor,
+    marginTop: '20@s',
+    fontSize: '15@s',
+    alignSelf: 'center',
   },
   appTenantName: {
     color: commonColor.inverseTextColor,
     marginTop: '5@s',
-    marginBottom: '10@s',
+    marginBottom: '5@s',
     fontSize: '15@s',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    alignSelf: 'center',
   },
   button: {
     width: '90%',
@@ -141,23 +147,13 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.inverseTextColor,
     textDecorationLine: 'underline'
   },
-  linksButton: {},
-  linksButtonLeft: {
-    alignSelf: 'flex-start',
-    marginLeft: '15@s'
-  },
-  linksButtonRight: {
-    alignSelf: 'flex-end',
-    marginRight: '15@s'
+  linksButton: {
+    alignSelf: 'center',
   },
   linksTextButton: {
-    fontSize: '12@s',
+    fontSize: '13@s',
     fontWeight: 'bold',
-    paddingBottom: '15@s',
     color: commonColor.inverseTextColor
-  },
-  linksTextButtonRight: {
-    textAlign: 'right'
   },
   footer: {
     elevation: 0,

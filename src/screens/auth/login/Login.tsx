@@ -376,6 +376,9 @@ export default class Login extends BaseScreen<Props, State> {
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation}/>
             <Form style={style.form}>
+              <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.newUser()}>
+                <TextRN style={style.linksTextButton}>{I18n.t('authentication.newUser')}</TextRN>
+              </Button>
               <View style={style.iconContainer}>
                 <Button
                   onPress={() => {
@@ -531,6 +534,9 @@ export default class Login extends BaseScreen<Props, State> {
                     {errorMessage}
                   </Text>
                 ))}
+              <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.forgotPassword()}>
+                <TextRN style={[style.linksTextButton, style.linksTextButton]}>{I18n.t('authentication.forgotYourPassword')}</TextRN>
+              </Button>
               <View style={style.eulaContainer}>
                 <CheckBox style={style.eulaCheckbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
                 <Text style={style.eulaText}>
@@ -556,18 +562,6 @@ export default class Login extends BaseScreen<Props, State> {
             </Form>
           </KeyboardAvoidingView>
         </ScrollView>
-        <Footer style={style.footer}>
-          <Left>
-            <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.newUser()}>
-              <TextRN style={style.linksTextButton}>{I18n.t('authentication.newUser')}</TextRN>
-            </Button>
-          </Left>
-          <Right>
-            <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonRight]} onPress={() => this.forgotPassword()}>
-              <TextRN style={[style.linksTextButton, style.linksTextButtonRight]}>{I18n.t('authentication.forgotYourPassword')}</TextRN>
-            </Button>
-          </Right>
-        </Footer>
         {/* <Fab
           active={this.state.active}
           direction="up"
