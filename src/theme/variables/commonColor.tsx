@@ -210,7 +210,7 @@ export class CommonColor {
   public inputGroupBg = transparentBg;
   public placeholderTextColor = borderColor;
   public inputColor = primaryDark;
-  public inputColorPlaceholder = disabledDark;
+  public inputColorPlaceholder = disabledLight;
 
   // Line Height
   public buttonLineHeight = 19;

@@ -41,6 +41,7 @@ export default class Login extends BaseScreen<Props, State> {
   public props: Props;
   private tenants: Partial<Tenant>[];
   private passwordInput: TextInput;
+  private newTenantNameInput: TextInput;
   private formValidationDef = {
     tenantSubDomain: {
       presence: {
@@ -139,6 +140,7 @@ export default class Login extends BaseScreen<Props, State> {
   }
 
   public login = async () => {
+    this.setState({ visible: false })
     // Check field
     const formIsValid = Utils.validateInput(this, this.formValidationDef);
     if (formIsValid) {
@@ -353,8 +355,8 @@ export default class Login extends BaseScreen<Props, State> {
               <View style={style.iconContainer}>
                 <Button
                   onPress={() => {
-                    this.setState({ visible: true , subdomain: null, name: null
-                  })}}>
+                    this.setState({ visible: true, newTenantSubDomain: null, newTenantName: null })
+                  }}>
                   <Icon type={'MaterialIcons'} name='add' />
                 </Button>
                 <Button
@@ -392,32 +394,43 @@ export default class Login extends BaseScreen<Props, State> {
               <Modal style ={modalStyles.modalContainer} isVisible={visible}
                   onBackdropPress={() => this.setState({ visible: false })}>
                 <View style ={modalStyles.modalHeaderContainer}>
-                  <TextRN style={modalStyles.modalTextHeader}> {I18n.t('authentication.addTenantTitle')}</TextRN>
+                  <TextRN style={modalStyles.modalTextHeader}>{I18n.t('authentication.addTenantTitle')}</TextRN>
                 </View>
-                <View style={modalStyles.modalFiltersContainer}>
-                  {this.props.children}
-                  <TextInput
-                    placeholder={I18n.t('authentication.tenantSubdomain')}
-                    placeholderTextColor={commonColor.defaultTextColor}
-                    style={modalStyles.inputFieldModal}
-                    onChangeText={(value) => this.setState({ subdomain: value })}
-                  />
-                  <TextInput
-                    placeholder={I18n.t('authentication.tenantName')}
-                    placeholderTextColor={commonColor.defaultTextColor}
-                    style={modalStyles.inputFieldModal}
-                    onChangeText={(value) => this.setState({ name: value })}
-                  />
+                <View style={modalStyles.modalContentContainer}>
+                  <View style={modalStyles.modalRow}>
+                    <Text style={modalStyles.modalLabel}>{I18n.t('authentication.tenantSubdomain')}:</Text>
+                    <TextInput
+                      ref={(ref: TextInput) => (this.newTenantNameInput = ref)}
+                      autoFocus={true}
+                      autoCapitalize={'none'}
+                      autoCorrect={false}
+                      placeholder={I18n.t('authentication.tenantSubdomain')}
+                      placeholderTextColor={commonColor.inputColorPlaceholder}
+                      style={modalStyles.modalInputField}
+                      onChangeText={(value) => this.setState({ newTenantSubDomain: value.toLowerCase() })}
+                    />
+                  </View>
+                  <View style={modalStyles.modalRow}>
+                    <Text style={modalStyles.modalLabel}>{I18n.t('authentication.tenantName')}:</Text>
+                    <TextInput
+                      placeholder={I18n.t('authentication.tenantName')}
+                      placeholderTextColor={commonColor.inputColorPlaceholder}
+                      style={modalStyles.modalInputField}
+                      onChangeText={(value) => this.setState({ newTenantName: value })}
+                    />
+                  </View>
                 </View>
                 <View style={modalStyles.modalButtonsContainer}>
-                  <Button disabled={!this.state.newTenantSubDomain || !this.state.newTenantName}
-                      style={modalStyles.modalButton} full={true}
+                  <Button style={[modalStyles.modalButton, modalStyles.modalButtonCreate]} full={true}
                       onPress={() => {
                         this.addTenant(this.state.newTenantSubDomain, this.state.newTenantName);
                       }} >
                     <Text style={modalStyles.modalTextButton}>{I18n.t('general.create')}</Text>
                   </Button>
-                  <Button style={modalStyles.modalButton} full={true} danger={true} onPress={() => {this.setState({visible:false})}} >
+                  <Button style={[modalStyles.modalButton, modalStyles.modalButtonCancel]} full={true}
+                      onPress={() => {
+                        this.setState({ visible: false })
+                      }} >
                     <Text style={modalStyles.modalTextButton}>{I18n.t('general.cancel')}</Text>
                   </Button>
                 </View>

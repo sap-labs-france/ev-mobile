@@ -9,43 +9,63 @@ const commonStyles = ScaledSheet.create({
   modalHeaderContainer: {
     flexDirection: 'row',
     width: '100%',
-    height: '35@s',
-    backgroundColor:commonColor.toolbarBtnColor,
+    height: '45@s',
+    backgroundColor: commonColor.headerBgColorLight,
     justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomWidth: '1@s',
+    borderBottomColor: commonColor.brandDisabledLight,
   },
   modalTextHeader:{
     width: '100%',
     textAlign: 'center',
-    fontSize: '20@s',
-    color: commonColor.headerBgColorLight
+    fontSize: '17@s',
   },
-  modalFiltersContainer: {
-    backgroundColor: 'white',
+  modalContentContainer: {
     padding: '15@s',
     justifyContent: 'flex-start',
     borderColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: commonColor.headerBgColorLight,
+  },
+  modalRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: '35@s',
+    alignItems: 'center',
+  },
+  modalLabel: {
+    fontSize: '14@s',
+  },
+  modalInputField: {
+    width: '65%',
+    fontSize: '14@s',
+    color: commonColor.defaultTextColor
   },
   modalButtonsContainer: {
     flexDirection: 'row',
-    width: '100%'
+    justifyContent: 'space-evenly',
+    width: '100%',
+    paddingBottom: 10,
+    backgroundColor: commonColor.headerBgColorLight,
   },
   modalButton: {
     height: '40@s',
-    width: '50%',
-    justifyContent: 'center',
-    alignItems: 'center'
+    width: '40%',
+    alignItems: 'center',
+    borderRadius: '5@s',
+  },
+  modalButtonCreate: {
+    color: commonColor.buttonDangerColor,
+    backgroundColor: commonColor.buttonDangerBg,
+  },
+  modalButtonCancel: {
   },
   modalTextButton: {
-    color: commonColor.inverseTextColor,
     height: '100%',
-    marginTop: '12@s',
-    fontSize: '16@s'
+    marginTop: 12,
+    fontSize: '14@s',
+    fontWeight: 'bold'
   },
-  inputFieldModal: {
-    width: '79%',
-    fontSize: '15@s',
-    color: commonColor.defaultTextColor
-  }
 });
 
 const portraitStyles = {};
