@@ -115,31 +115,37 @@ export default class CentralServerProvider {
     return this.getTenants().find((tenant: Partial<Tenant>) => tenant.subdomain === tenantSubDomain);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public getTenants(): Partial<Tenant>[] {
+    // Get the tenants from the storage first
     let tenants = SecuredStorage.getTenants();
-    if (tenants) {
-      if (__DEV__) {
-        tenants = [
-          { subdomain: 'testcharger', name: 'SAP Labs New Charging Stations Tests' },
-          { subdomain: 'testperf', name: 'SAP Labs Performance Tests' },
-          { subdomain: 'demopricing', name: 'SAP Labs Demo for Pricing' },
-          { subdomain: 'demobilling', name: 'SAP Labs Demo for Billing' },
-          { subdomain: 'slf', name: 'SAP Labs France (prod)' },
-          { subdomain: 'slfcah', name: 'SAP Labs France (Charge@Home) (prod)' }
-        ];
-      }
-      tenants = [
-        { subdomain: 'slf', name: 'SAP Labs France' },
-        { subdomain: 'slfcah', name: 'SAP Labs France (charge@home)' },
-        { subdomain: 'sapse', name: 'SAP SE' },
-        { subdomain: 'sapsecah', name: 'SAP SE (charge@home)' },
-        { subdomain: 'proviridis', name: 'Proviridis' },
-        { subdomain: 'sapbelgium', name: 'SAP Belgium' },
-      ];
+    if (!tenants) {
+      // Get initial tenants
+      tenants = this.getInitialTenants();
+      // Save them
       SecuredStorage.saveTenants(tenants);
     }
     return tenants;
+  }
+
+  public getInitialTenants(): Partial<Tenant>[] {
+    if (__DEV__) {
+      return [
+        { subdomain: 'testcharger', name: 'SAP Labs New Charging Stations Tests' },
+        { subdomain: 'testperf', name: 'SAP Labs Performance Tests' },
+        { subdomain: 'demopricing', name: 'SAP Labs Demo for Pricing' },
+        { subdomain: 'demobilling', name: 'SAP Labs Demo for Billing' },
+        { subdomain: 'slf', name: 'SAP Labs France (prod)' },
+        { subdomain: 'slfcah', name: 'SAP Labs France (Charge@Home) (prod)' }
+      ];
+    }
+    return [
+      { subdomain: 'slf', name: 'SAP Labs France' },
+      { subdomain: 'slfcah', name: 'SAP Labs France (charge@home)' },
+      { subdomain: 'sapse', name: 'SAP SE' },
+      { subdomain: 'sapsecah', name: 'SAP SE (charge@home)' },
+      { subdomain: 'proviridis', name: 'Proviridis' },
+      { subdomain: 'sapbelgium', name: 'SAP Belgium' },
+    ];
   }
 
   public async triggerAutoLogin(

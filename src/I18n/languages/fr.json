@@ -22,7 +22,7 @@
     "exitApp": "Quitter",
     "exitAppConfirm": "Voulez-vous vraiment quitter l'application ?",
     "deleteTenant": "Delete tenant",
-    "deleteTenantConfirm": "Voulez-vous supprimer le tenant: '{{TenantID}}'?",
+    "deleteTenantConfirm": "Voulez-vous supprimer le tenant: '{{name}} ({{subDomain}})'?",
     "noRecordFound": "Pas d'enregistrement trouvé",
     "day": "j",
     "hour": "h",
