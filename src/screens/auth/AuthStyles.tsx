@@ -84,12 +84,13 @@ const commonStyles = ScaledSheet.create({
   },
   inputGroup: {
     height: '40@s',
-    borderRadius: '20@s',
+    width: '90%',
     flexDirection: 'row',
     justifyContent: 'flex-start',
     marginBottom: '10@s',
+    marginLeft: 0,
+    paddingLeft: '10@s',
     backgroundColor: commonColor.inputGroupBg,
-    borderWidth: '0@s',
     borderColor: 'transparent'
   },
   inputIcon: {
@@ -103,13 +104,12 @@ const commonStyles = ScaledSheet.create({
     fontSize: '20@s'
   },
   inputField: {
-    width: '79%',
     fontSize: '15@s',
     color: commonColor.inverseTextColor
   },
   formErrorText: {
     fontSize: '12@s',
-    marginLeft: 30,
+    marginLeft: '20@s',
     color: commonColor.brandDangerLight,
     alignSelf: 'flex-start',
     top: '-5@s'

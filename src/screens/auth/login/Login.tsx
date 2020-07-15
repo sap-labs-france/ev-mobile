@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { ActionSheet, Button, CheckBox, Footer, Form, Icon, Item, Left, Right, Spinner, Text, View } from 'native-base';
+import { ActionSheet, Button, CheckBox, Footer, Form, Icon, Item, Left, Right, Spinner, Text, View, Fab } from 'native-base';
 import React from 'react';
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -20,6 +20,7 @@ export interface Props extends BaseProps {
 }
 
 interface State {
+  active?: boolean;
   eula?: boolean;
   password?: string;
   email?: string;
@@ -43,7 +44,6 @@ export default class Login extends BaseScreen<Props, State> {
   public props: Props;
   private tenants: Partial<Tenant>[];
   private passwordInput: TextInput;
-  private newTenantNameInput: TextInput;
   private formValidationDef = {
     tenantSubDomain: {
       presence: {
@@ -328,6 +328,8 @@ export default class Login extends BaseScreen<Props, State> {
           tenantName: this.tenants[buttonIndex].name
         });
       }
+      // Recompute form
+      Utils.validateInput(this, this.formValidationDef);
     }
   };
 
@@ -392,8 +394,7 @@ export default class Login extends BaseScreen<Props, State> {
                   <Icon type={'MaterialIcons'} name='settings-backup-restore' />
                 </Button>
               </View>
-              <Button
-                rounded={true} block={true} style={style.button}
+              <Button block={true} style={style.button}
                 onPress={() =>
                   ActionSheet.show(
                     {
@@ -477,7 +478,7 @@ export default class Login extends BaseScreen<Props, State> {
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+              <Item inlineLabel={true} style={style.inputGroup}>
                 <Icon active={true} name='mail' style={style.inputIcon} />
                 <TextInput
                   returnKeyType='next'
@@ -501,7 +502,7 @@ export default class Login extends BaseScreen<Props, State> {
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+              <Item inlineLabel={true} style={style.inputGroup}>
                 <Icon active={true} name='unlock' style={[style.inputIcon, style.inputIconLock]} />
                 <TextInput
                   returnKeyType='go'
@@ -544,7 +545,7 @@ export default class Login extends BaseScreen<Props, State> {
               {loading ? (
                 <Spinner style={style.spinner} color='white' />
               ) : (
-                <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.login()}>
+                <Button primary={true} block={true} style={style.button} onPress={() => this.login()}>
                   <TextRN style={style.buttonText}>{I18n.t('authentication.login')}</TextRN>
                 </Button>
               )}
@@ -563,6 +564,24 @@ export default class Login extends BaseScreen<Props, State> {
             </Button>
           </Right>
         </Footer>
+        {/* <Fab
+          active={this.state.active}
+          direction="up"
+          containerStyle={{ }}
+          style={{ backgroundColor: '#5067FF' }}
+          position="bottomRight"
+          onPress={() => this.setState({ active: !this.state.active })}>
+          <Icon name="share" />
+          <Button style={{ backgroundColor: '#34A34F' }}>
+            <Icon name="logo-whatsapp" />
+          </Button>
+          <Button style={{ backgroundColor: '#3B5998' }}>
+            <Icon name="logo-facebook" />
+          </Button>
+          <Button disabled style={{ backgroundColor: '#DD5144' }}>
+            <Icon name="mail" />
+          </Button>
+        </Fab> */}
       </Animatable.View>
     );
   }

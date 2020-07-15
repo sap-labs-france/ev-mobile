@@ -150,7 +150,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
             <Form style={style.form}>
-              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+              <Item inlineLabel={true} style={style.inputGroup}>
                 <Icon active={true} name='mail' style={style.inputIcon} />
                 <TextInput
                   returnKeyType={'next'}
@@ -175,7 +175,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
               {loading || !captcha ? (
                 <Spinner style={style.spinner} color='white' />
               ) : (
-                <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.retrievePassword()}>
+                <Button primary={true} block={true} style={style.button} onPress={() => this.retrievePassword()}>
                   <TextRN style={style.buttonText}>{I18n.t('authentication.retrievePassword')}</TextRN>
                 </Button>
               )}

@@ -218,7 +218,7 @@ export default class SignUp extends BaseScreen<Props, State> {
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
             <Form style={style.form}>
-              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+              <Item inlineLabel={true} style={style.inputGroup}>
                 <Icon active={true} name='person' style={style.inputIcon} />
                 <TextInput
                   onSubmitEditing={() => this.firstNameInput.focus()}
@@ -241,7 +241,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 ))}
 
-              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+              <Item inlineLabel={true} style={style.inputGroup}>
                 <Icon active={true} name='person' style={style.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.firstNameInput = ref)}
@@ -265,7 +265,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 ))}
 
-              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+              <Item inlineLabel={true} style={style.inputGroup}>
                 <Icon active={true} name='mail' style={style.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.emailInput = ref)}
@@ -290,7 +290,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 ))}
 
-              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+              <Item inlineLabel={true} style={style.inputGroup}>
                 <Icon active={true} name='unlock' style={style.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
@@ -314,7 +314,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
+              <Item inlineLabel={true} style={style.inputGroup}>
                 <Icon active={true} name='unlock' style={style.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
@@ -356,7 +356,7 @@ export default class SignUp extends BaseScreen<Props, State> {
               {loading || (!captcha && this.state.eula) ? (
                 <Spinner style={style.spinner} color='white' />
               ) : (
-                <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.signUp()}>
+                <Button primary={true} block={true} style={style.button} onPress={() => this.signUp()}>
                   <TextRN style={style.buttonText}>{I18n.t('authentication.signUp')}</TextRN>
                 </Button>
               )}
