@@ -240,7 +240,7 @@ export default class Login extends BaseScreen<Props, State> {
     } else {
       Alert.alert(
         I18n.t('general.deleteTenant'),
-        I18n.t('general.deleteTenantConfirm', { name: this.state.tenantName, subDomain: this.state.tenantSubDomain }), [
+        I18n.t('general.deleteTenantConfirm', { tenantName: this.state.tenantName }), [
           { text: I18n.t('general.no'), style: 'cancel' },
           { text: I18n.t('general.yes'), onPress: async () => {
             // Remove from list and Save
@@ -263,6 +263,26 @@ export default class Login extends BaseScreen<Props, State> {
         }],
       );
     }
+  };
+
+  private restoreTenants = () => {
+    Alert.alert(
+      I18n.t('general.restoreTenants'),
+      I18n.t('general.restoreTenantsConfirm'), [
+        { text: I18n.t('general.no'), style: 'cancel' },
+        { text: I18n.t('general.yes'), onPress: async () => {
+          // Remove from list and Save
+          this.tenants = this.centralServerProvider.getInitialTenants();
+          // Save
+          await SecuredStorage.saveTenants(this.tenants)
+          // Init
+          this.setState({
+            tenantSubDomain: null,
+            tenantName: I18n.t('authentication.tenant')
+          });
+        }
+      }],
+    );
   };
 
   public setTenant = async (buttonIndex: number) => {
@@ -330,15 +350,24 @@ export default class Login extends BaseScreen<Props, State> {
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation}/>
             <Form style={style.form}>
-              <View style ={style.iconContainer}>
-                <Button onPress={() => { this.setState({ visible: true , subdomain: null, name: null })}}>
+              <View style={style.iconContainer}>
+                <Button
+                  onPress={() => {
+                    this.setState({ visible: true , subdomain: null, name: null
+                  })}}>
                   <Icon type={'MaterialIcons'} name='add' />
                 </Button>
                 <Button
-                    onPress={() => {
-                      this.deleteTenant(this.state.tenantSubDomain);
-                    }}>
+                  onPress={() => {
+                    this.deleteTenant(this.state.tenantSubDomain);
+                  }}>
                   <Icon type={'MaterialIcons'} name='remove' />
+                </Button>
+                <Button
+                  onPress={() => {
+                    this.restoreTenants();
+                  }}>
+                  <Icon type={'MaterialIcons'} name='settings-backup-restore' />
                 </Button>
               </View>
               <Button
