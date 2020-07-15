@@ -3,9 +3,8 @@ import { Button, View } from 'native-base';
 import React from 'react';
 import { Text } from 'react-native';
 import Modal from 'react-native-modal';
-
+import computeStyleSheet from '../../../../ModalSyles';
 import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
-import computeStyleSheet from '../../../../ModalSyleSheet';
 
 export interface Props extends FilterContainerComponentProps {
 }

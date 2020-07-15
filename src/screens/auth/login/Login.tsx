@@ -3,9 +3,8 @@ import { ActionSheet, Button, CheckBox, Footer, Form, Icon, Item, Left, Right, S
 import React from 'react';
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-
 import Modal from 'react-native-modal';
-import ModalSyleSheet from '../../../ModalSyleSheet';
+import ModalSyles from '../../../ModalSyles';
 import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import Tenant from '../../../types/Tenant';
@@ -304,7 +303,7 @@ export default class Login extends BaseScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const modalStyle = ModalSyleSheet();
+    const modalStyles = ModalSyles();
     const navigation = this.props.navigation;
     const { eula, loading, initialLoading, visible } = this.state;
     // Render
@@ -341,31 +340,31 @@ export default class Login extends BaseScreen<Props, State> {
                 }>
                 <TextRN style={style.buttonText}>{this.state.tenantTitle}</TextRN>
               </Button>
-              <Modal style ={modalStyle.modalContainer} isVisible={visible} onBackdropPress={() => this.setState({ visible:false })}>
-                <View style ={modalStyle.modalHeaderContainer}>
-                  <TextRN style={modalStyle.modalTextHeader}> {this.state.addTenantTitle}</TextRN>
+              <Modal style ={modalStyles.modalContainer} isVisible={visible} onBackdropPress={() => this.setState({ visible:false })}>
+                <View style ={modalStyles.modalHeaderContainer}>
+                  <TextRN style={modalStyles.modalTextHeader}> {this.state.addTenantTitle}</TextRN>
                 </View>
-                <View style={modalStyle.modalFiltersContainer}>
+                <View style={modalStyles.modalFiltersContainer}>
                   {this.props.children}
                   <TextInput
                     placeholder={I18n.t('authentication.tenantSubdomain')}
                     placeholderTextColor={commonColor.defaultTextColor}
-                    style={modalStyle.inputFieldModal}
+                    style={modalStyles.inputFieldModal}
                     onChangeText={(TextInputValue) => this.setState({ subdomain: TextInputValue })}
                   />
                   <TextInput
                     placeholder={I18n.t('authentication.tenantName')}
                     placeholderTextColor={commonColor.defaultTextColor}
-                    style={modalStyle.inputFieldModal}
+                    style={modalStyles.inputFieldModal}
                     onChangeText={(TextInputValue) => this.setState({ name: TextInputValue })}
                   />
                 </View>
-                <View style={modalStyle.modalButtonsContainer}>
-                  <Button disabled={!this.state.subdomain || !this.state.name} style={modalStyle.modalButton} full={true}  onPress={() => {this.addTenant(), this.setState({visible:false})}} >
-                    <Text style={modalStyle.modalTextButton}>{I18n.t('general.create')}</Text>
+                <View style={modalStyles.modalButtonsContainer}>
+                  <Button disabled={!this.state.subdomain || !this.state.name} style={modalStyles.modalButton} full={true}  onPress={() => {this.addTenant(), this.setState({visible:false})}} >
+                    <Text style={modalStyles.modalTextButton}>{I18n.t('general.create')}</Text>
                   </Button>
-                  <Button style={modalStyle.modalButton} full={true} danger={true} onPress={() => {this.setState({visible:false})}} >
-                    <Text style={modalStyle.modalTextButton}>{I18n.t('general.cancel')}</Text>
+                  <Button style={modalStyles.modalButton} full={true} danger={true} onPress={() => {this.setState({visible:false})}} >
+                    <Text style={modalStyles.modalTextButton}>{I18n.t('general.cancel')}</Text>
                   </Button>
                 </View>
               </Modal>
