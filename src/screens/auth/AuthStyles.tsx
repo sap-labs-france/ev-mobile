@@ -90,6 +90,7 @@ const commonStyles = ScaledSheet.create({
     marginBottom: '10@s',
     marginLeft: 0,
     paddingLeft: '10@s',
+    paddingRight: '10@s',
     backgroundColor: commonColor.inputGroupBg,
     borderColor: 'transparent'
   },
@@ -97,13 +98,14 @@ const commonStyles = ScaledSheet.create({
     color: commonColor.inverseTextColor,
     alignSelf: 'center',
     textAlign: 'center',
-    width: '11%',
+    width: '25@s',
     fontSize: Platform.OS === 'ios' ? '20@s' : '15@s'
   },
   inputIconLock: {
     fontSize: '20@s'
   },
   inputField: {
+    flex: 1,
     fontSize: '15@s',
     color: commonColor.inverseTextColor
   },
@@ -166,17 +168,7 @@ const commonStyles = ScaledSheet.create({
 
 const portraitStyles = {};
 
-const landscapeStyles = {
-  button: {
-    width: '65%'
-  },
-  inputIcon: {
-    width: '7%'
-  },
-  inputField: {
-    width: '58%'
-  }
-};
+const landscapeStyles = {};
 
 export default function computeStyleSheet(): any {
   return ResponsiveStylesheet.createOriented({

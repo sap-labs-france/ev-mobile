@@ -30,6 +30,7 @@ interface State {
   newTenantName?: string;
   loading?: boolean;
   initialLoading?: boolean;
+  hidePassword?: boolean;
   errorEula?: object[];
   errorPassword?: object[];
   errorTenantSubDomain?: object[];
@@ -102,6 +103,7 @@ export default class Login extends BaseScreen<Props, State> {
       tenantName: I18n.t('authentication.tenant'),
       loading: false,
       visible: false,
+      hidePassword: true,
     };
   }
 
@@ -364,7 +366,7 @@ export default class Login extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyles = ModalStyles();
     const navigation = this.props.navigation;
-    const { eula, loading, initialLoading, visible } = this.state;
+    const { eula, loading, initialLoading, visible, hidePassword } = this.state;
     // Render
     return initialLoading ? (
       <Spinner style={style.spinner} />
@@ -421,7 +423,6 @@ export default class Login extends BaseScreen<Props, State> {
                   <View style={modalStyles.modalRow}>
                     <Text style={modalStyles.modalLabel}>{I18n.t('authentication.tenantSubdomain')}:</Text>
                     <TextInput
-                      ref={(ref: TextInput) => (this.newTenantNameInput = ref)}
                       autoFocus={true}
                       autoCapitalize={'none'}
                       autoCorrect={false}
@@ -516,10 +517,13 @@ export default class Login extends BaseScreen<Props, State> {
                   blurOnSubmit={false}
                   autoCorrect={false}
                   keyboardType={'default'}
-                  secureTextEntry={true}
+                  secureTextEntry={hidePassword}
                   onChangeText={(text) => this.setState({ password: text })}
                   value={this.state.password}
                 />
+                <Icon active={true} name={hidePassword ? 'eye' : 'eye-off'}
+                  onPress={() => this.setState({ hidePassword: !hidePassword })}
+                  style={[style.inputIcon, style.inputIconLock]} />
               </Item>
               {this.state.errorPassword &&
                 this.state.errorPassword.map((errorMessage, index) => (

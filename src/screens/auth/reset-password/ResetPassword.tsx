@@ -26,6 +26,8 @@ interface State {
   errorPassword?: object[];
   errorRepeatPassword?: object[];
   loading?: boolean;
+  hideRepeatPassword?: boolean;
+  hidePassword?: boolean;
 }
 
 export default class ResetPassword extends BaseScreen<Props, State> {
@@ -67,7 +69,9 @@ export default class ResetPassword extends BaseScreen<Props, State> {
       tenantName: '',
       password: '',
       repeatPassword: '',
-      loading: false
+      loading: false,
+      hidePassword: true,
+      hideRepeatPassword: true,
     };
   }
 
@@ -153,7 +157,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { tenantName, loading } = this.state;
+    const { tenantName, loading, hidePassword, hideRepeatPassword } = this.state;
     return (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
@@ -174,8 +178,11 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                   autoCorrect={false}
                   keyboardType={'default'}
                   onChangeText={(text) => this.setState({ password: text })}
-                  secureTextEntry={true}
+                  secureTextEntry={hidePassword}
                 />
+                <Icon active={true} name={hidePassword ? 'eye' : 'eye-off'}
+                  onPress={() => this.setState({ hidePassword: !hidePassword })}
+                  style={[style.inputIcon, style.inputIconLock]} />
               </Item>
               {this.state.errorPassword &&
                 this.state.errorPassword.map((errorMessage, index) => (
@@ -198,8 +205,11 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                   autoCorrect={false}
                   keyboardType={'default'}
                   onChangeText={(text) => this.setState({ repeatPassword: text })}
-                  secureTextEntry={true}
+                  secureTextEntry={hideRepeatPassword}
                 />
+                <Icon active={true} name={hideRepeatPassword ? 'eye' : 'eye-off'}
+                  onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
+                  style={[style.inputIcon, style.inputIconLock]} />
               </Item>
               {this.state.errorRepeatPassword &&
                 this.state.errorRepeatPassword.map((errorMessage, index) => (
