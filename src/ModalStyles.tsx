@@ -4,13 +4,15 @@ import { ScaledSheet } from 'react-native-size-matters';
 import commonColor from './theme/variables/commonColor';
 
 const commonStyles = ScaledSheet.create({
+  modal: {
+  },
   modalContainer: {
+    backgroundColor: commonColor.headerBgColorLight,
   },
   modalHeaderContainer: {
     flexDirection: 'row',
     width: '100%',
     height: '45@s',
-    backgroundColor: commonColor.headerBgColorLight,
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomWidth: '1@s',
@@ -29,7 +31,6 @@ const commonStyles = ScaledSheet.create({
     paddingTop: '5@s',
     paddingBottom: '5@s',
     justifyContent: 'flex-start',
-    backgroundColor: commonColor.headerBgColorLight,
   },
   modalRow: {
     flexDirection: 'row',
@@ -59,7 +60,6 @@ const commonStyles = ScaledSheet.create({
     width: '100%',
     paddingTop: '5@s',
     paddingBottom: '5@s',
-    backgroundColor: commonColor.headerBgColorLight,
     borderBottomLeftRadius: '5@s',
     borderBottomRightRadius: '5@s',
   },

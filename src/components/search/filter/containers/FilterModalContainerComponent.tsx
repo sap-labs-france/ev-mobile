@@ -57,20 +57,22 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
     const style = computeStyleSheet();
     const { visible } = this.state;
     return (
-      <Modal style={style.modalContainer} isVisible={visible} onBackdropPress={() => this.setState({ visible: false })}>
-        <View style ={style.modalHeaderContainer}>
-          <Text style={style.modalTextHeader}>{I18n.t('general.filters')}</Text>
-        </View>
-        <View style={style.modalContentContainer}>
-          {this.props.children}
-        </View>
-        <View style={style.modalButtonsContainer}>
-          <Button style={style.modalButton} full={true} light={true} onPress={this.applyFiltersAndNotify} >
-            <Text style={style.modalTextButton}>{I18n.t('general.apply')}</Text>
-          </Button>
-          <Button style={style.modalButton} full={true} danger={true} onPress={this.clearFiltersAndNotify} >
-            <Text style={style.modalTextButton}>{I18n.t('general.clear')}</Text>
-          </Button>
+      <Modal style={style.modal} isVisible={visible} onBackdropPress={() => this.setState({ visible: false })}>
+        <View style ={style.modalContainer}>
+          <View style ={style.modalHeaderContainer}>
+            <Text style={style.modalTextHeader}>{I18n.t('general.filters')}</Text>
+          </View>
+          <View style={style.modalContentContainer}>
+            {this.props.children}
+          </View>
+          <View style={style.modalButtonsContainer}>
+            <Button style={style.modalButton} full={true} light={true} onPress={this.applyFiltersAndNotify} >
+              <Text style={style.modalTextButton}>{I18n.t('general.apply')}</Text>
+            </Button>
+            <Button style={style.modalButton} full={true} danger={true} onPress={this.clearFiltersAndNotify} >
+              <Text style={style.modalTextButton}>{I18n.t('general.clear')}</Text>
+            </Button>
+          </View>
         </View>
       </Modal>
     );
