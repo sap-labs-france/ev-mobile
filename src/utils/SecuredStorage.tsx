@@ -1,10 +1,10 @@
 import { NavigationState } from 'react-navigation';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
+
 import ProviderFactory from '../provider/ProviderFactory';
 import { SecuredStorageKey } from '../types/SecuredStorageKeys';
 import Tenant from '../types/Tenant';
 import { UserCredentials } from '../types/User';
-
 
 // Generate a new Id for persisting the navigation each time the app is launched first time
 let navigationID: string = '' + new Date().getTime();
