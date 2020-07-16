@@ -159,7 +159,7 @@ export default class SignUp extends BaseScreen<Props, State> {
         // Loading
         this.setState({ loading: true });
         // Register
-        await this.centralServerProvider.register(tenantSubDomain, name, firstName, email, { password, repeatPassword }, eula, captcha);
+        await this.centralServerProvider.register(tenantSubDomain, name, firstName, email, Utils.getDeviceDefaultSupportedLocale(), { password, repeatPassword }, eula, captcha);
         // Reset
         this.setState({ loading: false });
         // Show

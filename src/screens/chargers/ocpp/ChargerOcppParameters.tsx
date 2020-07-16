@@ -121,10 +121,10 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
     const { charger } = this.state;
     Alert.alert
       (I18n.t('chargers.requestConfiguration', { chargeBoxID: charger.id }),
-      I18n.t('chargers.requestConfigurationMessage', { chargeBoxID: charger.id }), [
-      { text: I18n.t('general.yes'), onPress: () => this.requestChargerOcppParameters(charger.id) },
-      { text: I18n.t('general.cancel') }
-    ]);
+        I18n.t('chargers.requestConfigurationMessage', { chargeBoxID: charger.id }), [
+        { text: I18n.t('general.yes'), onPress: () => this.requestChargerOcppParameters(charger.id) },
+        { text: I18n.t('general.cancel') }
+      ]);
   }
 
   public async requestChargerOcppParameters(chargeBoxID: string) {
@@ -169,21 +169,21 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
         {loading ? (
           <Spinner style={style.spinner} />
         ) : (
-          <FlatList
-            data={chargerConfigurationKeyValues}
-            renderItem={({ item, index }) => (
-              <View style={index % 2 ? [style.descriptionContainer, style.rowBackground] : style.descriptionContainer}>
-                <Text style={style.label}>{item.key}</Text>
-                <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
-                  <Text style={style.value}>{item.value}</Text>
-                </ScrollView>
-              </View>
-            )}
-            keyExtractor={(item) => `${item.key}`}
-            refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-            ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noOCPPParameters')} />}
-          />
-        )}
+            <FlatList
+              data={chargerConfigurationKeyValues}
+              renderItem={({ item, index }) => (
+                <View style={index % 2 ? [style.descriptionContainer, style.rowBackground] : style.descriptionContainer}>
+                  <Text style={style.label}>{item.key}</Text>
+                  <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
+                    <Text style={style.value}>{item.value}</Text>
+                  </ScrollView>
+                </View>
+              )}
+              keyExtractor={(item) => `${item.key}`}
+              refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noOCPPParameters')} />}
+            />
+          )}
       </Container>
     );
   }

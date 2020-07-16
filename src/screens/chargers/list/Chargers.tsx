@@ -76,7 +76,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       GlobalFilters.CONNECTOR_TYPES) as string;
     this.setState({
       initialFilters: { connectorStatus, connectorType },
-      filters: { connectorStatus, connectorType}
+      filters: { connectorStatus, connectorType }
     });
   }
 
@@ -95,11 +95,11 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
       if (chargers.count === -1) {
         // Request nbr of records
         const chargersNbrRecordsOnly = await this.centralServerProvider.getChargers({
-            Search: searchText,
-            SiteAreaID: this.siteAreaID,
-            Issuer: true,
-            ConnectorStatus: this.state.filters.connectorStatus
-          }, Constants.ONLY_RECORD_COUNT_PAGING);
+          Search: searchText,
+          SiteAreaID: this.siteAreaID,
+          Issuer: true,
+          ConnectorStatus: this.state.filters.connectorStatus
+        }, Constants.ONLY_RECORD_COUNT_PAGING);
         // Set
         chargers.count = chargersNbrRecordsOnly.count;
       }

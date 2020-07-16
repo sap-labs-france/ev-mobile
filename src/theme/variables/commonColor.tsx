@@ -307,7 +307,7 @@ export class CommonColor {
     }
   }
 
-  constructor() {}
+  constructor() { }
 };
 
 export default new CommonColor();

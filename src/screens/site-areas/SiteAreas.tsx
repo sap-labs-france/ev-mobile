@@ -58,15 +58,15 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public getSiteAreas = async (searchText: string, skip: number, limit: number): Promise<DataResult<SiteArea>> => {
-    let siteAreas:DataResult<SiteArea>;
+    let siteAreas: DataResult<SiteArea>;
     try {
       // Get the Site Areas
       siteAreas = await this.centralServerProvider.getSiteAreas({
-          Search: searchText,
-          SiteID: this.siteID,
-          Issuer: true,
-          WithAvailableChargers: true
-        },
+        Search: searchText,
+        SiteID: this.siteID,
+        Issuer: true,
+        WithAvailableChargers: true
+      },
         { skip, limit }
       );
     } catch (error) {
@@ -151,17 +151,17 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           {loading ? (
             <Spinner style={style.spinner} />
           ) : (
-            <FlatList
-              data={this.state.siteAreas}
-              renderItem={({ item }) => <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />}
-              keyExtractor={(item) => item.id}
-              refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-              onEndReached={this.onEndScroll}
-              onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('siteAreas.noSiteAreas')} />}
-              ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-            />
-          )}
+              <FlatList
+                data={this.state.siteAreas}
+                renderItem={({ item }) => <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />}
+                keyExtractor={(item) => item.id}
+                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+                onEndReached={this.onEndScroll}
+                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('siteAreas.noSiteAreas')} />}
+                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+              />
+            )}
         </View>
       </Container>
     );

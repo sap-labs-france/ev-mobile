@@ -74,8 +74,8 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public refresh = async () => {
-      const { filters } = this.state;
-      // Get the provider
+    const { filters } = this.state;
+    // Get the provider
     const centralServerProvider = await ProviderFactory.getProvider();
     const securityProvider = centralServerProvider.getSecurityProvider();
     // Get the ongoing Transaction stats
@@ -86,7 +86,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
         ...this.state.initialFilters,
         startDateTime: filters.startDateTime ? this.state.initialFilters.startDateTime : new Date(transactionStats.stats.firstTimestamp),
         endDateTime: filters.endDateTime ? this.state.initialFilters.endDateTime : new Date(transactionStats.stats.lastTimestamp),
-    },
+      },
       totalNumberOfSession: transactionStats.stats.count,
       totalConsumptionWattHours: transactionStats.stats.totalConsumptionWattHours,
       totalDurationSecs: transactionStats.stats.totalDurationSecs,
@@ -148,78 +148,80 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
         {loading ? (
           <Spinner style={style.spinner} />
         ) : (
-          <Content style={style.content}>
-            <TransactionsHistoryFilters
-              initialFilters={initialFilters}
-              onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-              ref={(transactionsHistoryFilters: TransactionsHistoryFilters) =>
-                this.setScreenFilters(transactionsHistoryFilters)}
-            />
-            <Card>
-              <CardItem>
-                <Left>
-                  <Icon style={style.cardIcon} type='MaterialIcons' name='history' />
-                  <Body>
-                    <Text style={style.cardText}>{I18n.t('home.numberOfSessions',
-                      { nbrSessions: I18nManager.formatNumber(totalNumberOfSession)})}</Text>
-                    <Text note={true} style={style.cardNote}>{I18n.t('home.numberOfSessionsNote')}</Text>
-                  </Body>
-                </Left>
-              </CardItem>
-            </Card>
-            <Card>
-              <CardItem>
-                <Left>
-                  <Icon style={style.cardIcon} type='FontAwesome' name='bolt' />
-                  <Body>
-                    <Text style={style.cardText}>{I18n.t('home.totalConsumptiom',
-                      { totalConsumptiom: I18nManager.formatNumber(Math.round(totalConsumptionWattHours / 1000))})}</Text>
-                    <Text note={true} style={style.cardNote}>{I18n.t('home.totalConsumptiomNote')}</Text>
-                  </Body>
-                </Left>
-              </CardItem>
-            </Card>
-            <Card>
-              <CardItem>
-                <Left>
-                  <Icon style={style.cardIcon} type='MaterialIcons' name='timer' />
-                  <Body>
-                    <Text style={style.cardText}>{I18n.t('home.totalDuration',
-                      { totalDuration: Utils.formatDuration(totalDurationSecs) })}</Text>
-                    <Text note={true} style={style.cardNote}>{I18n.t('home.totalDurationNote')}</Text>
-                  </Body>
-                </Left>
-              </CardItem>
-            </Card>
-            <Card>
-              <CardItem>
-                <Left>
-                  <Icon style={style.cardIcon} type='MaterialIcons' name='timer-off' />
-                  <Body>
-                    <Text style={style.cardText}>{I18n.t('home.totalInactivity',
-                      { totalInactivity: Utils.formatDuration(totalInactivitySecs),
-                        totalInactivityPercent: I18nManager.formatPercentage((totalInactivitySecs / totalDurationSecs)) })}</Text>
-                    <Text note={true} style={style.cardNote}>{I18n.t('home.totalInactivityNote')}</Text>
-                  </Body>
-                </Left>
-              </CardItem>
-            </Card>
-            { isPricingActive &&
+            <Content style={style.content}>
+              <TransactionsHistoryFilters
+                initialFilters={initialFilters}
+                onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
+                ref={(transactionsHistoryFilters: TransactionsHistoryFilters) =>
+                  this.setScreenFilters(transactionsHistoryFilters)}
+              />
               <Card>
                 <CardItem>
                   <Left>
-                    <Icon style={style.cardIcon} type='FontAwesome' name='money' />
+                    <Icon style={style.cardIcon} type='MaterialIcons' name='history' />
                     <Body>
-                      <Text style={style.cardText}>{I18n.t('home.totalPrice',
-                        { totalPrice: I18nManager.formatCurrency(totalPrice) }) }</Text>
-                      <Text note={true} style={style.cardNote}>{I18n.t('home.totalPriceNote')}</Text>
+                      <Text style={style.cardText}>{I18n.t('home.numberOfSessions',
+                        { nbrSessions: I18nManager.formatNumber(totalNumberOfSession) })}</Text>
+                      <Text note={true} style={style.cardNote}>{I18n.t('home.numberOfSessionsNote')}</Text>
                     </Body>
                   </Left>
                 </CardItem>
               </Card>
-            }
-          </Content>
-        )}
+              <Card>
+                <CardItem>
+                  <Left>
+                    <Icon style={style.cardIcon} type='FontAwesome' name='bolt' />
+                    <Body>
+                      <Text style={style.cardText}>{I18n.t('home.totalConsumptiom',
+                        { totalConsumptiom: I18nManager.formatNumber(Math.round(totalConsumptionWattHours / 1000)) })}</Text>
+                      <Text note={true} style={style.cardNote}>{I18n.t('home.totalConsumptiomNote')}</Text>
+                    </Body>
+                  </Left>
+                </CardItem>
+              </Card>
+              <Card>
+                <CardItem>
+                  <Left>
+                    <Icon style={style.cardIcon} type='MaterialIcons' name='timer' />
+                    <Body>
+                      <Text style={style.cardText}>{I18n.t('home.totalDuration',
+                        { totalDuration: Utils.formatDuration(totalDurationSecs) })}</Text>
+                      <Text note={true} style={style.cardNote}>{I18n.t('home.totalDurationNote')}</Text>
+                    </Body>
+                  </Left>
+                </CardItem>
+              </Card>
+              <Card>
+                <CardItem>
+                  <Left>
+                    <Icon style={style.cardIcon} type='MaterialIcons' name='timer-off' />
+                    <Body>
+                      <Text style={style.cardText}>{I18n.t('home.totalInactivity',
+                        {
+                          totalInactivity: Utils.formatDuration(totalInactivitySecs),
+                          totalInactivityPercent: I18nManager.formatPercentage((totalInactivitySecs / totalDurationSecs))
+                        })}</Text>
+                      <Text note={true} style={style.cardNote}>{I18n.t('home.totalInactivityNote')}</Text>
+                    </Body>
+                  </Left>
+                </CardItem>
+              </Card>
+              {isPricingActive &&
+                <Card>
+                  <CardItem>
+                    <Left>
+                      <Icon style={style.cardIcon} type='FontAwesome' name='money' />
+                      <Body>
+                        <Text style={style.cardText}>{I18n.t('home.totalPrice',
+                          { totalPrice: I18nManager.formatCurrency(totalPrice) })}</Text>
+                        <Text note={true} style={style.cardNote}>{I18n.t('home.totalPriceNote')}</Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                </Card>
+              }
+            </Content>
+          )}
       </Container>
     );
   };

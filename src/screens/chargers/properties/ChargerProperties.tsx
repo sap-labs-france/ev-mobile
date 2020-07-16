@@ -8,7 +8,7 @@ import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation, { ChargingStationCapabilities, OcppCommand } from '../../../types/ChargingStation';
+import ChargingStation, { ChargingStationCapabilities } from '../../../types/ChargingStation';
 import { KeyValue, PropertyDisplay } from '../../../types/Global';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
@@ -81,7 +81,7 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
         if (ocppVendorParameters) {
           const style = computeStyleSheet();
           for (const ocppVendorParameter of ocppVendorParameters) {
-              formatterValues.push(<Text style={style.values}>{`${ocppVendorParameter.key}: ${ocppVendorParameter.value}`}</Text>);
+            formatterValues.push(<Text style={style.values}>{`${ocppVendorParameter.key}: ${ocppVendorParameter.value}`}</Text>);
           }
         }
         return formatterValues;
@@ -181,32 +181,32 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
         {loading ? (
           <Spinner style={style.spinner} />
         ) : (
-          <FlatList
-            data={this.displayedProperties}
-            renderItem={({ item, index }) => (
-              <View style={index % 2 ? [style.descriptionContainer, style.rowBackground] : style.descriptionContainer}>
-                <Text style={style.label}>{I18n.t(item.title)}</Text>
-                {item.formatter && item.value !== '-' ?
-                  item.formatterWithComponents ?
-                    <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValues}>
-                      {item.formatter(item.value)}
-                    </ScrollView>
-                  :
+            <FlatList
+              data={this.displayedProperties}
+              renderItem={({ item, index }) => (
+                <View style={index % 2 ? [style.descriptionContainer, style.rowBackground] : style.descriptionContainer}>
+                  <Text style={style.label}>{I18n.t(item.title)}</Text>
+                  {item.formatter && item.value !== '-' ?
+                    item.formatterWithComponents ?
+                      <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValues}>
+                        {item.formatter(item.value)}
+                      </ScrollView>
+                      :
+                      <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
+                        <Text style={style.value}>{item.formatter(item.value)}</Text>
+                      </ScrollView>
+                    :
                     <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
-                      <Text style={style.value}>{item.formatter(item.value)}</Text>
+                      <Text style={style.value}>{item.value}</Text>
                     </ScrollView>
-                :
-                  <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
-                    <Text style={style.value}>{item.value}</Text>
-                  </ScrollView>
-                }
-              </View>
-            )}
-            keyExtractor={(item) => `${item.key}`}
-            refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-            ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargerParameters')} />}
-          />
-        )}
+                  }
+                </View>
+              )}
+              keyExtractor={(item) => `${item.key}`}
+              refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargerParameters')} />}
+            />
+          )}
       </Container>
     );
   }

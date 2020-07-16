@@ -3,8 +3,16 @@ import { GlobalFilters } from '../types/Filter';
 import SecuredStorage from '../utils/SecuredStorage';
 
 export default class MigrationManager {
+  private static instance: MigrationManager;
+
+  private constructor() {
+  }
+
   public static getInstance(): MigrationManager {
-    return new MigrationManager();
+    if (!MigrationManager.instance) {
+      MigrationManager.instance = new MigrationManager();
+    }
+    return MigrationManager.instance;
   }
 
   public migrate = async () => {
