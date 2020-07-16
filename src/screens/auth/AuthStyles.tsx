@@ -86,7 +86,7 @@ const commonStyles = ScaledSheet.create({
     backgroundColor: commonColor.brandDanger
   },
   fab: {
-    backgroundColor: commonColor.buttonBg
+    backgroundColor: commonColor.brandPrimary
   },
 });
 
