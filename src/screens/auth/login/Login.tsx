@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { ActionSheet, Button, CheckBox, Fab, Form, Icon, Item, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
+import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Modal from 'react-native-modal';
 import computeFormStyleSheet from '../../../FormStyles';
@@ -378,7 +378,7 @@ export default class Login extends BaseScreen<Props, State> {
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation}/>
             <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.newUser()}>
-              <TextRN style={style.linksTextButton}>{I18n.t('authentication.newUser')}</TextRN>
+              <Text style={style.linksTextButton}>{I18n.t('authentication.newUser')}</Text>
             </Button>
             <Form style={formStyle.form}>
               <Button block={true} style={formStyle.button}
@@ -397,13 +397,13 @@ export default class Login extends BaseScreen<Props, State> {
                     }
                   )
                 }>
-                <TextRN style={formStyle.buttonText}>{this.state.tenantName}</TextRN>
+                <Text style={formStyle.buttonText}>{this.state.tenantName}</Text>
               </Button>
               <Modal style ={modalStyle.modal} isVisible={visible}
                   onBackdropPress={() => this.setState({ visible: false })}>
                 <View style ={modalStyle.modalContainer}>
                   <View style ={modalStyle.modalHeaderContainer}>
-                    <TextRN style={modalStyle.modalTextHeader}>{I18n.t('authentication.createTenantTitle')}</TextRN>
+                    <Text style={modalStyle.modalTextHeader}>{I18n.t('authentication.createTenantTitle')}</Text>
                   </View>
                   <View style={modalStyle.modalContentContainer}>
                     <View style={modalStyle.modalRow}>
@@ -472,7 +472,7 @@ export default class Login extends BaseScreen<Props, State> {
                   returnKeyType='next'
                   selectionColor={commonColor.inverseTextColor}
                   placeholder={I18n.t('authentication.email')}
-                  placeholderTextColor={commonColor.placeholderTextColor}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
                   onSubmitEditing={() => this.passwordInput.focus()}
                   style={formStyle.inputField}
                   autoCapitalize='none'
@@ -498,7 +498,7 @@ export default class Login extends BaseScreen<Props, State> {
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
                   onSubmitEditing={() => Keyboard.dismiss()}
                   placeholder={I18n.t('authentication.password')}
-                  placeholderTextColor={commonColor.placeholderTextColor}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
@@ -519,7 +519,7 @@ export default class Login extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.forgotPassword()}>
-                <TextRN style={[style.linksTextButton, style.linksTextButton]}>{I18n.t('authentication.forgotYourPassword')}</TextRN>
+                <Text style={[style.linksTextButton, style.linksTextButton]}>{I18n.t('authentication.forgotYourPassword')}</Text>
               </Button>
               <View style={formStyle.formCheckboxContainer}>
                 <CheckBox style={formStyle.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
@@ -540,7 +540,7 @@ export default class Login extends BaseScreen<Props, State> {
                 <Spinner style={formStyle.spinner} color='white' />
               ) : (
                 <Button primary={true} block={true} style={formStyle.button} onPress={() => this.login()}>
-                  <TextRN style={formStyle.buttonText}>{I18n.t('authentication.login')}</TextRN>
+                  <Text style={formStyle.buttonText}>{I18n.t('authentication.login')}</Text>
                 </Button>
               )}
             </Form>

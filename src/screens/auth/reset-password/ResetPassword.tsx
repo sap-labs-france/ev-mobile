@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Button, Footer, Form, Icon, Item, Left, Spinner, Text } from 'native-base';
 import React from 'react';
-import { Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
 import computeFormStyleSheet from '../../../FormStyles';
@@ -166,14 +166,14 @@ export default class ResetPassword extends BaseScreen<Props, State> {
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
             <Form style={formStyle.form}>
-              <Item inlineLabel={true} rounded={true} style={formStyle.inputGroup}>
+              <Item inlineLabel={true} style={formStyle.inputGroup}>
                 <Icon active={true} name='unlock' style={formStyle.inputIcon} />
                 <TextInput
                   selectionColor={commonColor.inverseTextColor}
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.password')}
-                  placeholderTextColor={commonColor.placeholderTextColor}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
@@ -192,7 +192,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel={true} rounded={true} style={formStyle.inputGroup}>
+              <Item inlineLabel={true} style={formStyle.inputGroup}>
                 <Icon active={true} name='unlock' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
@@ -200,7 +200,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                   onSubmitEditing={() => Keyboard.dismiss()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.repeatPassword')}
-                  placeholderTextColor={commonColor.placeholderTextColor}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
@@ -222,8 +222,8 @@ export default class ResetPassword extends BaseScreen<Props, State> {
               {loading ? (
                 <Spinner style={formStyle.spinner} color='white' />
               ) : (
-                <Button rounded={true} primary={true} block={true} style={formStyle.button} onPress={() => this.resetPassword()}>
-                  <TextRN style={formStyle.buttonText}>{I18n.t('authentication.resetPassword')}</TextRN>
+                <Button primary={true} block={true} style={formStyle.button} onPress={() => this.resetPassword()}>
+                  <Text style={formStyle.buttonText}>{I18n.t('authentication.resetPassword')}</Text>
                 </Button>
               )}
               </Form>
@@ -231,8 +231,9 @@ export default class ResetPassword extends BaseScreen<Props, State> {
         </ScrollView>
         <Footer style={style.footer}>
           <Left>
-            <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.props.navigation.goBack()}>
-              <TextRN style={[style.linksTextButton, style.linksTextButtonLeft]}>{I18n.t('authentication.backLogin')}</TextRN>
+            <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]}
+              onPress={() => this.props.navigation.navigate('Login')}>
+              <Text style={[style.linksTextButton, style.linksTextButtonLeft]}>{I18n.t('authentication.backLogin')}</Text>
             </Button>
           </Left>
         </Footer>

@@ -157,8 +157,8 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
                   returnKeyType={'next'}
                   selectionColor={commonColor.inverseTextColor}
                   placeholder={I18n.t('authentication.email')}
-                  placeholderTextColor={commonColor.placeholderTextColor}
-                  style={style.inputField}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
                   autoCorrect={false}
