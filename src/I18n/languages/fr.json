@@ -11,14 +11,21 @@
     "ok": "Ok",
     "yes": "Oui",
     "no": "Non",
+    "filters": "Filtres",
+    "create": "Créer",
     "clear": "Effacer",
     "close": "Fermer",
     "cancel": "Annuler",
     "apply": "Appliquer",
     "version": "Version",
     "search": "Rechercher",
+    "error": "Erreur",
     "exitApp": "Quitter",
     "exitAppConfirm": "Voulez-vous vraiment quitter l'application ?",
+    "deleteTenant": "Supprimer Organisation",
+    "deleteTenantConfirm": "Voulez-vous vraiment supprimer l'organisation '{{tenantName}}'?",
+    "restoreTenants": "Restaurer Organisations",
+    "restoreTenantsConfirm": "Voulez-vous vraiment restaurer la liste initiale des organisations?",
     "noRecordFound": "Pas d'enregistrement trouvé",
     "day": "j",
     "hour": "h",
@@ -29,6 +36,7 @@
     "onlyMyTransactions": "Mes Sessions",
     "onlyAvailableChargers": "Bornes Disponibles",
     "wrongTenant": "Vous êtes connecté sur la mauvaise organisation",
+    "tenantExists": "L'organisation existe déjà.",
     "createdOn": "Créé le",
     "createdBy": "Créé par",
     "lastChangedOn": "Modifié le",
@@ -43,6 +51,9 @@
     "statistics": "Statistiques"
   },
   "authentication": {
+    "tenantTitle": "Organisation",
+    "mandatoryTenantSubDomain": "The Organization subdomain is mandatory",
+    "mandatoryTenantName": "The Organization name is mandatory",
     "mandatoryTenant": "L'organisation est obligatoire",
     "unknownTenant": "Organisation inconnue!",
     "mandatoryName": "Le Nom est obligatoire",
@@ -92,7 +103,10 @@
     "signUp": "S'enregistrer",
     "passwordRule": "Doit contenir 1 char. minuscule et majuscule, 1 nombre, 1 char. spécial et une longueur minimum de 8",
     "passwordNotMatch": "Les mots de passes ne correspondent pas",
-    "tenant": "Choisir une Organisation"
+    "tenant": "Choisir une Organisation",
+    "createTenantTitle": "Créer une organisation",
+    "tenantSubdomain": "Sous domaine",
+    "tenantName": "Nom"
   },
   "users": {
     "userUnexpectedError": "Impossible de lire l'utilisateur"

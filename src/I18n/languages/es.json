@@ -11,14 +11,21 @@
     "ok": "Ok",
     "yes": "Sí",
     "no": "No",
+    "filters": "Filters",
+    "create": "Crear",
     "clear": "Borrar",
     "close": "Cerrar",
     "apply": "Aplicar",
     "cancel": "Cancelar",
     "version": "Versión",
     "search": "Buscar",
+    "error": "Error",
     "exitApp": "Salir de la aplicación",
     "exitAppConfirm": "¿Está seguro que desea salir de la aplicación?",
+    "deleteTenant": "Eliminar organización",
+    "deleteTenantConfirm": "¿Está seguro que desea eliminar la organización: '{{tenantName}}'?",
+    "restoreTenants": "Restore Organizations",
+    "restoreTenantsConfirm": "Do you really want to restore the initial list of organizations?",
     "noRecordFound": "Ningún registro fue encontrado",
     "day": "d",
     "hour": "h",
@@ -29,6 +36,7 @@
     "onlyMyTransactions": "Mis sesiones",
     "onlyAvailableChargers": "Cargadores Disponibles",
     "wrongTenant": "Se ha conectado a la organización equivocada",
+    "tenantExists": "La organización ya existe",
     "createdOn": "Creado en",
     "createdBy": "Creado por",
     "lastChangedOn": "Última modificación hecha en",
@@ -42,7 +50,10 @@
     "transactionsInProgress": "Sesiones en progreso",
     "statistics": "Estadísticas"
   },
-  "authentication": {
+	"authentication": {
+    "tenantTitle": "Organization",
+    "mandatoryTenantSubDomain": "The Organization subdomain is mandatory",
+    "mandatoryTenantName": "The Organization name is mandatory",
     "mandatoryTenant": "La organización es obligatoria",
     "unknownTenant": "¡Organización desconocida!",
     "mandatoryName": "El apellido es obligatorio",
@@ -92,7 +103,10 @@
     "signUp": "Registrarse",
     "passwordRule": "La contraseña debe contener al menos 8 caracteres; 1 letra minúscula, 1 mayúscula, 1 número y 1 símbolo especial",
     "passwordNotMatch": "Las contraseñas no coinciden",
-    "tenant": "Escoja una organización"
+    "tenant": "Escoja una organización",
+    "createTenantTitle": "Crear organización",
+    "tenantSubdomain": "Subdominio",
+    "tenantName": "Nombre"
   },
   "users": {
     "userUnexpectedError": "No se ha podido cargar el usuario"

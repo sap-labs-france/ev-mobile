@@ -210,27 +210,27 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
           {loading ? (
             <Spinner style={style.spinner} />
           ) : (
-              <View style={style.content}>
-                <ChargersFilters
-                  initialFilters={initialFilters}
-                  onFilterChanged={(newFilters: ChargersFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-                  ref={(chargersFilters: ChargersFilters) =>
-                    this.setScreenFilters(chargersFilters)}
-                />
-                <FlatList
-                  data={chargers}
-                  renderItem={({ item }) =>
-                    <ChargerComponent charger={item} isAdmin={isAdmin} navigation={navigation}
-                      isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteArea.siteID)} />}
-                  keyExtractor={(item) => item.id}
-                  refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-                  onEndReached={this.onEndScroll}
-                  onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-                  ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-                  ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargers')} />}
-                />
-              </View>
-            )}
+            <View style={style.content}>
+              <ChargersFilters
+                initialFilters={initialFilters}
+                onFilterChanged={(newFilters: ChargersFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
+                ref={(chargersFilters: ChargersFilters) =>
+                  this.setScreenFilters(chargersFilters)}
+              />
+              <FlatList
+                data={chargers}
+                renderItem={({ item }) =>
+                  <ChargerComponent charger={item} isAdmin={isAdmin} navigation={navigation}
+                    isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteArea ? item.siteArea.siteID : '')} />}
+                keyExtractor={(item) => item.id}
+                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+                onEndReached={this.onEndScroll}
+                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargers')} />}
+              />
+            </View>
+          )}
         </View>
       </Container>
     );

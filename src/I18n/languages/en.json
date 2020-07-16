@@ -11,14 +11,21 @@
     "ok": "Ok",
     "yes": "Yes",
     "no": "No",
+    "filters": "Filters",
+    "create": "Create",
     "clear": "Clear",
     "close": "Close",
     "apply": "Apply",
     "cancel": "Cancel",
     "version": "Version",
     "search": "Search",
+    "error": "Error",
     "exitApp": "Exit App",
     "exitAppConfirm": "Do you really want to exit the application?",
+    "deleteTenant": "Delete Organization",
+    "deleteConfirm": "Do you really want to delete the organization '{{tenantName}}'?",
+    "restoreTenants": "Restore Organizations",
+    "restoreTenantsConfirm": "Do you really want to restore the initial list of organizations?",
     "noRecordFound": "No record found",
     "day": "d",
     "hour": "h",
@@ -28,7 +35,8 @@
     "endDate": "End Date",
     "onlyMyTransactions": "My Sessions",
     "onlyAvailableChargers": "Available Chargers",
-    "wrongTenant": "You are connected to the wrong tenant",
+    "wrongTenant": "You are connected to the wrong organization",
+    "tenantExists": "The organization already exists.",
     "createdOn": "Created On",
     "createdBy": "Created By",
     "lastChangedOn": "Last Changed On",
@@ -42,7 +50,10 @@
     "transactionsInProgress": "Sessions In Progress",
     "statistics": "Statistics"
   },
-  "authentication": {
+	"authentication": {
+    "tenantTitle": "Organization",
+    "mandatoryTenantSubDomain": "The Organization subdomain is mandatory",
+    "mandatoryTenantName": "The Organization name is mandatory",
     "mandatoryTenant": "The Organization is mandatory",
     "unknownTenant": "Unknown Organization!",
     "mandatoryName": "The Name is mandatory",
@@ -92,7 +103,10 @@
     "signUp": "Sign Up",
     "passwordRule": "Must contain 1 letter lowercase and uppercase, 1 number, 1 special char and 8 chars long",
     "passwordNotMatch": "Password does not match",
-    "tenant": "Choose an Organization"
+    "tenant": "Choose an Organization",
+    "createTenantTitle": "Create Organization",
+    "tenantSubdomain": "Subdomain",
+    "tenantName": "Name"
   },
   "users": {
     "userUnexpectedError": "Cannot read the user"

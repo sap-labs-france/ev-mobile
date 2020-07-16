@@ -46,13 +46,13 @@ export default class DeepLinkingManager {
 
   private addResetPasswordRoute = () => {
     // Add Route
-    DeepLinking.addRoute('/resetPassword/:tenant/:hash', (response: { tenant: string, hash: string }) => {
+    DeepLinking.addRoute('/resetPassword/:tenant/:hash', async (response: {tenant: string, hash: string}) => {
       // Check params
       if (!response.tenant) {
         Message.showError(I18n.t('authentication.mandatoryTenant'));
       }
       // Get the Tenant
-      const tenant = this.centralServerProvider.getTenant(response.tenant);
+      const tenant = await this.centralServerProvider.getTenant(response.tenant);
       if (!tenant) {
         Message.showError(I18n.t('authentication.unknownTenant'));
       }
@@ -84,7 +84,7 @@ export default class DeepLinkingManager {
           Message.showError(I18n.t('authentication.mandatoryEmail'));
         }
         // Get the Tenant
-        const tenant = this.centralServerProvider.getTenant(response.tenant);
+        const tenant = await this.centralServerProvider.getTenant(response.tenant);
         if (!tenant) {
           Message.showError(I18n.t('authentication.unknownTenant'));
         }

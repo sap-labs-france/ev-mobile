@@ -1,11 +1,9 @@
 import I18n from 'i18n-js';
-import { Button, View } from 'native-base';
+import { Button, Text, View } from 'native-base';
 import React from 'react';
-import { Text } from 'react-native';
 import Modal from 'react-native-modal';
-
+import computeStyleSheet from '../../../../ModalStyles';
 import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
-import computeStyleSheet from './FilterContainerComponentStyles';
 
 export interface Props extends FilterContainerComponentProps {
 }
@@ -59,17 +57,22 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
     const style = computeStyleSheet();
     const { visible } = this.state;
     return (
-      <Modal style={style.modalContainer} isVisible={visible} onBackdropPress={() => this.setState({ visible: false })}>
-        <View style={style.modalFiltersContainer}>
-          {this.props.children}
-        </View>
-        <View style={style.modalButtonsContainer}>
-          <Button style={style.modalButton} full={true} danger={true} onPress={this.clearFiltersAndNotify} >
-            <Text style={style.modalTextButton}>{I18n.t('general.clear')}</Text>
-          </Button>
-          <Button style={style.modalButton} full={true} primary={true} onPress={this.applyFiltersAndNotify} >
-            <Text style={style.modalTextButton}>{I18n.t('general.apply')}</Text>
-          </Button>
+      <Modal style={style.modal} isVisible={visible} onBackdropPress={() => this.setState({ visible: false })}>
+        <View style ={style.modalContainer}>
+          <View style ={style.modalHeaderContainer}>
+            <Text style={style.modalTextHeader}>{I18n.t('general.filters')}</Text>
+          </View>
+          <View style={style.modalContentContainer}>
+            {this.props.children}
+          </View>
+          <View style={style.modalButtonsContainer}>
+            <Button style={style.modalButton} full={true} light={true} onPress={this.applyFiltersAndNotify} >
+              <Text style={style.modalTextButton}>{I18n.t('general.apply')}</Text>
+            </Button>
+            <Button style={style.modalButton} full={true} danger={true} onPress={this.clearFiltersAndNotify} >
+              <Text style={style.modalTextButton}>{I18n.t('general.clear')}</Text>
+            </Button>
+          </View>
         </View>
       </Modal>
     );

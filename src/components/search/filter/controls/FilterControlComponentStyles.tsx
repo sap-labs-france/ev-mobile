@@ -22,10 +22,10 @@ const commonStyles = ScaledSheet.create({
     borderTopColor: commonColor.listBorderColor
   },
   textFilter: {
-    fontSize: '16@s',
+    fontSize: '15@s',
   },
   filterValue: {
-    fontSize: '16@s',
+    fontSize: '15@s',
     color: commonColor.textColor
   },
   switchFilter: {
