@@ -37,6 +37,10 @@ export default class Utils {
     return chargingStation.connectors.find((connector) => connector.connectorId === connectorID);
   }
 
+  public static getRoundedNumberToTwoDecimals(numberToRound: number): number {
+    return Math.round(numberToRound * 100) / 100;
+  }
+
   public static countJsonProps(jsonDoc: object): number {
     let count = 0;
     if (!jsonDoc) {
