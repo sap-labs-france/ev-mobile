@@ -140,6 +140,9 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           const stateOfChargeValues: ChartPoint[] = [];
           for (const value of transaction.values) {
             const date = new Date(value.date).getTime();
+            if (value.instantWattsDC > 0) {
+              value.instantWatts = value.instantWattsDC;
+            }
             // Add
             consumptionValues.push({
               x: date,
