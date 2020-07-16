@@ -1,22 +1,22 @@
 import I18n from 'i18n-js';
 import { Spinner, Text } from 'native-base';
 import React from 'react';
-import { View, processColor } from 'react-native';
+import { processColor, View } from 'react-native';
 import { LineChart } from 'react-native-charts-wrapper';
 import { scale } from 'react-native-size-matters';
 import { DrawerActions } from 'react-navigation-drawer';
-
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import TransactionHeaderComponent from '../../../components/transaction/header/TransactionHeaderComponent';
 import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { Connector } from '../../../types/ChargingStation';
 import Consumption from '../../../types/Consumption';
-import Transaction from '../../../types/Transaction';
+import Transaction, { TransactionConsumption } from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './TransactionChartStyles';
+
 
 export interface Props extends BaseProps {
 }
@@ -127,7 +127,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   };
 
   public getTransactionWithConsumptions = async (transactionID: number):
-    Promise<{ transaction: Transaction; values: Consumption[], consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[] }> => {
+    Promise<{ transaction: Transaction; values: TransactionConsumption[], consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[] }> => {
     try {
       // Active Transaction?
       if (transactionID) {
@@ -140,6 +140,9 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           const stateOfChargeValues: ChartPoint[] = [];
           for (const value of transaction.values) {
             const date = new Date(value.date).getTime();
+            if (value.instantWattsDC > 0) {
+              value.instantWatts = value.instantWattsDC;
+            }
             // Add
             consumptionValues.push({
               x: date,

@@ -118,3 +118,14 @@ export interface OcppCommand {
   command: string;
   parameters: string[];
 }
+
+export enum SiteAreaLimitSource {
+  CHARGING_STATIONS = 'CS',
+  SITE_AREA = 'SA',
+}
+
+export enum ConnectorCurrentLimitSource {
+  CHARGING_PROFILE = 'CP',
+  STATIC_LIMITATION = 'SL',
+  CONNECTOR = 'CO'
+}
