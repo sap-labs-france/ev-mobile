@@ -3,7 +3,6 @@ import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 import commonColor from '../../theme/variables/commonColor';
 
-
 const commonStyles = ScaledSheet.create({
   noDisplay: {
     flex: 1,
@@ -18,6 +17,12 @@ const commonStyles = ScaledSheet.create({
   },
   scrollContainer: {
     minHeight: '90%'
+  },
+  header: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   logo: {
     resizeMode: 'contain',

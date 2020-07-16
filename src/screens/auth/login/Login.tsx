@@ -539,9 +539,9 @@ export default class Login extends BaseScreen<Props, State> {
               <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.forgotPassword()}>
                 <TextRN style={[style.linksTextButton, style.linksTextButton]}>{I18n.t('authentication.forgotYourPassword')}</TextRN>
               </Button>
-              <View style={style.formCheckboxContainer}>
-                <CheckBox style={style.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
-                <Text style={style.checkboxText}>
+              <View style={formStyle.formCheckboxContainer}>
+                <CheckBox style={formStyle.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
+                <Text style={formStyle.checkboxText}>
                   {I18n.t('authentication.acceptEula')}
                   <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
                     {I18n.t('authentication.eula')}

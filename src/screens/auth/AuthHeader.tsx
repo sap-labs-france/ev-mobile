@@ -32,7 +32,7 @@ export default class AuthHeader extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const { tenantName } = this.props;
     return (
-      <View style={style.formHeader}>
+      <View style={style.header}>
         <Image style={style.logo} source={logo} />
         <Text style={style.appText}>e-Mobility</Text>
         <Text style={style.appVersionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
