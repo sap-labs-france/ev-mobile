@@ -9,7 +9,7 @@ const commonStyles = ScaledSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: '35@s',
+    height: '40@s',
     paddingLeft: '5@s',
     paddingRight: '5@s',
     borderBottomWidth: 1,
