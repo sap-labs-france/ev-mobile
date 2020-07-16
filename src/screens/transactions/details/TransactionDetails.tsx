@@ -231,7 +231,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     return transaction && transaction.stateOfCharge ? (
       <View style={style.columnContainer}>
         <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>{transaction.stateOfCharge} > {transaction.stop.stateOfCharge}</Text>
+        <Text style={[style.label, style.labelValue, style.info]}>{transaction.stateOfCharge} {'>'} {transaction.stop.stateOfCharge}</Text>
         <Text style={[style.subLabel, style.info]}>(%)</Text>
       </View>
     ) : (
