@@ -4,7 +4,7 @@ import React from 'react';
 import { Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
-
+import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
 import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
@@ -14,6 +14,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+
 
 export interface Props extends BaseProps {
 }
@@ -214,6 +215,7 @@ export default class SignUp extends BaseScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
+    const formStyle = computeFormStyleSheet();
     const navigation = this.props.navigation;
     const { eula, loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl, hidePassword, hideRepeatPassword } = this.state;
     return (
@@ -221,16 +223,16 @@ export default class SignUp extends BaseScreen<Props, State> {
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
-            <Form style={style.form}>
-              <Item inlineLabel={true} style={style.inputGroup}>
-                <Icon active={true} name='person' style={style.inputIcon} />
+            <Form style={formStyle.form}>
+              <Item inlineLabel={true} style={formStyle.inputGroup}>
+                <Icon active={true} name='person' style={formStyle.inputIcon} />
                 <TextInput
                   onSubmitEditing={() => this.firstNameInput.focus()}
                   selectionColor={commonColor.inverseTextColor}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.name')}
                   placeholderTextColor={commonColor.placeholderTextColor}
-                  style={style.inputField}
+                  style={formStyle.inputField}
                   autoCapitalize='characters'
                   blurOnSubmit={false}
                   autoCorrect={false}
@@ -240,13 +242,13 @@ export default class SignUp extends BaseScreen<Props, State> {
               </Item>
               {this.state.errorName &&
                 this.state.errorName.map((errorMessage, index) => (
-                  <Text style={style.formErrorText} key={index}>
+                  <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
 
-              <Item inlineLabel={true} style={style.inputGroup}>
-                <Icon active={true} name='person' style={style.inputIcon} />
+              <Item inlineLabel={true} style={formStyle.inputGroup}>
+                <Icon active={true} name='person' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.firstNameInput = ref)}
                   selectionColor={commonColor.inverseTextColor}
@@ -254,7 +256,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.firstName')}
                   placeholderTextColor={commonColor.placeholderTextColor}
-                  style={style.inputField}
+                  style={formStyle.inputField}
                   autoCapitalize='words'
                   blurOnSubmit={false}
                   autoCorrect={false}
@@ -264,13 +266,13 @@ export default class SignUp extends BaseScreen<Props, State> {
               </Item>
               {this.state.errorFirstName &&
                 this.state.errorFirstName.map((errorMessage, index) => (
-                  <Text style={style.formErrorText} key={index}>
+                  <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
 
-              <Item inlineLabel={true} style={style.inputGroup}>
-                <Icon active={true} name='mail' style={style.inputIcon} />
+              <Item inlineLabel={true} style={formStyle.inputGroup}>
+                <Icon active={true} name='mail' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.emailInput = ref)}
                   selectionColor={commonColor.inverseTextColor}
@@ -278,7 +280,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.email')}
                   placeholderTextColor={commonColor.placeholderTextColor}
-                  style={style.inputField}
+                  style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
                   autoCorrect={false}
@@ -289,13 +291,13 @@ export default class SignUp extends BaseScreen<Props, State> {
               </Item>
               {this.state.errorEmail &&
                 this.state.errorEmail.map((errorMessage, index) => (
-                  <Text style={style.formErrorText} key={index}>
+                  <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
 
-              <Item inlineLabel={true} style={style.inputGroup}>
-                <Icon active={true} name='unlock' style={style.inputIcon} />
+              <Item inlineLabel={true} style={formStyle.inputGroup}>
+                <Icon active={true} name='unlock' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
                   selectionColor={commonColor.inverseTextColor}
@@ -303,7 +305,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.password')}
                   placeholderTextColor={commonColor.placeholderTextColor}
-                  style={style.inputField}
+                  style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
                   autoCorrect={false}
@@ -313,16 +315,16 @@ export default class SignUp extends BaseScreen<Props, State> {
                 />
                 <Icon active={true} name={hidePassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hidePassword: !hidePassword })}
-                  style={[style.inputIcon, style.inputIconLock]} />
+                  style={[formStyle.inputIcon, style.inputIconLock]} />
               </Item>
               {this.state.errorPassword &&
                 this.state.errorPassword.map((errorMessage, index) => (
-                  <Text style={style.formErrorText} key={index}>
+                  <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel={true} style={style.inputGroup}>
-                <Icon active={true} name='unlock' style={style.inputIcon} />
+              <Item inlineLabel={true} style={formStyle.inputGroup}>
+                <Icon active={true} name='unlock' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
                   selectionColor={commonColor.inverseTextColor}
@@ -330,7 +332,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.repeatPassword')}
                   placeholderTextColor={commonColor.placeholderTextColor}
-                  style={style.inputField}
+                  style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
                   autoCorrect={false}
@@ -340,17 +342,17 @@ export default class SignUp extends BaseScreen<Props, State> {
                 />
                 <Icon active={true} name={hideRepeatPassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
-                  style={[style.inputIcon, style.inputIconLock]} />
+                  style={[formStyle.inputIcon, style.inputIconLock]} />
               </Item>
               {this.state.errorRepeatPassword &&
                 this.state.errorRepeatPassword.map((errorMessage, index) => (
-                  <Text style={style.formErrorText} key={index}>
+                  <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
-              <View style={style.eulaContainer}>
-                <CheckBox style={style.eulaCheckbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
-                <Text style={style.eulaText}>
+              <View style={formStyle.formCheckboxContainer}>
+                <CheckBox style={formStyle.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
+                <Text style={formStyle.checkboxText}>
                   {I18n.t('authentication.acceptEula')}
                   <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
                     {I18n.t('authentication.eula')}
@@ -359,15 +361,15 @@ export default class SignUp extends BaseScreen<Props, State> {
               </View>
               {this.state.errorEula &&
                 this.state.errorEula.map((errorMessage, index) => (
-                  <Text style={[style.formErrorText, style.formErrorTextEula]} key={index}>
+                  <Text style={[formStyle.formErrorText, style.formErrorTextEula]} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
               {loading || (!captcha && this.state.eula) ? (
-                <Spinner style={style.spinner} color='white' />
+                <Spinner style={formStyle.spinner} color='white' />
               ) : (
-                <Button primary={true} block={true} style={style.button} onPress={() => this.signUp()}>
-                  <TextRN style={style.buttonText}>{I18n.t('authentication.signUp')}</TextRN>
+                <Button primary={true} block={true} style={formStyle.button} onPress={() => this.signUp()}>
+                  <TextRN style={formStyle.buttonText}>{I18n.t('authentication.signUp')}</TextRN>
                 </Button>
               )}
             </Form>

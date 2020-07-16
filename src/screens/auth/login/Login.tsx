@@ -1,10 +1,11 @@
 import I18n from 'i18n-js';
-import { ActionSheet, Button, CheckBox, Form, Icon, Item, Spinner, Text, View } from 'native-base';
+import { ActionSheet, Button, CheckBox, Fab, Form, Icon, Item, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Modal from 'react-native-modal';
-import ModalStyles from '../../../ModalStyles';
+import computeFormStyleSheet from '../../../FormStyles';
+import computeModalStyleSheet from '../../../ModalStyles';
 import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import Tenant from '../../../types/Tenant';
@@ -364,18 +365,19 @@ export default class Login extends BaseScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const modalStyles = ModalStyles();
+    const modalStyle = computeModalStyleSheet();
+    const formStyle = computeFormStyleSheet();
     const navigation = this.props.navigation;
     const { eula, loading, initialLoading, visible, hidePassword } = this.state;
     // Render
     return initialLoading ? (
-      <Spinner style={style.spinner} />
+      <Spinner style={formStyle.spinner} />
     ) : (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation}/>
-            <Form style={style.form}>
+            <Form style={formStyle.form}>
               <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.newUser()}>
                 <TextRN style={style.linksTextButton}>{I18n.t('authentication.newUser')}</TextRN>
               </Button>
@@ -399,7 +401,7 @@ export default class Login extends BaseScreen<Props, State> {
                   <Icon type={'MaterialIcons'} name='settings-backup-restore' />
                 </Button>
               </View>
-              <Button block={true} style={style.button}
+              <Button block={true} style={formStyle.button}
                 onPress={() =>
                   ActionSheet.show(
                     {
@@ -415,82 +417,82 @@ export default class Login extends BaseScreen<Props, State> {
                     }
                   )
                 }>
-                <TextRN style={style.buttonText}>{this.state.tenantName}</TextRN>
+                <TextRN style={formStyle.buttonText}>{this.state.tenantName}</TextRN>
               </Button>
-              <Modal style ={modalStyles.modalContainer} isVisible={visible}
+              <Modal style ={modalStyle.modalContainer} isVisible={visible}
                   onBackdropPress={() => this.setState({ visible: false })}>
-                <View style ={modalStyles.modalHeaderContainer}>
-                  <TextRN style={modalStyles.modalTextHeader}>{I18n.t('authentication.createTenantTitle')}</TextRN>
+                <View style ={modalStyle.modalHeaderContainer}>
+                  <TextRN style={modalStyle.modalTextHeader}>{I18n.t('authentication.createTenantTitle')}</TextRN>
                 </View>
-                <View style={modalStyles.modalContentContainer}>
-                  <View style={modalStyles.modalRow}>
-                    <Text style={modalStyles.modalLabel}>{I18n.t('authentication.tenantSubdomain')}:</Text>
+                <View style={modalStyle.modalContentContainer}>
+                  <View style={modalStyle.modalRow}>
+                    <Text style={modalStyle.modalLabel}>{I18n.t('authentication.tenantSubdomain')}:</Text>
                     <TextInput
                       autoFocus={true}
                       autoCapitalize={'none'}
                       autoCorrect={false}
                       placeholder={I18n.t('authentication.tenantSubdomain')}
                       placeholderTextColor={commonColor.inputColorPlaceholder}
-                      style={modalStyles.modalInputField}
+                      style={modalStyle.modalInputField}
                       onChangeText={(value) => this.setState({ newTenantSubDomain: value.toLowerCase() })}
                     />
                   </View>
-                  <View style={modalStyles.modalRowError}>
+                  <View style={modalStyle.modalRowError}>
                     {this.state.errorNewTenantSubDomain &&
                       this.state.errorNewTenantSubDomain.map((errorMessage, index) => (
-                        <Text style={modalStyles.modalErrorText} key={index}>
+                        <Text style={modalStyle.modalErrorText} key={index}>
                           {errorMessage}
                         </Text>
                       ))}
                   </View>
-                  <View style={modalStyles.modalRow}>
-                    <Text style={modalStyles.modalLabel}>{I18n.t('authentication.tenantName')}:</Text>
+                  <View style={modalStyle.modalRow}>
+                    <Text style={modalStyle.modalLabel}>{I18n.t('authentication.tenantName')}:</Text>
                     <TextInput
                       placeholder={I18n.t('authentication.tenantName')}
                       placeholderTextColor={commonColor.inputColorPlaceholder}
-                      style={modalStyles.modalInputField}
+                      style={modalStyle.modalInputField}
                       onChangeText={(value) => this.setState({ newTenantName: value })}
                     />
                   </View>
-                  <View style={modalStyles.modalRowError}>
+                  <View style={modalStyle.modalRowError}>
                     {this.state.errorNewTenantName &&
                       this.state.errorNewTenantName.map((errorMessage, index) => (
-                        <Text style={modalStyles.modalErrorText} key={index}>
+                        <Text style={modalStyle.modalErrorText} key={index}>
                           {errorMessage}
                         </Text>
                       ))}
                   </View>
                 </View>
-                <View style={modalStyles.modalButtonsContainer}>
-                  <Button style={[modalStyles.modalButton]} full={true} danger={true}
+                <View style={modalStyle.modalButtonsContainer}>
+                  <Button style={[modalStyle.modalButton]} full={true} danger={true}
                       onPress={() => {
                         this.createTenant(this.state.newTenantSubDomain, this.state.newTenantName);
                       }} >
-                    <Text style={modalStyles.modalTextButton}>{I18n.t('general.create')}</Text>
+                    <Text style={modalStyle.modalTextButton}>{I18n.t('general.create')}</Text>
                   </Button>
-                  <Button style={[modalStyles.modalButton]} full={true} light={true}
+                  <Button style={[modalStyle.modalButton]} full={true} light={true}
                       onPress={() => {
                         this.setState({ visible: false })
                       }} >
-                    <Text style={modalStyles.modalTextButton}>{I18n.t('general.cancel')}</Text>
+                    <Text style={modalStyle.modalTextButton}>{I18n.t('general.cancel')}</Text>
                   </Button>
                 </View>
               </Modal>
               {this.state.errorTenantSubDomain &&
                 this.state.errorTenantSubDomain.map((errorMessage, index) => (
-                  <Text style={style.formErrorText} key={index}>
+                  <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel={true} style={style.inputGroup}>
-                <Icon active={true} name='mail' style={style.inputIcon} />
+              <Item inlineLabel={true} style={formStyle.inputGroup}>
+                <Icon active={true} name='mail' style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType='next'
                   selectionColor={commonColor.inverseTextColor}
                   placeholder={I18n.t('authentication.email')}
                   placeholderTextColor={commonColor.placeholderTextColor}
                   onSubmitEditing={() => this.passwordInput.focus()}
-                  style={style.inputField}
+                  style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
                   autoCorrect={false}
@@ -502,12 +504,12 @@ export default class Login extends BaseScreen<Props, State> {
               </Item>
               {this.state.errorEmail &&
                 this.state.errorEmail.map((errorMessage, index) => (
-                  <Text style={style.formErrorText} key={index}>
+                  <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel={true} style={style.inputGroup}>
-                <Icon active={true} name='unlock' style={[style.inputIcon, style.inputIconLock]} />
+              <Item inlineLabel={true} style={formStyle.inputGroup}>
+                <Icon active={true} name='unlock' style={[formStyle.inputIcon, style.inputIconLock]} />
                 <TextInput
                   returnKeyType='go'
                   selectionColor={commonColor.inverseTextColor}
@@ -515,7 +517,7 @@ export default class Login extends BaseScreen<Props, State> {
                   onSubmitEditing={() => Keyboard.dismiss()}
                   placeholder={I18n.t('authentication.password')}
                   placeholderTextColor={commonColor.placeholderTextColor}
-                  style={style.inputField}
+                  style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
                   autoCorrect={false}
@@ -526,20 +528,20 @@ export default class Login extends BaseScreen<Props, State> {
                 />
                 <Icon active={true} name={hidePassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hidePassword: !hidePassword })}
-                  style={[style.inputIcon, style.inputIconLock]} />
+                  style={[formStyle.inputIcon, style.inputIconLock]} />
               </Item>
               {this.state.errorPassword &&
                 this.state.errorPassword.map((errorMessage, index) => (
-                  <Text style={style.formErrorText} key={index}>
+                  <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
               <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.forgotPassword()}>
                 <TextRN style={[style.linksTextButton, style.linksTextButton]}>{I18n.t('authentication.forgotYourPassword')}</TextRN>
               </Button>
-              <View style={style.eulaContainer}>
-                <CheckBox style={style.eulaCheckbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
-                <Text style={style.eulaText}>
+              <View style={style.formCheckboxContainer}>
+                <CheckBox style={style.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
+                <Text style={style.checkboxText}>
                   {I18n.t('authentication.acceptEula')}
                   <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
                     {I18n.t('authentication.eula')}
@@ -548,15 +550,15 @@ export default class Login extends BaseScreen<Props, State> {
               </View>
               {this.state.errorEula &&
                 this.state.errorEula.map((errorMessage, index) => (
-                  <Text style={[style.formErrorText, style.formErrorTextEula]} key={index}>
+                  <Text style={[formStyle.formErrorText, style.formErrorTextEula]} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
               {loading ? (
-                <Spinner style={style.spinner} color='white' />
+                <Spinner style={formStyle.spinner} color='white' />
               ) : (
-                <Button primary={true} block={true} style={style.button} onPress={() => this.login()}>
-                  <TextRN style={style.buttonText}>{I18n.t('authentication.login')}</TextRN>
+                <Button primary={true} block={true} style={formStyle.button} onPress={() => this.login()}>
+                  <TextRN style={formStyle.buttonText}>{I18n.t('authentication.login')}</TextRN>
                 </Button>
               )}
             </Form>
@@ -566,10 +568,10 @@ export default class Login extends BaseScreen<Props, State> {
           active={this.state.active}
           direction="up"
           containerStyle={{ }}
-          style={{ backgroundColor: '#5067FF' }}
+          style={style.fab}
           position="bottomRight"
           onPress={() => this.setState({ active: !this.state.active })}>
-          <Icon name="share" />
+          <Icon name="business" />
           <Button style={{ backgroundColor: '#34A34F' }}>
             <Icon name="logo-whatsapp" />
           </Button>

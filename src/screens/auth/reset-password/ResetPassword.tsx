@@ -4,7 +4,7 @@ import React from 'react';
 import { Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
-
+import computeFormStyleSheet from '../../../FormStyles';
 import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import Constants from '../../../utils/Constants';
@@ -13,6 +13,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+
 
 export interface Props extends BaseProps {
 }
@@ -157,22 +158,23 @@ export default class ResetPassword extends BaseScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
+    const formStyle = computeFormStyleSheet();
     const { tenantName, loading, hidePassword, hideRepeatPassword } = this.state;
     return (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
-            <Form style={style.form}>
-              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                <Icon active={true} name='unlock' style={style.inputIcon} />
+            <Form style={formStyle.form}>
+              <Item inlineLabel={true} rounded={true} style={formStyle.inputGroup}>
+                <Icon active={true} name='unlock' style={formStyle.inputIcon} />
                 <TextInput
                   selectionColor={commonColor.inverseTextColor}
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.password')}
                   placeholderTextColor={commonColor.placeholderTextColor}
-                  style={style.inputField}
+                  style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
                   autoCorrect={false}
@@ -182,16 +184,16 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                 />
                 <Icon active={true} name={hidePassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hidePassword: !hidePassword })}
-                  style={[style.inputIcon, style.inputIconLock]} />
+                  style={[formStyle.inputIcon, style.inputIconLock]} />
               </Item>
               {this.state.errorPassword &&
                 this.state.errorPassword.map((errorMessage, index) => (
-                  <Text style={style.formErrorText} key={index}>
+                  <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                <Icon active={true} name='unlock' style={style.inputIcon} />
+              <Item inlineLabel={true} rounded={true} style={formStyle.inputGroup}>
+                <Icon active={true} name='unlock' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
                   selectionColor={commonColor.inverseTextColor}
@@ -199,7 +201,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.repeatPassword')}
                   placeholderTextColor={commonColor.placeholderTextColor}
-                  style={style.inputField}
+                  style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
                   autoCorrect={false}
@@ -209,19 +211,19 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                 />
                 <Icon active={true} name={hideRepeatPassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
-                  style={[style.inputIcon, style.inputIconLock]} />
+                  style={[formStyle.inputIcon, style.inputIconLock]} />
               </Item>
               {this.state.errorRepeatPassword &&
                 this.state.errorRepeatPassword.map((errorMessage, index) => (
-                  <Text style={style.formErrorText} key={index}>
+                  <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
               {loading ? (
-                <Spinner style={style.spinner} color='white' />
+                <Spinner style={formStyle.spinner} color='white' />
               ) : (
-                <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.resetPassword()}>
-                  <TextRN style={style.buttonText}>{I18n.t('authentication.resetPassword')}</TextRN>
+                <Button rounded={true} primary={true} block={true} style={formStyle.button} onPress={() => this.resetPassword()}>
+                  <TextRN style={formStyle.buttonText}>{I18n.t('authentication.resetPassword')}</TextRN>
                 </Button>
               )}
               </Form>

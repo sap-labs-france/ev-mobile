@@ -4,7 +4,7 @@ import React from 'react';
 import { KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
-
+import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
 import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
@@ -143,15 +143,16 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
+    const formStyle = computeFormStyleSheet();
     const { loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl } = this.state;
     return (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
-            <Form style={style.form}>
-              <Item inlineLabel={true} style={style.inputGroup}>
-                <Icon active={true} name='mail' style={style.inputIcon} />
+            <Form style={formStyle.form}>
+              <Item inlineLabel={true} style={formStyle.inputGroup}>
+                <Icon active={true} name='mail' style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType={'next'}
                   selectionColor={commonColor.inverseTextColor}
@@ -168,15 +169,15 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
               </Item>
               {this.state.errorEmail &&
                 this.state.errorEmail.map((errorMessage, index) => (
-                  <Text style={style.formErrorText} key={index}>
+                  <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
               {loading || !captcha ? (
-                <Spinner style={style.spinner} color='white' />
+                <Spinner style={formStyle.spinner} color='white' />
               ) : (
-                <Button primary={true} block={true} style={style.button} onPress={() => this.retrievePassword()}>
-                  <TextRN style={style.buttonText}>{I18n.t('authentication.retrievePassword')}</TextRN>
+                <Button primary={true} block={true} style={formStyle.button} onPress={() => this.retrievePassword()}>
+                  <TextRN style={formStyle.buttonText}>{I18n.t('authentication.retrievePassword')}</TextRN>
                 </Button>
               )}
             </Form>
