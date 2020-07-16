@@ -226,7 +226,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                   <Text style={formStyle.buttonText}>{I18n.t('authentication.resetPassword')}</Text>
                 </Button>
               )}
-              </Form>
+            </Form>
           </KeyboardAvoidingView>
         </ScrollView>
         <Footer style={style.footer}>

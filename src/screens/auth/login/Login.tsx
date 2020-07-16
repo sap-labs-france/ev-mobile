@@ -21,7 +21,7 @@ export interface Props extends BaseProps {
 }
 
 interface State {
-  active?: boolean;
+  activeFab?: boolean;
   eula?: boolean;
   password?: string;
   email?: string;
@@ -97,6 +97,7 @@ export default class Login extends BaseScreen<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      activeFab: false,
       eula: false,
       password: null,
       email: Utils.getParamFromNavigation(this.props.navigation, 'email', ''),
@@ -547,11 +548,11 @@ export default class Login extends BaseScreen<Props, State> {
           </KeyboardAvoidingView>
         </ScrollView>
         <Fab
-          active={this.state.active}
+          active={this.state.activeFab}
           direction='up'
           style={style.fab}
           position='bottomRight'
-          onPress={() => this.setState({ active: !this.state.active })}>
+          onPress={() => this.setState({ activeFab: !this.state.activeFab })}>
           <Icon name='business' />
           <Button style={style.restoreOrgButton}
             onPress={() => {
