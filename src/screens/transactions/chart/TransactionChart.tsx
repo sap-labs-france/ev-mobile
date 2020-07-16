@@ -255,7 +255,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     if (consumptionValues && consumptionValues.length > 1) {
       chartDefinition.yAxis.left = {
         enabled: true,
-        valueFormatter: '##0kW',
+        valueFormatter: '##0.#kW',
         axisMinimum: 0,
         textColor: processColor(commonColor.brandInfo),
         textSize: scale(8)
