@@ -2,7 +2,7 @@ import I18n from 'i18n-js';
 import { Spinner, Text } from 'native-base';
 import React from 'react';
 import { processColor, View } from 'react-native';
-import { LineChart } from 'react-native-charts-wrapper';
+import { LineChart, LineChartProps } from 'react-native-charts-wrapper';
 import { scale } from 'react-native-size-matters';
 import { DrawerActions } from 'react-navigation-drawer';
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -193,7 +193,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   };
 
   public createChart(consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[]) {
-    const chartDefinition: any = {};
+    const chartDefinition = {} as LineChartProps;
     // Add Data
     chartDefinition.data = { dataSets: [] };
     // Check Consumptions
@@ -206,9 +206,6 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           drawValues: false,
           lineWidth: 2,
           drawCircles: false,
-          circleColor: processColor(commonColor.brandInfo),
-          drawCircleHole: false,
-          circleRadius: 5,
           highlightColor: processColor('white'),
           color: processColor(commonColor.brandInfo),
           drawFilled: true,
@@ -229,9 +226,6 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           drawValues: false,
           lineWidth: 2,
           drawCircles: false,
-          circleColor: processColor(commonColor.brandSuccess),
-          drawCircleHole: false,
-          circleRadius: 5,
           highlightColor: processColor('white'),
           color: processColor(commonColor.brandSuccess),
           drawFilled: true,
@@ -248,10 +242,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       granularity: 1,
       drawLabels: true,
       position: 'BOTTOM',
-      drawAxisLine: true,
       drawGridLines: false,
       fontFamily: 'HelveticaNeue-Medium',
-      fontWeight: 'bold',
       valueFormatter: 'date',
       valueFormatterPattern: 'HH:mm',
       textSize: scale(8),
@@ -263,19 +255,10 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     if (consumptionValues && consumptionValues.length > 1) {
       chartDefinition.yAxis.left = {
         enabled: true,
-        valueFormatter: '##0 kW',
+        valueFormatter: '##0kW',
         axisMinimum: 0,
         textColor: processColor(commonColor.brandInfo),
         textSize: scale(8)
-        // limitLines: [{
-        //   limit: connector.power,
-        //   label: I18n.t("details.connectorMax"),
-        //   valueTextColor: processColor("white"),
-        //   lineColor: processColor(commonColor.brandDanger),
-        //   lineDashPhase: 2,
-        //   lineWidth: 1,
-        //   lineDashLengths: [10,10]
-        // }]
       };
     } else {
       chartDefinition.yAxis.left = {
