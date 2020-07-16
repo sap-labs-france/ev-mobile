@@ -377,30 +377,10 @@ export default class Login extends BaseScreen<Props, State> {
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation}/>
+            <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.newUser()}>
+              <TextRN style={style.linksTextButton}>{I18n.t('authentication.newUser')}</TextRN>
+            </Button>
             <Form style={formStyle.form}>
-              <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.newUser()}>
-                <TextRN style={style.linksTextButton}>{I18n.t('authentication.newUser')}</TextRN>
-              </Button>
-              <View style={style.iconContainer}>
-                <Button
-                  onPress={() => {
-                    this.setState({ visible: true, newTenantSubDomain: null, newTenantName: null })
-                  }}>
-                  <Icon type={'MaterialIcons'} name='add' />
-                </Button>
-                <Button
-                  onPress={() => {
-                    this.deleteTenant(this.state.tenantSubDomain);
-                  }}>
-                  <Icon type={'MaterialIcons'} name='remove' />
-                </Button>
-                <Button
-                  onPress={() => {
-                    this.restoreTenants();
-                  }}>
-                  <Icon type={'MaterialIcons'} name='settings-backup-restore' />
-                </Button>
-              </View>
               <Button block={true} style={formStyle.button}
                 onPress={() =>
                   ActionSheet.show(
@@ -419,63 +399,65 @@ export default class Login extends BaseScreen<Props, State> {
                 }>
                 <TextRN style={formStyle.buttonText}>{this.state.tenantName}</TextRN>
               </Button>
-              <Modal style ={modalStyle.modalContainer} isVisible={visible}
+              <Modal style ={modalStyle.modal} isVisible={visible}
                   onBackdropPress={() => this.setState({ visible: false })}>
-                <View style ={modalStyle.modalHeaderContainer}>
-                  <TextRN style={modalStyle.modalTextHeader}>{I18n.t('authentication.createTenantTitle')}</TextRN>
-                </View>
-                <View style={modalStyle.modalContentContainer}>
-                  <View style={modalStyle.modalRow}>
-                    <Text style={modalStyle.modalLabel}>{I18n.t('authentication.tenantSubdomain')}:</Text>
-                    <TextInput
-                      autoFocus={true}
-                      autoCapitalize={'none'}
-                      autoCorrect={false}
-                      placeholder={I18n.t('authentication.tenantSubdomain')}
-                      placeholderTextColor={commonColor.inputColorPlaceholder}
-                      style={modalStyle.modalInputField}
-                      onChangeText={(value) => this.setState({ newTenantSubDomain: value.toLowerCase() })}
-                    />
+                <View style ={modalStyle.modalContainer}>
+                  <View style ={modalStyle.modalHeaderContainer}>
+                    <TextRN style={modalStyle.modalTextHeader}>{I18n.t('authentication.createTenantTitle')}</TextRN>
                   </View>
-                  <View style={modalStyle.modalRowError}>
-                    {this.state.errorNewTenantSubDomain &&
-                      this.state.errorNewTenantSubDomain.map((errorMessage, index) => (
-                        <Text style={modalStyle.modalErrorText} key={index}>
-                          {errorMessage}
-                        </Text>
-                      ))}
+                  <View style={modalStyle.modalContentContainer}>
+                    <View style={modalStyle.modalRow}>
+                      <Text style={modalStyle.modalLabel}>{I18n.t('authentication.tenantSubdomain')}:</Text>
+                      <TextInput
+                        autoFocus={true}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                        placeholder={I18n.t('authentication.tenantSubdomain')}
+                        placeholderTextColor={commonColor.inputColorPlaceholder}
+                        style={modalStyle.modalInputField}
+                        onChangeText={(value) => this.setState({ newTenantSubDomain: value.toLowerCase() })}
+                      />
+                    </View>
+                    <View style={modalStyle.modalRowError}>
+                      {this.state.errorNewTenantSubDomain &&
+                        this.state.errorNewTenantSubDomain.map((errorMessage, index) => (
+                          <Text style={modalStyle.modalErrorText} key={index}>
+                            {errorMessage}
+                          </Text>
+                        ))}
+                    </View>
+                    <View style={modalStyle.modalRow}>
+                      <Text style={modalStyle.modalLabel}>{I18n.t('authentication.tenantName')}:</Text>
+                      <TextInput
+                        placeholder={I18n.t('authentication.tenantName')}
+                        placeholderTextColor={commonColor.inputColorPlaceholder}
+                        style={modalStyle.modalInputField}
+                        onChangeText={(value) => this.setState({ newTenantName: value })}
+                      />
+                    </View>
+                    <View style={modalStyle.modalRowError}>
+                      {this.state.errorNewTenantName &&
+                        this.state.errorNewTenantName.map((errorMessage, index) => (
+                          <Text style={modalStyle.modalErrorText} key={index}>
+                            {errorMessage}
+                          </Text>
+                        ))}
+                    </View>
                   </View>
-                  <View style={modalStyle.modalRow}>
-                    <Text style={modalStyle.modalLabel}>{I18n.t('authentication.tenantName')}:</Text>
-                    <TextInput
-                      placeholder={I18n.t('authentication.tenantName')}
-                      placeholderTextColor={commonColor.inputColorPlaceholder}
-                      style={modalStyle.modalInputField}
-                      onChangeText={(value) => this.setState({ newTenantName: value })}
-                    />
+                  <View style={modalStyle.modalButtonsContainer}>
+                    <Button style={[modalStyle.modalButton]} full={true} danger={true}
+                        onPress={() => {
+                          this.createTenant(this.state.newTenantSubDomain, this.state.newTenantName);
+                        }} >
+                      <Text style={modalStyle.modalTextButton}>{I18n.t('general.create')}</Text>
+                    </Button>
+                    <Button style={[modalStyle.modalButton]} full={true} light={true}
+                        onPress={() => {
+                          this.setState({ visible: false })
+                        }} >
+                      <Text style={modalStyle.modalTextButton}>{I18n.t('general.cancel')}</Text>
+                    </Button>
                   </View>
-                  <View style={modalStyle.modalRowError}>
-                    {this.state.errorNewTenantName &&
-                      this.state.errorNewTenantName.map((errorMessage, index) => (
-                        <Text style={modalStyle.modalErrorText} key={index}>
-                          {errorMessage}
-                        </Text>
-                      ))}
-                  </View>
-                </View>
-                <View style={modalStyle.modalButtonsContainer}>
-                  <Button style={[modalStyle.modalButton]} full={true} danger={true}
-                      onPress={() => {
-                        this.createTenant(this.state.newTenantSubDomain, this.state.newTenantName);
-                      }} >
-                    <Text style={modalStyle.modalTextButton}>{I18n.t('general.create')}</Text>
-                  </Button>
-                  <Button style={[modalStyle.modalButton]} full={true} light={true}
-                      onPress={() => {
-                        this.setState({ visible: false })
-                      }} >
-                    <Text style={modalStyle.modalTextButton}>{I18n.t('general.cancel')}</Text>
-                  </Button>
                 </View>
               </Modal>
               {this.state.errorTenantSubDomain &&
@@ -564,24 +546,32 @@ export default class Login extends BaseScreen<Props, State> {
             </Form>
           </KeyboardAvoidingView>
         </ScrollView>
-        {/* <Fab
+        <Fab
           active={this.state.active}
-          direction="up"
-          containerStyle={{ }}
+          direction='up'
           style={style.fab}
-          position="bottomRight"
+          position='bottomRight'
           onPress={() => this.setState({ active: !this.state.active })}>
-          <Icon name="business" />
-          <Button style={{ backgroundColor: '#34A34F' }}>
-            <Icon name="logo-whatsapp" />
+          <Icon name='business' />
+          <Button style={style.restoreOrgButton}
+            onPress={() => {
+              this.restoreTenants();
+            }}>
+            <Icon type={'MaterialIcons'} name='settings-backup-restore' />
           </Button>
-          <Button style={{ backgroundColor: '#3B5998' }}>
-            <Icon name="logo-facebook" />
+          <Button style={style.deleteOrgButton}
+            onPress={() => {
+              this.deleteTenant(this.state.tenantSubDomain);
+            }}>
+            <Icon type={'MaterialIcons'} name='remove' />
           </Button>
-          <Button disabled style={{ backgroundColor: '#DD5144' }}>
-            <Icon name="mail" />
+          <Button style={style.createOrgButton}
+            onPress={() => {
+              this.setState({ visible: true, newTenantSubDomain: null, newTenantName: null })
+            }}>
+            <Icon type={'MaterialIcons'} name='add' />
           </Button>
-        </Fab> */}
+        </Fab>
       </Animatable.View>
     );
   }

@@ -53,11 +53,6 @@ const commonStyles = ScaledSheet.create({
     fontWeight: 'bold',
     alignSelf: 'center',
   },
-  iconContainer: {
-    flexDirection: 'row',
-    width: '83%',
-    justifyContent: 'flex-end'
-  },
   inputIconLock: {
     fontSize: '20@s'
   },
@@ -73,11 +68,21 @@ const commonStyles = ScaledSheet.create({
   },
   linksButton: {
     alignSelf: 'center',
+    marginBottom: '15@s',
   },
   linksTextButton: {
     fontSize: '13@s',
     fontWeight: 'bold',
     color: commonColor.inverseTextColor
+  },
+  createOrgButton: {
+    backgroundColor: commonColor.brandSuccess
+  },
+  restoreOrgButton: {
+    backgroundColor: commonColor.brandWarning
+  },
+  deleteOrgButton: {
+    backgroundColor: commonColor.brandDanger
   },
   fab: {
     backgroundColor: commonColor.buttonBg

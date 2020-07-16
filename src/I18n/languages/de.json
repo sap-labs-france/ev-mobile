@@ -35,7 +35,7 @@
     "endDate": "End Date",
     "onlyMyTransactions": "My Sessions",
     "onlyAvailableChargers": "Available Chargers",
-    "wrongTenant": "You are connected to the wrong tenant",
+    "wrongTenant": "You are connected to the wrong organization",
     "tenantExists": "Die Organisation existiert bereits.",
     "createdOn": "Created On",
     "createdBy": "Created By",
