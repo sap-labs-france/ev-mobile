@@ -75,7 +75,6 @@ const commonStyles = ScaledSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    borderBottomWidth: '0@s',
     marginBottom: '20@s',
     marginTop: '10@s'
   },

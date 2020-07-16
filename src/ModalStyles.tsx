@@ -15,6 +15,8 @@ const commonStyles = ScaledSheet.create({
     alignItems: 'center',
     borderBottomWidth: '1@s',
     borderBottomColor: commonColor.brandDisabledLight,
+    borderTopLeftRadius: '5@s',
+    borderTopRightRadius: '5@s',
   },
   modalTextHeader:{
     width: '100%',
@@ -22,9 +24,11 @@ const commonStyles = ScaledSheet.create({
     fontSize: '17@s',
   },
   modalContentContainer: {
-    padding: '15@s',
+    paddingLeft: '15@s',
+    paddingRight: '15@s',
+    paddingTop: '5@s',
+    paddingBottom: '5@s',
     justifyContent: 'flex-start',
-    borderColor: 'rgba(0, 0, 0, 0.1)',
     backgroundColor: commonColor.headerBgColorLight,
   },
   modalRow: {
@@ -53,8 +57,11 @@ const commonStyles = ScaledSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     width: '100%',
-    paddingBottom: 10,
+    paddingTop: '5@s',
+    paddingBottom: '5@s',
     backgroundColor: commonColor.headerBgColorLight,
+    borderBottomLeftRadius: '5@s',
+    borderBottomRightRadius: '5@s',
   },
   modalButton: {
     height: '40@s',
