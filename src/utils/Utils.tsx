@@ -1,6 +1,7 @@
 import I18n from 'i18n-js';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import { ImageSourcePropType, NativeModules, Platform } from 'react-native';
+import openMap from 'react-native-open-maps';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import Address from 'types/Address';
 import { KeyValue } from 'types/Global';
@@ -18,7 +19,6 @@ import User from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
 
-
 export default class Utils {
   public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
     const tenantSubDomain = centralServerProvider.getUserTenant();
@@ -28,6 +28,26 @@ export default class Utils {
       !Utils.isNullOrEmptyString(tenantSubDomain) &&
       !Utils.isNullOrEmptyString(email) &&
       !Utils.isNullOrEmptyString(password);
+  }
+
+  public static jumpToMapWithAddress(address: Address) {
+    if (!Utils.containsAddressGPSCoordinates(address)) {
+      Message.showError(I18n.t('general.noGPSCoordinates'));
+    } else {
+      Utils.jumpToMapWithCoordinates(address.coordinates);
+    }
+  }
+
+  public static jumpToMapWithCoordinates(coordinates: number[]) {
+    if (!Utils.containsGPSCoordinates(coordinates)) {
+      Message.showError(I18n.t('general.noGPSCoordinates'));
+    } else {
+      openMap({
+        longitude: coordinates[0],
+        latitude: coordinates[1],
+        zoom: 18
+      });
+    }
   }
 
   public static getChargePointFromID(chargingStation: ChargingStation, chargePointID: number): ChargePoint {

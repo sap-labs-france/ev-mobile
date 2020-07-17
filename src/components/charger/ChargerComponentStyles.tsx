@@ -1,8 +1,9 @@
 import deepmerge from 'deepmerge';
-import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
+import { Platform } from 'react-native';
+import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
-
 import commonColor from '../../theme/variables/commonColor';
+
 
 const commonStyles = ScaledSheet.create({
   container: {
@@ -15,29 +16,48 @@ const commonStyles = ScaledSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingLeft: '5@s',
-    paddingRight: '5@s',
-    borderBottomColor: commonColor.listBorderColor,
+    height: '40@s',
     borderBottomWidth: 1,
+    borderBottomColor: commonColor.listBorderColor,
     backgroundColor: commonColor.headerBgColor
   },
+  subHeaderContent: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '70%',
+  },
   headerName: {
-    color: commonColor.headerTextColor,
+    marginLeft: '10@s',
     fontSize: '20@s',
-    marginLeft: '5@s',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: commonColor.headerTextColor
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   button: {
-    marginLeft: '10@s',
-    marginRight: '10@s'
+  },
+  buttonRight: {
+    marginRight: '10@s',
   },
   icon: {
-    fontSize: '20@s',
-    paddingLeft: '20@s',
+    fontSize: '30@s',
+    color: commonColor.headerTextColor
+  },
+  iconLeft: {
+    marginLeft: '10@s',
+  },
+  iconRight: {
+    marginRight: '10@s',
+  },
+  iconLocation: {
+    marginTop: '5@s',
+  },
+  iconSettings: {
+    marginTop: '-3@s',
   },
   heartbeatIcon: {
     color: commonColor.brandSuccess,
