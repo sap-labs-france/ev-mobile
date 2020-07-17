@@ -8,6 +8,7 @@
     "email": "Entrez une adresse email valide",
     "mandatory": "est obligatoire",
     "eulaUnexpectedError": "Impossible de charger les CGUs",
+    "noGPSCoordinates": "Coordonnées GPS non fournies",
     "ok": "Ok",
     "yes": "Oui",
     "no": "Non",

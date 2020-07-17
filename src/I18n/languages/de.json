@@ -8,6 +8,7 @@
     "email": "Geben Sie eine gültige E-Mail ein",
     "mandatory": "ist notwendig",
     "eulaUnexpectedError": "Endnutzer-Lizenzvertrag konnte nicht geladen werden",
+    "noGPSCoordinates": "No GPS coordinates is provided",
     "ok": "Ok",
     "yes": "Ja",
     "no": "Nein",
