@@ -40,8 +40,8 @@ export default class SiteComponent extends React.Component<Props, State> {
       Message.showError(I18n.t('general.noGPSCoordinates'));
     } else {
       openMap({
-        latitude: address.coordinates[0],
-        longitude: address.coordinates[1],
+        longitude: address.coordinates[0],
+        latitude: address.coordinates[1],
         zoom: 18
       });
     }
