@@ -23,7 +23,7 @@
     "exitApp": "Exit App",
     "exitAppConfirm": "Do you really want to exit the application?",
     "deleteTenant": "Delete Organization",
-    "deleteConfirm": "Do you really want to delete the organization '{{tenantName}}'?",
+    "deleteTenantConfirm": "Do you really want to delete the organization '{{tenantName}}'?",
     "restoreTenants": "Restore Organizations",
     "restoreTenantsConfirm": "Do you really want to restore the initial list of organizations?",
     "noRecordFound": "No record found",
