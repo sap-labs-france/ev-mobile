@@ -2,6 +2,7 @@ import I18n from 'i18n-js';
 import { Button, Text, View } from 'native-base';
 import React from 'react';
 import Modal from 'react-native-modal';
+
 import computeStyleSheet from '../../../../ModalStyles';
 import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
 

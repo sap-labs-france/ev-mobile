@@ -1,10 +1,11 @@
 import I18n from 'i18n-js';
 import { Spinner, Text } from 'native-base';
 import React from 'react';
-import { processColor, View } from 'react-native';
+import { View, processColor } from 'react-native';
 import { LineChart, LineChartProps } from 'react-native-charts-wrapper';
 import { scale } from 'react-native-size-matters';
 import { DrawerActions } from 'react-navigation-drawer';
+
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import TransactionHeaderComponent from '../../../components/transaction/header/TransactionHeaderComponent';
 import commonColor from '../../../theme/variables/commonColor';
@@ -16,7 +17,6 @@ import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './TransactionChartStyles';
-
 
 export interface Props extends BaseProps {
 }
