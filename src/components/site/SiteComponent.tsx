@@ -2,6 +2,7 @@ import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+
 import BaseProps from '../../types/BaseProps';
 import ConnectorStats from '../../types/ConnectorStats';
 import Site from '../../types/Site';
