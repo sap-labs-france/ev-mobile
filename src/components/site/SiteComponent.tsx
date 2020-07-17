@@ -1,19 +1,14 @@
-import I18n from 'i18n-js';
 import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import openMap from 'react-native-open-maps';
-import Address from '../../types/Address';
 import BaseProps from '../../types/BaseProps';
 import ConnectorStats from '../../types/ConnectorStats';
 import Site from '../../types/Site';
 import Constants from '../../utils/Constants';
-import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import ConnectorStatusesContainerComponent from '../connector-status/ConnectorStatusesContainerComponent';
 import computeStyleSheet from './SiteComponentStyles';
-
 
 export interface Props extends BaseProps {
   site: Site;
@@ -33,18 +28,6 @@ export default class SiteComponent extends React.Component<Props, State> {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
-
-  public jumpToMap(address: Address) {
-    if (!Utils.containsAddressGPSCoordinates(address)) {
-      Message.showError(I18n.t('general.noGPSCoordinates'));
-    } else {
-      openMap({
-        longitude: address.coordinates[0],
-        latitude: address.coordinates[1],
-        zoom: 18
-      });
-    }
   }
 
   public render() {
@@ -78,10 +61,10 @@ export default class SiteComponent extends React.Component<Props, State> {
           <View style={style.container}>
             <View style={style.headerContent}>
               <View style={style.subHeaderContent}>
-                <TouchableOpacity onPress={() => this.jumpToMap(site.address)}>
-                  <Icon style={style.icon} name='pin' />
+                <TouchableOpacity onPress={() => Utils.jumpToMapWithAddress(site.address)}>
+                  <Icon style={[style.icon, style.iconLeft]} name='pin' />
                 </TouchableOpacity>
-                <Text style={style.headerName}>{site.name}</Text>
+                <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>{site.name}</Text>
               </View>
               <Icon style={style.icon} type='MaterialIcons' name='navigate-next' />
             </View>

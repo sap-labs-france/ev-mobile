@@ -57,7 +57,12 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
           }}>
           <View style={style.container}>
             <View style={style.headerContent}>
-              <Text style={style.headerName}>{siteArea.name}</Text>
+              <View style={style.subHeaderContent}>
+                <TouchableOpacity onPress={() => Utils.jumpToMapWithAddress(siteArea.address)}>
+                  <Icon style={[style.icon, style.iconLeft]} name='pin' />
+                </TouchableOpacity>
+                <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>{siteArea.name}</Text>
+              </View>
               <Icon style={siteArea.connectorStats.totalConnectors > 0 ? style.icon : style.iconHidden} type='MaterialIcons' name='navigate-next' />
             </View>
             <View style={style.connectorContent}>

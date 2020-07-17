@@ -2,7 +2,7 @@ import I18n from 'i18n-js';
 import moment from 'moment';
 import { Button, Icon, Text, View } from 'native-base';
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import BaseProps from '../../types/BaseProps';
@@ -50,12 +50,15 @@ export default class ChargerComponent extends React.Component<Props, State> {
     return (
       <View style={style.container}>
         <View style={style.headerContent}>
-          <Text style={style.headerName}>{charger.id}</Text>
+          <View style={style.subHeaderContent}>
+            <TouchableOpacity onPress={() => Utils.jumpToMapWithCoordinates(charger.coordinates)}>
+              <Icon style={[style.icon, style.iconLeft, style.iconLocation]} name='pin' />
+            </TouchableOpacity>
+            <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>{charger.id}</Text>
+          </View>
           <View style={style.buttonContainer}>
             {(isAdmin || isSiteAdmin) &&
-              <Button
-                transparent={true}
-                style={style.button}
+              <Button transparent={true} style={style.button}
                 onPress={() => {
                   navigation.navigate({
                     routeName: 'ChargerDetailsTabs',
@@ -65,10 +68,10 @@ export default class ChargerComponent extends React.Component<Props, State> {
                     key: `${Utils.randomNumber()}`
                   })
                 }}>
-                <Icon style={style.icon} type='MaterialIcons' name='tune' />
+                <Icon style={[style.icon, style.iconRight, style.iconSettings]} type='MaterialIcons' name='tune' />
               </Button>
             }
-            <Button transparent={true} style={style.button} onPress={() => { this.showHeartbeatStatus(); }}>
+            <Button transparent={true} style={[style.button, style.buttonRight]} onPress={() => { this.showHeartbeatStatus(); }}>
               {charger.inactive ?
                 <Animatable.Text animation='fadeIn' easing='ease-in-out' iterationCount='infinite' direction='alternate-reverse'>
                   <Icon style={style.deadHeartbeatIcon} type='FontAwesome' name='heartbeat' />
