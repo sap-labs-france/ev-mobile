@@ -8,6 +8,7 @@
     "email": "Enter a valid email address",
     "mandatory": "is mandatory",
     "eulaUnexpectedError": "Cannot load the EULA",
+    "noGPSCoordinates": "No GPS coordinates is provided",
     "ok": "Ok",
     "yes": "Yes",
     "no": "No",

@@ -3,7 +3,6 @@ import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
-
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
@@ -16,6 +15,7 @@ import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './SitesStyles';
+
 
 export interface Props extends BaseProps {
 }

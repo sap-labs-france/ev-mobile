@@ -1,17 +1,19 @@
+import I18n from 'i18n-js';
 import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import openMap from 'react-native-open-maps';
-
 import Address from '../../types/Address';
 import BaseProps from '../../types/BaseProps';
 import ConnectorStats from '../../types/ConnectorStats';
 import Site from '../../types/Site';
 import Constants from '../../utils/Constants';
+import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import ConnectorStatusesContainerComponent from '../connector-status/ConnectorStatusesContainerComponent';
 import computeStyleSheet from './SiteComponentStyles';
+
 
 export interface Props extends BaseProps {
   site: Site;
@@ -33,12 +35,16 @@ export default class SiteComponent extends React.Component<Props, State> {
     super.setState(state, callback);
   }
 
-  public siteLocation(address: Address) {
-    openMap({
-      latitude: address.latitude,
-      longitude: address.longitude,
-      zoom: 18
-    });
+  public jumpToMap(address: Address) {
+    if (!Utils.containsAddressGPSCoordinates(address)) {
+      Message.showError(I18n.t('general.noGPSCoordinates'));
+    } else {
+      openMap({
+        latitude: address.coordinates[0],
+        longitude: address.coordinates[1],
+        zoom: 18
+      });
+    }
   }
 
   public render() {
@@ -72,7 +78,7 @@ export default class SiteComponent extends React.Component<Props, State> {
           <View style={style.container}>
             <View style={style.headerContent}>
               <View style={style.subHeaderContent}>
-                <TouchableOpacity onPress={() => this.siteLocation(site.address)}>
+                <TouchableOpacity onPress={() => this.jumpToMap(site.address)}>
                   <Icon style={style.icon} name='pin' />
                 </TouchableOpacity>
                 <Text style={style.headerName}>{site.name}</Text>
