@@ -57,7 +57,7 @@ const commonStyles = ScaledSheet.create({
     marginTop: '5@s',
   },
   iconSettings: {
-    marginTop: '-3@s',
+    marginTop: Platform.OS === 'ios' ? '-3@s' : 0,
   },
   heartbeatIcon: {
     color: commonColor.brandSuccess,
