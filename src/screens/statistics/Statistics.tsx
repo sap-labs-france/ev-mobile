@@ -66,7 +66,9 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public async loadInitialFilters() {
-    const userID = await SecuredStorage.loadFilterValue(GlobalFilters.MY_USER_FILTER);
+    const centralServerProvider = await ProviderFactory.getProvider();
+    const userID = await SecuredStorage.loadFilterValue(
+      centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
     this.setState({
       initialFilters: { userID },
       filters: { userID }

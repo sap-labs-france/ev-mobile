@@ -20,6 +20,17 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>comgooglemaps</string>
+		<string>citymapper</string>
+		<string>uber</string>
+		<string>lyft</string>
+		<string>navigon</string>
+		<string>transit</string>
+		<string>waze</string>
+		<string>moovit</string>
+	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

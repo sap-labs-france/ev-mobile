@@ -135,12 +135,12 @@ export default class Login extends BaseScreen<Props, State> {
       // Check if user can be logged
       if (Utils.canAutoLogin(this.centralServerProvider, this.props.navigation)) {
         try {
-          // Check EULA
-          const result = await this.centralServerProvider.checkEndUserLicenseAgreement({ email, tenantSubDomain });
-          if (result.eulaAccepted) {
-            // Try to login
-            this.setState({ eula: true }, () => this.login());
-          }
+          // // Check EULA
+          // const result = await this.centralServerProvider.checkEndUserLicenseAgreement({ email, tenantSubDomain });
+          // if (result.eulaAccepted) {
+          //   // Try to login
+          //   this.setState({ eula: true }, () => this.login());
+          // }
         } catch (error) {
           // Do nothing: user must log on
         }
@@ -380,7 +380,7 @@ export default class Login extends BaseScreen<Props, State> {
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation}/>
             <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.newUser()}>
-              <Text style={style.linksTextButton}>{I18n.t('authentication.newUser')}</Text>
+              <Text style={style.linksTextButton} uppercase={false}>{I18n.t('authentication.newUser')}</Text>
             </Button>
             <Form style={formStyle.form}>
               <Button block={true} style={formStyle.button}
@@ -399,7 +399,7 @@ export default class Login extends BaseScreen<Props, State> {
                     }
                   )
                 }>
-                <Text style={formStyle.buttonText}>{this.state.tenantName}</Text>
+                <Text style={formStyle.buttonText} uppercase={false}>{this.state.tenantName}</Text>
               </Button>
               <Modal style ={modalStyle.modal} isVisible={visible}
                   onBackdropPress={() => this.setState({ visible: false })}>
@@ -451,13 +451,13 @@ export default class Login extends BaseScreen<Props, State> {
                         onPress={() => {
                           this.createTenant(this.state.newTenantSubDomain, this.state.newTenantName);
                         }} >
-                      <Text style={modalStyle.modalTextButton}>{I18n.t('general.create')}</Text>
+                      <Text style={modalStyle.modalTextButton} uppercase={false}>{I18n.t('general.create')}</Text>
                     </Button>
                     <Button style={[modalStyle.modalButton]} full={true} light={true}
                         onPress={() => {
                           this.setState({ visible: false })
                         }} >
-                      <Text style={modalStyle.modalTextButton}>{I18n.t('general.cancel')}</Text>
+                      <Text style={modalStyle.modalTextButton} uppercase={false}>{I18n.t('general.cancel')}</Text>
                     </Button>
                   </View>
                 </View>
@@ -469,7 +469,7 @@ export default class Login extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='mail' style={formStyle.inputIcon} />
+                <Icon active={true} name='mail' type='Ionicons' style={[formStyle.inputIcon, style.inputIconEmail]} />
                 <TextInput
                   returnKeyType='next'
                   selectionColor={commonColor.inverseTextColor}
@@ -493,7 +493,7 @@ export default class Login extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='unlock' style={[formStyle.inputIcon, style.inputIconLock]} />
+                <Icon active={true} name='lock' type='MaterialCommunityIcons' style={[formStyle.inputIcon, style.inputIconLock]} />
                 <TextInput
                   returnKeyType='go'
                   selectionColor={commonColor.inverseTextColor}
@@ -510,7 +510,7 @@ export default class Login extends BaseScreen<Props, State> {
                   onChangeText={(text) => this.setState({ password: text })}
                   value={this.state.password}
                 />
-                <Icon active={true} name={hidePassword ? 'eye' : 'eye-off'}
+                <Icon active={true} name={hidePassword ? 'eye' : 'eye-off'} type='Ionicons'
                   onPress={() => this.setState({ hidePassword: !hidePassword })}
                   style={[formStyle.inputIcon, style.inputIconLock]} />
               </Item>
@@ -521,7 +521,7 @@ export default class Login extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.forgotPassword()}>
-                <Text style={[style.linksTextButton, style.linksTextButton]}>{I18n.t('authentication.forgotYourPassword')}</Text>
+                <Text style={[style.linksTextButton, style.linksTextButton]} uppercase={false}>{I18n.t('authentication.forgotYourPassword')}</Text>
               </Button>
               <View style={formStyle.formCheckboxContainer}>
                 <CheckBox style={formStyle.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
@@ -542,7 +542,7 @@ export default class Login extends BaseScreen<Props, State> {
                 <Spinner style={formStyle.spinner} color='white' />
               ) : (
                 <Button primary={true} block={true} style={formStyle.button} onPress={() => this.login()}>
-                  <Text style={formStyle.buttonText}>{I18n.t('authentication.login')}</Text>
+                  <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.login')}</Text>
                 </Button>
               )}
             </Form>

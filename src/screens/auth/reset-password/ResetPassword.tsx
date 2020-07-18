@@ -167,7 +167,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
             <Form style={formStyle.form}>
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='unlock' style={formStyle.inputIcon} />
+                <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   selectionColor={commonColor.inverseTextColor}
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
@@ -193,7 +193,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='unlock' style={formStyle.inputIcon} />
+                <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
                   selectionColor={commonColor.inverseTextColor}
@@ -223,7 +223,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                 <Spinner style={formStyle.spinner} color='white' />
               ) : (
                 <Button primary={true} block={true} style={formStyle.button} onPress={() => this.resetPassword()}>
-                  <Text style={formStyle.buttonText}>{I18n.t('authentication.resetPassword')}</Text>
+                  <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.resetPassword')}</Text>
                 </Button>
               )}
             </Form>
@@ -233,7 +233,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
           <Left>
             <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]}
               onPress={() => this.props.navigation.navigate('Login')}>
-              <Text style={[style.linksTextButton, style.linksTextButtonLeft]}>{I18n.t('authentication.backLogin')}</Text>
+              <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>{I18n.t('authentication.backLogin')}</Text>
             </Button>
           </Left>
         </Footer>

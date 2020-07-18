@@ -9,6 +9,8 @@
     "mandatory": "ist notwendig",
     "eulaUnexpectedError": "Endnutzer-Lizenzvertrag konnte nicht geladen werden",
     "noGPSCoordinates": "No GPS coordinates is provided",
+    "chooseApp": "Choose an App",
+    "availableApps": "Available Apps",
     "ok": "Ok",
     "yes": "Ja",
     "no": "Nein",

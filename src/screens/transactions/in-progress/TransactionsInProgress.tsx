@@ -3,12 +3,12 @@ import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
-
-import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
 import TransactionInProgressComponent from '../../../components/transaction/in-progress/TransactionInProgressComponent';
+import I18nManager from '../../../I18n/I18nManager';
+import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import { DataResult } from '../../../types/DataResult';
 import { GlobalFilters } from '../../../types/Filter';
@@ -19,6 +19,7 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../TransactionsStyles';
 import TransactionsInProgressFilters, { TransactionsInProgressFiltersDef } from './TransactionsInProgressFilters';
+
 
 export interface Props extends BaseProps {
 }
@@ -65,7 +66,9 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
   }
 
   public async loadInitialFilters() {
-    const userID = await SecuredStorage.loadFilterValue(GlobalFilters.MY_USER_FILTER);
+    const centralServerProvider = await ProviderFactory.getProvider();
+    const userID = await SecuredStorage.loadFilterValue(
+      centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
     this.setState({
       initialFilters: { userID },
       filters: { userID }

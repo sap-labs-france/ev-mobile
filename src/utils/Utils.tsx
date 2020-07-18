@@ -1,12 +1,11 @@
 import I18n from 'i18n-js';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import { ImageSourcePropType, NativeModules, Platform } from 'react-native';
-import openMap from 'react-native-open-maps';
+import OpenMap from 'react-native-open-map';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import Address from 'types/Address';
 import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
-
 import chademo from '../../assets/connectorType/chademo.gif';
 import combo from '../../assets/connectorType/combo_ccs.gif';
 import domestic from '../../assets/connectorType/domestic-ue.gif';
@@ -43,10 +42,13 @@ export default class Utils {
     if (!Utils.containsGPSCoordinates(coordinates)) {
       Message.showError(I18n.t('general.noGPSCoordinates'));
     } else {
-      openMap({
+      OpenMap.show({
         longitude: coordinates[0],
         latitude: coordinates[1],
-        zoom: 18
+        title: 'Central Park',
+        cancelText: I18n.t('general.close'),
+        actionSheetTitle: I18n.t('general.chooseApp'),
+        actionSheetMessage: I18n.t('general.availableApps'),
       });
     }
   }
