@@ -141,7 +141,7 @@ export class CommonColor {
   // CheckBox
   public CheckboxRadius = platform === PLATFORM.IOS ? scale(13) : 0;
   public CheckboxBorderWidth = platform === PLATFORM.IOS ? scale(1) : scale(2);
-  public CheckboxPaddingLeft = platform === PLATFORM.IOS ? 0 : scale(2);
+  public CheckboxPaddingLeft = platform === PLATFORM.IOS ? 0 : 0;
   public CheckboxPaddingBottom = platform === PLATFORM.IOS ? 0 : scale(5);
   public CheckboxIconSize = platform === PLATFORM.IOS ? scale(20) : scale(17);
   public CheckboxIconMarginTop = platform === PLATFORM.IOS ? undefined : 0;

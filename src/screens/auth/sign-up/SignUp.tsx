@@ -272,7 +272,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 ))}
 
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='mail' style={[formStyle.inputIcon, style.inputIconEmail]} />
+                <Icon active={true} name='mail' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.emailInput = ref)}
                   selectionColor={commonColor.inverseTextColor}

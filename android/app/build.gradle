@@ -6,6 +6,8 @@ if (file("../release.gradle").exists()) {
   apply from: file("../release-template.gradle")
 }
 
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
 import com.android.build.OutputFile
 
 /**

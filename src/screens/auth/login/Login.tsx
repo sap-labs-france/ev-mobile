@@ -469,7 +469,7 @@ export default class Login extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='mail' type='Ionicons' style={[formStyle.inputIcon, style.inputIconEmail]} />
+                <Icon active={true} name='mail' type='Ionicons' style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType='next'
                   selectionColor={commonColor.inverseTextColor}

@@ -1,9 +1,8 @@
 import deepmerge from 'deepmerge';
-import { Platform } from 'react-native';
-import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
+import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
-
 import commonColor from './theme/variables/commonColor';
+
 
 const commonStyles = ScaledSheet.create({
   spinner: {
@@ -57,7 +56,7 @@ const commonStyles = ScaledSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
     width: '25@s',
-    fontSize: Platform.OS === 'ios' ? '20@s' : '15@s'
+    fontSize: '20@s'
   },
   inputField: {
     flex: 1,
