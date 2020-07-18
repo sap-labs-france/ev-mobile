@@ -153,7 +153,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
             <Form style={formStyle.form}>
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='mail' style={formStyle.inputIcon} />
+                <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType={'next'}
                   selectionColor={commonColor.inverseTextColor}
