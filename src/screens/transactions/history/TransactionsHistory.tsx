@@ -14,6 +14,7 @@ import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import { TransactionDataResult } from '../../../types/DataResult';
 import { GlobalFilters } from '../../../types/Filter';
+import { HTTPAuthError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
 import SecuredStorage from '../../../utils/SecuredStorage';
@@ -109,7 +110,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       return transactions;
     } catch (error) {
       // Check if HTTP?
-      if (!error.request || error.request.status !== 560) {
+      if (!error.request || error.request.status !== HTTPAuthError.ERROR) {
         Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
           'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
       }

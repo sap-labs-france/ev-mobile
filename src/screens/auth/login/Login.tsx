@@ -4,11 +4,11 @@ import React from 'react';
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Modal from 'react-native-modal';
-
 import computeFormStyleSheet from '../../../FormStyles';
 import computeModalStyleSheet from '../../../ModalStyles';
 import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
+import { HTTPError } from '../../../types/HTTPError';
 import Tenant from '../../../types/Tenant';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
@@ -17,6 +17,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+
 
 export interface Props extends BaseProps {
 }
@@ -183,24 +184,24 @@ export default class Login extends BaseScreen<Props, State> {
           // Show error
           switch (error.request.status) {
             // Unknown Email
-            case 500:
-            case 550:
+            case HTTPError.GENERAL_ERROR:
+            case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
               Message.showError(I18n.t('authentication.wrongEmailOrPassword'));
               break;
             // Account is locked
-            case 570:
+            case HTTPError.USER_ACCOUNT_LOCKED_ERROR:
               Message.showError(I18n.t('authentication.accountLocked'));
               break;
             // Account not Active
-            case 580:
+            case HTTPError.USER_ACCOUNT_INACTIVE_ERROR:
               Message.showError(I18n.t('authentication.accountNotActive'));
               break;
             // Account Pending
-            case 590:
+            case HTTPError.USER_ACCOUNT_PENDING_ERROR:
               Message.showError(I18n.t('authentication.accountPending'));
               break;
             // Eula no accepted
-            case 520:
+            case HTTPError.USER_EULA_ERROR:
               Message.showError(I18n.t('authentication.eulaNotAccepted'));
               break;
             default:
