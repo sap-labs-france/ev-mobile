@@ -6,8 +6,6 @@ if (file("../release.gradle").exists()) {
   apply from: file("../release-template.gradle")
 }
 
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
-
 import com.android.build.OutputFile
 
 /**
@@ -222,4 +220,5 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply plugin: 'com.google.gms.google-services'
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
