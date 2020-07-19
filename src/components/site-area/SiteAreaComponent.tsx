@@ -58,7 +58,7 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
           <View style={style.container}>
             <View style={style.headerContent}>
               <View style={style.subHeaderContent}>
-                <TouchableOpacity onPress={() => Utils.jumpToMapWithAddress(siteArea.address)}>
+                <TouchableOpacity onPress={() => Utils.jumpToMapWithAddress(siteArea.name, siteArea.address)}>
                   <Icon style={[style.icon, style.iconLeft]} type={'MaterialIcons'} name='place' />
                 </TouchableOpacity>
                 <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>{siteArea.name}</Text>

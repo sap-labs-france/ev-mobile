@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Button, CheckBox, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import { Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
 
@@ -272,7 +272,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 ))}
 
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='mail' style={formStyle.inputIcon} />
+                <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.emailInput = ref)}
                   selectionColor={commonColor.inverseTextColor}
@@ -297,7 +297,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 ))}
 
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='unlock' style={formStyle.inputIcon} />
+                <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
                   selectionColor={commonColor.inverseTextColor}
@@ -315,7 +315,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 />
                 <Icon active={true} name={hidePassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hidePassword: !hidePassword })}
-                  style={[formStyle.inputIcon, style.inputIconLock]} />
+                  style={formStyle.inputIcon} />
               </Item>
               {this.state.errorPassword &&
                 this.state.errorPassword.map((errorMessage, index) => (
@@ -324,7 +324,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='unlock' style={formStyle.inputIcon} />
+                <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
                   selectionColor={commonColor.inverseTextColor}
@@ -342,7 +342,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 />
                 <Icon active={true} name={hideRepeatPassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
-                  style={[formStyle.inputIcon, style.inputIconLock]} />
+                  style={formStyle.inputIcon} />
               </Item>
               {this.state.errorRepeatPassword &&
                 this.state.errorRepeatPassword.map((errorMessage, index) => (
@@ -369,7 +369,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Spinner style={formStyle.spinner} color='white' />
               ) : (
                 <Button primary={true} block={true} style={formStyle.button} onPress={() => this.signUp()}>
-                  <TextRN style={formStyle.buttonText}>{I18n.t('authentication.signUp')}</TextRN>
+                  <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.signUp')}</Text>
                 </Button>
               )}
             </Form>
@@ -386,7 +386,7 @@ export default class SignUp extends BaseScreen<Props, State> {
         <Footer style={style.footer}>
           <Left>
             <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.props.navigation.goBack()}>
-              <TextRN style={[style.linksTextButton, style.linksTextButtonLeft]}>{I18n.t('authentication.backLogin')}</TextRN>
+              <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>{I18n.t('authentication.backLogin')}</Text>
             </Button>
           </Left>
         </Footer>

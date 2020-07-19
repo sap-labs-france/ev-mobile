@@ -1,10 +1,10 @@
 import { NavigationState } from 'react-navigation';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
-
-import ProviderFactory from '../provider/ProviderFactory';
+import UserToken from 'types/UserToken';
 import { SecuredStorageKey } from '../types/SecuredStorageKeys';
 import Tenant from '../types/Tenant';
 import { UserCredentials } from '../types/User';
+
 
 // Generate a new Id for persisting the navigation each time the app is launched first time
 let navigationID: string = '' + new Date().getTime();
@@ -73,11 +73,7 @@ export default class SecuredStorage {
     );
   }
 
-  public static async saveFilterValue(filterInternalID: string, filterValue: string) {
-    // Get Provider
-    const centralServerProvider = await ProviderFactory.getProvider();
-    // Get Token
-    const user = await centralServerProvider.getUserInfo();
+  public static async saveFilterValue(user: UserToken, filterInternalID: string, filterValue: string) {
     // null value not allowed
     if (!filterValue) {
       filterValue = 'null';
@@ -88,12 +84,8 @@ export default class SecuredStorage {
       { accessible: ACCESSIBLE.WHEN_UNLOCKED });
   }
 
-  public static async filterExists(filterInternalID: string): Promise<boolean> {
+  public static async filterExists(user: UserToken, filterInternalID: string): Promise<boolean> {
     try {
-      // Get Provider
-      const centralServerProvider = await ProviderFactory.getProvider();
-      // Get Token
-      const user = await centralServerProvider.getUserInfo();
       // Check
       const result = await RNSecureStorage.exists(`${user.tenantID}~${user.id}~filter~${filterInternalID}`);
       // Returned result is a number, not a boolean! 0 = not found and 1 = found!
@@ -104,11 +96,7 @@ export default class SecuredStorage {
     return false;
   }
 
-  public static async loadFilterValue(filterInternalID: string): Promise<string> {
-    // Get Provider
-    const centralServerProvider = await ProviderFactory.getProvider();
-    // Get Token
-    const user = await centralServerProvider.getUserInfo();
+  public static async loadFilterValue(user: UserToken, filterInternalID: string): Promise<string> {
     // Get
     const value = await SecuredStorage._getString(`${user.tenantID}~${user.id}~filter~${filterInternalID}`);
     if (value === 'null') {

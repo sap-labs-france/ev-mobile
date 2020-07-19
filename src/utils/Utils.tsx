@@ -1,12 +1,11 @@
 import I18n from 'i18n-js';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import { ImageSourcePropType, NativeModules, Platform } from 'react-native';
-import openMap from 'react-native-open-maps';
+import { showLocation } from 'react-native-map-link';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import Address from 'types/Address';
 import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
-
 import chademo from '../../assets/connectorType/chademo.gif';
 import combo from '../../assets/connectorType/combo_ccs.gif';
 import domestic from '../../assets/connectorType/domestic-ue.gif';
@@ -31,22 +30,27 @@ export default class Utils {
       !Utils.isNullOrEmptyString(password);
   }
 
-  public static jumpToMapWithAddress(address: Address) {
+  public static jumpToMapWithAddress(title: string, address: Address) {
     if (!Utils.containsAddressGPSCoordinates(address)) {
       Message.showError(I18n.t('general.noGPSCoordinates'));
     } else {
-      Utils.jumpToMapWithCoordinates(address.coordinates);
+      Utils.jumpToMapWithCoordinates(title, address.coordinates);
     }
   }
 
-  public static jumpToMapWithCoordinates(coordinates: number[]) {
+  public static jumpToMapWithCoordinates(title: string, coordinates: number[]) {
     if (!Utils.containsGPSCoordinates(coordinates)) {
       Message.showError(I18n.t('general.noGPSCoordinates'));
     } else {
-      openMap({
+      showLocation({
         longitude: coordinates[0],
         latitude: coordinates[1],
-        zoom: 18
+        title,
+        googleForceLatLon: true,  // optionally force GoogleMaps to use the latlon for the query instead of the title
+        alwaysIncludeGoogle: true, // optional, true will always add Google Maps to iOS and open in Safari, even if app is not installed (default: false)
+        dialogTitle: I18n.t('general.chooseApp'),
+        dialogMessage: I18n.t('general.availableApps'),
+        cancelText: I18n.t('general.close'),
       });
     }
   }

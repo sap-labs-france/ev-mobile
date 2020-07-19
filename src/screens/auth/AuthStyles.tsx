@@ -54,9 +54,6 @@ const commonStyles = ScaledSheet.create({
     fontWeight: 'bold',
     alignSelf: 'center',
   },
-  inputIconLock: {
-    fontSize: '20@s'
-  },
   formErrorTextEula: {
     alignSelf: 'center',
     marginLeft: 0,
