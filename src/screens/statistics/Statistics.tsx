@@ -2,19 +2,20 @@ import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } from 'native-base';
 import React from 'react';
 import { DrawerActions } from 'react-navigation-drawer';
-
-import I18nManager from '../../I18n/I18nManager';
 import HeaderComponent from '../../components/header/HeaderComponent';
+import I18nManager from '../../I18n/I18nManager';
 import ProviderFactory from '../../provider/ProviderFactory';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from '../../screens/transactions/history/TransactionsHistoryFilters';
 import BaseProps from '../../types/BaseProps';
 import { TransactionDataResult } from '../../types/DataResult';
 import { GlobalFilters } from '../../types/Filter';
+import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
 import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './StatisticsStyles';
+
 
 export interface Props extends BaseProps {
 }
@@ -114,7 +115,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
       return transactions;
     } catch (error) {
       // Check if HTTP?
-      if (!error.request || error.request.status !== 560) {
+      if (!error.request || error.request.status !== HTTPAuthError.ERROR) {
         Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
           'transactions.transactionStatsUnexpectedError', this.props.navigation, this.refresh);
       }

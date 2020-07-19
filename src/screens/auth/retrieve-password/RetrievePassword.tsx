@@ -4,17 +4,18 @@ import React from 'react';
 import { KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
-
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
 import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
+import { HTTPError } from '../../../types/HTTPError';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+
 
 export interface Props extends BaseProps {
 }
@@ -116,11 +117,11 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
           // Show error
           switch (error.request.status) {
             // Invalid Captcha
-            case 530:
+            case HTTPError.INVALID_CAPTCHA:
               Message.showError(I18n.t('authentication.invalidCaptcha'));
               break;
             // Unknown Email
-            case 550:
+            case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
               Message.showError(I18n.t('authentication.wrongEmail'));
               break;
             default:
