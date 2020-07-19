@@ -1,8 +1,8 @@
 import React from 'react';
+
 import ProviderFactory from '../../../../provider/ProviderFactory';
 import SecuredStorage from '../../../../utils/SecuredStorage';
 import FilterControlComponent from '../controls/FilterControlComponent';
-
 
 export interface FilterContainerComponentProps {
   onFilterChanged?: (filters: any, applyFilters: boolean) => void;

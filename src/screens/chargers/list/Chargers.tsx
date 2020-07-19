@@ -3,12 +3,13 @@ import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
+
+import I18nManager from '../../../I18n/I18nManager';
 import ChargerComponent from '../../../components/charger/ChargerComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
-import I18nManager from '../../../I18n/I18nManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus } from '../../../types/ChargingStation';
@@ -20,7 +21,6 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import ChargersFilters, { ChargersFiltersDef } from './ChargersFilters';
 import computeStyleSheet from './ChargersStyles';
-
 
 export interface Props extends BaseProps {
 }
