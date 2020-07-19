@@ -1,4 +1,5 @@
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
@@ -46,6 +47,8 @@ export default class CentralServerProvider {
   private securityProvider: SecurityProvider = null;
 
   constructor() {
+    // Retry backend requests
+    axiosRetry(axios);
     if (__DEV__) {
       // QA REST Server
       // this.centralRestServerServiceBaseURL = Configuration.centralRestServerServiceBaseURLQA;
