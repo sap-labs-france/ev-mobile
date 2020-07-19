@@ -47,12 +47,18 @@ export default class ChargerComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { charger, isAdmin, isSiteAdmin, navigation } = this.props;
+    const validGPSCoordinates = Utils.containsGPSCoordinates(charger.coordinates);
     return (
       <View style={style.container}>
         <View style={style.headerContent}>
           <View style={style.subHeaderContent}>
-            <TouchableOpacity onPress={() => Utils.jumpToMapWithCoordinates(charger.id, charger.coordinates)}>
-              <Icon style={[style.icon, style.iconLeft, style.iconLocation]} type={'MaterialIcons'} name='place' />
+            <TouchableOpacity disabled={!validGPSCoordinates}
+                onPress={() => Utils.jumpToMapWithCoordinates(charger.id, charger.coordinates)}>
+              { validGPSCoordinates ?
+                <Icon style={[style.icon, style.iconLeft]} type='MaterialIcons' name='place' />
+              :
+                <Icon style={[style.icon, style.iconLeft]} type='MaterialCommunityIcons' name='map-marker-off' />
+              }
             </TouchableOpacity>
             <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>{charger.id}</Text>
           </View>

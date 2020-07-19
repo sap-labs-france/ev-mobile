@@ -34,6 +34,7 @@ export default class SiteComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { site, navigation } = this.props;
+    const validGPSCoordinates = Utils.containsAddressGPSCoordinates(site.address);
     let connectorStats: ConnectorStats;
     // New backend?
     if (site.connectorStats) {
@@ -62,8 +63,13 @@ export default class SiteComponent extends React.Component<Props, State> {
           <View style={style.container}>
             <View style={style.headerContent}>
               <View style={style.subHeaderContent}>
-                <TouchableOpacity onPress={() => Utils.jumpToMapWithAddress(site.name, site.address)}>
-                  <Icon style={[style.icon, style.iconLeft]} type={'MaterialIcons'} name='place' />
+                <TouchableOpacity disabled={!validGPSCoordinates}
+                    onPress={() => Utils.jumpToMapWithAddress(site.name, site.address)}>
+                  { validGPSCoordinates ?
+                    <Icon style={[style.icon, style.iconLeft]} type='MaterialIcons' name='place' />
+                  :
+                    <Icon style={[style.icon, style.iconLeft]} type='MaterialCommunityIcons' name='map-marker-off' />
+                  }
                 </TouchableOpacity>
                 <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>{site.name}</Text>
               </View>
