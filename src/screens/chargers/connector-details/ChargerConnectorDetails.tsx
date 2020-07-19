@@ -3,12 +3,13 @@ import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
+
 import noPhotoActive from '../../../../assets/no-photo-active.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
+import I18nManager from '../../../I18n/I18nManager';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
@@ -19,7 +20,6 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargerConnectorDetailsStyles';
-
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
