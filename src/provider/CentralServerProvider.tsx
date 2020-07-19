@@ -24,9 +24,6 @@ import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
 
-// Retry backend requests
-axiosRetry(axios);
-
 export default class CentralServerProvider {
   private debug: boolean = false;
   private captchaBaseUrl: string = Configuration.captchaBaseUrl;
@@ -50,6 +47,8 @@ export default class CentralServerProvider {
   private securityProvider: SecurityProvider = null;
 
   constructor() {
+    // Retry backend requests
+    axiosRetry(axios);
     if (__DEV__) {
       // QA REST Server
       // this.centralRestServerServiceBaseURL = Configuration.centralRestServerServiceBaseURLQA;
