@@ -51,7 +51,7 @@ export default class ChargerComponent extends React.Component<Props, State> {
       <View style={style.container}>
         <View style={style.headerContent}>
           <View style={style.subHeaderContent}>
-            <TouchableOpacity onPress={() => Utils.jumpToMapWithCoordinates(charger.coordinates)}>
+            <TouchableOpacity onPress={() => Utils.jumpToMapWithCoordinates(charger.id, charger.coordinates)}>
               <Icon style={[style.icon, style.iconLeft, style.iconLocation]} type={'MaterialIcons'} name='place' />
             </TouchableOpacity>
             <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>{charger.id}</Text>
