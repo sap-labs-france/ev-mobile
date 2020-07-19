@@ -36,6 +36,7 @@ export default interface ChargingStation extends CreatedUpdatedProps {
   capabilities?: ChargingStationCapabilities;
   ocppStandardParameters?: KeyValue[];
   ocppVendorParameters?: KeyValue[];
+  distanceMeters?: number;
 }
 
 export enum CurrentType {
