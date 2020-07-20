@@ -21,10 +21,23 @@ const commonStyles = ScaledSheet.create({
     borderBottomColor: commonColor.listBorderColor,
     backgroundColor: commonColor.headerBgColor
   },
-  subHeaderContent: {
+  titleContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    width: '80%',
+  },
+  subHeaderContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: '25@s',
+    paddingRight: '5@s',
+    paddingLeft: '5@s',
+    borderBottomWidth: 1,
+    borderBottomColor: commonColor.listBorderColor,
+  },
+  address: {
     width: '80%',
   },
   headerName: {

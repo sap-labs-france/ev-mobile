@@ -76,6 +76,10 @@ export default class I18nManager {
     return '-';
   }
 
+  public static isMetricsSystem(): boolean {
+    return RNLocalize.usesMetricSystem();
+  }
+
   private static isValidDate(date: Date): boolean {
     return !isNaN(new Date(date).getTime());
   }

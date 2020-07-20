@@ -51,7 +51,7 @@ export default class CentralServerProvider {
     axiosRetry(axios);
     if (__DEV__) {
       // QA REST Server
-      // this.centralRestServerServiceBaseURL = Configuration.centralRestServerServiceBaseURLQA;
+      this.centralRestServerServiceBaseURL = Configuration.centralRestServerServiceBaseURLQA;
       this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + '/client/auth';
       this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + '/client/api';
       this.debug = true;
@@ -395,8 +395,8 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getChargers(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<ChargingStation>> {
-    this.debugMethod('getChargers');
+  public async getChargingStations(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<ChargingStation>> {
+    this.debugMethod('getChargingStations');
     // Build Paging
     this.buildPaging(paging, params);
     // Call
@@ -416,8 +416,8 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getCharger(params = {}): Promise<ChargingStation> {
-    this.debugMethod('getCharger');
+  public async getChargingStation(params = {}): Promise<ChargingStation> {
+    this.debugMethod('getChargingStation');
     // Call
     const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/${ServerAction.CHARGING_STATION}`, {
       headers: this.buildSecuredHeaders(),
@@ -426,7 +426,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getChargerOcppParameters(id: string): Promise<DataResult<KeyValue>> {
+  public async getChargingStationOcppParameters(id: string): Promise<DataResult<KeyValue>> {
     // Call
     const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/${ServerAction.CHARGING_STATIONS_OCPP_PARAMETERS}?ChargeBoxID=${id}`, {
       headers: this.buildSecuredHeaders()
@@ -597,7 +597,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async requestChargerOcppParameters(id: string): Promise<ActionResponse> {
+  public async requestChargingStationOcppParameters(id: string): Promise<ActionResponse> {
     this.debugMethod('requestChargingStationOCPPConfiguration');
     // Call
     const result = await axios.post(`${this.centralRestServerServiceSecuredURL}/${ServerAction.CHARGING_STATION_REQUEST_OCPP_PARAMETERS}`,

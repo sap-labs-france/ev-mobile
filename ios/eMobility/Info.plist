@@ -68,9 +68,9 @@
 		</dict>
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Discover charging stations</string>
+	<string>Discover Charging Stations</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Discover charging stations</string>
+	<string>Discover Charging Stations</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

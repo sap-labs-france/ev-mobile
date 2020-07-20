@@ -6,27 +6,27 @@ import * as Animatable from 'react-native-animatable';
 import FilterVisibleContainerComponent from '../../../components/search/filter/containers/FilterVisibleContainerComponent';
 import computeControlStyleSheet from '../../../components/search/filter/controls/FilterControlComponentStyles';
 import ConnectorTypeFilterControlComponent from '../../../components/search/filter/controls/connector-type/ConnectorTypeFilterControlComponent';
-import OnlyAvailableChargerSwitchFilterControlComponent from '../../../components/search/filter/controls/only-available-chargers/OnlyAvailableChargerSwitchFilterControlComponent';
+import OnlyAvailableChargingStationSwitchFilterControlComponent from '../../../components/search/filter/controls/only-available-charging-stations/OnlyAvailableChargingStationSwitchFilterControlComponent';
 import ScreenFilters, { ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';
 import { ChargePointStatus } from '../../../types/ChargingStation';
 import { GlobalFilters } from '../../../types/Filter';
-import computeStyleSheet from './ChargersStyles';
+import computeStyleSheet from './ChargingStationsStyles';
 
 export interface Props {
-  onFilterChanged?: (filters: ChargersFiltersDef) => void;
-  initialFilters?: ChargersFiltersDef;
+  onFilterChanged?: (filters: ChargingStationFiltersDef) => void;
+  initialFilters?: ChargingStationFiltersDef;
 }
 
 interface State extends ScreenFiltersState {
-  filters?: ChargersFiltersDef;
+  filters?: ChargingStationFiltersDef;
 }
 
-export interface ChargersFiltersDef {
+export interface ChargingStationFiltersDef {
   connectorStatus?: ChargePointStatus;
   connectorType?: string;
 }
 
-export default class ChargersFilters extends ScreenFilters {
+export default class ChargingStationFilters extends ScreenFilters {
   public state: State;
   public props: Props;
 
@@ -41,7 +41,7 @@ export default class ChargersFilters extends ScreenFilters {
     super.setState(state, callback);
   }
 
-  public onFilterChanged = (newFilters: ChargersFiltersDef) => {
+  public onFilterChanged = (newFilters: ChargingStationFiltersDef) => {
     const { onFilterChanged } = this.props;
     this.setState({
       filters: { ...this.state.filters, ...newFilters }
@@ -61,15 +61,15 @@ export default class ChargersFilters extends ScreenFilters {
           ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) =>
             this.setFilterVisibleContainerComponent(filterVisibleContainerComponent)}
         >
-          <OnlyAvailableChargerSwitchFilterControlComponent
+          <OnlyAvailableChargingStationSwitchFilterControlComponent
             filterID={'connectorStatus'}
-            internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGERS}
+            internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS}
             initialValue={filters.hasOwnProperty('connectorStatus') ? filters.connectorStatus : initialFilters.connectorStatus}
             label={I18n.t('general.onlyAvailableChargers')}
             onFilterChanged={(id: string, value: ChargePointStatus) =>
               this.getFilterVisibleContainerComponent().setFilter(id, value)}
-            ref={(onlyAvailableChargerSwitchFilterControlComponent: OnlyAvailableChargerSwitchFilterControlComponent) =>
-              this.addVisibleFilter(onlyAvailableChargerSwitchFilterControlComponent)}
+            ref={(OnlyAvailableChargingStationSwitchFilterControlComponent: OnlyAvailableChargingStationSwitchFilterControlComponent) =>
+              this.addVisibleFilter(OnlyAvailableChargingStationSwitchFilterControlComponent)}
           />
           <Animatable.View style={style.filtersHidden} ref={this.setExpandableView} >
             <ConnectorTypeFilterControlComponent

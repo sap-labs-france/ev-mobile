@@ -12,6 +12,7 @@ export default interface Site extends CreatedUpdatedProps {
   image?: string;
   connectorStats: ConnectorStats;
   company?: Company;
+  distanceMeters?: number;
 }
 
 export interface SiteUser {

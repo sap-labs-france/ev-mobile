@@ -6,12 +6,12 @@ import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-n
 import Address from 'types/Address';
 import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
-
 import chademo from '../../assets/connectorType/chademo.gif';
 import combo from '../../assets/connectorType/combo_ccs.gif';
 import domestic from '../../assets/connectorType/domestic-ue.gif';
 import noConnector from '../../assets/connectorType/no-connector.gif';
 import type2 from '../../assets/connectorType/type2.gif';
+import I18nManager from '../I18n/I18nManager';
 import commonColor from '../theme/variables/commonColor';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
@@ -19,6 +19,7 @@ import { InactivityStatus } from '../types/Transaction';
 import User from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
+
 
 export default class Utils {
   public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
@@ -29,6 +30,32 @@ export default class Utils {
       !Utils.isNullOrEmptyString(tenantSubDomain) &&
       !Utils.isNullOrEmptyString(email) &&
       !Utils.isNullOrEmptyString(password);
+  }
+
+  public static formatDistance(distanceMeters: number): string {
+    let distance = distanceMeters;
+    // Convert to Yard
+    if (I18nManager.isMetricsSystem()) {
+      distance *= 1.09361;
+    }
+    if (distance < 1000) {
+      return I18nManager.isMetricsSystem() ?
+        Math.round(distance) + ' m' :
+        Math.round(distance) + ' yd';
+    }
+    return I18nManager.isMetricsSystem() ?
+      I18nManager.formatNumber(Math.round(distance / 100) / 10) + ' km' :
+      I18nManager.formatNumber(Math.round(distance * 0.000621371)) + ' mi';
+  }
+
+  public static isEmptyArray(array: any): boolean {
+    if (!array) {
+      return true;
+    }
+    if (Array.isArray(array) && array.length > 0) {
+      return false;
+    }
+    return true;
   }
 
   public static jumpToMapWithAddress(title: string, address: Address) {

@@ -57,9 +57,9 @@ export default class TransactionInProgressComponent extends React.Component<Prop
         <TouchableOpacity
           onPress={() => {
             navigation.navigate({
-              routeName: 'ChargerConnectorDetailsTabs',
+              routeName: 'ChargingStationConnectorDetailsTabs',
               params: {
-                chargerID: transaction.chargeBoxID,
+                chargingStationID: transaction.chargeBoxID,
                 connectorID: transaction.connectorId
               },
               key: `${Utils.randomNumber()}`

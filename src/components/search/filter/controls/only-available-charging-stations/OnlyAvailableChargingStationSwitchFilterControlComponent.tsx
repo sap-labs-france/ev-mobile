@@ -12,7 +12,7 @@ interface State {
   switchValue?: boolean;
 }
 
-export default class OnlyAvailableChargerSwitchFilterControlComponent extends FilterControlComponent<ChargePointStatus> {
+export default class OnlyAvailableChargingStationSwitchFilterControlComponent extends FilterControlComponent<ChargePointStatus> {
   public state: State;
   public props: Props;
   private status: ChargePointStatus = ChargePointStatus.AVAILABLE;

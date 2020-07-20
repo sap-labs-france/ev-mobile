@@ -136,12 +136,12 @@ export default class Login extends BaseScreen<Props, State> {
       // Check if user can be logged
       if (Utils.canAutoLogin(this.centralServerProvider, this.props.navigation)) {
         try {
-          // // Check EULA
-          // const result = await this.centralServerProvider.checkEndUserLicenseAgreement({ email, tenantSubDomain });
-          // if (result.eulaAccepted) {
-          //   // Try to login
-          //   this.setState({ eula: true }, () => this.login());
-          // }
+          // Check EULA
+          const result = await this.centralServerProvider.checkEndUserLicenseAgreement({ email, tenantSubDomain });
+          if (result.eulaAccepted) {
+            // Try to login
+            this.setState({ eula: true }, () => this.login());
+          }
         } catch (error) {
           // Do nothing: user must log on
         }

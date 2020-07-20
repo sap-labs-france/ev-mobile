@@ -17,10 +17,10 @@ import ChargingStation, { Connector, ConnectorType } from '../../../types/Chargi
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import ConnectorStatusComponent from '../../connector-status/ConnectorStatusComponent';
-import computeStyleSheet from './ChargerConnectorComponentStyles';
+import computeStyleSheet from './ChargingStationConnectorComponentStyles';
 
 export interface Props extends BaseProps {
-  charger: ChargingStation;
+  chargingStation: ChargingStation;
   connector: Connector;
 }
 
@@ -28,7 +28,7 @@ interface State {
   showBatteryLevel?: boolean;
 }
 
-export default class ChargerConnectorComponent extends React.Component<Props, State> {
+export default class ChargingStationConnectorComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   private timerAnimation: number;
@@ -162,16 +162,16 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
 
   public render() {
     const style = computeStyleSheet();
-    const { connector, navigation, charger } = this.props;
+    const { connector, navigation, chargingStation } = this.props;
     return (
       <TouchableOpacity
         style={style.container}
-        disabled={charger.inactive}
+        disabled={chargingStation.inactive}
         onPress={() =>
           navigation.navigate({
-            routeName: 'ChargerConnectorDetailsTabs',
+            routeName: 'ChargingStationConnectorDetailsTabs',
             params: {
-              chargerID: charger.id,
+              chargingStationID: chargingStation.id,
               connectorID: connector.connectorId
             },
             key: `${Utils.randomNumber()}`
@@ -183,7 +183,7 @@ export default class ChargerConnectorComponent extends React.Component<Props, St
               {this.renderFirstConnectorDetails(connector)}
               {this.renderSecondConnectorDetails(connector, style)}
               {this.renderThirdConnectorDetails(connector, style)}
-              {!charger.inactive &&
+              {!chargingStation.inactive &&
                 <Icon style={style.icon} type='MaterialIcons' name='navigate-next' />
               }
             </View>

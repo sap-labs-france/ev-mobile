@@ -46,7 +46,7 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
           onPress={() => {
             if (siteArea.connectorStats.totalConnectors > 0) {
               navigation.navigate({
-                routeName: 'Chargers',
+                routeName: 'ChargingStations',
                 params: {
                 siteAreaID: siteArea.id
                 },
@@ -58,7 +58,7 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
           }}>
           <View style={style.container}>
             <View style={style.headerContent}>
-              <View style={style.subHeaderContent}>
+              <View style={style.titleContainer}>
                 <TouchableOpacity disabled={!validGPSCoordinates}
                     onPress={() => Utils.jumpToMapWithAddress(siteArea.name, siteArea.address)}>
                   { validGPSCoordinates ?
@@ -70,6 +70,14 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
                 <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>{siteArea.name}</Text>
               </View>
               <Icon style={siteArea.connectorStats.totalConnectors > 0 ? style.icon : style.iconHidden} type='MaterialIcons' name='navigate-next' />
+            </View>
+            <View style={style.subHeaderContent}>
+              <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1} >
+                {siteArea.address.address1}, {siteArea.address.city}
+              </Text>
+              {(siteArea.distanceMeters > 0) &&
+                <Text>{Utils.formatDistance(siteArea.distanceMeters)}</Text>
+              }
             </View>
             <View style={style.connectorContent}>
               <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={siteArea.connectorStats} />

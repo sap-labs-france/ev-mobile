@@ -3,13 +3,13 @@ import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
-
-import I18nManager from '../../../I18n/I18nManager';
-import ChargerComponent from '../../../components/charger/ChargerComponent';
+import ChargingStationComponent from '../../../components/charging-station/ChargingStationComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
+import I18nManager from '../../../I18n/I18nManager';
+import LocationManager from '../../../location/LocationManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus } from '../../../types/ChargingStation';
@@ -19,25 +19,26 @@ import Constants from '../../../utils/Constants';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
-import ChargersFilters, { ChargersFiltersDef } from './ChargersFilters';
-import computeStyleSheet from './ChargersStyles';
+import ChargingStationFilters, { ChargingStationFiltersDef } from './ChargingStationFilters';
+import computeStyleSheet from './ChargingStationsStyles';
+
 
 export interface Props extends BaseProps {
 }
 
 interface State {
-  chargers?: ChargingStation[];
+  chargingStations?: ChargingStation[];
   loading?: boolean;
   refreshing?: boolean;
   isAdmin?: boolean;
   skip?: number;
   limit?: number;
   count?: number;
-  initialFilters?: ChargersFiltersDef;
-  filters?: ChargersFiltersDef;
+  initialFilters?: ChargingStationFiltersDef;
+  filters?: ChargingStationFiltersDef;
 }
 
-export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
+export default class ChargingStations extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
@@ -47,7 +48,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     super(props);
     // Init State
     this.state = {
-      chargers: [],
+      chargingStations: [],
       loading: true,
       refreshing: false,
       isAdmin: false,
@@ -73,7 +74,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
   public async loadInitialFilters() {
     const centralServerProvider = await ProviderFactory.getProvider();
     const connectorStatus = await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(), GlobalFilters.ONLY_AVAILABLE_CHARGERS) as ChargePointStatus;
+      centralServerProvider.getUserInfo(), GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS) as ChargePointStatus;
     const connectorType = await SecuredStorage.loadFilterValue(
       centralServerProvider.getUserInfo(), GlobalFilters.CONNECTOR_TYPES) as string;
     this.setState({
@@ -82,35 +83,40 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     });
   }
 
-  public getChargers = async (searchText: string, skip: number, limit: number): Promise<DataResult<ChargingStation>> => {
-    let chargers: DataResult<ChargingStation>;
+  public getChargingStations = async (searchText: string, skip: number, limit: number): Promise<DataResult<ChargingStation>> => {
+    let chargingStations: DataResult<ChargingStation>;
     try {
+      // Get the current location
+      const location = (await LocationManager.getInstance()).getLocation();
       // Get with the Site Area
-      chargers = await this.centralServerProvider.getChargers({
+      chargingStations = await this.centralServerProvider.getChargingStations({
         Search: searchText,
         SiteAreaID: this.siteAreaID,
         Issuer: true,
         ConnectorStatus: this.state.filters.connectorStatus,
-        ConnectorType: this.state.filters.connectorType
+        ConnectorType: this.state.filters.connectorType,
+        LocLatitude: location ? location.latitude : null,
+        LocLongitude: location ? location.longitude : null,
+        LocMaxDistanceMeters: location ? Constants.MAX_DISTANCE_METERS : null
       }, { skip, limit });
       // Check
-      if (chargers.count === -1) {
+      if (chargingStations.count === -1) {
         // Request nbr of records
-        const chargersNbrRecordsOnly = await this.centralServerProvider.getChargers({
+        const chargingStationsNbrRecordsOnly = await this.centralServerProvider.getChargingStations({
           Search: searchText,
           SiteAreaID: this.siteAreaID,
           Issuer: true,
           ConnectorStatus: this.state.filters.connectorStatus
         }, Constants.ONLY_RECORD_COUNT_PAGING);
         // Set
-        chargers.count = chargersNbrRecordsOnly.count;
+        chargingStations.count = chargingStationsNbrRecordsOnly.count;
       }
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
         'chargers.chargerUnexpectedError', this.props.navigation, this.refresh);
     }
-    return chargers;
+    return chargingStations;
   };
 
   public onEndScroll = async () => {
@@ -118,10 +124,10 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
-      const chargers = await this.getChargers(this.searchText, skip + Constants.PAGING_SIZE, limit);
+      const chargingStations = await this.getChargingStations(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState, props) => ({
-        chargers: chargers ? [...prevState.chargers, ...chargers.result] : prevState.chargers,
+        chargingStations: chargingStations ? [...prevState.chargingStations, ...chargingStations.result] : prevState.chargingStations,
         skip: prevState.skip + Constants.PAGING_SIZE,
         refreshing: false
       }));
@@ -145,14 +151,14 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
-      const chargers = await this.getChargers(this.searchText, 0, skip + limit);
+      const chargingStations = await this.getChargingStations(this.searchText, 0, skip + limit);
       // Get the provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
-      // Add Chargers
+      // Add ChargingStations
       this.setState(() => ({
         loading: false,
-        chargers: chargers ? chargers.result : [],
-        count: chargers ? chargers.count : 0,
+        chargingStations: chargingStations ? chargingStations.result : [],
+        count: chargingStations ? chargingStations.count : 0,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false
       }));
     }
@@ -167,13 +173,13 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
     this.setState({ refreshing: false });
   };
 
-  public getSiteIDFromChargers(): string {
-    const { chargers } = this.state;
+  public getSiteIDFromChargingStations(): string {
+    const { chargingStations } = this.state;
     // Find the first available Site ID
-    if (chargers && chargers.length > 0) {
-      for (const charger of chargers) {
-        if (charger.siteArea) {
-          return charger.siteArea.siteID;
+    if (chargingStations && chargingStations.length > 0) {
+      for (const chargingStation of chargingStations) {
+        if (chargingStation.siteArea) {
+          return chargingStation.siteArea.siteID;
         }
       }
     }
@@ -188,7 +194,7 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, chargers, isAdmin, initialFilters,
+    const { loading, chargingStations, isAdmin, initialFilters,
       skip, count, limit, filters } = this.state;
     return (
       <Container style={style.container}>
@@ -213,16 +219,16 @@ export default class Chargers extends BaseAutoRefreshScreen<Props, State> {
             <Spinner style={style.spinner} />
           ) : (
             <View style={style.content}>
-              <ChargersFilters
+              <ChargingStationFilters
                 initialFilters={initialFilters}
-                onFilterChanged={(newFilters: ChargersFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-                ref={(chargersFilters: ChargersFilters) =>
-                  this.setScreenFilters(chargersFilters)}
+                onFilterChanged={(newFilters: ChargingStationFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
+                ref={(ChargingStationFilters: ChargingStationFilters) =>
+                  this.setScreenFilters(ChargingStationFilters)}
               />
               <FlatList
-                data={chargers}
+                data={chargingStations}
                 renderItem={({ item }) =>
-                  <ChargerComponent charger={item} isAdmin={isAdmin} navigation={navigation}
+                  <ChargingStationComponent chargingStation={item} isAdmin={isAdmin} navigation={navigation}
                     isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteArea ? item.siteArea.siteID : '')} />}
                 keyExtractor={(item) => item.id}
                 refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}

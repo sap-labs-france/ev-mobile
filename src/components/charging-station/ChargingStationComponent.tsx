@@ -8,11 +8,11 @@ import * as Animatable from 'react-native-animatable';
 import BaseProps from '../../types/BaseProps';
 import ChargingStation from '../../types/ChargingStation';
 import Utils from '../../utils/Utils';
-import computeStyleSheet from './ChargerComponentStyles';
-import ChargerConnectorComponent from './connector/ChargerConnectorComponent';
+import computeStyleSheet from './ChargingStationComponentStyles';
+import ChargingStationConnectorComponent from './connector/ChargingStationConnectorComponent';
 
 export interface Props extends BaseProps {
-  charger: ChargingStation;
+  chargingStation: ChargingStation;
   isAdmin: boolean;
   isSiteAdmin: boolean;
 }
@@ -20,7 +20,7 @@ export interface Props extends BaseProps {
 interface State {
 }
 
-export default class ChargerComponent extends React.Component<Props, State> {
+export default class ChargingStationComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
 
@@ -33,12 +33,12 @@ export default class ChargerComponent extends React.Component<Props, State> {
   }
 
   public showHeartbeatStatus = () => {
-    const { charger } = this.props;
-    let message = I18n.t('chargers.heartBeatOkMessage', { chargeBoxID: charger.id });
-    if (charger.inactive) {
+    const { chargingStation } = this.props;
+    let message = I18n.t('chargers.heartBeatOkMessage', { chargeBoxID: chargingStation.id });
+    if (chargingStation.inactive) {
       message = I18n.t('chargers.heartBeatKoMessage', {
-        chargeBoxID: charger.id,
-        lastHeartBeat: moment(new Date(charger.lastHeartBeat),null, true).fromNow(true)
+        chargeBoxID: chargingStation.id,
+        lastHeartBeat: moment(new Date(chargingStation.lastHeartBeat),null, true).fromNow(true)
       });
     }
     Alert.alert(I18n.t('chargers.heartBeat'), message, [{ text: I18n.t('general.ok') }]);
@@ -46,30 +46,30 @@ export default class ChargerComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { charger, isAdmin, isSiteAdmin, navigation } = this.props;
-    const validGPSCoordinates = Utils.containsGPSCoordinates(charger.coordinates);
+    const { chargingStation, isAdmin, isSiteAdmin, navigation } = this.props;
+    const validGPSCoordinates = Utils.containsGPSCoordinates(chargingStation.coordinates);
     return (
       <View style={style.container}>
         <View style={style.headerContent}>
-          <View style={style.subHeaderContent}>
+          <View style={style.titleContainer}>
             <TouchableOpacity disabled={!validGPSCoordinates}
-                onPress={() => Utils.jumpToMapWithCoordinates(charger.id, charger.coordinates)}>
+                onPress={() => Utils.jumpToMapWithCoordinates(chargingStation.id, chargingStation.coordinates)}>
               { validGPSCoordinates ?
                 <Icon style={[style.icon, style.iconLeft]} type='MaterialIcons' name='place' />
               :
                 <Icon style={[style.icon, style.iconLeft]} type='MaterialCommunityIcons' name='map-marker-off' />
               }
             </TouchableOpacity>
-            <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>{charger.id}</Text>
+            <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>{chargingStation.id}</Text>
           </View>
           <View style={style.buttonContainer}>
             {(isAdmin || isSiteAdmin) &&
               <Button transparent={true} style={style.button}
                 onPress={() => {
                   navigation.navigate({
-                    routeName: 'ChargerDetailsTabs',
+                    routeName: 'ChargingStationDetailsTabs',
                     params: {
-                      chargerID: charger.id
+                      chargingStationID: chargingStation.id
                     },
                     key: `${Utils.randomNumber()}`
                   })
@@ -78,7 +78,7 @@ export default class ChargerComponent extends React.Component<Props, State> {
               </Button>
             }
             <Button transparent={true} style={[style.button, style.buttonRight]} onPress={() => { this.showHeartbeatStatus(); }}>
-              {charger.inactive ?
+              {chargingStation.inactive ?
                 <Animatable.Text animation='fadeIn' easing='ease-in-out' iterationCount='infinite' direction='alternate-reverse'>
                   <Icon style={style.deadHeartbeatIcon} type='FontAwesome' name='heartbeat' />
                 </Animatable.Text>
@@ -90,11 +90,23 @@ export default class ChargerComponent extends React.Component<Props, State> {
             </Button>
           </View>
         </View>
+        <View style={style.subHeaderContent}>
+          {chargingStation.siteArea ?
+            <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1} >
+              {chargingStation.siteArea.address.address1}, {chargingStation.siteArea.address.city}
+            </Text>
+          :
+            <Text></Text>
+          }
+          {(chargingStation.distanceMeters > 0) &&
+            <Text>{Utils.formatDistance(chargingStation.distanceMeters)}</Text>
+          }
+        </View>
         <View style={style.connectorsContainer}>
-          {charger.connectors.map((connector) => (
-            <ChargerConnectorComponent
-              key={`${charger.id}~${connector.connectorId}`}
-              charger={charger}
+          {chargingStation.connectors.map((connector) => (
+            <ChargingStationConnectorComponent
+              key={`${chargingStation.id}~${connector.connectorId}`}
+              chargingStation={chargingStation}
               connector={connector}
               navigation={navigation}
             />

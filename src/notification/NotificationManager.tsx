@@ -190,10 +190,10 @@ export default class NotificationManager {
             routeName: 'TransactionInProgressNavigator',
             key: `${Utils.randomNumber()}`,
             action: NavigationActions.navigate({
-              routeName: 'ChargerConnectorDetailsTabs',
+              routeName: 'ChargingStationConnectorDetailsTabs',
               key: `${Utils.randomNumber()}`,
               params: {
-                chargerID: notification.data.chargeBoxID,
+                chargingStationID: notification.data.chargeBoxID,
                 connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
               }
             }),
@@ -206,13 +206,13 @@ export default class NotificationManager {
         // Navigate
         this.navigator.dispatch(
           NavigationActions.navigate({
-            routeName: 'ChargersNavigator',
+            routeName: 'ChargingStationsNavigator',
             key: `${Utils.randomNumber()}`,
             action: NavigationActions.navigate({
-              routeName: 'ChargerConnectorDetailsTabs',
+              routeName: 'ChargingStationConnectorDetailsTabs',
               key: `${Utils.randomNumber()}`,
               params: {
-                chargerID: notification.data.chargeBoxID,
+                chargingStationID: notification.data.chargeBoxID,
                 connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
               }
             }),
@@ -226,13 +226,13 @@ export default class NotificationManager {
         // Navigate
         this.navigator.dispatch(
           NavigationActions.navigate({
-            routeName: 'ChargersNavigator',
+            routeName: 'ChargingStationsNavigator',
             key: `${Utils.randomNumber()}`,
             action: NavigationActions.navigate({
-              routeName: 'ChargerConnectorDetailsTabs',
+              routeName: 'ChargingStationConnectorDetailsTabs',
               key: `${Utils.randomNumber()}`,
               params: {
-                chargerID: notification.data.chargeBoxID,
+                chargingStationID: notification.data.chargeBoxID,
                 connectorID: 1
               }
             }),
@@ -245,7 +245,7 @@ export default class NotificationManager {
         // Navigate
         this.navigator.dispatch(
           NavigationActions.navigate({
-            routeName: 'Chargers',
+            routeName: 'ChargingStations',
             key: `${Utils.randomNumber()}`
           })
         );

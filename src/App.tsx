@@ -3,14 +3,14 @@ import { Icon, Root } from 'native-base';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { NavigationContainer, NavigationContainerComponent, NavigationState, createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator, NavigationContainer, NavigationContainerComponent, NavigationState } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
-
 import computeStyleSheet from './AppStyles';
-import I18nManager from './I18n/I18nManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
+import I18nManager from './I18n/I18nManager';
+import LocationManager from './location/LocationManager';
 import NotificationManager from './notification/NotificationManager';
 import ProviderFactory from './provider/ProviderFactory';
 import Eula from './screens/auth/eula/Eula';
@@ -18,11 +18,11 @@ import Login from './screens/auth/login/Login';
 import ResetPassword from './screens/auth/reset-password/ResetPassword';
 import RetrievePassword from './screens/auth/retrieve-password/RetrievePassword';
 import SignUp from './screens/auth/sign-up/SignUp';
-import ChargerActions from './screens/chargers/actions/ChargerActions';
-import ChargerConnectorDetails from './screens/chargers/connector-details/ChargerConnectorDetails';
-import Chargers from './screens/chargers/list/Chargers';
-import ChargerOcppParameters from './screens/chargers/ocpp/ChargerOcppParameters';
-import ChargerProperties from './screens/chargers/properties/ChargerProperties';
+import ChargingStationActions from './screens/charging-stations/actions/ChargingStationActions';
+import ChargingStationConnectorDetails from './screens/charging-stations/connector-details/ChargingStationConnectorDetails';
+import ChargingStations from './screens/charging-stations/list/ChargingStations';
+import ChargingStationOcppParameters from './screens/charging-stations/ocpp/ChargingStationOcppParameters';
+import ChargingStationProperties from './screens/charging-stations/properties/ChargingStationProperties';
 import Home from './screens/home/Home';
 import Sidebar from './screens/sidebar/SideBar';
 import SiteAreas from './screens/site-areas/SiteAreas';
@@ -34,6 +34,7 @@ import TransactionsHistory from './screens/transactions/history/TransactionsHist
 import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
 import commonColor from './theme/variables/commonColor';
 import SecuredStorage from './utils/SecuredStorage';
+
 
 // Init i18n
 I18nManager.initialize();
@@ -77,24 +78,24 @@ const statisticsNavigator = createStackNavigator(
   }
 );
 
-const chargerDetailsTabsNavigator = createMaterialBottomTabNavigator(
+const chargingStationDetailsTabsNavigator = createMaterialBottomTabNavigator(
   {
-    ChargerActions: {
-      screen: ChargerActions,
+    ChargingStationActions: {
+      screen: ChargingStationActions,
       navigationOptions: {
         title: I18n.t('chargers.actions'),
         tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'build')
       }
     },
-    ChargerOcppParameters: {
-      screen: ChargerOcppParameters,
+    ChargingStationOcppParameters: {
+      screen: ChargingStationOcppParameters,
       navigationOptions: {
         title: I18n.t('chargers.ocpp'),
         tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'format-list-bulleted')
       }
     },
-    ChargerProperties: {
-      screen: ChargerProperties,
+    ChargingStationProperties: {
+      screen: ChargingStationProperties,
       navigationOptions: {
         title: I18n.t('chargers.properties'),
         tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'info')
@@ -107,14 +108,14 @@ const chargerDetailsTabsNavigator = createMaterialBottomTabNavigator(
     barStyle: { backgroundColor: commonColor.brandPrimaryDark },
     labeled: true,
     backBehavior: 'none',
-    initialRouteName: 'ChargerActions',
+    initialRouteName: 'ChargingStationActions',
   }
 );
 
-const chargerConnectorDetailsTabsNavigator = createMaterialBottomTabNavigator(
+const ChargingStationConnectorDetailsTabsNavigator = createMaterialBottomTabNavigator(
   {
-    ChargerConnectorDetails: {
-      screen: ChargerConnectorDetails,
+    ChargingStationConnectorDetails: {
+      screen: ChargingStationConnectorDetails,
       navigationOptions: {
         title: I18n.t('sites.chargePoint'),
         tabBarIcon: (props) => createTabBarIcon(props, 'FontAwesome', 'bolt')
@@ -134,7 +135,7 @@ const chargerConnectorDetailsTabsNavigator = createMaterialBottomTabNavigator(
     barStyle: { backgroundColor: commonColor.brandPrimaryDark },
     labeled: true,
     backBehavior: 'none',
-    initialRouteName: 'ChargerConnectorDetails',
+    initialRouteName: 'ChargingStationConnectorDetails',
   }
 );
 
@@ -170,9 +171,9 @@ const sitesNavigator = createStackNavigator(
   {
     Sites: { screen: Sites },
     SiteAreas: { screen: SiteAreas },
-    Chargers: { screen: Chargers },
-    ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator },
-    ChargerConnectorDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator },
+    ChargingStations: { screen: ChargingStations },
+    ChargingStationDetailsTabs: { screen: chargingStationDetailsTabsNavigator },
+    ChargingStationConnectorDetailsTabs: { screen: ChargingStationConnectorDetailsTabsNavigator },
     TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator }
   },
   {
@@ -181,16 +182,16 @@ const sitesNavigator = createStackNavigator(
   }
 );
 
-// Chargers Stack Navigation
-const chargersNavigator = createStackNavigator(
+// ChargingStations Stack Navigation
+const chargingStationsNavigator = createStackNavigator(
   {
-    Chargers: { screen: Chargers },
-    ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator },
-    ChargerConnectorDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator },
+    ChargingStations: { screen: ChargingStations },
+    ChargingStationDetailsTabs: { screen: chargingStationDetailsTabsNavigator },
+    ChargingStationConnectorDetailsTabs: { screen: ChargingStationConnectorDetailsTabsNavigator },
     TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator }
   },
   {
-    initialRouteName: 'Chargers',
+    initialRouteName: 'ChargingStations',
     headerMode: 'none'
   }
 );
@@ -217,8 +218,8 @@ const transactionHistoryNavigator = createStackNavigator(
 const transactionInProgressNavigator = createStackNavigator(
   {
     TransactionsInProgress: { screen: TransactionsInProgress },
-    ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator },
-    ChargerConnectorDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator }
+    ChargingStationDetailsTabs: { screen: chargingStationDetailsTabsNavigator },
+    ChargingStationConnectorDetailsTabs: { screen: ChargingStationConnectorDetailsTabsNavigator }
   },
   {
     initialRouteName: 'TransactionsInProgress',
@@ -231,7 +232,7 @@ const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
   {
     HomeNavigator: { screen: homeNavigator },
     SitesNavigator: { screen: sitesNavigator },
-    ChargersNavigator: { screen: chargersNavigator },
+    ChargingStationsNavigator: { screen: chargingStationsNavigator },
     StatisticsNavigator: { screen: statisticsNavigator },
     TransactionHistoryNavigator: { screen: transactionHistoryNavigator },
     TransactionInProgressNavigator: { screen: transactionInProgressNavigator },
@@ -289,6 +290,7 @@ export default class App extends React.Component<Props, State> {
   private deepLinkingManager: DeepLinkingManager;
   private centralServerProvider: CentralServerProvider;
   private navigator: NavigationContainerComponent;
+  private location: LocationManager;
 
   constructor(props: Props) {
     super(props);
@@ -301,18 +303,21 @@ export default class App extends React.Component<Props, State> {
   public async componentDidMount() {
     // Get the central server
     this.centralServerProvider = await ProviderFactory.getProvider();
-    // Init Notification
+    // Init Notification --------------------------------------
     this.notificationManager = NotificationManager.getInstance();
     this.notificationManager.setCentralServerProvider(this.centralServerProvider);
     this.notificationManager.initialize(this.navigator);
     await this.notificationManager.start();
     // Assign
     this.centralServerProvider.setNotificationManager(this.notificationManager);
-    // Init Deep Linking
+    // Init Deep Linking ---------------------------------------
     this.deepLinkingManager = DeepLinkingManager.getInstance();
     this.deepLinkingManager.initialize(this.navigator, this.centralServerProvider);
     // Activate Deep links
     this.deepLinkingManager.startListening();
+    // Location ------------------------------------------------
+    this.location = await LocationManager.getInstance();
+    this.location.startListening();
     // Check on hold notification
     this.notificationManager.checkOnHoldNotification();
   }
@@ -322,6 +327,8 @@ export default class App extends React.Component<Props, State> {
     this.deepLinkingManager.stopListening();
     // Stop Notifications
     await this.notificationManager.stop();
+    // Stop Location
+    this.location.stopListening();
   }
 
   public render() {

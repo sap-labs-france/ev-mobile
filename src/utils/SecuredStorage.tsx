@@ -10,7 +10,7 @@ import { UserCredentials } from '../types/User';
 let navigationID: string = '' + new Date().getTime();
 if (__DEV__) {
   // Keep the same key for dev
-  navigationID = '1234567';
+  navigationID = '12345';
 }
 
 export default class SecuredStorage {

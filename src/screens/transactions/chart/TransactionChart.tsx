@@ -24,7 +24,7 @@ export interface Props extends BaseProps {
 
 interface State {
   loading?: boolean;
-  charger?: ChargingStation;
+  chargingStation?: ChargingStation;
   connector?: Connector;
   transaction?: Transaction;
   values?: Consumption[];
@@ -70,27 +70,27 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
-      const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
+      const chargingStationID = Utils.getParamFromNavigation(this.props.navigation, 'chargingStationID', null);
       const connectorID = Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null);
       const transactionID = Utils.getParamFromNavigation(this.props.navigation, 'transactionID', null);
       let transactionWithConsumptions = null;
-      let charger = null;
+      let chargingStation = null;
       let connector = null;
-      // Get Transaction and Charger
+      // Get Transaction and chargingStation
       if (transactionID) {
         transactionWithConsumptions = await this.getTransactionWithConsumptions(parseInt(transactionID, 10));
         if (transactionWithConsumptions && transactionWithConsumptions.transaction) {
-          charger = await this.getCharger(transactionWithConsumptions.transaction.chargeBoxID);
-          if (charger) {
-            connector = charger ? charger.connectors[transactionWithConsumptions.transaction.connectorId - 1] : null;
+          chargingStation = await this.getChargingStation(transactionWithConsumptions.transaction.chargeBoxID);
+          if (chargingStation) {
+            connector = chargingStation ? chargingStation.connectors[transactionWithConsumptions.transaction.connectorId - 1] : null;
           }
         }
-      // Get Charger and Transaction
-      } else if (chargerID) {
-        // Get Charger
-        charger = await this.getCharger(chargerID);
-        if (charger) {
-          connector = charger ? charger.connectors[parseInt(connectorID, 10) - 1] : null;
+      // Get chargingStation and Transaction
+      } else if (chargingStationID) {
+        // Get chargingStation
+        chargingStation = await this.getChargingStation(chargingStationID);
+        if (chargingStation) {
+          connector = chargingStation ? chargingStation.connectors[parseInt(connectorID, 10) - 1] : null;
           // Refresh Consumption
           if (connector.currentTransactionID && (!this.state.transaction || !this.state.transaction.stop)) {
             transactionWithConsumptions = await this.getTransactionWithConsumptions(connector.currentTransactionID);
@@ -103,22 +103,22 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       this.setState({
         loading: false,
         transaction: transactionWithConsumptions ? transactionWithConsumptions.transaction : this.state.transaction,
-        charger: !this.state.charger ? charger : this.state.charger,
+        chargingStation: !this.state.chargingStation ? chargingStation : this.state.chargingStation,
         connector,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,
-        isSiteAdmin: securityProvider && charger && charger.siteArea ? securityProvider.isSiteAdmin(charger.siteArea.siteID) : false,
-        canDisplayTransaction: charger ? this.canDisplayTransaction(
-          transactionWithConsumptions ? transactionWithConsumptions.transaction : null, charger, connector) : false,
+        isSiteAdmin: securityProvider && chargingStation && chargingStation.siteArea ? securityProvider.isSiteAdmin(chargingStation.siteArea.siteID) : false,
+        canDisplayTransaction: chargingStation ? this.canDisplayTransaction(
+          transactionWithConsumptions ? transactionWithConsumptions.transaction : null, chargingStation, connector) : false,
         ...transactionWithConsumptions
       });
     }
   };
 
-  public getCharger = async (chargerID: string): Promise<ChargingStation> => {
+  public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
-      // Get Charger
-      const charger = await this.centralServerProvider.getCharger({ ID: chargerID });
-      return charger;
+      // Get chargingStation
+      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: chargingStationID });
+      return chargingStation;
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
@@ -182,13 +182,13 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     };
   };
 
-  public canDisplayTransaction = (transaction: Transaction, charger: ChargingStation, connector: Connector): boolean => {
+  public canDisplayTransaction = (transaction: Transaction, chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
-    if (charger) {
+    if (chargingStation) {
       // Get the Security Provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Check Auth
-      return securityProvider.canReadTransaction(charger.siteArea, transaction ? transaction.tagID : connector.currentTagID);
+      return securityProvider.canReadTransaction(chargingStation.siteArea, transaction ? transaction.tagID : connector.currentTagID);
     }
     return false;
   };
@@ -295,7 +295,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { showTransactionDetails, isAdmin, isSiteAdmin, loading, transaction, charger,
+    const { showTransactionDetails, isAdmin, isSiteAdmin, loading, transaction, chargingStation,
       connector, consumptionValues, stateOfChargeValues, canDisplayTransaction } = this.state;
     const chartDefinition = this.createChart(consumptionValues, stateOfChargeValues);
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
@@ -306,7 +306,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           <View style={style.container}>
             <HeaderComponent
               navigation={this.props.navigation}
-              title={charger ? charger.id : I18n.t('connector.unknown')}
+              title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
               subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}
