@@ -90,11 +90,18 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
             </Button>
           </View>
         </View>
-        {(chargingStation.distanceMeters > 0) &&
-          <View style={style.subHeaderContent}>
-              <Text>{Utils.formatDistance(chargingStation.distanceMeters)}</Text>
-          </View>
-        }
+        <View style={style.subHeaderContent}>
+          {chargingStation.siteArea ?
+            <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1} >
+              {chargingStation.siteArea.address.address1}, {chargingStation.siteArea.address.city}
+            </Text>
+          :
+            <Text></Text>
+          }
+          {(chargingStation.distanceMeters > 0) &&
+            <Text>{Utils.formatDistance(chargingStation.distanceMeters)}</Text>
+          }
+        </View>
         <View style={style.connectorsContainer}>
           {chargingStation.connectors.map((connector) => (
             <ChargingStationConnectorComponent

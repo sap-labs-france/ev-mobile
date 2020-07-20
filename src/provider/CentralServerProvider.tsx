@@ -51,7 +51,7 @@ export default class CentralServerProvider {
     axiosRetry(axios);
     if (__DEV__) {
       // QA REST Server
-      // this.centralRestServerServiceBaseURL = Configuration.centralRestServerServiceBaseURLQA;
+      this.centralRestServerServiceBaseURL = Configuration.centralRestServerServiceBaseURLQA;
       this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + '/client/auth';
       this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + '/client/api';
       this.debug = true;

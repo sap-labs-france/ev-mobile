@@ -29,13 +29,16 @@ const commonStyles = ScaledSheet.create({
   },
   subHeaderContent: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     alignItems: 'center',
     height: '25@s',
     paddingRight: '5@s',
     paddingLeft: '5@s',
     borderBottomWidth: 1,
     borderBottomColor: commonColor.listBorderColor,
+  },
+  address: {
+    width: '80%',
   },
   headerName: {
     marginLeft: '10@s',

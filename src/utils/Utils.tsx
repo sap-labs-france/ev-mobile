@@ -44,8 +44,8 @@ export default class Utils {
         Math.round(distance) + ' yd';
     }
     return I18nManager.isMetricsSystem() ?
-      Math.round(distance / 1000) + ' km' :
-      Math.round(distance * 0.000621371) + ' mi';
+      I18nManager.formatNumber(Math.round(distance / 100) / 10) + ' km' :
+      I18nManager.formatNumber(Math.round(distance * 0.000621371)) + ' mi';
   }
 
   public static isEmptyArray(array: any): boolean {
