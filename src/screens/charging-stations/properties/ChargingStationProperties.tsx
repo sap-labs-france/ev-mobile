@@ -12,7 +12,7 @@ import ChargingStation, { ChargingStationCapabilities } from '../../../types/Cha
 import { KeyValue, PropertyDisplay } from '../../../types/Global';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
-import computeStyleSheet from './ChargerPropertiesStyles';
+import computeStyleSheet from './ChargingStationPropertiesStyles';
 
 export interface Props extends BaseProps {
 }
@@ -20,10 +20,10 @@ export interface Props extends BaseProps {
 interface State {
   loading?: boolean;
   refreshing?: boolean;
-  charger: ChargingStation;
+  chargingStation: ChargingStation;
 }
 
-export default class ChargerProperties extends BaseScreen<Props, State> {
+export default class ChargingStationProperties extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
   private displayedProperties: PropertyDisplay[] = [
@@ -94,7 +94,7 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
     this.state = {
       loading: true,
       refreshing: false,
-      charger: null,
+      chargingStation: null,
     }
   }
 
@@ -111,25 +111,25 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
-      const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
-      // Get Charger
-      const charger = await this.getCharger(chargerID);
+      const chargingStationID = Utils.getParamFromNavigation(this.props.navigation, 'chargingStationID', null);
+      // Get chargingStation
+      const chargingStation = await this.getChargingStation(chargingStationID);
       // Build props
-      const chargerProperties = this.buildChargerProperties(charger);
+      const chargingStationProperties = this.buildChargerProperties(chargingStation);
       // Set
       this.setState({
         loading: false,
-        charger,
-        chargerProperties,
+        chargingStation,
+        chargingStationProperties,
       });
     }
   };
 
-  public getCharger = async (chargerID: string): Promise<ChargingStation> => {
+  public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
-      // Get Charger
-      const charger = await this.centralServerProvider.getCharger({ ID: chargerID });
-      return charger;
+      // Get chargingStation
+      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: chargingStationID });
+      return chargingStation;
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
@@ -154,11 +154,11 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
     return true;
   };
 
-  private buildChargerProperties(charger: ChargingStation) {
-    if (charger) {
+  private buildChargerProperties(chargingStation: ChargingStation) {
+    if (chargingStation) {
       for (const displayedProperty of this.displayedProperties) {
         // @ts-ignore
-        displayedProperty.value = charger && charger[displayedProperty.key] ? charger[displayedProperty.key] : '-';
+        displayedProperty.value = chargingStation && chargingStation[displayedProperty.key] ? chargingStation[displayedProperty.key] : '-';
       }
     }
   }
@@ -166,13 +166,13 @@ export default class ChargerProperties extends BaseScreen<Props, State> {
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { loading, charger } = this.state;
+    const { loading, chargingStation } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
           navigation={this.props.navigation}
-          title={charger ? charger.id : I18n.t('connector.unknown')}
-          subTitle={charger && charger.inactive ? `(${I18n.t('details.inactive')})` : null}
+          title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
+          subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}

@@ -202,6 +202,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.2.0'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
     implementation 'me.leolin:ShortcutBadger:1.1.21@aar' // <-- Add this line if you wish to use badge on Android
+    implementation "com.google.android.gms:play-services-base:16.0.1"
+    implementation "com.google.android.gms:play-services-location:16.0.0"
 
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermes-engine/android/";

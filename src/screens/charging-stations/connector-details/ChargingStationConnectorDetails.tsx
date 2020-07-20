@@ -18,7 +18,7 @@ import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
-import computeStyleSheet from './ChargerConnectorDetailsStyles';
+import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
 
 
 const START_TRANSACTION_NB_TRIAL = 4;
@@ -28,7 +28,7 @@ export interface Props extends BaseProps {
 
 interface State {
   loading?: boolean;
-  charger?: ChargingStation;
+  chargingStation?: ChargingStation;
   connector?: Connector;
   transaction?: Transaction;
   isAdmin?: boolean;
@@ -47,7 +47,7 @@ interface State {
   refreshing?: boolean;
 }
 
-export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
+export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
 
@@ -55,7 +55,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     super(props);
     this.state = {
       loading: true,
-      charger: null,
+      chargingStation: null,
       connector: null,
       transaction: null,
       isAdmin: false,
@@ -92,11 +92,11 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     return null;
   };
 
-  public getCharger = async (chargerID: string): Promise<ChargingStation> => {
+  public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
       // Get Charger
-      const charger = await this.centralServerProvider.getCharger({ ID: chargerID });
-      return charger;
+      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: chargingStationID });
+      return chargingStation;
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
@@ -151,10 +151,10 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
 
   public showLastTransaction = async () => {
     const { navigation } = this.props;
-    const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
+    const chargingStationID = Utils.getParamFromNavigation(this.props.navigation, 'chargingStationID', null);
     const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null), 10);
     // Get the last session
-    const transaction = await this.getLastTransaction(chargerID, connectorID);
+    const transaction = await this.getLastTransaction(chargingStationID, connectorID);
     if (transaction) {
       // Navigate
       navigation.navigate({
@@ -172,14 +172,14 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     let siteImage = null;
     let userImage = null;
     let transaction = null;
-    const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
+    const chargingStationID = Utils.getParamFromNavigation(this.props.navigation, 'chargingStationID', null);
     const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null), 10);
     // Get Charger
-    const charger = await this.getCharger(chargerID);
-    const connector = charger ? Utils.getConnectorFromID(charger, connectorID) : null;
+    const chargingStation = await this.getChargingStation(chargingStationID);
+    const connector = chargingStation ? Utils.getConnectorFromID(chargingStation, connectorID) : null;
     // Get the Site Image
-    if (charger && charger.siteArea && !this.state.siteImage) {
-      siteImage = await this.getSiteImage(charger.siteArea.siteID);
+    if (chargingStation && chargingStation.siteArea && !this.state.siteImage) {
+      siteImage = await this.getSiteImage(chargingStation.siteArea.siteID);
     }
     // Get Current Transaction
     if (connector && connector.currentTransactionID) {
@@ -199,16 +199,16 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     const securityProvider = this.centralServerProvider.getSecurityProvider();
     // Set
     this.setState({
-      charger,
-      connector: charger ? Utils.getConnectorFromID(charger, connectorID) : null,
+      chargingStation,
+      connector: chargingStation ? Utils.getConnectorFromID(chargingStation, connectorID) : null,
       transaction,
       siteImage: siteImage ? siteImage : this.state.siteImage,
       userImage: userImage ? userImage : transaction ? this.state.userImage : null,
       isAdmin: securityProvider ? securityProvider.isAdmin() : false,
-      isSiteAdmin: securityProvider && charger && charger.siteArea ? securityProvider.isSiteAdmin(charger.siteArea.siteID) : false,
-      canDisplayTransaction: charger ? this.canDisplayTransaction(charger, connector) : false,
-      canStartTransaction: charger ? this.canStartTransaction(charger, connector) : false,
-      canStopTransaction: charger ? this.canStopTransaction(charger, connector) : false,
+      isSiteAdmin: securityProvider && chargingStation && chargingStation.siteArea ? securityProvider.isSiteAdmin(chargingStation.siteArea.siteID) : false,
+      canDisplayTransaction: chargingStation ? this.canDisplayTransaction(chargingStation, connector) : false,
+      canStartTransaction: chargingStation ? this.canStartTransaction(chargingStation, connector) : false,
+      canStopTransaction: chargingStation ? this.canStopTransaction(chargingStation, connector) : false,
       isPricingActive: securityProvider.isComponentPricingActive(),
       ...startStopTransactionButtonStatus,
       ...durationInfos,
@@ -216,35 +216,35 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
     });
   };
 
-  public canStopTransaction = (charger: ChargingStation, connector: Connector): boolean => {
+  public canStopTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
     if (connector && connector.currentTransactionID !== 0) {
       // Get the Security Provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Check Auth
-      return securityProvider.canStopTransaction(charger.siteArea, connector.currentTagID);
+      return securityProvider.canStopTransaction(chargingStation.siteArea, connector.currentTagID);
     }
     return false;
   };
 
-  public canStartTransaction = (charger: ChargingStation, connector: Connector): boolean => {
+  public canStartTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
     if (connector && connector.currentTransactionID === 0) {
       // Get the Security Provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Check Auth
-      return securityProvider.canStartTransaction(charger.siteArea);
+      return securityProvider.canStartTransaction(chargingStation.siteArea);
     }
     return false;
   };
 
-  public canDisplayTransaction = (charger: ChargingStation, connector: Connector): boolean => {
+  public canDisplayTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
     if (connector && connector.currentTransactionID !== 0) {
       // Get the Security Provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Check Auth
-      return securityProvider.canReadTransaction(charger.siteArea, connector.currentTagID);
+      return securityProvider.canReadTransaction(chargingStation.siteArea, connector.currentTagID);
     }
     return false;
   };
@@ -259,15 +259,15 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   };
 
   public startTransactionConfirm = () => {
-    const { charger } = this.state;
-    Alert.alert(I18n.t('details.startTransaction'), I18n.t('details.startTransactionMessage', { chargeBoxID: charger.id }), [
+    const { chargingStation } = this.state;
+    Alert.alert(I18n.t('details.startTransaction'), I18n.t('details.startTransactionMessage', { chargeBoxID: chargingStation.id }), [
       { text: I18n.t('general.yes'), onPress: () => this.startTransaction() },
       { text: I18n.t('general.no') }
     ]);
   };
 
   public startTransaction = async () => {
-    const { charger, connector } = this.state;
+    const { chargingStation, connector } = this.state;
     try {
       // Check Tag ID
       const userInfo = this.centralServerProvider.getUserInfo();
@@ -278,7 +278,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
       // Disable the button
       this.setState({ buttonDisabled: true });
       // Start the Transaction
-      const status = await this.centralServerProvider.startTransaction(charger.id, connector.connectorId, userInfo.tagIDs[0]);
+      const status = await this.centralServerProvider.startTransaction(chargingStation.id, connector.connectorId, userInfo.tagIDs[0]);
       // Check
       if (status && status.status === 'Accepted') {
         // Show message
@@ -301,21 +301,21 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   };
 
   public stopTransactionConfirm = async () => {
-    const { charger } = this.state;
+    const { chargingStation } = this.state;
     // Confirm
-    Alert.alert(I18n.t('details.stopTransaction'), I18n.t('details.stopTransactionMessage', { chargeBoxID: charger.id }), [
+    Alert.alert(I18n.t('details.stopTransaction'), I18n.t('details.stopTransactionMessage', { chargeBoxID: chargingStation.id }), [
       { text: I18n.t('general.yes'), onPress: () => this.stopTransaction() },
       { text: I18n.t('general.no') }
     ]);
   };
 
   public stopTransaction = async () => {
-    const { charger, connector } = this.state;
+    const { chargingStation, connector } = this.state;
     try {
       // Disable button
       this.setState({ buttonDisabled: true });
       // Stop the Transaction
-      const status = await this.centralServerProvider.stopTransaction(charger.id, connector.currentTransactionID);
+      const status = await this.centralServerProvider.stopTransaction(chargingStation.id, connector.currentTransactionID);
       // Check
       if (status && status.status === 'Accepted') {
         Message.showSuccess(I18n.t('details.accepted'));
@@ -624,7 +624,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { connector, canStopTransaction, canStartTransaction, charger, loading, siteImage, isPricingActive } = this.state;
+    const { connector, canStopTransaction, canStartTransaction, chargingStation, loading, siteImage, isPricingActive } = this.state;
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return (
       loading ? (
@@ -633,7 +633,7 @@ export default class ChargerConnectorDetails extends BaseAutoRefreshScreen<Props
           <Container style={style.container}>
             <HeaderComponent
               navigation={this.props.navigation}
-              title={charger ? charger.id : I18n.t('connector.unknown')}
+              title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
               subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}

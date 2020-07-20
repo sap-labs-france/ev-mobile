@@ -13,7 +13,7 @@ import ChargingStation from '../../../types/ChargingStation';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
-import computeStyleSheet from './ChargerOcppParametersStyles';
+import computeStyleSheet from './ChargingStationOcppParametersStyles';
 
 export interface Props extends BaseProps {
 }
@@ -21,21 +21,21 @@ export interface Props extends BaseProps {
 interface State {
   loading?: boolean;
   refreshing?: boolean;
-  charger: ChargingStation;
-  chargerConfigurationKeyValues?: KeyValue[];
+  chargingStation: ChargingStation;
+  chargingStationConfigurationKeyValues?: KeyValue[];
 }
 
-export default class ChargerOcppParameters extends BaseScreen<Props, State> {
+export default class ChargingStationOcppParameters extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      charger: null,
+      chargingStation: null,
       loading: true,
       refreshing: false,
-      chargerConfigurationKeyValues: null
+      chargingStationConfigurationKeyValues: null
     }
   }
 
@@ -52,34 +52,34 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
-      let chargerConfigurationKeyValues: KeyValue[] = [];
-      // Get Charger
-      let charger = this.state.charger;
-      if (!charger) {
-        const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
-        charger = await this.getCharger(chargerID);
+      let chargingStationConfigurationKeyValues: KeyValue[] = [];
+      // Get Charging Station
+      let chargingStation = this.state.chargingStation;
+      if (!chargingStation) {
+        const chargingStationID = Utils.getParamFromNavigation(this.props.navigation, 'chargingStationID', null);
+        chargingStation = await this.getChargingStation(chargingStationID);
       }
-      // Get Charger Config
-      const chargerConfiguration = await this.getChargerOcppParameters(charger.id);
+      // Get Charging Station Config
+      const chargingStationConfiguration = await this.getChargingStationOcppParameters(chargingStation.id);
       // Sort
-      if (chargerConfiguration && chargerConfiguration.count > 0) {
-        chargerConfiguration.result.sort(Utils.sortArrayOfKeyValue);
-        chargerConfigurationKeyValues = chargerConfiguration.result;
+      if (chargingStationConfiguration && chargingStationConfiguration.count > 0) {
+        chargingStationConfiguration.result.sort(Utils.sortArrayOfKeyValue);
+        chargingStationConfigurationKeyValues = chargingStationConfiguration.result;
       }
       // Set
       this.setState({
         loading: false,
-        charger,
-        chargerConfigurationKeyValues
+        chargingStation,
+        chargingStationConfigurationKeyValues
       });
     }
   };
 
-  public getCharger = async (chargerID: string): Promise<ChargingStation> => {
+  public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
-      // Get Charger
-      const charger = await this.centralServerProvider.getCharger({ ID: chargerID });
-      return charger;
+      // Get chargingStation
+      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: chargingStationID });
+      return chargingStation;
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
@@ -88,11 +88,11 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
     return null;
   };
 
-  public getChargerOcppParameters = async (chargerID: string): Promise<DataResult<KeyValue>> => {
+  public getChargingStationOcppParameters = async (chargingStationID: string): Promise<DataResult<KeyValue>> => {
     try {
-      // Get Charger
-      const chargerConfiguration = await this.centralServerProvider.getChargerOcppParameters(chargerID);
-      return chargerConfiguration;
+      // Get chargingStation
+      const chargingStationConfiguration = await this.centralServerProvider.getChargingStationOcppParameters(chargingStationID);
+      return chargingStationConfiguration;
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
@@ -117,20 +117,20 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
     return true;
   };
 
-  public requestChargerOcppParametersConfirm() {
-    const { charger } = this.state;
+  public requestChargingStationOcppParametersConfirm() {
+    const { chargingStation } = this.state;
     Alert.alert
-      (I18n.t('chargers.requestConfiguration', { chargeBoxID: charger.id }),
-        I18n.t('chargers.requestConfigurationMessage', { chargeBoxID: charger.id }), [
-        { text: I18n.t('general.yes'), onPress: () => this.requestChargerOcppParameters(charger.id) },
+      (I18n.t('chargers.requestConfiguration', { chargeBoxID: chargingStation.id }),
+        I18n.t('chargers.requestConfigurationMessage', { chargeBoxID: chargingStation.id }), [
+        { text: I18n.t('general.yes'), onPress: () => this.requestChargingStationOcppParameters(chargingStation.id) },
         { text: I18n.t('general.cancel') }
       ]);
   }
 
-  public async requestChargerOcppParameters(chargeBoxID: string) {
+  public async requestChargingStationOcppParameters(chargeBoxID: string) {
     try {
       // Unlock Connector
-      const status = await this.centralServerProvider.requestChargerOcppParameters(chargeBoxID);
+      const status = await this.centralServerProvider.requestChargingStationOcppParameters(chargeBoxID);
       // Check
       if (status.status && status.status === 'Accepted') {
         Message.showSuccess(I18n.t('details.accepted'));
@@ -148,19 +148,19 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { loading, charger, chargerConfigurationKeyValues } = this.state;
+    const { loading, chargingStation, chargingStationConfigurationKeyValues } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
           navigation={this.props.navigation}
-          title={charger ? charger.id : I18n.t('connector.unknown')}
-          subTitle={charger && charger.inactive ? `(${I18n.t('details.inactive')})` : null}
+          title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
+          subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
         />
-        <Button disabled={charger ? charger.inactive : true} block={true} iconLeft={true} style={style.actionButton} onPress={() => this.requestChargerOcppParametersConfirm()}>
+        <Button disabled={chargingStation ? chargingStation.inactive : true} block={true} iconLeft={true} style={style.actionButton} onPress={() => this.requestChargingStationOcppParametersConfirm()}>
           <Icon style={style.actionButtonIcon} type='MaterialIcons' name='get-app' />
           <Text uppercase={false} style={style.actionButtonText}>
             {I18n.t('chargers.requestConfiguration')}
@@ -170,7 +170,7 @@ export default class ChargerOcppParameters extends BaseScreen<Props, State> {
           <Spinner style={style.spinner} />
         ) : (
             <FlatList
-              data={chargerConfigurationKeyValues}
+              data={chargingStationConfigurationKeyValues}
               renderItem={({ item, index }) => (
                 <View style={index % 2 ? [style.descriptionContainer, style.rowBackground] : style.descriptionContainer}>
                   <Text style={style.label}>{item.key}</Text>

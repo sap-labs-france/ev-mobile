@@ -72,9 +72,9 @@ export default class Home extends BaseScreen<Props, State> {
         // User has only one transaction?
         if (transactions.count === 1) {
           navigation.navigate({
-            routeName: 'ChargerConnectorDetailsTabs',
+            routeName: 'ChargingStationConnectorDetailsTabs',
             params: {
-              chargerID: transactions.result[0].chargeBoxID,
+              chargingStationID: transactions.result[0].chargeBoxID,
               connectorID: transactions.result[0].connectorId
             },
             key: `${Utils.randomNumber()}`
@@ -119,7 +119,7 @@ export default class Home extends BaseScreen<Props, State> {
             </Card>
           )}
           <Card>
-            <CardItem button={true} onPress={() => navigation.navigate({ routeName: 'ChargersNavigator' })}>
+            <CardItem button={true} onPress={() => navigation.navigate({ routeName: 'ChargingStationsNavigator' })}>
               <Left>
                 <Icon style={style.cardIcon} type='MaterialIcons' name='ev-station' />
                 <Body>

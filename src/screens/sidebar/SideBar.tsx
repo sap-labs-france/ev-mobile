@@ -138,7 +138,7 @@ export default class SideBar extends BaseScreen<Props, State> {
                 <Text style={style.linkText}>{I18n.t('sidebar.sites')}</Text>
               </ListItem>
             )}
-            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('ChargersNavigator', 'Chargers')}>
+            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('ChargingStationsNavigator', 'ChargingStations')}>
               <Icon style={style.linkIcon} type='MaterialIcons' name='ev-station' />
               <Text style={style.linkText}>{I18n.t('sidebar.chargers')}</Text>
             </ListItem>

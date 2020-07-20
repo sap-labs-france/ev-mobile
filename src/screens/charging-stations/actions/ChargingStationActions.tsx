@@ -10,14 +10,14 @@ import ChargingStation, { ChargePointStatus } from '../../../types/ChargingStati
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
-import computeStyleSheet from './ChargerActionsStyles';
+import computeStyleSheet from './ChargingStationActionsStyles';
 
 export interface Props extends BaseProps {
 }
 
 interface State {
   loading?: boolean;
-  charger: ChargingStation;
+  chargingStation: ChargingStation;
   spinnerResetHard?: boolean;
   spinnerResetSoft?: boolean;
   spinnerClearCache?: boolean;
@@ -25,16 +25,16 @@ interface State {
   connectorsInactive?: boolean;
 }
 
-export default class ChargerActions extends BaseAutoRefreshScreen<Props, State> {
+export default class ChargingStationActions extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
-  private chargerID: string;
+  private chargingStationID: string;
 
   constructor(props: Props) {
     super(props);
     this.state = {
       loading: true,
-      charger: null,
+      chargingStation: null,
       spinnerResetHard: false,
       spinnerResetSoft: false,
       spinnerClearCache: false,
@@ -48,16 +48,16 @@ export default class ChargerActions extends BaseAutoRefreshScreen<Props, State> 
   }
 
   public async componentDidMount() {
-    // Add Chargers
-    this.chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
+    // Add ChargingStations
+    this.chargingStationID = Utils.getParamFromNavigation(this.props.navigation, 'chargingStationID', null);
     await super.componentDidMount();
   }
 
-  public getCharger = async (): Promise<ChargingStation> => {
+  public getChargingStation = async (): Promise<ChargingStation> => {
     try {
       // Get Charger
-      const charger = await this.centralServerProvider.getCharger({ ID: this.chargerID });
-      return charger;
+      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: this.chargingStationID });
+      return chargingStation;
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
@@ -67,17 +67,17 @@ export default class ChargerActions extends BaseAutoRefreshScreen<Props, State> 
   };
 
   public resetHardConfirm() {
-    const { charger } = this.state;
-    Alert.alert(I18n.t('chargers.resetHard'), I18n.t('chargers.resetHardMessage', { chargeBoxID: charger.id }), [
-      { text: I18n.t('general.yes'), onPress: () => this.reset(charger.id, 'Hard') },
+    const { chargingStation } = this.state;
+    Alert.alert(I18n.t('chargers.resetHard'), I18n.t('chargers.resetHardMessage', { chargeBoxID: chargingStation.id }), [
+      { text: I18n.t('general.yes'), onPress: () => this.reset(chargingStation.id, 'Hard') },
       { text: I18n.t('general.cancel') }
     ]);
   }
 
   public resetSoftConfirm() {
-    const { charger } = this.state;
-    Alert.alert(I18n.t('chargers.resetSoft'), I18n.t('chargers.resetSoftMessage', { chargeBoxID: charger.id }), [
-      { text: I18n.t('general.yes'), onPress: () => this.reset(charger.id, 'Soft') },
+    const { chargingStation } = this.state;
+    Alert.alert(I18n.t('chargers.resetSoft'), I18n.t('chargers.resetSoftMessage', { chargeBoxID: chargingStation.id }), [
+      { text: I18n.t('general.yes'), onPress: () => this.reset(chargingStation.id, 'Soft') },
       { text: I18n.t('general.cancel') }
     ]);
   }
@@ -114,9 +114,9 @@ export default class ChargerActions extends BaseAutoRefreshScreen<Props, State> 
   }
 
   public clearCacheConfirm() {
-    const { charger } = this.state;
-    Alert.alert(I18n.t('chargers.clearCache'), I18n.t('chargers.clearCacheMessage', { chargeBoxID: charger.id }), [
-      { text: I18n.t('general.yes'), onPress: () => this.clearCache(charger.id) },
+    const { chargingStation } = this.state;
+    Alert.alert(I18n.t('chargers.clearCache'), I18n.t('chargers.clearCacheMessage', { chargeBoxID: chargingStation.id }), [
+      { text: I18n.t('general.yes'), onPress: () => this.clearCache(chargingStation.id) },
       { text: I18n.t('general.cancel') }
     ]);
   }
@@ -142,12 +142,12 @@ export default class ChargerActions extends BaseAutoRefreshScreen<Props, State> 
   }
 
   public unlockConnectorConfirm(connectorId: number) {
-    const { charger } = this.state;
+    const { chargingStation } = this.state;
     Alert.alert
       (I18n.t('chargers.unlockConnector', { connectorId: Utils.getConnectorLetterFromConnectorID(connectorId) }),
         I18n.t('chargers.unlockConnectorMessage',
-          { chargeBoxID: charger.id, connectorId: Utils.getConnectorLetterFromConnectorID(connectorId) }), [
-        { text: I18n.t('general.yes'), onPress: () => this.unlockConnector(charger.id, connectorId) },
+          { chargeBoxID: chargingStation.id, connectorId: Utils.getConnectorLetterFromConnectorID(connectorId) }), [
+        { text: I18n.t('general.yes'), onPress: () => this.unlockConnector(chargingStation.id, connectorId) },
         { text: I18n.t('general.cancel') }
       ]);
   }
@@ -196,14 +196,14 @@ export default class ChargerActions extends BaseAutoRefreshScreen<Props, State> 
     if (this.isMounted()) {
       const spinnerConnectors = new Map();
       // Get Charger
-      const charger = await this.getCharger();
-      if (charger) {
-        charger.connectors.map((connector) => {
+      const chargingStation = await this.getChargingStation();
+      if (chargingStation) {
+        chargingStation.connectors.map((connector) => {
           spinnerConnectors.set(connector.connectorId, false);
         });
         this.setState(() => ({
           loading: false,
-          charger,
+          chargingStation,
           spinnerConnectors
         }));
       }
@@ -214,9 +214,9 @@ export default class ChargerActions extends BaseAutoRefreshScreen<Props, State> 
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { loading, charger, spinnerResetHard, spinnerResetSoft, spinnerConnectors, spinnerClearCache, connectorsInactive } = this.state;
-    const chargingStationIsDisabled = charger ?
-      charger.inactive || spinnerResetHard || spinnerResetSoft || spinnerClearCache || connectorsInactive : false;
+    const { loading, chargingStation, spinnerResetHard, spinnerResetSoft, spinnerConnectors, spinnerClearCache, connectorsInactive } = this.state;
+    const chargingStationIsDisabled = chargingStation ?
+      chargingStation.inactive || spinnerResetHard || spinnerResetSoft || spinnerClearCache || connectorsInactive : false;
     return (
       loading ? (
         <Spinner style={style.spinner} />
@@ -224,8 +224,8 @@ export default class ChargerActions extends BaseAutoRefreshScreen<Props, State> 
           <Container style={style.container}>
             <HeaderComponent
               navigation={this.props.navigation}
-              title={charger ? charger.id : I18n.t('connector.unknown')}
-              subTitle={charger && charger.inactive ? `(${I18n.t('details.inactive')})` : null}
+              title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
+              subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}
               rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
@@ -242,7 +242,7 @@ export default class ChargerActions extends BaseAutoRefreshScreen<Props, State> 
                     </Text>
                   </Button>
                 </View>
-                {charger && charger.connectors.map((connector) =>
+                {chargingStation && chargingStation.connectors.map((connector) =>
                   <View key={connector.connectorId} style={style.actionContainer}>
                     <Button
                       disabled={chargingStationIsDisabled || connector.status === ChargePointStatus.AVAILABLE}

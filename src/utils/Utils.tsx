@@ -31,6 +31,23 @@ export default class Utils {
       !Utils.isNullOrEmptyString(password);
   }
 
+  public static formatDistance(distance: number): string {
+    if (distance < 1000) {
+      return `${Math.round(distance)} m`
+    }
+    return `${Math.round(distance / 1000)} km`
+  }
+
+  public static isEmptyArray(array: any): boolean {
+    if (!array) {
+      return true;
+    }
+    if (Array.isArray(array) && array.length > 0) {
+      return false;
+    }
+    return true;
+  }
+
   public static jumpToMapWithAddress(title: string, address: Address) {
     if (!Utils.containsAddressGPSCoordinates(address)) {
       Message.showError(I18n.t('general.noGPSCoordinates'));

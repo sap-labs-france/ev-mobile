@@ -46,7 +46,7 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
           onPress={() => {
             if (siteArea.connectorStats.totalConnectors > 0) {
               navigation.navigate({
-                routeName: 'Chargers',
+                routeName: 'ChargingStations',
                 params: {
                 siteAreaID: siteArea.id
                 },
