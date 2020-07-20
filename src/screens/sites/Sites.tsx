@@ -3,12 +3,12 @@ import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
-
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteComponent from '../../components/site/SiteComponent';
+import LocationManager from '../../location/LocationManager';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
 import Site from '../../types/Site';
@@ -63,11 +63,16 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   public getSites = async (searchText = '', skip: number, limit: number): Promise<DataResult<Site>> => {
     let sites: DataResult<Site>;
     try {
+      // Get the current location
+      const location = (await LocationManager.getInstance()).getLocation();
       // Get the Sites
       sites = await this.centralServerProvider.getSites({
         Search: searchText,
         Issuer: true,
-        WithAvailableChargers: true
+        WithAvailableChargers: true,
+        LocLatitude: location ? location.latitude : null,
+        LocLongitude: location ? location.longitude : null,
+        LocMaxDistanceMeters: location ? Constants.MAX_DISTANCE_METERS : null
       }, { skip, limit });
     } catch (error) {
       // Other common Error

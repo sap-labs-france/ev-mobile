@@ -95,9 +95,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         Issuer: true,
         ConnectorStatus: this.state.filters.connectorStatus,
         ConnectorType: this.state.filters.connectorType,
-        PosLatitude: location ? location.latitude : null,
-        PosLongitude: location ? location.longitude : null,
-        PosMaxDistanceMeters: location ? 100000 : null
+        LocLatitude: location ? location.latitude : null,
+        LocLongitude: location ? location.longitude : null,
+        LocMaxDistanceMeters: location ? Constants.MAX_DISTANCE_METERS : null
       }, { skip, limit });
       // Check
       if (chargingStations.count === -1) {

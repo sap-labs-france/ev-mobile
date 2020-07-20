@@ -34,7 +34,6 @@ const commonStyles = ScaledSheet.create({
     height: '25@s',
     paddingRight: '5@s',
     paddingLeft: '5@s',
-
   },
   headerName: {
     marginLeft: '10@s',

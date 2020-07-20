@@ -44,23 +44,14 @@ export default class LocationManager {
   }
 
   public async startListening() {
-    console.log('====================================');
-    console.log(this.granted);
-    console.log('====================================');
     if (this.granted) {
       this.locationSubscription = RNLocation.subscribeToLocationUpdates((locations: Location[]) => {
-        console.log('====================================');
-        console.log({locations});
-        console.log('====================================');
         if (!Utils.isEmptyArray(locations)) {
           // Sort DESC
           locations = locations.sort((location1: Location, location2: Location) =>
             location2.timestamp - location1.timestamp);
           // Take the first one
           this.currentLocation = locations[0];
-          console.log('====================================');
-          console.log({currentLocation: this.currentLocation});
-          console.log('====================================');
         }
       });
     }

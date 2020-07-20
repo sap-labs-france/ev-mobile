@@ -62,7 +62,7 @@ export default class SiteComponent extends React.Component<Props, State> {
           }}>
           <View style={style.container}>
             <View style={style.headerContent}>
-              <View style={style.subHeaderContent}>
+              <View style={style.titleContainer}>
                 <TouchableOpacity disabled={!validGPSCoordinates}
                     onPress={() => Utils.jumpToMapWithAddress(site.name, site.address)}>
                   { validGPSCoordinates ?
@@ -75,6 +75,11 @@ export default class SiteComponent extends React.Component<Props, State> {
               </View>
               <Icon style={style.icon} type='MaterialIcons' name='navigate-next' />
             </View>
+            {(site.distanceMeters > 0) &&
+              <View style={style.subHeaderContent}>
+                  <Text>{Utils.formatDistance(site.distanceMeters)}</Text>
+              </View>
+            }
             <View style={style.connectorContent}>
               <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={connectorStats} />
             </View>

@@ -3,12 +3,12 @@ import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
-
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteAreaComponent from '../../components/site-area/SiteAreaComponent';
+import LocationManager from '../../location/LocationManager';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
 import SiteArea from '../../types/SiteArea';
@@ -60,12 +60,17 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   public getSiteAreas = async (searchText: string, skip: number, limit: number): Promise<DataResult<SiteArea>> => {
     let siteAreas: DataResult<SiteArea>;
     try {
+      // Get the current location
+      const location = (await LocationManager.getInstance()).getLocation();
       // Get the Site Areas
       siteAreas = await this.centralServerProvider.getSiteAreas({
         Search: searchText,
         SiteID: this.siteID,
         Issuer: true,
-        WithAvailableChargers: true
+        WithAvailableChargers: true,
+        LocLatitude: location ? location.latitude : null,
+        LocLongitude: location ? location.longitude : null,
+        LocMaxDistanceMeters: location ? Constants.MAX_DISTANCE_METERS : null
       },
         { skip, limit }
       );
