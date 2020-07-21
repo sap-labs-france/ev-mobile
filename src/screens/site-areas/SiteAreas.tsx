@@ -62,16 +62,16 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     let siteAreas: DataResult<SiteArea>;
     try {
       // Get the current location
-      const location = (await LocationManager.getInstance()).getLocation();
+      const currentLocation = (await LocationManager.getInstance()).getLocation();
       // Get the Site Areas
       siteAreas = await this.centralServerProvider.getSiteAreas({
         Search: searchText,
         SiteID: this.siteID,
         Issuer: true,
         WithAvailableChargers: true,
-        LocLatitude: location ? location.latitude : null,
-        LocLongitude: location ? location.longitude : null,
-        LocMaxDistanceMeters: location ? Constants.MAX_DISTANCE_METERS : null
+        LocLatitude: currentLocation ? currentLocation.latitude : null,
+        LocLongitude: currentLocation ? currentLocation.longitude : null,
+        LocMaxDistanceMeters: currentLocation ? Constants.MAX_DISTANCE_METERS : null
       },
         { skip, limit }
       );

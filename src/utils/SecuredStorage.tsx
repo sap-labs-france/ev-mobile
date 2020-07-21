@@ -74,6 +74,10 @@ export default class SecuredStorage {
   }
 
   public static async saveFilterValue(user: UserToken, filterInternalID: string, filterValue: string) {
+    // Ensure string
+    if (typeof filterValue !== 'string') {
+      filterValue = filterValue + '';
+    }
     // null value not allowed
     if (!filterValue) {
       filterValue = 'null';
