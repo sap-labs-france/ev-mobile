@@ -45,6 +45,17 @@ export default class Utils {
     return changedValue;
   }
 
+  public static formatAddress(address: Address): string {
+    const addresses: string[] = [];
+    if (address.address1 && address.address1.length > 0) {
+      addresses.push(address.address1);
+    }
+    if (address.city && address.city.length > 0) {
+      addresses.push(address.city);
+    }
+    return addresses.join(', ');
+  }
+
   public static convertToFloat(value: any): number {
     let changedValue: number = value;
     if (!value) {

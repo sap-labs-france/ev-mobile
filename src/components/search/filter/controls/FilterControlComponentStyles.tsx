@@ -8,7 +8,7 @@ const commonStyles = ScaledSheet.create({
   rowFilterContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: '40@s',
+    height: '35@s',
     alignItems: 'center',
   },
   columnFilterContainer: {

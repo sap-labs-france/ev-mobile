@@ -9,12 +9,16 @@ import ListFooterComponent from '../../components/list/footer/ListFooterComponen
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteAreaComponent from '../../components/site-area/SiteAreaComponent';
 import LocationManager from '../../location/LocationManager';
+import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
+import { GlobalFilters } from '../../types/Filter';
 import SiteArea from '../../types/SiteArea';
 import Constants from '../../utils/Constants';
+import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
+import SiteAreasFilters, { SiteAreasFiltersDef } from './SiteAreasFilters';
 import computeStyleSheet from './SiteAreasStyles';
 
 export interface Props extends BaseProps {
@@ -27,6 +31,8 @@ interface State {
   skip?: number;
   limit?: number;
   count?: number;
+  initialFilters?: SiteAreasFiltersDef;
+  filters?: SiteAreasFiltersDef;
 }
 
 export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
@@ -34,6 +40,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   public props: Props;
   private searchText: string;
   private siteID: string;
+  private locationEnabled: boolean;
 
   constructor(props: Props) {
     super(props);
@@ -43,7 +50,8 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       refreshing: false,
       skip: 0,
       limit: Constants.PAGING_SIZE,
-      count: 0
+      count: 0,
+      initialFilters: {},
     };
   }
 
@@ -53,15 +61,36 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
 
   public async componentDidMount() {
     // Get initial filters
+    await this.loadInitialFilters();
+    // Get initial filters
     this.siteID = Utils.getParamFromNavigation(this.props.navigation, 'siteID', null);
     await super.componentDidMount();
   }
 
+  public async loadInitialFilters() {
+    const centralServerProvider = await ProviderFactory.getProvider();
+    let location = Utils.convertToBoolean(await SecuredStorage.loadFilterValue(
+      centralServerProvider.getUserInfo(), GlobalFilters.LOCATION));
+    if (!location) {
+      location = false;
+    }
+    this.setState({
+      initialFilters: { location },
+      filters: { location }
+    });
+  }
+
   public getSiteAreas = async (searchText: string, skip: number, limit: number): Promise<DataResult<SiteArea>> => {
     let siteAreas: DataResult<SiteArea>;
+    const { filters } = this.state;
     try {
       // Get the current location
-      const currentLocation = (await LocationManager.getInstance()).getLocation();
+      let currentLocation = (await LocationManager.getInstance()).getLocation();
+      this.locationEnabled = currentLocation ? true : false;
+      // Bypass location
+      if (!filters.location) {
+        currentLocation = null;
+      }
       // Get the Site Areas
       siteAreas = await this.centralServerProvider.getSiteAreas({
         Search: searchText,
@@ -137,7 +166,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, skip, count, limit } = this.state;
+    const { loading, skip, count, limit, initialFilters } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -152,22 +181,27 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           onChange={(searchText) => this.search(searchText)}
           navigation={navigation}
         />
-        <View style={style.content}>
-          {loading ? (
-            <Spinner style={style.spinner} />
-          ) : (
-              <FlatList
-                data={this.state.siteAreas}
-                renderItem={({ item }) => <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />}
-                keyExtractor={(item) => item.id}
-                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-                onEndReached={this.onEndScroll}
-                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('siteAreas.noSiteAreas')} />}
-                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-              />
-            )}
-        </View>
+        {loading ? (
+          <Spinner style={style.spinner} />
+        ) : (
+          <View style={style.content}>
+            <SiteAreasFilters
+              initialFilters={initialFilters} locationEnabled={this.locationEnabled}
+              onFilterChanged={(newFilters: SiteAreasFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
+              ref={(siteAreasFilters: SiteAreasFilters) => this.setScreenFilters(siteAreasFilters)}
+            />
+            <FlatList
+              data={this.state.siteAreas}
+              renderItem={({ item }) => <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />}
+              keyExtractor={(item) => item.id}
+              refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+              onEndReached={this.onEndScroll}
+              onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('siteAreas.noSiteAreas')} />}
+              ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+            />
+          </View>
+        )}
       </Container>
     );
   }
