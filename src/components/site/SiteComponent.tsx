@@ -77,7 +77,7 @@ export default class SiteComponent extends React.Component<Props, State> {
             </View>
             <View style={style.subHeaderContent}>
               <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1} >
-                {site.address.address1}, {site.address.city}
+                {Utils.formatAddress(site.address)}
               </Text>
               {(site.distanceMeters > 0) &&
                 <Text>{Utils.formatDistance(site.distanceMeters)}</Text>

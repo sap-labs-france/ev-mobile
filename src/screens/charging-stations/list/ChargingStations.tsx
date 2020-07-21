@@ -43,6 +43,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public props: Props;
   private searchText: string;
   private siteAreaID: string;
+  private locationEnabled: boolean;
 
   constructor(props: Props) {
     super(props);
@@ -77,9 +78,14 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       centralServerProvider.getUserInfo(), GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS) as ChargePointStatus;
     const connectorType = await SecuredStorage.loadFilterValue(
       centralServerProvider.getUserInfo(), GlobalFilters.CONNECTOR_TYPES) as string;
+    let location = Utils.convertToBoolean(await SecuredStorage.loadFilterValue(
+      centralServerProvider.getUserInfo(), GlobalFilters.LOCATION));
+    if (!location) {
+      location = false;
+    }
     this.setState({
-      initialFilters: { connectorStatus, connectorType },
-      filters: { connectorStatus, connectorType }
+      initialFilters: { connectorStatus, connectorType, location },
+      filters: { connectorStatus, connectorType, location }
     });
   }
 
@@ -88,7 +94,12 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const { filters } = this.state;
     try {
       // Get the current location
-      const currentLocation = (await LocationManager.getInstance()).getLocation();
+      let currentLocation = (await LocationManager.getInstance()).getLocation();
+      this.locationEnabled = currentLocation ? true : false;
+      // Bypass location
+      if (!filters.location) {
+        currentLocation = null;
+      }
       // Get with the Site Area
       chargingStations = await this.centralServerProvider.getChargingStations({
         Search: searchText,
@@ -221,7 +232,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           ) : (
             <View style={style.content}>
               <ChargingStationsFilters
-                initialFilters={initialFilters}
+                initialFilters={initialFilters} locationEnabled={this.locationEnabled}
                 onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
                 ref={(chargingStationsFilters: ChargingStationsFilters) =>
                   this.setScreenFilters(chargingStationsFilters)}

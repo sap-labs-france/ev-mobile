@@ -93,7 +93,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
         <View style={style.subHeaderContent}>
           {chargingStation.siteArea ?
             <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1} >
-              {chargingStation.siteArea.address.address1}, {chargingStation.siteArea.address.city}
+              {Utils.formatAddress(chargingStation.siteArea.address)}
             </Text>
           :
             <Text>-</Text>

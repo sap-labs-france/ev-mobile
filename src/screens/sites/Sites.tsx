@@ -40,6 +40,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
+  private locationEnabled: boolean;
 
   constructor(props: Props) {
     super(props);
@@ -89,8 +90,9 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     try {
       // Get the current location
       let currentLocation = (await LocationManager.getInstance()).getLocation();
+      this.locationEnabled = currentLocation ? true : false;
+      // Bypass location
       if (!filters.location) {
-        // Bypass location
         currentLocation = null;
       }
       // Get the Sites
@@ -185,7 +187,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         ) : (
           <View style={style.content}>
             <SitesFilters
-              initialFilters={initialFilters}
+              initialFilters={initialFilters} locationEnabled={this.locationEnabled}
               onFilterChanged={(newFilters: SitesFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
               ref={(sitesFilters: SitesFilters) =>
                 this.setScreenFilters(sitesFilters)}

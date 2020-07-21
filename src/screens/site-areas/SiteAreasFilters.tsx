@@ -1,27 +1,26 @@
 import I18n from 'i18n-js';
 import { View } from 'native-base';
 import React from 'react';
-
 import FilterVisibleContainerComponent from '../../components/search/filter/containers/FilterVisibleContainerComponent';
 import LocationSwitchFilterControlComponent from '../../components/search/filter/controls/location-switch/LocationSwitchFilterControlComponent';
 import ScreenFilters, { ScreenFiltersState } from '../../components/search/filter/screen/ScreenFilters';
 import { GlobalFilters } from '../../types/Filter';
 
 export interface Props {
-  onFilterChanged?: (filters: SitesFiltersDef) => void;
-  initialFilters?: SitesFiltersDef;
+  onFilterChanged?: (filters: SiteAreasFiltersDef) => void;
+  initialFilters?: SiteAreasFiltersDef;
   locationEnabled?: boolean;
 }
 
 interface State extends ScreenFiltersState {
-  filters?: SitesFiltersDef;
+  filters?: SiteAreasFiltersDef;
 }
 
-export interface SitesFiltersDef {
+export interface SiteAreasFiltersDef {
   location?: boolean;
 }
 
-export default class SitesFilters extends ScreenFilters {
+export default class SiteAreasFilters extends ScreenFilters {
   public state: State;
   public props: Props;
 
@@ -36,7 +35,7 @@ export default class SitesFilters extends ScreenFilters {
     super.setState(state, callback);
   }
 
-  public onFilterChanged = (newFilters: SitesFiltersDef) => {
+  public onFilterChanged = (newFilters: SiteAreasFiltersDef) => {
     const { onFilterChanged } = this.props;
     this.setState({
       filters: { ...this.state.filters, ...newFilters }
