@@ -32,6 +32,60 @@ export default class Utils {
       !Utils.isNullOrEmptyString(password);
   }
 
+  public static convertToInt(value: any): number {
+    let changedValue: number = value;
+    if (!value) {
+      return 0;
+    }
+    // Check
+    if (typeof value === 'string') {
+      // Create Object
+      changedValue = parseInt(value);
+    }
+    return changedValue;
+  }
+
+  public static convertToFloat(value: any): number {
+    let changedValue: number = value;
+    if (!value) {
+      return 0;
+    }
+    // Check
+    if (typeof value === 'string') {
+      // Create Object
+      changedValue = parseFloat(value);
+    }
+    return changedValue;
+  }
+
+  public static convertToBoolean(value: any): boolean {
+    let result = false;
+    // Check boolean
+    if (value) {
+      // Check the type
+      if (typeof value === 'boolean') {
+        // Already a boolean
+        result = value;
+      } else {
+        // Convert
+        result = (value === 'true');
+      }
+    }
+    return result;
+  }
+
+  public static convertToDate(date: any): Date {
+    // Check
+    if (!date) {
+      return null;
+    }
+    // Check Type
+    if (!(date instanceof Date)) {
+      return new Date(date);
+    }
+    return date;
+  }
+
   public static formatDistance(distanceMeters: number): string {
     let distance = distanceMeters;
     // Convert to Yard

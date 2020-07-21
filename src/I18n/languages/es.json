@@ -34,6 +34,7 @@
     "hour": "h",
     "minute": "m",
     "second": "s",
+    "location": "Location",
     "startDate": "Fecha inicial",
     "endDate": "Fecha final",
     "onlyMyTransactions": "Mis sesiones",

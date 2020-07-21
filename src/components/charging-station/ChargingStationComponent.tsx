@@ -96,7 +96,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
               {chargingStation.siteArea.address.address1}, {chargingStation.siteArea.address.city}
             </Text>
           :
-            <Text></Text>
+            <Text>-</Text>
           }
           {(chargingStation.distanceMeters > 0) &&
             <Text>{Utils.formatDistance(chargingStation.distanceMeters)}</Text>

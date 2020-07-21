@@ -19,9 +19,8 @@ import Constants from '../../../utils/Constants';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
-import ChargingStationFilters, { ChargingStationFiltersDef } from './ChargingStationFilters';
+import ChargingStationsFilters, { ChargingStationsFiltersDef } from './ChargingStationsFilters';
 import computeStyleSheet from './ChargingStationsStyles';
-
 
 export interface Props extends BaseProps {
 }
@@ -34,8 +33,8 @@ interface State {
   skip?: number;
   limit?: number;
   count?: number;
-  initialFilters?: ChargingStationFiltersDef;
-  filters?: ChargingStationFiltersDef;
+  initialFilters?: ChargingStationsFiltersDef;
+  filters?: ChargingStationsFiltersDef;
 }
 
 export default class ChargingStations extends BaseAutoRefreshScreen<Props, State> {
@@ -85,19 +84,20 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
 
   public getChargingStations = async (searchText: string, skip: number, limit: number): Promise<DataResult<ChargingStation>> => {
     let chargingStations: DataResult<ChargingStation>;
+    const { filters } = this.state;
     try {
       // Get the current location
-      const location = (await LocationManager.getInstance()).getLocation();
+      const currentLocation = (await LocationManager.getInstance()).getLocation();
       // Get with the Site Area
       chargingStations = await this.centralServerProvider.getChargingStations({
         Search: searchText,
         SiteAreaID: this.siteAreaID,
         Issuer: true,
-        ConnectorStatus: this.state.filters.connectorStatus,
-        ConnectorType: this.state.filters.connectorType,
-        LocLatitude: location ? location.latitude : null,
-        LocLongitude: location ? location.longitude : null,
-        LocMaxDistanceMeters: location ? Constants.MAX_DISTANCE_METERS : null
+        ConnectorStatus: filters.connectorStatus,
+        ConnectorType: filters.connectorType,
+        LocLatitude: currentLocation ? currentLocation.latitude : null,
+        LocLongitude: currentLocation ? currentLocation.longitude : null,
+        LocMaxDistanceMeters: currentLocation ? Constants.MAX_DISTANCE_METERS : null
       }, { skip, limit });
       // Check
       if (chargingStations.count === -1) {
@@ -219,11 +219,11 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
             <Spinner style={style.spinner} />
           ) : (
             <View style={style.content}>
-              <ChargingStationFilters
+              <ChargingStationsFilters
                 initialFilters={initialFilters}
-                onFilterChanged={(newFilters: ChargingStationFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-                ref={(ChargingStationFilters: ChargingStationFilters) =>
-                  this.setScreenFilters(ChargingStationFilters)}
+                onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
+                ref={(chargingStationsFilters: ChargingStationsFilters) =>
+                  this.setScreenFilters(chargingStationsFilters)}
               />
               <FlatList
                 data={chargingStations}

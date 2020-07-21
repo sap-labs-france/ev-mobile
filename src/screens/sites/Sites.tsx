@@ -9,12 +9,16 @@ import ListFooterComponent from '../../components/list/footer/ListFooterComponen
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteComponent from '../../components/site/SiteComponent';
 import LocationManager from '../../location/LocationManager';
+import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
+import { GlobalFilters } from '../../types/Filter';
 import Site from '../../types/Site';
 import Constants from '../../utils/Constants';
+import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
+import SitesFilters, { SitesFiltersDef } from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
 
 export interface Props extends BaseProps {
@@ -26,6 +30,8 @@ interface State {
   refreshing?: boolean;
   skip?: number;
   limit?: number;
+  initialFilters?: SitesFiltersDef;
+  filters?: SitesFiltersDef;
   count?: number;
 }
 
@@ -41,6 +47,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       loading: true,
       refreshing: false,
       skip: 0,
+      initialFilters: {},
       limit: Constants.PAGING_SIZE,
       count: 0
     };
@@ -51,6 +58,8 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public async componentDidMount() {
+    // Get initial filters
+    await this.loadInitialFilters();
     // Call parent
     await super.componentDidMount();
     // No Site Management: Go to chargers
@@ -60,19 +69,37 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     }
   }
 
+  public async loadInitialFilters() {
+    const centralServerProvider = await ProviderFactory.getProvider();
+    let location = Utils.convertToBoolean(await SecuredStorage.loadFilterValue(
+      centralServerProvider.getUserInfo(), GlobalFilters.LOCATION));
+    if (!location) {
+      location = false;
+    }
+    this.setState({
+      initialFilters: { location },
+      filters: { location }
+    });
+  }
+
   public getSites = async (searchText = '', skip: number, limit: number): Promise<DataResult<Site>> => {
     let sites: DataResult<Site>;
+    const { filters } = this.state;
     try {
       // Get the current location
-      const location = (await LocationManager.getInstance()).getLocation();
+      let currentLocation = (await LocationManager.getInstance()).getLocation();
+      if (!filters.location) {
+        // Bypass location
+        currentLocation = null;
+      }
       // Get the Sites
       sites = await this.centralServerProvider.getSites({
         Search: searchText,
         Issuer: true,
         WithAvailableChargers: true,
-        LocLatitude: location ? location.latitude : null,
-        LocLongitude: location ? location.longitude : null,
-        LocMaxDistanceMeters: location ? Constants.MAX_DISTANCE_METERS : null
+        LocLatitude: currentLocation ? currentLocation.latitude : null,
+        LocLongitude: currentLocation ? currentLocation.longitude : null,
+        LocMaxDistanceMeters: currentLocation ? Constants.MAX_DISTANCE_METERS : null
       }, { skip, limit });
     } catch (error) {
       // Other common Error
@@ -137,7 +164,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, skip, count, limit } = this.state;
+    const { loading, skip, count, limit, initialFilters } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -152,22 +179,28 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           onChange={(searchText) => this.search(searchText)}
           navigation={navigation}
         />
-        <View style={style.content}>
-          {loading ? (
-            <Spinner style={style.spinner} />
-          ) : (
-              <FlatList
-                data={this.state.sites}
-                renderItem={({ item }) => <SiteComponent site={item} navigation={this.props.navigation} />}
-                keyExtractor={(item) => item.id}
-                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-                onEndReached={this.onEndScroll}
-                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('sites.noSites')} />}
-                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-              />
-            )}
-        </View>
+        {loading ? (
+          <Spinner style={style.spinner} />
+        ) : (
+          <View style={style.content}>
+            <SitesFilters
+              initialFilters={initialFilters}
+              onFilterChanged={(newFilters: SitesFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
+              ref={(sitesFilters: SitesFilters) =>
+                this.setScreenFilters(sitesFilters)}
+            />
+            <FlatList
+              data={this.state.sites}
+              renderItem={({ item }) => <SiteComponent site={item} navigation={this.props.navigation} />}
+              keyExtractor={(item) => item.id}
+              refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+              onEndReached={this.onEndScroll}
+              onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('sites.noSites')} />}
+              ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+            />
+          </View>
+        )}
       </Container>
     );
   }

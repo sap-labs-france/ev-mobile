@@ -4,5 +4,6 @@ export enum GlobalFilters {
   STATISTICS_END_DATE_FILTER = 'StatisticsStartEndFilter',
   MY_USER_FILTER = 'MyUserFilter',
   ONLY_AVAILABLE_CHARGING_STATIONS = 'OnlyAvailableChargingStationsFilter',
-  CONNECTOR_TYPES = 'ConnectorTypesFilter'
+  CONNECTOR_TYPES = 'ConnectorTypesFilter',
+  LOCATION = 'LocationFilter',
 }
