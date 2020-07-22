@@ -334,8 +334,6 @@ export default class Login extends BaseScreen<Props, State> {
           tenantName: this.tenants[buttonIndex].name
         });
       }
-      // Recompute form
-      Utils.validateInput(this, this.formValidationDef);
     }
   };
 

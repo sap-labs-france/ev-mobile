@@ -29,7 +29,7 @@ const commonStyles = ScaledSheet.create({
   },
   rightButtonHeader: {
   },
-  rightFilterButtonHeader: {
+  rightSecondButtonHeader: {
     marginRight: '15@s'
   },
   bodyHeader: {

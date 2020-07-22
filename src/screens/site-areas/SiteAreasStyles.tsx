@@ -15,6 +15,9 @@ const commonStyles = ScaledSheet.create({
   spinner: {
     flex: 1
   },
+  map: {
+    flex: 1
+  },
   noRecordFound: {
     flex: 1,
     paddingTop: '10@s',

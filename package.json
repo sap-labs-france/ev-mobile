@@ -99,6 +99,7 @@
     "react-native-localize": "^1.4.0",
     "react-native-location": "^2.5.0",
     "react-native-map-link": "^2.7.10",
+    "react-native-maps": "0.27.1",
     "react-native-modal": "^11.5.6",
     "react-native-modalbox": "^1.7.1",
     "react-native-orientation-locker": "^1.1.8",
