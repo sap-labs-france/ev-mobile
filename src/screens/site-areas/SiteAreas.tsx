@@ -3,7 +3,7 @@ import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
 import { Location } from 'react-native-location';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Region } from 'react-native-maps';
 import { DrawerActions } from 'react-navigation-drawer';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
@@ -45,6 +45,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   private siteID: string;
   private currentLocation: Location;
   private locationEnabled: boolean;
+  private currentRegion: Region;
 
   constructor(props: Props) {
     super(props);
@@ -99,7 +100,6 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
 
   public getSiteAreas = async (searchText: string, skip: number, limit: number): Promise<DataResult<SiteArea>> => {
     let siteAreas: DataResult<SiteArea>;
-    const { filters } = this.state;
     try {
       // Get current location
       this.currentLocation = await this.getCurrentLocation();
@@ -131,12 +131,30 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     return true;
   };
 
+  public refreshCurrentRegion(siteAreas: SiteArea[], force = false) {
+    // Set current region
+    if (!this.currentRegion || force) {
+      let gpsCoordinates: number[];
+      if (!Utils.isEmptyArray(siteAreas) && Utils.containsAddressGPSCoordinates(siteAreas[0].address)) {
+        gpsCoordinates = siteAreas[0].address.coordinates;
+      }
+      this.currentRegion = {
+        longitude: gpsCoordinates ? gpsCoordinates[0] : 2.3514616,
+        latitude: gpsCoordinates ? gpsCoordinates[1] : 48.8566969,
+        latitudeDelta: 0.009,
+        longitudeDelta: 0.009,
+      };
+    }
+  }
+
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
       const siteAreas = await this.getSiteAreas(this.searchText, 0, skip + limit);
+      // Refresh region
+      this.refreshCurrentRegion(siteAreas.result);
       // Set Site Areas
       this.setState({
         loading: false,
@@ -175,6 +193,22 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     await this.refresh();
   }
 
+  public onMapRegionChange = (region: Region) => {
+    this.currentRegion = region;
+  }
+
+  public filterChanged(newFilters: SiteAreasFiltersDef) {
+    delete this.currentRegion;
+    this.setState({ filters: newFilters }, () => this.refresh());
+  }
+
+  public toggleDisplayMap = () => {
+    // Refresh region
+    this.refreshCurrentRegion(this.state.siteAreas, true);
+    // Toggle map
+    this.setState({ showMap: !this.state.showMap })
+  }
+
   public render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
@@ -189,47 +223,44 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           leftActionIcon={'navigate-before'}
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
-          diplayMap={true}
+          diplayMap={this.locationEnabled && !Utils.isEmptyArray(this.state.siteAreas)}
           mapIsDisplayed={mapIsDisplayed}
-          diplayMapAction={() => this.setState({ showMap: !showMap })}
+          diplayMapAction={() => this.toggleDisplayMap()}
         />
         {loading ? (
           <Spinner style={style.spinner} />
         ) : (
-          mapIsDisplayed ?
-            <View style={style.content}>
+          <View style={style.content}>
+            <SimpleSearchComponent
+              onChange={(searchText) => this.search(searchText)}
+              navigation={navigation}
+            />
+            <SiteAreasFilters
+              initialFilters={initialFilters} locationEnabled={this.locationEnabled}
+              onFilterChanged={(newFilters: SiteAreasFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
+              ref={(siteAreasFilters: SiteAreasFilters) => this.setScreenFilters(siteAreasFilters)}
+            />
+            {mapIsDisplayed ?
               <MapView
                 style={style.map}
-                initialRegion={{
-                  longitude: Utils.containsAddressGPSCoordinates(this.state.siteAreas[0].address) ?
-                    this.state.siteAreas[0].address.coordinates[0] : 2.3514616,
-                  latitude: Utils.containsAddressGPSCoordinates(this.state.siteAreas[0].address) ?
-                    this.state.siteAreas[0].address.coordinates[1] : 48.8566969,
-                  latitudeDelta: 0.009,
-                  longitudeDelta: 0.009,
-                }}
+                region={this.currentRegion}
+                onRegionChange={this.onMapRegionChange}
               >
-                {this.state.siteAreas.map((siteArea) => (
-                  <Marker
-                    key={siteArea.id}
-                    coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
-                    title={siteArea.name}
-                    description={siteArea.name}
-                  />
-                ))}
+                {this.state.siteAreas.map((siteArea: SiteArea) => {
+                  if (Utils.containsAddressGPSCoordinates(siteArea.address)) {
+                    return (
+                      <Marker
+                        key={siteArea.id}
+                        coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
+                        title={siteArea.name}
+                        description={siteArea.name}
+                      />
+                    );
+                  }
+                  return undefined;
+                })}
               </MapView>
-            </View>
-          :
-            <View style={style.content}>
-              <SimpleSearchComponent
-                onChange={(searchText) => this.search(searchText)}
-                navigation={navigation}
-              />
-              <SiteAreasFilters
-                initialFilters={initialFilters} locationEnabled={this.locationEnabled}
-                onFilterChanged={(newFilters: SiteAreasFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-                ref={(siteAreasFilters: SiteAreasFilters) => this.setScreenFilters(siteAreasFilters)}
-              />
+            :
               <FlatList
                 data={this.state.siteAreas}
                 renderItem={({ item }) => <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />}
@@ -240,9 +271,10 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
                 ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('siteAreas.noSiteAreas')} />}
                 ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
               />
-            </View>
-          )
-        }
+            }
+          </View>
+        )
+      }
       </Container>
     );
   }

@@ -3,7 +3,7 @@ import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
 import { Location } from 'react-native-location';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Region } from 'react-native-maps';
 import { DrawerActions } from 'react-navigation-drawer';
 import ChargingStationComponent from '../../../components/charging-station/ChargingStationComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -47,6 +47,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   private siteAreaID: string;
   private currentLocation: Location;
   private locationEnabled: boolean;
+  private currentRegion: Region;
 
   constructor(props: Props) {
     super(props);
@@ -146,9 +147,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const { count, skip, limit } = this.state;
     // No reached the end?
     if (skip + limit < count || count === -1) {
-      // No: get next sites
+      // No: get next charging stations
       const chargingStations = await this.getChargingStations(this.searchText, skip + Constants.PAGING_SIZE, limit);
-      // Add sites
+      // Add charging stations
       this.setState((prevState, props) => ({
         chargingStations: chargingStations ? [...prevState.chargingStations, ...chargingStations.result] : prevState.chargingStations,
         skip: prevState.skip + Constants.PAGING_SIZE,
@@ -169,6 +170,22 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     return true;
   };
 
+  public refreshCurrentRegion(chargingStations: ChargingStation[], force = false) {
+    // Set current region
+    if (!this.currentRegion || force) {
+      let gpsCoordinates: number[];
+      if (!Utils.isEmptyArray(chargingStations) && Utils.containsGPSCoordinates(chargingStations[0].coordinates)) {
+        gpsCoordinates = chargingStations[0].coordinates;
+      }
+      this.currentRegion = {
+        longitude: gpsCoordinates ? gpsCoordinates[0] : 2.3514616,
+        latitude: gpsCoordinates ? gpsCoordinates[1] : 48.8566969,
+        latitudeDelta: 0.009,
+        longitudeDelta: 0.009,
+      };
+    }
+  }
+
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
@@ -177,6 +194,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       const chargingStations = await this.getChargingStations(this.searchText, 0, skip + limit);
       // Get the provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
+      // Refresh region
+      this.refreshCurrentRegion(chargingStations.result);
       // Add ChargingStations
       this.setState(() => ({
         loading: false,
@@ -211,7 +230,24 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
 
   public search = async (searchText: string) => {
     this.searchText = searchText;
+    delete this.currentRegion;
     await this.refresh();
+  }
+
+  public onMapRegionChange = (region: Region) => {
+    this.currentRegion = region;
+  }
+
+  public filterChanged(newFilters: ChargingStationsFiltersDef) {
+    delete this.currentRegion;
+    this.setState({ filters: newFilters }, () => this.refresh());
+  }
+
+  public toggleDisplayMap = () => {
+    // Refresh region
+    this.refreshCurrentRegion(this.state.chargingStations, true);
+    // Toggle map
+    this.setState({ showMap: !this.state.showMap })
   }
 
   public render() {
@@ -233,64 +269,61 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
           filters={filters}
-          diplayMap={true}
+          diplayMap={this.locationEnabled && !Utils.isEmptyArray(this.state.chargingStations)}
           mapIsDisplayed={mapIsDisplayed}
-          diplayMapAction={() => this.setState({ showMap: !showMap })}
+          diplayMapAction={() => this.toggleDisplayMap()}
         />
-        <View style={style.content}>
-          {loading ? (
-            <Spinner style={style.spinner} />
-          ) : (
-            mapIsDisplayed ?
-            <View style={style.content}>
+        {loading ? (
+          <Spinner style={style.spinner} />
+        ) : (
+          <View style={style.content}>
+            <SimpleSearchComponent
+              onChange={(searchText) => this.search(searchText)}
+              navigation={navigation}
+            />
+            <ChargingStationsFilters
+              initialFilters={initialFilters} locationEnabled={this.locationEnabled}
+              onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
+              ref={(chargingStationsFilters: ChargingStationsFilters) =>
+                this.setScreenFilters(chargingStationsFilters)}
+            />
+            {mapIsDisplayed ?
               <MapView
                 style={style.map}
-                initialRegion={{
-                  longitude: Utils.containsGPSCoordinates(this.state.chargingStations[0].coordinates) ?
-                    this.state.chargingStations[0].coordinates[0] : 2.3514616,
-                  latitude: Utils.containsGPSCoordinates(this.state.chargingStations[0].coordinates) ?
-                    this.state.chargingStations[0].coordinates[1] : 48.8566969,
-                  latitudeDelta: 0.009,
-                  longitudeDelta: 0.009,
-                }}
+                region={this.currentRegion}
+                onRegionChange={this.onMapRegionChange}
               >
-                {this.state.chargingStations.map((chargingStation) => (
-                  <Marker
-                    key={chargingStation.id}
-                    coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
-                    title={chargingStation.id}
-                    description={chargingStation.id}
-                  />
-                ))}
-              </MapView>
-            </View>
+              {this.state.chargingStations.map((chargingStation) => {
+                if (Utils.containsGPSCoordinates(chargingStation.coordinates)) {
+                  return (
+                    <Marker
+                      key={chargingStation.id}
+                      coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
+                      title={chargingStation.id}
+                      description={chargingStation.id}
+                    />
+                  );
+                }
+                return undefined;
+              })}
+            </MapView>
           :
-            <View style={style.content}>
-              <SimpleSearchComponent
-                onChange={(searchText) => this.search(searchText)}
-                navigation={navigation}
-              />
-              <ChargingStationsFilters
-                initialFilters={initialFilters} locationEnabled={this.locationEnabled}
-                onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-                ref={(chargingStationsFilters: ChargingStationsFilters) =>
-                  this.setScreenFilters(chargingStationsFilters)}
-              />
-              <FlatList
-                data={chargingStations}
-                renderItem={({ item }) =>
-                  <ChargingStationComponent chargingStation={item} isAdmin={isAdmin} navigation={navigation}
-                    isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteArea ? item.siteArea.siteID : '')} />}
-                keyExtractor={(item) => item.id}
-                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-                onEndReached={this.onEndScroll}
-                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargers')} />}
-              />
-            </View>
-          )}
-        </View>
+            <FlatList
+              data={chargingStations}
+              renderItem={({ item }) =>
+                <ChargingStationComponent chargingStation={item} isAdmin={isAdmin} navigation={navigation}
+                  isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteArea ? item.siteArea.siteID : '')} />}
+              keyExtractor={(item) => item.id}
+              refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+              onEndReached={this.onEndScroll}
+              onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+              ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargers')} />}
+            />
+          }
+          </View>
+        )
+      }
       </Container>
     );
   }

@@ -22,7 +22,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-   [GMSServices provideAPIKey:@"AIzaSyA4X0viMaongt6MuKkUfcY9dSqZNtg8LZQ"];
+   [GMSServices provideAPIKey:@"AIzaSyCGEd01GGu3RaUvQzzIg74t9f3Dtm-9LG0"];
    [FIRApp configure];
    [RNFirebaseNotifications configure];
    [FIRMessaging messaging].delegate = self;

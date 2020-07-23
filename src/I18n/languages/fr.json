@@ -162,13 +162,13 @@
     "free": "Libre(s)",
     "occupied": "Occupé(s)",
     "noSites": "Aucun Site trouvé",
-    "siteUnexpectedError": "Impossible de lire le site"
+    "siteUnexpectedError": "Impossible de lire les sites"
   },
   "siteAreas": {
     "title": "Zones",
     "noChargers": "Cette Zone n'a pas de Borne",
     "noSiteAreas": "Aucune Zone trouvée",
-    "siteAreaUnexpectedError": "Cannot read the site area"
+    "siteAreaUnexpectedError": "Impossible de lire les zones"
   },
   "chargers": {
     "title": "Bornes",
@@ -177,7 +177,7 @@
     "noOCPPParameters": "Pas de parametre OCPP",
     "noChargerParameters": "Pas de parametre",
     "chargerConfigurationUnexpectedError": "Impossible de lire la configuration de la borne",
-    "chargerUnexpectedError": "Impossible de lire la borne",
+    "chargerUnexpectedError": "Impossible de lire les bornes",
     "chargerResetUnexpectedError": "Impossible de réinitialiser la borne",
     "chargerRebootUnexpectedError": "Impossible de redémarrer la borne",
     "chargerClearCacheUnexpectedError": "Impossible d'effacer le cache de la borne",
