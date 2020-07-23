@@ -2,12 +2,12 @@ import I18n from 'i18n-js';
 import { Linking } from 'react-native';
 import DeepLinking from 'react-native-deep-linking';
 import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
+
 import CentralServerProvider from '../provider/CentralServerProvider';
 import { HTTPError } from '../types/HTTPError';
 import Constants from '../utils/Constants';
 import Message from '../utils/Message';
 import Utils from '../utils/Utils';
-
 
 export default class DeepLinkingManager {
   private static instance: DeepLinkingManager;

@@ -1,4 +1,5 @@
 import RNLocation, { Location, Subscription } from 'react-native-location';
+
 import Utils from '../utils/Utils';
 
 export default class LocationManager {

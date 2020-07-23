@@ -4,11 +4,12 @@ import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Image, ScrollView } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
+
 import noPhotoActive from '../../../../assets/no-photo-active.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
-import HeaderComponent from '../../../components/header/HeaderComponent';
 import I18nManager from '../../../I18n/I18nManager';
+import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
@@ -18,7 +19,6 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './TransactionDetailsStyles';
-
 
 export interface Props extends BaseProps {
 }

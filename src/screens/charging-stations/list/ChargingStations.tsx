@@ -5,12 +5,13 @@ import { FlatList, Platform, RefreshControl } from 'react-native';
 import { Location } from 'react-native-location';
 import MapView, { Marker, Region } from 'react-native-maps';
 import { DrawerActions } from 'react-navigation-drawer';
+
+import I18nManager from '../../../I18n/I18nManager';
 import ChargingStationComponent from '../../../components/charging-station/ChargingStationComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
-import I18nManager from '../../../I18n/I18nManager';
 import LocationManager from '../../../location/LocationManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
