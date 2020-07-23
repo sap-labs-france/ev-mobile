@@ -21,6 +21,7 @@
     "android": "cross-env TSC_WATCHFILE=UseFsEventsWithFallbackDynamicPolling react-native run-android",
     "android:release": "react-native run-android --variant=release",
     "android:bundleRelease": "npm run android:jetify && cd android && ./gradlew bundleRelease",
+    "android:bundleDebug": "npm run android:jetify && cd android && ./gradlew bundleDebug",
     "android:assembleRelease": "npm run android:jetify && cd android && ./gradlew assembleRelease",
     "android:assembleDebug": "npm run android:jetify && cd android && ./gradlew assembleDebug",
     "android:jetify": "npx jetify",
