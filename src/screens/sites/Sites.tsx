@@ -5,6 +5,7 @@ import { FlatList, Platform, RefreshControl } from 'react-native';
 import { Location } from 'react-native-location';
 import MapView, { Marker } from 'react-native-maps';
 import { DrawerActions } from 'react-navigation-drawer';
+
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../components/list/footer/ListFooterComponent';

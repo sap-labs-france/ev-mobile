@@ -1,8 +1,8 @@
 import { Switch, Text, View } from 'native-base';
 import React from 'react';
+
 import FilterControlComponent, { FilterControlComponentProps } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
-
 
 export interface Props extends FilterControlComponentProps<boolean> {
 }

@@ -3,13 +3,14 @@ import { Icon, Root } from 'native-base';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { createAppContainer, createSwitchNavigator, NavigationContainer, NavigationContainerComponent, NavigationState } from 'react-navigation';
+import { NavigationContainer, NavigationContainerComponent, NavigationState, createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
+
 import computeStyleSheet from './AppStyles';
-import DeepLinkingManager from './deeplinking/DeepLinkingManager';
 import I18nManager from './I18n/I18nManager';
+import DeepLinkingManager from './deeplinking/DeepLinkingManager';
 import LocationManager from './location/LocationManager';
 import NotificationManager from './notification/NotificationManager';
 import ProviderFactory from './provider/ProviderFactory';
@@ -34,7 +35,6 @@ import TransactionsHistory from './screens/transactions/history/TransactionsHist
 import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
 import commonColor from './theme/variables/commonColor';
 import SecuredStorage from './utils/SecuredStorage';
-
 
 // Init i18n
 I18nManager.initialize();
