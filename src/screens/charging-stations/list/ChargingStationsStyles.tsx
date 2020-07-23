@@ -15,6 +15,9 @@ const commonStyles = ScaledSheet.create({
   spinner: {
     flex: 1
   },
+  map: {
+    flex: 1
+  },
   filtersExpanded: {
     opacity: 1,
     height: '100@s',

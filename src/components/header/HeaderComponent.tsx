@@ -1,7 +1,6 @@
 import { Body, Button, Header, Icon, Left, Right, Subtitle, Title, View } from 'native-base';
 import React from 'react';
 import { BackHandler, Image } from 'react-native';
-
 import logo from '../../../assets/logo-low.png';
 import FilterModalContainerComponent from '../../components/search/filter/containers/FilterModalContainerComponent';
 import BaseProps from '../../types/BaseProps';
@@ -18,6 +17,9 @@ export interface Props extends BaseProps {
   rightActionIcon?: string;
   rightActionIconType?: IconType;
   filters?: any;
+  diplayMap?: boolean;
+  mapIsDisplayed?: boolean;
+  diplayMapAction?: () => void;
 }
 
 interface State {
@@ -79,7 +81,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
     const style = computeStyleSheet();
     const { hasFilter } = this.state;
     const { title, subTitle, leftAction, leftActionIcon, leftActionIconType,
-      rightAction, rightActionIcon, rightActionIconType, navigation } = this.props;
+      rightAction, rightActionIcon, rightActionIconType,
+      diplayMap, diplayMapAction, mapIsDisplayed, navigation } = this.props;
     return (
       <Header style={style.header}>
         <Left style={style.leftHeader}>
@@ -105,7 +108,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
           {hasFilter && (
             <Button
               transparent={true}
-              style={style.rightFilterButtonHeader}
+              style={style.rightSecondButtonHeader}
               onPress={() => {
                 this.searchIsVisible = !this.searchIsVisible;
                 // Show Filter Search
@@ -115,6 +118,14 @@ export default class HeaderComponent extends React.Component<Props, State> {
               }}>
               <Icon type={'MaterialCommunityIcons'} name={this.filterModalContainerComponent &&
                 this.filterModalContainerComponent.getNumberOfFilters() > 0 ? 'filter' : 'filter-outline'} style={style.iconHeader} />
+            </Button>
+          )}
+          {diplayMap && (
+            <Button transparent={true} style={style.rightSecondButtonHeader}
+              onPress={() => {
+                diplayMapAction();
+              }}>
+              <Icon type='MaterialCommunityIcons' name={mapIsDisplayed ? 'format-list-text' : 'earth'} style={style.iconHeader} />
             </Button>
           )}
           {rightAction ? (

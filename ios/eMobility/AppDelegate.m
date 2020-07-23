@@ -16,11 +16,13 @@
 #import <Firebase.h>
 #import <RNFirebaseNotifications.h>
 #import <RNFirebaseMessaging.h>
+#import <GoogleMaps/GoogleMaps.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+   [GMSServices provideAPIKey:@"AIzaSyA4X0viMaongt6MuKkUfcY9dSqZNtg8LZQ"];
    [FIRApp configure];
    [RNFirebaseNotifications configure];
    [FIRMessaging messaging].delegate = self;

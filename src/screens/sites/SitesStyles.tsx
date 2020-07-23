@@ -14,6 +14,9 @@ const commonStyles = ScaledSheet.create({
   },
   spinner: {
     flex: 1
+  },
+  map: {
+    flex: 1
   }
 });
 

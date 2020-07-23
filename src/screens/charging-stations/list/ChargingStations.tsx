@@ -2,6 +2,8 @@ import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
+import { Location } from 'react-native-location';
+import MapView, { Marker } from 'react-native-maps';
 import { DrawerActions } from 'react-navigation-drawer';
 
 import I18nManager from '../../../I18n/I18nManager';
@@ -36,6 +38,7 @@ interface State {
   count?: number;
   initialFilters?: ChargingStationsFiltersDef;
   filters?: ChargingStationsFiltersDef;
+  showMap?: boolean;
 }
 
 export default class ChargingStations extends BaseAutoRefreshScreen<Props, State> {
@@ -43,6 +46,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public props: Props;
   private searchText: string;
   private siteAreaID: string;
+  private currentLocation: Location;
   private locationEnabled: boolean;
 
   constructor(props: Props) {
@@ -57,7 +61,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       filters: {},
       skip: 0,
       limit: Constants.PAGING_SIZE,
-      count: 0
+      count: 0,
+      showMap: false,
     };
   }
 
@@ -89,17 +94,24 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     });
   }
 
+  public async getCurrentLocation(): Promise<Location> {
+    const { filters } = this.state;
+    // Get the current location
+    let currentLocation = (await LocationManager.getInstance()).getLocation();
+    this.locationEnabled = currentLocation ? true : false;
+    // Bypass location
+    if (!filters.location) {
+      currentLocation = null;
+    }
+    return currentLocation;
+  }
+
   public getChargingStations = async (searchText: string, skip: number, limit: number): Promise<DataResult<ChargingStation>> => {
     let chargingStations: DataResult<ChargingStation>;
     const { filters } = this.state;
     try {
-      // Get the current location
-      let currentLocation = (await LocationManager.getInstance()).getLocation();
-      this.locationEnabled = currentLocation ? true : false;
-      // Bypass location
-      if (!filters.location) {
-        currentLocation = null;
-      }
+      // Get current location
+      this.currentLocation = await this.getCurrentLocation();
       // Get with the Site Area
       chargingStations = await this.centralServerProvider.getChargingStations({
         Search: searchText,
@@ -107,9 +119,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         Issuer: true,
         ConnectorStatus: filters.connectorStatus,
         ConnectorType: filters.connectorType,
-        LocLatitude: currentLocation ? currentLocation.latitude : null,
-        LocLongitude: currentLocation ? currentLocation.longitude : null,
-        LocMaxDistanceMeters: currentLocation ? Constants.MAX_DISTANCE_METERS : null
+        LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
+        LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
+        LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
       }, { skip, limit });
       // Check
       if (chargingStations.count === -1) {
@@ -207,7 +219,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading, chargingStations, isAdmin, initialFilters,
-      skip, count, limit, filters } = this.state;
+      skip, count, limit, filters, showMap } = this.state;
+    const mapIsDisplayed = showMap && this.locationEnabled && !Utils.isEmptyArray(this.state.chargingStations)
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -221,16 +234,43 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
           filters={filters}
-        />
-        <SimpleSearchComponent
-          onChange={(searchText) => this.search(searchText)}
-          navigation={navigation}
+          diplayMap={true}
+          mapIsDisplayed={mapIsDisplayed}
+          diplayMapAction={() => this.setState({ showMap: !showMap })}
         />
         <View style={style.content}>
           {loading ? (
             <Spinner style={style.spinner} />
           ) : (
+            mapIsDisplayed ?
             <View style={style.content}>
+              <MapView
+                style={style.map}
+                initialRegion={{
+                  longitude: Utils.containsGPSCoordinates(this.state.chargingStations[0].coordinates) ?
+                    this.state.chargingStations[0].coordinates[0] : 2.3514616,
+                  latitude: Utils.containsGPSCoordinates(this.state.chargingStations[0].coordinates) ?
+                    this.state.chargingStations[0].coordinates[1] : 48.8566969,
+                  latitudeDelta: 0.009,
+                  longitudeDelta: 0.009,
+                }}
+              >
+                {this.state.chargingStations.map((chargingStation) => (
+                  <Marker
+                    key={chargingStation.id}
+                    coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
+                    title={chargingStation.id}
+                    description={chargingStation.id}
+                  />
+                ))}
+              </MapView>
+            </View>
+          :
+            <View style={style.content}>
+              <SimpleSearchComponent
+                onChange={(searchText) => this.search(searchText)}
+                navigation={navigation}
+              />
               <ChargingStationsFilters
                 initialFilters={initialFilters} locationEnabled={this.locationEnabled}
                 onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}

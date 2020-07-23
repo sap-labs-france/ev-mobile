@@ -14,6 +14,11 @@
       android:allowBackup="false"
       android:theme="@style/AppTheme">
 
+      <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyA4X0viMaongt6MuKkUfcY9dSqZNtg8LZQ"/>
+      <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
       <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
         See README(https://goo.gl/l4GJaQ) for more. -->
       <meta-data
