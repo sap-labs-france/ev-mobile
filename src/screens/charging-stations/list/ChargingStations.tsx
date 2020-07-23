@@ -181,8 +181,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       this.currentRegion = {
         longitude: gpsCoordinates ? gpsCoordinates[0] : 2.3514616,
         latitude: gpsCoordinates ? gpsCoordinates[1] : 48.8566969,
-        latitudeDelta: 0.009,
-        longitudeDelta: 0.009,
+        latitudeDelta: 0.003,
+        longitudeDelta: 0.003,
       };
     }
   }
