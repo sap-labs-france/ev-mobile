@@ -48,7 +48,7 @@ export default class CentralServerProvider {
 
   constructor() {
     // Retry backend requests
-    axiosRetry(axios);
+    axiosRetry(axios, { retryDelay: axiosRetry.exponentialDelay });
     if (__DEV__) {
       // QA REST Server
       // this.centralRestServerServiceBaseURL = Configuration.centralRestServerServiceBaseURLQA;
