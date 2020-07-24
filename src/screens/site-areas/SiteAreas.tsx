@@ -214,7 +214,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading, skip, count, limit, initialFilters, showMap } = this.state;
-    const mapIsDisplayed = showMap && this.locationEnabled && !Utils.isEmptyArray(this.state.siteAreas)
+    const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.siteAreas)
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -224,7 +224,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           leftActionIcon={'navigate-before'}
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
-          diplayMap={this.locationEnabled && !Utils.isEmptyArray(this.state.siteAreas)}
+          diplayMap={!Utils.isEmptyArray(this.state.siteAreas)}
           mapIsDisplayed={mapIsDisplayed}
           diplayMapAction={() => this.toggleDisplayMap()}
         />

@@ -256,7 +256,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const { navigation } = this.props;
     const { loading, chargingStations, isAdmin, initialFilters,
       skip, count, limit, filters, showMap } = this.state;
-    const mapIsDisplayed = showMap && this.locationEnabled && !Utils.isEmptyArray(this.state.chargingStations)
+    const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.chargingStations)
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -270,7 +270,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
           filters={filters}
-          diplayMap={this.locationEnabled && !Utils.isEmptyArray(this.state.chargingStations)}
+          diplayMap={!Utils.isEmptyArray(this.state.chargingStations)}
           mapIsDisplayed={mapIsDisplayed}
           diplayMapAction={() => this.toggleDisplayMap()}
         />
