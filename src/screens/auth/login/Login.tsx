@@ -315,7 +315,7 @@ export default class Login extends BaseScreen<Props, State> {
 
   public setTenant = async (buttonIndex: number) => {
     // Provided?
-    if (buttonIndex !== undefined) {
+    if (buttonIndex !== undefined && this.tenants[buttonIndex]) {
       // Get stored data
       const credentials = await SecuredStorage.getUserCredentials(
         this.tenants[buttonIndex].subdomain);
@@ -370,7 +370,7 @@ export default class Login extends BaseScreen<Props, State> {
     const formStyle = computeFormStyleSheet();
     const navigation = this.props.navigation;
     const { eula, loading, initialLoading, visible, hidePassword } = this.state;
-    // Render
+        // Render
     return initialLoading ? (
       <Spinner style={formStyle.spinner} />
     ) : (

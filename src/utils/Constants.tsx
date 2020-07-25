@@ -28,8 +28,9 @@ export default class Constants {
   public static readonly KEYCHAIN_SERVICE = 'eMobilityKeyChain';
 
   // Paging
+  public static readonly PAGING_SIZE = 50;
   public static readonly DEFAULT_PAGING: PagingParams = {
-    limit: 10,
+    limit: Constants.PAGING_SIZE,
     skip: 0,
   };
   public static readonly ONLY_ONE_PAGING: PagingParams = {
@@ -37,11 +38,10 @@ export default class Constants {
     skip: 0,
   };
   public static readonly ONLY_RECORD_COUNT_PAGING: PagingParams = {
-    limit: 10,
+    limit: 1,
     skip: 0,
     onlyRecordCount: true
   };
-  public static readonly PAGING_SIZE = 10;
 
   public static readonly REGEX_VALIDATION_LATITUDE = /^-?([1-8]?[1-9]|[1-9]0)\.{0,1}[0-9]*$/;
   public static readonly REGEX_VALIDATION_LONGITUDE = /^-?([1]?[0-7][0-9]|[1]?[0-8][0]|[1-9]?[0-9])\.{0,1}[0-9]*$/;
