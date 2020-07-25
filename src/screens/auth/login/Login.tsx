@@ -6,8 +6,6 @@ import * as Animatable from 'react-native-animatable';
 import Modal from 'react-native-modal';
 import computeFormStyleSheet from '../../../FormStyles';
 import computeModalStyleSheet from '../../../ModalStyles';
-import ThemeManager from '../../../theme/ThemeManager';
-import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Tenant from '../../../types/Tenant';
@@ -18,6 +16,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+import CommonColor2 from '../../../theme/variables/CommonColor2';
 
 
 export interface Props extends BaseProps {
@@ -369,6 +368,7 @@ export default class Login extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyleSheet();
     const formStyle = computeFormStyleSheet();
+    const commonColor = new CommonColor2();
     const navigation = this.props.navigation;
     const { eula, loading, initialLoading, visible, hidePassword } = this.state;
         // Render
@@ -409,16 +409,17 @@ export default class Login extends BaseScreen<Props, State> {
                   </View>
                   <View style={modalStyle.modalContentContainer}>
                     <View style={modalStyle.modalRow}>
-                      <Text style={modalStyle.modalLabel}>{I18n.t('authentication.tenantSubdomain')}:</Text>
-                      <TextInput
-                        autoFocus={true}
-                        autoCapitalize={'none'}
-                        autoCorrect={false}
-                        placeholder={I18n.t('authentication.tenantSubdomain')}
-                        placeholderTextColor={commonColor.inputColorPlaceholder}
-                        style={modalStyle.modalInputField}
-                        onChangeText={(value) => this.setState({ newTenantSubDomain: value.toLowerCase() })}
-                      />
+                      <Item inlineLabel={true} style={modalStyle.modalIinputGroup}>
+                        <TextInput
+                          autoFocus={true}
+                          autoCapitalize={'none'}
+                          autoCorrect={false}
+                          placeholder={I18n.t('authentication.tenantSubdomain')}
+                          placeholderTextColor={commonColor.inputColorPlaceholder}
+                          style={modalStyle.modalInputField}
+                          onChangeText={(value) => this.setState({ newTenantSubDomain: value.toLowerCase() })}
+                        />
+                      </Item>
                     </View>
                     <View style={modalStyle.modalRowError}>
                       {this.state.errorNewTenantSubDomain &&
@@ -429,13 +430,14 @@ export default class Login extends BaseScreen<Props, State> {
                         ))}
                     </View>
                     <View style={modalStyle.modalRow}>
-                      <Text style={modalStyle.modalLabel}>{I18n.t('authentication.tenantName')}:</Text>
-                      <TextInput
-                        placeholder={I18n.t('authentication.tenantName')}
-                        placeholderTextColor={commonColor.inputColorPlaceholder}
-                        style={modalStyle.modalInputField}
-                        onChangeText={(value) => this.setState({ newTenantName: value })}
-                      />
+                      <Item inlineLabel={true} style={modalStyle.modalIinputGroup}>
+                        <TextInput
+                          placeholder={I18n.t('authentication.tenantName')}
+                          placeholderTextColor={commonColor.inputColorPlaceholder}
+                          style={modalStyle.modalInputField}
+                          onChangeText={(value) => this.setState({ newTenantName: value })}
+                        />
+                      </Item>
                     </View>
                     <View style={modalStyle.modalRowError}>
                       {this.state.errorNewTenantName &&

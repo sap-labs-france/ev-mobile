@@ -8,7 +8,7 @@ export default class ThemeManager {
   private constructor() {
   }
 
-  public static async getInstance(): Promise<ThemeManager> {
+  public static getInstance(): ThemeManager {
     if (!ThemeManager.instance) {
       ThemeManager.instance = new ThemeManager();
     }
@@ -21,5 +21,9 @@ export default class ThemeManager {
 
   public getThemeType(): ThemeType {
     return this.themeType;
+  }
+
+  public isThemeTypeIsDark(): boolean {
+    return this.themeType === ThemeType.DARK;
   }
 }

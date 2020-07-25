@@ -1,10 +1,8 @@
 import { scale } from 'react-native-size-matters';
-
 import { PLATFORM } from './../variables/commonColor';
 import variable from './../variables/platform';
 
 export default (variables /* : * */ = variable) => {
-  const platformStyle = variables.platformStyle;
   const platform = variables.platform;
   const darkCommon = {
     'NativeBase.Text': {
@@ -97,6 +95,9 @@ export default (variables /* : * */ = variable) => {
           color: variables.buttonDisabledBg
         }
       },
+      'NativeBase.Text': {
+        color: variables.brandDisabledDark,
+      },
       'NativeBase.Icon': {
         color: variables.brandLight
       },
@@ -172,6 +173,7 @@ export default (variables /* : * */ = variable) => {
       },
       backgroundColor: variables.brandDark
     },
+
     '.light': {
       '.transparent': {
         ...lightCommon,
@@ -324,6 +326,7 @@ export default (variables /* : * */ = variable) => {
       // marginHorizontal: 16,
       paddingTop: platform === PLATFORM.IOS ? 2 : undefined
     },
+
     'NativeBase.IconNB': {
       color: variables.inverseTextColor,
       fontSize: 24,
@@ -366,7 +369,7 @@ export default (variables /* : * */ = variable) => {
       }
     },
     paddingVertical: variables.buttonPadding,
-    backgroundColor: variables.buttonPrimaryBg,
+    backgroundColor: variables.buttonBg,
     borderColor: variables.buttonPrimaryBg,
     borderWidth: null,
     height: scale(35),

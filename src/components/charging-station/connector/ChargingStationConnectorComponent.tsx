@@ -3,7 +3,6 @@ import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-
 import Chademo from '../../../../assets/connectorType/chademo.svg';
 import ComboCCS from '../../../../assets/connectorType/combo-ccs.svg';
 import Domestic from '../../../../assets/connectorType/domestic-ue.svg';
@@ -12,12 +11,14 @@ import Type1CCS from '../../../../assets/connectorType/type1-ccs.svg';
 import Type1 from '../../../../assets/connectorType/type1.svg';
 import Type2 from '../../../../assets/connectorType/type2.svg';
 import I18nManager from '../../../I18n/I18nManager';
+import CommonColor2 from '../../../theme/variables/CommonColor2';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { Connector, ConnectorType } from '../../../types/ChargingStation';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import ConnectorStatusComponent from '../../connector-status/ConnectorStatusComponent';
 import computeStyleSheet from './ChargingStationConnectorComponentStyles';
+
 
 export interface Props extends BaseProps {
   chargingStation: ChargingStation;
@@ -76,22 +77,23 @@ export default class ChargingStationConnectorComponent extends React.Component<P
     <ConnectorStatusComponent navigation={this.props.navigation} connector={connector} text={Utils.translateConnectorStatus(connector.status)} />
   );
 
-  private getConnectorTypeSVG = (connectorType: ConnectorType, style: any): Element => {
+  private buildConnectorTypeSVG = (connectorType: ConnectorType, style: any): Element => {
+    const commonColor = new CommonColor2();
     switch (connectorType) {
       case ConnectorType.CHADEMO:
-        return <Chademo width={style.connectorSVG.width} height={style.connectorSVG.height} />;
+        return <Chademo width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>;
       case ConnectorType.TYPE_2:
-        return <Type2 width={style.connectorSVG.width} height={style.connectorSVG.height} />;
+        return <Type2 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>;
       case ConnectorType.COMBO_CCS:
-        return <ComboCCS width={style.connectorSVG.width} height={style.connectorSVG.height} />;
+        return <ComboCCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>;
       case ConnectorType.DOMESTIC:
-        return <Domestic width={style.connectorSVG.width} height={style.connectorSVG.height} />;
+        return <Domestic width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor}/>;
       case ConnectorType.TYPE_1:
-        return <Type1 width={style.connectorSVG.width} height={style.connectorSVG.height} />;
+        return <Type1 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>;
       case ConnectorType.TYPE_1_CCS:
-        return <Type1CCS width={style.connectorSVG.width} height={style.connectorSVG.height} />;
+        return <Type1CCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>;
     }
-    return <NoConnector width={style.connectorSVG.width} height={style.connectorSVG.height} />;
+    return <NoConnector width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor}/>;
   }
 
   public renderSecondConnectorDetails = (connector: Connector, style: any) => {
@@ -130,8 +132,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
       </View>
     ) : (
         <View style={style.connectorDetail}>
-          {/* <Image style={style.connectorSVG} source={Utils.getConnectorTypeImage(connector.type)} /> */}
-          {this.getConnectorTypeSVG(connector.type, style)}
+          {this.buildConnectorTypeSVG(connector.type, style)}
           <Text style={style.labelImage}>{Utils.translateConnectorType(connector.type)}</Text>
         </View>
       );

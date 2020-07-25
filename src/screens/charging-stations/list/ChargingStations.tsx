@@ -285,8 +285,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
             <ChargingStationsFilters
               initialFilters={initialFilters} locationEnabled={this.locationEnabled}
               onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
-              ref={(chargingStationsFilters: ChargingStationsFilters) =>
-                this.setScreenFilters(chargingStationsFilters)}
+              ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
             />
             {mapIsDisplayed ?
               <MapView

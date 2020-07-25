@@ -145,7 +145,7 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     const connectorStyles = this.getConnectorStyles(style);
     // Get value
     const value = this.getConnectorValue();
-    // Animated
+    // Animated 
     const isAnimated = this.isAnimated();
     const isAndroid = Platform.OS === 'android';
     return (

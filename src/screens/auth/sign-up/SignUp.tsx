@@ -4,10 +4,9 @@ import React from 'react';
 import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
-
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
-import commonColor from '../../../theme/variables/commonColor';
+import CommonColor2 from '../../../theme/variables/CommonColor2';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Constants from '../../../utils/Constants';
@@ -16,6 +15,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+
 
 export interface Props extends BaseProps {
 }
@@ -217,6 +217,7 @@ export default class SignUp extends BaseScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
+    const commonColor = new CommonColor2();
     const navigation = this.props.navigation;
     const { eula, loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl, hidePassword, hideRepeatPassword } = this.state;
     return (

@@ -1,25 +1,21 @@
 import I18n from 'i18n-js';
 import CentralServerProvider from 'provider/CentralServerProvider';
-import { ImageSourcePropType, NativeModules, Platform } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 import { showLocation } from 'react-native-map-link';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import Address from 'types/Address';
 import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
-
-import chademo from '../../assets/connectorType/chademo.gif';
-import combo from '../../assets/connectorType/combo_ccs.gif';
-import domestic from '../../assets/connectorType/domestic-ue.gif';
-import noConnector from '../../assets/connectorType/no-connector.gif';
-import type2 from '../../assets/connectorType/type2.gif';
 import I18nManager from '../I18n/I18nManager';
-import commonColor from '../theme/variables/commonColor';
+import ThemeManager from '../theme/ThemeManager';
+import CommonColor2 from '../theme/variables/CommonColor2';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
 import { InactivityStatus } from '../types/Transaction';
 import User from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
+
 
 export default class Utils {
   public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
@@ -574,15 +570,17 @@ export default class Utils {
   }
 
   public static computeInactivityStyle(inactivityStatus: InactivityStatus): object {
+    const commonColor = new CommonColor2();
+    const darkTheme = ThemeManager.getInstance().isThemeTypeIsDark();
     switch (inactivityStatus) {
       case InactivityStatus.INFO:
-        return { color: commonColor.brandSuccess };
+        return { color: darkTheme ? commonColor.brandSuccessLight : commonColor.brandSuccessDark };
       case InactivityStatus.WARNING:
-        return { color: commonColor.brandWarning };
+        return { color: darkTheme ? commonColor.brandWarningLight : commonColor.brandWarningDark };
       case InactivityStatus.ERROR:
-        return { color: commonColor.brandDanger };
+        return { color: darkTheme ? commonColor.brandDangerLight : commonColor.brandDangerDark };
       default:
-        return { color: commonColor.brandInfo };
+        return { color: darkTheme ? commonColor.brandInfoLight : commonColor.brandInfoDark };
     }
   }
 
@@ -743,21 +741,6 @@ export default class Utils {
         return I18n.t('connector.domestic');
       default:
         return I18n.t('connector.unknown');
-    }
-  };
-
-  public static getConnectorTypeImage = (type: ConnectorType): ImageSourcePropType => {
-    switch (type) {
-      case ConnectorType.TYPE_2:
-        return type2;
-      case ConnectorType.COMBO_CCS:
-        return combo;
-      case ConnectorType.CHADEMO:
-        return chademo;
-      case ConnectorType.DOMESTIC:
-        return domestic;
-      default:
-        return noConnector;
     }
   };
 

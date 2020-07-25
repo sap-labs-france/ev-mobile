@@ -160,7 +160,8 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
         />
-        <Button disabled={chargingStation ? chargingStation.inactive : true} block={true} iconLeft={true} style={style.actionButton} onPress={() => this.requestChargingStationOcppParametersConfirm()}>
+        <Button disabled={chargingStation ? chargingStation.inactive : true} block={true} iconLeft={true}
+          style={style.actionButton} onPress={() => this.requestChargingStationOcppParametersConfirm()}>
           <Icon style={style.actionButtonIcon} type='MaterialIcons' name='get-app' />
           <Text uppercase={false} style={style.actionButtonText}>
             {I18n.t('chargers.requestConfiguration')}

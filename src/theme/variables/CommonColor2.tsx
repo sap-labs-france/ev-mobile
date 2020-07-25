@@ -51,7 +51,7 @@ const light = '#f4f4f4';
 const darkTheme: ThemeColors = {
   backgroundHeader: dark,
   background: dark,
-  borderColor: '#E7E7E7',
+  borderColor: light,
   textColor: light,
   placeholderTextColor: dark,
   inverseTextColor: dark,
@@ -59,12 +59,18 @@ const darkTheme: ThemeColors = {
   buttonBg: disabledDark,
   fontSize: scale(22),
   fontSizeIconBase: platform === PLATFORM.IOS ? 30 : 28,
+  success: successLight,
+  warning: warningLight,
+  danger: dangerLight,
+  info: infoLight,
+  primary: primaryLight,
+  disabled: disabledLight,
 };
 
 const lightTheme: ThemeColors = {
   backgroundHeader: primaryDark,
   background: primary,
-  borderColor: '#757575',
+  borderColor: dark,
   textColor: dark,
   placeholderTextColor: disabledDark,
   inverseTextColor: light,
@@ -72,11 +78,17 @@ const lightTheme: ThemeColors = {
   buttonBg: disabledLight,
   fontSize: scale(22),
   fontSizeIconBase: platform === PLATFORM.IOS ? 30 : 28,
+  success: successDark,
+  warning: warningDark,
+  danger: dangerDark,
+  info: infoDark,
+  primary: primaryDark,
+  disabled: disabledDark,
 };
 
 
 // tslint:disable-next-line: cyclomatic-complexity
-export class CommonColor {
+export default class CommonColor2 {
   public platformStyle = platformStyle;
   public platform = platform;
 
@@ -100,6 +112,13 @@ export class CommonColor {
   public brandDisabledLight = disabledLight;
   public brandDisabledDark = disabledDark;
   public brandBackground = this.getCurrentTheme().background;
+
+  public success = this.getCurrentTheme().success;
+  public warning = this.getCurrentTheme().warning;
+  public danger = this.getCurrentTheme().danger;
+  public info = this.getCurrentTheme().info;
+  public primary = this.getCurrentTheme().primary;
+  public disabled = this.getCurrentTheme().disabled;
 
   public brandDark = dark;
   public brandLight = light;
@@ -140,7 +159,7 @@ export class CommonColor {
   public buttonDisabledBg = disabled;
   public buttonBg = this.getCurrentTheme().buttonBg;
   public buttonPadding = 6;
-  public buttonPrimaryBg = dark;
+  public buttonPrimaryBg = primaryDark;
   public buttonPrimaryColor = light;
   public buttonInfoBg = info;
   public buttonInfoColor = light;
@@ -235,7 +254,7 @@ export class CommonColor {
   public inputGroupBg = this.getCurrentTheme().buttonBg;
   public placeholderTextColor = this.getCurrentTheme().borderColor;
   public inputColor = primaryDark;
-  public inputColorPlaceholder = disabledLight;
+  public inputColorPlaceholder = this.getCurrentTheme().placeholderTextColor;
 
   // Line Height
   public buttonLineHeight = 19;
@@ -333,14 +352,8 @@ export class CommonColor {
     }
   }
 
-  constructor() {
-  }
-
   public getCurrentTheme(): ThemeColors {
     const darkThemeEnabled = ThemeManager.getInstance().isThemeTypeIsDark();
-    console.log('getCurrentTheme ====================================');
-    console.log(darkThemeEnabled);
-    console.log('====================================');
     if (darkThemeEnabled) {
       return darkTheme;
     }
@@ -348,5 +361,4 @@ export class CommonColor {
   }
 };
 
-export default new CommonColor();
 

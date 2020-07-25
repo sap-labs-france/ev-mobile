@@ -6,7 +6,7 @@ import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
 
 import computeFormStyleSheet from '../../../FormStyles';
-import commonColor from '../../../theme/variables/commonColor';
+import CommonColor2 from '../../../theme/variables/CommonColor2';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Constants from '../../../utils/Constants';
@@ -159,6 +159,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
+    const commonColor = new CommonColor2();
     const formStyle = computeFormStyleSheet();
     const { tenantName, loading, hidePassword, hideRepeatPassword } = this.state;
     return (

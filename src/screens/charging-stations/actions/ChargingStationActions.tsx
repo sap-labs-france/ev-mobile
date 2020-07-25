@@ -246,7 +246,8 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
                   <View key={connector.connectorId} style={style.actionContainer}>
                     <Button
                       disabled={chargingStationIsDisabled || connector.status === ChargePointStatus.AVAILABLE}
-                      block={true} iconLeft={true} warning={!chargingStationIsDisabled && connector.status !== ChargePointStatus.AVAILABLE} style={style.actionButton}
+                      warning={!chargingStationIsDisabled && connector.status !== ChargePointStatus.AVAILABLE}
+                      block={true} iconLeft={true} style={style.actionButton}
                       onPress={() => this.unlockConnectorConfirm(connector.connectorId)}>
                       {spinnerConnectors.get(connector.connectorId) ? (<Spinner color='white' />) : (<Icon style={style.actionButtonIcon} type='MaterialIcons' name='lock-open' />)}
                       <Text uppercase={false} style={style.actionButtonText}>
