@@ -3,14 +3,13 @@ import { Icon, Root } from 'native-base';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { NavigationContainer, NavigationContainerComponent, NavigationState, createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator, NavigationContainer, NavigationContainerComponent, NavigationState } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
-
 import computeStyleSheet from './AppStyles';
-import I18nManager from './I18n/I18nManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
+import I18nManager from './I18n/I18nManager';
 import LocationManager from './location/LocationManager';
 import NotificationManager from './notification/NotificationManager';
 import ProviderFactory from './provider/ProviderFactory';
@@ -33,8 +32,11 @@ import TransactionChart from './screens/transactions/chart/TransactionChart';
 import TransactionDetails from './screens/transactions/details/TransactionDetails';
 import TransactionsHistory from './screens/transactions/history/TransactionsHistory';
 import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
+import ThemeManager from './theme/ThemeManager';
 import commonColor from './theme/variables/commonColor';
+import { ThemeType } from './types/Theme';
 import SecuredStorage from './utils/SecuredStorage';
+
 
 // Init i18n
 I18nManager.initialize();
@@ -228,7 +230,7 @@ const transactionInProgressNavigator = createStackNavigator(
 );
 
 // Drawer Navigation
-const appDrawerNavigator: NavigationContainer = createDrawerNavigator(
+const appDrawerNavigator = createDrawerNavigator(
   {
     HomeNavigator: { screen: homeNavigator },
     SitesNavigator: { screen: sitesNavigator },
@@ -278,6 +280,7 @@ const loadNavigationState = async () => {
 };
 
 export interface Props {
+  themeType?: ThemeType;
 }
 
 interface State {
@@ -291,6 +294,7 @@ export default class App extends React.Component<Props, State> {
   private centralServerProvider: CentralServerProvider;
   private navigator: NavigationContainerComponent;
   private location: LocationManager;
+  private theme: ThemeManager;
 
   constructor(props: Props) {
     super(props);
@@ -318,6 +322,9 @@ export default class App extends React.Component<Props, State> {
     // Location ------------------------------------------------
     this.location = await LocationManager.getInstance();
     this.location.startListening();
+    // Theme ------------------------------------------------
+    this.theme = await ThemeManager.getInstance();
+    this.theme.setThemeType(this.props.themeType);
     // Check on hold notification
     this.notificationManager.checkOnHoldNotification();
   }
@@ -334,10 +341,10 @@ export default class App extends React.Component<Props, State> {
   public render() {
     return (
       <Root>
-        <StatusBar hidden={true} />
+        <StatusBar hidden={false} />
         <RootContainer
           ref={(navigatorRef) => {
-            this.navigator = navigatorRef
+            this.navigator = navigatorRef;
           }}
           persistNavigationState={persistNavigationState}
           loadNavigationState={loadNavigationState} />
