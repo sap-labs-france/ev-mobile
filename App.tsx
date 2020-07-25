@@ -1,9 +1,12 @@
+import { StyleProvider } from 'native-base';
 import React, { useEffect } from 'react';
 import { useDarkMode } from 'react-native-dynamic';
 import SplashScreen from 'react-native-splash-screen';
-import Setup from './src/boot/Setup';
+import App from './src/App';
+import Theme from './src/theme/components';
+import variables from './src/theme/variables/commonColor';
 
-export default function App() {
+export default function AppBootstrap() {
   const isDarkMode = useDarkMode();
 
   useEffect(() => {
@@ -16,6 +19,8 @@ export default function App() {
   }, []);
 
   return (
-    <Setup />
+    <StyleProvider style={Theme.getTheme(variables)}>
+      <App />
+    </StyleProvider>
   )
 }
