@@ -628,7 +628,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return (
       loading ? (
-        <Spinner style={style.spinner} />
+        <Spinner style={style.spinner} color='grey' />
       ) : (
           <Container style={style.container}>
             <HeaderComponent

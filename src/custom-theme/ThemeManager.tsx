@@ -24,6 +24,6 @@ export default class ThemeManager {
   }
 
   public isThemeTypeIsDark(): boolean {
-    return this.themeType === ThemeType.DARK;
+    return this.themeType !== ThemeType.DARK;
   }
 }

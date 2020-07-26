@@ -1,14 +1,17 @@
-import ThemeColor, { PLATFORM } from '../variables/ThemeColor';
+// @flow
 
-export default (themeColor: ThemeColor) => {
-  const platform = themeColor.platform;
+import variable from '../variables/platform';
+import { PLATFORM } from '../variables/commonColor';
 
-  const segmentTheme: any = {
+export default (variables /* : * */ = variable) => {
+  const platform = variables.platform;
+
+  const segmentTheme = {
     height: 45,
-    borderColor: themeColor.segmentBorderColorMain,
+    borderColor: variables.segmentBorderColorMain,
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: themeColor.segmentBackgroundColor,
+    backgroundColor: variables.segmentBackgroundColor,
     'NativeBase.Button': {
       alignSelf: 'center',
       borderRadius: 0,
@@ -18,15 +21,15 @@ export default (themeColor: ThemeColor) => {
       backgroundColor: 'transparent',
       borderWidth: 1,
       borderLeftWidth: 0,
-      borderColor: themeColor.segmentBorderColor,
+      borderColor: variables.segmentBorderColor,
       elevation: 0,
       '.active': {
-        backgroundColor: themeColor.segmentActiveBackgroundColor,
+        backgroundColor: variables.segmentActiveBackgroundColor,
         'NativeBase.Text': {
-          color: themeColor.segmentActiveTextColor
+          color: variables.segmentActiveTextColor
         },
         'NativeBase.Icon': {
-          color: themeColor.segmentActiveTextColor
+          color: variables.segmentActiveTextColor
         }
       },
       '.first': {
@@ -39,13 +42,13 @@ export default (themeColor: ThemeColor) => {
         borderBottomRightRadius: platform === PLATFORM.IOS ? 5 : undefined
       },
       'NativeBase.Text': {
-        color: themeColor.segmentTextColor,
+        color: variables.segmentTextColor,
         fontSize: 14
       },
       'NativeBase.Icon': {
         fontSize: 22,
         paddingTop: 0,
-        color: themeColor.segmentTextColor
+        color: variables.segmentTextColor
       }
     }
   };

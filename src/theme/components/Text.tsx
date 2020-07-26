@@ -1,13 +1,15 @@
-import ThemeColor from '../variables/ThemeColor';
+// @flow
 
-export default (themeColor: ThemeColor) => {
-  const textTheme: any = {
-    fontSize: themeColor.DefaultFontSize,
-    fontFamily: themeColor.fontFamily,
-    color: themeColor.textColor,
+import variable from '../variables/platform';
+
+export default (variables /* : * */ = variable) => {
+  const textTheme = {
+    fontSize: variables.DefaultFontSize,
+    fontFamily: variables.fontFamily,
+    color: variables.textColor,
     '.note': {
       color: '#a7a7a7',
-      fontSize: themeColor.noteFontSize
+      fontSize: variables.noteFontSize
     }
   };
 

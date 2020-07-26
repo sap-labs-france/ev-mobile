@@ -5,7 +5,7 @@ import Chademo from '../../../../../../assets/connectorType/chademo.svg';
 import ComboCCS from '../../../../../../assets/connectorType/combo-ccs.svg';
 import Domestic from '../../../../../../assets/connectorType/domestic-ue.svg';
 import Type2 from '../../../../../../assets/connectorType/type2.svg';
-import ThemeColor from '../../../../../theme/variables/ThemeColor';
+import ThemeColor from '../../../../../custom-theme/ThemeColor';
 import { ConnectorType } from '../../../../../types/ChargingStation';
 import FilterControlComponent, { FilterControlComponentProps } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';

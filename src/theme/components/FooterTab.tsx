@@ -1,25 +1,28 @@
+// @flow
+
 import { Platform } from 'react-native';
 
-import ThemeColor, { PLATFORM } from '../variables/ThemeColor';
+import variable from '../variables/platform';
+import { PLATFORM } from '../variables/commonColor';
 
-export default (themeColor: ThemeColor) => {
-  const platform = themeColor.platform;
+export default (variables /* : * */ = variable) => {
+  const platform = variables.platform;
 
-  const footerTabTheme: any = {
+  const footerTabTheme = {
     'NativeBase.Button': {
       '.active': {
         'NativeBase.Text': {
-          color: themeColor.tabBarActiveTextColor,
-          fontSize: themeColor.tabBarTextSize,
+          color: variables.tabBarActiveTextColor,
+          fontSize: variables.tabBarTextSize,
           lineHeight: 16
         },
         'NativeBase.Icon': {
-          color: themeColor.tabBarActiveTextColor
+          color: variables.tabBarActiveTextColor
         },
         'NativeBase.IconNB': {
-          color: themeColor.tabBarActiveTextColor
+          color: variables.tabBarActiveTextColor
         },
-        backgroundColor: themeColor.tabActiveBgColor
+        backgroundColor: variables.tabActiveBgColor
       },
       flexDirection: null,
       backgroundColor: 'transparent',
@@ -31,7 +34,7 @@ export default (themeColor: ThemeColor) => {
       shadowOpacity: null,
       alignSelf: 'center',
       flex: 1,
-      height: themeColor.footerHeight,
+      height: variables.footerHeight,
       justifyContent: 'center',
       '.badge': {
         'NativeBase.Badge': {
@@ -53,18 +56,19 @@ export default (themeColor: ThemeColor) => {
         }
       },
       'NativeBase.Icon': {
-        color: themeColor.tabBarTextColor
+        color: variables.tabBarTextColor
       },
       'NativeBase.IconNB': {
-        color: themeColor.tabBarTextColor
+        color: variables.tabBarTextColor
       },
       'NativeBase.Text': {
-        color: themeColor.tabBarTextColor,
-        fontSize: themeColor.tabBarTextSize,
+        color: variables.tabBarTextColor,
+        fontSize: variables.tabBarTextSize,
         lineHeight: 16
       }
     },
-    backgroundColor: Platform.OS === PLATFORM.ANDROID ? themeColor.footerDefaultBg : undefined,
+    backgroundColor:
+      Platform.OS === PLATFORM.ANDROID ? variables.footerDefaultBg : undefined,
     flexDirection: 'row',
     justifyContent: 'space-between',
     flex: 1,

@@ -183,7 +183,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           filters={filters}
         />
         {loading ? (
-          <Spinner style={style.spinner} />
+          <Spinner style={style.spinner} color='grey' />
         ) : (
             <View style={style.content}>
               {(isAdmin || hasSiteAdmin) &&

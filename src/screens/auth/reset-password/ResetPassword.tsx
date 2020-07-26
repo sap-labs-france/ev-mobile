@@ -4,9 +4,8 @@ import React from 'react';
 import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
-
 import computeFormStyleSheet from '../../../FormStyles';
-import ThemeColor from '../../../theme/variables/ThemeColor';
+import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Constants from '../../../utils/Constants';
@@ -15,6 +14,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+
 
 export interface Props extends BaseProps {
 }
@@ -159,7 +159,6 @@ export default class ResetPassword extends BaseScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const themeColor = new ThemeColor();
     const formStyle = computeFormStyleSheet();
     const { tenantName, loading, hidePassword, hideRepeatPassword } = this.state;
     return (
@@ -171,11 +170,11 @@ export default class ResetPassword extends BaseScreen<Props, State> {
               <Item inlineLabel={true} style={formStyle.inputGroup}>
                 <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
-                  selectionColor={themeColor.inverseTextColor}
+                  selectionColor={commonColor.inverseTextColor}
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.password')}
-                  placeholderTextColor={themeColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
@@ -198,11 +197,11 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                 <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
-                  selectionColor={themeColor.inverseTextColor}
+                  selectionColor={commonColor.inverseTextColor}
                   onSubmitEditing={() => Keyboard.dismiss()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.repeatPassword')}
-                  placeholderTextColor={themeColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
@@ -222,7 +221,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               {loading ? (
-                <Spinner style={formStyle.spinner} color='white' />
+                <Spinner style={formStyle.spinner} color='grey' />
               ) : (
                 <Button primary={true} block={true} style={formStyle.button} onPress={() => this.resetPassword()}>
                   <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.resetPassword')}</Text>

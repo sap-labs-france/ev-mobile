@@ -1,7 +1,9 @@
-import ThemeColor from '../variables/ThemeColor';
+// @flow
 
-export default (themeColor: ThemeColor) => {
-  const cardTheme: any = {
+import variable from '../variables/platform';
+
+export default (variables /* : * */ = variable) => {
+  const cardTheme = {
     '.transparent': {
       shadowColor: null,
       shadowOffset: null,
@@ -19,11 +21,11 @@ export default (themeColor: ThemeColor) => {
     },
     marginVertical: 5,
     marginHorizontal: 2,
-    borderWidth: themeColor.borderWidth,
-    borderRadius: themeColor.cardBorderRadius,
-    borderColor: themeColor.cardBorderColor,
+    borderWidth: variables.borderWidth,
+    borderRadius: variables.cardBorderRadius,
+    borderColor: variables.cardBorderColor,
     flexWrap: 'nowrap',
-    backgroundColor: themeColor.cardDefaultBg,
+    backgroundColor: variables.cardDefaultBg,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,

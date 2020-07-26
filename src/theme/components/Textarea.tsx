@@ -1,18 +1,20 @@
-import ThemeColor from '../variables/ThemeColor';
+// @flow
 
-export default (themeColor: ThemeColor) => {
-  const textAreaTheme: any = {
+import variable from '../variables/platform';
+
+export default (variables /* : * */ = variable) => {
+  const textAreaTheme = {
     '.underline': {
-      borderBottomWidth: themeColor.borderWidth,
+      borderBottomWidth: variables.borderWidth,
       marginTop: 5,
-      borderColor: themeColor.inputBorderColor
+      borderColor: variables.inputBorderColor
     },
     '.bordered': {
       borderWidth: 1,
       marginTop: 5,
-      borderColor: themeColor.inputBorderColor
+      borderColor: variables.inputBorderColor
     },
-    color: themeColor.textColor,
+    color: variables.textColor,
     paddingLeft: 10,
     paddingRight: 5,
     fontSize: 15,

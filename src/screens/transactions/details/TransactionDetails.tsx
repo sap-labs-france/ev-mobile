@@ -258,7 +258,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(transaction ? transaction.connectorId : null);
     return (
       loading ? (
-        <Spinner style={style.spinner} />
+        <Spinner style={style.spinner} color='grey' />
       ) : (
           <Container style={style.container}>
             <HeaderComponent

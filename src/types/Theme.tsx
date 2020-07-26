@@ -12,8 +12,6 @@ export default interface ThemeDefinition {
   inverseTextColor: string;
   subTextColor: string;
   buttonBg: string;
-  fontSize: number;
-  fontSizeIconBase: number;
   success: string;
   warning: string;
   danger: string;

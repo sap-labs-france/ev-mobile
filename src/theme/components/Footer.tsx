@@ -1,22 +1,28 @@
-import ThemeColor from '../variables/ThemeColor';
+// @flow
 
-export default (themeColor: ThemeColor) => {
+import variable from '../variables/platform';
+import { PLATFORM } from '../variables/commonColor';
+
+export default (variables /* : * */ = variable) => {
+  const platformStyle = variables.platformStyle;
+  const platform = variables.platform;
+
   const iconCommon = {
     'NativeBase.Icon': {
-      color: themeColor.tabBarActiveTextColor
+      color: variables.tabBarActiveTextColor
     }
   };
   const iconNBCommon = {
     'NativeBase.IconNB': {
-      color: themeColor.tabBarActiveTextColor
+      color: variables.tabBarActiveTextColor
     }
   };
   const textCommon = {
     'NativeBase.Text': {
-      color: themeColor.tabBarActiveTextColor
+      color: variables.tabBarActiveTextColor
     }
   };
-  const footerTheme: any = {
+  const footerTheme = {
     'NativeBase.Left': {
       'NativeBase.Button': {
         '.transparent': {
@@ -60,8 +66,8 @@ export default (themeColor: ThemeColor) => {
           ...textCommon
         },
         '.full': {
-          height: themeColor.footerHeight,
-          paddingBottom: themeColor.footerPaddingBottom,
+          height: variables.footerHeight,
+          paddingBottom: variables.footerPaddingBottom,
           flex: 1
         },
         ...iconCommon,
@@ -92,11 +98,19 @@ export default (themeColor: ThemeColor) => {
       alignSelf: 'center',
       alignItems: 'flex-end'
     },
-    backgroundColor: themeColor.footerDefaultBg,
+    backgroundColor: variables.footerDefaultBg,
     flexDirection: 'row',
     justifyContent: 'center',
-    height: themeColor.footerHeight,
-    paddingBottom: themeColor.footerPaddingBottom,
+    borderTopWidth:
+      platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL
+        ? variables.borderWidth
+        : undefined,
+    borderColor:
+      platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL
+        ? '#cbcbcb'
+        : undefined,
+    height: variables.footerHeight,
+    paddingBottom: variables.footerPaddingBottom,
     elevation: 3,
     left: 0,
     right: 0

@@ -1,17 +1,20 @@
-import ThemeColor, { PLATFORM } from '../variables/ThemeColor';
+// @flow
 
-export default (themeColor: ThemeColor) => {
-  const platform = themeColor.platform;
+import variable from '../variables/platform';
+import { PLATFORM } from '../variables/commonColor';
 
-  const toastTheme: any = {
+export default (variables /* : * */ = variable) => {
+  const platform = variables.platform;
+
+  const toastTheme = {
     '.danger': {
-      backgroundColor: themeColor.brandDanger
+      backgroundColor: variables.brandDanger
     },
     '.warning': {
-      backgroundColor: themeColor.brandWarning
+      backgroundColor: variables.brandWarning
     },
     '.success': {
-      backgroundColor: themeColor.brandSuccess
+      backgroundColor: variables.brandSuccess
     },
     backgroundColor: 'rgba(0,0,0,0.8)',
     borderRadius: platform === PLATFORM.IOS ? 5 : 0,

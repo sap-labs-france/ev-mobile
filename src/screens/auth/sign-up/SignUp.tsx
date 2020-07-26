@@ -6,7 +6,7 @@ import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
-import ThemeColor from '../../../theme/variables/ThemeColor';
+import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Constants from '../../../utils/Constants';
@@ -217,7 +217,6 @@ export default class SignUp extends BaseScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
-    const themeColor = new ThemeColor();
     const navigation = this.props.navigation;
     const { eula, loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl, hidePassword, hideRepeatPassword } = this.state;
     return (
@@ -230,10 +229,10 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Icon active={true} name='person' style={formStyle.inputIcon} />
                 <TextInput
                   onSubmitEditing={() => this.firstNameInput.focus()}
-                  selectionColor={themeColor.inverseTextColor}
+                  selectionColor={commonColor.inverseTextColor}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.name')}
-                  placeholderTextColor={themeColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
                   style={formStyle.inputField}
                   autoCapitalize='characters'
                   blurOnSubmit={false}
@@ -253,11 +252,11 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Icon active={true} name='person' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.firstNameInput = ref)}
-                  selectionColor={themeColor.inverseTextColor}
+                  selectionColor={commonColor.inverseTextColor}
                   onSubmitEditing={() => this.emailInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.firstName')}
-                  placeholderTextColor={themeColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
                   style={formStyle.inputField}
                   autoCapitalize='words'
                   blurOnSubmit={false}
@@ -277,11 +276,11 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.emailInput = ref)}
-                  selectionColor={themeColor.inverseTextColor}
+                  selectionColor={commonColor.inverseTextColor}
                   onSubmitEditing={() => this.passwordInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.email')}
-                  placeholderTextColor={themeColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
@@ -302,11 +301,11 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
-                  selectionColor={themeColor.inverseTextColor}
+                  selectionColor={commonColor.inverseTextColor}
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.password')}
-                  placeholderTextColor={themeColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
@@ -329,11 +328,11 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
-                  selectionColor={themeColor.inverseTextColor}
+                  selectionColor={commonColor.inverseTextColor}
                   onSubmitEditing={() => Keyboard.dismiss()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.repeatPassword')}
-                  placeholderTextColor={themeColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
@@ -368,7 +367,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               {loading || (!captcha && this.state.eula) ? (
-                <Spinner style={formStyle.spinner}/>
+                <Spinner style={formStyle.spinner} color='grey'/>
               ) : (
                 <Button primary={true} block={true} style={formStyle.button} onPress={() => this.signUp()}>
                   <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.signUp')}</Text>

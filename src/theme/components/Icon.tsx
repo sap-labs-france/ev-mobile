@@ -1,9 +1,11 @@
-import ThemeColor from '../variables/ThemeColor';
+// @flow
 
-export default (themeColor: ThemeColor) => {
-  const iconTheme: any = {
-    fontSize: themeColor.iconFontSize,
-    color: themeColor.textColor
+import variable from '../variables/platform';
+
+export default (variables /* : * */ = variable) => {
+  const iconTheme = {
+    fontSize: variables.iconFontSize,
+    color: variables.textColor
   };
 
   return iconTheme;

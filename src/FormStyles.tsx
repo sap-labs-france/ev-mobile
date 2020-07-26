@@ -1,11 +1,9 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
-import ThemeColor from './theme/variables/ThemeColor';
-import { color } from 'react-native-reanimated';
+import commonColor from './theme/variables/commonColor';
 
 export default function computeStyleSheet(): any {
-  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     spinner: {
       flex: 1
@@ -33,13 +31,13 @@ export default function computeStyleSheet(): any {
       alignSelf: 'center',
       height: '40@s',
       marginBottom: '10@s',
-      backgroundColor: themeColor.buttonBg,
+      backgroundColor: commonColor.buttonBg,
     },
     buttonText: {
       width: '100%',
       textAlign: 'center',
       fontSize: '15@s',
-      color: themeColor.textColor
+      color: commonColor.textColor
     },
     inputGroup: {
       height: '40@s',
@@ -50,11 +48,11 @@ export default function computeStyleSheet(): any {
       marginLeft: 0,
       paddingLeft: '10@s',
       paddingRight: '10@s',
-      backgroundColor: themeColor.inputGroupBg,
+      backgroundColor: commonColor.buttonBg,
       borderColor: 'transparent'
     },
     inputIcon: {
-      color: themeColor.textColor,
+      color: commonColor.textColor,
       alignSelf: 'center',
       textAlign: 'center',
       width: '25@s',
@@ -63,12 +61,12 @@ export default function computeStyleSheet(): any {
     inputField: {
       flex: 1,
       fontSize: '15@s',
-      color: themeColor.textColor
+      color: commonColor.textColor
     },
     formErrorText: {
       fontSize: '12@s',
       marginLeft: '20@s',
-      color: themeColor.brandDangerLight,
+      color: commonColor.brandDangerLight,
       alignSelf: 'flex-start',
       top: '-5@s'
     },
@@ -80,11 +78,13 @@ export default function computeStyleSheet(): any {
       marginTop: '10@s'
     },
     checkbox: {
-      marginRight: '15@s'
+      marginRight: '15@s',
+      borderColor: commonColor.textColor,
+      backgroundColor: commonColor.containerBgColor,
     },
     checkboxText: {
       fontSize: '13@s',
-      color: themeColor.textColor
+      color: commonColor.textColor,
     },
   });
   const portraitStyles = {};

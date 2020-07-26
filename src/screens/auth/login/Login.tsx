@@ -6,6 +6,7 @@ import * as Animatable from 'react-native-animatable';
 import Modal from 'react-native-modal';
 import computeFormStyleSheet from '../../../FormStyles';
 import computeModalStyleSheet from '../../../ModalStyles';
+import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Tenant from '../../../types/Tenant';
@@ -16,7 +17,6 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
-import ThemeColor from '../../../theme/variables/ThemeColor';
 
 
 export interface Props extends BaseProps {
@@ -368,12 +368,11 @@ export default class Login extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyleSheet();
     const formStyle = computeFormStyleSheet();
-    const themeColor = new ThemeColor();
     const navigation = this.props.navigation;
     const { eula, loading, initialLoading, visible, hidePassword } = this.state;
         // Render
     return initialLoading ? (
-      <Spinner style={formStyle.spinner} />
+      <Spinner style={formStyle.spinner} color='grey' />
     ) : (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
@@ -415,7 +414,7 @@ export default class Login extends BaseScreen<Props, State> {
                           autoCapitalize={'none'}
                           autoCorrect={false}
                           placeholder={I18n.t('authentication.tenantSubdomain')}
-                          placeholderTextColor={themeColor.inputColorPlaceholder}
+                          placeholderTextColor={commonColor.inputColorPlaceholder}
                           style={modalStyle.modalInputField}
                           onChangeText={(value) => this.setState({ newTenantSubDomain: value.toLowerCase() })}
                         />
@@ -433,7 +432,7 @@ export default class Login extends BaseScreen<Props, State> {
                       <Item inlineLabel={true} style={modalStyle.modalIinputGroup}>
                         <TextInput
                           placeholder={I18n.t('authentication.tenantName')}
-                          placeholderTextColor={themeColor.inputColorPlaceholder}
+                          placeholderTextColor={commonColor.inputColorPlaceholder}
                           style={modalStyle.modalInputField}
                           onChangeText={(value) => this.setState({ newTenantName: value })}
                         />
@@ -474,9 +473,9 @@ export default class Login extends BaseScreen<Props, State> {
                 <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType='next'
-                  selectionColor={themeColor.inverseTextColor}
+                  selectionColor={commonColor.inverseTextColor}
                   placeholder={I18n.t('authentication.email')}
-                  placeholderTextColor={themeColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
                   onSubmitEditing={() => this.passwordInput.focus()}
                   style={formStyle.inputField}
                   autoCapitalize='none'
@@ -498,11 +497,11 @@ export default class Login extends BaseScreen<Props, State> {
                 <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType='go'
-                  selectionColor={themeColor.inverseTextColor}
+                  selectionColor={commonColor.inverseTextColor}
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
                   onSubmitEditing={() => Keyboard.dismiss()}
                   placeholder={I18n.t('authentication.password')}
-                  placeholderTextColor={themeColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
@@ -541,7 +540,7 @@ export default class Login extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               {loading ? (
-                <Spinner style={formStyle.spinner} color='white' />
+                <Spinner style={formStyle.spinner} color='grey' />
               ) : (
                 <Button primary={true} block={true} style={formStyle.button} onPress={() => this.login()}>
                   <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.login')}</Text>

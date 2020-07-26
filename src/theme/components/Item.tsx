@@ -1,9 +1,12 @@
+// @flow
+
 import { Platform } from 'react-native';
 
-import ThemeColor, { PLATFORM } from '../variables/ThemeColor';
+import variable from '../variables/platform';
+import { PLATFORM } from '../variables/commonColor';
 
-export default (themeColor: ThemeColor) => {
-  const itemTheme: any = {
+export default (variables /* : * */ = variable) => {
+  const itemTheme = {
     '.floatingLabel': {
       'NativeBase.Input': {
         height: 50,
@@ -11,7 +14,7 @@ export default (themeColor: ThemeColor) => {
         paddingTop: 3,
         paddingBottom: 7,
         '.multiline': {
-          minHeight: themeColor.inputHeightBase,
+          minHeight: variables.inputHeightBase,
           paddingTop: Platform.OS === PLATFORM.IOS ? 10 : 3,
           paddingBottom: Platform.OS === PLATFORM.IOS ? 14 : 10
         }
@@ -37,11 +40,11 @@ export default (themeColor: ThemeColor) => {
         flex: 1,
         height: null,
         width: null,
-        fontSize: themeColor.inputFontSize
+        fontSize: variables.inputFontSize
       },
       'NativeBase.Input': {
         flex: 2,
-        fontSize: themeColor.inputFontSize
+        fontSize: variables.inputFontSize
       }
     },
     '.stackedLabel': {
@@ -52,19 +55,20 @@ export default (themeColor: ThemeColor) => {
         right: null,
         paddingTop: 5,
         alignSelf: 'flex-start',
-        fontSize: themeColor.inputFontSize - 2
+        fontSize: variables.inputFontSize - 2
       },
       'NativeBase.Icon': {
         marginTop: 36
       },
       'NativeBase.Input': {
-        alignSelf: Platform.OS === PLATFORM.IOS ? 'stretch' : 'flex-start',
+        // alignSelf: Platform.OS === PLATFORM.IOS ? 'stretch' : 'flex-start',
+        alignSelf: 'stretch',
         flex: 1,
-        width: Platform.OS === PLATFORM.IOS ? null : themeColor.deviceWidth - 25,
-        fontSize: themeColor.inputFontSize,
-        lineHeight: themeColor.inputLineHeight - 6,
+        // width: Platform.OS === PLATFORM.IOS ? null : variables.deviceWidth - 25,
+        fontSize: variables.inputFontSize,
+        lineHeight: variables.inputLineHeight - 6,
         '.secureTextEntry': {
-          fontSize: themeColor.inputFontSize - 4
+          fontSize: variables.inputFontSize
         },
         '.multiline': {
           paddingTop: Platform.OS === PLATFORM.IOS ? 9 : undefined,
@@ -72,7 +76,7 @@ export default (themeColor: ThemeColor) => {
         }
       },
       flexDirection: null,
-      minHeight: themeColor.inputHeightBase + 15
+      minHeight: variables.inputHeightBase + 15
     },
     '.inlineLabel': {
       'NativeBase.Label': {
@@ -83,17 +87,17 @@ export default (themeColor: ThemeColor) => {
         paddingRight: 20,
         height: null,
         width: null,
-        fontSize: themeColor.inputFontSize
+        fontSize: variables.inputFontSize
       },
       'NativeBase.Input': {
         paddingLeft: 5,
-        fontSize: themeColor.inputFontSize
+        fontSize: variables.inputFontSize
       },
       flexDirection: 'row'
     },
     'NativeBase.Label': {
-      fontSize: themeColor.inputFontSize,
-      color: themeColor.inputColorPlaceholder,
+      fontSize: variables.inputFontSize,
+      color: variables.inputColorPlaceholder,
       paddingRight: 5
     },
     'NativeBase.Icon': {
@@ -108,27 +112,27 @@ export default (themeColor: ThemeColor) => {
       '.multiline': {
         height: null
       },
-      height: themeColor.inputHeightBase,
-      color: themeColor.inputColor,
+      height: variables.inputHeightBase,
+      color: variables.inputColor,
       flex: 1,
       top: Platform.OS === PLATFORM.IOS ? 1.5 : undefined,
-      fontSize: themeColor.inputFontSize
+      fontSize: variables.inputFontSize
     },
     '.underline': {
       'NativeBase.Input': {
         paddingLeft: 15
       },
       '.success': {
-        borderColor: themeColor.inputSuccessBorderColor
+        borderColor: variables.inputSuccessBorderColor
       },
       '.error': {
-        borderColor: themeColor.inputErrorBorderColor
+        borderColor: variables.inputErrorBorderColor
       },
-      borderWidth: themeColor.borderWidth * 2,
+      borderWidth: variables.borderWidth * 2,
       borderTopWidth: 0,
       borderRightWidth: 0,
       borderLeftWidth: 0,
-      borderColor: themeColor.inputBorderColor
+      borderColor: variables.inputBorderColor
     },
     '.regular': {
       'NativeBase.Input': {
@@ -138,13 +142,13 @@ export default (themeColor: ThemeColor) => {
         paddingLeft: 10
       },
       '.success': {
-        borderColor: themeColor.inputSuccessBorderColor
+        borderColor: variables.inputSuccessBorderColor
       },
       '.error': {
-        borderColor: themeColor.inputErrorBorderColor
+        borderColor: variables.inputErrorBorderColor
       },
-      borderWidth: themeColor.borderWidth * 2,
-      borderColor: themeColor.inputBorderColor
+      borderWidth: variables.borderWidth * 2,
+      borderColor: variables.inputBorderColor
     },
     '.rounded': {
       'NativeBase.Input': {
@@ -154,62 +158,62 @@ export default (themeColor: ThemeColor) => {
         paddingLeft: 10
       },
       '.success': {
-        borderColor: themeColor.inputSuccessBorderColor
+        borderColor: variables.inputSuccessBorderColor
       },
       '.error': {
-        borderColor: themeColor.inputErrorBorderColor
+        borderColor: variables.inputErrorBorderColor
       },
-      borderWidth: themeColor.borderWidth * 2,
+      borderWidth: variables.borderWidth * 2,
       borderRadius: 30,
-      borderColor: themeColor.inputBorderColor
+      borderColor: variables.inputBorderColor
     },
 
     '.success': {
       'NativeBase.Icon': {
-        color: themeColor.inputSuccessBorderColor
+        color: variables.inputSuccessBorderColor
       },
       'NativeBase.IconNB': {
-        color: themeColor.inputSuccessBorderColor
+        color: variables.inputSuccessBorderColor
       },
       '.rounded': {
         borderRadius: 30,
-        borderColor: themeColor.inputSuccessBorderColor
+        borderColor: variables.inputSuccessBorderColor
       },
       '.regular': {
-        borderColor: themeColor.inputSuccessBorderColor
+        borderColor: variables.inputSuccessBorderColor
       },
       '.underline': {
-        borderWidth: themeColor.borderWidth * 2,
+        borderWidth: variables.borderWidth * 2,
         borderTopWidth: 0,
         borderRightWidth: 0,
         borderLeftWidth: 0,
-        borderColor: themeColor.inputSuccessBorderColor
+        borderColor: variables.inputSuccessBorderColor
       },
-      borderColor: themeColor.inputSuccessBorderColor
+      borderColor: variables.inputSuccessBorderColor
     },
 
     '.error': {
       'NativeBase.Icon': {
-        color: themeColor.inputErrorBorderColor
+        color: variables.inputErrorBorderColor
       },
       'NativeBase.IconNB': {
-        color: themeColor.inputErrorBorderColor
+        color: variables.inputErrorBorderColor
       },
       '.rounded': {
         borderRadius: 30,
-        borderColor: themeColor.inputErrorBorderColor
+        borderColor: variables.inputErrorBorderColor
       },
       '.regular': {
-        borderColor: themeColor.inputErrorBorderColor
+        borderColor: variables.inputErrorBorderColor
       },
       '.underline': {
-        borderWidth: themeColor.borderWidth * 2,
+        borderWidth: variables.borderWidth * 2,
         borderTopWidth: 0,
         borderRightWidth: 0,
         borderLeftWidth: 0,
-        borderColor: themeColor.inputErrorBorderColor
+        borderColor: variables.inputErrorBorderColor
       },
-      borderColor: themeColor.inputErrorBorderColor
+      borderColor: variables.inputErrorBorderColor
     },
     '.disabled': {
       'NativeBase.Icon': {
@@ -223,11 +227,11 @@ export default (themeColor: ThemeColor) => {
       marginLeft: 0
     },
 
-    borderWidth: themeColor.borderWidth * 2,
+    borderWidth: variables.borderWidth * 2,
     borderTopWidth: 0,
     borderRightWidth: 0,
     borderLeftWidth: 0,
-    borderColor: themeColor.inputBorderColor,
+    borderColor: variables.inputBorderColor,
     backgroundColor: 'transparent',
     flexDirection: 'row',
     alignItems: 'center',

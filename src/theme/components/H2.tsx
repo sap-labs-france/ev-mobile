@@ -1,10 +1,12 @@
-import ThemeColor from '../variables/ThemeColor';
+// @flow
 
-export default (themeColor: ThemeColor) => {
-  const h2Theme: any = {
-    color: themeColor.textColor,
-    fontSize: themeColor.fontSizeH2,
-    lineHeight: themeColor.lineHeightH2
+import variable from '../variables/platform';
+
+export default (variables /* : * */ = variable) => {
+  const h2Theme = {
+    color: variables.textColor,
+    fontSize: variables.fontSizeH2,
+    lineHeight: variables.lineHeightH2
   };
 
   return h2Theme;

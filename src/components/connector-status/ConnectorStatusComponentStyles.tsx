@@ -1,8 +1,8 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
-import ThemeManager from '../../theme/ThemeManager';
-import ThemeColor from '../../theme/variables/ThemeColor';
+import ThemeManager from '../../custom-theme/ThemeManager';
+import ThemeColor from '../../custom-theme/ThemeColor';
 
 export default function computeStyleSheet(): any {
   const themeColor = new ThemeColor();

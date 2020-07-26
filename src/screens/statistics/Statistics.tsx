@@ -149,7 +149,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
           filters={filters}
         />
         {loading ? (
-          <Spinner style={style.spinner} />
+          <Spinner style={style.spinner} color='grey' />
         ) : (
             <Content style={style.content}>
               <TransactionsHistoryFilters

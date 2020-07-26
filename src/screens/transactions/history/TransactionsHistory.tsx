@@ -203,7 +203,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
           navigation={navigation}
         />
         {loading ? (
-          <Spinner style={style.spinner} />
+          <Spinner style={style.spinner} color='grey' />
         ) : (
             <View style={style.content}>
               <TransactionsHistoryFilters

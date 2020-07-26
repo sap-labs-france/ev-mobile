@@ -1,19 +1,23 @@
-import { PixelRatio, Platform } from 'react-native';
-import ThemeColor, { PLATFORM } from '../variables/ThemeColor';
-import pickerTheme from './Picker';
+// @flow
 
-export default (themeColor: ThemeColor) => {
-  const platform = themeColor.platform;
+import { Platform, PixelRatio } from 'react-native';
+
+import pickerTheme from './Picker';
+import variable from '../variables/platform';
+import { PLATFORM } from '../variables/commonColor';
+
+export default (variables /* : * */ = variable) => {
+  const platform = variables.platform;
   const selectedStyle = {
     'NativeBase.Text': {
-      color: themeColor.listItemSelected
+      color: variables.listItemSelected
     },
     'NativeBase.Icon': {
-      color: themeColor.listItemSelected
+      color: variables.listItemSelected
     }
   };
 
-  const listItemTheme: any = {
+  const listItemTheme = {
     'NativeBase.InputGroup': {
       'NativeBase.Icon': {
         paddingRight: 5
@@ -33,8 +37,11 @@ export default (themeColor: ThemeColor) => {
       'NativeBase.Item': {
         'NativeBase.Icon': {
           backgroundColor: 'transparent',
-          color: themeColor.dropdownLinkColor,
-          fontSize: platform === PLATFORM.IOS ? themeColor.iconFontSize - 10 : themeColor.iconFontSize - 5,
+          color: variables.dropdownLinkColor,
+          fontSize:
+            platform === PLATFORM.IOS
+              ? variables.iconFontSize - 10
+              : variables.iconFontSize - 5,
           alignItems: 'center',
           marginTop: 2,
           paddingRight: 8
@@ -68,7 +75,7 @@ export default (themeColor: ThemeColor) => {
         width: platform === PLATFORM.IOS ? undefined : 0,
         height: platform === PLATFORM.IOS ? undefined : 0
       },
-      backgroundColor: themeColor.toolbarInputColor,
+      backgroundColor: variables.toolbarInputColor,
       padding: 10,
       marginLeft: null
     },
@@ -78,34 +85,37 @@ export default (themeColor: ThemeColor) => {
     },
     '.first': {
       '.itemHeader': {
-        paddingTop: themeColor.listItemPadding + 3
+        paddingTop: variables.listItemPadding + 3
       }
     },
     '.itemHeader': {
       '.first': {
-        paddingTop: themeColor.listItemPadding + 3
+        paddingTop: variables.listItemPadding + 3
       },
-      borderBottomWidth: platform === PLATFORM.IOS ? themeColor.borderWidth : null,
+      borderBottomWidth:
+        platform === PLATFORM.IOS ? variables.borderWidth : null,
       marginLeft: null,
-      padding: themeColor.listItemPadding,
-      paddingLeft: themeColor.listItemPadding + 5,
-      paddingTop: platform === PLATFORM.IOS ? themeColor.listItemPadding + 25 : undefined,
-      paddingBottom: platform === PLATFORM.ANDROID ? themeColor.listItemPadding + 20 : undefined,
+      padding: variables.listItemPadding,
+      paddingLeft: variables.listItemPadding + 5,
+      paddingTop:
+        platform === PLATFORM.IOS ? variables.listItemPadding + 25 : undefined,
+      paddingBottom:
+        platform === PLATFORM.ANDROID ? variables.listItemPadding + 20 : undefined,
       flexDirection: 'row',
-      borderColor: themeColor.listBorderColor,
+      borderColor: variables.listBorderColor,
       'NativeBase.Text': {
         fontSize: 14,
-        color: platform === PLATFORM.IOS ? undefined : themeColor.listNoteColor
+        color: platform === PLATFORM.IOS ? undefined : variables.listNoteColor
       }
     },
     '.itemDivider': {
       borderBottomWidth: null,
       marginLeft: null,
-      padding: themeColor.listItemPadding,
-      paddingLeft: themeColor.listItemPadding + 5,
-      backgroundColor: themeColor.listDividerBg,
+      padding: variables.listItemPadding,
+      paddingLeft: variables.listItemPadding + 5,
+      backgroundColor: variables.listDividerBg,
       flexDirection: 'row',
-      borderColor: themeColor.listBorderColor
+      borderColor: variables.listBorderColor
     },
     '.selected': {
       'NativeBase.Left': {
@@ -123,7 +133,7 @@ export default (themeColor: ThemeColor) => {
       'NativeBase.Body': {
         'NativeBase.Text': {
           '.note': {
-            color: themeColor.listNoteColor,
+            color: variables.listNoteColor,
             fontWeight: '200'
           },
           fontWeight: '600'
@@ -133,12 +143,12 @@ export default (themeColor: ThemeColor) => {
         alignSelf: null
       },
       'NativeBase.Icon': {
-        width: themeColor.iconFontSize - 10,
-        fontSize: themeColor.iconFontSize - 10
+        width: variables.iconFontSize - 10,
+        fontSize: variables.iconFontSize - 10
       },
       'NativeBase.IconNB': {
-        width: themeColor.iconFontSize - 10,
-        fontSize: themeColor.iconFontSize - 10
+        width: variables.iconFontSize - 10,
+        fontSize: variables.iconFontSize - 10
       },
       'NativeBase.Text': {
         alignSelf: 'center'
@@ -147,9 +157,9 @@ export default (themeColor: ThemeColor) => {
     },
     'NativeBase.Body': {
       'NativeBase.Text': {
-        marginHorizontal: themeColor.listItemPadding,
+        marginHorizontal: variables.listItemPadding,
         '.note': {
-          color: themeColor.listNoteColor,
+          color: variables.listNoteColor,
           fontWeight: '200'
         }
       },
@@ -164,7 +174,7 @@ export default (themeColor: ThemeColor) => {
         'NativeBase.Button': {
           marginRight: -15,
           'NativeBase.Text': {
-            color: themeColor.topTabBarActiveTextColor
+            color: variables.topTabBarActiveTextColor
           }
         }
       },
@@ -172,23 +182,23 @@ export default (themeColor: ThemeColor) => {
         alignSelf: null,
         '.transparent': {
           'NativeBase.Text': {
-            color: themeColor.topTabBarActiveTextColor
+            color: variables.topTabBarActiveTextColor
           }
         }
       },
       'NativeBase.Icon': {
         alignSelf: null,
-        fontSize: themeColor.iconFontSize - 8,
+        fontSize: variables.iconFontSize - 8,
         color: '#c9c8cd'
       },
       'NativeBase.IconNB': {
         alignSelf: null,
-        fontSize: themeColor.iconFontSize - 8,
+        fontSize: variables.iconFontSize - 8,
         color: '#c9c8cd'
       },
       'NativeBase.Text': {
         '.note': {
-          color: themeColor.listNoteColor,
+          color: variables.listNoteColor,
           fontWeight: '200'
         },
         alignSelf: null
@@ -213,14 +223,14 @@ export default (themeColor: ThemeColor) => {
     },
     'NativeBase.Text': {
       '.note': {
-        color: themeColor.listNoteColor,
+        color: variables.listNoteColor,
         fontWeight: '200'
       },
       alignSelf: 'center'
     },
     '.last': {
-      marginLeft: -(themeColor.listItemPadding + 5),
-      paddingLeft: (themeColor.listItemPadding + 5) * 2,
+      marginLeft: -(variables.listItemPadding + 5),
+      paddingLeft: (variables.listItemPadding + 5) * 2,
       top: 1
     },
     '.avatar': {
@@ -234,23 +244,23 @@ export default (themeColor: ThemeColor) => {
           marginLeft: null
         },
         flex: 1,
-        paddingVertical: themeColor.listItemPadding,
-        borderBottomWidth: themeColor.borderWidth,
-        borderColor: themeColor.listBorderColor,
-        marginLeft: themeColor.listItemPadding + 5
+        paddingVertical: variables.listItemPadding,
+        borderBottomWidth: variables.borderWidth,
+        borderColor: variables.listBorderColor,
+        marginLeft: variables.listItemPadding + 5
       },
       'NativeBase.Right': {
         'NativeBase.Text': {
           '.note': {
-            fontSize: themeColor.noteFontSize - 2
+            fontSize: variables.noteFontSize - 2
           }
         },
         flex: 0,
-        paddingRight: themeColor.listItemPadding + 5,
+        paddingRight: variables.listItemPadding + 5,
         alignSelf: 'stretch',
-        paddingVertical: themeColor.listItemPadding,
-        borderBottomWidth: themeColor.borderWidth,
-        borderColor: themeColor.listBorderColor
+        paddingVertical: variables.listItemPadding,
+        borderBottomWidth: variables.borderWidth,
+        borderColor: variables.listBorderColor
       },
       '.noBorder': {
         'NativeBase.Body': {
@@ -273,17 +283,17 @@ export default (themeColor: ThemeColor) => {
           marginLeft: null
         },
         flex: 1,
-        paddingVertical: themeColor.listItemPadding + 8,
-        borderBottomWidth: themeColor.borderWidth,
-        borderColor: themeColor.listBorderColor,
-        marginLeft: themeColor.listItemPadding + 5
+        paddingVertical: variables.listItemPadding + 8,
+        borderBottomWidth: variables.borderWidth,
+        borderColor: variables.listBorderColor,
+        marginLeft: variables.listItemPadding + 5
       },
       'NativeBase.Right': {
         'NativeBase.Button': {
           '.transparent': {
             'NativeBase.Text': {
-              fontSize: themeColor.listNoteSize,
-              color: themeColor.sTabBarActiveTextColor
+              fontSize: variables.listNoteSize,
+              color: variables.sTabBarActiveTextColor
             }
           },
           height: null
@@ -291,10 +301,10 @@ export default (themeColor: ThemeColor) => {
         flex: 0,
         justifyContent: 'center',
         alignSelf: 'stretch',
-        paddingRight: themeColor.listItemPadding + 5,
-        paddingVertical: themeColor.listItemPadding + 5,
-        borderBottomWidth: themeColor.borderWidth,
-        borderColor: themeColor.listBorderColor
+        paddingRight: variables.listItemPadding + 5,
+        paddingVertical: variables.listItemPadding + 5,
+        borderBottomWidth: variables.borderWidth,
+        borderColor: variables.listBorderColor
       },
       '.noBorder': {
         'NativeBase.Body': {
@@ -316,18 +326,18 @@ export default (themeColor: ThemeColor) => {
         'NativeBase.Right': {
           borderBottomWidth: null
         },
-        borderBottomWidth: themeColor.borderWidth,
-        borderColor: themeColor.listBorderColor
+        borderBottomWidth: variables.borderWidth,
+        borderColor: variables.listBorderColor
       },
       'NativeBase.Left': {
         'NativeBase.Button': {
           'NativeBase.IconNB': {
             marginHorizontal: null,
-            fontSize: themeColor.iconFontSize - 5
+            fontSize: variables.iconFontSize - 5
           },
           'NativeBase.Icon': {
             marginHorizontal: null,
-            fontSize: themeColor.iconFontSize - 8
+            fontSize: variables.iconFontSize - 8
           },
           alignSelf: 'center',
           height: 29,
@@ -339,14 +349,14 @@ export default (themeColor: ThemeColor) => {
           justifyContent: 'center'
         },
         'NativeBase.Icon': {
-          width: themeColor.iconFontSize - 5,
-          fontSize: themeColor.iconFontSize - 2
+          width: variables.iconFontSize - 5,
+          fontSize: variables.iconFontSize - 2
         },
         'NativeBase.IconNB': {
-          width: themeColor.iconFontSize - 5,
-          fontSize: themeColor.iconFontSize - 2
+          width: variables.iconFontSize - 5,
+          fontSize: variables.iconFontSize - 2
         },
-        paddingRight: themeColor.listItemPadding + 5,
+        paddingRight: variables.listItemPadding + 5,
         flex: 0,
         height: 44,
         justifyContent: 'center',
@@ -361,7 +371,7 @@ export default (themeColor: ThemeColor) => {
         height: 44,
         justifyContent: 'center',
         borderBottomWidth: 1 / PixelRatio.getPixelSizeForLayoutSize(1),
-        borderColor: themeColor.listBorderColor
+        borderColor: variables.listBorderColor
       },
       'NativeBase.Right': {
         'NativeBase.Text': {
@@ -371,14 +381,14 @@ export default (themeColor: ThemeColor) => {
         },
         'NativeBase.IconNB': {
           color: '#C8C7CC',
-          fontSize: themeColor.iconFontSize - 10,
+          fontSize: variables.iconFontSize - 10,
           alignSelf: 'center',
           paddingLeft: 10,
           paddingTop: 3
         },
         'NativeBase.Icon': {
           color: '#C8C7CC',
-          fontSize: themeColor.iconFontSize - 10,
+          fontSize: variables.iconFontSize - 10,
           alignSelf: 'center',
           paddingLeft: 10,
           paddingTop: 3
@@ -397,8 +407,8 @@ export default (themeColor: ThemeColor) => {
         height: 44,
         justifyContent: 'flex-end',
         borderBottomWidth: 1 / PixelRatio.getPixelSizeForLayoutSize(1),
-        borderColor: themeColor.listBorderColor,
-        paddingRight: themeColor.listItemPadding + 5
+        borderColor: variables.listBorderColor,
+        paddingRight: variables.listItemPadding + 5
       },
       '.noBorder': {
         'NativeBase.Body': {
@@ -419,17 +429,17 @@ export default (themeColor: ThemeColor) => {
     },
     '.noIndent': {
       marginLeft: null,
-      padding: themeColor.listItemPadding,
-      paddingLeft: themeColor.listItemPadding + 6
+      padding: variables.listItemPadding,
+      paddingLeft: variables.listItemPadding + 6
     },
     alignItems: 'center',
     flexDirection: 'row',
-    paddingRight: themeColor.listItemPadding + 6,
-    paddingVertical: themeColor.listItemPadding + 3,
-    marginLeft: themeColor.listItemPadding + 6,
+    paddingRight: variables.listItemPadding + 6,
+    paddingVertical: variables.listItemPadding + 3,
+    marginLeft: variables.listItemPadding + 6,
     borderBottomWidth: 1 / PixelRatio.getPixelSizeForLayoutSize(1),
-    backgroundColor: themeColor.listBg,
-    borderColor: themeColor.listBorderColor
+    backgroundColor: variables.listBg,
+    borderColor: variables.listBorderColor
   };
 
   return listItemTheme;

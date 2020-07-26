@@ -1,5 +1,7 @@
+// @flow
+
 export default () => {
-  const theme: any = {
+  const theme = {
     'NativeBase.Item': {
       '.fixedLabel': {
         'NativeBase.Label': {

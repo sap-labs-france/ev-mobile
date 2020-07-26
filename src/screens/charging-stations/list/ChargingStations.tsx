@@ -275,7 +275,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           diplayMapAction={() => this.toggleDisplayMap()}
         />
         {loading ? (
-          <Spinner style={style.spinner} />
+          <Spinner style={style.spinner} color='grey' />
         ) : (
           <View style={style.content}>
             <SimpleSearchComponent

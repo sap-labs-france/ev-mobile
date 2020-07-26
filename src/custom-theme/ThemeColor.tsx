@@ -2,7 +2,7 @@ import color from 'color';
 import { Dimensions, PixelRatio, Platform } from 'react-native';
 import { scale } from 'react-native-size-matters';
 import ThemeDefinition from 'types/Theme';
-import ThemeManager from '../ThemeManager';
+import ThemeManager from './ThemeManager';
 
 export const PLATFORM = {
   ANDROID: 'android',

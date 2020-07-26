@@ -32,8 +32,8 @@ import TransactionChart from './screens/transactions/chart/TransactionChart';
 import TransactionDetails from './screens/transactions/details/TransactionDetails';
 import TransactionsHistory from './screens/transactions/history/TransactionsHistory';
 import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
-import ThemeManager from './theme/ThemeManager';
-import ThemeColor from './theme/variables/ThemeColor';
+import ThemeManager from './custom-theme/ThemeManager';
+import ThemeColor from './custom-theme/ThemeColor';
 import { ThemeType } from './types/Theme';
 import SecuredStorage from './utils/SecuredStorage';
 

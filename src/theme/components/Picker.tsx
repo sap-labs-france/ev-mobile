@@ -1,5 +1,7 @@
+// @flow
+
 export default () => {
-  const pickerTheme: any = {
+  const pickerTheme = {
     '.note': {
       color: '#8F8E95'
     },

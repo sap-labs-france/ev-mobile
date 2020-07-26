@@ -1,20 +1,29 @@
+// @flow
+
 import { Platform } from 'react-native';
 
-import ThemeColor, { PLATFORM } from '../variables/ThemeColor';
+import variable from '../variables/platform';
+import { PLATFORM } from '../variables/commonColor';
 
-export default (themeColor: ThemeColor) => {
-  const radioTheme: any = {
+export default (variables /* : * */ = variable) => {
+  const radioTheme = {
     '.selected': {
       'NativeBase.IconNB': {
-        color: Platform.OS === PLATFORM.IOS ? themeColor.radioColor : themeColor.radioSelectedColorAndroid,
-        lineHeight: Platform.OS === PLATFORM.IOS ? 25 : themeColor.radioBtnLineHeight,
+        color:
+          Platform.OS === PLATFORM.IOS
+            ? variables.radioColor
+            : variables.radioSelectedColorAndroid,
+        lineHeight:
+          Platform.OS === PLATFORM.IOS ? 25 : variables.radioBtnLineHeight,
         height: Platform.OS === PLATFORM.IOS ? 20 : undefined
       }
     },
     'NativeBase.IconNB': {
       color: Platform.OS === PLATFORM.IOS ? 'transparent' : undefined,
-      lineHeight: Platform.OS === PLATFORM.IOS ? undefined : themeColor.radioBtnLineHeight,
-      fontSize: Platform.OS === PLATFORM.IOS ? undefined : themeColor.radioBtnSize
+      lineHeight:
+        Platform.OS === PLATFORM.IOS ? undefined : variables.radioBtnLineHeight,
+      fontSize:
+        Platform.OS === PLATFORM.IOS ? undefined : variables.radioBtnSize
     }
   };
 

@@ -4,7 +4,7 @@ import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import SplashScreen from 'react-native-splash-screen';
 import App from './src/App';
 import Theme from './src/theme/components';
-import ThemeColor from './src/theme/variables/ThemeColor';
+import theme from './src/theme/components/index';
 import { ThemeType } from './src/types/Theme';
 
 export default function AppBootstrap() {
@@ -12,7 +12,6 @@ export default function AppBootstrap() {
 
   useEffect(() => {
     console.log('useEffect ====================================');
-    console.log(Theme.getTheme(new ThemeColor()));
     console.log('====================================');
     // Do stuff while splash screen is shown
     // After having done stuff (such as async tasks) hide the splash screen
@@ -21,7 +20,7 @@ export default function AppBootstrap() {
 
   return (
     <AppearanceProvider>
-      <StyleProvider style={Theme.getTheme(new ThemeColor())}>
+      <StyleProvider style={theme()}>
         <App themeType={colorScheme}/>
       </StyleProvider>
     </AppearanceProvider>

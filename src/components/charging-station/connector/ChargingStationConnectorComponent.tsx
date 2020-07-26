@@ -11,7 +11,7 @@ import Type1CCS from '../../../../assets/connectorType/type1-ccs.svg';
 import Type1 from '../../../../assets/connectorType/type1.svg';
 import Type2 from '../../../../assets/connectorType/type2.svg';
 import I18nManager from '../../../I18n/I18nManager';
-import ThemeColor from '../../../theme/variables/ThemeColor';
+import ThemeColor from '../../../custom-theme/ThemeColor';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { Connector, ConnectorType } from '../../../types/ChargingStation';
 import Constants from '../../../utils/Constants';

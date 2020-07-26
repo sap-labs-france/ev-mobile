@@ -7,7 +7,7 @@ import { scale } from 'react-native-size-matters';
 import { DrawerActions } from 'react-navigation-drawer';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import TransactionHeaderComponent from '../../../components/transaction/header/TransactionHeaderComponent';
-import ThemeColor from '../../../theme/variables/ThemeColor';
+import ThemeColor from '../../../custom-theme/ThemeColor';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { Connector } from '../../../types/ChargingStation';
 import Consumption from '../../../types/Consumption';
@@ -302,7 +302,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return (
       loading ? (
-        <Spinner style={style.spinner} />
+        <Spinner style={style.spinner} color='grey' />
       ) : (
           <View style={style.container}>
             <HeaderComponent

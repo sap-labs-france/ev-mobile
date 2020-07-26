@@ -1,9 +1,11 @@
-import ThemeColor from '../variables/ThemeColor';
+// @flow
 
-export default (themeColor: ThemeColor) => {
-  const viewTheme: any = {
+import variable from '../variables/platform';
+
+export default (variables /* : * */ = variable) => {
+  const viewTheme = {
     '.padder': {
-      padding: themeColor.contentPadding
+      padding: variables.contentPadding
     }
   };
 
