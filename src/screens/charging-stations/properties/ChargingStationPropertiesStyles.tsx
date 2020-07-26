@@ -1,14 +1,13 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
-import ThemeColor from '../../../custom-theme/ThemeColor';
+import commonColor from '../../../theme/variables/commonColor';
 
 export default function computeStyleSheet(): any {
-  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
-      backgroundColor: themeColor.containerBgColor
+      backgroundColor: commonColor.containerBgColor
     },
     scrollViewContainer: {
       flexDirection: 'column'
@@ -21,7 +20,7 @@ export default function computeStyleSheet(): any {
     },
     spinner: {
       flex: 1,
-      color: themeColor.textColor
+      color: commonColor.textColor
     },
     descriptionContainer: {
       width: '100%',
@@ -36,7 +35,7 @@ export default function computeStyleSheet(): any {
       marginBottom: '5@s',
       fontSize: '12@s',
       fontWeight: 'bold',
-      color: themeColor.textColor,
+      color: commonColor.textColor,
     },
     scrollViewValue: {
       marginTop: '5@s',
@@ -45,7 +44,7 @@ export default function computeStyleSheet(): any {
     value: {
       fontSize: '12@s',
       marginLeft: '15@s',
-      color: themeColor.textColor
+      color: commonColor.textColor
     },
     scrollViewValues: {
       flexDirection: 'column',
@@ -55,10 +54,10 @@ export default function computeStyleSheet(): any {
       fontSize: '12@s',
       marginLeft: '15@s',
       marginBottom: '5@s',
-      color: themeColor.textColor
+      color: commonColor.textColor
     },
     rowBackground: {
-      backgroundColor: themeColor.headerBgColor
+      backgroundColor: commonColor.headerBgColor
     },
   });
   const portraitStyles = {};

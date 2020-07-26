@@ -6,6 +6,7 @@ export enum ThemeType {
 export default interface ThemeDefinition {
   backgroundHeader: string;
   background: string;
+  listBackgroundHeader: string;
   borderColor: string;
   textColor: string;
   placeholderTextColor: string;

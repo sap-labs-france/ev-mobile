@@ -27,33 +27,46 @@ const dangerDark = color(danger).darken(darkLightRatio).hex();
 const warning = colorWarning;
 const warningLight = color(warning).lighten(darkLightRatio).hex();
 const warningDark = color(warning).darken(darkLightRatio).hex();
+
 const disabled = colorDisabled;
 const disabledLight = color(disabled).lighten(darkLightRatio).hex();
 const disabledDark = color(disabled).darken(darkLightRatio).hex();
+
 const dark = '#333';
+const darkLight = color(dark).lighten(darkLightRatio).hex();
+
 const light = '#f4f4f4';
+const lightDark = color(dark).darken(darkLightRatio).hex();
 
 // Dark theme
 const darkTheme: ThemeDefinition = {
-  backgroundHeader: dark,
-  background: dark,
-  borderColor: light,
-  textColor: light,
-  placeholderTextColor: dark,
-  inverseTextColor: dark,
-  subTextColor: disabledDark,
-  buttonBg: disabledDark,
   success: successLight,
   warning: warningLight,
   danger: dangerLight,
   info: infoLight,
   primary: primaryLight,
   disabled: disabledLight,
+  backgroundHeader: dark,
+  listBackgroundHeader: darkLight,
+  background: dark,
+  borderColor: light,
+  textColor: light,
+  placeholderTextColor: disabledDark,
+  inverseTextColor: dark,
+  subTextColor: disabledDark,
+  buttonBg: disabledDark,
 };
 
 // Light theme
 const lightTheme: ThemeDefinition = {
+  success: successDark,
+  warning: warningDark,
+  danger: dangerDark,
+  info: infoDark,
+  primary: primaryDark,
+  disabled: disabledDark,
   backgroundHeader: light,
+  listBackgroundHeader: lightDark,
   background: disabled,
   borderColor: dark,
   textColor: primaryDark,
@@ -61,12 +74,6 @@ const lightTheme: ThemeDefinition = {
   inverseTextColor: light,
   subTextColor: disabledLight,
   buttonBg: disabledLight,
-  success: successDark,
-  warning: warningDark,
-  danger: dangerDark,
-  info: infoDark,
-  primary: primaryDark,
-  disabled: disabledDark,
 };
 
 const getCurrentTheme = (): ThemeDefinition => {
@@ -78,31 +85,51 @@ const getCurrentTheme = (): ThemeDefinition => {
 }
 
 const customCommonColors = {
-  brandPrimary: getCurrentTheme().primary,
-  brandInfo: getCurrentTheme().info,
-  brandSuccess: getCurrentTheme().success,
-  brandDanger: getCurrentTheme().danger,
-  brandWarning: getCurrentTheme().warning,
+  primary: getCurrentTheme().primary,
+  brandPrimary: primary,
   brandPrimaryLight: primaryLight,
   brandPrimaryDark: primaryDark,
+
+  info: getCurrentTheme().info,
+  brandInfo: info,
   brandInfoLight: infoLight,
   brandInfoDark: infoDark,
+
+  success: getCurrentTheme().success,
+  brandSuccess: success,
   brandSuccessLight: successLight,
   brandSuccessDark: successDark,
+
+  danger: getCurrentTheme().danger,
+  brandDanger: danger,
   brandDangerLight: dangerLight,
   brandDangerDark: dangerDark,
+
+  warning: getCurrentTheme().warning,
+  brandWarning: warning,
   brandWarningLight: warningLight,
   brandWarningDark: warningDark,
+
+  disabled: getCurrentTheme().disabled,
   brandDisabled: disabled,
   brandDisabledLight: disabledLight,
   brandDisabledDark: disabledDark,
+
   brandBackground: getCurrentTheme().background,
+
   brandDark: getCurrentTheme().buttonBg,
   brandLight: light,
 
   containerBgColor: getCurrentTheme().background,
+  listHeaderBgColor: getCurrentTheme().listBackgroundHeader,
+  headerBgColor: getCurrentTheme().backgroundHeader,
+  headerTextColor: getCurrentTheme().textColor,
   textColor: getCurrentTheme().textColor,
   buttonBg: getCurrentTheme().buttonBg,
+  subTextColor: getCurrentTheme().subTextColor,
+  placeholderTextColor: getCurrentTheme().placeholderTextColor,
+
+  topTabBarActiveTextColor: getCurrentTheme().textColor,
 };
 
 export default customCommonColors;

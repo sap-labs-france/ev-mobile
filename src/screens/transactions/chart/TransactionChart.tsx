@@ -7,7 +7,7 @@ import { scale } from 'react-native-size-matters';
 import { DrawerActions } from 'react-navigation-drawer';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import TransactionHeaderComponent from '../../../components/transaction/header/TransactionHeaderComponent';
-import ThemeColor from '../../../custom-theme/ThemeColor';
+import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { Connector } from '../../../types/ChargingStation';
 import Consumption from '../../../types/Consumption';
@@ -193,7 +193,6 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   };
 
   public createChart(consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[]) {
-    const themeColor = new ThemeColor();
     const chartDefinition = {} as LineChartProps;
     // Add Data
     chartDefinition.data = { dataSets: [] };
@@ -208,10 +207,10 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           lineWidth: 2,
           drawCircles: false,
           highlightColor: processColor('white'),
-          color: processColor(themeColor.primary),
+          color: processColor(commonColor.primary),
           drawFilled: true,
           fillAlpha: 65,
-          fillColor: processColor(themeColor.primary),
+          fillColor: processColor(commonColor.primary),
           valueTextSize: scale(8)
         }
       });
@@ -228,10 +227,10 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           lineWidth: 2,
           drawCircles: false,
           highlightColor: processColor('white'),
-          color: processColor(themeColor.success),
+          color: processColor(commonColor.success),
           drawFilled: true,
           fillAlpha: 65,
-          fillColor: processColor(themeColor.success),
+          fillColor: processColor(commonColor.success),
           valueTextSize: scale(8)
         }
       });
@@ -248,7 +247,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       valueFormatter: 'date',
       valueFormatterPattern: 'HH:mm',
       textSize: scale(8),
-      textColor: processColor(themeColor.textColor)
+      textColor: processColor(commonColor.textColor)
     };
     // Y Axis
     chartDefinition.yAxis = {};
@@ -258,7 +257,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         enabled: true,
         valueFormatter: '##0.#kW',
         axisMinimum: 0,
-        textColor: processColor(themeColor.textColor),
+        textColor: processColor(commonColor.textColor),
         textSize: scale(8)
       };
     } else {
@@ -273,7 +272,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         valueFormatter: '##0',
         axisMinimum: 0,
         axisMaximum: 100,
-        textColor: processColor(themeColor.success),
+        textColor: processColor(commonColor.success),
         textSize: scale(8)
       };
     } else {
@@ -295,7 +294,6 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const themeColor = new ThemeColor();
     const { showTransactionDetails, isAdmin, isSiteAdmin, loading, transaction, chargingStation,
       connector, consumptionValues, stateOfChargeValues, canDisplayTransaction } = this.state;
     const chartDefinition = this.createChart(consumptionValues, stateOfChargeValues);
@@ -326,13 +324,13 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
                 legend={{
                   enabled: true,
                   textSize: scale(8),
-                  textColor: processColor(themeColor.textColor)
+                  textColor: processColor(commonColor.textColor)
                 }}
                 marker={{
                   enabled: true,
-                  markerColor: processColor(themeColor.disabled),
+                  markerColor: processColor(commonColor.disabled),
                   textSize: scale(12),
-                  textColor: processColor(themeColor.inverseTextColor)
+                  textColor: processColor(commonColor.inverseTextColor)
                 }}
                 xAxis={chartDefinition.xAxis}
                 yAxis={chartDefinition.yAxis}

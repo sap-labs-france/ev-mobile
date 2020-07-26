@@ -1,14 +1,13 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
-import ThemeColor from '../../../custom-theme/ThemeColor';
+import commonColor from '../../../theme/variables/commonColor';
 
 export default function computeStyleSheet(): any {
-  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
-      backgroundColor: themeColor.containerBgColor
+      backgroundColor: commonColor.containerBgColor
     },
     scrollViewContainer: {
       flex: 1,
@@ -24,7 +23,7 @@ export default function computeStyleSheet(): any {
     },
     spinner: {
       flex: 1,
-      color: themeColor.textColor,
+      color: commonColor.textColor,
     },
     actionContainer: {
       width: '90%',
@@ -37,7 +36,7 @@ export default function computeStyleSheet(): any {
     },
     actionButtonIcon: {
       fontSize: '20@s',
-      color: themeColor.textColor,
+      color: commonColor.textColor,
     },
     actionButtonText: {
       fontSize: '18@s',

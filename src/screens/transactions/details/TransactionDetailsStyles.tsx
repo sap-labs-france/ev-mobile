@@ -2,14 +2,13 @@ import deepmerge from 'deepmerge';
 import { Platform } from 'react-native';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
-import ThemeColor from '../../../custom-theme/ThemeColor';
+import commonColor from '../../../theme/variables/commonColor';
 
 export default function computeStyleSheet(): any {
-  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
-      backgroundColor: themeColor.containerBgColor
+      backgroundColor: commonColor.containerBgColor
     },
     viewContainer: {
       flex: 1,
@@ -19,7 +18,7 @@ export default function computeStyleSheet(): any {
     },
     spinner: {
       flex: 1,
-      color: themeColor.textColor
+      color: commonColor.textColor
     },
     backgroundImage: {
       width: '100%',
@@ -36,8 +35,8 @@ export default function computeStyleSheet(): any {
       alignItems: 'center',
       padding: '5@s',
       borderBottomWidth: 1,
-      borderBottomColor: themeColor.listBorderColor,
-      backgroundColor: themeColor.headerBgColor
+      borderBottomColor: commonColor.listBorderColor,
+      backgroundColor: commonColor.headerBgColor
     },
     headerRowContainer: {
       width: '100%',
@@ -46,20 +45,20 @@ export default function computeStyleSheet(): any {
       alignItems: 'center'
     },
     headerName: {
-      color: themeColor.headerTextColor,
+      color: commonColor.headerTextColor,
       fontSize: '18@s',
       marginLeft: '5@s',
       marginRight: '5@s',
       fontWeight: 'bold'
     },
     subHeaderName: {
-      color: themeColor.headerTextColor,
+      color: commonColor.headerTextColor,
       fontSize: '14@s',
       marginLeft: '5@s',
       marginRight: '5@s',
     },
     subSubHeaderName: {
-      color: themeColor.headerTextColor,
+      color: commonColor.headerTextColor,
       fontSize: '12@s',
       marginLeft: '5@s',
       marginRight: '5@s',
@@ -87,35 +86,35 @@ export default function computeStyleSheet(): any {
     label: {
       fontSize: '16@s',
       alignSelf: 'center',
-      color: themeColor.textColor,
+      color: commonColor.textColor,
     },
     labelValue: {
       fontSize: '25@s',
       fontWeight: 'bold',
-      color: themeColor.textColor,
+      color: commonColor.textColor,
     },
     labelUser: {
       fontSize: '10@s',
-      color: themeColor.textColor,
+      color: commonColor.textColor,
     },
     subLabel: {
       fontSize: '10@s',
       marginTop: Platform.OS === 'ios' ? '0@s' : '-5@s',
-      color: themeColor.textColor,
+      color: commonColor.textColor,
       alignSelf: 'center'
     },
     subLabelStatusError: {
-      color: themeColor.brandDanger,
+      color: commonColor.brandDanger,
       marginTop: '2@s'
     },
     subLabelUser: {
       fontSize: '8@s',
       marginTop: '0@s',
-      color: themeColor.textColor,
+      color: commonColor.textColor,
     },
     icon: {
       fontSize: '25@s',
-      color: themeColor.textColor,
+      color: commonColor.textColor,
     },
     userImage: {
       height: '52@s',
@@ -124,24 +123,24 @@ export default function computeStyleSheet(): any {
       marginBottom: '5@s',
       borderRadius: '26@s',
       borderWidth: '3@s',
-      borderColor: themeColor.textColor
+      borderColor: commonColor.textColor
     },
     info: {
-      color: themeColor.textColor,
-      borderColor: themeColor.brandPrimaryDark
+      color: commonColor.textColor,
+      borderColor: commonColor.brandPrimaryDark
     },
     success: {
-      color: themeColor.success
+      color: commonColor.success
     },
     warning: {
-      color: themeColor.warning
+      color: commonColor.warning
     },
     danger: {
-      color: themeColor.danger
+      color: commonColor.danger
     },
     disabled: {
-      color: themeColor.disabled,
-      borderColor: themeColor.buttonDisabledBg
+      color: commonColor.disabled,
+      borderColor: commonColor.buttonDisabledBg
     }
   });
   const portraitStyles = {};

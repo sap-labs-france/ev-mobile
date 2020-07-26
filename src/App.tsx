@@ -8,6 +8,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
 import computeStyleSheet from './AppStyles';
+import ThemeManager from './custom-theme/ThemeManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
 import I18nManager from './I18n/I18nManager';
 import LocationManager from './location/LocationManager';
@@ -32,8 +33,7 @@ import TransactionChart from './screens/transactions/chart/TransactionChart';
 import TransactionDetails from './screens/transactions/details/TransactionDetails';
 import TransactionsHistory from './screens/transactions/history/TransactionsHistory';
 import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
-import ThemeManager from './custom-theme/ThemeManager';
-import ThemeColor from './custom-theme/ThemeColor';
+import commonColor from './theme/variables/commonColor';
 import { ThemeType } from './types/Theme';
 import SecuredStorage from './utils/SecuredStorage';
 
@@ -119,12 +119,11 @@ export default class App extends React.Component<Props, State> {
 
   private createRootContainerNavigation() {
     const appStyles = computeStyleSheet();
-    const themeColor = new ThemeColor();
     const barStyle = {
-      backgroundColor: themeColor.containerBgColor,
+      backgroundColor: commonColor.containerBgColor,
       paddingTop: 10,
       borderTopWidth: 1,
-      borderTopColor: themeColor.topTabBarTextColor
+      borderTopColor: commonColor.topTabBarTextColor
     };
     // Auth Stack Navigation
     const authNavigator = createStackNavigator(
@@ -185,8 +184,8 @@ export default class App extends React.Component<Props, State> {
         }
       },
       {
-        activeColor: themeColor.topTabBarActiveTextColor,
-        inactiveColor: themeColor.topTabBarTextColor,
+        activeColor: commonColor.topTabBarActiveTextColor,
+        inactiveColor: commonColor.topTabBarTextColor,
         barStyle,
         labeled: true,
         backBehavior: 'none',
@@ -211,8 +210,8 @@ export default class App extends React.Component<Props, State> {
         },
       },
       {
-        activeColor: themeColor.topTabBarActiveTextColor,
-        inactiveColor: themeColor.topTabBarTextColor,
+        activeColor: commonColor.topTabBarActiveTextColor,
+        inactiveColor: commonColor.topTabBarTextColor,
         barStyle,
         labeled: true,
         backBehavior: 'none',
@@ -237,8 +236,8 @@ export default class App extends React.Component<Props, State> {
         }
       },
       {
-        activeColor: themeColor.topTabBarActiveTextColor,
-        inactiveColor: themeColor.topTabBarTextColor,
+        activeColor: commonColor.topTabBarActiveTextColor,
+        inactiveColor: commonColor.topTabBarTextColor,
         barStyle,
         labeled: true,
         backBehavior: 'none',
@@ -277,7 +276,7 @@ export default class App extends React.Component<Props, State> {
       type: 'AntDesign' | 'Entypo' | 'EvilIcons' | 'Feather' | 'FontAwesome' | 'FontAwesome5' | 'Foundation' | 'Ionicons' | 'MaterialCommunityIcons' | 'MaterialIcons' | 'Octicons' | 'SimpleLineIcons' | 'Zocial',
       name: string): React.ReactNode => {
       return <Icon style={{
-        color: props.focused ? themeColor.topTabBarActiveTextColor : themeColor.topTabBarTextColor, paddingBottom: 5, fontSize: 23
+        color: props.focused ? commonColor.topTabBarActiveTextColor : commonColor.topTabBarTextColor, paddingBottom: 5, fontSize: 23
       }} type={type} name={name} />
     };
     const transactionHistoryNavigator = createStackNavigator(

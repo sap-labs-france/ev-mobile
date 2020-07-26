@@ -2,61 +2,50 @@ import deepmerge from 'deepmerge';
 import { Platform } from 'react-native';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
-import ThemeColor from '../../custom-theme/ThemeColor';
+import commonColor from '../../theme/variables/commonColor';
 
 export default function computeStyleSheet(): any {
-  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     header: {
-      height: '55@s',
+      height: '45@s',
       width: '100%',
       padding: 0,
       margin: 0,
-      paddingLeft: '10@s',
-      paddingRight: '10@s',
       borderBottomWidth: 1,
-      borderBottomColor: themeColor.listBorderColor,
-      backgroundColor: themeColor.headerBgColor
-    },
-    buttonRow: {
-      flexDirection: 'row',
+      borderBottomColor: commonColor.listBorderColor,
+      backgroundColor: commonColor.headerBgColor
     },
     leftHeader: {
-    },
-    leftButtonHeader: {
-      paddingLeft: 0
+      flexDirection: 'row',
     },
     rightHeader: {
-    },
-    rightButtonHeader: {
-    },
-    rightSecondButtonHeader: {
-      marginRight: '15@s'
+      flexDirection: 'row',
     },
     bodyHeader: {
       flex: 3,
       paddingLeft: Platform.OS === 'ios' ? 0 : '50@s'
     },
     titleHeader: {
-      color: themeColor.textColor,
+      color: commonColor.textColor,
       fontSize: '18@s'
     },
     titleHeaderWithSubTitle: {
       fontSize: '18@s'
     },
     subTitleHeader: {
-      color: themeColor.textColor,
+      color: commonColor.textColor,
       fontWeight: 'bold',
       fontSize: '12@s',
       marginTop: Platform.OS === 'ios' ? 0 : '-3@s'
     },
     logoHeader: {
       width: '45@s',
+      marginLeft: '5@s',
+      marginRight: '5@s',
       resizeMode: 'contain'
     },
     iconHeader: {
-      color: themeColor.textColor,
-      fontSize: '30@s'
+      color: commonColor.textColor,
     }
   });
   const portraitStyles = {};

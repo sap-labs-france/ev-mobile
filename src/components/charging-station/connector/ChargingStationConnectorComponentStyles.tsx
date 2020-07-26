@@ -1,10 +1,9 @@
 import deepmerge from 'deepmerge';
-import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
+import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
-import ThemeColor from '../../../custom-theme/ThemeColor';
+import commonColor from '../../../theme/variables/commonColor';
 
 export default function computeStyleSheet(): any {
-  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       width: '100%',
@@ -13,7 +12,7 @@ export default function computeStyleSheet(): any {
       borderStyle: 'solid',
       borderWidth: 1,
       borderColor: 'transparent',
-      borderTopColor: themeColor.listBorderColor
+      borderTopColor: commonColor.listBorderColor
     },
     connectorContainer: {
       flexDirection: 'column',
@@ -37,14 +36,14 @@ export default function computeStyleSheet(): any {
       alignItems: 'center',
       height: '60@s',
       width: '80@s',
-      color: themeColor.textColor
+      color: commonColor.textColor
     },
     connectorDetailAnimated: {
       position: 'absolute',
       alignItems: 'center'
     },
     connectorValues: {
-      color: themeColor.textColor,
+      color: commonColor.textColor,
       marginTop: '-1@s',
       fontSize: '30@s',
       fontWeight: 'bold',
@@ -55,22 +54,22 @@ export default function computeStyleSheet(): any {
       height: '40@s'
     },
     labelImage: {
-      color: themeColor.textColor,
+      color: commonColor.textColor,
       paddingTop: '2@s',
       fontSize: '10@s'
     },
     label: {
-      color: themeColor.textColor,
+      color: commonColor.textColor,
       fontSize: '10@s',
       marginTop: '-3@s'
     },
     subLabel: {
-      color: themeColor.textColor,
+      color: commonColor.textColor,
       fontSize: '9@s'
     },
     icon: {
       fontSize: '30@s',
-      color: themeColor.textColor,
+      color: commonColor.textColor,
     }
   });
   const portraitStyles = {};

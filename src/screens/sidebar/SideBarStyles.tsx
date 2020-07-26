@@ -2,14 +2,13 @@ import deepmerge from 'deepmerge';
 import { Platform } from 'react-native';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
-import ThemeColor from '../../custom-theme/ThemeColor';
+import commonColor from '../../theme/variables/commonColor';
 
 export default function computeStyleSheet(): any {
-  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
-      backgroundColor: themeColor.containerBgColor
+      backgroundColor: commonColor.containerBgColor
     },
     background: {
       flex: 1
@@ -20,10 +19,10 @@ export default function computeStyleSheet(): any {
     },
     header: {
       flexDirection: 'column',
-      borderColor: themeColor.textColor,
+      borderColor: commonColor.textColor,
+      backgroundColor: commonColor.containerBgColor,
       borderBottomWidth: 1,
       height: '120@s',
-      paddingBottom: '10@s',
       marginTop: Platform.OS === 'ios' ? '-5@s' : '10@s'
     },
     logo: {
@@ -31,10 +30,11 @@ export default function computeStyleSheet(): any {
       width: '100@s',
       height: '50@s',
       alignSelf: 'center',
-      margin: '5@s'
+      margin: '5@s',
+      marginBottom: '10@s',
     },
     tenantName: {
-      color: themeColor.textColor,
+      color: commonColor.textColor,
       fontSize: '14@s',
       margin: '2@s',
       alignSelf: 'center',
@@ -42,13 +42,14 @@ export default function computeStyleSheet(): any {
       width: '90%'
     },
     versionText: {
-      color: themeColor.textColor,
+      color: commonColor.textColor,
       fontSize: '14@s',
       margin: '2@s',
-      alignSelf: 'center'
+      alignSelf: 'center',
+      marginBottom: '10@s',
     },
     versionDate: {
-      color: themeColor.textColor,
+      color: commonColor.textColor,
       fontSize: '14@s',
       alignSelf: 'center',
       marginBottom: '2@s'
@@ -66,10 +67,10 @@ export default function computeStyleSheet(): any {
     },
     linkIcon: {
       fontSize: '20@s',
-      color: themeColor.textColor
+      color: commonColor.textColor
     },
     linkText: {
-      color: themeColor.textColor,
+      color: commonColor.textColor,
       fontSize: '16@s',
       paddingLeft: '10@s'
     },
@@ -81,7 +82,7 @@ export default function computeStyleSheet(): any {
       paddingTop: '10@s',
       flexDirection: 'row',
       borderTopWidth: 1,
-      borderTopColor: themeColor.textColor
+      borderTopColor: commonColor.textColor
     },
     gridLogoutContainer: {
       flex: 1,
@@ -99,12 +100,12 @@ export default function computeStyleSheet(): any {
     logoutText: {
       fontWeight: 'bold',
       fontSize: '14@s',
-      color: themeColor.textColor
+      color: commonColor.textColor
     },
     userName: {
       paddingTop: '5@s',
       fontSize: '14@s',
-      color: themeColor.textColor
+      color: commonColor.textColor
     },
     columnThumbnail: {
       flex: 1,

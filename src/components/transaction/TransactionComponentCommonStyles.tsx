@@ -1,44 +1,43 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
-import ThemeColor from '../../custom-theme/ThemeColor';
+import commonColor from '../../theme/variables/commonColor';
 
 export default function computeStyleSheet(): any {
-  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
       flexDirection: 'column',
       borderBottomWidth: 1,
-      borderBottomColor: themeColor.listBorderColor
+      borderBottomColor: commonColor.listBorderColor
     },
     transactionContent: {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-evenly',
       borderBottomWidth: 1,
-      borderBottomColor: themeColor.listBorderColor,
+      borderBottomColor: commonColor.listBorderColor,
       paddingLeft: '5@s',
       paddingRight: '5@s',
       height: '80@s',
       width: '100%'
     },
     label: {
-      color: themeColor.textColor,
+      color: commonColor.textColor,
       fontSize: '10@s',
       marginTop: '-3@s'
     },
     info: {
-      color: themeColor.textColor,
+      color: commonColor.textColor,
     },
     success: {
-      color: themeColor.brandSuccess
+      color: commonColor.brandSuccess
     },
     warning: {
-      color: themeColor.brandWarning
+      color: commonColor.brandWarning
     },
     danger: {
-      color: themeColor.brandDanger
+      color: commonColor.brandDanger
     },
     columnContainer: {
       flexDirection: 'column',
@@ -52,17 +51,17 @@ export default function computeStyleSheet(): any {
       alignItems: 'center'
     },
     icon: {
-      color: themeColor.textColor,
+      color: commonColor.textColor,
       fontSize: '30@s',
       justifyContent: 'flex-end'
     },
     labelValue: {
       fontSize: '15@s',
-      color: themeColor.textColor,
+      color: commonColor.textColor,
     },
     subLabelValue: {
       fontSize: '10@s',
-      color: themeColor.textColor,
+      color: commonColor.textColor,
     }
   });
   const portraitStyles = {};

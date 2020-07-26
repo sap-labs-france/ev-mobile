@@ -2,7 +2,7 @@ import I18n from 'i18n-js';
 import { Button, Icon } from 'native-base';
 import React from 'react';
 import { TextInput, View } from 'react-native';
-import ThemeColor from '../../../custom-theme/ThemeColor';
+import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import computeStyleSheet from './SimpleSearchComponentStyles';
 
@@ -47,7 +47,6 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
 
   public render() {
     const style = computeStyleSheet();
-    const themeColor = new ThemeColor();
     return (
       <View style={style.container}>
         <Icon type='MaterialIcons' name='search' style={style.icon} />
@@ -55,10 +54,10 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
           ref={(ref) => {
             this.textInput = ref;
           }}
-          selectionColor={themeColor.textColor}
+          selectionColor={commonColor.textColor}
           style={style.inputField}
           placeholder={I18n.t('general.search')}
-          placeholderTextColor={themeColor.placeholderTextColor}
+          placeholderTextColor={commonColor.placeholderTextColor}
           onChangeText={(searchText) => this.searchHasChanged(searchText)}
         />
         <Button disabled={!this.currentSearchText} style={style.iconButton} transparent={true} onPress={() => this.clearSearch()}>
