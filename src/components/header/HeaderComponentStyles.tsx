@@ -2,10 +2,10 @@ import deepmerge from 'deepmerge';
 import { Platform } from 'react-native';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
-import CommonColor2 from '../../theme/variables/CommonColor2';
+import ThemeColor from '../../theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     header: {
       height: '55@s',
@@ -15,8 +15,8 @@ export default function computeStyleSheet(): any {
       paddingLeft: '10@s',
       paddingRight: '10@s',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.headerBgColor
+      borderBottomColor: themeColor.listBorderColor,
+      backgroundColor: themeColor.headerBgColor
     },
     buttonRow: {
       flexDirection: 'row',
@@ -38,14 +38,14 @@ export default function computeStyleSheet(): any {
       paddingLeft: Platform.OS === 'ios' ? 0 : '50@s'
     },
     titleHeader: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       fontSize: '18@s'
     },
     titleHeaderWithSubTitle: {
       fontSize: '18@s'
     },
     subTitleHeader: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       fontWeight: 'bold',
       fontSize: '12@s',
       marginTop: Platform.OS === 'ios' ? 0 : '-3@s'
@@ -55,7 +55,7 @@ export default function computeStyleSheet(): any {
       resizeMode: 'contain'
     },
     iconHeader: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       fontSize: '30@s'
     }
   });

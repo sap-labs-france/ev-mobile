@@ -1,43 +1,41 @@
 import { moderateScale, scale } from 'react-native-size-matters';
+import ThemeColor from '../variables/ThemeColor';
 
-import commonColor from './../variables/commonColor';
-import variable from './../variables/platform';
-
-export default (variables /* : * */ = variable) => {
+export default (themeColor: ThemeColor) => {
   const badgeTheme: any = {
     '.primary': {
-      backgroundColor: variables.buttonPrimaryBg
+      backgroundColor: themeColor.buttonPrimaryBg
     },
     '.warning': {
-      backgroundColor: variables.buttonWarningBg
+      backgroundColor: themeColor.buttonWarningBg
     },
     '.info': {
-      backgroundColor: variables.buttonInfoBg
+      backgroundColor: themeColor.buttonInfoBg
     },
     '.success': {
-      backgroundColor: variables.buttonSuccessBg
+      backgroundColor: themeColor.buttonSuccessBg
     },
     '.danger': {
-      backgroundColor: variables.buttonDangerBg
+      backgroundColor: themeColor.buttonDangerBg
     },
     'NativeBase.Text': {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
-      color: variables.badgeColor,
-      fontSize: variables.fontSizeBase,
-      lineHeight: variables.lineHeight - 5,
+      color: themeColor.badgeColor,
+      fontSize: themeColor.fontSizeBase,
+      lineHeight: themeColor.lineHeight - 5,
       textAlign: 'center',
       paddingTop: moderateScale(11, 4),
       paddingBottom: moderateScale(8),
       paddingHorizontal: 3
     },
-    backgroundColor: variables.badgeBg,
-    padding: variables.badgePadding,
+    backgroundColor: themeColor.badgeBg,
+    padding: themeColor.badgePadding,
     paddingHorizontal: 6,
     borderStyle: 'solid',
-    borderColor: commonColor.textColor,
+    borderColor: themeColor.textColor,
     borderWidth: scale(4),
     justifyContent: 'center',
     alignItems: 'center',

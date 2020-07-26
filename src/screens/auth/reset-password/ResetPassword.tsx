@@ -6,7 +6,7 @@ import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
 
 import computeFormStyleSheet from '../../../FormStyles';
-import CommonColor2 from '../../../theme/variables/CommonColor2';
+import ThemeColor from '../../../theme/variables/ThemeColor';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Constants from '../../../utils/Constants';
@@ -159,7 +159,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const commonColor = new CommonColor2();
+    const themeColor = new ThemeColor();
     const formStyle = computeFormStyleSheet();
     const { tenantName, loading, hidePassword, hideRepeatPassword } = this.state;
     return (
@@ -171,11 +171,11 @@ export default class ResetPassword extends BaseScreen<Props, State> {
               <Item inlineLabel={true} style={formStyle.inputGroup}>
                 <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={themeColor.inverseTextColor}
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.password')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={themeColor.inputColorPlaceholder}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
@@ -198,11 +198,11 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                 <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={themeColor.inverseTextColor}
                   onSubmitEditing={() => Keyboard.dismiss()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.repeatPassword')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={themeColor.inputColorPlaceholder}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}

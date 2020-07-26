@@ -1,10 +1,10 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
-import CommonColor2 from '../../../../theme/variables/CommonColor2';
+import ThemeColor from '../../../../theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     rowFilterContainer: {
       flexDirection: 'row',
@@ -20,18 +20,18 @@ export default function computeStyleSheet(): any {
     },
     rowFilterWithBorder: {
       borderTopWidth: 1,
-      borderTopColor: commonColor.listBorderColor
+      borderTopColor: themeColor.listBorderColor
     },
     textFilter: {
       fontSize: '15@s',
-      color: commonColor.textColor,
+      color: themeColor.textColor,
     },
     filterValue: {
       fontSize: '15@s',
-      color: commonColor.textColor
+      color: themeColor.textColor
     },
     switchFilter: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
     },
     connectorTypeFilterContainer: {
       flexDirection: 'row',

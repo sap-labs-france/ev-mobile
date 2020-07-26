@@ -1,10 +1,10 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
-import CommonColor2 from '../../../theme/variables/CommonColor2';
+import ThemeColor from '../../../theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flexDirection: 'row',
@@ -14,8 +14,8 @@ export default function computeStyleSheet(): any {
       paddingLeft: '5@s',
       paddingRight: '5@s',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.headerBgColor
+      borderBottomColor: themeColor.listBorderColor,
+      backgroundColor: themeColor.headerBgColor
     },
     inputField: {
       flex: 1,
@@ -25,7 +25,7 @@ export default function computeStyleSheet(): any {
       paddingLeft: '5@s',
       paddingRight: '5@s',
       fontSize: '25@s',
-      color: commonColor.textColor
+      color: themeColor.textColor
     }
   });
   const portraitStyles = {};

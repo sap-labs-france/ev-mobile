@@ -2,20 +2,20 @@ import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 import ThemeManager from '../../theme/ThemeManager';
-import CommonColor2 from '../../theme/variables/CommonColor2';
+import ThemeColor from '../../theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const darkTheme = ThemeManager.getInstance().isThemeTypeIsDark();
-  const connectorSuccessColor = darkTheme ? commonColor.brandSuccessLight : commonColor.brandSuccess;
-  const connectorWarningColor = darkTheme ? commonColor.brandWarningLight : commonColor.brandWarning;
-  const connectorWarningBorderColor = darkTheme ? commonColor.brandWarning : commonColor.brandWarningDark;
-  const connectorDangerColor = darkTheme ? commonColor.brandDangerLight : commonColor.brandDanger;
-  const connectorDangerBorderColor = darkTheme ? commonColor.brandDanger : commonColor.brandDangerDark;
-  const connectorDisabledColor = darkTheme ? commonColor.brandDisabledLight : commonColor.brandDisabled;
-  const connectorDisabledBorderColor = darkTheme ? commonColor.brandDisabled : commonColor.brandDisabledDark;
-  const connectorPrimaryColor = darkTheme ? commonColor.brandPrimaryLight : commonColor.brandPrimary;
-  const connectorPrimaryBorderColor = darkTheme ? commonColor.brandPrimary : commonColor.brandPrimaryDark;
+  const connectorSuccessColor = darkTheme ? themeColor.brandSuccessLight : themeColor.brandSuccess;
+  const connectorWarningColor = darkTheme ? themeColor.brandWarningLight : themeColor.brandWarning;
+  const connectorWarningBorderColor = darkTheme ? themeColor.brandWarning : themeColor.brandWarningDark;
+  const connectorDangerColor = darkTheme ? themeColor.brandDangerLight : themeColor.brandDanger;
+  const connectorDangerBorderColor = darkTheme ? themeColor.brandDanger : themeColor.brandDangerDark;
+  const connectorDisabledColor = darkTheme ? themeColor.brandDisabledLight : themeColor.brandDisabled;
+  const connectorDisabledBorderColor = darkTheme ? themeColor.brandDisabled : themeColor.brandDisabledDark;
+  const connectorPrimaryColor = darkTheme ? themeColor.brandPrimaryLight : themeColor.brandPrimary;
+  const connectorPrimaryBorderColor = darkTheme ? themeColor.brandPrimary : themeColor.brandPrimaryDark;
   const commonStyles = ScaledSheet.create({
     containerWithDescription: {
       height: '60@s',
@@ -39,19 +39,19 @@ export default function computeStyleSheet(): any {
       alignItems: 'center',
       borderWidth: '4@s',
       borderRadius: '22@s',
-      borderColor: commonColor.textColor,
+      borderColor: themeColor.textColor,
       backgroundColor: 'transparent'
     },
     commonConnectorValue: {
       fontSize: '22@s',
       fontWeight: 'bold',
-      color: commonColor.textColor
+      color: themeColor.textColor
     },
     commonConnectorDescription: {
       position: 'absolute',
       bottom: '-2@s',
       fontSize: '12@s',
-      color: commonColor.textColor
+      color: themeColor.textColor
     },
     faultedConnector: {
       backgroundColor: connectorDangerColor,
@@ -110,10 +110,10 @@ export default function computeStyleSheet(): any {
       color: connectorDisabledColor
     },
     chargingConnector: {
-      backgroundColor: commonColor.brandPrimary,
-      borderColor: commonColor.brandInfoLight,
-      borderTopColor: commonColor.brandPrimary,
-      borderBottomColor: commonColor.brandPrimary
+      backgroundColor: themeColor.brandPrimary,
+      borderColor: themeColor.brandInfoLight,
+      borderTopColor: themeColor.brandPrimary,
+      borderBottomColor: themeColor.brandPrimary
     },
     chargingConnectorValue: {},
     chargingConnectorDescription: {

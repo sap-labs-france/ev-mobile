@@ -2,16 +2,16 @@ import deepmerge from 'deepmerge';
 import { Platform } from 'react-native';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
-import CommonColor2 from '../../theme/variables/CommonColor2';
+import ThemeColor from '../../theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
       flexDirection: 'column',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor
+      borderBottomColor: themeColor.listBorderColor
     },
     headerContent: {
       flexDirection: 'row',
@@ -19,8 +19,8 @@ export default function computeStyleSheet(): any {
       alignItems: 'center',
       height: '40@s',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.headerBgColor
+      borderBottomColor: themeColor.listBorderColor,
+      backgroundColor: themeColor.headerBgColorLight
     },
     titleContainer: {
       flexDirection: 'row',
@@ -38,13 +38,13 @@ export default function computeStyleSheet(): any {
     },
     address: {
       width: '80%',
-      color: commonColor.headerTextColor,
+      color: themeColor.headerTextColor,
     },
     headerName: {
       marginLeft: '10@s',
       fontSize: '20@s',
       fontWeight: 'bold',
-      color: commonColor.headerTextColor
+      color: themeColor.headerTextColor
     },
     buttonContainer: {
       flexDirection: 'row',
@@ -58,7 +58,7 @@ export default function computeStyleSheet(): any {
     },
     icon: {
       fontSize: '30@s',
-      color: commonColor.headerTextColor
+      color: themeColor.headerTextColor
     },
     iconLeft: {
       marginLeft: '10@s',
@@ -73,12 +73,12 @@ export default function computeStyleSheet(): any {
       marginTop: Platform.OS === 'ios' ? '-3@s' : 0,
     },
     heartbeatIcon: {
-      color: commonColor.brandSuccess,
+      color: themeColor.success,
       paddingLeft: '20@s',
       fontSize: '18@s'
     },
     deadHeartbeatIcon: {
-      color: commonColor.brandDanger,
+      color: themeColor.danger,
       paddingLeft: '20@s',
       fontSize: '18@s'
     },

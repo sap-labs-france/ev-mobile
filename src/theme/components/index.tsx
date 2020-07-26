@@ -1,6 +1,5 @@
 import _ from 'lodash';
-
-import variable from './../variables/platform';
+import ThemeColor from '../variables/ThemeColor';
 import badgeTheme from './Badge';
 import bodyTheme from './Body';
 import buttonTheme from './Button';
@@ -45,9 +44,12 @@ import toastTheme from './Toast';
 import viewTheme from './View';
 
 export default class Theme {
-  public static getTheme(variables = variable) {
+  public static getTheme(themeColor: ThemeColor) {
+    console.log('getTheme ====================================');
+    console.log(themeColor.getCurrentTheme().background);
+    console.log('====================================');
     const theme = {
-      variables,
+      variables: themeColor,
       'NativeBase.Left': {
         ...leftTheme()
       },
@@ -59,74 +61,74 @@ export default class Theme {
       },
 
       'NativeBase.Header': {
-        ...headerTheme(variables)
+        ...headerTheme(themeColor)
       },
 
       'NativeBase.Button': {
-        ...buttonTheme(variables)
+        ...buttonTheme(themeColor)
       },
 
       'NativeBase.Title': {
-        ...titleTheme(variables)
+        ...titleTheme(themeColor)
       },
       'NativeBase.Subtitle': {
-        ...subtitleTheme(variables)
+        ...subtitleTheme(themeColor)
       },
 
       'NativeBase.InputGroup': {
-        ...inputGroupTheme(variables)
+        ...inputGroupTheme(themeColor)
       },
 
       'NativeBase.Input': {
-        ...inputTheme(variables)
+        ...inputTheme(themeColor)
       },
 
       'NativeBase.Badge': {
-        ...badgeTheme(variables)
+        ...badgeTheme(themeColor)
       },
 
       'NativeBase.CheckBox': {
-        ...checkBoxTheme(variables)
+        ...checkBoxTheme(themeColor)
       },
 
       'NativeBase.Radio': {
-        ...radioTheme(variables)
+        ...radioTheme(themeColor)
       },
 
       'NativeBase.Card': {
-        ...cardTheme(variables)
+        ...cardTheme(themeColor)
       },
 
       'NativeBase.CardItem': {
-        ...cardItemTheme(variables)
+        ...cardItemTheme(themeColor)
       },
 
       'NativeBase.Toast': {
-        ...toastTheme(variables)
+        ...toastTheme(themeColor)
       },
 
       'NativeBase.H1': {
-        ...h1Theme(variables)
+        ...h1Theme(themeColor)
       },
       'NativeBase.H2': {
-        ...h2Theme(variables)
+        ...h2Theme(themeColor)
       },
       'NativeBase.H3': {
-        ...h3Theme(variables)
+        ...h3Theme(themeColor)
       },
       'NativeBase.Form': {
         ...formTheme()
       },
 
       'NativeBase.Container': {
-        ...containerTheme(variables)
+        ...containerTheme(themeColor)
       },
       'NativeBase.Content': {
         ...contentTheme()
       },
 
       'NativeBase.Footer': {
-        ...footerTheme(variables)
+        ...footerTheme(themeColor)
       },
 
       'NativeBase.Tabs': {
@@ -134,25 +136,25 @@ export default class Theme {
       },
 
       'NativeBase.FooterTab': {
-        ...footerTabTheme(variables)
+        ...footerTabTheme(themeColor)
       },
 
       'NativeBase.ListItem': {
-        ...listItemTheme(variables)
+        ...listItemTheme(themeColor)
       },
 
       'NativeBase.ListItem1': {
-        ...listItemTheme(variables)
+        ...listItemTheme(themeColor)
       },
 
       'NativeBase.Icon': {
-        ...iconTheme(variables)
+        ...iconTheme(themeColor)
       },
       'NativeBase.IconNB': {
-        ...iconTheme(variables)
+        ...iconTheme(themeColor)
       },
       'NativeBase.Text': {
-        ...textTheme(variables)
+        ...textTheme(themeColor)
       },
       'NativeBase.Spinner': {
         ...spinnerTheme()
@@ -163,7 +165,7 @@ export default class Theme {
       },
 
       'NativeBase.Item': {
-        ...itemTheme(variables)
+        ...itemTheme(themeColor)
       },
 
       'NativeBase.Label': {
@@ -171,7 +173,7 @@ export default class Theme {
       },
 
       'NativeBase.Textarea': {
-        ...textAreaTheme(variables)
+        ...textAreaTheme(themeColor)
       },
 
       'NativeBase.PickerNB': {
@@ -186,26 +188,26 @@ export default class Theme {
       },
 
       'NativeBase.Segment': {
-        ...segmentTheme(variables)
+        ...segmentTheme(themeColor)
       },
 
       'NativeBase.TabBar': {
-        ...tabBarTheme(variables)
+        ...tabBarTheme(themeColor)
       },
       'NativeBase.ViewNB': {
-        ...viewTheme(variables)
+        ...viewTheme(themeColor)
       },
       'NativeBase.TabHeading': {
-        ...tabHeadingTheme(variables)
+        ...tabHeadingTheme(themeColor)
       },
       'NativeBase.TabContainer': {
-        ...tabContainerTheme(variables)
+        ...tabContainerTheme(themeColor)
       },
       'NativeBase.Switch': {
         ...switchTheme()
       },
       'NativeBase.Separator': {
-        ...separatorTheme(variables)
+        ...separatorTheme(themeColor)
       },
       'NativeBase.SwipeRow': {
         ...swipeRowTheme()

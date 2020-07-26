@@ -1,13 +1,16 @@
 import { PixelRatio, StatusBar } from 'react-native';
 
-import { PLATFORM } from './../variables/commonColor';
-import variable from './../variables/platform';
+import ThemeColor, { PLATFORM } from '../variables/ThemeColor';
 
-const buildTheme = (variables: any) => {
+// tslint:disable-next-line: cyclomatic-complexity
+const buildTheme = (themeColor: ThemeColor) => {
   // Forced to break up the theme to avoid typescript infinite run!
-  const platformStyle = variables.platformStyle;
-  const platform = variables.platform;
-
+  const platformStyle = themeColor.platformStyle;
+  const platform = themeColor.platform;
+  console.log('====================================');
+  console.log(platformStyle);
+  console.log(platform);
+  console.log('====================================');
   const headerTheme: any = {
     backgroundColor: 'transparent',
     flexDirection: 'row',
@@ -16,11 +19,11 @@ const buildTheme = (variables: any) => {
     justifyContent: 'center',
     // paddingTop: platform === PLATFORM.IOS ? 18 : 0,
     borderBottomWidth: platform === PLATFORM.IOS ? 1 / PixelRatio.getPixelSizeForLayoutSize(1) : 0,
-    borderBottomColor: variables.toolbarDefaultBorder,
+    borderBottomColor: themeColor.toolbarDefaultBorder,
     height:
-      variables.platform === PLATFORM.IOS && variables.platformStyle === PLATFORM.MATERIAL
-        ? variables.toolbarHeight + 10
-        : variables.toolbarHeight,
+      themeColor.platform === PLATFORM.IOS && themeColor.platformStyle === PLATFORM.MATERIAL
+        ? themeColor.toolbarHeight + 10
+        : themeColor.toolbarHeight,
     top: 0,
     left: 0,
     right: 0
@@ -45,16 +48,16 @@ const buildTheme = (variables: any) => {
   headerTheme['.hasSubtitle'] = {
     'NativeBase.Body': {
       'NativeBase.Title': {
-        fontSize: variables.titleFontSize - 2,
-        fontFamily: variables.titleFontfamily,
+        fontSize: themeColor.titleFontSize - 2,
+        fontFamily: themeColor.titleFontfamily,
         textAlign: 'center',
         fontWeight: '500',
         paddingBottom: 3
       },
       'NativeBase.Subtitle': {
-        fontSize: variables.subTitleFontSize,
-        fontFamily: variables.titleFontfamily,
-        color: variables.subtitleColor,
+        fontSize: themeColor.subTitleFontSize,
+        fontFamily: themeColor.titleFontfamily,
+        color: themeColor.subtitleColor,
         textAlign: 'center'
       }
     }
@@ -69,7 +72,7 @@ const buildTheme = (variables: any) => {
     shadowRadius: null,
     shadowOpacity: null,
     paddingTop: platform === PLATFORM.ANDROID ? StatusBar.currentHeight : undefined,
-    height: platform === PLATFORM.ANDROID ? variables.toolbarHeight + StatusBar.currentHeight : variables.toolbarHeight
+    height: platform === PLATFORM.ANDROID ? themeColor.toolbarHeight + StatusBar.currentHeight : themeColor.toolbarHeight
   };
 
   headerTheme['.noShadow'] = {
@@ -136,16 +139,16 @@ const buildTheme = (variables: any) => {
     alignItems: 'center',
     '.transparent': {
       'NativeBase.Text': {
-        color: variables.toolbarBtnTextColor,
+        color: themeColor.toolbarBtnTextColor,
         fontWeight: '600'
       },
       'NativeBase.Icon': {
-        color: variables.toolbarBtnColor
+        color: themeColor.toolbarBtnColor
       },
       'NativeBase.IconNB': {
-        color: variables.toolbarBtnColor
+        color: themeColor.toolbarBtnColor
       },
-      paddingHorizontal: variables.buttonPadding
+      paddingHorizontal: themeColor.buttonPadding
     },
     paddingHorizontal: 15
   };
@@ -154,8 +157,8 @@ const buildTheme = (variables: any) => {
     'NativeBase.Item': {
       'NativeBase.Icon': {
         backgroundColor: 'transparent',
-        color: variables.dropdownLinkColor,
-        fontSize: variables.toolbarSearchIconSize,
+        color: themeColor.dropdownLinkColor,
+        fontSize: themeColor.toolbarSearchIconSize,
         alignItems: 'center',
         marginTop: 2,
         paddingRight: 10,
@@ -169,15 +172,15 @@ const buildTheme = (variables: any) => {
       'NativeBase.Input': {
         alignSelf: 'center',
         lineHeight: null,
-        height: variables.searchBarInputHeight
+        height: themeColor.searchBarInputHeight
       },
       alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'flex-start',
       flex: 1,
-      height: variables.searchBarHeight,
+      height: themeColor.searchBarHeight,
       borderColor: 'transparent',
-      backgroundColor: variables.toolbarInputColor
+      backgroundColor: themeColor.toolbarInputColor
     },
     'NativeBase.Button': {
       '.transparent': {
@@ -205,21 +208,21 @@ const buildTheme = (variables: any) => {
         marginLeft: -10,
         height: 30,
         'NativeBase.Icon': {
-          color: variables.toolbarBtnColor,
-          fontSize: variables.iconHeaderSize,
+          color: themeColor.toolbarBtnColor,
+          fontSize: themeColor.iconHeaderSize,
           marginTop: 2,
           marginRight: 5,
           marginLeft: 2
         },
         'NativeBase.Text': {
-          color: variables.toolbarBtnTextColor,
+          color: themeColor.toolbarBtnTextColor,
           fontSize: platform === PLATFORM.IOS ? 17 : 0,
           marginLeft: 7,
           lineHeight: 19.5
         },
         'NativeBase.IconNB': {
-          color: variables.toolbarBtnColor,
-          fontSize: variables.iconHeaderSize,
+          color: themeColor.toolbarBtnColor,
+          fontSize: themeColor.iconHeaderSize,
           marginTop: 2,
           marginRight: 5,
           marginLeft: 2
@@ -227,29 +230,29 @@ const buildTheme = (variables: any) => {
       },
       '.transparent': {
         'NativeBase.Icon': {
-          color: variables.toolbarBtnColor,
+          color: themeColor.toolbarBtnColor,
           fontSize:
-            platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL
-              ? variables.iconHeaderSize + 1
-              : variables.iconHeaderSize,
+            platform === PLATFORM.IOS && themeColor.platformStyle !== PLATFORM.MATERIAL
+              ? themeColor.iconHeaderSize + 1
+              : themeColor.iconHeaderSize,
           marginTop: 0,
           marginRight: 2,
           marginLeft: 1,
           paddingTop: 1
         },
         'NativeBase.IconNB': {
-          color: variables.toolbarBtnColor,
+          color: themeColor.toolbarBtnColor,
           fontSize:
-            platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL
-              ? variables.iconHeaderSize + 1
-              : variables.iconHeaderSize - 2,
+            platform === PLATFORM.IOS && themeColor.platformStyle !== PLATFORM.MATERIAL
+              ? themeColor.iconHeaderSize + 1
+              : themeColor.iconHeaderSize - 2,
           marginTop: 0,
           marginRight: 2,
           marginLeft: 1,
           paddingTop: 1
         },
         'NativeBase.Text': {
-          color: variables.toolbarBtnTextColor,
+          color: themeColor.toolbarBtnTextColor,
           fontSize: platform === PLATFORM.IOS ? 17 : 0,
           top: platform === PLATFORM.IOS ? 1 : -1.5,
           paddingLeft: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? 2 : 5,
@@ -266,13 +269,13 @@ const buildTheme = (variables: any) => {
         shadowOpacity: null
       },
       'NativeBase.Icon': {
-        color: variables.toolbarBtnColor
+        color: themeColor.toolbarBtnColor
       },
       'NativeBase.IconNB': {
-        color: variables.toolbarBtnColor
+        color: themeColor.toolbarBtnColor
       },
       alignSelf: null,
-      paddingRight: variables.buttonPadding,
+      paddingRight: themeColor.buttonPadding,
       paddingLeft: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? 4 : 8
     },
     flex: platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL ? 1 : 0.4,
@@ -295,13 +298,13 @@ const buildTheme = (variables: any) => {
         backgroundColor: 'transparent'
       },
       'NativeBase.Icon': {
-        color: variables.toolbarBtnColor
+        color: themeColor.toolbarBtnColor
       },
       'NativeBase.IconNB': {
-        color: variables.toolbarBtnColor
+        color: themeColor.toolbarBtnColor
       },
       'NativeBase.Text': {
-        color: variables.inverseTextColor,
+        color: themeColor.inverseTextColor,
         backgroundColor: 'transparent'
       }
     }
@@ -312,20 +315,20 @@ const buildTheme = (variables: any) => {
       '.hasText': {
         height: 30,
         'NativeBase.Icon': {
-          color: variables.toolbarBtnColor,
-          fontSize: variables.iconHeaderSize - 2,
+          color: themeColor.toolbarBtnColor,
+          fontSize: themeColor.iconHeaderSize - 2,
           marginTop: 2,
           marginRight: 2,
           marginLeft: 5
         },
         'NativeBase.Text': {
-          color: variables.toolbarBtnTextColor,
+          color: themeColor.toolbarBtnTextColor,
           fontSize: platform === PLATFORM.IOS ? 17 : 14,
           lineHeight: 19.5
         },
         'NativeBase.IconNB': {
-          color: variables.toolbarBtnColor,
-          fontSize: variables.iconHeaderSize - 2,
+          color: themeColor.toolbarBtnColor,
+          fontSize: themeColor.iconHeaderSize - 2,
           marginTop: 2,
           marginRight: 2,
           marginLeft: 5
@@ -333,26 +336,26 @@ const buildTheme = (variables: any) => {
       },
       '.transparent': {
         'NativeBase.Icon': {
-          color: variables.toolbarBtnColor,
-          fontSize: variables.iconHeaderSize - 2,
+          color: themeColor.toolbarBtnColor,
+          fontSize: themeColor.iconHeaderSize - 2,
           marginTop: 0,
           marginLeft: 2,
           marginRight: 0
           // paddingTop: 0
         },
         'NativeBase.IconNB': {
-          color: variables.toolbarBtnColor,
-          fontSize: variables.iconHeaderSize - 2,
+          color: themeColor.toolbarBtnColor,
+          fontSize: themeColor.iconHeaderSize - 2,
           marginTop: 0,
           marginLeft: 2,
           marginRight: 0
           // paddingTop: 0
         },
         'NativeBase.Text': {
-          color: variables.toolbarBtnTextColor,
+          color: themeColor.toolbarBtnTextColor,
           fontSize: platform === PLATFORM.IOS ? 17 : 14,
           top: platform === PLATFORM.IOS ? 1 : -1.5,
-          paddingRight: platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL ? 0 : undefined
+          paddingRight: platform === PLATFORM.IOS && themeColor.platformStyle !== PLATFORM.MATERIAL ? 0 : undefined
         },
         padding: 0,
         marginLeft: platform === PLATFORM.IOS ? -9 : -5,
@@ -365,13 +368,13 @@ const buildTheme = (variables: any) => {
         shadowOpacity: null
       },
       'NativeBase.Icon': {
-        color: variables.toolbarBtnColor
+        color: themeColor.toolbarBtnColor
       },
       'NativeBase.IconNB': {
-        color: variables.toolbarBtnColor
+        color: themeColor.toolbarBtnColor
       },
       alignSelf: null,
-      paddingHorizontal: variables.buttonPadding
+      paddingHorizontal: themeColor.buttonPadding
     },
     flex: 1,
     alignSelf: 'center',
@@ -382,6 +385,6 @@ const buildTheme = (variables: any) => {
   return headerTheme;
 };
 
-export default (variables /* : * */ = variable) => {
-  return buildTheme(variables);
+export default (themeColor: ThemeColor) => {
+  return buildTheme(themeColor);
 };

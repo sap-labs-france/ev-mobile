@@ -1,13 +1,13 @@
-import variable from './../variables/platform';
+import ThemeColor from '../variables/ThemeColor';
 
-export default (variables /* : * */ = variable) => {
+export default (themeColor: ThemeColor) => {
   const textTheme: any = {
-    fontSize: variables.DefaultFontSize,
-    fontFamily: variables.fontFamily,
-    color: variables.textColor,
+    fontSize: themeColor.DefaultFontSize,
+    fontFamily: themeColor.fontFamily,
+    color: themeColor.textColor,
     '.note': {
       color: '#a7a7a7',
-      fontSize: variables.noteFontSize
+      fontSize: themeColor.noteFontSize
     }
   };
 

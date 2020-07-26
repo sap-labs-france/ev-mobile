@@ -1,18 +1,18 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
-import CommonColor2 from '../../theme/variables/CommonColor2';
+import ThemeColor from '../../theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     noDisplay: {
       flex: 1,
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: themeColor.containerBgColor
     },
     container: {
       flex: 1,
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: themeColor.containerBgColor
     },
     keyboardContainer: {
       flex: 1
@@ -32,23 +32,23 @@ export default function computeStyleSheet(): any {
       height: '100@s'
     },
     appText: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       fontSize: '40@s',
       fontWeight: 'bold',
       paddingTop: '5@s'
     },
     appVersionText: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       fontSize: '15@s'
     },
     appTenant: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       marginTop: '20@s',
       fontSize: '15@s',
       alignSelf: 'center',
     },
     appTenantName: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       marginTop: '5@s',
       marginBottom: '5@s',
       fontSize: '15@s',
@@ -62,7 +62,7 @@ export default function computeStyleSheet(): any {
     },
     eulaLink: {
       fontSize: '13@s',
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       textDecorationLine: 'underline'
     },
     linksButton: {
@@ -72,22 +72,22 @@ export default function computeStyleSheet(): any {
     linksTextButton: {
       fontSize: '13@s',
       fontWeight: 'bold',
-      color: commonColor.textColor
+      color: themeColor.textColor
     },
     createOrgButton: {
-      backgroundColor: commonColor.brandSuccess
+      backgroundColor: themeColor.brandSuccess
     },
     restoreOrgButton: {
-      backgroundColor: commonColor.brandWarning
+      backgroundColor: themeColor.brandWarning
     },
     deleteOrgButton: {
-      backgroundColor: commonColor.brandDanger
+      backgroundColor: themeColor.brandDanger
     },
     fab: {
-      backgroundColor: commonColor.brandDisabledDark
+      backgroundColor: themeColor.brandDisabledDark
     },
     footer: {
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: themeColor.containerBgColor
     }
   });
   const portraitStyles = {};

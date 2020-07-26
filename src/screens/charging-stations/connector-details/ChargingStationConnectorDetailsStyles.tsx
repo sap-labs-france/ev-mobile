@@ -2,20 +2,20 @@ import deepmerge from 'deepmerge';
 import { Platform } from 'react-native';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
-import CommonColor2 from '../../../theme/variables/CommonColor2';
+import ThemeColor from '../../../theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
       flexDirection: 'column',
       justifyContent: 'flex-start',
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: themeColor.containerBgColor
     },
     spinner: {
       flex: 1,
-      color: commonColor.textColor
+      color: themeColor.textColor
     },
     backgroundImage: {
       width: '100%',
@@ -35,8 +35,8 @@ export default function computeStyleSheet(): any {
       borderRadius: '25@s',
       borderStyle: 'solid',
       borderWidth: '4@s',
-      borderColor: commonColor.textColor,
-      backgroundColor: commonColor.containerBgColor,
+      borderColor: themeColor.textColor,
+      backgroundColor: themeColor.containerBgColor,
       justifyContent: 'center',
       alignItems: 'center'
     },
@@ -56,8 +56,8 @@ export default function computeStyleSheet(): any {
       borderRadius: '50@s',
       borderStyle: 'solid',
       borderWidth: '4@s',
-      borderColor: commonColor.textColor,
-      backgroundColor: commonColor.containerBgColor,
+      borderColor: themeColor.textColor,
+      backgroundColor: themeColor.containerBgColor,
       justifyContent: 'center',
       alignItems: 'center'
     },
@@ -65,29 +65,29 @@ export default function computeStyleSheet(): any {
       height: '15@s'
     },
     startTransaction: {
-      borderColor: commonColor.brandSuccess
+      borderColor: themeColor.success
     },
     stopTransaction: {
-      borderColor: commonColor.brandDanger
+      borderColor: themeColor.danger
     },
     transactionIcon: {
       fontSize: '75@s'
     },
     lastTransactionIcon: {
       fontSize: '25@s',
-      color: commonColor.buttonBg,
+      color: themeColor.buttonBg,
     },
     startTransactionIcon: {
-      color: commonColor.brandSuccess
+      color: themeColor.success
     },
     stopTransactionIcon: {
-      color: commonColor.brandDanger
+      color: themeColor.danger
     },
     buttonTransactionDisabled: {
-      borderColor: commonColor.buttonDisabledBg
+      borderColor: themeColor.buttonDisabledBg
     },
     transactionDisabledIcon: {
-      color: commonColor.buttonDisabledBg,
+      color: themeColor.buttonDisabledBg,
       backgroundColor: 'transparent'
     },
     scrollViewContainer: {
@@ -112,34 +112,36 @@ export default function computeStyleSheet(): any {
     },
     label: {
       fontSize: '16@s',
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       alignSelf: 'center'
     },
     labelValue: {
       fontSize: '25@s',
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      color: themeColor.textColor,
     },
     labelUser: {
-      fontSize: '10@s'
+      fontSize: '10@s',
+      color: themeColor.textColor,
     },
     subLabel: {
       fontSize: '10@s',
       marginTop: Platform.OS === 'ios' ? '0@s' : '-2@s',
-      color: commonColor.brandPrimaryDark,
+      color: themeColor.textColor,
       alignSelf: 'center'
     },
     subLabelStatusError: {
-      color: commonColor.brandDanger,
+      color: themeColor.danger,
       marginTop: '2@s'
     },
     subLabelUser: {
       fontSize: '8@s',
       marginTop: '0@s',
-      color: commonColor.textColor,
+      color: themeColor.textColor,
     },
     icon: {
       fontSize: '25@s',
-      color: commonColor.textColor,
+      color: themeColor.textColor,
     },
     userImage: {
       height: '52@s',
@@ -148,24 +150,24 @@ export default function computeStyleSheet(): any {
       marginBottom: '5@s',
       borderRadius: '26@s',
       borderWidth: '3@s',
-      borderColor: commonColor.textColor
+      borderColor: themeColor.textColor
     },
     info: {
-      color: commonColor.brandPrimaryDark,
-      borderColor: commonColor.brandPrimaryDark
+      color: themeColor.textColor,
+      borderColor: themeColor.textColor
     },
     success: {
-      color: commonColor.brandSuccess
+      color: themeColor.brandSuccess
     },
     warning: {
-      color: commonColor.brandWarning
+      color: themeColor.brandWarning
     },
     danger: {
-      color: commonColor.brandDanger
+      color: themeColor.brandDanger
     },
     disabled: {
-      color: commonColor.buttonDisabledBg,
-      borderColor: commonColor.buttonDisabledBg
+      color: themeColor.buttonDisabledBg,
+      borderColor: themeColor.buttonDisabledBg
     }
   });
   const portraitStyles = {};

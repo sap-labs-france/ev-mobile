@@ -1,16 +1,16 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
-import CommonColor2 from '../../theme/variables/CommonColor2';
+import ThemeColor from '../../theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
       flexDirection: 'column',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
+      borderBottomColor: themeColor.listBorderColor,
     },
     headerContent: {
       flexDirection: 'row',
@@ -18,8 +18,8 @@ export default function computeStyleSheet(): any {
       alignItems: 'center',
       height: '40@s',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.brandBackground,
+      borderBottomColor: themeColor.listBorderColor,
+      backgroundColor: themeColor.brandBackground,
     },
     titleContainer: {
       flexDirection: 'row',
@@ -35,17 +35,17 @@ export default function computeStyleSheet(): any {
       paddingRight: '5@s',
       paddingLeft: '5@s',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
+      borderBottomColor: themeColor.listBorderColor,
     },
     headerName: {
       marginLeft: '10@s',
       fontSize: '20@s',
       fontWeight: 'bold',
-      color: commonColor.headerTextColor
+      color: themeColor.headerTextColor
     },
     address: {
       width: '80%',
-      color: commonColor.headerTextColor,
+      color: themeColor.headerTextColor,
     },
     connectorContent: {
       flexDirection: 'row',
@@ -53,11 +53,11 @@ export default function computeStyleSheet(): any {
       paddingTop: '12@s',
       paddingBottom: '12@s',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.brandPrimaryDark,
+      borderBottomColor: themeColor.brandPrimaryDark,
     },
     icon: {
       fontSize: '30@s',
-      color: commonColor.headerTextColor
+      color: themeColor.headerTextColor
     },
     iconLeft: {
       marginLeft: '10@s',

@@ -5,7 +5,7 @@ import Chademo from '../../../../../../assets/connectorType/chademo.svg';
 import ComboCCS from '../../../../../../assets/connectorType/combo-ccs.svg';
 import Domestic from '../../../../../../assets/connectorType/domestic-ue.svg';
 import Type2 from '../../../../../../assets/connectorType/type2.svg';
-import CommonColor2 from '../../../../../theme/variables/CommonColor2';
+import ThemeColor from '../../../../../theme/variables/ThemeColor';
 import { ConnectorType } from '../../../../../types/ChargingStation';
 import FilterControlComponent, { FilterControlComponentProps } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
@@ -39,12 +39,12 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
 
   public getConnectors(): {type: ConnectorType; element: Element; selected: boolean;}[] {
     const connectorStyle = computeStyleSheet();
-    const commonColor = new CommonColor2();
+    const themeColor = new ThemeColor();
     return [
-      { type: ConnectorType.TYPE_2, element: <Type2 width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>, selected: false },
-      { type: ConnectorType.COMBO_CCS, element: <ComboCCS width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>, selected: false },
-      { type: ConnectorType.CHADEMO, element: <Chademo width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>, selected: false },
-      { type: ConnectorType.DOMESTIC, element: <Domestic width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} fill={commonColor.textColor}/>, selected: false },
+      { type: ConnectorType.TYPE_2, element: <Type2 width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={themeColor.textColor} strokeWidth='10'/>, selected: false },
+      { type: ConnectorType.COMBO_CCS, element: <ComboCCS width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={themeColor.textColor} strokeWidth='30'/>, selected: false },
+      { type: ConnectorType.CHADEMO, element: <Chademo width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={themeColor.textColor} strokeWidth='30'/>, selected: false },
+      { type: ConnectorType.DOMESTIC, element: <Domestic width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} fill={themeColor.textColor}/>, selected: false },
     ]
   }
 

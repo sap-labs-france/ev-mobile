@@ -1,44 +1,44 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
-import CommonColor2 from '../../theme/variables/CommonColor2';
+import ThemeColor from '../../theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
       flexDirection: 'column',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor
+      borderBottomColor: themeColor.listBorderColor
     },
     transactionContent: {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-evenly',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
+      borderBottomColor: themeColor.listBorderColor,
       paddingLeft: '5@s',
       paddingRight: '5@s',
       height: '80@s',
       width: '100%'
     },
     label: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       fontSize: '10@s',
       marginTop: '-3@s'
     },
     info: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
     },
     success: {
-      color: commonColor.brandSuccess
+      color: themeColor.brandSuccess
     },
     warning: {
-      color: commonColor.brandWarning
+      color: themeColor.brandWarning
     },
     danger: {
-      color: commonColor.brandDanger
+      color: themeColor.brandDanger
     },
     columnContainer: {
       flexDirection: 'column',
@@ -52,17 +52,17 @@ export default function computeStyleSheet(): any {
       alignItems: 'center'
     },
     icon: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       fontSize: '30@s',
       justifyContent: 'flex-end'
     },
     labelValue: {
       fontSize: '15@s',
-      color: commonColor.textColor,
+      color: themeColor.textColor,
     },
     subLabelValue: {
       fontSize: '10@s',
-      color: commonColor.textColor,
+      color: themeColor.textColor,
     }
   });
   const portraitStyles = {};

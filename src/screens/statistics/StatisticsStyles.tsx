@@ -1,50 +1,50 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
-import CommonColor2 from '../../theme/variables/CommonColor2';
+import ThemeColor from '../../theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
       justifyContent: 'center',
       height: '100%',
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: themeColor.containerBgColor
     },
     spinner: {
       flex: 1,
-      color: commonColor.textColor
+      color: themeColor.textColor
     },
     content: {
-      backgroundColor: commonColor.headerBgColor,
+      backgroundColor: themeColor.headerBgColor,
     },
     cards: {
       padding: '10@s',
-      backgroundColor: commonColor.headerBgColor,
+      backgroundColor: themeColor.headerBgColor,
     },
     card: {
       padding: '5@s',
-      backgroundColor: commonColor.headerBgColor,
+      backgroundColor: themeColor.headerBgColor,
     },
     cardItem: {
-      backgroundColor: commonColor.headerBgColor,
+      backgroundColor: themeColor.headerBgColor,
     },
     tabHeader: {},
     cardIcon: {
       textAlign: 'center',
       fontSize: '35@s',
       width: '40@s',
-      color: commonColor.textColor
+      color: themeColor.textColor
     },
     cardText: {
       fontSize: '20@s',
-      color: commonColor.textColor
+      color: themeColor.textColor
     },
     cardNote: {
       fontSize: '12@s',
       fontStyle: 'italic',
-      color: commonColor.subTextColor
+      color: themeColor.subTextColor
     }
   });
   const portraitStyles = {};

@@ -16,7 +16,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
-import CommonColor2 from '../../../theme/variables/CommonColor2';
+import ThemeColor from '../../../theme/variables/ThemeColor';
 
 
 export interface Props extends BaseProps {
@@ -368,7 +368,7 @@ export default class Login extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyleSheet();
     const formStyle = computeFormStyleSheet();
-    const commonColor = new CommonColor2();
+    const themeColor = new ThemeColor();
     const navigation = this.props.navigation;
     const { eula, loading, initialLoading, visible, hidePassword } = this.state;
         // Render
@@ -415,7 +415,7 @@ export default class Login extends BaseScreen<Props, State> {
                           autoCapitalize={'none'}
                           autoCorrect={false}
                           placeholder={I18n.t('authentication.tenantSubdomain')}
-                          placeholderTextColor={commonColor.inputColorPlaceholder}
+                          placeholderTextColor={themeColor.inputColorPlaceholder}
                           style={modalStyle.modalInputField}
                           onChangeText={(value) => this.setState({ newTenantSubDomain: value.toLowerCase() })}
                         />
@@ -433,7 +433,7 @@ export default class Login extends BaseScreen<Props, State> {
                       <Item inlineLabel={true} style={modalStyle.modalIinputGroup}>
                         <TextInput
                           placeholder={I18n.t('authentication.tenantName')}
-                          placeholderTextColor={commonColor.inputColorPlaceholder}
+                          placeholderTextColor={themeColor.inputColorPlaceholder}
                           style={modalStyle.modalInputField}
                           onChangeText={(value) => this.setState({ newTenantName: value })}
                         />
@@ -474,9 +474,9 @@ export default class Login extends BaseScreen<Props, State> {
                 <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType='next'
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={themeColor.inverseTextColor}
                   placeholder={I18n.t('authentication.email')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={themeColor.inputColorPlaceholder}
                   onSubmitEditing={() => this.passwordInput.focus()}
                   style={formStyle.inputField}
                   autoCapitalize='none'
@@ -498,11 +498,11 @@ export default class Login extends BaseScreen<Props, State> {
                 <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType='go'
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={themeColor.inverseTextColor}
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
                   onSubmitEditing={() => Keyboard.dismiss()}
                   placeholder={I18n.t('authentication.password')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={themeColor.inputColorPlaceholder}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}

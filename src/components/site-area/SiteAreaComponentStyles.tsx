@@ -2,16 +2,16 @@ import deepmerge from 'deepmerge';
 import { Platform } from 'react-native';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
-import CommonColor2 from '../../theme/variables/CommonColor2';
+import ThemeColor from '../../theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
       flexDirection: 'column',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor
+      borderBottomColor: themeColor.listBorderColor
     },
     headerContent: {
       flexDirection: 'row',
@@ -19,8 +19,8 @@ export default function computeStyleSheet(): any {
       alignItems: 'center',
       height: '40@s',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.headerBgColor
+      borderBottomColor: themeColor.listBorderColor,
+      backgroundColor: themeColor.headerBgColor
     },
     titleContainer: {
       flexDirection: 'row',
@@ -36,17 +36,17 @@ export default function computeStyleSheet(): any {
       paddingRight: '5@s',
       paddingLeft: '5@s',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
+      borderBottomColor: themeColor.listBorderColor,
     },
     address: {
       width: '80%',
-      color: commonColor.headerTextColor,
+      color: themeColor.headerTextColor,
     },
     headerName: {
       marginLeft: '10@s',
       fontSize: '20@s',
       fontWeight: 'bold',
-      color: commonColor.headerTextColor
+      color: themeColor.headerTextColor
     },
     connectorContent: {
       flexDirection: 'row',
@@ -54,11 +54,11 @@ export default function computeStyleSheet(): any {
       paddingTop: '12@s',
       paddingBottom: '12@s',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.brandPrimaryDark
+      borderBottomColor: themeColor.brandPrimaryDark
     },
     icon: {
       fontSize: '30@s',
-      color: commonColor.headerTextColor
+      color: themeColor.headerTextColor
     },
     iconLeft: {
       marginLeft: '10@s',
@@ -83,7 +83,7 @@ export default function computeStyleSheet(): any {
     badgeSuccessContainer: {},
     badgeOccupiedContainer: {},
     connectorText: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       marginTop: '-15@s',
       marginRight: '10@s',
       fontSize: '20@s'
@@ -92,10 +92,10 @@ export default function computeStyleSheet(): any {
       marginTop: '5@s'
     },
     freeConnectorBadge: {
-      backgroundColor: commonColor.brandInfo
+      backgroundColor: themeColor.brandInfo
     },
     occupiedConnectorBadge: {
-      backgroundColor: commonColor.brandDanger
+      backgroundColor: themeColor.brandDanger
     },
     connectorBadgeTitle: {
       minWidth: '35@s',
@@ -104,7 +104,7 @@ export default function computeStyleSheet(): any {
       paddingTop: Platform.OS === 'ios' ? '3@s' : 0,
       paddingBottom: Platform.OS === 'ios' ? '3@s' : 0,
       fontWeight: 'bold',
-      color: commonColor.textColor
+      color: themeColor.textColor
     },
     connectorSubTitle: {
       fontSize: '15@s',
@@ -113,7 +113,7 @@ export default function computeStyleSheet(): any {
       marginBottom: '5@s',
       marginLeft: '10@s',
       marginRight: '10@s',
-      color: commonColor.textColor
+      color: themeColor.textColor
     }
   });
   const portraitStyles = {};

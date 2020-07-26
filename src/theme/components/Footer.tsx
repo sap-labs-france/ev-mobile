@@ -1,23 +1,19 @@
-import { PLATFORM } from './../variables/commonColor';
-import variable from './../variables/platform';
+import ThemeColor from '../variables/ThemeColor';
 
-export default (variables /* : * */ = variable) => {
-  const platformStyle = variables.platformStyle;
-  const platform = variables.platform;
-
+export default (themeColor: ThemeColor) => {
   const iconCommon = {
     'NativeBase.Icon': {
-      color: variables.tabBarActiveTextColor
+      color: themeColor.tabBarActiveTextColor
     }
   };
   const iconNBCommon = {
     'NativeBase.IconNB': {
-      color: variables.tabBarActiveTextColor
+      color: themeColor.tabBarActiveTextColor
     }
   };
   const textCommon = {
     'NativeBase.Text': {
-      color: variables.tabBarActiveTextColor
+      color: themeColor.tabBarActiveTextColor
     }
   };
   const footerTheme: any = {
@@ -64,8 +60,8 @@ export default (variables /* : * */ = variable) => {
           ...textCommon
         },
         '.full': {
-          height: variables.footerHeight,
-          paddingBottom: variables.footerPaddingBottom,
+          height: themeColor.footerHeight,
+          paddingBottom: themeColor.footerPaddingBottom,
           flex: 1
         },
         ...iconCommon,
@@ -96,11 +92,11 @@ export default (variables /* : * */ = variable) => {
       alignSelf: 'center',
       alignItems: 'flex-end'
     },
-    backgroundColor: variables.footerDefaultBg,
+    backgroundColor: themeColor.footerDefaultBg,
     flexDirection: 'row',
     justifyContent: 'center',
-    height: variables.footerHeight,
-    paddingBottom: variables.footerPaddingBottom,
+    height: themeColor.footerHeight,
+    paddingBottom: themeColor.footerPaddingBottom,
     elevation: 3,
     left: 0,
     right: 0

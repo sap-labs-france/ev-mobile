@@ -1,27 +1,27 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
-import CommonColor2 from '../../../../theme/variables/CommonColor2';
+import ThemeColor from '../../../../theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     visibleContainer: {
       paddingLeft: '10@s',
       paddingRight: '10@s',
       justifyContent: 'flex-start',
       borderBottomWidth: '1@s',
-      borderColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.containerBgColor
+      borderColor: themeColor.listBorderColor,
+      backgroundColor: themeColor.containerBgColor
     },
     visibleExpandedContainer: {
       flexDirection: 'row',
       justifyContent: 'center',
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: themeColor.containerBgColor
     },
     visibleExpandedIcon: {
       fontSize: '25@s',
-      color: commonColor.textColor
+      color: themeColor.textColor
     }
   });
   const portraitStyles = {};

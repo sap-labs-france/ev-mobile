@@ -1,13 +1,12 @@
 import { Platform } from 'react-native';
 
-import { PLATFORM } from './../variables/commonColor';
-import variable from './../variables/platform';
+import ThemeColor, { PLATFORM } from '../variables/ThemeColor';
 
-export default (variables /* : * */ = variable) => {
+export default (themeColor: ThemeColor) => {
   const titleTheme: any = {
-    fontSize: variables.titleFontSize,
-    fontFamily: variables.titleFontfamily,
-    color: variables.titleFontColor,
+    fontSize: themeColor.titleFontSize,
+    fontFamily: themeColor.titleFontfamily,
+    color: themeColor.titleFontColor,
     fontWeight: Platform.OS === PLATFORM.IOS ? '700' : undefined,
     textAlign: 'center',
     paddingLeft: Platform.OS === PLATFORM.IOS ? 4 : 0,

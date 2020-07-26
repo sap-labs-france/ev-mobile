@@ -1,23 +1,22 @@
 import { StyleSheet } from 'react-native';
 
-import { PLATFORM } from './../variables/commonColor';
-import variable from './../variables/platform';
+import ThemeColor, { PLATFORM } from '../variables/ThemeColor';
 
-export default (variables /* : * */ = variable) => {
-  const platform = variables.platform;
+export default (themeColor: ThemeColor) => {
+  const platform = themeColor.platform;
   const transparentBtnCommon: any = {
     'NativeBase.Text': {
-      fontSize: variables.DefaultFontSize - 3,
-      color: variables.sTabBarActiveTextColor
+      fontSize: themeColor.DefaultFontSize - 3,
+      color: themeColor.sTabBarActiveTextColor
     },
     'NativeBase.Icon': {
-      fontSize: variables.iconFontSize - 10,
-      color: variables.sTabBarActiveTextColor,
+      fontSize: themeColor.iconFontSize - 10,
+      color: themeColor.sTabBarActiveTextColor,
       marginHorizontal: null
     },
     'NativeBase.IconNB': {
-      fontSize: variables.iconFontSize - 10,
-      color: variables.sTabBarActiveTextColor
+      fontSize: themeColor.iconFontSize - 10,
+      color: themeColor.sTabBarActiveTextColor
     },
     paddingVertical: null,
     paddingHorizontal: null
@@ -28,7 +27,7 @@ export default (variables /* : * */ = variable) => {
       'NativeBase.Body': {
         'NativeBase.Text': {
           '.note': {
-            color: variables.listNoteColor,
+            color: themeColor.listNoteColor,
             fontWeight: '400',
             marginRight: 20
           }
@@ -38,10 +37,10 @@ export default (variables /* : * */ = variable) => {
         alignItems: null
       },
       'NativeBase.Icon': {
-        fontSize: variables.iconFontSize
+        fontSize: themeColor.iconFontSize
       },
       'NativeBase.IconNB': {
-        fontSize: variables.iconFontSize
+        fontSize: themeColor.iconFontSize
       },
       'NativeBase.Text': {
         marginLeft: 10,
@@ -50,7 +49,7 @@ export default (variables /* : * */ = variable) => {
       'NativeBase.Button': {
         '.transparent': {
           ...transparentBtnCommon,
-          paddingRight: variables.cardItemPadding + 5
+          paddingRight: themeColor.cardItemPadding + 5
         }
       },
       flex: 1,
@@ -60,7 +59,7 @@ export default (variables /* : * */ = variable) => {
     '.content': {
       'NativeBase.Text': {
         color: platform === PLATFORM.IOS ? '#555' : '#222',
-        fontSize: variables.DefaultFontSize - 2
+        fontSize: themeColor.DefaultFontSize - 2
       }
     },
     '.cardBody': {
@@ -72,7 +71,7 @@ export default (variables /* : * */ = variable) => {
     'NativeBase.Body': {
       'NativeBase.Text': {
         '.note': {
-          color: variables.listNoteColor,
+          color: themeColor.listNoteColor,
           fontWeight: '200',
           marginRight: 20
         }
@@ -80,7 +79,7 @@ export default (variables /* : * */ = variable) => {
       'NativeBase.Button': {
         '.transparent': {
           ...transparentBtnCommon,
-          paddingRight: variables.cardItemPadding + 5,
+          paddingRight: themeColor.cardItemPadding + 5,
           alignSelf: 'stretch'
         }
       },
@@ -100,16 +99,16 @@ export default (variables /* : * */ = variable) => {
       },
       'NativeBase.Icon': {
         alignSelf: null,
-        fontSize: variables.iconFontSize - 8,
-        color: variables.cardBorderColor
+        fontSize: themeColor.iconFontSize - 8,
+        color: themeColor.cardBorderColor
       },
       'NativeBase.IconNB': {
         alignSelf: null,
-        fontSize: variables.iconFontSize - 8,
-        color: variables.cardBorderColor
+        fontSize: themeColor.iconFontSize - 8,
+        color: themeColor.cardBorderColor
       },
       'NativeBase.Text': {
-        fontSize: variables.DefaultFontSize - 1,
+        fontSize: themeColor.DefaultFontSize - 1,
         alignSelf: null
       },
       'NativeBase.Thumbnail': {
@@ -136,13 +135,13 @@ export default (variables /* : * */ = variable) => {
       },
       '.bordered': {
         'NativeBase.Text': {
-          color: variables.brandPrimary,
+          color: themeColor.brandPrimary,
           fontWeight: platform === PLATFORM.IOS ? '600' : '500'
         },
-        borderBottomWidth: variables.borderWidth
+        borderBottomWidth: themeColor.borderWidth
       },
       borderBottomWidth: null,
-      paddingVertical: variables.cardItemPadding + 5
+      paddingVertical: themeColor.cardItemPadding + 5
     },
     '.footer': {
       'NativeBase.Text': {
@@ -151,45 +150,45 @@ export default (variables /* : * */ = variable) => {
       },
       '.bordered': {
         'NativeBase.Text': {
-          color: variables.brandPrimary,
+          color: themeColor.brandPrimary,
           fontWeight: platform === PLATFORM.IOS ? '600' : '500'
         },
-        borderTopWidth: variables.borderWidth
+        borderTopWidth: themeColor.borderWidth
       },
       borderBottomWidth: null
     },
     'NativeBase.Text': {
       '.note': {
-        color: variables.listNoteColor,
+        color: themeColor.listNoteColor,
         fontWeight: '200'
       }
     },
     'NativeBase.Icon': {
-      width: variables.iconFontSize + 5,
-      fontSize: variables.iconFontSize - 2
+      width: themeColor.iconFontSize + 5,
+      fontSize: themeColor.iconFontSize - 2
     },
     'NativeBase.IconNB': {
-      width: variables.iconFontSize + 5,
-      fontSize: variables.iconFontSize - 2
+      width: themeColor.iconFontSize + 5,
+      fontSize: themeColor.iconFontSize - 2
     },
     '.bordered': {
       borderBottomWidth: StyleSheet.hairlineWidth,
-      borderColor: variables.cardBorderColor
+      borderColor: themeColor.cardBorderColor
     },
     '.first': {
-      borderTopLeftRadius: variables.cardBorderRadius,
-      borderTopRightRadius: variables.cardBorderRadius
+      borderTopLeftRadius: themeColor.cardBorderRadius,
+      borderTopRightRadius: themeColor.cardBorderRadius
     },
     '.last': {
-      borderBottomLeftRadius: variables.cardBorderRadius,
-      borderBottomRightRadius: variables.cardBorderRadius
+      borderBottomLeftRadius: themeColor.cardBorderRadius,
+      borderBottomRightRadius: themeColor.cardBorderRadius
     },
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: variables.cardBorderRadius,
-    padding: variables.cardItemPadding + 5,
-    paddingVertical: variables.cardItemPadding,
-    backgroundColor: variables.cardDefaultBg
+    borderRadius: themeColor.cardBorderRadius,
+    padding: themeColor.cardItemPadding + 5,
+    paddingVertical: themeColor.cardItemPadding,
+    backgroundColor: themeColor.cardDefaultBg
   };
 
   return cardItemTheme;

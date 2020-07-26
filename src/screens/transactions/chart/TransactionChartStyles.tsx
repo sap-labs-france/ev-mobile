@@ -1,20 +1,20 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
-import CommonColor2 from '../../../theme/variables/CommonColor2';
+import ThemeColor from '../../../theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
-      backgroundColor: commonColor.containerBgColor,
+      backgroundColor: themeColor.containerBgColor,
       paddingBottom: '5@s'
     },
     spinner: {
       flex: 1,
       justifyContent: 'center',
-      color: commonColor.textColor
+      color: themeColor.textColor
     },
     chart: {
       height: '87%'
@@ -32,14 +32,14 @@ export default function computeStyleSheet(): any {
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: '8@s',
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: themeColor.containerBgColor
     },
     headerValue: {
       fontSize: '18@s',
       fontWeight: 'bold'
     },
     subHeaderName: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       fontSize: '15@s',
       width: '49%'
     },
@@ -51,7 +51,7 @@ export default function computeStyleSheet(): any {
       marginTop: '20@s',
       fontSize: '14@s',
       textAlign: 'center',
-      color: commonColor.textColor,
+      color: themeColor.textColor,
     }
   });
   const portraitStyles = {};

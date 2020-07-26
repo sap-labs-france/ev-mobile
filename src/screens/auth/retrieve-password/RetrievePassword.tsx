@@ -7,7 +7,7 @@ import { NavigationActions, StackActions } from 'react-navigation';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
-import CommonColor2 from '../../../theme/variables/CommonColor2';
+import ThemeColor from '../../../theme/variables/ThemeColor';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Constants from '../../../utils/Constants';
@@ -146,7 +146,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
-    const commonColor = new CommonColor2();
+    const themeColor = new ThemeColor();
     const { loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl } = this.state;
     return (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
@@ -158,9 +158,9 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
                 <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType={'next'}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={themeColor.inverseTextColor}
                   placeholder={I18n.t('authentication.email')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={themeColor.inputColorPlaceholder}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
@@ -177,7 +177,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               {loading || !captcha ? (
-                <Spinner style={formStyle.spinner} color='white' />
+                <Spinner style={formStyle.spinner}/>
               ) : (
                 <Button primary={true} block={true} style={formStyle.button} onPress={() => this.retrievePassword()}>
                   <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.retrievePassword')}</Text>

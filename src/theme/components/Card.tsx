@@ -1,6 +1,6 @@
-import variable from './../variables/platform';
+import ThemeColor from '../variables/ThemeColor';
 
-export default (variables /* : * */ = variable) => {
+export default (themeColor: ThemeColor) => {
   const cardTheme: any = {
     '.transparent': {
       shadowColor: null,
@@ -19,11 +19,11 @@ export default (variables /* : * */ = variable) => {
     },
     marginVertical: 5,
     marginHorizontal: 2,
-    borderWidth: variables.borderWidth,
-    borderRadius: variables.cardBorderRadius,
-    borderColor: variables.cardBorderColor,
+    borderWidth: themeColor.borderWidth,
+    borderRadius: themeColor.cardBorderRadius,
+    borderColor: themeColor.cardBorderColor,
     flexWrap: 'nowrap',
-    backgroundColor: variables.cardDefaultBg,
+    backgroundColor: themeColor.cardDefaultBg,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,

@@ -1,8 +1,8 @@
 import { scale } from 'react-native-size-matters';
 
-import variable from './../variables/platform';
+import ThemeColor from '../variables/ThemeColor';
 
-export default (variables /* : * */ = variable) => {
+export default (themeColor: ThemeColor) => {
   const tabBarTheme: any = {
     '.tabIcon': {
       height: undefined
@@ -13,20 +13,20 @@ export default (variables /* : * */ = variable) => {
     'NativeBase.Button': {
       '.transparent': {
         'NativeBase.Text': {
-          fontSize: variables.tabFontSize,
-          color: variables.sTabBarActiveTextColor,
+          fontSize: themeColor.tabFontSize,
+          color: themeColor.sTabBarActiveTextColor,
           fontWeight: '400'
         },
         'NativeBase.IconNB': {
-          color: variables.sTabBarActiveTextColor
+          color: themeColor.sTabBarActiveTextColor
         }
       },
       'NativeBase.IconNB': {
-        color: variables.sTabBarActiveTextColor
+        color: themeColor.sTabBarActiveTextColor
       },
       'NativeBase.Text': {
-        fontSize: variables.tabFontSize,
-        color: variables.sTabBarActiveTextColor,
+        fontSize: themeColor.tabFontSize,
+        color: themeColor.sTabBarActiveTextColor,
         fontWeight: '400'
       },
       '.isTabActive': {
@@ -40,7 +40,7 @@ export default (variables /* : * */ = variable) => {
       justifyContent: 'center',
       borderRadius: null,
       borderBottomColor: 'transparent',
-      backgroundColor: variables.tabBgColor
+      backgroundColor: themeColor.tabBgColor
     },
     height: scale(50),
     flexDirection: 'row',
@@ -50,7 +50,7 @@ export default (variables /* : * */ = variable) => {
     borderLeftWidth: 0,
     borderRightWidth: 0,
     borderBottomColor: '#ccc',
-    backgroundColor: variables.tabBgColor
+    backgroundColor: themeColor.tabBgColor
   };
 
   return tabBarTheme;

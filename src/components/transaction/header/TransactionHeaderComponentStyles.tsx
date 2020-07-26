@@ -1,16 +1,16 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
-import CommonColor2 from '../../../theme/variables/CommonColor2';
+import ThemeColor from '../../../theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
       flexDirection: 'column',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor
+      borderBottomColor: themeColor.listBorderColor
     },
     headerContent: {
       flexDirection: 'row',
@@ -18,11 +18,11 @@ export default function computeStyleSheet(): any {
       alignItems: 'center',
       padding: '5@s',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.headerBgColor
+      borderBottomColor: themeColor.listBorderColor,
+      backgroundColor: themeColor.headerBgColorLight
     },
     headerName: {
-      color: commonColor.headerTextColor,
+      color: themeColor.headerTextColor,
       fontSize: '18@s',
       marginLeft: '5@s',
       marginRight: '5@s',
@@ -35,10 +35,10 @@ export default function computeStyleSheet(): any {
       padding: '5@s',
       paddingLeft: '8@s',
       paddingRight: '8@s',
-      backgroundColor: commonColor.headerBgColorLight
+      backgroundColor: themeColor.containerBgColor
     },
     subHeaderName: {
-      color: commonColor.headerTextColor,
+      color: themeColor.headerTextColor,
       fontSize: '15@s',
       width: '49%'
     },
@@ -51,7 +51,7 @@ export default function computeStyleSheet(): any {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
+      borderBottomColor: themeColor.listBorderColor,
       paddingLeft: '5@s',
       paddingRight: '5@s',
       height: '80@s',
@@ -60,19 +60,19 @@ export default function computeStyleSheet(): any {
     label: {
       fontSize: '10@s',
       marginTop: '-3@s',
-      color: commonColor.textColor,
+      color: themeColor.textColor,
     },
     info: {
-      color: commonColor.brandPrimaryDark
+      color: themeColor.primary
     },
     success: {
-      color: commonColor.brandSuccess
+      color: themeColor.success
     },
     warning: {
-      color: commonColor.brandWarning
+      color: themeColor.warning
     },
     danger: {
-      color: commonColor.brandDanger
+      color: themeColor.danger
     },
     columnContainer: {
       flexDirection: 'column',
@@ -87,11 +87,11 @@ export default function computeStyleSheet(): any {
     icon: {
       fontSize: '30@s',
       justifyContent: 'flex-end',
-      color: commonColor.textColor,
+      color: themeColor.textColor,
     },
     labelValue: {
       fontSize: '15@s',
-      color: commonColor.textColor,
+      color: themeColor.textColor,
     }
   });
   const portraitStyles = {};

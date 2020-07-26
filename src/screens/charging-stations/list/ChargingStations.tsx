@@ -293,34 +293,34 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
                 region={this.currentRegion}
                 onRegionChange={this.onMapRegionChange}
               >
-              {this.state.chargingStations.map((chargingStation) => {
-                if (Utils.containsGPSCoordinates(chargingStation.coordinates)) {
-                  return (
-                    <Marker
-                      key={chargingStation.id}
-                      coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
-                      title={chargingStation.id}
-                      description={chargingStation.id}
-                    />
-                  );
-                }
-                return undefined;
-              })}
-            </MapView>
-          :
-            <FlatList
-              data={chargingStations}
-              renderItem={({ item }) =>
-                <ChargingStationComponent chargingStation={item} isAdmin={isAdmin} navigation={navigation}
-                  isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteArea ? item.siteArea.siteID : '')} />}
-              keyExtractor={(item) => item.id}
-              refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-              onEndReached={this.onEndScroll}
-              onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-              ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargers')} />}
-            />
-          }
+                {this.state.chargingStations.map((chargingStation) => {
+                  if (Utils.containsGPSCoordinates(chargingStation.coordinates)) {
+                    return (
+                      <Marker
+                        key={chargingStation.id}
+                        coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
+                        title={chargingStation.id}
+                        description={chargingStation.id}
+                      />
+                    );
+                  }
+                  return undefined;
+                })}
+              </MapView>
+            :
+              <FlatList
+                data={chargingStations}
+                renderItem={({ item }) =>
+                  <ChargingStationComponent chargingStation={item} isAdmin={isAdmin} navigation={navigation}
+                    isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteArea ? item.siteArea.siteID : '')} />}
+                keyExtractor={(item) => item.id}
+                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+                onEndReached={this.onEndScroll}
+                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargers')} />}
+              />
+            }
           </View>
         )
       }

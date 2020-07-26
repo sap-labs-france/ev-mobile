@@ -3,7 +3,7 @@ export enum ThemeType {
   LIGHT = 'light',
 }
 
-export default interface ThemeColors {
+export default interface ThemeDefinition {
   backgroundHeader: string;
   background: string;
   borderColor: string;

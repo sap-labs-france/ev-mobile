@@ -1,12 +1,11 @@
-import { PLATFORM } from './../variables/commonColor';
-import variable from './../variables/platform';
+import ThemeColor, { PLATFORM } from '../variables/ThemeColor';
 
-export default (variables /* : * */ = variable) => {
-  const platform = variables.platform;
+export default (themeColor: ThemeColor) => {
+  const platform = themeColor.platform;
 
   const tabHeadingTheme = {
     flexDirection: 'row',
-    backgroundColor: variables.tabDefaultBg,
+    backgroundColor: themeColor.tabDefaultBg,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -17,22 +16,22 @@ export default (variables /* : * */ = variable) => {
       minWidth: platform === PLATFORM.ANDROID ? undefined : 60
     },
     'NativeBase.Text': {
-      color: variables.topTabBarTextColor,
+      color: themeColor.topTabBarTextColor,
       marginHorizontal: 7,
       marginTop: -5
     },
     'NativeBase.Icon': {
-      color: variables.topTabBarTextColor,
+      color: themeColor.topTabBarTextColor,
       fontSize: platform === PLATFORM.IOS ? 26 : undefined
     },
     '.active': {
       'NativeBase.Text': {
-        color: variables.topTabBarActiveTextColor,
+        color: themeColor.topTabBarActiveTextColor,
         fontWeight: '600',
         marginTop: -5
       },
       'NativeBase.Icon': {
-        color: variables.topTabBarActiveTextColor
+        color: themeColor.topTabBarActiveTextColor
       }
     }
   };

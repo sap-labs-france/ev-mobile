@@ -1,10 +1,10 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
-import CommonColor2 from '../../../theme/variables/CommonColor2';
+import ThemeColor from '../../../theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       width: '100%',
@@ -13,7 +13,7 @@ export default function computeStyleSheet(): any {
       borderStyle: 'solid',
       borderWidth: 1,
       borderColor: 'transparent',
-      borderTopColor: commonColor.listBorderColor
+      borderTopColor: themeColor.listBorderColor
     },
     connectorContainer: {
       flexDirection: 'column',
@@ -37,14 +37,14 @@ export default function computeStyleSheet(): any {
       alignItems: 'center',
       height: '60@s',
       width: '80@s',
-      color: commonColor.textColor
+      color: themeColor.textColor
     },
     connectorDetailAnimated: {
       position: 'absolute',
       alignItems: 'center'
     },
     connectorValues: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       marginTop: '-1@s',
       fontSize: '30@s',
       fontWeight: 'bold',
@@ -55,22 +55,22 @@ export default function computeStyleSheet(): any {
       height: '40@s'
     },
     labelImage: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       paddingTop: '2@s',
       fontSize: '10@s'
     },
     label: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       fontSize: '10@s',
       marginTop: '-3@s'
     },
     subLabel: {
-      color: commonColor.textColor,
+      color: themeColor.textColor,
       fontSize: '9@s'
     },
     icon: {
       fontSize: '30@s',
-      color: commonColor.textColor,
+      color: themeColor.textColor,
     }
   });
   const portraitStyles = {};

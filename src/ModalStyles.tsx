@@ -1,15 +1,15 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
-import CommonColor2 from './theme/variables/CommonColor2';
+import ThemeColor from './theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     modal: {
     },
     modalContainer: {
-      backgroundColor: commonColor.containerBgColor,
+      backgroundColor: themeColor.containerBgColor,
     },
     modalHeaderContainer: {
       flexDirection: 'row',
@@ -22,7 +22,7 @@ export default function computeStyleSheet(): any {
       width: '100%',
       textAlign: 'center',
       fontSize: '17@s',
-      color: commonColor.textColor,
+      color: themeColor.textColor,
     },
     modalContentContainer: {
       paddingLeft: '15@s',
@@ -45,7 +45,7 @@ export default function computeStyleSheet(): any {
       marginLeft: 0,
       paddingLeft: '10@s',
       paddingRight: '10@s',
-      backgroundColor: commonColor.inputGroupBg,
+      backgroundColor: themeColor.inputGroupBg,
       borderColor: 'transparent'
     },
     modalRowError: {
@@ -54,16 +54,16 @@ export default function computeStyleSheet(): any {
     },
     modalErrorText: {
       fontSize: '12@s',
-      color: commonColor.brandDangerLight,
+      color: themeColor.brandDangerLight,
     },
     modalLabel: {
       fontSize: '14@s',
-      color: commonColor.textColor,
+      color: themeColor.textColor,
     },
     modalInputField: {
       width: '65%',
       fontSize: '14@s',
-      color: commonColor.textColor,
+      color: themeColor.textColor,
     },
     modalButtonsContainer: {
       flexDirection: 'row',

@@ -5,7 +5,7 @@ import React from 'react';
 import { Image, ScrollView } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
 
-import noPhotoActive from '../../../../assets/no-photo-active.png';
+import noPhotoActive from '../../../../assets/no-photo.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
 import I18nManager from '../../../I18n/I18nManager';

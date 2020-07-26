@@ -11,7 +11,7 @@ import Type1CCS from '../../../../assets/connectorType/type1-ccs.svg';
 import Type1 from '../../../../assets/connectorType/type1.svg';
 import Type2 from '../../../../assets/connectorType/type2.svg';
 import I18nManager from '../../../I18n/I18nManager';
-import CommonColor2 from '../../../theme/variables/CommonColor2';
+import ThemeColor from '../../../theme/variables/ThemeColor';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { Connector, ConnectorType } from '../../../types/ChargingStation';
 import Constants from '../../../utils/Constants';
@@ -78,22 +78,22 @@ export default class ChargingStationConnectorComponent extends React.Component<P
   );
 
   private buildConnectorTypeSVG = (connectorType: ConnectorType, style: any): Element => {
-    const commonColor = new CommonColor2();
+    const themeColor = new ThemeColor();
     switch (connectorType) {
       case ConnectorType.CHADEMO:
-        return <Chademo width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>;
+        return <Chademo width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={themeColor.textColor} strokeWidth='30'/>;
       case ConnectorType.TYPE_2:
-        return <Type2 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>;
+        return <Type2 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={themeColor.textColor} strokeWidth='10'/>;
       case ConnectorType.COMBO_CCS:
-        return <ComboCCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>;
+        return <ComboCCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={themeColor.textColor} strokeWidth='30'/>;
       case ConnectorType.DOMESTIC:
-        return <Domestic width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor}/>;
+        return <Domestic width={style.connectorSVG.width} height={style.connectorSVG.height} fill={themeColor.textColor}/>;
       case ConnectorType.TYPE_1:
-        return <Type1 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>;
+        return <Type1 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={themeColor.textColor} strokeWidth='10'/>;
       case ConnectorType.TYPE_1_CCS:
-        return <Type1CCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>;
+        return <Type1CCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={themeColor.textColor} strokeWidth='10'/>;
     }
-    return <NoConnector width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor}/>;
+    return <NoConnector width={style.connectorSVG.width} height={style.connectorSVG.height} fill={themeColor.textColor}/>;
   }
 
   public renderSecondConnectorDetails = (connector: Connector, style: any) => {

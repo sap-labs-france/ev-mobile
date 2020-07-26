@@ -1,16 +1,16 @@
-import variable from './../variables/platform';
+import ThemeColor from '../variables/ThemeColor';
 
-export default (variables /* : * */ = variable) => {
+export default (themeColor: ThemeColor) => {
   const inputTheme: any = {
     '.multiline': {
       height: null
     },
-    height: variables.inputHeightBase,
-    color: variables.inputColor,
+    height: themeColor.inputHeightBase,
+    color: themeColor.inputColor,
     paddingLeft: 5,
     paddingRight: 5,
     flex: 1,
-    fontSize: variables.inputFontSize
+    fontSize: themeColor.inputFontSize
   };
 
   return inputTheme;

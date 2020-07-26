@@ -1,14 +1,14 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
-import CommonColor2 from '../../../theme/variables/CommonColor2';
+import ThemeColor from '../../../theme/variables/ThemeColor';
 
 export default function computeStyleSheet(): any {
-  const commonColor = new CommonColor2();
+  const themeColor = new ThemeColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: themeColor.containerBgColor
     },
     scrollViewContainer: {
       flexDirection: 'column'
@@ -21,11 +21,11 @@ export default function computeStyleSheet(): any {
     },
     spinner: {
       flex: 1,
-      color: commonColor.textColor
+      color: themeColor.textColor
     },
     actionButton: {
-      backgroundColor: commonColor.buttonBg,
-      color: commonColor.textColor
+      backgroundColor: themeColor.buttonBg,
+      color: themeColor.textColor
     },
     actionButtonIcon: {
       fontSize: '20@s'
@@ -46,7 +46,7 @@ export default function computeStyleSheet(): any {
       marginBottom: '5@s',
       fontSize: '12@s',
       fontWeight: 'bold',
-      color: commonColor.textColor,
+      color: themeColor.textColor,
     },
     scrollViewValue: {
       marginTop: '5@s',
@@ -55,7 +55,7 @@ export default function computeStyleSheet(): any {
     value: {
       fontSize: '12@s',
       marginLeft: '15@s',
-      color: commonColor.textColor
+      color: themeColor.textColor
     },
     scrollViewValues: {
       flexDirection: 'column',
@@ -65,10 +65,10 @@ export default function computeStyleSheet(): any {
       fontSize: '15@s',
       marginLeft: '15@s',
       marginBottom: '5@s',
-      color: commonColor.textColor
+      color: themeColor.textColor
     },
     rowBackground: {
-      backgroundColor: commonColor.headerBgColor
+      backgroundColor: themeColor.headerBgColor
     },
   });
   const portraitStyles = {};

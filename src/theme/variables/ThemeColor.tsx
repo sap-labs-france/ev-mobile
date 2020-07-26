@@ -1,7 +1,7 @@
 import color from 'color';
 import { Dimensions, PixelRatio, Platform } from 'react-native';
 import { scale } from 'react-native-size-matters';
-import ThemeColors from 'types/Theme';
+import ThemeDefinition from 'types/Theme';
 import ThemeManager from '../ThemeManager';
 
 export const PLATFORM = {
@@ -48,7 +48,7 @@ const dark = '#333';
 const light = '#f4f4f4';
 
 // Dark
-const darkTheme: ThemeColors = {
+const darkTheme: ThemeDefinition = {
   backgroundHeader: dark,
   background: dark,
   borderColor: light,
@@ -67,11 +67,11 @@ const darkTheme: ThemeColors = {
   disabled: disabledLight,
 };
 
-const lightTheme: ThemeColors = {
-  backgroundHeader: primaryDark,
-  background: primary,
+const lightTheme: ThemeDefinition = {
+  backgroundHeader: light,
+  background: disabled,
   borderColor: dark,
-  textColor: dark,
+  textColor: primaryDark,
   placeholderTextColor: disabledDark,
   inverseTextColor: light,
   subTextColor: disabledLight,
@@ -88,7 +88,7 @@ const lightTheme: ThemeColors = {
 
 
 // tslint:disable-next-line: cyclomatic-complexity
-export default class CommonColor2 {
+export default class ThemeColor {
   public platformStyle = platformStyle;
   public platform = platform;
 
@@ -184,6 +184,7 @@ export default class CommonColor2 {
 
   // CheckBox
   public CheckboxRadius = platform === PLATFORM.IOS ? scale(13) : 0;
+  public CheckboxBorderColor = light;
   public CheckboxBorderWidth = platform === PLATFORM.IOS ? scale(1) : scale(2);
   public CheckboxPaddingLeft = platform === PLATFORM.IOS ? 0 : 0;
   public CheckboxPaddingBottom = platform === PLATFORM.IOS ? 0 : scale(5);
@@ -192,7 +193,7 @@ export default class CommonColor2 {
   public CheckboxFontSize = platform === PLATFORM.IOS ? scale(19) : scale(17);
   public checkboxBgColor = light;
   public checkboxSize = scale(20);
-  public checkboxTickColor = primaryDark;
+  public checkboxTickColor = this.getCurrentTheme().textColor;
   public checkboxDefaultColor = 'transparent';
 
   // Container
@@ -310,8 +311,8 @@ export default class CommonColor2 {
   public textColor = this.getCurrentTheme().textColor;
   public headerTextColor = this.getCurrentTheme().textColor;
   public headerBgColor = this.getCurrentTheme().backgroundHeader;
-  public headerBgColorLight = color(this.getCurrentTheme().backgroundHeader).lighten(0.025).hex();
-  public headerBgColorDark = color(this.getCurrentTheme().backgroundHeader).darken(0.025).hex();
+  public headerBgColorLight = color(this.getCurrentTheme().backgroundHeader).lighten(0.5).hex();
+  public headerBgColorDark = color(this.getCurrentTheme().backgroundHeader).darken(0.5).hex();
   public inverseTextColor = this.getCurrentTheme().inverseTextColor;
   public noteFontSize = 14;
   public defaultTextColor = this.getCurrentTheme().textColor;
@@ -352,7 +353,7 @@ export default class CommonColor2 {
     }
   }
 
-  public getCurrentTheme(): ThemeColors {
+  public getCurrentTheme(): ThemeDefinition {
     const darkThemeEnabled = ThemeManager.getInstance().isThemeTypeIsDark();
     if (darkThemeEnabled) {
       return darkTheme;

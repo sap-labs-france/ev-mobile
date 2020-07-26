@@ -8,7 +8,7 @@ import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
 import I18nManager from '../I18n/I18nManager';
 import ThemeManager from '../theme/ThemeManager';
-import CommonColor2 from '../theme/variables/CommonColor2';
+import ThemeColor from '../theme/variables/ThemeColor';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
 import { InactivityStatus } from '../types/Transaction';
@@ -570,17 +570,17 @@ export default class Utils {
   }
 
   public static computeInactivityStyle(inactivityStatus: InactivityStatus): object {
-    const commonColor = new CommonColor2();
+    const themeColor = new ThemeColor();
     const darkTheme = ThemeManager.getInstance().isThemeTypeIsDark();
     switch (inactivityStatus) {
       case InactivityStatus.INFO:
-        return { color: darkTheme ? commonColor.brandSuccessLight : commonColor.brandSuccessDark };
+        return { color: darkTheme ? themeColor.brandSuccessLight : themeColor.brandSuccessDark };
       case InactivityStatus.WARNING:
-        return { color: darkTheme ? commonColor.brandWarningLight : commonColor.brandWarningDark };
+        return { color: darkTheme ? themeColor.brandWarningLight : themeColor.brandWarningDark };
       case InactivityStatus.ERROR:
-        return { color: darkTheme ? commonColor.brandDangerLight : commonColor.brandDangerDark };
+        return { color: darkTheme ? themeColor.brandDangerLight : themeColor.brandDangerDark };
       default:
-        return { color: darkTheme ? commonColor.brandInfoLight : commonColor.brandInfoDark };
+        return { color: darkTheme ? themeColor.brandInfoLight : themeColor.brandInfoDark };
     }
   }
 

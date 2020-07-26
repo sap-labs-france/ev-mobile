@@ -1,9 +1,9 @@
-import variable from './../variables/platform';
+import ThemeColor from '../variables/ThemeColor';
 
-export default (variables /* : * */ = variable) => {
+export default (themeColor: ThemeColor) => {
   const viewTheme: any = {
     '.padder': {
-      padding: variables.contentPadding
+      padding: themeColor.contentPadding
     }
   };
 

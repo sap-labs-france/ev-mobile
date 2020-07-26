@@ -1,10 +1,10 @@
-import variable from './../variables/platform';
+import ThemeColor from '../variables/ThemeColor';
 
-export default (variables /* : * */ = variable) => {
+export default (themeColor: ThemeColor) => {
   const h3Theme: any = {
-    color: variables.textColor,
-    fontSize: variables.fontSizeH3,
-    lineHeight: variables.lineHeightH3
+    color: themeColor.textColor,
+    fontSize: themeColor.fontSizeH3,
+    lineHeight: themeColor.lineHeightH3
   };
 
   return h3Theme;
