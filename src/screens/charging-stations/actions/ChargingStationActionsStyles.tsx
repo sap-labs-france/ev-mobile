@@ -23,7 +23,6 @@ export default function computeStyleSheet(): any {
     },
     spinner: {
       flex: 1,
-      color: commonColor.textColor,
     },
     actionContainer: {
       width: '90%',
@@ -36,7 +35,6 @@ export default function computeStyleSheet(): any {
     },
     actionButtonIcon: {
       fontSize: '20@s',
-      color: commonColor.textColor,
     },
     actionButtonText: {
       fontSize: '18@s',

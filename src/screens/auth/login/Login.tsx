@@ -555,7 +555,7 @@ export default class Login extends BaseScreen<Props, State> {
           style={style.fab}
           position='bottomRight'
           onPress={() => this.setState({ activeFab: !this.state.activeFab })}>
-          <Icon name='business' />
+          <Icon name='business' style={style.fabIcon} />
           <Button style={style.restoreOrgButton}
             onPress={() => {
               this.restoreTenants();

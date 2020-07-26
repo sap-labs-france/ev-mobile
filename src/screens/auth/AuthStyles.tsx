@@ -2,6 +2,7 @@ import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 import commonColor from '../../theme/variables/commonColor';
+import { color } from 'react-native-reanimated';
 
 export default function computeStyleSheet(): any {
   const commonStyles = ScaledSheet.create({
@@ -83,7 +84,10 @@ export default function computeStyleSheet(): any {
       backgroundColor: commonColor.brandDanger
     },
     fab: {
-      backgroundColor: commonColor.brandDark
+      backgroundColor: commonColor.buttonBg,
+    },
+    fabIcon: {
+      color: commonColor.textColor
     },
     footer: {
       backgroundColor: commonColor.containerBgColor

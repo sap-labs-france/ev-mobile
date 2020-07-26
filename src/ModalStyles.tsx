@@ -16,6 +16,8 @@ export default function computeStyleSheet(): any {
       height: '45@s',
       justifyContent: 'center',
       alignItems: 'center',
+      borderBottomWidth: 1,
+      borderBottomColor: commonColor.listBorderColor,
     },
     modalTextHeader:{
       width: '100%',

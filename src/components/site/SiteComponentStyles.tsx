@@ -18,7 +18,7 @@ export default function computeStyleSheet(): any {
       height: '40@s',
       borderBottomWidth: 1,
       borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.brandBackground,
+      backgroundColor: commonColor.listHeaderBgColor,
     },
     titleContainer: {
       flexDirection: 'row',

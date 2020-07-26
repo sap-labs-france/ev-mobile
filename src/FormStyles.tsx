@@ -66,7 +66,7 @@ export default function computeStyleSheet(): any {
     formErrorText: {
       fontSize: '12@s',
       marginLeft: '20@s',
-      color: commonColor.brandDangerLight,
+      color: commonColor.danger,
       alignSelf: 'flex-start',
       top: '-5@s'
     },

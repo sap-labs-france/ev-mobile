@@ -24,13 +24,14 @@ export default function computeStyleSheet(): any {
     },
     actionButton: {
       backgroundColor: commonColor.buttonBg,
-      color: commonColor.textColor
     },
     actionButtonIcon: {
-      fontSize: '20@s'
+      fontSize: '20@s',
+      color: commonColor.textColor
     },
     actionButtonText: {
-      fontSize: '15@s'
+      fontSize: '15@s',
+      color: commonColor.textColor
     },
     descriptionContainer: {
       width: '100%',

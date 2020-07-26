@@ -44,7 +44,7 @@ export default function computeStyleSheet(): any {
     commonConnectorValue: {
       fontSize: '22@s',
       fontWeight: 'bold',
-      color: commonColor.textColor
+      color: commonColor.inverseTextColor
     },
     commonConnectorDescription: {
       position: 'absolute',
@@ -114,7 +114,8 @@ export default function computeStyleSheet(): any {
       borderTopColor: commonColor.brandPrimary,
       borderBottomColor: commonColor.brandPrimary
     },
-    chargingConnectorValue: {},
+    chargingConnectorValue: {
+    },
     chargingConnectorDescription: {
       color: connectorPrimaryColor
     }

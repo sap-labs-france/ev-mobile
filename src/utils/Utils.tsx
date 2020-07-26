@@ -16,7 +16,6 @@ import User from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
 
-
 export default class Utils {
   public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
     const tenantSubDomain = centralServerProvider.getUserTenant();
