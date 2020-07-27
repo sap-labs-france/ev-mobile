@@ -1,4 +1,5 @@
 import deepmerge from 'deepmerge';
+import { Platform } from 'react-native';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 import Utils from './utils/Utils';
@@ -29,7 +30,7 @@ export default function computeStyleSheet(): any {
     modalContentContainer: {
       paddingLeft: '15@s',
       paddingRight: '15@s',
-      paddingTop: '5@s',
+      paddingTop: Platform.OS === 'ios' ? '5@s' : '15@s',
       paddingBottom: '5@s',
       justifyContent: 'flex-start',
     },

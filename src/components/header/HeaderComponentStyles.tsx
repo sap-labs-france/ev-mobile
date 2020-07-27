@@ -25,7 +25,7 @@ export default function computeStyleSheet(): any {
     },
     bodyHeader: {
       flex: 3,
-      paddingLeft: Platform.OS === 'ios' ? 0 : '50@s'
+      paddingLeft: Platform.OS === 'ios' ? 0 : '60@s'
     },
     titleHeader: {
       color: commonColor.textColor,
@@ -49,12 +49,12 @@ export default function computeStyleSheet(): any {
     iconLeftHeader: {
       fontSize: '30@s',
       color: commonColor.textColor,
-      paddingRight: '10@s',
+      width: '35@s'
     },
     iconRightHeader: {
       fontSize: '30@s',
       color: commonColor.textColor,
-      paddingLeft: '10@s',
+      width: '35@s'
     }
   });
   const portraitStyles = {};

@@ -90,7 +90,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
           <Left style={style.leftHeader}>
             <Icon type={leftActionIconType} name={leftActionIcon}
               style={style.iconLeftHeader} onPress={() => leftAction()}/>
-            <Icon type='MaterialCommunityIcons' name='home'
+            <Icon type='MaterialIcons' name='home'
               style={style.iconLeftHeader} onPress={() => navigation.navigate({ routeName: 'HomeNavigator' })} />
           </Left>
         :

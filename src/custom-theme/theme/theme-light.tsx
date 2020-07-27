@@ -16,6 +16,6 @@ export default {
   placeholderTextColor: palette.disabledDark,
   inverseTextColor: palette.light,
   subTextColor: palette.disabledDark,
-  buttonBg: palette.lightDark,
+  buttonBg: palette.disabled,
 };
 

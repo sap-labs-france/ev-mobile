@@ -25,8 +25,8 @@ export default function computeStyleSheet(): any {
       backgroundColor: commonColor.containerBgColor,
       borderColor: commonColor.listBorderColor,
       borderBottomWidth: 1,
-      height: '120@s',
-      marginTop: Platform.OS === 'ios' ? '-5@s' : '10@s'
+      height: Platform.OS === 'ios' ? '120@s' : '150@s',
+      marginTop: Platform.OS === 'ios' ? '-5@s' : '5@s'
     },
     logo: {
       resizeMode: 'contain',
@@ -56,6 +56,7 @@ export default function computeStyleSheet(): any {
       color: commonColor.textColor,
       fontSize: '14@s',
       alignSelf: 'center',
+      marginTop: '-5@s',
       marginBottom: '2@s'
     },
     linkContainer: {
@@ -78,7 +79,7 @@ export default function computeStyleSheet(): any {
       paddingLeft: '10@s'
     },
     logoutContainer: {
-      paddingBottom: '25@s',
+      paddingBottom: Platform.OS === 'ios' ? '25@s' : '10@s',
       paddingLeft: '10@s',
       paddingRight: '10@s',
       paddingTop: 0,

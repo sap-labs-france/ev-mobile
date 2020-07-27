@@ -35,9 +35,6 @@ export default class AppBootstrap extends React.Component<Props, State> {
     themeManager.setThemeType(Appearance.getColorScheme() as ThemeType);
     // Display
     this.setState({switchTheme: true});
-    console.log('====================================');
-    console.log(buildTheme(Appearance.getColorScheme() as ThemeType));
-    console.log('====================================');
     // Subscribe
     this.themeSubscription = Appearance.addChangeListener(({ colorScheme }) => {
       // Set the new theme

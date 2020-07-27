@@ -57,8 +57,8 @@ export const buildCommonColor = (currentTheme: ThemeDefinition) => {
 
     topTabBarActiveTextColor: currentTheme.textColor,
 
-    CheckboxIconMarginTop: Platform.OS === PLATFORM.IOS ? 3 : 1,
-    CheckboxPaddingLeft: Platform.OS === PLATFORM.IOS ? 0 : 0,
+    CheckboxIconMarginTop: Platform.OS === PLATFORM.IOS ? 3 : 2,
+    CheckboxPaddingLeft: Platform.OS === PLATFORM.IOS ? 0 : 2,
     checkboxSize: 23,
     checkboxTickColor: currentTheme.textColor,
     checkboxDefaultColor: 'transparent',

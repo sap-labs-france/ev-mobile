@@ -100,7 +100,7 @@ export default class App extends React.Component<Props, State> {
   public render() {
     return (
       <Root>
-        <StatusBar hidden={false} />
+        <StatusBar hidden={true} />
         {this.createRootContainerNavigation()}
       </Root>
     );
