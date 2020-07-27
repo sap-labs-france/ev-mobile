@@ -1,13 +1,12 @@
 import { Platform } from 'react-native';
 import ThemeDefinition from 'types/Theme';
+import palette from '../custom-theme/theme/palette';
 import commonColor, { PLATFORM } from '../theme/variables/commonColor';
 import ThemeManager from './ThemeManager';
-import palette from '../custom-theme/theme/palette';
 
 export const buildCommonColor = (currentTheme: ThemeDefinition) => {
   return {
     ...commonColor,
-
     primary: currentTheme.primary,
     brandPrimary: palette.primary,
     brandPrimaryLight: palette.primaryLight,
@@ -62,6 +61,7 @@ export const buildCommonColor = (currentTheme: ThemeDefinition) => {
     CheckboxPaddingLeft: Platform.OS === PLATFORM.IOS ? 0 : 0,
     checkboxSize: 23,
     checkboxTickColor: currentTheme.textColor,
+    checkboxDefaultColor: 'transparent',
 
     borderRadiusBase: 0,
 
