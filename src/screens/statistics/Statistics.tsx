@@ -2,8 +2,10 @@ import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } from 'native-base';
 import React from 'react';
 import { DrawerActions } from 'react-navigation-drawer';
-import HeaderComponent from '../../components/header/HeaderComponent';
+
+import computeCardStyleSheet from '../../CardStyles';
 import I18nManager from '../../I18n/I18nManager';
+import HeaderComponent from '../../components/header/HeaderComponent';
 import ProviderFactory from '../../provider/ProviderFactory';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from '../../screens/transactions/history/TransactionsHistoryFilters';
 import BaseProps from '../../types/BaseProps';
@@ -15,7 +17,6 @@ import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './StatisticsStyles';
-import computeCardStyleSheet from '../../CardStyles';
 
 export interface Props extends BaseProps {
 }

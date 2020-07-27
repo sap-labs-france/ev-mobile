@@ -2,6 +2,7 @@ import deepmerge from 'deepmerge';
 import { Platform } from 'react-native';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
+
 import Utils from '../../utils/Utils';
 
 export default function computeStyleSheet(): any {

@@ -3,14 +3,15 @@ import { Icon, Root } from 'native-base';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import React from 'react';
 import { StatusBar, View } from 'react-native';
-import { createAppContainer, createSwitchNavigator, NavigationContainerComponent, NavigationState } from 'react-navigation';
+import { NavigationContainerComponent, NavigationState, createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
+
 import computeStyleSheet from './AppStyles';
+import I18nManager from './I18n/I18nManager';
 import ThemeManager from './custom-theme/ThemeManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
-import I18nManager from './I18n/I18nManager';
 import LocationManager from './location/LocationManager';
 import NotificationManager from './notification/NotificationManager';
 import ProviderFactory from './provider/ProviderFactory';

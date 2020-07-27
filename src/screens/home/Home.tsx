@@ -4,6 +4,7 @@ import React from 'react';
 import { Alert, BackHandler } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
 import Transaction from 'types/Transaction';
+
 import computeCardStyleSheet from '../../CardStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import BaseProps from '../../types/BaseProps';

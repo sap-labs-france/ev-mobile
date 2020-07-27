@@ -1,11 +1,12 @@
 // @flow
 // copy/paste theme (index.tsx) in here + use custom platform variable
 import { merge } from 'lodash';
+
 import buildTheme from '../theme/components';
 import textTheme from '../theme/components/Text';
 import { ThemeType } from '../types/Theme';
-import { buildCommonColor } from './customCommonColor';
 import ThemeManager from './ThemeManager';
+import { buildCommonColor } from './customCommonColor';
 
 const theme = (themeType: ThemeType) => {
   // Build the theme

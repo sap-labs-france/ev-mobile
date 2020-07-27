@@ -2,6 +2,7 @@ import I18n from 'i18n-js';
 import { Button, Icon } from 'native-base';
 import React from 'react';
 import { TextInput, View } from 'react-native';
+
 import BaseProps from '../../../types/BaseProps';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './SimpleSearchComponentStyles';
