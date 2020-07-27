@@ -4,7 +4,6 @@ import React from 'react';
 import { KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
-import commonColor from '../../../custom-theme/customCommonColor';
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
 import BaseProps from '../../../types/BaseProps';
@@ -146,6 +145,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
+    const commonColor = Utils.getCurrentCommonColor();
     const { loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl } = this.state;
     return (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>

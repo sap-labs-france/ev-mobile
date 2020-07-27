@@ -8,7 +8,6 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
 import computeStyleSheet from './AppStyles';
-import commonColor from './custom-theme/customCommonColor';
 import ThemeManager from './custom-theme/ThemeManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
 import I18nManager from './I18n/I18nManager';
@@ -36,6 +35,7 @@ import TransactionsHistory from './screens/transactions/history/TransactionsHist
 import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
 import { ThemeType } from './types/Theme';
 import SecuredStorage from './utils/SecuredStorage';
+import Utils from './utils/Utils';
 
 // Init i18n
 I18nManager.initialize();
@@ -118,6 +118,7 @@ export default class App extends React.Component<Props, State> {
   }
 
   private createRootContainerNavigation() {
+    const commonColor = Utils.getCurrentCommonColor();
     const appStyles = computeStyleSheet();
     const barStyle = {
       backgroundColor: commonColor.containerBgColor,

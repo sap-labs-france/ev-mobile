@@ -2,8 +2,8 @@ import I18n from 'i18n-js';
 import { Button, Icon } from 'native-base';
 import React from 'react';
 import { TextInput, View } from 'react-native';
-import commonColor from '../../../custom-theme/customCommonColor';
 import BaseProps from '../../../types/BaseProps';
+import Utils from '../../../utils/Utils';
 import computeStyleSheet from './SimpleSearchComponentStyles';
 
 export interface Props extends BaseProps {
@@ -14,7 +14,6 @@ interface State {
 }
 
 export default class SimpleSearchComponent extends React.Component<Props, State> {
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -47,6 +46,7 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
 
   public render() {
     const style = computeStyleSheet();
+    const commonColor = Utils.getCurrentCommonColor();
     return (
       <View style={style.container}>
         <Icon type='MaterialIcons' name='search' style={style.icon} />

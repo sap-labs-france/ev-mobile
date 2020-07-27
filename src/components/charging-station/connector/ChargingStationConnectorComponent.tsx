@@ -11,7 +11,6 @@ import Type1CCS from '../../../../assets/connectorType/type1-ccs.svg';
 import Type1 from '../../../../assets/connectorType/type1.svg';
 import Type2 from '../../../../assets/connectorType/type2.svg';
 import I18nManager from '../../../I18n/I18nManager';
-import commonColor from '../../../custom-theme/customCommonColor';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { Connector, ConnectorType } from '../../../types/ChargingStation';
 import Constants from '../../../utils/Constants';
@@ -77,6 +76,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
   );
 
   private buildConnectorTypeSVG = (connectorType: ConnectorType, style: any): Element => {
+    const commonColor = Utils.getCurrentCommonColor();
     switch (connectorType) {
       case ConnectorType.CHADEMO:
         return <Chademo width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>;
