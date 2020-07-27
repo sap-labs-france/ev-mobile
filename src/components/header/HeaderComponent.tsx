@@ -88,13 +88,10 @@ export default class HeaderComponent extends React.Component<Props, State> {
       <Header style={style.header}>
         {leftAction ?
           <Left style={style.leftHeader}>
-            <Button transparent={true} onPress={() => leftAction()}>
-              <Icon type={leftActionIconType} name={leftActionIcon} style={style.iconHeader} />
-            </Button>
-            <Button transparent={true}
-                onPress={() => { navigation.navigate({ routeName: 'HomeNavigator' });}}>
-              <Icon type='MaterialCommunityIcons' name='home' style={style.iconHeader} />
-            </Button>
+            <Icon type={leftActionIconType} name={leftActionIcon}
+              style={style.iconLeftHeader} onPress={() => leftAction()}/>
+            <Icon type='MaterialCommunityIcons' name='home'
+              style={style.iconLeftHeader} onPress={() => navigation.navigate({ routeName: 'HomeNavigator' })} />
           </Left>
         :
           <Left style={style.leftHeader}>
@@ -107,30 +104,24 @@ export default class HeaderComponent extends React.Component<Props, State> {
         </Body>
         <Right style={style.rightHeader}>
           {hasFilter && (
-            <Button
-              transparent={true}
-              style={style.rightSecondButtonHeader}
+            <Icon type={'MaterialCommunityIcons'} name={this.filterModalContainerComponent &&
+              this.filterModalContainerComponent.getNumberOfFilters() > 0 ? 'filter' : 'filter-outline'}
               onPress={() => {
                 this.searchIsVisible = !this.searchIsVisible;
                 // Show Filter Search
                 if (this.filterModalContainerComponent) {
                   this.filterModalContainerComponent.setVisible(this.searchIsVisible);
                 }
-              }}>
-              <Icon type={'MaterialCommunityIcons'} name={this.filterModalContainerComponent &&
-                this.filterModalContainerComponent.getNumberOfFilters() > 0 ? 'filter' : 'filter-outline'} style={style.iconHeader} />
-            </Button>
+              }}
+              style={style.iconRightHeader} />
           )}
           {diplayMap && (
-            <Button transparent={true} style={style.rightSecondButtonHeader}
-              onPress={() => { diplayMapAction(); }}>
-              <Icon type='MaterialCommunityIcons' name={mapIsDisplayed ? 'format-list-text' : 'earth'} style={style.iconHeader} />
-            </Button>
+            <Icon type='MaterialCommunityIcons' name={mapIsDisplayed ? 'format-list-text' : 'earth'}
+              style={style.iconRightHeader} onPress={() => diplayMapAction()}/>
           )}
           {rightAction ? (
-            <Button transparent={true} onPress={() => rightAction()}>
-              <Icon type={rightActionIconType} name={rightActionIcon} style={style.iconHeader} />
-            </Button>
+            <Icon type={rightActionIconType} name={rightActionIcon}
+              style={style.iconRightHeader} onPress={() => rightAction()}/>
           ) : (
             <Image source={logo} style={style.logoHeader} />
           )}

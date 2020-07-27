@@ -43,6 +43,9 @@ export const buildCommonColor = (currentTheme: ThemeDefinition) => {
     brandDark: palette.dark,
     brandLight: palette.light,
 
+    listBorderColor: palette.disabledDark,
+    cardBorderColor: currentTheme.textColor,
+
     containerBgColor: currentTheme.background,
     listHeaderBgColor: currentTheme.listBackgroundHeader,
     headerBgColor: currentTheme.backgroundHeader,
@@ -58,9 +61,9 @@ export const buildCommonColor = (currentTheme: ThemeDefinition) => {
     CheckboxIconMarginTop: Platform.OS === PLATFORM.IOS ? 3 : 1,
     CheckboxPaddingLeft: Platform.OS === PLATFORM.IOS ? 0 : 0,
     checkboxSize: 23,
+    checkboxTickColor: currentTheme.textColor,
 
     borderRadiusBase: 0,
-    checkboxTickColor: currentTheme.textColor,
 
     buttonDangerBg: currentTheme.danger,
     buttonWarningBg: currentTheme.warning,

@@ -2,7 +2,7 @@
 // copy/paste theme (index.tsx) in here + use custom platform variable
 import { merge } from 'lodash';
 import buildTheme from '../theme/components';
-import textTheme from '../theme/components/Text';
+import buttonTheme from '../theme/components/Button';
 import { ThemeType } from '../types/Theme';
 import { buildCommonColor } from './customCommonColor';
 import ThemeManager from './ThemeManager';
@@ -13,13 +13,13 @@ const theme = (themeType: ThemeType) => {
   const themeDefinition = themeManager.getThemeDefinition(themeType);
   const commonColor = buildCommonColor(themeDefinition);
   const currentTheme = buildTheme(commonColor);
-  // Example of override
   const customTheme = {
-    'NativeBase.Text': {
-      ...textTheme(),
-      '.link': {
-        color: commonColor.textColor,
-      }
+    'NativeBase.Button': {
+      ...buttonTheme(commonColor),
+      shadowColor: commonColor.brandDark,
+      shadowOffset: { width: 1, height: 3 },
+      shadowOpacity: 0.2,
+      shadowRadius: 1.2,
     }
   };
 

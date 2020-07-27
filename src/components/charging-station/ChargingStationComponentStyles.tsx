@@ -38,7 +38,10 @@ export default function computeStyleSheet(): any {
     },
     address: {
       width: '80%',
-      color: commonColor.headerTextColor,
+      color: commonColor.textColor,
+    },
+    distance: {
+      color: commonColor.textColor,
     },
     headerName: {
       marginLeft: '10@s',

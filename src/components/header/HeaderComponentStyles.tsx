@@ -21,6 +21,7 @@ export default function computeStyleSheet(): any {
     },
     rightHeader: {
       flexDirection: 'row',
+      alignItems: 'center'
     },
     bodyHeader: {
       flex: 3,
@@ -45,8 +46,15 @@ export default function computeStyleSheet(): any {
       marginRight: '5@s',
       resizeMode: 'contain'
     },
-    iconHeader: {
+    iconLeftHeader: {
+      fontSize: '30@s',
       color: commonColor.textColor,
+      paddingRight: '10@s',
+    },
+    iconRightHeader: {
+      fontSize: '30@s',
+      color: commonColor.textColor,
+      paddingLeft: '10@s',
     }
   });
   const portraitStyles = {};

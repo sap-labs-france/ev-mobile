@@ -2,7 +2,7 @@ import I18n from 'i18n-js';
 import { Icon, Root } from 'native-base';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import React from 'react';
-import { StatusBar, View } from 'react-native';
+import { StatusBar } from 'react-native';
 import { createAppContainer, createSwitchNavigator, NavigationContainerComponent, NavigationState } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
@@ -33,7 +33,6 @@ import TransactionChart from './screens/transactions/chart/TransactionChart';
 import TransactionDetails from './screens/transactions/details/TransactionDetails';
 import TransactionsHistory from './screens/transactions/history/TransactionsHistory';
 import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
-import { ThemeType } from './types/Theme';
 import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
 
@@ -41,11 +40,9 @@ import Utils from './utils/Utils';
 I18nManager.initialize();
 
 export interface Props {
-  themeType?: ThemeType;
 }
 
 interface State {
-  switchTheme?: boolean;
 }
 
 export default class App extends React.Component<Props, State> {
@@ -87,10 +84,6 @@ export default class App extends React.Component<Props, State> {
     // Location ------------------------------------------------
     this.location = await LocationManager.getInstance();
     this.location.startListening();
-    // Theme ------------------------------------------------
-    this.theme = ThemeManager.getInstance();
-    this.theme.setThemeType(this.props.themeType);
-    this.setState({switchTheme: true});
     // Check on hold notification
     this.notificationManager.checkOnHoldNotification();
   }
@@ -105,15 +98,11 @@ export default class App extends React.Component<Props, State> {
   }
 
   public render() {
-    const { switchTheme } = this.state;
     return (
-      switchTheme ?
-        <Root>
-          <StatusBar hidden={false} />
-          {this.createRootContainerNavigation()}
-        </Root>
-      :
-        <View/>
+      <Root>
+        <StatusBar hidden={false} />
+        {this.createRootContainerNavigation()}
+      </Root>
     );
   }
 

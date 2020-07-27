@@ -473,7 +473,7 @@ export default class Login extends BaseScreen<Props, State> {
                 <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType='next'
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   placeholder={I18n.t('authentication.email')}
                   placeholderTextColor={commonColor.inputColorPlaceholder}
                   onSubmitEditing={() => this.passwordInput.focus()}
@@ -497,7 +497,7 @@ export default class Login extends BaseScreen<Props, State> {
                 <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType='go'
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
                   onSubmitEditing={() => Keyboard.dismiss()}
                   placeholder={I18n.t('authentication.password')}
