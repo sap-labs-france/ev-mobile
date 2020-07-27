@@ -25,7 +25,7 @@ export default function computeStyleSheet(): any {
     },
     bodyHeader: {
       flex: 3,
-      paddingLeft: Platform.OS === 'ios' ? 0 : '60@s'
+      paddingLeft: Platform.OS === 'ios' ? 0 : '40@s'
     },
     titleHeader: {
       color: commonColor.textColor,
@@ -43,7 +43,6 @@ export default function computeStyleSheet(): any {
     logoHeader: {
       width: '45@s',
       marginLeft: '5@s',
-      marginRight: '5@s',
       resizeMode: 'contain'
     },
     iconLeftHeader: {
