@@ -1,8 +1,7 @@
 // @flow
 
 import color from 'color';
-import { Dimensions, PixelRatio, Platform } from 'react-native';
-import customCommonColor from '../../custom-theme/customCommonColor';
+import { Platform, Dimensions, PixelRatio } from 'react-native';
 
 export const PLATFORM = {
   ANDROID: 'android',
@@ -308,6 +307,5 @@ export default {
       rightInset: 44,
       bottomInset: 21
     }
-  },
-  ...customCommonColor
+  }
 };

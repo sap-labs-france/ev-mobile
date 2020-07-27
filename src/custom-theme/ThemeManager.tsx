@@ -42,10 +42,10 @@ export default class ThemeManager {
   public disabledDark = color(this.disabled).darken(this.darkLightRatio).hex();
 
   public dark = '#000';
-  public darkLight = color(this.dark).lighten(0.1).hex();
+  public darkLight = '#333';
 
   public light = '#FFF';
-  public lightDark = color(this.light).darken(0.1).hex();
+  public lightDark = '#CCC';
 
   // Light theme
   private lightTheme: ThemeDefinition = {
@@ -97,7 +97,7 @@ export default class ThemeManager {
 
   public getCurrentThemeDefinition = (): ThemeDefinition => {
     const darkThemeEnabled = ThemeManager.getInstance().isThemeTypeIsDark();
-    if (darkThemeEnabled) {
+    if (!darkThemeEnabled) {
       return this.darkTheme;
     }
     return this.lightTheme;

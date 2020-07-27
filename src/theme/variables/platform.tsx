@@ -1,10 +1,9 @@
 // @flow
 
 import color from 'color';
-import { Dimensions, PixelRatio, Platform } from 'react-native';
-import customPlatform from '../../custom-theme/customPlatform';
-import { PLATFORM } from './commonColor';
+import { Platform, Dimensions, PixelRatio } from 'react-native';
 
+import { PLATFORM } from './commonColor';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
@@ -331,6 +330,5 @@ export default {
       rightInset: 44,
       bottomInset: 21
     }
-  },
-  ...customPlatform
+  }
 };

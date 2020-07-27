@@ -2,7 +2,7 @@ import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 import ThemeManager from '../../custom-theme/ThemeManager';
-import commonColor from '../../theme/variables/commonColor';
+import commonColor from '../../custom-theme/customCommonColor';
 
 export default function computeStyleSheet(): any {
   const darkTheme = ThemeManager.getInstance().isThemeTypeIsDark();

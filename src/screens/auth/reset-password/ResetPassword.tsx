@@ -5,7 +5,7 @@ import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-nat
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
 import computeFormStyleSheet from '../../../FormStyles';
-import commonColor from '../../../theme/variables/commonColor';
+import commonColor from '../../../custom-theme/customCommonColor';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Constants from '../../../utils/Constants';

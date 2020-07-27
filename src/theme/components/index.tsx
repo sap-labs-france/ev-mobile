@@ -2,62 +2,62 @@
 // @flow
 
 import _ from 'lodash';
-import variable from '../variables/platform';
-import badgeTheme from './Badge';
+
 import bodyTheme from './Body';
-import buttonTheme from './Button';
-import cardTheme from './Card';
-import cardItemTheme from './CardItem';
-import checkBoxTheme from './CheckBox';
+import leftTheme from './Left';
+import rightTheme from './Right';
+import headerTheme from './Header';
+import switchTheme from './Switch';
+import thumbnailTheme from './Thumbnail';
 import containerTheme from './Container';
 import contentTheme from './Content';
-import fabTheme from './Fab';
+import buttonTheme from './Button';
+import titleTheme from './Title';
+import subtitleTheme from './Subtitle';
+import inputGroupTheme from './InputGroup';
+import badgeTheme from './Badge';
+import checkBoxTheme from './CheckBox';
+import cardTheme from './Card';
+import radioTheme from './Radio';
+import h3Theme from './H3';
+import h2Theme from './H2';
+import h1Theme from './H1';
 import footerTheme from './Footer';
 import footerTabTheme from './FooterTab';
-import formTheme from './Form';
-import h1Theme from './H1';
-import h2Theme from './H2';
-import h3Theme from './H3';
-import headerTheme from './Header';
-import iconTheme from './Icon';
-import inputTheme from './Input';
-import inputGroupTheme from './InputGroup';
+import fabTheme from './Fab';
 import itemTheme from './Item';
 import labelTheme from './Label';
-import leftTheme from './Left';
-import listItemTheme from './ListItem';
-import pickerTheme from './Picker';
-import radioTheme from './Radio';
-import rightTheme from './Right';
-import segmentTheme from './Segment';
-import separatorTheme from './Separator';
-import spinnerTheme from './Spinner';
-import subtitleTheme from './Subtitle';
-import swipeRowTheme from './SwipeRow';
-import switchTheme from './Switch';
+import textAreaTheme from './Textarea';
+import textTheme from './Text';
+import toastTheme from './Toast';
 import tabTheme from './Tab';
 import tabBarTheme from './TabBar';
 import tabContainerTheme from './TabContainer';
-import tabHeadingTheme from './TabHeading';
-import textTheme from './Text';
-import textAreaTheme from './Textarea';
-import thumbnailTheme from './Thumbnail';
-import titleTheme from './Title';
-import toastTheme from './Toast';
 import viewTheme from './View';
-
+import tabHeadingTheme from './TabHeading';
+import iconTheme from './Icon';
+import inputTheme from './Input';
+import swipeRowTheme from './SwipeRow';
+import segmentTheme from './Segment';
+import spinnerTheme from './Spinner';
+import cardItemTheme from './CardItem';
+import listItemTheme from './ListItem';
+import formTheme from './Form';
+import separatorTheme from './Separator';
+import pickerTheme from './Picker';
+import variable from './../variables/platform';
 
 export default (variables /* : * */ = variable) => {
   const theme = {
     variables,
     'NativeBase.Left': {
-      ...leftTheme()
+      ...leftTheme(variables)
     },
     'NativeBase.Right': {
-      ...rightTheme()
+      ...rightTheme(variables)
     },
     'NativeBase.Body': {
-      ...bodyTheme()
+      ...bodyTheme(variables)
     },
 
     'NativeBase.Header': {
@@ -117,14 +117,14 @@ export default (variables /* : * */ = variable) => {
       ...h3Theme(variables)
     },
     'NativeBase.Form': {
-      ...formTheme()
+      ...formTheme(variables)
     },
 
     'NativeBase.Container': {
       ...containerTheme(variables)
     },
     'NativeBase.Content': {
-      ...contentTheme()
+      ...contentTheme(variables)
     },
 
     'NativeBase.Footer': {
@@ -157,11 +157,11 @@ export default (variables /* : * */ = variable) => {
       ...textTheme(variables)
     },
     'NativeBase.Spinner': {
-      ...spinnerTheme()
+      ...spinnerTheme(variables)
     },
 
     'NativeBase.Fab': {
-      ...fabTheme()
+      ...fabTheme(variables)
     },
 
     'NativeBase.Item': {
@@ -169,7 +169,7 @@ export default (variables /* : * */ = variable) => {
     },
 
     'NativeBase.Label': {
-      ...labelTheme()
+      ...labelTheme(variables)
     },
 
     'NativeBase.Textarea': {
@@ -177,14 +177,14 @@ export default (variables /* : * */ = variable) => {
     },
 
     'NativeBase.PickerNB': {
-      ...pickerTheme(),
+      ...pickerTheme(variables),
       'NativeBase.Button': {
         'NativeBase.Text': {}
       }
     },
 
     'NativeBase.Tab': {
-      ...tabTheme()
+      ...tabTheme(variables)
     },
 
     'NativeBase.Segment': {
@@ -204,16 +204,16 @@ export default (variables /* : * */ = variable) => {
       ...tabContainerTheme(variables)
     },
     'NativeBase.Switch': {
-      ...switchTheme()
+      ...switchTheme(variables)
     },
     'NativeBase.Separator': {
       ...separatorTheme(variables)
     },
     'NativeBase.SwipeRow': {
-      ...swipeRowTheme()
+      ...swipeRowTheme(variables)
     },
     'NativeBase.Thumbnail': {
-      ...thumbnailTheme()
+      ...thumbnailTheme(variables)
     }
   };
 

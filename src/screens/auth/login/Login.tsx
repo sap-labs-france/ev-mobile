@@ -6,7 +6,7 @@ import * as Animatable from 'react-native-animatable';
 import Modal from 'react-native-modal';
 import computeFormStyleSheet from '../../../FormStyles';
 import computeModalStyleSheet from '../../../ModalStyles';
-import commonColor from '../../../theme/variables/commonColor';
+import commonColor from '../../../custom-theme/customCommonColor';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Tenant from '../../../types/Tenant';

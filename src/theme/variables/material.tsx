@@ -1,8 +1,8 @@
 // @flow
 
 import color from 'color';
-import { Dimensions, PixelRatio, Platform } from 'react-native';
-import customMaterial from '../../custom-theme/customMaterial';
+import { Platform, Dimensions, PixelRatio } from 'react-native';
+
 import { PLATFORM } from './commonColor';
 
 const deviceHeight = Dimensions.get('window').height;
@@ -300,6 +300,5 @@ export default {
       rightInset: 44,
       bottomInset: 21
     }
-  },
-  ...customMaterial
+  }
 };

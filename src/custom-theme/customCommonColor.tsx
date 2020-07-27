@@ -1,9 +1,13 @@
+import { Platform } from 'react-native';
+import commonColor, { PLATFORM } from '../theme/variables/commonColor';
 import ThemeManager from './ThemeManager';
 
 const themeManager = ThemeManager.getInstance();
 const currentTheme = themeManager.getCurrentThemeDefinition();
 
-const customCommonColors = {
+const customCommonColor = {
+  ...commonColor,
+
   primary: currentTheme.primary,
   brandPrimary: themeManager.primary,
   brandPrimaryLight: themeManager.primaryLight,
@@ -49,6 +53,19 @@ const customCommonColors = {
   placeholderTextColor: currentTheme.placeholderTextColor,
 
   topTabBarActiveTextColor: currentTheme.textColor,
+
+  CheckboxIconMarginTop: Platform.OS === PLATFORM.IOS ? 3 : 1,
+  CheckboxPaddingLeft: Platform.OS === PLATFORM.IOS ? 0 : 0,
+  checkboxSize: 23,
+
+  borderRadiusBase: 0,
+  checkboxTickColor: currentTheme.textColor,
+
+  buttonDangerBg: currentTheme.danger,
+  buttonWarningBg: currentTheme.warning,
+  buttonInfoBg: currentTheme.info,
+  buttonSuccessBg: currentTheme.success,
+  buttonDisabledBg: themeManager.disabledDark,
 };
 
-export default customCommonColors;
+export default customCommonColor;
