@@ -104,7 +104,7 @@ export default function computeStyleSheet(): any {
       alignSelf: 'center'
     },
     subLabelStatusError: {
-      color: commonColor.brandDanger,
+      color: commonColor.danger,
       marginTop: '2@s'
     },
     subLabelUser: {

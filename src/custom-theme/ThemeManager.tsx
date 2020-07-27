@@ -41,7 +41,7 @@ export default class ThemeManager {
   public disabledLight = color(this.disabled).lighten(this.darkLightRatio).hex();
   public disabledDark = color(this.disabled).darken(this.darkLightRatio).hex();
 
-  public dark = '#333';
+  public dark = '#000';
   public darkLight = color(this.dark).lighten(0.1).hex();
 
   public light = '#FFF';
@@ -59,7 +59,7 @@ export default class ThemeManager {
     listBackgroundHeader: this.lightDark,
     background: this.light,
     borderColor: this.dark,
-    textColor: this.primaryDark,
+    textColor: this.dark,
     placeholderTextColor: this.disabledDark,
     inverseTextColor: this.light,
     subTextColor: this.disabledDark,

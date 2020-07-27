@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import SplashScreen from 'react-native-splash-screen';
 import App from './src/App';
-import Theme from './src/theme/components';
 import theme from './src/theme/components/index';
 import { ThemeType } from './src/types/Theme';
 

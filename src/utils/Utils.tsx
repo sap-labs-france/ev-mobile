@@ -569,16 +569,15 @@ export default class Utils {
   }
 
   public static computeInactivityStyle(inactivityStatus: InactivityStatus): object {
-    const darkTheme = ThemeManager.getInstance().isThemeTypeIsDark();
     switch (inactivityStatus) {
       case InactivityStatus.INFO:
-        return { color: darkTheme ? commonColor.brandSuccessLight : commonColor.brandSuccessDark };
+        return { color: commonColor.success };
       case InactivityStatus.WARNING:
-        return { color: darkTheme ? commonColor.brandWarningLight : commonColor.brandWarningDark };
+        return { color: commonColor.warning };
       case InactivityStatus.ERROR:
-        return { color: darkTheme ? commonColor.brandDangerLight : commonColor.brandDangerDark };
+        return { color: commonColor.danger };
       default:
-        return { color: darkTheme ? commonColor.brandInfoLight : commonColor.brandInfoDark };
+        return { color: commonColor.textColor };
     }
   }
 
