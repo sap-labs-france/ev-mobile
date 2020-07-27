@@ -76,7 +76,7 @@ export default function computeStyleSheet(): any {
       borderColor: connectorPrimaryBorderColor
     },
     suspendedConnectorValue: {
-      color: commonColor.textColor
+      color: commonColor.brandLight
     },
     suspendedConnectorDescription: {
       color: connectorPrimaryColor
@@ -85,7 +85,9 @@ export default function computeStyleSheet(): any {
       backgroundColor: connectorWarningColor,
       borderColor: connectorWarningBorderColor
     },
-    preparingConnectorValue: {},
+    preparingConnectorValue: {
+      color: commonColor.brandLight
+    },
     preparingConnectorDescription: {
       color: connectorWarningColor
     },
@@ -93,7 +95,9 @@ export default function computeStyleSheet(): any {
       backgroundColor: connectorWarningColor,
       borderColor: connectorWarningBorderColor
     },
-    finishingConnectorValue: {},
+    finishingConnectorValue: {
+      color: commonColor.brandLight
+    },
     finishingConnectorDescription: {
       color: connectorWarningColor
     },
@@ -109,7 +113,7 @@ export default function computeStyleSheet(): any {
       borderColor: connectorDisabledBorderColor
     },
     reservedConnectorValue: {
-      color: commonColor.textColor
+      color: commonColor.brandLight
     },
     reservedConnectorDescription: {
       color: connectorDisabledColor
@@ -121,7 +125,7 @@ export default function computeStyleSheet(): any {
       borderBottomColor: commonColor.brandPrimary
     },
     chargingConnectorValue: {
-      color: commonColor.textColor
+      color: commonColor.brandLight
     },
     chargingConnectorDescription: {
       color: connectorPrimaryColor
