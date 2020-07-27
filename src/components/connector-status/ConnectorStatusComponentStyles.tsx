@@ -2,9 +2,10 @@ import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 import ThemeManager from '../../custom-theme/ThemeManager';
-import commonColor from '../../custom-theme/customCommonColor';
+import Utils from '../../utils/Utils';
 
 export default function computeStyleSheet(): any {
+  const commonColor = Utils.getCurrentCommonColor();
   const darkTheme = ThemeManager.getInstance().isThemeTypeIsDark();
   const connectorSuccessColor = darkTheme ? commonColor.brandSuccessLight : commonColor.brandSuccess;
   const connectorWarningColor = darkTheme ? commonColor.brandWarningLight : commonColor.brandWarning;
@@ -73,7 +74,9 @@ export default function computeStyleSheet(): any {
       backgroundColor: connectorPrimaryColor,
       borderColor: connectorPrimaryBorderColor
     },
-    suspendedConnectorValue: {},
+    suspendedConnectorValue: {
+      color: commonColor.textColor
+    },
     suspendedConnectorDescription: {
       color: connectorPrimaryColor
     },
@@ -104,7 +107,9 @@ export default function computeStyleSheet(): any {
       backgroundColor: connectorDisabledColor,
       borderColor: connectorDisabledBorderColor
     },
-    reservedConnectorValue: {},
+    reservedConnectorValue: {
+      color: commonColor.textColor
+    },
     reservedConnectorDescription: {
       color: connectorDisabledColor
     },
@@ -115,6 +120,7 @@ export default function computeStyleSheet(): any {
       borderBottomColor: commonColor.brandPrimary
     },
     chargingConnectorValue: {
+      color: commonColor.textColor
     },
     chargingConnectorDescription: {
       color: connectorPrimaryColor

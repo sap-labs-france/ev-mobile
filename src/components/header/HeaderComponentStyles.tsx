@@ -1,10 +1,11 @@
 import deepmerge from 'deepmerge';
 import { Platform } from 'react-native';
-import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
+import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
-import commonColor from '../../custom-theme/customCommonColor';
+import Utils from '../../utils/Utils';
 
 export default function computeStyleSheet(): any {
+  const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     header: {
       height: '45@s',

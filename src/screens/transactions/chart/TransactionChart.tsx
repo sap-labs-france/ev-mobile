@@ -7,7 +7,6 @@ import { scale } from 'react-native-size-matters';
 import { DrawerActions } from 'react-navigation-drawer';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import TransactionHeaderComponent from '../../../components/transaction/header/TransactionHeaderComponent';
-import commonColor from '../../../custom-theme/customCommonColor';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { Connector } from '../../../types/ChargingStation';
 import Consumption from '../../../types/Consumption';
@@ -193,6 +192,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   };
 
   public createChart(consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[]) {
+    const commonColor = Utils.getCurrentCommonColor();
     const chartDefinition = {} as LineChartProps;
     // Add Data
     chartDefinition.data = { dataSets: [] };
@@ -294,6 +294,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
+    const commonColor = Utils.getCurrentCommonColor();
     const { showTransactionDetails, isAdmin, isSiteAdmin, loading, transaction, chargingStation,
       connector, consumptionValues, stateOfChargeValues, canDisplayTransaction } = this.state;
     const chartDefinition = this.createChart(consumptionValues, stateOfChargeValues);

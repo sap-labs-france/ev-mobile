@@ -2,9 +2,10 @@ import deepmerge from 'deepmerge';
 import { Platform } from 'react-native';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
-import commonColor from '../../../custom-theme/customCommonColor';
+import Utils from '../../../utils/Utils';
 
 export default function computeStyleSheet(): any {
+  const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
@@ -14,7 +15,7 @@ export default function computeStyleSheet(): any {
     },
     spinner: {
       flex: 1,
-      color: commonColor.textColor
+      backgroundColor: commonColor.containerBgColor
     },
     backgroundImage: {
       width: '100%',
@@ -74,7 +75,7 @@ export default function computeStyleSheet(): any {
     },
     lastTransactionIcon: {
       fontSize: '25@s',
-      color: commonColor.buttonBg,
+      color: commonColor.textColor,
     },
     startTransactionIcon: {
       color: commonColor.success
@@ -92,7 +93,8 @@ export default function computeStyleSheet(): any {
     scrollViewContainer: {
       flexDirection: 'column',
       justifyContent: 'flex-start',
-      alignItems: 'center'
+      alignItems: 'center',
+      paddingTop: '10@s'
     },
     rowContainer: {
       flexDirection: 'row',
