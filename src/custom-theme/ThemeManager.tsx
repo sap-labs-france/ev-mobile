@@ -97,7 +97,7 @@ export default class ThemeManager {
 
   public getCurrentThemeDefinition = (): ThemeDefinition => {
     const darkThemeEnabled = ThemeManager.getInstance().isThemeTypeIsDark();
-    if (!darkThemeEnabled) {
+    if (darkThemeEnabled) {
       return this.darkTheme;
     }
     return this.lightTheme;
