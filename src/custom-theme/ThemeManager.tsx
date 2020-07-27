@@ -1,7 +1,6 @@
 import color from 'color';
+
 import ThemeDefinition, { ThemeType } from '../types/Theme';
-
-
 
 export default class ThemeManager {
   private static instance: ThemeManager;

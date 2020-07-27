@@ -1,4 +1,5 @@
 import { Platform } from 'react-native';
+
 import commonColor, { PLATFORM } from '../theme/variables/commonColor';
 import ThemeManager from './ThemeManager';
 

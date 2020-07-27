@@ -2,6 +2,7 @@ import { StyleProvider } from 'native-base';
 import React, { useEffect } from 'react';
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import SplashScreen from 'react-native-splash-screen';
+
 import App from './src/App';
 import buildTheme from './src/custom-theme';
 import { ThemeType } from './src/types/Theme';
