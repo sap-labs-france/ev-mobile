@@ -7,7 +7,6 @@ import Modal from 'react-native-modal';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import computeModalStyleSheet from '../../../ModalStyles';
-import commonColor from '../../../custom-theme/customCommonColor';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Tenant from '../../../types/Tenant';
@@ -368,6 +367,7 @@ export default class Login extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyleSheet();
     const formStyle = computeFormStyleSheet();
+    const commonColor = Utils.getCurrentCommonColor();
     const navigation = this.props.navigation;
     const { eula, loading, initialLoading, visible, hidePassword } = this.state;
         // Render

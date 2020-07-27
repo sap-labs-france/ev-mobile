@@ -37,6 +37,7 @@ import TransactionsHistory from './screens/transactions/history/TransactionsHist
 import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
 import { ThemeType } from './types/Theme';
 import SecuredStorage from './utils/SecuredStorage';
+import Utils from './utils/Utils';
 
 // Init i18n
 I18nManager.initialize();
@@ -119,6 +120,7 @@ export default class App extends React.Component<Props, State> {
   }
 
   private createRootContainerNavigation() {
+    const commonColor = Utils.getCurrentCommonColor();
     const appStyles = computeStyleSheet();
     const barStyle = {
       backgroundColor: commonColor.containerBgColor,

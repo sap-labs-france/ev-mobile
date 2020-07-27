@@ -18,7 +18,7 @@ export default function AppBootstrap() {
 
   return (
     <AppearanceProvider>
-      <StyleProvider style={buildTheme()}>
+      <StyleProvider style={buildTheme(colorScheme)}>
         <App themeType={colorScheme}/>
       </StyleProvider>
     </AppearanceProvider>

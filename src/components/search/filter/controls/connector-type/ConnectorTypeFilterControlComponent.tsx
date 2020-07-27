@@ -6,8 +6,8 @@ import Chademo from '../../../../../../assets/connectorType/chademo.svg';
 import ComboCCS from '../../../../../../assets/connectorType/combo-ccs.svg';
 import Domestic from '../../../../../../assets/connectorType/domestic-ue.svg';
 import Type2 from '../../../../../../assets/connectorType/type2.svg';
-import commonColor from '../../../../../custom-theme/customCommonColor';
 import { ConnectorType } from '../../../../../types/ChargingStation';
+import Utils from '../../../../../utils/Utils';
 import FilterControlComponent, { FilterControlComponentProps } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
 
@@ -40,6 +40,7 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
 
   public getConnectors(): {type: ConnectorType; element: Element; selected: boolean;}[] {
     const connectorStyle = computeStyleSheet();
+    const commonColor = Utils.getCurrentCommonColor();
     return [
       { type: ConnectorType.TYPE_2, element: <Type2 width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>, selected: false },
       { type: ConnectorType.COMBO_CCS, element: <ComboCCS width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>, selected: false },

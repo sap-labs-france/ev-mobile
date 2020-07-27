@@ -3,6 +3,7 @@ import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } f
 import React from 'react';
 import { DrawerActions } from 'react-navigation-drawer';
 
+import computeCardStyleSheet from '../../CardStyles';
 import I18nManager from '../../I18n/I18nManager';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ProviderFactory from '../../provider/ProviderFactory';
@@ -132,6 +133,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
 
   public render = () => {
     const style = computeStyleSheet();
+    const cardStyle = computeCardStyleSheet();
     const { navigation } = this.props;
     const { loading, totalNumberOfSession, totalConsumptionWattHours, initialFilters, filters,
       totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive } = this.state;
@@ -158,67 +160,67 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
                 ref={(transactionsHistoryFilters: TransactionsHistoryFilters) =>
                   this.setScreenFilters(transactionsHistoryFilters)}
               />
-              <Content style={style.cards}>
-                <Card style={style.card}>
-                  <CardItem style={style.cardItem}>
+              <Content style={cardStyle.cards}>
+                <Card style={cardStyle.card}>
+                  <CardItem style={cardStyle.cardItem}>
                     <Left>
-                      <Icon style={style.cardIcon} type='MaterialIcons' name='history' />
+                      <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='history' />
                       <Body>
-                        <Text style={style.cardText}>{I18n.t('home.numberOfSessions',
+                        <Text style={cardStyle.cardText}>{I18n.t('home.numberOfSessions',
                           { nbrSessions: I18nManager.formatNumber(totalNumberOfSession) })}</Text>
-                        <Text note={true} style={style.cardNote}>{I18n.t('home.numberOfSessionsNote')}</Text>
+                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.numberOfSessionsNote')}</Text>
                       </Body>
                     </Left>
                   </CardItem>
                 </Card>
-                <Card style={style.card}>
-                  <CardItem style={style.cardItem}>
+                <Card style={cardStyle.card}>
+                  <CardItem style={cardStyle.cardItem}>
                     <Left>
-                      <Icon style={style.cardIcon} type='FontAwesome' name='bolt' />
+                      <Icon style={cardStyle.cardIcon} type='FontAwesome' name='bolt' />
                       <Body>
-                        <Text style={style.cardText}>{I18n.t('home.totalConsumptiom',
+                        <Text style={cardStyle.cardText}>{I18n.t('home.totalConsumptiom',
                           { totalConsumptiom: I18nManager.formatNumber(Math.round(totalConsumptionWattHours / 1000)) })}</Text>
-                        <Text note={true} style={style.cardNote}>{I18n.t('home.totalConsumptiomNote')}</Text>
+                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.totalConsumptiomNote')}</Text>
                       </Body>
                     </Left>
                   </CardItem>
                 </Card>
-                <Card style={style.card}>
-                  <CardItem style={style.cardItem}>
+                <Card style={cardStyle.card}>
+                  <CardItem style={cardStyle.cardItem}>
                     <Left>
-                      <Icon style={style.cardIcon} type='MaterialIcons' name='timer' />
+                      <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='timer' />
                       <Body>
-                        <Text style={style.cardText}>{I18n.t('home.totalDuration',
+                        <Text style={cardStyle.cardText}>{I18n.t('home.totalDuration',
                           { totalDuration: Utils.formatDuration(totalDurationSecs) })}</Text>
-                        <Text note={true} style={style.cardNote}>{I18n.t('home.totalDurationNote')}</Text>
+                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.totalDurationNote')}</Text>
                       </Body>
                     </Left>
                   </CardItem>
                 </Card>
-                <Card style={style.card}>
-                  <CardItem style={style.cardItem}>
+                <Card style={cardStyle.card}>
+                  <CardItem style={cardStyle.cardItem}>
                     <Left>
-                      <Icon style={style.cardIcon} type='MaterialIcons' name='timer-off' />
+                      <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='timer-off' />
                       <Body>
-                        <Text style={style.cardText}>{I18n.t('home.totalInactivity',
+                        <Text style={cardStyle.cardText}>{I18n.t('home.totalInactivity',
                           {
                             totalInactivity: Utils.formatDuration(totalInactivitySecs),
                             totalInactivityPercent: I18nManager.formatPercentage((totalInactivitySecs / totalDurationSecs))
                           })}</Text>
-                        <Text note={true} style={style.cardNote}>{I18n.t('home.totalInactivityNote')}</Text>
+                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.totalInactivityNote')}</Text>
                       </Body>
                     </Left>
                   </CardItem>
                 </Card>
                 {isPricingActive &&
-                  <Card style={style.card}>
-                    <CardItem style={style.cardItem}>
+                  <Card style={cardStyle.card}>
+                    <CardItem style={cardStyle.cardItem}>
                       <Left>
-                        <Icon style={style.cardIcon} type='FontAwesome' name='money' />
+                        <Icon style={cardStyle.cardIcon} type='FontAwesome' name='money' />
                         <Body>
-                          <Text style={style.cardText}>{I18n.t('home.totalPrice',
+                          <Text style={cardStyle.cardText}>{I18n.t('home.totalPrice',
                             { totalPrice: I18nManager.formatCurrency(totalPrice) })}</Text>
-                          <Text note={true} style={style.cardNote}>{I18n.t('home.totalPriceNote')}</Text>
+                          <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.totalPriceNote')}</Text>
                         </Body>
                       </Left>
                     </CardItem>

@@ -8,7 +8,8 @@ import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
 
 import I18nManager from '../I18n/I18nManager';
-import commonColor from '../custom-theme/customCommonColor';
+import ThemeManager from '../custom-theme/ThemeManager';
+import { buildCommonColor } from '../custom-theme/customCommonColor';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
 import { InactivityStatus } from '../types/Transaction';
@@ -25,6 +26,13 @@ export default class Utils {
       !Utils.isNullOrEmptyString(tenantSubDomain) &&
       !Utils.isNullOrEmptyString(email) &&
       !Utils.isNullOrEmptyString(password);
+  }
+
+  public static getCurrentCommonColor(): any {
+    // Build the theme
+    const themeManager = ThemeManager.getInstance();
+    const themeDefinition = themeManager.getCurrentThemeDefinition();
+    return buildCommonColor(themeDefinition);
   }
 
   public static convertToInt(value: any): number {
@@ -569,6 +577,7 @@ export default class Utils {
   }
 
   public static computeInactivityStyle(inactivityStatus: InactivityStatus): object {
+    const commonColor = Utils.getCurrentCommonColor();
     switch (inactivityStatus) {
       case InactivityStatus.INFO:
         return { color: commonColor.success };
