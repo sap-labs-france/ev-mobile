@@ -64,29 +64,29 @@ export default class ChargingStationsFilters extends ScreenFilters {
           ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) =>
             this.setFilterVisibleContainerComponent(filterVisibleContainerComponent)}
         >
-          <OnlyAvailableChargingStationSwitchFilterControlComponent
-            filterID={'connectorStatus'}
-            internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS}
-            initialValue={filters.hasOwnProperty('connectorStatus') ? filters.connectorStatus : initialFilters.connectorStatus}
-            label={I18n.t('general.onlyAvailableChargers')}
-            onFilterChanged={(id: string, value: ChargePointStatus) =>
-              this.getFilterVisibleContainerComponent().setFilter(id, value)}
-            ref={(onlyAvailableChargingStationSwitchFilterControlComponent: OnlyAvailableChargingStationSwitchFilterControlComponent) =>
-              this.addVisibleFilter(onlyAvailableChargingStationSwitchFilterControlComponent)}
-          />
-          {locationEnabled &&
-            <LocationSwitchFilterControlComponent
-              filterID={'location'}
-              internalFilterID={GlobalFilters.LOCATION}
-              initialValue={filters.hasOwnProperty('location') ? filters.location : initialFilters.location}
-              label={I18n.t('general.location')}
-              onFilterChanged={(id: string, value: boolean) =>
-                this.getFilterVisibleContainerComponent().setFilter(id, value)}
-              ref={(locationSwitchFilterControlComponent: LocationSwitchFilterControlComponent) =>
-                this.addVisibleFilter(locationSwitchFilterControlComponent)}
-            />
-          }
           <Animatable.View style={style.filtersHidden} ref={this.setExpandableView} >
+            <OnlyAvailableChargingStationSwitchFilterControlComponent
+              filterID={'connectorStatus'}
+              internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS}
+              initialValue={filters.hasOwnProperty('connectorStatus') ? filters.connectorStatus : initialFilters.connectorStatus}
+              label={I18n.t('general.onlyAvailableChargers')}
+              onFilterChanged={(id: string, value: ChargePointStatus) =>
+                this.getFilterVisibleContainerComponent().setFilter(id, value)}
+              ref={(onlyAvailableChargingStationSwitchFilterControlComponent: OnlyAvailableChargingStationSwitchFilterControlComponent) =>
+                this.addVisibleFilter(onlyAvailableChargingStationSwitchFilterControlComponent)}
+            />
+            {locationEnabled &&
+              <LocationSwitchFilterControlComponent
+                filterID={'location'}
+                internalFilterID={GlobalFilters.LOCATION}
+                initialValue={filters.hasOwnProperty('location') ? filters.location : initialFilters.location}
+                label={I18n.t('general.location')}
+                onFilterChanged={(id: string, value: boolean) =>
+                  this.getFilterVisibleContainerComponent().setFilter(id, value)}
+                ref={(locationSwitchFilterControlComponent: LocationSwitchFilterControlComponent) =>
+                  this.addVisibleFilter(locationSwitchFilterControlComponent)}
+              />
+            }
             <ConnectorTypeFilterControlComponent
               filterID={'connectorType'}
               internalFilterID={GlobalFilters.CONNECTOR_TYPES}

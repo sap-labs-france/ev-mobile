@@ -1,14 +1,13 @@
 import I18n from 'i18n-js';
 import { Spinner, Text } from 'native-base';
 import React from 'react';
-import { View, processColor } from 'react-native';
+import { processColor, View } from 'react-native';
 import { LineChart, LineChartProps } from 'react-native-charts-wrapper';
 import { scale } from 'react-native-size-matters';
 import { DrawerActions } from 'react-navigation-drawer';
-
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import TransactionHeaderComponent from '../../../components/transaction/header/TransactionHeaderComponent';
-import commonColor from '../../../theme/variables/commonColor';
+import commonColor from '../../../custom-theme/customCommonColor';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { Connector } from '../../../types/ChargingStation';
 import Consumption from '../../../types/Consumption';
@@ -208,10 +207,10 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           lineWidth: 2,
           drawCircles: false,
           highlightColor: processColor('white'),
-          color: processColor(commonColor.brandInfo),
+          color: processColor(commonColor.primary),
           drawFilled: true,
           fillAlpha: 65,
-          fillColor: processColor(commonColor.brandInfo),
+          fillColor: processColor(commonColor.primary),
           valueTextSize: scale(8)
         }
       });
@@ -228,10 +227,10 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           lineWidth: 2,
           drawCircles: false,
           highlightColor: processColor('white'),
-          color: processColor(commonColor.brandSuccess),
+          color: processColor(commonColor.success),
           drawFilled: true,
           fillAlpha: 65,
-          fillColor: processColor(commonColor.brandSuccess),
+          fillColor: processColor(commonColor.success),
           valueTextSize: scale(8)
         }
       });
@@ -248,7 +247,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       valueFormatter: 'date',
       valueFormatterPattern: 'HH:mm',
       textSize: scale(8),
-      textColor: processColor(commonColor.brandInfo)
+      textColor: processColor(commonColor.textColor)
     };
     // Y Axis
     chartDefinition.yAxis = {};
@@ -258,7 +257,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         enabled: true,
         valueFormatter: '##0.#kW',
         axisMinimum: 0,
-        textColor: processColor(commonColor.brandInfo),
+        textColor: processColor(commonColor.textColor),
         textSize: scale(8)
       };
     } else {
@@ -273,7 +272,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         valueFormatter: '##0',
         axisMinimum: 0,
         axisMaximum: 100,
-        textColor: processColor(commonColor.brandSuccess),
+        textColor: processColor(commonColor.success),
         textSize: scale(8)
       };
     } else {
@@ -301,7 +300,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return (
       loading ? (
-        <Spinner style={style.spinner} />
+        <Spinner style={style.spinner} color='grey' />
       ) : (
           <View style={style.container}>
             <HeaderComponent
@@ -325,11 +324,11 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
                 legend={{
                   enabled: true,
                   textSize: scale(8),
-                  textColor: processColor(commonColor.brandPrimaryDark)
+                  textColor: processColor(commonColor.textColor)
                 }}
                 marker={{
                   enabled: true,
-                  markerColor: processColor(commonColor.brandPrimaryDark),
+                  markerColor: processColor(commonColor.disabled),
                   textSize: scale(12),
                   textColor: processColor(commonColor.inverseTextColor)
                 }}

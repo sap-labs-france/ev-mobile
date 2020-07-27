@@ -4,10 +4,9 @@ import React from 'react';
 import { KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
-
+import commonColor from '../../../custom-theme/customCommonColor';
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
-import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Constants from '../../../utils/Constants';
@@ -16,6 +15,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+
 
 export interface Props extends BaseProps {
 }
@@ -176,7 +176,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               {loading || !captcha ? (
-                <Spinner style={formStyle.spinner} color='white' />
+                <Spinner style={formStyle.spinner} color='grey'/>
               ) : (
                 <Button primary={true} block={true} style={formStyle.button} onPress={() => this.retrievePassword()}>
                   <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.retrievePassword')}</Text>

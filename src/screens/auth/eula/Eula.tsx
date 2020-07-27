@@ -77,7 +77,7 @@ export default class Eula extends BaseScreen<Props, State> {
           leftActionIcon={'navigate-before'}
         />
         {loading ? (
-          <Spinner style={style.spinner} color='white' />
+          <Spinner style={style.spinner} color='grey' />
         ) : (
             <ScrollView style={style.container}>
               <HTMLView value={eulaTextHtml} />

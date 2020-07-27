@@ -1,5 +1,7 @@
+// @flow
+
 export default () => {
-  const swipeRowTheme: any = {
+  const swipeRowTheme = {
     'NativeBase.ListItem': {
       '.list': {
         backgroundColor: '#FFF'

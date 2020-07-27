@@ -86,21 +86,21 @@ export default class HeaderComponent extends React.Component<Props, State> {
       diplayMap, diplayMapAction, mapIsDisplayed, navigation } = this.props;
     return (
       <Header style={style.header}>
-        <Left style={style.leftHeader}>
-          {leftAction ? (
-            <View style={style.buttonRow}>
-              <Button transparent={true} style={style.leftButtonHeader} onPress={() => leftAction()}>
-                <Icon type={leftActionIconType} name={leftActionIcon} style={[style.iconHeader, style.leftIconHeader]} />
-              </Button>
-              <Button transparent={true} style={style.leftButtonHeader}
-                  onPress={() => { navigation.navigate({ routeName: 'HomeNavigator' });}}>
-                <Icon type='MaterialIcons' name='home' style={[style.iconHeader, style.leftIconHeader]} />
-              </Button>
-            </View>
-          ) : (
+        {leftAction ?
+          <Left style={style.leftHeader}>
+            <Button transparent={true} onPress={() => leftAction()}>
+              <Icon type={leftActionIconType} name={leftActionIcon} style={style.iconHeader} />
+            </Button>
+            <Button transparent={true}
+                onPress={() => { navigation.navigate({ routeName: 'HomeNavigator' });}}>
+              <Icon type='MaterialCommunityIcons' name='home' style={style.iconHeader} />
+            </Button>
+          </Left>
+        :
+          <Left style={style.leftHeader}>
             <Image source={logo} style={style.logoHeader} />
-          )}
-        </Left>
+          </Left>
+        }
         <Body style={style.bodyHeader}>
           <Title style={subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader}>{title}</Title>
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
@@ -123,14 +123,12 @@ export default class HeaderComponent extends React.Component<Props, State> {
           )}
           {diplayMap && (
             <Button transparent={true} style={style.rightSecondButtonHeader}
-              onPress={() => {
-                diplayMapAction();
-              }}>
+              onPress={() => { diplayMapAction(); }}>
               <Icon type='MaterialCommunityIcons' name={mapIsDisplayed ? 'format-list-text' : 'earth'} style={style.iconHeader} />
             </Button>
           )}
           {rightAction ? (
-            <Button transparent={true} style={style.rightButtonHeader} onPress={() => rightAction()}>
+            <Button transparent={true} onPress={() => rightAction()}>
               <Icon type={rightActionIconType} name={rightActionIcon} style={style.iconHeader} />
             </Button>
           ) : (

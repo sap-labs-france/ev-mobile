@@ -1,15 +1,25 @@
-import React from 'react';
+import { StyleProvider } from 'native-base';
+import React, { useEffect } from 'react';
+import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import SplashScreen from 'react-native-splash-screen';
+import App from './src/App';
+import buildTheme from './src/custom-theme';
+import { ThemeType } from './src/types/Theme';
 
-import Setup from './src/boot/Setup';
+export default function AppBootstrap() {
+  const colorScheme = useColorScheme() as ThemeType;
 
-export default class App extends React.Component {
-  public componentDidMount() {
+  useEffect(() => {
     // Do stuff while splash screen is shown
     // After having done stuff (such as async tasks) hide the splash screen
     SplashScreen.hide();
-  }
-  public render() {
-    return <Setup />;
-  }
+  }, []);
+
+  return (
+    <AppearanceProvider>
+      <StyleProvider style={buildTheme()}>
+        <App themeType={colorScheme}/>
+      </StyleProvider>
+    </AppearanceProvider>
+  )
 }

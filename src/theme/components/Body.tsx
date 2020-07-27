@@ -1,5 +1,7 @@
+// @flow
+
 export default () => {
-  const bodyTheme: any = {
+  const bodyTheme = {
     flex: 1,
     alignItems: 'center',
     alignSelf: 'center'

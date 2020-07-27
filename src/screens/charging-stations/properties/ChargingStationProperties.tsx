@@ -179,7 +179,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
           rightActionIcon={'menu'}
         />
         {loading ? (
-          <Spinner style={style.spinner} />
+          <Spinner style={style.spinner} color='grey' />
         ) : (
             <FlatList
               data={this.displayedProperties}

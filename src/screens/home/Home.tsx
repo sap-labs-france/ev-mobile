@@ -104,10 +104,10 @@ export default class Home extends BaseScreen<Props, State> {
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
         />
-        <Content style={style.content}>
+        <Content style={style.cards}>
           {isComponentOrganizationActive && (
             <Card>
-              <CardItem button={true} onPress={() => navigation.navigate({ routeName: 'SitesNavigator' })}>
+              <CardItem style={style.card} button={true} onPress={() => navigation.navigate({ routeName: 'SitesNavigator' })}>
                 <Left>
                   <Icon style={style.cardIcon} type='MaterialIcons' name='store-mall-directory' />
                   <Body>
@@ -119,7 +119,7 @@ export default class Home extends BaseScreen<Props, State> {
             </Card>
           )}
           <Card>
-            <CardItem button={true} onPress={() => navigation.navigate({ routeName: 'ChargingStationsNavigator' })}>
+            <CardItem style={style.card} button={true} onPress={() => navigation.navigate({ routeName: 'ChargingStationsNavigator' })}>
               <Left>
                 <Icon style={style.cardIcon} type='MaterialIcons' name='ev-station' />
                 <Body>
@@ -130,7 +130,7 @@ export default class Home extends BaseScreen<Props, State> {
             </CardItem>
           </Card>
           <Card>
-            <CardItem button={true} onPress={() => navigation.navigate({ routeName: 'TransactionHistoryNavigator' })}>
+            <CardItem style={style.card} button={true} onPress={() => navigation.navigate({ routeName: 'TransactionHistoryNavigator' })}>
               <Left>
                 <Icon style={style.cardIcon} type='MaterialCommunityIcons' name='history' />
                 <Body>
@@ -141,7 +141,7 @@ export default class Home extends BaseScreen<Props, State> {
             </CardItem>
           </Card>
           <Card>
-            <CardItem button={true} onPress={this.navigateToTransactionInProgress}>
+            <CardItem style={style.card} button={true} onPress={this.navigateToTransactionInProgress}>
               <Left>
                 <Icon style={style.cardIcon} type='MaterialIcons' name='play-arrow' />
                 <Body>
@@ -152,7 +152,7 @@ export default class Home extends BaseScreen<Props, State> {
             </CardItem>
           </Card>
           <Card>
-            <CardItem button={true} onPress={() => navigation.navigate({ routeName: 'StatisticsNavigator' })}>
+            <CardItem style={style.card} button={true} onPress={() => navigation.navigate({ routeName: 'StatisticsNavigator' })}>
               <Left>
                 <Icon style={style.cardIcon} type='MaterialIcons' name='assessment' />
                 <Body>

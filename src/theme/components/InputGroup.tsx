@@ -1,7 +1,9 @@
+// @flow
+
 import variable from './../variables/platform';
 
 export default (variables /* : * */ = variable) => {
-  const inputGroupTheme: any = {
+  const inputGroupTheme = {
     'NativeBase.Icon': {
       fontSize: 24,
       color: variables.sTabBarActiveTextColor,

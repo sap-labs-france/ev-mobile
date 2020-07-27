@@ -1,10 +1,12 @@
-import { PLATFORM } from './../variables/commonColor';
+// @flow
+
 import variable from './../variables/platform';
+import { PLATFORM } from './../variables/commonColor';
 
 export default (variables /* : * */ = variable) => {
   const platform = variables.platform;
 
-  const segmentTheme: any = {
+  const segmentTheme = {
     height: 45,
     borderColor: variables.segmentBorderColorMain,
     flexDirection: 'row',

@@ -1,5 +1,7 @@
+// @flow
+
 export default () => {
-  const thumbnailTheme: any = {
+  const thumbnailTheme = {
     '.square': {
       borderRadius: 0,
       '.small': {

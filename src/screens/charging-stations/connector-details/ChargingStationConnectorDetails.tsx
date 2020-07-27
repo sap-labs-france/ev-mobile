@@ -4,7 +4,7 @@ import React from 'react';
 import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
 
-import noPhotoActive from '../../../../assets/no-photo-active.png';
+import noPhotoActive from '../../../../assets/no-photo.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
 import I18nManager from '../../../I18n/I18nManager';
@@ -628,7 +628,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return (
       loading ? (
-        <Spinner style={style.spinner} />
+        <Spinner style={style.spinner} color='grey' />
       ) : (
           <Container style={style.container}>
             <HeaderComponent

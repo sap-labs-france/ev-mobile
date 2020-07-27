@@ -4,9 +4,8 @@ import React from 'react';
 import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
-
 import computeFormStyleSheet from '../../../FormStyles';
-import commonColor from '../../../theme/variables/commonColor';
+import commonColor from '../../../custom-theme/customCommonColor';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Constants from '../../../utils/Constants';
@@ -15,6 +14,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+
 
 export interface Props extends BaseProps {
 }
@@ -221,7 +221,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               {loading ? (
-                <Spinner style={formStyle.spinner} color='white' />
+                <Spinner style={formStyle.spinner} color='grey' />
               ) : (
                 <Button primary={true} block={true} style={formStyle.button} onPress={() => this.resetPassword()}>
                   <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.resetPassword')}</Text>

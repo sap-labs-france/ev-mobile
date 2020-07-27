@@ -1,5 +1,7 @@
+// @flow
+
 export default () => {
-  const leftTheme: any = {
+  const leftTheme = {
     flex: 1,
     alignSelf: 'center',
     alignItems: 'flex-start'

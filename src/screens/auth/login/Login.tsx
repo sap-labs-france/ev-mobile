@@ -4,10 +4,9 @@ import React from 'react';
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Modal from 'react-native-modal';
-
 import computeFormStyleSheet from '../../../FormStyles';
 import computeModalStyleSheet from '../../../ModalStyles';
-import commonColor from '../../../theme/variables/commonColor';
+import commonColor from '../../../custom-theme/customCommonColor';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Tenant from '../../../types/Tenant';
@@ -18,6 +17,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+
 
 export interface Props extends BaseProps {
 }
@@ -315,7 +315,7 @@ export default class Login extends BaseScreen<Props, State> {
 
   public setTenant = async (buttonIndex: number) => {
     // Provided?
-    if (buttonIndex !== undefined) {
+    if (buttonIndex !== undefined && this.tenants[buttonIndex]) {
       // Get stored data
       const credentials = await SecuredStorage.getUserCredentials(
         this.tenants[buttonIndex].subdomain);
@@ -370,9 +370,9 @@ export default class Login extends BaseScreen<Props, State> {
     const formStyle = computeFormStyleSheet();
     const navigation = this.props.navigation;
     const { eula, loading, initialLoading, visible, hidePassword } = this.state;
-    // Render
+        // Render
     return initialLoading ? (
-      <Spinner style={formStyle.spinner} />
+      <Spinner style={formStyle.spinner} color='grey' />
     ) : (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
@@ -408,16 +408,17 @@ export default class Login extends BaseScreen<Props, State> {
                   </View>
                   <View style={modalStyle.modalContentContainer}>
                     <View style={modalStyle.modalRow}>
-                      <Text style={modalStyle.modalLabel}>{I18n.t('authentication.tenantSubdomain')}:</Text>
-                      <TextInput
-                        autoFocus={true}
-                        autoCapitalize={'none'}
-                        autoCorrect={false}
-                        placeholder={I18n.t('authentication.tenantSubdomain')}
-                        placeholderTextColor={commonColor.inputColorPlaceholder}
-                        style={modalStyle.modalInputField}
-                        onChangeText={(value) => this.setState({ newTenantSubDomain: value.toLowerCase() })}
-                      />
+                      <Item inlineLabel={true} style={modalStyle.modalIinputGroup}>
+                        <TextInput
+                          autoFocus={true}
+                          autoCapitalize={'none'}
+                          autoCorrect={false}
+                          placeholder={I18n.t('authentication.tenantSubdomain')}
+                          placeholderTextColor={commonColor.inputColorPlaceholder}
+                          style={modalStyle.modalInputField}
+                          onChangeText={(value) => this.setState({ newTenantSubDomain: value.toLowerCase() })}
+                        />
+                      </Item>
                     </View>
                     <View style={modalStyle.modalRowError}>
                       {this.state.errorNewTenantSubDomain &&
@@ -428,13 +429,14 @@ export default class Login extends BaseScreen<Props, State> {
                         ))}
                     </View>
                     <View style={modalStyle.modalRow}>
-                      <Text style={modalStyle.modalLabel}>{I18n.t('authentication.tenantName')}:</Text>
-                      <TextInput
-                        placeholder={I18n.t('authentication.tenantName')}
-                        placeholderTextColor={commonColor.inputColorPlaceholder}
-                        style={modalStyle.modalInputField}
-                        onChangeText={(value) => this.setState({ newTenantName: value })}
-                      />
+                      <Item inlineLabel={true} style={modalStyle.modalIinputGroup}>
+                        <TextInput
+                          placeholder={I18n.t('authentication.tenantName')}
+                          placeholderTextColor={commonColor.inputColorPlaceholder}
+                          style={modalStyle.modalInputField}
+                          onChangeText={(value) => this.setState({ newTenantName: value })}
+                        />
+                      </Item>
                     </View>
                     <View style={modalStyle.modalRowError}>
                       {this.state.errorNewTenantName &&
@@ -538,7 +540,7 @@ export default class Login extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               {loading ? (
-                <Spinner style={formStyle.spinner} color='white' />
+                <Spinner style={formStyle.spinner} color='grey' />
               ) : (
                 <Button primary={true} block={true} style={formStyle.button} onPress={() => this.login()}>
                   <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.login')}</Text>
@@ -553,7 +555,7 @@ export default class Login extends BaseScreen<Props, State> {
           style={style.fab}
           position='bottomRight'
           onPress={() => this.setState({ activeFab: !this.state.activeFab })}>
-          <Icon name='business' />
+          <Icon name='business' style={style.fabIcon} />
           <Button style={style.restoreOrgButton}
             onPress={() => {
               this.restoreTenants();

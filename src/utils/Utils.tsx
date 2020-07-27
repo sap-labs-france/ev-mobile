@@ -1,19 +1,13 @@
 import I18n from 'i18n-js';
 import CentralServerProvider from 'provider/CentralServerProvider';
-import { ImageSourcePropType, NativeModules, Platform } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 import { showLocation } from 'react-native-map-link';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import Address from 'types/Address';
 import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
-
-import chademo from '../../assets/connectorType/chademo.gif';
-import combo from '../../assets/connectorType/combo_ccs.gif';
-import domestic from '../../assets/connectorType/domestic-ue.gif';
-import noConnector from '../../assets/connectorType/no-connector.gif';
-import type2 from '../../assets/connectorType/type2.gif';
+import commonColor from '../custom-theme/customCommonColor';
 import I18nManager from '../I18n/I18nManager';
-import commonColor from '../theme/variables/commonColor';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
 import { InactivityStatus } from '../types/Transaction';
@@ -576,13 +570,13 @@ export default class Utils {
   public static computeInactivityStyle(inactivityStatus: InactivityStatus): object {
     switch (inactivityStatus) {
       case InactivityStatus.INFO:
-        return { color: commonColor.brandSuccess };
+        return { color: commonColor.success };
       case InactivityStatus.WARNING:
-        return { color: commonColor.brandWarning };
+        return { color: commonColor.warning };
       case InactivityStatus.ERROR:
-        return { color: commonColor.brandDanger };
+        return { color: commonColor.danger };
       default:
-        return { color: commonColor.brandInfo };
+        return { color: commonColor.textColor };
     }
   }
 
@@ -743,21 +737,6 @@ export default class Utils {
         return I18n.t('connector.domestic');
       default:
         return I18n.t('connector.unknown');
-    }
-  };
-
-  public static getConnectorTypeImage = (type: ConnectorType): ImageSourcePropType => {
-    switch (type) {
-      case ConnectorType.TYPE_2:
-        return type2;
-      case ConnectorType.COMBO_CCS:
-        return combo;
-      case ConnectorType.CHADEMO:
-        return chademo;
-      case ConnectorType.DOMESTIC:
-        return domestic;
-      default:
-        return noConnector;
     }
   };
 

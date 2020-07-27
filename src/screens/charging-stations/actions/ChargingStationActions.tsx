@@ -219,7 +219,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
       chargingStation.inactive || spinnerResetHard || spinnerResetSoft || spinnerClearCache || connectorsInactive : false;
     return (
       loading ? (
-        <Spinner style={style.spinner} />
+        <Spinner style={style.spinner} color='grey' />
       ) : (
           <Container style={style.container}>
             <HeaderComponent
@@ -236,7 +236,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
                 <View style={style.actionContainer}>
                   <Button disabled={chargingStationIsDisabled} block={true} danger={!chargingStationIsDisabled} iconLeft={true} style={style.actionButton}
                     onPress={() => this.resetHardConfirm()}>
-                    {spinnerResetHard ? <Spinner color='white' /> : <Icon style={style.actionButtonIcon} type='MaterialIcons' name='repeat' />}
+                    {spinnerResetHard ? <Spinner color='grey' /> : <Icon style={style.actionButtonIcon} type='MaterialIcons' name='repeat' />}
                     <Text uppercase={false} style={style.actionButtonText}>
                       {I18n.t('chargers.resetHard')}
                     </Text>
@@ -246,9 +246,10 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
                   <View key={connector.connectorId} style={style.actionContainer}>
                     <Button
                       disabled={chargingStationIsDisabled || connector.status === ChargePointStatus.AVAILABLE}
-                      block={true} iconLeft={true} warning={!chargingStationIsDisabled && connector.status !== ChargePointStatus.AVAILABLE} style={style.actionButton}
+                      warning={!chargingStationIsDisabled && connector.status !== ChargePointStatus.AVAILABLE}
+                      block={true} iconLeft={true} style={style.actionButton}
                       onPress={() => this.unlockConnectorConfirm(connector.connectorId)}>
-                      {spinnerConnectors.get(connector.connectorId) ? (<Spinner color='white' />) : (<Icon style={style.actionButtonIcon} type='MaterialIcons' name='lock-open' />)}
+                      {spinnerConnectors.get(connector.connectorId) ? (<Spinner color='grey' />) : (<Icon style={style.actionButtonIcon} type='MaterialIcons' name='lock-open' />)}
                       <Text uppercase={false} style={style.actionButtonText}>
                         {I18n.t('chargers.unlockConnector', { connectorId: Utils.getConnectorLetterFromConnectorID(connector.connectorId) })}
                       </Text>
@@ -258,7 +259,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
                 <View style={style.actionContainer}>
                   <Button disabled={chargingStationIsDisabled} block={true} iconLeft={true} warning={!chargingStationIsDisabled} style={style.actionButton}
                     onPress={() => this.resetSoftConfirm()}>
-                    {spinnerResetSoft ? <Spinner color='white' /> : <Icon style={style.actionButtonIcon} type='MaterialIcons' name='layers-clear' />}
+                    {spinnerResetSoft ? <Spinner color='grey' /> : <Icon style={style.actionButtonIcon} type='MaterialIcons' name='layers-clear' />}
                     <Text uppercase={false} style={style.actionButtonText}>
                       {I18n.t('chargers.resetSoft')}
                     </Text>
@@ -267,7 +268,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
                 <View style={style.actionContainer}>
                   <Button disabled={chargingStationIsDisabled} block={true} iconLeft={true} warning={!chargingStationIsDisabled} style={style.actionButton}
                     onPress={() => this.clearCacheConfirm()}>
-                    {spinnerClearCache ? <Spinner color='white' /> : <Icon style={style.actionButtonIcon} type='MaterialIcons' name='refresh' />}
+                    {spinnerClearCache ? <Spinner color='grey' /> : <Icon style={style.actionButtonIcon} type='MaterialIcons' name='refresh' />}
                     <Text uppercase={false} style={style.actionButtonText}>
                       {I18n.t('chargers.clearCache')}
                     </Text>
