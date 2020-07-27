@@ -16,33 +16,7 @@ export default function computeStyleSheet(): any {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
-    cards: {
-      padding: '10@s',
-      backgroundColor: commonColor.headerBgColor,
-    },
-    card: {
-      padding: '5@s',
-      backgroundColor: commonColor.headerBgColor,
-    },
-    cardItem: {
-      backgroundColor: commonColor.headerBgColor,
-    },
-    tabHeader: {},
-    cardIcon: {
-      textAlign: 'center',
-      fontSize: '50@s',
-      width: '55@s',
-      color: commonColor.textColor,
-    },
-    cardText: {
-      fontSize: '20@s',
-      color: commonColor.textColor,
-    },
-    cardNote: {
-      fontStyle: 'italic',
-      fontSize: '12@s',
-      color: commonColor.subTextColor,
-    }
+    tabHeader: {}
   });
   const portraitStyles = {};
   const landscapeStyles = {};
