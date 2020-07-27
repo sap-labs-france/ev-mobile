@@ -170,7 +170,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
               <Item inlineLabel={true} style={formStyle.inputGroup}>
                 <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.password')}
@@ -197,7 +197,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                 <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   onSubmitEditing={() => Keyboard.dismiss()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.repeatPassword')}

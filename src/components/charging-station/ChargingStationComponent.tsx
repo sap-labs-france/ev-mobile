@@ -99,7 +99,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
             <Text>-</Text>
           }
           {(chargingStation.distanceMeters > 0) &&
-            <Text>{Utils.formatDistance(chargingStation.distanceMeters)}</Text>
+            <Text style={style.distance}>{Utils.formatDistance(chargingStation.distanceMeters)}</Text>
           }
         </View>
         <View style={style.connectorsContainer}>

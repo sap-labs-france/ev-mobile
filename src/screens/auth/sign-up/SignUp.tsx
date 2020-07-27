@@ -229,7 +229,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Icon active={true} name='person' style={formStyle.inputIcon} />
                 <TextInput
                   onSubmitEditing={() => this.firstNameInput.focus()}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.name')}
                   placeholderTextColor={commonColor.inputColorPlaceholder}
@@ -252,7 +252,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Icon active={true} name='person' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.firstNameInput = ref)}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   onSubmitEditing={() => this.emailInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.firstName')}
@@ -276,7 +276,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.emailInput = ref)}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   onSubmitEditing={() => this.passwordInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.email')}
@@ -301,7 +301,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.password')}
@@ -328,7 +328,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   onSubmitEditing={() => Keyboard.dismiss()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.repeatPassword')}

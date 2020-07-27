@@ -158,7 +158,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
                 <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType={'next'}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   placeholder={I18n.t('authentication.email')}
                   placeholderTextColor={commonColor.inputColorPlaceholder}
                   style={formStyle.inputField}

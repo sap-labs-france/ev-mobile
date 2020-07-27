@@ -10,19 +10,21 @@ export default function computeStyleSheet(): any {
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: commonColor.containerBgColor,
+      borderColor: commonColor.listBorderColor,
+      borderLeftWidth: 1,
+      padding: '10@s'
     },
     background: {
       flex: 1
     },
     drawerContent: {
-      paddingTop: '5@s',
       flex: 1
     },
     header: {
       flexDirection: 'column',
-      borderColor: commonColor.textColor,
       backgroundColor: commonColor.containerBgColor,
+      borderColor: commonColor.listBorderColor,
       borderBottomWidth: 1,
       height: '120@s',
       marginTop: Platform.OS === 'ios' ? '-5@s' : '10@s'
@@ -48,6 +50,7 @@ export default function computeStyleSheet(): any {
       fontSize: '14@s',
       margin: '2@s',
       alignSelf: 'center',
+      fontWeight: 'bold',
       marginBottom: '10@s',
     },
     versionDate: {
@@ -58,17 +61,16 @@ export default function computeStyleSheet(): any {
     },
     linkContainer: {
       paddingTop: '10@s',
-      paddingLeft: '10@s'
     },
     links: {
-      borderBottomWidth: '0@s',
+      borderBottomWidth: 0,
       borderBottomColor: 'transparent',
       height: Platform.OS === 'ios' ? undefined : '35@s',
       paddingTop: '10@s',
       paddingBottom: '10@s'
     },
     linkIcon: {
-      fontSize: '20@s',
+      fontSize: '30@s',
       color: commonColor.textColor
     },
     linkText: {
@@ -77,14 +79,16 @@ export default function computeStyleSheet(): any {
       paddingLeft: '10@s'
     },
     logoutContainer: {
-      padding: 30,
-      paddingTop: '0@s'
+      paddingBottom: '25@s',
+      paddingLeft: '10@s',
+      paddingRight: '10@s',
+      paddingTop: 0,
+      borderTopWidth: 1,
+      borderTopColor: commonColor.listBorderColor
     },
     logoutButton: {
       paddingTop: '10@s',
       flexDirection: 'row',
-      borderTopWidth: 1,
-      borderTopColor: commonColor.textColor
     },
     gridLogoutContainer: {
       flex: 1,
