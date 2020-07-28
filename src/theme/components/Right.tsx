@@ -1,5 +1,7 @@
+// @flow
+
 export default () => {
-  const rightTheme: any = {
+  const rightTheme = {
     'NativeBase.Button': {
       alignSelf: null
     },

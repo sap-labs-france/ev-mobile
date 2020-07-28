@@ -1,7 +1,9 @@
+// @flow
+
 import variable from './../variables/platform';
 
 export default (variables /* : * */ = variable) => {
-  const textAreaTheme: any = {
+  const textAreaTheme = {
     '.underline': {
       borderBottomWidth: variables.borderWidth,
       marginTop: 5,

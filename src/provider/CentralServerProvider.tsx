@@ -1,4 +1,5 @@
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
@@ -12,7 +13,7 @@ import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
 import Eula, { EulaAccepted } from '../types/Eula';
 import PagingParams from '../types/PagingParams';
-import Setting from '../types/Setting';
+import { ServerAction } from '../types/Server';
 import Site from '../types/Site';
 import SiteArea from '../types/SiteArea';
 import Tenant from '../types/Tenant';
@@ -46,9 +47,11 @@ export default class CentralServerProvider {
   private securityProvider: SecurityProvider = null;
 
   constructor() {
+    // Retry backend requests
+    axiosRetry(axios);
     if (__DEV__) {
       // QA REST Server
-      this.centralRestServerServiceBaseURL = Configuration.centralRestServerServiceBaseURLQA;
+      // this.centralRestServerServiceBaseURL = Configuration.centralRestServerServiceBaseURLQA;
       this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + '/client/auth';
       this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + '/client/api';
       this.debug = true;
@@ -314,7 +317,7 @@ export default class CentralServerProvider {
     this.debugMethod('register');
     // Call
     const result = await axios.post(
-      `${this.centralRestServerServiceAuthURL}/RegisterUser`,
+      `${this.centralRestServerServiceAuthURL}/${ServerAction.REGISTER_USER}`,
       {
         acceptEula,
         captcha,
@@ -349,7 +352,7 @@ export default class CentralServerProvider {
   public async retrievePassword(tenantSubDomain: string, email: string, captcha: string) {
     this.debugMethod('retrievePassword');
     const result = await axios.post(
-      `${this.centralRestServerServiceAuthURL}/Reset`,
+      `${this.centralRestServerServiceAuthURL}/${ServerAction.RESET}`,
       {
         tenant: tenantSubDomain,
         captcha,
@@ -365,7 +368,7 @@ export default class CentralServerProvider {
   public async resetPassword(tenantSubDomain: string, hash: string, passwords: { password: string; repeatPassword: string; }) {
     this.debugMethod('resetPassword');
     const result = await axios.post(
-      `${this.centralRestServerServiceAuthURL}/Reset`,
+      `${this.centralRestServerServiceAuthURL}/${ServerAction.RESET}`,
       {
         tenant: tenantSubDomain,
         hash,
@@ -381,7 +384,7 @@ export default class CentralServerProvider {
   public async verifyEmail(tenantSubDomain: string, email: string, token: string): Promise<ActionResponse> {
     this.debugMethod('verifyEmail');
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceAuthURL}/VerifyEmail`, {
+    const result = await axios.get(`${this.centralRestServerServiceAuthURL}/${ServerAction.VERIFY_EMAIL}`, {
       headers: this.buildHeaders(),
       params: {
         Tenant: tenantSubDomain,
@@ -392,12 +395,12 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getChargers(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<ChargingStation>> {
-    this.debugMethod('getChargers');
+  public async getChargingStations(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<ChargingStation>> {
+    this.debugMethod('getChargingStations');
     // Build Paging
     this.buildPaging(paging, params);
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStations`, {
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/${ServerAction.CHARGING_STATIONS}`, {
       headers: this.buildSecuredHeaders(),
       params,
     });
@@ -407,46 +410,36 @@ export default class CentralServerProvider {
   public async saveUserMobileToken(params: { id: string; mobileToken: string; mobileOS: string }): Promise<ActionResponse> {
     this.debugMethod('saveUserMobileToken');
     // Call
-    const result = await axios.put(`${this.centralRestServerServiceSecuredURL}/UpdateUserMobileToken`, params, {
+    const result = await axios.put(`${this.centralRestServerServiceSecuredURL}/${ServerAction.USER_UPDATE_MOBILE_TOKEN}`, params, {
       headers: this.buildSecuredHeaders(),
     });
     return result.data;
   }
 
-  public async getCharger(params = {}): Promise<ChargingStation> {
-    this.debugMethod('getCharger');
+  public async getChargingStation(params = {}): Promise<ChargingStation> {
+    this.debugMethod('getChargingStation');
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStation`, {
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/${ServerAction.CHARGING_STATION}`, {
       headers: this.buildSecuredHeaders(),
       params,
     });
     return result.data;
   }
 
-  public async getChargerOcppParameters(id: string): Promise<DataResult<KeyValue>> {
+  public async getChargingStationOcppParameters(id: string): Promise<DataResult<KeyValue>> {
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationOcppParameters?ChargeBoxID=${id}`, {
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/${ServerAction.CHARGING_STATIONS_OCPP_PARAMETERS}?ChargeBoxID=${id}`, {
       headers: this.buildSecuredHeaders()
     });
     return result.data;
   }
-
-  // public async getSettings(params: {} = {}): Promise<DataResult<Setting>> {
-  //   this.debugMethod('getCharger');
-  //   // Call
-  //   const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/Settings`, {
-  //     headers: this.buildSecuredHeaders(),
-  //     params,
-  //   });
-  //   return result.data;
-  // }
 
   public async getSites(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Site>> {
     this.debugMethod('getSites');
     // Build Paging
     this.buildPaging(paging, params);
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/Sites`, {
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/${ServerAction.SITES}`, {
       headers: this.buildSecuredHeaders(),
       params,
     });
@@ -458,7 +451,7 @@ export default class CentralServerProvider {
     // Build Paging
     this.buildPaging(paging, params);
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/SiteAreas`, {
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/${ServerAction.SITE_AREAS}`, {
       headers: this.buildSecuredHeaders(),
       params,
     });
@@ -468,7 +461,7 @@ export default class CentralServerProvider {
   public async getEndUserLicenseAgreement(params: { Language: string; }): Promise<Eula> {
     this.debugMethod('getEndUserLicenseAgreement');
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceAuthURL}/EndUserLicenseAgreement`, {
+    const result = await axios.get(`${this.centralRestServerServiceAuthURL}/${ServerAction.END_USER_LICENSE_AGREEMENT}`, {
       headers: this.buildHeaders(),
       params,
     });
@@ -479,7 +472,7 @@ export default class CentralServerProvider {
     this.debugMethod('startTransaction');
     // Call
     const result = await axios.post(
-      `${this.centralRestServerServiceSecuredURL}/ChargingStationRemoteStartTransaction`,
+      `${this.centralRestServerServiceSecuredURL}/${ServerAction.CHARGING_STATION_REMOTE_START_TRANSACTION}`,
       {
         args: {
           connectorId,
@@ -498,7 +491,7 @@ export default class CentralServerProvider {
     this.debugMethod('stopTransaction');
     // Call
     const result = await axios.post(
-      `${this.centralRestServerServiceSecuredURL}/ChargingStationRemoteStopTransaction`,
+      `${this.centralRestServerServiceSecuredURL}/${ServerAction.CHARGING_STATION_REMOTE_STOP_TRANSACTION}`,
       {
         args: {
           transactionId,
@@ -516,7 +509,7 @@ export default class CentralServerProvider {
     this.debugMethod('reset');
     // Call
     const result = await axios.post(
-      `${this.centralRestServerServiceSecuredURL}/ChargingStationReset`,
+      `${this.centralRestServerServiceSecuredURL}/${ServerAction.CHARGING_STATION_RESET}`,
       {
         args: {
           type,
@@ -534,7 +527,7 @@ export default class CentralServerProvider {
     this.debugMethod('clearCache');
     // Call
     const result = await axios.post(
-      `${this.centralRestServerServiceSecuredURL}/ChargingStationClearCache`,
+      `${this.centralRestServerServiceSecuredURL}/${ServerAction.CHARGING_STATION_CLEAR_CACHE}`,
       {
         args: {},
         chargeBoxID,
@@ -550,7 +543,7 @@ export default class CentralServerProvider {
     this.debugMethod('clearCache');
     // Call
     const result = await axios.post(
-      `${this.centralRestServerServiceSecuredURL}/ChargingStationUnlockConnector`,
+      `${this.centralRestServerServiceSecuredURL}/${ServerAction.CHARGING_STATION_UNLOCK_CONNECTOR}`,
       {
         args: {
           connectorId
@@ -567,7 +560,7 @@ export default class CentralServerProvider {
   public async getTransaction(params = {}): Promise<Transaction> {
     this.debugMethod('getTransaction');
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/Transaction`, {
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/${ServerAction.TRANSACTION}`, {
       headers: this.buildSecuredHeaders(),
       params,
     });
@@ -583,7 +576,7 @@ export default class CentralServerProvider {
     params.SortFields = 'timestamp';
     params.SortDirs = '-1';
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/ChargingStationTransactions`, {
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/${ServerAction.CHARGING_STATION_TRANSACTIONS}`, {
       headers: this.buildSecuredHeaders(),
       params,
     });
@@ -597,17 +590,17 @@ export default class CentralServerProvider {
     // Build Paging
     this.buildPaging(paging, params);
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/TransactionsCompleted`, {
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/${ServerAction.TRANSACTIONS_COMPLETED}`, {
       headers: this.buildSecuredHeaders(),
       params,
     });
     return result.data;
   }
 
-  public async requestChargerOcppParameters(id: string): Promise<ActionResponse> {
+  public async requestChargingStationOcppParameters(id: string): Promise<ActionResponse> {
     this.debugMethod('requestChargingStationOCPPConfiguration');
     // Call
-    const result = await axios.post(`${this.centralRestServerServiceSecuredURL}/ChargingStationRequestOcppParameters`,
+    const result = await axios.post(`${this.centralRestServerServiceSecuredURL}/${ServerAction.CHARGING_STATION_REQUEST_OCPP_PARAMETERS}`,
       {
         chargeBoxID: id,
         forceUpdateOCPPParamsFromTemplate: false,
@@ -623,7 +616,7 @@ export default class CentralServerProvider {
     // Build Paging
     this.buildPaging(paging, params);
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/TransactionsActive`, {
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/${ServerAction.TRANSACTIONS_ACTIVE}`, {
       headers: this.buildSecuredHeaders(),
       params,
     });
@@ -633,7 +626,7 @@ export default class CentralServerProvider {
   public async getUserImage(params = {}): Promise<string> {
     this.debugMethod('getUserImage');
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/UserImage`, {
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/${ServerAction.USER_IMAGE}`, {
       headers: this.buildSecuredHeaders(),
       params,
     });
@@ -646,7 +639,7 @@ export default class CentralServerProvider {
     let foundSiteImage = this.siteImages.find((siteImage) => siteImage.id === id);
     if (!foundSiteImage) {
       // Call
-      const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/SiteImage`, {
+      const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/${ServerAction.SITE_IMAGE}`, {
         headers: this.buildSecuredHeaders(),
         params: { ID: id },
       });
@@ -664,7 +657,7 @@ export default class CentralServerProvider {
   public async getTransactionConsumption(transactionId: number): Promise<Transaction> {
     this.debugMethod('getChargingStationConsumption');
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/TransactionConsumption`, {
+    const result = await axios.get(`${this.centralRestServerServiceSecuredURL}/${ServerAction.TRANSACTION_CONSUMPTION}`, {
       headers: this.buildSecuredHeaders(),
       params: { TransactionId: transactionId },
     });
@@ -674,7 +667,7 @@ export default class CentralServerProvider {
   public async checkEndUserLicenseAgreement(params: { email: string; tenantSubDomain: string; }): Promise<EulaAccepted> {
     this.debugMethod('checkEndUserLicenseAgreement');
     // Call
-    const result = await axios.get(`${this.centralRestServerServiceAuthURL}/CheckEndUserLicenseAgreement`, {
+    const result = await axios.get(`${this.centralRestServerServiceAuthURL}/${ServerAction.CHECK_END_USER_LICENSE_AGREEMENT}`, {
       headers: this.buildHeaders(),
       params: {
         Email: params.email,
@@ -722,19 +715,6 @@ export default class CentralServerProvider {
     );
     return result.data;
   }
-
-  // public _buildOrdering(ordering, queryString) {
-  //   if (ordering && ordering.length) {
-  //     if (!queryString.SortFields) {
-  //       queryString.SortFields = [];
-  //       queryString.SortDirs = [];
-  //     }
-  //     ordering.forEach((order) => {
-  //       queryString.SortFields.push(order.field);
-  //       queryString.SortDirs.push(order.direction);
-  //     });
-  //   }
-  // }
 
   private buildHeaders(): object {
     return {

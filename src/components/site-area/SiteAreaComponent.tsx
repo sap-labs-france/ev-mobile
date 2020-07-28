@@ -35,6 +35,7 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { siteArea, navigation } = this.props;
+    const validGPSCoordinates = Utils.containsAddressGPSCoordinates(siteArea.address);
     // New backend?
     return (
       <Animatable.View
@@ -45,7 +46,7 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
           onPress={() => {
             if (siteArea.connectorStats.totalConnectors > 0) {
               navigation.navigate({
-                routeName: 'Chargers',
+                routeName: 'ChargingStations',
                 params: {
                 siteAreaID: siteArea.id
                 },
@@ -57,8 +58,26 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
           }}>
           <View style={style.container}>
             <View style={style.headerContent}>
-              <Text style={style.headerName}>{siteArea.name}</Text>
+              <View style={style.titleContainer}>
+                <TouchableOpacity disabled={!validGPSCoordinates}
+                    onPress={() => Utils.jumpToMapWithAddress(siteArea.name, siteArea.address)}>
+                  { validGPSCoordinates ?
+                    <Icon style={[style.icon, style.iconLeft]} type='MaterialIcons' name='place' />
+                  :
+                    <Icon style={[style.icon, style.iconLeft]} type='MaterialCommunityIcons' name='map-marker-off' />
+                  }
+                </TouchableOpacity>
+                <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>{siteArea.name}</Text>
+              </View>
               <Icon style={siteArea.connectorStats.totalConnectors > 0 ? style.icon : style.iconHidden} type='MaterialIcons' name='navigate-next' />
+            </View>
+            <View style={style.subHeaderContent}>
+              <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1} >
+                {Utils.formatAddress(siteArea.address)}
+              </Text>
+              {(siteArea.distanceMeters > 0) &&
+                <Text>{Utils.formatDistance(siteArea.distanceMeters)}</Text>
+              }
             </View>
             <View style={style.connectorContent}>
               <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={siteArea.connectorStats} />

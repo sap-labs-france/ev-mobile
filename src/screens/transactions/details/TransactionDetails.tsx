@@ -5,12 +5,13 @@ import React from 'react';
 import { Image, ScrollView } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
 
-import noPhotoActive from '../../../../assets/no-photo-active.png';
+import noPhotoActive from '../../../../assets/no-photo.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
 import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';
+import { HTTPError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
 import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
@@ -103,7 +104,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       return transaction;
     } catch (error) {
       switch (error.request.status) {
-        case 550:
+        case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
           Message.showError(I18n.t('transactions.transactionDoesNotExist'));
           break;
         default:
@@ -257,7 +258,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(transaction ? transaction.connectorId : null);
     return (
       loading ? (
-        <Spinner style={style.spinner} />
+        <Spinner style={style.spinner} color='grey' />
       ) : (
           <Container style={style.container}>
             <HeaderComponent

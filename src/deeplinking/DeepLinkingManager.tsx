@@ -4,6 +4,7 @@ import DeepLinking from 'react-native-deep-linking';
 import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
 
 import CentralServerProvider from '../provider/CentralServerProvider';
+import { HTTPError } from '../types/HTTPError';
 import Constants from '../utils/Constants';
 import Message from '../utils/Message';
 import Utils from '../utils/Utils';
@@ -127,15 +128,15 @@ export default class DeepLinkingManager {
             // Show error
             switch (error.request.status) {
               // Account already active
-              case 530:
+              case HTTPError.USER_ACCOUNT_ALREADY_ACTIVE_ERROR:
                 Message.showError(I18n.t('authentication.accountAlreadyActive'));
                 break;
               // VerificationToken no longer valid
-              case 540:
+              case HTTPError.INVALID_TOKEN_ERROR:
                 Message.showError(I18n.t('authentication.activationTokenNotValid'));
                 break;
               // Email does not exist
-              case 550:
+              case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
                 Message.showError(I18n.t('authentication.activationEmailNotValid'));
                 break;
               // Other common Error

@@ -10,9 +10,11 @@ import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmpt
 import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import TransactionHistoryComponent from '../../../components/transaction/history/TransactionHistoryComponent';
+import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import { TransactionDataResult } from '../../../types/DataResult';
 import { GlobalFilters } from '../../../types/Filter';
+import { HTTPAuthError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
 import SecuredStorage from '../../../utils/SecuredStorage';
@@ -72,7 +74,9 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
   }
 
   public async loadInitialFilters() {
-    const userID = await SecuredStorage.loadFilterValue(GlobalFilters.MY_USER_FILTER);
+    const centralServerProvider = await ProviderFactory.getProvider();
+    const userID = await SecuredStorage.loadFilterValue(
+      centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
     this.setState({
       initialFilters: { userID },
       filters: { userID }
@@ -106,7 +110,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       return transactions;
     } catch (error) {
       // Check if HTTP?
-      if (!error.request || error.request.status !== 560) {
+      if (!error.request || error.request.status !== HTTPAuthError.ERROR) {
         Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
           'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
       }
@@ -199,7 +203,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
           navigation={navigation}
         />
         {loading ? (
-          <Spinner style={style.spinner} />
+          <Spinner style={style.spinner} color='grey' />
         ) : (
             <View style={style.content}>
               <TransactionsHistoryFilters

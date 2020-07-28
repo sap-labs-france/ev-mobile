@@ -5,8 +5,8 @@ import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-nat
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
 import computeFormStyleSheet from '../../../FormStyles';
-import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
+import { HTTPError } from '../../../types/HTTPError';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
@@ -134,7 +134,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
           // Show error
           switch (error.request.status) {
             // Invalid Hash
-            case 550:
+            case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
               Message.showError(I18n.t('authentication.resetPasswordHashNotValid'));
               break;
             default:
@@ -159,6 +159,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
+    const commonColor = Utils.getCurrentCommonColor();
     const { tenantName, loading, hidePassword, hideRepeatPassword } = this.state;
     return (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
@@ -167,9 +168,9 @@ export default class ResetPassword extends BaseScreen<Props, State> {
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
             <Form style={formStyle.form}>
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='unlock' style={formStyle.inputIcon} />
+                <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.password')}
@@ -184,7 +185,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                 />
                 <Icon active={true} name={hidePassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hidePassword: !hidePassword })}
-                  style={[formStyle.inputIcon, style.inputIconLock]} />
+                  style={formStyle.inputIcon} />
               </Item>
               {this.state.errorPassword &&
                 this.state.errorPassword.map((errorMessage, index) => (
@@ -193,10 +194,10 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='unlock' style={formStyle.inputIcon} />
+                <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   onSubmitEditing={() => Keyboard.dismiss()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.repeatPassword')}
@@ -211,7 +212,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                 />
                 <Icon active={true} name={hideRepeatPassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
-                  style={[formStyle.inputIcon, style.inputIconLock]} />
+                  style={formStyle.inputIcon} />
               </Item>
               {this.state.errorRepeatPassword &&
                 this.state.errorRepeatPassword.map((errorMessage, index) => (
@@ -220,10 +221,10 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               {loading ? (
-                <Spinner style={formStyle.spinner} color='white' />
+                <Spinner style={formStyle.spinner} color='grey' />
               ) : (
                 <Button primary={true} block={true} style={formStyle.button} onPress={() => this.resetPassword()}>
-                  <Text style={formStyle.buttonText}>{I18n.t('authentication.resetPassword')}</Text>
+                  <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.resetPassword')}</Text>
                 </Button>
               )}
             </Form>
@@ -233,7 +234,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
           <Left>
             <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]}
               onPress={() => this.props.navigation.navigate('Login')}>
-              <Text style={[style.linksTextButton, style.linksTextButtonLeft]}>{I18n.t('authentication.backLogin')}</Text>
+              <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>{I18n.t('authentication.backLogin')}</Text>
             </Button>
           </Left>
         </Footer>

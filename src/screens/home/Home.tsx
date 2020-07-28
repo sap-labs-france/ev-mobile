@@ -4,7 +4,7 @@ import React from 'react';
 import { Alert, BackHandler } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
 import Transaction from 'types/Transaction';
-
+import computeCardStyleSheet from '../../CardStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import BaseProps from '../../types/BaseProps';
 import Constants from '../../utils/Constants';
@@ -72,9 +72,9 @@ export default class Home extends BaseScreen<Props, State> {
         // User has only one transaction?
         if (transactions.count === 1) {
           navigation.navigate({
-            routeName: 'ChargerConnectorDetailsTabs',
+            routeName: 'ChargingStationConnectorDetailsTabs',
             params: {
-              chargerID: transactions.result[0].chargeBoxID,
+              chargingStationID: transactions.result[0].chargeBoxID,
               connectorID: transactions.result[0].connectorId
             },
             key: `${Utils.randomNumber()}`
@@ -94,6 +94,7 @@ export default class Home extends BaseScreen<Props, State> {
 
   public render = () => {
     const style = computeStyleSheet();
+    const cardStyle = computeCardStyleSheet();
     const { navigation } = this.props;
     const { isComponentOrganizationActive } = this.state;
     return (
@@ -104,60 +105,60 @@ export default class Home extends BaseScreen<Props, State> {
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
         />
-        <Content style={style.content}>
+        <Content style={cardStyle.cards}>
           {isComponentOrganizationActive && (
-            <Card>
-              <CardItem button={true} onPress={() => navigation.navigate({ routeName: 'SitesNavigator' })}>
+            <Card style={cardStyle.card}>
+              <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate({ routeName: 'SitesNavigator' })}>
                 <Left>
-                  <Icon style={style.cardIcon} type='MaterialIcons' name='store-mall-directory' />
+                  <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='store-mall-directory' />
                   <Body>
-                    <Text style={style.cardText}>{I18n.t('home.browseSites')}</Text>
-                    <Text note={true} style={style.cardNote}>{I18n.t('home.browseSitesNote')}</Text>
+                    <Text style={cardStyle.cardText}>{I18n.t('home.browseSites')}</Text>
+                    <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.browseSitesNote')}</Text>
                   </Body>
                 </Left>
               </CardItem>
             </Card>
           )}
-          <Card>
-            <CardItem button={true} onPress={() => navigation.navigate({ routeName: 'ChargersNavigator' })}>
+          <Card style={cardStyle.card}>
+            <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate({ routeName: 'ChargingStationsNavigator' })}>
               <Left>
-                <Icon style={style.cardIcon} type='MaterialIcons' name='ev-station' />
+                <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='ev-station' />
                 <Body>
-                  <Text style={style.cardText}>{I18n.t('home.browseChargers')}</Text>
-                  <Text note={true} style={style.cardNote}>{I18n.t('home.browseChargersNote')}</Text>
+                  <Text style={cardStyle.cardText}>{I18n.t('home.browseChargers')}</Text>
+                  <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.browseChargersNote')}</Text>
                 </Body>
               </Left>
             </CardItem>
           </Card>
-          <Card>
-            <CardItem button={true} onPress={() => navigation.navigate({ routeName: 'TransactionHistoryNavigator' })}>
+          <Card style={cardStyle.card}>
+            <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate({ routeName: 'TransactionHistoryNavigator' })}>
               <Left>
-                <Icon style={style.cardIcon} type='MaterialCommunityIcons' name='history' />
+                <Icon style={cardStyle.cardIcon} type='MaterialCommunityIcons' name='history' />
                 <Body>
-                  <Text style={style.cardText}>{I18n.t('home.browseSessions')}</Text>
-                  <Text note={true} style={style.cardNote}>{I18n.t('home.browseSessionsNote')}</Text>
+                  <Text style={cardStyle.cardText}>{I18n.t('home.browseSessions')}</Text>
+                  <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.browseSessionsNote')}</Text>
                 </Body>
               </Left>
             </CardItem>
           </Card>
-          <Card>
-            <CardItem button={true} onPress={this.navigateToTransactionInProgress}>
+          <Card style={cardStyle.card}>
+            <CardItem style={cardStyle.cardItem} button={true} onPress={this.navigateToTransactionInProgress}>
               <Left>
-                <Icon style={style.cardIcon} type='MaterialIcons' name='play-arrow' />
+                <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='play-arrow' />
                 <Body>
-                  <Text style={style.cardText}>{I18n.t('home.ongoingSessions')}</Text>
-                  <Text note={true} style={style.cardNote}>{I18n.t('home.ongoingSessionsNote')}</Text>
+                  <Text style={cardStyle.cardText}>{I18n.t('home.ongoingSessions')}</Text>
+                  <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.ongoingSessionsNote')}</Text>
                 </Body>
               </Left>
             </CardItem>
           </Card>
-          <Card>
-            <CardItem button={true} onPress={() => navigation.navigate({ routeName: 'StatisticsNavigator' })}>
+          <Card style={cardStyle.card}>
+            <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate({ routeName: 'StatisticsNavigator' })}>
               <Left>
-                <Icon style={style.cardIcon} type='MaterialIcons' name='assessment' />
+                <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='assessment' />
                 <Body>
-                  <Text style={style.cardText}>{I18n.t('home.browseStatistics')}</Text>
-                  <Text note={true} style={style.cardNote}>{I18n.t('home.browseStatisticsNote')}</Text>
+                  <Text style={cardStyle.cardText}>{I18n.t('home.browseStatistics')}</Text>
+                  <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.browseStatisticsNote')}</Text>
                 </Body>
               </Left>
             </CardItem>

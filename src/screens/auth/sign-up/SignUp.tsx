@@ -1,13 +1,13 @@
 import I18n from 'i18n-js';
 import { Button, CheckBox, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import { Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
-import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
+import { HTTPError } from '../../../types/HTTPError';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
@@ -187,11 +187,11 @@ export default class SignUp extends BaseScreen<Props, State> {
           // Show error
           switch (error.request.status) {
             // Email already exists
-            case 510:
+            case HTTPError.USER_EMAIL_ALREADY_EXIST_ERROR:
               Message.showError(I18n.t('authentication.emailAlreadyExists'));
               break;
             // Invalid Captcha
-            case 530:
+            case HTTPError.INVALID_CAPTCHA:
               Message.showError(I18n.t('authentication.invalidCaptcha'));
               break;
             default:
@@ -216,6 +216,7 @@ export default class SignUp extends BaseScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
+    const commonColor = Utils.getCurrentCommonColor();
     const navigation = this.props.navigation;
     const { eula, loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl, hidePassword, hideRepeatPassword } = this.state;
     return (
@@ -228,7 +229,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Icon active={true} name='person' style={formStyle.inputIcon} />
                 <TextInput
                   onSubmitEditing={() => this.firstNameInput.focus()}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.name')}
                   placeholderTextColor={commonColor.inputColorPlaceholder}
@@ -251,7 +252,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 <Icon active={true} name='person' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.firstNameInput = ref)}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   onSubmitEditing={() => this.emailInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.firstName')}
@@ -272,10 +273,10 @@ export default class SignUp extends BaseScreen<Props, State> {
                 ))}
 
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='mail' style={formStyle.inputIcon} />
+                <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.emailInput = ref)}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   onSubmitEditing={() => this.passwordInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.email')}
@@ -297,10 +298,10 @@ export default class SignUp extends BaseScreen<Props, State> {
                 ))}
 
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='unlock' style={formStyle.inputIcon} />
+                <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.password')}
@@ -315,7 +316,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 />
                 <Icon active={true} name={hidePassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hidePassword: !hidePassword })}
-                  style={[formStyle.inputIcon, style.inputIconLock]} />
+                  style={formStyle.inputIcon} />
               </Item>
               {this.state.errorPassword &&
                 this.state.errorPassword.map((errorMessage, index) => (
@@ -324,10 +325,10 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='unlock' style={formStyle.inputIcon} />
+                <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   onSubmitEditing={() => Keyboard.dismiss()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.repeatPassword')}
@@ -342,7 +343,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                 />
                 <Icon active={true} name={hideRepeatPassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
-                  style={[formStyle.inputIcon, style.inputIconLock]} />
+                  style={formStyle.inputIcon} />
               </Item>
               {this.state.errorRepeatPassword &&
                 this.state.errorRepeatPassword.map((errorMessage, index) => (
@@ -351,7 +352,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               <View style={formStyle.formCheckboxContainer}>
-                <CheckBox style={formStyle.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
+                <CheckBox style={formStyle.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula, captcha: null })} />
                 <Text style={formStyle.checkboxText}>
                   {I18n.t('authentication.acceptEula')}
                   <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
@@ -366,10 +367,10 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               {loading || (!captcha && this.state.eula) ? (
-                <Spinner style={formStyle.spinner} color='white' />
+                <Spinner style={formStyle.spinner} color='grey'/>
               ) : (
                 <Button primary={true} block={true} style={formStyle.button} onPress={() => this.signUp()}>
-                  <TextRN style={formStyle.buttonText}>{I18n.t('authentication.signUp')}</TextRN>
+                  <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.signUp')}</Text>
                 </Button>
               )}
             </Form>
@@ -386,7 +387,7 @@ export default class SignUp extends BaseScreen<Props, State> {
         <Footer style={style.footer}>
           <Left>
             <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.props.navigation.goBack()}>
-              <TextRN style={[style.linksTextButton, style.linksTextButtonLeft]}>{I18n.t('authentication.backLogin')}</TextRN>
+              <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>{I18n.t('authentication.backLogin')}</Text>
             </Button>
           </Left>
         </Footer>

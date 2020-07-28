@@ -1,23 +1,20 @@
 import I18n from 'i18n-js';
 import CentralServerProvider from 'provider/CentralServerProvider';
-import { ImageSourcePropType, NativeModules, Platform } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
+import { showLocation } from 'react-native-map-link';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import Address from 'types/Address';
 import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
-import chademo from '../../assets/connectorType/chademo.gif';
-import combo from '../../assets/connectorType/combo_ccs.gif';
-import domestic from '../../assets/connectorType/domestic-ue.gif';
-import noConnector from '../../assets/connectorType/no-connector.gif';
-import type2 from '../../assets/connectorType/type2.gif';
-import commonColor from '../theme/variables/commonColor';
+import { buildCommonColor } from '../custom-theme/customCommonColor';
+import ThemeManager from '../custom-theme/ThemeManager';
+import I18nManager from '../I18n/I18nManager';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
 import { InactivityStatus } from '../types/Transaction';
 import User from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
-
 
 export default class Utils {
   public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
@@ -30,6 +27,129 @@ export default class Utils {
       !Utils.isNullOrEmptyString(password);
   }
 
+  public static getCurrentCommonColor(): any {
+    // Build the theme
+    const themeManager = ThemeManager.getInstance();
+    const themeDefinition = themeManager.getCurrentThemeDefinition();
+    return buildCommonColor(themeDefinition);
+  }
+
+  public static convertToInt(value: any): number {
+    let changedValue: number = value;
+    if (!value) {
+      return 0;
+    }
+    // Check
+    if (typeof value === 'string') {
+      // Create Object
+      changedValue = parseInt(value);
+    }
+    return changedValue;
+  }
+
+  public static formatAddress(address: Address): string {
+    const addresses: string[] = [];
+    if (address.address1 && address.address1.length > 0) {
+      addresses.push(address.address1);
+    }
+    if (address.city && address.city.length > 0) {
+      addresses.push(address.city);
+    }
+    return addresses.join(', ');
+  }
+
+  public static convertToFloat(value: any): number {
+    let changedValue: number = value;
+    if (!value) {
+      return 0;
+    }
+    // Check
+    if (typeof value === 'string') {
+      // Create Object
+      changedValue = parseFloat(value);
+    }
+    return changedValue;
+  }
+
+  public static convertToBoolean(value: any): boolean {
+    let result = false;
+    // Check boolean
+    if (value) {
+      // Check the type
+      if (typeof value === 'boolean') {
+        // Already a boolean
+        result = value;
+      } else {
+        // Convert
+        result = (value === 'true');
+      }
+    }
+    return result;
+  }
+
+  public static convertToDate(date: any): Date {
+    // Check
+    if (!date) {
+      return null;
+    }
+    // Check Type
+    if (!(date instanceof Date)) {
+      return new Date(date);
+    }
+    return date;
+  }
+
+  public static formatDistance(distanceMeters: number): string {
+    let distance = distanceMeters;
+    // Convert to Yard
+    if (I18nManager.isMetricsSystem()) {
+      distance *= 1.09361;
+    }
+    if (distance < 1000) {
+      return I18nManager.isMetricsSystem() ?
+        Math.round(distance) + ' m' :
+        Math.round(distance) + ' yd';
+    }
+    return I18nManager.isMetricsSystem() ?
+      I18nManager.formatNumber(Math.round(distance / 100) / 10) + ' km' :
+      I18nManager.formatNumber(Math.round(distance * 0.000621371)) + ' mi';
+  }
+
+  public static isEmptyArray(array: any): boolean {
+    if (!array) {
+      return true;
+    }
+    if (Array.isArray(array) && array.length > 0) {
+      return false;
+    }
+    return true;
+  }
+
+  public static jumpToMapWithAddress(title: string, address: Address) {
+    if (!Utils.containsAddressGPSCoordinates(address)) {
+      Message.showError(I18n.t('general.noGPSCoordinates'));
+    } else {
+      Utils.jumpToMapWithCoordinates(title, address.coordinates);
+    }
+  }
+
+  public static jumpToMapWithCoordinates(title: string, coordinates: number[]) {
+    if (!Utils.containsGPSCoordinates(coordinates)) {
+      Message.showError(I18n.t('general.noGPSCoordinates'));
+    } else {
+      showLocation({
+        longitude: coordinates[0],
+        latitude: coordinates[1],
+        title,
+        googleForceLatLon: true,  // optionally force GoogleMaps to use the latlon for the query instead of the title
+        alwaysIncludeGoogle: true, // optional, true will always add Google Maps to iOS and open in Safari, even if app is not installed (default: false)
+        dialogTitle: I18n.t('general.chooseApp'),
+        dialogMessage: I18n.t('general.availableApps'),
+        cancelText: I18n.t('general.close'),
+      });
+    }
+  }
+
   public static getChargePointFromID(chargingStation: ChargingStation, chargePointID: number): ChargePoint {
     return chargingStation.chargePoints.find((chargePoint) => chargePoint.chargePointID === chargePointID);
   }
@@ -39,7 +159,7 @@ export default class Utils {
   }
 
   public static containsAddressGPSCoordinates(address: Address): boolean {
-    // Check if GPS are available
+      // Check if GPS are available
     if (address && Utils.containsGPSCoordinates(address.coordinates)) {
       return true;
     }
@@ -49,7 +169,11 @@ export default class Utils {
   public static containsGPSCoordinates(coordinates: number[]): boolean {
     // Check if GPs are available
     if (coordinates && coordinates.length === 2 && coordinates[0] && coordinates[1]) {
-      return true;
+      // Check Longitude & Latitude
+      if (new RegExp(Constants.REGEX_VALIDATION_LONGITUDE).test(coordinates[0].toString()) &&
+          new RegExp(Constants.REGEX_VALIDATION_LATITUDE).test(coordinates[1].toString())) {
+        return true;
+      }
     }
     return false;
   }
@@ -452,15 +576,16 @@ export default class Utils {
   }
 
   public static computeInactivityStyle(inactivityStatus: InactivityStatus): object {
+    const commonColor = Utils.getCurrentCommonColor();
     switch (inactivityStatus) {
       case InactivityStatus.INFO:
-        return { color: commonColor.brandSuccess };
+        return { color: commonColor.success };
       case InactivityStatus.WARNING:
-        return { color: commonColor.brandWarning };
+        return { color: commonColor.warning };
       case InactivityStatus.ERROR:
-        return { color: commonColor.brandDanger };
+        return { color: commonColor.danger };
       default:
-        return { color: commonColor.brandInfo };
+        return { color: commonColor.textColor };
     }
   }
 
@@ -621,21 +746,6 @@ export default class Utils {
         return I18n.t('connector.domestic');
       default:
         return I18n.t('connector.unknown');
-    }
-  };
-
-  public static getConnectorTypeImage = (type: ConnectorType): ImageSourcePropType => {
-    switch (type) {
-      case ConnectorType.TYPE_2:
-        return type2;
-      case ConnectorType.COMBO_CCS:
-        return combo;
-      case ConnectorType.CHADEMO:
-        return chademo;
-      case ConnectorType.DOMESTIC:
-        return domestic;
-      default:
-        return noConnector;
     }
   };
 

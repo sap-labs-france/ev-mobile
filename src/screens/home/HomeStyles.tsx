@@ -1,43 +1,25 @@
 import deepmerge from 'deepmerge';
-import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
+import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
-
-import commonColor from '../../theme/variables/commonColor';
-
-const commonStyles = ScaledSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    height: '100%',
-    backgroundColor: commonColor.containerBgColor
-  },
-  spinner: {
-    flex: 1,
-    color: commonColor.textColor
-  },
-  content: {
-    padding: '5@s'
-  },
-  tabHeader: {},
-  cardIcon: {
-    textAlign: 'center',
-    fontSize: '50@s',
-    width: '55@s'
-  },
-  cardText: {
-    fontSize: '20@s',
-  },
-  cardNote: {
-    fontStyle: 'italic',
-    fontSize: '12@s'
-  }
-});
-
-const portraitStyles = {};
-
-const landscapeStyles = {};
+import Utils from '../../utils/Utils';
 
 export default function computeStyleSheet(): any {
+  const commonColor = Utils.getCurrentCommonColor();
+  const commonStyles = ScaledSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      height: '100%',
+      backgroundColor: commonColor.containerBgColor
+    },
+    spinner: {
+      flex: 1,
+      backgroundColor: commonColor.containerBgColor
+    },
+    tabHeader: {}
+  });
+  const portraitStyles = {};
+  const landscapeStyles = {};
   return ResponsiveStylesheet.createOriented({
     landscape: deepmerge(commonStyles, landscapeStyles),
     portrait: deepmerge(commonStyles, portraitStyles)

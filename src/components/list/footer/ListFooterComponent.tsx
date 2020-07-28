@@ -31,7 +31,7 @@ export default class ListFooterComponent extends React.Component<Props, State> {
     if (skip + limit < count || count === -1) {
       return (
         <View style={style.spinnerContainer}>
-          <Spinner />
+          <Spinner color='grey'/>
         </View>
       );
     }

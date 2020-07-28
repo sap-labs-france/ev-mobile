@@ -1,5 +1,6 @@
 import React from 'react';
 
+import ProviderFactory from '../../../../provider/ProviderFactory';
 import SecuredStorage from '../../../../utils/SecuredStorage';
 import FilterControlComponent from '../controls/FilterControlComponent';
 
@@ -130,7 +131,12 @@ export default abstract class FilterContainerComponent extends React.Component<F
     for (const filterControlComponent of this.filterControlComponents) {
       // Save
       if (filterControlComponent.canBeSaved()) {
-        await SecuredStorage.saveFilterValue(filterControlComponent.getInternalID(), filterControlComponent.getValue());
+        // Get Provider
+        const centralServerProvider = await ProviderFactory.getProvider();
+        // Get Token
+        const user = await centralServerProvider.getUserInfo();
+        // Save
+        await SecuredStorage.saveFilterValue(user, filterControlComponent.getInternalID(), filterControlComponent.getValue());
       }
     }
   }

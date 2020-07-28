@@ -2,20 +2,27 @@ import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
+import { Location } from 'react-native-location';
+import MapView, { Marker, Region } from 'react-native-maps';
 import { DrawerActions } from 'react-navigation-drawer';
+
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteComponent from '../../components/site/SiteComponent';
+import LocationManager from '../../location/LocationManager';
+import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
+import { GlobalFilters } from '../../types/Filter';
 import Site from '../../types/Site';
 import Constants from '../../utils/Constants';
+import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
+import SitesFilters, { SitesFiltersDef } from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
-
 
 export interface Props extends BaseProps {
 }
@@ -26,13 +33,19 @@ interface State {
   refreshing?: boolean;
   skip?: number;
   limit?: number;
+  initialFilters?: SitesFiltersDef;
+  filters?: SitesFiltersDef;
   count?: number;
+  showMap?: boolean;
 }
 
 export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
+  private currentLocation: Location;
+  private locationEnabled: boolean;
+  private currentRegion: Region;
 
   constructor(props: Props) {
     super(props);
@@ -41,8 +54,10 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       loading: true,
       refreshing: false,
       skip: 0,
+      initialFilters: {},
       limit: Constants.PAGING_SIZE,
-      count: 0
+      count: 0,
+      showMap: false,
     };
   }
 
@@ -51,23 +66,55 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public async componentDidMount() {
+    // Get initial filters
+    await this.loadInitialFilters();
     // Call parent
     await super.componentDidMount();
     // No Site Management: Go to chargers
     const securityProvider = this.centralServerProvider.getSecurityProvider();
     if (securityProvider && !securityProvider.isComponentOrganizationActive()) {
-      this.props.navigation.navigate('Chargers');
+      this.props.navigation.navigate('ChargingStations');
     }
+  }
+
+  public async loadInitialFilters() {
+    const centralServerProvider = await ProviderFactory.getProvider();
+    let location = Utils.convertToBoolean(await SecuredStorage.loadFilterValue(
+      centralServerProvider.getUserInfo(), GlobalFilters.LOCATION));
+    if (!location) {
+      location = false;
+    }
+    this.setState({
+      initialFilters: { location },
+      filters: { location }
+    });
+  }
+
+  public async getCurrentLocation(): Promise<Location> {
+    const { filters } = this.state;
+    // Get the current location
+    let currentLocation = (await LocationManager.getInstance()).getLocation();
+    this.locationEnabled = currentLocation ? true : false;
+    // Bypass location
+    if (!filters.location) {
+      currentLocation = null;
+    }
+    return currentLocation;
   }
 
   public getSites = async (searchText = '', skip: number, limit: number): Promise<DataResult<Site>> => {
     let sites: DataResult<Site>;
     try {
+      // Get current location
+      this.currentLocation = await this.getCurrentLocation();
       // Get the Sites
       sites = await this.centralServerProvider.getSites({
         Search: searchText,
         Issuer: true,
-        WithAvailableChargers: true
+        WithAvailableChargers: true,
+        LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
+        LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
+        LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
       }, { skip, limit });
     } catch (error) {
       // Other common Error
@@ -85,17 +132,35 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     return true;
   };
 
+  public refreshCurrentRegion(sites: Site[], force = false) {
+    // Set current region
+    if (!this.currentRegion || force) {
+      let gpsCoordinates: number[];
+      if (!Utils.isEmptyArray(sites) && Utils.containsAddressGPSCoordinates(sites[0].address)) {
+        gpsCoordinates = sites[0].address.coordinates;
+      }
+      this.currentRegion = {
+        longitude: gpsCoordinates ? gpsCoordinates[0] : 2.3514616,
+        latitude: gpsCoordinates ? gpsCoordinates[1] : 48.8566969,
+        latitudeDelta: 0.009,
+        longitudeDelta: 0.009,
+      };
+    }
+  }
+
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
       const sites = await this.getSites(this.searchText, 0, skip + limit);
+      // Refresh region
+      this.refreshCurrentRegion(sites.result);
       // Add sites
       this.setState({
         loading: false,
+        sites: sites ? sites.result : [],
         count: sites ? sites.count : 0,
-        sites: sites ? sites.result : []
       });
     }
   };
@@ -126,13 +191,31 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
 
   public search = async (searchText: string) => {
     this.searchText = searchText;
+    delete this.currentRegion;
     await this.refresh();
+  }
+
+  public onMapRegionChange = (region: Region) => {
+    this.currentRegion = region;
+  }
+
+  public filterChanged(newFilters: SitesFiltersDef) {
+    delete this.currentRegion;
+    this.setState({ filters: newFilters }, () => this.refresh());
+  }
+
+  public toggleDisplayMap = () => {
+    // Refresh region
+    this.refreshCurrentRegion(this.state.sites, true);
+    // Toggle map
+    this.setState({ showMap: !this.state.showMap })
   }
 
   public render() {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, skip, count, limit } = this.state;
+    const { loading, skip, count, limit, initialFilters, showMap } = this.state;
+    const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.sites)
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -142,15 +225,44 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           leftActionIcon={'navigate-before'}
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
+          diplayMap={!Utils.isEmptyArray(this.state.sites)}
+          mapIsDisplayed={mapIsDisplayed}
+          diplayMapAction={() => this.toggleDisplayMap()}
         />
-        <SimpleSearchComponent
-          onChange={(searchText) => this.search(searchText)}
-          navigation={navigation}
-        />
-        <View style={style.content}>
-          {loading ? (
-            <Spinner style={style.spinner} />
-          ) : (
+        {loading ? (
+          <Spinner style={style.spinner} color='grey' />
+        ) : (
+          <View style={style.content}>
+            <SimpleSearchComponent
+              onChange={(searchText) => this.search(searchText)}
+              navigation={navigation}
+            />
+            <SitesFilters
+              initialFilters={initialFilters} locationEnabled={this.locationEnabled}
+              onFilterChanged={(newFilters: SitesFiltersDef) => this.filterChanged(newFilters)}
+              ref={(sitesFilters: SitesFilters) => this.setScreenFilters(sitesFilters)}
+            />
+            {mapIsDisplayed ?
+              <MapView
+                style={style.map}
+                region={this.currentRegion}
+                onRegionChange={this.onMapRegionChange}
+              >
+                {this.state.sites.map((site: Site) => {
+                  if (Utils.containsAddressGPSCoordinates(site.address)) {
+                    return (
+                      <Marker
+                        key={site.id}
+                        coordinate={{ longitude: site.address.coordinates[0], latitude: site.address.coordinates[1] }}
+                        title={site.name}
+                        description={site.name}
+                      />
+                    );
+                  }
+                  return undefined;
+                })}
+              </MapView>
+            :
               <FlatList
                 data={this.state.sites}
                 renderItem={({ item }) => <SiteComponent site={item} navigation={this.props.navigation} />}
@@ -161,8 +273,10 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
                 ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('sites.noSites')} />}
                 ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
               />
-            )}
-        </View>
+            }
+          </View>
+        )
+      }
       </Container>
     );
   }

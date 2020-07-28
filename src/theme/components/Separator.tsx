@@ -1,7 +1,9 @@
+// @flow
+
 import variable from './../variables/platform';
 
 export default (variables /* : * */ = variable) => {
-  const theme: any = {
+  const theme = {
     '.group': {
       height: 50,
       paddingVertical: variables.listItemPadding - 8,

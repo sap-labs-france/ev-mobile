@@ -1,19 +1,20 @@
 import I18n from 'i18n-js';
 import { Button, Footer, Form, Icon, Item, Left, Spinner, Text } from 'native-base';
 import React from 'react';
-import { KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
-import commonColor from '../../../theme/variables/commonColor';
 import BaseProps from '../../../types/BaseProps';
+import { HTTPError } from '../../../types/HTTPError';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+
 
 export interface Props extends BaseProps {
 }
@@ -115,11 +116,11 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
           // Show error
           switch (error.request.status) {
             // Invalid Captcha
-            case 530:
+            case HTTPError.INVALID_CAPTCHA:
               Message.showError(I18n.t('authentication.invalidCaptcha'));
               break;
             // Unknown Email
-            case 550:
+            case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
               Message.showError(I18n.t('authentication.wrongEmail'));
               break;
             default:
@@ -144,6 +145,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
+    const commonColor = Utils.getCurrentCommonColor();
     const { loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl } = this.state;
     return (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
@@ -152,10 +154,10 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
             <Form style={formStyle.form}>
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='mail' style={formStyle.inputIcon} />
+                <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType={'next'}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   placeholder={I18n.t('authentication.email')}
                   placeholderTextColor={commonColor.inputColorPlaceholder}
                   style={formStyle.inputField}
@@ -174,10 +176,10 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               {loading || !captcha ? (
-                <Spinner style={formStyle.spinner} color='white' />
+                <Spinner style={formStyle.spinner} color='grey'/>
               ) : (
                 <Button primary={true} block={true} style={formStyle.button} onPress={() => this.retrievePassword()}>
-                  <TextRN style={formStyle.buttonText}>{I18n.t('authentication.retrievePassword')}</TextRN>
+                  <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.retrievePassword')}</Text>
                 </Button>
               )}
             </Form>
@@ -194,7 +196,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
         <Footer style={style.footer}>
           <Left>
             <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.props.navigation.goBack()}>
-              <TextRN style={[style.linksTextButton, style.linksTextButtonLeft]}>{I18n.t('authentication.backLogin')}</TextRN>
+              <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>{I18n.t('authentication.backLogin')}</Text>
             </Button>
           </Left>
         </Footer>

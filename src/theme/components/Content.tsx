@@ -1,6 +1,7 @@
+// @flow
 
 export default () => {
-  const contentTheme: any = {
+  const contentTheme = {
     flex: 1,
     backgroundColor: 'transparent',
     'NativeBase.Segment': {

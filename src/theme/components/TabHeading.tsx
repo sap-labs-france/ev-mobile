@@ -1,5 +1,7 @@
-import { PLATFORM } from './../variables/commonColor';
+// @flow
+
 import variable from './../variables/platform';
+import { PLATFORM } from './../variables/commonColor';
 
 export default (variables /* : * */ = variable) => {
   const platform = variables.platform;
@@ -10,7 +12,6 @@ export default (variables /* : * */ = variable) => {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: platform === PLATFORM.ANDROID ? 5 : 0,
     '.scrollable': {
       paddingHorizontal: 20,
       flex: platform === PLATFORM.ANDROID ? 0 : 1,
@@ -18,8 +19,7 @@ export default (variables /* : * */ = variable) => {
     },
     'NativeBase.Text': {
       color: variables.topTabBarTextColor,
-      marginHorizontal: 7,
-      marginTop: -5
+      marginHorizontal: 7
     },
     'NativeBase.Icon': {
       color: variables.topTabBarTextColor,
@@ -28,8 +28,7 @@ export default (variables /* : * */ = variable) => {
     '.active': {
       'NativeBase.Text': {
         color: variables.topTabBarActiveTextColor,
-        fontWeight: '600',
-        marginTop: -5
+        fontWeight: '600'
       },
       'NativeBase.Icon': {
         color: variables.topTabBarActiveTextColor

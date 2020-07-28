@@ -1,12 +1,14 @@
+// @flow
+
 import { Platform } from 'react-native';
 
-import { PLATFORM } from './../variables/commonColor';
 import variable from './../variables/platform';
+import { PLATFORM } from './../variables/commonColor';
 
 export default (variables /* : * */ = variable) => {
   const platform = variables.platform;
 
-  const footerTabTheme: any = {
+  const footerTabTheme = {
     'NativeBase.Button': {
       '.active': {
         'NativeBase.Text': {
@@ -65,7 +67,8 @@ export default (variables /* : * */ = variable) => {
         lineHeight: 16
       }
     },
-    backgroundColor: Platform.OS === PLATFORM.ANDROID ? variables.footerDefaultBg : undefined,
+    backgroundColor:
+      Platform.OS === PLATFORM.ANDROID ? variables.footerDefaultBg : undefined,
     flexDirection: 'row',
     justifyContent: 'space-between',
     flex: 1,

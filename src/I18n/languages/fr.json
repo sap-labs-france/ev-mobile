@@ -9,6 +9,8 @@
     "mandatory": "est obligatoire",
     "eulaUnexpectedError": "Impossible de charger les CGUs",
     "noGPSCoordinates": "Coordonnées GPS non fournies",
+    "chooseApp": "Choisissez une App",
+    "availableApps": "Apps Disponibles",
     "ok": "Ok",
     "yes": "Oui",
     "no": "Non",
@@ -33,10 +35,11 @@
     "hour": "h",
     "minute": "m",
     "second": "s",
+    "location": "Bornes les plus proches",
     "startDate": "Date Début",
     "endDate": "Date Fin",
     "onlyMyTransactions": "Mes Sessions",
-    "onlyAvailableChargers": "Bornes Disponibles",
+    "onlyAvailableChargers": "Bornes disponibles",
     "wrongTenant": "Vous êtes connecté sur la mauvaise organisation",
     "tenantExists": "L'organisation existe déjà.",
     "createdOn": "Créé le",
@@ -167,13 +170,13 @@
     "free": "Libre(s)",
     "occupied": "Occupé(s)",
     "noSites": "Aucun Site trouvé",
-    "siteUnexpectedError": "Impossible de lire le site"
+    "siteUnexpectedError": "Impossible de lire les sites"
   },
   "siteAreas": {
     "title": "Zones",
     "noChargers": "Cette Zone n'a pas de Borne",
     "noSiteAreas": "Aucune Zone trouvée",
-    "siteAreaUnexpectedError": "Cannot read the site area"
+    "siteAreaUnexpectedError": "Impossible de lire les zones"
   },
   "chargers": {
     "title": "Bornes",
@@ -182,7 +185,7 @@
     "noOCPPParameters": "Pas de parametre OCPP",
     "noChargerParameters": "Pas de parametre",
     "chargerConfigurationUnexpectedError": "Impossible de lire la configuration de la borne",
-    "chargerUnexpectedError": "Impossible de lire la borne",
+    "chargerUnexpectedError": "Impossible de lire les bornes",
     "chargerResetUnexpectedError": "Impossible de réinitialiser la borne",
     "chargerRebootUnexpectedError": "Impossible de redémarrer la borne",
     "chargerClearCacheUnexpectedError": "Impossible d'effacer le cache de la borne",

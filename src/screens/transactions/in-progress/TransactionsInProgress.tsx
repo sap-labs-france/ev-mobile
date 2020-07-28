@@ -9,6 +9,7 @@ import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
 import TransactionInProgressComponent from '../../../components/transaction/in-progress/TransactionInProgressComponent';
+import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import { DataResult } from '../../../types/DataResult';
 import { GlobalFilters } from '../../../types/Filter';
@@ -65,7 +66,9 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
   }
 
   public async loadInitialFilters() {
-    const userID = await SecuredStorage.loadFilterValue(GlobalFilters.MY_USER_FILTER);
+    const centralServerProvider = await ProviderFactory.getProvider();
+    const userID = await SecuredStorage.loadFilterValue(
+      centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
     this.setState({
       initialFilters: { userID },
       filters: { userID }
@@ -180,7 +183,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           filters={filters}
         />
         {loading ? (
-          <Spinner style={style.spinner} />
+          <Spinner style={style.spinner} color='grey' />
         ) : (
             <View style={style.content}>
               {(isAdmin || hasSiteAdmin) &&

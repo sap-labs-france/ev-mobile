@@ -33,7 +33,8 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
       Animated.timing(spinValue, {
         toValue: 1,
         duration: 4000,
-        easing: Easing.linear
+        easing: Easing.linear,
+        useNativeDriver: true
       })
     ).start();
     // Second interpolate beginning and end values (in this case 0 and 1)
@@ -144,7 +145,7 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     const connectorStyles = this.getConnectorStyles(style);
     // Get value
     const value = this.getConnectorValue();
-    // Animated
+    // Animated 
     const isAnimated = this.isAnimated();
     const isAndroid = Platform.OS === 'android';
     return (

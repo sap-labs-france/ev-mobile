@@ -9,6 +9,8 @@
     "mandatory": "is mandatory",
     "eulaUnexpectedError": "Cannot load the EULA",
     "noGPSCoordinates": "No GPS coordinates is provided",
+    "chooseApp": "Choose an App",
+    "availableApps": "Available Apps",
     "ok": "Ok",
     "yes": "Yes",
     "no": "No",
@@ -33,10 +35,11 @@
     "hour": "h",
     "minute": "m",
     "second": "s",
+    "location": "Closest charging stations",
     "startDate": "Start Date",
     "endDate": "End Date",
     "onlyMyTransactions": "My Sessions",
-    "onlyAvailableChargers": "Available Chargers",
+    "onlyAvailableChargers": "Available charging stations",
     "wrongTenant": "You are connected to the wrong organization",
     "tenantExists": "The organization already exists.",
     "createdOn": "Created On",
@@ -118,7 +121,7 @@
     "sendSuccess": "The error report has been sent successfully"
   },
   "users": {
-    "userUnexpectedError": "Cannot read the user"
+    "userUnexpectedError": "Cannot read the users"
   },
   "transactions": {
     "transaction": "Session",
@@ -167,13 +170,13 @@
     "free": "Free",
     "occupied": "Occupied",
     "noSites": "No Site found",
-    "siteUnexpectedError": "Cannot read the site"
+    "siteUnexpectedError": "Cannot read the sites"
   },
   "siteAreas": {
     "title": "Site Areas",
     "noChargers": "This Site Area has no Charger",
     "noSiteAreas": "No Site Area found",
-    "siteAreaUnexpectedError": "Cannot read the site area"
+    "siteAreaUnexpectedError": "Cannot read the site areas"
   },
   "chargers": {
     "title": "Charging Stations",
@@ -182,7 +185,7 @@
     "noOCPPParameters": "No OCPP parameter",
     "noChargerParameters": "No Charging Station parameter",
     "chargerConfigurationUnexpectedError": "Cannot read the configuration of the charging station",
-    "chargerUnexpectedError": "Cannot read the charging station",
+    "chargerUnexpectedError": "Cannot read the charging stations",
     "chargerResetUnexpectedError": "Cannot reset the charging station",
     "chargerRebootUnexpectedError": "Cannot reboot the charging station",
     "chargerClearCacheUnexpectedError": "Cannot clear the cache of the charging station",

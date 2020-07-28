@@ -1,5 +1,7 @@
-import { PLATFORM } from './../variables/commonColor';
+// @flow
+
 import variable from './../variables/platform';
+import { PLATFORM } from './../variables/commonColor';
 
 export default (variables /* : * */ = variable) => {
   const platformStyle = variables.platformStyle;
@@ -20,7 +22,7 @@ export default (variables /* : * */ = variable) => {
       color: variables.tabBarActiveTextColor
     }
   };
-  const footerTheme: any = {
+  const footerTheme = {
     'NativeBase.Left': {
       'NativeBase.Button': {
         '.transparent': {
@@ -99,6 +101,14 @@ export default (variables /* : * */ = variable) => {
     backgroundColor: variables.footerDefaultBg,
     flexDirection: 'row',
     justifyContent: 'center',
+    borderTopWidth:
+      platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL
+        ? variables.borderWidth
+        : undefined,
+    borderColor:
+      platform === PLATFORM.IOS && platformStyle !== PLATFORM.MATERIAL
+        ? '#cbcbcb'
+        : undefined,
     height: variables.footerHeight,
     paddingBottom: variables.footerPaddingBottom,
     elevation: 3,
