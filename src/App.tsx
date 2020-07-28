@@ -33,6 +33,7 @@ import TransactionsHistory from './screens/transactions/history/TransactionsHist
 import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
 import commonColor from './theme/variables/commonColor';
 import SecuredStorage from './utils/SecuredStorage';
+import ReportError from './screens//report-error//ReportError'
 
 
 // Init i18n
@@ -127,6 +128,13 @@ const chargerConnectorDetailsTabsNavigator = createMaterialBottomTabNavigator(
         tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
       }
     },
+    ReportError: {
+      screen: ReportError,
+      navigationOptions: {
+        title: I18n.t('details.reportError'),
+        tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'report')
+      }
+    },
   },
   {
     activeColor: commonColor.topTabBarActiveTextColor,
@@ -153,7 +161,14 @@ const transactionDetailsTabsNavigator = createMaterialBottomTabNavigator(
         title: I18n.t('details.graph'),
         tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
       }
-    }
+    },
+    ReportError: {
+      screen: ReportError,
+      navigationOptions: {
+        title: I18n.t('details.error'),
+        tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'report')
+      }
+    },
   },
   {
     activeColor: commonColor.topTabBarActiveTextColor,
@@ -165,6 +180,40 @@ const transactionDetailsTabsNavigator = createMaterialBottomTabNavigator(
   }
 );
 
+const reportErrorTabsNavigator = createMaterialBottomTabNavigator(
+  {
+    ChargerConnectorDetails: {
+      screen: ChargerConnectorDetails,
+      navigationOptions: {
+        title: I18n.t('sites.chargePoint'),
+        tabBarIcon: (props) => createTabBarIcon(props, 'FontAwesome', 'bolt')
+      },
+    },
+    TransactionChart: {
+      screen: TransactionChart,
+      navigationOptions: {
+        title: I18n.t('details.graph'),
+        tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
+      }
+    },
+    ReportError: {
+      screen: ReportError,
+      navigationOptions: {
+        title: I18n.t('details.error'),
+        tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'report')
+      }
+    },
+  },
+  {
+    activeColor: commonColor.topTabBarActiveTextColor,
+    inactiveColor: commonColor.topTabBarTextColor,
+    barStyle: { backgroundColor: commonColor.brandPrimaryDark },
+    labeled: true,
+    backBehavior: 'none',
+    initialRouteName: 'ReportError',
+  }
+);
+
 // Organizations Stack Navigation
 const sitesNavigator = createStackNavigator(
   {
@@ -173,7 +222,8 @@ const sitesNavigator = createStackNavigator(
     Chargers: { screen: Chargers },
     ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator },
     ChargerConnectorDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator },
-    TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator }
+    TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator },
+    ReportErrorTabs: { screen: reportErrorTabsNavigator }
   },
   {
     initialRouteName: 'Sites',
@@ -187,7 +237,8 @@ const chargersNavigator = createStackNavigator(
     Chargers: { screen: Chargers },
     ChargerDetailsTabs: { screen: chargerDetailsTabsNavigator },
     ChargerConnectorDetailsTabs: { screen: chargerConnectorDetailsTabsNavigator },
-    TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator }
+    TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator },
+    ReportErrorTabs: { screen: reportErrorTabsNavigator }
   },
   {
     initialRouteName: 'Chargers',

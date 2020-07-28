@@ -705,6 +705,24 @@ export default class CentralServerProvider {
     }
   }
 
+  public async sendErrorReport(email: string, name: string, errorTitle: string, errorDescription: string, phone: string) {
+    this.debugMethod('submit');
+    const result = await axios.post(
+      `${this.centralRestServerServiceAuthURL}/EndUserErrorNotifcation`,
+      {
+        email,
+        name,
+        errorTitle,
+        errorDescription,
+        phone
+      },
+      {
+        headers: this.buildHeaders(),
+      },
+    );
+    return result.data;
+  }
+
   // public _buildOrdering(ordering, queryString) {
   //   if (ordering && ordering.length) {
   //     if (!queryString.SortFields) {

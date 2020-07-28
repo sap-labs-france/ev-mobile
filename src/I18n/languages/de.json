@@ -18,6 +18,7 @@
     "close": "Close",
     "apply": "Apply",
     "cancel": "Abbrechen",
+    "send": "Senden",
     "version": "Version",
     "search": "Suche",
     "error": "Fehler",
@@ -41,14 +42,16 @@
     "createdOn": "Created On",
     "createdBy": "Created By",
     "lastChangedOn": "Last Changed On",
-    "lastChangedBy": "Last Changed By"
+    "lastChangedBy": "Last Changed By",
+    "errorTitle": "Fehlertitel",
+    "errorDescription": "Beschreibung"
   },
   "sidebar": {
     "home": "Home",
     "sites": "Standorte",
     "chargers": "Ladestationen",
     "transactionsHistory": "Ladevorgangs Historie",
-    "transactionsInProgress": "laufnde Ladevorgänge",
+    "transactionsInProgress": "laufende Ladevorgänge",
     "statistics": "Statistiken"
   },
 	"authentication": {
@@ -107,7 +110,12 @@
     "tenant": "Wählen Sie eine Organisation",
     "createTenantTitle": "Organisation Erstellen",
     "tenantSubdomain": "Subdomain",
-    "tenantName": "Name"
+    "tenantName": "Name",
+    "phone" : "Telefonnummer",
+    "mandatoryPhone": "die Telefonnummer ist notwendig",
+    "mandatoryErrorTitle": "der Titel ist notwendig",
+    "mandatoryErrorDescription": "die Fehlerbeschreibung ist notwendig",
+    "sendSuccess": "Der Fehlerbericht wurde erfolgreich gesendet"
   },
   "users": {
     "userUnexpectedError": "Benutzer kann nicht gelesen werden"
@@ -224,6 +232,7 @@
     "inactive": "Verbindung zum Ladepunkt unterbrochen",
     "informations": "Informationen",
     "graph": "Diagramm",
+    "reportError": "Fehler melden",
     "notAuthorized": "Sie sind nicht authorisiert diesen Ladevorgang einzusehen",
     "noTransaction": "Keine laufende Transaktion",
     "startTransaction": "Transaktion starten",

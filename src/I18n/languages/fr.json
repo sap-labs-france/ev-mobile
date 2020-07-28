@@ -17,6 +17,7 @@
     "clear": "Effacer",
     "close": "Fermer",
     "cancel": "Annuler",
+    "send": "Envoyer",
     "apply": "Appliquer",
     "version": "Version",
     "search": "Rechercher",
@@ -41,7 +42,9 @@
     "createdOn": "Créé le",
     "createdBy": "Créé par",
     "lastChangedOn": "Modifié le",
-    "lastChangedBy": "Modifié par"
+    "lastChangedBy": "Modifié par",
+    "errorTitle": "Titre de l'erreur",
+    "errorDescription": "Description"
   },
   "sidebar": {
     "home": "Home",
@@ -107,7 +110,12 @@
     "tenant": "Choisir une Organisation",
     "createTenantTitle": "Créer une organisation",
     "tenantSubdomain": "Sous domaine",
-    "tenantName": "Nom"
+    "tenantName": "Nom",
+    "phone" : "Phone",
+    "mandatoryPhone": "Le numéro de téléphone est obligatoire",
+    "mandatoryErrorTitle": "Le titre est obligatoire",
+    "mandatoryErrorDescription": "La description de l'erreur est obligatoire",
+    "sendSuccess": "L'erreur a été envoyée avec succès"
   },
   "users": {
     "userUnexpectedError": "Impossible de lire l'utilisateur"
@@ -224,6 +232,7 @@
     "inactive": "Borne Déconnectée",
     "informations": "Informations",
     "graph": "Courbe",
+    "reportError": "Signaler une erreur",
     "notAuthorized": "Vous n'êtes pas autorisé à lire cette session",
     "noTransaction": "Pas de transaction en cours",
     "startTransaction": "Démarrer transaction",
