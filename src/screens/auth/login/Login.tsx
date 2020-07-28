@@ -3,10 +3,8 @@ import { ActionSheet, Button, CheckBox, Fab, Form, Icon, Item, Spinner, Text, Vi
 import React from 'react';
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import Modal from 'react-native-modal';
 
 import computeFormStyleSheet from '../../../FormStyles';
-import computeModalStyleSheet from '../../../ModalStyles';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Tenant from '../../../types/Tenant';
@@ -17,6 +15,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
+import CreateTenantDialog from './CreateTenantDialog';
 
 export interface Props extends BaseProps {
 }
@@ -28,8 +27,6 @@ interface State {
   email?: string;
   tenantSubDomain?: string;
   tenantName?: string;
-  newTenantSubDomain?: string;
-  newTenantName?: string;
   loading?: boolean;
   initialLoading?: boolean;
   hidePassword?: boolean;
@@ -39,7 +36,7 @@ interface State {
   errorEmail?: object[];
   errorNewTenantName?: object[];
   errorNewTenantSubDomain?: object[];
-  visible?: boolean;
+  visibleCreateTenant?: boolean;
 }
 
 export default class Login extends BaseScreen<Props, State> {
@@ -80,20 +77,6 @@ export default class Login extends BaseScreen<Props, State> {
       }
     }
   };
-  private formCreateTenantValidationDef = {
-    newTenantSubDomain: {
-      presence: {
-        allowEmpty: false,
-        message: '^' + I18n.t('authentication.mandatoryTenantSubDomain')
-      }
-    },
-    newTenantName: {
-      presence: {
-        allowEmpty: false,
-        message: '^' + I18n.t('authentication.mandatoryTenantName')
-      },
-    },
-  };
 
   constructor(props: Props) {
     super(props);
@@ -105,7 +88,7 @@ export default class Login extends BaseScreen<Props, State> {
       tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', ''),
       tenantName: I18n.t('authentication.tenant'),
       loading: false,
-      visible: false,
+      visibleCreateTenant: false,
       hidePassword: true,
     };
   }
@@ -161,7 +144,7 @@ export default class Login extends BaseScreen<Props, State> {
   }
 
   public login = async () => {
-    this.setState({ visible: false })
+    this.setState({ visibleCreateTenant: false })
     // Check field
     const formIsValid = Utils.validateInput(this, this.formValidationDef);
     if (formIsValid) {
@@ -230,35 +213,6 @@ export default class Login extends BaseScreen<Props, State> {
     this.props.navigation.navigate('AppDrawerNavigator');
   }
 
-  private createTenant = async (subdomain: string, name: string) => {
-    // Check field
-    const formIsValid = Utils.validateInput(this, this.formCreateTenantValidationDef);
-    if (formIsValid) {
-      const foundTenant = this.tenants.find(tenant => tenant.subdomain === subdomain)
-      // Already exists
-      if (foundTenant) {
-        Alert.alert(
-          I18n.t('general.error'),
-          I18n.t('general.tenantExists'),
-          [{ text: I18n.t('general.ok'), style: 'cancel' }],
-          { cancelable: false }
-        );
-      // Add new Tenant and Save
-      } else {
-        this.tenants.push({
-          subdomain,
-          name
-        });
-        // Save
-        await SecuredStorage.saveTenants(this.tenants);
-        // Hide Modal
-        this.setState({
-          visible: false
-        })
-      }
-    }
-  };
-
   private deleteTenant = (subdomain: string) => {
     // Not selected
     if (!this.state.tenantSubDomain) {
@@ -277,11 +231,13 @@ export default class Login extends BaseScreen<Props, State> {
                 // Remove
                 this.tenants.splice(i, 1);
                 // Save
-                await SecuredStorage.saveTenants(this.tenants)
+                await SecuredStorage.saveTenants(this.tenants);
+                // Remove cache
+                await SecuredStorage.deleteUserCredentials(subdomain);
                 // Init
                 this.setState({
                   tenantSubDomain: null,
-                  tenantName: I18n.t('authentication.tenant')
+                  tenantName: I18n.t('authentication.tenant'),
                 });
                 break;
               }
@@ -312,7 +268,7 @@ export default class Login extends BaseScreen<Props, State> {
     );
   };
 
-  public setTenant = async (buttonIndex: number) => {
+  public setTenantWithIndex = async (buttonIndex: number) => {
     // Provided?
     if (buttonIndex !== undefined && this.tenants[buttonIndex]) {
       // Get stored data
@@ -365,12 +321,11 @@ export default class Login extends BaseScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const modalStyle = computeModalStyleSheet();
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const navigation = this.props.navigation;
-    const { eula, loading, initialLoading, visible, hidePassword } = this.state;
-        // Render
+    const { eula, loading, initialLoading, visibleCreateTenant, hidePassword } = this.state;
+    // Render
     return initialLoading ? (
       <Spinner style={formStyle.spinner} color='grey' />
     ) : (
@@ -394,75 +349,24 @@ export default class Login extends BaseScreen<Props, State> {
                       cancelButtonIndex: this.tenants.length,
                     },
                     (buttonIndex) => {
-                      this.setTenant(buttonIndex);
+                      this.setTenantWithIndex(buttonIndex);
                     }
                   )
                 }>
                 <Text style={formStyle.buttonText} uppercase={false}>{this.state.tenantName}</Text>
               </Button>
-              <Modal style ={modalStyle.modal} isVisible={visible}
-                  onBackdropPress={() => this.setState({ visible: false })}>
-                <View style ={modalStyle.modalContainer}>
-                  <View style ={modalStyle.modalHeaderContainer}>
-                    <Text style={modalStyle.modalTextHeader}>{I18n.t('authentication.createTenantTitle')}</Text>
-                  </View>
-                  <View style={modalStyle.modalContentContainer}>
-                    <View style={modalStyle.modalRow}>
-                      <Item inlineLabel={true} style={modalStyle.modalIinputGroup}>
-                        <TextInput
-                          autoFocus={true}
-                          autoCapitalize={'none'}
-                          autoCorrect={false}
-                          placeholder={I18n.t('authentication.tenantSubdomain')}
-                          placeholderTextColor={commonColor.inputColorPlaceholder}
-                          style={modalStyle.modalInputField}
-                          onChangeText={(value) => this.setState({ newTenantSubDomain: value.toLowerCase() })}
-                        />
-                      </Item>
-                    </View>
-                    <View style={modalStyle.modalRowError}>
-                      {this.state.errorNewTenantSubDomain &&
-                        this.state.errorNewTenantSubDomain.map((errorMessage, index) => (
-                          <Text style={modalStyle.modalErrorText} key={index}>
-                            {errorMessage}
-                          </Text>
-                        ))}
-                    </View>
-                    <View style={modalStyle.modalRow}>
-                      <Item inlineLabel={true} style={modalStyle.modalIinputGroup}>
-                        <TextInput
-                          placeholder={I18n.t('authentication.tenantName')}
-                          placeholderTextColor={commonColor.inputColorPlaceholder}
-                          style={modalStyle.modalInputField}
-                          onChangeText={(value) => this.setState({ newTenantName: value })}
-                        />
-                      </Item>
-                    </View>
-                    <View style={modalStyle.modalRowError}>
-                      {this.state.errorNewTenantName &&
-                        this.state.errorNewTenantName.map((errorMessage, index) => (
-                          <Text style={modalStyle.modalErrorText} key={index}>
-                            {errorMessage}
-                          </Text>
-                        ))}
-                    </View>
-                  </View>
-                  <View style={modalStyle.modalButtonsContainer}>
-                    <Button style={[modalStyle.modalButton]} full={true} danger={true}
-                        onPress={() => {
-                          this.createTenant(this.state.newTenantSubDomain, this.state.newTenantName);
-                        }} >
-                      <Text style={modalStyle.modalTextButton} uppercase={false}>{I18n.t('general.create')}</Text>
-                    </Button>
-                    <Button style={[modalStyle.modalButton]} full={true} light={true}
-                        onPress={() => {
-                          this.setState({ visible: false })
-                        }} >
-                      <Text style={modalStyle.modalTextButton} uppercase={false}>{I18n.t('general.cancel')}</Text>
-                    </Button>
-                  </View>
-                </View>
-              </Modal>
+              {visibleCreateTenant &&
+                <CreateTenantDialog navigation={navigation} tenants={this.tenants}
+                close={(newTenant: Tenant) => {
+                  this.setState({ visibleCreateTenant: false });
+                  if (newTenant) {
+                    const index = this.tenants.findIndex((tenant) => tenant.subdomain === newTenant.subdomain);
+                    if (index !== -1) {
+                      this.setTenantWithIndex(index);
+                    }
+                  }
+                }} />
+              }
               {this.state.errorTenantSubDomain &&
                 this.state.errorTenantSubDomain.map((errorMessage, index) => (
                   <Text style={formStyle.formErrorText} key={index}>
@@ -570,7 +474,7 @@ export default class Login extends BaseScreen<Props, State> {
           </Button>
           <Button style={style.createOrgButton}
             onPress={() => {
-              this.setState({ visible: true, newTenantSubDomain: null, newTenantName: null })
+              this.setState({ visibleCreateTenant: true })
             }}>
             <Icon type={'MaterialIcons'} name='add' />
           </Button>

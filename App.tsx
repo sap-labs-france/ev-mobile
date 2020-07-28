@@ -32,7 +32,9 @@ export default class AppBootstrap extends React.Component<Props, State> {
     SplashScreen.hide();
     // Theme ------------------------------------------------
     const themeManager = ThemeManager.getInstance();
+    // Set theme
     themeManager.setThemeType(Appearance.getColorScheme() as ThemeType);
+    // Display
     this.setState({switchTheme: true});
     // Subscribe
     this.themeSubscription = Appearance.addChangeListener(({ colorScheme }) => {
