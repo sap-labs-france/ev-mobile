@@ -60,7 +60,11 @@ export default class SecuredStorage {
   }
 
   public static async deleteUserCredentials(tenantSubDomain: string) {
-    await RNSecureStorage.remove(`${tenantSubDomain}~${SecuredStorageKey.CREDENTIALS}`);
+    try {
+      await RNSecureStorage.remove(`${tenantSubDomain}~${SecuredStorageKey.CREDENTIALS}`);
+    } catch (error) {
+      // Error ff it does not exist
+    }
   }
 
   public static async saveUserCredentials(tenantSubDomain: string, credentials: UserCredentials) {

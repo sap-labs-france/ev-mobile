@@ -3,9 +3,7 @@ import { ActionSheet, Button, CheckBox, Fab, Form, Icon, Item, Spinner, Text, Vi
 import React from 'react';
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import Modal from 'react-native-modal';
 import computeFormStyleSheet from '../../../FormStyles';
-import computeModalStyleSheet from '../../../ModalStyles';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Tenant from '../../../types/Tenant';
@@ -38,7 +36,7 @@ interface State {
   errorEmail?: object[];
   errorNewTenantName?: object[];
   errorNewTenantSubDomain?: object[];
-  visible?: boolean;
+  visibleCreateTenant?: boolean;
 }
 
 export default class Login extends BaseScreen<Props, State> {
@@ -90,7 +88,7 @@ export default class Login extends BaseScreen<Props, State> {
       tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', ''),
       tenantName: I18n.t('authentication.tenant'),
       loading: false,
-      visible: false,
+      visibleCreateTenant: false,
       hidePassword: true,
     };
   }
@@ -146,7 +144,7 @@ export default class Login extends BaseScreen<Props, State> {
   }
 
   public login = async () => {
-    this.setState({ visible: false })
+    this.setState({ visibleCreateTenant: false })
     // Check field
     const formIsValid = Utils.validateInput(this, this.formValidationDef);
     if (formIsValid) {
@@ -239,7 +237,7 @@ export default class Login extends BaseScreen<Props, State> {
                 // Init
                 this.setState({
                   tenantSubDomain: null,
-                  tenantName: I18n.t('authentication.tenant')
+                  tenantName: I18n.t('authentication.tenant'),
                 });
                 break;
               }
@@ -326,10 +324,7 @@ export default class Login extends BaseScreen<Props, State> {
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const navigation = this.props.navigation;
-    const { eula, loading, initialLoading, visible, hidePassword } = this.state;
-    console.log('====================================');
-    console.log(visible);
-    console.log('====================================');
+    const { eula, loading, initialLoading, visibleCreateTenant, hidePassword } = this.state;
     // Render
     return initialLoading ? (
       <Spinner style={formStyle.spinner} color='grey' />
@@ -360,10 +355,10 @@ export default class Login extends BaseScreen<Props, State> {
                 }>
                 <Text style={formStyle.buttonText} uppercase={false}>{this.state.tenantName}</Text>
               </Button>
-              {visible &&
+              {visibleCreateTenant &&
                 <CreateTenantDialog navigation={navigation} tenants={this.tenants}
                 close={(newTenant: Tenant) => {
-                  this.setState({ visible: false });
+                  this.setState({ visibleCreateTenant: false });
                   if (newTenant) {
                     const index = this.tenants.findIndex((tenant) => tenant.subdomain === newTenant.subdomain);
                     if (index !== -1) {
@@ -479,7 +474,7 @@ export default class Login extends BaseScreen<Props, State> {
           </Button>
           <Button style={style.createOrgButton}
             onPress={() => {
-              this.setState({ visible: true })
+              this.setState({ visibleCreateTenant: true })
             }}>
             <Icon type={'MaterialIcons'} name='add' />
           </Button>
