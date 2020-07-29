@@ -262,8 +262,11 @@ export default class CentralServerProvider {
     this.debugMethod('login');
     // Call
     const result = await axios.post(
-      `${this.centralRestServerServiceAuthURL}/Login`,
+      `${this.centralRestServerServiceAuthURL}/${ServerAction.LOGIN}`,
       {
+        'axios-retry': {
+          retries: 0
+        },
         acceptEula,
         email,
         password,
