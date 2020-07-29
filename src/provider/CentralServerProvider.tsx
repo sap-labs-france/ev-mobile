@@ -264,15 +264,15 @@ export default class CentralServerProvider {
     const result = await axios.post(
       `${this.centralRestServerServiceAuthURL}/${ServerAction.LOGIN}`,
       {
-        'axios-retry': {
-          retries: 0
-        },
         acceptEula,
         email,
         password,
         tenant: tenantSubDomain,
       },
       {
+        'axios-retry': {
+          retries: 0
+        },
         headers: this.buildHeaders(),
       },
     );
