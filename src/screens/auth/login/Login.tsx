@@ -3,6 +3,7 @@ import { ActionSheet, Button, CheckBox, Fab, Form, Icon, Item, Spinner, Text, Vi
 import React from 'react';
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
@@ -15,7 +16,6 @@ import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 import CreateTenantDialog from './CreateTenantDialog';
-
 
 export interface Props extends BaseProps {
 }

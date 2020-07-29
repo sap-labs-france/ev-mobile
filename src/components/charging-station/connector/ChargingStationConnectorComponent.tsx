@@ -3,6 +3,7 @@ import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+
 import Chademo from '../../../../assets/connectorType/chademo.svg';
 import ComboCCS from '../../../../assets/connectorType/combo-ccs.svg';
 import Domestic from '../../../../assets/connectorType/domestic-ue.svg';

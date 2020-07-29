@@ -3,6 +3,7 @@ import { Button, Item, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
+
 import computeModalStyleSheet from '../../../ModalStyles';
 import BaseProps from '../../../types/BaseProps';
 import Tenant from '../../../types/Tenant';

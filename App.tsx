@@ -3,6 +3,7 @@ import React from 'react';
 import { EventSubscription } from 'react-native';
 import { Appearance, AppearanceProvider } from 'react-native-appearance';
 import SplashScreen from 'react-native-splash-screen';
+
 import App from './src/App';
 import buildTheme from './src/custom-theme';
 import ThemeManager from './src/custom-theme/ThemeManager';
