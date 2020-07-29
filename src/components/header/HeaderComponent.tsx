@@ -1,12 +1,12 @@
-import { Body, Button, Header, Icon, Left, Right, Subtitle, Title, View } from 'native-base';
+import { Body, Header, Icon, Left, Right, Subtitle, Title } from 'native-base';
 import React from 'react';
 import { BackHandler, Image } from 'react-native';
-
 import logo from '../../../assets/logo-low.png';
 import FilterModalContainerComponent from '../../components/search/filter/containers/FilterModalContainerComponent';
 import BaseProps from '../../types/BaseProps';
 import { IconType } from '../../types/Icon';
 import computeStyleSheet from './HeaderComponentStyles';
+
 
 export interface Props extends BaseProps {
   title: string;
