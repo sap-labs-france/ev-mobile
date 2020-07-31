@@ -11,7 +11,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import computeStyleSheet from './AppStyles';
 import I18nManager from './I18n/I18nManager';
 import ThemeManager from './custom-theme/ThemeManager';
-import commonColor from './custom-theme/customCommonColor';
+import { RootSiblingParent } from 'react-native-root-siblings';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
 import LocationManager from './location/LocationManager';
 import NotificationManager from './notification/NotificationManager';
@@ -101,10 +101,10 @@ export default class App extends React.Component<Props, State> {
 
   public render() {
     return (
-      <Root>
+      <RootSiblingParent>
         <StatusBar hidden={true} />
         {this.createRootContainerNavigation()}
-      </Root>
+      </RootSiblingParent>
     );
   }
 
