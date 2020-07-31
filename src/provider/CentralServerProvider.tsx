@@ -48,7 +48,7 @@ export default class CentralServerProvider {
   private securityProvider: SecurityProvider = null;
 
   constructor() {
-    // Retry backend requests
+    // Get axios instance
     this.axiosInstance = AxiosFactory.getAxiosInstance();
     if (__DEV__) {
       // QA REST Server
