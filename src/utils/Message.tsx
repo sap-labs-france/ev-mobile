@@ -1,5 +1,7 @@
-import { Toast } from 'native-base';
+import Toast from 'react-native-root-toast';
 import { scale } from 'react-native-size-matters';
+import Utils from './Utils';
+import { Platform } from 'react-native';
 
 export default class Message {
   public static showError(message: string) {
@@ -19,16 +21,21 @@ export default class Message {
   }
 
   private static _show(message: string, type: 'danger' | 'success' | 'warning') {
-    Toast.show({
-      text: message,
+    const commonColor = Utils.getCurrentCommonColor();
+    Toast.show(message, {
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+      duration: Toast.durations.LONG,
+      opacity: 1,
+      position: Toast.positions.TOP + (Platform.OS === 'ios' ? 20 : 0),
       textStyle: {
         fontSize: scale(15),
-        color: 'white',
-        textAlign: 'center'
+        textAlign: 'center',
+        color: commonColor.brandLight,
+        width: 1000
       },
-      duration: 3000,
-      type,
-      position: 'top'
+      backgroundColor: commonColor[type]
     });
   }
 }

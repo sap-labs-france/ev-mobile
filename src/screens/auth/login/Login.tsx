@@ -1,9 +1,9 @@
 import I18n from 'i18n-js';
-import { ActionSheet, Button, CheckBox, Fab, Form, Icon, Item, Spinner, Text, View } from 'native-base';
+import { Button, CheckBox, Fab, Form, Icon, Item, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
+import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput, Platform } from 'react-native';
+import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet';
 import * as Animatable from 'react-native-animatable';
-
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
@@ -16,6 +16,7 @@ import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 import CreateTenantDialog from './CreateTenantDialog';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {
 }
@@ -42,8 +43,9 @@ interface State {
 export default class Login extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
-  private tenants: Partial<Tenant>[];
+  private tenants: Partial<Tenant>[] = [];
   private passwordInput: TextInput;
+  private actionSheet: ActionSheet;
   private formValidationDef = {
     tenantSubDomain: {
       presence: {
@@ -338,23 +340,86 @@ export default class Login extends BaseScreen<Props, State> {
             </Button>
             <Form style={formStyle.form}>
               <Button block={true} style={formStyle.button}
-                onPress={() =>
-                  ActionSheet.show(
-                    {
-                      options: [
-                        ...this.tenants,
-                        { name: I18n.t('general.cancel'), subdomain: '' }
-                      ].map((tenant: Partial<Tenant>) => tenant.name),
-                      title: I18n.t('authentication.tenant'),
-                      cancelButtonIndex: this.tenants.length,
-                    },
-                    (buttonIndex) => {
-                      this.setTenantWithIndex(buttonIndex);
-                    }
-                  )
-                }>
+                onPress={() => {
+                  this.actionSheet.show();
+                }}>
                 <Text style={formStyle.buttonText} uppercase={false}>{this.state.tenantName}</Text>
               </Button>
+              <ActionSheet
+                ref={(actionSheet: ActionSheet) => this.actionSheet = actionSheet}
+                title={I18n.t('authentication.tenant')}
+                styles={{
+                  overlay: {
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
+                    opacity: 0.4,
+                    backgroundColor: commonColor.containerBgColor
+                  },
+                  wrapper: {
+                    flex: 1,
+                    flexDirection: 'row'
+                  },
+                  body: {
+                    flex: 1,
+                    alignSelf: 'flex-end',
+                    backgroundColor: commonColor.containerBgColor
+                  },
+                  titleBox: {
+                    height: scale(40),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: commonColor.containerBgColor
+                  },
+                  titleText: {
+                    color: commonColor.placeholderTextColor,
+                    fontSize: scale(16)
+                  },
+                  messageBox: {
+                    height: scale(30),
+                    paddingLeft: scale(10),
+                    paddingRight: scale(10),
+                    paddingBottom: scale(10),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: commonColor.containerBgColor
+                  },
+                  messageText: {
+                    color: commonColor.disabled,
+                    fontSize: scale(12)
+                  },
+                  buttonBox: {
+                    height: scale(45),
+                    marginTop: 0,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: commonColor.textColor,
+                    backgroundColor: commonColor.containerBgColor
+                  },
+                  buttonText: {
+                    fontSize: scale(20)
+                  },
+                  cancelButtonBox: {
+                    height: scale(40),
+                    marginTop: scale(6),
+                    marginBottom: Platform.OS === 'ios' ? scale(15) : scale(10),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: commonColor.containerBgColor
+                  }
+                }}
+                options={[
+                    ...this.tenants,
+                    { name: I18n.t('general.cancel'), subdomain: '' }
+                  ].map((tenant: Partial<Tenant>) =>
+                    <Text style={{color: commonColor.textColor, fontSize: scale(16)}}>{tenant.name}</Text>)}
+                cancelButtonIndex={this.tenants.length}
+                onPress={(index: number) => {
+                  this.setTenantWithIndex(index);
+                }}
+              />
               {visibleCreateTenant &&
                 <CreateTenantDialog navigation={navigation} tenants={this.tenants}
                 close={(newTenant: Tenant) => {
