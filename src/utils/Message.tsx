@@ -1,7 +1,8 @@
+import { Platform } from 'react-native';
 import Toast from 'react-native-root-toast';
 import { scale } from 'react-native-size-matters';
+
 import Utils from './Utils';
-import { Platform } from 'react-native';
 
 export default class Message {
   public static showError(message: string) {
