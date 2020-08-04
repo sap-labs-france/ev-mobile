@@ -8,21 +8,20 @@ export default class AxiosFactory {
   private constructor() {}
 
   public static getAxiosInstance(axiosConfig?: AxiosRequestConfig, axiosRetryConfig?: IAxiosRetryConfig): AxiosInstance {
-    AxiosFactory.setupAxiosRetry(axiosRetryConfig);
     if (!AxiosFactory.axiosInstance) {
       AxiosFactory.axiosInstance = axios.create(axiosConfig);
     }
+    AxiosFactory.applyAxiosRetryConfiguration(AxiosFactory.axiosInstance, axiosRetryConfig);
     return AxiosFactory.axiosInstance;
   }
 
-  private static setupAxiosRetry(axiosRetryConfig?: IAxiosRetryConfig) {
-    let localAxiosRetryConfig: IAxiosRetryConfig;
+  private static applyAxiosRetryConfiguration(axiosInstance: AxiosInstance, axiosRetryConfig?: IAxiosRetryConfig) {
     if (!axiosRetryConfig || !axiosRetryConfig.retries) {
-      localAxiosRetryConfig.retries = this.maxRetries;
+      axiosRetryConfig.retries = AxiosFactory.maxRetries;
     }
     if (!axiosRetryConfig || !axiosRetryConfig.retryDelay) {
-      localAxiosRetryConfig.retryDelay = axiosRetry.exponentialDelay.bind(this);
+      axiosRetryConfig.retryDelay = axiosRetry.exponentialDelay.bind(this);
     }
-    axiosRetry(axios, localAxiosRetryConfig);
+    axiosRetry(axiosInstance, axiosRetryConfig);
   }
 }
