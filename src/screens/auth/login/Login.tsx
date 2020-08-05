@@ -1,9 +1,11 @@
 import I18n from 'i18n-js';
 import { Button, CheckBox, Fab, Form, Icon, Item, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput, Platform } from 'react-native';
+import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, Platform, ScrollView, TextInput } from 'react-native';
 import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet';
 import * as Animatable from 'react-native-animatable';
+import { scale } from 'react-native-size-matters';
+
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
@@ -16,7 +18,6 @@ import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 import CreateTenantDialog from './CreateTenantDialog';
-import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {
 }

@@ -1,5 +1,5 @@
-import axios, { AxiosInstance } from 'axios';
-import axiosRetry from 'axios-retry';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axiosRetry, { IAxiosRetryConfig } from 'axios-retry';
 
 export default class AxiosFactory {
   private static axiosInstance: AxiosInstance;
@@ -7,15 +7,21 @@ export default class AxiosFactory {
 
   private constructor() {}
 
-  public static getAxiosInstance(): AxiosInstance {
-    AxiosFactory.setupAxiosInstance();
+  public static getAxiosInstance(axiosConfig?: AxiosRequestConfig, axiosRetryConfig?: IAxiosRetryConfig): AxiosInstance {
     if (!AxiosFactory.axiosInstance) {
-      AxiosFactory.axiosInstance = axios.create();
+      AxiosFactory.axiosInstance = axios.create(axiosConfig);
     }
+    AxiosFactory.applyAxiosRetryConfiguration(AxiosFactory.axiosInstance, axiosRetryConfig);
     return AxiosFactory.axiosInstance;
   }
 
-  private static setupAxiosInstance() {
-    axiosRetry(axios, { retries: this.maxRetries, retryDelay: axiosRetry.exponentialDelay.bind(this) });
+  private static applyAxiosRetryConfiguration(axiosInstance: AxiosInstance, axiosRetryConfig?: IAxiosRetryConfig) {
+    if (!axiosRetryConfig || !axiosRetryConfig.retries) {
+      axiosRetryConfig.retries = AxiosFactory.maxRetries;
+    }
+    if (!axiosRetryConfig || !axiosRetryConfig.retryDelay) {
+      axiosRetryConfig.retryDelay = axiosRetry.exponentialDelay.bind(this);
+    }
+    axiosRetry(axiosInstance, axiosRetryConfig);
   }
 }
