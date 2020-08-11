@@ -16,10 +16,13 @@ export default class AxiosFactory {
   }
 
   private static applyAxiosRetryConfiguration(axiosInstance: AxiosInstance, axiosRetryConfig?: IAxiosRetryConfig) {
-    if (!axiosRetryConfig || !axiosRetryConfig.retries) {
+    if (!axiosRetryConfig) {
+      axiosRetryConfig = {} as IAxiosRetryConfig;
+    }
+    if (!axiosRetryConfig.retries) {
       axiosRetryConfig.retries = AxiosFactory.maxRetries;
     }
-    if (!axiosRetryConfig || !axiosRetryConfig.retryDelay) {
+    if (!axiosRetryConfig.retryDelay) {
       axiosRetryConfig.retryDelay = axiosRetry.exponentialDelay.bind(this);
     }
     axiosRetry(axiosInstance, axiosRetryConfig);
