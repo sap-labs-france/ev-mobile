@@ -7,11 +7,14 @@ export default class AxiosFactory {
 
   private constructor() {}
 
-  public static getAxiosInstance(axiosConfig?: AxiosRequestConfig, axiosRetryConfig?: IAxiosRetryConfig): AxiosInstance {
-    if (!AxiosFactory.axiosInstance) {
-      AxiosFactory.axiosInstance = axios.create(axiosConfig);
+  public static getAxiosInstance(instanceConfiguration?: { axiosConfig?: AxiosRequestConfig, axiosRetryConfig?: IAxiosRetryConfig }): AxiosInstance {
+    if (!instanceConfiguration) {
+      instanceConfiguration = {};
     }
-    AxiosFactory.applyAxiosRetryConfiguration(AxiosFactory.axiosInstance, axiosRetryConfig);
+    if (!AxiosFactory.axiosInstance) {
+      AxiosFactory.axiosInstance = axios.create(instanceConfiguration.axiosConfig);
+    }
+    AxiosFactory.applyAxiosRetryConfiguration(AxiosFactory.axiosInstance, instanceConfiguration.axiosRetryConfig);
     return AxiosFactory.axiosInstance;
   }
 
