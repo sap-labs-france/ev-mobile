@@ -15,6 +15,7 @@ export interface Props extends BaseProps {
   chargingStation: ChargingStation;
   isAdmin: boolean;
   isSiteAdmin: boolean;
+  onNavigate?: () => void;
 }
 
 interface State {
@@ -46,7 +47,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
 
   public render() {
     const style = computeStyleSheet();
-    const { chargingStation, isAdmin, isSiteAdmin, navigation } = this.props;
+    const { chargingStation, isAdmin, isSiteAdmin, navigation, onNavigate } = this.props;
     const validGPSCoordinates = Utils.containsGPSCoordinates(chargingStation.coordinates);
     return (
       <View style={style.container}>
@@ -66,13 +67,16 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
             {(isAdmin || isSiteAdmin) &&
               <Button transparent={true} style={style.button}
                 onPress={() => {
+                  if (onNavigate) {
+                    onNavigate();
+                  }
                   navigation.navigate({
                     routeName: 'ChargingStationDetailsTabs',
                     params: {
                       chargingStationID: chargingStation.id
                     },
                     key: `${Utils.randomNumber()}`
-                  })
+                  });
                 }}>
                 <Icon style={[style.icon, style.iconRight, style.iconSettings]} type='MaterialIcons' name='tune' />
               </Button>
@@ -105,6 +109,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
         <View style={style.connectorsContainer}>
           {chargingStation.connectors.map((connector) => (
             <ChargingStationConnectorComponent
+              onNavigate={onNavigate}
               key={`${chargingStation.id}~${connector.connectorId}`}
               chargingStation={chargingStation}
               connector={connector}

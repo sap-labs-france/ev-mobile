@@ -1,21 +1,23 @@
 import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
-import { FlatList, Platform, RefreshControl } from 'react-native';
+import { FlatList, Platform, RefreshControl, Text } from 'react-native';
 import { Location } from 'react-native-location';
 import MapView, { Marker, Region } from 'react-native-maps';
+import Modal from 'react-native-modal';
 import { DrawerActions } from 'react-navigation-drawer';
 
-import I18nManager from '../../../I18n/I18nManager';
 import ChargingStationComponent from '../../../components/charging-station/ChargingStationComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
+import I18nManager from '../../../I18n/I18nManager';
 import LocationManager from '../../../location/LocationManager';
+import computeModalStyle from '../../../ModalStyles';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation, { ChargePointStatus } from '../../../types/ChargingStation';
+import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { DataResult } from '../../../types/DataResult';
 import { GlobalFilters } from '../../../types/Filter';
 import Constants from '../../../utils/Constants';
@@ -39,6 +41,8 @@ interface State {
   initialFilters?: ChargingStationsFiltersDef;
   filters?: ChargingStationsFiltersDef;
   showMap?: boolean;
+  visible?: boolean;
+  chargingStationSelected?: ChargingStation;
 }
 
 export default class ChargingStations extends BaseAutoRefreshScreen<Props, State> {
@@ -64,6 +68,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       limit: Constants.PAGING_SIZE,
       count: 0,
       showMap: false,
+      visible: false,
+      chargingStationSelected: null,
     };
   }
 
@@ -251,12 +257,25 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     this.setState({ showMap: !this.state.showMap })
   }
 
+  public showMapChargingStationDetail = (chargingStation: ChargingStation) => {
+    this.setState({
+      visible: true,
+      chargingStationSelected: chargingStation
+    });
+  }
+
+  public setModalHeightByNumberOfConnector(connectors: Connector[]): number {
+    const numberConnector = connectors.length;
+      return 80 + 95 * numberConnector;
+  }
+
   public render() {
     const style = computeStyleSheet();
+    const modalStyle = computeModalStyle();
     const { navigation } = this.props;
     const { loading, chargingStations, isAdmin, initialFilters,
-      skip, count, limit, filters, showMap } = this.state;
-    const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.chargingStations)
+      skip, count, limit, filters, showMap, chargingStationSelected } = this.state;
+    const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.chargingStations);
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -288,25 +307,37 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
               ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
             />
             {mapIsDisplayed ?
-              <MapView
-                style={style.map}
-                region={this.currentRegion}
-                onRegionChange={this.onMapRegionChange}
-              >
-                {this.state.chargingStations.map((chargingStation) => {
-                  if (Utils.containsGPSCoordinates(chargingStation.coordinates)) {
-                    return (
-                      <Marker
-                        key={chargingStation.id}
-                        coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
-                        title={chargingStation.id}
-                        description={chargingStation.id}
-                      />
-                    );
-                  }
-                  return undefined;
-                })}
-              </MapView>
+              <View style={style.map}>
+                <MapView
+                  style={style.map}
+                  region={this.currentRegion}
+                  onRegionChange={this.onMapRegionChange}
+                >
+                  {this.state.chargingStations.map((chargingStation) => {
+                    if (Utils.containsGPSCoordinates(chargingStation.coordinates)) {
+                      return (
+                        <Marker
+                          key={chargingStation.id}
+                          coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
+                          title={chargingStation.id}
+                          onPress={() => this.showMapChargingStationDetail(chargingStation)}
+                        />
+                      );
+                    }
+                    return undefined;
+                  })}
+                </MapView>
+                {chargingStationSelected &&
+                  <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
+                    <View style={[modalStyle.modalContainer, {height: this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors)}]}>
+                      <ChargingStationComponent chargingStation={chargingStationSelected} isAdmin={isAdmin}
+                        onNavigate={() => this.setState({ visible: false })}
+                        navigation={navigation}
+                        isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID: '')}/>
+                    </View>
+                  </Modal>
+                }
+              </View>
             :
               <FlatList
                 data={chargingStations}
