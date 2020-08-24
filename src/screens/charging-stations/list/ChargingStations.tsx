@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
-import { FlatList, Platform, RefreshControl, Text } from 'react-native';
+import { FlatList, Platform, RefreshControl, ScrollView, Text } from 'react-native';
 import { Location } from 'react-native-location';
 import MapView, { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
@@ -266,7 +266,10 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
 
   public setModalHeightByNumberOfConnector(connectors: Connector[]): number {
     const numberConnector = connectors.length;
+    if (numberConnector <= 4) {
       return 80 + 95 * numberConnector;
+    }
+    return 80 + 95 * 3;
   }
 
   public render() {
@@ -329,12 +332,14 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
                 </MapView>
                 {chargingStationSelected &&
                   <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
-                    <View style={[modalStyle.modalContainer, {height: this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors)}]}>
-                      <ChargingStationComponent chargingStation={chargingStationSelected} isAdmin={isAdmin}
-                        onNavigate={() => this.setState({ visible: false })}
-                        navigation={navigation}
-                        isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID: '')}/>
-                    </View>
+                      <View style={[modalStyle.modalContainer, {height: this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors)}]}>
+                        <ScrollView>
+                          <ChargingStationComponent chargingStation={chargingStationSelected} isAdmin={isAdmin}
+                          onNavigate={() => this.setState({ visible: false })}
+                          navigation={navigation}
+                          isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID: '')}/>
+                        </ScrollView>
+                      </View>
                   </Modal>
                 }
               </View>
