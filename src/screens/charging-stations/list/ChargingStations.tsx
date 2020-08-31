@@ -267,18 +267,17 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   }
 
   public setModalHeightByNumberOfConnector(connectors: Connector[]): number {
-    const numberConnector = connectors.length;
-      if (numberConnector <= 4) {
-        return 80 + 95 * numberConnector;
-      }
-      return 80 + 95 * 4;
+    if (connectors.length <= 4) {
+      return 80 + 95 * connectors.length;
+    }
+    return 80 + 95 * 4;
   }
 
   public buildModal(isAdmin: boolean, navigation: any, chargingStationSelected: ChargingStation, modalStyle: any) {
     if (Platform.OS === 'ios') {
       return (
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
-          <Modalize alwaysOpen={ chargingStationSelected.connectors.length === 1 ? 80 + 95 * 1 : 80 + 95 * 2}>
+          <Modalize alwaysOpen={ this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors) }>
             <ChargingStationComponent chargingStation={chargingStationSelected} isAdmin={isAdmin}
               onNavigate={() => this.setState({ visible: false })}
               navigation={navigation}
@@ -289,7 +288,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     } else {
       return (
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
-          <View style={[modalStyle.modalContainer, {height: this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors)}]}>
+          <View style={[modalStyle.modalContainer, { height: this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors) }]}>
             <ScrollView>
               <ChargingStationComponent chargingStation={chargingStationSelected} isAdmin={isAdmin}
               onNavigate={() => this.setState({ visible: false })}
