@@ -87,6 +87,10 @@ export default function computeStyleSheet(): any {
       fontSize: '14@s',
       fontWeight: 'bold',
     },
+    modalBottomHalf: {
+      justifyContent: 'flex-end',
+      margin: 0,
+    },
   });
   const portraitStyles = {};
   const landscapeStyles = {};
