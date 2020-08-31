@@ -1,5 +1,5 @@
 import I18n from 'i18n-js';
-import { Icon, Root } from 'native-base';
+import { Icon } from 'native-base';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import React from 'react';
 import { StatusBar } from 'react-native';
