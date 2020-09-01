@@ -12,7 +12,8 @@ export default function computeStyleSheet(): any {
       flex: 1,
       flexDirection: 'column',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor
+      borderBottomColor: commonColor.listBorderColor,
+      backgroundColor: commonColor.listHeaderBgColor
     },
     headerContent: {
       flexDirection: 'row',

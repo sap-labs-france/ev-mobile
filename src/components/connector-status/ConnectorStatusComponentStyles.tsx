@@ -104,7 +104,9 @@ export default function computeStyleSheet(): any {
     unavailableConnector: {
       borderColor: connectorDisabledBorderColor
     },
-    unavailableConnectorValue: {},
+    unavailableConnectorValue: {
+      color: connectorDisabledColor
+    },
     unavailableConnectorDescription: {
       color: connectorDisabledColor
     },

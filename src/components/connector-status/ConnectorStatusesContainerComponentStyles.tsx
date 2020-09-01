@@ -11,7 +11,7 @@ export default function computeStyleSheet(): any {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-evenly',
-      alignItems: 'center'
+      alignItems: 'center',
     }
   });
   const portraitStyles = {};
