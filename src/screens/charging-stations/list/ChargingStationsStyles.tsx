@@ -19,7 +19,7 @@ export default function computeStyleSheet(): any {
       backgroundColor: commonColor.containerBgColor
     },
     map: {
-      flex: 1
+      flex: 1,
     },
     filtersExpanded: {
       opacity: 1,

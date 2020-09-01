@@ -277,7 +277,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     if (Platform.OS === 'ios') {
       return (
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
-          <Modalize alwaysOpen={ this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors) }>
+          <Modalize
+              alwaysOpen={ this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors) }
+              modalStyle={modalStyle.modalContainer}>
             <ChargingStationComponent chargingStation={chargingStationSelected} isAdmin={isAdmin}
               onNavigate={() => this.setState({ visible: false })}
               navigation={navigation}
