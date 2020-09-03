@@ -27,7 +27,7 @@ import SecurityProvider from './SecurityProvider';
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
   private debug: boolean = false;
-  private captchaBaseURL: string = Configuration.CAPTCHA_BASE_URL;
+  private captchaBaseUrl: string = Configuration.CAPTCHA_BASE_URL;
   private centralRestServerServiceBaseURL: string = Configuration.CENTRAL_REST_SERVER_SERVICE_BASE_URL_PROD;
   private centralRestServerServiceAuthURL: string = this.centralRestServerServiceBaseURL + '/client/auth';
   private centralRestServerServiceSecuredURL: string = this.centralRestServerServiceBaseURL + '/client/api';
@@ -109,7 +109,7 @@ export default class CentralServerProvider {
   }
 
   public getCaptchaBaseUrl(): string {
-    return this.captchaBaseURL;
+    return this.captchaBaseUrl;
   }
 
   public getCaptchaSiteKey(): string {
