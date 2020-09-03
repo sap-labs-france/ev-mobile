@@ -20,7 +20,7 @@ export interface Props extends BaseProps {
 
 interface State {
   loading?: boolean;
-  charger?: ChargingStation;
+  chargingStation?: ChargingStation;
   phone?: string;
   title?: string;
   description?: string;
@@ -59,9 +59,8 @@ export default class ReportError extends BaseAutoRefreshScreen<Props, State> {
     super(props);
     this.state = {
       loading: true,
-      email: Utils.getParamFromNavigation(this.props.navigation, 'email', '')
+    };
   };
-};
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
@@ -71,38 +70,38 @@ export default class ReportError extends BaseAutoRefreshScreen<Props, State> {
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
-      const chargerID = Utils.getParamFromNavigation(this.props.navigation, 'chargerID', null);
+      const chargingStationID = Utils.getParamFromNavigation(this.props.navigation, 'chargingStationID', null);
       const connectorID = Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null);
-      let charger = null;
+      let chargingStation = null;
       let connector = null;
-      if (chargerID) {
-        // Get Charger
-        charger = await this.getCharger(chargerID);
-        if (charger) {
-          connector = charger ? charger.connectors[parseInt(connectorID, 10) - 1] : null;
+      if (chargingStationID) {
+        // Get chargingStation
+        chargingStation = await this.getchargingStation(chargingStationID);
+        if (chargingStation) {
+          connector = chargingStation ? chargingStation.connectors[parseInt(connectorID, 10) - 1] : null;
         }
       }
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Set
       this.setState({
         loading: false,
-        charger: !this.state.charger ? charger : this.state.charger,
+        chargingStation: !this.state.chargingStation ? chargingStation : this.state.chargingStation,
         connector,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,
-        isSiteAdmin: securityProvider && charger && charger.siteArea ? securityProvider.isSiteAdmin(charger.siteArea.siteID) : false,
+        isSiteAdmin: securityProvider && chargingStation && chargingStation.siteArea ? securityProvider.isSiteAdmin(chargingStation.siteArea.siteID) : false,
       });
     }
   };
 
-  public getCharger = async (chargerID: string): Promise<ChargingStation> => {
+  public getchargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
-      // Get Charger
-      const charger = await this.centralServerProvider.getCharger({ ID: chargerID });
-      return charger;
+      // Get chargingStation
+      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: chargingStationID });
+      return chargingStation;
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'chargers.chargerUnexpectedError', this.props.navigation, this.refresh);
+        'chargingStations.chargingStationUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
   };
@@ -164,7 +163,7 @@ export default class ReportError extends BaseAutoRefreshScreen<Props, State> {
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const { connector, charger, loading } = this.state;
+    const { connector, chargingStation, loading } = this.state;
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return  (
       loading ? (
@@ -173,7 +172,7 @@ export default class ReportError extends BaseAutoRefreshScreen<Props, State> {
         <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
           <HeaderComponent
             navigation={this.props.navigation}
-            title={charger ? charger.id : I18n.t('connector.unknown')}
+            title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
             subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
             leftAction={() => this.onBack()}
             leftActionIcon={'navigate-before'}

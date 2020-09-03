@@ -5,8 +5,8 @@ import { KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
 
-import computeFormStyleSheet from '../../../FormStyles';
 import commonColor from '../../../custom-theme/customCommonColor';
+import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
@@ -24,8 +24,8 @@ interface State {
   tenantSubDomain?: string;
   tenantName?: string;
   email?: string;
-  captchaSiteKey?: string;
-  captchaBaseUrl?: string;
+  CAPTCHA_SITE_KEY?: string;
+  CAPTCHA_BASE_URL?: string;
   captcha?: string;
   loading?: boolean;
   errorEmail?: object[];
@@ -52,8 +52,8 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
       tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', ''),
       tenantName: '',
       email: Utils.getParamFromNavigation(this.props.navigation, 'email', ''),
-      captchaSiteKey: null,
-      captchaBaseUrl: null,
+      CAPTCHA_SITE_KEY: null,
+      CAPTCHA_BASE_URL: null,
       captcha: null,
       loading: false
     };
@@ -70,8 +70,8 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
     const tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
     this.setState({
       tenantName: tenant ? tenant.name : '',
-      captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
-      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl()
+      CAPTCHA_SITE_KEY: this.centralServerProvider.getCaptchaSiteKey(),
+      CAPTCHA_BASE_URL: this.centralServerProvider.getCAPTCHA_BASE_URL()
     });
     // Disable Auto Login
     this.centralServerProvider.setAutoLoginDisabled(true);
@@ -147,7 +147,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl } = this.state;
+    const { loading, captcha, tenantName, CAPTCHA_SITE_KEY, CAPTCHA_BASE_URL } = this.state;
     return (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
@@ -185,12 +185,12 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
               )}
             </Form>
           </KeyboardAvoidingView>
-          {captchaSiteKey && captchaBaseUrl && (
+          {CAPTCHA_SITE_KEY && CAPTCHA_BASE_URL && (
             <ReactNativeRecaptchaV3
               action='ResetPassword'
               onHandleToken={this.recaptchaResponseToken}
-              url={captchaBaseUrl}
-              siteKey={captchaSiteKey}
+              url={CAPTCHA_BASE_URL}
+              siteKey={CAPTCHA_SITE_KEY}
             />
           )}
         </ScrollView>

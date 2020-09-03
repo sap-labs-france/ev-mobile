@@ -28,8 +28,8 @@ interface State {
   password?: string;
   repeatPassword?: string;
   eula?: boolean;
-  captchaSiteKey?: string;
-  captchaBaseUrl?: string;
+  CAPTCHA_SITE_KEY?: string;
+  CAPTCHA_BASE_URL?: string;
   captcha?: string;
   loading?: boolean;
   hideRepeatPassword?: boolean;
@@ -119,8 +119,8 @@ export default class SignUp extends BaseScreen<Props, State> {
       password: '',
       repeatPassword: '',
       eula: false,
-      captchaSiteKey: null,
-      captchaBaseUrl: null,
+      CAPTCHA_SITE_KEY: null,
+      CAPTCHA_BASE_URL: null,
       captcha: null,
       loading: false,
       hidePassword: true,
@@ -139,8 +139,8 @@ export default class SignUp extends BaseScreen<Props, State> {
     const tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
     this.setState({
       tenantName: tenant ? tenant.name : '',
-      captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
-      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl()
+      CAPTCHA_SITE_KEY: this.centralServerProvider.getCaptchaSiteKey(),
+      CAPTCHA_BASE_URL: this.centralServerProvider.getCAPTCHA_BASE_URL()
     });
     // Disable Auto Login
     this.centralServerProvider.setAutoLoginDisabled(true);
@@ -218,7 +218,7 @@ export default class SignUp extends BaseScreen<Props, State> {
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const navigation = this.props.navigation;
-    const { eula, loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl, hidePassword, hideRepeatPassword } = this.state;
+    const { eula, loading, captcha, tenantName, CAPTCHA_SITE_KEY, CAPTCHA_BASE_URL, hidePassword, hideRepeatPassword } = this.state;
     return (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
@@ -375,12 +375,12 @@ export default class SignUp extends BaseScreen<Props, State> {
               )}
             </Form>
           </KeyboardAvoidingView>
-          {this.state.eula && captchaSiteKey && captchaBaseUrl && (
+          {this.state.eula && CAPTCHA_SITE_KEY && CAPTCHA_BASE_URL && (
             <ReactNativeRecaptchaV3
               action='RegisterUser'
               onHandleToken={this.recaptchaResponseToken}
-              url={captchaBaseUrl}
-              siteKey={captchaSiteKey}
+              url={CAPTCHA_BASE_URL}
+              siteKey={CAPTCHA_SITE_KEY}
             />
           )}
         </ScrollView>

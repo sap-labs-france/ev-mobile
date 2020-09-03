@@ -10,9 +10,9 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import { createStackNavigator } from 'react-navigation-stack';
 
 import computeStyleSheet from './AppStyles';
-import I18nManager from './I18n/I18nManager';
 import ThemeManager from './custom-theme/ThemeManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
+import I18nManager from './I18n/I18nManager';
 import LocationManager from './location/LocationManager';
 import NotificationManager from './notification/NotificationManager';
 import ProviderFactory from './provider/ProviderFactory';
@@ -37,7 +37,6 @@ import TransactionDetails from './screens/transactions/details/TransactionDetail
 import TransactionsHistory from './screens/transactions/history/TransactionsHistory';
 import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
 import SecuredStorage from './utils/SecuredStorage';
-
 import Utils from './utils/Utils';
 
 // Init i18n
@@ -235,13 +234,6 @@ export default class App extends React.Component<Props, State> {
             tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
           }
         },
-        ReportError: {
-          screen: ReportError,
-          navigationOptions: {
-            title: I18n.t('details.error'),
-            tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'report')
-          }
-        },
       },
       {
         activeColor: commonColor.topTabBarActiveTextColor,
@@ -250,39 +242,6 @@ export default class App extends React.Component<Props, State> {
         labeled: true,
         backBehavior: 'none',
         initialRouteName: 'TransactionDetails',
-      }
-    );
-    const reportErrorTabsNavigator = createMaterialBottomTabNavigator(
-      {
-        ChargerConnectorDetails: {
-          screen: ChargingStationConnectorDetails,
-          navigationOptions: {
-            title: I18n.t('sites.chargePoint'),
-            tabBarIcon: (props) => createTabBarIcon(props, 'FontAwesome', 'bolt')
-          },
-        },
-        TransactionChart: {
-          screen: TransactionChart,
-          navigationOptions: {
-            title: I18n.t('details.graph'),
-            tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
-          }
-        },
-        ReportError: {
-          screen: ReportError,
-          navigationOptions: {
-            title: I18n.t('details.error'),
-            tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'report')
-          }
-        },
-      },
-      {
-        activeColor: commonColor.topTabBarActiveTextColor,
-        inactiveColor: commonColor.topTabBarTextColor,
-        barStyle: { backgroundColor: commonColor.brandPrimaryDark },
-        labeled: true,
-        backBehavior: 'none',
-        initialRouteName: 'ReportError',
       }
     );
     // Organizations Stack Navigation
@@ -294,7 +253,6 @@ export default class App extends React.Component<Props, State> {
         ChargingStationDetailsTabs: { screen: chargingStationDetailsTabsNavigator },
         ChargingStationConnectorDetailsTabs: { screen: chargingStationConnectorDetailsTabsNavigator },
         TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator },
-        ReportErrorTabs: { screen: reportErrorTabsNavigator }
       },
       {
         initialRouteName: 'Sites',
@@ -308,7 +266,6 @@ export default class App extends React.Component<Props, State> {
         ChargingStationDetailsTabs: { screen: chargingStationDetailsTabsNavigator },
         ChargingStationConnectorDetailsTabs: { screen: chargingStationConnectorDetailsTabsNavigator },
         TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator },
-        ReportErrorTabs: { screen: reportErrorTabsNavigator }
       },
       {
         initialRouteName: 'ChargingStations',
