@@ -118,7 +118,8 @@
     "mandatoryPhone": "El número de teléfono es obligatorio",
     "mandatoryErrorTitle": "El título del error es obligatorio",
     "mandatoryErrorDescription": "La descripción del error es obligatoria",
-    "sendSuccess": "El reporte del error se ha enviado exitosamente"
+    "reportErrorSuccess": "The error has been reported successfully",
+    "reportErrorFailed": "Cannot report the error"
   },
   "users": {
     "userUnexpectedError": "No se ha podido cargar el usuario"

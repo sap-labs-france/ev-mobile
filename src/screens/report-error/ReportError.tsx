@@ -115,28 +115,18 @@ export default class ReportError extends BaseAutoRefreshScreen<Props, State> {
         this.setState({ loading: true } as State);
         // Submit
         await this.centralServerProvider.sendErrorReport(title, description, phone);
-        this.setState({ loading: false });
-        // Show
-        Message.showSuccess(I18n.t('authentication.sendSuccess'));
+        Message.showSuccess(I18n.t('authentication.reportErrorSuccess'));
         this.clearInput();
       } catch (error){
         // submit failed
         this.setState({loading: false});
         // Check request?
         if(error.request) {
-          // Show error
-          switch(error.request.status) {
-            // Unknown Email
-            case 550:
-              Message.showError(I18n.t('authentication.wrongEmail'));
-              break;
-            default:
-              // Other common Error
-              Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-                'authentication.unexpectedError');
-          }
-        } else{
-          Message.showError(I18n.t('authentication.unexpectedError'));
+          // Other common Error
+          Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+            'authentication.reportErrorFailed');
+        } else {
+          Message.showError(I18n.t('authentication.reportErrorFailed'));
         }
       }
     }
@@ -144,6 +134,7 @@ export default class ReportError extends BaseAutoRefreshScreen<Props, State> {
 
   public clearInput = () => {
     this.setState({
+      loading: false,
       phone: '' ,
       title: '',
       description: '',

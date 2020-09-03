@@ -118,7 +118,8 @@
     "mandatoryPhone": "Le numéro de téléphone est obligatoire",
     "mandatoryErrorTitle": "Le titre est obligatoire",
     "mandatoryErrorDescription": "La description de l'erreur est obligatoire",
-    "sendSuccess": "L'erreur a été envoyée avec succès"
+    "reportErrorSuccess": "L'erreur a été envoyée avec succès",
+    "reportErrorFailed": "Impossible d'envoyer l'erreur"
   },
   "users": {
     "userUnexpectedError": "Impossible de lire l'utilisateur"

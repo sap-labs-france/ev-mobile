@@ -668,6 +668,22 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  public async sendErrorReport(errorTitle: string, errorDescription: string, phone: string) {
+    this.debugMethod('sendErrorReport');
+    const result = await this.axiosInstance.post(
+      `${this.centralRestServerServiceSecuredURL}/${ServerAction.END_USER_ERROR_NOTIFICATION}`,
+      {
+        errorTitle,
+        errorDescription,
+        phone
+      },
+      {
+        headers: this.buildSecuredHeaders(),
+      },
+    );
+    return result.data;
+  }
+
   public async checkEndUserLicenseAgreement(params: { email: string; tenantSubDomain: string; }): Promise<EulaAccepted> {
     this.debugMethod('checkEndUserLicenseAgreement');
     // Call
@@ -700,22 +716,6 @@ export default class CentralServerProvider {
         queryString.OnlyRecordCount = paging.onlyRecordCount;
       }
     }
-  }
-
-  public async sendErrorReport(errorTitle: string, errorDescription: string, phone: string) {
-    this.debugMethod('sendErrorReport');
-    const result = await this.axiosInstance.post(
-      `${this.centralRestServerServiceAuthURL}/${ServerAction.END_USER_ERROR_NOTIFICATION}`,
-      {
-        errorTitle,
-        errorDescription,
-        phone
-      },
-      {
-        headers: this.buildHeaders(),
-      },
-    );
-    return result.data;
   }
 
   private buildHeaders(): object {

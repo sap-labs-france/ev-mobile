@@ -118,7 +118,8 @@
     "mandatoryPhone": "The phone number is mandatory",
     "mandatoryErrorTitle": "The title is mandatory",
     "mandatoryErrorDescription": "The error description is mandatory",
-    "sendSuccess": "The error report has been sent successfully"
+    "reportErrorSuccess": "The error has been reported successfully",
+    "reportErrorFailed": "Cannot report the error"
   },
   "users": {
     "userUnexpectedError": "Cannot read the users"
