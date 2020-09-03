@@ -140,7 +140,7 @@ export default class SignUp extends BaseScreen<Props, State> {
     this.setState({
       tenantName: tenant ? tenant.name : '',
       captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
-      captchaBaseUrl: this.centralServerProvider.getcaptchaBaseUrl()
+      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl()
     });
     // Disable Auto Login
     this.centralServerProvider.setAutoLoginDisabled(true);
