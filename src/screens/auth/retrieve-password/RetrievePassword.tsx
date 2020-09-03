@@ -71,7 +71,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
     this.setState({
       tenantName: tenant ? tenant.name : '',
       captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
-      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseURL()
+      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseUrl()
     });
     // Disable Auto Login
     this.centralServerProvider.setAutoLoginDisabled(true);
