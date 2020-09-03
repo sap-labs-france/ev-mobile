@@ -4,8 +4,8 @@ import NotificationManager from 'notification/NotificationManager';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import { KeyValue } from 'types/Global';
 
-import I18nManager from '../I18n/I18nManager';
 import Configuration from '../config/Configuration';
+import I18nManager from '../I18n/I18nManager';
 import MigrationManager from '../migration/MigrationManager';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
@@ -27,11 +27,11 @@ import SecurityProvider from './SecurityProvider';
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
   private debug: boolean = false;
-  private captchaBaseUrl: string = Configuration.captchaBaseUrl;
-  private centralRestServerServiceBaseURL: string = Configuration.centralRestServerServiceBaseURLProd;
+  private captchaBaseUrl: string = Configuration.CAPTCHA_BASE_URL;
+  private centralRestServerServiceBaseURL: string = Configuration.CENTRAL_REST_SERVER_SERVICE_BASE_URL_PROD;
   private centralRestServerServiceAuthURL: string = this.centralRestServerServiceBaseURL + '/client/auth';
   private centralRestServerServiceSecuredURL: string = this.centralRestServerServiceBaseURL + '/client/api';
-  private captchaSiteKey: string = Configuration.captchaSiteKey;
+  private captchaSiteKey: string = Configuration.CAPTCHA_SITE_KEY;
 
   // Paste the token below
   private token: string = null;
@@ -52,7 +52,7 @@ export default class CentralServerProvider {
     this.axiosInstance = AxiosFactory.getAxiosInstance();
     if (__DEV__) {
       // QA REST Server
-      this.centralRestServerServiceBaseURL = Configuration.centralRestServerServiceBaseURLQA;
+      // this.centralRestServerServiceBaseURL = Configuration.CENTRAL_REST_SERVER_SERVICE_BASE_URL_QA;
       this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + '/client/auth';
       this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + '/client/api';
       this.debug = true;
@@ -138,9 +138,9 @@ export default class CentralServerProvider {
 
   public getInitialTenants(): Partial<Tenant>[] {
     if (__DEV__) {
-      return Configuration.defaultTenantsListQA;
+      return Configuration.DEFAULT_TENANTS_LIST_QA;
     }
-    return Configuration.defaultTenantsListProd;
+    return Configuration.DEFAULT_TENANTS_LIST_PROD;
   }
 
   public async triggerAutoLogin(
@@ -665,6 +665,22 @@ export default class CentralServerProvider {
       headers: this.buildSecuredHeaders(),
       params: { TransactionId: transactionId },
     });
+    return result.data;
+  }
+
+  public async sendErrorReport(errorTitle: string, errorDescription: string, phone: string) {
+    this.debugMethod('sendErrorReport');
+    const result = await this.axiosInstance.post(
+      `${this.centralRestServerServiceSecuredURL}/${ServerAction.END_USER_ERROR_NOTIFICATION}`,
+      {
+        errorTitle,
+        errorDescription,
+        phone
+      },
+      {
+        headers: this.buildSecuredHeaders(),
+      },
+    );
     return result.data;
   }
 

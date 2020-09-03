@@ -20,6 +20,7 @@
     "close": "Schließen",
     "apply": "Anwenden",
     "cancel": "Abbrechen",
+    "send": "Senden",
     "version": "Version",
     "search": "Suche",
     "error": "Fehler",
@@ -44,7 +45,9 @@
     "createdOn": "Erstellt am",
     "createdBy": "Erstellt von",
     "lastChangedOn": "Letzte Änderung am",
-    "lastChangedBy": "Letzte Änderung von"
+    "lastChangedBy": "Letzte Änderung von",
+    "errorTitle": "Fehlertitel",
+    "errorDescription": "Beschreibung"
   },
   "sidebar": {
     "home": "Home",
@@ -110,7 +113,13 @@
     "tenant": "Wählen Sie eine Organisation",
     "createTenantTitle": "Organisation Erstellen",
     "tenantSubdomain": "Subdomain",
-    "tenantName": "Name"
+    "tenantName": "Name",
+    "phone" : "Telefonnummer",
+    "mandatoryPhone": "die Telefonnummer ist notwendig",
+    "mandatoryErrorTitle": "der Titel ist notwendig",
+    "mandatoryErrorDescription": "die Fehlerbeschreibung ist notwendig",
+    "reportErrorSuccess": "The error has been reported successfully",
+    "reportErrorFailed": "Cannot report the error"
   },
   "users": {
     "userUnexpectedError": "Benutzer kann nicht gelesen werden"
@@ -227,6 +236,7 @@
     "inactive": "Verbindung zum Ladepunkt unterbrochen",
     "informations": "Informationen",
     "graph": "Diagramm",
+    "reportError": "Fehler melden",
     "notAuthorized": "Sie sind nicht authorisiert diesen Ladevorgang einzusehen",
     "noTransaction": "Keine laufende Transaktion",
     "startTransaction": "Transaktion starten",
