@@ -108,7 +108,7 @@ export default class CentralServerProvider {
     I18nManager.switchLanguage(this.getUserLanguage(), this.currency);
   }
 
-  public getcaptchaBaseURL(): string {
+  public getCaptchaBaseURL(): string {
     return this.captchaBaseURL;
   }
 

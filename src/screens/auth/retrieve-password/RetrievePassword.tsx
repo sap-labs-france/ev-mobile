@@ -25,7 +25,7 @@ interface State {
   tenantName?: string;
   email?: string;
   captchaSiteKey?: string;
-  captchaBaseURL?: string;
+  captchaBaseUrl?: string;
   captcha?: string;
   loading?: boolean;
   errorEmail?: object[];
@@ -53,7 +53,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
       tenantName: '',
       email: Utils.getParamFromNavigation(this.props.navigation, 'email', ''),
       captchaSiteKey: null,
-      captchaBaseURL: null,
+      captchaBaseUrl: null,
       captcha: null,
       loading: false
     };
@@ -71,7 +71,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
     this.setState({
       tenantName: tenant ? tenant.name : '',
       captchaSiteKey: this.centralServerProvider.getCaptchaSiteKey(),
-      captchaBaseURL: this.centralServerProvider.getcaptchaBaseURL()
+      captchaBaseUrl: this.centralServerProvider.getCaptchaBaseURL()
     });
     // Disable Auto Login
     this.centralServerProvider.setAutoLoginDisabled(true);
@@ -147,7 +147,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { loading, captcha, tenantName, captchaSiteKey, captchaBaseURL } = this.state;
+    const { loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl } = this.state;
     return (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
@@ -185,11 +185,11 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
               )}
             </Form>
           </KeyboardAvoidingView>
-          {captchaSiteKey && captchaBaseURL && (
+          {captchaSiteKey && captchaBaseUrl && (
             <ReactNativeRecaptchaV3
               action='ResetPassword'
               onHandleToken={this.recaptchaResponseToken}
-              url={captchaBaseURL}
+              url={captchaBaseUrl}
               siteKey={captchaSiteKey}
             />
           )}
