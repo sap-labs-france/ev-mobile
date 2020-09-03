@@ -2,6 +2,7 @@ import deepmerge from 'deepmerge';
 import { Platform } from 'react-native';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
+
 import Utils from './utils/Utils';
 
 export default function computeStyleSheet(): any {
@@ -85,6 +86,10 @@ export default function computeStyleSheet(): any {
       marginTop: '12@s',
       fontSize: '14@s',
       fontWeight: 'bold',
+    },
+    modalBottomHalf: {
+      justifyContent: 'flex-end',
+      margin: 0,
     },
   });
   const portraitStyles = {};

@@ -1,4 +1,4 @@
-import { Body, Button, Header, Icon, Left, Right, Subtitle, Title, View } from 'native-base';
+import { Body, Header, Icon, Left, Right, Subtitle, Title } from 'native-base';
 import React from 'react';
 import { BackHandler, Image } from 'react-native';
 

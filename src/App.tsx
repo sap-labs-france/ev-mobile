@@ -1,12 +1,14 @@
 import I18n from 'i18n-js';
-import { Icon, Root } from 'native-base';
+import { Icon } from 'native-base';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import React from 'react';
 import { StatusBar } from 'react-native';
+import { RootSiblingParent } from 'react-native-root-siblings';
 import { NavigationContainerComponent, NavigationState, createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
+
 import computeStyleSheet from './AppStyles';
 import I18nManager from './I18n/I18nManager';
 import ThemeManager from './custom-theme/ThemeManager';
@@ -101,10 +103,10 @@ export default class App extends React.Component<Props, State> {
 
   public render() {
     return (
-      <Root>
+      <RootSiblingParent>
         <StatusBar hidden={true} />
         {this.createRootContainerNavigation()}
-      </Root>
+      </RootSiblingParent>
     );
   }
 

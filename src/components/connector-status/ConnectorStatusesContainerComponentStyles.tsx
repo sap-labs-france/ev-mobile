@@ -1,6 +1,7 @@
 import deepmerge from 'deepmerge';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
+
 import Utils from '../../utils/Utils';
 
 export default function computeStyleSheet(): any {
@@ -10,7 +11,7 @@ export default function computeStyleSheet(): any {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-evenly',
-      alignItems: 'center'
+      alignItems: 'center',
     }
   });
   const portraitStyles = {};

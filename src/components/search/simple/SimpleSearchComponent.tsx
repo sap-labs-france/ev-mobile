@@ -2,10 +2,11 @@ import I18n from 'i18n-js';
 import { Icon } from 'native-base';
 import React from 'react';
 import { TextInput, View } from 'react-native';
+
+import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './SimpleSearchComponentStyles';
-import computeFormStyleSheet from '../../../FormStyles';
 
 export interface Props extends BaseProps {
   onChange: (search: string) => void,

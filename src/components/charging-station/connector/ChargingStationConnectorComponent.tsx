@@ -3,6 +3,7 @@ import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+
 import Chademo from '../../../../assets/connectorType/chademo.svg';
 import ComboCCS from '../../../../assets/connectorType/combo-ccs.svg';
 import Domestic from '../../../../assets/connectorType/domestic-ue.svg';
@@ -21,6 +22,7 @@ import computeStyleSheet from './ChargingStationConnectorComponentStyles';
 export interface Props extends BaseProps {
   chargingStation: ChargingStation;
   connector: Connector;
+  onNavigate?: () => void;
 }
 
 interface State {
@@ -161,12 +163,15 @@ export default class ChargingStationConnectorComponent extends React.Component<P
 
   public render() {
     const style = computeStyleSheet();
-    const { connector, navigation, chargingStation } = this.props;
+    const { connector, navigation, chargingStation, onNavigate } = this.props;
     return (
       <TouchableOpacity
         style={style.container}
         disabled={chargingStation.inactive}
-        onPress={() =>
+        onPress={() => {
+          if (onNavigate) {
+            onNavigate();
+          }
           navigation.navigate({
             routeName: 'ChargingStationConnectorDetailsTabs',
             params: {
@@ -175,7 +180,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
             },
             key: `${Utils.randomNumber()}`
           })
-        }>
+        }}>
         <Animatable.View animation={'flipInX'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
           <View style={style.connectorContainer}>
             <View style={style.connectorDetailContainer}>

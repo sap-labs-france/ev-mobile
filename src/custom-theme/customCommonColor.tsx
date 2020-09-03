@@ -1,5 +1,6 @@
 import { Platform } from 'react-native';
 import ThemeDefinition from 'types/Theme';
+
 import palette from '../custom-theme/theme/palette';
 import commonColor, { PLATFORM } from '../theme/variables/commonColor';
 import ThemeManager from './ThemeManager';

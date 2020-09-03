@@ -62,6 +62,7 @@ export interface ConvergentChargingPricingSettings extends PricingSetting {
 export interface OcpiSettings {
   countryCode: string;
   partyID: string;
+  currency: string;
   businessDetails: {
     name: string;
     website: string;
