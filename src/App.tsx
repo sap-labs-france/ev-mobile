@@ -200,7 +200,14 @@ export default class App extends React.Component<Props, State> {
             title: I18n.t('details.graph'),
             tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
           }
-        }
+        },
+        // ReportError: {
+        //   screen: ReportError,
+        //   navigationOptions: {
+        //     title: I18n.t('details.reportError'),
+        //     tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'report')
+        //   }
+        // },
       },
       {
         activeColor: commonColor.topTabBarActiveTextColor,
