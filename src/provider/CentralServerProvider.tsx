@@ -698,7 +698,7 @@ export default class CentralServerProvider {
     }
   }
 
-  public async sendErrorReport(email: string, name: string, errorTitle: string, errorDescription: string, phone: string) {
+  public async sendErrorReport(errorTitle: string, errorDescription: string, phone: string) {
     this.debugMethod('sendErrorReport');
     const result = await axios.post(
       `${this.centralRestServerServiceAuthURL}/${ServerAction.END_USER_ERROR_NOTIFICATION}`,
