@@ -20,6 +20,7 @@
     "close": "Cerrar",
     "apply": "Aplicar",
     "cancel": "Cancelar",
+    "send": "Enviar",
     "version": "Versión",
     "search": "Buscar",
     "error": "Error",
@@ -44,7 +45,9 @@
     "createdOn": "Creado en",
     "createdBy": "Creado por",
     "lastChangedOn": "Última modificación hecha en",
-    "lastChangedBy": "Última modificación hecha por"
+    "lastChangedBy": "Última modificación hecha por",
+    "errorTitle": "Titulo del error",
+    "errorDescription": "Descripción del error"
   },
   "sidebar": {
     "home": "Menú principal",
@@ -110,7 +113,13 @@
     "tenant": "Escoja una organización",
     "createTenantTitle": "Crear organización",
     "tenantSubdomain": "Subdominio",
-    "tenantName": "Nombre"
+    "tenantName": "Nombre",
+    "phone" : "Teléfono",
+    "mandatoryPhone": "El número de teléfono es obligatorio",
+    "mandatoryErrorTitle": "El título del error es obligatorio",
+    "mandatoryErrorDescription": "La descripción del error es obligatoria",
+    "reportErrorSuccess": "The error has been reported successfully",
+    "reportErrorFailed": "Cannot report the error"
   },
   "users": {
     "userUnexpectedError": "No se ha podido cargar el usuario"
@@ -227,6 +236,7 @@
     "inactive": "Cargador desconectado",
     "informations": "Información",
     "graph": "Gráfica",
+    "reportError": "Reportar un error",
     "notAuthorized": "No está autorizado/a para leer esta sesión",
     "noTransaction": "No hay transacciones en curso",
     "startTransaction": "Comenzar transacción",

@@ -13,7 +13,7 @@ export default function computeStyleSheet(): any {
       flexDirection: 'column',
       borderBottomWidth: 1,
       borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.listHeaderBgColor
+      backgroundColor: commonColor.light
     },
     headerContent: {
       flexDirection: 'row',
