@@ -10,12 +10,13 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import { createStackNavigator } from 'react-navigation-stack';
 
 import computeStyleSheet from './AppStyles';
-import I18nManager from './I18n/I18nManager';
 import ThemeManager from './custom-theme/ThemeManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
+import I18nManager from './I18n/I18nManager';
 import LocationManager from './location/LocationManager';
 import NotificationManager from './notification/NotificationManager';
 import ProviderFactory from './provider/ProviderFactory';
+import ReportError from './screens//report-error//ReportError'
 import Eula from './screens/auth/eula/Eula';
 import Login from './screens/auth/login/Login';
 import ResetPassword from './screens/auth/reset-password/ResetPassword';
@@ -200,6 +201,13 @@ export default class App extends React.Component<Props, State> {
             tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
           }
         },
+        // ReportError: {
+        //   screen: ReportError,
+        //   navigationOptions: {
+        //     title: I18n.t('details.reportError'),
+        //     tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'report')
+        //   }
+        // },
       },
       {
         activeColor: commonColor.topTabBarActiveTextColor,
@@ -225,7 +233,7 @@ export default class App extends React.Component<Props, State> {
             title: I18n.t('details.graph'),
             tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
           }
-        }
+        },
       },
       {
         activeColor: commonColor.topTabBarActiveTextColor,
@@ -244,7 +252,7 @@ export default class App extends React.Component<Props, State> {
         ChargingStations: { screen: ChargingStations },
         ChargingStationDetailsTabs: { screen: chargingStationDetailsTabsNavigator },
         ChargingStationConnectorDetailsTabs: { screen: chargingStationConnectorDetailsTabsNavigator },
-        TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator }
+        TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator },
       },
       {
         initialRouteName: 'Sites',
@@ -257,7 +265,7 @@ export default class App extends React.Component<Props, State> {
         ChargingStations: { screen: ChargingStations },
         ChargingStationDetailsTabs: { screen: chargingStationDetailsTabsNavigator },
         ChargingStationConnectorDetailsTabs: { screen: chargingStationConnectorDetailsTabsNavigator },
-        TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator }
+        TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator },
       },
       {
         initialRouteName: 'ChargingStations',
