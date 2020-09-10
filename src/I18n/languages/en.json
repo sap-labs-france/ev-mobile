@@ -20,6 +20,7 @@
     "close": "Close",
     "apply": "Apply",
     "cancel": "Cancel",
+    "send": "Send",
     "version": "Version",
     "search": "Search",
     "error": "Error",
@@ -44,7 +45,9 @@
     "createdOn": "Created On",
     "createdBy": "Created By",
     "lastChangedOn": "Last Changed On",
-    "lastChangedBy": "Last Changed By"
+    "lastChangedBy": "Last Changed By",
+    "errorTitle": "Error title",
+    "errorDescription": "Description"
   },
   "sidebar": {
     "home": "Home",
@@ -60,16 +63,16 @@
     "mandatoryTenantName": "The Organization name is mandatory",
     "mandatoryTenant": "The Organization is mandatory",
     "unknownTenant": "Unknown Organization!",
-    "mandatoryName": "The Name is mandatory",
+    "mandatoryName": "The name is mandatory",
     "mandatoryFirstName": "The First Name is mandatory",
-    "mandatoryEmail": "The Email is mandatory",
-    "invalidEmail": "The Email is invalid",
+    "mandatoryEmail": "The email is mandatory",
+    "invalidEmail": "The email is invalid",
     "mandatoryPassword": "The Password is mandatory",
     "logOut": "Log Out",
     "mustSelectTenant": "Select an Organization",
     "wrongEmailOrPassword": "Wrong email or password",
     "authenticationFailed": "Authentication Failed",
-    "invalidCaptcha": "The Captcha has been refused (security)!",
+    "invalidCaptcha": "The captcha has been refused (security)!",
     "wrongEmail": "Wrong email!",
     "emailAlreadyExists": "Email already exist",
     "registerUnexpectedError": "Cannot create account",
@@ -110,7 +113,13 @@
     "tenant": "Choose an Organization",
     "createTenantTitle": "Create Organization",
     "tenantSubdomain": "Subdomain",
-    "tenantName": "Name"
+    "tenantName": "Name",
+    "phone" : "Phone",
+    "mandatoryPhone": "The phone number is mandatory",
+    "mandatoryErrorTitle": "The title is mandatory",
+    "mandatoryErrorDescription": "The error description is mandatory",
+    "reportErrorSuccess": "The error has been reported successfully",
+    "reportErrorFailed": "Cannot report the error"
   },
   "users": {
     "userUnexpectedError": "Cannot read the users"
@@ -227,6 +236,7 @@
     "inactive": "Disconnected Charger",
     "informations": "Informations",
     "graph": "Chart",
+    "reportError": "Report Error",
     "notAuthorized": "You are not authorized to read this session",
     "noTransaction": "No ongoing transaction",
     "startTransaction": "Start transaction",
