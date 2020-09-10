@@ -41,7 +41,7 @@ export default class CentralServerProvider {
   private locale: string = null;
   private tenantSubDomain: string = null;
   private currency: string = null;
-  private siteImages: { id: string; image: string; }[] = [];
+  private siteImages: Map<string, string> = new Map();
   private autoLoginDisabled: boolean = false;
   private notificationManager: NotificationManager;
 
@@ -640,22 +640,20 @@ export default class CentralServerProvider {
   public async getSiteImage(id: string): Promise<string> {
     this.debugMethod('getSiteImage');
     // Check cache
-    let foundSiteImage = this.siteImages.find((siteImage) => siteImage.id === id);
+    let foundSiteImage = this.siteImages.get(id);
     if (!foundSiteImage) {
-      // Call
+      // Call backend
       const result = await this.axiosInstance.get(`${this.centralRestServerServiceSecuredURL}/${ServerAction.SITE_IMAGE}`, {
         headers: this.buildSecuredHeaders(),
         params: { ID: id },
       });
-      // Set
-      foundSiteImage = {
-        id,
-        image: result.data.image,
-      };
-      // Add
-      this.siteImages.push(foundSiteImage);
+      if (result.data.image) {
+        // Set
+        foundSiteImage = result.data.image;
+        this.siteImages.set(id, foundSiteImage);
+      }
     }
-    return foundSiteImage.image;
+    return foundSiteImage;
   }
 
   public async getTransactionConsumption(transactionId: number): Promise<Transaction> {
