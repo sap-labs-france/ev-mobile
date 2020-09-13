@@ -169,7 +169,6 @@ export default class Login extends BaseScreen<Props, State> {
           // Show error
           switch (error.request.status) {
             // Unknown Email
-            case HTTPError.GENERAL_ERROR:
             case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
               Message.showError(I18n.t('authentication.wrongEmailOrPassword'));
               break;
