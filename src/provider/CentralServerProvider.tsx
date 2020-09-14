@@ -52,7 +52,7 @@ export default class CentralServerProvider {
     this.axiosInstance = AxiosFactory.getAxiosInstance();
     if (__DEV__) {
       // QA REST Server
-      // this.centralRestServerServiceBaseURL = Configuration.CENTRAL_REST_SERVER_SERVICE_BASE_URL_QA;
+      this.centralRestServerServiceBaseURL = Configuration.CENTRAL_REST_SERVER_SERVICE_BASE_URL_QA;
       this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + '/client/auth';
       this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + '/client/api';
       this.debug = true;

@@ -116,6 +116,12 @@ export default class Utils {
       I18nManager.formatNumber(Math.round(distance * 0.000621371)) + ' mi';
   }
 
+  public static getValuesFromEnum(enumType: any): number[] {
+    const keys: string[] = Object.keys(enumType).filter(httpError => typeof enumType[httpError] === 'number');
+    const values: number[] = keys.map((httpErrorKey: string) => enumType[httpErrorKey]);
+    return values;
+  }
+
   public static isEmptyArray(array: any): boolean {
     if (!array) {
       return true;
