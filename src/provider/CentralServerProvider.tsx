@@ -4,8 +4,8 @@ import NotificationManager from 'notification/NotificationManager';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import { KeyValue } from 'types/Global';
 
-import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
+import Configuration from '../config/Configuration';
 import MigrationManager from '../migration/MigrationManager';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
@@ -52,7 +52,7 @@ export default class CentralServerProvider {
     this.axiosInstance = AxiosFactory.getAxiosInstance();
     if (__DEV__) {
       // QA REST Server
-      // this.centralRestServerServiceBaseURL = Configuration.CENTRAL_REST_SERVER_SERVICE_BASE_URL_QA;
+      this.centralRestServerServiceBaseURL = Configuration.CENTRAL_REST_SERVER_SERVICE_BASE_URL_QA;
       this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + '/client/auth';
       this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + '/client/api';
       this.debug = true;

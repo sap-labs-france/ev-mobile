@@ -8,8 +8,11 @@ export default class Configuration {
     { subdomain: 'slfcah', name: 'SAP Labs France (charge@home)' },
     { subdomain: 'sapse', name: 'SAP SE' },
     { subdomain: 'sapsecah', name: 'SAP SE (charge@home)' },
-    { subdomain: 'proviridis', name: 'Proviridis' },
+    { subdomain: 'sapfrance', name: 'SAP France' },
+    { subdomain: 'sapfrancecah', name: 'SAP France (charge@home)' },
     { subdomain: 'sapbelgium', name: 'SAP Belgium' },
+    { subdomain: 'sapportugal', name: 'SAP Portugal' },
+    { subdomain: 'proviridis', name: 'Proviridis' },
   ]
   public static readonly DEFAULT_TENANTS_LIST_QA: { subdomain: string, name: string }[] = [
     { subdomain: 'testcharger', name: 'SAP Labs New Charging Stations Tests' },

@@ -10,9 +10,9 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import { createStackNavigator } from 'react-navigation-stack';
 
 import computeStyleSheet from './AppStyles';
+import I18nManager from './I18n/I18nManager';
 import ThemeManager from './custom-theme/ThemeManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
-import I18nManager from './I18n/I18nManager';
 import LocationManager from './location/LocationManager';
 import NotificationManager from './notification/NotificationManager';
 import ProviderFactory from './provider/ProviderFactory';
