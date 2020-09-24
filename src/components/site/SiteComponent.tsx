@@ -52,13 +52,14 @@ export default class SiteComponent extends React.Component<Props, State> {
         iterationCount={1}
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity onPress={() => {
-            navigation.navigate({
-              routeName: 'SiteAreas',
-              params: {
-                siteID: site.id
-              },
-              key: `${Utils.randomNumber()}`
-            })
+            navigation.navigate(
+              'SiteAreas', {
+                params: {
+                  siteID: site.id
+                },
+                key: `${Utils.randomNumber()}`
+              }
+            )
           }}>
           <View style={style.container}>
             <View style={style.headerContent}>

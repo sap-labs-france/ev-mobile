@@ -1,3 +1,4 @@
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
@@ -7,7 +8,6 @@ import { Location } from 'react-native-location';
 import MapView, { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
-import { DrawerActions } from 'react-navigation-drawer';
 
 import ChargingStationComponent from '../../../components/charging-station/ChargingStationComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -78,7 +78,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public async componentDidMount() {
     // Get initial filters
     await this.loadInitialFilters();
-    this.siteAreaID = Utils.getParamFromNavigation(this.props.navigation, 'siteAreaID', null);
+    this.siteAreaID = Utils.getParamFromNavigation(this.props.route, 'siteAreaID', null);
     await super.componentDidMount();
   }
 
@@ -173,7 +173,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       this.props.navigation.goBack();
     } else {
       // Go back to the top
-      this.props.navigation.goBack(null);
+      this.props.navigation.goBack();
     }
     // Do not bubble up
     return true;
@@ -275,7 +275,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   }
 
   public buildModal(isAdmin: boolean, navigation: any, chargingStationSelected: ChargingStation, modalStyle: any) {
-    if (Platform.OS === 'ios') {
+    // Uncomment when you will have more than 4 connector.
+    // if (Platform.OS === 'ios') {
       return (
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
           <Modalize alwaysOpen={ chargingStationSelected.connectors.length === 1 ? 80 + 95 * 1 : 80 + 95 * 2}>
@@ -286,20 +287,20 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           </Modalize>
         </Modal>
       )
-    } else {
-      return (
-        <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
-          <View style={[modalStyle.modalContainer, {height: this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors)}]}>
-            <ScrollView>
-              <ChargingStationComponent chargingStation={chargingStationSelected} isAdmin={isAdmin}
-              onNavigate={() => this.setState({ visible: false })}
-              navigation={navigation}
-              isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID: '')}/>
-            </ScrollView>
-          </View>
-        </Modal>
-      )
-    }
+    // } else {
+    //   return (
+    //     <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
+    //       <View style={[modalStyle.modalContainer, { height: this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors) }]}>
+    //         <ScrollView>
+    //           <ChargingStationComponent chargingStation={chargingStationSelected} isAdmin={isAdmin}
+    //           onNavigate={() => this.setState({ visible: false })}
+    //           navigation={navigation}
+    //           isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID: '')}/>
+    //         </ScrollView>
+    //       </View>
+    //     </Modal>
+    //   )
+    // }
   }
 
   public render() {

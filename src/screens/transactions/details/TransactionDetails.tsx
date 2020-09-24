@@ -1,15 +1,15 @@
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import moment from 'moment';
 import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Image, ScrollView } from 'react-native';
-import { DrawerActions } from 'react-navigation-drawer';
 
 import noPhotoActive from '../../../../assets/no-photo.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
-import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
+import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
@@ -70,7 +70,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     let siteImage = null;
     let userImage = null;
     // Get IDs
-    const transactionID = Utils.getParamFromNavigation(this.props.navigation, 'transactionID', null);
+    const transactionID = Utils.getParamFromNavigation(this.props.route, 'transactionID', null);
     // Get Transaction
     const transaction = await this.getTransaction(transactionID);
     // Get the Site Image

@@ -1,7 +1,7 @@
+import { CommonActions, NavigationContainerRef } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Linking } from 'react-native';
 import DeepLinking from 'react-native-deep-linking';
-import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
 
 import CentralServerProvider from '../provider/CentralServerProvider';
 import { HTTPError } from '../types/HTTPError';
@@ -11,7 +11,7 @@ import Utils from '../utils/Utils';
 
 export default class DeepLinkingManager {
   private static instance: DeepLinkingManager;
-  private navigator: NavigationContainerComponent;
+  private navigator: NavigationContainerRef;
   private centralServerProvider: CentralServerProvider;
 
   private constructor() {
@@ -24,7 +24,7 @@ export default class DeepLinkingManager {
     return DeepLinkingManager.instance;
   }
 
-  public initialize(navigator: NavigationContainerComponent, centralServerProvider: CentralServerProvider) {
+  public initialize(navigator: NavigationContainerRef, centralServerProvider: CentralServerProvider) {
     // Keep
     this.navigator = navigator;
     this.centralServerProvider = centralServerProvider;
@@ -64,8 +64,8 @@ export default class DeepLinkingManager {
       this.centralServerProvider.setAutoLoginDisabled(true);
       // Navigate
       this.navigator.dispatch(
-        NavigationActions.navigate({
-          routeName: 'ResetPassword',
+        CommonActions.navigate({
+          name: 'ResetPassword',
           key: `${Utils.randomNumber()}`,
           params: { tenantSubDomain: response.tenant, hash: response.hash }
         })
@@ -97,8 +97,8 @@ export default class DeepLinkingManager {
         this.centralServerProvider.logoff();
         // Navigate to login page
         this.navigator.dispatch(
-          NavigationActions.navigate({
-            routeName: 'Login',
+          CommonActions.navigate({
+            name: 'Login',
             key: `${Utils.randomNumber()}`,
             params: { tenantSubDomain: response.tenant, email: response.email }
           })
@@ -114,8 +114,8 @@ export default class DeepLinkingManager {
             if (response.resetToken && response.resetToken !== 'null') {
               // Change password
               this.navigator.dispatch(
-                NavigationActions.navigate({
-                  routeName: 'ResetPassword',
+                CommonActions.navigate({
+                  name: 'ResetPassword',
                   key: `${Utils.randomNumber()}`,
                   params: { tenantSubDomain: response.tenant, hash: response.resetToken }
                 })

@@ -1,6 +1,5 @@
 import React from 'react';
 import { BackHandler } from 'react-native';
-import { NavigationEventSubscription } from 'react-navigation';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ScreenFilters from '../../components/search/filter/screen/ScreenFilters';
@@ -17,8 +16,6 @@ interface State {
 export default class BaseScreen<P, S> extends React.Component<Props, State> {
   protected mounted: boolean;
   protected centralServerProvider: CentralServerProvider;
-  private didFocus: NavigationEventSubscription;
-  private didBlur: NavigationEventSubscription;
   private headerComponent: HeaderComponent;
   private screenFilters: ScreenFilters;
 
@@ -32,11 +29,11 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   }
 
   public async componentDidMount() {
-    // Add listeners
-    this.didFocus = this.props.navigation.addListener('didFocus', this.componentDidFocus.bind(this));
-    this.didBlur = this.props.navigation.addListener('didBlur', this.componentDidBlur.bind(this));
     // Get provider
     this.centralServerProvider = await ProviderFactory.getProvider();
+    // Add listeners
+    this.props.navigation.addListener('didFocus', this.componentDidFocus.bind(this));
+    this.props.navigation.addListener('didBlur', this.componentDidBlur.bind(this));
     // Remove Backhandler for Android
     BackHandler.removeEventListener('hardwareBackPress', this.onBack);
     // Ok
@@ -45,13 +42,6 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
 
   public async componentWillUnmount() {
     this.mounted = false;
-    // Remove listeners
-    if (this.didFocus) {
-      this.didFocus.remove();
-    }
-    if (this.didBlur) {
-      this.didBlur.remove();
-    }
   }
 
   public setHeaderComponent(headerComponent: HeaderComponent) {

@@ -6,7 +6,7 @@ import { Alert, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import BaseProps from '../../types/BaseProps';
-import ChargingStation from '../../types/ChargingStation';
+import ChargingStation, { ConnectorCurrentLimitSource } from '../../types/ChargingStation';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './ChargingStationComponentStyles';
 import ChargingStationConnectorComponent from './connector/ChargingStationConnectorComponent';
@@ -70,13 +70,14 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
                   if (onNavigate) {
                     onNavigate();
                   }
-                  navigation.navigate({
-                    routeName: 'ChargingStationDetailsTabs',
-                    params: {
-                      chargingStationID: chargingStation.id
-                    },
-                    key: `${Utils.randomNumber()}`
-                  });
+                  navigation.navigate(
+                    'ChargingStationDetailsTabs', {
+                      params: {
+                        chargingStationID: chargingStation.id,
+                      },
+                      key: `${Utils.randomNumber()}`
+                    }
+                  );
                 }}>
                 <Icon style={[style.icon, style.iconRight, style.iconSettings]} type='MaterialIcons' name='tune' />
               </Button>

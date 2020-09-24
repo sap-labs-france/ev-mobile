@@ -1,9 +1,9 @@
+import { CommonActions, StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Button, CheckBox, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import { NavigationActions, StackActions } from 'react-navigation';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
@@ -111,11 +111,11 @@ export default class SignUp extends BaseScreen<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', ''),
+      tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', ''),
       tenantName: '',
       name: '',
       firstName: '',
-      email: Utils.getParamFromNavigation(this.props.navigation, 'email', ''),
+      email: Utils.getParamFromNavigation(this.props.route, 'email', ''),
       password: '',
       repeatPassword: '',
       eula: false,
@@ -166,17 +166,15 @@ export default class SignUp extends BaseScreen<Props, State> {
         Message.showSuccess(I18n.t('authentication.registerSuccess'));
         // Navigate
         this.props.navigation.dispatch(
-          StackActions.reset({
+          CommonActions.reset({
             index: 0,
-            actions: [
-              NavigationActions.navigate({
-                routeName: 'Login',
-                params: {
-                  tenantSubDomain: this.state.tenantSubDomain,
-                  email: this.state.email
-                }
-              })
-            ]
+            routes: [{
+              name: 'Login',
+              params: {
+                tenantSubDomain: this.state.tenantSubDomain,
+                email: this.state.email
+              }
+            }]
           })
         );
       } catch (error) {
