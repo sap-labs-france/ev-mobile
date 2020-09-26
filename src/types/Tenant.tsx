@@ -31,3 +31,9 @@ export default interface Tenant extends CreatedUpdatedProps {
     };
   };
 }
+
+export interface TenantConnection {
+  subdomain: string;
+  name: string;
+  endpoint: string;
+}

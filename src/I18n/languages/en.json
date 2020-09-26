@@ -1,5 +1,6 @@
 {
   "general": {
+    "migrationError": "Error during migration of data",
     "cannotConnectBackend": "Connection has been lost",
     "unexpectedErrorBackend": "Unexpected Backend Error",
     "unexpectedError": "Unexpected Error",

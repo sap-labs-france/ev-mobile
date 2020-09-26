@@ -106,15 +106,14 @@ export default class Login extends BaseScreen<Props, State> {
     this.tenants = await this.centralServerProvider.getTenants();
     // Load User data
     if (!this.state.email || !this.state.tenantSubDomain) {
-      const tenantSubDomain = this.centralServerProvider.getUserTenant();
-      const tenant = await this.centralServerProvider.getTenant(tenantSubDomain);
+      const tenant = this.centralServerProvider.getUserTenant();
       const email = this.centralServerProvider.getUserEmail();
       const password = this.centralServerProvider.getUserPassword();
       // Set
       this.setState({
         email,
         password,
-        tenantSubDomain,
+        tenantSubDomain: tenant ? tenant.subdomain : null,
         tenantName: tenant ? tenant.name : this.state.tenantName,
         initialLoading: false
       });
@@ -122,9 +121,10 @@ export default class Login extends BaseScreen<Props, State> {
       if (Utils.canAutoLogin(this.centralServerProvider, this.props.navigation)) {
         try {
           // Check EULA
-          const result = await this.centralServerProvider.checkEndUserLicenseAgreement({ email, tenantSubDomain });
+          const result = await this.centralServerProvider.checkEndUserLicenseAgreement(
+            { email, tenantSubDomain: tenant.subdomain });
+          // Try to login
           if (result.eulaAccepted) {
-            // Try to login
             this.setState({ eula: true }, () => this.login());
           }
         } catch (error) {

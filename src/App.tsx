@@ -1,6 +1,5 @@
 import I18n from 'i18n-js';
 import { Icon } from 'native-base';
-import CentralServerProvider from 'provider/CentralServerProvider';
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
@@ -10,13 +9,14 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import { createStackNavigator } from 'react-navigation-stack';
 
 import computeStyleSheet from './AppStyles';
-import I18nManager from './I18n/I18nManager';
 import ThemeManager from './custom-theme/ThemeManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
+import I18nManager from './I18n/I18nManager';
 import LocationManager from './location/LocationManager';
+import MigrationManager from './migration/MigrationManager';
 import NotificationManager from './notification/NotificationManager';
+import CentralServerProvider from './provider/CentralServerProvider';
 import ProviderFactory from './provider/ProviderFactory';
-import ReportError from './screens//report-error//ReportError'
 import Eula from './screens/auth/eula/Eula';
 import Login from './screens/auth/login/Login';
 import ResetPassword from './screens/auth/reset-password/ResetPassword';
@@ -89,6 +89,10 @@ export default class App extends React.Component<Props, State> {
     this.location.startListening();
     // Check on hold notification
     this.notificationManager.checkOnHoldNotification();
+    // Check migration
+    const migrationManager = MigrationManager.getInstance();
+    migrationManager.setCentralServerProvider(this.centralServerProvider);
+    await migrationManager.migrate();
   }
 
   public async componentWillUnmount() {
