@@ -54,11 +54,15 @@ export default class MigrationManager {
           tenant.endpoint = Configuration.SCP_REST_ENDPOINT_PROD;
         }
       }
-      // Add Monaco
+      // Add new tenants
       this.addNewTenant(tenants, {
-        subdomain: 'mairiedemonaco',
-        name: 'Mairie de Monaco',
-        endpoint: Configuration.AWS_REST_ENDPOINT_PROD,
+        subdomain: 'mairiedemonaco', name: 'Mairie de Monaco', endpoint: Configuration.AWS_REST_ENDPOINT_PROD,
+      });
+      this.addNewTenant(tenants, {
+        subdomain: 'sapfrance', name: 'SAP France', endpoint: Configuration.SCP_REST_ENDPOINT_PROD,
+      });
+      this.addNewTenant(tenants, {
+        subdomain: 'sapfrancecah', name: 'SAP France (charge@home)', endpoint: Configuration.SCP_REST_ENDPOINT_PROD,
       });
       // Save
       await SecuredStorage.saveTenants(tenants);

@@ -115,6 +115,7 @@
     "createTenantTitle": "Créer une organisation",
     "tenantSubdomain": "Sous domaine",
     "tenantName": "Nom",
+    "tenantEndpoint": "Cloud",
     "phone" : "Phone",
     "mandatoryPhone": "Le numéro de téléphone est obligatoire",
     "mandatoryErrorTitle": "Le titre est obligatoire",

@@ -40,15 +40,26 @@ export default function computeStyleSheet(): any {
       justifyContent: 'center',
       alignItems: 'center',
     },
-    modalIinputGroup: {
+    modalInputGroup: {
       height: '35@s',
       width: '90%',
       flexDirection: 'row',
       justifyContent: 'flex-start',
       marginBottom: '10@s',
       marginLeft: 0,
-      paddingLeft: '10@s',
+      paddingLeft: '15@s',
       paddingRight: '10@s',
+      backgroundColor: commonColor.buttonBg,
+      borderColor: 'transparent'
+    },
+    modalPickerGroup: {
+      height: '35@s',
+      width: '90%',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      marginBottom: '10@s',
+      marginLeft: 0,
+      paddingLeft: 0,
       backgroundColor: commonColor.buttonBg,
       borderColor: 'transparent'
     },
@@ -68,6 +79,15 @@ export default function computeStyleSheet(): any {
       width: '65%',
       fontSize: '14@s',
       color: commonColor.textColor,
+    },
+    modalPickerField: {
+      fontSize: '14@s',
+      color: commonColor.textColor,
+    },
+    modalPickerPlaceHolder: {
+      color: commonColor.inputColorPlaceholder,
+      padding: 0,
+      margin: 0,
     },
     modalButtonsContainer: {
       flexDirection: 'row',

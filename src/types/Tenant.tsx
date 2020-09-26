@@ -37,3 +37,9 @@ export interface TenantConnection {
   name: string;
   endpoint: string;
 }
+
+export interface EndpointCloud {
+  id: string;
+  name: string;
+  endpoint: string;
+}

@@ -1,14 +1,23 @@
 import { KeyValue } from 'types/Global';
-import { TenantConnection } from 'types/Tenant';
+import { EndpointCloud, TenantConnection } from 'types/Tenant';
 
 export default class Configuration {
   public static readonly SCP_REST_ENDPOINT_PROD = 'https://sap-ev-rest-server.cfapps.eu10.hana.ondemand.com';
   public static readonly SCP_REST_ENDPOINT_QA = 'https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com';
-
   public static readonly AWS_REST_ENDPOINT_PROD = 'https://rest.e-mobility-group.com';
 
   public static readonly SCP_CAPTCHA_BASE_URL: string = 'https://evse.cfapps.eu10.hana.ondemand.com';
   public static readonly SCP_CAPTCHA_SITE_KEY: string = '6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw';
+
+  public static readonly ENDPOINT_CLOUDS_PROD: EndpointCloud[] = [
+    { id: 'scp', name: 'SAP Cloud Platform', endpoint: Configuration.SCP_REST_ENDPOINT_PROD },
+    { id: 'aws', name: 'Amazon Web Service', endpoint: Configuration.AWS_REST_ENDPOINT_PROD },
+  ];
+
+  public static readonly ENDPOINT_CLOUDS_QA: EndpointCloud[] = [
+    ...Configuration.ENDPOINT_CLOUDS_PROD,
+    { id: 'scpqa', name: 'SAP Cloud Platform QA', endpoint: Configuration.SCP_REST_ENDPOINT_QA },
+  ];
 
   public static readonly DEFAULT_TENANTS_LIST_PROD: TenantConnection[] = [
     { subdomain: 'slf', name: 'SAP Labs France', endpoint: Configuration.SCP_REST_ENDPOINT_PROD },
@@ -30,7 +39,8 @@ export default class Configuration {
     { subdomain: 'demobilling', name: 'SAP Labs Demo for Billing', endpoint: Configuration.SCP_REST_ENDPOINT_QA },
     { subdomain: 'slf', name: 'SAP Labs France (prod)', endpoint: Configuration.SCP_REST_ENDPOINT_PROD },
     { subdomain: 'slfcah', name: 'SAP Labs France (Charge@Home) (prod)', endpoint: Configuration.SCP_REST_ENDPOINT_PROD },
-    { subdomain: 'mairiedemonaco', name: 'Mairie de Monaco', endpoint: Configuration.AWS_REST_ENDPOINT_PROD },
+    { subdomain: 'sapfrance', name: 'SAP France (prod)', endpoint: Configuration.SCP_REST_ENDPOINT_PROD },
+    { subdomain: 'sapfrancecah', name: 'SAP France (charge@home) (prod)', endpoint: Configuration.SCP_REST_ENDPOINT_PROD },
   ];
 
   public static isServerLocalePreferred: boolean = true;
