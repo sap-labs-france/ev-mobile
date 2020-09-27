@@ -90,7 +90,7 @@ export default class Login extends React.Component<Props, State> {
       }
     }
   };
-  
+
   public render() {
     const modalStyle = computeModalStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();

@@ -6,8 +6,8 @@ import buildTheme from '../theme/components';
 import buttonTheme from '../theme/components/Button';
 import headerTheme from '../theme/components/Header';
 import { ThemeType } from '../types/Theme';
-import ThemeManager from './ThemeManager';
 import { buildCommonColor } from './customCommonColor';
+import ThemeManager from './ThemeManager';
 
 const theme = (themeType: ThemeType) => {
   // Build the theme

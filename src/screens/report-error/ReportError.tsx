@@ -6,13 +6,13 @@ import * as Animatable from 'react-native-animatable';
 import { DrawerActions } from 'react-navigation-drawer';
 import ChargingStation, { Connector } from 'types/ChargingStation';
 
+import HeaderComponent from './../../components/header/HeaderComponent';
 import commonColor from '../../theme/variables/commonColor';
 import BaseProps from '../../types/BaseProps';
 import Constants from '../../utils/Constants';
 import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
-import HeaderComponent from './../../components/header/HeaderComponent';
 import computeStyleSheet from './ReportErrorStyles';
 
 export interface Props extends BaseProps {
