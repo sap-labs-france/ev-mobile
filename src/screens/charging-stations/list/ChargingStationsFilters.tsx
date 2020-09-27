@@ -4,8 +4,8 @@ import React from 'react';
 import * as Animatable from 'react-native-animatable';
 
 import FilterVisibleContainerComponent from '../../../components/search/filter/containers/FilterVisibleContainerComponent';
-import computeControlStyleSheet from '../../../components/search/filter/controls/FilterControlComponentStyles';
 import ConnectorTypeFilterControlComponent from '../../../components/search/filter/controls/connector-type/ConnectorTypeFilterControlComponent';
+import computeControlStyleSheet from '../../../components/search/filter/controls/FilterControlComponentStyles';
 import LocationSwitchFilterControlComponent from '../../../components/search/filter/controls/location-switch/LocationSwitchFilterControlComponent';
 import OnlyAvailableChargingStationSwitchFilterControlComponent from '../../../components/search/filter/controls/only-available-charging-station-switch/OnlyAvailableChargingStationSwitchFilterControlComponent';
 import ScreenFilters, { ScreenFiltersState } from '../../../components/search/filter/screen/ScreenFilters';

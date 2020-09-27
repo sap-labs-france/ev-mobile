@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import axiosRetry, { IAxiosRetryConfig } from 'axios-retry';
 
-import { HTTPError } from '../types/HTTPError';
+import { HTTPAuthError, HTTPError } from '../types/HTTPError';
 import Utils from './Utils';
 
 export default class AxiosFactory {
@@ -38,7 +38,7 @@ export default class AxiosFactory {
   }
 
   private static isNetworkOrAppIdempotentRequestError(error: AxiosError): boolean {
-    const noRetryHTTPErrorCodes: number[] = Utils.getValuesFromEnum(HTTPError);
+    const noRetryHTTPErrorCodes: number[] = Utils.getValuesFromEnum(HTTPError).concat(Utils.getValuesFromEnum(HTTPAuthError));
     if (noRetryHTTPErrorCodes.includes(error.response.status)) {
       return false;
     }
