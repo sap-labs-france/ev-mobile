@@ -356,7 +356,7 @@ export default class Login extends BaseScreen<Props, State> {
                     bottom: 0,
                     left: 0,
                     opacity: 0.4,
-                    backgroundColor: commonColor.containerBgColor
+                    backgroundColor: commonColor.disabled
                   },
                   wrapper: {
                     flex: 1,

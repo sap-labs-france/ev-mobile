@@ -146,11 +146,19 @@ export default class Login extends React.Component<Props, State> {
             <View style={modalStyle.modalRow}>
               <Item picker={true} inlineLabel={true} style={modalStyle.modalPickerGroup}>
                 <Picker
-                  mode='dropdown'
+                  mode='dialog'
                   style={modalStyle.modalPickerField}
                   placeholder={I18n.t('authentication.tenantEndpoint')}
+                  headerBackButtonText={I18n.t('general.back')}
+                  iosHeader={I18n.t('authentication.tenantEndpoint')}
                   placeholderStyle={modalStyle.modalPickerPlaceHolder}
-                  placeholderIconColor={commonColor.inputColorPlaceholder}
+                  headerStyle={modalStyle.modalPickerModal}
+                  headerTitleStyle={modalStyle.modalPickerText}
+                  headerBackButtonTextStyle={modalStyle.modalPickerText}
+                  textStyle={modalStyle.modalPickerText}
+                  itemTextStyle={modalStyle.modalPickerText}
+                  itemStyle={modalStyle.modalPickerModal}
+                  modalStyle={modalStyle.modalPickerModal}
                   selectedValue={this.state.newTenantEndpointCloud}
                   onValueChange={(value) => this.setState({ newTenantEndpointCloud: value })}
                 >
