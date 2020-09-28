@@ -4,8 +4,8 @@ import NotificationManager from 'notification/NotificationManager';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import { KeyValue } from 'types/Global';
 
-import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
+import Configuration from '../config/Configuration';
 import MigrationManager from '../migration/MigrationManager';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';

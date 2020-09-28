@@ -8,8 +8,8 @@ import BaseProps from '../../../types/BaseProps';
 import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
-import TransactionHeaderComponent from '../header/TransactionHeaderComponent';
 import computeStyleSheet from '../TransactionComponentCommonStyles';
+import TransactionHeaderComponent from '../header/TransactionHeaderComponent';
 
 export interface Props extends BaseProps {
   transaction: Transaction;
