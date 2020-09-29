@@ -1,12 +1,12 @@
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { FlatList, RefreshControl, ScrollView } from 'react-native';
-import { DrawerActions } from 'react-navigation-drawer';
 
-import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
+import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargingStationCapabilities } from '../../../types/ChargingStation';
 import { KeyValue, PropertyDisplay } from '../../../types/Global';
@@ -111,7 +111,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
-      const chargingStationID = Utils.getParamFromNavigation(this.props.navigation, 'chargingStationID', null);
+      const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
       // Get chargingStation
       const chargingStation = await this.getChargingStation(chargingStationID);
       // Build props
@@ -149,7 +149,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.goBack(null);
+    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };

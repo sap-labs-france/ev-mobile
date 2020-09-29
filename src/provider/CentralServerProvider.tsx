@@ -1,11 +1,11 @@
+import { NavigationContainerRef } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
 import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
-import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import { KeyValue } from 'types/Global';
 
-import I18nManager from '../I18n/I18nManager';
 import Configuration from '../config/Configuration';
+import I18nManager from '../I18n/I18nManager';
 import MigrationManager from '../migration/MigrationManager';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
@@ -52,7 +52,7 @@ export default class CentralServerProvider {
     this.axiosInstance = AxiosFactory.getAxiosInstance();
     if (__DEV__) {
       // QA REST Server
-      this.centralRestServerServiceBaseURL = Configuration.centralRestServerServiceBaseURLQA;
+      // this.centralRestServerServiceBaseURL = Configuration.CENTRAL_REST_SERVER_SERVICE_BASE_URL_QA;
       this.centralRestServerServiceAuthURL = this.centralRestServerServiceBaseURL + '/client/auth';
       this.centralRestServerServiceSecuredURL = this.centralRestServerServiceBaseURL + '/client/api';
       this.debug = true;
@@ -144,7 +144,7 @@ export default class CentralServerProvider {
   }
 
   public async triggerAutoLogin(
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>, fctRefresh: any) {
+    navigation: NavigationContainerRef, fctRefresh: any) {
     this.debugMethod('triggerAutoLogin');
     try {
       // Force log the user
@@ -671,7 +671,7 @@ export default class CentralServerProvider {
   public async checkEndUserLicenseAgreement(params: { email: string; tenantSubDomain: string; }): Promise<EulaAccepted> {
     this.debugMethod('checkEndUserLicenseAgreement');
     // Call
-    const result = await this.axiosInstance.get(`${this.centralRestServerServiceAuthURL}/${ServerAction.CHECK_END_USER_LICENSE_AGREEMENT}`, {
+     const result = await this.axiosInstance.get(`${this.centralRestServerServiceAuthURL}/${ServerAction.CHECK_END_USER_LICENSE_AGREEMENT}`, {
       headers: this.buildHeaders(),
       params: {
         Email: params.email,

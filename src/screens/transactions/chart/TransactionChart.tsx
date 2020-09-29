@@ -1,10 +1,10 @@
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Spinner, Text } from 'native-base';
 import React from 'react';
 import { View, processColor } from 'react-native';
 import { LineChart, LineChartProps } from 'react-native-charts-wrapper';
 import { scale } from 'react-native-size-matters';
-import { DrawerActions } from 'react-navigation-drawer';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import TransactionHeaderComponent from '../../../components/transaction/header/TransactionHeaderComponent';
@@ -69,9 +69,9 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
-      const chargingStationID = Utils.getParamFromNavigation(this.props.navigation, 'chargingStationID', null);
-      const connectorID = Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null);
-      const transactionID = Utils.getParamFromNavigation(this.props.navigation, 'transactionID', null);
+      const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
+      const connectorID = Utils.getParamFromNavigation(this.props.route, 'connectorID', null);
+      const transactionID = Utils.getParamFromNavigation(this.props.route, 'transactionID', null);
       let transactionWithConsumptions = null;
       let chargingStation = null;
       let connector = null;
@@ -287,7 +287,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.goBack(null);
+    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };

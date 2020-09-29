@@ -1,4 +1,4 @@
-import { NavigationState } from 'react-navigation';
+import { NavigationState } from '@react-navigation/native'
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import UserToken from 'types/UserToken';
 
@@ -10,7 +10,7 @@ import { UserCredentials } from '../types/User';
 let navigationID: string = '' + new Date().getTime();
 if (__DEV__) {
   // Keep the same key for dev
-  navigationID = '12345';
+  navigationID = '12345676';
 }
 
 export default class SecuredStorage {
@@ -113,7 +113,7 @@ export default class SecuredStorage {
     return value;
   }
 
-  private static getCurrentTenantSubDomain(): Promise<string> {
+  private static async getCurrentTenantSubDomain(): Promise<string> {
     return SecuredStorage._getString(SecuredStorageKey.CURRENT_TENANT_SUB_DOMAIN);
   }
 

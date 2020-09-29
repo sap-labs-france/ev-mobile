@@ -1,10 +1,10 @@
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
 import { Location } from 'react-native-location';
 import MapView, { Marker, Region } from 'react-native-maps';
-import { DrawerActions } from 'react-navigation-drawer';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
@@ -70,7 +70,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     // Get initial filters
     await this.loadInitialFilters();
     // Get initial filters
-    this.siteID = Utils.getParamFromNavigation(this.props.navigation, 'siteID', null);
+    this.siteID = Utils.getParamFromNavigation(this.props.route, 'siteID', null);
     await super.componentDidMount();
   }
 

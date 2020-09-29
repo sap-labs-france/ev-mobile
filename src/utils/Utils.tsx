@@ -1,15 +1,15 @@
+import { NavigationContainerRef } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import { NativeModules, Platform } from 'react-native';
 import { showLocation } from 'react-native-map-link';
-import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
 import Address from 'types/Address';
 import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
 
-import I18nManager from '../I18n/I18nManager';
-import ThemeManager from '../custom-theme/ThemeManager';
 import { buildCommonColor } from '../custom-theme/customCommonColor';
+import ThemeManager from '../custom-theme/ThemeManager';
+import I18nManager from '../I18n/I18nManager';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
 import { InactivityStatus } from '../types/Transaction';
@@ -18,7 +18,7 @@ import Constants from './Constants';
 import Message from './Message';
 
 export default class Utils {
-  public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
+  public static canAutoLogin(centralServerProvider: CentralServerProvider): boolean {
     const tenantSubDomain = centralServerProvider.getUserTenant();
     const email = centralServerProvider.getUserEmail();
     const password = centralServerProvider.getUserPassword();
@@ -497,18 +497,18 @@ export default class Utils {
     return new Promise((resolve) => setTimeout(resolve, millis));
   }
 
-  public static getParamFromNavigation(navigation: NavigationScreenProp<NavigationState, NavigationParams>,
-    name: string, defaultValue: string): string {
+  public static getParamFromNavigation(route: any, name: string, defaultValue: string): string {
+    const params: any = route.params?.params ? route.params.params : route.params
     // Has param object?
-    if (!navigation.state.params) {
+    if (!params) {
       return defaultValue;
     }
     // Has param
-    if (!navigation.state.params[name]) {
+    if (!params[name]) {
       return defaultValue;
     }
     // Ok, return the value
-    return navigation.state.params[name];
+    return params[name];
   }
 
   public static getLanguageFromLocale(locale: string) {
@@ -604,7 +604,7 @@ export default class Utils {
   }
 
   public static async handleHttpUnexpectedError(centralServerProvider: CentralServerProvider,
-    error: RequestError, defaultErrorMessage: string, navigation?: NavigationScreenProp<NavigationState, NavigationParams>, fctRefresh?: () => void) {
+    error: RequestError, defaultErrorMessage: string, navigation?: NavigationContainerRef, fctRefresh?: () => void) {
     // Override
     fctRefresh = () => {
       setTimeout(() => fctRefresh, 2000);
