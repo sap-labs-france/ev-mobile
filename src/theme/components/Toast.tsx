@@ -1,10 +1,12 @@
+// @flow
+
 import { PLATFORM } from './../variables/commonColor';
 import variable from './../variables/platform';
 
 export default (variables /* : * */ = variable) => {
   const platform = variables.platform;
 
-  const toastTheme: any = {
+  const toastTheme = {
     '.danger': {
       backgroundColor: variables.brandDanger
     },

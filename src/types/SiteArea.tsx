@@ -13,4 +13,5 @@ export default interface SiteArea extends CreatedUpdatedProps {
   site: Site;
   accessControl: boolean;
   connectorStats: ConnectorStats;
+  distanceMeters?: number;
 }

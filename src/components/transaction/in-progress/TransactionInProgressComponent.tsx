@@ -41,8 +41,8 @@ export default class TransactionInProgressComponent extends React.Component<Prop
   public render() {
     const style = computeStyleSheet();
     const { transaction, isAdmin, isSiteAdmin, isPricingActive } = this.props;
-    const consumption = Math.round(transaction.currentConsumption / 10) / 100;
-    const totalConsumption = Math.round(transaction.currentTotalConsumption / 10) / 100;
+    const consumption = Math.round(transaction.currentInstantWatts / 10) / 100;
+    const totalConsumption = Math.round(transaction.currentTotalConsumptionWh / 10) / 100;
     const price = transaction.currentCumulatedPrice ? Math.round(transaction.currentCumulatedPrice * 100) / 100 : 0;
     const duration = Utils.formatDurationHHMMSS(transaction.currentTotalDurationSecs, false);
     const inactivity = Utils.formatDurationHHMMSS(transaction.currentTotalInactivitySecs, false);
@@ -57,9 +57,9 @@ export default class TransactionInProgressComponent extends React.Component<Prop
         <TouchableOpacity
           onPress={() => {
             navigation.navigate({
-              routeName: 'ChargerConnectorDetailsTabs',
+              routeName: 'ChargingStationConnectorDetailsTabs',
               params: {
-                chargerID: transaction.chargeBoxID,
+                chargingStationID: transaction.chargeBoxID,
                 connectorID: transaction.connectorId
               },
               key: `${Utils.randomNumber()}`
@@ -85,7 +85,7 @@ export default class TransactionInProgressComponent extends React.Component<Prop
               </View>
             </View>
             <View style={style.transactionContent}>
-            <View style={style.columnContainer}>
+              <View style={style.columnContainer}>
                 <Icon type='MaterialIcons' name='timer' style={[style.icon, style.info]} />
                 <Text style={[style.labelValue, style.info]}>{duration}</Text>
                 <Text style={[style.subLabelValue, style.info]}>(hh:mm)</Text>

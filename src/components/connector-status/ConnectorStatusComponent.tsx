@@ -33,7 +33,8 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
       Animated.timing(spinValue, {
         toValue: 1,
         duration: 4000,
-        easing: Easing.linear
+        easing: Easing.linear,
+        useNativeDriver: true
       })
     ).start();
     // Second interpolate beginning and end values (in this case 0 and 1)
@@ -132,7 +133,7 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
   public isAnimated(): boolean {
     const { value, type, connector } = this.props;
     if (connector) {
-      return connector.currentConsumption > 0;
+      return connector.currentInstantWatts > 0;
     } else {
       return type === ChargePointStatus.CHARGING && value > 0;
     }

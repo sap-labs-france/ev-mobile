@@ -1,7 +1,9 @@
+// @flow
+
 import variable from './../variables/platform';
 
 export default (variables /* : * */ = variable) => {
-  const cardTheme: any = {
+  const cardTheme = {
     '.transparent': {
       shadowColor: null,
       shadowOffset: null,

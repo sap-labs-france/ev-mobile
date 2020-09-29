@@ -1,3 +1,5 @@
+// @flow
+
 import { PixelRatio, Platform } from 'react-native';
 
 import { PLATFORM } from './../variables/commonColor';
@@ -15,7 +17,7 @@ export default (variables /* : * */ = variable) => {
     }
   };
 
-  const listItemTheme: any = {
+  const listItemTheme = {
     'NativeBase.InputGroup': {
       'NativeBase.Icon': {
         paddingRight: 5
@@ -36,7 +38,10 @@ export default (variables /* : * */ = variable) => {
         'NativeBase.Icon': {
           backgroundColor: 'transparent',
           color: variables.dropdownLinkColor,
-          fontSize: platform === PLATFORM.IOS ? variables.iconFontSize - 10 : variables.iconFontSize - 5,
+          fontSize:
+            platform === PLATFORM.IOS
+              ? variables.iconFontSize - 10
+              : variables.iconFontSize - 5,
           alignItems: 'center',
           marginTop: 2,
           paddingRight: 8
@@ -87,12 +92,15 @@ export default (variables /* : * */ = variable) => {
       '.first': {
         paddingTop: variables.listItemPadding + 3
       },
-      borderBottomWidth: platform === PLATFORM.IOS ? variables.borderWidth : null,
+      borderBottomWidth:
+        platform === PLATFORM.IOS ? variables.borderWidth : null,
       marginLeft: null,
       padding: variables.listItemPadding,
       paddingLeft: variables.listItemPadding + 5,
-      paddingTop: platform === PLATFORM.IOS ? variables.listItemPadding + 25 : undefined,
-      paddingBottom: platform === PLATFORM.ANDROID ? variables.listItemPadding + 20 : undefined,
+      paddingTop:
+        platform === PLATFORM.IOS ? variables.listItemPadding + 25 : undefined,
+      paddingBottom:
+        platform === PLATFORM.ANDROID ? variables.listItemPadding + 20 : undefined,
       flexDirection: 'row',
       borderColor: variables.listBorderColor,
       'NativeBase.Text': {

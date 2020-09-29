@@ -2,6 +2,7 @@ import CreatedUpdatedProps from './CreatedUpdatedProps';
 import { KeyValue } from './Global';
 import SiteArea from './SiteArea';
 import { InactivityStatus } from './Transaction';
+import User from './User';
 
 export default interface ChargingStation extends CreatedUpdatedProps {
   id?: string;
@@ -24,29 +25,50 @@ export default interface ChargingStation extends CreatedUpdatedProps {
   inactive: boolean;
   lastReboot: Date;
   chargingStationURL: string;
-  numberOfConnectedPhase: number;
   maximumPower: number;
-  cannotChargeInParallel: boolean;
+  voltage: number;
   powerLimitUnit: string;
-  latitude: number;
-  longitude: number;
+  coordinates: number[];
+  chargePoints: ChargePoint[];
   connectors: Connector[];
-  errorCode?: string;
   currentIPAddress?: string;
   siteArea?: SiteArea;
   capabilities?: ChargingStationCapabilities;
-  ocppAdvancedCommands?: OcppAdvancedCommands[];
   ocppStandardParameters?: KeyValue[];
   ocppVendorParameters?: KeyValue[];
-  currentType: ChargingStationCurrentType;
+  distanceMeters?: number;
+}
+
+export enum CurrentType {
+  AC = 'AC',
+  DC = 'DC'
+}
+
+export interface ChargePoint {
+  chargePointID: number;
+  currentType: CurrentType;
+  voltage: number;
+  amperage: number;
+  numberOfConnectedPhase: number;
+  cannotChargeInParallel: boolean;
+  sharePowerToAllConnectors: boolean;
+  excludeFromPowerLimitation: boolean;
+  ocppParamForPowerLimitation: string;
+  power: number;
+  efficiency: number;
+  connectorIDs: number[];
 }
 
 export interface Connector {
   connectorId: number;
-  currentConsumption: number;
+  currentInstantWatts: number;
   currentStateOfCharge?: number;
-  totalInactivitySecs?: number;
-  totalConsumption?: number;
+  currentTotalConsumptionWh?: number;
+  currentTotalInactivitySecs?: number;
+  currentInactivityStatus: InactivityStatus;
+  currentTransactionID: number;
+  currentTransactionDate: Date;
+  currentTagID: string;
   status: ChargePointStatus;
   errorCode?: string;
   info?: string;
@@ -55,11 +77,13 @@ export interface Connector {
   type: ConnectorType;
   voltage?: number;
   amperage?: number;
-  activeTransactionID: number;
-  activeTransactionDate: Date;
-  activeTagID: string;
+  userID?: string;
+  user?: User;
+  amperageLimit?: number;
   statusLastChangedOn?: Date;
-  inactivityStatus: InactivityStatus;
+  numberOfConnectedPhase?: number;
+  currentType?: CurrentType;
+  chargePointID?: number;
 }
 
 export enum ChargePointStatus {
@@ -85,15 +109,8 @@ export enum ConnectorType {
   UNKNOWN = 'U',
 }
 
-export enum ChargingStationCurrentType {
-  AC = 'AC',
-  DC = 'DC',
-  AC_DC = 'AC/DC',
-}
-
 export interface ChargingStationCapabilities {
-  supportStaticLimitationForChargingStation?: boolean;
-  supportStaticLimitationPerConnector?: boolean;
+  supportStaticLimitation?: boolean;
   supportChargingProfiles?: boolean;
   supportTxDefaultProfile?: boolean;
 }
@@ -103,6 +120,13 @@ export interface OcppCommand {
   parameters: string[];
 }
 
-export interface OcppAdvancedCommands {
-  command: string | OcppCommand;
+export enum SiteAreaLimitSource {
+  CHARGING_STATIONS = 'CS',
+  SITE_AREA = 'SA',
+}
+
+export enum ConnectorCurrentLimitSource {
+  CHARGING_PROFILE = 'CP',
+  STATIC_LIMITATION = 'SL',
+  CONNECTOR = 'CO'
 }

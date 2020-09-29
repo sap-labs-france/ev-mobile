@@ -9,7 +9,7 @@ export enum ComponentType {
   STATISTICS = 'statistics',
   ANALYTICS = 'analytics',
   SMART_CHARGING = 'smartCharging',
-  BUILDING = 'building'
+  ASSET = 'asset'
 }
 
 export enum IdentifierType {
@@ -62,6 +62,7 @@ export interface ConvergentChargingPricingSettings extends PricingSetting {
 export interface OcpiSettings {
   countryCode: string;
   partyID: string;
+  currency: string;
   businessDetails: {
     name: string;
     website: string;

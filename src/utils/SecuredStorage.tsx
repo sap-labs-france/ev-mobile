@@ -1,9 +1,10 @@
 import { NavigationState } from 'react-navigation';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
+import UserToken from 'types/UserToken';
 
-import ProviderFactory from '../provider/ProviderFactory';
+import { SecuredStorageKey } from '../types/SecuredStorageKeys';
+import Tenant, { TenantConnection } from '../types/Tenant';
 import { UserCredentials } from '../types/User';
-import Constants from './Constants';
 
 // Generate a new Id for persisting the navigation each time the app is launched first time
 let navigationID: string = '' + new Date().getTime();
@@ -13,8 +14,19 @@ if (__DEV__) {
 }
 
 export default class SecuredStorage {
+  public static async getLastMigrationVersion(): Promise<string> {
+    return SecuredStorage._getString(SecuredStorageKey.MIGRATION_VERSION);
+  }
+
+  public static async setLastMigrationVersion(version: string): Promise<void> {
+    await RNSecureStorage.set(
+      SecuredStorageKey.MIGRATION_VERSION, version,
+      { accessible: ACCESSIBLE.WHEN_UNLOCKED }
+    );
+  }
+
   public static async getNavigationState(): Promise<NavigationState> {
-    const navigationState = await SecuredStorage._getJson(Constants.KEY_NAVIGATION_STATE);
+    const navigationState = await SecuredStorage._getJson(SecuredStorageKey.NAVIGATION_STATE);
     // Check the key
     if (navigationState) {
       if (navigationState.key === navigationID) {
@@ -25,11 +37,10 @@ export default class SecuredStorage {
   }
 
   public static async saveNavigationState(navigationState: NavigationState) {
-    // Add a key
     await RNSecureStorage.set(
-      Constants.KEY_NAVIGATION_STATE,
+      SecuredStorageKey.NAVIGATION_STATE,
       JSON.stringify({ key: navigationID, navigationState }),
-      { accessible: ACCESSIBLE.WHEN_UNLOCKED}
+      { accessible: ACCESSIBLE.WHEN_UNLOCKED }
     );
   }
 
@@ -39,11 +50,11 @@ export default class SecuredStorage {
       tenantSubDomain = await SecuredStorage.getCurrentTenantSubDomain();
     }
     // Get User Credentials
-    return SecuredStorage._getJson(`${tenantSubDomain}~${Constants.KEY_CREDENTIALS}`);
+    return SecuredStorage._getJson(`${tenantSubDomain}~${SecuredStorageKey.CREDENTIALS}`);
   }
 
   public static async clearUserToken(tenantSubDomain: string) {
-    const credentials = await SecuredStorage._getJson(`${tenantSubDomain}~${Constants.KEY_CREDENTIALS}`);
+    const credentials = await SecuredStorage._getJson(`${tenantSubDomain}~${SecuredStorageKey.CREDENTIALS}`);
     if (credentials) {
       Reflect.deleteProperty(credentials, 'token');
       await SecuredStorage.saveUserCredentials(tenantSubDomain, credentials);
@@ -51,7 +62,7 @@ export default class SecuredStorage {
   }
 
   public static async clearUserPassword(tenantSubDomain: string) {
-    const credentials: UserCredentials = await SecuredStorage._getJson(`${tenantSubDomain}~${Constants.KEY_CREDENTIALS}`);
+    const credentials: UserCredentials = await SecuredStorage._getJson(`${tenantSubDomain}~${SecuredStorageKey.CREDENTIALS}`);
     if (credentials) {
       Reflect.deleteProperty(credentials, 'password');
       await SecuredStorage.saveUserCredentials(tenantSubDomain, credentials);
@@ -59,39 +70,40 @@ export default class SecuredStorage {
   }
 
   public static async deleteUserCredentials(tenantSubDomain: string) {
-    await RNSecureStorage.remove(`${tenantSubDomain}~${Constants.KEY_CREDENTIALS}`);
+    try {
+      await RNSecureStorage.remove(`${tenantSubDomain}~${SecuredStorageKey.CREDENTIALS}`);
+    } catch (error) {
+      // Error ff it does not exist
+    }
   }
 
   public static async saveUserCredentials(tenantSubDomain: string, credentials: UserCredentials) {
     // Save last used domain
     await SecuredStorage.saveCurrentTenantSubDomain(tenantSubDomain);
     // Save Credentials
-    await RNSecureStorage.set(`${tenantSubDomain}~${Constants.KEY_CREDENTIALS}`, JSON.stringify(credentials), {
-      accessible: ACCESSIBLE.WHEN_UNLOCKED
-    });
+    await RNSecureStorage.set(`${tenantSubDomain}~${SecuredStorageKey.CREDENTIALS}`,
+      JSON.stringify(credentials),
+      { accessible: ACCESSIBLE.WHEN_UNLOCKED }
+    );
   }
 
-  public static async saveFilterValue(filterInternalID: string, filterValue: string) {
-    // Get Provider
-    const centralServerProvider = await ProviderFactory.getProvider();
-    // Get Token
-    const user = await centralServerProvider.getUserInfo();
+  public static async saveFilterValue(user: UserToken, filterInternalID: string, filterValue: string) {
+    // Ensure string
+    if (typeof filterValue !== 'string') {
+      filterValue = filterValue + '';
+    }
     // null value not allowed
     if (!filterValue) {
       filterValue = 'null';
     }
     // Save
-    await RNSecureStorage.set(`${user.tenantID}~${user.id}~filter~${filterInternalID}`, filterValue, {
-      accessible: ACCESSIBLE.WHEN_UNLOCKED
-    });
+    await RNSecureStorage.set(`${user.tenantID}~${user.id}~filter~${filterInternalID}`,
+      filterValue,
+      { accessible: ACCESSIBLE.WHEN_UNLOCKED });
   }
 
-  public static async filterExists(filterInternalID: string): Promise<boolean> {
+  public static async filterExists(user: UserToken, filterInternalID: string): Promise<boolean> {
     try {
-      // Get Provider
-      const centralServerProvider = await ProviderFactory.getProvider();
-      // Get Token
-      const user = await centralServerProvider.getUserInfo();
       // Check
       const result = await RNSecureStorage.exists(`${user.tenantID}~${user.id}~filter~${filterInternalID}`);
       // Returned result is a number, not a boolean! 0 = not found and 1 = found!
@@ -102,11 +114,7 @@ export default class SecuredStorage {
     return false;
   }
 
-  public static async loadFilterValue(filterInternalID: string): Promise<string> {
-    // Get Provider
-    const centralServerProvider = await ProviderFactory.getProvider();
-    // Get Token
-    const user = await centralServerProvider.getUserInfo();
+  public static async loadFilterValue(user: UserToken, filterInternalID: string): Promise<string> {
     // Get
     const value = await SecuredStorage._getString(`${user.tenantID}~${user.id}~filter~${filterInternalID}`);
     if (value === 'null') {
@@ -116,13 +124,13 @@ export default class SecuredStorage {
   }
 
   private static getCurrentTenantSubDomain(): Promise<string> {
-    return SecuredStorage._getString(Constants.KEY_CURRENT_TENANT_SUB_DOMAIN);
+    return SecuredStorage._getString(SecuredStorageKey.CURRENT_TENANT_SUB_DOMAIN);
   }
 
   private static async saveCurrentTenantSubDomain(tenantSubDomain: string) {
-    await RNSecureStorage.set(Constants.KEY_CURRENT_TENANT_SUB_DOMAIN, tenantSubDomain, {
-      accessible: ACCESSIBLE.WHEN_UNLOCKED
-    });
+    await RNSecureStorage.set(SecuredStorageKey.CURRENT_TENANT_SUB_DOMAIN, tenantSubDomain,
+      { accessible: ACCESSIBLE.WHEN_UNLOCKED }
+    );
   }
 
   private static async _getJson(key: string): Promise<any> {
@@ -145,5 +153,19 @@ export default class SecuredStorage {
       // Key does not exist: do nothing
     }
     return null;
+  }
+
+  public static async saveTenants(tenants: Partial<Tenant>[]) {
+    // Add a key
+    await RNSecureStorage.set(
+      SecuredStorageKey.TENANTS,
+      JSON.stringify(tenants),
+      { accessible: ACCESSIBLE.WHEN_UNLOCKED }
+    );
+  }
+
+  public static async getTenants(): Promise<TenantConnection[]> {
+    const tenants = await SecuredStorage._getJson(SecuredStorageKey.TENANTS);
+    return tenants as TenantConnection[];
   }
 }

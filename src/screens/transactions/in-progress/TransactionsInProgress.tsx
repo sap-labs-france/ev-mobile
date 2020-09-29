@@ -9,6 +9,7 @@ import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
 import TransactionInProgressComponent from '../../../components/transaction/in-progress/TransactionInProgressComponent';
+import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import { DataResult } from '../../../types/DataResult';
 import { GlobalFilters } from '../../../types/Filter';
@@ -65,7 +66,9 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
   }
 
   public async loadInitialFilters() {
-    const userID = await SecuredStorage.loadFilterValue(GlobalFilters.MY_USER_FILTER);
+    const centralServerProvider = await ProviderFactory.getProvider();
+    const userID = await SecuredStorage.loadFilterValue(
+      centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
     this.setState({
       initialFilters: { userID },
       filters: { userID }
@@ -144,7 +147,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     const { count, skip, limit } = this.state;
     // No reached the end?
     if (skip + limit < count || count === -1) {
-    // No: get next sites
+      // No: get next sites
       const transactions = await this.getTransactionsInProgress(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState) => ({
@@ -180,37 +183,37 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           filters={filters}
         />
         {loading ? (
-          <Spinner style={style.spinner} />
+          <Spinner style={style.spinner} color='grey' />
         ) : (
-          <View style={style.content}>
-            {(isAdmin || hasSiteAdmin) &&
-              <TransactionsInProgressFilters
-                initialFilters={initialFilters}
-                onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-                ref={(transactionsInProgressFilters: TransactionsInProgressFilters) =>
-                  this.setScreenFilters(transactionsInProgressFilters)}
-              />
-            }
-            <FlatList
-              data={transactions}
-              renderItem={({ item }) => (
-                <TransactionInProgressComponent
-                  transaction={item}
-                  navigation={navigation}
-                  isAdmin={isAdmin}
-                  isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteID)}
-                  isPricingActive={isPricingActive}
+            <View style={style.content}>
+              {(isAdmin || hasSiteAdmin) &&
+                <TransactionsInProgressFilters
+                  initialFilters={initialFilters}
+                  onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
+                  ref={(transactionsInProgressFilters: TransactionsInProgressFilters) =>
+                    this.setScreenFilters(transactionsInProgressFilters)}
                 />
-              )}
-              keyExtractor={(item) => `${item.id}`}
-              refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-              onEndReached={this.onEndScroll}
-              onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-              ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('transactions.noTransactionsInProgress')} />}
-            />
-          </View>
-        )}
+              }
+              <FlatList
+                data={transactions}
+                renderItem={({ item }) => (
+                  <TransactionInProgressComponent
+                    transaction={item}
+                    navigation={navigation}
+                    isAdmin={isAdmin}
+                    isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteID)}
+                    isPricingActive={isPricingActive}
+                  />
+                )}
+                keyExtractor={(item) => `${item.id}`}
+                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+                onEndReached={this.onEndScroll}
+                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('transactions.noTransactionsInProgress')} />}
+              />
+            </View>
+          )}
       </Container>
     );
   };

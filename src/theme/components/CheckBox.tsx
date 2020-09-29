@@ -1,7 +1,9 @@
+// @flow
+
 import variable from './../variables/platform';
 
 export default (variables /* : * */ = variable) => {
-  const checkBoxTheme: any = {
+  const checkBoxTheme = {
     '.checked': {
       'NativeBase.Icon': {
         color: variables.checkboxTickColor

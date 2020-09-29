@@ -3,8 +3,8 @@ import PagingParams from '../types/PagingParams';
 export default class Constants {
   public static readonly REST_RESPONSE_SUCCESS = 'Success';
 
-  public static readonly SUPPORTED_LOCALES = ['en_US', 'fr_FR'];
-  public static readonly SUPPORTED_LANGUAGES = ['en', 'fr', 'de'];
+  public static readonly SUPPORTED_LOCALES = ['en_US', 'fr_FR', 'de_DE', 'es_MX'];
+  public static readonly SUPPORTED_LANGUAGES = ['en', 'fr', 'de', 'es'];
   public static readonly DEFAULT_LOCALE = 'en_US';
   public static readonly DEFAULT_LANGUAGE = 'en';
 
@@ -27,13 +27,10 @@ export default class Constants {
   public static readonly SHARED_PREFERENCES_NAME = 'eMobilityPreferences';
   public static readonly KEYCHAIN_SERVICE = 'eMobilityKeyChain';
 
-  public static readonly KEY_CURRENT_TENANT_SUB_DOMAIN = 'currentTenantSubDomain';
-  public static readonly KEY_CREDENTIALS = 'credentials';
-  public static readonly KEY_NAVIGATION_STATE = 'navigation-state';
-
   // Paging
+  public static readonly PAGING_SIZE = 50;
   public static readonly DEFAULT_PAGING: PagingParams = {
-    limit: 10,
+    limit: Constants.PAGING_SIZE,
     skip: 0,
   };
   public static readonly ONLY_ONE_PAGING: PagingParams = {
@@ -41,9 +38,12 @@ export default class Constants {
     skip: 0,
   };
   public static readonly ONLY_RECORD_COUNT_PAGING: PagingParams = {
-    limit: 10,
+    limit: 1,
     skip: 0,
     onlyRecordCount: true
   };
-  public static readonly PAGING_SIZE = 10;
+
+  public static readonly REGEX_VALIDATION_LATITUDE = /^-?([1-8]?[1-9]|[1-9]0)\.{0,1}[0-9]*$/;
+  public static readonly REGEX_VALIDATION_LONGITUDE = /^-?([1]?[0-7][0-9]|[1]?[0-8][0]|[1-9]?[0-9])\.{0,1}[0-9]*$/;
+  public static readonly MAX_DISTANCE_METERS = 500000; // 500km autonomy
 }

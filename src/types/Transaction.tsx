@@ -1,5 +1,4 @@
 import ChargingStation from '../types/ChargingStation';
-import Consumption from './Consumption';
 import User from './User';
 
 export enum InactivityStatus {
@@ -31,7 +30,7 @@ export default interface Transaction {
     totalInactivitySecs: number;
     extraInactivitySecs: number;
     inactivityStatus?: InactivityStatus;
-    totalConsumption: number;
+    totalConsumptionWh: number;
     totalDurationSecs: number;
     timestamp: Date;
     transactionData?: any;
@@ -49,10 +48,6 @@ export default interface Transaction {
     reportId?: string;
     status?: any;
   };
-  lastMeterValue?: {
-    value: number;
-    timestamp: Date;
-  };
   chargeBox?: ChargingStation;
   meterStart: number;
   timestamp: Date;
@@ -62,18 +57,57 @@ export default interface Transaction {
   pricingSource: string;
   stateOfCharge: number;
   timezone: string;
-  lastUpdate?: Date;
+  currentTimestamp?: Date;
   currentTotalInactivitySecs: number;
   currentInactivityStatus?: InactivityStatus;
   currentStateOfCharge: number;
   numberOfMeterValues: number;
-  currentConsumption: number;
+  currentInstantWatts: number;
+  currentInstantWattsL1?: number;
+  currentInstantWattsL2?: number;
+  currentInstantWattsL3?: number;
+  currentInstantWattsDC?: number;
   currentConsumptionWh?: number;
   currentCumulatedPrice: number;
-  currentTotalConsumption: number;
+  currentTotalConsumptionWh: number;
   currentTotalDurationSecs: number;
   currentSignedData?: number;
+  currentInstantVolts?: number;
+  currentInstantVoltsL1?: number;
+  currentInstantVoltsL2?: number;
+  currentInstantVoltsL3?: number;
+  currentInstantVoltsDC?: number;
+  currentInstantAmps?: number;
+  currentInstantAmpsL1?: number;
+  currentInstantAmpsL2?: number;
+  currentInstantAmpsL3?: number;
+  currentInstantAmpsDC?: number;
   uniqueId?: string;
   errorCode?: number;
-  values?: Consumption[]
+  values?: TransactionConsumption[]
+}
+
+export interface TransactionConsumption {
+  date: Date;
+  instantWatts: number;
+  instantWattsL1: number;
+  instantWattsL2: number;
+  instantWattsL3: number;
+  instantWattsDC: number;
+  instantAmps: number;
+  instantAmpsL1: number;
+  instantAmpsL2: number;
+  instantAmpsL3: number;
+  instantAmpsDC: number;
+  instantVolts: number;
+  instantVoltsL1: number;
+  instantVoltsL2: number;
+  instantVoltsL3: number;
+  instantVoltsDC: number;
+  limitWatts: number;
+  limitAmps: number;
+  cumulatedConsumptionWh: number;
+  cumulatedConsumptionAmps: number;
+  stateOfCharge: number;
+  cumulatedAmount: number;
 }

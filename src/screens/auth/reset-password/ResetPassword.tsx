@@ -1,12 +1,13 @@
 import I18n from 'i18n-js';
 import { Button, Footer, Form, Icon, Item, Left, Spinner, Text } from 'native-base';
 import React from 'react';
-import { Keyboard, KeyboardAvoidingView, ScrollView, Text as TextRN, TextInput } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { NavigationActions, StackActions } from 'react-navigation';
 
-import commonColor from '../../../theme/variables/commonColor';
+import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
+import { HTTPError } from '../../../types/HTTPError';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
@@ -26,6 +27,8 @@ interface State {
   errorPassword?: object[];
   errorRepeatPassword?: object[];
   loading?: boolean;
+  hideRepeatPassword?: boolean;
+  hidePassword?: boolean;
 }
 
 export default class ResetPassword extends BaseScreen<Props, State> {
@@ -63,11 +66,13 @@ export default class ResetPassword extends BaseScreen<Props, State> {
     super(props);
     this.state = {
       tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', ''),
-      hash:  Utils.getParamFromNavigation(this.props.navigation, 'hash', null),
+      hash: Utils.getParamFromNavigation(this.props.navigation, 'hash', null),
       tenantName: '',
       password: '',
       repeatPassword: '',
-      loading: false
+      loading: false,
+      hidePassword: true,
+      hideRepeatPassword: true,
     };
   }
 
@@ -79,7 +84,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
     // Call parent
     await super.componentDidMount();
     // Init
-    const tenant = this.centralServerProvider.getTenant(this.state.tenantSubDomain);
+    const tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
     this.setState({
       tenantName: tenant ? tenant.name : ''
     });
@@ -129,7 +134,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
           // Show error
           switch (error.request.status) {
             // Invalid Hash
-            case 550:
+            case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
               Message.showError(I18n.t('authentication.resetPasswordHashNotValid'));
               break;
             default:
@@ -153,74 +158,83 @@ export default class ResetPassword extends BaseScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { tenantName, loading } = this.state;
+    const formStyle = computeFormStyleSheet();
+    const commonColor = Utils.getCurrentCommonColor();
+    const { tenantName, loading, hidePassword, hideRepeatPassword } = this.state;
     return (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
-            <Form style={style.form}>
-              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                <Icon active={true} name='unlock' style={style.inputIcon} />
+            <Form style={formStyle.form}>
+              <Item inlineLabel={true} style={formStyle.inputGroup}>
+                <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.password')}
-                  placeholderTextColor={commonColor.placeholderTextColor}
-                  style={style.inputField}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
                   autoCorrect={false}
                   keyboardType={'default'}
                   onChangeText={(text) => this.setState({ password: text })}
-                  secureTextEntry={true}
+                  secureTextEntry={hidePassword}
                 />
+                <Icon active={true} name={hidePassword ? 'eye' : 'eye-off'}
+                  onPress={() => this.setState({ hidePassword: !hidePassword })}
+                  style={formStyle.inputIcon} />
               </Item>
               {this.state.errorPassword &&
                 this.state.errorPassword.map((errorMessage, index) => (
-                  <Text style={style.formErrorText} key={index}>
+                  <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel={true} rounded={true} style={style.inputGroup}>
-                <Icon active={true} name='unlock' style={style.inputIcon} />
+              <Item inlineLabel={true} style={formStyle.inputGroup}>
+                <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
-                  selectionColor={commonColor.inverseTextColor}
+                  selectionColor={commonColor.textColor}
                   onSubmitEditing={() => Keyboard.dismiss()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.repeatPassword')}
-                  placeholderTextColor={commonColor.placeholderTextColor}
-                  style={style.inputField}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
                   autoCorrect={false}
                   keyboardType={'default'}
                   onChangeText={(text) => this.setState({ repeatPassword: text })}
-                  secureTextEntry={true}
+                  secureTextEntry={hideRepeatPassword}
                 />
+                <Icon active={true} name={hideRepeatPassword ? 'eye' : 'eye-off'}
+                  onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
+                  style={formStyle.inputIcon} />
               </Item>
               {this.state.errorRepeatPassword &&
                 this.state.errorRepeatPassword.map((errorMessage, index) => (
-                  <Text style={style.formErrorText} key={index}>
+                  <Text style={formStyle.formErrorText} key={index}>
                     {errorMessage}
                   </Text>
                 ))}
               {loading ? (
-                <Spinner style={style.spinner} color='white' />
+                <Spinner style={formStyle.spinner} color='grey' />
               ) : (
-                <Button rounded={true} primary={true} block={true} style={style.button} onPress={() => this.resetPassword()}>
-                  <TextRN style={style.buttonText}>{I18n.t('authentication.resetPassword')}</TextRN>
+                <Button primary={true} block={true} style={formStyle.button} onPress={() => this.resetPassword()}>
+                  <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.resetPassword')}</Text>
                 </Button>
               )}
-              </Form>
+            </Form>
           </KeyboardAvoidingView>
         </ScrollView>
         <Footer style={style.footer}>
           <Left>
-            <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.props.navigation.goBack()}>
-              <TextRN style={[style.linksTextButton, style.linksTextButtonLeft]}>{I18n.t('authentication.backLogin')}</TextRN>
+            <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]}
+              onPress={() => this.props.navigation.navigate('Login')}>
+              <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>{I18n.t('authentication.backLogin')}</Text>
             </Button>
           </Left>
         </Footer>

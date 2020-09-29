@@ -1,7 +1,7 @@
 declare module 'react-native-deep-linking' {
   export default class DeepLinking {
-    static addScheme(scheme: string): void;
-    static evaluateUrl(url: string): void;
-    static addRoute(expression: string, callback: (response: any) => void): void;
+    public static addScheme(scheme: string): void;
+    public static evaluateUrl(url: string): void;
+    public static addRoute(expression: string, callback: (response: any) => void): void;
   }
 }

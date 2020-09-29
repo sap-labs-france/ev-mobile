@@ -4,16 +4,24 @@ import DeepLinking from 'react-native-deep-linking';
 import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
 
 import CentralServerProvider from '../provider/CentralServerProvider';
+import { HTTPError } from '../types/HTTPError';
 import Constants from '../utils/Constants';
 import Message from '../utils/Message';
 import Utils from '../utils/Utils';
 
 export default class DeepLinkingManager {
+  private static instance: DeepLinkingManager;
   private navigator: NavigationContainerComponent;
   private centralServerProvider: CentralServerProvider;
 
-  public static getInstance() {
-    return new DeepLinkingManager();
+  private constructor() {
+  }
+
+  public static getInstance(): DeepLinkingManager {
+    if (!DeepLinkingManager.instance) {
+      DeepLinkingManager.instance = new DeepLinkingManager();
+    }
+    return DeepLinkingManager.instance;
   }
 
   public initialize(navigator: NavigationContainerComponent, centralServerProvider: CentralServerProvider) {
@@ -39,13 +47,13 @@ export default class DeepLinkingManager {
 
   private addResetPasswordRoute = () => {
     // Add Route
-    DeepLinking.addRoute('/resetPassword/:tenant/:hash', (response: {tenant: string, hash: string}) => {
+    DeepLinking.addRoute('/resetPassword/:tenant/:hash', async (response: {tenant: string, hash: string}) => {
       // Check params
       if (!response.tenant) {
         Message.showError(I18n.t('authentication.mandatoryTenant'));
       }
       // Get the Tenant
-      const tenant = this.centralServerProvider.getTenant(response.tenant);
+      const tenant = await this.centralServerProvider.getTenant(response.tenant);
       if (!tenant) {
         Message.showError(I18n.t('authentication.unknownTenant'));
       }
@@ -68,79 +76,79 @@ export default class DeepLinkingManager {
   private addVerifyAccountRoute = () => {
     // Add Route
     DeepLinking.addRoute('/verifyAccount/:tenant/:email/:token/:resetToken',
-        async (response: {tenant: string, email: string, token: string, resetToken: string}) => {
-      // Check params
-      if (!response.tenant) {
-        Message.showError(I18n.t('authentication.mandatoryTenant'));
-      }
-      if (!response.email) {
-        Message.showError(I18n.t('authentication.mandatoryEmail'));
-      }
-      // Get the Tenant
-      const tenant = this.centralServerProvider.getTenant(response.tenant);
-      if (!tenant) {
-        Message.showError(I18n.t('authentication.unknownTenant'));
-      }
-      if (!response.token) {
-        Message.showError(I18n.t('authentication.verifyAccountTokenNotValid'));
-      }
-      // Disable
-      this.centralServerProvider.setAutoLoginDisabled(true);
-      this.centralServerProvider.logoff();
-      // Navigate to login page
-      this.navigator.dispatch(
-        NavigationActions.navigate({
-          routeName: 'Login',
-          key: `${Utils.randomNumber()}`,
-          params: { tenantSubDomain: response.tenant, email: response.email }
-        })
-      );
-      // Call the backend
-      try {
-        // Validate Account
-        const result = await this.centralServerProvider.verifyEmail(response.tenant, response.email, response.token);
-        if (result.status === Constants.REST_RESPONSE_SUCCESS) {
-          // Ok
-          Message.showSuccess(I18n.t('authentication.accountVerifiedSuccess'));
-          // Check if user has to change his password
-          if (response.resetToken && response.resetToken !== 'null') {
-            // Change password
-            this.navigator.dispatch(
-              NavigationActions.navigate({
-                routeName: 'ResetPassword',
-                key: `${Utils.randomNumber()}`,
-                params: { tenantSubDomain: response.tenant, hash: response.resetToken }
-              })
-            );
+      async (response: { tenant: string, email: string, token: string, resetToken: string }) => {
+        // Check params
+        if (!response.tenant) {
+          Message.showError(I18n.t('authentication.mandatoryTenant'));
+        }
+        if (!response.email) {
+          Message.showError(I18n.t('authentication.mandatoryEmail'));
+        }
+        // Get the Tenant
+        const tenant = await this.centralServerProvider.getTenant(response.tenant);
+        if (!tenant) {
+          Message.showError(I18n.t('authentication.unknownTenant'));
+        }
+        if (!response.token) {
+          Message.showError(I18n.t('authentication.verifyAccountTokenNotValid'));
+        }
+        // Disable
+        this.centralServerProvider.setAutoLoginDisabled(true);
+        this.centralServerProvider.logoff();
+        // Navigate to login page
+        this.navigator.dispatch(
+          NavigationActions.navigate({
+            routeName: 'Login',
+            key: `${Utils.randomNumber()}`,
+            params: { tenantSubDomain: response.tenant, email: response.email }
+          })
+        );
+        // Call the backend
+        try {
+          // Validate Account
+          const result = await this.centralServerProvider.verifyEmail(response.tenant, response.email, response.token);
+          if (result.status === Constants.REST_RESPONSE_SUCCESS) {
+            // Ok
+            Message.showSuccess(I18n.t('authentication.accountVerifiedSuccess'));
+            // Check if user has to change his password
+            if (response.resetToken && response.resetToken !== 'null') {
+              // Change password
+              this.navigator.dispatch(
+                NavigationActions.navigate({
+                  routeName: 'ResetPassword',
+                  key: `${Utils.randomNumber()}`,
+                  params: { tenantSubDomain: response.tenant, hash: response.resetToken }
+                })
+              );
+            }
+          }
+        } catch (error) {
+          // Check request?
+          if (error.request) {
+            // Show error
+            switch (error.request.status) {
+              // Account already active
+              case HTTPError.USER_ACCOUNT_ALREADY_ACTIVE_ERROR:
+                Message.showError(I18n.t('authentication.accountAlreadyActive'));
+                break;
+              // VerificationToken no longer valid
+              case HTTPError.INVALID_TOKEN_ERROR:
+                Message.showError(I18n.t('authentication.activationTokenNotValid'));
+                break;
+              // Email does not exist
+              case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
+                Message.showError(I18n.t('authentication.activationEmailNotValid'));
+                break;
+              // Other common Error
+              default:
+                Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+                  'authentication.activationUnexpectedError');
+            }
+          } else {
+            Message.showError(I18n.t('authentication.activationUnexpectedError'));
           }
         }
-      } catch (error) {
-        // Check request?
-        if (error.request) {
-          // Show error
-          switch (error.request.status) {
-            // Account already active
-            case 530:
-              Message.showError(I18n.t('authentication.accountAlreadyActive'));
-              break;
-            // VerificationToken no longer valid
-            case 540:
-              Message.showError(I18n.t('authentication.activationTokenNotValid'));
-              break;
-            // Email does not exist
-            case 550:
-              Message.showError(I18n.t('authentication.activationEmailNotValid'));
-              break;
-            // Other common Error
-            default:
-              Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-                'authentication.activationUnexpectedError');
-          }
-        } else {
-          Message.showError(I18n.t('authentication.activationUnexpectedError'));
-        }
-      }
-    });
+      });
   }
 
   public startListening() {

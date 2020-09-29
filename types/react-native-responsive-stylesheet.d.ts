@@ -1,9 +1,9 @@
 declare module 'react-native-responsive-stylesheet' {
   export default class ResponsiveStyleSheet {
-    static create(styles: object): void;
-    static createSized(direction:	"min-width"|"max-width"|"min-height"|"max-height"|"min-direction"|"max-direction", map: object): void;
-    static createOriented(map: object): void;
-    static validSizes(direction:	"min-width"|"max-width"|"min-height"|"max-height"|"min-direction"|"max-direction", sizes: string[]): void;
-    static getOrientation():  "landscape"|"portrait";
+    public static create(styles: object): void;
+    public static createSized(direction: 'min-width' | 'max-width' | 'min-height' | 'max-height' | 'min-direction' | 'max-direction', map: object): void;
+    public static createOriented(map: object): void;
+    public static validSizes(direction: 'min-width' | 'max-width' | 'min-height' | 'max-height' | 'min-direction' | 'max-direction', sizes: string[]): void;
+    public static getOrientation(): 'landscape' | 'portrait';
   }
 }

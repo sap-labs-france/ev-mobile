@@ -5,12 +5,13 @@ import React from 'react';
 import { Image, ScrollView } from 'react-native';
 import { DrawerActions } from 'react-navigation-drawer';
 
-import noPhotoActive from '../../../../assets/no-photo-active.png';
+import noPhotoActive from '../../../../assets/no-photo.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
 import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';
+import { HTTPError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
 import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
@@ -103,7 +104,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       return transaction;
     } catch (error) {
       switch (error.request.status) {
-        case 550:
+        case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
           Message.showError(I18n.t('transactions.transactionDoesNotExist'));
           break;
         default:
@@ -141,7 +142,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       // Compute duration
       const elapsedTimeFormatted = Utils.formatDurationHHMMSS(
         ((new Date(transaction.stop.timestamp).getTime() - new Date(transaction.timestamp).getTime()) / 1000), false);
-      // Compute Inactivity
+      // Compute inactivity
       const totalInactivitySecs = transaction.stop.totalInactivitySecs +
         (transaction.stop.extraInactivitySecs ? transaction.stop.extraInactivitySecs : 0);
       const inactivityFormatted = Utils.formatDurationHHMMSS(totalInactivitySecs, false);
@@ -173,11 +174,11 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         {(isAdmin || isSiteAdmin) && <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text>}
       </View>
     ) : (
-      <View style={style.columnContainer}>
-        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
-        <Text style={[style.label, style.disabled]}>-</Text>
-      </View>
-    );
+        <View style={style.columnContainer}>
+          <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
+          <Text style={[style.label, style.disabled]}>-</Text>
+        </View>
+      );
   };
 
   public renderPrice = (style: any) => {
@@ -220,7 +221,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     return (
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.info]} type='MaterialIcons' name='ev-station' />
-        <Text style={[style.label, style.labelValue, style.info]}>{transaction ? I18nManager.formatNumber(Math.round(transaction.stop.totalConsumption / 10) / 100) : '-'}</Text>
+        <Text style={[style.label, style.labelValue, style.info]}>{transaction ? I18nManager.formatNumber(Math.round(transaction.stop.totalConsumptionWh / 10) / 100) : '-'}</Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
     );
@@ -231,15 +232,15 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     return transaction && transaction.stateOfCharge ? (
       <View style={style.columnContainer}>
         <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.info]} />
-        <Text style={[style.label, style.labelValue, style.info]}>{transaction.stateOfCharge} > {transaction.stop.stateOfCharge}</Text>
+        <Text style={[style.label, style.labelValue, style.info]}>{transaction.stateOfCharge} {'>'} {transaction.stop.stateOfCharge}</Text>
         <Text style={[style.subLabel, style.info]}>(%)</Text>
       </View>
     ) : (
-      <View style={style.columnContainer}>
-        <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.disabled]} />
-        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
-      </View>
-    );
+        <View style={style.columnContainer}>
+          <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.disabled]} />
+          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+        </View>
+      );
   };
 
   public onBack = () => {
@@ -257,45 +258,45 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(transaction ? transaction.connectorId : null);
     return (
       loading ? (
-        <Spinner style={style.spinner} />
+        <Spinner style={style.spinner} color='grey' />
       ) : (
-        <Container style={style.container}>
-          <HeaderComponent
-            navigation={this.props.navigation}
-            title={transaction ? transaction.chargeBoxID : I18n.t('connector.unknown')}
-            subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
-            leftAction={() => this.onBack()}
-            leftActionIcon={'navigate-before'}
-            rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
-            rightActionIcon={'menu'}
-          />
-          {/* Site Image */}
-          <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
-          <View style={style.headerContent}>
-            <View style={style.headerRowContainer}>
-              <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format('LLL') : ''}</Text>
-              <Text style={style.subHeaderName}>({transaction ? moment(new Date(transaction.stop.timestamp)).format('LLL') : ''})</Text>
-              {(transaction.userID !== transaction.stop.userID) &&
-                <Text style={style.subSubHeaderName}>({I18n.t('details.stoppedBy')} {Utils.buildUserName(transaction.stop.user)})</Text>
-              }
+          <Container style={style.container}>
+            <HeaderComponent
+              navigation={this.props.navigation}
+              title={transaction ? transaction.chargeBoxID : I18n.t('connector.unknown')}
+              subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
+              leftAction={() => this.onBack()}
+              leftActionIcon={'navigate-before'}
+              rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+              rightActionIcon={'menu'}
+            />
+            {/* Site Image */}
+            <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
+            <View style={style.headerContent}>
+              <View style={style.headerRowContainer}>
+                <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format('LLL') : ''}</Text>
+                <Text style={style.subHeaderName}>({transaction ? moment(new Date(transaction.stop.timestamp)).format('LLL') : ''})</Text>
+                {(transaction.userID !== transaction.stop.userID) &&
+                  <Text style={style.subSubHeaderName}>({I18n.t('details.stoppedBy')} {Utils.buildUserName(transaction.stop.user)})</Text>
+                }
+              </View>
             </View>
-          </View>
-          <ScrollView contentContainerStyle={style.scrollViewContainer}>
-            <View style={style.rowContainer}>
-              {this.renderUserInfo(style)}
-              {this.renderTotalConsumption(style)}
-            </View>
-            <View style={style.rowContainer}>
-              {this.renderElapsedTime(style)}
-              {this.renderInactivity(style)}
-            </View>
-            <View style={style.rowContainer}>
-              {this.renderBatteryLevel(style)}
-              {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
-            </View>
-          </ScrollView>
-        </Container>
-      )
+            <ScrollView contentContainerStyle={style.scrollViewContainer}>
+              <View style={style.rowContainer}>
+                {this.renderUserInfo(style)}
+                {this.renderTotalConsumption(style)}
+              </View>
+              <View style={style.rowContainer}>
+                {this.renderElapsedTime(style)}
+                {this.renderInactivity(style)}
+              </View>
+              <View style={style.rowContainer}>
+                {this.renderBatteryLevel(style)}
+                {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
+              </View>
+            </ScrollView>
+          </Container>
+        )
     );
   }
 }

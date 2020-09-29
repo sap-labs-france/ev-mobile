@@ -1,5 +1,7 @@
+// @flow
+
 export default () => {
-  const labelTheme: any = {
+  const labelTheme = {
     '.focused': {
       width: 0
     },

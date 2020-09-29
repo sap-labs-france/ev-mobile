@@ -1,17 +1,16 @@
 import I18n from 'i18n-js';
 import CentralServerProvider from 'provider/CentralServerProvider';
-import { ImageSourcePropType, NativeModules, Platform } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
+import { showLocation } from 'react-native-map-link';
 import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
+import Address from 'types/Address';
 import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
 
-import chademo from '../../assets/connectorType/chademo.gif';
-import combo from '../../assets/connectorType/combo_ccs.gif';
-import domestic from '../../assets/connectorType/domestic-ue.gif';
-import noConnector from '../../assets/connectorType/no-connector.gif';
-import type2 from '../../assets/connectorType/type2.gif';
-import commonColor from '../theme/variables/commonColor';
-import { ChargePointStatus, ConnectorType } from '../types/ChargingStation';
+import I18nManager from '../I18n/I18nManager';
+import ThemeManager from '../custom-theme/ThemeManager';
+import { buildCommonColor } from '../custom-theme/customCommonColor';
+import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
 import { InactivityStatus } from '../types/Transaction';
 import User from '../types/User';
@@ -20,13 +19,457 @@ import Message from './Message';
 
 export default class Utils {
   public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
-    const tenantSubDomain = centralServerProvider.getUserTenant();
+    const tenant = centralServerProvider.getUserTenant();
     const email = centralServerProvider.getUserEmail();
     const password = centralServerProvider.getUserPassword();
     return !centralServerProvider.hasAutoLoginDisabled() &&
-      !Utils.isNullOrEmptyString(tenantSubDomain) &&
+      !Utils.isNullOrEmptyString(tenant?.subdomain) &&
       !Utils.isNullOrEmptyString(email) &&
       !Utils.isNullOrEmptyString(password);
+  }
+
+  public static getCurrentCommonColor(): any {
+    // Build the theme
+    const themeManager = ThemeManager.getInstance();
+    const themeDefinition = themeManager.getCurrentThemeDefinition();
+    return buildCommonColor(themeDefinition);
+  }
+
+  public static convertToInt(value: any): number {
+    let changedValue: number = value;
+    if (!value) {
+      return 0;
+    }
+    // Check
+    if (typeof value === 'string') {
+      // Create Object
+      changedValue = parseInt(value);
+    }
+    return changedValue;
+  }
+
+  public static formatAddress(address: Address): string {
+    const addresses: string[] = [];
+    if (address.address1 && address.address1.length > 0) {
+      addresses.push(address.address1);
+    }
+    if (address.city && address.city.length > 0) {
+      addresses.push(address.city);
+    }
+    return addresses.join(', ');
+  }
+
+  public static convertToFloat(value: any): number {
+    let changedValue: number = value;
+    if (!value) {
+      return 0;
+    }
+    // Check
+    if (typeof value === 'string') {
+      // Create Object
+      changedValue = parseFloat(value);
+    }
+    return changedValue;
+  }
+
+  public static convertToBoolean(value: any): boolean {
+    let result = false;
+    // Check boolean
+    if (value) {
+      // Check the type
+      if (typeof value === 'boolean') {
+        // Already a boolean
+        result = value;
+      } else {
+        // Convert
+        result = (value === 'true');
+      }
+    }
+    return result;
+  }
+
+  public static convertToDate(date: any): Date {
+    // Check
+    if (!date) {
+      return null;
+    }
+    // Check Type
+    if (!(date instanceof Date)) {
+      return new Date(date);
+    }
+    return date;
+  }
+
+  public static formatDistance(distanceMeters: number): string {
+    let distance = distanceMeters;
+    // Convert to Yard
+    if (I18nManager.isMetricsSystem()) {
+      distance *= 1.09361;
+    }
+    if (distance < 1000) {
+      return I18nManager.isMetricsSystem() ?
+        Math.round(distance) + ' m' :
+        Math.round(distance) + ' yd';
+    }
+    return I18nManager.isMetricsSystem() ?
+      I18nManager.formatNumber(Math.round(distance / 100) / 10) + ' km' :
+      I18nManager.formatNumber(Math.round(distance * 0.000621371)) + ' mi';
+  }
+
+  public static getValuesFromEnum(enumType: any): number[] {
+    const keys: string[] = Object.keys(enumType).filter(httpError => typeof enumType[httpError] === 'number');
+    const values: number[] = keys.map((httpErrorKey: string) => enumType[httpErrorKey]);
+    return values;
+  }
+
+  public static isEmptyArray(array: any): boolean {
+    if (!array) {
+      return true;
+    }
+    if (Array.isArray(array) && array.length > 0) {
+      return false;
+    }
+    return true;
+  }
+
+  public static jumpToMapWithAddress(title: string, address: Address) {
+    if (!Utils.containsAddressGPSCoordinates(address)) {
+      Message.showError(I18n.t('general.noGPSCoordinates'));
+    } else {
+      Utils.jumpToMapWithCoordinates(title, address.coordinates);
+    }
+  }
+
+  public static jumpToMapWithCoordinates(title: string, coordinates: number[]) {
+    if (!Utils.containsGPSCoordinates(coordinates)) {
+      Message.showError(I18n.t('general.noGPSCoordinates'));
+    } else {
+      showLocation({
+        longitude: coordinates[0],
+        latitude: coordinates[1],
+        title,
+        googleForceLatLon: true,  // optionally force GoogleMaps to use the latlon for the query instead of the title
+        alwaysIncludeGoogle: true, // optional, true will always add Google Maps to iOS and open in Safari, even if app is not installed (default: false)
+        dialogTitle: I18n.t('general.chooseApp'),
+        dialogMessage: I18n.t('general.availableApps'),
+        cancelText: I18n.t('general.close'),
+      });
+    }
+  }
+
+  public static getChargePointFromID(chargingStation: ChargingStation, chargePointID: number): ChargePoint {
+    return chargingStation.chargePoints.find((chargePoint) => chargePoint.chargePointID === chargePointID);
+  }
+
+  public static getConnectorFromID(chargingStation: ChargingStation, connectorID: number): Connector {
+    return chargingStation.connectors.find((connector) => connector.connectorId === connectorID);
+  }
+
+  public static containsAddressGPSCoordinates(address: Address): boolean {
+      // Check if GPS are available
+    if (address && Utils.containsGPSCoordinates(address.coordinates)) {
+      return true;
+    }
+    return false;
+  }
+
+  public static containsGPSCoordinates(coordinates: number[]): boolean {
+    // Check if GPs are available
+    if (coordinates && coordinates.length === 2 && coordinates[0] && coordinates[1]) {
+      // Check Longitude & Latitude
+      if (new RegExp(Constants.REGEX_VALIDATION_LONGITUDE).test(coordinates[0].toString()) &&
+          new RegExp(Constants.REGEX_VALIDATION_LATITUDE).test(coordinates[1].toString())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static computeChargingStationTotalAmps(chargingStation: ChargingStation): number {
+    let totalAmps = 0;
+    if (chargingStation) {
+      // Check at Charging Station
+      if (chargingStation.maximumPower) {
+        return Utils.convertWattToAmp(chargingStation, null, 0, chargingStation.maximumPower);
+      }
+      // Check at charge point level
+      if (chargingStation.chargePoints) {
+        for (const chargePoint of chargingStation.chargePoints) {
+          totalAmps += chargePoint.amperage;
+        }
+      }
+      // Check at connector level
+      if (totalAmps === 0 && chargingStation.connectors) {
+        for (const connector of chargingStation.connectors) {
+          totalAmps += connector.amperage;
+        }
+      }
+    }
+    return totalAmps;
+  }
+
+  // tslint:disable-next-line: cyclomatic-complexity
+  public static getChargingStationPower(chargingStation: ChargingStation, chargePoint: ChargePoint, connectorId = 0): number {
+    let totalPower = 0;
+    if (chargingStation) {
+      // Check at charge point level
+      if (chargingStation.chargePoints) {
+        for (const chargePointOfCS of chargingStation.chargePoints) {
+          if (!chargePoint || chargePoint.chargePointID === chargePointOfCS.chargePointID) {
+            // Charging Station
+            if (connectorId === 0 && chargePointOfCS.power) {
+              totalPower += chargePointOfCS.power;
+              // Connector
+            } else if (chargePointOfCS.connectorIDs.includes(connectorId) && chargePointOfCS.power) {
+              if (chargePointOfCS.cannotChargeInParallel || chargePointOfCS.sharePowerToAllConnectors) {
+                // Check Connector ID
+                const connector = Utils.getConnectorFromID(chargingStation, connectorId);
+                if (connector.power) {
+                  return connector.power;
+                }
+                return chargePointOfCS.power;
+              }
+              // Power is shared evenly on connectors
+              return chargePointOfCS.power / chargePointOfCS.connectorIDs.length;
+            }
+          }
+        }
+      }
+      // Check at connector level
+      if (totalPower === 0 && chargingStation.connectors) {
+        for (const connector of chargingStation.connectors) {
+          if (connectorId === 0 && connector.power) {
+            totalPower += connector.power;
+          }
+          if (connector.connectorId === connectorId && connector.power) {
+            return connector.power;
+          }
+        }
+      }
+    }
+    if (!totalPower) {
+      const amperage = Utils.getChargingStationAmperage(chargingStation, chargePoint, connectorId);
+      const voltage = Utils.getChargingStationVoltage(chargingStation, chargePoint, connectorId);
+      if (voltage && amperage) {
+        return voltage * amperage;
+      }
+    }
+    return totalPower;
+  }
+
+  public static getNumberOfConnectedPhases(chargingStation: ChargingStation, chargePoint?: ChargePoint, connectorId = 0): number {
+    if (chargingStation) {
+      // Check at charge point level
+      if (chargingStation.chargePoints) {
+        for (const chargePointOfCS of chargingStation.chargePoints) {
+          if (!chargePoint || chargePoint.chargePointID === chargePointOfCS.chargePointID) {
+            // Charging Station
+            if (connectorId === 0 && chargePointOfCS.numberOfConnectedPhase) {
+              return chargePointOfCS.numberOfConnectedPhase;
+            }
+            // Connector
+            if (chargePointOfCS.connectorIDs.includes(connectorId) && chargePointOfCS.numberOfConnectedPhase) {
+              // Check Connector ID
+              const connector = Utils.getConnectorFromID(chargingStation, connectorId);
+              if (connector.numberOfConnectedPhase) {
+                return connector.numberOfConnectedPhase;
+              }
+              return chargePointOfCS.numberOfConnectedPhase;
+            }
+          }
+        }
+      }
+      // Check at connector level
+      if (chargingStation.connectors) {
+        for (const connector of chargingStation.connectors) {
+          // Take the first
+          if (connectorId === 0 && connector.numberOfConnectedPhase) {
+            return connector.numberOfConnectedPhase;
+          }
+          if (connector.connectorId === connectorId && connector.numberOfConnectedPhase) {
+            return connector.numberOfConnectedPhase;
+          }
+        }
+      }
+    }
+    return 1;
+  }
+
+  public static getChargingStationVoltage(chargingStation: ChargingStation, chargePoint?: ChargePoint, connectorId = 0): number {
+    if (chargingStation) {
+      // Check at charging station level
+      if (chargingStation.voltage) {
+        return chargingStation.voltage;
+      }
+      // Check at charge point level
+      if (chargingStation.chargePoints) {
+        for (const chargePointOfCS of chargingStation.chargePoints) {
+          if (!chargePoint || chargePoint.chargePointID === chargePointOfCS.chargePointID) {
+            // Charging Station
+            if (connectorId === 0 && chargePointOfCS.voltage) {
+              return chargePointOfCS.voltage;
+            }
+            // Connector
+            if (chargePointOfCS.connectorIDs.includes(connectorId) && chargePointOfCS.voltage) {
+              // Check Connector ID
+              const connector = Utils.getConnectorFromID(chargingStation, connectorId);
+              if (connector.voltage) {
+                return connector.voltage;
+              }
+              return chargePointOfCS.voltage;
+            }
+          }
+        }
+      }
+      // Check at connector level
+      if (chargingStation.connectors) {
+        for (const connector of chargingStation.connectors) {
+          // Take the first
+          if (connectorId === 0 && connector.voltage) {
+            return connector.voltage;
+          }
+          if (connector.connectorId === connectorId && connector.voltage) {
+            return connector.voltage;
+          }
+        }
+      }
+    }
+    return 0;
+  }
+
+  public static getChargingStationCurrentType(chargingStation: ChargingStation, chargePoint: ChargePoint, connectorId = 0): CurrentType {
+    if (chargingStation) {
+      // Check at charge point level
+      if (chargingStation.chargePoints) {
+        for (const chargePointOfCS of chargingStation.chargePoints) {
+          if (!chargePoint || chargePoint.chargePointID === chargePointOfCS.chargePointID) {
+            // Charging Station
+            if (connectorId === 0 && chargePointOfCS.currentType) {
+              return chargePointOfCS.currentType;
+              // Connector
+            } else if (chargePointOfCS.connectorIDs.includes(connectorId) && chargePointOfCS.currentType) {
+              // Check Connector ID
+              const connector = Utils.getConnectorFromID(chargingStation, connectorId);
+              if (connector.currentType) {
+                return connector.currentType;
+              }
+              return chargePointOfCS.currentType;
+            }
+          }
+        }
+      }
+      // Check at connector level
+      if (chargingStation.connectors) {
+        for (const connector of chargingStation.connectors) {
+          // Take the first
+          if (connectorId === 0 && connector.currentType) {
+            return connector.currentType;
+          }
+          if (connector.connectorId === connectorId && connector.currentType) {
+            return connector.currentType;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  // tslint:disable-next-line: cyclomatic-complexity
+  public static getChargingStationAmperage(chargingStation: ChargingStation, chargePoint?: ChargePoint, connectorId = 0): number {
+    let totalAmps = 0;
+    if (chargingStation) {
+      // Check at charge point level
+      if (chargingStation.chargePoints) {
+        for (const chargePointOfCS of chargingStation.chargePoints) {
+          if (!chargePoint || chargePoint.chargePointID === chargePointOfCS.chargePointID) {
+            // Charging Station
+            if (connectorId === 0 && chargePointOfCS.amperage) {
+              totalAmps += chargePointOfCS.amperage;
+            } else if (chargePointOfCS.connectorIDs.includes(connectorId) && chargePointOfCS.amperage) {
+              if (chargePointOfCS.cannotChargeInParallel || chargePointOfCS.sharePowerToAllConnectors) {
+                // Same power for all connectors
+                // Check Connector ID first
+                const connector = Utils.getConnectorFromID(chargingStation, connectorId);
+                if (connector.amperage) {
+                  return connector.amperage;
+                }
+                return chargePointOfCS.amperage;
+              }
+              // Power is split evenly per connector
+              return chargePointOfCS.amperage / chargePointOfCS.connectorIDs.length;
+            }
+          }
+        }
+      }
+      // Check at connector level
+      if (totalAmps === 0 && chargingStation.connectors) {
+        for (const connector of chargingStation.connectors) {
+          if (connectorId === 0 && connector.amperage) {
+            totalAmps += connector.amperage;
+          }
+          if (connector.connectorId === connectorId && connector.amperage) {
+            return connector.amperage;
+          }
+        }
+      }
+    }
+    return totalAmps;
+  }
+
+  public static getChargingStationAmperageLimit(chargingStation: ChargingStation, chargePoint: ChargePoint, connectorId = 0): number {
+    let amperageLimit = 0;
+    if (chargingStation) {
+      if (connectorId > 0) {
+        return Utils.getConnectorFromID(chargingStation, connectorId).amperageLimit;
+      }
+      // Check at charge point level
+      if (chargingStation.chargePoints) {
+        for (const chargePointOfCS of chargingStation.chargePoints) {
+          if (!chargePoint || chargePoint.chargePointID === chargePointOfCS.chargePointID) {
+            if (chargePointOfCS.excludeFromPowerLimitation) {
+              continue;
+            }
+            if (chargePointOfCS.cannotChargeInParallel ||
+              chargePointOfCS.sharePowerToAllConnectors) {
+              // Add limit amp of one connector
+              amperageLimit += Utils.getConnectorFromID(chargingStation, chargePointOfCS.connectorIDs[0]).amperageLimit;
+            } else {
+              // Add limit amp of all connectors
+              for (const connectorID of chargePointOfCS.connectorIDs) {
+                amperageLimit += Utils.getConnectorFromID(chargingStation, connectorID).amperageLimit;
+              }
+            }
+          }
+        }
+      }
+      // Check at connector level
+      if (amperageLimit === 0 && chargingStation.connectors) {
+        for (const connector of chargingStation.connectors) {
+          amperageLimit += connector.amperageLimit;
+        }
+      }
+    }
+    return amperageLimit;
+  }
+
+  public static convertAmpToWatt(chargingStation: ChargingStation, chargePoint: ChargePoint, connectorID = 0, ampValue: number): number {
+    const voltage = Utils.getChargingStationVoltage(chargingStation, chargePoint, connectorID);
+    if (voltage) {
+      return voltage * ampValue;
+    }
+    return 0;
+  }
+
+  public static convertWattToAmp(chargingStation: ChargingStation, chargePoint: ChargePoint, connectorID = 0, wattValue: number): number {
+    const voltage = Utils.getChargingStationVoltage(chargingStation, chargePoint, connectorID);
+    if (voltage) {
+      return Math.floor(wattValue / voltage);
+    }
+    return 0;
+  }
+
+  public static getRoundedNumberToTwoDecimals(numberToRound: number): number {
+    return Math.round(numberToRound * 100) / 100;
   }
 
   public static countJsonProps(jsonDoc: object): number {
@@ -61,7 +504,7 @@ export default class Utils {
   }
 
   public static getParamFromNavigation(navigation: NavigationScreenProp<NavigationState, NavigationParams>,
-      name: string, defaultValue: string): string {
+    name: string, defaultValue: string): string {
     // Has param object?
     if (!navigation.state.params) {
       return defaultValue;
@@ -74,30 +517,41 @@ export default class Utils {
     return navigation.state.params[name];
   }
 
-  public static getDefaultLocale(): string {
-    let deviceLanguage = Platform.OS === 'ios' ?
-      NativeModules.SettingsManager.settings.AppleLocale :
-      NativeModules.I18nManager.localeIdentifier;
-    // Filter only on supported languages
-    const shortDeviceLanguage = deviceLanguage ? deviceLanguage.substring(0, 2) : null;
-    // Default
-    if (!shortDeviceLanguage || (shortDeviceLanguage !== 'en' && shortDeviceLanguage !== 'de' && shortDeviceLanguage !== 'fr')) {
-      deviceLanguage = 'en-gb';
-    }
-    return deviceLanguage;
-  }
-
-  public static getDefaultLanguage(): string {
-    return Utils.getDefaultLocale().substring(0, 2);
-  }
-
   public static getLanguageFromLocale(locale: string) {
     let language = null;
-    // Set the User's locale
-    if (locale && locale.length > 2) {
+    // Set the user's locale
+    if (locale && locale.length >= 2) {
       language = locale.substring(0, 2);
     }
     return language;
+  }
+
+  private static getDeviceLocale(): string {
+    return Platform.OS === 'ios' ?
+      NativeModules.SettingsManager.settings.AppleLocale :
+      NativeModules.I18nManager.localeIdentifier;
+  }
+
+  private static getDeviceLanguage(): string {
+    return Utils.getLanguageFromLocale(Utils.getDeviceLocale());
+  }
+
+  public static getDeviceDefaultSupportedLocale(): string {
+    const deviceLocale = Utils.getDeviceLocale();
+    // Filter only on supported locales
+    if (Constants.SUPPORTED_LOCALES.includes(deviceLocale)) {
+      return deviceLocale;
+    }
+    return Constants.DEFAULT_LOCALE;
+  }
+
+  public static getDeviceDefaultSupportedLanguage(): string {
+    const deviceLanguage = Utils.getDeviceLanguage();
+    // Filter only on supported languages
+    if (Constants.SUPPORTED_LANGUAGES.includes(deviceLanguage)) {
+      return deviceLanguage;
+    }
+    return Constants.DEFAULT_LANGUAGE;
   }
 
   public static formatDuration(durationSecs: number): string {
@@ -129,15 +583,16 @@ export default class Utils {
   }
 
   public static computeInactivityStyle(inactivityStatus: InactivityStatus): object {
+    const commonColor = Utils.getCurrentCommonColor();
     switch (inactivityStatus) {
       case InactivityStatus.INFO:
-        return { color: commonColor.brandSuccess };
+        return { color: commonColor.success };
       case InactivityStatus.WARNING:
-        return { color: commonColor.brandWarning };
+        return { color: commonColor.warning };
       case InactivityStatus.ERROR:
-        return { color: commonColor.brandDanger };
+        return { color: commonColor.danger };
       default:
-        return { color: commonColor.brandInfo };
+        return { color: commonColor.textColor };
     }
   }
 
@@ -155,7 +610,7 @@ export default class Utils {
   }
 
   public static async handleHttpUnexpectedError(centralServerProvider: CentralServerProvider,
-      error: RequestError, defaultErrorMessage: string, navigation?: NavigationScreenProp<NavigationState, NavigationParams>, fctRefresh?: () => void) {
+    error: RequestError, defaultErrorMessage: string, navigation?: NavigationScreenProp<NavigationState, NavigationParams>, fctRefresh?: () => void) {
     // Override
     fctRefresh = () => {
       setTimeout(() => fctRefresh, 2000);
@@ -298,21 +753,6 @@ export default class Utils {
         return I18n.t('connector.domestic');
       default:
         return I18n.t('connector.unknown');
-    }
-  };
-
-  public static getConnectorTypeImage = (type: ConnectorType): ImageSourcePropType => {
-    switch (type) {
-      case ConnectorType.TYPE_2:
-        return type2;
-      case ConnectorType.COMBO_CCS:
-        return combo;
-      case ConnectorType.CHADEMO:
-        return chademo;
-      case ConnectorType.DOMESTIC:
-        return domestic;
-      default:
-        return noConnector;
     }
   };
 
