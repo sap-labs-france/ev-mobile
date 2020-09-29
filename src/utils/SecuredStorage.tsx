@@ -1,4 +1,4 @@
-import { NavigationState } from 'react-navigation';
+import { NavigationState } from '@react-navigation/native'
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import UserToken from 'types/UserToken';
 
@@ -123,7 +123,7 @@ export default class SecuredStorage {
     return value;
   }
 
-  private static getCurrentTenantSubDomain(): Promise<string> {
+  private static async getCurrentTenantSubDomain(): Promise<string> {
     return SecuredStorage._getString(SecuredStorageKey.CURRENT_TENANT_SUB_DOMAIN);
   }
 

@@ -1,8 +1,8 @@
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Button, Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, ScrollView } from 'react-native';
-import { DrawerActions } from 'react-navigation-drawer';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';
@@ -49,7 +49,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
 
   public async componentDidMount() {
     // Add ChargingStations
-    this.chargingStationID = Utils.getParamFromNavigation(this.props.navigation, 'chargingStationID', null);
+    this.chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
     await super.componentDidMount();
   }
 
@@ -187,7 +187,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.goBack(null);
+    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };

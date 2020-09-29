@@ -1,10 +1,10 @@
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import moment from 'moment';
 import { Container, Content, Header, Icon, ListItem, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import { NavigationActions } from 'react-navigation';
 
 import logo from '../../../assets/logo-low.png';
 import noPhoto from '../../../assets/no-photo-inverse.png';
@@ -96,14 +96,13 @@ export default class SideBar extends BaseScreen<Props, State> {
   public navigateTo = (container: string, screen: string, params = {}) => {
     // Navigate
     this.props.navigation.dispatch(
-      NavigationActions.navigate({
-        routeName: container,
-        key: `${Utils.randomNumber()}`,
-        action: NavigationActions.navigate({
-          routeName: screen,
-          key: `${Utils.randomNumber()}`
-        }),
-      })
+      DrawerActions.jumpTo(
+        container,
+        {
+          name: screen,
+          key: `${Utils.randomNumber()}`,
+        }
+      ),
     );
     // Close
     this.props.navigation.closeDrawer();

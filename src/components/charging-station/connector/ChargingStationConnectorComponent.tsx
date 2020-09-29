@@ -172,14 +172,15 @@ export default class ChargingStationConnectorComponent extends React.Component<P
           if (onNavigate) {
             onNavigate();
           }
-          navigation.navigate({
-            routeName: 'ChargingStationConnectorDetailsTabs',
-            params: {
-              chargingStationID: chargingStation.id,
-              connectorID: connector.connectorId
-            },
-            key: `${Utils.randomNumber()}`
-          })
+          navigation.navigate(
+            'ChargingStationConnectorDetailsTabs', {
+              params: {
+                chargingStationID: chargingStation.id,
+                connectorID: connector.connectorId
+              },
+              key: `${Utils.randomNumber()}`
+            }
+          )
         }}>
         <Animatable.View animation={'flipInX'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
           <View style={style.connectorContainer}>

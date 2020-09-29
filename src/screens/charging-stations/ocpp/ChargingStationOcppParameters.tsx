@@ -1,8 +1,8 @@
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Button, Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, FlatList, RefreshControl, ScrollView } from 'react-native';
-import { DrawerActions } from 'react-navigation-drawer';
 import { DataResult } from 'types/DataResult';
 import { KeyValue } from 'types/Global';
 
@@ -56,7 +56,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
       // Get Charging Station
       let chargingStation = this.state.chargingStation;
       if (!chargingStation) {
-        const chargingStationID = Utils.getParamFromNavigation(this.props.navigation, 'chargingStationID', null);
+        const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
         chargingStation = await this.getChargingStation(chargingStationID);
       }
       // Get Charging Station Config
@@ -112,7 +112,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.goBack(null);
+    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };

@@ -8,8 +8,8 @@ import BaseProps from '../../../types/BaseProps';
 import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
-import computeStyleSheet from '../TransactionComponentCommonStyles';
 import TransactionHeaderComponent from '../header/TransactionHeaderComponent';
+import computeStyleSheet from '../TransactionComponentCommonStyles';
 
 export interface Props extends BaseProps {
   transaction: Transaction;
@@ -54,11 +54,12 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate({
-              routeName: 'TransactionDetailsTabs',
-              params: { transactionID: transaction.id },
-              key: `${Utils.randomNumber()}`
-            });
+            navigation.navigate(
+              'TransactionDetailsTabs', {
+                params: { transactionID: transaction.id },
+                key: `${Utils.randomNumber()}`
+              }
+            );
           }}>
           <View style={style.container}>
             <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} />

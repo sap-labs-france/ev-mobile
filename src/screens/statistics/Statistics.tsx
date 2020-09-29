@@ -1,11 +1,11 @@
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } from 'native-base';
 import React from 'react';
-import { DrawerActions } from 'react-navigation-drawer';
 
 import computeCardStyleSheet from '../../CardStyles';
-import I18nManager from '../../I18n/I18nManager';
 import HeaderComponent from '../../components/header/HeaderComponent';
+import I18nManager from '../../I18n/I18nManager';
 import ProviderFactory from '../../provider/ProviderFactory';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from '../../screens/transactions/history/TransactionsHistoryFilters';
 import BaseProps from '../../types/BaseProps';
@@ -126,7 +126,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate({ routeName: 'HomeNavigator' });
+    this.props.navigation.navigate('HomeNavigator');
     // Do not bubble up
     return true;
   };

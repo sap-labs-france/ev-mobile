@@ -1,15 +1,15 @@
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
-import { DrawerActions } from 'react-navigation-drawer';
 
 import noPhotoActive from '../../../../assets/no-photo.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
-import I18nManager from '../../../I18n/I18nManager';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
+import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
@@ -151,17 +151,18 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public showLastTransaction = async () => {
     const { navigation } = this.props;
-    const chargingStationID = Utils.getParamFromNavigation(this.props.navigation, 'chargingStationID', null);
-    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null), 10);
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
+    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null), 10);
     // Get the last session
     const transaction = await this.getLastTransaction(chargingStationID, connectorID);
     if (transaction) {
       // Navigate
-      navigation.navigate({
-        routeName: 'TransactionDetailsTabs',
-        params: { transactionID: transaction.id },
-        key: `${Utils.randomNumber()}`
-      });
+      navigation.navigate(
+        'TransactionDetailsTabs', {
+          params: { transactionID: transaction.id },
+          key: `${Utils.randomNumber()}`
+        }
+      );
     } else {
       Alert.alert(I18n.t('chargers.noSession'), I18n.t('chargers.noSessionMessage'));
     }
@@ -172,8 +173,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     let siteImage = null;
     let userImage = null;
     let transaction = null;
-    const chargingStationID = Utils.getParamFromNavigation(this.props.navigation, 'chargingStationID', null);
-    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.navigation, 'connectorID', null), 10);
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
+    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null), 10);
     // Get Charger
     const chargingStation = await this.getChargingStation(chargingStationID);
     const connector = chargingStation ? Utils.getConnectorFromID(chargingStation, connectorID) : null;
@@ -616,7 +617,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.goBack(null);
+    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };

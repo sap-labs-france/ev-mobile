@@ -1,17 +1,18 @@
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { InitialState, NavigationContainer, NavigationContainerRef, NavigationState } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import I18n from 'i18n-js';
 import { Icon } from 'native-base';
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
-import { NavigationContainerComponent, NavigationState, createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { createDrawerNavigator } from 'react-navigation-drawer';
-import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
-import { createStackNavigator } from 'react-navigation-stack';
+import BaseProps from 'types/BaseProps';
 
 import computeStyleSheet from './AppStyles';
-import I18nManager from './I18n/I18nManager';
 import ThemeManager from './custom-theme/ThemeManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
+import I18nManager from './I18n/I18nManager';
 import LocationManager from './location/LocationManager';
 import MigrationManager from './migration/MigrationManager';
 import NotificationManager from './notification/NotificationManager';
@@ -42,26 +43,241 @@ import Utils from './utils/Utils';
 // Init i18n
 I18nManager.initialize();
 
+// Navigation Stack variable
+const AuthStack = createStackNavigator();
+const HomeStack = createStackNavigator();
+const StatsStack = createStackNavigator();
+const SitesStack = createStackNavigator();
+const ChargingStationsStack = createStackNavigator();
+const TransactionHistoryStack = createStackNavigator();
+const TransactionInProgressStack = createStackNavigator();
+const rootStack = createStackNavigator();
+
+// Navigation Tab variable
+const ChargingStationDetailsTabs = createMaterialBottomTabNavigator();
+const ChargingStationConnectorDetailsTabs = createMaterialBottomTabNavigator();
+const TransactionDetailsTabs = createMaterialBottomTabNavigator();
+
+// Navigation Drawer variable
+const AppDrawer = createDrawerNavigator();
+
+// Navigation style variable
+const commonColor = Utils.getCurrentCommonColor();
+const appStyles = computeStyleSheet();
+const barStyle = {
+  backgroundColor: commonColor.containerBgColor,
+  paddingTop: 10,
+  borderTopWidth: 1,
+  borderTopColor: commonColor.topTabBarTextColor
+};
+const createTabBarIcon = (props: { focused: boolean; tintColor?: string; horizontal?: boolean; },
+  type: 'AntDesign' | 'Entypo' | 'EvilIcons' | 'Feather' | 'FontAwesome' | 'FontAwesome5' | 'Foundation' | 'Ionicons' | 'MaterialCommunityIcons' | 'MaterialIcons' | 'Octicons' | 'SimpleLineIcons' | 'Zocial',
+  name: string): React.ReactNode => {
+  return <Icon style={{
+    color: props.focused ? commonColor.topTabBarActiveTextColor : commonColor.topTabBarTextColor,
+    paddingBottom: 5,
+    fontSize: 23
+  }} type={type} name={name} />
+};
+
+// save last page with state
+const persistNavigationState = async (navigationState: NavigationState) => {
+  try {
+    await SecuredStorage.saveNavigationState(navigationState);
+  } catch (error) {
+    // tslint:disable-next-line: no-console
+    console.log(error);
+  }
+};
+
+function createAuthNavigator() {
+  return(
+    <AuthStack.Navigator initialRouteName={'Login'} headerMode='none'>
+      <AuthStack.Screen name='Login' component={Login}/>
+      <AuthStack.Screen name='Eula' component={Eula}/>
+      <AuthStack.Screen name='SignUp' component={SignUp}/>
+      <AuthStack.Screen name='ResetPassword' component={ResetPassword}/>
+      <AuthStack.Screen name='RetrievePassword' component={RetrievePassword}/>
+    </AuthStack.Navigator>
+  );
+}
+
+function createHomeNavigator() {
+  return(
+    <HomeStack.Navigator initialRouteName='Home' headerMode='none'>
+      <HomeStack.Screen name='Home' component={Home}/>
+    </HomeStack.Navigator>
+  );
+}
+
+function createStatsNavigator() {
+  return(
+    <StatsStack.Navigator initialRouteName='Statistics' headerMode='none'>
+      <StatsStack.Screen name='Statistics' component={Statistics}/>
+    </StatsStack.Navigator>
+  );
+}
+
+function createChargingStationDetailsTabsNavigator(props: BaseProps) {
+  return (
+    <ChargingStationDetailsTabs.Navigator initialRouteName='ChargingStationActions' activeColor={commonColor.topTabBarActiveTextColor}
+      inactiveColor={commonColor.topTabBarTextColor} barStyle={barStyle}  labeled={true} backBehavior='none'>
+      <ChargingStationDetailsTabs.Screen name='ChargingStationActions' component={ChargingStationActions}
+        initialParams={props?.route?.params?.params}
+        options={{
+          title: I18n.t('chargers.actions'),
+          tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'build')
+        }}/>
+      <ChargingStationDetailsTabs.Screen name='ChargingStationOcppParameters' component={ChargingStationOcppParameters}
+        initialParams={props?.route?.params?.params}
+        options={{
+          title: I18n.t('chargers.ocpp'),
+          tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'format-list-bulleted')
+        }}/>
+      <ChargingStationDetailsTabs.Screen name='ChargingStationProperties' component={ChargingStationProperties}
+        initialParams={props?.route?.params?.params}
+        options={{
+          title: I18n.t('chargers.properties'),
+          tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'info')
+        }}/>
+    </ChargingStationDetailsTabs.Navigator>
+  );
+}
+
+function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
+  return (
+    <ChargingStationConnectorDetailsTabs.Navigator initialRouteName='ChargingStationConnectorDetails' activeColor={commonColor.topTabBarActiveTextColor}
+      inactiveColor={commonColor.topTabBarTextColor} barStyle={barStyle} labeled={true} backBehavior='none'>
+      <ChargingStationConnectorDetailsTabs.Screen name='ChargingStationConnectorDetails' component={ChargingStationConnectorDetails}
+        initialParams={props?.route?.params?.params}
+        options={{
+          title: I18n.t('sites.chargePoint'),
+          tabBarIcon: (props) => createTabBarIcon(props, 'FontAwesome', 'bolt')
+        }}/>
+      <ChargingStationConnectorDetailsTabs.Screen name='TransactionChart' component={TransactionChart}
+        initialParams={props?.route?.params?.params}
+        options={{
+          title: I18n.t('details.graph'),
+          tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
+        }}/>
+    </ChargingStationConnectorDetailsTabs.Navigator>
+  );
+}
+
+function createTransactionDetailsTabsNavigator(props: BaseProps) {
+  return (
+    <TransactionDetailsTabs.Navigator initialRouteName='TransactionDetails' activeColor={commonColor.topTabBarActiveTextColor}
+      inactiveColor={commonColor.topTabBarTextColor} barStyle={barStyle} labeled={true} backBehavior='none'>
+      <TransactionDetailsTabs.Screen name='TransactionDetails' component={TransactionDetails}
+        initialParams={props?.route?.params?.params}
+        options={{
+          title: I18n.t('transactions.transaction'),
+          tabBarIcon: (props) => createTabBarIcon(props, 'FontAwesome', 'bolt')
+        }}/>
+      <TransactionDetailsTabs.Screen name='TransactionChart' component={TransactionChart}
+        initialParams={props?.route?.params?.params}
+        options={{
+          title: I18n.t('details.graph'),
+          tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
+        }}/>
+    </TransactionDetailsTabs.Navigator>
+  );
+}
+
+function createSitesNavigator() {
+  return(
+    <SitesStack.Navigator initialRouteName='Sites' headerMode='none'>
+      <SitesStack.Screen name='Sites' component={Sites}/>
+      <SitesStack.Screen name='SiteAreas' component={SiteAreas}/>
+      <SitesStack.Screen name='ChargingStations' component={ChargingStations}/>
+      <SitesStack.Screen name='ChargingStationDetailsTabs' component={createChargingStationDetailsTabsNavigator}/>
+      <SitesStack.Screen name='ChargingStationConnectorDetailsTabs' component={createChargingStationConnectorDetailsTabsNavigator}/>
+      <SitesStack.Screen name='TransactionDetailsTabs' component={createTransactionDetailsTabsNavigator}/>
+    </SitesStack.Navigator>
+  );
+}
+
+function createChargingStationsNavigator() {
+  return (
+    <ChargingStationsStack.Navigator initialRouteName='ChargingStations' headerMode='none'>
+      <ChargingStationsStack.Screen name='ChargingStations' component={ChargingStations}/>
+      <ChargingStationsStack.Screen name='ChargingStationDetailsTabs' component={createChargingStationDetailsTabsNavigator}/>
+      <ChargingStationsStack.Screen name='ChargingStationConnectorDetailsTabs' component={createChargingStationConnectorDetailsTabsNavigator}/>
+      <ChargingStationsStack.Screen name='TransactionDetailsTabs' component={createTransactionDetailsTabsNavigator}/>
+    </ChargingStationsStack.Navigator>
+  );
+}
+
+function createTransactionHistoryNavigator() {
+  return (
+    <TransactionHistoryStack.Navigator initialRouteName='TransactionsHistory' headerMode='none'>
+      <TransactionHistoryStack.Screen name='TransactionsHistory' component={TransactionsHistory}/>
+      <TransactionHistoryStack.Screen name='TransactionDetailsTabs' component={createTransactionDetailsTabsNavigator}/>
+    </TransactionHistoryStack.Navigator>
+  );
+}
+
+function createTransactionInProgressNavigator() {
+  return (
+    <TransactionInProgressStack.Navigator initialRouteName='TransactionsInProgress' headerMode='none'>
+      <TransactionInProgressStack.Screen name='TransactionsInProgress' component={TransactionsInProgress}/>
+      <TransactionInProgressStack.Screen name='ChargingStationDetailsTabs' component={createChargingStationDetailsTabsNavigator}/>
+      <TransactionInProgressStack.Screen name='ChargingStationConnectorDetailsTabs' component={createChargingStationConnectorDetailsTabsNavigator}/>
+    </TransactionInProgressStack.Navigator>
+  );
+}
+
+function createAppDrawerNavigator() {
+  return (
+    <AppDrawer.Navigator initialRouteName='HomeNavigator' screenOptions={{ swipeEnabled: true, unmountOnBlur: true }}
+      drawerStyle={appStyles.sideMenu.width} drawerPosition='right' drawerContent={(props) => <Sidebar {...props}/>}>
+      <AppDrawer.Screen name='HomeNavigator' component={createHomeNavigator}/>
+      <AppDrawer.Screen name='SitesNavigator' component={createSitesNavigator}/>
+      <AppDrawer.Screen name='ChargingStationsNavigator' component={createChargingStationsNavigator}/>
+      <AppDrawer.Screen name='StatisticsNavigator' component={createStatsNavigator}/>
+      <AppDrawer.Screen name='TransactionHistoryNavigator' component={createTransactionHistoryNavigator}/>
+      <AppDrawer.Screen name='TransactionInProgressNavigator' component={createTransactionInProgressNavigator}/>
+    </AppDrawer.Navigator>
+  );
+}
+
+function createRootNavigator(app: App, initialState: InitialState) {
+  return (
+    <NavigationContainer ref={(navigatorRef) => { app.navigator = navigatorRef }}
+      onStateChange={persistNavigationState} initialState={initialState}>
+      <rootStack.Navigator initialRouteName='AuthNavigator' headerMode='none'>
+        <rootStack.Screen name='AuthNavigator' component={createAuthNavigator}/>
+        <rootStack.Screen name='AppDrawerNavigator' component={createAppDrawerNavigator}/>
+      </rootStack.Navigator>
+    </NavigationContainer>
+  );
+}
+
 export interface Props {
 }
 
 interface State {
+  switchTheme?: boolean;
+  isNavigationStateLoaded?: boolean;
+  navigationState?: InitialState;
 }
 
 export default class App extends React.Component<Props, State> {
   public state: State;
   public props: Props;
+  public navigator: NavigationContainerRef;
   private notificationManager: NotificationManager;
   private deepLinkingManager: DeepLinkingManager;
   private centralServerProvider: CentralServerProvider;
-  private navigator: NavigationContainerComponent;
   private location: LocationManager;
   private theme: ThemeManager;
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      switchTheme: false
+      switchTheme: false,
+      navigationState: null,
+      isNavigationStateLoaded: false,
     };
   }
 
@@ -70,6 +286,8 @@ export default class App extends React.Component<Props, State> {
   }
 
   public async componentDidMount() {
+    // Load Navigation State
+    const navigationState = await SecuredStorage.getNavigationState();
     // Get the central server
     this.centralServerProvider = await ProviderFactory.getProvider();
     // Init Notification --------------------------------------
@@ -93,6 +311,11 @@ export default class App extends React.Component<Props, State> {
     const migrationManager = MigrationManager.getInstance();
     migrationManager.setCentralServerProvider(this.centralServerProvider);
     await migrationManager.migrate();
+    // Set
+    this.setState({
+      navigationState,
+      isNavigationStateLoaded: true,
+    });
   }
 
   public async componentWillUnmount() {
@@ -106,256 +329,11 @@ export default class App extends React.Component<Props, State> {
 
   public render() {
     return (
-      <RootSiblingParent>
-        <StatusBar hidden={true} />
-        {this.createRootContainerNavigation()}
-      </RootSiblingParent>
+      this.state.isNavigationStateLoaded &&
+        <RootSiblingParent>
+          <StatusBar hidden={true} />
+          {createRootNavigator(this, this.state.navigationState)}
+        </RootSiblingParent>
     );
-  }
-
-  private createRootContainerNavigation() {
-    const commonColor = Utils.getCurrentCommonColor();
-    const appStyles = computeStyleSheet();
-    const barStyle = {
-      backgroundColor: commonColor.containerBgColor,
-      paddingTop: 10,
-      borderTopWidth: 1,
-      borderTopColor: commonColor.topTabBarTextColor
-    };
-    // Auth Stack Navigation
-    const authNavigator = createStackNavigator(
-      {
-        Login: { screen: Login },
-        Eula: { screen: Eula },
-        SignUp: { screen: SignUp },
-        ResetPassword: { screen: ResetPassword },
-        RetrievePassword: { screen: RetrievePassword }
-      },
-      {
-        initialRouteName: 'Login',
-        headerMode: 'none'
-      }
-    );
-    // Home Stack Navigation
-    const homeNavigator = createStackNavigator(
-      {
-        Home: { screen: Home }
-      },
-      {
-        initialRouteName: 'Home',
-        headerMode: 'none'
-      }
-    );
-    // Stats Stack Navigation
-    const statisticsNavigator = createStackNavigator(
-      {
-        Statistics: { screen: Statistics }
-      },
-      {
-        initialRouteName: 'Statistics',
-        headerMode: 'none'
-      }
-    );
-    const chargingStationDetailsTabsNavigator = createMaterialBottomTabNavigator(
-      {
-        ChargingStationActions: {
-          screen: ChargingStationActions,
-          navigationOptions: {
-            title: I18n.t('chargers.actions'),
-            tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'build')
-          }
-        },
-        ChargingStationOcppParameters: {
-          screen: ChargingStationOcppParameters,
-          navigationOptions: {
-            title: I18n.t('chargers.ocpp'),
-            tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'format-list-bulleted')
-          }
-        },
-        ChargingStationProperties: {
-          screen: ChargingStationProperties,
-          navigationOptions: {
-            title: I18n.t('chargers.properties'),
-            tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'info')
-          }
-        }
-      },
-      {
-        activeColor: commonColor.topTabBarActiveTextColor,
-        inactiveColor: commonColor.topTabBarTextColor,
-        barStyle,
-        labeled: true,
-        backBehavior: 'none',
-        initialRouteName: 'ChargingStationActions',
-      }
-    );
-    const chargingStationConnectorDetailsTabsNavigator = createMaterialBottomTabNavigator(
-      {
-        ChargingStationConnectorDetails: {
-          screen: ChargingStationConnectorDetails,
-          navigationOptions: {
-            title: I18n.t('sites.chargePoint'),
-            tabBarIcon: (props) => createTabBarIcon(props, 'FontAwesome', 'bolt')
-          },
-        },
-        TransactionChart: {
-          screen: TransactionChart,
-          navigationOptions: {
-            title: I18n.t('details.graph'),
-            tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
-          }
-        },
-        // ReportError: {
-        //   screen: ReportError,
-        //   navigationOptions: {
-        //     title: I18n.t('details.reportError'),
-        //     tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'report')
-        //   }
-        // },
-      },
-      {
-        activeColor: commonColor.topTabBarActiveTextColor,
-        inactiveColor: commonColor.topTabBarTextColor,
-        barStyle,
-        labeled: true,
-        backBehavior: 'none',
-        initialRouteName: 'ChargingStationConnectorDetails',
-      }
-    );
-    const transactionDetailsTabsNavigator = createMaterialBottomTabNavigator(
-      {
-        TransactionDetails: {
-          screen: TransactionDetails,
-          navigationOptions: {
-            title: I18n.t('transactions.transaction'),
-            tabBarIcon: (props) => createTabBarIcon(props, 'FontAwesome', 'bolt')
-          },
-        },
-        TransactionChart: {
-          screen: TransactionChart,
-          navigationOptions: {
-            title: I18n.t('details.graph'),
-            tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
-          }
-        },
-      },
-      {
-        activeColor: commonColor.topTabBarActiveTextColor,
-        inactiveColor: commonColor.topTabBarTextColor,
-        barStyle,
-        labeled: true,
-        backBehavior: 'none',
-        initialRouteName: 'TransactionDetails',
-      }
-    );
-    // Organizations Stack Navigation
-    const sitesNavigator = createStackNavigator(
-      {
-        Sites: { screen: Sites },
-        SiteAreas: { screen: SiteAreas },
-        ChargingStations: { screen: ChargingStations },
-        ChargingStationDetailsTabs: { screen: chargingStationDetailsTabsNavigator },
-        ChargingStationConnectorDetailsTabs: { screen: chargingStationConnectorDetailsTabsNavigator },
-        TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator },
-      },
-      {
-        initialRouteName: 'Sites',
-        headerMode: 'none'
-      }
-    );
-    // ChargingStations Stack Navigation
-    const chargingStationsNavigator = createStackNavigator(
-      {
-        ChargingStations: { screen: ChargingStations },
-        ChargingStationDetailsTabs: { screen: chargingStationDetailsTabsNavigator },
-        ChargingStationConnectorDetailsTabs: { screen: chargingStationConnectorDetailsTabsNavigator },
-        TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator },
-      },
-      {
-        initialRouteName: 'ChargingStations',
-        headerMode: 'none'
-      }
-    );
-    const createTabBarIcon = (props: { focused: boolean; tintColor?: string; horizontal?: boolean; },
-      type: 'AntDesign' | 'Entypo' | 'EvilIcons' | 'Feather' | 'FontAwesome' | 'FontAwesome5' | 'Foundation' | 'Ionicons' | 'MaterialCommunityIcons' | 'MaterialIcons' | 'Octicons' | 'SimpleLineIcons' | 'Zocial',
-      name: string): React.ReactNode => {
-      return <Icon style={{
-        color: props.focused ? commonColor.topTabBarActiveTextColor : commonColor.topTabBarTextColor, paddingBottom: 5, fontSize: 23
-      }} type={type} name={name} />
-    };
-    const transactionHistoryNavigator = createStackNavigator(
-      {
-        TransactionsHistory: { screen: TransactionsHistory },
-        TransactionDetailsTabs: { screen: transactionDetailsTabsNavigator }
-      },
-      {
-        initialRouteName: 'TransactionsHistory',
-        headerMode: 'none'
-      }
-    );
-    const transactionInProgressNavigator = createStackNavigator(
-      {
-        TransactionsInProgress: { screen: TransactionsInProgress },
-        ChargingStationDetailsTabs: { screen: chargingStationDetailsTabsNavigator },
-        ChargingStationConnectorDetailsTabs: { screen: chargingStationConnectorDetailsTabsNavigator }
-      },
-      {
-        initialRouteName: 'TransactionsInProgress',
-        headerMode: 'none'
-      }
-    );
-    // Drawer Navigation
-    const appDrawerNavigator = createDrawerNavigator(
-      {
-        HomeNavigator: { screen: homeNavigator },
-        SitesNavigator: { screen: sitesNavigator },
-        ChargingStationsNavigator: { screen: chargingStationsNavigator },
-        StatisticsNavigator: { screen: statisticsNavigator },
-        TransactionHistoryNavigator: { screen: transactionHistoryNavigator },
-        TransactionInProgressNavigator: { screen: transactionInProgressNavigator },
-      },
-      {
-        navigationOptions: {
-          swipeEnabled: true
-        },
-        drawerWidth: appStyles.sideMenu.width,
-        initialRouteName: 'HomeNavigator',
-        unmountInactiveRoutes: true,
-        drawerPosition: 'right',
-        contentComponent: (props) => <Sidebar {...props} />
-      }
-    );
-    const rootNavigator = createSwitchNavigator(
-      {
-        AuthNavigator: { screen: authNavigator },
-        AppDrawerNavigator: { screen: appDrawerNavigator }
-      },
-      {
-        initialRouteName: 'AuthNavigator'
-      }
-    );
-    // Create a container to wrap the main navigator
-    const RootContainer = createAppContainer(rootNavigator);
-    // Handle persistence of navigation
-    const persistNavigationState = async (navigationState: NavigationState) => {
-      try {
-        await SecuredStorage.saveNavigationState(navigationState);
-      } catch (error) {
-        // tslint:disable-next-line: no-console
-        console.log(error);
-      }
-    };
-    const loadNavigationState = async () => {
-      const navigationState = await SecuredStorage.getNavigationState();
-      return navigationState;
-    };
-    return (
-      <RootContainer
-        ref={(navigatorRef) => {
-          this.navigator = navigatorRef;
-        }}
-        persistNavigationState={persistNavigationState}
-        loadNavigationState={loadNavigationState} />
-    )
   }
 }
