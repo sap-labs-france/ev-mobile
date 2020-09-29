@@ -74,6 +74,7 @@
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/toolbar-android": "0.1.0-rc.2",
+    "@react-navigation/drawer": "^5.9.2",
     "add": "^2.0.6",
     "axios": "^0.19.2",
     "axios-retry": "^3.1.8",
