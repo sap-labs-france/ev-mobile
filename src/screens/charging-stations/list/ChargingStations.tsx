@@ -1,5 +1,4 @@
-simport { DrawerActions } from '@react-navigation/native';
-
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
