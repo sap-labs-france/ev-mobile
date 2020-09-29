@@ -43,10 +43,15 @@ export default class Eula extends BaseScreen<Props, State> {
 
   public loadEndUserLicenseAgreement = async () => {
     const { i18nLanguage: i18nLanguage } = this.state;
+    // Get the first tenant for the EULA (same in all tenants)
+    const tenants = await  this.centralServerProvider.getTenants();
     try {
-      const result: any = await this.centralServerProvider.getEndUserLicenseAgreement({
-        Language: i18nLanguage
-      });
+      const result: any = await this.centralServerProvider.getEndUserLicenseAgreement(
+        tenants[0].subdomain,
+        {
+          Language: i18nLanguage
+        }
+      );
       this.setState({
         loading: false,
         eulaTextHtml: result.text

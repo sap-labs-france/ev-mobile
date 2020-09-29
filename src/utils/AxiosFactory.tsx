@@ -1,5 +1,8 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import axiosRetry, { IAxiosRetryConfig } from 'axios-retry';
+
+import { HTTPAuthError, HTTPError } from '../types/HTTPError';
+import Utils from './Utils';
 
 export default class AxiosFactory {
   private static axiosInstance: AxiosInstance;
@@ -25,9 +28,20 @@ export default class AxiosFactory {
     if (!axiosRetryConfig.retries) {
       axiosRetryConfig.retries = AxiosFactory.maxRetries;
     }
+    if (!axiosRetryConfig.retryCondition) {
+      axiosRetryConfig.retryCondition = AxiosFactory.isNetworkOrAppIdempotentRequestError;
+    }
     if (!axiosRetryConfig.retryDelay) {
       axiosRetryConfig.retryDelay = axiosRetry.exponentialDelay.bind(this);
     }
     axiosRetry(axiosInstance, axiosRetryConfig);
+  }
+
+  private static isNetworkOrAppIdempotentRequestError(error: AxiosError): boolean {
+    const noRetryHTTPErrorCodes: number[] = Utils.getValuesFromEnum(HTTPError).concat(Utils.getValuesFromEnum(HTTPAuthError));
+    if (noRetryHTTPErrorCodes.includes(error.response.status)) {
+      return false;
+    }
+    return axiosRetry.isNetworkOrIdempotentRequestError(error);
   }
 }

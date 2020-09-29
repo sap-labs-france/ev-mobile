@@ -1,5 +1,6 @@
 {
   "general": {
+    "migrationError": "Error during migration of data",
     "cannotConnectBackend": "La connexion a été perdue",
     "unexpectedErrorBackend": "Erreur Backend Inattendue",
     "unexpectedError": "Erreur Applicative",
@@ -11,6 +12,7 @@
     "noGPSCoordinates": "Coordonnées GPS non fournies",
     "chooseApp": "Choisissez une App",
     "availableApps": "Apps Disponibles",
+    "back": "Back",
     "ok": "Ok",
     "yes": "Oui",
     "no": "Non",
@@ -19,6 +21,7 @@
     "clear": "Effacer",
     "close": "Fermer",
     "cancel": "Annuler",
+    "send": "Envoyer",
     "apply": "Appliquer",
     "version": "Version",
     "search": "Rechercher",
@@ -44,7 +47,9 @@
     "createdOn": "Créé le",
     "createdBy": "Créé par",
     "lastChangedOn": "Modifié le",
-    "lastChangedBy": "Modifié par"
+    "lastChangedBy": "Modifié par",
+    "errorTitle": "Titre de l'erreur",
+    "errorDescription": "Description"
   },
   "sidebar": {
     "home": "Home",
@@ -110,7 +115,14 @@
     "tenant": "Choisir une Organisation",
     "createTenantTitle": "Créer une organisation",
     "tenantSubdomain": "Sous domaine",
-    "tenantName": "Nom"
+    "tenantName": "Nom",
+    "tenantEndpoint": "Cloud",
+    "phone" : "Phone",
+    "mandatoryPhone": "Le numéro de téléphone est obligatoire",
+    "mandatoryErrorTitle": "Le titre est obligatoire",
+    "mandatoryErrorDescription": "La description de l'erreur est obligatoire",
+    "reportErrorSuccess": "L'erreur a été envoyée avec succès",
+    "reportErrorFailed": "Impossible d'envoyer l'erreur"
   },
   "users": {
     "userUnexpectedError": "Impossible de lire l'utilisateur"
@@ -227,6 +239,7 @@
     "inactive": "Borne Déconnectée",
     "informations": "Informations",
     "graph": "Courbe",
+    "reportError": "Signaler une erreur",
     "notAuthorized": "Vous n'êtes pas autorisé à lire cette session",
     "noTransaction": "Pas de transaction en cours",
     "startTransaction": "Démarrer transaction",
@@ -236,7 +249,7 @@
     "notAuthorisedTitle": "Non autorisé",
     "notAuthorised": "Vous n'êtes pas autorisé à arrêter la transaction.",
     "accepted": "La requête a été acceptée",
-    "noBadgeID": "Pas de badge dans votre profile",
+    "noBadgeID": "Pas de badge dans votre profil",
     "denied": "La requête a échouée",
     "duration": "(hh:mm)",
     "total": "Total",

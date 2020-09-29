@@ -18,12 +18,12 @@ import Constants from './Constants';
 import Message from './Message';
 
 export default class Utils {
-  public static canAutoLogin(centralServerProvider: CentralServerProvider): boolean {
-    const tenantSubDomain = centralServerProvider.getUserTenant();
+  public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
+    const tenant = centralServerProvider.getUserTenant();
     const email = centralServerProvider.getUserEmail();
     const password = centralServerProvider.getUserPassword();
     return !centralServerProvider.hasAutoLoginDisabled() &&
-      !Utils.isNullOrEmptyString(tenantSubDomain) &&
+      !Utils.isNullOrEmptyString(tenant?.subdomain) &&
       !Utils.isNullOrEmptyString(email) &&
       !Utils.isNullOrEmptyString(password);
   }
@@ -114,6 +114,12 @@ export default class Utils {
     return I18nManager.isMetricsSystem() ?
       I18nManager.formatNumber(Math.round(distance / 100) / 10) + ' km' :
       I18nManager.formatNumber(Math.round(distance * 0.000621371)) + ' mi';
+  }
+
+  public static getValuesFromEnum(enumType: any): number[] {
+    const keys: string[] = Object.keys(enumType).filter(httpError => typeof enumType[httpError] === 'number');
+    const values: number[] = keys.map((httpErrorKey: string) => enumType[httpErrorKey]);
+    return values;
   }
 
   public static isEmptyArray(array: any): boolean {

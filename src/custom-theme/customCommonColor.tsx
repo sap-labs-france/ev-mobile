@@ -47,6 +47,7 @@ export const buildCommonColor = (currentTheme: ThemeDefinition) => {
     cardBorderColor: currentTheme.textColor,
 
     containerBgColor: currentTheme.background,
+    containerTouchableBackgroundColor: currentTheme.touchableBackgroundColor,
     listHeaderBgColor: currentTheme.listBackgroundHeader,
     headerBgColor: currentTheme.backgroundHeader,
     headerTextColor: currentTheme.textColor,

@@ -19,4 +19,5 @@ export default interface ThemeDefinition {
   info: string;
   primary: string;
   disabled: string;
+  touchableBackgroundColor: string;
 }

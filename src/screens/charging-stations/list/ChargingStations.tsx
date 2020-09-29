@@ -9,14 +9,14 @@ import MapView, { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
+import I18nManager from '../../../I18n/I18nManager';
+import computeModalStyle from '../../../ModalStyles';
 import ChargingStationComponent from '../../../components/charging-station/ChargingStationComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
-import I18nManager from '../../../I18n/I18nManager';
 import LocationManager from '../../../location/LocationManager';
-import computeModalStyle from '../../../ModalStyles';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
@@ -278,7 +278,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     // if (Platform.OS === 'ios') {
       return (
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
-          <Modalize alwaysOpen={ this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors) }>
+          <Modalize
+              alwaysOpen={ this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors) }
+              modalStyle={modalStyle.modalContainer}>
             <ChargingStationComponent chargingStation={chargingStationSelected} isAdmin={isAdmin}
               onNavigate={() => this.setState({ visible: false })}
               navigation={navigation}

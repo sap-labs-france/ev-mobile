@@ -106,16 +106,14 @@ export default class Login extends BaseScreen<Props, State> {
     this.tenants = await this.centralServerProvider.getTenants();
     // Load User data
     if (!this.state.email || !this.state.tenantSubDomain) {
-      // await Utils.sleep(50);
-      const tenantSubDomain = this.centralServerProvider.getUserTenant();
-      const tenant = await this.centralServerProvider.getTenant(tenantSubDomain);
+      const tenant = this.centralServerProvider.getUserTenant();
       const email = this.centralServerProvider.getUserEmail();
       const password = this.centralServerProvider.getUserPassword();
       // Set
       this.setState({
         email,
         password,
-        tenantSubDomain,
+        tenantSubDomain: tenant ? tenant.subdomain : null,
         tenantName: tenant ? tenant.name : this.state.tenantName,
         initialLoading: false
       });
@@ -123,9 +121,10 @@ export default class Login extends BaseScreen<Props, State> {
       if (Utils.canAutoLogin(this.centralServerProvider)) {
         try {
           // Check EULA
-          const result = await this.centralServerProvider.checkEndUserLicenseAgreement({ email, tenantSubDomain });
+          const result = await this.centralServerProvider.checkEndUserLicenseAgreement(
+            { email, tenantSubDomain: tenant.subdomain });
+          // Try to login
           if (result.eulaAccepted) {
-            // Try to login
             this.setState({ eula: true }, () => this.login());
           }
         } catch (error) {
@@ -170,7 +169,6 @@ export default class Login extends BaseScreen<Props, State> {
           // Show error
           switch (error.request.status) {
             // Unknown Email
-            case HTTPError.GENERAL_ERROR:
             case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
               Message.showError(I18n.t('authentication.wrongEmailOrPassword'));
               break;
@@ -361,7 +359,7 @@ export default class Login extends BaseScreen<Props, State> {
                     bottom: 0,
                     left: 0,
                     opacity: 0.4,
-                    backgroundColor: commonColor.containerBgColor
+                    backgroundColor: commonColor.disabled
                   },
                   wrapper: {
                     flex: 1,
