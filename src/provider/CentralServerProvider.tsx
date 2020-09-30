@@ -687,21 +687,6 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async checkEndUserLicenseAgreement(params: { email: string; tenantSubDomain: string; }): Promise<EulaAccepted> {
-    this.debugMethod('checkEndUserLicenseAgreement');
-    // Get the Tenant
-    const tenant = await this.getTenant(params.tenantSubDomain);
-    // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceAuthURL(tenant)}/${ServerAction.CHECK_END_USER_LICENSE_AGREEMENT}`, {
-      headers: this.buildHeaders(),
-      params: {
-        Email: params.email,
-        Tenant: params.tenantSubDomain
-      },
-    });
-    return result.data;
-  }
-
   public async sendErrorReport(errorTitle: string, errorDescription: string, phone: string) {
     this.debugMethod('sendErrorReport');
     const result = await this.axiosInstance.post(
