@@ -39,7 +39,7 @@ export default class AxiosFactory {
 
   private static isNetworkOrAppIdempotentRequestError(error: AxiosError): boolean {
     const noRetryHTTPErrorCodes: number[] = Utils.getValuesFromEnum(HTTPError).concat(Utils.getValuesFromEnum(HTTPAuthError));
-    if (noRetryHTTPErrorCodes.includes(error.response.status)) {
+    if (noRetryHTTPErrorCodes.includes(error.response?.status)) {
       return false;
     }
     return axiosRetry.isNetworkOrIdempotentRequestError(error);
