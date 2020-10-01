@@ -1,9 +1,9 @@
-import { NavigationState } from 'react-navigation';
+import { NavigationState } from '@react-navigation/native'
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import UserToken from 'types/UserToken';
 
 import { SecuredStorageKey } from '../types/SecuredStorageKeys';
-import Tenant from '../types/Tenant';
+import Tenant, { TenantConnection } from '../types/Tenant';
 import { UserCredentials } from '../types/User';
 
 // Generate a new Id for persisting the navigation each time the app is launched first time
@@ -14,6 +14,17 @@ if (__DEV__) {
 }
 
 export default class SecuredStorage {
+  public static async getLastMigrationVersion(): Promise<string> {
+    return SecuredStorage._getString(SecuredStorageKey.MIGRATION_VERSION);
+  }
+
+  public static async setLastMigrationVersion(version: string): Promise<void> {
+    await RNSecureStorage.set(
+      SecuredStorageKey.MIGRATION_VERSION, version,
+      { accessible: ACCESSIBLE.WHEN_UNLOCKED }
+    );
+  }
+
   public static async getNavigationState(): Promise<NavigationState> {
     const navigationState = await SecuredStorage._getJson(SecuredStorageKey.NAVIGATION_STATE);
     // Check the key
@@ -26,7 +37,6 @@ export default class SecuredStorage {
   }
 
   public static async saveNavigationState(navigationState: NavigationState) {
-    // Add a key
     await RNSecureStorage.set(
       SecuredStorageKey.NAVIGATION_STATE,
       JSON.stringify({ key: navigationID, navigationState }),
@@ -113,7 +123,7 @@ export default class SecuredStorage {
     return value;
   }
 
-  private static getCurrentTenantSubDomain(): Promise<string> {
+  private static async getCurrentTenantSubDomain(): Promise<string> {
     return SecuredStorage._getString(SecuredStorageKey.CURRENT_TENANT_SUB_DOMAIN);
   }
 
@@ -154,8 +164,8 @@ export default class SecuredStorage {
     );
   }
 
-  public static async getTenants(): Promise<Partial<Tenant>[]> {
+  public static async getTenants(): Promise<TenantConnection[]> {
     const tenants = await SecuredStorage._getJson(SecuredStorageKey.TENANTS);
-    return tenants as Partial<Tenant>[];
+    return tenants as TenantConnection[];
   }
 }

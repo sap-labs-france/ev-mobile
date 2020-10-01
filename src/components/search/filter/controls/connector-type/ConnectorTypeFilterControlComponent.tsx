@@ -15,6 +15,13 @@ export interface Props extends FilterControlComponentProps<string> {
 }
 
 interface State {
+  connectorTypes: ConnectorFilter[];
+}
+
+interface ConnectorFilter {
+  type: ConnectorType;
+  element: Element;
+  selected: boolean;
 }
 
 export default class ConnectorTypeFilterControlComponent extends FilterControlComponent<string> {
@@ -23,10 +30,22 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
 
   constructor(props: Props) {
     super(props);
+    // Init
+    const connectorStyle = computeStyleSheet();
+    const commonColor = Utils.getCurrentCommonColor();
+    this.state = {
+      connectorTypes: [
+        { type: ConnectorType.TYPE_2, element: <Type2 width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>, selected: false },
+        { type: ConnectorType.COMBO_CCS, element: <ComboCCS width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>, selected: false },
+        { type: ConnectorType.CHADEMO, element: <Chademo width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>, selected: false },
+        { type: ConnectorType.DOMESTIC, element: <Domestic width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} fill={commonColor.textColor}/>, selected: false },
+      ]
+    };
+    // Default filter values
     const connectorTypes = this.getValue() as string;
     if (connectorTypes) {
       for (const connectorType of connectorTypes.split('|')) {
-        for (const connector of this.getConnectors()) {
+        for (const connector of this.state.connectorTypes) {
           if (connector.type === connectorType) {
             connector.selected = true;
             break;
@@ -34,19 +53,6 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
         }
       }
     }
-    this.state = {
-    };
-  }
-
-  public getConnectors(): {type: ConnectorType; element: Element; selected: boolean;}[] {
-    const connectorStyle = computeStyleSheet();
-    const commonColor = Utils.getCurrentCommonColor();
-    return [
-      { type: ConnectorType.TYPE_2, element: <Type2 width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>, selected: false },
-      { type: ConnectorType.COMBO_CCS, element: <ComboCCS width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>, selected: false },
-      { type: ConnectorType.CHADEMO, element: <Chademo width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>, selected: false },
-      { type: ConnectorType.DOMESTIC, element: <Domestic width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} fill={commonColor.textColor}/>, selected: false },
-    ]
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
@@ -61,7 +67,8 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
     const { onFilterChanged } = this.props;
     // Build Filter
     const connectorFilters: ConnectorType[] = [];
-    for (const connector of this.getConnectors()) {
+    const connectorTypes = this.state.connectorTypes;
+    for (const connector of connectorTypes) {
       if (connector.selected) {
         connectorFilters.push(connector.type);
       }
@@ -87,7 +94,7 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
       <View style={{...internalStyle.columnFilterContainer, ...style}}>
         <Text style={internalStyle.textFilter}>{label}</Text>
         <View style={internalStyle.connectorTypeFilterContainer}>
-          {this.getConnectors().map((connector) =>
+          {this.state.connectorTypes.map((connector) =>
             <ToggleButton
               style={internalStyle.connectorTypeButton}
               key={connector.type}

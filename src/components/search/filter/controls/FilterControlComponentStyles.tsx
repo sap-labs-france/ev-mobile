@@ -11,6 +11,8 @@ export default function computeStyleSheet(): any {
       flexDirection: 'row',
       justifyContent: 'space-between',
       height: '35@s',
+      paddingLeft: '15@s',
+      paddingRight: '15@s',
       alignItems: 'center',
     },
     columnFilterContainer: {

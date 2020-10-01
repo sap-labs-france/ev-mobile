@@ -1,5 +1,6 @@
 {
   "general": {
+    "migrationError": "Error during migration of data",
     "cannotConnectBackend": "Connection has been lost",
     "unexpectedErrorBackend": "Unexpected Backend Error",
     "unexpectedError": "Unexpected Error",
@@ -11,6 +12,7 @@
     "noGPSCoordinates": "No GPS coordinates is provided",
     "chooseApp": "Choose an App",
     "availableApps": "Available Apps",
+    "back": "Back",
     "ok": "Ok",
     "yes": "Yes",
     "no": "No",
@@ -114,6 +116,7 @@
     "createTenantTitle": "Create Organization",
     "tenantSubdomain": "Subdomain",
     "tenantName": "Name",
+    "tenantEndpoint": "Cloud",
     "phone" : "Phone",
     "mandatoryPhone": "The phone number is mandatory",
     "mandatoryErrorTitle": "The title is mandatory",

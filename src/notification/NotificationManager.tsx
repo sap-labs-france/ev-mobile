@@ -1,8 +1,8 @@
+import { CommonActions, DrawerActions, NavigationContainerRef } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Platform } from 'react-native';
 import firebase from 'react-native-firebase';
 import { Notification, NotificationOpen } from 'react-native-firebase/notifications';
-import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
 
 import CentralServerProvider from '../provider/CentralServerProvider';
 import { UserNotificationType } from '../types/UserNotifications';
@@ -12,7 +12,7 @@ import Utils from '../utils/Utils';
 export default class NotificationManager {
   private static instance: NotificationManager;
   private token: string;
-  private navigator: NavigationContainerComponent;
+  private navigator: NavigationContainerRef;
   private removeNotificationDisplayedListener: () => any;
   private removeNotificationListener: () => any;
   private removeNotificationOpenedListener: () => any;
@@ -35,7 +35,7 @@ export default class NotificationManager {
     this.centralServerProvider = centralServerProvider;
   }
 
-  public async initialize(navigator: NavigationContainerComponent) {
+  public async initialize(navigator: NavigationContainerRef) {
     // Keep the nav
     this.navigator = navigator;
     // Check if user has given permission
@@ -164,79 +164,74 @@ export default class NotificationManager {
     switch (notification.data.notificationType) {
       // End of Transaction
       case UserNotificationType.END_OF_SESSION:
-        // Navigate
-        this.navigator.dispatch(
-          NavigationActions.navigate({
-            routeName: 'TransactionHistoryNavigator',
+
+      this.navigator.dispatch(
+        DrawerActions.jumpTo(
+          'TransactionHistoryNavigator',
+          {
+            name: 'TransactionDetailsTabs',
             key: `${Utils.randomNumber()}`,
-            action: NavigationActions.navigate({
-              routeName: 'TransactionDetailsTabs',
-              key: `${Utils.randomNumber()}`,
-              params: {
-                transactionID: parseInt(notification.data.transactionId, 10)
-              }
-            }),
-          })
-        );
+            params: {
+              transactionID: parseInt(notification.data.transactionId, 10)
+            }
+          }
+        )
+      );
         break;
 
       // Session In Progress
       case UserNotificationType.SESSION_STARTED:
       case UserNotificationType.END_OF_CHARGE:
       case UserNotificationType.OPTIMAL_CHARGE_REACHED:
-        // Navigate
+
         this.navigator.dispatch(
-          NavigationActions.navigate({
-            routeName: 'TransactionInProgressNavigator',
-            key: `${Utils.randomNumber()}`,
-            action: NavigationActions.navigate({
-              routeName: 'ChargingStationConnectorDetailsTabs',
+          DrawerActions.jumpTo(
+            'TransactionInProgressNavigator',
+            {
+              name: 'ChargingStationConnectorDetailsTabs',
               key: `${Utils.randomNumber()}`,
               params: {
                 chargingStationID: notification.data.chargeBoxID,
                 connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
               }
-            }),
-          })
+            }
+          )
         );
         break;
 
       case UserNotificationType.CHARGING_STATION_STATUS_ERROR:
       case UserNotificationType.PREPARING_SESSION_NOT_STARTED:
-        // Navigate
+
         this.navigator.dispatch(
-          NavigationActions.navigate({
-            routeName: 'ChargingStationsNavigator',
-            key: `${Utils.randomNumber()}`,
-            action: NavigationActions.navigate({
-              routeName: 'ChargingStationConnectorDetailsTabs',
+          DrawerActions.jumpTo(
+            'ChargingStationsNavigator',
+            {
+              name: 'ChargingStationConnectorDetailsTabs',
               key: `${Utils.randomNumber()}`,
               params: {
                 chargingStationID: notification.data.chargeBoxID,
                 connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
               }
-            }),
-          })
+            }
+          )
         );
         break;
 
       // Charger just connected
       case UserNotificationType.SESSION_NOT_STARTED_AFTER_AUTHORIZE:
       case UserNotificationType.CHARGING_STATION_REGISTERED:
-        // Navigate
         this.navigator.dispatch(
-          NavigationActions.navigate({
-            routeName: 'ChargingStationsNavigator',
-            key: `${Utils.randomNumber()}`,
-            action: NavigationActions.navigate({
-              routeName: 'ChargingStationConnectorDetailsTabs',
+          DrawerActions.jumpTo(
+            'ChargingStationsNavigator',
+            {
+              name: 'ChargingStationConnectorDetailsTabs',
               key: `${Utils.randomNumber()}`,
               params: {
                 chargingStationID: notification.data.chargeBoxID,
                 connectorID: 1
               }
-            }),
-          })
+            }
+          )
         );
         break;
 
@@ -244,8 +239,8 @@ export default class NotificationManager {
       case UserNotificationType.OFFLINE_CHARGING_STATION:
         // Navigate
         this.navigator.dispatch(
-          NavigationActions.navigate({
-            routeName: 'ChargingStations',
+          CommonActions.navigate({
+            name: 'ChargingStations',
             key: `${Utils.randomNumber()}`
           })
         );

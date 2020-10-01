@@ -1,8 +1,8 @@
-import I18n from 'i18n-js';
+import { DrawerActions } from '@react-navigation/native';
+import I18n, { toHumanSize } from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
-import { DrawerActions } from 'react-navigation-drawer';
 
 import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -120,7 +120,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate({ routeName: 'HomeNavigator' });
+    this.props.navigation.navigate('HomeNavigator');
     // Do not bubble up
     return true;
   };

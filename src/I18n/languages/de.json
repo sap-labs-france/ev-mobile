@@ -1,5 +1,6 @@
 ﻿{
   "general": {
+    "migrationError": "Error during migration of data",
     "cannotConnectBackend": "Die Verbindung wurde unterbrochen",
     "unexpectedErrorBackend": "Unerwarteter Backend Fehler",
     "unexpectedError": "Unerwarteter Fehler",
@@ -11,6 +12,7 @@
     "noGPSCoordinates": "Keine GPS-Koordinaten verfügbar",
     "chooseApp": "Wählen Sie eine Anwendung",
     "availableApps": "Verfügbare Anwendungen",
+    "back": "Back",
     "ok": "Ok",
     "yes": "Ja",
     "no": "Nein",
@@ -114,6 +116,7 @@
     "createTenantTitle": "Organisation Erstellen",
     "tenantSubdomain": "Subdomain",
     "tenantName": "Name",
+    "tenantEndpoint": "Cloud",
     "phone" : "Telefonnummer",
     "mandatoryPhone": "die Telefonnummer ist notwendig",
     "mandatoryErrorTitle": "der Titel ist notwendig",

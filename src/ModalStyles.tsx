@@ -9,6 +9,9 @@ export default function computeStyleSheet(): any {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     modal: {
+      backgroundColor: commonColor.containerTouchableBackgroundColor,
+      padding: '20@s',
+      margin: 0,
     },
     modalContainer: {
       backgroundColor: commonColor.containerBgColor,
@@ -29,10 +32,10 @@ export default function computeStyleSheet(): any {
       color: commonColor.textColor,
     },
     modalContentContainer: {
-      paddingLeft: '15@s',
-      paddingRight: '15@s',
-      paddingTop: '15@s',
-      paddingBottom: '5@s',
+      paddingLeft: '5@s',
+      paddingRight: '5@s',
+      paddingTop: '5@s',
+      paddingBottom: '15@s',
       justifyContent: 'flex-start',
     },
     modalRow: {
@@ -40,21 +43,34 @@ export default function computeStyleSheet(): any {
       justifyContent: 'center',
       alignItems: 'center',
     },
-    modalIinputGroup: {
+    modalInputGroup: {
       height: '35@s',
       width: '90%',
       flexDirection: 'row',
       justifyContent: 'flex-start',
-      marginBottom: '10@s',
+      marginTop: '10@s',
       marginLeft: 0,
-      paddingLeft: '10@s',
+      paddingLeft: '15@s',
       paddingRight: '10@s',
+      backgroundColor: commonColor.buttonBg,
+      borderColor: 'transparent',
+    },
+    modalPickerGroup: {
+      height: '35@s',
+      width: '90%',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      marginTop: '10@s',
+      marginLeft: 0,
+      paddingLeft: Platform.OS === 'ios' ? 0 : '10@s',
       backgroundColor: commonColor.buttonBg,
       borderColor: 'transparent'
     },
     modalRowError: {
       flexDirection: 'row',
       justifyContent: 'flex-start',
+      marginTop: '3@s',
+      marginLeft: '15@s',
     },
     modalErrorText: {
       fontSize: '12@s',
@@ -67,6 +83,18 @@ export default function computeStyleSheet(): any {
     modalInputField: {
       width: '65%',
       fontSize: '14@s',
+      color: commonColor.textColor,
+    },
+    modalPickerField: {
+      fontSize: '14@s',
+    },
+    modalPickerPlaceHolder: {
+      color: commonColor.inputColorPlaceholder,
+    },
+    modalPickerModal: {
+      backgroundColor: commonColor.containerBgColor,
+    },
+    modalPickerText: {
       color: commonColor.textColor,
     },
     modalButtonsContainer: {
@@ -83,7 +111,7 @@ export default function computeStyleSheet(): any {
     },
     modalTextButton: {
       height: '100%',
-      marginTop: '12@s',
+      marginTop: Platform.OS === 'ios' ? '12@s' : '7@s',
       fontSize: '14@s',
       fontWeight: 'bold',
     },

@@ -1,9 +1,9 @@
+import { CommonActions, StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Button, Footer, Form, Icon, Item, Left, Spinner, Text } from 'native-base';
 import React from 'react';
 import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import { NavigationActions, StackActions } from 'react-navigation';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
@@ -114,16 +114,14 @@ export default class ResetPassword extends BaseScreen<Props, State> {
         Message.showSuccess(I18n.t('authentication.resetPasswordSuccess'));
         // Navigate
         this.props.navigation.dispatch(
-          StackActions.reset({
+          CommonActions.reset({
             index: 0,
-            actions: [
-              NavigationActions.navigate({
-                routeName: 'Login',
-                params: {
-                  tenantSubDomain: this.state.tenantSubDomain
-                }
-              })
-            ]
+            routes: [{
+              name: 'Login',
+              params: {
+                tenantSubDomain: this.state.tenantSubDomain
+              }
+            }]
           })
         );
       } catch (error) {

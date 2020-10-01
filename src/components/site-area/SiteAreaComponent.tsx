@@ -45,13 +45,14 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
         <TouchableOpacity
           onPress={() => {
             if (siteArea.connectorStats.totalConnectors > 0) {
-              navigation.navigate({
-                routeName: 'ChargingStations',
-                params: {
-                siteAreaID: siteArea.id
-                },
-                key: `${Utils.randomNumber()}`
-              });
+              navigation.navigate(
+                'ChargingStations', {
+                  params: {
+                    siteAreaID: siteArea.id
+                  },
+                  key: `${Utils.randomNumber()}`
+                }
+              );
             } else {
               Message.showError(I18n.t('siteAreas.noChargers'));
             }
