@@ -4,8 +4,8 @@ import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { KeyValue } from 'types/Global';
 
-import I18nManager from '../I18n/I18nManager';
 import Configuration from '../config/Configuration';
+import I18nManager from '../I18n/I18nManager';
 import MigrationManager from '../migration/MigrationManager';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
@@ -690,7 +690,7 @@ export default class CentralServerProvider {
   public async sendErrorReport(errorTitle: string, errorDescription: string, phone: string) {
     this.debugMethod('sendErrorReport');
     const result = await this.axiosInstance.post(
-      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.END_USER_ERROR_NOTIFICATION}`,
+      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.END_USER_REPORT_ERROR}`,
       {
         errorTitle,
         errorDescription,
