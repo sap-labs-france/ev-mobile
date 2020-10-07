@@ -40,7 +40,7 @@
     "lint:fix": "tslint --fix '{src,__tests__,types}/**/*.ts{,x}' *.ts{,x}",
     "tsc": "tsc",
     "tsc-stats": "tsc --diagnostics --listFiles",
-    "clean-install": "rimraf node_modules && rimraf package-lock.json && npm cache clear --force && npm install",
+    "clean-install": "rimraf package-lock.json && rimraf node_modules && npm cache clear --force && npm install",
     "ios:bundle": "react-native bundle --platform='ios' --dev=false --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --assets-dest='./ios'",
     "android:bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
     "android:clean": "cd android && ./gradlew clean",
