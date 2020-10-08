@@ -5,8 +5,6 @@ import NotificationManager from 'notification/NotificationManager';
 import { KeyValue } from 'types/Global';
 
 import Configuration from '../config/Configuration';
-import I18nManager from '../I18n/I18nManager';
-import MigrationManager from '../migration/MigrationManager';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
@@ -15,7 +13,7 @@ import PagingParams from '../types/PagingParams';
 import { ServerAction } from '../types/Server';
 import Site from '../types/Site';
 import SiteArea from '../types/SiteArea';
-import Tenant, { TenantConnection } from '../types/Tenant';
+import { TenantConnection } from '../types/Tenant';
 import Transaction from '../types/Transaction';
 import UserToken from '../types/UserToken';
 import AxiosFactory from '../utils/AxiosFactory';
@@ -690,7 +688,7 @@ export default class CentralServerProvider {
   public async sendErrorReport(mobile: string, subject: string, description: string) {
     this.debugMethod('sendErrorReport');
     const result = await this.axiosInstance.post(
-      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.END_USER_ERROR_NOTIFICATION}`,
+      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.END_USER_REPORT_ERROR}`,
       {
         mobile,
         subject,
