@@ -57,7 +57,8 @@
     "chargers": "Charging Stations",
     "transactionsHistory": "Sessions History",
     "transactionsInProgress": "Sessions In Progress",
-    "statistics": "Statistics"
+    "statistics": "Statistics",
+    "reportError": "Report Error"
   },
 	"authentication": {
     "tenantTitle": "Organization",
@@ -69,6 +70,7 @@
     "mandatoryFirstName": "The First Name is mandatory",
     "mandatoryEmail": "The email is mandatory",
     "invalidEmail": "The email is invalid",
+    "invalidMobile": "The mobile is invalid",
     "mandatoryPassword": "The Password is mandatory",
     "logOut": "Log Out",
     "mustSelectTenant": "Select an Organization",
@@ -120,7 +122,8 @@
     "phone" : "Phone",
     "mandatoryPhone": "The phone number is mandatory",
     "mandatoryErrorTitle": "The title is mandatory",
-    "mandatoryErrorDescription": "The error description is mandatory",
+    "mandatoryErrorSubject": "The subject is mandatory",
+    "mandatoryErrorDescription": "The description is mandatory",
     "reportErrorSuccess": "The error has been reported successfully",
     "reportErrorFailed": "Cannot report the error"
   },

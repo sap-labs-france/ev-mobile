@@ -41,6 +41,25 @@ export default function computeStyleSheet(): any {
       justifyContent: 'center',
       alignItems: 'center'
     },
+    reportErrorContainer: {
+      width: '50@s',
+      height: '50@s',
+      marginTop: '-75@s',
+      marginLeft: '250@s',
+      marginBottom: '25@s',
+      backgroundColor: 'transparent'
+    },
+    reportErrorButton: {
+      width: '50@s',
+      height: '50@s',
+      borderRadius: '25@s',
+      borderStyle: 'solid',
+      borderWidth: '4@s',
+      borderColor: commonColor.textColor,
+      backgroundColor: commonColor.containerBgColor,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
     transactionContainer: {
       width: '100@s',
       height: '100@s',
@@ -75,6 +94,10 @@ export default function computeStyleSheet(): any {
       fontSize: '75@s'
     },
     lastTransactionIcon: {
+      fontSize: '25@s',
+      color: commonColor.textColor,
+    },
+    reportErrorIcon: {
       fontSize: '25@s',
       color: commonColor.textColor,
     },

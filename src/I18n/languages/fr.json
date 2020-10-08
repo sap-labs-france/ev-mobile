@@ -57,7 +57,8 @@
     "chargers": "Bornes",
     "transactionsHistory": "Historique Sessions",
     "transactionsInProgress": "Sessions En Cours",
-    "statistics": "Statistiques"
+    "statistics": "Statistiques",
+    "reportError": "Signaler Erreur"
   },
   "authentication": {
     "tenantTitle": "Organisation",
@@ -120,7 +121,8 @@
     "phone" : "Phone",
     "mandatoryPhone": "Le numéro de téléphone est obligatoire",
     "mandatoryErrorTitle": "Le titre est obligatoire",
-    "mandatoryErrorDescription": "La description de l'erreur est obligatoire",
+    "mandatoryErrorSubject": "Le sujet est obligatoire",
+    "mandatoryErrorDescription": "La description est obligatoire",
     "reportErrorSuccess": "L'erreur a été envoyée avec succès",
     "reportErrorFailed": "Impossible d'envoyer l'erreur"
   },

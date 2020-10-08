@@ -97,15 +97,13 @@ export default class SideBar extends BaseScreen<Props, State> {
     // Navigate
     this.props.navigation.dispatch(
       DrawerActions.jumpTo(
-        container,
-        {
+        container, {
           name: screen,
+          params,
           key: `${Utils.randomNumber()}`,
         }
       ),
     );
-    // Close
-    this.props.navigation.closeDrawer();
   };
 
   public render() {
@@ -152,6 +150,10 @@ export default class SideBar extends BaseScreen<Props, State> {
             <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('StatisticsNavigator', 'Statistics')}>
               <Icon style={style.linkIcon} type='MaterialIcons' name='assessment' />
               <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
+            </ListItem>
+            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
+              <Icon style={style.linkIcon} type='MaterialIcons' name='report-problem' />
+              <Text style={style.linkText}>{I18n.t('sidebar.reportError')}</Text>
             </ListItem>
             {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
               <Icon name="ios-settings-outline" />

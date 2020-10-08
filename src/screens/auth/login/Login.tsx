@@ -118,7 +118,7 @@ export default class Login extends BaseScreen<Props, State> {
         initialLoading: false
       });
       // Check if user can be logged
-      if (Utils.canAutoLogin(this.centralServerProvider)) {
+      if (Utils.canAutoLogin(this.centralServerProvider, this.props.navigation)) {
         try {
           // Check EULA
           const result = await this.centralServerProvider.checkEndUserLicenseAgreement(

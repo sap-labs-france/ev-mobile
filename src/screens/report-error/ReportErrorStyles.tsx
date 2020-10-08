@@ -16,55 +16,80 @@ const commonStyles = ScaledSheet.create({
     justifyContent: 'center',
     color: commonColor.textColor
   },
-  form: {
+  iconContainer: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: '10@s'
   },
-  button: {
-    width: '50%',
-    alignSelf: 'center',
-    height: '30@s',
-    marginBottom: '10@s',
-    backgroundColor: commonColor.buttonBg
+  reportErrorIcon: {
+    fontSize: '100@s',
+    color: commonColor.brandPrimary
   },
-  buttonText: {
-    width: '100%',
-    textAlign: 'center',
+  formContainer: {
+    flex: 3,
+  },
+  mobileInput: {
+    height: '40@s',
+    width: '94%',
+    paddingLeft: '10@s',
+    paddingRight: '10@s',
+    marginLeft: '10@s',
+    marginRight: '10@s',
+  },
+  subjectInput: {
+    height: '40@s',
+    width: '94%',
+    paddingLeft: '10@s',
+    paddingRight: '10@s',
+    marginLeft: '10@s',
+    marginRight: '10@s',
+    marginTop: '15@s'
+  },
+  descriptionInput: {
+    width: '94%',
+    alignItems: 'flex-start',
+    height: '210@s',
+    paddingLeft: '10@s',
+    marginLeft: '10@s',
+    marginRight: '10@s',
+    marginTop: '15@s'
+  },
+  inputText: {
+    fontSize: '15@s',
+    color: commonColor.textColor
+  },
+  descriptionText: {
+    paddingTop: '12@s',
     fontSize: '13@s',
     color: commonColor.textColor
   },
-  inputGroup: {
-    width: '90%',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    marginBottom: '10@s',
-    marginLeft: 0,
-    paddingLeft: '10@s',
-    paddingRight: '10@s',
-    backgroundColor: commonColor.inputGroupBg,
-    borderColor: commonColor.inputBorderColor,
-
+  sendButton: {
+    marginTop: '30@s',
+    marginLeft: '10@s',
+    marginRight: '10@s',
   },
-  inputIcon: {
-    color: commonColor.iconStyle,
-    alignSelf: 'center',
+  sendTextButton: {
+    color: 'white',
     textAlign: 'center',
-    width: '25@s',
-    fontSize: Platform.OS === 'ios' ? '20@s' : '15@s'
+    fontSize: '16@s'
   },
-  inputField: {
-    fontSize: '15@s',
-    color: 'black'
-  },
-  formErrorText: {
+  errorMobileText: {
     fontSize: '12@s',
     marginLeft: '20@s',
-    color: commonColor.brandDangerLight,
+    color: commonColor.brandDanger,
     alignSelf: 'flex-start',
-    top: '-5@s'
+  },
+  errorSubjectText: {
+    fontSize: '12@s',
+    marginLeft: '20@s',
+    color: commonColor.brandDanger,
+    alignSelf: 'flex-start',
+  },
+  errorDescriptionText: {
+    fontSize: '12@s',
+    marginLeft: '20@s',
+    color: commonColor.brandDanger,
+    alignSelf: 'flex-start',
   }
 });
 

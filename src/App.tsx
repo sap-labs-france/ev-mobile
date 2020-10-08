@@ -10,9 +10,9 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 import BaseProps from 'types/BaseProps';
 
 import computeStyleSheet from './AppStyles';
-import I18nManager from './I18n/I18nManager';
 import ThemeManager from './custom-theme/ThemeManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
+import I18nManager from './I18n/I18nManager';
 import LocationManager from './location/LocationManager';
 import MigrationManager from './migration/MigrationManager';
 import NotificationManager from './notification/NotificationManager';
@@ -29,6 +29,7 @@ import ChargingStations from './screens/charging-stations/list/ChargingStations'
 import ChargingStationOcppParameters from './screens/charging-stations/ocpp/ChargingStationOcppParameters';
 import ChargingStationProperties from './screens/charging-stations/properties/ChargingStationProperties';
 import Home from './screens/home/Home';
+import ReportError from './screens/report-error/ReportError';
 import Sidebar from './screens/sidebar/SideBar';
 import SiteAreas from './screens/site-areas/SiteAreas';
 import Sites from './screens/sites/Sites';
@@ -47,6 +48,7 @@ I18nManager.initialize();
 const AuthStack = createStackNavigator();
 const HomeStack = createStackNavigator();
 const StatsStack = createStackNavigator();
+const ReportErrorStack = createStackNavigator();
 const SitesStack = createStackNavigator();
 const ChargingStationsStack = createStackNavigator();
 const TransactionHistoryStack = createStackNavigator();
@@ -115,6 +117,14 @@ function createStatsNavigator() {
     <StatsStack.Navigator initialRouteName='Statistics' headerMode='none'>
       <StatsStack.Screen name='Statistics' component={Statistics}/>
     </StatsStack.Navigator>
+  );
+}
+
+function createReportErrorNavigator(props: BaseProps) {
+  return(
+    <ReportErrorStack.Navigator initialRouteName='ReportError' headerMode='none'>
+      <ReportErrorStack.Screen name='ReportError' component={ReportError} initialParams={props?.route?.params?.params}/>
+    </ReportErrorStack.Navigator>
   );
 }
 
@@ -235,6 +245,7 @@ function createAppDrawerNavigator() {
       <AppDrawer.Screen name='SitesNavigator' component={createSitesNavigator}/>
       <AppDrawer.Screen name='ChargingStationsNavigator' component={createChargingStationsNavigator}/>
       <AppDrawer.Screen name='StatisticsNavigator' component={createStatsNavigator}/>
+      <AppDrawer.Screen name='ReportErrorNavigator' component={createReportErrorNavigator}/>
       <AppDrawer.Screen name='TransactionHistoryNavigator' component={createTransactionHistoryNavigator}/>
       <AppDrawer.Screen name='TransactionInProgressNavigator' component={createTransactionInProgressNavigator}/>
     </AppDrawer.Navigator>
