@@ -380,7 +380,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.post(
-      `${this.buildCentralRestServerServiceAuthURL(tenant)}/${ServerAction.RESET}`,
+      `${this.buildCentralRestServerServiceAuthURL(tenant)}/${ServerAction.PASSWORD_RESET}`,
       {
         tenant: tenantSubDomain,
         captcha,
@@ -399,7 +399,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.post(
-      `${this.buildCentralRestServerServiceAuthURL(tenant)}/${ServerAction.RESET}`,
+      `${this.buildCentralRestServerServiceAuthURL(tenant)}/${ServerAction.PASSWORD_RESET}`,
       {
         tenant: tenantSubDomain,
         hash,
