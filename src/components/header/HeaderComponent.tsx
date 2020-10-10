@@ -14,6 +14,7 @@ export interface Props extends BaseProps {
   leftAction?: () => void;
   leftActionIcon?: string;
   leftActionIconType?: IconType;
+  hideHomeAction?: boolean;
   rightAction?: () => void;
   rightActionIcon?: string;
   rightActionIconType?: IconType;
@@ -82,7 +83,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
     const style = computeStyleSheet();
     const { hasFilter } = this.state;
     const { title, subTitle, leftAction, leftActionIcon, leftActionIconType,
-      rightAction, rightActionIcon, rightActionIconType,
+      rightAction, rightActionIcon, rightActionIconType, hideHomeAction,
       diplayMap, diplayMapAction, mapIsDisplayed, navigation } = this.props;
     return (
       <Header style={style.header}>
@@ -90,8 +91,9 @@ export default class HeaderComponent extends React.Component<Props, State> {
           <Left style={style.leftHeader}>
             <Icon type={leftActionIconType} name={leftActionIcon}
               style={style.iconLeftHeader} onPress={() => leftAction()}/>
-            <Icon type='MaterialIcons' name='home'
+            {!hideHomeAction && <Icon type='MaterialIcons' name='home'
               style={style.iconLeftHeader} onPress={() => navigation.navigate('HomeNavigator')} />
+            }
           </Left>
         :
           <Left style={style.leftHeader}>
