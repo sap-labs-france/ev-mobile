@@ -5,8 +5,8 @@ import React from 'react';
 import { KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
-import computeFormStyleSheet from '../../../FormStyles';
 import commonColor from '../../../custom-theme/customCommonColor';
+import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
@@ -158,7 +158,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
                   returnKeyType={'next'}
                   selectionColor={commonColor.textColor}
                   placeholder={I18n.t('authentication.email')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.placeholderTextColor}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}

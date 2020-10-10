@@ -172,7 +172,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.password')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.placeholderTextColor}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
@@ -199,7 +199,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                   onSubmitEditing={() => Keyboard.dismiss()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.repeatPassword')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.placeholderTextColor}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}

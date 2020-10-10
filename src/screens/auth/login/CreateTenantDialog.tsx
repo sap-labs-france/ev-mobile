@@ -4,8 +4,8 @@ import React from 'react';
 import { Alert, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 
-import computeModalStyleSheet from '../../../ModalStyles';
 import Configuration from '../../../config/Configuration';
+import computeModalStyleSheet from '../../../ModalStyles';
 import BaseProps from '../../../types/BaseProps';
 import Tenant, { EndpointCloud, TenantConnection } from '../../../types/Tenant';
 import SecuredStorage from '../../../utils/SecuredStorage';
@@ -109,7 +109,7 @@ export default class Login extends React.Component<Props, State> {
                   autoCapitalize={'none'}
                   autoCorrect={false}
                   placeholder={I18n.t('authentication.tenantSubdomain')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.placeholderTextColor}
                   style={modalStyle.modalInputField}
                   onChangeText={(value) => this.setState({ newTenantSubDomain: value.toLowerCase() })}
                 />
@@ -127,7 +127,7 @@ export default class Login extends React.Component<Props, State> {
               <Item inlineLabel={true} style={modalStyle.modalInputGroup}>
                 <TextInput
                   placeholder={I18n.t('authentication.tenantName')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.placeholderTextColor}
                   autoCorrect={false}
                   style={modalStyle.modalInputField}
                   onChangeText={(value) => this.setState({ newTenantName: value })}

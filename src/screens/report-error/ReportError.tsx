@@ -6,13 +6,13 @@ import * as Animatable from 'react-native-animatable';
 import { DrawerActions } from 'react-navigation-drawer';
 import ChargingStation, { Connector } from 'types/ChargingStation';
 
+import HeaderComponent from './../../components/header/HeaderComponent';
 import commonColor from '../../theme/variables/commonColor';
 import BaseProps from '../../types/BaseProps';
 import Constants from '../../utils/Constants';
 import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
-import HeaderComponent from './../../components/header/HeaderComponent';
 import computeStyleSheet from './ReportErrorStyles';
 
 export interface Props extends BaseProps {
@@ -179,7 +179,7 @@ export default class ReportError extends BaseAutoRefreshScreen<Props, State> {
                     returnKeyType='next'
                     selectionColor={commonColor.inverseTextColor}
                     placeholder={I18n.t('authentication.phone')}
-                    placeholderTextColor={commonColor.inputColorPlaceholder}
+                    placeholderTextColor={commonColor.placeholderTextColor}
                     style={style.inputField}
                     autoCapitalize='none'
                     blurOnSubmit={false}
@@ -203,7 +203,7 @@ export default class ReportError extends BaseAutoRefreshScreen<Props, State> {
                     returnKeyType='next'
                     selectionColor={commonColor.inverseTextColor}
                     placeholder={I18n.t('general.errorTitle')}
-                    placeholderTextColor={commonColor.inputColorPlaceholder}
+                    placeholderTextColor={commonColor.placeholderTextColor}
                     style={style.inputField}
                     autoCapitalize='none'
                     blurOnSubmit={false}
@@ -225,7 +225,7 @@ export default class ReportError extends BaseAutoRefreshScreen<Props, State> {
                     returnKeyType='next'
                     selectionColor={commonColor.inverseTextColor}
                     placeholder={I18n.t('general.errorDescription')}
-                    placeholderTextColor={commonColor.inputColorPlaceholder}
+                    placeholderTextColor={commonColor.placeholderTextColor}
                     style={style.inputField}
                     autoCapitalize='none'
                     blurOnSubmit={false}
