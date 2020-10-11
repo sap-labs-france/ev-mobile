@@ -123,7 +123,7 @@
     "react-native-vector-icons": "^7.0.0",
     "react-native-webview": "^10.3.2",
     "rn-secure-storage": "^2.0.6",
-    "tslib": "^2.0.1",
+    "tslib": "^2.0.3",
     "validate.js": "^0.13.1"
   },
   "devDependencies": {
