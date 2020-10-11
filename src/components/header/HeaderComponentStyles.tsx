@@ -15,7 +15,7 @@ export default function computeStyleSheet(): any {
       margin: 0,
       borderBottomWidth: 1,
       borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.headerBgColor
+      backgroundColor: commonColor.listHeaderBgColor
     },
     leftHeader: {
       flexDirection: 'row',
