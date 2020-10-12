@@ -89,7 +89,7 @@ export default function computeStyleSheet(): any {
       fontSize: '14@s',
     },
     modalPickerPlaceHolder: {
-      color: commonColor.inputColorPlaceholder,
+      color: commonColor.placeholderTextColor,
     },
     modalPickerModal: {
       backgroundColor: commonColor.containerBgColor,

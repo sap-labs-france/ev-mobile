@@ -2,6 +2,8 @@ import { StyleProvider, View } from 'native-base';
 import React from 'react';
 import { EventSubscription } from 'react-native';
 import { Appearance, AppearanceProvider } from 'react-native-appearance';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { Theme } from 'react-native-paper/lib/typescript/src/types';
 import SplashScreen from 'react-native-splash-screen';
 
 import App from './src/App';
@@ -53,11 +55,18 @@ export default class AppBootstrap extends React.Component<Props, State> {
 
   public render() {
     const { switchTheme } = this.state;
+    const themeManager = ThemeManager.getInstance();
+    const theme: Theme = {
+      ...DefaultTheme,
+      dark: themeManager.isThemeTypeIsDark(),
+    };
     return (
       switchTheme ?
         <AppearanceProvider>
           <StyleProvider style={buildTheme(Appearance.getColorScheme() as ThemeType)}>
-            <App/>
+            <PaperProvider theme={theme}>
+              <App/>
+            </PaperProvider>
           </StyleProvider>
         </AppearanceProvider>
       :
