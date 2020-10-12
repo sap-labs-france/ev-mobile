@@ -11,7 +11,6 @@ const colorDisabled = '#E7E7E7';
 const darkLightRatio = 0.4;
 
 export default {
-
   primary: colorBrand,
   primaryLight: color(colorBrand).lighten(darkLightRatio).hex(),
   primaryDark: color(colorBrand).darken(darkLightRatio).hex(),

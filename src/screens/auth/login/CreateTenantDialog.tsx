@@ -109,7 +109,7 @@ export default class Login extends React.Component<Props, State> {
                   autoCapitalize={'none'}
                   autoCorrect={false}
                   placeholder={I18n.t('authentication.tenantSubdomain')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.placeholderTextColor}
                   style={modalStyle.modalInputField}
                   onChangeText={(value) => this.setState({ newTenantSubDomain: value.toLowerCase() })}
                 />
@@ -127,7 +127,7 @@ export default class Login extends React.Component<Props, State> {
               <Item inlineLabel={true} style={modalStyle.modalInputGroup}>
                 <TextInput
                   placeholder={I18n.t('authentication.tenantName')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.placeholderTextColor}
                   autoCorrect={false}
                   style={modalStyle.modalInputField}
                   onChangeText={(value) => this.setState({ newTenantName: value })}

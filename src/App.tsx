@@ -61,24 +61,16 @@ const TransactionDetailsTabs = createMaterialBottomTabNavigator();
 // Navigation Drawer variable
 const AppDrawer = createDrawerNavigator();
 
-// Navigation style variable
-const commonColor = Utils.getCurrentCommonColor();
-const appStyles = computeStyleSheet();
-const barStyle = {
-  backgroundColor: commonColor.containerBgColor,
-  paddingTop: 10,
-  borderTopWidth: 1,
-  borderTopColor: commonColor.topTabBarTextColor
-};
 const createTabBarIcon = (props: { focused: boolean; tintColor?: string; horizontal?: boolean; },
   type: 'AntDesign' | 'Entypo' | 'EvilIcons' | 'Feather' | 'FontAwesome' | 'FontAwesome5' | 'Foundation' | 'Ionicons' | 'MaterialCommunityIcons' | 'MaterialIcons' | 'Octicons' | 'SimpleLineIcons' | 'Zocial',
   name: string): React.ReactNode => {
-  return <Icon style={{
-    color: props.focused ? commonColor.topTabBarActiveTextColor : commonColor.topTabBarTextColor,
-    paddingBottom: 5,
-    fontSize: 23
-  }} type={type} name={name} />
-};
+    const commonColor = Utils.getCurrentCommonColor();
+    return <Icon style={{
+      color: props.focused ? commonColor.topTabBarActiveTextColor : commonColor.topTabBarTextColor,
+      paddingBottom: 5,
+      fontSize: 23
+    }} type={type} name={name} />
+  };
 
 // save last page with state
 const persistNavigationState = async (navigationState: NavigationState) => {
@@ -118,7 +110,19 @@ function createStatsNavigator() {
   );
 }
 
+function getTabStyle(): any {
+  const commonColor = Utils.getCurrentCommonColor();
+  return {
+    backgroundColor: commonColor.containerBgColor,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: commonColor.topTabBarTextColor
+  };
+}
+
 function createChargingStationDetailsTabsNavigator(props: BaseProps) {
+  const commonColor = Utils.getCurrentCommonColor();
+  const barStyle = getTabStyle();
   return (
     <ChargingStationDetailsTabs.Navigator initialRouteName='ChargingStationActions' activeColor={commonColor.topTabBarActiveTextColor}
       inactiveColor={commonColor.topTabBarTextColor} barStyle={barStyle}  labeled={true} backBehavior='none'>
@@ -145,6 +149,8 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
 }
 
 function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
+  const commonColor = Utils.getCurrentCommonColor();
+  const barStyle = getTabStyle();
   return (
     <ChargingStationConnectorDetailsTabs.Navigator initialRouteName='ChargingStationConnectorDetails' activeColor={commonColor.topTabBarActiveTextColor}
       inactiveColor={commonColor.topTabBarTextColor} barStyle={barStyle} labeled={true} backBehavior='none'>
@@ -165,6 +171,8 @@ function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
 }
 
 function createTransactionDetailsTabsNavigator(props: BaseProps) {
+  const commonColor = Utils.getCurrentCommonColor();
+  const barStyle = getTabStyle();
   return (
     <TransactionDetailsTabs.Navigator initialRouteName='TransactionDetails' activeColor={commonColor.topTabBarActiveTextColor}
       inactiveColor={commonColor.topTabBarTextColor} barStyle={barStyle} labeled={true} backBehavior='none'>
@@ -228,6 +236,7 @@ function createTransactionInProgressNavigator() {
 }
 
 function createAppDrawerNavigator() {
+  const appStyles = computeStyleSheet();
   return (
     <AppDrawer.Navigator initialRouteName='HomeNavigator' screenOptions={{ swipeEnabled: true, unmountOnBlur: true }}
       drawerStyle={appStyles.sideMenu.width} drawerPosition='right' drawerContent={(props) => <Sidebar {...props}/>}>

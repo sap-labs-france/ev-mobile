@@ -179,7 +179,7 @@ export default class ReportError extends BaseAutoRefreshScreen<Props, State> {
                     returnKeyType='next'
                     selectionColor={commonColor.inverseTextColor}
                     placeholder={I18n.t('authentication.phone')}
-                    placeholderTextColor={commonColor.inputColorPlaceholder}
+                    placeholderTextColor={commonColor.placeholderTextColor}
                     style={style.inputField}
                     autoCapitalize='none'
                     blurOnSubmit={false}
@@ -203,7 +203,7 @@ export default class ReportError extends BaseAutoRefreshScreen<Props, State> {
                     returnKeyType='next'
                     selectionColor={commonColor.inverseTextColor}
                     placeholder={I18n.t('general.errorTitle')}
-                    placeholderTextColor={commonColor.inputColorPlaceholder}
+                    placeholderTextColor={commonColor.placeholderTextColor}
                     style={style.inputField}
                     autoCapitalize='none'
                     blurOnSubmit={false}
@@ -225,7 +225,7 @@ export default class ReportError extends BaseAutoRefreshScreen<Props, State> {
                     returnKeyType='next'
                     selectionColor={commonColor.inverseTextColor}
                     placeholder={I18n.t('general.errorDescription')}
-                    placeholderTextColor={commonColor.inputColorPlaceholder}
+                    placeholderTextColor={commonColor.placeholderTextColor}
                     style={style.inputField}
                     autoCapitalize='none'
                     blurOnSubmit={false}

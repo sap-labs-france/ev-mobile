@@ -230,7 +230,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   selectionColor={commonColor.textColor}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.name')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.placeholderTextColor}
                   style={formStyle.inputField}
                   autoCapitalize='characters'
                   blurOnSubmit={false}
@@ -254,7 +254,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   onSubmitEditing={() => this.emailInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.firstName')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.placeholderTextColor}
                   style={formStyle.inputField}
                   autoCapitalize='words'
                   blurOnSubmit={false}
@@ -278,7 +278,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   onSubmitEditing={() => this.passwordInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.email')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.placeholderTextColor}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
@@ -303,7 +303,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.password')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.placeholderTextColor}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}
@@ -330,7 +330,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   onSubmitEditing={() => Keyboard.dismiss()}
                   returnKeyType={'next'}
                   placeholder={I18n.t('authentication.repeatPassword')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  placeholderTextColor={commonColor.placeholderTextColor}
                   style={formStyle.inputField}
                   autoCapitalize='none'
                   blurOnSubmit={false}

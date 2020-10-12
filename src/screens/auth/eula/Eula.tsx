@@ -80,6 +80,7 @@ export default class Eula extends BaseScreen<Props, State> {
           title={I18n.t('authentication.eula')}
           leftAction={() => this.props.navigation.navigate('Login')}
           leftActionIcon={'navigate-before'}
+          hideHomeAction={true}
         />
         {loading ? (
           <Spinner style={style.spinner} color='grey' />
