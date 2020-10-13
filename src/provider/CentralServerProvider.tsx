@@ -461,6 +461,7 @@ export default class CentralServerProvider {
   }
 
   public async getChargingStationOcppParameters(id: string): Promise<DataResult<KeyValue>> {
+    this.debugMethod('getChargingStationOcppParameters');
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CHARGING_STATIONS_OCPP_PARAMETERS}?ChargeBoxID=${id}`, {
       headers: this.buildSecuredHeaders()
@@ -564,7 +565,7 @@ export default class CentralServerProvider {
   }
 
   public async unlockConnector(chargeBoxID: string, connectorId: number): Promise<ActionResponse> {
-    this.debugMethod('clearCache');
+    this.debugMethod('unlockConnector');
     // Call
     const result = await this.axiosInstance.post(
       `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CHARGING_STATION_UNLOCK_CONNECTOR}`,
@@ -592,6 +593,7 @@ export default class CentralServerProvider {
   }
 
   public async getLastTransaction(chargeBoxID: string, connectorId: number): Promise<Transaction> {
+    this.debugMethod('getLastTransaction');
     const params: { [param: string]: string } = {};
     params.ChargeBoxID = chargeBoxID;
     params.ConnectorId = connectorId + '';
