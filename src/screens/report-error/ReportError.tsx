@@ -2,15 +2,14 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Button, Form, Icon, Item, Spinner } from 'native-base';
 import React from 'react';
-import { ScrollView, Text, TextInput, View } from 'react-native';
+import { Keyboard, ScrollView, Text, TextInput, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import ChargingStation, { Connector } from 'types/ChargingStation';
-import Message from 'utils/Message';
 
 import HeaderComponent from './../../components/header/HeaderComponent';
-import commonColor from '../../theme/variables/commonColor';
 import BaseProps from '../../types/BaseProps';
 import Constants from '../../utils/Constants';
+import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './ReportErrorStyles';
@@ -171,6 +170,7 @@ export default class ReportError extends BaseScreen<Props, State> {
 
   public render() {
     const { navigation } = this.props;
+    const commonColor = Utils.getCurrentCommonColor();
     const style = computeStyleSheet();
     const { loading } = this.state;
     return  (
@@ -241,6 +241,7 @@ export default class ReportError extends BaseScreen<Props, State> {
                   ref={(ref: TextInput) => (this.descriptionInput = ref)}
                   style={style.descriptionText}
                   placeholder='Description'
+                  onSubmitEditing={() => Keyboard.dismiss()}
                   placeholderTextColor={commonColor.inputColorPlaceholder}
                   selectionColor={commonColor.textColor}
                   onChangeText={(text) => this.setState({ description: text })}

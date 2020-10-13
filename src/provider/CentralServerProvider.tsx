@@ -5,6 +5,7 @@ import NotificationManager from 'notification/NotificationManager';
 import { KeyValue } from 'types/Global';
 
 import Configuration from '../config/Configuration';
+import I18nManager from '../I18n/I18nManager';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
