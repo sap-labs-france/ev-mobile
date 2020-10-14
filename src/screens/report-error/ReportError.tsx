@@ -193,7 +193,7 @@ export default class ReportError extends BaseScreen<Props, State> {
             <Item style={style.mobileInput} regular={true}>
               <TextInput
                 style={style.inputText}
-                placeholder='Mobile'
+                placeholder={I18n.t('general.mobile')}
                 placeholderTextColor={commonColor.inputColorPlaceholder}
                 selectionColor={commonColor.textColor}
                 onChangeText={(text) => this.changeMobileText(text)}
@@ -216,7 +216,7 @@ export default class ReportError extends BaseScreen<Props, State> {
               <TextInput
                 ref={(ref: TextInput) => (this.subjectInput = ref)}
                 style={style.inputText}
-                placeholder='Subject'
+                placeholder={I18n.t('general.errorTitle')}
                 placeholderTextColor={commonColor.inputColorPlaceholder}
                 selectionColor={commonColor.textColor}
                 onChangeText={(text) => this.setState({ subject: text })}
@@ -240,7 +240,7 @@ export default class ReportError extends BaseScreen<Props, State> {
                 <TextInput
                   ref={(ref: TextInput) => (this.descriptionInput = ref)}
                   style={style.descriptionText}
-                  placeholder='Description'
+                  placeholder={I18n.t('general.errorDescription')}
                   onSubmitEditing={() => Keyboard.dismiss()}
                   placeholderTextColor={commonColor.inputColorPlaceholder}
                   selectionColor={commonColor.textColor}

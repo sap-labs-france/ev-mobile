@@ -63,7 +63,7 @@ export default function computeStyleSheet(): any {
     },
     descriptionText: {
       paddingTop: '12@s',
-      fontSize: '13@s',
+      fontSize: '15@s',
       color: commonColor.textColor
     },
     sendButton: {

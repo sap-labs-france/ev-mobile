@@ -48,6 +48,7 @@
     "createdBy": "Créé par",
     "lastChangedOn": "Modifié le",
     "lastChangedBy": "Modifié par",
+    "mobile": "Mobile",
     "errorTitle": "Titre de l'erreur",
     "errorDescription": "Description"
   },
@@ -70,6 +71,7 @@
     "mandatoryFirstName": "Le Prénom est obligatoire",
     "mandatoryEmail": "L'Email est obligatoire",
     "invalidEmail": "L'Email est invalide",
+    "invalidMobile": "The mobile is invalid",
     "mandatoryPassword": "Le Mot de Passe est obligatoire",
     "logOut": "Se déconnecter",
     "mustSelectTenant": "Selectionnez une Organisation",
@@ -124,7 +126,7 @@
     "mandatoryErrorSubject": "Le sujet est obligatoire",
     "mandatoryErrorDescription": "La description est obligatoire",
     "reportErrorSuccess": "L'erreur a été envoyée avec succès",
-    "reportErrorFailed": "Impossible d'envoyer l'erreur"
+    "reportErrorFailed": "Impossible d'envoyer l'erreur",
   },
   "users": {
     "userUnexpectedError": "Impossible de lire l'utilisateur"

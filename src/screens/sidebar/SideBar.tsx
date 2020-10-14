@@ -152,7 +152,7 @@ export default class SideBar extends BaseScreen<Props, State> {
               <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
             </ListItem>
             <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
-              <Icon style={style.linkIcon} type='MaterialIcons' name='report-problem' />
+              <Icon style={style.linkIcon} type='MaterialIcons' name='error-outline' />
               <Text style={style.linkText}>{I18n.t('sidebar.reportError')}</Text>
             </ListItem>
             {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>

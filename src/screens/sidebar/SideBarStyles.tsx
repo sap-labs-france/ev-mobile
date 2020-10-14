@@ -66,9 +66,9 @@ export default function computeStyleSheet(): any {
     links: {
       borderBottomWidth: 0,
       borderBottomColor: 'transparent',
-      height: Platform.OS === 'ios' ? undefined : '35@s',
+      height: Platform.OS === 'ios' ? undefined : '30@s',
       paddingTop: '10@s',
-      paddingBottom: Platform.OS === 'ios' ? 0 : '10@s'
+      paddingBottom: '10@s'
     },
     linkIcon: {
       fontSize: '30@s',
