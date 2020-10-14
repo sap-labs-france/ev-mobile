@@ -98,7 +98,7 @@
     "react-native-deep-linking": "^2.2.0",
     "react-native-device-info": "^2.3.2",
     "react-native-elements": "^1.2.6",
-    "react-native-firebase": "^5.5.6",
+    "react-native-firebase": "^5.6.0",
     "react-native-gesture-handler": "^1.7.0",
     "react-native-google-maps-directions": "^2.1.1",
     "react-native-htmlview": "^0.15.0",
