@@ -25,7 +25,7 @@ export default function computeStyleSheet(): any {
     },
     reportErrorIcon: {
       fontSize: '100@s',
-      color: commonColor.brandPrimary
+      color: commonColor.textColor
     },
     formContainer: {
       flex: 3,

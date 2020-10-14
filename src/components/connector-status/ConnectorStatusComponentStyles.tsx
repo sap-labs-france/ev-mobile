@@ -13,7 +13,7 @@ export default function computeStyleSheet(): any {
   const connectorWarningBorderColor = darkTheme ? commonColor.brandWarning : commonColor.brandWarningDark;
   const connectorDangerColor = darkTheme ? commonColor.brandDangerLight : commonColor.brandDanger;
   const connectorDangerBorderColor = darkTheme ? commonColor.brandDanger : commonColor.brandDangerDark;
-  const connectorDisabledColor = darkTheme ? commonColor.brandDisabledLight : commonColor.brandDisabled;
+  const connectorDisabledColor = darkTheme ? commonColor.brandDisabledLight : commonColor.brandDisabledDark;
   const connectorDisabledBorderColor = darkTheme ? commonColor.brandDisabled : commonColor.brandDisabledDark;
   const connectorPrimaryColor = darkTheme ? commonColor.brandPrimaryLight : commonColor.brandPrimary;
   const connectorPrimaryBorderColor = darkTheme ? commonColor.brandPrimary : commonColor.brandPrimaryDark;
