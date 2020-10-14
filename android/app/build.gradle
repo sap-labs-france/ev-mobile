@@ -141,8 +141,8 @@ android {
         applicationId "com.emobility"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 147
-        versionName "1.3.20"
+        versionCode 148
+        versionName "1.3.21"
     }
     splits {
         abi {
