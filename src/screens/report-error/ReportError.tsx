@@ -65,6 +65,7 @@ export default class ReportError extends BaseScreen<Props, State> {
       description: null,
     };
   };
+
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
   };
@@ -77,18 +78,16 @@ export default class ReportError extends BaseScreen<Props, State> {
     let chargingStation = null;
     let connector = null;
     let connectorLetter = null;
-
+    // Get Charging Station
     if (chargingStationID) {
-      // Get chargingStation
       chargingStation = await this.getChargingStation(chargingStationID);
       if (chargingStation) {
         connector = chargingStation ? chargingStation.connectors[parseInt(connectorID, 10) - 1] : null;
         connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
-        this.setState({ subject: chargingStationID + ' Connector ' + connectorLetter})
+        this.setState({ subject: chargingStationID + ' - ' + connectorLetter})
       }
     }
     const securityProvider = this.centralServerProvider.getSecurityProvider();
-    // Set
     this.setState({
       loading: false,
       chargingStation,
@@ -123,8 +122,12 @@ export default class ReportError extends BaseScreen<Props, State> {
         this.setState({ loading: true } as State);
         // Submit
         await this.centralServerProvider.sendErrorReport(mobile, subject, description);
+        // Ok
         Message.showSuccess(I18n.t('authentication.reportErrorSuccess'));
+        // Init
         this.clearInput();
+        // Get to the previous screen
+        this.onBack();
       } catch (error) {
         // submit failed
         this.setState({ loading: false });
@@ -161,7 +164,6 @@ export default class ReportError extends BaseScreen<Props, State> {
 
   public changeMobileText(text: string) {
     if (!text) {
-      console.log('clear mobile');
       this.setState({ mobile: null});
     } else {
       this.setState({ mobile: text});

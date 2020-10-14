@@ -175,7 +175,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     // Get the last session
       // Navigate
     navigation.navigate(
-      'ReportErrorNavigator', {
+      'ReportError', {
         params: {
           chargingStationID,
           connectorID,
@@ -590,7 +590,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return (
         <TouchableOpacity style={[style.reportErrorContainer]} onPress={() => this.showReportError()}>
           <View style={style.reportErrorButton}>
-            <Icon style={style.reportErrorIcon} type='MaterialIcons' name='report-problem' />
+            <Icon style={style.reportErrorIcon} type='MaterialIcons' name='error-outline' />
           </View>
         </TouchableOpacity>
       );

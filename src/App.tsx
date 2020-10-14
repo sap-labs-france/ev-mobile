@@ -202,7 +202,7 @@ function createTransactionDetailsTabsNavigator(props: BaseProps) {
   );
 }
 
-function createSitesNavigator() {
+function createSitesNavigator(props: BaseProps) {
   return(
     <SitesStack.Navigator initialRouteName='Sites' headerMode='none'>
       <SitesStack.Screen name='Sites' component={Sites}/>
@@ -211,17 +211,19 @@ function createSitesNavigator() {
       <SitesStack.Screen name='ChargingStationDetailsTabs' component={createChargingStationDetailsTabsNavigator}/>
       <SitesStack.Screen name='ChargingStationConnectorDetailsTabs' component={createChargingStationConnectorDetailsTabsNavigator}/>
       <SitesStack.Screen name='TransactionDetailsTabs' component={createTransactionDetailsTabsNavigator}/>
+      <SitesStack.Screen name='ReportError' component={ReportError} initialParams={props?.route?.params?.params}/>
     </SitesStack.Navigator>
   );
 }
 
-function createChargingStationsNavigator() {
+function createChargingStationsNavigator(props: BaseProps) {
   return (
     <ChargingStationsStack.Navigator initialRouteName='ChargingStations' headerMode='none'>
       <ChargingStationsStack.Screen name='ChargingStations' component={ChargingStations}/>
       <ChargingStationsStack.Screen name='ChargingStationDetailsTabs' component={createChargingStationDetailsTabsNavigator}/>
       <ChargingStationsStack.Screen name='ChargingStationConnectorDetailsTabs' component={createChargingStationConnectorDetailsTabsNavigator}/>
       <ChargingStationsStack.Screen name='TransactionDetailsTabs' component={createTransactionDetailsTabsNavigator}/>
+      <ChargingStationsStack.Screen name='ReportError' component={ReportError} initialParams={props?.route?.params?.params}/>
     </ChargingStationsStack.Navigator>
   );
 }
