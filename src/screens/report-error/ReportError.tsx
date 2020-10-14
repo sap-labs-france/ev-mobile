@@ -188,85 +188,90 @@ export default class ReportError extends BaseScreen<Props, State> {
             rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
             rightActionIcon={'menu'}
           />
-          <View style={style.iconContainer}>
-            <Icon style={style.reportErrorIcon} type='MaterialIcons' name='error-outline'/>
-          </View>
-          <Form style={style.formContainer}>
-            <Item style={style.mobileInput} regular={true}>
-              <TextInput
-                style={style.inputText}
-                placeholder={I18n.t('general.mobile')}
-                placeholderTextColor={commonColor.inputColorPlaceholder}
-                selectionColor={commonColor.textColor}
-                onChangeText={(text) => this.changeMobileText(text)}
-                onSubmitEditing={!this.state.subject ? () => this.subjectInput.focus() : () => this.descriptionInput.focus()}
-                autoFocus={!this.state.mobile ? true : false}
-                autoCapitalize='none'
-                blurOnSubmit={false}
-                autoCorrect={false}
-                value={this.state.mobile}
-              />
-            </Item>
-            {this.state.errorMobile &&
-              this.state.errorMobile.map((errorMessage, index) => (
-                <Text style={style.errorMobileText} key={index}>
-                  {errorMessage}
-                </Text>
-              ))
-            }
-            <Item style={style.subjectInput} regular={true}>
-              <TextInput
-                ref={(ref: TextInput) => (this.subjectInput = ref)}
-                style={style.inputText}
-                placeholder={I18n.t('general.errorTitle')}
-                placeholderTextColor={commonColor.inputColorPlaceholder}
-                selectionColor={commonColor.textColor}
-                onChangeText={(text) => this.setState({ subject: text })}
-                onSubmitEditing={() => this.descriptionInput.focus()}
-                autoFocus={this.state.mobile && !this.state.subject ? true : false}
-                autoCorrect={false}
-                blurOnSubmit={false}
-                autoCapitalize='none'
-                value={this.state.subject}
-              />
-            </Item>
-            {this.state.errorSubject &&
-              this.state.errorSubject.map((errorMessage, index) => (
-                <Text style={style.errorSubjectText} key={index}>
-                  {errorMessage}
-                </Text>
-              ))
-            }
-            <Item style={style.descriptionInput} regular={true}>
-              <ScrollView>
+          <ScrollView style={style.container}>
+            <View style={style.iconContainer}>
+              <Icon style={style.reportErrorIcon} type='MaterialIcons' name='error-outline'/>
+            </View>
+            <Form style={style.formContainer}>
+              <Item style={style.input} regular={true}>
                 <TextInput
-                  ref={(ref: TextInput) => (this.descriptionInput = ref)}
-                  style={style.descriptionText}
-                  placeholder={I18n.t('general.errorDescription')}
-                  onSubmitEditing={() => Keyboard.dismiss()}
+                  style={style.inputText}
+                  placeholder={I18n.t('general.mobile')}
                   placeholderTextColor={commonColor.inputColorPlaceholder}
                   selectionColor={commonColor.textColor}
-                  onChangeText={(text) => this.setState({ description: text })}
-                  autoFocus={this.state.mobile && this.state.subject ? true : false}
-                  multiline={true}
+                  onChangeText={(text) => this.changeMobileText(text)}
+                  onSubmitEditing={!this.state.subject ? () => this.subjectInput.focus() : () => this.descriptionInput.focus()}
+                  autoFocus={!this.state.mobile ? true : false}
+                  autoCapitalize='none'
+                  blurOnSubmit={false}
+                  autoCorrect={false}
+                  value={this.state.mobile}
+                />
+              </Item>
+              {this.state.errorMobile &&
+                this.state.errorMobile.map((errorMessage, index) => (
+                  <Text style={style.errorMobileText} key={index}>
+                    {errorMessage}
+                  </Text>
+                ))
+              }
+              <Item style={style.input} regular={true}>
+                <TextInput
+                  ref={(ref: TextInput) => (this.subjectInput = ref)}
+                  style={style.inputText}
+                  placeholder={I18n.t('general.errorTitle')}
+                  placeholderTextColor={commonColor.inputColorPlaceholder}
+                  selectionColor={commonColor.textColor}
+                  onChangeText={(text) => this.setState({ subject: text })}
+                  onSubmitEditing={() => this.descriptionInput.focus()}
+                  autoFocus={this.state.mobile && !this.state.subject ? true : false}
                   autoCorrect={false}
                   blurOnSubmit={false}
                   autoCapitalize='none'
+                  value={this.state.subject}
                 />
-              </ScrollView>
-            </Item>
-            {this.state.errorDescription &&
-              this.state.errorDescription.map((errorMessage, index) => (
-                <Text style={style.errorDescriptionText} key={index}>
-                  {errorMessage}
-                </Text>
-              ))
-            }
-            <Button style={style.sendButton} block={true} onPress={() => this.sendErrorReport()} primary={true}>
-              <Text style={style.sendTextButton}>{I18n.t('general.send')}</Text>
-            </Button>
-          </Form>
-      </Animatable.View>
-    ))
+              </Item>
+              {this.state.errorSubject &&
+                this.state.errorSubject.map((errorMessage, index) => (
+                  <Text style={style.errorSubjectText} key={index}>
+                    {errorMessage}
+                  </Text>
+                ))
+              }
+              <Item style={style.descriptionInput} regular={true}>
+                <ScrollView>
+                  <TextInput
+                    ref={(ref: TextInput) => (this.descriptionInput = ref)}
+                    style={style.descriptionText}
+                    placeholder={I18n.t('general.errorDescription')}
+                    onSubmitEditing={() => Keyboard.dismiss()}
+                    placeholderTextColor={commonColor.inputColorPlaceholder}
+                    selectionColor={commonColor.textColor}
+                    onChangeText={(text) => this.setState({ description: text })}
+                    autoFocus={this.state.mobile && this.state.subject ? true : false}
+                    multiline={true}
+                    autoCorrect={false}
+                    blurOnSubmit={false}
+                    autoCapitalize='none'
+                  />
+                </ScrollView>
+              </Item>
+              {this.state.errorDescription &&
+                this.state.errorDescription.map((errorMessage, index) => (
+                  <Text style={style.errorDescriptionText} key={index}>
+                    {errorMessage}
+                  </Text>
+                ))
+              }
+              <View style={style.buttonContainer}>
+                <Button style={style.sendButton} block={true} onPress={() => this.sendErrorReport()} primary={true}>
+                  <Text style={style.sendTextButton}>{I18n.t('general.send')}</Text>
+                </Button>
+              </View>
+            </Form>
+          </ScrollView>
+        </Animatable.View>
+      )
+    )
   }
 };
