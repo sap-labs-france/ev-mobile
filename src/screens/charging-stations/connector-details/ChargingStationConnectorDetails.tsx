@@ -7,9 +7,9 @@ import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'reac
 import noPhotoActive from '../../../../assets/no-photo.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
-import I18nManager from '../../../I18n/I18nManager';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
+import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
@@ -166,6 +166,23 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     } else {
       Alert.alert(I18n.t('chargers.noSession'), I18n.t('chargers.noSessionMessage'));
     }
+  }
+
+  public showReportError = async () => {
+    const { navigation } = this.props;
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
+    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null), 10);
+    // Get the last session
+      // Navigate
+    navigation.navigate(
+      'ReportErrorNavigator', {
+        params: {
+          chargingStationID,
+          connectorID,
+        },
+        key: `${Utils.randomNumber()}`
+      }
+    );
   }
 
   // tslint:disable-next-line: cyclomatic-complexity
@@ -555,9 +572,25 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { isAdmin, isSiteAdmin, connector, canStartTransaction } = this.state;
     if ((isAdmin || isSiteAdmin) && canStartTransaction && connector && connector.currentTransactionID === 0) {
       return (
-        <TouchableOpacity style={[style.lastTransactionContainer]} onPress={() => this.showLastTransaction()}>
-          <View style={[style.buttonLastTransaction]}>
+        <TouchableOpacity style={style.lastTransactionContainer} onPress={() => this.showLastTransaction()}>
+          <View style={style.buttonLastTransaction}>
             <Icon style={style.lastTransactionIcon} type='MaterialCommunityIcons' name='history' />
+          </View>
+        </TouchableOpacity>
+      );
+    }
+    return (
+      <View style={[style.lastTransactionContainer]} />
+    );
+  };
+
+  public renderReportErrorButton = (style: any) => {
+    const { connector, canStartTransaction } = this.state;
+    if (canStartTransaction && connector && connector.currentTransactionID === 0) {
+      return (
+        <TouchableOpacity style={[style.reportErrorContainer]} onPress={() => this.showReportError()}>
+          <View style={style.reportErrorButton}>
+            <Icon style={style.reportErrorIcon} type='MaterialIcons' name='report-problem' />
           </View>
         </TouchableOpacity>
       );
@@ -645,6 +678,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
             {/* Show Last Transaction */}
             {this.renderShowLastTransactionButton(style)}
+            {/* Report Error */}
+            {this.renderReportErrorButton(style)}
             {/* Start/Stop Transaction */}
             {canStartTransaction && connector && connector.currentTransactionID === 0 ? (
               <View style={style.transactionContainer}>

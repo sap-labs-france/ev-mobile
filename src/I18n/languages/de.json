@@ -57,7 +57,8 @@
     "chargers": "Ladestationen",
     "transactionsHistory": "Ladevorgangs Historie",
     "transactionsInProgress": "Laufende Ladevorgänge",
-    "statistics": "Statistiken"
+    "statistics": "Statistiken",
+    "reportError": "Fehler Melden"
   },
 	"authentication": {
     "tenantTitle": "Organization",
@@ -69,6 +70,7 @@
     "mandatoryFirstName": "Der Vorname ist notwendig",
     "mandatoryEmail": "Die E-Mail ist notwendig",
     "invalidEmail": "Die E-Mail ist ungültig",
+    "invalidMobile": "Das Handy ist ungültig",
     "mandatoryPassword": "Das Passwort ist notwendig",
     "logOut": "Ausloggen",
     "mustSelectTenant": "Wählen Sie eine Organisation",
@@ -118,11 +120,12 @@
     "tenantName": "Name",
     "tenantEndpoint": "Cloud",
     "phone" : "Telefonnummer",
-    "mandatoryPhone": "die Telefonnummer ist notwendig",
-    "mandatoryErrorTitle": "der Titel ist notwendig",
-    "mandatoryErrorDescription": "die Fehlerbeschreibung ist notwendig",
-    "reportErrorSuccess": "The error has been reported successfully",
-    "reportErrorFailed": "Cannot report the error"
+    "mandatoryPhone": "Die Telefonnummer ist notwendig",
+    "mandatoryErrorTitle": "Der Titel ist notwendig",
+    "mandatoryErrorSubject": "Das Thema ist notwendig",
+    "mandatoryErrorDescription": "Die Beschreibung ist notwendig",
+    "reportErrorSuccess": "Der Fehler wurde erfolgreich gemeldet",
+    "reportErrorFailed": "Der Fehler kann nicht gemeldet werden"
   },
   "users": {
     "userUnexpectedError": "Benutzer kann nicht gelesen werden"

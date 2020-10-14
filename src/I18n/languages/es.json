@@ -57,7 +57,8 @@
     "chargers": " Estaciones de carga",
     "transactionsHistory": "Historial de sesiones",
     "transactionsInProgress": "Sesiones en progreso",
-    "statistics": "Estadísticas"
+    "statistics": "Estadísticas",
+    "reportError": "Reportar error"
   },
 	"authentication": {
     "tenantTitle": "Organización",
@@ -69,6 +70,7 @@
     "mandatoryFirstName": "El nombre es obligatorio",
     "mandatoryEmail": "El correo electrónico es obligatorio",
     "invalidEmail": "El correo electrónico es inválido",
+    "invalidMobile": "El móvil no es válido",
     "mandatoryPassword": "La contraseña es obligatoria",
     "logOut": "Cerrar sesión",
     "mustSelectTenant": "Seleccione una organización",
@@ -120,9 +122,10 @@
     "phone" : "Teléfono",
     "mandatoryPhone": "El número de teléfono es obligatorio",
     "mandatoryErrorTitle": "El título del error es obligatorio",
-    "mandatoryErrorDescription": "La descripción del error es obligatoria",
-    "reportErrorSuccess": "The error has been reported successfully",
-    "reportErrorFailed": "Cannot report the error"
+    "mandatoryErrorSubject": "El tema es obligatorio",
+    "mandatoryErrorDescription": "La descripción es obligatoria",
+    "reportErrorSuccess": "El error se ha informado correctamente",
+    "reportErrorFailed": "No se puede informar el error"
   },
   "users": {
     "userUnexpectedError": "No se ha podido cargar el usuario"
