@@ -29,6 +29,7 @@ export default class Configuration {
     { subdomain: 'sapbelgium', name: 'SAP Belgium', endpoint: Configuration.SCP_REST_ENDPOINT_PROD },
     { subdomain: 'sapportugal', name: 'SAP Portugal', endpoint: Configuration.SCP_REST_ENDPOINT_PROD },
     { subdomain: 'proviridis', name: 'Proviridis', endpoint: Configuration.SCP_REST_ENDPOINT_PROD },
+    { subdomain: 'imredd', name: 'IMREDD', endpoint: Configuration.SCP_REST_ENDPOINT_PROD },
     { subdomain: 'mairiedemonaco', name: 'Mairie de Monaco', endpoint: Configuration.AWS_REST_ENDPOINT_PROD },
   ];
 

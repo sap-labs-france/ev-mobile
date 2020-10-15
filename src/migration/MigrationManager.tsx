@@ -64,6 +64,9 @@ export default class MigrationManager {
       this.addNewTenant(tenants, {
         subdomain: 'sapfrancecah', name: 'SAP France (charge@home)', endpoint: Configuration.SCP_REST_ENDPOINT_PROD,
       });
+      this.addNewTenant(tenants, {
+        subdomain: 'imredd', name: 'IMREDD', endpoint: Configuration.SCP_REST_ENDPOINT_PROD,
+      });
       // Save
       await SecuredStorage.saveTenants(tenants);
     }
