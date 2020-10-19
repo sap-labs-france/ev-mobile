@@ -160,7 +160,7 @@ export default class Login extends BaseScreen<Props, State> {
         // Login Success
         this.setState({ loading: false });
         // Navigate
-        this.navigateToSites();
+        this.navigateToApp();
       } catch (error) {
         // Login failed
         this.setState({ loading: false });
@@ -210,7 +210,7 @@ export default class Login extends BaseScreen<Props, State> {
     return true;
   };
 
-  public navigateToSites() {
+  public navigateToApp() {
     // Navigate to App
     this.props.navigation.navigate('AppDrawerNavigator');
   }
