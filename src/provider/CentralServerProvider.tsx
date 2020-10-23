@@ -258,7 +258,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.post(
-      `${this.buildCentralRestServerServiceAuthURL(tenant)}/${ServerAction.LOGIN}`,
+      `${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_SIGNIN}`,
       {
         acceptEula,
         email,
@@ -313,7 +313,7 @@ export default class CentralServerProvider {
     // Get the Tenant
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceAuthURL(tenant)}/${ServerAction.END_USER_LICENSE_AGREEMENT}`, {
+    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/${ServerAction.END_USER_LICENSE_AGREEMENT}`, {
       headers: this.buildHeaders(),
       params,
     });
@@ -325,7 +325,7 @@ export default class CentralServerProvider {
     // Get the Tenant
     const tenant = await this.getTenant(params.tenantSubDomain);
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceAuthURL(tenant)}/${ServerAction.CHECK_END_USER_LICENSE_AGREEMENT}`, {
+    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/${ServerAction.CHECK_END_USER_LICENSE_AGREEMENT}`, {
       headers: this.buildHeaders(),
       params: {
         Email: params.email,
@@ -342,7 +342,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.post(
-      `${this.buildCentralRestServerServiceAuthURL(tenant)}/${ServerAction.REGISTER_USER}`,
+      `${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_SIGNON}`,
       {
         acceptEula,
         captcha,
@@ -380,7 +380,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.post(
-      `${this.buildCentralRestServerServiceAuthURL(tenant)}/${ServerAction.PASSWORD_RESET}`,
+      `${this.buildRestServerAuthURL(tenant)}/${ServerAction.PASSWORD_RESET}`,
       {
         tenant: tenantSubDomain,
         captcha,
@@ -399,7 +399,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.post(
-      `${this.buildCentralRestServerServiceAuthURL(tenant)}/${ServerAction.PASSWORD_RESET}`,
+      `${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_PASSWORD_RESET}`,
       {
         tenant: tenantSubDomain,
         hash,
@@ -418,7 +418,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.get(
-      `${this.buildCentralRestServerServiceAuthURL(tenant)}/${ServerAction.VERIFY_EMAIL}`, {
+      `${this.buildRestServerAuthURL(tenant)}/${ServerAction.VERIFY_EMAIL}`, {
       headers: this.buildHeaders(),
       params: {
         Tenant: tenantSubDomain,
@@ -745,7 +745,7 @@ export default class CentralServerProvider {
     }
   }
 
-  private buildCentralRestServerServiceAuthURL(tenant: TenantConnection): string {
+  private buildRestServerAuthURL(tenant: TenantConnection): string {
     return tenant.endpoint + '/client/auth';
   }
 

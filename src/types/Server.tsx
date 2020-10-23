@@ -278,6 +278,7 @@ export enum ServerAction {
   TENANT = 'Tenant',
   TENANT_UPDATE = 'TenantUpdate',
   TENANT_DELETE = 'TenantDelete',
+  TENANT_LOGO = 'TenantLogo',
 
   COMPANY_CREATE = 'CompanyCreate',
   COMPANIES = 'Companies',
@@ -330,7 +331,13 @@ export enum ServerAction {
   USER_SITES = 'UserSites',
   USERS_IN_ERROR = 'UsersInError',
   USER_IMAGE = 'UserImage',
+  TAGS = 'Tags',
+  TAG = 'Tag',
+  TAG_CREATE = 'TagCreate',
+  TAG_UPDATE = 'TagUpdate',
+  TAG_DELETE = 'TagDelete',
   USER = 'User',
+  USERS_EXPORT = 'UsersExport',
 
   NOTIFICATIONS = 'Notifications',
 
@@ -362,4 +369,12 @@ export enum ServerAction {
   HTTP_REQUEST = 'HttpRequest',
   HTTP_RESPONSE = 'HttpResponse',
   HTTP_ERROR = 'HttpError',
+
+  // RESTful API
+  REST_SIGNIN = 'signin',
+  REST_SIGNON = 'signon',
+  REST_SIGNOUT = 'signout',
+  REST_PASSWORD_RESET = 'passwordreset',
+  REST_PING = 'ping',
+  REST_TENANTS = 'tenants'
 }
