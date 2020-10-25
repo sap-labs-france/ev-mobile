@@ -485,8 +485,8 @@ export default class Utils {
     return count;
   }
 
-  public static cloneJSonDocument(jsonDocument: object): object {
-    return JSON.parse(JSON.stringify(jsonDocument));
+  public static cloneObject(object: object): object {
+    return JSON.parse(JSON.stringify(object));
   }
 
   public static isNullOrEmptyString(value: string) {
