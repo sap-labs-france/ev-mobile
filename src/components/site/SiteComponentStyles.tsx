@@ -38,14 +38,15 @@ export default function computeStyleSheet(): any {
       borderBottomWidth: 1,
       borderBottomColor: commonColor.listBorderColor,
     },
-    headerName: {
-      fontSize: '20@s',
-      fontWeight: 'bold',
-      color: commonColor.headerTextColor
-    },
     address: {
       width: '80%',
       color: commonColor.headerTextColor,
+    },
+    headerName: {
+      marginLeft: '5@s',
+      fontSize: '20@s',
+      fontWeight: 'bold',
+      color: commonColor.headerTextColor
     },
     connectorContent: {
       flexDirection: 'row',
