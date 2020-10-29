@@ -313,7 +313,7 @@ export default class CentralServerProvider {
     // Get the Tenant
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
-    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_EULA}`, {
+    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/eula`, {
       headers: this.buildHeaders(),
       params,
     });
@@ -325,7 +325,7 @@ export default class CentralServerProvider {
     // Get the Tenant
     const tenant = await this.getTenant(params.tenantSubDomain);
     // Call
-    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_EULA}/check`, {
+    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/eula/${ServerAction.REST_CHECK}`, {
       headers: this.buildHeaders(),
       params: {
         Email: params.email,
@@ -380,7 +380,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.post(
-      `${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_PASSWORD}/reset`,
+      `${this.buildRestServerAuthURL(tenant)}/password/${ServerAction.REST_RESET}`,
       {
         tenant: tenantSubDomain,
         captcha,
@@ -399,7 +399,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.post(
-      `${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_PASSWORD}/reset`,
+      `${this.buildRestServerAuthURL(tenant)}/password/${ServerAction.REST_RESET}`,
       {
         tenant: tenantSubDomain,
         hash,
@@ -418,7 +418,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.get(
-      `${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_MAIL}/check`, {
+      `${this.buildRestServerAuthURL(tenant)}/mail/${ServerAction.REST_CHECK}`, {
       headers: this.buildHeaders(),
       params: {
         Tenant: tenantSubDomain,
