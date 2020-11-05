@@ -25,7 +25,7 @@ export default function computeStyleSheet(): any {
     lastTransactionContainer: {
       width: '50@s',
       height: '50@s',
-      marginTop: '-90@s',
+      marginTop: '-85@s',
       marginLeft: '45@s',
       marginBottom: '25@s',
       backgroundColor: 'transparent'
@@ -118,7 +118,7 @@ export default function computeStyleSheet(): any {
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      paddingTop: '10@s'
+      paddingTop: '20@s'
     },
     rowContainer: {
       flexDirection: 'row',

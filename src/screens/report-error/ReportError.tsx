@@ -6,12 +6,12 @@ import { Keyboard, ScrollView, Text, TextInput, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import ChargingStation, { Connector } from 'types/ChargingStation';
 
-import HeaderComponent from './../../components/header/HeaderComponent';
 import BaseProps from '../../types/BaseProps';
 import Constants from '../../utils/Constants';
 import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
+import HeaderComponent from './../../components/header/HeaderComponent';
 import computeStyleSheet from './ReportErrorStyles';
 
 export interface Props extends BaseProps {

@@ -46,7 +46,7 @@ export default function computeStyleSheet(): any {
       color: commonColor.textColor,
     },
     headerName: {
-      marginLeft: '10@s',
+      marginLeft: '5@s',
       fontSize: '20@s',
       fontWeight: 'bold',
       color: commonColor.headerTextColor

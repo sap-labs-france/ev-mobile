@@ -1,4 +1,3 @@
-import Utils from '../utils/Utils';
 import CentralServerProvider from './CentralServerProvider';
 
 export default class ProviderFactory {
@@ -12,7 +11,7 @@ export default class ProviderFactory {
     if (!ProviderFactory.centralServerProviderInstance) {
       const centralServerProviderInstance = new CentralServerProvider();
       await centralServerProviderInstance.initialize();
-      // 2nd IF because both App.tsx and BaseScreen.tsx pass the first IF qnd only the App.tsx that will set other props must win
+      // 2nd IF because both App.tsx and BaseScreen.tsx pass the first IF and only the App.tsx that will set other props must win
       if (!ProviderFactory.centralServerProviderInstance) {
         ProviderFactory.centralServerProviderInstance = centralServerProviderInstance;
       }

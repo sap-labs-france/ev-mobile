@@ -14,7 +14,7 @@ export default {
   borderColor: palette.light,
   textColor: palette.light,
   placeholderTextColor: palette.disabledDark,
-  inverseTextColor: palette.light,
+  inverseTextColor: palette.dark,
   subTextColor: palette.disabledDark,
   buttonBg: palette.darkLight,
   touchableBackgroundColor: 'rgba(255,255,255,0.1)',
