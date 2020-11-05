@@ -3,6 +3,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
@@ -37,13 +38,13 @@
                  android:value="e-Mobility"/>
       <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_description"
                  android:value="e-Mobility notification channel"/>
-    
+
       <service android:name="io.invertase.firebase.messaging.RNFirebaseMessagingService">
         <intent-filter>
             <action android:name="com.google.firebase.MESSAGING_EVENT" />
         </intent-filter>
       </service>
-      
+
       <service android:name="io.invertase.firebase.messaging.RNFirebaseBackgroundMessagingService" />
 
       <activity

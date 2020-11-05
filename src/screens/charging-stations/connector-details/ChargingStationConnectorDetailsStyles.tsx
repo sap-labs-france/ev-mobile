@@ -99,7 +99,7 @@ export default function computeStyleSheet(): any {
     },
     reportErrorIcon: {
       fontSize: '25@s',
-      color: commonColor.textColor,
+      color: commonColor.brandDanger,
     },
     startTransactionIcon: {
       color: commonColor.success

@@ -2,22 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>QR code camera</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-			<string>comgooglemaps</string>
-			<string>citymapper</string>
-			<string>uber</string>
-			<string>lyft</string>
-			<string>transit</string>
-			<string>truckmap</string>
-			<string>waze</string>
-			<string>yandexnavi</string>
-			<string>moovit</string>
-			<string>yandextaxi</string>
-			<string>yandexmaps</string>
-			<string>kakaomap</string>
-			<string>szn-mapy</string>
-			<string>mapsme</string>
+		<string>comgooglemaps</string>
+		<string>citymapper</string>
+		<string>uber</string>
+		<string>lyft</string>
+		<string>transit</string>
+		<string>truckmap</string>
+		<string>waze</string>
+		<string>yandexnavi</string>
+		<string>moovit</string>
+		<string>yandextaxi</string>
+		<string>yandexmaps</string>
+		<string>kakaomap</string>
+		<string>szn-mapy</string>
+		<string>mapsme</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>

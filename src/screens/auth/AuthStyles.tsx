@@ -1,4 +1,5 @@
 import deepmerge from 'deepmerge';
+import { white } from 'react-native-paper/lib/typescript/src/styles/colors';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
@@ -92,6 +93,23 @@ export default function computeStyleSheet(): any {
     },
     footer: {
       backgroundColor: commonColor.containerBgColor
+    },
+    qrCodeContainer: {
+      marginBottom: '15@s',
+      marginLeft: '15@s',
+      width: '55@s'
+    },
+    qrCodeButton: {
+      width: '50@s',
+      height: '50@s',
+      borderRadius: '35@s',
+      backgroundColor: commonColor.buttonBg,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    qrCodeIcon: {
+      fontSize: '25@s',
+      color: commonColor.textColor,
     }
   });
   const portraitStyles = {};

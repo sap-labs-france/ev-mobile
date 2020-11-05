@@ -50,7 +50,8 @@
     "lastChangedBy": "Modifié par",
     "mobile": "Mobile",
     "errorTitle": "Titre de l'erreur",
-    "errorDescription": "Description"
+    "errorDescription": "Description",
+    "scanQrCodeSuccess": "Le QR code à bien était scanner"
   },
   "sidebar": {
     "home": "Home",
@@ -126,7 +127,19 @@
     "mandatoryErrorSubject": "Le sujet est obligatoire",
     "mandatoryErrorDescription": "La description est obligatoire",
     "reportErrorSuccess": "L'erreur a été envoyée avec succès",
-    "reportErrorFailed": "Impossible d'envoyer l'erreur",
+    "reportErrorFailed": "Impossible d'envoyer l'erreur"
+  },
+  "qrCode": {
+    "wrongOrganizationTitle": "Changement d'Organisation",
+    "wrongOrganizationMessage": "La borne que vous essayez d'accéder n'est pas dans votre organisation voulez-vous changer pour {{tenantName}}?",
+    "endpointError": "L'endpoint {{endpoint}} n'existe pas",
+    "unknownOrganizationTitle": "Organisation inconnu",
+    "unknownOrganizationMessage": "Vous avez scannez une organisation inconnu {{tenantName}}, voulez vous la créer et vous y connectez ?",
+    "unknownChargingStation": "La borne {{chargingStationID}} est inconnu",
+    "unknownConnector": "Le connecteur {{connectorID}} est inconnu",
+    "scanTenantQrCodeTitle": "Scan Tenant Qr Code",
+    "scanChargingStationQrCodeTitle": "Scan Borne Qr Code",
+    "tenantNameError": "Wrong Tenant Name"
   },
   "users": {
     "userUnexpectedError": "Impossible de lire l'utilisateur"

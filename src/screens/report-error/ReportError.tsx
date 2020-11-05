@@ -264,7 +264,7 @@ export default class ReportError extends BaseScreen<Props, State> {
                 ))
               }
               <View style={style.buttonContainer}>
-                <Button style={style.sendButton} block={true} onPress={() => this.sendErrorReport()} primary={true}>
+                <Button style={style.sendButton} block={true} onPress={() => this.sendErrorReport()} danger={true}>
                   <Text style={style.sendTextButton}>{I18n.t('general.send')}</Text>
                 </Button>
               </View>

@@ -1,5 +1,4 @@
 import deepmerge from 'deepmerge';
-import { Platform } from 'react-native';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
 import { ScaledSheet } from 'react-native-size-matters';
 
@@ -25,7 +24,7 @@ export default function computeStyleSheet(): any {
     },
     reportErrorIcon: {
       fontSize: '100@s',
-      color: commonColor.textColor
+      color: commonColor.brandDanger
     },
     formContainer: {
       flex: 3,
