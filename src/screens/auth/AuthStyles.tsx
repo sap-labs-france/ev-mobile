@@ -97,7 +97,7 @@ export default function computeStyleSheet(): any {
     qrCodeContainer: {
       marginBottom: '15@s',
       marginLeft: '15@s',
-      width: '55@s'
+      width: '50@s'
     },
     qrCodeButton: {
       width: '50@s',
@@ -113,7 +113,11 @@ export default function computeStyleSheet(): any {
     }
   });
   const portraitStyles = {};
-  const landscapeStyles = {};
+  const landscapeStyles = {
+    qrCodeContainer: {
+      marginTop: '5%',
+    }
+  };
   return ResponsiveStylesheet.createOriented({
     landscape: deepmerge(commonStyles, landscapeStyles),
     portrait: deepmerge(commonStyles, portraitStyles)

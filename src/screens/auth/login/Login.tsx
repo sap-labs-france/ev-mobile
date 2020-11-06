@@ -555,38 +555,38 @@ export default class Login extends BaseScreen<Props, State> {
                   )}
                 </Form>
               </KeyboardAvoidingView>
+              <Fab
+                active={this.state.activeFab}
+                direction='up'
+                style={style.fab}
+                position='bottomRight'
+                onPress={() => this.setState({ activeFab: !this.state.activeFab })}>
+                <Icon name='business' style={style.fabIcon} />
+                <Button style={style.restoreOrgButton}
+                  onPress={() => {
+                    this.restoreTenants();
+                  }}>
+                  <Icon type={'MaterialIcons'} name='settings-backup-restore' />
+                </Button>
+                <Button style={style.deleteOrgButton}
+                  onPress={() => {
+                    this.deleteTenant(this.state.tenantSubDomain);
+                  }}>
+                  <Icon type={'MaterialIcons'} name='remove' />
+                </Button>
+                <Button style={style.createOrgButton}
+                  onPress={() => {
+                    this.setState({ createTenantVisible: true })
+                  }}>
+                  <Icon type={'MaterialIcons'} name='add' />
+                </Button>
+              </Fab>
+              <TouchableOpacity onPress={() => this.setState({ qrCodeVisible: true })} style={style.qrCodeContainer}>
+                  <View style={style.qrCodeButton}>
+                    <Icon style={style.qrCodeIcon} type='AntDesign' name='qrcode'/>
+                  </View>
+              </TouchableOpacity>
             </ScrollView>
-            <Fab
-              active={this.state.activeFab}
-              direction='up'
-              style={style.fab}
-              position='bottomRight'
-              onPress={() => this.setState({ activeFab: !this.state.activeFab })}>
-              <Icon name='business' style={style.fabIcon} />
-              <Button style={style.restoreOrgButton}
-                onPress={() => {
-                  this.restoreTenants();
-                }}>
-                <Icon type={'MaterialIcons'} name='settings-backup-restore' />
-              </Button>
-              <Button style={style.deleteOrgButton}
-                onPress={() => {
-                  this.deleteTenant(this.state.tenantSubDomain);
-                }}>
-                <Icon type={'MaterialIcons'} name='remove' />
-              </Button>
-              <Button style={style.createOrgButton}
-                onPress={() => {
-                  this.setState({ createTenantVisible: true })
-                }}>
-                <Icon type={'MaterialIcons'} name='add' />
-              </Button>
-            </Fab>
-            <TouchableOpacity onPress={() => this.setState({ qrCodeVisible: true })} style={style.qrCodeContainer}>
-                <View style={style.qrCodeButton}>
-                  <Icon style={style.qrCodeIcon} type='AntDesign' name='qrcode'/>
-                </View>
-            </TouchableOpacity>
           </View>
         )}
       </Animatable.View>
