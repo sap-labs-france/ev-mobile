@@ -599,8 +599,7 @@ export default class CentralServerProvider {
     params.ConnectorId = connectorId + '';
     params.Limit = '1';
     params.Skip = '0';
-    params.SortFields = 'timestamp';
-    params.SortDirs = '-1';
+    params.SortFields = '-timestamp';
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CHARGING_STATION_TRANSACTIONS}`, {
       headers: this.buildSecuredHeaders(),
