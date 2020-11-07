@@ -325,7 +325,7 @@ export default class CentralServerProvider {
     // Get the Tenant
     const tenant = await this.getTenant(params.tenantSubDomain);
     // Call
-    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_END_USER_LICENSE_AGREEMENT}/${ServerAction.REST_CHECK}`, {
+    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_END_USER_LICENSE_AGREEMENT_CHECK}`, {
       headers: this.buildHeaders(),
       params: {
         Email: params.email,
