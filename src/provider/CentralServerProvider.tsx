@@ -313,7 +313,7 @@ export default class CentralServerProvider {
     // Get the Tenant
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
-    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/eula`, {
+    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/${ServerAction.END_USER_LICENSE_AGREEMENT}`, {
       headers: this.buildHeaders(),
       params,
     });
@@ -325,7 +325,7 @@ export default class CentralServerProvider {
     // Get the Tenant
     const tenant = await this.getTenant(params.tenantSubDomain);
     // Call
-    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/eula/${ServerAction.REST_CHECK}`, {
+    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_END_USER_LICENSE_AGREEMENT}/${ServerAction.REST_CHECK}`, {
       headers: this.buildHeaders(),
       params: {
         Email: params.email,
