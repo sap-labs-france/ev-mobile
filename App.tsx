@@ -5,13 +5,14 @@ import { Appearance, AppearanceProvider } from 'react-native-appearance';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Theme } from 'react-native-paper/lib/typescript/src/types';
 import SplashScreen from 'react-native-splash-screen';
+import BaseProps from 'types/BaseProps';
 
 import App from './src/App';
 import buildTheme from './src/custom-theme';
 import ThemeManager from './src/custom-theme/ThemeManager';
 import { ThemeType } from './src/types/Theme';
 
-export interface Props {
+export interface Props extends BaseProps {
 }
 
 interface State {

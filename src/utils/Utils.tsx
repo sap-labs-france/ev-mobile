@@ -88,16 +88,16 @@ export default class Utils {
     return result;
   }
 
-  public static convertToDate(date: any): Date {
+  public static convertToDate(value: any): Date {
     // Check
-    if (!date) {
+    if (!value) {
       return null;
     }
     // Check Type
-    if (!(date instanceof Date)) {
-      return new Date(date);
+    if (!(value instanceof Date)) {
+      return new Date(value);
     }
-    return date;
+    return value;
   }
 
   public static formatDistance(distanceMeters: number): string {
@@ -489,11 +489,11 @@ export default class Utils {
     return JSON.parse(JSON.stringify(object));
   }
 
-  public static isNullOrEmptyString(value: string) {
+  public static isNullOrEmptyString(value: string): boolean {
     if (!value) {
       return true;
     }
-    if (value.length === 0) {
+    if (value === null || value.length === 0) {
       return true;
     }
     return false;
