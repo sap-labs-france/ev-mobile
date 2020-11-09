@@ -163,7 +163,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
-            <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
+            <AuthHeader navigation={this.props.navigation} tenantName={tenantName} />
             <Form style={formStyle.form}>
               <Item inlineLabel={true} style={formStyle.inputGroup}>
                 <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
@@ -221,10 +221,10 @@ export default class ResetPassword extends BaseScreen<Props, State> {
               {loading ? (
                 <Spinner style={formStyle.spinner} color='grey' />
               ) : (
-                <Button primary={true} block={true} style={formStyle.button} onPress={() => this.resetPassword()}>
-                  <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.resetPassword')}</Text>
-                </Button>
-              )}
+                  <Button primary={true} block={true} style={formStyle.button} onPress={() => this.resetPassword()}>
+                    <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.resetPassword')}</Text>
+                  </Button>
+                )}
             </Form>
           </KeyboardAvoidingView>
         </ScrollView>

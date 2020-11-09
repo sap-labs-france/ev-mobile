@@ -59,9 +59,9 @@ static void InitializeFlipper(UIApplication *application) {
      [UIUserNotificationSettings settingsForTypes:allNotificationTypes categories:nil];
      [application registerUserNotificationSettings:settings];
    }
-  
+
   [application registerForRemoteNotifications];
-  
+
   [[FIRInstanceID instanceID] instanceIDWithHandler:^(FIRInstanceIDResult * _Nullable result, NSError * _Nullable error) {
     if (error != nil) {
       NSLog(@"Error fetching remote instance ID: %@", error);

@@ -232,51 +232,51 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         {loading ? (
           <Spinner style={style.spinner} color='grey' />
         ) : (
-          <View style={style.content}>
-            <SimpleSearchComponent
-              onChange={(searchText) => this.search(searchText)}
-              navigation={navigation}
-            />
-            <SitesFilters
-              initialFilters={initialFilters} locationEnabled={this.locationEnabled}
-              onFilterChanged={(newFilters: SitesFiltersDef) => this.filterChanged(newFilters)}
-              ref={(sitesFilters: SitesFilters) => this.setScreenFilters(sitesFilters)}
-            />
-            {mapIsDisplayed ?
-              <MapView
-                style={style.map}
-                region={this.currentRegion}
-                onRegionChange={this.onMapRegionChange}
-              >
-                {this.state.sites.map((site: Site) => {
-                  if (Utils.containsAddressGPSCoordinates(site.address)) {
-                    return (
-                      <Marker
-                        key={site.id}
-                        coordinate={{ longitude: site.address.coordinates[0], latitude: site.address.coordinates[1] }}
-                        title={site.name}
-                        description={site.name}
-                      />
-                    );
-                  }
-                  return undefined;
-                })}
-              </MapView>
-            :
-              <FlatList
-                data={this.state.sites}
-                renderItem={({ item }) => <SiteComponent site={item} navigation={this.props.navigation} />}
-                keyExtractor={(item) => item.id}
-                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-                onEndReached={this.onEndScroll}
-                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('sites.noSites')} />}
-                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+            <View style={style.content}>
+              <SimpleSearchComponent
+                onChange={(searchText) => this.search(searchText)}
+                navigation={navigation}
               />
-            }
-          </View>
-        )
-      }
+              <SitesFilters
+                initialFilters={initialFilters} locationEnabled={this.locationEnabled}
+                onFilterChanged={(newFilters: SitesFiltersDef) => this.filterChanged(newFilters)}
+                ref={(sitesFilters: SitesFilters) => this.setScreenFilters(sitesFilters)}
+              />
+              {mapIsDisplayed ?
+                <MapView
+                  style={style.map}
+                  region={this.currentRegion}
+                  onRegionChange={this.onMapRegionChange}
+                >
+                  {this.state.sites.map((site: Site) => {
+                    if (Utils.containsAddressGPSCoordinates(site.address)) {
+                      return (
+                        <Marker
+                          key={site.id}
+                          coordinate={{ longitude: site.address.coordinates[0], latitude: site.address.coordinates[1] }}
+                          title={site.name}
+                          description={site.name}
+                        />
+                      );
+                    }
+                    return undefined;
+                  })}
+                </MapView>
+                :
+                <FlatList
+                  data={this.state.sites}
+                  renderItem={({ item }) => <SiteComponent site={item} navigation={this.props.navigation} />}
+                  keyExtractor={(item) => item.id}
+                  refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+                  onEndReached={this.onEndScroll}
+                  onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+                  ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('sites.noSites')} />}
+                  ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+                />
+              }
+            </View>
+          )
+        }
       </Container>
     );
   }

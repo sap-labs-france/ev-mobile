@@ -92,7 +92,7 @@ export default class CentralServerProvider {
       // Try to decode the token
       try {
         // Decode the token
-        this.decodedToken = jwtDecode(this.token);
+        this.decodedToken = jwtDecode(this.token) as UserToken;
         // Build Security Provider
         this.securityProvider = new SecurityProvider(this.decodedToken);
       } catch (error) { }
@@ -176,7 +176,7 @@ export default class CentralServerProvider {
     if (this.token) {
       try {
         // Try to decode the token
-        this.decodedToken = jwtDecode(this.token);
+        this.decodedToken = jwtDecode(this.token) as UserToken;
       } catch (error) {
         return false;
       }
@@ -276,7 +276,7 @@ export default class CentralServerProvider {
     this.email = email;
     this.password = password;
     this.token = result.data.token;
-    this.decodedToken = jwtDecode(this.token);
+    this.decodedToken = jwtDecode(this.token) as UserToken;
     this.locale = this.decodedToken.locale;
     this.currency = this.decodedToken.currency;
     this.tenant = tenant;
@@ -599,8 +599,7 @@ export default class CentralServerProvider {
     params.ConnectorId = connectorId + '';
     params.Limit = '1';
     params.Skip = '0';
-    params.SortFields = 'timestamp';
-    params.SortDirs = '-1';
+    params.SortFields = '-timestamp';
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CHARGING_STATION_TRANSACTIONS}`, {
       headers: this.buildSecuredHeaders(),

@@ -1,4 +1,4 @@
-import { CommonActions, StackActions } from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Button, Footer, Form, Icon, Item, Left, Spinner, Text } from 'native-base';
 import React from 'react';
@@ -6,7 +6,6 @@ import { KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import computeFormStyleSheet from '../../../FormStyles';
-import commonColor from '../../../custom-theme/customCommonColor';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
@@ -150,7 +149,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
-            <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
+            <AuthHeader navigation={this.props.navigation} tenantName={tenantName} />
             <Form style={formStyle.form}>
               <Item inlineLabel={true} style={formStyle.inputGroup}>
                 <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
@@ -175,12 +174,12 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               {loading || !captcha ? (
-                <Spinner style={formStyle.spinner} color='grey'/>
+                <Spinner style={formStyle.spinner} color='grey' />
               ) : (
-                <Button primary={true} block={true} style={formStyle.button} onPress={() => this.retrievePassword()}>
-                  <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.retrievePassword')}</Text>
-                </Button>
-              )}
+                  <Button primary={true} block={true} style={formStyle.button} onPress={() => this.retrievePassword()}>
+                    <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.retrievePassword')}</Text>
+                  </Button>
+                )}
             </Form>
           </KeyboardAvoidingView>
           {captchaSiteKey && captchaBaseUrl && (
