@@ -10,6 +10,7 @@
 		00E356F31AD99517003FC87E /* eMobilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* eMobilityTests.m */; };
 		10ECAF6A2D336A5FC05EB568 /* libPods-eMobility.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A35EA780547AC04E959F7BDF /* libPods-eMobility.a */; };
 		1CC819AD6A2FC2A592998B9F /* libPods-eMobility-eMobilityTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCEBE4FF447AEF6E267D2CE /* libPods-eMobility-eMobilityTests.a */; };
+		BC900CFE2559AABB00CF7C99 /* eMobility.plist in Resources */ = {isa = PBXBuildFile; fileRef = BC900CFD2559AABB00CF7C99 /* eMobility.plist */; };
 		D2336F5B23510E6F00A1BCB0 /* CustomChartDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531074D0230782CA00116552 /* CustomChartDateFormatter.swift */; };
 		D2336F5C23510E6F00A1BCB0 /* ScatterDataExtract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531074A2230782C500116552 /* ScatterDataExtract.swift */; };
 		D2336F5D23510E6F00A1BCB0 /* RNLineChartManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 531074CF230782CA00116552 /* RNLineChartManagerBridge.m */; };
@@ -80,7 +81,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* eMobilityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = eMobilityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* eMobilityTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = eMobilityTests.m; sourceTree = "<group>"; };
@@ -161,8 +161,8 @@
 		A35EA780547AC04E959F7BDF /* libPods-eMobility.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eMobility.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9FD426B458C973184907047 /* Pods-eMobility.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility.release.xcconfig"; path = "Target Support Files/Pods-eMobility/Pods-eMobility.release.xcconfig"; sourceTree = "<group>"; };
 		AF048C93F344CF3D162B4940 /* Pods-eMobility-eMobilityTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility-eMobilityTests.debug.xcconfig"; path = "Target Support Files/Pods-eMobility-eMobilityTests/Pods-eMobility-eMobilityTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BC900CFD2559AABB00CF7C99 /* eMobility.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = eMobility.plist; sourceTree = "<group>"; };
 		D2336FA623510E6F00A1BCB0 /* eMobility.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eMobility.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D2336FA723510E6F00A1BCB0 /* eMobility.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = eMobility.plist; path = "/Users/i030367/Documents/charge-angels/ev-mobile/ios/eMobility.plist"; sourceTree = "<absolute>"; };
 		D263A5F0F24DAF5A88D51D16 /* Pods-eMobility-eMobilityTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eMobility-eMobilityTests.release.xcconfig"; path = "Target Support Files/Pods-eMobility-eMobilityTests/Pods-eMobility-eMobilityTests.release.xcconfig"; sourceTree = "<group>"; };
 		D2D3C4392469AFDC00D6DECE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D2F07E6724CB15C300BD3DD2 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = eMobility/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -212,7 +212,6 @@
 			children = (
 				D2F07E6724CB15C300BD3DD2 /* LaunchScreen.storyboard */,
 				D2D3C4392469AFDC00D6DECE /* GoogleService-Info.plist */,
-				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -317,6 +316,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				BC900CFD2559AABB00CF7C99 /* eMobility.plist */,
 				53DD4F672305FDBB00044E75 /* RNCharts */,
 				13B07FAE1A68108700A75B9A /* eMobility */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -324,7 +324,6 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				C4E99EF1EB30928FD26DDEBC /* Pods */,
-				D2336FA723510E6F00A1BCB0 /* eMobility.plist */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -447,6 +446,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2D3C43A2469AFDC00D6DECE /* GoogleService-Info.plist in Resources */,
+				BC900CFE2559AABB00CF7C99 /* eMobility.plist in Resources */,
 				D2336F9523510E6F00A1BCB0 /* bar in Resources */,
 				D2336F9623510E6F00A1BCB0 /* line in Resources */,
 				D2336F9723510E6F00A1BCB0 /* formatters in Resources */,

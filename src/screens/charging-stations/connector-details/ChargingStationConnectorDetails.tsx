@@ -7,9 +7,9 @@ import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'reac
 import noPhotoActive from '../../../../assets/no-photo.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
-import I18nManager from '../../../I18n/I18nManager';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
+import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
@@ -77,6 +77,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
+  }
+
+  public async componentDidMount() {
+    await super.componentDidMount();
+    const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null);
+    if (startTransaction) {
+      this.startTransactionConfirm();
+    }
   }
 
   public getSiteImage = async (siteID: string): Promise<string> => {

@@ -128,6 +128,19 @@
     "reportErrorSuccess": "O erro foi relatado com sucesso",
     "reportErrorFailed": "Não é possível comunicar o erro"
   },
+  "qrCode": {
+    "wrongOrganizationTitle": "Change Organization",
+    "wrongOrganizationMessage": "The charging Station you try to access is not on your organization do you want to switch to {{tenantName}}?",
+    "unknownEndpoint": "{{endpoint}} endpoint doesn't exist",
+    "unknownOrganizationTitle": "Unknown Organization",
+    "unknownOrganizationMessage": "You scanned an unknown organization {{tenantName}}, do you want to create and log into it?",
+    "unknownChargingStation": "Unknown Charging Station {{chargingStationID}}",
+    "unknownConnector": "Unknown Connector {{connectorID}}",
+    "scanTenantQrCodeTitle": "Scan Tenant",
+    "scanChargingStationQrCodeTitle": "Scan Charging Station",
+    "tenantNameError": "Wrong Tenant Name",
+    "endpointError": "Wrong endpoint"
+  },
   "users": {
     "userUnexpectedError": "Não posso ler os utilizadores"
   },

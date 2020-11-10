@@ -3,6 +3,7 @@ import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Text } from 'native-base';
 import React from 'react';
 import { Alert, BackHandler, TouchableOpacity, View } from 'react-native';
+import Orientation from 'react-native-orientation-locker';
 import ChargingStation from 'types/ChargingStation';
 import { TenantConnection } from 'types/Tenant';
 import Transaction from 'types/Transaction';
@@ -66,17 +67,12 @@ export default class Home extends BaseScreen<Props, State> {
   }
 
   public onBack = (): boolean => {
-    //TODO check back
-    if (this.state.qrCodeVisible === true) {
-      this.setState({ qrCodeVisible: false});
-    } else {
-      Alert.alert(
-        I18n.t('general.exitApp'),
-        I18n.t('general.exitAppConfirm'),
-        [{ text: I18n.t('general.no'), style: 'cancel' }, { text: I18n.t('general.yes'), onPress: () => BackHandler.exitApp() }],
-        { cancelable: false }
-      );
-    }
+    Alert.alert(
+      I18n.t('general.exitApp'),
+      I18n.t('general.exitAppConfirm'),
+      [{ text: I18n.t('general.no'), style: 'cancel' }, { text: I18n.t('general.yes'), onPress: () => BackHandler.exitApp() }],
+      { cancelable: false }
+    );
     return true;
   }
 
@@ -125,6 +121,7 @@ export default class Home extends BaseScreen<Props, State> {
             tenants={this.tenants}
             tenantSubDomain={this.tenantSubDomain}
             close={() => {
+              Orientation.unlockAllOrientations();
               this.setState({qrCodeVisible: false})
             }}
           />

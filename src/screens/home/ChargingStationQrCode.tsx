@@ -1,9 +1,10 @@
 import { DrawerActions, StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { tail } from 'lodash';
 import { Container } from 'native-base';
 import React from 'react';
 import { Alert } from 'react-native';
+import base64 from 'react-native-base64';
+import Orientation from 'react-native-orientation-locker';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -40,6 +41,11 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
     }
   }
 
+  public async componentDidMount() {
+    await super.componentDidMount();
+    Orientation.lockToPortrait();
+  }
+
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
   }
@@ -48,7 +54,6 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
     // Logoff
     this.centralServerProvider.logoff();
     // Navigate to login
-    //TODO: Find an another solution than initialParams
     this.props.navigation.dispatch(
       StackActions.replace(
         'AuthNavigator', {
@@ -78,8 +83,8 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
 
   public async checkTenantQrCodeData(chargingStationQRCode: ChargingStationQRCode): Promise<boolean> {
     const tenant = await this.centralServerProvider.getTenant(chargingStationQRCode.tenantSubDomain);
+    const endpointCloud = this.tenantEndpointClouds.find((tenantEndpointCloud) => tenantEndpointCloud.id === chargingStationQRCode.endpoint);
     if (chargingStationQRCode.tenantSubDomain !== this.props.tenantSubDomain) {
-      const endpointCloud = this.tenantEndpointClouds.find((tenantEndpointCloud) => tenantEndpointCloud.id === chargingStationQRCode.endpoint);
       // Check tenant exist
       if (tenant) {
         await Alert.alert(
@@ -94,7 +99,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
         return false;
       } else {
         if (!endpointCloud) {
-          Message.showError(I18n.t('qrCode.endpointError', {endpoint: chargingStationQRCode.endpoint}));
+          Message.showError(I18n.t('qrCode.unknownEndpoint', {endpoint: chargingStationQRCode.endpoint}));
           return false;
         }
         await Alert.alert(
@@ -111,6 +116,10 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
     }
     if (tenant.name !== chargingStationQRCode.tenantName) {
       Message.showError(I18n.t('qrCode.tenantNameError'));
+      return false;
+    }
+    if (tenant.endpoint !== endpointCloud.endpoint) {
+      Message.showError(I18n.t('qrCode.endpointError'));
       return false;
     }
     return true;
@@ -136,22 +145,23 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
       Message.showError(I18n.t('qrCode.unknownChargingStation', {chargingStationID: chargingStationQRCode.chargingStationID}));
       return false;
     }
-    // Save data
     Message.showSuccess(I18n.t('general.scanQrCodeSuccess'));
     return true;
   }
 
-  public async checkQrCodeDataAndNavigate(qrCode: any) {
+  public async checkQrCodeDataAndNavigate(decodeData: string) {
     const { navigation } = this.props;
     // Check Qr code Data
-    const chargingStationQRCode: ChargingStationQRCode = JSON.parse(qrCode.data);
-    if (await this.checkQrCodeDataAndSave(chargingStationQRCode)) {
+    const chargingStationQrCode: ChargingStationQRCode  = JSON.parse(decodeData);
+
+    if (await this.checkQrCodeDataAndSave(chargingStationQrCode)) {
       // Navigate to connector
       navigation.navigate(
         'ChargingStationConnectorDetailsTabs', {
           params: {
-            chargingStationID: chargingStationQRCode.chargingStationID,
-            connectorID: chargingStationQRCode.connectorID
+            chargingStationID: chargingStationQrCode.chargingStationID,
+            connectorID: chargingStationQrCode.connectorID,
+            startTransaction: true
           },
           key: `${Utils.randomNumber()}`
         }
@@ -173,7 +183,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
         />
-        <QRCodeScanner showMarker={true} onRead={(data) => this.checkQrCodeDataAndNavigate(data)}/>
+        <QRCodeScanner cameraProps={{captureAudio: false}} showMarker={true} onRead={(qrCode) => this.checkQrCodeDataAndNavigate(base64.decode(qrCode.data))}/>
       </Container>
     );
   }

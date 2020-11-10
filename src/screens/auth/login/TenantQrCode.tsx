@@ -2,6 +2,8 @@ import I18n from 'i18n-js';
 import { Container } from 'native-base';
 import React from 'react';
 import { Alert } from 'react-native';
+import base64 from 'react-native-base64';
+import Orientation from 'react-native-orientation-locker';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -35,6 +37,11 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
     }
   }
 
+  public async componentDidMount() {
+    await super.componentDidMount();
+    Orientation.lockToPortrait();
+  }
+
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
   }
@@ -62,9 +69,9 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
       close(newTenant);
   }
 
-  public async checkQrCodeAndSelectOrCreateTenant(qrCode: any) {
+  public async checkQrCodeAndSelectOrCreateTenant(decodeData: string) {
     const { close } = this.props;
-    const tenantQRCode: TenantQRCode = JSON.parse(qrCode.data);
+    const tenantQRCode: TenantQRCode = JSON.parse(decodeData);
     const tenant = await this.centralServerProvider.getTenant(tenantQRCode.tenantSubDomain);
     if (!tenant) {
       await Alert.alert(
@@ -91,7 +98,7 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
           leftActionIcon={'navigate-before'}
           hideHomeAction={true}
         />
-        <QRCodeScanner showMarker={true} onRead={(qrCode) => this.checkQrCodeAndSelectOrCreateTenant(qrCode)}/>
+        <QRCodeScanner cameraProps={{captureAudio: false}} showMarker={true} onRead={(qrCode) => this.checkQrCodeAndSelectOrCreateTenant(base64.decode(qrCode.data))}/>
       </Container>
     );
   }

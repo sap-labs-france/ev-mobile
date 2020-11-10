@@ -1,5 +1,4 @@
 import deepmerge from 'deepmerge';
-import { white } from 'react-native-paper/lib/typescript/src/styles/colors';
 import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 

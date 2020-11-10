@@ -2,7 +2,7 @@ export default interface ChargingStationQRCode {
   tenantSubDomain: string;
   tenantName: string;
   tenantDescription: string;
-  endpoint: 'aws' | 'scf';
+  endpoint: string;
   chargingStationID: string;
   connectorID: number;
 }

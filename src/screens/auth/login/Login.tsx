@@ -5,6 +5,7 @@ import { TouchableOpacity } from 'react-native';
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, Platform, ScrollView, TextInput } from 'react-native';
 import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet';
 import * as Animatable from 'react-native-animatable';
+import Orientation from 'react-native-orientation-locker';
 import { scale } from 'react-native-size-matters';
 
 import computeFormStyleSheet from '../../../FormStyles';
@@ -305,6 +306,8 @@ export default class Login extends BaseScreen<Props, State> {
       } else {
         // Set Tenant
         this.setState({
+          email: null,
+          password: null,
           tenantSubDomain: this.tenants[buttonIndex].subdomain,
           tenantName: this.tenants[buttonIndex].name
         });
@@ -366,6 +369,7 @@ export default class Login extends BaseScreen<Props, State> {
         {qrCodeVisible ? (
           <CreateTenantQrCode tenants={this.tenants} navigation={navigation}
             close={(newTenant: TenantConnection) => {
+              Orientation.unlockAllOrientations();
               this.selectTenant(newTenant);
             }}
           />

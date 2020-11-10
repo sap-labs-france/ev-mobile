@@ -132,14 +132,15 @@
   "qrCode": {
     "wrongOrganizationTitle": "Changement d'Organisation",
     "wrongOrganizationMessage": "La borne que vous essayez d'accéder n'est pas dans votre organisation voulez-vous changer pour {{tenantName}}?",
-    "endpointError": "L'endpoint {{endpoint}} n'existe pas",
+    "unknownEndpoint": "L'endpoint {{endpoint}} n'existe pas",
     "unknownOrganizationTitle": "Organisation inconnu",
     "unknownOrganizationMessage": "Vous avez scannez une organisation inconnu {{tenantName}}, voulez vous la créer et vous y connectez ?",
     "unknownChargingStation": "La borne {{chargingStationID}} est inconnu",
     "unknownConnector": "Le connecteur {{connectorID}} est inconnu",
     "scanTenantQrCodeTitle": "Scan Tenant Qr Code",
     "scanChargingStationQrCodeTitle": "Scan Borne Qr Code",
-    "tenantNameError": "Wrong Tenant Name"
+    "tenantNameError": "Nom du Tenant n'est pas bon",
+    "endpointError": "Nom du Endpoint n'est pas bon"
   },
   "users": {
     "userUnexpectedError": "Impossible de lire l'utilisateur"
