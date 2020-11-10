@@ -10,12 +10,12 @@ target 'eMobility' do
 
   # Required by RNCharts
   pod 'SwiftyJSON', '5.0'
-  pod 'Charts', '3.3.0'
+  pod 'Charts', '3.6.0'
 
   # Add Firebase
-  pod 'Firebase/Core'
-  pod 'Firebase/Messaging'
-  pod 'Firebase/Analytics'
+  pod 'FirebaseCore'
+  pod 'FirebaseMessaging'
+  pod 'FirebaseAnalytics'
 
   # React Native Maps dependencies
   rn_maps_path = '../node_modules/react-native-maps'

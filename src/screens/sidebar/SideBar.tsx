@@ -23,6 +23,7 @@ interface State {
   userImage?: string;
   tenantName?: string;
   isComponentOrganizationActive?: boolean;
+  updateDate?: string;
 }
 
 export default class SideBar extends BaseScreen<Props, State> {
@@ -36,7 +37,8 @@ export default class SideBar extends BaseScreen<Props, State> {
       userID: '',
       userImage: '',
       tenantName: '',
-      isComponentOrganizationActive: false
+      isComponentOrganizationActive: false,
+      updateDate: ''
     };
   }
 
@@ -46,6 +48,7 @@ export default class SideBar extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     await super.componentDidMount();
+    await this.getUpdateDate();
     // Init User (delay it)
     this.refresh();
   }
@@ -53,6 +56,11 @@ export default class SideBar extends BaseScreen<Props, State> {
   public refresh = async () => {
     await this.getUserInfo();
   };
+
+  public async getUpdateDate() {
+    const lastUpdateTime = await DeviceInfo.getLastUpdateTime();
+    this.setState({ updateDate: (lastUpdateTime && lastUpdateTime !== -1) && moment(lastUpdateTime).format('LL') });
+  }
 
   public getUserInfo = async () => {
     // Logoff
@@ -97,7 +105,8 @@ export default class SideBar extends BaseScreen<Props, State> {
     // Navigate
     this.props.navigation.dispatch(
       DrawerActions.jumpTo(
-        container, {
+        container,
+        {
           name: screen,
           params,
           key: `${Utils.randomNumber()}`,
@@ -110,7 +119,7 @@ export default class SideBar extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const { navigation } = this.props;
-    const { userName, userImage, tenantName, isComponentOrganizationActive } = this.state;
+    const { userName, userImage, tenantName, isComponentOrganizationActive, updateDate } = this.state;
     return (
       <Container style={style.container}>
         <Content style={style.drawerContent}>
@@ -121,9 +130,7 @@ export default class SideBar extends BaseScreen<Props, State> {
             </Text>
             {/* <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`} (Beta)</Text> */}
             <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
-            {DeviceInfo.getLastUpdateTime() && (
-              <Text style={style.versionDate}>{moment(DeviceInfo.getLastUpdateTime()).format('LL')}</Text>
-            )}
+            {!Utils.isNullOrEmptyString(updateDate) && (<Text style={style.versionDate}>{updateDate}</Text>)}
           </Header>
           <View style={style.linkContainer}>
             <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('HomeNavigator', 'Home')}>

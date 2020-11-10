@@ -243,8 +243,9 @@ export default class Login extends BaseScreen<Props, State> {
       Alert.alert(
         I18n.t('general.deleteTenant'),
         I18n.t('general.deleteTenantConfirm', { tenantName: this.state.tenantName }), [
-          { text: I18n.t('general.no'), style: 'cancel' },
-          { text: I18n.t('general.yes'), onPress: async () => {
+        { text: I18n.t('general.no'), style: 'cancel' },
+        {
+          text: I18n.t('general.yes'), onPress: async () => {
             // Remove from list and Save
             for (let i = 0; i < this.tenants.length; i++) {
               const tenant = this.tenants[i];
@@ -273,8 +274,9 @@ export default class Login extends BaseScreen<Props, State> {
     Alert.alert(
       I18n.t('general.restoreTenants'),
       I18n.t('general.restoreTenantsConfirm'), [
-        { text: I18n.t('general.no'), style: 'cancel' },
-        { text: I18n.t('general.yes'), onPress: async () => {
+      { text: I18n.t('general.no'), style: 'cancel' },
+      {
+        text: I18n.t('general.yes'), onPress: async () => {
           // Remove from list and Save
           this.tenants = this.centralServerProvider.getInitialTenants();
           // Save
@@ -321,9 +323,9 @@ export default class Login extends BaseScreen<Props, State> {
     if (this.state.tenantSubDomain) {
       navigation.navigate(
         'SignUp', {
-          tenantSubDomain: this.state.tenantSubDomain,
-          email: this.state.email
-        }
+        tenantSubDomain: this.state.tenantSubDomain,
+        email: this.state.email
+      }
       );
     } else {
       Message.showError(I18n.t('authentication.mustSelectTenant'));

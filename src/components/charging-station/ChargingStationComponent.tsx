@@ -6,7 +6,7 @@ import { Alert, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import BaseProps from '../../types/BaseProps';
-import ChargingStation, { ConnectorCurrentLimitSource } from '../../types/ChargingStation';
+import ChargingStation from '../../types/ChargingStation';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './ChargingStationComponentStyles';
 import ChargingStationConnectorComponent from './connector/ChargingStationConnectorComponent';

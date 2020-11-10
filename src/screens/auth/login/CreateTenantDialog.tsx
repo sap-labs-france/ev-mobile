@@ -97,9 +97,9 @@ export default class Login extends React.Component<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     // Render
     return (
-      <Modal style ={modalStyle.modal} isVisible={true} onBackdropPress={() => this.props.close() }>
-        <View style ={modalStyle.modalContainer}>
-          <View style ={modalStyle.modalHeaderContainer}>
+      <Modal style={modalStyle.modal} isVisible={true} onBackdropPress={() => this.props.close()}>
+        <View style={modalStyle.modalContainer}>
+          <View style={modalStyle.modalHeaderContainer}>
             <Text style={modalStyle.modalTextHeader}>{I18n.t('authentication.createTenantTitle')}</Text>
           </View>
           <View style={modalStyle.modalContentContainer}>
@@ -171,13 +171,13 @@ export default class Login extends React.Component<Props, State> {
           </View>
           <View style={modalStyle.modalButtonsContainer}>
             <Button style={[modalStyle.modalButton]} full={true} danger={true}
-                onPress={() => {
-                  this.createTenant(this.state.newTenantSubDomain, this.state.newTenantName, this.state.newTenantEndpointCloud);
-                }} >
+              onPress={() => {
+                this.createTenant(this.state.newTenantSubDomain, this.state.newTenantName, this.state.newTenantEndpointCloud);
+              }} >
               <Text style={modalStyle.modalTextButton} uppercase={false}>{I18n.t('general.create')}</Text>
             </Button>
             <Button style={[modalStyle.modalButton]} full={true} light={true}
-                onPress={() => { this.props.close() }} >
+              onPress={() => { this.props.close() }} >
               <Text style={modalStyle.modalTextButton} uppercase={false}>{I18n.t('general.cancel')}</Text>
             </Button>
           </View>
