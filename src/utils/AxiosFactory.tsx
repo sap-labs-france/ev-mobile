@@ -14,4 +14,4 @@ export default class AxiosFactory {
     }
     return AxiosFactory.axiosInstance;
   }
-S}
+}
