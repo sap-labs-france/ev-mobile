@@ -19,4 +19,5 @@ export default interface UserToken {
   sitesAdmin?: string[];
   sitesOwner?: string[];
   activeComponents?: string[];
+  exp?: number;
 }

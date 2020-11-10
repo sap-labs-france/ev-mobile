@@ -1,4 +1,4 @@
-import { CommonActions, StackActions } from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Button, CheckBox, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
 import React from 'react';
@@ -221,7 +221,7 @@ export default class SignUp extends BaseScreen<Props, State> {
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
-            <AuthHeader navigation={this.props.navigation} tenantName={tenantName}/>
+            <AuthHeader navigation={this.props.navigation} tenantName={tenantName} />
             <Form style={formStyle.form}>
               <Item inlineLabel={true} style={formStyle.inputGroup}>
                 <Icon active={true} name='person' style={formStyle.inputIcon} />
@@ -365,12 +365,12 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               {loading || (!captcha && this.state.eula) ? (
-                <Spinner style={formStyle.spinner} color='grey'/>
+                <Spinner style={formStyle.spinner} color='grey' />
               ) : (
-                <Button primary={true} block={true} style={formStyle.button} onPress={() => this.signUp()}>
-                  <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.signUp')}</Text>
-                </Button>
-              )}
+                  <Button primary={true} block={true} style={formStyle.button} onPress={() => this.signUp()}>
+                    <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.signUp')}</Text>
+                  </Button>
+                )}
             </Form>
           </KeyboardAvoidingView>
           {this.state.eula && captchaSiteKey && captchaBaseUrl && (

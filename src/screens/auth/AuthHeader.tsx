@@ -41,7 +41,7 @@ export default class AuthHeader extends BaseScreen<Props, State> {
             <Text style={style.appTenant}>{I18n.t('authentication.tenantTitle')}</Text>
             <Text style={style.appTenantName}>{tenantName}</Text>
           </View>
-        :
+          :
           undefined
         }
       </View>

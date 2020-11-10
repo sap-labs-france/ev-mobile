@@ -81,7 +81,6 @@ export default class NotificationManager {
           case UserNotificationType.END_OF_SESSION:
           case UserNotificationType.SESSION_STARTED:
             break;
-
           // Force display notif
           default:
             await firebase.notifications().displayNotification(notification);
@@ -164,26 +163,23 @@ export default class NotificationManager {
     switch (notification.data.notificationType) {
       // End of Transaction
       case UserNotificationType.END_OF_SESSION:
-
-      this.navigator.dispatch(
-        DrawerActions.jumpTo(
-          'TransactionHistoryNavigator',
-          {
-            name: 'TransactionDetailsTabs',
-            key: `${Utils.randomNumber()}`,
-            params: {
-              transactionID: parseInt(notification.data.transactionId, 10)
+        this.navigator.dispatch(
+          DrawerActions.jumpTo(
+            'TransactionHistoryNavigator',
+            {
+              name: 'TransactionDetailsTabs',
+              key: `${Utils.randomNumber()}`,
+              params: {
+                transactionID: parseInt(notification.data.transactionId, 10)
+              }
             }
-          }
-        )
-      );
+          )
+        );
         break;
-
       // Session In Progress
       case UserNotificationType.SESSION_STARTED:
       case UserNotificationType.END_OF_CHARGE:
       case UserNotificationType.OPTIMAL_CHARGE_REACHED:
-
         this.navigator.dispatch(
           DrawerActions.jumpTo(
             'TransactionInProgressNavigator',
@@ -198,10 +194,8 @@ export default class NotificationManager {
           )
         );
         break;
-
       case UserNotificationType.CHARGING_STATION_STATUS_ERROR:
       case UserNotificationType.PREPARING_SESSION_NOT_STARTED:
-
         this.navigator.dispatch(
           DrawerActions.jumpTo(
             'ChargingStationsNavigator',
@@ -216,7 +210,6 @@ export default class NotificationManager {
           )
         );
         break;
-
       // Charger just connected
       case UserNotificationType.SESSION_NOT_STARTED_AFTER_AUTHORIZE:
       case UserNotificationType.CHARGING_STATION_REGISTERED:
@@ -234,7 +227,6 @@ export default class NotificationManager {
           )
         );
         break;
-
       // Go to Charger list
       case UserNotificationType.OFFLINE_CHARGING_STATION:
         // Navigate
@@ -245,7 +237,6 @@ export default class NotificationManager {
           })
         );
         break;
-
       // No need to navigate
       case UserNotificationType.UNKNOWN_USER_BADGED:
       case UserNotificationType.OCPI_PATCH_STATUS_ERROR:
