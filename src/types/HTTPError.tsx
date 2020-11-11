@@ -45,6 +45,8 @@ export enum HTTPError {
   NO_CAR_FOR_USER = 595,
 
   THREE_PHASE_CHARGER_ON_SINGLE_PHASE_SITE_AREA = 539,
+
+  CANNOT_ACQUIRE_LOCK = 510,
 }
 
 export enum HTTPAuthError {
