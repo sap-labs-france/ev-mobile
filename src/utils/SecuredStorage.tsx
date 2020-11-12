@@ -6,7 +6,7 @@ import { SecuredStorageKey } from '../types/SecuredStorageKeys';
 import Tenant, { TenantConnection } from '../types/Tenant';
 import { UserCredentials } from '../types/User';
 
-// Generate a new Id for persisting the navigation each time the app is launched first time
+// Generate a new Id for persisting the navigation each time the app is launched for the first time
 let navigationID: string = '' + new Date().getTime();
 if (__DEV__) {
   // Keep the same key for dev

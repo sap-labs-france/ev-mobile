@@ -3,8 +3,9 @@ import { EndpointCloud, TenantConnection } from 'types/Tenant';
 
 export default class Configuration {
   public static readonly SCP_REST_ENDPOINT_PROD = 'https://sap-ev-rest-server.cfapps.eu10.hana.ondemand.com';
-  public static readonly SCP_REST_ENDPOINT_QA = 'https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com';
   public static readonly AWS_REST_ENDPOINT_PROD = 'https://rest.e-mobility-group.com';
+  public static readonly SCP_REST_ENDPOINT_QA = 'https://sap-ev-rest-server-qa.cfapps.eu10.hana.ondemand.com';
+  public static readonly LOCALHOST_REST_ENDPOINT_QA = 'http://localhost:8090';
 
   public static readonly SCP_CAPTCHA_BASE_URL: string = 'https://evse.cfapps.eu10.hana.ondemand.com';
   public static readonly SCP_CAPTCHA_SITE_KEY: string = '6Lcmr6EUAAAAAIyn3LasUzk-0MpH2R1COXFYsxNw';
@@ -17,6 +18,7 @@ export default class Configuration {
   public static readonly ENDPOINT_CLOUDS_QA: EndpointCloud[] = [
     ...Configuration.ENDPOINT_CLOUDS_PROD,
     { id: 'scpqa', name: 'SAP Cloud Platform QA', endpoint: Configuration.SCP_REST_ENDPOINT_QA },
+    { id: 'localhost', name: 'Localhost QA', endpoint: Configuration.LOCALHOST_REST_ENDPOINT_QA },
   ];
 
   public static readonly DEFAULT_TENANTS_LIST_PROD: TenantConnection[] = [
@@ -34,6 +36,7 @@ export default class Configuration {
   ];
 
   public static readonly DEFAULT_TENANTS_LIST_QA: TenantConnection[] = [
+    { subdomain: 'slf', name: 'SAP Labs France (localhost)', endpoint: Configuration.LOCALHOST_REST_ENDPOINT_QA },
     { subdomain: 'testcharger', name: 'SAP Labs New Charging Stations Tests', endpoint: Configuration.SCP_REST_ENDPOINT_QA },
     { subdomain: 'testperf', name: 'SAP Labs Performance Tests', endpoint: Configuration.SCP_REST_ENDPOINT_QA },
     { subdomain: 'demopricing', name: 'SAP Labs Demo for Pricing', endpoint: Configuration.SCP_REST_ENDPOINT_QA },
@@ -44,13 +47,13 @@ export default class Configuration {
     { subdomain: 'sapfrancecah', name: 'SAP France (charge@home) (prod)', endpoint: Configuration.SCP_REST_ENDPOINT_PROD },
   ];
 
-  public static isServerLocalePreferred: boolean = true;
-
   public static ENDPOINTS_PROD: KeyValue[] = [
-    { key: 'general.enpoint_scp_prod', value: Configuration.SCP_REST_ENDPOINT_PROD },
+    { key: 'general.endpoint_scp_prod', value: Configuration.SCP_REST_ENDPOINT_PROD },
   ];
 
   public static ENDPOINTS_QA: KeyValue[] = [
-    { key: 'general.enpoint_scp_qa', value: Configuration.SCP_REST_ENDPOINT_QA },
+    { key: 'general.endpoint_scp_qa', value: Configuration.SCP_REST_ENDPOINT_QA },
   ];
+
+  public static isServerLocalePreferred: boolean = true;
 }
