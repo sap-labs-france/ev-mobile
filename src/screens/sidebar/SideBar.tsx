@@ -96,7 +96,7 @@ export default class SideBar extends BaseScreen<Props, State> {
   public async logoff() {
     // Logoff
     this.centralServerProvider.setAutoLoginDisabled(true);
-    this.centralServerProvider.logoff();
+    await this.centralServerProvider.logoff();
     // Back to login
     this.props.navigation.navigate('AuthNavigator');
   }

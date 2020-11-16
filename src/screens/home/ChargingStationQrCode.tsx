@@ -52,7 +52,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
 
   public async logoff(tenant: TenantConnection) {
     // Logoff
-    this.centralServerProvider.logoff();
+    await this.centralServerProvider.logoff();
     // Navigate to login
     this.props.navigation.dispatch(
       StackActions.replace(

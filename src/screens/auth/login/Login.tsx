@@ -121,7 +121,20 @@ export default class Login extends BaseScreen<Props, State> {
         name: this.state.tenantNameQrCode,
         endpoint: this.state.endpointQrCode
       };
-      this.selectTenant(tenant);
+      await this.selectTenant(tenant);
+      if (this.state.email && this.state.password && this.state.tenantSubDomain) {
+        try {
+          // Check EULA
+          const result = await this.centralServerProvider.checkEndUserLicenseAgreement(
+            { email: this.state.email, tenantSubDomain: tenant.subdomain });
+          // Try to login
+          if (result.eulaAccepted) {
+            await this.setState({ eula: true }, () => this.login());
+          }
+        } catch (error) {
+          // Do nothing: user must log on
+        }
+      }
     }
     // Load User data
     if (!this.state.email || !this.state.tenantSubDomain) {
@@ -144,7 +157,7 @@ export default class Login extends BaseScreen<Props, State> {
             { email, tenantSubDomain: tenant.subdomain });
           // Try to login
           if (result.eulaAccepted) {
-            this.setState({ eula: true }, () => this.login());
+            await this.setState({ eula: true }, () => this.login());
           }
         } catch (error) {
           // Do nothing: user must log on
@@ -347,12 +360,12 @@ export default class Login extends BaseScreen<Props, State> {
     }
   };
 
-  public selectTenant(newTenant: TenantConnection) {
+  public async selectTenant(newTenant: TenantConnection) {
     this.setState({ qrCodeVisible: false, createTenantVisible: false });
     if (newTenant) {
       const index = this.tenants.findIndex((tenant) => tenant.subdomain === newTenant.subdomain);
       if (index !== -1) {
-        this.setTenantWithIndex(index);
+        await this.setTenantWithIndex(index);
       }
     }
   }
@@ -370,9 +383,21 @@ export default class Login extends BaseScreen<Props, State> {
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         {qrCodeVisible ? (
           <CreateTenantQrCode tenants={this.tenants} navigation={navigation}
-            close={(newTenant: TenantConnection) => {
+            close={async (newTenant: TenantConnection) => {
               Orientation.unlockAllOrientations();
-              this.selectTenant(newTenant);
+              await this.selectTenant(newTenant);
+              if (this.state.email && this.state.password && this.state.tenantSubDomain) {
+                try {
+                  const result = await this.centralServerProvider.checkEndUserLicenseAgreement(
+                    { email: this.state.email, tenantSubDomain: this.state.tenantSubDomain});
+                  // Try to login
+                  if (result.eulaAccepted) {
+                    this.login();
+                  }
+                } catch (error) {
+                  // Do nothing: user must log on
+                }
+              }
             }}
           />
         ) : (
