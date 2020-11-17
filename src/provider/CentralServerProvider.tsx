@@ -605,7 +605,7 @@ export default class CentralServerProvider {
       headers: this.buildSecuredHeaders(),
       params,
     });
-    if (result.data.count > 0) {
+    if (result.data?.result?.length > 0) {
       return result.data.result[0];
     }
     return null;
