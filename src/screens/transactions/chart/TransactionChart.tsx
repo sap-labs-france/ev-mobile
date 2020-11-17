@@ -11,7 +11,6 @@ import TransactionHeaderComponent from '../../../components/transaction/header/T
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { Connector } from '../../../types/ChargingStation';
 import Consumption from '../../../types/Consumption';
-import Consumption from '../../../types/Consumption';
 import { HTTPAuthError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
