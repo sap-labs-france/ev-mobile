@@ -51,7 +51,7 @@
     "mobile": "Mobile",
     "errorTitle": "Titre de l'erreur",
     "errorDescription": "Description",
-    "scanQrCodeSuccess": "Le QR code à bien était scanner"
+    "scanQrCodeSuccess": "Le QR code a bien été scanné"
   },
   "sidebar": {
     "home": "Home",
@@ -131,7 +131,7 @@
   },
   "qrCode": {
     "wrongOrganizationTitle": "Changement d'Organisation",
-    "wrongOrganizationMessage": "La borne que vous essayez d'accéder n'est pas dans votre organisation voulez-vous changer pour {{tenantName}}?",
+    "wrongOrganizationMessage": "La borne que vous essayez d'atteindre n'est pas dans votre organisation, voulez-vous changer pour {{tenantName}}?",
     "unknownEndpoint": "L'endpoint {{endpoint}} n'existe pas",
     "unknownOrganizationTitle": "Organisation inconnu",
     "unknownOrganizationMessage": "Vous avez scannez une organisation inconnu {{tenantName}}, voulez vous la créer et vous y connectez ?",
