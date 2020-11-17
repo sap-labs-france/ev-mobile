@@ -11,8 +11,9 @@ import TransactionHeaderComponent from '../../../components/transaction/header/T
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { Connector } from '../../../types/ChargingStation';
 import Consumption from '../../../types/Consumption';
+import Consumption from '../../../types/Consumption';
 import { HTTPAuthError } from '../../../types/HTTPError';
-import Transaction, { TransactionConsumption } from '../../../types/Transaction';
+import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
@@ -127,7 +128,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   };
 
   public getTransactionWithConsumptions = async (transactionID: number):
-    Promise<{ transaction: Transaction; values: TransactionConsumption[], consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[] }> => {
+    Promise<{ transaction: Transaction; values: Consumption[], consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[] }> => {
     try {
       // Active Transaction?
       if (transactionID) {
