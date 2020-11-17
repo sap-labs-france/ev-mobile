@@ -50,7 +50,8 @@
     "lastChangedBy": "Última modificación hecha por",
     "mobile": "Móvil",
     "errorTitle": "Titulo del error",
-    "errorDescription": "Descripción del error"
+    "errorDescription": "Descripción del error",
+    "scanQrCodeSuccess": "El código QR se ha escaneado correctamente"
   },
   "sidebar": {
     "home": "Menú principal",
@@ -127,6 +128,19 @@
     "mandatoryErrorDescription": "La descripción es obligatoria",
     "reportErrorSuccess": "El error se ha informado correctamente",
     "reportErrorFailed": "No se puede informar el error"
+  },
+  "qrCode": {
+    "wrongOrganizationTitle": "Change Organization",
+    "wrongOrganizationMessage": "The charging Station you are trying to access is not in this organization, do you want to switch to {{tenantName}}?",
+    "unknownEndpoint": "{{endpoint}} endpoint doesn't exist",
+    "unknownOrganizationTitle": "Unknown Organization",
+    "unknownOrganizationMessage": "You scanned an unknown organization {{tenantName}}, do you want to create and log into it?",
+    "unknownChargingStation": "Unknown Charging Station {{chargingStationID}}",
+    "unknownConnector": "Unknown Connector {{connectorID}}",
+    "scanTenantQrCodeTitle": "Scan Tenant",
+    "scanChargingStationQrCodeTitle": "Scan Charging Station",
+    "tenantNameError": "Wrong Tenant Name",
+    "endpointError": "Wrong endpoint"
   },
   "users": {
     "userUnexpectedError": "No se ha podido cargar el usuario"

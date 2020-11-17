@@ -1,15 +1,17 @@
 import I18n from 'i18n-js';
 import { Button, CheckBox, Fab, Form, Icon, Item, Spinner, Text, View } from 'native-base';
 import React from 'react';
+import { TouchableOpacity } from 'react-native';
 import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, Platform, ScrollView, TextInput } from 'react-native';
 import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet';
 import * as Animatable from 'react-native-animatable';
+import Orientation from 'react-native-orientation-locker';
 import { scale } from 'react-native-size-matters';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
-import Tenant from '../../../types/Tenant';
+import { TenantConnection } from '../../../types/Tenant';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import SecuredStorage from '../../../utils/SecuredStorage';
@@ -18,6 +20,7 @@ import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 import CreateTenantDialog from './CreateTenantDialog';
+import CreateTenantQrCode from './TenantQrCode';
 
 export interface Props extends BaseProps {
 }
@@ -27,8 +30,11 @@ interface State {
   eula?: boolean;
   password?: string;
   email?: string;
-  tenantSubDomain?: string;
   tenantName?: string;
+  tenantSubDomain?: string;
+  tenantSubDomainQrCode?: string;
+  tenantNameQrCode?: string;
+  endpointQrCode?: string;
   loading?: boolean;
   initialLoading?: boolean;
   hidePassword?: boolean;
@@ -38,13 +44,14 @@ interface State {
   errorEmail?: object[];
   errorNewTenantName?: object[];
   errorNewTenantSubDomain?: object[];
-  visibleCreateTenant?: boolean;
+  createTenantVisible?: boolean;
+  qrCodeVisible?: boolean;
 }
 
 export default class Login extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
-  private tenants: Partial<Tenant>[] = [];
+  private tenants: TenantConnection[] = [];
   private passwordInput: TextInput;
   private actionSheet: ActionSheet;
   private formValidationDef = {
@@ -90,9 +97,13 @@ export default class Login extends BaseScreen<Props, State> {
       email: Utils.getParamFromNavigation(this.props.route, 'email', ''),
       tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', ''),
       tenantName: I18n.t('authentication.tenant'),
+      tenantNameQrCode: Utils.getParamFromNavigation(this.props.route, 'name', ''),
+      tenantSubDomainQrCode: Utils.getParamFromNavigation(this.props.route, 'subdomain', ''),
+      endpointQrCode: Utils.getParamFromNavigation(this.props.route, 'endpoint', ''),
       loading: false,
-      visibleCreateTenant: false,
+      createTenantVisible: false,
       hidePassword: true,
+      qrCodeVisible: false,
     };
   }
 
@@ -104,6 +115,27 @@ export default class Login extends BaseScreen<Props, State> {
     await super.componentDidMount();
     // Get Tenants
     this.tenants = await this.centralServerProvider.getTenants();
+    if (this.state.endpointQrCode && this.state.tenantNameQrCode && this.state.tenantSubDomainQrCode) {
+      const tenant: TenantConnection = {
+        subdomain: this.state.tenantSubDomainQrCode,
+        name: this.state.tenantNameQrCode,
+        endpoint: this.state.endpointQrCode
+      };
+      await this.selectTenant(tenant);
+      if (this.state.email && this.state.password && this.state.tenantSubDomain) {
+        try {
+          // Check EULA
+          const result = await this.centralServerProvider.checkEndUserLicenseAgreement(
+            { email: this.state.email, tenantSubDomain: tenant.subdomain });
+          // Try to login
+          if (result.eulaAccepted) {
+            await this.setState({ eula: true }, () => this.login());
+          }
+        } catch (error) {
+          // Do nothing: user must log on
+        }
+      }
+    }
     // Load User data
     if (!this.state.email || !this.state.tenantSubDomain) {
       const tenant = this.centralServerProvider.getUserTenant();
@@ -125,7 +157,7 @@ export default class Login extends BaseScreen<Props, State> {
             { email, tenantSubDomain: tenant.subdomain });
           // Try to login
           if (result.eulaAccepted) {
-            this.setState({ eula: true }, () => this.login());
+            await this.setState({ eula: true }, () => this.login());
           }
         } catch (error) {
           // Do nothing: user must log on
@@ -147,7 +179,7 @@ export default class Login extends BaseScreen<Props, State> {
   }
 
   public login = async () => {
-    this.setState({ visibleCreateTenant: false })
+    this.setState({ createTenantVisible: false })
     // Check field
     const formIsValid = Utils.validateInput(this, this.formValidationDef);
     if (formIsValid) {
@@ -289,6 +321,8 @@ export default class Login extends BaseScreen<Props, State> {
       } else {
         // Set Tenant
         this.setState({
+          email: null,
+          password: null,
           tenantSubDomain: this.tenants[buttonIndex].subdomain,
           tenantName: this.tenants[buttonIndex].name
         });
@@ -326,230 +360,267 @@ export default class Login extends BaseScreen<Props, State> {
     }
   };
 
+  public async selectTenant(newTenant: TenantConnection) {
+    this.setState({ qrCodeVisible: false, createTenantVisible: false });
+    if (newTenant) {
+      const index = this.tenants.findIndex((tenant) => tenant.subdomain === newTenant.subdomain);
+      if (index !== -1) {
+        await this.setTenantWithIndex(index);
+      }
+    }
+  }
+
   public render() {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const navigation = this.props.navigation;
-    const { eula, loading, initialLoading, visibleCreateTenant, hidePassword } = this.state;
+    const { eula, loading, initialLoading, createTenantVisible, hidePassword, qrCodeVisible } = this.state;
     // Render
     return initialLoading ? (
       <Spinner style={formStyle.spinner} color='grey' />
     ) : (
-        <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
-          <ScrollView contentContainerStyle={style.scrollContainer}>
-            <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
-              <AuthHeader navigation={this.props.navigation} />
-              <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.newUser()}>
-                <Text style={style.linksTextButton} uppercase={false}>{I18n.t('authentication.newUser')}</Text>
-              </Button>
-              <Form style={formStyle.form}>
-                <Button block={true} style={formStyle.button}
-                  onPress={() => {
-                    this.actionSheet.show();
-                  }}>
-                  <Text style={formStyle.buttonText} uppercase={false}>{this.state.tenantName}</Text>
-                </Button>
-                <ActionSheet
-                  ref={(actionSheet: ActionSheet) => this.actionSheet = actionSheet}
-                  title={I18n.t('authentication.tenant')}
-                  styles={{
-                    overlay: {
-                      position: 'absolute',
-                      top: 0,
-                      right: 0,
-                      bottom: 0,
-                      left: 0,
-                      opacity: 0.4,
-                      backgroundColor: commonColor.disabled
-                    },
-                    wrapper: {
-                      flex: 1,
-                      flexDirection: 'row'
-                    },
-                    body: {
-                      flex: 1,
-                      alignSelf: 'flex-end',
-                      backgroundColor: commonColor.containerBgColor
-                    },
-                    titleBox: {
-                      height: scale(40),
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: commonColor.containerBgColor
-                    },
-                    titleText: {
-                      color: commonColor.placeholderTextColor,
-                      fontSize: scale(16)
-                    },
-                    messageBox: {
-                      height: scale(30),
-                      paddingLeft: scale(10),
-                      paddingRight: scale(10),
-                      paddingBottom: scale(10),
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: commonColor.containerBgColor
-                    },
-                    messageText: {
-                      color: commonColor.disabled,
-                      fontSize: scale(12)
-                    },
-                    buttonBox: {
-                      height: scale(45),
-                      marginTop: 0,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: commonColor.textColor,
-                      backgroundColor: commonColor.containerBgColor
-                    },
-                    buttonText: {
-                      fontSize: scale(20)
-                    },
-                    cancelButtonBox: {
-                      height: scale(40),
-                      marginTop: scale(6),
-                      marginBottom: Platform.OS === 'ios' ? scale(15) : scale(10),
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: commonColor.containerBgColor
-                    }
-                  }}
-                  options={[
-                    ...this.tenants,
-                    { name: I18n.t('general.cancel'), subdomain: '' }
-                  ].map((tenant: Partial<Tenant>) =>
-                    <Text style={{ color: commonColor.textColor, fontSize: scale(16) }}>{tenant.name}</Text>)}
-                  cancelButtonIndex={this.tenants.length}
-                  onPress={(index: number) => {
-                    this.setTenantWithIndex(index);
-                  }}
-                />
-                {visibleCreateTenant &&
-                  <CreateTenantDialog navigation={navigation} tenants={this.tenants}
-                    close={(newTenant: Tenant) => {
-                      this.setState({ visibleCreateTenant: false });
-                      if (newTenant) {
-                        const index = this.tenants.findIndex((tenant) => tenant.subdomain === newTenant.subdomain);
-                        if (index !== -1) {
-                          this.setTenantWithIndex(index);
-                        }
-                      }
-                    }} />
+      <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+        {qrCodeVisible ? (
+          <CreateTenantQrCode tenants={this.tenants} navigation={navigation}
+            close={async (newTenant: TenantConnection) => {
+              Orientation.unlockAllOrientations();
+              await this.selectTenant(newTenant);
+              if (this.state.email && this.state.password && this.state.tenantSubDomain) {
+                try {
+                  const result = await this.centralServerProvider.checkEndUserLicenseAgreement(
+                    { email: this.state.email, tenantSubDomain: this.state.tenantSubDomain});
+                  // Try to login
+                  if (result.eulaAccepted) {
+                    this.login();
+                  }
+                } catch (error) {
+                  // Do nothing: user must log on
                 }
-                {this.state.errorTenantSubDomain &&
-                  this.state.errorTenantSubDomain.map((errorMessage, index) => (
-                    <Text style={formStyle.formErrorText} key={index}>
-                      {errorMessage}
-                    </Text>
-                  ))}
-                <Item inlineLabel={true} style={formStyle.inputGroup}>
-                  <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
-                  <TextInput
-                    returnKeyType='next'
-                    selectionColor={commonColor.textColor}
-                    placeholder={I18n.t('authentication.email')}
-                    placeholderTextColor={commonColor.placeholderTextColor}
-                    onSubmitEditing={() => this.passwordInput.focus()}
-                    style={formStyle.inputField}
-                    autoCapitalize='none'
-                    blurOnSubmit={false}
-                    autoCorrect={false}
-                    keyboardType={'email-address'}
-                    secureTextEntry={false}
-                    onChangeText={(text) => this.setState({ email: text })}
-                    value={this.state.email}
-                  />
-                </Item>
-                {this.state.errorEmail &&
-                  this.state.errorEmail.map((errorMessage, index) => (
-                    <Text style={formStyle.formErrorText} key={index}>
-                      {errorMessage}
-                    </Text>
-                  ))}
-                <Item inlineLabel={true} style={formStyle.inputGroup}>
-                  <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
-                  <TextInput
-                    returnKeyType='go'
-                    selectionColor={commonColor.textColor}
-                    ref={(ref: TextInput) => (this.passwordInput = ref)}
-                    onSubmitEditing={() => Keyboard.dismiss()}
-                    placeholder={I18n.t('authentication.password')}
-                    placeholderTextColor={commonColor.placeholderTextColor}
-                    style={formStyle.inputField}
-                    autoCapitalize='none'
-                    blurOnSubmit={false}
-                    autoCorrect={false}
-                    keyboardType={'default'}
-                    secureTextEntry={hidePassword}
-                    onChangeText={(text) => this.setState({ password: text })}
-                    value={this.state.password}
-                  />
-                  <Icon active={true} name={hidePassword ? 'eye' : 'eye-off'} type='Ionicons'
-                    onPress={() => this.setState({ hidePassword: !hidePassword })}
-                    style={formStyle.inputIcon} />
-                </Item>
-                {this.state.errorPassword &&
-                  this.state.errorPassword.map((errorMessage, index) => (
-                    <Text style={formStyle.formErrorText} key={index}>
-                      {errorMessage}
-                    </Text>
-                  ))}
-                <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.forgotPassword()}>
-                  <Text style={[style.linksTextButton, style.linksTextButton]} uppercase={false}>{I18n.t('authentication.forgotYourPassword')}</Text>
+              }
+            }}
+          />
+        ) : (
+          <View>
+            <ScrollView contentContainerStyle={style.scrollContainer}>
+              <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
+                <AuthHeader navigation={this.props.navigation}/>
+                <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.newUser()}>
+                  <Text style={style.linksTextButton} uppercase={false}>{I18n.t('authentication.newUser')}</Text>
                 </Button>
-                <View style={formStyle.formCheckboxContainer}>
-                  <CheckBox style={formStyle.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
-                  <Text style={formStyle.checkboxText}>
-                    {I18n.t('authentication.acceptEula')}
-                    <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
-                      {I18n.t('authentication.eula')}
+                <Form style={formStyle.form}>
+                  <Button block={true} style={formStyle.button}
+                    onPress={() => {
+                      this.actionSheet.show();
+                    }}>
+                    <Text style={formStyle.buttonText} uppercase={false}>{this.state.tenantName}</Text>
+                  </Button>
+                  <ActionSheet
+                    ref={(actionSheet: ActionSheet) => this.actionSheet = actionSheet}
+                    title={I18n.t('authentication.tenant')}
+                    styles={{
+                      overlay: {
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        bottom: 0,
+                        left: 0,
+                        opacity: 0.4,
+                        backgroundColor: commonColor.disabled
+                      },
+                      wrapper: {
+                        flex: 1,
+                        flexDirection: 'row'
+                      },
+                      body: {
+                        flex: 1,
+                        alignSelf: 'flex-end',
+                        backgroundColor: commonColor.containerBgColor
+                      },
+                      titleBox: {
+                        height: scale(40),
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: commonColor.containerBgColor
+                      },
+                      titleText: {
+                        color: commonColor.placeholderTextColor,
+                        fontSize: scale(16)
+                      },
+                      messageBox: {
+                        height: scale(30),
+                        paddingLeft: scale(10),
+                        paddingRight: scale(10),
+                        paddingBottom: scale(10),
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: commonColor.containerBgColor
+                      },
+                      messageText: {
+                        color: commonColor.disabled,
+                        fontSize: scale(12)
+                      },
+                      buttonBox: {
+                        height: scale(45),
+                        marginTop: 0,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: commonColor.textColor,
+                        backgroundColor: commonColor.containerBgColor
+                      },
+                      buttonText: {
+                        fontSize: scale(20)
+                      },
+                      cancelButtonBox: {
+                        height: scale(40),
+                        marginTop: scale(6),
+                        marginBottom: Platform.OS === 'ios' ? scale(15) : scale(10),
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: commonColor.containerBgColor
+                      }
+                    }}
+                    options={[
+                        ...this.tenants,
+                        { name: I18n.t('general.cancel'), subdomain: '' }
+                      ].map((tenant: TenantConnection) =>
+                        <Text style={{color: commonColor.textColor, fontSize: scale(16)}}>{tenant.name}</Text>)}
+                    cancelButtonIndex={this.tenants.length}
+                    onPress={(index: number) => {
+                      this.setTenantWithIndex(index);
+                    }}
+                  />
+                  {createTenantVisible &&
+                    <CreateTenantDialog navigation={navigation} tenants={this.tenants}
+                      close={(newTenant: TenantConnection) => {
+                        this.selectTenant(newTenant);
+                      }
+                    } />
+                  }
+                  {this.state.errorTenantSubDomain &&
+                    this.state.errorTenantSubDomain.map((errorMessage, index) => (
+                      <Text style={formStyle.formErrorText} key={index}>
+                        {errorMessage}
+                      </Text>
+                    ))
+                  }
+                  <Item inlineLabel={true} style={formStyle.inputGroup}>
+                    <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
+                    <TextInput
+                      returnKeyType='next'
+                      selectionColor={commonColor.textColor}
+                      placeholder={I18n.t('authentication.email')}
+                      placeholderTextColor={commonColor.placeholderTextColor}
+                      onSubmitEditing={() => this.passwordInput.focus()}
+                      style={formStyle.inputField}
+                      autoCapitalize='none'
+                      blurOnSubmit={false}
+                      autoCorrect={false}
+                      keyboardType={'email-address'}
+                      secureTextEntry={false}
+                      onChangeText={(text) => this.setState({ email: text })}
+                      value={this.state.email}
+                    />
+                  </Item>
+                  {this.state.errorEmail &&
+                    this.state.errorEmail.map((errorMessage, index) => (
+                      <Text style={formStyle.formErrorText} key={index}>
+                        {errorMessage}
+                      </Text>
+                    ))
+                  }
+                  <Item inlineLabel={true} style={formStyle.inputGroup}>
+                    <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
+                    <TextInput
+                      returnKeyType='go'
+                      selectionColor={commonColor.textColor}
+                      ref={(ref: TextInput) => (this.passwordInput = ref)}
+                      onSubmitEditing={() => Keyboard.dismiss()}
+                      placeholder={I18n.t('authentication.password')}
+                      placeholderTextColor={commonColor.placeholderTextColor}
+                      style={formStyle.inputField}
+                      autoCapitalize='none'
+                      blurOnSubmit={false}
+                      autoCorrect={false}
+                      keyboardType={'default'}
+                      secureTextEntry={hidePassword}
+                      onChangeText={(text) => this.setState({ password: text })}
+                      value={this.state.password}
+                    />
+                    <Icon active={true} name={hidePassword ? 'eye' : 'eye-off'} type='Ionicons'
+                      onPress={() => this.setState({ hidePassword: !hidePassword })}
+                      style={formStyle.inputIcon} />
+                  </Item>
+                  {this.state.errorPassword &&
+                    this.state.errorPassword.map((errorMessage, index) => (
+                      <Text style={formStyle.formErrorText} key={index}>
+                        {errorMessage}
+                      </Text>
+                    ))
+                  }
+                  <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.forgotPassword()}>
+                    <Text style={[style.linksTextButton, style.linksTextButton]} uppercase={false}>{I18n.t('authentication.forgotYourPassword')}</Text>
+                  </Button>
+                  <View style={formStyle.formCheckboxContainer}>
+                    <CheckBox style={formStyle.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
+                    <Text style={formStyle.checkboxText}>
+                      {I18n.t('authentication.acceptEula')}
+                      <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
+                        {I18n.t('authentication.eula')}
+                      </Text>
                     </Text>
-                  </Text>
-                </View>
-                {this.state.errorEula &&
-                  this.state.errorEula.map((errorMessage, index) => (
-                    <Text style={[formStyle.formErrorText, style.formErrorTextEula]} key={index}>
-                      {errorMessage}
-                    </Text>
-                  ))}
-                {loading ? (
-                  <Spinner style={formStyle.spinner} color='grey' />
-                ) : (
+                  </View>
+                  {this.state.errorEula &&
+                    this.state.errorEula.map((errorMessage, index) => (
+                      <Text style={[formStyle.formErrorText, style.formErrorTextEula]} key={index}>
+                        {errorMessage}
+                      </Text>
+                    ))
+                  }
+                  {loading ? (
+                    <Spinner style={formStyle.spinner} color='grey' />
+                  ) : (
                     <Button primary={true} block={true} style={formStyle.button} onPress={() => this.login()}>
                       <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.login')}</Text>
                     </Button>
                   )}
-              </Form>
-            </KeyboardAvoidingView>
-          </ScrollView>
-          <Fab
-            active={this.state.activeFab}
-            direction='up'
-            style={style.fab}
-            position='bottomRight'
-            onPress={() => this.setState({ activeFab: !this.state.activeFab })}>
-            <Icon name='business' style={style.fabIcon} />
-            <Button style={style.restoreOrgButton}
-              onPress={() => {
-                this.restoreTenants();
-              }}>
-              <Icon type={'MaterialIcons'} name='settings-backup-restore' />
-            </Button>
-            <Button style={style.deleteOrgButton}
-              onPress={() => {
-                this.deleteTenant(this.state.tenantSubDomain);
-              }}>
-              <Icon type={'MaterialIcons'} name='remove' />
-            </Button>
-            <Button style={style.createOrgButton}
-              onPress={() => {
-                this.setState({ visibleCreateTenant: true })
-              }}>
-              <Icon type={'MaterialIcons'} name='add' />
-            </Button>
-          </Fab>
-        </Animatable.View>
-      );
+                </Form>
+              </KeyboardAvoidingView>
+              <Fab
+                active={this.state.activeFab}
+                direction='up'
+                style={style.fab}
+                position='bottomRight'
+                onPress={() => this.setState({ activeFab: !this.state.activeFab })}>
+                <Icon name='business' style={style.fabIcon} />
+                <Button style={style.restoreOrgButton}
+                  onPress={() => {
+                    this.restoreTenants();
+                  }}>
+                  <Icon type={'MaterialIcons'} name='settings-backup-restore' />
+                </Button>
+                <Button style={style.deleteOrgButton}
+                  onPress={() => {
+                    this.deleteTenant(this.state.tenantSubDomain);
+                  }}>
+                  <Icon type={'MaterialIcons'} name='remove' />
+                </Button>
+                <Button style={style.createOrgButton}
+                  onPress={() => {
+                    this.setState({ createTenantVisible: true })
+                  }}>
+                  <Icon type={'MaterialIcons'} name='add' />
+                </Button>
+              </Fab>
+              <TouchableOpacity onPress={() => this.setState({ qrCodeVisible: true })} style={style.qrCodeContainer}>
+                  <View style={style.qrCodeButton}>
+                    <Icon style={style.qrCodeIcon} type='AntDesign' name='qrcode'/>
+                  </View>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
+        )}
+      </Animatable.View>
+    );
   }
 }
