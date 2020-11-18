@@ -109,7 +109,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
         </View>
         <View style={style.connectorsContainer}>
           {chargingStation.connectors.map((connector) => (
-            <ChargingStationConnectorComponent
+            connector && <ChargingStationConnectorComponent
               onNavigate={onNavigate}
               key={`${chargingStation.id}~${connector.connectorId}`}
               chargingStation={chargingStation}
