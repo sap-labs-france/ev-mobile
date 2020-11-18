@@ -55,7 +55,7 @@ export default function computeStyleSheet(): any {
       borderRadius: '25@s',
       borderStyle: 'solid',
       borderWidth: '4@s',
-      borderColor: commonColor.textColor,
+      borderColor: commonColor.brandDanger,
       backgroundColor: commonColor.containerBgColor,
       justifyContent: 'center',
       alignItems: 'center'
@@ -99,7 +99,7 @@ export default function computeStyleSheet(): any {
     },
     reportErrorIcon: {
       fontSize: '25@s',
-      color: commonColor.textColor,
+      color: commonColor.brandDanger,
     },
     startTransactionIcon: {
       color: commonColor.success
@@ -196,7 +196,11 @@ export default function computeStyleSheet(): any {
     }
   });
   const portraitStyles = {};
-  const landscapeStyles = {};
+  const landscapeStyles = {
+    reportErrorContainer: {
+      marginLeft: '84%'
+    }
+  };
   return ResponsiveStylesheet.createOriented({
     landscape: deepmerge(commonStyles, landscapeStyles),
     portrait: deepmerge(commonStyles, portraitStyles)

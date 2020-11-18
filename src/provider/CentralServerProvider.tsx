@@ -4,8 +4,8 @@ import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { KeyValue } from 'types/Global';
 
-import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
+import Configuration from '../config/Configuration';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
@@ -243,13 +243,16 @@ export default class CentralServerProvider {
     this.autoLoginDisabled = autoLoginDisabled;
   }
 
-  public logoff() {
+  public async logoff() {
     this.debugMethod('logoff');
     // Clear the token and tenant
-    SecuredStorage.clearUserToken(this.tenant.subdomain);
+    await SecuredStorage.clearUserToken(this.tenant.subdomain);
     // Clear local data
     this.token = null;
     this.decodedToken = null;
+    this.tenant = null;
+    this.email = null;
+    this.password = null;
   }
 
   public async login(email: string, password: string, acceptEula: boolean, tenantSubDomain: string) {
@@ -266,9 +269,6 @@ export default class CentralServerProvider {
         tenant: tenantSubDomain,
       },
       {
-        'axios-retry': {
-          retries: 0
-        },
         headers: this.buildHeaders(),
       },
     );
@@ -313,7 +313,7 @@ export default class CentralServerProvider {
     // Get the Tenant
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
-    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/${ServerAction.END_USER_LICENSE_AGREEMENT}`, {
+    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_END_USER_LICENSE_AGREEMENT}`, {
       headers: this.buildHeaders(),
       params,
     });
@@ -380,7 +380,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.post(
-      `${this.buildRestServerAuthURL(tenant)}/password/${ServerAction.REST_RESET}`,
+      `${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_REQUEST_PASSWORD}`,
       {
         tenant: tenantSubDomain,
         captcha,
@@ -399,7 +399,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.post(
-      `${this.buildRestServerAuthURL(tenant)}/password/${ServerAction.REST_RESET}`,
+      `${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_PASSWORD_RESET}`,
       {
         tenant: tenantSubDomain,
         hash,
@@ -418,7 +418,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.get(
-      `${this.buildRestServerAuthURL(tenant)}/mail/${ServerAction.REST_CHECK}`, {
+      `${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_MAIL_CHECK}`, {
       headers: this.buildHeaders(),
       params: {
         Tenant: tenantSubDomain,
@@ -605,7 +605,7 @@ export default class CentralServerProvider {
       headers: this.buildSecuredHeaders(),
       params,
     });
-    if (result.data.count > 0) {
+    if (result.data?.result?.length > 0) {
       return result.data.result[0];
     }
     return null;

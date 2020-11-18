@@ -23,6 +23,10 @@ target 'eMobility' do
   pod 'GoogleMaps'
   pod 'Google-Maps-iOS-Utils'
 
+  # Camera Permission
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
+
   target 'eMobilityTests' do
     inherit! :complete
     # Pods for testing

@@ -12,7 +12,7 @@ import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { Connector } from '../../../types/ChargingStation';
 import Consumption from '../../../types/Consumption';
 import { HTTPAuthError } from '../../../types/HTTPError';
-import Transaction, { TransactionConsumption } from '../../../types/Transaction';
+import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
@@ -127,7 +127,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   };
 
   public getTransactionWithConsumptions = async (transactionID: number):
-    Promise<{ transaction: Transaction; values: TransactionConsumption[], consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[] }> => {
+    Promise<{ transaction: Transaction; values: Consumption[], consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[] }> => {
     try {
       // Active Transaction?
       if (transactionID) {
@@ -135,11 +135,18 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         const transaction = await this.centralServerProvider.getTransactionConsumption(transactionID);
         // At least 2 values for the chart!!!
         if (transaction.values && transaction.values.length > 1) {
+          // Add last point
+          if (transaction.values.length > 0) {
+            transaction.values.push({
+              ...transaction.values[transaction.values.length - 1],
+              startedAt: transaction.values[transaction.values.length - 1].endedAt,
+            });
+          }
           // Convert
           const consumptionValues: ChartPoint[] = [];
           const stateOfChargeValues: ChartPoint[] = [];
           for (const value of transaction.values) {
-            const date = new Date(value.date).getTime();
+            const date = new Date(value.startedAt).getTime();
             if (value.instantWattsDC > 0) {
               value.instantWatts = value.instantWattsDC;
             }

@@ -13,7 +13,7 @@ import Utils from '../../../utils/Utils';
 
 export interface Props extends BaseProps {
   tenants: TenantConnection[];
-  close: (newTenant?: Partial<Tenant>) => void;
+  close: (newTenant?: TenantConnection) => void;
 }
 
 interface State {
@@ -63,9 +63,14 @@ export default class Login extends React.Component<Props, State> {
   }
 
   private createTenant = async (subdomain: string, name: string, endpointCloud: EndpointCloud) => {
-    const { tenants } = this.props;
+    const { tenants, close } = this.props;
     // Check field
     const formIsValid = Utils.validateInput(this, this.formCreateTenantValidationDef);
+    const newTenant: TenantConnection = {
+      subdomain,
+      name,
+      endpoint: endpointCloud.endpoint
+    }
     if (formIsValid) {
       const foundTenant = tenants.find((tenant) => tenant.subdomain === subdomain)
       // Already exists
@@ -78,15 +83,11 @@ export default class Login extends React.Component<Props, State> {
         );
       // Add new Tenant and Save
       } else {
-        tenants.push({
-          subdomain,
-          name,
-          endpoint: endpointCloud.endpoint
-        });
+        tenants.push(newTenant);
         // Save
         await SecuredStorage.saveTenants(tenants);
         // Hide Modal
-        this.props.close({ subdomain, name });
+        close(newTenant);
       }
     }
   };

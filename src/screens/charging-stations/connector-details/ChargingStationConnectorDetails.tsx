@@ -4,8 +4,7 @@ import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 
-import noPhotoActive from '../../../../assets/no-photo.png';
-import noPhoto from '../../../../assets/no-photo.png';
+import { default as noPhoto, default as noPhotoActive } from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
 import I18nManager from '../../../I18n/I18nManager';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
@@ -77,6 +76,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
+  }
+
+  public async componentDidMount() {
+    await super.componentDidMount();
+    const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null);
+    if (startTransaction) {
+      this.startTransactionConfirm();
+    }
   }
 
   public getSiteImage = async (siteID: string): Promise<string> => {

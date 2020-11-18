@@ -84,10 +84,10 @@ const persistNavigationState = async (navigationState: NavigationState) => {
   }
 };
 
-function createAuthNavigator() {
+function createAuthNavigator(props: BaseProps) {
   return(
     <AuthStack.Navigator initialRouteName={'Login'} headerMode='none'>
-      <AuthStack.Screen name='Login' component={Login}/>
+      <AuthStack.Screen name='Login' component={Login} initialParams={props?.route?.params?.params}/>
       <AuthStack.Screen name='Eula' component={Eula}/>
       <AuthStack.Screen name='SignUp' component={SignUp}/>
       <AuthStack.Screen name='ResetPassword' component={ResetPassword}/>
@@ -255,11 +255,11 @@ function createAppDrawerNavigator() {
       <AppDrawer.Screen name='HomeNavigator' component={createHomeNavigator}/>
       <AppDrawer.Screen name='SitesNavigator' component={createSitesNavigator}/>
       <AppDrawer.Screen name='ChargingStationsNavigator' component={createChargingStationsNavigator}/>
+      <AppDrawer.Screen name='ChargingStationConnectorDetailsTabs' component={createChargingStationConnectorDetailsTabsNavigator}/>
       <AppDrawer.Screen name='StatisticsNavigator' component={createStatsNavigator}/>
       <AppDrawer.Screen name='ReportErrorNavigator' component={createReportErrorNavigator}/>
       <AppDrawer.Screen name='TransactionHistoryNavigator' component={createTransactionHistoryNavigator}/>
       <AppDrawer.Screen name='TransactionInProgressNavigator' component={createTransactionInProgressNavigator}/>
-      <AppDrawer.Screen name='ChargingStationConnectorDetailsTabs' component={createChargingStationConnectorDetailsTabsNavigator}/>
     </AppDrawer.Navigator>
   );
 }

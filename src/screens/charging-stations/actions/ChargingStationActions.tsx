@@ -163,7 +163,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
       // Unlock Connector
       const status = await this.centralServerProvider.unlockConnector(chargeBoxID, connectorID);
       // Check
-      if (status.status && status.status === 'Accepted') {
+      if (status.status && status.status === 'Unlocked') {
         Message.showSuccess(I18n.t('details.accepted'));
       } else {
         Message.showError(I18n.t('details.denied'));
