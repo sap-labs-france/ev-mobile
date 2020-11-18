@@ -92,10 +92,31 @@ export default function computeStyleSheet(): any {
     },
     footer: {
       backgroundColor: commonColor.containerBgColor
+    },
+    qrCodeContainer: {
+      marginBottom: '15@s',
+      marginLeft: '15@s',
+      width: '50@s'
+    },
+    qrCodeButton: {
+      width: '50@s',
+      height: '50@s',
+      borderRadius: '35@s',
+      backgroundColor: commonColor.buttonBg,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    qrCodeIcon: {
+      fontSize: '25@s',
+      color: commonColor.textColor,
     }
   });
   const portraitStyles = {};
-  const landscapeStyles = {};
+  const landscapeStyles = {
+    qrCodeContainer: {
+      marginTop: '5%',
+    }
+  };
   return ResponsiveStylesheet.createOriented({
     landscape: deepmerge(commonStyles, landscapeStyles),
     portrait: deepmerge(commonStyles, portraitStyles)

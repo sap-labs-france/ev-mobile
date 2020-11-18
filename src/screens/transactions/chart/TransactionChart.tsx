@@ -11,7 +11,6 @@ import TransactionHeaderComponent from '../../../components/transaction/header/T
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { Connector } from '../../../types/ChargingStation';
 import Consumption from '../../../types/Consumption';
-import Consumption from '../../../types/Consumption';
 import { HTTPAuthError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
@@ -136,11 +135,18 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         const transaction = await this.centralServerProvider.getTransactionConsumption(transactionID);
         // At least 2 values for the chart!!!
         if (transaction.values && transaction.values.length > 1) {
+          // Add last point
+          if (transaction.values.length > 0) {
+            transaction.values.push({
+              ...transaction.values[transaction.values.length - 1],
+              startedAt: transaction.values[transaction.values.length - 1].endedAt,
+            });
+          }
           // Convert
           const consumptionValues: ChartPoint[] = [];
           const stateOfChargeValues: ChartPoint[] = [];
           for (const value of transaction.values) {
-            const date = new Date(value.date).getTime();
+            const date = new Date(value.startedAt).getTime();
             if (value.instantWattsDC > 0) {
               value.instantWatts = value.instantWattsDC;
             }
