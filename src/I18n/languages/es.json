@@ -213,7 +213,7 @@
     "chargerClearCacheUnexpectedError": "No se puede borrar el caché de la estación de carga",
     "chargerUnlockUnexpectedError": "No se puede desbloquear el conector",
     "heartBeatOkMessage": "'{{chargeBoxID}}' funciona correctamente e informó su estatus hace un minuto.",
-    "heartBeatKoMessage": "'{{chargeBoxID}}' no funciona correctamente y no ha informado su estatus desde {{lastHeartBeat}}.",
+    "heartBeatKoMessage": "'{{chargeBoxID}}' no funciona correctamente y no ha informado su estatus desde {{lastSeen}}.",
     "resetHard": "Reiniciar",
     "resetHardMessage": "¿Está seguro que desea reiniciar '{{chargeBoxID}}'?",
     "resetSoft": "Resetear",

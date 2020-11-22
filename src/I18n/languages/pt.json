@@ -213,7 +213,7 @@
     "chargerClearCacheUnexpectedError": "Não posso limpar a cache da estação de carregamento",
     "chargerUnlockUnexpectedError": "Não posso desbloquear o conector",
     "heartBeatOkMessage": "'{{chargeBoxID}}' está a trabalhar corretamente e efetuou um reporte do seu estado a um minuto atrazo",
-    "heartBeatKoMessage": "'{{chargeBoxID}}' não está a trabalhar corretamente e não reportou o seu estado desde {{lastHeartBeat}}",
+    "heartBeatKoMessage": "'{{chargeBoxID}}' não está a trabalhar corretamente e não reportou o seu estado desde {{lastSeen}}",
     "resetHard": "Reboot",
     "resetHardMessage": "Você quer mesmo fazer o reboot '{{chargeBoxID}}'?",
     "resetSoft": "Reset",

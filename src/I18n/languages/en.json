@@ -213,7 +213,7 @@
     "chargerClearCacheUnexpectedError": "Cannot clear the cache of the charging station",
     "chargerUnlockUnexpectedError": "Cannot unlock the connector",
     "heartBeatOkMessage": "'{{chargeBoxID}}' is working properly and reported its status a minute ago",
-    "heartBeatKoMessage": "'{{chargeBoxID}}' is not working properly and hasn't reported its status since {{lastHeartBeat}}",
+    "heartBeatKoMessage": "'{{chargeBoxID}}' is not working properly and hasn't reported its status since {{lastSeen}}",
     "resetHard": "Reboot",
     "resetHardMessage": "Do you really want to reboot '{{chargeBoxID}}'?",
     "resetSoft": "Reset",
