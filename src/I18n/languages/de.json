@@ -213,7 +213,7 @@
     "chargerClearCacheUnexpectedError": "Cache der Ladestation konnte nicht gelöscht werden",
     "chargerUnlockUnexpectedError": "Ladepunkt konnte nicht entsperrt werden",
     "heartBeatOkMessage": "'{{chargeBoxID}}' funktioniert ordentlich und hat vor einer Minute einen Herzschlag gesendet",
-    "heartBeatKoMessage": "'{{chargeBoxID}}' ist fehlerhaft und hat zuletzt {{lastHeartBeat}} einen Herzschlag gesendet",
+    "heartBeatKoMessage": "'{{chargeBoxID}}' ist fehlerhaft und hat zuletzt {{lastSeen}} einen Herzschlag gesendet",
     "resetHard": "Neustarten",
     "resetHardMessage": "Möchten Sie wirklich die Ladestation '{{chargeBoxID}}' neu starten?",
     "resetSoft": "Reset",

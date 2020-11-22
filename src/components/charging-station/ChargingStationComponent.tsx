@@ -39,7 +39,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
     if (chargingStation.inactive) {
       message = I18n.t('chargers.heartBeatKoMessage', {
         chargeBoxID: chargingStation.id,
-        lastHeartBeat: moment(new Date(chargingStation.lastHeartBeat),null, true).fromNow(true)
+        lastSeen: moment(new Date(chargingStation.lastSeen), null, true).fromNow(true)
       });
     }
     Alert.alert(I18n.t('chargers.heartBeat'), message, [{ text: I18n.t('general.ok') }]);
@@ -54,10 +54,10 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
         <View style={style.headerContent}>
           <View style={style.titleContainer}>
             <TouchableOpacity disabled={!validGPSCoordinates}
-                onPress={() => Utils.jumpToMapWithCoordinates(chargingStation.id, chargingStation.coordinates)}>
-              { validGPSCoordinates ?
+              onPress={() => Utils.jumpToMapWithCoordinates(chargingStation.id, chargingStation.coordinates)}>
+              {validGPSCoordinates ?
                 <Icon style={[style.icon, style.iconLeft]} type='MaterialIcons' name='place' />
-              :
+                :
                 <Icon style={[style.icon, style.iconLeft]} type='MaterialCommunityIcons' name='map-marker-off' />
               }
             </TouchableOpacity>
@@ -71,12 +71,12 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
                     onNavigate();
                   }
                   navigation.navigate(
-                    'ChargingStationDetailsTabs', {
-                      params: {
-                        chargingStationID: chargingStation.id,
-                      },
-                      key: `${Utils.randomNumber()}`
-                    }
+                    'ChargingStationDetailsTabs', {
+                    params: {
+                      chargingStationID: chargingStation.id,
+                    },
+                    key: `${Utils.randomNumber()}`
+                  }
                   );
                 }}>
                 <Icon style={[style.icon, style.iconRight, style.iconSettings]} type='MaterialIcons' name='tune' />
@@ -87,7 +87,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
                 <Animatable.Text animation='fadeIn' easing='ease-in-out' iterationCount='infinite' direction='alternate-reverse'>
                   <Icon style={style.deadHeartbeatIcon} type='FontAwesome' name='heartbeat' />
                 </Animatable.Text>
-              :
+                :
                 <Animatable.Text animation='pulse' easing='ease-out' iterationCount='infinite' style={{ textAlign: 'center' }}>
                   <Icon style={style.heartbeatIcon} type='FontAwesome' name='heartbeat' />
                 </Animatable.Text>
@@ -100,7 +100,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
             <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1} >
               {Utils.formatAddress(chargingStation.siteArea.address)}
             </Text>
-          :
+            :
             <Text>-</Text>
           }
           {(chargingStation.distanceMeters > 0) &&
