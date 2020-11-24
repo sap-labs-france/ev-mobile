@@ -1,3 +1,10 @@
+// Get the supported locales for moment
+import 'moment/locale/de';
+import 'moment/locale/en-us';
+import 'moment/locale/es';
+import 'moment/locale/fr';
+import 'moment/locale/pt-br';
+
 import i18n from 'i18n-js';
 import moment from 'moment';
 import { I18nManager as I18nReactNativeManager } from 'react-native';
@@ -14,12 +21,6 @@ export default class I18nManager {
   private static currency: string;
 
   public static async initialize() {
-    // Get the supported locales for moment
-    require('moment/locale/fr');
-    require('moment/locale/de');
-    require('moment/locale/en-gb');
-    require('moment/locale/es');
-    require('moment/locale/pt');
     // Translation files
     const translationGetters: any = {
       en: () => enJsonLanguage,
