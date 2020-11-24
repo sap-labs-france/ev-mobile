@@ -4,6 +4,7 @@ import { I18nManager as I18nReactNativeManager } from 'react-native';
 import * as RNLocalize from 'react-native-localize';
 
 import Constants from '../utils/Constants';
+import Utils from '../utils/Utils';
 import deJsonLanguage from './languages/de.json';
 import enJsonLanguage from './languages/en.json';
 import esJsonLanguage from './languages/es.json';
@@ -68,7 +69,7 @@ export default class I18nManager {
       if (currency) {
         return new Intl.NumberFormat(i18n.locale, { style: 'currency', currency }).format(value);
       }
-      return I18nManager.formatNumber(Math.round(value * 100) / 100);
+      return I18nManager.formatNumber(Utils.roundTo(value, 2));
     }
     return '-';
   }

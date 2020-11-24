@@ -153,7 +153,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
             // Add
             consumptionValues.push({
               x: date,
-              y: value.instantWatts ? Utils.getRoundedNumberToTwoDecimals(value.instantWatts / 1000) : 0
+              y: value.instantWatts ? Utils.roundTo(value.instantWatts / 1000, 2) : 0
             });
             if (value.stateOfCharge > 0) {
               stateOfChargeValues.push({
