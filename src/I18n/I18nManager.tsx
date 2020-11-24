@@ -1,6 +1,6 @@
 // Get the supported locales for moment
 import 'moment/locale/de';
-import 'moment/locale/en-us';
+import 'moment/locale/en-gb';
 import 'moment/locale/es';
 import 'moment/locale/fr';
 import 'moment/locale/pt-br';
