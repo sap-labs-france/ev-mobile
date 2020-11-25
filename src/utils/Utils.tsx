@@ -468,8 +468,9 @@ export default class Utils {
     return 0;
   }
 
-  public static getRoundedNumberToTwoDecimals(numberToRound: number): number {
-    return Math.round(numberToRound * 100) / 100;
+  public static roundTo(value: number, scale: number): number {
+    const roundPower = Math.pow(10, scale);
+    return Math.round(value * roundPower) / roundPower;
   }
 
   public static countJsonProps(jsonDoc: object): number {

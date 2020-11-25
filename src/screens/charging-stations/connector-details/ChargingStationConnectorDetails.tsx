@@ -472,7 +472,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { transaction, connector } = this.state;
     let price = 0;
     if (transaction) {
-      price = Math.round(transaction.currentCumulatedPrice * 100) / 100;
+      price = Utils.roundTo(transaction.currentCumulatedPrice, 2);
     }
     return connector && connector.currentTransactionID && transaction && !isNaN(price) ? (
       <View style={style.columnContainer}>
