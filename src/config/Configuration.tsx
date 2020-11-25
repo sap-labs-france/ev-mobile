@@ -31,6 +31,7 @@ export default class Configuration {
     { subdomain: 'proviridis', name: 'Proviridis', endpoint: Configuration.SCP_REST_ENDPOINT_PROD },
     { subdomain: 'imredd', name: 'IMREDD', endpoint: Configuration.SCP_REST_ENDPOINT_PROD },
     { subdomain: 'mairiedemonaco', name: 'Mairie de Monaco', endpoint: Configuration.AWS_REST_ENDPOINT_PROD },
+    { subdomain: 'chargex', name: 'ChargeX', endpoint: Configuration.AWS_REST_ENDPOINT_PROD },
   ];
 
   public static readonly DEFAULT_TENANTS_LIST_QA: TenantConnection[] = [

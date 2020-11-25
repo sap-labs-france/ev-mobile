@@ -43,7 +43,7 @@ export default class TransactionInProgressComponent extends React.Component<Prop
     const { transaction, isAdmin, isSiteAdmin, isPricingActive } = this.props;
     const consumption = Math.round(transaction.currentInstantWatts / 10) / 100;
     const totalConsumption = Math.round(transaction.currentTotalConsumptionWh / 10) / 100;
-    const price = transaction.currentCumulatedPrice ? Math.round(transaction.currentCumulatedPrice * 100) / 100 : 0;
+    const price = transaction.currentCumulatedPrice ? Utils.roundTo(transaction.currentCumulatedPrice, 2) : 0;
     const duration = Utils.formatDurationHHMMSS(transaction.currentTotalDurationSecs, false);
     const inactivity = Utils.formatDurationHHMMSS(transaction.currentTotalInactivitySecs, false);
     const inactivityStyle = Utils.computeInactivityStyle(transaction.currentInactivityStatus);
