@@ -1,11 +1,13 @@
+import { Buffer } from 'buffer'
+
 import { NavigationContainerRef } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
 import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { KeyValue } from 'types/Global';
 
-import I18nManager from '../I18n/I18nManager';
 import Configuration from '../config/Configuration';
+import I18nManager from '../I18n/I18nManager';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
@@ -664,13 +666,18 @@ export default class CentralServerProvider {
     let foundSiteImage = this.siteImages.get(id);
     if (!foundSiteImage) {
       // Call backend
-      const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.SITE_IMAGE}`, {
-        headers: this.buildSecuredHeaders(),
-        params: { ID: id },
+      const result = await this.axiosInstance.get(
+        `${this.buildCentralRestServerServiceUtilURL(this.tenant)}/${ServerAction.SITE_IMAGE}`, {
+        headers: this.buildHeaders(),
+        responseType: 'arraybuffer',
+        params: {
+          ID: id,
+          TenantID: this.decodedToken?.tenantID,
+        },
       });
-      if (result.data.image) {
-        // Set
-        foundSiteImage = result.data.image;
+      if (result.data) {
+        const base64Image = Buffer.from(result.data).toString('base64');
+        foundSiteImage = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
         this.siteImages.set(id, foundSiteImage);
       }
     }
@@ -746,6 +753,10 @@ export default class CentralServerProvider {
 
   private buildCentralRestServerServiceAuthURL(tenant: TenantConnection): string {
     return tenant.endpoint + '/client/auth';
+  }
+
+  private buildCentralRestServerServiceUtilURL(tenant: TenantConnection): string {
+    return tenant.endpoint + '/client/util';
   }
 
   private buildCentralRestServerServiceSecuredURL(): string {
