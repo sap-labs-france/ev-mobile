@@ -59,6 +59,9 @@ export default class MigrationManager {
         subdomain: 'mairiedemonaco', name: 'Mairie de Monaco', endpoint: Configuration.AWS_REST_ENDPOINT_PROD,
       });
       this.addNewTenant(tenants, {
+        subdomain: 'chargex', name: 'ChargeX', endpoint: Configuration.AWS_REST_ENDPOINT_PROD,
+      });
+      this.addNewTenant(tenants, {
         subdomain: 'sapfrance', name: 'SAP France', endpoint: Configuration.SCP_REST_ENDPOINT_PROD,
       });
       this.addNewTenant(tenants, {
