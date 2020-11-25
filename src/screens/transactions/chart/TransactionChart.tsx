@@ -75,9 +75,15 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       let transactionWithConsumptions = null;
       let chargingStation = null;
       let connector = null;
-      // Get Transaction and chargingStation
+      console.log('====================================');
+      console.log({chargingStationID, connectorID, transactionID});
+      console.log('====================================');
+    // Get Transaction and chargingStation
       if (transactionID) {
         transactionWithConsumptions = await this.getTransactionWithConsumptions(parseInt(transactionID, 10));
+        console.log('====================================');
+        console.log({transactionWithConsumptions});
+        console.log('====================================');
         if (transactionWithConsumptions && transactionWithConsumptions.transaction) {
           chargingStation = await this.getChargingStation(transactionWithConsumptions.transaction.chargeBoxID);
           if (chargingStation) {
@@ -168,6 +174,13 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
             values: transaction.values,
             consumptionValues,
             stateOfChargeValues
+          };
+        } else {
+          return {
+            transaction,
+            values: null,
+            consumptionValues: null,
+            stateOfChargeValues: null
           };
         }
       }
@@ -363,9 +376,9 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
                 keepPositionOnRotation={false}
               />
             ) : (
-                transaction || (connector && connector.currentTransactionID) ?
+                (transaction || (connector && connector.currentTransactionID)) ?
                   canDisplayTransaction ?
-                    <Text style={style.notData}>{I18n.t('details.noData')}</Text>
+                    <Text style={style.notData}>{I18n.t('details.noConsumptionData')}</Text>
                     :
                     <Text style={style.notData}>{I18n.t('details.notAuthorized')}</Text>
                   :
