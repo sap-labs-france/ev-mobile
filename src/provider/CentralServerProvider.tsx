@@ -677,8 +677,10 @@ export default class CentralServerProvider {
       });
       if (result.data) {
         const base64Image = Buffer.from(result.data).toString('base64');
-        foundSiteImage = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
-        this.siteImages.set(id, foundSiteImage);
+        if (base64Image) {
+          foundSiteImage = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
+          this.siteImages.set(id, foundSiteImage);
+        }
       }
     }
     return foundSiteImage;
