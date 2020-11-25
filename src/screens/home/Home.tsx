@@ -191,14 +191,18 @@ export default class Home extends BaseScreen<Props, State> {
                   </Left>
                 </CardItem>
               </Card>
+              <Card style={cardStyle.card}>
+                <CardItem style={cardStyle.cardItem} button={true} onPress={() => this.setState({qrCodeVisible: true})}>
+                  <Left>
+                    <Icon style={cardStyle.cardIcon} type='AntDesign' name='qrcode'/>
+                    <Body>
+                      <Text style={cardStyle.cardText}>{I18n.t('qrCode.browseScan&Charge')}</Text>
+                      <Text note={true} style={cardStyle.cardNote}>{I18n.t('qrCode.browseScan&ChargeNote')}</Text>
+                    </Body>
+                  </Left>
+                </CardItem>
+              </Card>
             </Content>
-            <View style={style.qrCodeContainer}>
-              <TouchableOpacity onPress={() => this.setState({qrCodeVisible: true})} style={style.qrCodeTouchableOpacity}>
-                <View style={style.qrCodeButton}>
-                  <Icon style={style.qrCodeIcon} type='AntDesign' name='qrcode'/>
-                </View>
-              </TouchableOpacity>
-            </View>
           </Container>
         )}
       </Container>
