@@ -20,7 +20,6 @@ import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 import CreateTenantDialog from './CreateTenantDialog';
-import TenantManagement from './TenantManagement';
 import CreateTenantQrCode from './TenantQrCode';
 
 export interface Props extends BaseProps {
@@ -410,14 +409,13 @@ export default class Login extends BaseScreen<Props, State> {
                   <Text style={style.linksTextButton} uppercase={false}>{I18n.t('authentication.newUser')}</Text>
                 </Button>
                 <Form style={formStyle.form}>
-                  <TenantManagement tenantName={this.state.tenantName} navigation={navigation}/>
-                  {/* <Button block={true} style={formStyle.button}
+                  <Button block={true} style={formStyle.button}
                     onPress={() => {
                       this.actionSheet.show();
                     }}>
                     <Text style={formStyle.buttonText} uppercase={false}>{this.state.tenantName}</Text>
-                  </Button> */}
-                  {/* <ActionSheet
+                  </Button>
+                  <ActionSheet
                     ref={(actionSheet: ActionSheet) => this.actionSheet = actionSheet}
                     title={I18n.t('authentication.tenant')}
                     styles={{
@@ -491,7 +489,7 @@ export default class Login extends BaseScreen<Props, State> {
                     onPress={(index: number) => {
                       this.setTenantWithIndex(index);
                     }}
-                  /> */}
+                  />
                   {createTenantVisible &&
                     <CreateTenantDialog navigation={navigation} tenants={this.tenants}
                       close={(newTenant: TenantConnection) => {
