@@ -288,6 +288,7 @@
     "connectorMax": "Max. Leistung Anschluss (kW)",
     "noData": "Nicht Daten",
     "noSessionInProgress": "Kein laufender Ladvorgang",
+    "noConsumptionData": "No consumption data",
     "serialNumber": "Seriennummer",
     "privateURL": "Private URL",
     "publicURL": "Öffentliche URL",

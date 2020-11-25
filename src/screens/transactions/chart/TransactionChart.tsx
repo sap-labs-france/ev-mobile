@@ -369,7 +369,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
                     :
                     <Text style={style.notData}>{I18n.t('details.notAuthorized')}</Text>
                   :
-                  <Text style={style.notData}>{I18n.t('details.noSessionInProgress')}</Text>
+                  <Text style={style.notData}>{I18n.t('details.noConsumptionData')}</Text>
               )}
           </View>
         )

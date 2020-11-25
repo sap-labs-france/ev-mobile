@@ -288,6 +288,7 @@
     "connectorMax": "Maximo poder de conexão (kW)",
     "noData": "Sem dados",
     "noSessionInProgress": "Nenhuma sessão em progresso",
+    "noConsumptionData": "No consumption data",
     "serialNumber": "Numero de Serie",
     "privateURL": "URL Privado",
     "publicURL": "URL Publico",
