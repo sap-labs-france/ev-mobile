@@ -130,6 +130,8 @@
     "reportErrorFailed": "Impossible d'envoyer l'erreur"
   },
   "qrCode": {
+    "browseScan&Charge": "Scan & Charge",
+    "browseScan&ChargeNote": "Scan the Charging Station's QR Code",
     "wrongOrganizationTitle": "Changement d'Organisation",
     "wrongOrganizationMessage": "La borne que vous essayez d'atteindre n'est pas dans votre organisation, voulez-vous changer pour {{tenantName}}?",
     "unknownEndpoint": "L'endpoint {{endpoint}} n'existe pas",
