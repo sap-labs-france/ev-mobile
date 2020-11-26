@@ -251,7 +251,7 @@ export default class Login extends BaseScreen<Props, State> {
     // Not selected
     if (!this.state.tenantSubDomain) {
       Message.showError(I18n.t('authentication.mustSelectTenant'));
-      // Delete
+    // Delete
     } else {
       Alert.alert(
         I18n.t('general.deleteTenant'),

@@ -90,7 +90,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
             connector = chargingStation ? chargingStation.connectors[transactionWithConsumptions.transaction.connectorId - 1] : null;
           }
         }
-        // Get chargingStation and Transaction
+      // Get chargingStation and Transaction
       } else if (chargingStationID) {
         // Get chargingStation
         chargingStation = await this.getChargingStation(chargingStationID);

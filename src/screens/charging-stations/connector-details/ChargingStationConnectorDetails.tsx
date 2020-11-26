@@ -6,9 +6,9 @@ import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'reac
 
 import { default as noPhoto, default as noPhotoActive } from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
-import I18nManager from '../../../I18n/I18nManager';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
+import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
@@ -365,20 +365,20 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return {
         buttonDisabled: false
       };
-      // Still trials? (only for Start Transaction)
+    // Still trials? (only for Start Transaction)
     } else if (startTransactionNbTrial > 0) {
       // Trial - 1
       return {
         startTransactionNbTrial: startTransactionNbTrial > 0 ? startTransactionNbTrial - 1 : 0
       };
-      // Transaction ongoing
+    // Transaction ongoing
     } else if (connector && connector.currentTransactionID !== 0) {
       // Transaction has started, enable the buttons again
       return {
         startTransactionNbTrial: 0,
         buttonDisabled: false
       };
-      // Transaction is stopped (currentTransactionID == 0)
+    // Transaction is stopped (currentTransactionID == 0)
     } else if (connector && connector.status === ChargePointStatus.FINISHING) {
       // Disable the button until the user unplug the cable
       return {
@@ -410,7 +410,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         elapsedTimeFormatted,
         inactivityFormatted
       };
-      // Basic User: Use the connector data
+    // Basic User: Use the connector data
     } else if (connector && connector.currentTransactionID) {
       let elapsedTimeFormatted = Constants.DEFAULT_DURATION;
       let inactivityFormatted = Constants.DEFAULT_DURATION;

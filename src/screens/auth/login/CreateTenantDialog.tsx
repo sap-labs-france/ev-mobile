@@ -4,8 +4,8 @@ import React from 'react';
 import { Alert, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 
-import computeModalStyleSheet from '../../../ModalStyles';
 import Configuration from '../../../config/Configuration';
+import computeModalStyleSheet from '../../../ModalStyles';
 import BaseProps from '../../../types/BaseProps';
 import { EndpointCloud, TenantConnection } from '../../../types/Tenant';
 import SecuredStorage from '../../../utils/SecuredStorage';
@@ -81,7 +81,7 @@ export default class Login extends React.Component<Props, State> {
           [{ text: I18n.t('general.ok'), style: 'cancel' }],
           { cancelable: false }
         );
-        // Add new Tenant and Save
+      // Add new Tenant and Save
       } else {
         tenants.push(newTenant);
         // Save
