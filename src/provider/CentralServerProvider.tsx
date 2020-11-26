@@ -6,8 +6,8 @@ import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { KeyValue } from 'types/Global';
 
-import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
+import Configuration from '../config/Configuration';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
@@ -733,13 +733,13 @@ export default class CentralServerProvider {
     }
   }
 
-  private buildHeaders(): object {
+  private buildHeaders(): Record<string, string> {
     return {
       'Content-Type': 'application/json',
     };
   }
 
-  private buildSecuredHeaders(): object {
+  private buildSecuredHeaders(): Record<string, string> {
     return {
       'Authorization': 'Bearer ' + this.token,
       'Content-Type': 'application/json',

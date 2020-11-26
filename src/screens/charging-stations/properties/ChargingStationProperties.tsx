@@ -175,7 +175,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
           subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
-          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
           rightActionIcon={'menu'}
         />
         {loading ? (

@@ -6,7 +6,7 @@ export interface FilterControlComponentProps<T> {
   label: string;
   locale?: string;
   initialValue?: T;
-  style?: object;
+  style?: Record<string, unknown>;
   onFilterChanged: (id: string, value: T) => void;
 }
 

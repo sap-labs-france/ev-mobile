@@ -18,7 +18,7 @@ import Constants from './Constants';
 import Message from './Message';
 
 export default class Utils {
-  public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
+  public static canAutoLogin(centralServerProvider: CentralServerProvider): boolean {
     const tenant = centralServerProvider.getUserTenant();
     const email = centralServerProvider.getUserEmail();
     const password = centralServerProvider.getUserPassword();
@@ -473,7 +473,7 @@ export default class Utils {
     return Math.round(value * roundPower) / roundPower;
   }
 
-  public static countJsonProps(jsonDoc: object): number {
+  public static countJsonProps(jsonDoc: Record<string, unknown>): number {
     let count = 0;
     if (!jsonDoc) {
       return count;
@@ -486,7 +486,7 @@ export default class Utils {
     return count;
   }
 
-  public static cloneObject(object: object): object {
+  public static cloneObject(object: Record<string, unknown>): Record<string, unknown> {
     return JSON.parse(JSON.stringify(object));
   }
 
@@ -583,7 +583,7 @@ export default class Utils {
     return result;
   }
 
-  public static computeInactivityStyle(inactivityStatus: InactivityStatus): object {
+  public static computeInactivityStyle(inactivityStatus: InactivityStatus): Record<string, unknown> {
     const commonColor = Utils.getCurrentCommonColor();
     switch (inactivityStatus) {
       case InactivityStatus.INFO:
@@ -664,7 +664,7 @@ export default class Utils {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
-  public static validateInput(screen: React.Component, constraints: object): boolean {
+  public static validateInput(screen: React.Component, constraints: Record<string, unknown>): boolean {
     let formValid = true;
     const errorState: any = {};
     // Reset all errors

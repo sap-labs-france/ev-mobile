@@ -7,7 +7,7 @@ import Modal from 'react-native-modal';
 import computeModalStyleSheet from '../../../ModalStyles';
 import Configuration from '../../../config/Configuration';
 import BaseProps from '../../../types/BaseProps';
-import Tenant, { EndpointCloud, TenantConnection } from '../../../types/Tenant';
+import { EndpointCloud, TenantConnection } from '../../../types/Tenant';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 
@@ -20,8 +20,8 @@ interface State {
   newTenantSubDomain?: string;
   newTenantName?: string;
   newTenantEndpointCloud?: EndpointCloud;
-  errorNewTenantName?: object[];
-  errorNewTenantSubDomain?: object[];
+  errorNewTenantName?: Record<string, unknown>[];
+  errorNewTenantSubDomain?: Record<string, unknown>[];
 }
 
 export default class Login extends React.Component<Props, State> {
@@ -81,7 +81,7 @@ export default class Login extends React.Component<Props, State> {
           [{ text: I18n.t('general.ok'), style: 'cancel' }],
           { cancelable: false }
         );
-      // Add new Tenant and Save
+        // Add new Tenant and Save
       } else {
         tenants.push(newTenant);
         // Save

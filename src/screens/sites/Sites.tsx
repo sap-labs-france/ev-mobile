@@ -223,7 +223,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           title={I18n.t('sidebar.sites')}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
-          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
           rightActionIcon={'menu'}
           diplayMap={!Utils.isEmptyArray(this.state.sites)}
           mapIsDisplayed={mapIsDisplayed}

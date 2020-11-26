@@ -6,9 +6,9 @@ import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'reac
 
 import { default as noPhoto, default as noPhotoActive } from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
+import I18nManager from '../../../I18n/I18nManager';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
@@ -78,10 +78,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
+  public async componentDidMount() {
     await super.componentDidMount();
     const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null);
-    if (startTransaction) {
+    if (startTransaction) {
       this.startTransactionConfirm();
     }
   }
@@ -166,9 +166,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       // Navigate
       navigation.navigate(
         'TransactionDetailsTabs', {
-          params: { transactionID: transaction.id },
-          key: `${Utils.randomNumber()}`
-        }
+        params: { transactionID: transaction.id },
+        key: `${Utils.randomNumber()}`
+      }
       );
     } else {
       Alert.alert(I18n.t('chargers.noSession'), I18n.t('chargers.noSessionMessage'));
@@ -180,15 +180,15 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
     const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null), 10);
     // Get the last session
-      // Navigate
+    // Navigate
     navigation.navigate(
       'ReportError', {
-        params: {
-          chargingStationID,
-          connectorID,
-        },
-        key: `${Utils.randomNumber()}`
-      }
+      params: {
+        chargingStationID,
+        connectorID,
+      },
+      key: `${Utils.randomNumber()}`
+    }
     );
   }
 
@@ -410,7 +410,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         elapsedTimeFormatted,
         inactivityFormatted
       };
-    // Basic User: Use the connector data
+      // Basic User: Use the connector data
     } else if (connector && connector.currentTransactionID) {
       let elapsedTimeFormatted = Constants.DEFAULT_DURATION;
       let inactivityFormatted = Constants.DEFAULT_DURATION;
@@ -678,7 +678,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
               subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}
-              rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
               rightActionIcon={'menu'}
             />
             {/* Site Image */}

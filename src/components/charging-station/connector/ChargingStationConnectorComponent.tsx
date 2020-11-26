@@ -32,7 +32,7 @@ interface State {
 export default class ChargingStationConnectorComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
-  private timerAnimation: number;
+  private timerAnimation: NodeJS.Timeout;
 
   constructor(props: Props) {
     super(props);

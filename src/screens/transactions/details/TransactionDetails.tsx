@@ -8,8 +8,8 @@ import { Image, ScrollView } from 'react-native';
 import noPhotoActive from '../../../../assets/no-photo.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
-import HeaderComponent from '../../../components/header/HeaderComponent';
 import I18nManager from '../../../I18n/I18nManager';
+import HeaderComponent from '../../../components/header/HeaderComponent';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
@@ -245,7 +245,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.goBack(null);
+    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };
@@ -267,7 +267,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
               subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}
-              rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
               rightActionIcon={'menu'}
             />
             {/* Site Image */}

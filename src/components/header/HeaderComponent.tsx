@@ -11,11 +11,11 @@ import computeStyleSheet from './HeaderComponentStyles';
 export interface Props extends BaseProps {
   title: string;
   subTitle?: string;
-  leftAction?: () => void;
+  leftAction?: () => boolean;
   leftActionIcon?: string;
   leftActionIconType?: IconType;
   hideHomeAction?: boolean;
-  rightAction?: () => void;
+  rightAction?: () => boolean;
   rightActionIcon?: string;
   rightActionIconType?: IconType;
   filters?: any;

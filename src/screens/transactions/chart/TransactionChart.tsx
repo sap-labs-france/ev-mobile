@@ -76,13 +76,13 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       let chargingStation = null;
       let connector = null;
       console.log('====================================');
-      console.log({chargingStationID, connectorID, transactionID});
+      console.log({ chargingStationID, connectorID, transactionID });
       console.log('====================================');
-    // Get Transaction and chargingStation
+      // Get Transaction and chargingStation
       if (transactionID) {
         transactionWithConsumptions = await this.getTransactionWithConsumptions(parseInt(transactionID, 10));
         console.log('====================================');
-        console.log({transactionWithConsumptions});
+        console.log({ transactionWithConsumptions });
         console.log('====================================');
         if (transactionWithConsumptions && transactionWithConsumptions.transaction) {
           chargingStation = await this.getChargingStation(transactionWithConsumptions.transaction.chargeBoxID);
@@ -90,7 +90,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
             connector = chargingStation ? chargingStation.connectors[transactionWithConsumptions.transaction.connectorId - 1] : null;
           }
         }
-      // Get chargingStation and Transaction
+        // Get chargingStation and Transaction
       } else if (chargingStationID) {
         // Get chargingStation
         chargingStation = await this.getChargingStation(chargingStationID);
@@ -331,7 +331,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
               subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}
-              rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
               rightActionIcon={'menu'}
             />
             {showTransactionDetails && transaction && (

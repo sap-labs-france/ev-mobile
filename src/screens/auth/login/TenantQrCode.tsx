@@ -17,7 +17,7 @@ import BaseScreen from '../../base-screen/BaseScreen';
 
 export interface Props extends BaseProps {
   tenants: TenantConnection[];
-  close: (newTenant?: TenantConnection) => void;
+  close: (newTenant?: TenantConnection) => boolean;
 }
 
 interface State {
@@ -46,27 +46,27 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
     super.setState(state, callback);
   }
 
-  public async createTenant(tenantQRCode: TenantQRCode) {
-      const { tenants, close } = this.props;
-      // Get the end point
-      const newTenantEndpointCloud = this.tenantEndpointClouds.find((tenantEndpointCloud) => tenantEndpointCloud.id === tenantQRCode.endpoint)
-      if (!newTenantEndpointCloud) {
-        Message.showError(I18n.t('qrCode.endpointError', {endpoint: tenantQRCode.endpoint}));
-        close();
-        return;
-      }
-      // Create
-      const newTenant: TenantConnection = {
-        subdomain: tenantQRCode.tenantSubDomain ,
-        name: tenantQRCode.tenantName,
-        endpoint: newTenantEndpointCloud.endpoint
-      };
-      // Add
-      tenants.push(newTenant)
-      // Save
-      await SecuredStorage.saveTenants(tenants);
-      // Close
-      close(newTenant);
+  public async createTenant(tenantQRCode: TenantQRCode) {
+    const { tenants, close } = this.props;
+    // Get the end point
+    const newTenantEndpointCloud = this.tenantEndpointClouds.find((tenantEndpointCloud) => tenantEndpointCloud.id === tenantQRCode.endpoint)
+    if (!newTenantEndpointCloud) {
+      Message.showError(I18n.t('qrCode.endpointError', { endpoint: tenantQRCode.endpoint }));
+      close();
+      return;
+    }
+    // Create
+    const newTenant: TenantConnection = {
+      subdomain: tenantQRCode.tenantSubDomain,
+      name: tenantQRCode.tenantName,
+      endpoint: newTenantEndpointCloud.endpoint
+    };
+    // Add
+    tenants.push(newTenant)
+    // Save
+    await SecuredStorage.saveTenants(tenants);
+    // Close
+    close(newTenant);
   }
 
   public async checkQrCodeAndSelectOrCreateTenant(decodeData: string) {
@@ -76,10 +76,10 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
     if (!tenant) {
       await Alert.alert(
         I18n.t('qrCode.unknownOrganizationTitle'),
-        I18n.t('qrCode.unknownOrganizationMessage', {tenantName: tenantQRCode.tenantName}),
+        I18n.t('qrCode.unknownOrganizationMessage', { tenantName: tenantQRCode.tenantName }),
         [
           { text: I18n.t('general.no'), onPress: () => close(), style: 'cancel' },
-          { text: I18n.t('general.yes'), onPress: () => this.createTenant(tenantQRCode)}
+          { text: I18n.t('general.yes'), onPress: () => this.createTenant(tenantQRCode) }
         ],
       );
     } else {
@@ -98,7 +98,7 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
           leftActionIcon={'navigate-before'}
           hideHomeAction={true}
         />
-        <QRCodeScanner cameraProps={{captureAudio: false}} showMarker={true} onRead={(qrCode) => this.checkQrCodeAndSelectOrCreateTenant(base64.decode(qrCode.data))}/>
+        <QRCodeScanner cameraProps={{ captureAudio: false }} showMarker={true} onRead={(qrCode) => this.checkQrCodeAndSelectOrCreateTenant(base64.decode(qrCode.data))} />
       </Container>
     );
   }
