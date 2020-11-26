@@ -400,7 +400,7 @@ export default class Login extends BaseScreen<Props, State> {
         <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
           {qrCodeVisible ? (
             <CreateTenantQrCode tenants={this.tenants} navigation={navigation}
-              close={(newTenant?: TenantConnection) => { this.close(newTenant); return true }}
+              close={async (newTenant?: TenantConnection) => { await this.close(newTenant); return true }}
             />
           ) : (
               <View>
