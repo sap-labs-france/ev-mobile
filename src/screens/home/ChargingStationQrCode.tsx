@@ -1,9 +1,9 @@
 import { DrawerActions, StackActions } from '@react-navigation/native';
+import base64 from 'base-64';
 import I18n from 'i18n-js';
 import { Container } from 'native-base';
 import React from 'react';
 import { Alert } from 'react-native';
-import base64 from 'react-native-base64';
 import Orientation from 'react-native-orientation-locker';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
