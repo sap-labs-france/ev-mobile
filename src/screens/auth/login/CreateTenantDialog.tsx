@@ -81,7 +81,7 @@ export default class Login extends React.Component<Props, State> {
           [{ text: I18n.t('general.ok'), style: 'cancel' }],
           { cancelable: false }
         );
-        // Add new Tenant and Save
+      // Add new Tenant and Save
       } else {
         tenants.push(newTenant);
         // Save
