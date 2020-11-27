@@ -333,9 +333,6 @@ export default class Login extends BaseScreen<Props, State> {
   public forgotPassword = () => {
     const navigation = this.props.navigation;
     // Tenant selected?
-    console.log('====================================');
-    console.log(this.state.email);
-    console.log('====================================');
     if (this.state.tenantSubDomain) {
       navigation.navigate(
         'RetrievePassword', {
