@@ -121,7 +121,18 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
         return false;
       }
     }
-    // Check Charging Station
+    if (tenant.endpoint !== endpointCloud.endpoint) {
+      Message.showError(I18n.t('qrCode.endpointError'));
+      return false;
+    }
+    return true;
+  }
+
+  public async checkQrCodeDataAndSave(chargingStationQRCode: ChargingStationQRCode): Promise<boolean> {
+    // Check the Tenant Sub Domain
+    if (!(await this.checkTenantQrCodeData(chargingStationQRCode))) {
+      return false;
+    }
     try {
       const chargingStation = await this.centralServerProvider.getChargingStation(
         { ID: chargingStationQrCode.chargingStationID });
