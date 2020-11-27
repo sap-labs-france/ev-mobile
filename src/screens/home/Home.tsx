@@ -119,9 +119,8 @@ export default class Home extends BaseScreen<Props, State> {
           <ChargingStationQrCode
             navigation={this.props.navigation}
             tenants={this.tenants}
-            tenantSubDomain={this.tenantSubDomain}
+            currentTenantSubDomain={this.tenantSubDomain}
             close={() => {
-              Orientation.unlockAllOrientations();
               this.setState({qrCodeVisible: false})
             }}
           />
@@ -168,7 +167,7 @@ export default class Home extends BaseScreen<Props, State> {
                     </Body>
                   </Left>
                 </CardItem>
-              </Card> 
+              </Card>
               <Card style={cardStyle.card}>
                 <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate('TransactionHistoryNavigator' )}>
                   <Left>

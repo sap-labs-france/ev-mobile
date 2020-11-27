@@ -1,4 +1,4 @@
-import { DrawerActions } from '@react-navigation/native';
+import { DrawerActions, StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import moment from 'moment';
 import { Container, Content, Header, Icon, ListItem, Text, Thumbnail, View } from 'native-base';
@@ -97,7 +97,15 @@ export default class SideBar extends BaseScreen<Props, State> {
     // Logoff
     this.centralServerProvider.setAutoLoginDisabled(true);
     await this.centralServerProvider.logoff();
-    // Back to login
+    // Navigate to login
+    this.props.navigation.dispatch(
+      StackActions.replace(
+        'AuthNavigator', {
+          name: 'Login',
+          key: `${Utils.randomNumber()}`,
+        }
+      ),
+    );
     this.props.navigation.navigate('AuthNavigator');
   }
 

@@ -7,9 +7,9 @@ import Address from 'types/Address';
 import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
 
-import I18nManager from '../I18n/I18nManager';
-import ThemeManager from '../custom-theme/ThemeManager';
 import { buildCommonColor } from '../custom-theme/customCommonColor';
+import ThemeManager from '../custom-theme/ThemeManager';
+import I18nManager from '../I18n/I18nManager';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
 import { InactivityStatus } from '../types/Transaction';
@@ -18,16 +18,6 @@ import Constants from './Constants';
 import Message from './Message';
 
 export default class Utils {
-  public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
-    const tenant = centralServerProvider.getUserTenant();
-    const email = centralServerProvider.getUserEmail();
-    const password = centralServerProvider.getUserPassword();
-    return !centralServerProvider.hasAutoLoginDisabled() &&
-      !Utils.isNullOrEmptyString(tenant?.subdomain) &&
-      !Utils.isNullOrEmptyString(email) &&
-      !Utils.isNullOrEmptyString(password);
-  }
-
   public static getCurrentCommonColor(): any {
     // Build the theme
     const themeManager = ThemeManager.getInstance();

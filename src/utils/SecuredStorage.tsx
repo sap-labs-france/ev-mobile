@@ -10,7 +10,7 @@ import { UserCredentials } from '../types/User';
 let navigationID: string = '' + new Date().getTime();
 if (__DEV__) {
   // Keep the same key for dev
-  navigationID = '1234567';
+  navigationID = '12345678';
 }
 
 export default class SecuredStorage {
@@ -44,7 +44,7 @@ export default class SecuredStorage {
     );
   }
 
-  public static async getUserCredentials(tenantSubDomain: string): Promise<UserCredentials> {
+  public static async getUserCredentials(tenantSubDomain?: string): Promise<UserCredentials> {
     // Get current domain
     if (!tenantSubDomain) {
       tenantSubDomain = await SecuredStorage.getCurrentTenantSubDomain();

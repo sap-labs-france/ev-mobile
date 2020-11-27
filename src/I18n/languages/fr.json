@@ -64,8 +64,8 @@
   },
   "authentication": {
     "tenantTitle": "Organisation",
-    "mandatoryTenantSubDomain": "The Organization subdomain is mandatory",
-    "mandatoryTenantName": "The Organization name is mandatory",
+    "mandatoryTenantSubDomain": "Le sous-domaine de l'organization est obligatoire",
+    "mandatoryTenantName": "Le nom de l'organization est obligatoire",
     "mandatoryTenant": "L'organisation est obligatoire",
     "unknownTenant": "Organisation inconnue!",
     "mandatoryName": "Le Nom est obligatoire",
@@ -133,16 +133,19 @@
     "browseScan&Charge": "Scan & Charge",
     "browseScan&ChargeNote": "Scan the Charging Station's QR Code",
     "wrongOrganizationTitle": "Changement d'Organisation",
-    "wrongOrganizationMessage": "La borne que vous essayez d'atteindre n'est pas dans votre organisation, voulez-vous changer pour {{tenantName}}?",
-    "unknownEndpoint": "L'endpoint {{endpoint}} n'existe pas",
+    "wrongOrganizationMessage": "La borne que vous essayez d'atteindre n'est pas dans votre organisation, voulez-vous changer pour '{{tenantName}}'?",
+    "invalidQRCode": "QR Code invalide",
+    "unknownQRCode": "QR Code non reconnu",
+    "unknownEndpoint": "Le cloud '{{endpoint}}' n'existe pas",
     "unknownOrganizationTitle": "Organisation inconnu",
-    "unknownOrganizationMessage": "Vous avez scannez une organisation inconnu {{tenantName}}, voulez vous la créer et vous y connectez ?",
-    "unknownChargingStation": "La borne {{chargingStationID}} est inconnu",
-    "unknownConnector": "Le connecteur {{connectorID}} est inconnu",
-    "scanTenantQrCodeTitle": "Scan Tenant Qr Code",
-    "scanChargingStationQrCodeTitle": "Scan Borne Qr Code",
-    "tenantNameError": "Nom du Tenant n'est pas bon",
-    "endpointError": "Nom du Endpoint n'est pas bon"
+    "unknownOrganizationMessage": "Vous avez scannez une organisation inconnu '{{tenantName}}', voulez vous la créer et vous y connecter ?",
+    "newOrganizationTitle": "Nouvelle Organisation",
+    "newOrganizationMessage": "Voulez vous sauvegarder la nouvelle organisation '{{tenantName}}'?",
+    "unknownChargingStation": "La borne '{{chargingStationID}}' est inconnue",
+    "unknownConnector": "Le connecteur '{{connectorID}}' est inconnu",
+    "scanTenantQrCodeTitle": "Scanner Organisation",
+    "scanTenantQrCodeSuccess": "L'organisation '{{tenantName}}' a été sauvegardée",
+    "scanChargingStationQrCodeTitle": "Scanner Borne"
   },
   "users": {
     "userUnexpectedError": "Impossible de lire l'utilisateur"
@@ -161,6 +164,7 @@
     "transactionUnexpectedError": "Impossible de lire la session",
     "transactionStatsUnexpectedError": "Impossible de lire les statistiques",
     "transactionStartUnexpectedError": "Impossible de démarrer la session",
+    "carNotConnectedError": "Votre voiture n'est pas connctée à la borne",
     "transactionStopUnexpectedError": "Impossible de stopper la session"
   },
   "home": {
@@ -270,7 +274,7 @@
     "notAuthorised": "Vous n'êtes pas autorisé à arrêter la transaction.",
     "accepted": "La requête a été acceptée",
     "noBadgeID": "Pas de badge dans votre profil",
-    "denied": "La requête a échouée",
+    "denied": "Request has has been rejected",
     "duration": "(hh:mm)",
     "total": "Total",
     "maximum": "Maximum",

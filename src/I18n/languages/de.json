@@ -133,16 +133,19 @@
     "browseScan&Charge": "Scan & Charge",
     "browseScan&ChargeNote": "Scan the Charging Station's QR Code",
     "wrongOrganizationTitle": "Change Organization",
-    "wrongOrganizationMessage": "The charging Station you are trying to access is not in this organization, do you want to switch to {{tenantName}}?",
-    "unknownEndpoint": "{{endpoint}} endpoint doesn't exist",
+    "wrongOrganizationMessage": "The charging Station you are trying to access is not in this organization, do you want to switch to '{{tenantName}}'?",
+    "invalidQRCode": "Invalid QR Code",
+    "unknownQRCode": "Unknown QR Code",
+    "unknownEndpoint": "Unknown cloud '{{endpoint}}'",
     "unknownOrganizationTitle": "Unknown Organization",
-    "unknownOrganizationMessage": "You scanned an unknown organization {{tenantName}}, do you want to create and log into it?",
-    "unknownChargingStation": "Unknown Charging Station {{chargingStationID}}",
-    "unknownConnector": "Unknown Connector {{connectorID}}",
+    "unknownOrganizationMessage": "You scanned an unknown organization '{{tenantName}}', do you want to create it and log into it?",
+    "newOrganizationTitle": "New Organization",
+    "newOrganizationMessage": "Do you want to save the new organization '{{tenantName}}'?",
+    "unknownChargingStation": "Unknown Charging Station '{{chargingStationID}}'",
+    "unknownConnector": "Unknown Connector ID '{{connectorID}}'",
     "scanTenantQrCodeTitle": "Scan Tenant",
-    "scanChargingStationQrCodeTitle": "Scan Charging Station",
-    "tenantNameError": "Wrong Tenant Name",
-    "endpointError": "Wrong endpoint"
+    "scanTenantQrCodeSuccess": "Organization '{{tenantName}}' has saved",
+    "scanChargingStationQrCodeTitle": "Scan Charging Station"
   },
   "users": {
     "userUnexpectedError": "Benutzer kann nicht gelesen werden"
@@ -161,6 +164,7 @@
     "transactionUnexpectedError": "Ladevorgang konnte nicht gelesen werden",
     "transactionStatsUnexpectedError": "Statistiken konnten nicht gelesen werden",
     "transactionStartUnexpectedError": "Ladevorgang konnte nicht gstartet werden",
+    "carNotConnectedError": "Your car is not connected to the charging station",
     "transactionStopUnexpectedError": "Ladevorgang konnte nicht beendet werden"
   },
   "home": {
@@ -270,7 +274,7 @@
     "notAuthorised": "Sie dürfen die Ladesitzung nicht beenden.",
     "accepted": "Anfrage wurde angenommen",
     "noBadgeID": "Kein Badge in Ihrem Profil!",
-    "denied": "Anfrage fehlgeschlagen",
+    "denied": "Request has has been rejected",
     "duration": "(hh:mm)",
     "total": "Summe",
     "maximum": "Maximum",

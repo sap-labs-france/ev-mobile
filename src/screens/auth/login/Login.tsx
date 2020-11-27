@@ -1,8 +1,7 @@
 import I18n from 'i18n-js';
 import { Button, CheckBox, Fab, Form, Icon, Item, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, Platform, ScrollView, TextInput } from 'react-native';
+import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, Platform, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet';
 import * as Animatable from 'react-native-animatable';
 import Orientation from 'react-native-orientation-locker';
@@ -18,7 +17,7 @@ import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
-import computeStyleSheet from '../AuthStyles';
+import computeStyleSheet, { computeActionSheetStyleSheet } from '../AuthStyles';
 import CreateTenantDialog from './CreateTenantDialog';
 import CreateTenantQrCode from './TenantQrCode';
 
@@ -32,9 +31,6 @@ interface State {
   email?: string;
   tenantName?: string;
   tenantSubDomain?: string;
-  tenantSubDomainQrCode?: string;
-  tenantNameQrCode?: string;
-  endpointQrCode?: string;
   loading?: boolean;
   initialLoading?: boolean;
   hidePassword?: boolean;
@@ -97,9 +93,6 @@ export default class Login extends BaseScreen<Props, State> {
       email: Utils.getParamFromNavigation(this.props.route, 'email', ''),
       tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', ''),
       tenantName: I18n.t('authentication.tenant'),
-      tenantNameQrCode: Utils.getParamFromNavigation(this.props.route, 'name', ''),
-      tenantSubDomainQrCode: Utils.getParamFromNavigation(this.props.route, 'subdomain', ''),
-      endpointQrCode: Utils.getParamFromNavigation(this.props.route, 'endpoint', ''),
       loading: false,
       createTenantVisible: false,
       hidePassword: true,
@@ -113,72 +106,64 @@ export default class Login extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     await super.componentDidMount();
-    // Get Tenants
+    let email = this.state.email = '';
+    let password = this.state.password = '';
+    let tenant: TenantConnection;
+    // Get tenants
     this.tenants = await this.centralServerProvider.getTenants();
-    if (this.state.endpointQrCode && this.state.tenantNameQrCode && this.state.tenantSubDomainQrCode) {
-      const tenant: TenantConnection = {
-        subdomain: this.state.tenantSubDomainQrCode,
-        name: this.state.tenantNameQrCode,
-        endpoint: this.state.endpointQrCode
-      };
-      await this.selectTenant(tenant);
-      if (this.state.email && this.state.password && this.state.tenantSubDomain) {
-        try {
-          // Check EULA
-          const result = await this.centralServerProvider.checkEndUserLicenseAgreement(
-            { email: this.state.email, tenantSubDomain: tenant.subdomain });
-          // Try to login
-          if (result.eulaAccepted) {
-            await this.setState({ eula: true }, () => this.login());
-          }
-        } catch (error) {
-          // Do nothing: user must log on
+    // Check if sub-domain is provided
+    if (!this.state.tenantSubDomain) {
+      // No: et latest saved credentials
+      const userCredentials = await SecuredStorage.getUserCredentials();
+      if (userCredentials) {
+        tenant = await this.centralServerProvider.getTenant(userCredentials.tenantSubDomain);
+        email = userCredentials.email;
+        password = userCredentials.password;
+      }
+    } else {
+      if (this.state.tenantSubDomain) {
+        // Get the Tenant
+        tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
+        // Get user connection
+        const userCredentials = await SecuredStorage.getUserCredentials(tenant.subdomain)
+        if (userCredentials) {
+          email = userCredentials.email;
+          password = userCredentials.password;
         }
       }
     }
-    // Load User data
-    if (!this.state.email || !this.state.tenantSubDomain) {
-      const tenant = this.centralServerProvider.getUserTenant();
-      const email = this.centralServerProvider.getUserEmail();
-      const password = this.centralServerProvider.getUserPassword();
-      // Set
-      this.setState({
-        email,
-        password,
-        tenantSubDomain: tenant ? tenant.subdomain : null,
-        tenantName: tenant ? tenant.name : this.state.tenantName,
-        initialLoading: false
-      });
-      // Check if user can be logged
-      if (Utils.canAutoLogin(this.centralServerProvider, this.props.navigation)) {
-        try {
-          // Check EULA
-          const result = await this.centralServerProvider.checkEndUserLicenseAgreement(
-            { email, tenantSubDomain: tenant.subdomain });
-          // Try to login
-          if (result.eulaAccepted) {
-            await this.setState({ eula: true }, () => this.login());
-          }
-        } catch (error) {
-          // Do nothing: user must log on
+    // Set
+    this.setState({
+      email,
+      password,
+      tenantName: tenant ? tenant.name : I18n.t('authentication.tenant'),
+      tenantSubDomain: tenant ? tenant.subdomain : null,
+      initialLoading: false
+    }, async () => await this.checkAutoLogin(tenant, email, password));
+  }
+
+  public async checkAutoLogin(tenant: TenantConnection, email: string, password: string) {
+    // Check if user can be logged
+    if (!this.centralServerProvider.hasAutoLoginDisabled() &&
+        !Utils.isNullOrEmptyString(tenant?.subdomain) &&
+        !Utils.isNullOrEmptyString(email) &&
+        !Utils.isNullOrEmptyString(password)) {
+      try {
+        // Check EULA
+        const result = await this.centralServerProvider.checkEndUserLicenseAgreement(
+          { email, tenantSubDomain: tenant.subdomain });
+        // Try to login
+        if (result.eulaAccepted) {
+          this.setState({ eula: true }, () => this.login());
         }
+      } catch (error) {
+        // Do nothing: user must log on
       }
-    } else {
-      // Set Tenant title
-      let tenantName = I18n.t('authentication.tenant');
-      if (this.state.tenantSubDomain) {
-        const tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
-        tenantName = tenant.name;
-      }
-      // Set
-      this.setState({
-        initialLoading: false,
-        tenantName
-      });
     }
   }
 
   public login = async () => {
+    // Ensure popup always closed
     this.setState({ createTenantVisible: false })
     // Check field
     const formIsValid = Utils.validateInput(this, this.formValidationDef);
@@ -348,11 +333,16 @@ export default class Login extends BaseScreen<Props, State> {
   public forgotPassword = () => {
     const navigation = this.props.navigation;
     // Tenant selected?
+    console.log('====================================');
+    console.log(this.state.email);
+    console.log('====================================');
     if (this.state.tenantSubDomain) {
       navigation.navigate(
         'RetrievePassword', {
-        tenantSubDomain: this.state.tenantSubDomain,
-        email: this.state.email
+          params: {
+            tenantSubDomain: this.state.tenantSubDomain,
+            email: this.state.email
+          }
       });
     } else {
       // Error
@@ -373,6 +363,7 @@ export default class Login extends BaseScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
+    const actionSheetStyleSheet = computeActionSheetStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const navigation = this.props.navigation;
     const { eula, loading, initialLoading, createTenantVisible, hidePassword, qrCodeVisible } = this.state;
@@ -383,21 +374,11 @@ export default class Login extends BaseScreen<Props, State> {
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         {qrCodeVisible ? (
           <CreateTenantQrCode tenants={this.tenants} navigation={navigation}
-            close={async (newTenant: TenantConnection) => {
-              Orientation.unlockAllOrientations();
-              await this.selectTenant(newTenant);
-              if (this.state.email && this.state.password && this.state.tenantSubDomain) {
-                try {
-                  const result = await this.centralServerProvider.checkEndUserLicenseAgreement(
-                    { email: this.state.email, tenantSubDomain: this.state.tenantSubDomain});
-                  // Try to login
-                  if (result.eulaAccepted) {
-                    this.login();
-                  }
-                } catch (error) {
-                  // Do nothing: user must log on
-                }
-              }
+            close={async (tenant: TenantConnection) => {
+              // Set
+              await this.selectTenant(tenant);
+              // Check auto login
+              await this.checkAutoLogin(tenant, this.state.email, this.state.password);
             }}
           />
         ) : (
@@ -418,68 +399,7 @@ export default class Login extends BaseScreen<Props, State> {
                   <ActionSheet
                     ref={(actionSheet: ActionSheet) => this.actionSheet = actionSheet}
                     title={I18n.t('authentication.tenant')}
-                    styles={{
-                      overlay: {
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
-                        bottom: 0,
-                        left: 0,
-                        opacity: 0.4,
-                        backgroundColor: commonColor.disabled
-                      },
-                      wrapper: {
-                        flex: 1,
-                        flexDirection: 'row'
-                      },
-                      body: {
-                        flex: 1,
-                        alignSelf: 'flex-end',
-                        backgroundColor: commonColor.containerBgColor
-                      },
-                      titleBox: {
-                        height: scale(40),
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        backgroundColor: commonColor.containerBgColor
-                      },
-                      titleText: {
-                        color: commonColor.placeholderTextColor,
-                        fontSize: scale(16)
-                      },
-                      messageBox: {
-                        height: scale(30),
-                        paddingLeft: scale(10),
-                        paddingRight: scale(10),
-                        paddingBottom: scale(10),
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        backgroundColor: commonColor.containerBgColor
-                      },
-                      messageText: {
-                        color: commonColor.disabled,
-                        fontSize: scale(12)
-                      },
-                      buttonBox: {
-                        height: scale(45),
-                        marginTop: 0,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: commonColor.textColor,
-                        backgroundColor: commonColor.containerBgColor
-                      },
-                      buttonText: {
-                        fontSize: scale(20)
-                      },
-                      cancelButtonBox: {
-                        height: scale(40),
-                        marginTop: scale(6),
-                        marginBottom: Platform.OS === 'ios' ? scale(15) : scale(10),
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        backgroundColor: commonColor.containerBgColor
-                      }
-                    }}
+                    styles={actionSheetStyleSheet}
                     options={[
                         ...this.tenants,
                         { name: I18n.t('general.cancel'), subdomain: '' }

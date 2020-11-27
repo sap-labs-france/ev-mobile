@@ -82,7 +82,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     await super.componentDidMount();
     const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null);
     if (startTransaction) {
-      this.startTransactionConfirm();
+      this.startTransaction();
     }
   }
 
@@ -314,7 +314,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         // Enable the button
         this.setState({ buttonDisabled: false });
         // Show message
-        Message.showError(I18n.t('details.denied'));
+        if (this.state.connector.status === ChargePointStatus.AVAILABLE) {
+          Message.showError(I18n.t('transactions.carNotConnectedError'));
+        } else {
+          Message.showError(I18n.t('details.denied'));
+        }
       }
     } catch (error) {
       // Enable the button
