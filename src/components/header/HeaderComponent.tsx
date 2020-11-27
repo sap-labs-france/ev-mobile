@@ -90,12 +90,12 @@ export default class HeaderComponent extends React.Component<Props, State> {
         {leftAction ?
           <Left style={style.leftHeader}>
             <Icon type={leftActionIconType} name={leftActionIcon}
-              style={style.iconLeftHeader} onPress={() => leftAction()}/>
+              style={style.iconLeftHeader} onPress={() => leftAction()} />
             {!hideHomeAction && <Icon type='MaterialIcons' name='home'
               style={style.iconLeftHeader} onPress={() => navigation.navigate('HomeNavigator')} />
             }
           </Left>
-        :
+          :
           <Left style={style.leftHeader}>
             <Image source={logo} style={style.logoHeader} />
           </Left>
@@ -119,14 +119,14 @@ export default class HeaderComponent extends React.Component<Props, State> {
           )}
           {diplayMap && (
             <Icon type='MaterialCommunityIcons' name={mapIsDisplayed ? 'format-list-text' : 'earth'}
-              style={style.iconRightHeader} onPress={() => diplayMapAction()}/>
+              style={style.iconRightHeader} onPress={() => diplayMapAction()} />
           )}
           {rightAction ? (
             <Icon type={rightActionIconType} name={rightActionIcon}
-              style={style.iconRightHeader} onPress={() => rightAction()}/>
+              style={style.iconRightHeader} onPress={() => rightAction()} />
           ) : (
-            <Image source={logo} style={style.logoHeader} />
-          )}
+              <Image source={logo} style={style.logoHeader} />
+            )}
         </Right>
       </Header>
     );

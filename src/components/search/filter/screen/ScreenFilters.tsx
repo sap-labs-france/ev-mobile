@@ -66,7 +66,7 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
     } else {
       this.expandableView.animate({ from: styleTo, to: styleFrom }, 250);
     }
-    this.setState({expanded});
+    this.setState({ expanded });
   }
 
   public setExpandableView = (expandableView: any) => {

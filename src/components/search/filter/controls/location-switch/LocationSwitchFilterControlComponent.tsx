@@ -46,7 +46,7 @@ export default class LocationSwitchFilterControlComponent extends FilterControlC
     const { label, style } = this.props;
     const { switchValue } = this.state;
     return (
-      <View style={{...internalStyle.rowFilterContainer, ...style}}>
+      <View style={{ ...internalStyle.rowFilterContainer, ...style }}>
         <Text style={internalStyle.textFilter}>{label}</Text>
         <Switch
           style={internalStyle.switchFilter}

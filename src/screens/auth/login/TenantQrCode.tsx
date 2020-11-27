@@ -46,46 +46,71 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
     super.setState(state, callback);
   }
 
-  public async createTenant(tenantQRCode: TenantQRCode) {
-    const { tenants, close } = this.props;
-    // Get the end point
-    const newTenantEndpointCloud = this.tenantEndpointClouds.find((tenantEndpointCloud) => tenantEndpointCloud.id === tenantQRCode.endpoint)
-    if (!newTenantEndpointCloud) {
-      Message.showError(I18n.t('qrCode.endpointError', { endpoint: tenantQRCode.endpoint }));
-      close();
-      return;
-    }
+  public async createTenantAndClose(tenantQrCode: TenantQRCode) {
+    const { tenants } = this.props;
+    // Get Endpoint
+    const newTenantEndpointCloud = this.tenantEndpointClouds.find(
+      (tenantEndpointCloud) => tenantEndpointCloud.id === tenantQrCode.endpoint);
     // Create
     const newTenant: TenantConnection = {
-      subdomain: tenantQRCode.tenantSubDomain,
-      name: tenantQRCode.tenantName,
+      subdomain: tenantQrCode.tenantSubDomain,
+      name: tenantQrCode.tenantName,
       endpoint: newTenantEndpointCloud.endpoint
     };
     // Add
     tenants.push(newTenant)
     // Save
     await SecuredStorage.saveTenants(tenants);
+    // Ok
+    Message.showSuccess(I18n.t('qrCode.scanTenantQrCodeSuccess', { tenantName: tenantQrCode.tenantName }));
     // Close
-    close(newTenant);
+    this.close(newTenant);
   }
 
-  public async checkQrCodeAndSelectOrCreateTenant(decodeData: string) {
-    const { close } = this.props;
-    const tenantQRCode: TenantQRCode = JSON.parse(decodeData);
-    const tenant = await this.centralServerProvider.getTenant(tenantQRCode.tenantSubDomain);
-    if (!tenant) {
-      await Alert.alert(
-        I18n.t('qrCode.unknownOrganizationTitle'),
-        I18n.t('qrCode.unknownOrganizationMessage', { tenantName: tenantQRCode.tenantName }),
-        [
-          { text: I18n.t('general.no'), onPress: () => close(), style: 'cancel' },
-          { text: I18n.t('general.yes'), onPress: () => this.createTenant(tenantQRCode) }
-        ],
-      );
-    } else {
-      close(tenant);
+  public async checkQrCodeDataAndNavigate(qrCodeData: string) {
+    try {
+      // Decode
+      const decodedQrCodeData = base64.decode(qrCodeData);
+      // Parse
+      const tenantQrCode = JSON.parse(decodedQrCodeData) as TenantQRCode;
+      // Check mandatory props
+      if (!tenantQrCode.tenantSubDomain ||
+        !tenantQrCode.tenantName ||
+        !tenantQrCode.endpoint) {
+        Message.showError(I18n.t('qrCode.invalidQRCode'));
+        this.close();
+        return;
+      }
+      // Check Endpoint
+      const newTenantEndpointCloud = this.tenantEndpointClouds.find(
+        (tenantEndpointCloud) => tenantEndpointCloud.id === tenantQrCode.endpoint);
+      if (!newTenantEndpointCloud) {
+        Message.showError(I18n.t('qrCode.unknownEndpoint', { endpoint: tenantQrCode.endpoint }));
+        this.close();
+      }
+      // Check QR Code
+      const tenant = await this.centralServerProvider.getTenant(tenantQrCode.tenantSubDomain);
+      if (!tenant) {
+        Alert.alert(
+          I18n.t('qrCode.newOrganizationTitle'),
+          I18n.t('qrCode.newOrganizationMessage', { tenantName: tenantQrCode.tenantName }),
+          [
+            { text: I18n.t('general.no'), onPress: () => this.close(), style: 'cancel' },
+            { text: I18n.t('general.yes'), onPress: () => this.createTenantAndClose(tenantQrCode) }
+          ],
+        );
+      } else {
+        this.close(tenant);
+      }
+    } catch (error) {
+      Message.showError(I18n.t('qrCode.unknownQRCode'));
+      this.close();
     }
-    Message.showSuccess(I18n.t('general.scanQrCodeSuccess'));
+  }
+
+  private close(tenant?: TenantConnection) {
+    Orientation.unlockAllOrientations();
+    this.props.close(tenant);
   }
 
   public render() {
@@ -98,7 +123,9 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
           leftActionIcon={'navigate-before'}
           hideHomeAction={true}
         />
-        <QRCodeScanner cameraProps={{ captureAudio: false }} showMarker={true} onRead={(qrCode) => this.checkQrCodeAndSelectOrCreateTenant(base64.decode(qrCode.data))} />
+        <QRCodeScanner
+          cameraProps={{ captureAudio: false }}
+          showMarker={true} onRead={(qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)} />
       </Container>
     );
   }

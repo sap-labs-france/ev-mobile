@@ -2,8 +2,7 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
-import { FlatList, Platform, RefreshControl } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { FlatList, Platform, RefreshControl, ScrollView } from 'react-native';
 import { Location } from 'react-native-location';
 import MapView, { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
@@ -274,8 +273,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   }
 
   public buildModal(isAdmin: boolean, navigation: any, chargingStationSelected: ChargingStation, modalStyle: any) {
-    // Uncomment when you will have more than 4 connector.
-    // if (Platform.OS === 'ios') {
+    // ChargeX setup have more than 4 connectors.
+    if (Platform.OS === 'ios') {
       return (
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
           <Modalize
@@ -288,20 +287,20 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           </Modalize>
         </Modal>
       )
-    // } else {
-    //   return (
-    //     <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
-    //       <View style={[modalStyle.modalContainer, { height: this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors) }]}>
-    //         <ScrollView>
-    //           <ChargingStationComponent chargingStation={chargingStationSelected} isAdmin={isAdmin}
-    //             onNavigate={() => this.setState({ visible: false })}
-    //             navigation={navigation}
-    //             isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID : '')} />
-    //         </ScrollView>
-    //       </View>
-    //     </Modal>
-    //   )
-    // }
+    } else {
+      return (
+        <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
+          <View style={[modalStyle.modalContainer, { height: this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors) }]}>
+            <ScrollView>
+              <ChargingStationComponent chargingStation={chargingStationSelected} isAdmin={isAdmin}
+                onNavigate={() => this.setState({ visible: false })}
+                navigation={navigation}
+                isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID : '')} />
+            </ScrollView>
+          </View>
+        </Modal>
+      )
+    }
   }
 
   public render() {

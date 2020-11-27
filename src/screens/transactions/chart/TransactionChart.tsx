@@ -75,15 +75,9 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       let transactionWithConsumptions = null;
       let chargingStation = null;
       let connector = null;
-      console.log('====================================');
-      console.log({ chargingStationID, connectorID, transactionID });
-      console.log('====================================');
       // Get Transaction and chargingStation
       if (transactionID) {
         transactionWithConsumptions = await this.getTransactionWithConsumptions(parseInt(transactionID, 10));
-        console.log('====================================');
-        console.log({ transactionWithConsumptions });
-        console.log('====================================');
         if (transactionWithConsumptions && transactionWithConsumptions.transaction) {
           chargingStation = await this.getChargingStation(transactionWithConsumptions.transaction.chargeBoxID);
           if (chargingStation) {

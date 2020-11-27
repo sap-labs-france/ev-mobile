@@ -3,7 +3,6 @@ import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Text } from 'native-base';
 import React from 'react';
 import { Alert, BackHandler } from 'react-native';
-import Orientation from 'react-native-orientation-locker';
 import ChargingStation from 'types/ChargingStation';
 import { TenantConnection } from 'types/Tenant';
 import Transaction from 'types/Transaction';
@@ -119,9 +118,8 @@ export default class Home extends BaseScreen<Props, State> {
           <ChargingStationQrCode
             navigation={this.props.navigation}
             tenants={this.tenants}
-            tenantSubDomain={this.tenantSubDomain}
+            currentTenantSubDomain={this.tenantSubDomain}
             close={() => {
-              Orientation.unlockAllOrientations();
               this.setState({ qrCodeVisible: false });
               return true;
             }}

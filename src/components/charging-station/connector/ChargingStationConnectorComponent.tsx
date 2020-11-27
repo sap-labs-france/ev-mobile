@@ -81,19 +81,19 @@ export default class ChargingStationConnectorComponent extends React.Component<P
     const commonColor = Utils.getCurrentCommonColor();
     switch (connectorType) {
       case ConnectorType.CHADEMO:
-        return <Chademo width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>;
+        return <Chademo width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30' />;
       case ConnectorType.TYPE_2:
-        return <Type2 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>;
+        return <Type2 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10' />;
       case ConnectorType.COMBO_CCS:
-        return <ComboCCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>;
+        return <ComboCCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30' />;
       case ConnectorType.DOMESTIC:
-        return <Domestic width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor}/>;
+        return <Domestic width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor} />;
       case ConnectorType.TYPE_1:
-        return <Type1 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>;
+        return <Type1 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10' />;
       case ConnectorType.TYPE_1_CCS:
-        return <Type1CCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>;
+        return <Type1CCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10' />;
     }
-    return <NoConnector width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor}/>;
+    return <NoConnector width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor} />;
   }
 
   public renderSecondConnectorDetails = (connector: Connector, style: any) => {
@@ -174,12 +174,12 @@ export default class ChargingStationConnectorComponent extends React.Component<P
           }
           navigation.navigate(
             'ChargingStationConnectorDetailsTabs', {
-              params: {
-                chargingStationID: chargingStation.id,
-                connectorID: connector.connectorId
-              },
-              key: `${Utils.randomNumber()}`
-            }
+            params: {
+              chargingStationID: chargingStation.id,
+              connectorID: connector.connectorId
+            },
+            key: `${Utils.randomNumber()}`
+          }
           )
         }}>
         <Animatable.View animation={'flipInX'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>

@@ -106,10 +106,10 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
         break;
       // Default
       default:
-        case ChargePointStatus.UNAVAILABLE:
-          status = 'unavailable';
-          break;
-      }
+      case ChargePointStatus.UNAVAILABLE:
+        status = 'unavailable';
+        break;
+    }
     if (status) {
       connectorStyles.container.push(style[status + 'Connector']);
       connectorStyles.value.push(style[status + 'ConnectorValue']);
@@ -157,17 +157,17 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
             </View>
           </View>
         ) : (
-          <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
-            <View style={connectorStyles.container}>
-              <Animated.Text
-                style={
-                  isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
-                }>
-                {value}
-              </Animated.Text>
-            </View>
-          </Animated.View>
-        )}
+            <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
+              <View style={connectorStyles.container}>
+                <Animated.Text
+                  style={
+                    isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
+                  }>
+                  {value}
+                </Animated.Text>
+              </View>
+            </Animated.View>
+          )}
         {this.props.text && <Text style={connectorStyles.description}>{this.props.text}</Text>}
       </View>
     );

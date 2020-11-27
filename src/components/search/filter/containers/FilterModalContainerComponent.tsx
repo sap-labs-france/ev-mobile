@@ -59,8 +59,8 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
     const { visible } = this.state;
     return (
       <Modal style={style.modal} isVisible={visible} onBackdropPress={() => this.setState({ visible: false })}>
-        <View style ={style.modalContainer}>
-          <View style ={style.modalHeaderContainer}>
+        <View style={style.modalContainer}>
+          <View style={style.modalHeaderContainer}>
             <Text style={style.modalTextHeader}>{I18n.t('general.filters')}</Text>
           </View>
           <View style={style.modalContentContainer}>
