@@ -320,9 +320,11 @@ export default class Login extends BaseScreen<Props, State> {
     if (this.state.tenantSubDomain) {
       navigation.navigate(
         'SignUp', {
-        tenantSubDomain: this.state.tenantSubDomain,
-        email: this.state.email
-      }
+          params: {
+            tenantSubDomain: this.state.tenantSubDomain,
+            email: this.state.email
+          }
+        }
       );
     } else {
       Message.showError(I18n.t('authentication.mustSelectTenant'));

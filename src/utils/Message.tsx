@@ -34,7 +34,6 @@ export default class Message {
         fontSize: scale(15),
         textAlign: 'center',
         color: commonColor.brandLight,
-        width: 1000
       },
       backgroundColor: commonColor[type]
     });
