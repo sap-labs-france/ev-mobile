@@ -245,7 +245,6 @@ export default class SignUp extends BaseScreen<Props, State> {
                     {errorMessage}
                   </Text>
                 ))}
-
               <Item inlineLabel={true} style={formStyle.inputGroup}>
                 <Icon active={true} name='person' style={formStyle.inputIcon} />
                 <TextInput
@@ -286,6 +285,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   keyboardType={'email-address'}
                   onChangeText={(text) => this.setState({ email: text })}
                   secureTextEntry={false}
+                  value={this.state.email}
                 />
               </Item>
               {this.state.errorEmail &&
