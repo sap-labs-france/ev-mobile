@@ -116,7 +116,7 @@
     "signUp": "Konto erstellen",
     "passwordRule": "Muss einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl, ein Sonderzeichen und mindestens 8 Zeichen beinhalten.",
     "passwordNotMatch": "Passwörter stimmen nicht miteinander überein",
-    "tenant": "Wählen Sie eine Organisation",
+    "tenant": "Organisation",
     "createTenantTitle": "Organisation Erstellen",
     "tenantSubdomain": "Subdomain",
     "tenantName": "Name",

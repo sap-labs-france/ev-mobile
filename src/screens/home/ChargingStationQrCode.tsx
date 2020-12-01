@@ -128,9 +128,9 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
     return true;
   }
 
-  public async checkQrCodeDataAndSave(chargingStationQRCode: ChargingStationQRCode): Promise<boolean> {
+  public async checkQrCodeDataAndSave(chargingStationQrCode: ChargingStationQRCode): Promise<boolean> {
     // Check the Tenant Sub Domain
-    if (!(await this.checkTenantQrCodeData(chargingStationQRCode))) {
+    if (!(await this.checkQrCodeData(chargingStationQrCode))) {
       return false;
     }
     try {

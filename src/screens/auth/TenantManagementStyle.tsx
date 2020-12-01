@@ -8,49 +8,35 @@ export default function computeStyleSheet(): any {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     modalContainer: {
-      flex: 0.8,
+      flex: 1,
       backgroundColor: commonColor.containerBgColor
-    },
-    titleView: {
-      paddingBottom: '10@s',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderBottomWidth: 2,
-      borderColor: 'white',
-      borderRadius: 2
-    },
-    titleText: {
-      paddingTop: '8@s',
-      fontSize: '16@s',
-      color: commonColor.placeholderTextColor
     },
     toolBar: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      paddingTop: '10@s',
-      paddingBottom: '10@s',
-      borderBottomWidth: 2,
-      borderColor: 'white',
-      borderRadius: 2
+      paddingTop: '5@s',
+      paddingBottom: '5@s',
+      borderBottomWidth: 1,
+      borderColor: commonColor.textColor,
+      borderRadius: 1
     },
-    createTenantButton: {
-      borderRadius: 4
-    },
-    createTenantText: {
-      color: commonColor.disabled,
-    },
-    restoreTenantButton: {
-      borderRadius: 4
-    },
-    restoreTenantText: {
-      color: commonColor.disabled,
+    tenantNameView: {
+      paddingTop: '15@s',
+      backgroundColor: commonColor.containerBgColor,
+      height: '50@s'
     },
     tenantNameText: {
-      color: commonColor.disabled,
-      fontSize: '15@s',
+      color: commonColor.textColor,
+      fontSize: '16@s',
       textAlign: 'center',
-      paddingTop: '15@s',
     },
+    trashIconButton: {
+      alignSelf: 'flex-end',
+      height: '50@s'
+    },
+    icon: {
+      color: commonColor.textColor
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

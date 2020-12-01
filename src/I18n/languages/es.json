@@ -116,7 +116,7 @@
     "signUp": "Registrarse",
     "passwordRule": "La contraseña debe contener al menos 8 caracteres; 1 letra minúscula, 1 mayúscula, 1 número y 1 símbolo especial",
     "passwordNotMatch": "Las contraseñas no coinciden",
-    "tenant": "Escoja una organización",
+    "tenant": "Organización",
     "createTenantTitle": "Crear organización",
     "tenantSubdomain": "Subdominio",
     "tenantName": "Nombre",
