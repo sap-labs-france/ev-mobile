@@ -125,7 +125,8 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
         />
         <QRCodeScanner
           cameraProps={{captureAudio: false}}
-          showMarker={true} onRead={(qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)}/>
+          showMarker={true}
+          onRead={(qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)}/>
       </Container>
     );
   }
