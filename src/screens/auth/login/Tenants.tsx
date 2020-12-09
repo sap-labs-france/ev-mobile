@@ -21,7 +21,7 @@ export interface Props extends BaseProps {
 interface State {
   tenants?: TenantConnection[]
   createTenantVisible?: boolean
-  qrCodeVisible?: boolean
+  createQrCodeTenantVisible?: boolean
 }
 
 export default class Tenants extends BaseScreen<Props, State> {
@@ -31,7 +31,7 @@ export default class Tenants extends BaseScreen<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      qrCodeVisible: false,
+      createQrCodeTenantVisible: false,
       createTenantVisible: false
     }
   }
@@ -46,17 +46,13 @@ export default class Tenants extends BaseScreen<Props, State> {
     super.setState(state, callback);
   }
 
-  public async selectTenant(tenant: TenantConnection) {
-    this.setState({ tenantVisible: false })
-    // this.props.onSelect(tenant);
-  }
-
   public createTenant() {
     Alert.alert(
-      'Create Tenant',
-      'Choose the way you want to create the tenant', [
-        { text: 'Qrcode', onPress: () => { this.setState({ qrCodeVisible: true })}},
-        { text: 'Manually', onPress: () => { this.setState({ createTenantVisible: true })}}
+      I18n.t('authentication.createTenantTitle'),
+      I18n.t('authentication.createTenantText'), [
+        { text: 'QR Code', onPress: () => { this.setState({ createQrCodeTenantVisible: true })}},
+        { text: I18n.t('general.manually'), onPress: () => { this.setState({ createTenantVisible: true })}},
+        { text: I18n.t('general.close'), style: 'cancel'},
       ]
     )
   }
@@ -69,7 +65,6 @@ export default class Tenants extends BaseScreen<Props, State> {
     // Remove cache
     await SecuredStorage.deleteUserCredentials(subdomain);
     this.setState({ tenants });
-    // this.props.resetTenantTitleText();
   };
 
   private restoreTenants = () => {
@@ -84,7 +79,6 @@ export default class Tenants extends BaseScreen<Props, State> {
           // Save
           await SecuredStorage.saveTenants(tenants);
           this.setState({ tenants });
-          // this.props.resetTenantTitleText();
         }
       }],
     );
@@ -92,18 +86,29 @@ export default class Tenants extends BaseScreen<Props, State> {
 
   public render() {
     const navigation = this.props.navigation
-    const {tenants, createTenantVisible, qrCodeVisible} = this.state
+    const {tenants, createTenantVisible, createQrCodeTenantVisible} = this.state
     const tenantStyle = computeTenantStyleSheet();
     return (
       <View style={{flex: 1}}>
-        {qrCodeVisible ? (
+        {createQrCodeTenantVisible ? (
           <CreateTenantQrCode tenants={this.state.tenants} navigation={navigation}
             close={async (tenant: TenantConnection) => {
-              this.setState({qrCodeVisible: false});
+              this.setState({createQrCodeTenantVisible: false});
               // Set
-              // await this.selectTenant(tenant);
-              // // Check auto login
-              // await this.checkAutoLogin(tenant, this.state.email, this.state.password);
+              this.props.navigation.dispatch(
+                StackActions.replace(
+                  'AuthNavigator', {
+                    name: 'Login',
+                    params: {
+                      tenantNameSelected: tenant.name,
+                      tenantSubdomainSelected: tenant.subdomain,
+                      tenantEndpointSelected: tenant.endpoint,
+                      createTenantWithQrCode: true
+                    },
+                    key: `${Utils.randomNumber()}`,
+                  }
+                ),
+              )
             }}
           />
         ) : (
@@ -115,7 +120,14 @@ export default class Tenants extends BaseScreen<Props, State> {
               hideHomeAction={true}
               leftActionIcon='navigate-before'
               leftActionIconType='MaterialIcons'
-              leftAction={() => this.props.navigation.goBack()}
+              leftAction={() => {
+                try {
+                  this.props.route.params.onGoBack();
+                  this.props.navigation.goBack();
+                } catch (error) {
+                  this.props.navigation.goBack();
+                }
+              }}
             />
             <View>
               <View style={tenantStyle.toolBar}>
@@ -130,10 +142,22 @@ export default class Tenants extends BaseScreen<Props, State> {
                     close={(newTenant: TenantConnection) => {
                       this.setState({ createTenantVisible: false });
                       if (newTenant) {
-                        this.selectTenant(newTenant);
+                        this.props.navigation.dispatch(
+                          StackActions.replace(
+                            'AuthNavigator', {
+                              name: 'Login',
+                              params: {
+                                tenantNameSelected: newTenant.name,
+                                tenantSubdomainSelected: newTenant.subdomain,
+                                tenantEndpointSelected: newTenant.endpoint
+                              },
+                              key: `${Utils.randomNumber()}`,
+                            }
+                          ),
+                        );
                       }
-                    }
-                  }/>
+                    }}
+                  />
                 }
               </View>
               <SwipeListView
