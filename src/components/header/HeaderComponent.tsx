@@ -2,7 +2,7 @@ import { Body, Header, Icon, Left, Right, Subtitle, Title } from 'native-base';
 import React from 'react';
 import { BackHandler, Image } from 'react-native';
 
-import logo from '../../../assets/logo-low.png';
+import defaultTenantLogo from '../../../assets/logo-low.png';
 import FilterModalContainerComponent from '../../components/search/filter/containers/FilterModalContainerComponent';
 import BaseProps from '../../types/BaseProps';
 import { IconType } from '../../types/Icon';
@@ -11,10 +11,10 @@ import computeStyleSheet from './HeaderComponentStyles';
 export interface Props extends BaseProps {
   title: string;
   subTitle?: string;
+  hideHomeAction?: boolean;
   leftAction?: () => void;
   leftActionIcon?: string;
   leftActionIconType?: IconType;
-  hideHomeAction?: boolean;
   rightAction?: () => void;
   rightActionIcon?: string;
   rightActionIconType?: IconType;
@@ -22,6 +22,7 @@ export interface Props extends BaseProps {
   diplayMap?: boolean;
   mapIsDisplayed?: boolean;
   diplayMapAction?: () => void;
+  tenantLogo?: string;
 }
 
 interface State {
@@ -83,7 +84,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
     const style = computeStyleSheet();
     const { hasFilter } = this.state;
     const { title, subTitle, leftAction, leftActionIcon, leftActionIconType,
-      rightAction, rightActionIcon, rightActionIconType, hideHomeAction,
+      rightAction, rightActionIcon, rightActionIconType, hideHomeAction, tenantLogo,
       diplayMap, diplayMapAction, mapIsDisplayed, navigation } = this.props;
     return (
       <Header style={style.header}>
@@ -97,7 +98,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
           </Left>
         :
           <Left style={style.leftHeader}>
-            <Image source={logo} style={style.logoHeader} />
+            <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader} />
           </Left>
         }
         <Body style={style.bodyHeader}>
@@ -125,7 +126,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
             <Icon type={rightActionIconType} name={rightActionIcon}
               style={style.iconRightHeader} onPress={() => rightAction()}/>
           ) : (
-            <Image source={logo} style={style.logoHeader} />
+            <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader} />
           )}
         </Right>
       </Header>

@@ -43,6 +43,7 @@ export default function computeStyleSheet(): any {
     },
     logoHeader: {
       width: '45@s',
+      height: '45@s',
       marginLeft: '5@s',
       resizeMode: 'contain'
     },

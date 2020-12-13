@@ -131,6 +131,7 @@ export default class Home extends BaseScreen<Props, State> {
               title={I18n.t('sidebar.home')}
               rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
               rightActionIcon={'menu'}
+              tenantLogo={this.centralServerProvider?.getCurrentTenantLogo()}
             />
             <Content style={cardStyle.cards}>
               {isComponentOrganizationActive && (
