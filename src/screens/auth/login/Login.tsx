@@ -134,7 +134,7 @@ export default class Login extends BaseScreen<Props, State> {
     }
     // Get logo
     tenantLogo = this.centralServerProvider.getCurrentTenantLogo();
-    if (!tenantLogo) {
+    if (tenant && !tenantLogo) {
       tenantLogo = await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
     }
     // Set

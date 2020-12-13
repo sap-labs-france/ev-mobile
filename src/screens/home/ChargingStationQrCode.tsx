@@ -187,7 +187,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
           cameraProps={{captureAudio: false}}
           showMarker={true}
           reactivate={true}
-          reactivateTimeout={250}
+          reactivateTimeout={500}
           onRead={(qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)}/>
       </Container>
     );
