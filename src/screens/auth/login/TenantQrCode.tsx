@@ -7,12 +7,12 @@ import Orientation from 'react-native-orientation-locker';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import Configuration from '../../../config/Configuration';
 import BaseProps from '../../../types/BaseProps';
-import TenantQRCode from '../../../types/QrCode'
+import TenantQRCode from '../../../types/QrCode';
 import { EndpointCloud, TenantConnection } from '../../../types/Tenant';
 import Message from '../../../utils/Message';
 import SecuredStorage from '../../../utils/SecuredStorage';
+import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 
 export interface Props extends BaseProps {
@@ -30,11 +30,7 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
 
   constructor(props: Props) {
     super(props);
-    if (__DEV__) {
-      this.tenantEndpointClouds = Configuration.ENDPOINT_CLOUDS_QA;
-    } else {
-      this.tenantEndpointClouds = Configuration.ENDPOINT_CLOUDS_PROD;
-    }
+    this.tenantEndpointClouds = Utils.getEndpointCloud();
   }
 
   public async componentDidMount() {
@@ -78,7 +74,6 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
           !tenantQrCode.tenantName ||
           !tenantQrCode.endpoint) {
         Message.showError(I18n.t('qrCode.invalidQRCode'));
-        this.close();
         return;
       }
       // Check Endpoint
@@ -86,7 +81,7 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
         (tenantEndpointCloud) =>tenantEndpointCloud.id === tenantQrCode.endpoint);
       if (!newTenantEndpointCloud) {
         Message.showError(I18n.t('qrCode.unknownEndpoint', { endpoint: tenantQrCode.endpoint }));
-        this.close();
+        return;
       }
       // Check QR Code
       const tenant = await this.centralServerProvider.getTenant(tenantQrCode.tenantSubDomain);
@@ -103,8 +98,7 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
         this.close(tenant);
       }
     } catch (error) {
-      Message.showError(I18n.t('qrCode.unknownQRCode'));
-      this.close();
+      // Do not display message until we get the right QR Code
     }
   }
 
@@ -126,6 +120,8 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
         <QRCodeScanner
           cameraProps={{captureAudio: false}}
           showMarker={true}
+          reactivate={true}
+          reactivateTimeout={250}
           onRead={(qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)}/>
       </Container>
     );

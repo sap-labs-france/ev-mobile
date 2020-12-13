@@ -7,17 +7,27 @@ import Address from 'types/Address';
 import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
 
+import Configuration from '../config/Configuration';
 import { buildCommonColor } from '../custom-theme/customCommonColor';
 import ThemeManager from '../custom-theme/ThemeManager';
 import I18nManager from '../I18n/I18nManager';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
+import { EndpointCloud } from '../types/Tenant';
 import { InactivityStatus } from '../types/Transaction';
 import User from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
 
 export default class Utils {
+  public static getEndpointCloud(): EndpointCloud[] {
+    if (__DEV__) {
+      return Configuration.ENDPOINT_CLOUDS_QA;
+    } else {
+      return Configuration.ENDPOINT_CLOUDS_PROD;
+    }
+  }
+
   public static getCurrentCommonColor(): any {
     // Build the theme
     const themeManager = ThemeManager.getInstance();
