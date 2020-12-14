@@ -8,16 +8,26 @@ import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
 
 import I18nManager from '../I18n/I18nManager';
+import Configuration from '../config/Configuration';
 import ThemeManager from '../custom-theme/ThemeManager';
 import { buildCommonColor } from '../custom-theme/customCommonColor';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
+import { EndpointCloud } from '../types/Tenant';
 import { InactivityStatus } from '../types/Transaction';
 import User from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
 
 export default class Utils {
+  public static getEndpointCloud(): EndpointCloud[] {
+    if (__DEV__) {
+      return Configuration.ENDPOINT_CLOUDS_QA;
+    } else {
+      return Configuration.ENDPOINT_CLOUDS_PROD;
+    }
+  }
+
   public static getCurrentCommonColor(): any {
     // Build the theme
     const themeManager = ThemeManager.getInstance();

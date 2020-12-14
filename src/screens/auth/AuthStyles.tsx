@@ -96,9 +96,10 @@ export default function computeStyleSheet(): any {
       alignItems: 'center'
     },
     logo: {
-      resizeMode: 'contain',
+      width: '75%',
+      height: '100@s',
       marginTop: '10@s',
-      height: '100@s'
+      resizeMode: 'contain',
     },
     appText: {
       color: commonColor.textColor,
