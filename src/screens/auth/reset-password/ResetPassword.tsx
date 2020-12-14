@@ -159,11 +159,13 @@ export default class ResetPassword extends BaseScreen<Props, State> {
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const { tenantName, loading, hidePassword, hideRepeatPassword } = this.state;
+    // Get logo
+    const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
       <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
-            <AuthHeader navigation={this.props.navigation} tenantName={tenantName} />
+            <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} />
             <Form style={formStyle.form}>
               <Item inlineLabel={true} style={formStyle.inputGroup}>
                 <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
