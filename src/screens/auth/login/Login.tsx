@@ -112,10 +112,6 @@ export default class Login extends BaseScreen<Props, State> {
     let tenantLogo: string;
     // Get tenants
     this.tenants = await this.centralServerProvider.getTenants();
-    if (!this.state.tenantNameSelected || !this.state.tenantSubdomainSelected || !this.state.tenantEndpointSelected) {
-      const tenantSubDomainSaved = await SecuredStorage.getCurrentTenantSubDomain();
-      this.setState({tenantSubDomain: tenantSubDomainSaved});
-    }
     if (this.state.tenantNameSelected && this.state.tenantSubdomainSelected && this.state.tenantEndpointSelected) {
       const tenantSelected: TenantConnection = {
         name: this.state.tenantNameSelected,
@@ -126,7 +122,6 @@ export default class Login extends BaseScreen<Props, State> {
       if (this.state.createTenantWithQrCode) {
         this.centralServerProvider.setAutoLoginDisabled(false);
       }
-      await SecuredStorage.saveCurrentTenantSubDomain(this.state.tenantSubDomain);
     }
     // Check if sub-domain is provided
     if (!this.state.tenantSubDomain) {
