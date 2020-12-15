@@ -20,7 +20,7 @@ export default function computeStyleSheet(): any {
     },
     backgroundImage: {
       width: '100%',
-      height: '125@s'
+      height: '125@s',
     },
     lastTransactionContainer: {
       width: '50@s',

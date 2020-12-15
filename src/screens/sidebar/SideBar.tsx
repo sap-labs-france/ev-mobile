@@ -6,7 +6,7 @@ import React from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
-import logo from '../../../assets/logo-low.png';
+import defaultTenantLogo from '../../../assets/logo-low.png';
 import noPhoto from '../../../assets/no-photo-inverse.png';
 import BaseProps from '../../types/BaseProps';
 import Constants from '../../utils/Constants';
@@ -127,11 +127,13 @@ export default class SideBar extends BaseScreen<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     const { navigation } = this.props;
     const { userName, userImage, tenantName, isComponentOrganizationActive, updateDate } = this.state;
+    // Get logo
+    const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
       <Container style={style.container}>
         <Content style={style.drawerContent}>
           <Header style={style.header}>
-            <Image source={logo} style={style.logo} />
+            <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logo} />
             <Text numberOfLines={1} style={style.tenantName}>
               {tenantName}
             </Text>

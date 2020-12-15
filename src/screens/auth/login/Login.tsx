@@ -26,6 +26,7 @@ interface State {
   email?: string;
   tenantName?: string;
   tenantSubDomain?: string;
+  tenantLogo?: string;
   loading?: boolean;
   initialLoading?: boolean;
   hidePassword?: boolean;
@@ -94,6 +95,7 @@ export default class Login extends BaseScreen<Props, State> {
       createTenantWithQrCode: Utils.getParamFromNavigation(this.props.route, 'createTenantWithQrCode', ''),
       tenantName: I18n.t('authentication.tenant'),
       loading: false,
+      initialLoading: true,
       hidePassword: true,
     };
   }
@@ -107,6 +109,8 @@ export default class Login extends BaseScreen<Props, State> {
     let email = this.state.email = '';
     let password = this.state.password = '';
     let tenant: TenantConnection;
+    let tenantLogo: string;
+    // Get tenants
     this.tenants = await this.centralServerProvider.getTenants();
     if (!this.state.tenantNameSelected || !this.state.tenantSubdomainSelected || !this.state.tenantEndpointSelected) {
       const tenantSubDomainSaved = await SecuredStorage.getCurrentTenantSubDomain();
@@ -126,7 +130,7 @@ export default class Login extends BaseScreen<Props, State> {
     }
     // Check if sub-domain is provided
     if (!this.state.tenantSubDomain) {
-      // No: et latest saved credentials
+      // Not provided: display latest saved credentials
       const userCredentials = await SecuredStorage.getUserCredentials();
       if (userCredentials) {
         tenant = await this.centralServerProvider.getTenant(userCredentials.tenantSubDomain);
@@ -134,21 +138,25 @@ export default class Login extends BaseScreen<Props, State> {
         password = userCredentials.password;
       }
     } else {
-      if (this.state.tenantSubDomain) {
-        // Get the Tenant
-        tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
-        // Get user connection
-        const userCredentials = await SecuredStorage.getUserCredentials(this.state.tenantSubDomain);
-        if (userCredentials) {
-          email = userCredentials.email;
-          password = userCredentials.password;
-        }
+      // Get the Tenant
+      tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
+      // Get user connection
+      const userCredentials = await SecuredStorage.getUserCredentials(tenant.subdomain)
+      if (userCredentials) {
+        email = userCredentials.email;
+        password = userCredentials.password;
       }
+    }
+    // Get logo
+    tenantLogo = this.centralServerProvider.getCurrentTenantLogo();
+    if (tenant && !tenantLogo) {
+      tenantLogo = await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
     }
     // Set
     this.setState({
       email,
       password,
+      tenantLogo,
       tenantName: tenant ? tenant.name : I18n.t('authentication.tenant'),
       tenantSubDomain: tenant ? tenant.subdomain : null,
       initialLoading: false
@@ -246,6 +254,8 @@ export default class Login extends BaseScreen<Props, State> {
   public setTenantWithIndex = async (buttonIndex: number) => {
     // Provided?
     if (buttonIndex !== undefined && this.tenants[buttonIndex]) {
+      const tenant = this.tenants[buttonIndex];
+      const tenantLogo = await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
       // Get stored data
       const credentials = await SecuredStorage.getUserCredentials(
         this.tenants[buttonIndex].subdomain);
@@ -254,16 +264,18 @@ export default class Login extends BaseScreen<Props, State> {
         this.setState({
           email: credentials.email,
           password: credentials.password,
-          tenantSubDomain: this.tenants[buttonIndex].subdomain,
-          tenantName: this.tenants[buttonIndex].name
+          tenantSubDomain: tenant.subdomain,
+          tenantName: tenant.name,
+          tenantLogo,
         });
       } else {
         // Set Tenant
         this.setState({
           email: null,
           password: null,
-          tenantSubDomain: this.tenants[buttonIndex].subdomain,
-          tenantName: this.tenants[buttonIndex].name
+          tenantSubDomain: tenant.subdomain,
+          tenantName: tenant.name,
+          tenantLogo,
         });
       }
     }
@@ -318,7 +330,7 @@ export default class Login extends BaseScreen<Props, State> {
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const navigation = this.props.navigation;
-    const { eula, loading, initialLoading, hidePassword } = this.state;
+    const { tenantLogo, eula, loading, initialLoading, hidePassword } = this.state;
     // Render
     return initialLoading ? (
       <Spinner style={formStyle.spinner} color='grey' />

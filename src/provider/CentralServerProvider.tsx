@@ -16,7 +16,7 @@ import PagingParams from '../types/PagingParams';
 import { ServerAction } from '../types/Server';
 import Site from '../types/Site';
 import SiteArea from '../types/SiteArea';
-import { TenantConnection } from '../types/Tenant';
+import { EndpointCloud, TenantConnection } from '../types/Tenant';
 import Transaction from '../types/Transaction';
 import UserToken from '../types/UserToken';
 import AxiosFactory from '../utils/AxiosFactory';
@@ -40,6 +40,7 @@ export default class CentralServerProvider {
   private tenant: TenantConnection = null;
   private currency: string = null;
   private siteImages: Map<string, string> = new Map();
+  private tenantLogo: string;
   private autoLoginDisabled: boolean = false;
   private notificationManager: NotificationManager;
 
@@ -136,6 +137,32 @@ export default class CentralServerProvider {
       return Utils.cloneObject(Configuration.DEFAULT_TENANTS_LIST_QA) as TenantConnection[];
     }
     return Utils.cloneObject(Configuration.DEFAULT_TENANTS_LIST_PROD) as TenantConnection[];
+  }
+
+  public async getTenantLogoBySubdomain(tenant: TenantConnection): Promise<string> {
+    this.debugMethod('getTenantLogoBySubdomain');
+    let tenantLogo: string;
+    // Call backend
+    const result = await this.axiosInstance.get(
+      `${this.buildCentralRestServerServiceUtilURL(tenant)}/${ServerAction.TENANT_LOGO}`, {
+      headers: this.buildHeaders(),
+      responseType: 'arraybuffer',
+      params: {
+        Subdomain: tenant.subdomain,
+      },
+    });
+    if (result.data) {
+      const base64Image = Buffer.from(result.data).toString('base64');
+      if (base64Image) {
+        tenantLogo = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
+      }
+    }
+    this.tenantLogo = tenantLogo;
+    return tenantLogo;
+  }
+
+  public getCurrentTenantLogo(): string {
+    return this.tenantLogo;
   }
 
   public async triggerAutoLogin(
@@ -753,14 +780,14 @@ export default class CentralServerProvider {
   }
 
   private buildRestServerAuthURL(tenant: TenantConnection): string {
-    return tenant.endpoint + '/v1/auth';
+    return tenant?.endpoint + '/v1/auth';
   }
 
   private buildCentralRestServerServiceUtilURL(tenant: TenantConnection): string {
-    return tenant.endpoint + '/client/util';
+    return tenant?.endpoint + '/client/util';
   }
 
   private buildCentralRestServerServiceSecuredURL(): string {
-    return this.tenant.endpoint + '/client/api';
+    return this.tenant?.endpoint + '/client/api';
   }
 }
