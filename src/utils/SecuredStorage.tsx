@@ -123,11 +123,11 @@ export default class SecuredStorage {
     return value;
   }
 
-  private static async getCurrentTenantSubDomain(): Promise<string> {
+  public static async getCurrentTenantSubDomain(): Promise<string> {
     return SecuredStorage._getString(SecuredStorageKey.CURRENT_TENANT_SUB_DOMAIN);
   }
 
-  private static async saveCurrentTenantSubDomain(tenantSubDomain: string) {
+  public static async saveCurrentTenantSubDomain(tenantSubDomain: string) {
     await RNSecureStorage.set(SecuredStorageKey.CURRENT_TENANT_SUB_DOMAIN, tenantSubDomain,
       { accessible: ACCESSIBLE.WHEN_UNLOCKED }
     );

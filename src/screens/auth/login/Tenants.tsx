@@ -121,12 +121,14 @@ export default class Tenants extends BaseScreen<Props, State> {
               leftActionIcon='navigate-before'
               leftActionIconType='MaterialIcons'
               leftAction={() => {
-                try {
-                  this.props.route.params.onGoBack();
-                  this.props.navigation.goBack();
-                } catch (error) {
-                  this.props.navigation.goBack();
-                }
+                this.props.navigation.dispatch(
+                  StackActions.replace (
+                    'AuthNavigator', {
+                      name: 'Login',
+                      key: `${Utils.randomNumber()}`
+                    }
+                  ),
+                )
               }}
             />
             <View>

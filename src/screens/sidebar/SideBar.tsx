@@ -106,7 +106,6 @@ export default class SideBar extends BaseScreen<Props, State> {
         }
       ),
     );
-    this.props.navigation.navigate('AuthNavigator');
   }
 
   public navigateTo = (container: string, screen: string, params = {}) => {
