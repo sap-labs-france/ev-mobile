@@ -256,7 +256,7 @@
     "domestic": "Domestico"
   },
   "details": {
-    "connector": "Conector",
+    "connector": "Connector",
     "connectors": "Conectores",
     "stoppedAt": "Parado em",
     "stoppedBy": "Parado por",
