@@ -6,14 +6,14 @@ import { Alert } from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
-import HeaderComponent from '../../../components/header/HeaderComponent';
-import BaseProps from '../../../types/BaseProps';
-import TenantQRCode from '../../../types/QrCode';
-import { EndpointCloud, TenantConnection } from '../../../types/Tenant';
-import Message from '../../../utils/Message';
-import SecuredStorage from '../../../utils/SecuredStorage';
-import Utils from '../../../utils/Utils';
-import BaseScreen from '../../base-screen/BaseScreen';
+import HeaderComponent from '../../components/header/HeaderComponent';
+import BaseProps from '../../types/BaseProps';
+import TenantQRCode from '../../types/QrCode';
+import { EndpointCloud, TenantConnection } from '../../types/Tenant';
+import Message from '../../utils/Message';
+import SecuredStorage from '../../utils/SecuredStorage';
+import Utils from '../../utils/Utils';
+import BaseScreen from '../base-screen/BaseScreen';
 
 export interface Props extends BaseProps {
   tenants: TenantConnection[];

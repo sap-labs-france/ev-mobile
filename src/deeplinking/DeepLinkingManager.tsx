@@ -108,7 +108,6 @@ export default class DeepLinkingManager {
           // Validate Account
           const result = await this.centralServerProvider.verifyEmail(response.tenant, response.email, response.token);
           if (result.status === Constants.REST_RESPONSE_SUCCESS) {
-            // Ok
             Message.showSuccess(I18n.t('authentication.accountVerifiedSuccess'));
             // Check if user has to change his password
             if (response.resetToken && response.resetToken !== 'null') {

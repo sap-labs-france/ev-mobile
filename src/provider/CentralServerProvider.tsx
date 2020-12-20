@@ -134,9 +134,9 @@ export default class CentralServerProvider {
 
   public getInitialTenants(): TenantConnection[] {
     if (__DEV__) {
-      return Configuration.DEFAULT_TENANTS_LIST_QA;
+      return Utils.cloneObject(Configuration.DEFAULT_TENANTS_LIST_QA) as TenantConnection[];
     }
-    return Configuration.DEFAULT_TENANTS_LIST_PROD;
+    return Utils.cloneObject(Configuration.DEFAULT_TENANTS_LIST_PROD) as TenantConnection[];
   }
 
   public async getTenantLogoBySubdomain(tenant: TenantConnection): Promise<string> {
@@ -310,7 +310,6 @@ export default class CentralServerProvider {
     this.currency = this.decodedToken.currency;
     this.tenant = tenant;
     this.securityProvider = new SecurityProvider(this.decodedToken);
-    this.autoLoginDisabled = false;
     // Save
     await SecuredStorage.saveUserCredentials(tenantSubDomain, {
       email,
