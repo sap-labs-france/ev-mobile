@@ -58,6 +58,19 @@ export default class Tenants extends BaseScreen<Props, State> {
     )
   }
 
+  private tenantCreated = async (newTenant: TenantConnection) => {
+    // Refresh
+    if (newTenant) {
+      const tenants = await this.centralServerProvider.getTenants();
+      this.setState({
+        tenants,
+        createQrCodeTenantVisible: false,
+        createTenantVisible: false,
+      });
+      Message.showSuccess(I18n.t('general.createTenantSuccess', { tenantName: newTenant.name }));
+    }
+  };
+
   private deleteTenant = async (index: number, subdomain: string) => {
     const tenants = this.state.tenants
     // Remove
@@ -97,19 +110,7 @@ export default class Tenants extends BaseScreen<Props, State> {
         {createQrCodeTenantVisible ? (
           <CreateTenantQrCode tenants={this.state.tenants} navigation={navigation}
             close={async (tenant: TenantConnection) => {
-              this.setState({createQrCodeTenantVisible: false});
-              // Set
-              this.props.navigation.dispatch(
-                StackActions.replace(
-                  'AuthNavigator', {
-                    name: 'Login',
-                    params: {
-                      tenantSubDomain: tenant.subdomain,
-                    },
-                    key: `${Utils.randomNumber()}`,
-                  }
-                ),
-              )
+              this.tenantCreated(tenant);
             }}
           />
         ) : (
@@ -136,20 +137,7 @@ export default class Tenants extends BaseScreen<Props, State> {
                 {createTenantVisible &&
                   <CreateTenantDialog navigation={navigation} tenants={this.state.tenants}
                     close={(newTenant: TenantConnection) => {
-                      this.setState({ createTenantVisible: false });
-                      if (newTenant) {
-                        this.props.navigation.dispatch(
-                          StackActions.replace(
-                            'AuthNavigator', {
-                              name: 'Login',
-                              params: {
-                                tenantSubDomain: newTenant.subdomain,
-                              },
-                              key: `${Utils.randomNumber()}`,
-                            }
-                          ),
-                        );
-                      }
+                      this.tenantCreated(newTenant);
                     }}
                   />
                 }
@@ -178,7 +166,9 @@ export default class Tenants extends BaseScreen<Props, State> {
                   </View>
                 )}
                 renderHiddenItem={({ item, index }) => (
-                  <Button style={tenantStyle.trashIconButton} danger={true} onPress={() => {this.deleteTenant(index, item.subdomain) }}>
+                  <Button style={tenantStyle.trashIconButton} danger={true} onPress={() => {
+                      this.deleteTenant(index, item.subdomain)
+                    }}>
                     <Icon style={tenantStyle.trashIcon} name='trash'/>
                   </Button>
                 )}

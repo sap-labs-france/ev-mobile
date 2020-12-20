@@ -35,6 +35,7 @@
     "restoreTenants": "Restore Organizations",
     "restoreTenantsConfirm": "Do you really want to restore the initial list of organizations?",
     "restoreTenantsSuccess": "Organization list has been restored",
+    "createTenantSuccess": "New tenant '{{tenantName}}' has been created",
     "noRecordFound": "No record found",
     "day": "d",
     "hour": "h",
