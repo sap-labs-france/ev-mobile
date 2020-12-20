@@ -33,6 +33,7 @@
     "deleteTenantConfirm": "Möchten Sie die Organisation '{{tenantName}}' wirklich löschen?",
     "restoreTenants": "Organisationen wiederherstellen?",
     "restoreTenantsConfirm": "Möchten Sie wirklich die ursprüngliche Liste der Organisationen wiederherstellen?",
+    "restoreTenantsSuccess": "Organization list has been restored",
     "noRecordFound": "Kein Eintrag gefunden",
     "day": "d",
     "hour": "h",

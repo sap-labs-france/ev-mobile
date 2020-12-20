@@ -6,14 +6,15 @@ import { Alert, TouchableOpacity } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view'
 import { TenantConnection } from 'types/Tenant';
 
-import HeaderComponent from '../../../components/header/HeaderComponent';
-import BaseProps from '../../../types/BaseProps';
-import SecuredStorage from '../../../utils/SecuredStorage';
-import Utils from '../../../utils/Utils';
-import BaseScreen from '../../base-screen/BaseScreen';
-import computeTenantStyleSheet from '../TenantsStyle';
+import HeaderComponent from '../../components/header/HeaderComponent';
+import BaseProps from '../../types/BaseProps';
+import Message from '../../utils/Message';
+import SecuredStorage from '../../utils/SecuredStorage';
+import Utils from '../../utils/Utils';
+import BaseScreen from '../base-screen/BaseScreen';
 import CreateTenantDialog from './CreateTenantDialog';
 import CreateTenantQrCode from './TenantQrCode';
+import computeTenantStyleSheet from './TenantsStyle';
 
 export interface Props extends BaseProps {
 }
@@ -79,6 +80,7 @@ export default class Tenants extends BaseScreen<Props, State> {
           // Save
           await SecuredStorage.saveTenants(tenants);
           this.setState({ tenants });
+          Message.showSuccess(I18n.t('general.restoreTenantsSuccess'));
         }
       }],
     );
@@ -100,10 +102,7 @@ export default class Tenants extends BaseScreen<Props, State> {
                   'AuthNavigator', {
                     name: 'Login',
                     params: {
-                      tenantNameSelected: tenant.name,
-                      tenantSubdomainSelected: tenant.subdomain,
-                      tenantEndpointSelected: tenant.endpoint,
-                      createTenantWithQrCode: true
+                      tenantSubDomain: tenant.subdomain,
                     },
                     key: `${Utils.randomNumber()}`,
                   }
@@ -121,14 +120,7 @@ export default class Tenants extends BaseScreen<Props, State> {
               leftActionIcon='navigate-before'
               leftActionIconType='MaterialIcons'
               leftAction={() => {
-                this.props.navigation.dispatch(
-                  StackActions.replace (
-                    'AuthNavigator', {
-                      name: 'Login',
-                      key: `${Utils.randomNumber()}`
-                    }
-                  ),
-                )
+                this.props.navigation.goBack();
               }}
             />
             <View>
@@ -149,9 +141,7 @@ export default class Tenants extends BaseScreen<Props, State> {
                             'AuthNavigator', {
                               name: 'Login',
                               params: {
-                                tenantNameSelected: newTenant.name,
-                                tenantSubdomainSelected: newTenant.subdomain,
-                                tenantEndpointSelected: newTenant.endpoint
+                                tenantSubDomain: newTenant.subdomain,
                               },
                               key: `${Utils.randomNumber()}`,
                             }
@@ -174,9 +164,7 @@ export default class Tenants extends BaseScreen<Props, State> {
                           'AuthNavigator', {
                             name: 'Login',
                             params: {
-                              tenantNameSelected: item.name,
-                              tenantSubdomainSelected: item.subdomain,
-                              tenantEndpointSelected: item.endpoint
+                              tenantSubDomain: item.subdomain,
                             },
                             key: `${Utils.randomNumber()}`,
                           }

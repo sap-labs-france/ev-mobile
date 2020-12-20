@@ -36,10 +36,6 @@ interface State {
   errorEmail?: object[];
   errorNewTenantName?: object[];
   errorNewTenantSubDomain?: object[];
-  tenantNameSelected: string;
-  tenantSubdomainSelected: string;
-  tenantEndpointSelected: string;
-  createTenantWithQrCode: string;
 }
 
 export default class Login extends BaseScreen<Props, State> {
@@ -89,10 +85,6 @@ export default class Login extends BaseScreen<Props, State> {
       password: null,
       email: Utils.getParamFromNavigation(this.props.route, 'email', ''),
       tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', ''),
-      tenantNameSelected: Utils.getParamFromNavigation(this.props.route, 'tenantNameSelected', ''),
-      tenantSubdomainSelected: Utils.getParamFromNavigation(this.props.route, 'tenantSubdomainSelected', ''),
-      tenantEndpointSelected: Utils.getParamFromNavigation(this.props.route, 'tenantEndpointSelected', ''),
-      createTenantWithQrCode: Utils.getParamFromNavigation(this.props.route, 'createTenantWithQrCode', ''),
       tenantName: I18n.t('authentication.tenant'),
       loading: false,
       initialLoading: true,
@@ -112,17 +104,6 @@ export default class Login extends BaseScreen<Props, State> {
     let tenantLogo: string;
     // Get tenants
     this.tenants = await this.centralServerProvider.getTenants();
-    if (this.state.tenantNameSelected && this.state.tenantSubdomainSelected && this.state.tenantEndpointSelected) {
-      const tenantSelected: TenantConnection = {
-        name: this.state.tenantNameSelected,
-        subdomain: this.state.tenantSubdomainSelected,
-        endpoint: this.state.tenantEndpointSelected
-      }
-      await this.selectTenant(tenantSelected);
-      if (this.state.createTenantWithQrCode) {
-        this.centralServerProvider.setAutoLoginDisabled(false);
-      }
-    }
     // Check if sub-domain is provided
     if (!this.state.tenantSubDomain) {
       // Not provided: display latest saved credentials
