@@ -59,15 +59,24 @@ export default class Tenants extends BaseScreen<Props, State> {
   }
 
   private tenantCreated = async (newTenant: TenantConnection) => {
-    // Refresh
+    // Always close pop-up
+    this.setState({
+      createQrCodeTenantVisible: false,
+      createTenantVisible: false,
+    });
     if (newTenant) {
-      const tenants = await this.centralServerProvider.getTenants();
-      this.setState({
-        tenants,
-        createQrCodeTenantVisible: false,
-        createTenantVisible: false,
-      });
-      Message.showSuccess(I18n.t('general.createTenantSuccess', { tenantName: newTenant.name }));
+      const foundTenant = this.state.tenants.find((tenant: TenantConnection) => tenant.subdomain === newTenant.subdomain );
+      if (foundTenant) {
+        // Tenant already exists
+        Message.showInfo(I18n.t('general.tenantExists', { tenantName: foundTenant.name }));
+      } else {
+        // Refresh
+        const tenants = await this.centralServerProvider.getTenants();
+        this.setState({
+          tenants,
+        });
+        Message.showSuccess(I18n.t('general.createTenantSuccess', { tenantName: newTenant.name }));
+      }
     }
   };
 
@@ -108,7 +117,7 @@ export default class Tenants extends BaseScreen<Props, State> {
     return (
       <View style={{flex: 1}}>
         {createQrCodeTenantVisible ? (
-          <CreateTenantQrCode tenants={this.state.tenants} navigation={navigation}
+          <CreateTenantQrCode tenants={Utils.cloneObject(this.state.tenants)} navigation={navigation}
             close={async (tenant: TenantConnection) => {
               this.tenantCreated(tenant);
             }}
@@ -135,7 +144,7 @@ export default class Tenants extends BaseScreen<Props, State> {
                   <Icon style={tenantStyle.icon} type={'MaterialIcons'} name='add'/>
                 </Button>
                 {createTenantVisible &&
-                  <CreateTenantDialog navigation={navigation} tenants={this.state.tenants}
+                  <CreateTenantDialog navigation={navigation} tenants={Utils.cloneObject(this.state.tenants)}
                     close={(newTenant: TenantConnection) => {
                       this.tenantCreated(newTenant);
                     }}

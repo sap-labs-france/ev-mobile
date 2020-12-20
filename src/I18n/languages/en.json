@@ -47,7 +47,7 @@
     "onlyMyTransactions": "My Sessions",
     "onlyAvailableChargers": "Available charging stations",
     "wrongTenant": "You are connected to the wrong organization",
-    "tenantExists": "The organization already exists.",
+    "tenantExists": "The organization '{{tenantName}}' already exists.",
     "createdOn": "Created On",
     "createdBy": "Created By",
     "lastChangedOn": "Last Changed On",

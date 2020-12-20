@@ -2,7 +2,6 @@ import base64 from 'base-64';
 import I18n from 'i18n-js';
 import { Container } from 'native-base';
 import React from 'react';
-import { Alert } from 'react-native';
 import Orientation from 'react-native-orientation-locker';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
@@ -86,14 +85,7 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
       // Check QR Code
       const tenant = await this.centralServerProvider.getTenant(tenantQrCode.tenantSubDomain);
       if (!tenant) {
-        Alert.alert(
-          I18n.t('qrCode.newOrganizationTitle'),
-          I18n.t('qrCode.newOrganizationMessage', { tenantName: tenantQrCode.tenantName }),
-          [
-            { text: I18n.t('general.no'), onPress: () => this.close(), style: 'cancel' },
-            { text: I18n.t('general.yes'), onPress: () => this.createTenantAndClose(tenantQrCode)}
-          ],
-        );
+        this.createTenantAndClose(tenantQrCode);
       } else {
         this.close(tenant);
       }
