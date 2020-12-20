@@ -117,10 +117,12 @@ export default class Login extends BaseScreen<Props, State> {
       // Get the Tenant
       tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
       // Get user connection
-      const userCredentials = await SecuredStorage.getUserCredentials(tenant.subdomain)
-      if (userCredentials) {
-        email = userCredentials.email;
-        password = userCredentials.password;
+      if (tenant) {
+        const userCredentials = await SecuredStorage.getUserCredentials(tenant.subdomain)
+        if (userCredentials) {
+          email = userCredentials.email;
+          password = userCredentials.password;
+        }
       }
     }
     // Get logo
@@ -137,6 +139,23 @@ export default class Login extends BaseScreen<Props, State> {
       tenantSubDomain: tenant ? tenant.subdomain : null,
       initialLoading: false
     }, async () => await this.checkAutoLogin(tenant, email, password));
+  }
+
+  public async componentDidFocus() {
+    super.componentDidFocus();
+    // Check if current Tenant selection is still valid (handle delete tenant usee case)
+    if (this.state?.tenantSubDomain) {
+      // Get tenants
+      this.tenants = await this.centralServerProvider.getTenants();
+      // Find
+      const foundTenant = this.tenants.find((tenant: TenantConnection) => this.state.tenantSubDomain === tenant.subdomain);
+      if (!foundTenant) {
+        this.setState({
+          tenantSubDomain: null,
+          tenantName: I18n.t('authentication.tenant'),
+        });
+      }
+    }
   }
 
   public async checkAutoLogin(tenant: TenantConnection, email: string, password: string) {
