@@ -60,12 +60,14 @@ export default class Tenants extends BaseScreen<Props, State> {
 
   private deleteTenant = async (index: number, subdomain: string) => {
     const tenants = this.state.tenants
-    tenants.splice(index, 1);
+    // Remove
+    const tenant = tenants.splice(index, 1)[0];
     // Save
     await SecuredStorage.saveTenants(tenants);
     // Remove cache
     await SecuredStorage.deleteUserCredentials(subdomain);
     this.setState({ tenants });
+    Message.showSuccess(I18n.t('general.deleteTenantSuccess', { tenantName: tenant.name }));
   };
 
   private restoreTenants = () => {
@@ -177,7 +179,7 @@ export default class Tenants extends BaseScreen<Props, State> {
                 )}
                 renderHiddenItem={({ item, index }) => (
                   <Button style={tenantStyle.trashIconButton} danger={true} onPress={() => {this.deleteTenant(index, item.subdomain) }}>
-                    <Icon style={tenantStyle.icon} name='trash'/>
+                    <Icon style={tenantStyle.trashIcon} name='trash'/>
                   </Button>
                 )}
                 rightOpenValue={-65}

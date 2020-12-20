@@ -31,6 +31,7 @@
     "exitAppConfirm": "Voce tem a certeza que quer sair da aplicação?",
     "deleteTenant": "eliminar Organização",
     "deleteTenantConfirm": "Vocé quer mesmo eliminar a organziação '{{tenantName}}'?",
+    "deleteTenantSuccess": "Organization '{{tenantName}}' has been deleted",
     "restoreTenants": "Restaurar Organização",
     "restoreTenantsConfirm": "Voce quer mesmo restaurar a lista inicial de organização?",
     "restoreTenantsSuccess": "Organization list has been restored",

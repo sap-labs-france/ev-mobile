@@ -30,12 +30,15 @@ export default function computeStyleSheet(): any {
       fontSize: '16@s',
       textAlign: 'center',
     },
+    icon: {
+      color: commonColor.textColor,
+    },
     trashIconButton: {
       alignSelf: 'flex-end',
       height: '50@s'
     },
-    icon: {
-      color: commonColor.textColor
+    trashIcon: {
+      color: commonColor.inverseTextColor,
     }
   });
   const portraitStyles = {};
