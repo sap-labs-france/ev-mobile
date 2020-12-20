@@ -134,6 +134,7 @@
     "reportErrorFailed": "Cannot report the error"
   },
   "qrCode": {
+    "qrCode": "QR Code",
     "browseScan&Charge": "Scan & Charge",
     "browseScan&ChargeNote": "Scan the Charging Station's QR Code",
     "wrongOrganizationTitle": "Change Organization",

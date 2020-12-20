@@ -134,6 +134,7 @@
     "reportErrorFailed": "Impossible d'envoyer l'erreur"
   },
   "qrCode": {
+    "qrCode": "QR Code",
     "browseScan&Charge": "Scan & Charge",
     "browseScan&ChargeNote": "Scan the Charging Station's QR Code",
     "wrongOrganizationTitle": "Changement d'Organisation",
