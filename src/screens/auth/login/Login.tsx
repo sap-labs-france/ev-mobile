@@ -126,10 +126,7 @@ export default class Login extends BaseScreen<Props, State> {
       }
     }
     // Get logo
-    tenantLogo = this.centralServerProvider.getCurrentTenantLogo();
-    if (tenant && !tenantLogo) {
-      tenantLogo = await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
-    }
+    tenantLogo = await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
     // Set
     this.setState({
       email,
@@ -144,12 +141,12 @@ export default class Login extends BaseScreen<Props, State> {
   public async componentDidFocus() {
     super.componentDidFocus();
     // Check if current Tenant selection is still valid (handle delete tenant usee case)
-    if (this.state?.tenantSubDomain) {
-      // Get tenants
-      this.tenants = await this.centralServerProvider.getTenants();
-      // Find
-      const foundTenant = this.tenants.find((tenant: TenantConnection) => this.state.tenantSubDomain === tenant.subdomain);
-      if (!foundTenant) {
+    if (this.state.tenantSubDomain) {
+      // Get the current Tenant
+      const tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
+      if (!tenant) {
+        // Refresh
+        this.tenants = await this.centralServerProvider.getTenants();
         this.setState({
           tenantSubDomain: null,
           tenantName: I18n.t('authentication.tenant'),
@@ -334,7 +331,7 @@ export default class Login extends BaseScreen<Props, State> {
         <View>
           <ScrollView contentContainerStyle={style.scrollContainer}>
             <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
-              <AuthHeader navigation={this.props.navigation}/>
+              <AuthHeader navigation={this.props.navigation} tenantLogo={tenantLogo}/>
               <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.newUser()}>
                 <Text style={style.linksTextButton} uppercase={false}>{I18n.t('authentication.newUser')}</Text>
               </Button>
