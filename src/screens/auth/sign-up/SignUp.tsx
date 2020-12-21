@@ -3,13 +3,11 @@ import I18n from 'i18n-js';
 import { Button, CheckBox, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
-import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
@@ -220,7 +218,7 @@ export default class SignUp extends BaseScreen<Props, State> {
     // Get logo
     const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
-      <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+      <View style={style.container}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo}/>
@@ -391,7 +389,7 @@ export default class SignUp extends BaseScreen<Props, State> {
             </Button>
           </Left>
         </Footer>
-      </Animatable.View>
+      </View>
     );
   }
 }

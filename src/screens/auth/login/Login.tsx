@@ -327,7 +327,7 @@ export default class Login extends BaseScreen<Props, State> {
     return initialLoading ? (
       <Spinner style={formStyle.spinner} color='grey' />
     ) : (
-      <View>
+      <View style={style.container}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation} tenantLogo={tenantLogo}/>
