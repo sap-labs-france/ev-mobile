@@ -38,6 +38,7 @@ export default function computeStyleSheet(): any {
       height: '50@s'
     },
     trashIcon: {
+      color: 'white'
     }
   });
   const portraitStyles = {};

@@ -112,7 +112,7 @@ export default class Tenants extends BaseScreen<Props, State> {
 
   public render() {
     const navigation = this.props.navigation
-    const {tenants, createTenantVisible, createQrCodeTenantVisible} = this.state
+    const { tenants, createTenantVisible, createQrCodeTenantVisible } = this.state
     const tenantStyle = computeTenantStyleSheet();
     return (
       <View style={{flex: 1}}>
