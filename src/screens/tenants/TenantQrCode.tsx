@@ -56,8 +56,6 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
       tenants.push(newTenant)
       // Save
       await SecuredStorage.saveTenants(tenants);
-      // Ok
-      Message.showSuccess(I18n.t('qrCode.scanTenantQrCodeSuccess', { tenantName: tenantQrCode.tenantName }));
       // Close
       this.close(newTenant);
   }
