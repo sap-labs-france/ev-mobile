@@ -113,7 +113,7 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
           cameraProps={{captureAudio: false}}
           showMarker={true}
           reactivate={true}
-          reactivateTimeout={500}
+          reactivateTimeout={1000}
           onRead={(qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)}/>
       </Container>
     );

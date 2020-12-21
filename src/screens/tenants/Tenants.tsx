@@ -65,7 +65,7 @@ export default class Tenants extends BaseScreen<Props, State> {
       createTenantVisible: false,
     });
     if (newTenant) {
-      const foundTenant = this.state.tenants.find((tenant: TenantConnection) => tenant.subdomain === newTenant.subdomain );
+      const foundTenant = this.state.tenants.find((tenant: TenantConnection) => tenant.subdomain === newTenant.subdomain);
       if (foundTenant) {
         // Tenant already exists
         Message.showInfo(I18n.t('general.tenantExists', { tenantName: foundTenant.name }));
