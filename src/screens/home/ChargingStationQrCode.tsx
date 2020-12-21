@@ -24,6 +24,7 @@ export interface Props extends BaseProps {
 }
 
 interface State {
+  activateQrCode?: boolean;
 }
 
 export default class ChargingStationQrCode extends BaseScreen<State, Props> {
@@ -33,6 +34,9 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
 
   constructor(props: Props) {
     super(props);
+    this.state = {
+      activateQrCode: true,
+    }
     this.tenantEndpointClouds = Utils.getEndpointCloud();
   }
 
@@ -108,28 +112,35 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
         // Check if the tenant already exists
         if (tenant) {
           // Tenant exists: Propose the user to switch to the existing one and log off
-          Alert.alert(
-            I18n.t('qrCode.wrongOrganizationTitle'),
-            I18n.t('qrCode.wrongOrganizationMessage', { tenantName: tenant.name }),
-            [
-              { text: I18n.t('general.no'), style: 'cancel' },
-              { text: I18n.t('general.yes'), onPress: ()  => this.logoffAndNavigateToLogin(tenant)}
-            ],
-            { cancelable: false }
-          );
-          return;
+          this.setState({
+            activateQrCode: false
+          }, () => {
+            Alert.alert(
+              I18n.t('qrCode.wrongOrganizationTitle'),
+              I18n.t('qrCode.wrongOrganizationMessage', { tenantName: tenant.name }),
+              [
+                { text: I18n.t('general.no'), style: 'cancel', onPress: () => this.setState({ activateQrCode: true }) },
+                { text: I18n.t('general.yes'), onPress: () => this.logoffAndNavigateToLogin(tenant) }
+              ],
+              { cancelable: false }
+            );
+          });
         } else {
-          Alert.alert(
-            I18n.t('qrCode.unknownOrganizationTitle'),
-            I18n.t('qrCode.unknownOrganizationMessage', {tenantName: chargingStationQrCode.tenantName}),
-            [
-              { text: I18n.t('general.no'), style: 'cancel' },
-              { text: I18n.t('general.yes'), onPress: ()  => this.saveTenantAndLogOff(chargingStationQrCode, endpointCloud) }
-            ],
-            { cancelable: false }
-          );
-          return;
+          this.setState({
+            activateQrCode: false
+          }, () => {
+            Alert.alert(
+              I18n.t('qrCode.unknownOrganizationTitle'),
+              I18n.t('qrCode.unknownOrganizationMessage', {tenantName: chargingStationQrCode.tenantName}),
+              [
+                { text: I18n.t('general.no'), style: 'cancel', onPress: () => this.setState({ activateQrCode: true }) },
+                { text: I18n.t('general.yes'), onPress: () => this.saveTenantAndLogOff(chargingStationQrCode, endpointCloud) }
+              ],
+              { cancelable: false }
+            );
+          });
         }
+        return;
       }
       // Check Charging Station
       try {
@@ -172,6 +183,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
 
   public render() {
     const { navigation } = this.props;
+    const { activateQrCode } = this.state;
     return (
       <Container>
         <HeaderComponent
@@ -183,12 +195,14 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
           rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
           rightActionIcon={'menu'}
         />
-        <QRCodeScanner
-          cameraProps={{captureAudio: false}}
-          showMarker={true}
-          reactivate={true}
-          reactivateTimeout={500}
-          onRead={(qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)}/>
+        {activateQrCode &&
+          <QRCodeScanner
+            cameraProps={{captureAudio: false}}
+            showMarker={true}
+            reactivate={true}
+            reactivateTimeout={1000}
+            onRead={(qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)}/>
+        }
       </Container>
     );
   }

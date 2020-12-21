@@ -10,9 +10,9 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 import BaseProps from 'types/BaseProps';
 
 import computeStyleSheet from './AppStyles';
-import I18nManager from './I18n/I18nManager';
 import ThemeManager from './custom-theme/ThemeManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
+import I18nManager from './I18n/I18nManager';
 import LocationManager from './location/LocationManager';
 import MigrationManager from './migration/MigrationManager';
 import NotificationManager from './notification/NotificationManager';
@@ -34,6 +34,7 @@ import Sidebar from './screens/sidebar/SideBar';
 import SiteAreas from './screens/site-areas/SiteAreas';
 import Sites from './screens/sites/Sites';
 import Statistics from './screens/statistics/Statistics';
+import Tenants from './screens/tenants/Tenants';
 import TransactionChart from './screens/transactions/chart/TransactionChart';
 import TransactionDetails from './screens/transactions/details/TransactionDetails';
 import TransactionsHistory from './screens/transactions/history/TransactionsHistory';
@@ -88,6 +89,7 @@ function createAuthNavigator(props: BaseProps) {
   return(
     <AuthStack.Navigator initialRouteName={'Login'} headerMode='none'>
       <AuthStack.Screen name='Login' component={Login} initialParams={props?.route?.params?.params}/>
+      <AuthStack.Screen name='Tenants' component={Tenants}/>
       <AuthStack.Screen name='Eula' component={Eula}/>
       <AuthStack.Screen name='SignUp' component={SignUp}/>
       <AuthStack.Screen name='ResetPassword' component={ResetPassword}/>
