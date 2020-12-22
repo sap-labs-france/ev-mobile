@@ -487,7 +487,7 @@ export default class Utils {
   }
 
   public static cloneObject<T>(object: T): T {
-    return JSON.parse(JSON.stringify(object));
+    return JSON.parse(JSON.stringify(object)) as T;
   }
 
   public static isNullOrEmptyString(value: string): boolean {
