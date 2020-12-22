@@ -4,12 +4,12 @@ import React from 'react';
 import { Alert, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 
-import computeModalStyleSheet from '../../../ModalStyles';
-import Configuration from '../../../config/Configuration';
-import BaseProps from '../../../types/BaseProps';
-import { EndpointCloud, TenantConnection } from '../../../types/Tenant';
-import SecuredStorage from '../../../utils/SecuredStorage';
-import Utils from '../../../utils/Utils';
+import computeModalStyleSheet from '../../ModalStyles';
+import Configuration from '../../config/Configuration';
+import BaseProps from '../../types/BaseProps';
+import { EndpointCloud, TenantConnection } from '../../types/Tenant';
+import SecuredStorage from '../../utils/SecuredStorage';
+import Utils from '../../utils/Utils';
 
 export interface Props extends BaseProps {
   tenants: TenantConnection[];
@@ -24,7 +24,7 @@ interface State {
   errorNewTenantSubDomain?: Record<string, unknown>[];
 }
 
-export default class Login extends React.Component<Props, State> {
+export default class CreateTenantDialog extends React.Component<Props, State> {
   public state: State;
   public props: Props;
   public tenantEndpointClouds: EndpointCloud[];
@@ -77,14 +77,14 @@ export default class Login extends React.Component<Props, State> {
       if (foundTenant) {
         Alert.alert(
           I18n.t('general.error'),
-          I18n.t('general.tenantExists'),
+          I18n.t('general.tenantExists', { tenantName: foundTenant.name }),
           [{ text: I18n.t('general.ok'), style: 'cancel' }],
           { cancelable: false }
         );
       // Add new Tenant and Save
       } else {
-        tenants.push(newTenant);
         // Save
+        tenants.push(newTenant);
         await SecuredStorage.saveTenants(tenants);
         // Hide Modal
         close(newTenant);

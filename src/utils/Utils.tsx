@@ -486,7 +486,7 @@ export default class Utils {
     return count;
   }
 
-  public static cloneObject(object: Record<string, unknown>): Record<string, unknown> {
+  public static cloneObject<T>(object: T): T {
     return JSON.parse(JSON.stringify(object));
   }
 

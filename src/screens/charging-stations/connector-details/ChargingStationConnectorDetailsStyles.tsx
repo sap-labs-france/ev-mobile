@@ -197,7 +197,7 @@ export default function computeStyleSheet(): any {
   });
   const portraitStyles = {};
   const landscapeStyles = {
-    reportErrorContainer: {
+    reportErrorContainer: {
       marginLeft: '84%'
     }
   };
