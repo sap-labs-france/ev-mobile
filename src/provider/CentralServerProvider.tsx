@@ -486,12 +486,14 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getChargingStation(params = {}): Promise<ChargingStation> {
+  public async getChargingStation(id: string): Promise<ChargingStation> {
     this.debugMethod('getChargingStation');
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CHARGING_STATION}`, {
       headers: this.buildSecuredHeaders(),
-      params,
+      params: {
+        ID: id
+      },
     });
     return result.data;
   }
@@ -618,12 +620,14 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getTransaction(params = {}): Promise<Transaction> {
+  public async getTransaction(id: number): Promise<Transaction> {
     this.debugMethod('getTransaction');
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTION}`, {
       headers: this.buildSecuredHeaders(),
-      params,
+      params: {
+        ID: id
+      }
     });
     return result.data;
   }

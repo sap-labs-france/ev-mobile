@@ -1,4 +1,4 @@
-import { CommonActions, DrawerActions, NavigationContainerRef } from '@react-navigation/native';
+import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Platform } from 'react-native';
 import firebase from 'react-native-firebase';
@@ -164,16 +164,30 @@ export default class NotificationManager {
       // End of Transaction
       case UserNotificationType.END_OF_SESSION:
         this.navigator.dispatch(
-          DrawerActions.jumpTo(
-            'TransactionHistoryNavigator',
-            {
-              name: 'TransactionDetailsTabs',
-              key: `${Utils.randomNumber()}`,
+          StackActions.replace(
+            'AppDrawerNavigator', {
               params: {
-                transactionID: parseInt(notification.data.transactionId, 10)
+                screen: 'HomeNavigator',
+                params: {
+                  navigateTo: StackActions.push(
+                    'AppDrawerNavigator',
+                    {
+                      screen: 'TransactionHistoryNavigator',
+                      params: {
+                        screen: 'TransactionDetailsTabs',
+                        key: `${Utils.randomNumber()}`,
+                        params: {
+                          params: {
+                            transactionID: Utils.convertToInt(notification.data.transactionId)
+                          }
+                        }
+                      }
+                    }
+                  ),
+                }
               }
             }
-          )
+          ),
         );
         break;
       // Session In Progress
@@ -181,60 +195,113 @@ export default class NotificationManager {
       case UserNotificationType.END_OF_CHARGE:
       case UserNotificationType.OPTIMAL_CHARGE_REACHED:
         this.navigator.dispatch(
-          DrawerActions.jumpTo(
-            'TransactionInProgressNavigator',
-            {
-              name: 'ChargingStationConnectorDetailsTabs',
-              key: `${Utils.randomNumber()}`,
+          StackActions.replace(
+            'AppDrawerNavigator', {
               params: {
-                chargingStationID: notification.data.chargeBoxID,
-                connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                screen: 'HomeNavigator',
+                params: {
+                  navigateTo: StackActions.push(
+                    'AppDrawerNavigator',
+                    {
+                      screen: 'TransactionInProgressNavigator',
+                      params: {
+                        screen: 'ChargingStationConnectorDetailsTabs',
+                        key: `${Utils.randomNumber()}`,
+                        params: {
+                          params: {
+                            chargingStationID: notification.data.chargeBoxID,
+                            connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                          }
+                        }
+                      }
+                    }
+                  ),
+                }
               }
             }
-          )
+          ),
         );
         break;
       case UserNotificationType.CHARGING_STATION_STATUS_ERROR:
       case UserNotificationType.PREPARING_SESSION_NOT_STARTED:
         this.navigator.dispatch(
-          DrawerActions.jumpTo(
-            'ChargingStationsNavigator',
-            {
-              name: 'ChargingStationConnectorDetailsTabs',
-              key: `${Utils.randomNumber()}`,
+          StackActions.replace(
+            'AppDrawerNavigator', {
               params: {
-                chargingStationID: notification.data.chargeBoxID,
-                connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                screen: 'HomeNavigator',
+                params: {
+                  navigateTo: StackActions.push(
+                    'AppDrawerNavigator',
+                    {
+                      screen: 'ChargingStationsNavigator',
+                      params: {
+                        screen: 'ChargingStationConnectorDetailsTabs',
+                        key: `${Utils.randomNumber()}`,
+                        params: {
+                          params: {
+                            chargingStationID: notification.data.chargeBoxID,
+                            connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                          }
+                        }
+                      }
+                    }
+                  ),
+                }
               }
             }
-          )
+          ),
         );
         break;
       // Charger just connected
       case UserNotificationType.SESSION_NOT_STARTED_AFTER_AUTHORIZE:
       case UserNotificationType.CHARGING_STATION_REGISTERED:
         this.navigator.dispatch(
-          DrawerActions.jumpTo(
-            'ChargingStationsNavigator',
-            {
-              name: 'ChargingStationConnectorDetailsTabs',
-              key: `${Utils.randomNumber()}`,
+          StackActions.replace(
+            'AppDrawerNavigator', {
               params: {
-                chargingStationID: notification.data.chargeBoxID,
-                connectorID: 1
+                screen: 'HomeNavigator',
+                params: {
+                  navigateTo: StackActions.push(
+                    'AppDrawerNavigator',
+                    {
+                      screen: 'ChargingStationsNavigator',
+                      params: {
+                        screen: 'ChargingStationConnectorDetailsTabs',
+                        key: `${Utils.randomNumber()}`,
+                        params: {
+                          params: {
+                            chargingStationID: notification.data.chargeBoxID,
+                            connectorID: 1
+                          }
+                        }
+                      }
+                    }
+                  ),
+                }
               }
             }
-          )
+          ),
         );
         break;
       // Go to Charger list
       case UserNotificationType.OFFLINE_CHARGING_STATION:
-        // Navigate
         this.navigator.dispatch(
-          CommonActions.navigate({
-            name: 'ChargingStations',
-            key: `${Utils.randomNumber()}`
-          })
+          StackActions.replace(
+            'AppDrawerNavigator', {
+              params: {
+                screen: 'HomeNavigator',
+                params: {
+                  navigateTo: StackActions.push(
+                    'AppDrawerNavigator',
+                    {
+                      screen: 'ChargingStationsNavigator',
+                      key: `${Utils.randomNumber()}`,
+                    }
+                  ),
+                }
+              }
+            }
+          ),
         );
         break;
       // No need to navigate

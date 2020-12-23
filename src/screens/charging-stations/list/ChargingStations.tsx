@@ -77,7 +77,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public async componentDidMount() {
     // Get initial filters
     await this.loadInitialFilters();
-    this.siteAreaID = Utils.getParamFromNavigation(this.props.route, 'siteAreaID', null);
+    this.siteAreaID = Utils.getParamFromNavigation(this.props.route, 'siteAreaID', null) as string;
     await super.componentDidMount();
   }
 

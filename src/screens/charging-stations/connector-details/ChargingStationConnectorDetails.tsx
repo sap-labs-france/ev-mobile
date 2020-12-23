@@ -6,9 +6,9 @@ import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'reac
 
 import { default as noPhoto, default as noPhotoActive } from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
-import I18nManager from '../../../I18n/I18nManager';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
+import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
@@ -72,6 +72,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       buttonDisabled: true,
       refreshing: false
     };
+    console.log('ChargingStationConnectorDetails ====================================');
+    console.log(this.props.route);
+    console.log('====================================');
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
@@ -80,7 +83,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public async componentDidMount() {
     await super.componentDidMount();
-    const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null);
+    const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null) as boolean;
     if (startTransaction) {
       this.startTransaction();
     }
@@ -102,7 +105,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
       // Get Charger
-      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: chargingStationID });
+      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID);
       return chargingStation;
     } catch (error) {
       // Other common Error
@@ -115,7 +118,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   public getTransaction = async (transactionID: number): Promise<Transaction> => {
     try {
       // Get Transaction
-      const transaction = await this.centralServerProvider.getTransaction({ ID: transactionID });
+      const transaction = await this.centralServerProvider.getTransaction(transactionID);
       return transaction;
     } catch (error) {
       // Check if HTTP?
@@ -158,8 +161,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public showLastTransaction = async () => {
     const { navigation } = this.props;
-    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
-    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null), 10);
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
+    const connectorID: number = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
     // Get the last session
     const transaction = await this.getLastTransaction(chargingStationID, connectorID);
     if (transaction) {
@@ -177,8 +180,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public showReportError = async () => {
     const { navigation } = this.props;
-    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
-    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null), 10);
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
+    const connectorID: number = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
     // Get the last session
       // Navigate
     navigation.navigate(
@@ -197,8 +200,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     let siteImage = null;
     let userImage = null;
     let transaction = null;
-    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
-    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null), 10);
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
+    const connectorID: number = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
     // Get Charger
     const chargingStation = await this.getChargingStation(chargingStationID);
     const connector = chargingStation ? Utils.getConnectorFromID(chargingStation, connectorID) : null;

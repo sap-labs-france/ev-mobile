@@ -56,7 +56,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
       // Get Charging Station
       let chargingStation = this.state.chargingStation;
       if (!chargingStation) {
-        const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
+        const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
         chargingStation = await this.getChargingStation(chargingStationID);
       }
       // Get Charging Station Config
@@ -78,7 +78,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
       // Get chargingStation
-      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: chargingStationID });
+      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID);
       return chargingStation;
     } catch (error) {
       // Other common Error
