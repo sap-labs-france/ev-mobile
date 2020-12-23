@@ -129,7 +129,15 @@ export default class CentralServerProvider {
       // Save them
       await SecuredStorage.saveTenants(tenants);
     }
-    return tenants;
+    return tenants.sort((tenant1: TenantConnection, tenant2: TenantConnection) => {
+      if (tenant1.name < tenant2.name) {
+        return -1;
+      }
+      if (tenant1.name > tenant2.name) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
   public getInitialTenants(): TenantConnection[] {
