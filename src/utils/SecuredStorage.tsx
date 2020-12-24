@@ -33,7 +33,7 @@ export default class SecuredStorage {
       if (navigationState.key === navigationID) {
         const routeNames: string[] = [];
         // Clear dups
-        if (!Utils.isEmptyArray(navigationState.navigationState?.routes)) {
+        if (__DEV__ && !Utils.isEmptyArray(navigationState.navigationState?.routes)) {
           navigationState.navigationState.routes = navigationState.navigationState?.routes.filter((route) => {
             if (!routeNames.includes(route.name)) {
               routeNames.push(route.name);
