@@ -241,7 +241,7 @@ export default class Login extends BaseScreen<Props, State> {
 
   public navigateToApp() {
     // Navigate to App
-    this.props.navigation.navigate('AppDrawerNavigator');
+    this.props.navigation.navigate('AppDrawerNavigator', { key: `${Utils.randomNumber()}` });
   }
 
   public setTenantWithIndex = async (buttonIndex: number) => {

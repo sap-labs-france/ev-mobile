@@ -95,10 +95,14 @@ export default class Home extends BaseScreen<Props, State> {
             }
           );
         } else {
-          navigation.navigate('TransactionInProgressNavigator');
+          navigation.navigate('TransactionInProgressNavigator', {
+            key: `${Utils.randomNumber()}`
+          });
         }
       } else {
-        navigation.navigate('TransactionInProgressNavigator');
+        navigation.navigate('TransactionInProgressNavigator', {
+          key: `${Utils.randomNumber()}`
+        });
       }
     } catch (error) {
       // Other common Error
@@ -135,7 +139,8 @@ export default class Home extends BaseScreen<Props, State> {
             <Content style={cardStyle.cards}>
               {isComponentOrganizationActive && (
                 <Card style={cardStyle.card}>
-                  <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate('SitesNavigator')}>
+                  <CardItem style={cardStyle.cardItem} button={true}
+                    onPress={() => navigation.navigate('SitesNavigator', { key: `${Utils.randomNumber()}` })}>
                     <Left>
                       <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='store-mall-directory' />
                       <Body>
@@ -147,7 +152,8 @@ export default class Home extends BaseScreen<Props, State> {
                 </Card>
               )}
               <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate('ChargingStationsNavigator')}>
+                <CardItem style={cardStyle.cardItem} button={true}
+                  onPress={() => navigation.navigate('ChargingStationsNavigator', { key: `${Utils.randomNumber()}` })}>
                   <Left>
                     <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='ev-station' />
                     <Body>
@@ -169,7 +175,8 @@ export default class Home extends BaseScreen<Props, State> {
                 </CardItem>
               </Card>
               <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate('TransactionHistoryNavigator' )}>
+                <CardItem style={cardStyle.cardItem} button={true}
+                  onPress={() => navigation.navigate('TransactionHistoryNavigator', { key: `${Utils.randomNumber()}` })}>
                   <Left>
                     <Icon style={cardStyle.cardIcon} type='MaterialCommunityIcons' name='history' />
                     <Body>
@@ -191,7 +198,8 @@ export default class Home extends BaseScreen<Props, State> {
                 </CardItem>
               </Card>
               <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate('StatisticsNavigator')}>
+                <CardItem style={cardStyle.cardItem} button={true}
+                  onPress={() => navigation.navigate('StatisticsNavigator', { key: `${Utils.randomNumber()}` })}>
                   <Left>
                     <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='assessment' />
                     <Body>
