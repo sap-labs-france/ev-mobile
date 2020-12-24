@@ -147,11 +147,15 @@ export default class NotificationManager {
 
   private async processOpenedNotification(notificationOpen: NotificationOpen): Promise<boolean> {
     let connectionIsValid = true;
+    // Not valid
+    if (!notificationOpen?.notification?.data) {
+      return true;
+    }
     // Get information about the notification that was opened
     const notification: Notification = notificationOpen.notification;
     // User must be logged and Navigation available
-    if (!this.navigator) {
-      // Process it later
+    if (!this.navigator || !this.centralServerProvider) {
+      // Process later
       this.lastNotification = notificationOpen;
       return false;
     }
@@ -185,6 +189,7 @@ export default class NotificationManager {
         } catch (error) {
           // Cannot login
           Message.showError(I18n.t('general.mustLoggedToTenant', { tenantName: tenant.name }));
+          return false;
         }
       } else {
         // Cannot login
