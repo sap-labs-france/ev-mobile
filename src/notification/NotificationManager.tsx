@@ -7,6 +7,7 @@ import { Notification, NotificationOpen } from 'react-native-firebase/notificati
 import CentralServerProvider from '../provider/CentralServerProvider';
 import { UserNotificationType } from '../types/UserNotifications';
 import Message from '../utils/Message';
+import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 
 export default class NotificationManager {
@@ -145,19 +146,51 @@ export default class NotificationManager {
   }
 
   private async processOpenedNotification(notificationOpen: NotificationOpen): Promise<boolean> {
+    let connectionIsValid = true;
     // Get information about the notification that was opened
     const notification: Notification = notificationOpen.notification;
-    // No: meaning the user got the notif and clicked on it, then navigate to the right screen
     // User must be logged and Navigation available
-    if (!this.centralServerProvider.isUserConnectionValid() || !this.navigator) {
+    if (!this.navigator) {
       // Process it later
       this.lastNotification = notificationOpen;
       return false;
     }
-    // Check Tenant
-    if (this.centralServerProvider.getUserInfo().tenantID !== notification.data.tenantID) {
-      Message.showError(I18n.t('general.wrongTenant'));
+    // Check tenant
+    if (!notification.data.tenantSubdomain) {
+      Message.showError(I18n.t('general.tenantMissing'));
       return false;
+    }
+    // Check if tenant exists
+    const tenant = await this.centralServerProvider.getTenant(notification.data.tenantSubdomain);
+    if (!tenant) {
+      Message.showError(I18n.t('general.tenantUnknown', { tenantSubdomain: notification.data.tenantSubdomain }));
+      return false;
+    }
+    // Check current connection
+    if (!this.centralServerProvider.isUserConnectionValid()) {
+      connectionIsValid = false;
+    // Check current Tenant
+    } else if (this.centralServerProvider.getUserInfo().tenantSubdomain !== tenant.subdomain) {
+      connectionIsValid = false;
+    }
+    // Establish connection
+    if (!connectionIsValid) {
+      // Try to login
+      const userCredentials = await SecuredStorage.getUserCredentials(tenant.subdomain);
+      if (userCredentials) {
+        // Login
+        try {
+          await this.centralServerProvider.login(
+            userCredentials.email, userCredentials.password, true, userCredentials.tenantSubDomain);
+        } catch (error) {
+          // Cannot login
+          Message.showError(I18n.t('general.mustLoggedToTenant', { tenantName: tenant.name }));
+        }
+      } else {
+        // Cannot login
+        Message.showError(I18n.t('general.mustLoggedToTenant', { tenantName: tenant.name }));
+        return false;
+      }
     }
     // Check
     switch (notification.data.notificationType) {
