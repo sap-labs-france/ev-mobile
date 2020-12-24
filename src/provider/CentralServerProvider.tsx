@@ -188,7 +188,7 @@ export default class CentralServerProvider {
       await this.logoff();
       // Go to login page
       if (navigation) {
-        navigation.navigate('AuthNavigator');
+        navigation.navigate('AuthNavigator', { key: `${Utils.randomNumber()}` });
       }
     }
   }

@@ -112,12 +112,11 @@ export default class SideBar extends BaseScreen<Props, State> {
     // Navigate
     this.props.navigation.dispatch(
       DrawerActions.jumpTo(
-        container,
-        {
-          name: screen,
-          params,
-          key: `${Utils.randomNumber()}`,
-        }
+        container, {
+        name: screen,
+        params,
+        key: `${Utils.randomNumber()}`,
+      }
       ),
     );
   };

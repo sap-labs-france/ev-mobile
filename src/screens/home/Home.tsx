@@ -1,4 +1,4 @@
-import { DrawerActions, NavigationAction } from '@react-navigation/native';
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Text } from 'native-base';
 import React from 'react';
@@ -59,11 +59,6 @@ export default class Home extends BaseScreen<Props, State> {
       loading: false,
       isComponentOrganizationActive: securityProvider ? securityProvider.isComponentOrganizationActive() : false,
     });
-    // Redirect
-    const navigateTo = Utils.getParamFromNavigation(this.props.route, 'navigateTo', null) as NavigationAction;
-    if (navigateTo) {
-      this.props.navigation.dispatch(navigateTo);
-    }
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
@@ -100,10 +95,16 @@ export default class Home extends BaseScreen<Props, State> {
           }
           );
         } else {
-          navigation.navigate('TransactionInProgressNavigator');
+          navigation.navigate('TransactionInProgressNavigator', {
+            screen: 'TransactionsInProgress',
+            key: `${Utils.randomNumber()}`
+          });
         }
       } else {
-        navigation.navigate('TransactionInProgressNavigator');
+        navigation.navigate('TransactionInProgressNavigator', {
+          screen: 'TransactionsInProgress',
+          key: `${Utils.randomNumber()}`
+        });
       }
     } catch (error) {
       // Other common Error
@@ -141,7 +142,8 @@ export default class Home extends BaseScreen<Props, State> {
               <Content style={cardStyle.cards}>
                 {isComponentOrganizationActive && (
                   <Card style={cardStyle.card}>
-                    <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate('SitesNavigator')}>
+                    <CardItem style={cardStyle.cardItem} button={true}
+                      onPress={() => navigation.navigate('SitesNavigator', { screen: 'Sites', key: `${Utils.randomNumber()}` })}>
                       <Left>
                         <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='store-mall-directory' />
                         <Body>
@@ -153,7 +155,8 @@ export default class Home extends BaseScreen<Props, State> {
                   </Card>
                 )}
                 <Card style={cardStyle.card}>
-                  <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate('ChargingStationsNavigator')}>
+                  <CardItem style={cardStyle.cardItem} button={true}
+                    onPress={() => navigation.navigate('ChargingStationsNavigator', { screen: 'ChargingStations', key: `${Utils.randomNumber()}` })}>
                     <Left>
                       <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='ev-station' />
                       <Body>
@@ -175,7 +178,8 @@ export default class Home extends BaseScreen<Props, State> {
                   </CardItem>
                 </Card>
                 <Card style={cardStyle.card}>
-                  <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate('TransactionHistoryNavigator')}>
+                  <CardItem style={cardStyle.cardItem} button={true}
+                    onPress={() => navigation.navigate('TransactionHistoryNavigator', { screen: 'TransactionsHistory', key: `${Utils.randomNumber()}` })}>
                     <Left>
                       <Icon style={cardStyle.cardIcon} type='MaterialCommunityIcons' name='history' />
                       <Body>
@@ -197,7 +201,8 @@ export default class Home extends BaseScreen<Props, State> {
                   </CardItem>
                 </Card>
                 <Card style={cardStyle.card}>
-                  <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate('StatisticsNavigator')}>
+                  <CardItem style={cardStyle.cardItem} button={true}
+                    onPress={() => navigation.navigate('StatisticsNavigator', { key: `${Utils.randomNumber()}` })}>
                     <Left>
                       <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='assessment' />
                       <Body>
