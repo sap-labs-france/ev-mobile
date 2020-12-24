@@ -199,24 +199,15 @@ export default class NotificationManager {
         this.navigator.dispatch(
           StackActions.replace(
             'AppDrawerNavigator', {
+              screen: 'TransactionHistoryNavigator',
+              initial: false,
               params: {
-                screen: 'HomeNavigator',
+                screen: 'TransactionDetailsTabs',
+                key: `${Utils.randomNumber()}`,
                 params: {
-                  navigateTo: StackActions.push(
-                    'AppDrawerNavigator',
-                    {
-                      screen: 'TransactionHistoryNavigator',
-                      params: {
-                        screen: 'TransactionDetailsTabs',
-                        key: `${Utils.randomNumber()}`,
-                        params: {
-                          params: {
-                            transactionID: Utils.convertToInt(notification.data.transactionId)
-                          }
-                        }
-                      }
-                    }
-                  ),
+                  params: {
+                    transactionID: Utils.convertToInt(notification.data.transactionId)
+                  }
                 }
               }
             }
@@ -230,25 +221,16 @@ export default class NotificationManager {
         this.navigator.dispatch(
           StackActions.replace(
             'AppDrawerNavigator', {
+              screen: 'TransactionInProgressNavigator',
+              initial: false,
               params: {
-                screen: 'HomeNavigator',
+                screen: 'ChargingStationConnectorDetailsTabs',
+                key: `${Utils.randomNumber()}`,
                 params: {
-                  navigateTo: StackActions.push(
-                    'AppDrawerNavigator',
-                    {
-                      screen: 'TransactionInProgressNavigator',
-                      params: {
-                        screen: 'ChargingStationConnectorDetailsTabs',
-                        key: `${Utils.randomNumber()}`,
-                        params: {
-                          params: {
-                            chargingStationID: notification.data.chargeBoxID,
-                            connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
-                          }
-                        }
-                      }
-                    }
-                  ),
+                  params: {
+                    chargingStationID: notification.data.chargeBoxID,
+                    connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                  }
                 }
               }
             }
@@ -260,25 +242,16 @@ export default class NotificationManager {
         this.navigator.dispatch(
           StackActions.replace(
             'AppDrawerNavigator', {
+              screen: 'ChargingStationsNavigator',
+              initial: false,
               params: {
-                screen: 'HomeNavigator',
+                screen: 'ChargingStationConnectorDetailsTabs',
+                key: `${Utils.randomNumber()}`,
                 params: {
-                  navigateTo: StackActions.push(
-                    'AppDrawerNavigator',
-                    {
-                      screen: 'ChargingStationsNavigator',
-                      params: {
-                        screen: 'ChargingStationConnectorDetailsTabs',
-                        key: `${Utils.randomNumber()}`,
-                        params: {
-                          params: {
-                            chargingStationID: notification.data.chargeBoxID,
-                            connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
-                          }
-                        }
-                      }
-                    }
-                  ),
+                  params: {
+                    chargingStationID: notification.data.chargeBoxID,
+                    connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                  }
                 }
               }
             }
@@ -291,25 +264,16 @@ export default class NotificationManager {
         this.navigator.dispatch(
           StackActions.replace(
             'AppDrawerNavigator', {
+              screen: 'ChargingStationsNavigator',
+              initial: false,
               params: {
-                screen: 'HomeNavigator',
+                screen: 'ChargingStationConnectorDetailsTabs',
+                key: `${Utils.randomNumber()}`,
                 params: {
-                  navigateTo: StackActions.push(
-                    'AppDrawerNavigator',
-                    {
-                      screen: 'ChargingStationsNavigator',
-                      params: {
-                        screen: 'ChargingStationConnectorDetailsTabs',
-                        key: `${Utils.randomNumber()}`,
-                        params: {
-                          params: {
-                            chargingStationID: notification.data.chargeBoxID,
-                            connectorID: 1
-                          }
-                        }
-                      }
-                    }
-                  ),
+                  params: {
+                    chargingStationID: notification.data.chargeBoxID,
+                    connectorID: 1
+                  }
                 }
               }
             }
@@ -321,18 +285,9 @@ export default class NotificationManager {
         this.navigator.dispatch(
           StackActions.replace(
             'AppDrawerNavigator', {
-              params: {
-                screen: 'HomeNavigator',
-                params: {
-                  navigateTo: StackActions.push(
-                    'AppDrawerNavigator',
-                    {
-                      screen: 'ChargingStationsNavigator',
-                      key: `${Utils.randomNumber()}`,
-                    }
-                  ),
-                }
-              }
+              screen: 'ChargingStationsNavigator',
+              initial: false,
+              key: `${Utils.randomNumber()}`,
             }
           ),
         );
