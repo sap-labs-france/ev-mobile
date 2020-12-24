@@ -1,4 +1,4 @@
-import { DrawerActions } from '@react-navigation/native';
+import { DrawerActions, NavigationAction } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Text } from 'native-base';
 import React from 'react';
@@ -59,6 +59,11 @@ export default class Home extends BaseScreen<Props, State> {
       loading: false,
       isComponentOrganizationActive: securityProvider ? securityProvider.isComponentOrganizationActive() : false,
     });
+    // Redirect
+    const navigateTo = Utils.getParamFromNavigation(this.props.route, 'navigateTo', null) as NavigationAction;
+    if (navigateTo) {
+      this.props.navigation.dispatch(navigateTo);
+    }
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {

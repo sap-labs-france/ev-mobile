@@ -72,8 +72,8 @@ export default class ReportError extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     await super.componentDidMount();
-    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
-    const connectorID = Utils.getParamFromNavigation(this.props.route, 'connectorID', null);
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
+    const connectorID = Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string;
     const userMobile = this.centralServerProvider.getUserInfo().mobile;
     let chargingStation = null;
     let connector = null;
@@ -82,7 +82,7 @@ export default class ReportError extends BaseScreen<Props, State> {
     if (chargingStationID) {
       chargingStation = await this.getChargingStation(chargingStationID);
       if (chargingStation) {
-        connector = chargingStation ? chargingStation.connectors[parseInt(connectorID, 10) - 1] : null;
+        connector = chargingStation ? chargingStation.connectors[Utils.convertToInt(connectorID) - 1] : null;
         connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
         this.setState({ subject: chargingStationID + ' - ' + connectorLetter })
       }
@@ -101,7 +101,7 @@ export default class ReportError extends BaseScreen<Props, State> {
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
       // Get chargingStation
-      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: chargingStationID });
+      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID);
       return chargingStation;
     } catch (error) {
       // Other common Error

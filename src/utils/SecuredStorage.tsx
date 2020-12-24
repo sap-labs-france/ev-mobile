@@ -5,6 +5,7 @@ import UserToken from 'types/UserToken';
 import { SecuredStorageKey } from '../types/SecuredStorageKeys';
 import Tenant, { TenantConnection } from '../types/Tenant';
 import { UserCredentials } from '../types/User';
+import Utils from './Utils';
 
 // Generate a new Id for persisting the navigation each time the app is launched for the first time
 let navigationID: string = '' + new Date().getTime();
@@ -26,10 +27,21 @@ export default class SecuredStorage {
   }
 
   public static async getNavigationState(): Promise<NavigationState> {
-    const navigationState = await SecuredStorage._getJson(SecuredStorageKey.NAVIGATION_STATE);
+    const navigationState = await SecuredStorage._getJson(SecuredStorageKey.NAVIGATION_STATE) as { key: string; navigationState: NavigationState };
     // Check the key
     if (navigationState) {
       if (navigationState.key === navigationID) {
+        const routeNames: string[] = [];
+        // Clear dups
+        if (__DEV__ && !Utils.isEmptyArray(navigationState.navigationState?.routes)) {
+          navigationState.navigationState.routes = navigationState.navigationState?.routes.filter((route) => {
+            if (!routeNames.includes(route.name)) {
+              routeNames.push(route.name);
+              return true;
+            }
+            return false;
+          });
+        }
         return navigationState.navigationState;
       }
     }

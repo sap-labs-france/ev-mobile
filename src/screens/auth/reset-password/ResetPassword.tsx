@@ -63,8 +63,8 @@ export default class ResetPassword extends BaseScreen<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', ''),
-      hash: Utils.getParamFromNavigation(this.props.navigation, 'hash', null),
+      tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', '') as string,
+      hash: Utils.getParamFromNavigation(this.props.navigation, 'hash', null) as string,
       tenantName: '',
       password: '',
       repeatPassword: '',

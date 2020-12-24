@@ -70,7 +70,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     let siteImage = null;
     let userImage = null;
     // Get IDs
-    const transactionID = Utils.getParamFromNavigation(this.props.route, 'transactionID', null);
+    const transactionID = Utils.getParamFromNavigation(this.props.route, 'transactionID', null) as number;
     // Get Transaction
     const transaction = await this.getTransaction(transactionID);
     // Get the Site Image
@@ -97,10 +97,10 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     });
   }
 
-  public getTransaction = async (transactionID: string): Promise<Transaction> => {
+  public getTransaction = async (transactionID: number): Promise<Transaction> => {
     try {
       // Get Transaction
-      const transaction = await this.centralServerProvider.getTransaction({ ID: transactionID });
+      const transaction = await this.centralServerProvider.getTransaction(transactionID);
       return transaction;
     } catch (error) {
       switch (error.request.status) {
@@ -275,9 +275,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
             <View style={style.headerContent}>
               <View style={style.headerRowContainer}>
                 <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format('LLL') : ''}</Text>
-                <Text style={style.subHeaderName}>({transaction ? moment(new Date(transaction.stop.timestamp)).format('LLL') : ''})</Text>
-                {(transaction.userID !== transaction.stop.userID) &&
-                  <Text style={style.subSubHeaderName}>({I18n.t('details.stoppedBy')} {Utils.buildUserName(transaction.stop.user)})</Text>
+                <Text style={style.subHeaderName}>({transaction ? moment(new Date(transaction?.stop.timestamp)).format('LLL') : ''})</Text>
+                {(transaction?.userID !== transaction?.stop.userID) &&
+                  <Text style={style.subSubHeaderName}>({I18n.t('details.stoppedBy')} {Utils.buildUserName(transaction?.stop.user)})</Text>
                 }
               </View>
             </View>

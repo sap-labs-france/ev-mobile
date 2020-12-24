@@ -43,7 +43,7 @@ export default class Utils {
     // Check
     if (typeof value === 'string') {
       // Create Object
-      changedValue = parseInt(value);
+      changedValue = Utils.convertToInt(value);
     }
     return changedValue;
   }
@@ -504,7 +504,7 @@ export default class Utils {
     return new Promise((resolve) => setTimeout(resolve, millis));
   }
 
-  public static getParamFromNavigation(route: any, name: string, defaultValue: string): string {
+  public static getParamFromNavigation(route: any, name: string, defaultValue: string): string|number|boolean|object {
     const params: any = route.params?.params ? route.params.params : route.params
     // Has param object?
     if (!params) {

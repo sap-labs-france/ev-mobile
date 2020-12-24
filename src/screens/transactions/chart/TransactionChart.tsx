@@ -69,15 +69,15 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
-      const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
-      const connectorID = Utils.getParamFromNavigation(this.props.route, 'connectorID', null);
-      const transactionID = Utils.getParamFromNavigation(this.props.route, 'transactionID', null);
+      const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
+      const connectorID = Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string;
+      const transactionID = Utils.getParamFromNavigation(this.props.route, 'transactionID', null) as string;
       let transactionWithConsumptions = null;
       let chargingStation = null;
       let connector = null;
       // Get Transaction and chargingStation
       if (transactionID) {
-        transactionWithConsumptions = await this.getTransactionWithConsumptions(parseInt(transactionID, 10));
+        transactionWithConsumptions = await this.getTransactionWithConsumptions(Utils.convertToInt(transactionID));
         if (transactionWithConsumptions && transactionWithConsumptions.transaction) {
           chargingStation = await this.getChargingStation(transactionWithConsumptions.transaction.chargeBoxID);
           if (chargingStation) {
@@ -89,7 +89,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         // Get chargingStation
         chargingStation = await this.getChargingStation(chargingStationID);
         if (chargingStation) {
-          connector = chargingStation ? chargingStation.connectors[parseInt(connectorID, 10) - 1] : null;
+          connector = chargingStation ? chargingStation.connectors[Utils.convertToInt(connectorID) - 1] : null;
           // Refresh Consumption
           if (connector.currentTransactionID && (!this.state.transaction || !this.state.transaction.stop)) {
             transactionWithConsumptions = await this.getTransactionWithConsumptions(connector.currentTransactionID);
@@ -116,7 +116,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
       // Get chargingStation
-      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: chargingStationID });
+      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID);
       return chargingStation;
     } catch (error) {
       // Other common Error
