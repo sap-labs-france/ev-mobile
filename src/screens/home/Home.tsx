@@ -96,11 +96,13 @@ export default class Home extends BaseScreen<Props, State> {
           );
         } else {
           navigation.navigate('TransactionInProgressNavigator', {
+            screen: 'TransactionsInProgress',
             key: `${Utils.randomNumber()}`
           });
         }
       } else {
         navigation.navigate('TransactionInProgressNavigator', {
+          screen: 'TransactionsInProgress',
           key: `${Utils.randomNumber()}`
         });
       }
@@ -140,7 +142,7 @@ export default class Home extends BaseScreen<Props, State> {
               {isComponentOrganizationActive && (
                 <Card style={cardStyle.card}>
                   <CardItem style={cardStyle.cardItem} button={true}
-                    onPress={() => navigation.navigate('SitesNavigator', { key: `${Utils.randomNumber()}` })}>
+                    onPress={() => navigation.navigate('SitesNavigator', { screen: 'Sites', key: `${Utils.randomNumber()}` })}>
                     <Left>
                       <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='store-mall-directory' />
                       <Body>
@@ -153,7 +155,7 @@ export default class Home extends BaseScreen<Props, State> {
               )}
               <Card style={cardStyle.card}>
                 <CardItem style={cardStyle.cardItem} button={true}
-                  onPress={() => navigation.navigate('ChargingStationsNavigator', { key: `${Utils.randomNumber()}` })}>
+                  onPress={() => navigation.navigate('ChargingStationsNavigator', { screen: 'ChargingStations', key: `${Utils.randomNumber()}` })}>
                   <Left>
                     <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='ev-station' />
                     <Body>
@@ -176,7 +178,7 @@ export default class Home extends BaseScreen<Props, State> {
               </Card>
               <Card style={cardStyle.card}>
                 <CardItem style={cardStyle.cardItem} button={true}
-                  onPress={() => navigation.navigate('TransactionHistoryNavigator', { key: `${Utils.randomNumber()}` })}>
+                  onPress={() => navigation.navigate('TransactionHistoryNavigator', { screen: 'TransactionsHistory', key: `${Utils.randomNumber()}` })}>
                   <Left>
                     <Icon style={cardStyle.cardIcon} type='MaterialCommunityIcons' name='history' />
                     <Body>
