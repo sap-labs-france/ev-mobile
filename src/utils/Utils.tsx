@@ -1,4 +1,5 @@
 import { NavigationContainerRef } from '@react-navigation/native';
+import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import { NativeModules, Platform } from 'react-native';
@@ -627,8 +628,8 @@ export default class Utils {
           Message.showError(I18n.t('general.cannotConnectBackend'));
           break;
         // Not logged in?
-        case 401:
-        case 403:
+        case StatusCodes.UNAUTHORIZED:
+        case StatusCodes.FORBIDDEN:
           // Force auto login
           await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;

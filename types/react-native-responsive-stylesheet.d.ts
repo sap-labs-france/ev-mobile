@@ -1,9 +1,12 @@
 declare module 'react-native-responsive-stylesheet' {
-  export default class ResponsiveStyleSheet {
-    public static create(styles: Record<string, unknown>): void;
-    public static createSized(direction: 'min-width' | 'max-width' | 'min-height' | 'max-height' | 'min-direction' | 'max-direction', map: Record<string, unknown>): void;
-    public static createOriented(map: Record<string, unknown>): void;
-    public static validSizes(direction: 'min-width' | 'max-width' | 'min-height' | 'max-height' | 'min-direction' | 'max-direction', sizes: string[]): void;
-    public static getOrientation(): 'landscape' | 'portrait';
+  import { StyleSheet } from 'react-native';
+  export interface OrientedStylesSheets<T extends StyleSheet.NamedStyles<T> | StyleSheet.NamedStyles<any>> {
+    landscape?: T,
+    portrait?: T
+  }
+  export default class ResponsiveStylesSheet {
+    public static create<T extends StyleSheet.NamedStyles<T> | StyleSheet.NamedStyles<any>>(styles: T | StyleSheet.NamedStyles<T>): T;
+    public static createSized<T extends StyleSheet.NamedStyles<T> | StyleSheet.NamedStyles<any>>(direction: 'min-width' | 'max-width' | 'min-height' | 'max-height' | 'min-direction' | 'max-direction', map: Record<number, T>): T[];
+    public static createOriented<T extends StyleSheet.NamedStyles<T> | StyleSheet.NamedStyles<any>>(map: OrientedStylesSheets<T>): T;
   }
 }

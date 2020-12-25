@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleSheet, ViewStyle } from 'react-native';
 
 import CentralServerProvider from '../../../../provider/CentralServerProvider';
 import ProviderFactory from '../../../../provider/ProviderFactory';
@@ -60,7 +61,7 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
     });
   }
 
-  public setViewExpanded = (expanded: boolean, styleFrom?: Record<string, unknown>, styleTo?: Record<string, unknown>) => {
+  public setViewExpanded = (expanded: boolean, styleFrom?: ViewStyle, styleTo?: ViewStyle) => {
     if (expanded && styleFrom && styleTo) {
       this.expandableView.animate({ from: styleFrom, to: styleTo }, 250);
     } else {

@@ -34,6 +34,7 @@ export default class SecuredStorage {
         const routeNames: string[] = [];
         // Clear dups
         if (__DEV__ && !Utils.isEmptyArray(navigationState.navigationState?.routes)) {
+          // FIXME: 'routes' is a read-only property.
           navigationState.navigationState.routes = navigationState.navigationState?.routes.filter((route) => {
             if (!routeNames.includes(route.name)) {
               routeNames.push(route.name);

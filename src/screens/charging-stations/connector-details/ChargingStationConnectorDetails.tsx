@@ -72,9 +72,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       buttonDisabled: true,
       refreshing: false
     };
-    console.log('ChargingStationConnectorDetails ====================================');
-    console.log(this.props.route);
-    console.log('====================================');
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
