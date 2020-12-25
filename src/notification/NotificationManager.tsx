@@ -204,18 +204,18 @@ export default class NotificationManager {
         this.navigator.dispatch(
           StackActions.replace(
             'AppDrawerNavigator', {
-              screen: 'TransactionHistoryNavigator',
-              initial: false,
+            screen: 'TransactionHistoryNavigator',
+            initial: false,
+            params: {
+              screen: 'TransactionDetailsTabs',
+              key: `${Utils.randomNumber()}`,
               params: {
-                screen: 'TransactionDetailsTabs',
-                key: `${Utils.randomNumber()}`,
                 params: {
-                  params: {
-                    transactionID: Utils.convertToInt(notification.data.transactionId)
-                  }
+                  transactionID: Utils.convertToInt(notification.data.transactionId)
                 }
               }
             }
+          }
           ),
         );
         break;
@@ -226,19 +226,19 @@ export default class NotificationManager {
         this.navigator.dispatch(
           StackActions.replace(
             'AppDrawerNavigator', {
-              screen: 'TransactionInProgressNavigator',
-              initial: false,
+            screen: 'TransactionInProgressNavigator',
+            initial: false,
+            params: {
+              screen: 'ChargingStationConnectorDetailsTabs',
+              key: `${Utils.randomNumber()}`,
               params: {
-                screen: 'ChargingStationConnectorDetailsTabs',
-                key: `${Utils.randomNumber()}`,
                 params: {
-                  params: {
-                    chargingStationID: notification.data.chargeBoxID,
-                    connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
-                  }
+                  chargingStationID: notification.data.chargeBoxID,
+                  connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
                 }
               }
             }
+          }
           ),
         );
         break;
@@ -247,19 +247,19 @@ export default class NotificationManager {
         this.navigator.dispatch(
           StackActions.replace(
             'AppDrawerNavigator', {
-              screen: 'ChargingStationsNavigator',
-              initial: false,
+            screen: 'ChargingStationsNavigator',
+            initial: false,
+            params: {
+              screen: 'ChargingStationConnectorDetailsTabs',
+              key: `${Utils.randomNumber()}`,
               params: {
-                screen: 'ChargingStationConnectorDetailsTabs',
-                key: `${Utils.randomNumber()}`,
                 params: {
-                  params: {
-                    chargingStationID: notification.data.chargeBoxID,
-                    connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
-                  }
+                  chargingStationID: notification.data.chargeBoxID,
+                  connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
                 }
               }
             }
+          }
           ),
         );
         break;
@@ -269,19 +269,19 @@ export default class NotificationManager {
         this.navigator.dispatch(
           StackActions.replace(
             'AppDrawerNavigator', {
-              screen: 'ChargingStationsNavigator',
-              initial: false,
+            screen: 'ChargingStationsNavigator',
+            initial: false,
+            params: {
+              screen: 'ChargingStationConnectorDetailsTabs',
+              key: `${Utils.randomNumber()}`,
               params: {
-                screen: 'ChargingStationConnectorDetailsTabs',
-                key: `${Utils.randomNumber()}`,
                 params: {
-                  params: {
-                    chargingStationID: notification.data.chargeBoxID,
-                    connectorID: 1
-                  }
+                  chargingStationID: notification.data.chargeBoxID,
+                  connectorID: 1
                 }
               }
             }
+          }
           ),
         );
         break;
@@ -290,10 +290,10 @@ export default class NotificationManager {
         this.navigator.dispatch(
           StackActions.replace(
             'AppDrawerNavigator', {
-              screen: 'ChargingStationsNavigator',
-              initial: false,
-              key: `${Utils.randomNumber()}`,
-            }
+            screen: 'ChargingStationsNavigator',
+            initial: false,
+            key: `${Utils.randomNumber()}`,
+          }
           ),
         );
         break;
