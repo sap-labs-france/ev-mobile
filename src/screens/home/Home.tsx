@@ -86,25 +86,28 @@ export default class Home extends BaseScreen<Props, State> {
         // User has only one transaction?
         if (transactions.count === 1) {
           navigation.navigate(
-            'ChargingStationConnectorDetailsTabs', {
-            params: {
-              chargingStationID: transactions.result[0].chargeBoxID,
-              connectorID: transactions.result[0].connectorId
-            },
-            key: `${Utils.randomNumber()}`
-          }
+            'ChargingStationConnectorDetailsTabs',
+            {
+              params: {
+                chargingStationID: transactions.result[0].chargeBoxID,
+                connectorID: transactions.result[0].connectorId
+              },
+              key: `${Utils.randomNumber()}`
+            }
           );
         } else {
-          navigation.navigate('TransactionInProgressNavigator', {
+          navigation.navigate('TransactionInProgressNavigator',
+            {
+              screen: 'TransactionsInProgress',
+              key: `${Utils.randomNumber()}`
+            });
+        }
+      } else {
+        navigation.navigate('TransactionInProgressNavigator',
+          {
             screen: 'TransactionsInProgress',
             key: `${Utils.randomNumber()}`
           });
-        }
-      } else {
-        navigation.navigate('TransactionInProgressNavigator', {
-          screen: 'TransactionsInProgress',
-          key: `${Utils.randomNumber()}`
-        });
       }
     } catch (error) {
       // Other common Error

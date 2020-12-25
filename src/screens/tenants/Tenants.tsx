@@ -162,13 +162,14 @@ export default class Tenants extends BaseScreen<Props, State> {
                       <TouchableOpacity onPress={() => {
                         this.props.navigation.dispatch(
                           StackActions.replace(
-                            'AuthNavigator', {
-                            name: 'Login',
-                            params: {
-                              tenantSubDomain: item.subdomain,
-                            },
-                            key: `${Utils.randomNumber()}`,
-                          }
+                            'AuthNavigator',
+                            {
+                              name: 'Login',
+                              params: {
+                                tenantSubDomain: item.subdomain,
+                              },
+                              key: `${Utils.randomNumber()}`,
+                            }
                           ),
                         );
                       }}>

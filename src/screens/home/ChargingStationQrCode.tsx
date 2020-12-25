@@ -55,13 +55,14 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
     // Navigate to login
     this.props.navigation.dispatch(
       StackActions.replace(
-        'AuthNavigator', {
-        name: 'Login',
-        params: {
-          tenantSubDomain: tenant.subdomain,
-        },
-        key: `${Utils.randomNumber()}`,
-      }
+        'AuthNavigator',
+        {
+          name: 'Login',
+          params: {
+            tenantSubDomain: tenant.subdomain,
+          },
+          key: `${Utils.randomNumber()}`,
+        }
       ),
     );
   }

@@ -71,12 +71,13 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
                     onNavigate();
                   }
                   navigation.navigate(
-                    'ChargingStationDetailsTabs', {
-                    params: {
-                      chargingStationID: chargingStation.id,
-                    },
-                    key: `${Utils.randomNumber()}`
-                  }
+                    'ChargingStationDetailsTabs',
+                    {
+                      params: {
+                        chargingStationID: chargingStation.id,
+                      },
+                      key: `${Utils.randomNumber()}`
+                    }
                   );
                 }}>
                 <Icon style={[style.icon, style.iconRight, style.iconSettings]} type='MaterialIcons' name='tune' />

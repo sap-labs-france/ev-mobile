@@ -100,10 +100,11 @@ export default class SideBar extends BaseScreen<Props, State> {
     // Navigate to login
     this.props.navigation.dispatch(
       StackActions.replace(
-        'AuthNavigator', {
-        name: 'Login',
-        key: `${Utils.randomNumber()}`,
-      }
+        'AuthNavigator',
+        {
+          name: 'Login',
+          key: `${Utils.randomNumber()}`,
+        }
       ),
     );
   }

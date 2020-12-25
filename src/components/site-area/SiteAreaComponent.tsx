@@ -46,12 +46,13 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
           onPress={() => {
             if (siteArea.connectorStats.totalConnectors > 0) {
               navigation.navigate(
-                'ChargingStations', {
-                params: {
-                  siteAreaID: siteArea.id
-                },
-                key: `${Utils.randomNumber()}`
-              }
+                'ChargingStations',
+                {
+                  params: {
+                    siteAreaID: siteArea.id
+                  },
+                  key: `${Utils.randomNumber()}`
+                }
               );
             } else {
               Message.showError(I18n.t('siteAreas.noChargers'));

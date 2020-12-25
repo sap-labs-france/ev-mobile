@@ -278,12 +278,13 @@ export default class Login extends BaseScreen<Props, State> {
     // Tenant selected?
     if (this.state.tenantSubDomain) {
       navigation.navigate(
-        'SignUp', {
-        params: {
-          tenantSubDomain: this.state.tenantSubDomain,
-          email: this.state.email
+        'SignUp',
+        {
+          params: {
+            tenantSubDomain: this.state.tenantSubDomain,
+            email: this.state.email
+          }
         }
-      }
       );
     } else {
       Message.showError(I18n.t('authentication.mustSelectTenant'));
@@ -295,12 +296,13 @@ export default class Login extends BaseScreen<Props, State> {
     // Tenant selected?
     if (this.state.tenantSubDomain) {
       navigation.navigate(
-        'RetrievePassword', {
-        params: {
-          tenantSubDomain: this.state.tenantSubDomain,
-          email: this.state.email
-        }
-      });
+        'RetrievePassword',
+        {
+          params: {
+            tenantSubDomain: this.state.tenantSubDomain,
+            email: this.state.email
+          }
+        });
     } else {
       // Error
       Message.showError(I18n.t('authentication.mustSelectTenant'));
@@ -337,9 +339,10 @@ export default class Login extends BaseScreen<Props, State> {
               <Form style={formStyle.form}>
                 <Button block={true} style={formStyle.button} onPress={() =>
                   navigation.navigate(
-                    'Tenants', {
-                    key: `${Utils.randomNumber()}`
-                  }
+                    'Tenants',
+                    {
+                      key: `${Utils.randomNumber()}`
+                    }
                   )}
                 >
                   <Text style={formStyle.buttonText} uppercase={false}>{this.state.tenantName}</Text>

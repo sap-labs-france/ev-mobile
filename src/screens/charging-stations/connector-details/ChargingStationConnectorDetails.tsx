@@ -168,10 +168,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     if (transaction) {
       // Navigate
       navigation.navigate(
-        'TransactionDetailsTabs', {
-        params: { transactionID: transaction.id },
-        key: `${Utils.randomNumber()}`
-      }
+        'TransactionDetailsTabs',
+        {
+          params: { transactionID: transaction.id },
+          key: `${Utils.randomNumber()}`
+        }
       );
     } else {
       Alert.alert(I18n.t('chargers.noSession'), I18n.t('chargers.noSessionMessage'));
@@ -185,13 +186,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     // Get the last session
     // Navigate
     navigation.navigate(
-      'ReportError', {
-      params: {
-        chargingStationID,
-        connectorID,
-      },
-      key: `${Utils.randomNumber()}`
-    }
+      'ReportError',
+      {
+        params: {
+          chargingStationID,
+          connectorID,
+        },
+        key: `${Utils.randomNumber()}`
+      }
     );
   }
 
