@@ -10,8 +10,8 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 import BaseProps from 'types/BaseProps';
 
 import computeStyleSheet from './AppStyles';
-import I18nManager from './I18n/I18nManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
+import I18nManager from './I18n/I18nManager';
 import LocationManager from './location/LocationManager';
 import MigrationManager from './migration/MigrationManager';
 import NotificationManager from './notification/NotificationManager';
@@ -353,10 +353,10 @@ export default class App extends React.Component<Props, State> {
   public render() {
     return (
       this.state.isNavigationStateLoaded &&
-      <RootSiblingParent>
-        <StatusBar hidden={true} />
-        {createRootNavigator(this, this.state.navigationState)}
-      </RootSiblingParent>
+        <RootSiblingParent>
+          <StatusBar hidden={true} />
+          {createRootNavigator(this, this.state.navigationState)}
+        </RootSiblingParent>
     );
   }
 }
