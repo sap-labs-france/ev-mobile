@@ -178,7 +178,7 @@ export default class Utils {
     if (coordinates && coordinates.length === 2 && coordinates[0] && coordinates[1]) {
       // Check Longitude & Latitude
       if (new RegExp(Constants.REGEX_VALIDATION_LONGITUDE).test(coordinates[0].toString()) &&
-        new RegExp(Constants.REGEX_VALIDATION_LATITUDE).test(coordinates[1].toString())) {
+          new RegExp(Constants.REGEX_VALIDATION_LATITUDE).test(coordinates[1].toString())) {
         return true;
       }
     }

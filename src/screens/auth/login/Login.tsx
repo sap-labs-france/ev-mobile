@@ -158,9 +158,9 @@ export default class Login extends BaseScreen<Props, State> {
   public async checkAutoLogin(tenant: TenantConnection, email: string, password: string) {
     // Check if user can be logged
     if (!this.centralServerProvider.hasAutoLoginDisabled() &&
-      !Utils.isNullOrEmptyString(tenant?.subdomain) &&
-      !Utils.isNullOrEmptyString(email) &&
-      !Utils.isNullOrEmptyString(password)) {
+        !Utils.isNullOrEmptyString(tenant?.subdomain) &&
+        !Utils.isNullOrEmptyString(email) &&
+        !Utils.isNullOrEmptyString(password)) {
       try {
         // Check EULA
         const result = await this.centralServerProvider.checkEndUserLicenseAgreement(

@@ -106,7 +106,6 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
         break;
       // Default
       default:
-      case ChargePointStatus.UNAVAILABLE:
         status = 'unavailable';
         break;
     }

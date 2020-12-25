@@ -68,8 +68,8 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
       const tenantQrCode = JSON.parse(decodedQrCodeData) as TenantQRCode;
       // Check mandatory props
       if (!tenantQrCode.tenantSubDomain ||
-        !tenantQrCode.tenantName ||
-        !tenantQrCode.endpoint) {
+          !tenantQrCode.tenantName ||
+          !tenantQrCode.endpoint) {
         Message.showError(I18n.t('qrCode.invalidQRCode'));
         return;
       }
