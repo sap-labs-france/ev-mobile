@@ -126,7 +126,7 @@
     "react-native-svg": "^12.1.0",
     "react-native-swipe-list-view": "^3.2.5",
     "react-native-vector-icons": "^7.1.0",
-    "react-native-webview": "^10.10.2",
+    "react-native-webview": "^11.0.2",
     "rn-secure-storage": "^2.0.7",
     "tslib": "^2.0.3",
     "validate.js": "^0.13.1"
