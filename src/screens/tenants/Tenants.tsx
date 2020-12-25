@@ -50,11 +50,12 @@ export default class Tenants extends BaseScreen<Props, State> {
   public createTenant() {
     Alert.alert(
       I18n.t('authentication.createTenantTitle'),
-      I18n.t('authentication.createTenantText'), [
-      { text: I18n.t('qrCode.qrCode'), onPress: () => { this.setState({ createQrCodeTenantVisible: true }) } },
-      { text: I18n.t('general.manually'), onPress: () => { this.setState({ createTenantVisible: true }) } },
-      { text: I18n.t('general.close'), style: 'cancel' },
-    ]
+      I18n.t('authentication.createTenantText'),
+      [
+        { text: I18n.t('qrCode.qrCode'), onPress: () => { this.setState({ createQrCodeTenantVisible: true }) } },
+        { text: I18n.t('general.manually'), onPress: () => { this.setState({ createTenantVisible: true }) } },
+        { text: I18n.t('general.close'), style: 'cancel' },
+      ]
     )
   }
 
