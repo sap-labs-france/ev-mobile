@@ -3,7 +3,7 @@ import I18n from 'i18n-js';
 import moment from 'moment';
 import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
-import { Image, ScrollView } from 'react-native';
+import { Image, ImageStyle, ScrollView } from 'react-native';
 
 import noPhotoActive from '../../../../assets/no-photo.png';
 import noPhoto from '../../../../assets/no-photo.png';
@@ -271,7 +271,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
               rightActionIcon={'menu'}
             />
             {/* Site Image */}
-            <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
+            <Image style={style.backgroundImage as ImageStyle} source={siteImage ? { uri: siteImage } : noSite} />
             <View style={style.headerContent}>
               <View style={style.headerRowContainer}>
                 <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format('LLL') : ''}</Text>

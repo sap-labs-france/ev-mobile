@@ -1,5 +1,6 @@
 import { Switch, Text, View } from 'native-base';
 import React from 'react';
+import { StyleSheet } from 'react-native';
 
 import ProviderFactory from '../../../../../provider/ProviderFactory';
 import FilterControlComponent, { FilterControlComponentProps } from '../FilterControlComponent';
@@ -61,7 +62,7 @@ export default class MyUserSwitchFilterControlComponent extends FilterControlCom
     const { label, style } = this.props;
     const { switchValue } = this.state;
     return (
-      <View style={{ ...internalStyle.rowFilterContainer, ...style }}>
+      <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
         <Text style={internalStyle.textFilter}>{label}</Text>
         <Switch
           style={internalStyle.switchFilter}

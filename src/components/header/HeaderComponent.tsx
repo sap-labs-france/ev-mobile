@@ -1,6 +1,6 @@
 import { Body, Header, Icon, Left, Right, Subtitle, Title } from 'native-base';
 import React from 'react';
-import { BackHandler, Image } from 'react-native';
+import { BackHandler, Image, ImageStyle } from 'react-native';
 
 import defaultTenantLogo from '../../../assets/logo-low.png';
 import FilterModalContainerComponent from '../../components/search/filter/containers/FilterModalContainerComponent';
@@ -19,9 +19,9 @@ export interface Props extends BaseProps {
   rightActionIcon?: string;
   rightActionIconType?: IconType;
   filters?: any;
-  diplayMap?: boolean;
+  displayMap?: boolean;
   mapIsDisplayed?: boolean;
-  diplayMapAction?: () => void;
+  displayMapAction?: () => void;
   tenantLogo?: string;
 }
 
@@ -85,7 +85,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
     const { hasFilter } = this.state;
     const { title, subTitle, leftAction, leftActionIcon, leftActionIconType,
       rightAction, rightActionIcon, rightActionIconType, hideHomeAction, tenantLogo,
-      diplayMap, diplayMapAction, mapIsDisplayed, navigation } = this.props;
+      displayMap, displayMapAction, mapIsDisplayed, navigation } = this.props;
     return (
       <Header style={style.header}>
         {leftAction ?
@@ -98,7 +98,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
           </Left>
           :
           <Left style={style.leftHeader}>
-            <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader} />
+            <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader as ImageStyle} />
           </Left>
         }
         <Body style={style.bodyHeader}>
@@ -118,15 +118,15 @@ export default class HeaderComponent extends React.Component<Props, State> {
               }}
               style={style.iconRightHeader} />
           )}
-          {diplayMap && (
+          {displayMap && (
             <Icon type='MaterialCommunityIcons' name={mapIsDisplayed ? 'format-list-text' : 'earth'}
-              style={style.iconRightHeader} onPress={() => diplayMapAction()} />
+              style={style.iconRightHeader} onPress={() => displayMapAction()} />
           )}
           {rightAction ? (
             <Icon type={rightActionIconType} name={rightActionIcon}
               style={style.iconRightHeader} onPress={() => rightAction()} />
           ) : (
-              <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader} />
+              <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader as ImageStyle} />
             )}
         </Right>
       </Header>

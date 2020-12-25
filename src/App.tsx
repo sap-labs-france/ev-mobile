@@ -251,7 +251,7 @@ function createAppDrawerNavigator(props: BaseProps) {
   const appStyles = computeStyleSheet();
   return (
     <AppDrawer.Navigator initialRouteName='HomeNavigator' screenOptions={{ swipeEnabled: true, unmountOnBlur: true }}
-      drawerStyle={appStyles.sideMenu.width} drawerPosition='right' drawerContent={(props) => <Sidebar {...props} />}>
+      drawerStyle={appStyles.sideMenu} drawerPosition='right' drawerContent={(props) => <Sidebar {...props} />}>
       <AppDrawer.Screen name='HomeNavigator' component={createHomeNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name='SitesNavigator' component={createSitesNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name='ChargingStationsNavigator' component={createChargingStationsNavigator} initialParams={props?.route?.params?.params} />

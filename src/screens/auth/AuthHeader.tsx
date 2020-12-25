@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Text, View } from 'native-base';
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, ImageStyle } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 import defaultTenantLogo from '../../../assets/logo-low.png';
@@ -34,7 +34,7 @@ export default class AuthHeader extends BaseScreen<Props, State> {
     const { tenantName, tenantLogo } = this.props;
     return (
       <View style={style.header}>
-        <Image style={style.logo} source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} />
+        <Image style={style.logo as ImageStyle} source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} />
         <Text style={style.appText}>e-Mobility</Text>
         <Text style={style.appVersionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
         {tenantName ?

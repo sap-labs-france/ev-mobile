@@ -1,5 +1,6 @@
 import { DatePicker, Text, View } from 'native-base';
 import React from 'react';
+import { StyleSheet } from 'react-native';
 
 import I18nManager from '../../../../../I18n/I18nManager';
 import FilterControlComponent, { FilterControlComponentProps } from '../FilterControlComponent';
@@ -51,7 +52,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
     const internalStyle = computeStyleSheet();
     const { label, style, defaultDate, minimumDate, maximumDate, locale } = this.props;
     return (
-      <View style={{ ...internalStyle.rowFilterContainer, ...style }}>
+      <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
         <Text style={internalStyle.textFilter}>{label}</Text>
         <DatePicker
           defaultDate={defaultDate}

@@ -3,7 +3,7 @@ import I18n from 'i18n-js';
 import moment from 'moment';
 import { Container, Content, Header, Icon, ListItem, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import { Image, ImageStyle, TouchableOpacity } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 import defaultTenantLogo from '../../../assets/logo-low.png';
@@ -134,7 +134,7 @@ export default class SideBar extends BaseScreen<Props, State> {
       <Container style={style.container}>
         <Content style={style.drawerContent}>
           <Header style={style.header}>
-            <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logo} />
+            <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logo as ImageStyle} />
             <Text numberOfLines={1} style={style.tenantName}>
               {tenantName}
             </Text>
@@ -196,7 +196,7 @@ export default class SideBar extends BaseScreen<Props, State> {
               </View>
               <View style={style.columnThumbnail}>
                 <TouchableOpacity style={style.buttonThumbnail} onPress={() => navigation.navigate('Profile')}>
-                  <Thumbnail style={style.profilePic} source={userImage ? { uri: userImage } : noPhoto} />
+                  <Thumbnail style={style.profilePic as ImageStyle} source={userImage ? { uri: userImage } : noPhoto} />
                 </TouchableOpacity>
               </View>
             </View>

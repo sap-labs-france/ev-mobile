@@ -323,9 +323,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
           rightActionIcon={'menu'}
           filters={filters}
-          diplayMap={!Utils.isEmptyArray(this.state.chargingStations)}
+          displayMap={!Utils.isEmptyArray(this.state.chargingStations)}
           mapIsDisplayed={mapIsDisplayed}
-          diplayMapAction={() => this.toggleDisplayMap()}
+          displayMapAction={() => this.toggleDisplayMap()}
         />
         {loading ? (
           <Spinner style={style.spinner} color='grey' />

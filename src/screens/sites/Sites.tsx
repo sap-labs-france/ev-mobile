@@ -225,9 +225,9 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           leftActionIcon={'navigate-before'}
           rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
           rightActionIcon={'menu'}
-          diplayMap={!Utils.isEmptyArray(this.state.sites)}
+          displayMap={!Utils.isEmptyArray(this.state.sites)}
           mapIsDisplayed={mapIsDisplayed}
-          diplayMapAction={() => this.toggleDisplayMap()}
+          displayMapAction={() => this.toggleDisplayMap()}
         />
         {loading ? (
           <Spinner style={style.spinner} color='grey' />

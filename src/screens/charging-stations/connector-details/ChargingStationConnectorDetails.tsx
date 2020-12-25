@@ -2,7 +2,7 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
-import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
+import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 
 import { default as noPhoto, default as noPhotoActive } from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
@@ -688,7 +688,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
               rightActionIcon={'menu'}
             />
             {/* Site Image */}
-            <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
+            <Image style={style.backgroundImage as ImageStyle} source={siteImage ? { uri: siteImage } : noSite} />
             {/* Show Last Transaction */}
             {this.renderShowLastTransactionButton(style)}
             {/* Report Error */}

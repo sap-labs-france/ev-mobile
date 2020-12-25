@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 
 import CentralServerProvider from '../../../../provider/CentralServerProvider';
 import ProviderFactory from '../../../../provider/ProviderFactory';

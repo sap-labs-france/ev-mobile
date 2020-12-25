@@ -1,5 +1,6 @@
 import { Text, View } from 'native-base';
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { ToggleButton } from 'react-native-paper';
 
 import Chademo from '../../../../../../assets/connectorType/chademo.svg';
@@ -91,7 +92,7 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
     const internalStyle = computeStyleSheet();
     const { style, label } = this.props;
     return (
-      <View style={{ ...internalStyle.columnFilterContainer, ...style }}>
+      <View style={StyleSheet.compose(internalStyle.columnFilterContainer, style)}>
         <Text style={internalStyle.textFilter}>{label}</Text>
         <View style={internalStyle.connectorTypeFilterContainer}>
           {this.state.connectorTypes.map((connector) =>
