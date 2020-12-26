@@ -10,8 +10,8 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 import BaseProps from 'types/BaseProps';
 
 import computeStyleSheet from './AppStyles';
-import DeepLinkingManager from './deeplinking/DeepLinkingManager';
 import I18nManager from './I18n/I18nManager';
+import DeepLinkingManager from './deeplinking/DeepLinkingManager';
 import LocationManager from './location/LocationManager';
 import MigrationManager from './migration/MigrationManager';
 import NotificationManager from './notification/NotificationManager';

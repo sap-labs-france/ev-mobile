@@ -444,11 +444,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public renderConnectorStatus = (style: any) => {
-    const { connector, isAdmin, isSiteAdmin } = this.state;
+    const { chargingStation, connector, isAdmin, isSiteAdmin } = this.state;
     return (
       <View style={style.columnContainer}>
-        <ConnectorStatusComponent navigation={this.props.navigation} connector={connector}
-          text={connector ? Utils.translateConnectorStatus(connector.status) : ChargePointStatus.UNAVAILABLE} />
+        <ConnectorStatusComponent navigation={this.props.navigation} connector={connector} inactive={chargingStation.inactive} />
         {(isAdmin || isSiteAdmin) && connector && connector.status === ChargePointStatus.FAULTED && (
           <Text style={[style.subLabel, style.subLabelStatusError]}>({connector.errorCode})</Text>
         )}
