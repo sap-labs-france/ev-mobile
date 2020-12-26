@@ -397,8 +397,7 @@ export default (variables /* : * */ = variable) => {
         : 0,
     borderBottomColor: variables.toolbarDefaultBorder,
     height:
-      variables.platform === PLATFORM.IOS &&
-        variables.platformStyle === PLATFORM.MATERIAL
+      variables.platform === PLATFORM.IOS && variables.platformStyle === PLATFORM.MATERIAL
         ? variables.toolbarHeight + 10
         : variables.toolbarHeight,
     elevation: 3,
