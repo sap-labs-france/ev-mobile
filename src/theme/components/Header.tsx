@@ -214,8 +214,7 @@ export default (variables /* : * */ = variable) => {
           'NativeBase.Icon': {
             color: variables.toolbarBtnColor,
             fontSize:
-              platform === PLATFORM.IOS &&
-                variables.platformStyle !== PLATFORM.MATERIAL
+              platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL
                 ? variables.iconHeaderSize + 1
                 : variables.iconHeaderSize,
             marginTop: 0,
@@ -226,8 +225,7 @@ export default (variables /* : * */ = variable) => {
           'NativeBase.IconNB': {
             color: variables.toolbarBtnColor,
             fontSize:
-              platform === PLATFORM.IOS &&
-                variables.platformStyle !== PLATFORM.MATERIAL
+              platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL
                 ? variables.iconHeaderSize + 1
                 : variables.iconHeaderSize - 2,
             marginTop: 0,
@@ -356,8 +354,7 @@ export default (variables /* : * */ = variable) => {
             fontSize: platform === PLATFORM.IOS ? 17 : 14,
             top: platform === PLATFORM.IOS ? 1 : -1.5,
             paddingRight:
-              platform === PLATFORM.IOS &&
-                variables.platformStyle !== PLATFORM.MATERIAL
+              platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL
                 ? 0
                 : undefined
           },
