@@ -72,9 +72,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       buttonDisabled: true,
       refreshing: false
     };
-    console.log('ChargingStationConnectorDetails ====================================');
-    console.log(this.props.route);
-    console.log('====================================');
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
@@ -445,11 +442,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public renderConnectorStatus = (style: any) => {
-    const { connector, isAdmin, isSiteAdmin } = this.state;
+    const { chargingStation, connector, isAdmin, isSiteAdmin } = this.state;
     return (
       <View style={style.columnContainer}>
-        <ConnectorStatusComponent navigation={this.props.navigation} connector={connector}
-          text={connector ? Utils.translateConnectorStatus(connector.status) : ChargePointStatus.UNAVAILABLE} />
+        <ConnectorStatusComponent navigation={this.props.navigation} connector={connector} inactive={chargingStation.inactive} />
         {(isAdmin || isSiteAdmin) && connector && connector.status === ChargePointStatus.FAULTED && (
           <Text style={[style.subLabel, style.subLabelStatusError]}>({connector.errorCode})</Text>
         )}
