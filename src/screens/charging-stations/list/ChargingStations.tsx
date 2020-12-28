@@ -139,7 +139,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           SiteAreaID: this.siteAreaID,
           Issuer: true,
           ConnectorStatus: this.state.filters.connectorStatus
-        }, Constants.ONLY_RECORD_COUNT_PAGING);
+        }, Constants.ONLY_RECORD_COUNT);
         // Set
         chargingStations.count = chargingStationsNbrRecordsOnly.count;
       }
