@@ -81,7 +81,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   public async componentDidMount() {
     await super.componentDidMount();
     const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null, true) as boolean;
-    if (!startTransaction) {
+    if (startTransaction) {
       this.startTransactionConfirm();
     }
   }
@@ -487,7 +487,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       <View style={style.columnContainer}>
         <Icon type='FontAwesome' name='money' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>{price}</Text>
-        <Text style={[style.subLabel, style.info]}>({transaction.priceUnit})</Text>
+        <Text style={[style.subLabel, style.info]}>({transaction.stop ? transaction.stop.priceUnit : transaction.priceUnit})</Text>
       </View>
     ) : (
         <View style={style.columnContainer}>
