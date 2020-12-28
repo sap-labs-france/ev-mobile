@@ -5,6 +5,7 @@ import { PixelRatio, StatusBar } from 'react-native';
 import { PLATFORM } from './../variables/commonColor';
 import variable from './../variables/platform';
 
+// tslint:disable-next-line: cyclomatic-complexity
 export default (variables /* : * */ = variable) => {
   const platformStyle = variables.platformStyle;
   const platform = variables.platform;

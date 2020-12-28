@@ -283,7 +283,9 @@ export default class CentralServerProvider {
   public async logoff() {
     this.debugMethod('logoff');
     // Clear the token and tenant
-    await SecuredStorage.clearUserToken(this.tenant.subdomain);
+    if (this.tenant) {
+      await SecuredStorage.clearUserToken(this.tenant.subdomain);
+    }
     // Clear local data
     this.token = null;
     this.decodedToken = null;

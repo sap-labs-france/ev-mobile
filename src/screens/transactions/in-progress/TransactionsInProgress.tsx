@@ -94,7 +94,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
         const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactionsActive({
           UserID: this.state.filters.userID,
           Search: searchText
-        }, Constants.ONLY_RECORD_COUNT_PAGING);
+        }, Constants.ONLY_RECORD_COUNT);
         // Set
         transactions.count = transactionsNbrRecordsOnly.count;
       }

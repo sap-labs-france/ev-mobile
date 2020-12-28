@@ -111,7 +111,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
           StartDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime.toISOString() : null,
           EndDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime.toISOString() : null,
         },
-        Constants.ONLY_RECORD_COUNT_PAGING
+        Constants.ONLY_RECORD_COUNT
       );
       return transactions;
     } catch (error) {

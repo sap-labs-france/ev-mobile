@@ -1,6 +1,7 @@
 import { NavigationContainerRef } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
+import _ from 'lodash';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import { NativeModules, Platform } from 'react-native';
 import { showLocation } from 'react-native-map-link';
@@ -27,6 +28,10 @@ export default class Utils {
     } else {
       return Configuration.ENDPOINT_CLOUDS_PROD;
     }
+  }
+
+  public static objectHasProperty(object: any, key: string): boolean {
+    return _.has(object, key);
   }
 
   public static getCurrentCommonColor(): any {
@@ -505,18 +510,24 @@ export default class Utils {
     return new Promise((resolve) => setTimeout(resolve, millis));
   }
 
-  public static getParamFromNavigation(route: any, name: string, defaultValue: string): string|number|boolean|object {
+  public static getParamFromNavigation(route: any, name: string, defaultValue: string, removeValue = false): string | number | boolean | object {
     const params: any = route.params?.params ? route.params.params : route.params
     // Has param object?
     if (!params) {
       return defaultValue;
     }
-    // Has param
-    if (!params[name]) {
+    // Has no param
+    if (!Utils.objectHasProperty(params, name)) {
       return defaultValue;
     }
+    // Get
+    const value = params[name];
+    // Delete
+    if (removeValue) {
+      delete params[name];
+    }
     // Ok, return the value
-    return params[name];
+    return value;
   }
 
   public static getLanguageFromLocale(locale: string) {
@@ -618,7 +629,7 @@ export default class Utils {
       setTimeout(() => fctRefresh, 2000);
     };
     // tslint:disable-next-line: no-console
-    console.log(`HTTP request error`, error);
+    console.error(`HTTP request error`, error);
     // Check if HTTP?
     if (error.request) {
       // Status?

@@ -80,9 +80,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public async componentDidMount() {
     await super.componentDidMount();
-    const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null) as boolean;
+    const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null, true) as boolean;
     if (startTransaction) {
-      this.startTransaction();
+      this.startTransactionConfirm();
     }
   }
 
@@ -302,6 +302,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         Message.showError(I18n.t('details.noBadgeID'));
         return;
       }
+      // Check already charging
+      if (connector.status !== ChargePointStatus.AVAILABLE &&
+          connector.status !== ChargePointStatus.PREPARING) {
+        Message.showError(I18n.t('transactions.connectorNotAvailable'));
+        return;
+      }
       // Disable the button
       this.setState({ buttonDisabled: true });
       // Start the Transaction
@@ -447,7 +453,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { chargingStation, connector, isAdmin, isSiteAdmin } = this.state;
     return (
       <View style={style.columnContainer}>
-        <ConnectorStatusComponent navigation={this.props.navigation} connector={connector} inactive={chargingStation.inactive} />
+        <ConnectorStatusComponent navigation={this.props.navigation} connector={connector} inactive={chargingStation?.inactive} />
         {(isAdmin || isSiteAdmin) && connector && connector.status === ChargePointStatus.FAULTED && (
           <Text style={[style.subLabel, style.subLabelStatusError]}>({connector.errorCode})</Text>
         )}
@@ -483,7 +489,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       <View style={style.columnContainer}>
         <Icon type='FontAwesome' name='money' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>{price}</Text>
-        <Text style={[style.subLabel, style.info]}>({transaction.priceUnit})</Text>
+        <Text style={[style.subLabel, style.info]}>({transaction.stop ? transaction.stop.priceUnit : transaction.priceUnit})</Text>
       </View>
     ) : (
         <View style={style.columnContainer}>
