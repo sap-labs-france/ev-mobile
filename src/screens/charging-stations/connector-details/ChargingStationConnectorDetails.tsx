@@ -81,7 +81,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   public async componentDidMount() {
     await super.componentDidMount();
     const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null, true) as boolean;
-    if (startTransaction) {
+    if (!startTransaction) {
       this.startTransactionConfirm();
     }
   }
@@ -298,6 +298,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       const userInfo = this.centralServerProvider.getUserInfo();
       if (!userInfo.tagIDs || userInfo.tagIDs.length === 0) {
         Message.showError(I18n.t('details.noBadgeID'));
+        return;
+      }
+      // Check already charging
+      if (connector.status !== ChargePointStatus.AVAILABLE &&
+          connector.status !== ChargePointStatus.PREPARING) {
+        Message.showError(I18n.t('transactions.connectorNotAvailable'));
         return;
       }
       // Disable the button

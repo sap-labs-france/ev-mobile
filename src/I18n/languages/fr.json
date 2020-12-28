@@ -174,6 +174,7 @@
     "transactionStatsUnexpectedError": "Impossible de lire les statistiques",
     "transactionStartUnexpectedError": "Impossible de démarrer la session",
     "carNotConnectedError": "Votre voiture n'est pas connctée à la borne",
+    "connectorNotAvailable": "Le connecteur de cette borne n'est pas disponible",
     "transactionStopUnexpectedError": "Impossible de stopper la session"
   },
   "home": {
