@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer'
 
-import { NavigationContainerRef } from '@react-navigation/native';
+import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
 import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
@@ -174,21 +174,29 @@ export default class CentralServerProvider {
   }
 
   public async triggerAutoLogin(
-    navigation: NavigationContainerRef, fctRefresh: any) {
+    navigation: NavigationContainerRef, fctRefresh: () => void) {
     this.debugMethod('triggerAutoLogin');
     try {
       // Force log the user
       await this.login(this.email, this.password, true, this.tenant.subdomain);
-      // Ok: Refresh
+        // Ok: Refresh
       if (fctRefresh) {
         fctRefresh();
       }
     } catch (error) {
       // Ko: Logoff
+      this.setAutoLoginDisabled(true);
       await this.logoff();
       // Go to login page
       if (navigation) {
-        navigation.navigate('AuthNavigator', { key: `${Utils.randomNumber()}` });
+        navigation.dispatch(
+          StackActions.replace(
+            'AuthNavigator', {
+              name: 'Login',
+              key: `${Utils.randomNumber()}`,
+            }
+          ),
+        );
       }
     }
   }
