@@ -179,7 +179,7 @@ export default class CentralServerProvider {
     try {
       // Force log the user
       await this.login(this.email, this.password, true, this.tenant.subdomain);
-        // Ok: Refresh
+      // Ok: Refresh
       if (fctRefresh) {
         fctRefresh();
       }
@@ -191,7 +191,8 @@ export default class CentralServerProvider {
       if (navigation) {
         navigation.dispatch(
           StackActions.replace(
-            'AuthNavigator', {
+            'AuthNavigator',
+            {
               name: 'Login',
               key: `${Utils.randomNumber()}`,
             }
