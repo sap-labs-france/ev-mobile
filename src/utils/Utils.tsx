@@ -624,10 +624,6 @@ export default class Utils {
 
   public static async handleHttpUnexpectedError(centralServerProvider: CentralServerProvider,
     error: RequestError, defaultErrorMessage: string, navigation?: NavigationContainerRef, fctRefresh?: () => void) {
-    // Override
-    fctRefresh = () => {
-      setTimeout(() => fctRefresh, 2000);
-    };
     // tslint:disable-next-line: no-console
     console.error(`HTTP request error`, error);
     // Check if HTTP?
