@@ -4,11 +4,11 @@ import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl } from 'react-native';
 
-import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
 import TransactionInProgressComponent from '../../../components/transaction/in-progress/TransactionInProgressComponent';
+import I18nManager from '../../../I18n/I18nManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import { DataResult } from '../../../types/DataResult';
@@ -94,7 +94,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
         const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactionsActive({
           UserID: this.state.filters.userID,
           Search: searchText
-        }, Constants.ONLY_RECORD_COUNT_PAGING);
+        }, Constants.ONLY_RECORD_COUNT);
         // Set
         transactions.count = transactionsNbrRecordsOnly.count;
       }

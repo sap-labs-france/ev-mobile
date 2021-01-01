@@ -46,9 +46,9 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', ''),
+      tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', '') as string,
       tenantName: '',
-      email: Utils.getParamFromNavigation(this.props.route, 'email', ''),
+      email: Utils.getParamFromNavigation(this.props.route, 'email', '') as string,
       captchaSiteKey: null,
       captchaBaseUrl: null,
       captcha: null,

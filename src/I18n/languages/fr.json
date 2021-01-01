@@ -47,6 +47,9 @@
     "onlyMyTransactions": "Mes Sessions",
     "onlyAvailableChargers": "Bornes disponibles",
     "wrongTenant": "Vous êtes connecté sur la mauvaise organisation",
+    "tenantUnknown": "Organisation inconnue '{{tenantSubdomain}}'",
+    "mustLoggedToTenant": "Vous devez être connecté à l'organization '{{tenantName}}'",
+    "tenantMissing": "L'organisation est manquante",
     "tenantExists": "L'organisation existe déjà.",
     "createdOn": "Créé le",
     "createdBy": "Créé par",
@@ -171,6 +174,7 @@
     "transactionStatsUnexpectedError": "Impossible de lire les statistiques",
     "transactionStartUnexpectedError": "Impossible de démarrer la session",
     "carNotConnectedError": "Votre voiture n'est pas connctée à la borne",
+    "connectorNotAvailable": "Le connecteur de cette borne n'est pas disponible",
     "transactionStopUnexpectedError": "Impossible de stopper la session"
   },
   "home": {

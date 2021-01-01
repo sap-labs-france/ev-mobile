@@ -44,8 +44,12 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
 
   public async componentWillUnmount() {
     this.mounted = false;
-    this.componentFocusUnsubscribe();
-    this.componentBlurUnsubscribe();
+    if (this.componentFocusUnsubscribe) {
+      this.componentFocusUnsubscribe();
+    }
+    if (this.componentBlurUnsubscribe) {
+      this.componentBlurUnsubscribe();
+    }
   }
 
   public setHeaderComponent(headerComponent: HeaderComponent) {

@@ -77,7 +77,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public async componentDidMount() {
     // Get initial filters
     await this.loadInitialFilters();
-    this.siteAreaID = Utils.getParamFromNavigation(this.props.route, 'siteAreaID', null);
+    this.siteAreaID = Utils.getParamFromNavigation(this.props.route, 'siteAreaID', null) as string;
     await super.componentDidMount();
   }
 
@@ -132,14 +132,14 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
       }, { skip, limit });
       // Check
-      if (chargingStations.count === -1) {
+      if (chargingStations?.count === -1) {
         // Request nbr of records
         const chargingStationsNbrRecordsOnly = await this.centralServerProvider.getChargingStations({
           Search: searchText,
           SiteAreaID: this.siteAreaID,
           Issuer: true,
           ConnectorStatus: this.state.filters.connectorStatus
-        }, Constants.ONLY_RECORD_COUNT_PAGING);
+        }, Constants.ONLY_RECORD_COUNT);
         // Set
         chargingStations.count = chargingStationsNbrRecordsOnly.count;
       }
@@ -158,7 +158,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       // No: get next charging stations
       const chargingStations = await this.getChargingStations(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add charging stations
-      this.setState((prevState, props) => ({
+      this.setState((prevState) => ({
         chargingStations: chargingStations ? [...prevState.chargingStations, ...chargingStations.result] : prevState.chargingStations,
         skip: prevState.skip + Constants.PAGING_SIZE,
         refreshing: false
@@ -203,7 +203,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       // Get the provider
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Refresh region
-      this.refreshCurrentRegion(chargingStations.result);
+      if (chargingStations) {
+        this.refreshCurrentRegion(chargingStations.result);
+      }
       // Add ChargingStations
       this.setState(() => ({
         loading: false,

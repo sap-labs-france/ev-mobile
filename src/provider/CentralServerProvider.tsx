@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer'
 
-import { NavigationContainerRef } from '@react-navigation/native';
+import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
 import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
@@ -129,7 +129,15 @@ export default class CentralServerProvider {
       // Save them
       await SecuredStorage.saveTenants(tenants);
     }
-    return tenants;
+    return tenants.sort((tenant1: TenantConnection, tenant2: TenantConnection) => {
+      if (tenant1.name < tenant2.name) {
+        return -1;
+      }
+      if (tenant1.name > tenant2.name) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
   public getInitialTenants(): TenantConnection[] {
@@ -166,21 +174,29 @@ export default class CentralServerProvider {
   }
 
   public async triggerAutoLogin(
-    navigation: NavigationContainerRef, fctRefresh: any) {
+    navigation: NavigationContainerRef, fctRefresh: () => void) {
     this.debugMethod('triggerAutoLogin');
     try {
       // Force log the user
       await this.login(this.email, this.password, true, this.tenant.subdomain);
-      // Ok: Refresh
+        // Ok: Refresh
       if (fctRefresh) {
         fctRefresh();
       }
     } catch (error) {
       // Ko: Logoff
+      this.setAutoLoginDisabled(true);
       await this.logoff();
       // Go to login page
       if (navigation) {
-        navigation.navigate('AuthNavigator');
+        navigation.dispatch(
+          StackActions.replace(
+            'AuthNavigator', {
+              name: 'Login',
+              key: `${Utils.randomNumber()}`,
+            }
+          ),
+        );
       }
     }
   }
@@ -275,7 +291,9 @@ export default class CentralServerProvider {
   public async logoff() {
     this.debugMethod('logoff');
     // Clear the token and tenant
-    await SecuredStorage.clearUserToken(this.tenant.subdomain);
+    if (this.tenant) {
+      await SecuredStorage.clearUserToken(this.tenant.subdomain);
+    }
     // Clear local data
     this.token = null;
     this.decodedToken = null;
@@ -478,12 +496,14 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getChargingStation(params = {}): Promise<ChargingStation> {
+  public async getChargingStation(id: string): Promise<ChargingStation> {
     this.debugMethod('getChargingStation');
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CHARGING_STATION}`, {
       headers: this.buildSecuredHeaders(),
-      params,
+      params: {
+        ID: id
+      },
     });
     return result.data;
   }
@@ -610,12 +630,14 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getTransaction(params = {}): Promise<Transaction> {
+  public async getTransaction(id: number): Promise<Transaction> {
     this.debugMethod('getTransaction');
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTION}`, {
       headers: this.buildSecuredHeaders(),
-      params,
+      params: {
+        ID: id
+      }
     });
     return result.data;
   }

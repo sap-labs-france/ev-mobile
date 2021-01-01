@@ -73,9 +73,10 @@ export default class ChargingStationConnectorComponent extends React.Component<P
     });
   }
 
-  public renderFirstConnectorDetails = (connector: Connector) => (
-    <ConnectorStatusComponent navigation={this.props.navigation} connector={connector} text={Utils.translateConnectorStatus(connector.status)} />
-  );
+  public renderFirstConnectorDetails = (chargingStation: ChargingStation, connector: Connector) => (
+    <ConnectorStatusComponent navigation={this.props.navigation} connector={connector} inactive={chargingStation.inactive}/>
+
+  )
 
   private buildConnectorTypeSVG = (connectorType: ConnectorType, style: any): Element => {
     const commonColor = Utils.getCurrentCommonColor();
@@ -96,8 +97,8 @@ export default class ChargingStationConnectorComponent extends React.Component<P
     return <NoConnector width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor}/>;
   }
 
-  public renderSecondConnectorDetails = (connector: Connector, style: any) => {
-    return connector.currentTransactionID !== 0 ? (
+  public renderSecondConnectorDetails = (chargingStation: ChargingStation, connector: Connector, style: any) => {
+    return connector.currentTransactionID !== 0 && !chargingStation.inactive ? (
       <View style={style.connectorDetail}>
         <Animatable.View
           animation={!this.state.showBatteryLevel ? 'fadeIn' : 'fadeOut'}
@@ -138,8 +139,8 @@ export default class ChargingStationConnectorComponent extends React.Component<P
       );
   }
 
-  public renderThirdConnectorDetails = (connector: Connector, style: any) =>
-    connector.currentTransactionID !== 0 ? (
+  public renderThirdConnectorDetails = (chargingStation: ChargingStation, connector: Connector, style: any) =>
+    connector.currentTransactionID !== 0 && !chargingStation.inactive ? (
       <View style={style.connectorDetail}>
         <Text style={style.connectorValues}>{I18nManager.formatNumber(Math.round(connector.currentTotalConsumptionWh / 1000))}</Text>
         <Text style={style.label} numberOfLines={1}>
@@ -185,9 +186,9 @@ export default class ChargingStationConnectorComponent extends React.Component<P
         <Animatable.View animation={'flipInX'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
           <View style={style.connectorContainer}>
             <View style={style.connectorDetailContainer}>
-              {this.renderFirstConnectorDetails(connector)}
-              {this.renderSecondConnectorDetails(connector, style)}
-              {this.renderThirdConnectorDetails(connector, style)}
+              {this.renderFirstConnectorDetails(chargingStation, connector)}
+              {this.renderSecondConnectorDetails(chargingStation, connector, style)}
+              {this.renderThirdConnectorDetails(chargingStation, connector, style)}
               {!chargingStation.inactive &&
                 <Icon style={style.icon} type='MaterialIcons' name='navigate-next' />
               }

@@ -1,5 +1,6 @@
 import { NavigationContainerRef } from '@react-navigation/native';
 import I18n from 'i18n-js';
+import _ from 'lodash';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import { NativeModules, Platform } from 'react-native';
 import { showLocation } from 'react-native-map-link';
@@ -28,6 +29,10 @@ export default class Utils {
     }
   }
 
+  public static objectHasProperty(object: any, key: string): boolean {
+    return _.has(object, key);
+  }
+
   public static getCurrentCommonColor(): any {
     // Build the theme
     const themeManager = ThemeManager.getInstance();
@@ -43,7 +48,7 @@ export default class Utils {
     // Check
     if (typeof value === 'string') {
       // Create Object
-      changedValue = parseInt(value);
+      changedValue = Utils.convertToInt(value);
     }
     return changedValue;
   }
@@ -504,18 +509,24 @@ export default class Utils {
     return new Promise((resolve) => setTimeout(resolve, millis));
   }
 
-  public static getParamFromNavigation(route: any, name: string, defaultValue: string): string {
+  public static getParamFromNavigation(route: any, name: string, defaultValue: string, removeValue = false): string|number|boolean|object {
     const params: any = route.params?.params ? route.params.params : route.params
     // Has param object?
     if (!params) {
       return defaultValue;
     }
-    // Has param
-    if (!params[name]) {
+    // Has no param
+    if (!Utils.objectHasProperty(params, name)) {
       return defaultValue;
     }
+    // Get
+    const value = params[name];
+    // Delete
+    if (removeValue) {
+      delete params[name];
+    }
     // Ok, return the value
-    return params[name];
+    return value;
   }
 
   public static getLanguageFromLocale(locale: string) {
@@ -612,12 +623,8 @@ export default class Utils {
 
   public static async handleHttpUnexpectedError(centralServerProvider: CentralServerProvider,
     error: RequestError, defaultErrorMessage: string, navigation?: NavigationContainerRef, fctRefresh?: () => void) {
-    // Override
-    fctRefresh = () => {
-      setTimeout(() => fctRefresh, 2000);
-    };
     // tslint:disable-next-line: no-console
-    console.log(`HTTP request error`, error);
+    console.error(`HTTP request error`, error);
     // Check if HTTP?
     if (error.request) {
       // Status?

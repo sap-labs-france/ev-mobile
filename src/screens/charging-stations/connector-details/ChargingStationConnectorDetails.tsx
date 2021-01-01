@@ -6,9 +6,9 @@ import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'reac
 
 import { default as noPhoto, default as noPhotoActive } from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
-import I18nManager from '../../../I18n/I18nManager';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
+import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
@@ -80,9 +80,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public async componentDidMount() {
     await super.componentDidMount();
-    const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null);
+    const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null, true) as boolean;
     if (startTransaction) {
-      this.startTransaction();
+      this.startTransactionConfirm();
     }
   }
 
@@ -102,7 +102,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
       // Get Charger
-      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: chargingStationID });
+      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID);
       return chargingStation;
     } catch (error) {
       // Other common Error
@@ -115,7 +115,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   public getTransaction = async (transactionID: number): Promise<Transaction> => {
     try {
       // Get Transaction
-      const transaction = await this.centralServerProvider.getTransaction({ ID: transactionID });
+      const transaction = await this.centralServerProvider.getTransaction(transactionID);
       return transaction;
     } catch (error) {
       // Check if HTTP?
@@ -158,8 +158,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public showLastTransaction = async () => {
     const { navigation } = this.props;
-    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
-    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null), 10);
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
+    const connectorID: number = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
     // Get the last session
     const transaction = await this.getLastTransaction(chargingStationID, connectorID);
     if (transaction) {
@@ -177,8 +177,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public showReportError = async () => {
     const { navigation } = this.props;
-    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
-    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null), 10);
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
+    const connectorID: number = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
     // Get the last session
       // Navigate
     navigation.navigate(
@@ -197,8 +197,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     let siteImage = null;
     let userImage = null;
     let transaction = null;
-    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
-    const connectorID: number = parseInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null), 10);
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
+    const connectorID: number = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
     // Get Charger
     const chargingStation = await this.getChargingStation(chargingStationID);
     const connector = chargingStation ? Utils.getConnectorFromID(chargingStation, connectorID) : null;
@@ -298,6 +298,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       const userInfo = this.centralServerProvider.getUserInfo();
       if (!userInfo.tagIDs || userInfo.tagIDs.length === 0) {
         Message.showError(I18n.t('details.noBadgeID'));
+        return;
+      }
+      // Check already charging
+      if (connector.status !== ChargePointStatus.AVAILABLE &&
+          connector.status !== ChargePointStatus.PREPARING) {
+        Message.showError(I18n.t('transactions.connectorNotAvailable'));
         return;
       }
       // Disable the button
@@ -442,11 +448,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public renderConnectorStatus = (style: any) => {
-    const { connector, isAdmin, isSiteAdmin } = this.state;
+    const { chargingStation, connector, isAdmin, isSiteAdmin } = this.state;
     return (
       <View style={style.columnContainer}>
-        <ConnectorStatusComponent navigation={this.props.navigation} connector={connector}
-          text={connector ? Utils.translateConnectorStatus(connector.status) : ChargePointStatus.UNAVAILABLE} />
+        <ConnectorStatusComponent navigation={this.props.navigation} connector={connector} inactive={chargingStation?.inactive} />
         {(isAdmin || isSiteAdmin) && connector && connector.status === ChargePointStatus.FAULTED && (
           <Text style={[style.subLabel, style.subLabelStatusError]}>({connector.errorCode})</Text>
         )}
@@ -482,7 +487,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       <View style={style.columnContainer}>
         <Icon type='FontAwesome' name='money' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>{price}</Text>
-        <Text style={[style.subLabel, style.info]}>({transaction.priceUnit})</Text>
+        <Text style={[style.subLabel, style.info]}>({transaction.stop ? transaction.stop.priceUnit : transaction.priceUnit})</Text>
       </View>
     ) : (
         <View style={style.columnContainer}>
@@ -678,8 +683,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <Container style={style.container}>
             <HeaderComponent
               navigation={this.props.navigation}
-              title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
-              subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
+              title={chargingStation ? chargingStation.id : '-'}
+              subTitle={connectorLetter ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}
               rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}

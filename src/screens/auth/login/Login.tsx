@@ -1,3 +1,4 @@
+import { StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Button, CheckBox, Form, Icon, Item, Spinner, Text, View } from 'native-base';
 import React from 'react';
@@ -81,8 +82,8 @@ export default class Login extends BaseScreen<Props, State> {
       activeFab: false,
       eula: false,
       password: null,
-      email: Utils.getParamFromNavigation(this.props.route, 'email', ''),
-      tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', ''),
+      email: Utils.getParamFromNavigation(this.props.route, 'email', '') as string,
+      tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', '') as string,
       tenantName: I18n.t('authentication.tenant'),
       loading: false,
       initialLoading: true,
@@ -116,7 +117,7 @@ export default class Login extends BaseScreen<Props, State> {
       tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
       // Get user connection
       if (tenant) {
-        const userCredentials = await SecuredStorage.getUserCredentials(tenant.subdomain)
+        const userCredentials = await SecuredStorage.getUserCredentials(tenant.subdomain);
         if (userCredentials) {
           email = userCredentials.email;
           password = userCredentials.password;
@@ -240,7 +241,7 @@ export default class Login extends BaseScreen<Props, State> {
 
   public navigateToApp() {
     // Navigate to App
-    this.props.navigation.navigate('AppDrawerNavigator');
+    this.props.navigation.navigate('AppDrawerNavigator', { key: `${Utils.randomNumber()}` });
   }
 
   public setTenantWithIndex = async (buttonIndex: number) => {
