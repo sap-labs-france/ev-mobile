@@ -22,8 +22,8 @@ interface State {
   hash?: string;
   password?: string;
   repeatPassword?: string;
-  errorPassword?: object[];
-  errorRepeatPassword?: object[];
+  errorPassword?: Record<string, unknown>[];
+  errorRepeatPassword?: Record<string, unknown>[];
   loading?: boolean;
   hideRepeatPassword?: boolean;
   hidePassword?: boolean;

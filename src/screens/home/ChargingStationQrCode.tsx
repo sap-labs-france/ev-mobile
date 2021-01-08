@@ -20,7 +20,7 @@ import BaseScreen from '../base-screen/BaseScreen';
 export interface Props extends BaseProps {
   currentTenantSubDomain: string;
   tenants: TenantConnection[];
-  close: () => void;
+  close: () => boolean;
 }
 
 interface State {
@@ -49,13 +49,14 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
     super.setState(state, callback);
   }
 
-  public async logoffAndNavigateToLogin(tenant: TenantConnection) {
+  public async logoffAndNavigateToLogin(tenant: TenantConnection) {
     // Logoff
     await this.centralServerProvider.logoff();
     // Navigate to login
     this.props.navigation.dispatch(
       StackActions.replace(
-        'AuthNavigator', {
+        'AuthNavigator',
+        {
           name: 'Login',
           params: {
             tenantSubDomain: tenant.subdomain,
@@ -66,7 +67,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
     );
   }
 
-  public async saveTenantAndLogOff(chargingStationQRCode: ChargingStationQRCode, newTenantEndpointCloud: EndpointCloud) {
+  public async saveTenantAndLogOff(chargingStationQRCode: ChargingStationQRCode, newTenantEndpointCloud: EndpointCloud) {
     // Create new tenant
     const newTenant: TenantConnection = {
       subdomain: chargingStationQRCode.tenantSubDomain,
@@ -82,7 +83,6 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
   }
 
   public async checkQrCodeDataAndNavigate(qrCodeData: string): Promise<void> {
-    const { navigation } = this.props;
     try {
       // Decode
       const decodedQrCodeData = base64.decode(qrCodeData);
@@ -100,17 +100,17 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
       // Check Endpoint
       const endpointCloud = this.tenantEndpointClouds.find(
         (tenantEndpointCloud) => tenantEndpointCloud.id === chargingStationQrCode.endpoint);
-      if (!endpointCloud) {
+      if (!endpointCloud) {
         Message.showError(I18n.t('qrCode.unknownEndpoint', { endpoint: chargingStationQrCode.endpoint }));
         return;
       }
       // Check Tenant
       const tenant = await this.centralServerProvider.getTenant(chargingStationQrCode.tenantSubDomain);
       // Scanned Tenant is not the current one where the user is logged
-      if (chargingStationQrCode.tenantSubDomain !== this.props.currentTenantSubDomain) {
+      if (chargingStationQrCode.tenantSubDomain !== this.props.currentTenantSubDomain) {
         // User in wrong tenant!
         // Check if the tenant already exists
-        if (tenant) {
+        if (tenant) {
           // Tenant exists: Propose the user to switch to the existing one and log off
           this.setState({
             activateQrCode: false
@@ -131,7 +131,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
           }, () => {
             Alert.alert(
               I18n.t('qrCode.unknownOrganizationTitle'),
-              I18n.t('qrCode.unknownOrganizationMessage', {tenantName: chargingStationQrCode.tenantName}),
+              I18n.t('qrCode.unknownOrganizationMessage', { tenantName: chargingStationQrCode.tenantName }),
               [
                 { text: I18n.t('general.no'), style: 'cancel', onPress: () => this.setState({ activateQrCode: true }) },
                 { text: I18n.t('general.yes'), onPress: () => this.saveTenantAndLogOff(chargingStationQrCode, endpointCloud) }
@@ -150,7 +150,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
         const foundConnector = chargingStation.connectors.find(
           (connector: Connector) => connector.connectorId === chargingStationQrCode.connectorID);
         // Check if the Connector exist
-        if (!foundConnector) {
+        if (!foundConnector) {
           Message.showError(I18n.t('qrCode.unknownConnector', { connectorID: chargingStationQrCode.connectorID }));
           return;
         }
@@ -193,19 +193,19 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('qrCode.scanChargingStationQrCodeTitle')}
-          leftAction={() => this.close()}
+          leftAction={() => { this.close(); return true }}
           leftActionIcon={'navigate-before'}
           hideHomeAction={true}
-          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
           rightActionIcon={'menu'}
         />
         {activateQrCode &&
           <QRCodeScanner
-            cameraProps={{captureAudio: false}}
+            cameraProps={{ captureAudio: false }}
             showMarker={true}
             reactivate={true}
             reactivateTimeout={1000}
-            onRead={(qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)}/>
+            onRead={(qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)} />
         }
       </Container>
     );

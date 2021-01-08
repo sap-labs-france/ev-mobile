@@ -2,20 +2,20 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
-import { FlatList, Platform, RefreshControl } from 'react-native';
+import { FlatList, Platform, RefreshControl, ScrollView } from 'react-native';
 import { Location } from 'react-native-location';
 import MapView, { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
+import I18nManager from '../../../I18n/I18nManager';
+import computeModalStyle from '../../../ModalStyles';
 import ChargingStationComponent from '../../../components/charging-station/ChargingStationComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
-import I18nManager from '../../../I18n/I18nManager';
 import LocationManager from '../../../location/LocationManager';
-import computeModalStyle from '../../../ModalStyles';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
@@ -274,35 +274,35 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     return 80 + 95 * 4;
   }
 
-  public buildModal(isAdmin: boolean, navigation: any, chargingStationSelected: ChargingStation, modalStyle: any) {
-    // Uncomment when you will have more than 4 connector.
-    // if (Platform.OS === 'ios') {
+  public buildModal(isAdmin: boolean, navigation: any, chargingStationSelected: ChargingStation, modalStyle: any) {
+    // ChargeX setup have more than 4 connectors.
+    if (Platform.OS === 'ios') {
       return (
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
           <Modalize
-              alwaysOpen={ this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors) }
-              modalStyle={modalStyle.modalContainer}>
+            alwaysOpen={this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors)}
+            modalStyle={modalStyle.modalContainer}>
             <ChargingStationComponent chargingStation={chargingStationSelected} isAdmin={isAdmin}
               onNavigate={() => this.setState({ visible: false })}
               navigation={navigation}
-              isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID: '')}/>
+              isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID : '')} />
           </Modalize>
         </Modal>
       )
-    // } else {
-    //   return (
-    //     <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
-    //       <View style={[modalStyle.modalContainer, { height: this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors) }]}>
-    //         <ScrollView>
-    //           <ChargingStationComponent chargingStation={chargingStationSelected} isAdmin={isAdmin}
-    //           onNavigate={() => this.setState({ visible: false })}
-    //           navigation={navigation}
-    //           isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID: '')}/>
-    //         </ScrollView>
-    //       </View>
-    //     </Modal>
-    //   )
-    // }
+    } else {
+      return (
+        <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
+          <View style={[modalStyle.modalContainer, { height: this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors) }]}>
+            <ScrollView>
+              <ChargingStationComponent chargingStation={chargingStationSelected} isAdmin={isAdmin}
+                onNavigate={() => this.setState({ visible: false })}
+                navigation={navigation}
+                isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID : '')} />
+            </ScrollView>
+          </View>
+        </Modal>
+      )
+    }
   }
 
   public render() {
@@ -322,66 +322,66 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('chargers.chargers')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
-          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
           rightActionIcon={'menu'}
           filters={filters}
-          diplayMap={!Utils.isEmptyArray(this.state.chargingStations)}
+          displayMap={!Utils.isEmptyArray(this.state.chargingStations)}
           mapIsDisplayed={mapIsDisplayed}
-          diplayMapAction={() => this.toggleDisplayMap()}
+          displayMapAction={() => this.toggleDisplayMap()}
         />
         {loading ? (
           <Spinner style={style.spinner} color='grey' />
         ) : (
-          <View style={style.content}>
-            <SimpleSearchComponent
-              onChange={(searchText) => this.search(searchText)}
-              navigation={navigation}
-            />
-            <ChargingStationsFilters
-              initialFilters={initialFilters} locationEnabled={this.locationEnabled}
-              onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
-              ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
-            />
-            {mapIsDisplayed ?
-              <View style={style.map}>
-                <MapView
-                  style={style.map}
-                  region={this.currentRegion}
-                  onRegionChange={this.onMapRegionChange}
-                >
-                  {this.state.chargingStations.map((chargingStation) => {
-                    if (Utils.containsGPSCoordinates(chargingStation.coordinates)) {
-                      return (
-                        <Marker
-                          key={chargingStation.id}
-                          coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
-                          title={chargingStation.id}
-                          onPress={() => this.showMapChargingStationDetail(chargingStation)}
-                        />
-                      );
-                    }
-                    return undefined;
-                  })}
-                </MapView>
-                {chargingStationSelected && this.buildModal(isAdmin, navigation, chargingStationSelected, modalStyle)}
-              </View>
-            :
-              <FlatList
-                data={chargingStations}
-                renderItem={({ item }) =>
-                  <ChargingStationComponent chargingStation={item} isAdmin={isAdmin} navigation={navigation}
-                    isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteArea ? item.siteArea.siteID : '')} />}
-                keyExtractor={(item) => item.id}
-                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-                onEndReached={this.onEndScroll}
-                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargers')} />}
+            <View style={style.content}>
+              <SimpleSearchComponent
+                onChange={(searchText) => this.search(searchText)}
+                navigation={navigation}
               />
-            }
-          </View>
-        )
-      }
+              <ChargingStationsFilters
+                initialFilters={initialFilters} locationEnabled={this.locationEnabled}
+                onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
+                ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
+              />
+              {mapIsDisplayed ?
+                <View style={style.map}>
+                  <MapView
+                    style={style.map}
+                    region={this.currentRegion}
+                    onRegionChange={this.onMapRegionChange}
+                  >
+                    {this.state.chargingStations.map((chargingStation) => {
+                      if (Utils.containsGPSCoordinates(chargingStation.coordinates)) {
+                        return (
+                          <Marker
+                            key={chargingStation.id}
+                            coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
+                            title={chargingStation.id}
+                            onPress={() => this.showMapChargingStationDetail(chargingStation)}
+                          />
+                        );
+                      }
+                      return undefined;
+                    })}
+                  </MapView>
+                  {chargingStationSelected && this.buildModal(isAdmin, navigation, chargingStationSelected, modalStyle)}
+                </View>
+                :
+                <FlatList
+                  data={chargingStations}
+                  renderItem={({ item }) =>
+                    <ChargingStationComponent chargingStation={item} isAdmin={isAdmin} navigation={navigation}
+                      isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteArea ? item.siteArea.siteID : '')} />}
+                  keyExtractor={(item) => item.id}
+                  refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+                  onEndReached={this.onEndScroll}
+                  onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+                  ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+                  ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargers')} />}
+                />
+              }
+            </View>
+          )
+        }
       </Container>
     );
   }

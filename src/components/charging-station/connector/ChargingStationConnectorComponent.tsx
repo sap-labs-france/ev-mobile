@@ -32,7 +32,7 @@ interface State {
 export default class ChargingStationConnectorComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
-  private timerAnimation: number;
+  private timerAnimation: NodeJS.Timeout;
 
   constructor(props: Props) {
     super(props);
@@ -74,7 +74,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
   }
 
   public renderFirstConnectorDetails = (chargingStation: ChargingStation, connector: Connector) => (
-    <ConnectorStatusComponent navigation={this.props.navigation} connector={connector} inactive={chargingStation.inactive}/>
+    <ConnectorStatusComponent navigation={this.props.navigation} connector={connector} inactive={chargingStation.inactive} />
 
   )
 
@@ -82,19 +82,19 @@ export default class ChargingStationConnectorComponent extends React.Component<P
     const commonColor = Utils.getCurrentCommonColor();
     switch (connectorType) {
       case ConnectorType.CHADEMO:
-        return <Chademo width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>;
+        return <Chademo width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30' />;
       case ConnectorType.TYPE_2:
-        return <Type2 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>;
+        return <Type2 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10' />;
       case ConnectorType.COMBO_CCS:
-        return <ComboCCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>;
+        return <ComboCCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30' />;
       case ConnectorType.DOMESTIC:
-        return <Domestic width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor}/>;
+        return <Domestic width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor} />;
       case ConnectorType.TYPE_1:
-        return <Type1 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>;
+        return <Type1 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10' />;
       case ConnectorType.TYPE_1_CCS:
-        return <Type1CCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>;
+        return <Type1CCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10' />;
     }
-    return <NoConnector width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor}/>;
+    return <NoConnector width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor} />;
   }
 
   public renderSecondConnectorDetails = (chargingStation: ChargingStation, connector: Connector, style: any) => {
@@ -174,7 +174,8 @@ export default class ChargingStationConnectorComponent extends React.Component<P
             onNavigate();
           }
           navigation.navigate(
-            'ChargingStationConnectorDetailsTabs', {
+            'ChargingStationConnectorDetailsTabs',
+            {
               params: {
                 chargingStationID: chargingStation.id,
                 connectorID: connector.connectorId

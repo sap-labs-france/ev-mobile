@@ -4,8 +4,8 @@ import React from 'react';
 import { Alert, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 
-import Configuration from '../../config/Configuration';
 import computeModalStyleSheet from '../../ModalStyles';
+import Configuration from '../../config/Configuration';
 import BaseProps from '../../types/BaseProps';
 import { EndpointCloud, TenantConnection } from '../../types/Tenant';
 import SecuredStorage from '../../utils/SecuredStorage';
@@ -20,8 +20,8 @@ interface State {
   newTenantSubDomain?: string;
   newTenantName?: string;
   newTenantEndpointCloud?: EndpointCloud;
-  errorNewTenantName?: object[];
-  errorNewTenantSubDomain?: object[];
+  errorNewTenantName?: Record<string, unknown>[];
+  errorNewTenantSubDomain?: Record<string, unknown>[];
 }
 
 export default class CreateTenantDialog extends React.Component<Props, State> {

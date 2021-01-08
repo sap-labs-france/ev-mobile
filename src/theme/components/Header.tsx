@@ -5,6 +5,7 @@ import { PixelRatio, StatusBar } from 'react-native';
 import { PLATFORM } from './../variables/commonColor';
 import variable from './../variables/platform';
 
+// tslint:disable-next-line: cyclomatic-complexity
 export default (variables /* : * */ = variable) => {
   const platformStyle = variables.platformStyle;
   const platform = variables.platform;
@@ -214,8 +215,7 @@ export default (variables /* : * */ = variable) => {
           'NativeBase.Icon': {
             color: variables.toolbarBtnColor,
             fontSize:
-              platform === PLATFORM.IOS &&
-              variables.platformStyle !== PLATFORM.MATERIAL
+              platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL
                 ? variables.iconHeaderSize + 1
                 : variables.iconHeaderSize,
             marginTop: 0,
@@ -226,8 +226,7 @@ export default (variables /* : * */ = variable) => {
           'NativeBase.IconNB': {
             color: variables.toolbarBtnColor,
             fontSize:
-              platform === PLATFORM.IOS &&
-              variables.platformStyle !== PLATFORM.MATERIAL
+              platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL
                 ? variables.iconHeaderSize + 1
                 : variables.iconHeaderSize - 2,
             marginTop: 0,
@@ -356,8 +355,7 @@ export default (variables /* : * */ = variable) => {
             fontSize: platform === PLATFORM.IOS ? 17 : 14,
             top: platform === PLATFORM.IOS ? 1 : -1.5,
             paddingRight:
-              platform === PLATFORM.IOS &&
-              variables.platformStyle !== PLATFORM.MATERIAL
+              platform === PLATFORM.IOS && variables.platformStyle !== PLATFORM.MATERIAL
                 ? 0
                 : undefined
           },
@@ -400,8 +398,7 @@ export default (variables /* : * */ = variable) => {
         : 0,
     borderBottomColor: variables.toolbarDefaultBorder,
     height:
-      variables.platform === PLATFORM.IOS &&
-      variables.platformStyle === PLATFORM.MATERIAL
+      variables.platform === PLATFORM.IOS && variables.platformStyle === PLATFORM.MATERIAL
         ? variables.toolbarHeight + 10
         : variables.toolbarHeight,
     elevation: 3,

@@ -1,4 +1,5 @@
 import { NavigationContainerRef } from '@react-navigation/native';
+import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import _ from 'lodash';
 import CentralServerProvider from 'provider/CentralServerProvider';
@@ -8,10 +9,10 @@ import Address from 'types/Address';
 import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
 
-import Configuration from '../config/Configuration';
-import { buildCommonColor } from '../custom-theme/customCommonColor';
-import ThemeManager from '../custom-theme/ThemeManager';
 import I18nManager from '../I18n/I18nManager';
+import Configuration from '../config/Configuration';
+import ThemeManager from '../custom-theme/ThemeManager';
+import { buildCommonColor } from '../custom-theme/customCommonColor';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
 import { EndpointCloud } from '../types/Tenant';
@@ -171,7 +172,7 @@ export default class Utils {
   }
 
   public static containsAddressGPSCoordinates(address: Address): boolean {
-      // Check if GPS are available
+    // Check if GPS are available
     if (address && Utils.containsGPSCoordinates(address.coordinates)) {
       return true;
     }
@@ -224,7 +225,7 @@ export default class Utils {
             // Charging Station
             if (connectorId === 0 && chargePointOfCS.power) {
               totalPower += chargePointOfCS.power;
-              // Connector
+            // Connector
             } else if (chargePointOfCS.connectorIDs.includes(connectorId) && chargePointOfCS.power) {
               if (chargePointOfCS.cannotChargeInParallel || chargePointOfCS.sharePowerToAllConnectors) {
                 // Check Connector ID
@@ -351,7 +352,7 @@ export default class Utils {
             // Charging Station
             if (connectorId === 0 && chargePointOfCS.currentType) {
               return chargePointOfCS.currentType;
-              // Connector
+            // Connector
             } else if (chargePointOfCS.connectorIDs.includes(connectorId) && chargePointOfCS.currentType) {
               // Check Connector ID
               const connector = Utils.getConnectorFromID(chargingStation, connectorId);
@@ -478,7 +479,7 @@ export default class Utils {
     return Math.round(value * roundPower) / roundPower;
   }
 
-  public static countJsonProps(jsonDoc: object): number {
+  public static countJsonProps(jsonDoc: Record<string, unknown>): number {
     let count = 0;
     if (!jsonDoc) {
       return count;
@@ -492,7 +493,7 @@ export default class Utils {
   }
 
   public static cloneObject<T>(object: T): T {
-    return JSON.parse(JSON.stringify(object));
+    return JSON.parse(JSON.stringify(object)) as T;
   }
 
   public static isNullOrEmptyString(value: string): boolean {
@@ -509,7 +510,7 @@ export default class Utils {
     return new Promise((resolve) => setTimeout(resolve, millis));
   }
 
-  public static getParamFromNavigation(route: any, name: string, defaultValue: string, removeValue = false): string|number|boolean|object {
+  public static getParamFromNavigation(route: any, name: string, defaultValue: string, removeValue = false): string | number | boolean | object {
     const params: any = route.params?.params ? route.params.params : route.params
     // Has param object?
     if (!params) {
@@ -594,7 +595,7 @@ export default class Utils {
     return result;
   }
 
-  public static computeInactivityStyle(inactivityStatus: InactivityStatus): object {
+  public static computeInactivityStyle(inactivityStatus: InactivityStatus): Record<string, unknown> {
     const commonColor = Utils.getCurrentCommonColor();
     switch (inactivityStatus) {
       case InactivityStatus.INFO:
@@ -634,8 +635,8 @@ export default class Utils {
           Message.showError(I18n.t('general.cannotConnectBackend'));
           break;
         // Not logged in?
-        case 401:
-        case 403:
+        case StatusCodes.UNAUTHORIZED:
+        case StatusCodes.FORBIDDEN:
           // Force auto login
           await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;
@@ -671,7 +672,7 @@ export default class Utils {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
-  public static validateInput(screen: React.Component, constraints: object): boolean {
+  public static validateInput(screen: React.Component, constraints: Record<string, unknown>): boolean {
     let formValid = true;
     const errorState: any = {};
     // Reset all errors

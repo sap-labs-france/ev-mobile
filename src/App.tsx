@@ -10,8 +10,8 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 import BaseProps from 'types/BaseProps';
 
 import computeStyleSheet from './AppStyles';
-import DeepLinkingManager from './deeplinking/DeepLinkingManager';
 import I18nManager from './I18n/I18nManager';
+import DeepLinkingManager from './deeplinking/DeepLinkingManager';
 import LocationManager from './location/LocationManager';
 import MigrationManager from './migration/MigrationManager';
 import NotificationManager from './notification/NotificationManager';
@@ -66,13 +66,13 @@ const AppDrawer = createDrawerNavigator();
 const createTabBarIcon = (props: { focused: boolean; tintColor?: string; horizontal?: boolean; },
   type: 'AntDesign' | 'Entypo' | 'EvilIcons' | 'Feather' | 'FontAwesome' | 'FontAwesome5' | 'Foundation' | 'Ionicons' | 'MaterialCommunityIcons' | 'MaterialIcons' | 'Octicons' | 'SimpleLineIcons' | 'Zocial',
   name: string): React.ReactNode => {
-    const commonColor = Utils.getCurrentCommonColor();
-    return <Icon style={{
-      color: props.focused ? commonColor.topTabBarActiveTextColor : commonColor.topTabBarTextColor,
-      paddingBottom: 5,
-      fontSize: 23
-    }} type={type} name={name} />
-  };
+  const commonColor = Utils.getCurrentCommonColor();
+  return <Icon style={{
+    color: props.focused ? commonColor.topTabBarActiveTextColor : commonColor.topTabBarTextColor,
+    paddingBottom: 5,
+    fontSize: 23
+  }} type={type} name={name} />
+};
 
 // save last page with state
 const persistNavigationState = async (navigationState: NavigationState) => {
@@ -85,38 +85,38 @@ const persistNavigationState = async (navigationState: NavigationState) => {
 };
 
 function createAuthNavigator(props: BaseProps) {
-  return(
+  return (
     <AuthStack.Navigator initialRouteName={'Login'} headerMode='none'>
-      <AuthStack.Screen name='Login' component={Login} initialParams={props?.route?.params?.params}/>
-      <AuthStack.Screen name='Tenants' component={Tenants} initialParams={props?.route?.params?.params}/>
-      <AuthStack.Screen name='Eula' component={Eula} initialParams={props?.route?.params?.params}/>
-      <AuthStack.Screen name='SignUp' component={SignUp} initialParams={props?.route?.params?.params}/>
-      <AuthStack.Screen name='ResetPassword' component={ResetPassword} initialParams={props?.route?.params?.params}/>
-      <AuthStack.Screen name='RetrievePassword' component={RetrievePassword} initialParams={props?.route?.params?.params}/>
+      <AuthStack.Screen name='Login' component={Login} initialParams={props?.route?.params?.params} />
+      <AuthStack.Screen name='Tenants' component={Tenants} initialParams={props?.route?.params?.params} />
+      <AuthStack.Screen name='Eula' component={Eula} initialParams={props?.route?.params?.params} />
+      <AuthStack.Screen name='SignUp' component={SignUp} initialParams={props?.route?.params?.params} />
+      <AuthStack.Screen name='ResetPassword' component={ResetPassword} initialParams={props?.route?.params?.params} />
+      <AuthStack.Screen name='RetrievePassword' component={RetrievePassword} initialParams={props?.route?.params?.params} />
     </AuthStack.Navigator>
   );
 }
 
 function createHomeNavigator(props: BaseProps) {
-  return(
+  return (
     <HomeStack.Navigator initialRouteName='Home' headerMode='none'>
-      <HomeStack.Screen name='Home' component={Home} initialParams={props?.route?.params?.params}/>
+      <HomeStack.Screen name='Home' component={Home} initialParams={props?.route?.params?.params} />
     </HomeStack.Navigator>
   );
 }
 
 function createStatsNavigator(props: BaseProps) {
-  return(
+  return (
     <StatsStack.Navigator initialRouteName='Statistics' headerMode='none'>
-      <StatsStack.Screen name='Statistics' component={Statistics} initialParams={props?.route?.params?.params}/>
+      <StatsStack.Screen name='Statistics' component={Statistics} initialParams={props?.route?.params?.params} />
     </StatsStack.Navigator>
   );
 }
 
 function createReportErrorNavigator(props: BaseProps) {
-  return(
+  return (
     <ReportErrorStack.Navigator initialRouteName='ReportError' headerMode='none'>
-      <ReportErrorStack.Screen name='ReportError' component={ReportError} initialParams={props?.route?.params?.params}/>
+      <ReportErrorStack.Screen name='ReportError' component={ReportError} initialParams={props?.route?.params?.params} />
     </ReportErrorStack.Navigator>
   );
 }
@@ -136,30 +136,30 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
   const barStyle = getTabStyle();
   return (
     <ChargingStationDetailsTabs.Navigator initialRouteName='ChargingStationActions' activeColor={commonColor.topTabBarActiveTextColor}
-      inactiveColor={commonColor.topTabBarTextColor} barStyle={barStyle}  labeled={true} backBehavior='none'>
+      inactiveColor={commonColor.topTabBarTextColor} barStyle={barStyle} labeled={true} backBehavior='none'>
       <ChargingStationDetailsTabs.Screen name='ChargingStationActions' component={ChargingStationActions}
         initialParams={props?.route?.params?.params}
         options={{
           title: I18n.t('chargers.actions'),
           tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'build')
-        }}/>
+        }} />
       <ChargingStationDetailsTabs.Screen name='ChargingStationOcppParameters' component={ChargingStationOcppParameters}
         initialParams={props?.route?.params?.params}
         options={{
           title: I18n.t('chargers.ocpp'),
           tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'format-list-bulleted')
-        }}/>
+        }} />
       <ChargingStationDetailsTabs.Screen name='ChargingStationProperties' component={ChargingStationProperties}
         initialParams={props?.route?.params?.params}
         options={{
           title: I18n.t('chargers.properties'),
           tabBarIcon: (props) => createTabBarIcon(props, 'MaterialIcons', 'info')
-        }}/>
+        }} />
     </ChargingStationDetailsTabs.Navigator>
   );
 }
 
-function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
+function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
   const commonColor = Utils.getCurrentCommonColor();
   const barStyle = getTabStyle();
   return (
@@ -170,13 +170,13 @@ function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
         options={{
           title: I18n.t('sites.chargePoint'),
           tabBarIcon: (props) => createTabBarIcon(props, 'FontAwesome', 'bolt')
-        }}/>
+        }} />
       <ChargingStationConnectorDetailsTabs.Screen name='TransactionChart' component={TransactionChart}
         initialParams={props?.route?.params?.params}
         options={{
           title: I18n.t('details.graph'),
           tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
-        }}/>
+        }} />
     </ChargingStationConnectorDetailsTabs.Navigator>
   );
 }
@@ -192,27 +192,27 @@ function createTransactionDetailsTabsNavigator(props: BaseProps) {
         options={{
           title: I18n.t('transactions.transaction'),
           tabBarIcon: (props) => createTabBarIcon(props, 'FontAwesome', 'bolt')
-        }}/>
+        }} />
       <TransactionDetailsTabs.Screen name='TransactionChart' component={TransactionChart}
         initialParams={props?.route?.params?.params}
         options={{
           title: I18n.t('details.graph'),
           tabBarIcon: (props) => createTabBarIcon(props, 'AntDesign', 'linechart')
-        }}/>
+        }} />
     </TransactionDetailsTabs.Navigator>
   );
 }
 
 function createSitesNavigator(props: BaseProps) {
-  return(
+  return (
     <SitesStack.Navigator initialRouteName='Sites' headerMode='none'>
-      <SitesStack.Screen name='Sites' component={Sites} initialParams={props?.route?.params?.params}/>
-      <SitesStack.Screen name='SiteAreas' component={SiteAreas} initialParams={props?.route?.params?.params}/>
-      <SitesStack.Screen name='ChargingStations' component={ChargingStations} initialParams={props?.route?.params?.params}/>
-      <SitesStack.Screen name='ChargingStationDetailsTabs' component={createChargingStationDetailsTabsNavigator} initialParams={props?.route?.params?.params}/>
-      <SitesStack.Screen name='ChargingStationConnectorDetailsTabs' component={createChargingStationConnectorDetailsTabsNavigator} initialParams={props?.route?.params?.params}/>
-      <SitesStack.Screen name='TransactionDetailsTabs' component={createTransactionDetailsTabsNavigator} initialParams={props?.route?.params?.params}/>
-      <SitesStack.Screen name='ReportError' component={ReportError} initialParams={props?.route?.params?.params}/>
+      <SitesStack.Screen name='Sites' component={Sites} initialParams={props?.route?.params?.params} />
+      <SitesStack.Screen name='SiteAreas' component={SiteAreas} initialParams={props?.route?.params?.params} />
+      <SitesStack.Screen name='ChargingStations' component={ChargingStations} initialParams={props?.route?.params?.params} />
+      <SitesStack.Screen name='ChargingStationDetailsTabs' component={createChargingStationDetailsTabsNavigator} initialParams={props?.route?.params?.params} />
+      <SitesStack.Screen name='ChargingStationConnectorDetailsTabs' component={createChargingStationConnectorDetailsTabsNavigator} initialParams={props?.route?.params?.params} />
+      <SitesStack.Screen name='TransactionDetailsTabs' component={createTransactionDetailsTabsNavigator} initialParams={props?.route?.params?.params} />
+      <SitesStack.Screen name='ReportError' component={ReportError} initialParams={props?.route?.params?.params} />
     </SitesStack.Navigator>
   );
 }
@@ -220,11 +220,11 @@ function createSitesNavigator(props: BaseProps) {
 function createChargingStationsNavigator(props: BaseProps) {
   return (
     <ChargingStationsStack.Navigator initialRouteName='ChargingStations' headerMode='none'>
-      <ChargingStationsStack.Screen name='ChargingStations' component={ChargingStations} initialParams={props?.route?.params?.params}/>
-      <ChargingStationsStack.Screen name='ChargingStationDetailsTabs' component={createChargingStationDetailsTabsNavigator} initialParams={props?.route?.params?.params}/>
-      <ChargingStationsStack.Screen name='ChargingStationConnectorDetailsTabs' component={createChargingStationConnectorDetailsTabsNavigator} initialParams={props?.route?.params?.params}/>
-      <ChargingStationsStack.Screen name='TransactionDetailsTabs' component={createTransactionDetailsTabsNavigator} initialParams={props?.route?.params?.params}/>
-      <ChargingStationsStack.Screen name='ReportError' component={ReportError} initialParams={props?.route?.params?.params}/>
+      <ChargingStationsStack.Screen name='ChargingStations' component={ChargingStations} initialParams={props?.route?.params?.params} />
+      <ChargingStationsStack.Screen name='ChargingStationDetailsTabs' component={createChargingStationDetailsTabsNavigator} initialParams={props?.route?.params?.params} />
+      <ChargingStationsStack.Screen name='ChargingStationConnectorDetailsTabs' component={createChargingStationConnectorDetailsTabsNavigator} initialParams={props?.route?.params?.params} />
+      <ChargingStationsStack.Screen name='TransactionDetailsTabs' component={createTransactionDetailsTabsNavigator} initialParams={props?.route?.params?.params} />
+      <ChargingStationsStack.Screen name='ReportError' component={ReportError} initialParams={props?.route?.params?.params} />
     </ChargingStationsStack.Navigator>
   );
 }
@@ -232,8 +232,8 @@ function createChargingStationsNavigator(props: BaseProps) {
 function createTransactionHistoryNavigator(props: BaseProps) {
   return (
     <TransactionHistoryStack.Navigator initialRouteName='TransactionsHistory' headerMode='none'>
-      <TransactionHistoryStack.Screen name='TransactionsHistory' component={TransactionsHistory} initialParams={props?.route?.params?.params}/>
-      <TransactionHistoryStack.Screen name='TransactionDetailsTabs' component={createTransactionDetailsTabsNavigator} initialParams={props?.route?.params?.params}/>
+      <TransactionHistoryStack.Screen name='TransactionsHistory' component={TransactionsHistory} initialParams={props?.route?.params?.params} />
+      <TransactionHistoryStack.Screen name='TransactionDetailsTabs' component={createTransactionDetailsTabsNavigator} initialParams={props?.route?.params?.params} />
     </TransactionHistoryStack.Navigator>
   );
 }
@@ -241,9 +241,9 @@ function createTransactionHistoryNavigator(props: BaseProps) {
 function createTransactionInProgressNavigator(props: BaseProps) {
   return (
     <TransactionInProgressStack.Navigator initialRouteName='TransactionsInProgress' headerMode='none'>
-      <TransactionInProgressStack.Screen name='TransactionsInProgress' component={TransactionsInProgress} initialParams={props?.route?.params?.params}/>
-      <TransactionInProgressStack.Screen name='ChargingStationDetailsTabs' component={createChargingStationDetailsTabsNavigator} initialParams={props?.route?.params?.params}/>
-      <TransactionInProgressStack.Screen name='ChargingStationConnectorDetailsTabs' component={createChargingStationConnectorDetailsTabsNavigator} initialParams={props?.route?.params?.params}/>
+      <TransactionInProgressStack.Screen name='TransactionsInProgress' component={TransactionsInProgress} initialParams={props?.route?.params?.params} />
+      <TransactionInProgressStack.Screen name='ChargingStationDetailsTabs' component={createChargingStationDetailsTabsNavigator} initialParams={props?.route?.params?.params} />
+      <TransactionInProgressStack.Screen name='ChargingStationConnectorDetailsTabs' component={createChargingStationConnectorDetailsTabsNavigator} initialParams={props?.route?.params?.params} />
     </TransactionInProgressStack.Navigator>
   );
 }
@@ -252,14 +252,14 @@ function createAppDrawerNavigator(props: BaseProps) {
   const appStyles = computeStyleSheet();
   return (
     <AppDrawer.Navigator initialRouteName='HomeNavigator' screenOptions={{ swipeEnabled: true, unmountOnBlur: true }}
-      drawerStyle={appStyles.sideMenu.width} drawerPosition='right' drawerContent={(props) => <Sidebar {...props}/>}>
-      <AppDrawer.Screen name='HomeNavigator' component={createHomeNavigator} initialParams={props?.route?.params?.params}/>
-      <AppDrawer.Screen name='SitesNavigator' component={createSitesNavigator} initialParams={props?.route?.params?.params}/>
-      <AppDrawer.Screen name='ChargingStationsNavigator' component={createChargingStationsNavigator} initialParams={props?.route?.params?.params}/>
-      <AppDrawer.Screen name='StatisticsNavigator' component={createStatsNavigator} initialParams={props?.route?.params?.params}/>
-      <AppDrawer.Screen name='ReportErrorNavigator' component={createReportErrorNavigator} initialParams={props?.route?.params?.params}/>
-      <AppDrawer.Screen name='TransactionHistoryNavigator' component={createTransactionHistoryNavigator} initialParams={props?.route?.params?.params}/>
-      <AppDrawer.Screen name='TransactionInProgressNavigator' component={createTransactionInProgressNavigator} initialParams={props?.route?.params?.params}/>
+      drawerStyle={appStyles.sideMenu} drawerPosition='right' drawerContent={(props) => <Sidebar {...props} />}>
+      <AppDrawer.Screen name='HomeNavigator' component={createHomeNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name='SitesNavigator' component={createSitesNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name='ChargingStationsNavigator' component={createChargingStationsNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name='StatisticsNavigator' component={createStatsNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name='ReportErrorNavigator' component={createReportErrorNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name='TransactionHistoryNavigator' component={createTransactionHistoryNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name='TransactionInProgressNavigator' component={createTransactionInProgressNavigator} initialParams={props?.route?.params?.params} />
     </AppDrawer.Navigator>
   );
 }
@@ -267,15 +267,15 @@ function createAppDrawerNavigator(props: BaseProps) {
 function createRootNavigator(app: App, initialState: InitialState) {
   return (
     <NavigationContainer ref={(navigatorRef) => {
-        if (navigatorRef) {
-          app.notificationManager?.initialize(navigatorRef);
-          app.deepLinkingManager?.initialize(navigatorRef, app.centralServerProvider);
-        }
-      }}
+      if (navigatorRef) {
+        app.notificationManager?.initialize(navigatorRef);
+        app.deepLinkingManager?.initialize(navigatorRef, app.centralServerProvider);
+      }
+    }}
       onStateChange={persistNavigationState} initialState={initialState}>
       <rootStack.Navigator initialRouteName='AuthNavigator' headerMode='none'>
-        <rootStack.Screen name='AuthNavigator' component={createAuthNavigator}/>
-        <rootStack.Screen name='AppDrawerNavigator' component={createAppDrawerNavigator}/>
+        <rootStack.Screen name='AuthNavigator' component={createAuthNavigator} />
+        <rootStack.Screen name='AppDrawerNavigator' component={createAppDrawerNavigator} />
       </rootStack.Navigator>
     </NavigationContainer>
   );

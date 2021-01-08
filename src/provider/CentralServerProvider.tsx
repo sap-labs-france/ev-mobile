@@ -6,8 +6,8 @@ import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { KeyValue } from 'types/Global';
 
-import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
+import Configuration from '../config/Configuration';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
@@ -16,7 +16,7 @@ import PagingParams from '../types/PagingParams';
 import { ServerAction } from '../types/Server';
 import Site from '../types/Site';
 import SiteArea from '../types/SiteArea';
-import { EndpointCloud, TenantConnection } from '../types/Tenant';
+import { TenantConnection } from '../types/Tenant';
 import Transaction from '../types/Transaction';
 import UserToken from '../types/UserToken';
 import AxiosFactory from '../utils/AxiosFactory';
@@ -179,7 +179,7 @@ export default class CentralServerProvider {
     try {
       // Force log the user
       await this.login(this.email, this.password, true, this.tenant.subdomain);
-        // Ok: Refresh
+      // Ok: Refresh
       if (fctRefresh) {
         fctRefresh();
       }
@@ -191,7 +191,8 @@ export default class CentralServerProvider {
       if (navigation) {
         navigation.dispatch(
           StackActions.replace(
-            'AuthNavigator', {
+            'AuthNavigator',
+            {
               name: 'Login',
               key: `${Utils.randomNumber()}`,
             }
@@ -781,13 +782,13 @@ export default class CentralServerProvider {
     }
   }
 
-  private buildHeaders(): object {
+  private buildHeaders(): Record<string, string> {
     return {
       'Content-Type': 'application/json',
     };
   }
 
-  private buildSecuredHeaders(): object {
+  private buildSecuredHeaders(): Record<string, string> {
     return {
       'Authorization': 'Bearer ' + this.token,
       'Content-Type': 'application/json',

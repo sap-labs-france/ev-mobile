@@ -69,7 +69,7 @@
     "statistics": "Statistiken",
     "reportError": "Fehler Melden"
   },
-	"authentication": {
+  "authentication": {
     "tenantTitle": "Organization",
     "mandatoryTenantSubDomain": "Die Subdomain der Organisation ist notwendig",
     "mandatoryTenantName": "Der Name der Organisation ist notwendig",
@@ -109,8 +109,8 @@
     "acceptEula": "Ich bestätige den ",
     "eula": "Endnutzer-Lizenzvertrag",
     "login": "Anmelden",
-		"registerSuccess": "Konto erfolgreich erstellt, überprüfen Sie bitte Ihre E-Mails!",
-		"resetPasswordSuccess": "Passwort erfolgreich aktualisiert!",
+    "registerSuccess": "Konto erfolgreich erstellt, überprüfen Sie bitte Ihre E-Mails!",
+    "resetPasswordSuccess": "Passwort erfolgreich aktualisiert!",
     "resetPasswordHashNotValid": "Anfrage nicht mehr gültig, fordern Sie erneut ein neues Passwort an",
     "resetPasswordUnexpectedError": "Passwort kann nicht zurückgesetzt werden",
     "verifyAccountTokenNotValid": "Anfrage ist nicht länger gültig, fordern sie eine neue Accountverifizierung an",
@@ -129,7 +129,7 @@
     "tenantSubdomain": "Subdomain",
     "tenantName": "Name",
     "tenantEndpoint": "Cloud",
-    "phone" : "Telefonnummer",
+    "phone": "Telefonnummer",
     "mandatoryPhone": "Die Telefonnummer ist notwendig",
     "mandatoryErrorTitle": "Der Titel ist notwendig",
     "mandatoryErrorSubject": "Das Thema ist notwendig",

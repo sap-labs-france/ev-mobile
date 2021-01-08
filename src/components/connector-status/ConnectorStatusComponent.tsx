@@ -55,7 +55,7 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     super.setState(state, callback);
   }
 
-  public getConnectorStyles(style: any) {
+  public getConnectorStyles(style: any): { container: Record<string, unknown>[], value: Record<string, unknown>[], description: Record<string, unknown>[] } {
     const { status, connector, inactive } = this.props;
     // Get the type
     let connectorType;
@@ -115,10 +115,9 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
         break;
       // Default
       default:
-        case ChargePointStatus.UNAVAILABLE:
-          styleStatusName = 'unavailable';
-          break;
-      }
+        styleStatusName = 'unavailable';
+        break;
+    }
     if (styleStatusName) {
       connectorStyles.container.push(style[styleStatusName + 'Connector']);
       connectorStyles.value.push(style[styleStatusName + 'ConnectorValue']);
@@ -157,7 +156,7 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     if (!connector) {
       return Utils.translateConnectorStatus(ChargePointStatus.UNAVAILABLE);
     }
-    // Connecetor's status text
+    // Connector's status text
     return Utils.translateConnectorStatus(connector.status);
   }
 
@@ -190,17 +189,17 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
             </View>
           </View>
         ) : (
-          <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
-            <View style={connectorStyles.container}>
-              <Animated.Text
-                style={
-                  isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
-                }>
-                {value}
-              </Animated.Text>
-            </View>
-          </Animated.View>
-        )}
+            <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
+              <View style={connectorStyles.container}>
+                <Animated.Text
+                  style={
+                    isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
+                  }>
+                  {value}
+                </Animated.Text>
+              </View>
+            </Animated.View>
+          )}
         {connectorText && <Text style={connectorStyles.description}>{connectorText}</Text>}
       </View>
     );
