@@ -21,7 +21,7 @@ import ptJsonLanguage from './languages/pt.json';
 export default class I18nManager {
   private static currency: string;
 
-  public static async initialize() {
+  public static initialize(): void {
     // Translation files
     const translationGetters: any = {
       en: () => enJsonLanguage,

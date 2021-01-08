@@ -203,7 +203,8 @@ export default class NotificationManager {
       case UserNotificationType.END_OF_SESSION:
         this.navigator.dispatch(
           StackActions.replace(
-            'AppDrawerNavigator', {
+            'AppDrawerNavigator',
+            {
               screen: 'TransactionHistoryNavigator',
               initial: false,
               params: {
@@ -225,7 +226,8 @@ export default class NotificationManager {
       case UserNotificationType.OPTIMAL_CHARGE_REACHED:
         this.navigator.dispatch(
           StackActions.replace(
-            'AppDrawerNavigator', {
+            'AppDrawerNavigator',
+            {
               screen: 'TransactionInProgressNavigator',
               initial: false,
               params: {
@@ -246,7 +248,8 @@ export default class NotificationManager {
       case UserNotificationType.PREPARING_SESSION_NOT_STARTED:
         this.navigator.dispatch(
           StackActions.replace(
-            'AppDrawerNavigator', {
+            'AppDrawerNavigator',
+            {
               screen: 'ChargingStationsNavigator',
               initial: false,
               params: {
@@ -268,7 +271,8 @@ export default class NotificationManager {
       case UserNotificationType.CHARGING_STATION_REGISTERED:
         this.navigator.dispatch(
           StackActions.replace(
-            'AppDrawerNavigator', {
+            'AppDrawerNavigator',
+            {
               screen: 'ChargingStationsNavigator',
               initial: false,
               params: {
@@ -289,7 +293,8 @@ export default class NotificationManager {
       case UserNotificationType.OFFLINE_CHARGING_STATION:
         this.navigator.dispatch(
           StackActions.replace(
-            'AppDrawerNavigator', {
+            'AppDrawerNavigator',
+            {
               screen: 'ChargingStationsNavigator',
               initial: false,
               key: `${Utils.randomNumber()}`,

@@ -47,7 +47,7 @@ export default class DeepLinkingManager {
 
   private addResetPasswordRoute = () => {
     // Add Route
-    DeepLinking.addRoute('/resetPassword/:tenant/:hash', async (response: {tenant: string, hash: string}) => {
+    DeepLinking.addRoute('/resetPassword/:tenant/:hash', async (response: { tenant: string, hash: string }) => {
       // Check params
       if (!response.tenant) {
         Message.showError(I18n.t('authentication.mandatoryTenant'));

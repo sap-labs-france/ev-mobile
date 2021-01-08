@@ -32,13 +32,13 @@ interface State {
   loading?: boolean;
   hideRepeatPassword?: boolean;
   hidePassword?: boolean;
-  errorEula?: object[];
-  errorPassword?: object[];
-  errorTenant?: object[];
-  errorEmail?: object[];
-  errorName?: object[];
-  errorFirstName?: object[];
-  errorRepeatPassword?: object[];
+  errorEula?: Record<string, unknown>[];
+  errorPassword?: Record<string, unknown>[];
+  errorTenant?: Record<string, unknown>[];
+  errorEmail?: Record<string, unknown>[];
+  errorName?: Record<string, unknown>[];
+  errorFirstName?: Record<string, unknown>[];
+  errorRepeatPassword?: Record<string, unknown>[];
 }
 
 export default class SignUp extends BaseScreen<Props, State> {

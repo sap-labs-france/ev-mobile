@@ -55,7 +55,8 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
         <TouchableOpacity
           onPress={() => {
             navigation.navigate(
-              'TransactionDetailsTabs', {
+              'TransactionDetailsTabs',
+              {
                 params: { transactionID: transaction.id },
                 key: `${Utils.randomNumber()}`
               }

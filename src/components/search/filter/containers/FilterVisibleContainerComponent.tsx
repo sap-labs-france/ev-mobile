@@ -39,7 +39,7 @@ export default class FilterVisibleContainerComponent extends FilterContainerComp
     const { onExpand } = this.props;
     this.setState({
       expanded: !this.state.expanded
-    }, ()=> {
+    }, () => {
       if (onExpand) {
         onExpand(this.state.expanded);
       }
@@ -48,8 +48,8 @@ export default class FilterVisibleContainerComponent extends FilterContainerComp
 
   public render = () => {
     const style = computeStyleSheet();
-    const { onExpand  } = this.props;
-    const { expanded  } = this.state;
+    const { onExpand } = this.props;
+    const { expanded } = this.state;
     return (
       <View style={style.visibleContainer}>
         {this.props.children}
@@ -57,7 +57,7 @@ export default class FilterVisibleContainerComponent extends FilterContainerComp
           <TouchableOpacity style={style.visibleExpandedContainer} onPress={this.toggleExpanded}>
             {expanded ?
               <Icon style={style.visibleExpandedIcon} type='MaterialIcons' name='keyboard-arrow-up' />
-            :
+              :
               <Icon style={style.visibleExpandedIcon} type='MaterialIcons' name='keyboard-arrow-down' />
             }
           </TouchableOpacity>

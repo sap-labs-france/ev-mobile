@@ -1,4 +1,5 @@
 import React from 'react';
+import { ImageStyle, StyleProp, TextStyle, ViewStyle } from 'react-native';
 
 export interface FilterControlComponentProps<T> {
   internalFilterID: string;
@@ -6,7 +7,7 @@ export interface FilterControlComponentProps<T> {
   label: string;
   locale?: string;
   initialValue?: T;
-  style?: object;
+  style?: StyleProp<ViewStyle | TextStyle | ImageStyle>;
   onFilterChanged: (id: string, value: T) => void;
 }
 

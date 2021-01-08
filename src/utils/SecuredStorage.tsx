@@ -27,13 +27,14 @@ export default class SecuredStorage {
   }
 
   public static async getNavigationState(): Promise<NavigationState> {
-    const navigationState = await SecuredStorage._getJson(SecuredStorageKey.NAVIGATION_STATE) as { key:string; navigationState: NavigationState};
+    const navigationState = await SecuredStorage._getJson(SecuredStorageKey.NAVIGATION_STATE) as { key: string; navigationState: NavigationState };
     // Check the key
     if (navigationState) {
       if (navigationState.key === navigationID) {
         const routeNames: string[] = [];
         // Clear dups
         if (__DEV__ && !Utils.isEmptyArray(navigationState.navigationState?.routes)) {
+          // FIXME: 'routes' is a read-only property.
           navigationState.navigationState.routes = navigationState.navigationState?.routes.filter((route) => {
             if (!routeNames.includes(route.name)) {
               routeNames.push(route.name);

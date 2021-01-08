@@ -25,7 +25,7 @@ interface State {
   captchaBaseUrl?: string;
   captcha?: string;
   loading?: boolean;
-  errorEmail?: object[];
+  errorEmail?: Record<string, unknown>[];
 }
 
 export default class RetrievePassword extends BaseScreen<Props, State> {

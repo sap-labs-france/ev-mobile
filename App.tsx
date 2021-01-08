@@ -38,13 +38,13 @@ export default class AppBootstrap extends React.Component<Props, State> {
     // Set theme
     themeManager.setThemeType(Appearance.getColorScheme() as ThemeType);
     // Display
-    this.setState({switchTheme: true});
+    this.setState({ switchTheme: true });
     // Subscribe
     this.themeSubscription = Appearance.addChangeListener(({ colorScheme }) => {
       // Set the new theme
       themeManager.setThemeType(Appearance.getColorScheme() as ThemeType);
       // Refresh
-      this.setState({switchTheme: false}, () => this.setState({switchTheme: true}));
+      this.setState({ switchTheme: false }, () => this.setState({ switchTheme: true }));
     });
   }
 
@@ -66,12 +66,12 @@ export default class AppBootstrap extends React.Component<Props, State> {
         <AppearanceProvider>
           <StyleProvider style={buildTheme(Appearance.getColorScheme() as ThemeType)}>
             <PaperProvider theme={theme}>
-              <App/>
+              <App />
             </PaperProvider>
           </StyleProvider>
         </AppearanceProvider>
-      :
-        <View/>
+        :
+        <View />
     )
   }
 }

@@ -4,8 +4,8 @@ import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } f
 import React from 'react';
 
 import computeCardStyleSheet from '../../CardStyles';
-import HeaderComponent from '../../components/header/HeaderComponent';
 import I18nManager from '../../I18n/I18nManager';
+import HeaderComponent from '../../components/header/HeaderComponent';
 import ProviderFactory from '../../provider/ProviderFactory';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from '../../screens/transactions/history/TransactionsHistoryFilters';
 import BaseProps from '../../types/BaseProps';
@@ -146,7 +146,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
           title={I18n.t('home.statistics')}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
-          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
           rightActionIcon={'menu'}
           filters={filters}
         />

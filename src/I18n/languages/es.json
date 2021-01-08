@@ -69,7 +69,7 @@
     "statistics": "Estadísticas",
     "reportError": "Reportar error"
   },
-	"authentication": {
+  "authentication": {
     "tenantTitle": "Organización",
     "mandatoryTenantSubDomain": "El subdominio de la organización es obligatorio",
     "mandatoryTenantName": "El nombre de la organizacion es obligatorio",
@@ -129,7 +129,7 @@
     "tenantSubdomain": "Subdominio",
     "tenantName": "Nombre",
     "tenantEndpoint": "Cloud",
-    "phone" : "Teléfono",
+    "phone": "Teléfono",
     "mandatoryPhone": "El número de teléfono es obligatorio",
     "mandatoryErrorTitle": "El título del error es obligatorio",
     "mandatoryErrorSubject": "El tema es obligatorio",

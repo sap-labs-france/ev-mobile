@@ -2,13 +2,13 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
-import { Alert, Image, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
+import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 
 import { default as noPhoto, default as noPhotoActive } from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
+import I18nManager from '../../../I18n/I18nManager';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
@@ -78,10 +78,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
+  public async componentDidMount() {
     await super.componentDidMount();
     const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null, true) as boolean;
-    if (startTransaction) {
+    if (startTransaction) {
       this.startTransactionConfirm();
     }
   }
@@ -165,7 +165,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     if (transaction) {
       // Navigate
       navigation.navigate(
-        'TransactionDetailsTabs', {
+        'TransactionDetailsTabs',
+        {
           params: { transactionID: transaction.id },
           key: `${Utils.randomNumber()}`
         }
@@ -180,9 +181,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
     const connectorID: number = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
     // Get the last session
-      // Navigate
+    // Navigate
     navigation.navigate(
-      'ReportError', {
+      'ReportError',
+      {
         params: {
           chargingStationID,
           connectorID,
@@ -375,20 +377,20 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return {
         buttonDisabled: false
       };
-      // Still trials? (only for Start Transaction)
+    // Still trials? (only for Start Transaction)
     } else if (startTransactionNbTrial > 0) {
       // Trial - 1
       return {
         startTransactionNbTrial: startTransactionNbTrial > 0 ? startTransactionNbTrial - 1 : 0
       };
-      // Transaction ongoing
+    // Transaction ongoing
     } else if (connector && connector.currentTransactionID !== 0) {
       // Transaction has started, enable the buttons again
       return {
         startTransactionNbTrial: 0,
         buttonDisabled: false
       };
-      // Transaction is stopped (currentTransactionID == 0)
+    // Transaction is stopped (currentTransactionID == 0)
     } else if (connector && connector.status === ChargePointStatus.FINISHING) {
       // Disable the button until the user unplug the cable
       return {
@@ -687,11 +689,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
               subTitle={connectorLetter ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}
-              rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
               rightActionIcon={'menu'}
             />
             {/* Site Image */}
-            <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
+            <Image style={style.backgroundImage as ImageStyle} source={siteImage ? { uri: siteImage } : noSite} />
             {/* Show Last Transaction */}
             {this.renderShowLastTransactionButton(style)}
             {/* Report Error */}
