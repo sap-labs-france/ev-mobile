@@ -109,11 +109,11 @@ export default class SignUp extends BaseScreen<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', ''),
+      tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', '') as string,
       tenantName: '',
       name: '',
       firstName: '',
-      email: Utils.getParamFromNavigation(this.props.route, 'email', ''),
+      email: Utils.getParamFromNavigation(this.props.route, 'email', '') as string,
       password: '',
       repeatPassword: '',
       eula: false,

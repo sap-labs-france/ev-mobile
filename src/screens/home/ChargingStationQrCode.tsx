@@ -145,7 +145,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
       // Check Charging Station
       try {
         const chargingStation = await this.centralServerProvider.getChargingStation(
-          { ID: chargingStationQrCode.chargingStationID });
+          chargingStationQrCode.chargingStationID);
         // Check Connector
         const foundConnector = chargingStation.connectors.find(
           (connector: Connector) => connector.connectorId === chargingStationQrCode.connectorID);
@@ -160,14 +160,18 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
         return;
       }
       // Ok: Navigate to connector
-      navigation.navigate(
-        'ChargingStationConnectorDetailsTabs', {
+      this.props.navigation.navigate(
+        'ChargingStationsNavigator',
+        {
+          screen: 'ChargingStationConnectorDetailsTabs',
+          key: `${Utils.randomNumber()}`,
           params: {
-            chargingStationID: chargingStationQrCode.chargingStationID,
-            connectorID: chargingStationQrCode.connectorID,
-            startTransaction: true
-          },
-          key: `${Utils.randomNumber()}`
+            params: {
+              chargingStationID: chargingStationQrCode.chargingStationID,
+              connectorID: chargingStationQrCode.connectorID,
+              startTransaction: true
+            },
+          }
         }
       );
       this.close();

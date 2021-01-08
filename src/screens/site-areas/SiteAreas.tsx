@@ -70,7 +70,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     // Get initial filters
     await this.loadInitialFilters();
     // Get initial filters
-    this.siteID = Utils.getParamFromNavigation(this.props.route, 'siteID', null);
+    this.siteID = Utils.getParamFromNavigation(this.props.route, 'siteID', null) as string;
     await super.componentDidMount();
   }
 

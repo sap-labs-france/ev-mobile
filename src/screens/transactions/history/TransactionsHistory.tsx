@@ -102,7 +102,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
           StartDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime.toISOString() : null,
           EndDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime.toISOString() : null,
           Search: searchText
-        }, Constants.ONLY_RECORD_COUNT_PAGING);
+        }, Constants.ONLY_RECORD_COUNT);
         // Set
         transactions.count = transactionsNbrRecordsOnly.count;
         transactions.stats = transactionsNbrRecordsOnly.stats;

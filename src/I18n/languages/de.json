@@ -47,6 +47,9 @@
     "onlyMyTransactions": "Meine Ladevorgäng",
     "onlyAvailableChargers": "Verfügbare Ladestationen",
     "wrongTenant": "Sie sind mit der falschen Organisation verbunden",
+    "tenantUnknown": "Unknown organization '{{tenantSubdomain}}'",
+    "mustLoggedToTenant": "You must be logged to organization '{{tenantName}}'",
+    "tenantMissing": "The organization is missing",
     "tenantExists": "Die Organisation existiert bereits.",
     "createdOn": "Erstellt am",
     "createdBy": "Erstellt von",
@@ -171,6 +174,7 @@
     "transactionStatsUnexpectedError": "Statistiken konnten nicht gelesen werden",
     "transactionStartUnexpectedError": "Ladevorgang konnte nicht gstartet werden",
     "carNotConnectedError": "Your car is not connected to the charging station",
+    "connectorNotAvailable": "This charging station's connector is not available",
     "transactionStopUnexpectedError": "Ladevorgang konnte nicht beendet werden"
   },
   "home": {
