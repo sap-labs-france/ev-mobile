@@ -8,7 +8,9 @@ export enum UserNotificationType {
   CHARGING_STATION_STATUS_ERROR = 'ChargingStationStatusError',
   CHARGING_STATION_REGISTERED = 'ChargingStationRegistered',
   OCPI_PATCH_STATUS_ERROR = 'OcpiPatchStatusError',
+  // TODO: Remove once the rename is done
   SMTP_AUTH_ERROR = 'SmtpAuthError',
+  SMTP_ERROR = 'SmtpError',
   PREPARING_SESSION_NOT_STARTED = 'PreparingSessionNotStarted',
   USER_ACCOUNT_INACTIVITY = 'UserAccountInactivity',
   OFFLINE_CHARGING_STATION = 'OfflineChargingStation',
