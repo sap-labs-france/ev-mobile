@@ -305,7 +305,6 @@ export default class NotificationManager {
       // No need to navigate
       case UserNotificationType.UNKNOWN_USER_BADGED:
       case UserNotificationType.OCPI_PATCH_STATUS_ERROR:
-      case UserNotificationType.SMTP_AUTH_ERROR:
       case UserNotificationType.SMTP_ERROR:
       case UserNotificationType.USER_ACCOUNT_STATUS_CHANGED:
       case UserNotificationType.USER_ACCOUNT_INACTIVITY:
