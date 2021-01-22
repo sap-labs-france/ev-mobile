@@ -1,3 +1,4 @@
+import I18n from 'i18n-js';
 import { Text, View } from 'native-base';
 import React from 'react';
 import { Animated, Easing, Platform } from 'react-native';
@@ -9,9 +10,10 @@ import computeStyleSheet from './ConnectorStatusComponentStyles';
 
 export interface Props extends BaseProps {
   connector?: Connector;
-  text: string;
+  text?: string;
   value?: number;
-  type?: string;
+  status?: string;
+  inactive?: boolean;
 }
 
 interface State {
@@ -53,15 +55,22 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     super.setState(state, callback);
   }
 
-  public getConnectorStyles(style: any) {
-    const { type, connector } = this.props;
+  public getConnectorStyles(style: any): { container: Record<string, unknown>[], value: Record<string, unknown>[], description: Record<string, unknown>[] } {
+    const { status, connector, inactive } = this.props;
     // Get the type
     let connectorType;
-    let status;
+    let styleStatusName;
+    // Status Provided: Force status
     if (connector) {
       connectorType = connector.status;
-    } else if (type) {
-      connectorType = type;
+    }
+    // Status Provided: Force status
+    if (status) {
+      connectorType = status;
+    }
+    // Inactive Charging Station
+    if (inactive) {
+      connectorType = ChargePointStatus.UNAVAILABLE;
     }
     // Default CSS
     const connectorStyles = {
@@ -73,47 +82,46 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
       // Charging
       case ChargePointStatus.CHARGING:
       case ChargePointStatus.OCCUPIED:
-        status = 'charging';
+        styleStatusName = 'charging';
         break;
       // Preparing
       case ChargePointStatus.PREPARING:
-        status = 'preparing';
+        styleStatusName = 'preparing';
         break;
       // Preparing
       case ChargePointStatus.FINISHING:
-        status = 'finishing';
+        styleStatusName = 'finishing';
         break;
       // Reserved
       case ChargePointStatus.RESERVED:
-        status = 'reserved';
+        styleStatusName = 'reserved';
         break;
       // Faulted
       case ChargePointStatus.FAULTED:
-        status = 'faulted';
+        styleStatusName = 'faulted';
         break;
       // Unavailable
       case ChargePointStatus.UNAVAILABLE:
-        status = 'unavailable';
+        styleStatusName = 'unavailable';
         break;
       // Suspending EV / EVSE
       case ChargePointStatus.SUSPENDED_EVSE:
       case ChargePointStatus.SUSPENDED_EV:
-        status = 'suspended';
+        styleStatusName = 'suspended';
         break;
       // Available
       case ChargePointStatus.AVAILABLE:
-        status = 'available';
+        styleStatusName = 'available';
         break;
       // Default
       default:
-        case ChargePointStatus.UNAVAILABLE:
-          status = 'unavailable';
-          break;
-      }
-    if (status) {
-      connectorStyles.container.push(style[status + 'Connector']);
-      connectorStyles.value.push(style[status + 'ConnectorValue']);
-      connectorStyles.description.push(style[status + 'ConnectorDescription']);
+        styleStatusName = 'unavailable';
+        break;
+    }
+    if (styleStatusName) {
+      connectorStyles.container.push(style[styleStatusName + 'Connector']);
+      connectorStyles.value.push(style[styleStatusName + 'ConnectorValue']);
+      connectorStyles.description.push(style[styleStatusName + 'ConnectorDescription']);
     }
     return connectorStyles;
   }
@@ -130,12 +138,34 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     }
   }
 
+  public getConnectorText(): string {
+    const { text, status, inactive, connector } = this.props;
+    // Inactive charging station
+    if (inactive) {
+      return Utils.translateConnectorStatus(ChargePointStatus.UNAVAILABLE);
+    }
+    // Text provided: Force text label
+    if (text) {
+      return I18n.t(text);
+    }
+    // Status provided: Force status label
+    if (status) {
+      return Utils.translateConnectorStatus(status);
+    }
+    // No connector
+    if (!connector) {
+      return Utils.translateConnectorStatus(ChargePointStatus.UNAVAILABLE);
+    }
+    // Connector's status text
+    return Utils.translateConnectorStatus(connector.status);
+  }
+
   public isAnimated(): boolean {
-    const { value, type, connector } = this.props;
+    const { value, status, connector } = this.props;
     if (connector) {
       return connector.currentInstantWatts > 0;
     } else {
-      return type === ChargePointStatus.CHARGING && value > 0;
+      return status === ChargePointStatus.CHARGING && value > 0;
     }
   }
 
@@ -143,13 +173,15 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     const style = computeStyleSheet();
     // Get styling
     const connectorStyles = this.getConnectorStyles(style);
+    // Get text
+    const connectorText = this.getConnectorText();
     // Get value
     const value = this.getConnectorValue();
     // Animated
     const isAnimated = this.isAnimated();
     const isAndroid = Platform.OS === 'android';
     return (
-      <View style={this.props.text ? style.containerWithDescription : style.containerWithNoDescription}>
+      <View style={connectorText ? style.containerWithDescription : style.containerWithNoDescription}>
         {isAndroid ? (
           <View>
             <View style={connectorStyles.container}>
@@ -157,18 +189,18 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
             </View>
           </View>
         ) : (
-          <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
-            <View style={connectorStyles.container}>
-              <Animated.Text
-                style={
-                  isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
-                }>
-                {value}
-              </Animated.Text>
-            </View>
-          </Animated.View>
-        )}
-        {this.props.text && <Text style={connectorStyles.description}>{this.props.text}</Text>}
+            <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
+              <View style={connectorStyles.container}>
+                <Animated.Text
+                  style={
+                    isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
+                  }>
+                  {value}
+                </Animated.Text>
+              </View>
+            </Animated.View>
+          )}
+        {connectorText && <Text style={connectorStyles.description}>{connectorText}</Text>}
       </View>
     );
   }

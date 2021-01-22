@@ -25,9 +25,9 @@ interface State {
   description?: string;
   connector?: Connector;
   visible?: boolean;
-  errorMobile?: object[];
-  errorSubject?: object[];
-  errorDescription?: object[];
+  errorMobile?: Record<string, unknown>[];
+  errorSubject?: Record<string, unknown>[];
+  errorDescription?: Record<string, unknown>[];
 }
 
 export default class ReportError extends BaseScreen<Props, State> {
@@ -72,8 +72,8 @@ export default class ReportError extends BaseScreen<Props, State> {
 
   public async componentDidMount() {
     await super.componentDidMount();
-    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
-    const connectorID = Utils.getParamFromNavigation(this.props.route, 'connectorID', null);
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
+    const connectorID = Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string;
     const userMobile = this.centralServerProvider.getUserInfo().mobile;
     let chargingStation = null;
     let connector = null;
@@ -82,9 +82,9 @@ export default class ReportError extends BaseScreen<Props, State> {
     if (chargingStationID) {
       chargingStation = await this.getChargingStation(chargingStationID);
       if (chargingStation) {
-        connector = chargingStation ? chargingStation.connectors[parseInt(connectorID, 10) - 1] : null;
+        connector = chargingStation ? chargingStation.connectors[Utils.convertToInt(connectorID) - 1] : null;
         connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
-        this.setState({ subject: chargingStationID + ' - ' + connectorLetter})
+        this.setState({ subject: chargingStationID + ' - ' + connectorLetter })
       }
     }
     const securityProvider = this.centralServerProvider.getSecurityProvider();
@@ -101,7 +101,7 @@ export default class ReportError extends BaseScreen<Props, State> {
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
       // Get chargingStation
-      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: chargingStationID });
+      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID);
       return chargingStation;
     } catch (error) {
       // Other common Error
@@ -117,7 +117,7 @@ export default class ReportError extends BaseScreen<Props, State> {
 
     if (formIsValid) {
       this.centralServerProvider.getUserInfo().mobile = this.state.mobile;
-      const { mobile, subject, description  } = this.state;
+      const { mobile, subject, description } = this.state;
       try {
         this.setState({ loading: true } as State);
         // Submit
@@ -146,7 +146,7 @@ export default class ReportError extends BaseScreen<Props, State> {
   public clearInput = () => {
     this.setState({
       loading: false,
-      mobile: '' ,
+      mobile: '',
       subject: '',
       description: '',
       errorDescription: [],
@@ -163,10 +163,10 @@ export default class ReportError extends BaseScreen<Props, State> {
   };
 
   public changeMobileText(text: string) {
-    if (!text) {
-      this.setState({ mobile: null});
+    if (!text) {
+      this.setState({ mobile: null });
     } else {
-      this.setState({ mobile: text});
+      this.setState({ mobile: text });
     }
   }
 
@@ -175,103 +175,103 @@ export default class ReportError extends BaseScreen<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     const style = computeStyleSheet();
     const { loading } = this.state;
-    return  (
+    return (
       loading ? (
         <Spinner style={style.spinner} />
       ) : (
-        <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
-          <HeaderComponent
-            navigation={this.props.navigation}
-            title={I18n.t('sidebar.reportError')}
-            leftAction={() => this.onBack()}
-            leftActionIcon={'navigate-before'}
-            rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
-            rightActionIcon={'menu'}
-          />
-          <ScrollView style={style.container}>
-            <View style={style.iconContainer}>
-              <Icon style={style.reportErrorIcon} type='MaterialIcons' name='error-outline'/>
-            </View>
-            <Form style={style.formContainer}>
-              <Item style={style.input} regular={true}>
-                <TextInput
-                  style={style.inputText}
-                  placeholder={I18n.t('general.mobile')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
-                  selectionColor={commonColor.textColor}
-                  onChangeText={(text) => this.changeMobileText(text)}
-                  onSubmitEditing={!this.state.subject ? () => this.subjectInput.focus() : () => this.descriptionInput.focus()}
-                  autoFocus={!this.state.mobile ? true : false}
-                  autoCapitalize='none'
-                  blurOnSubmit={false}
-                  autoCorrect={false}
-                  value={this.state.mobile}
-                />
-              </Item>
-              {this.state.errorMobile &&
-                this.state.errorMobile.map((errorMessage, index) => (
-                  <Text style={style.errorMobileText} key={index}>
-                    {errorMessage}
-                  </Text>
-                ))
-              }
-              <Item style={style.input} regular={true}>
-                <TextInput
-                  ref={(ref: TextInput) => (this.subjectInput = ref)}
-                  style={style.inputText}
-                  placeholder={I18n.t('general.errorTitle')}
-                  placeholderTextColor={commonColor.inputColorPlaceholder}
-                  selectionColor={commonColor.textColor}
-                  onChangeText={(text) => this.setState({ subject: text })}
-                  onSubmitEditing={() => this.descriptionInput.focus()}
-                  autoFocus={this.state.mobile && !this.state.subject ? true : false}
-                  autoCorrect={false}
-                  blurOnSubmit={false}
-                  autoCapitalize='none'
-                  value={this.state.subject}
-                />
-              </Item>
-              {this.state.errorSubject &&
-                this.state.errorSubject.map((errorMessage, index) => (
-                  <Text style={style.errorSubjectText} key={index}>
-                    {errorMessage}
-                  </Text>
-                ))
-              }
-              <Item style={style.descriptionInput} regular={true}>
-                <ScrollView>
+          <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+            <HeaderComponent
+              navigation={this.props.navigation}
+              title={I18n.t('sidebar.reportError')}
+              leftAction={() => this.onBack()}
+              leftActionIcon={'navigate-before'}
+              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
+              rightActionIcon={'menu'}
+            />
+            <ScrollView style={style.container}>
+              <View style={style.iconContainer}>
+                <Icon style={style.reportErrorIcon} type='MaterialIcons' name='error-outline' />
+              </View>
+              <Form style={style.formContainer}>
+                <Item style={style.input} regular={true}>
                   <TextInput
-                    ref={(ref: TextInput) => (this.descriptionInput = ref)}
-                    style={style.descriptionText}
-                    placeholder={I18n.t('general.errorDescription')}
-                    onSubmitEditing={() => Keyboard.dismiss()}
+                    style={style.inputText}
+                    placeholder={I18n.t('general.mobile')}
                     placeholderTextColor={commonColor.inputColorPlaceholder}
                     selectionColor={commonColor.textColor}
-                    onChangeText={(text) => this.setState({ description: text })}
-                    autoFocus={this.state.mobile && this.state.subject ? true : false}
-                    multiline={true}
+                    onChangeText={(text) => this.changeMobileText(text)}
+                    onSubmitEditing={!this.state.subject ? () => this.subjectInput.focus() : () => this.descriptionInput.focus()}
+                    autoFocus={!this.state.mobile ? true : false}
+                    autoCapitalize='none'
+                    blurOnSubmit={false}
+                    autoCorrect={false}
+                    value={this.state.mobile}
+                  />
+                </Item>
+                {this.state.errorMobile &&
+                  this.state.errorMobile.map((errorMessage, index) => (
+                    <Text style={style.errorMobileText} key={index}>
+                      {errorMessage}
+                    </Text>
+                  ))
+                }
+                <Item style={style.input} regular={true}>
+                  <TextInput
+                    ref={(ref: TextInput) => (this.subjectInput = ref)}
+                    style={style.inputText}
+                    placeholder={I18n.t('general.errorTitle')}
+                    placeholderTextColor={commonColor.inputColorPlaceholder}
+                    selectionColor={commonColor.textColor}
+                    onChangeText={(text) => this.setState({ subject: text })}
+                    onSubmitEditing={() => this.descriptionInput.focus()}
+                    autoFocus={this.state.mobile && !this.state.subject ? true : false}
                     autoCorrect={false}
                     blurOnSubmit={false}
                     autoCapitalize='none'
+                    value={this.state.subject}
                   />
-                </ScrollView>
-              </Item>
-              {this.state.errorDescription &&
-                this.state.errorDescription.map((errorMessage, index) => (
-                  <Text style={style.errorDescriptionText} key={index}>
-                    {errorMessage}
-                  </Text>
-                ))
-              }
-              <View style={style.buttonContainer}>
-                <Button style={style.sendButton} block={true} onPress={() => this.sendErrorReport()} danger={true}>
-                  <Text style={style.sendTextButton}>{I18n.t('general.send')}</Text>
-                </Button>
-              </View>
-            </Form>
-          </ScrollView>
-        </Animatable.View>
-      )
+                </Item>
+                {this.state.errorSubject &&
+                  this.state.errorSubject.map((errorMessage, index) => (
+                    <Text style={style.errorSubjectText} key={index}>
+                      {errorMessage}
+                    </Text>
+                  ))
+                }
+                <Item style={style.descriptionInput} regular={true}>
+                  <ScrollView>
+                    <TextInput
+                      ref={(ref: TextInput) => (this.descriptionInput = ref)}
+                      style={style.descriptionText}
+                      placeholder={I18n.t('general.errorDescription')}
+                      onSubmitEditing={() => Keyboard.dismiss()}
+                      placeholderTextColor={commonColor.inputColorPlaceholder}
+                      selectionColor={commonColor.textColor}
+                      onChangeText={(text) => this.setState({ description: text })}
+                      autoFocus={this.state.mobile && this.state.subject ? true : false}
+                      multiline={true}
+                      autoCorrect={false}
+                      blurOnSubmit={false}
+                      autoCapitalize='none'
+                    />
+                  </ScrollView>
+                </Item>
+                {this.state.errorDescription &&
+                  this.state.errorDescription.map((errorMessage, index) => (
+                    <Text style={style.errorDescriptionText} key={index}>
+                      {errorMessage}
+                    </Text>
+                  ))
+                }
+                <View style={style.buttonContainer}>
+                  <Button style={style.sendButton} block={true} onPress={() => this.sendErrorReport()} danger={true}>
+                    <Text style={style.sendTextButton}>{I18n.t('general.send')}</Text>
+                  </Button>
+                </View>
+              </Form>
+            </ScrollView>
+          </Animatable.View>
+        )
     )
   }
 };

@@ -43,7 +43,7 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
     const { navigation } = this.props;
     const { transaction, isAdmin, isSiteAdmin, isPricingActive } = this.props;
     const consumption = Math.round(transaction.stop.totalConsumptionWh / 10) / 100;
-    const price = transaction.stop.price ? Math.round(transaction.stop.price * 100) / 100 : 0;
+    const price = transaction.stop.price ? Utils.roundTo(transaction.stop.price, 2) : 0;
     const duration = Utils.formatDurationHHMMSS(transaction.stop.totalDurationSecs, false);
     const inactivity = Utils.formatDurationHHMMSS(transaction.stop.totalInactivitySecs, false);
     const inactivityStyle = Utils.computeInactivityStyle(transaction.stop.inactivityStatus);
@@ -55,7 +55,8 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
         <TouchableOpacity
           onPress={() => {
             navigation.navigate(
-              'TransactionDetailsTabs', {
+              'TransactionDetailsTabs',
+              {
                 params: { transactionID: transaction.id },
                 key: `${Utils.randomNumber()}`
               }

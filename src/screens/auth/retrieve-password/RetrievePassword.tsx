@@ -1,15 +1,13 @@
 import { CommonActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Button, Footer, Form, Icon, Item, Left, Spinner, Text } from 'native-base';
+import { Button, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
-import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
@@ -27,7 +25,7 @@ interface State {
   captchaBaseUrl?: string;
   captcha?: string;
   loading?: boolean;
-  errorEmail?: object[];
+  errorEmail?: Record<string, unknown>[];
 }
 
 export default class RetrievePassword extends BaseScreen<Props, State> {
@@ -48,9 +46,9 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tenantSubDomain: Utils.getParamFromNavigation(this.props.navigation, 'tenantSubDomain', ''),
+      tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', '') as string,
       tenantName: '',
-      email: Utils.getParamFromNavigation(this.props.navigation, 'email', ''),
+      email: Utils.getParamFromNavigation(this.props.route, 'email', '') as string,
       captchaSiteKey: null,
       captchaBaseUrl: null,
       captcha: null,
@@ -145,11 +143,13 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
     const formStyle = computeFormStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const { loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl } = this.state;
+    // Get logo
+    const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
-      <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+      <View style={style.container}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
-            <AuthHeader navigation={this.props.navigation} tenantName={tenantName} />
+            <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo}/>
             <Form style={formStyle.form}>
               <Item inlineLabel={true} style={formStyle.inputGroup}>
                 <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
@@ -198,7 +198,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
             </Button>
           </Left>
         </Footer>
-      </Animatable.View>
+      </View>
     );
   }
 }

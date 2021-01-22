@@ -3,13 +3,11 @@ import I18n from 'i18n-js';
 import { Button, CheckBox, Footer, Form, Icon, Item, Left, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
-import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
@@ -34,13 +32,13 @@ interface State {
   loading?: boolean;
   hideRepeatPassword?: boolean;
   hidePassword?: boolean;
-  errorEula?: object[];
-  errorPassword?: object[];
-  errorTenant?: object[];
-  errorEmail?: object[];
-  errorName?: object[];
-  errorFirstName?: object[];
-  errorRepeatPassword?: object[];
+  errorEula?: Record<string, unknown>[];
+  errorPassword?: Record<string, unknown>[];
+  errorTenant?: Record<string, unknown>[];
+  errorEmail?: Record<string, unknown>[];
+  errorName?: Record<string, unknown>[];
+  errorFirstName?: Record<string, unknown>[];
+  errorRepeatPassword?: Record<string, unknown>[];
 }
 
 export default class SignUp extends BaseScreen<Props, State> {
@@ -111,11 +109,11 @@ export default class SignUp extends BaseScreen<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', ''),
+      tenantSubDomain: Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', '') as string,
       tenantName: '',
       name: '',
       firstName: '',
-      email: Utils.getParamFromNavigation(this.props.route, 'email', ''),
+      email: Utils.getParamFromNavigation(this.props.route, 'email', '') as string,
       password: '',
       repeatPassword: '',
       eula: false,
@@ -217,11 +215,13 @@ export default class SignUp extends BaseScreen<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     const navigation = this.props.navigation;
     const { eula, loading, captcha, tenantName, captchaSiteKey, captchaBaseUrl, hidePassword, hideRepeatPassword } = this.state;
+    // Get logo
+    const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
-      <Animatable.View style={style.container} animation={'fadeIn'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+      <View style={style.container}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
-            <AuthHeader navigation={this.props.navigation} tenantName={tenantName} />
+            <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo}/>
             <Form style={formStyle.form}>
               <Item inlineLabel={true} style={formStyle.inputGroup}>
                 <Icon active={true} name='person' style={formStyle.inputIcon} />
@@ -245,7 +245,6 @@ export default class SignUp extends BaseScreen<Props, State> {
                     {errorMessage}
                   </Text>
                 ))}
-
               <Item inlineLabel={true} style={formStyle.inputGroup}>
                 <Icon active={true} name='person' style={formStyle.inputIcon} />
                 <TextInput
@@ -286,6 +285,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   keyboardType={'email-address'}
                   onChangeText={(text) => this.setState({ email: text })}
                   secureTextEntry={false}
+                  value={this.state.email}
                 />
               </Item>
               {this.state.errorEmail &&
@@ -389,7 +389,7 @@ export default class SignUp extends BaseScreen<Props, State> {
             </Button>
           </Left>
         </Footer>
-      </Animatable.View>
+      </View>
     );
   }
 }

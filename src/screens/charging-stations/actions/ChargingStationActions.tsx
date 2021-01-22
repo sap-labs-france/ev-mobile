@@ -49,14 +49,14 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
 
   public async componentDidMount() {
     // Add ChargingStations
-    this.chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
+    this.chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
     await super.componentDidMount();
   }
 
   public getChargingStation = async (): Promise<ChargingStation> => {
     try {
       // Get Charger
-      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: this.chargingStationID });
+      const chargingStation = await this.centralServerProvider.getChargingStation(this.chargingStationID);
       return chargingStation;
     } catch (error) {
       // Other common Error
@@ -228,7 +228,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
               subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}
-              rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
               rightActionIcon={'menu'}
             />
             <ScrollView contentContainerStyle={style.scrollViewContainer}>

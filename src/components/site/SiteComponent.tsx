@@ -52,23 +52,24 @@ export default class SiteComponent extends React.Component<Props, State> {
         iterationCount={1}
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity onPress={() => {
-            navigation.navigate(
-              'SiteAreas', {
-                params: {
-                  siteID: site.id
-                },
-                key: `${Utils.randomNumber()}`
-              }
-            )
-          }}>
+          navigation.navigate(
+            'SiteAreas',
+            {
+              params: {
+                siteID: site.id
+              },
+              key: `${Utils.randomNumber()}`
+            }
+          )
+        }}>
           <View style={style.container}>
             <View style={style.headerContent}>
               <View style={style.titleContainer}>
                 <TouchableOpacity disabled={!validGPSCoordinates}
-                    onPress={() => Utils.jumpToMapWithAddress(site.name, site.address)}>
-                  { validGPSCoordinates ?
+                  onPress={() => Utils.jumpToMapWithAddress(site.name, site.address)}>
+                  {validGPSCoordinates ?
                     <Icon style={[style.icon, style.iconLeft]} type='MaterialIcons' name='place' />
-                  :
+                    :
                     <Icon style={[style.icon, style.iconLeft]} type='MaterialCommunityIcons' name='map-marker-off' />
                   }
                 </TouchableOpacity>

@@ -44,7 +44,7 @@ export default class Eula extends BaseScreen<Props, State> {
   public loadEndUserLicenseAgreement = async () => {
     const { i18nLanguage: i18nLanguage } = this.state;
     // Get the first tenant for the EULA (same in all tenants)
-    const tenants = await  this.centralServerProvider.getTenants();
+    const tenants = await this.centralServerProvider.getTenants();
     try {
       const result: any = await this.centralServerProvider.getEndUserLicenseAgreement(
         tenants[0].subdomain,
@@ -78,7 +78,7 @@ export default class Eula extends BaseScreen<Props, State> {
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('authentication.eula')}
-          leftAction={() => this.props.navigation.navigate('Login')}
+          leftAction={() => { this.props.navigation.navigate('Login'); return true }}
           leftActionIcon={'navigate-before'}
           hideHomeAction={true}
         />

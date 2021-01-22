@@ -1,5 +1,7 @@
 import { NavigationContainerRef } from '@react-navigation/native';
+import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
+import _ from 'lodash';
 import CentralServerProvider from 'provider/CentralServerProvider';
 import { NativeModules, Platform } from 'react-native';
 import { showLocation } from 'react-native-map-link';
@@ -7,25 +9,29 @@ import Address from 'types/Address';
 import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
 
-import { buildCommonColor } from '../custom-theme/customCommonColor';
-import ThemeManager from '../custom-theme/ThemeManager';
 import I18nManager from '../I18n/I18nManager';
+import Configuration from '../config/Configuration';
+import ThemeManager from '../custom-theme/ThemeManager';
+import { buildCommonColor } from '../custom-theme/customCommonColor';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
+import { EndpointCloud } from '../types/Tenant';
 import { InactivityStatus } from '../types/Transaction';
 import User from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
 
 export default class Utils {
-  public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
-    const tenant = centralServerProvider.getUserTenant();
-    const email = centralServerProvider.getUserEmail();
-    const password = centralServerProvider.getUserPassword();
-    return !centralServerProvider.hasAutoLoginDisabled() &&
-      !Utils.isNullOrEmptyString(tenant?.subdomain) &&
-      !Utils.isNullOrEmptyString(email) &&
-      !Utils.isNullOrEmptyString(password);
+  public static getEndpointCloud(): EndpointCloud[] {
+    if (__DEV__) {
+      return Configuration.ENDPOINT_CLOUDS_QA;
+    } else {
+      return Configuration.ENDPOINT_CLOUDS_PROD;
+    }
+  }
+
+  public static objectHasProperty(object: any, key: string): boolean {
+    return _.has(object, key);
   }
 
   public static getCurrentCommonColor(): any {
@@ -43,17 +49,17 @@ export default class Utils {
     // Check
     if (typeof value === 'string') {
       // Create Object
-      changedValue = parseInt(value);
+      changedValue = Utils.convertToInt(value);
     }
     return changedValue;
   }
 
   public static formatAddress(address: Address): string {
     const addresses: string[] = [];
-    if (address.address1 && address.address1.length > 0) {
+    if (address?.address1 && address?.address1.length > 0) {
       addresses.push(address.address1);
     }
-    if (address.city && address.city.length > 0) {
+    if (address?.city && address?.city.length > 0) {
       addresses.push(address.city);
     }
     return addresses.join(', ');
@@ -166,7 +172,7 @@ export default class Utils {
   }
 
   public static containsAddressGPSCoordinates(address: Address): boolean {
-      // Check if GPS are available
+    // Check if GPS are available
     if (address && Utils.containsGPSCoordinates(address.coordinates)) {
       return true;
     }
@@ -219,7 +225,7 @@ export default class Utils {
             // Charging Station
             if (connectorId === 0 && chargePointOfCS.power) {
               totalPower += chargePointOfCS.power;
-              // Connector
+            // Connector
             } else if (chargePointOfCS.connectorIDs.includes(connectorId) && chargePointOfCS.power) {
               if (chargePointOfCS.cannotChargeInParallel || chargePointOfCS.sharePowerToAllConnectors) {
                 // Check Connector ID
@@ -346,7 +352,7 @@ export default class Utils {
             // Charging Station
             if (connectorId === 0 && chargePointOfCS.currentType) {
               return chargePointOfCS.currentType;
-              // Connector
+            // Connector
             } else if (chargePointOfCS.connectorIDs.includes(connectorId) && chargePointOfCS.currentType) {
               // Check Connector ID
               const connector = Utils.getConnectorFromID(chargingStation, connectorId);
@@ -468,11 +474,12 @@ export default class Utils {
     return 0;
   }
 
-  public static getRoundedNumberToTwoDecimals(numberToRound: number): number {
-    return Math.round(numberToRound * 100) / 100;
+  public static roundTo(value: number, scale: number): number {
+    const roundPower = Math.pow(10, scale);
+    return Math.round(value * roundPower) / roundPower;
   }
 
-  public static countJsonProps(jsonDoc: object): number {
+  public static countJsonProps(jsonDoc: Record<string, unknown>): number {
     let count = 0;
     if (!jsonDoc) {
       return count;
@@ -485,8 +492,8 @@ export default class Utils {
     return count;
   }
 
-  public static cloneObject(object: object): object {
-    return JSON.parse(JSON.stringify(object));
+  public static cloneObject<T>(object: T): T {
+    return JSON.parse(JSON.stringify(object)) as T;
   }
 
   public static isNullOrEmptyString(value: string): boolean {
@@ -503,18 +510,24 @@ export default class Utils {
     return new Promise((resolve) => setTimeout(resolve, millis));
   }
 
-  public static getParamFromNavigation(route: any, name: string, defaultValue: string): string {
+  public static getParamFromNavigation(route: any, name: string, defaultValue: string, removeValue = false): string | number | boolean | object {
     const params: any = route.params?.params ? route.params.params : route.params
     // Has param object?
     if (!params) {
       return defaultValue;
     }
-    // Has param
-    if (!params[name]) {
+    // Has no param
+    if (!Utils.objectHasProperty(params, name)) {
       return defaultValue;
     }
+    // Get
+    const value = params[name];
+    // Delete
+    if (removeValue) {
+      delete params[name];
+    }
     // Ok, return the value
-    return params[name];
+    return value;
   }
 
   public static getLanguageFromLocale(locale: string) {
@@ -582,7 +595,7 @@ export default class Utils {
     return result;
   }
 
-  public static computeInactivityStyle(inactivityStatus: InactivityStatus): object {
+  public static computeInactivityStyle(inactivityStatus: InactivityStatus): Record<string, unknown> {
     const commonColor = Utils.getCurrentCommonColor();
     switch (inactivityStatus) {
       case InactivityStatus.INFO:
@@ -611,12 +624,8 @@ export default class Utils {
 
   public static async handleHttpUnexpectedError(centralServerProvider: CentralServerProvider,
     error: RequestError, defaultErrorMessage: string, navigation?: NavigationContainerRef, fctRefresh?: () => void) {
-    // Override
-    fctRefresh = () => {
-      setTimeout(() => fctRefresh, 2000);
-    };
     // tslint:disable-next-line: no-console
-    console.log(`HTTP request error`, error);
+    console.error(`HTTP request error`, error);
     // Check if HTTP?
     if (error.request) {
       // Status?
@@ -626,8 +635,8 @@ export default class Utils {
           Message.showError(I18n.t('general.cannotConnectBackend'));
           break;
         // Not logged in?
-        case 401:
-        case 403:
+        case StatusCodes.UNAUTHORIZED:
+        case StatusCodes.FORBIDDEN:
           // Force auto login
           await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;
@@ -663,7 +672,7 @@ export default class Utils {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
-  public static validateInput(screen: React.Component, constraints: object): boolean {
+  public static validateInput(screen: React.Component, constraints: Record<string, unknown>): boolean {
     let formValid = true;
     const errorState: any = {};
     // Reset all errors

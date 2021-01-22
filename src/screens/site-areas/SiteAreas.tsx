@@ -70,7 +70,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     // Get initial filters
     await this.loadInitialFilters();
     // Get initial filters
-    this.siteID = Utils.getParamFromNavigation(this.props.route, 'siteID', null);
+    this.siteID = Utils.getParamFromNavigation(this.props.route, 'siteID', null) as string;
     await super.componentDidMount();
   }
 
@@ -222,60 +222,60 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           title={I18n.t('siteAreas.title')}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
-          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
           rightActionIcon={'menu'}
-          diplayMap={!Utils.isEmptyArray(this.state.siteAreas)}
+          displayMap={!Utils.isEmptyArray(this.state.siteAreas)}
           mapIsDisplayed={mapIsDisplayed}
-          diplayMapAction={() => this.toggleDisplayMap()}
+          displayMapAction={() => this.toggleDisplayMap()}
         />
         {loading ? (
           <Spinner style={style.spinner} color='grey' />
         ) : (
-          <View style={style.content}>
-            <SimpleSearchComponent
-              onChange={(searchText) => this.search(searchText)}
-              navigation={navigation}
-            />
-            <SiteAreasFilters
-              initialFilters={initialFilters} locationEnabled={this.locationEnabled}
-              onFilterChanged={(newFilters: SiteAreasFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-              ref={(siteAreasFilters: SiteAreasFilters) => this.setScreenFilters(siteAreasFilters)}
-            />
-            {mapIsDisplayed ?
-              <MapView
-                style={style.map}
-                region={this.currentRegion}
-                onRegionChange={this.onMapRegionChange}
-              >
-                {this.state.siteAreas.map((siteArea: SiteArea) => {
-                  if (Utils.containsAddressGPSCoordinates(siteArea.address)) {
-                    return (
-                      <Marker
-                        key={siteArea.id}
-                        coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
-                        title={siteArea.name}
-                        description={siteArea.name}
-                      />
-                    );
-                  }
-                  return undefined;
-                })}
-              </MapView>
-            :
-              <FlatList
-                data={this.state.siteAreas}
-                renderItem={({ item }) => <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />}
-                keyExtractor={(item) => item.id}
-                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-                onEndReached={this.onEndScroll}
-                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('siteAreas.noSiteAreas')} />}
-                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+            <View style={style.content}>
+              <SimpleSearchComponent
+                onChange={(searchText) => this.search(searchText)}
+                navigation={navigation}
               />
-            }
-          </View>
-        )
-      }
+              <SiteAreasFilters
+                initialFilters={initialFilters} locationEnabled={this.locationEnabled}
+                onFilterChanged={(newFilters: SiteAreasFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
+                ref={(siteAreasFilters: SiteAreasFilters) => this.setScreenFilters(siteAreasFilters)}
+              />
+              {mapIsDisplayed ?
+                <MapView
+                  style={style.map}
+                  region={this.currentRegion}
+                  onRegionChange={this.onMapRegionChange}
+                >
+                  {this.state.siteAreas.map((siteArea: SiteArea) => {
+                    if (Utils.containsAddressGPSCoordinates(siteArea.address)) {
+                      return (
+                        <Marker
+                          key={siteArea.id}
+                          coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
+                          title={siteArea.name}
+                          description={siteArea.name}
+                        />
+                      );
+                    }
+                    return undefined;
+                  })}
+                </MapView>
+                :
+                <FlatList
+                  data={this.state.siteAreas}
+                  renderItem={({ item }) => <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />}
+                  keyExtractor={(item) => item.id}
+                  refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+                  onEndReached={this.onEndScroll}
+                  onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+                  ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('siteAreas.noSiteAreas')} />}
+                  ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+                />
+              }
+            </View>
+          )
+        }
       </Container>
     );
   }

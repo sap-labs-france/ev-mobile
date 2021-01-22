@@ -3,7 +3,7 @@ import I18n from 'i18n-js';
 import moment from 'moment';
 import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
-import { Image, ScrollView } from 'react-native';
+import { Image, ImageStyle, ScrollView } from 'react-native';
 
 import noPhotoActive from '../../../../assets/no-photo.png';
 import noPhoto from '../../../../assets/no-photo.png';
@@ -70,7 +70,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     let siteImage = null;
     let userImage = null;
     // Get IDs
-    const transactionID = Utils.getParamFromNavigation(this.props.route, 'transactionID', null);
+    const transactionID = Utils.getParamFromNavigation(this.props.route, 'transactionID', null) as number;
     // Get Transaction
     const transaction = await this.getTransaction(transactionID);
     // Get the Site Image
@@ -97,10 +97,10 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     });
   }
 
-  public getTransaction = async (transactionID: string): Promise<Transaction> => {
+  public getTransaction = async (transactionID: number): Promise<Transaction> => {
     try {
       // Get Transaction
-      const transaction = await this.centralServerProvider.getTransaction({ ID: transactionID });
+      const transaction = await this.centralServerProvider.getTransaction(transactionID);
       return transaction;
     } catch (error) {
       switch (error.request.status) {
@@ -187,7 +187,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       <View style={style.columnContainer}>
         <Icon type='FontAwesome' name='money' style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>{transaction ? I18nManager.formatCurrency(transaction.stop.price) : '-'}</Text>
-        <Text style={[style.subLabel, style.info]}>({transaction ? transaction.priceUnit : '-'})</Text>
+        <Text style={[style.subLabel, style.info]}>({transaction ? transaction.stop.priceUnit : '-'})</Text>
       </View>
     );
   };
@@ -245,7 +245,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.goBack(null);
+    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };
@@ -267,17 +267,17 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
               subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}
-              rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
               rightActionIcon={'menu'}
             />
             {/* Site Image */}
-            <Image style={style.backgroundImage} source={siteImage ? { uri: siteImage } : noSite} />
+            <Image style={style.backgroundImage as ImageStyle} source={siteImage ? { uri: siteImage } : noSite} />
             <View style={style.headerContent}>
               <View style={style.headerRowContainer}>
                 <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format('LLL') : ''}</Text>
-                <Text style={style.subHeaderName}>({transaction ? moment(new Date(transaction.stop.timestamp)).format('LLL') : ''})</Text>
-                {(transaction.userID !== transaction.stop.userID) &&
-                  <Text style={style.subSubHeaderName}>({I18n.t('details.stoppedBy')} {Utils.buildUserName(transaction.stop.user)})</Text>
+                <Text style={style.subHeaderName}>({transaction ? moment(new Date(transaction?.stop.timestamp)).format('LLL') : ''})</Text>
+                {(transaction?.userID !== transaction?.stop.userID) &&
+                  <Text style={style.subSubHeaderName}>({I18n.t('details.stoppedBy')} {Utils.buildUserName(transaction?.stop.user)})</Text>
                 }
               </View>
             </View>

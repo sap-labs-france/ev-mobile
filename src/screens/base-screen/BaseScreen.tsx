@@ -18,6 +18,8 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   protected centralServerProvider: CentralServerProvider;
   private headerComponent: HeaderComponent;
   private screenFilters: ScreenFilters;
+  private componentFocusUnsubscribe: () => void;
+  private componentBlurUnsubscribe: () => void;
 
   constructor(props: Props) {
     super(props);
@@ -32,8 +34,8 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     // Get provider
     this.centralServerProvider = await ProviderFactory.getProvider();
     // Add listeners
-    this.props.navigation.addListener('didFocus', this.componentDidFocus.bind(this));
-    this.props.navigation.addListener('didBlur', this.componentDidBlur.bind(this));
+    this.componentFocusUnsubscribe = this.props.navigation.addListener('focus', this.componentDidFocus.bind(this));
+    this.componentBlurUnsubscribe = this.props.navigation.addListener('blur', this.componentDidBlur.bind(this));
     // Remove Backhandler for Android
     BackHandler.removeEventListener('hardwareBackPress', this.onBack);
     // Ok
@@ -42,6 +44,12 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
 
   public async componentWillUnmount() {
     this.mounted = false;
+    if (this.componentFocusUnsubscribe) {
+      this.componentFocusUnsubscribe();
+    }
+    if (this.componentBlurUnsubscribe) {
+      this.componentBlurUnsubscribe();
+    }
   }
 
   public setHeaderComponent(headerComponent: HeaderComponent) {

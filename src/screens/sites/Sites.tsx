@@ -73,7 +73,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     // No Site Management: Go to chargers
     const securityProvider = this.centralServerProvider.getSecurityProvider();
     if (securityProvider && !securityProvider.isComponentOrganizationActive()) {
-      this.props.navigation.navigate('ChargingStations');
+      this.props.navigation.navigate('ChargingStations', { key: `${Utils.randomNumber()}` });
     }
   }
 
@@ -223,11 +223,11 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           title={I18n.t('sidebar.sites')}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
-          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
           rightActionIcon={'menu'}
-          diplayMap={!Utils.isEmptyArray(this.state.sites)}
+          displayMap={!Utils.isEmptyArray(this.state.sites)}
           mapIsDisplayed={mapIsDisplayed}
-          diplayMapAction={() => this.toggleDisplayMap()}
+          displayMapAction={() => this.toggleDisplayMap()}
         />
         {loading ? (
           <Spinner style={style.spinner} color='grey' />

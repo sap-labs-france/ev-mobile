@@ -1,5 +1,6 @@
 import { Text, View } from 'native-base';
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { ToggleButton } from 'react-native-paper';
 
 import Chademo from '../../../../../../assets/connectorType/chademo.svg';
@@ -35,10 +36,10 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
     const commonColor = Utils.getCurrentCommonColor();
     this.state = {
       connectorTypes: [
-        { type: ConnectorType.TYPE_2, element: <Type2 width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='10'/>, selected: false },
-        { type: ConnectorType.COMBO_CCS, element: <ComboCCS width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>, selected: false },
-        { type: ConnectorType.CHADEMO, element: <Chademo width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='30'/>, selected: false },
-        { type: ConnectorType.DOMESTIC, element: <Domestic width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} fill={commonColor.textColor}/>, selected: false },
+        { type: ConnectorType.TYPE_2, element: <Type2 width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='10' />, selected: false },
+        { type: ConnectorType.COMBO_CCS, element: <ComboCCS width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='30' />, selected: false },
+        { type: ConnectorType.CHADEMO, element: <Chademo width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} stroke={commonColor.textColor} strokeWidth='30' />, selected: false },
+        { type: ConnectorType.DOMESTIC, element: <Domestic width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} fill={commonColor.textColor} />, selected: false },
       ]
     };
     // Default filter values
@@ -91,7 +92,7 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
     const internalStyle = computeStyleSheet();
     const { style, label } = this.props;
     return (
-      <View style={{...internalStyle.columnFilterContainer, ...style}}>
+      <View style={StyleSheet.compose(internalStyle.columnFilterContainer, style)}>
         <Text style={internalStyle.textFilter}>{label}</Text>
         <View style={internalStyle.connectorTypeFilterContainer}>
           {this.state.connectorTypes.map((connector) =>

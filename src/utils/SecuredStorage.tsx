@@ -5,12 +5,13 @@ import UserToken from 'types/UserToken';
 import { SecuredStorageKey } from '../types/SecuredStorageKeys';
 import Tenant, { TenantConnection } from '../types/Tenant';
 import { UserCredentials } from '../types/User';
+import Utils from './Utils';
 
 // Generate a new Id for persisting the navigation each time the app is launched for the first time
 let navigationID: string = '' + new Date().getTime();
 if (__DEV__) {
   // Keep the same key for dev
-  navigationID = '1234567';
+  navigationID = '12345678';
 }
 
 export default class SecuredStorage {
@@ -26,10 +27,22 @@ export default class SecuredStorage {
   }
 
   public static async getNavigationState(): Promise<NavigationState> {
-    const navigationState = await SecuredStorage._getJson(SecuredStorageKey.NAVIGATION_STATE);
+    const navigationState = await SecuredStorage._getJson(SecuredStorageKey.NAVIGATION_STATE) as { key: string; navigationState: NavigationState };
     // Check the key
     if (navigationState) {
       if (navigationState.key === navigationID) {
+        const routeNames: string[] = [];
+        // Clear dups
+        if (__DEV__ && !Utils.isEmptyArray(navigationState.navigationState?.routes)) {
+          // FIXME: 'routes' is a read-only property.
+          navigationState.navigationState.routes = navigationState.navigationState?.routes.filter((route) => {
+            if (!routeNames.includes(route.name)) {
+              routeNames.push(route.name);
+              return true;
+            }
+            return false;
+          });
+        }
         return navigationState.navigationState;
       }
     }
@@ -44,7 +57,7 @@ export default class SecuredStorage {
     );
   }
 
-  public static async getUserCredentials(tenantSubDomain: string): Promise<UserCredentials> {
+  public static async getUserCredentials(tenantSubDomain?: string): Promise<UserCredentials> {
     // Get current domain
     if (!tenantSubDomain) {
       tenantSubDomain = await SecuredStorage.getCurrentTenantSubDomain();
@@ -123,11 +136,11 @@ export default class SecuredStorage {
     return value;
   }
 
-  private static async getCurrentTenantSubDomain(): Promise<string> {
+  public static async getCurrentTenantSubDomain(): Promise<string> {
     return SecuredStorage._getString(SecuredStorageKey.CURRENT_TENANT_SUB_DOMAIN);
   }
 
-  private static async saveCurrentTenantSubDomain(tenantSubDomain: string) {
+  public static async saveCurrentTenantSubDomain(tenantSubDomain: string) {
     await RNSecureStorage.set(SecuredStorageKey.CURRENT_TENANT_SUB_DOMAIN, tenantSubDomain,
       { accessible: ACCESSIBLE.WHEN_UNLOCKED }
     );

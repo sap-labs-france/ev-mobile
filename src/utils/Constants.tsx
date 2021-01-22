@@ -33,11 +33,11 @@ export default class Constants {
     limit: Constants.PAGING_SIZE,
     skip: 0,
   };
-  public static readonly ONLY_ONE_PAGING: PagingParams = {
+  public static readonly ONLY_ONE_RECORD: PagingParams = {
     limit: 1,
     skip: 0,
   };
-  public static readonly ONLY_RECORD_COUNT_PAGING: PagingParams = {
+  public static readonly ONLY_RECORD_COUNT: PagingParams = {
     limit: 1,
     skip: 0,
     onlyRecordCount: true

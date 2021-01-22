@@ -11,6 +11,7 @@ export default interface UserToken {
   tagIDs?: string[];
   tenantID: string;
   tenantName?: string;
+  tenantSubdomain?: string;
   userHashID?: string;
   tenantHashID?: string;
   scopes?: readonly string[];

@@ -111,7 +111,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
-      const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null);
+      const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
       // Get chargingStation
       const chargingStation = await this.getChargingStation(chargingStationID);
       // Build props
@@ -128,7 +128,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
       // Get chargingStation
-      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: chargingStationID });
+      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID);
       return chargingStation;
     } catch (error) {
       // Other common Error
@@ -175,7 +175,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
           subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
-          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
           rightActionIcon={'menu'}
         />
         {loading ? (

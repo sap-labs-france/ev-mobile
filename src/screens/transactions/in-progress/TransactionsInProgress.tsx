@@ -94,7 +94,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
         const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactionsActive({
           UserID: this.state.filters.userID,
           Search: searchText
-        }, Constants.ONLY_RECORD_COUNT_PAGING);
+        }, Constants.ONLY_RECORD_COUNT);
         // Set
         transactions.count = transactionsNbrRecordsOnly.count;
       }
@@ -178,7 +178,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('transactions.transactions')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
-          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
           rightActionIcon={'menu'}
           filters={filters}
         />

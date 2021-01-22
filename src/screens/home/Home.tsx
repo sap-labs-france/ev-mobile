@@ -2,8 +2,7 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Text } from 'native-base';
 import React from 'react';
-import { Alert, BackHandler, TouchableOpacity, View } from 'react-native';
-import Orientation from 'react-native-orientation-locker';
+import { Alert, BackHandler } from 'react-native';
 import ChargingStation from 'types/ChargingStation';
 import { TenantConnection } from 'types/Tenant';
 import Transaction from 'types/Transaction';
@@ -83,23 +82,35 @@ export default class Home extends BaseScreen<Props, State> {
         // Get the Transactions
         const transactions = await this.centralServerProvider.getTransactionsActive({
           UserID: this.userID,
-        }, Constants.ONLY_ONE_PAGING);
+        }, Constants.ONLY_ONE_RECORD);
         // User has only one transaction?
         if (transactions.count === 1) {
           navigation.navigate(
-            'ChargingStationConnectorDetailsTabs', {
+            'TransactionInProgressNavigator',
+            {
+              screen: 'ChargingStationConnectorDetailsTabs',
               params: {
-                chargingStationID: transactions.result[0].chargeBoxID,
-                connectorID: transactions.result[0].connectorId
+                params: {
+                  chargingStationID: transactions.result[0].chargeBoxID,
+                  connectorID: transactions.result[0].connectorId
+                }
               },
               key: `${Utils.randomNumber()}`
             }
           );
         } else {
-          navigation.navigate('TransactionInProgressNavigator');
+          navigation.navigate('TransactionInProgressNavigator',
+            {
+              screen: 'TransactionsInProgress',
+              key: `${Utils.randomNumber()}`
+            });
         }
       } else {
-        navigation.navigate('TransactionInProgressNavigator');
+        navigation.navigate('TransactionInProgressNavigator',
+          {
+            screen: 'TransactionsInProgress',
+            key: `${Utils.randomNumber()}`
+          });
       }
     } catch (error) {
       // Other common Error
@@ -119,88 +130,97 @@ export default class Home extends BaseScreen<Props, State> {
           <ChargingStationQrCode
             navigation={this.props.navigation}
             tenants={this.tenants}
-            tenantSubDomain={this.tenantSubDomain}
+            currentTenantSubDomain={this.tenantSubDomain}
             close={() => {
-              Orientation.unlockAllOrientations();
-              this.setState({qrCodeVisible: false})
+              this.setState({ qrCodeVisible: false });
+              return true;
             }}
           />
         ) : (
-          <Container style={style.container}>
-            <HeaderComponent
-              navigation={navigation}
-              title={I18n.t('sidebar.home')}
-              rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
-              rightActionIcon={'menu'}
-            />
-            <Content style={cardStyle.cards}>
-              {isComponentOrganizationActive && (
+            <Container style={style.container}>
+              <HeaderComponent
+                navigation={navigation}
+                title={I18n.t('sidebar.home')}
+                rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
+                rightActionIcon={'menu'}
+                tenantLogo={this.centralServerProvider?.getCurrentTenantLogo()}
+              />
+              <Content style={cardStyle.cards}>
+                {isComponentOrganizationActive && (
+                  <Card style={cardStyle.card}>
+                    <CardItem style={cardStyle.cardItem} button={true}
+                      onPress={() => navigation.navigate('SitesNavigator', { screen: 'Sites', key: `${Utils.randomNumber()}` })}>
+                      <Left>
+                        <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='store-mall-directory' />
+                        <Body>
+                          <Text style={cardStyle.cardText}>{I18n.t('home.browseSites')}</Text>
+                          <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.browseSitesNote')}</Text>
+                        </Body>
+                      </Left>
+                    </CardItem>
+                  </Card>
+                )}
                 <Card style={cardStyle.card}>
-                  <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate('SitesNavigator')}>
+                  <CardItem style={cardStyle.cardItem} button={true}
+                    onPress={() => navigation.navigate('ChargingStationsNavigator', { screen: 'ChargingStations', key: `${Utils.randomNumber()}` })}>
                     <Left>
-                      <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='store-mall-directory' />
+                      <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='ev-station' />
                       <Body>
-                        <Text style={cardStyle.cardText}>{I18n.t('home.browseSites')}</Text>
-                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.browseSitesNote')}</Text>
+                        <Text style={cardStyle.cardText}>{I18n.t('home.browseChargers')}</Text>
+                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.browseChargersNote')}</Text>
                       </Body>
                     </Left>
                   </CardItem>
                 </Card>
-              )}
-              <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate('ChargingStationsNavigator')}>
-                  <Left>
-                    <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='ev-station' />
-                    <Body>
-                      <Text style={cardStyle.cardText}>{I18n.t('home.browseChargers')}</Text>
-                      <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.browseChargersNote')}</Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
-              <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate('TransactionHistoryNavigator' )}>
-                  <Left>
-                    <Icon style={cardStyle.cardIcon} type='MaterialCommunityIcons' name='history' />
-                    <Body>
-                      <Text style={cardStyle.cardText}>{I18n.t('home.browseSessions')}</Text>
-                      <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.browseSessionsNote')}</Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
-              <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem} button={true} onPress={this.navigateToTransactionInProgress}>
-                  <Left>
-                    <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='play-arrow' />
-                    <Body>
-                      <Text style={cardStyle.cardText}>{I18n.t('home.ongoingSessions')}</Text>
-                      <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.ongoingSessionsNote')}</Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
-              <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem} button={true} onPress={() => navigation.navigate('StatisticsNavigator')}>
-                  <Left>
-                    <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='assessment' />
-                    <Body>
-                      <Text style={cardStyle.cardText}>{I18n.t('home.browseStatistics')}</Text>
-                      <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.browseStatisticsNote')}</Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
-            </Content>
-            <View style={style.qrCodeContainer}>
-              <TouchableOpacity onPress={() => this.setState({qrCodeVisible: true})} style={style.qrCodeTouchableOpacity}>
-                <View style={style.qrCodeButton}>
-                  <Icon style={style.qrCodeIcon} type='AntDesign' name='qrcode'/>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </Container>
-        )}
+                <Card style={cardStyle.card}>
+                  <CardItem style={cardStyle.cardItem} button={true} onPress={() => this.setState({ qrCodeVisible: true })}>
+                    <Left>
+                      <Icon style={cardStyle.cardIcon} type='AntDesign' name='qrcode' />
+                      <Body>
+                        <Text style={cardStyle.cardText}>{I18n.t('qrCode.browseScan&Charge')}</Text>
+                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('qrCode.browseScan&ChargeNote')}</Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                </Card>
+                <Card style={cardStyle.card}>
+                  <CardItem style={cardStyle.cardItem} button={true}
+                    onPress={() => navigation.navigate('TransactionHistoryNavigator', { screen: 'TransactionsHistory', key: `${Utils.randomNumber()}` })}>
+                    <Left>
+                      <Icon style={cardStyle.cardIcon} type='MaterialCommunityIcons' name='history' />
+                      <Body>
+                        <Text style={cardStyle.cardText}>{I18n.t('home.browseSessions')}</Text>
+                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.browseSessionsNote')}</Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                </Card>
+                <Card style={cardStyle.card}>
+                  <CardItem style={cardStyle.cardItem} button={true} onPress={this.navigateToTransactionInProgress}>
+                    <Left>
+                      <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='play-arrow' />
+                      <Body>
+                        <Text style={cardStyle.cardText}>{I18n.t('home.ongoingSessions')}</Text>
+                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.ongoingSessionsNote')}</Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                </Card>
+                <Card style={cardStyle.card}>
+                  <CardItem style={cardStyle.cardItem} button={true}
+                    onPress={() => navigation.navigate('StatisticsNavigator', { key: `${Utils.randomNumber()}` })}>
+                    <Left>
+                      <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='assessment' />
+                      <Body>
+                        <Text style={cardStyle.cardText}>{I18n.t('home.browseStatistics')}</Text>
+                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.browseStatisticsNote')}</Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                </Card>
+              </Content>
+            </Container>
+          )}
       </Container>
     );
   };

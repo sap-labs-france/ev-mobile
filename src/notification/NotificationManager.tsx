@@ -1,4 +1,4 @@
-import { CommonActions, DrawerActions, NavigationContainerRef } from '@react-navigation/native';
+import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Platform } from 'react-native';
 import firebase from 'react-native-firebase';
@@ -7,6 +7,7 @@ import { Notification, NotificationOpen } from 'react-native-firebase/notificati
 import CentralServerProvider from '../provider/CentralServerProvider';
 import { UserNotificationType } from '../types/UserNotifications';
 import Message from '../utils/Message';
+import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 
 export default class NotificationManager {
@@ -145,35 +146,78 @@ export default class NotificationManager {
   }
 
   private async processOpenedNotification(notificationOpen: NotificationOpen): Promise<boolean> {
+    let connectionIsValid = true;
+    // Not valid
+    if (!notificationOpen?.notification?.data) {
+      return true;
+    }
     // Get information about the notification that was opened
     const notification: Notification = notificationOpen.notification;
-    // No: meaning the user got the notif and clicked on it, then navigate to the right screen
     // User must be logged and Navigation available
-    if (!this.centralServerProvider.isUserConnectionValid() || !this.navigator) {
-      // Process it later
+    if (!this.navigator || !this.centralServerProvider) {
+      // Process later
       this.lastNotification = notificationOpen;
       return false;
     }
-    // Check Tenant
-    if (this.centralServerProvider.getUserInfo().tenantID !== notification.data.tenantID) {
-      Message.showError(I18n.t('general.wrongTenant'));
+    // Check tenant
+    if (!notification.data.tenantSubdomain) {
+      Message.showError(I18n.t('general.tenantMissing'));
       return false;
+    }
+    // Check if tenant exists
+    const tenant = await this.centralServerProvider.getTenant(notification.data.tenantSubdomain);
+    if (!tenant) {
+      Message.showError(I18n.t('general.tenantUnknown', { tenantSubdomain: notification.data.tenantSubdomain }));
+      return false;
+    }
+    // Check current connection
+    if (!this.centralServerProvider.isUserConnectionValid()) {
+      connectionIsValid = false;
+    // Check current Tenant
+    } else if (this.centralServerProvider.getUserInfo().tenantSubdomain !== tenant.subdomain) {
+      connectionIsValid = false;
+    }
+    // Establish connection
+    if (!connectionIsValid) {
+      // Try to login
+      const userCredentials = await SecuredStorage.getUserCredentials(tenant.subdomain);
+      if (userCredentials) {
+        // Login
+        try {
+          await this.centralServerProvider.login(
+            userCredentials.email, userCredentials.password, true, userCredentials.tenantSubDomain);
+        } catch (error) {
+          // Cannot login
+          Message.showError(I18n.t('general.mustLoggedToTenant', { tenantName: tenant.name }));
+          return false;
+        }
+      } else {
+        // Cannot login
+        Message.showError(I18n.t('general.mustLoggedToTenant', { tenantName: tenant.name }));
+        return false;
+      }
     }
     // Check
     switch (notification.data.notificationType) {
       // End of Transaction
       case UserNotificationType.END_OF_SESSION:
         this.navigator.dispatch(
-          DrawerActions.jumpTo(
-            'TransactionHistoryNavigator',
+          StackActions.replace(
+            'AppDrawerNavigator',
             {
-              name: 'TransactionDetailsTabs',
-              key: `${Utils.randomNumber()}`,
+              screen: 'TransactionHistoryNavigator',
+              initial: false,
               params: {
-                transactionID: parseInt(notification.data.transactionId, 10)
+                screen: 'TransactionDetailsTabs',
+                key: `${Utils.randomNumber()}`,
+                params: {
+                  params: {
+                    transactionID: Utils.convertToInt(notification.data.transactionId)
+                  }
+                }
               }
             }
-          )
+          ),
         );
         break;
       // Session In Progress
@@ -181,60 +225,81 @@ export default class NotificationManager {
       case UserNotificationType.END_OF_CHARGE:
       case UserNotificationType.OPTIMAL_CHARGE_REACHED:
         this.navigator.dispatch(
-          DrawerActions.jumpTo(
-            'TransactionInProgressNavigator',
+          StackActions.replace(
+            'AppDrawerNavigator',
             {
-              name: 'ChargingStationConnectorDetailsTabs',
-              key: `${Utils.randomNumber()}`,
+              screen: 'TransactionInProgressNavigator',
+              initial: false,
               params: {
-                chargingStationID: notification.data.chargeBoxID,
-                connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                screen: 'ChargingStationConnectorDetailsTabs',
+                key: `${Utils.randomNumber()}`,
+                params: {
+                  params: {
+                    chargingStationID: notification.data.chargeBoxID,
+                    connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                  }
+                }
               }
             }
-          )
+          ),
         );
         break;
       case UserNotificationType.CHARGING_STATION_STATUS_ERROR:
       case UserNotificationType.PREPARING_SESSION_NOT_STARTED:
         this.navigator.dispatch(
-          DrawerActions.jumpTo(
-            'ChargingStationsNavigator',
+          StackActions.replace(
+            'AppDrawerNavigator',
             {
-              name: 'ChargingStationConnectorDetailsTabs',
-              key: `${Utils.randomNumber()}`,
+              screen: 'ChargingStationsNavigator',
+              initial: false,
               params: {
-                chargingStationID: notification.data.chargeBoxID,
-                connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                screen: 'ChargingStationConnectorDetailsTabs',
+                key: `${Utils.randomNumber()}`,
+                params: {
+                  params: {
+                    chargingStationID: notification.data.chargeBoxID,
+                    connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                  }
+                }
               }
             }
-          )
+          ),
         );
         break;
       // Charger just connected
       case UserNotificationType.SESSION_NOT_STARTED_AFTER_AUTHORIZE:
       case UserNotificationType.CHARGING_STATION_REGISTERED:
         this.navigator.dispatch(
-          DrawerActions.jumpTo(
-            'ChargingStationsNavigator',
+          StackActions.replace(
+            'AppDrawerNavigator',
             {
-              name: 'ChargingStationConnectorDetailsTabs',
-              key: `${Utils.randomNumber()}`,
+              screen: 'ChargingStationsNavigator',
+              initial: false,
               params: {
-                chargingStationID: notification.data.chargeBoxID,
-                connectorID: 1
+                screen: 'ChargingStationConnectorDetailsTabs',
+                key: `${Utils.randomNumber()}`,
+                params: {
+                  params: {
+                    chargingStationID: notification.data.chargeBoxID,
+                    connectorID: 1
+                  }
+                }
               }
             }
-          )
+          ),
         );
         break;
       // Go to Charger list
       case UserNotificationType.OFFLINE_CHARGING_STATION:
-        // Navigate
         this.navigator.dispatch(
-          CommonActions.navigate({
-            name: 'ChargingStations',
-            key: `${Utils.randomNumber()}`
-          })
+          StackActions.replace(
+            'AppDrawerNavigator',
+            {
+              screen: 'ChargingStationsNavigator',
+              initial: false,
+              key: `${Utils.randomNumber()}`,
+            }
+          ),
         );
         break;
       // No need to navigate

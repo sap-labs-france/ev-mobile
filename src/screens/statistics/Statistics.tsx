@@ -111,7 +111,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
           StartDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime.toISOString() : null,
           EndDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime.toISOString() : null,
         },
-        Constants.ONLY_RECORD_COUNT_PAGING
+        Constants.ONLY_RECORD_COUNT
       );
       return transactions;
     } catch (error) {
@@ -146,7 +146,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
           title={I18n.t('home.statistics')}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
-          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
           rightActionIcon={'menu'}
           filters={filters}
         />

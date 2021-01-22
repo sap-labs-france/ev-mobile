@@ -46,7 +46,8 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
           onPress={() => {
             if (siteArea.connectorStats.totalConnectors > 0) {
               navigation.navigate(
-                'ChargingStations', {
+                'ChargingStations',
+                {
                   params: {
                     siteAreaID: siteArea.id
                   },
@@ -61,10 +62,10 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
             <View style={style.headerContent}>
               <View style={style.titleContainer}>
                 <TouchableOpacity disabled={!validGPSCoordinates}
-                    onPress={() => Utils.jumpToMapWithAddress(siteArea.name, siteArea.address)}>
-                  { validGPSCoordinates ?
+                  onPress={() => Utils.jumpToMapWithAddress(siteArea.name, siteArea.address)}>
+                  {validGPSCoordinates ?
                     <Icon style={[style.icon, style.iconLeft]} type='MaterialIcons' name='place' />
-                  :
+                    :
                     <Icon style={[style.icon, style.iconLeft]} type='MaterialCommunityIcons' name='map-marker-off' />
                   }
                 </TouchableOpacity>

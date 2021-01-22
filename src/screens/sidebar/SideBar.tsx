@@ -1,12 +1,12 @@
-import { DrawerActions } from '@react-navigation/native';
+import { DrawerActions, StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import moment from 'moment';
 import { Container, Content, Header, Icon, ListItem, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import { Image, ImageStyle, TouchableOpacity } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
-import logo from '../../../assets/logo-low.png';
+import defaultTenantLogo from '../../../assets/logo-low.png';
 import noPhoto from '../../../assets/no-photo-inverse.png';
 import BaseProps from '../../types/BaseProps';
 import Constants from '../../utils/Constants';
@@ -97,8 +97,16 @@ export default class SideBar extends BaseScreen<Props, State> {
     // Logoff
     this.centralServerProvider.setAutoLoginDisabled(true);
     await this.centralServerProvider.logoff();
-    // Back to login
-    this.props.navigation.navigate('AuthNavigator');
+    // Navigate to login
+    this.props.navigation.dispatch(
+      StackActions.replace(
+        'AuthNavigator',
+        {
+          name: 'Login',
+          key: `${Utils.randomNumber()}`,
+        }
+      ),
+    );
   }
 
   public navigateTo = (container: string, screen: string, params = {}) => {
@@ -120,11 +128,13 @@ export default class SideBar extends BaseScreen<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     const { navigation } = this.props;
     const { userName, userImage, tenantName, isComponentOrganizationActive, updateDate } = this.state;
+    // Get logo
+    const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
       <Container style={style.container}>
         <Content style={style.drawerContent}>
           <Header style={style.header}>
-            <Image source={logo} style={style.logo} />
+            <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logo as ImageStyle} />
             <Text numberOfLines={1} style={style.tenantName}>
               {tenantName}
             </Text>
@@ -160,8 +170,8 @@ export default class SideBar extends BaseScreen<Props, State> {
               <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
             </ListItem>
             <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
-              <Icon style={[style.linkIcon, {color: commonColor.brandDanger}]} type='MaterialIcons' name='error-outline'/>
-              <Text style={[style.linkText, {color: commonColor.brandDanger}]}>{I18n.t('sidebar.reportError')}</Text>
+              <Icon style={[style.linkIcon, { color: commonColor.brandDanger }]} type='MaterialIcons' name='error-outline' />
+              <Text style={[style.linkText, { color: commonColor.brandDanger }]}>{I18n.t('sidebar.reportError')}</Text>
             </ListItem>
             {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
               <Icon name="ios-settings-outline" />
@@ -186,7 +196,7 @@ export default class SideBar extends BaseScreen<Props, State> {
               </View>
               <View style={style.columnThumbnail}>
                 <TouchableOpacity style={style.buttonThumbnail} onPress={() => navigation.navigate('Profile')}>
-                  <Thumbnail style={style.profilePic} source={userImage ? { uri: userImage } : noPhoto} />
+                  <Thumbnail style={style.profilePic as ImageStyle} source={userImage ? { uri: userImage } : noPhoto} />
                 </TouchableOpacity>
               </View>
             </View>
