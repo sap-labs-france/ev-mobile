@@ -153,7 +153,7 @@
     "unknownChargingStation": "Unknown Charging Station '{{chargingStationID}}'",
     "unknownConnector": "Unknown Connector ID '{{connectorID}}'",
     "scanTenantQrCodeTitle": "Scan Tenant",
-    "scanTenantQrCodeSuccess": "L'organisation '{{tenantName}}' a été scannée avec succès",
+    "scanTenantQrCodeSuccess": "Organization '{{tenantName}}' has been saved successfully",
     "scanChargingStationQrCodeTitle": "Scan Charging Station"
   },
   "users": {
