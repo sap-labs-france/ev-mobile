@@ -84,7 +84,7 @@ export default class NotificationManager {
             break;
           // Display notif
           default:
-            if (notification.data.notificationType in UserNotificationType) {
+            if (Object.values(UserNotificationType).includes(notification.data.notificationType as UserNotificationType)) {
               await firebase.notifications().displayNotification(notification);
             }
             break;
