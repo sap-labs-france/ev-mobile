@@ -82,9 +82,11 @@ export default class NotificationManager {
           case UserNotificationType.END_OF_SESSION:
           case UserNotificationType.SESSION_STARTED:
             break;
-          // Force display notif
+          // Display notif
           default:
-            await firebase.notifications().displayNotification(notification);
+            if (Object.values(UserNotificationType).includes(notification.data.notificationType as UserNotificationType)) {
+              await firebase.notifications().displayNotification(notification);
+            }
             break;
         }
       } else {
