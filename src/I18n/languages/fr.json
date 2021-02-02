@@ -70,6 +70,9 @@
     "reportError": "Signaler Erreur"
   },
   "authentication": {
+    "noTenantFoundTitle" : "Aucune organisation trouvée",
+    "addTenantButton" : "Scanner un QR code",
+    "noTenantFoundMessage" : "Voulez-vous en ajouter un?",
     "tenantTitle": "Organisation",
     "mandatoryTenantSubDomain": "Le sous-domaine de l'organization est obligatoire",
     "mandatoryTenantName": "Le nom de l'organization est obligatoire",

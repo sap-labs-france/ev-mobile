@@ -122,12 +122,9 @@ export default class CentralServerProvider {
 
   public async getTenants(): Promise<TenantConnection[]> {
     // Get the tenants from the storage first
-    let tenants = await SecuredStorage.getTenants();
+    const tenants = await SecuredStorage.getTenants();
     if (!tenants) {
-      // Get initial tenants
-      tenants = this.getInitialTenants();
-      // Save them
-      await SecuredStorage.saveTenants(tenants);
+      return []
     }
     return tenants.sort((tenant1: TenantConnection, tenant2: TenantConnection) => {
       if (tenant1.name < tenant2.name) {
