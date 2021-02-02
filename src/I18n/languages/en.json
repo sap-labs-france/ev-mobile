@@ -70,6 +70,9 @@
     "reportError": "Report Error"
   },
   "authentication": {
+    "noTenantFoundTitle" : "No tenant found",
+    "addTenantButton" : "Scan QR code",
+    "noTenantFoundMessage" : "Do you want to add one?",
     "tenantTitle": "Organization",
     "mandatoryTenantSubDomain": "The Organization subdomain is mandatory",
     "mandatoryTenantName": "The Organization name is mandatory",
