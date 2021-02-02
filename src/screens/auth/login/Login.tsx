@@ -102,6 +102,10 @@ export default class Login extends BaseScreen<Props, State> {
     let tenantLogo: string;
     // Get tenants
     this.tenants = await this.centralServerProvider.getTenants();
+    console.log(this.tenants)
+    if(this.tenants.length === 0){
+      this.noTenantFoundMessage();
+    }
     // Check if sub-domain is provided
     if (!this.state.tenantSubDomain) {
       // Not provided: display latest saved credentials
@@ -153,6 +157,18 @@ export default class Login extends BaseScreen<Props, State> {
         });
       }
     }
+  }
+
+  private noTenantFoundMessage(){
+    Alert.alert(
+      I18n.t('authentication.noTenantFoundTitle'),
+      I18n.t('authentication.noTenantFoundMessage'),
+      [
+        {text: I18n.t('authentication.addTenantButton') , onPress:() => {return}},
+        {text: I18n.t('general.close'), style: 'cancel' }
+      ]
+    )
+
   }
 
   public async checkAutoLogin(tenant: TenantConnection, email: string, password: string) {
@@ -326,7 +342,7 @@ export default class Login extends BaseScreen<Props, State> {
     const navigation = this.props.navigation;
     const { tenantLogo, eula, loading, initialLoading, hidePassword } = this.state;
     // Render
-    return initialLoading ? (
+    return  initialLoading ? (
       <Spinner style={formStyle.spinner} color='grey' />
     ) : (
         <View style={style.container}>
@@ -440,4 +456,6 @@ export default class Login extends BaseScreen<Props, State> {
         </View>
       );
   }
+
+
 }
