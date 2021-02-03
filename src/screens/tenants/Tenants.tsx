@@ -27,6 +27,7 @@ interface State {
 
 
 
+
 export default class Tenants extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
@@ -63,12 +64,23 @@ export default class Tenants extends BaseScreen<Props, State> {
     )
   }
 
+  private goToSignUp(tenant : TenantConnection) {
+    this.props.navigation.navigate(
+      'SignUp',
+      {
+        params: {
+          tenantSubDomain: tenant.subdomain,
+        }
+      }
+    );
+  }
+
   private registerToNewTenantMessage(tenant : TenantConnection) {
     Alert.alert(
       I18n.t('general.createTenantSuccess', { tenantName: tenant.name }),
       I18n.t('general.registerToNewTenantMessage'),
       [
-        { text: I18n.t('general.yes'), onPress: () => {  } },
+        { text: I18n.t('general.yes'), onPress: () => {this.goToSignUp(tenant)} },
         { text: I18n.t('general.close'), style: 'cancel' },
       ]
     )
