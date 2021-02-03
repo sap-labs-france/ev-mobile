@@ -25,6 +25,8 @@ interface State {
   createQrCodeTenantVisible?: boolean
 }
 
+
+
 export default class Tenants extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
@@ -41,6 +43,8 @@ export default class Tenants extends BaseScreen<Props, State> {
     await super.componentDidMount();
     const tenants = await this.centralServerProvider.getTenants();
     this.setState({ tenants });
+    const scanQRCode = Utils.getParamFromNavigation(this.props.route, 'openQRCode', this.state.createQrCodeTenantVisible);
+    this.setState({createQrCodeTenantVisible: scanQRCode})
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
@@ -54,6 +58,17 @@ export default class Tenants extends BaseScreen<Props, State> {
       [
         { text: I18n.t('qrCode.qrCode'), onPress: () => { this.setState({ createQrCodeTenantVisible: true }) } },
         { text: I18n.t('general.manually'), onPress: () => { this.setState({ createTenantVisible: true }) } },
+        { text: I18n.t('general.close'), style: 'cancel' },
+      ]
+    )
+  }
+
+  private registerToNewTenantMessage(tenant : TenantConnection) {
+    Alert.alert(
+      I18n.t('general.createTenantSuccess', { tenantName: tenant.name }),
+      I18n.t('general.registerToNewTenantMessage'),
+      [
+        { text: I18n.t('general.yes'), onPress: () => {  } },
         { text: I18n.t('general.close'), style: 'cancel' },
       ]
     )
@@ -77,6 +92,9 @@ export default class Tenants extends BaseScreen<Props, State> {
           tenants,
         });
         Message.showSuccess(I18n.t('general.createTenantSuccess', { tenantName: newTenant.name }));
+
+        this.registerToNewTenantMessage(newTenant);
+
       }
     }
   };
