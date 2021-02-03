@@ -13,7 +13,6 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
-import Tenants from "../../tenants/Tenants";
 
 export interface Props extends BaseProps {
 }
