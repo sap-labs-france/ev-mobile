@@ -510,7 +510,7 @@ export default class Utils {
     return new Promise((resolve) => setTimeout(resolve, millis));
   }
 
-  public static getParamFromNavigation(route: any, name: string, defaultValue: string, removeValue = false): string | number | boolean | object {
+  public static getParamFromNavigation(route: any, name: string, defaultValue: any, removeValue = false): string | number | boolean | object {
     const params: any = route.params?.params ? route.params.params : route.params
     // Has param object?
     if (!params) {
