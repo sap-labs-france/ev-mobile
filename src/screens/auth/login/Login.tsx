@@ -102,7 +102,7 @@ export default class Login extends BaseScreen<Props, State> {
     let tenantLogo: string;
     // Get tenants
     this.tenants = await this.centralServerProvider.getTenants();
-    if(this.tenants?.length === 0){
+    if(Utils.isEmptyArray(this.tenants)){
       this.noTenantFoundMessage();
     }
 
@@ -169,8 +169,8 @@ export default class Login extends BaseScreen<Props, State> {
         {text: I18n.t('general.close'), style: 'cancel' }
       ]
     )
-
   }
+
   private goToTenants(openQRCode = false) {
     this.props.navigation.navigate(
       'Tenants',
