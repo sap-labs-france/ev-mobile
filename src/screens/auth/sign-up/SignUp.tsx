@@ -209,12 +209,6 @@ export default class SignUp extends BaseScreen<Props, State> {
     return true;
   };
 
-  private goToLogin() {
-    this.props.navigation.navigate(
-      'Login'
-    );
-  }
-
   public render() {
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
@@ -390,7 +384,9 @@ export default class SignUp extends BaseScreen<Props, State> {
         </ScrollView>
         <Footer style={style.footer}>
           <Left>
-            <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.goToLogin()}>
+            <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]} onPress={() => navigation.navigate(
+              'Login'
+            )}>
               <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>{I18n.t('authentication.backLogin')}</Text>
             </Button>
           </Left>

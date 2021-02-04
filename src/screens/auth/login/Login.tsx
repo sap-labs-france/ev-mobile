@@ -102,10 +102,16 @@ export default class Login extends BaseScreen<Props, State> {
     let tenantLogo: string;
     // Get tenants
     this.tenants = await this.centralServerProvider.getTenants();
-    if(Utils.isEmptyArray(this.tenants)){
-      this.noTenantFoundMessage();
+    if (Utils.isEmptyArray(this.tenants)) {
+      Alert.alert(
+        I18n.t('authentication.noTenantFoundTitle'),
+        I18n.t('authentication.noTenantFoundMessage'),
+        [
+          {text: I18n.t('authentication.addTenantButton') , onPress:() => { this.goToTenants(true) }},
+          {text: I18n.t('general.close'), style: 'cancel' }
+        ]
+      );
     }
-
     // Check if sub-domain is provided
     if (!this.state.tenantSubDomain) {
       // Not provided: display latest saved credentials
@@ -140,7 +146,6 @@ export default class Login extends BaseScreen<Props, State> {
       tenantSubDomain: tenant ? tenant.subdomain : null,
       initialLoading: false
     }, async () => await this.checkAutoLogin(tenant, email, password));
-
   }
 
   public async componentDidFocus() {
@@ -160,17 +165,6 @@ export default class Login extends BaseScreen<Props, State> {
     }
   }
 
-  private noTenantFoundMessage(){
-    Alert.alert(
-      I18n.t('authentication.noTenantFoundTitle'),
-      I18n.t('authentication.noTenantFoundMessage'),
-      [
-        {text: I18n.t('authentication.addTenantButton') , onPress:() => {this.goToTenants(true)}},
-        {text: I18n.t('general.close'), style: 'cancel' }
-      ]
-    )
-  }
-
   private goToTenants(openQRCode = false) {
     this.props.navigation.navigate(
       'Tenants',
@@ -179,6 +173,7 @@ export default class Login extends BaseScreen<Props, State> {
         openQRCode
       }
     )
+
   }
   public async checkAutoLogin(tenant: TenantConnection, email: string, password: string) {
     // Check if user can be logged
@@ -352,19 +347,17 @@ export default class Login extends BaseScreen<Props, State> {
     const { tenantLogo, eula, loading, initialLoading, hidePassword } = this.state;
     // Render
     return initialLoading ? (
-      <Spinner style={formStyle.spinner} color='grey'/>
+      <Spinner style={formStyle.spinner} color='grey' />
     ) : (
       <View style={style.container}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
-            <AuthHeader navigation={this.props.navigation} tenantLogo={tenantLogo}/>
-            <Button small={true} transparent={true} style={[style.linksButton]}
-                    onPress={() => this.newUser()}>
-              <Text style={style.linksTextButton}
-                    uppercase={false}>{I18n.t('authentication.newUser')}</Text>
+            <AuthHeader navigation={this.props.navigation} tenantLogo={tenantLogo} />
+            <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.newUser()}>
+              <Text style={style.linksTextButton} uppercase={false}>{I18n.t('authentication.newUser')}</Text>
             </Button>
             <Form style={formStyle.form}>
-              <Button block={true} style={formStyle.button} onPress={() => this.goToTenants()}>
+              <Button block={true} style={formStyle.button} onPress={ () => this.goToTenants() }>
                 <Text style={formStyle.buttonText} uppercase={false}>{this.state.tenantName}</Text>
               </Button>
               {this.state.errorTenantSubDomain &&
@@ -375,8 +368,7 @@ export default class Login extends BaseScreen<Props, State> {
               ))
               }
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='email' type='MaterialCommunityIcons'
-                      style={formStyle.inputIcon}/>
+                <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType='next'
                   selectionColor={commonColor.textColor}
@@ -389,7 +381,7 @@ export default class Login extends BaseScreen<Props, State> {
                   autoCorrect={false}
                   keyboardType={'email-address'}
                   secureTextEntry={false}
-                  onChangeText={(text) => this.setState({email: text})}
+                  onChangeText={(text) => this.setState({ email: text })}
                   value={this.state.email}
                 />
               </Item>
@@ -401,8 +393,7 @@ export default class Login extends BaseScreen<Props, State> {
               ))
               }
               <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='lock' type='MaterialCommunityIcons'
-                      style={formStyle.inputIcon}/>
+                <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType='go'
                   selectionColor={commonColor.textColor}
@@ -416,12 +407,12 @@ export default class Login extends BaseScreen<Props, State> {
                   autoCorrect={false}
                   keyboardType={'default'}
                   secureTextEntry={hidePassword}
-                  onChangeText={(text) => this.setState({password: text})}
+                  onChangeText={(text) => this.setState({ password: text })}
                   value={this.state.password}
                 />
                 <Icon active={true} name={hidePassword ? 'eye' : 'eye-off'} type='Ionicons'
-                      onPress={() => this.setState({hidePassword: !hidePassword})}
-                      style={formStyle.inputIcon}/>
+                      onPress={() => this.setState({ hidePassword: !hidePassword })}
+                      style={formStyle.inputIcon} />
               </Item>
               {this.state.errorPassword &&
               this.state.errorPassword.map((errorMessage, index) => (
@@ -430,14 +421,11 @@ export default class Login extends BaseScreen<Props, State> {
                 </Text>
               ))
               }
-              <Button small={true} transparent={true} style={[style.linksButton]}
-                      onPress={() => this.forgotPassword()}>
-                <Text style={[style.linksTextButton, style.linksTextButton]}
-                      uppercase={false}>{I18n.t('authentication.forgotYourPassword')}</Text>
+              <Button small={true} transparent={true} style={[style.linksButton]} onPress={() => this.forgotPassword()}>
+                <Text style={[style.linksTextButton, style.linksTextButton]} uppercase={false}>{I18n.t('authentication.forgotYourPassword')}</Text>
               </Button>
               <View style={formStyle.formCheckboxContainer}>
-                <CheckBox style={formStyle.checkbox} checked={eula}
-                          onPress={() => this.setState({eula: !eula})}/>
+                <CheckBox style={formStyle.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
                 <Text style={formStyle.checkboxText}>
                   {I18n.t('authentication.acceptEula')}
                   <Text onPress={() => navigation.navigate('Eula')} style={style.eulaLink}>
@@ -453,12 +441,10 @@ export default class Login extends BaseScreen<Props, State> {
               ))
               }
               {loading ? (
-                <Spinner style={formStyle.spinner} color='grey'/>
+                <Spinner style={formStyle.spinner} color='grey' />
               ) : (
-                <Button primary={true} block={true} style={formStyle.button}
-                        onPress={() => this.login()}>
-                  <Text style={formStyle.buttonText}
-                        uppercase={false}>{I18n.t('authentication.login')}</Text>
+                <Button primary={true} block={true} style={formStyle.button} onPress={() => this.login()}>
+                  <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.login')}</Text>
                 </Button>
               )}
             </Form>
@@ -467,6 +453,4 @@ export default class Login extends BaseScreen<Props, State> {
       </View>
     );
   }
-
-
 }
