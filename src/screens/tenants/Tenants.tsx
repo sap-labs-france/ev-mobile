@@ -80,7 +80,6 @@ export default class Tenants extends BaseScreen<Props, State> {
           tenants,
         });
         Message.showSuccess(I18n.t('general.createTenantSuccess', { tenantName: newTenant.name }));
-
         Alert.alert(
           I18n.t('general.createTenantSuccess', { tenantName: newTenant.name }),
           I18n.t('general.registerToNewTenantMessage'),
@@ -96,7 +95,6 @@ export default class Tenants extends BaseScreen<Props, State> {
             { text: I18n.t('general.close'), style: 'cancel' },
           ]
         );
-
       }
     }
   };

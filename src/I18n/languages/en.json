@@ -36,7 +36,6 @@
     "restoreTenantsConfirm": "Do you really want to restore the initial list of organizations?",
     "restoreTenantsSuccess": "Organization list has been restored",
     "createTenantSuccess": "New tenant '{{tenantName}}' has been created",
-    "registerToNewTenantMessage" : "Do you want to register to the new tenant?",
     "noRecordFound": "No record found",
     "day": "d",
     "hour": "h",
