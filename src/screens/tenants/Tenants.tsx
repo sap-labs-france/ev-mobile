@@ -87,7 +87,8 @@ export default class Tenants extends BaseScreen<Props, State> {
           I18n.t('general.registerToNewTenantMessage'),
           [
             {
-              text: I18n.t('general.yes'), onPress: () => {
+              text: I18n.t('general.yes'),
+              onPress: () => {
                 this.props.navigation.navigate(
                   'SignUp', {
                     params: {
