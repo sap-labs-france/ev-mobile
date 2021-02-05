@@ -36,7 +36,7 @@
     "restoreTenantsConfirm": "Möchten Sie wirklich die ursprüngliche Liste der Organisationen wiederherstellen?",
     "restoreTenantsSuccess": "Liste der Organisationen wurde wieder hergestellt",
     "createTenantSuccess": "Neuer Tenant '{{tenantName}}' wurde erstellt",
-    "registerToNewTenantMessage": "Voulez-vous vous enregistrer dans cette organisation?",
+    "registerToNewTenantMessage": "Do you want to sign up for this organization?",
     "noRecordFound": "Kein Eintrag gefunden",
     "day": "d",
     "hour": "h",
