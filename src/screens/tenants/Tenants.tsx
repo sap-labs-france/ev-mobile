@@ -40,10 +40,12 @@ export default class Tenants extends BaseScreen<Props, State> {
   public async componentDidMount() {
     await super.componentDidMount();
     const tenants = await this.centralServerProvider.getTenants();
-    const createQrCodeTenantVisible = Utils.getParamFromNavigation(this.props.route, 'openQRCode', this.state.createQrCodeTenantVisible);
+    const createQrCodeTenantVisible = Utils.getParamFromNavigation(
+      this.props.route, 'openQRCode', this.state.createQrCodeTenantVisible);
     this.setState({
       tenants,
-      createQrCodeTenantVisible});
+      createQrCodeTenantVisible
+    });
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
@@ -84,14 +86,18 @@ export default class Tenants extends BaseScreen<Props, State> {
           I18n.t('general.createTenantSuccess', { tenantName: newTenant.name }),
           I18n.t('general.registerToNewTenantMessage'),
           [
-            { text: I18n.t('general.yes'), onPress: () => { this.props.navigation.navigate(
-                'SignUp',
-                {
-                  params: {
-                    tenantSubDomain: newTenant.subdomain,
+            {
+              text: I18n.t('general.yes'),
+              onPress: () => {
+                this.props.navigation.navigate(
+                  'SignUp', {
+                    params: {
+                      tenantSubDomain: newTenant.subdomain
+                    }
                   }
-                }
-              );}},
+                );
+              }
+            },
             { text: I18n.t('general.close'), style: 'cancel' },
           ]
         );
