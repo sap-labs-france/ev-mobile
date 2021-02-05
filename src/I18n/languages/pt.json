@@ -36,6 +36,7 @@
     "restoreTenantsConfirm": "Voce quer mesmo restaurar a lista inicial de organização?",
     "restoreTenantsSuccess": "Organization list has been restored",
     "createTenantSuccess": "New tenant '{{tenantName}}' has been created",
+    "registerToNewTenantMessage": "Do you want to sign up for this organization?",
     "noRecordFound": "Nenhum registo encontrado",
     "day": "d",
     "hour": "h",
@@ -70,6 +71,8 @@
     "reportError": "Comunicar erro"
   },
   "authentication": {
+    "noTenantFoundTitle" : "No organization found",
+    "noTenantFoundMessage" : "Do you want to add a new organization using a QR-Code?",
     "tenantTitle": "Organização",
     "mandatoryTenantSubDomain": "O subdominio da organização é obrigatório",
     "mandatoryTenantName": "O nome da organização é obrigatório",

@@ -36,6 +36,7 @@
     "restoreTenantsConfirm": "Do you really want to restore the initial list of organizations?",
     "restoreTenantsSuccess": "Organization list has been restored",
     "createTenantSuccess": "New tenant '{{tenantName}}' has been created",
+    "registerToNewTenantMessage": "Do you want to sign up for this organization?",
     "noRecordFound": "No record found",
     "day": "d",
     "hour": "h",
@@ -70,9 +71,8 @@
     "reportError": "Report Error"
   },
   "authentication": {
-    "noTenantFoundTitle" : "No tenant found",
-    "addTenantButton" : "Scan QR code",
-    "noTenantFoundMessage" : "Do you want to add one?",
+    "noTenantFoundTitle" : "No organization found",
+    "noTenantFoundMessage" : "Do you want to add a new organization using a QR-Code?",
     "tenantTitle": "Organization",
     "mandatoryTenantSubDomain": "The Organization subdomain is mandatory",
     "mandatoryTenantName": "The Organization name is mandatory",
