@@ -72,7 +72,7 @@
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",
-    "noTenantFoundMessage" : "Voulez-vous enregistrer une nouvelle organisation avec un QR-Code?",
+    "noTenantFoundMessage" : "Voulez-vous enregistrer une nouvelle organisation en utilisant le QR-Code?",
     "tenantTitle": "Organisation",
     "mandatoryTenantSubDomain": "Le sous-domaine de l'organization est obligatoire",
     "mandatoryTenantName": "Le nom de l'organization est obligatoire",
