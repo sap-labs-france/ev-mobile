@@ -49,7 +49,7 @@ export default class Utils {
     // Check
     if (typeof value === 'string') {
       // Create Object
-      changedValue = Utils.convertToInt(value);
+      changedValue = parseInt(value, 10);
     }
     return changedValue;
   }
