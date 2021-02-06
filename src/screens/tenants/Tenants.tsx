@@ -83,8 +83,8 @@ export default class Tenants extends BaseScreen<Props, State> {
         });
         Message.showSuccess(I18n.t('general.createTenantSuccess', { tenantName: newTenant.name }));
         Alert.alert(
-          I18n.t('general.createTenantSuccess', { tenantName: newTenant.name }),
-          I18n.t('general.registerToNewTenantMessage'),
+          I18n.t('general.registerToNewTenantTitle'),
+          I18n.t('general.registerToNewTenant', { tenantName: newTenant.name }),
           [
             {
               text: I18n.t('general.yes'),
@@ -117,24 +117,6 @@ export default class Tenants extends BaseScreen<Props, State> {
     Message.showSuccess(I18n.t('general.deleteTenantSuccess', { tenantName: tenant.name }));
   };
 
-  private restoreTenants = () => {
-    Alert.alert(
-      I18n.t('general.restoreTenants'),
-      I18n.t('general.restoreTenantsConfirm'), [
-      { text: I18n.t('general.no'), style: 'cancel' },
-      {
-        text: I18n.t('general.yes'), onPress: async () => {
-          // Remove from list and Save
-          const tenants = this.centralServerProvider.getInitialTenants();
-          // Save
-          await SecuredStorage.saveTenants(tenants);
-          this.setState({ tenants });
-          Message.showSuccess(I18n.t('general.restoreTenantsSuccess'));
-        }
-      }],
-    );
-  }
-
   public render() {
     const navigation = this.props.navigation
     const { tenants, createTenantVisible, createQrCodeTenantVisible } = this.state
@@ -164,9 +146,6 @@ export default class Tenants extends BaseScreen<Props, State> {
               />
               <View>
                 <View style={tenantStyle.toolBar}>
-                  <Button style={tenantStyle.restoreTenantButton} transparent={true} onPress={() => this.restoreTenants()}>
-                    <Icon style={tenantStyle.icon} type={'MaterialIcons'} name='settings-backup-restore' />
-                  </Button>
                   <Button style={tenantStyle.createTenantButton} transparent={true} onPress={() => this.createTenant()}>
                     <Icon style={tenantStyle.icon} type={'MaterialIcons'} name='add' />
                   </Button>

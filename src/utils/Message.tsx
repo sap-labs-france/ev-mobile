@@ -24,16 +24,16 @@ export default class Message {
   private static _show(message: string, type: 'danger' | 'success' | 'warning') {
     const commonColor = Utils.getCurrentCommonColor();
     Toast.show(message, {
-      shadow: true,
+      shadow: false,
       animation: true,
       hideOnPress: true,
       duration: Toast.durations.LONG,
       opacity: 1,
       position: Toast.positions.TOP + (Platform.OS === 'ios' ? 20 : 0),
+      textColor: commonColor.inverseTextColor,
       textStyle: {
         fontSize: scale(15),
         textAlign: 'center',
-        color: commonColor.brandLight,
       },
       backgroundColor: commonColor[type]
     });

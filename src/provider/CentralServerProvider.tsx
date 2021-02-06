@@ -6,8 +6,8 @@ import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { KeyValue } from 'types/Global';
 
-import I18nManager from '../I18n/I18nManager';
 import Configuration from '../config/Configuration';
+import I18nManager from '../I18n/I18nManager';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
@@ -135,13 +135,6 @@ export default class CentralServerProvider {
       }
       return 0;
     });
-  }
-
-  public getInitialTenants(): TenantConnection[] {
-    if (__DEV__) {
-      return Utils.cloneObject(Configuration.DEFAULT_TENANTS_LIST_QA) as TenantConnection[];
-    }
-    return Utils.cloneObject(Configuration.DEFAULT_TENANTS_LIST_PROD) as TenantConnection[];
   }
 
   public async getTenantLogoBySubdomain(tenant: TenantConnection): Promise<string> {
