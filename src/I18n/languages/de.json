@@ -35,7 +35,9 @@
     "restoreTenants": "Organisationen wiederherstellen?",
     "restoreTenantsConfirm": "Möchten Sie wirklich die ursprüngliche Liste der Organisationen wiederherstellen?",
     "restoreTenantsSuccess": "Liste der Organisationen wurde wieder hergestellt",
-    "createTenantSuccess": "Neuer Tenant '{{tenantName}}' wurde erstellt",
+    "createTenantSuccess": "New tenant '{{tenantName}}' has been registered",
+    "registerToNewTenantTitle": "Sign up",
+    "registerToNewTenant": "Do you want to sign up in the new organization '{{tenantName}}'?",
     "noRecordFound": "Kein Eintrag gefunden",
     "day": "d",
     "hour": "h",
@@ -50,7 +52,7 @@
     "tenantUnknown": "Unbekannte Organisation '{{tenantSubdomain}}'",
     "mustLoggedToTenant": "You must be logged to organization '{{tenantName}}'",
     "tenantMissing": "The organization is missing",
-    "tenantExists": "Die Organisation existiert bereits.",
+    "tenantExists": "Die Organisation '{{tenantName}}' existiert bereits.",
     "createdOn": "Erstellt am",
     "createdBy": "Erstellt von",
     "lastChangedOn": "Letzte Änderung am",
@@ -70,6 +72,8 @@
     "reportError": "Fehler Melden"
   },
   "authentication": {
+    "noTenantFoundTitle" : "No organization found",
+    "noTenantFoundMessage" : "Do you want to register a new organization using a QR-Code?",
     "tenantTitle": "Organization",
     "mandatoryTenantSubDomain": "Die Subdomain der Organisation ist notwendig",
     "mandatoryTenantName": "Der Name der Organisation ist notwendig",

@@ -102,6 +102,16 @@ export default class Login extends BaseScreen<Props, State> {
     let tenantLogo: string;
     // Get tenants
     this.tenants = await this.centralServerProvider.getTenants();
+    if (Utils.isEmptyArray(this.tenants)) {
+      Alert.alert(
+        I18n.t('authentication.noTenantFoundTitle'),
+        I18n.t('authentication.noTenantFoundMessage'),
+        [
+          {text: I18n.t('general.yes') , onPress:() => { this.goToTenants(true) }},
+          {text: I18n.t('general.close'), style: 'cancel' }
+        ]
+      );
+    }
     // Check if sub-domain is provided
     if (!this.state.tenantSubDomain) {
       // Not provided: display latest saved credentials
@@ -153,6 +163,17 @@ export default class Login extends BaseScreen<Props, State> {
         });
       }
     }
+  }
+
+  private goToTenants(openQRCode = false) {
+    this.props.navigation.navigate(
+      'Tenants',
+      {
+        key: `${Utils.randomNumber()}`,
+        openQRCode
+      }
+    )
+
   }
 
   public async checkAutoLogin(tenant: TenantConnection, email: string, password: string) {
@@ -326,7 +347,7 @@ export default class Login extends BaseScreen<Props, State> {
     const navigation = this.props.navigation;
     const { tenantLogo, eula, loading, initialLoading, hidePassword } = this.state;
     // Render
-    return initialLoading ? (
+    return  initialLoading ? (
       <Spinner style={formStyle.spinner} color='grey' />
     ) : (
         <View style={style.container}>
@@ -337,13 +358,7 @@ export default class Login extends BaseScreen<Props, State> {
                 <Text style={style.linksTextButton} uppercase={false}>{I18n.t('authentication.newUser')}</Text>
               </Button>
               <Form style={formStyle.form}>
-                <Button block={true} style={formStyle.button} onPress={() =>
-                  navigation.navigate(
-                    'Tenants',
-                    {
-                      key: `${Utils.randomNumber()}`
-                    }
-                  )}
+                <Button block={true} style={formStyle.button} onPress={ () => this.goToTenants() }
                 >
                   <Text style={formStyle.buttonText} uppercase={false}>{this.state.tenantName}</Text>
                 </Button>
