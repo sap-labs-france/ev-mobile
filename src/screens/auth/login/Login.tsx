@@ -108,7 +108,7 @@ export default class Login extends BaseScreen<Props, State> {
         I18n.t('authentication.noTenantFoundMessage'),
         [
           {text: I18n.t('general.yes') , onPress:() => { this.goToTenants(true) }},
-          {text: I18n.t('general.close'), style: 'cancel' }
+          {text: I18n.t('general.no'), style: 'cancel' }
         ]
       );
     }

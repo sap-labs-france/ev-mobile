@@ -3,6 +3,7 @@ import 'moment/locale/de';
 import 'moment/locale/en-gb';
 import 'moment/locale/es';
 import 'moment/locale/fr';
+import 'moment/locale/it';
 import 'moment/locale/pt-br';
 
 import i18n from 'i18n-js';
