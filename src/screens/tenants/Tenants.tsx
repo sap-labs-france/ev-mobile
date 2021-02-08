@@ -93,7 +93,6 @@ export default class Tenants extends BaseScreen<Props, State> {
                 navigation.navigate(
                   'SignUp',
                   {
-                    key: `${Utils.randomNumber()}`,
                     tenantSubDomain: newTenant.subdomain
                   }
                 );

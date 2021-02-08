@@ -206,7 +206,6 @@ export default class SignUp extends BaseScreen<Props, State> {
     // Back mobile button: Force navigation
     this.props.navigation.navigate(
       'Login', {
-        key: `${Utils.randomNumber()}`,
         tenantSubDomain: this.state.tenantSubDomain
       }
     );
