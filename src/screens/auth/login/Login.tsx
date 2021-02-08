@@ -150,10 +150,11 @@ export default class Login extends BaseScreen<Props, State> {
 
   public async componentDidFocus() {
     super.componentDidFocus();
+    const tenantSubDomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', this.state.tenantSubDomain )
     // Check if current Tenant selection is still valid (handle delete tenant usee case)
-    if (this.state.tenantSubDomain) {
+    if (tenantSubDomain) {
       // Get the current Tenant
-      const tenant = await this.centralServerProvider.getTenant(this.state.tenantSubDomain);
+      const tenant = await this.centralServerProvider.getTenant(tenantSubDomain.toString());
       if (!tenant) {
         // Refresh
         this.tenants = await this.centralServerProvider.getTenants();
@@ -162,6 +163,10 @@ export default class Login extends BaseScreen<Props, State> {
           tenantName: I18n.t('authentication.tenant'),
         });
       }
+      this.setState({
+        tenantSubDomain,
+        tenantName: tenant.name
+      });
     }
   }
 

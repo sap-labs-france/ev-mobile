@@ -204,7 +204,13 @@ export default class SignUp extends BaseScreen<Props, State> {
 
   public onBack = (): boolean => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate('Login');
+    console.log('onBack ' + this.state.tenantSubDomain)
+    this.props.navigation.navigate(
+      'Login', {
+        key: `${Utils.randomNumber()}`,
+        tenantSubDomain: this.state.tenantSubDomain
+      }
+    );
     // Do not bubble up
     return true;
   };
@@ -385,9 +391,7 @@ export default class SignUp extends BaseScreen<Props, State> {
         <Footer style={style.footer}>
           <Left>
             <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]}
-              onPress={() => navigation.navigate(
-                'Login'
-              )}>
+              onPress={() => this.onBack()}>
               <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>
                 {I18n.t('authentication.backLogin')}
               </Text>

@@ -125,6 +125,7 @@
     "password": "Password",
     "repeatPassword": "Repita a password",
     "signUp": "Inscreva-se",
+    "signIn": "Sign In",
     "passwordRule": "Deve conter 1 letra minúscula e maúscula, 1 numero, 1 caracter especial e um minimo de 8 caracteres",
     "passwordNotMatch": "Password não coincide",
     "tenant": "Organização",
