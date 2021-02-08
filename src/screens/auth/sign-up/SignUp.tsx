@@ -204,7 +204,6 @@ export default class SignUp extends BaseScreen<Props, State> {
 
   public onBack = (): boolean => {
     // Back mobile button: Force navigation
-    console.log('onBack ' + this.state.tenantSubDomain)
     this.props.navigation.navigate(
       'Login', {
         key: `${Utils.randomNumber()}`,
