@@ -161,12 +161,15 @@ export default class Login extends BaseScreen<Props, State> {
         this.setState({
           tenantSubDomain: null,
           tenantName: I18n.t('authentication.tenant'),
+          email: null,
+          password: null
+        });
+      } else {
+        this.setState({
+          tenantSubDomain,
+          tenantName: tenant.name
         });
       }
-      this.setState({
-        tenantSubDomain,
-        tenantName: tenant.name
-      });
     }
   }
 
