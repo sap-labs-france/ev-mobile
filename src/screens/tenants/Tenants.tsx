@@ -65,6 +65,7 @@ export default class Tenants extends BaseScreen<Props, State> {
   }
 
   private tenantCreated = async (newTenant: TenantConnection) => {
+    const navigation = this.props.navigation
     // Always close pop-up
     this.setState({
       createQrCodeTenantVisible: false,
@@ -87,18 +88,24 @@ export default class Tenants extends BaseScreen<Props, State> {
           I18n.t('general.registerToNewTenant', { tenantName: newTenant.name }),
           [
             {
-              text: I18n.t('general.yes'),
+              text: I18n.t('authentication.signUp'),
               onPress: () => {
-                this.props.navigation.navigate(
-                  'SignUp', {
-                    params: {
-                      tenantSubDomain: newTenant.subdomain
-                    }
+                navigation.navigate(
+                  'SignUp',
+                  {
+                    tenantSubDomain: newTenant.subdomain
                   }
                 );
               }
             },
-            { text: I18n.t('general.close'), style: 'cancel' },
+            { text: I18n.t('authentication.signIn'), style: 'cancel', onPress: () => {
+              navigation.navigate(
+                'Login',
+                {
+                  tenantSubDomain: newTenant.subdomain
+                }
+              )
+        } },
           ]
         );
       }

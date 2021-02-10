@@ -125,6 +125,7 @@
     "password": "Mot de passe",
     "repeatPassword": "Répétez mot de passe",
     "signUp": "S'enregistrer",
+    "signIn": "Se connecter",
     "passwordRule": "Doit contenir 1 char. minuscule et majuscule, 1 nombre, 1 char. spécial et une longueur minimum de 8",
     "passwordNotMatch": "Les mots de passes ne correspondent pas",
     "tenant": "Organisation",

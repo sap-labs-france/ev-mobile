@@ -125,6 +125,7 @@
     "password": "Password",
     "repeatPassword": "Repeat password",
     "signUp": "Sign Up",
+    "signIn": "Sign In",
     "passwordRule": "Must contain 1 letter lowercase and uppercase, 1 number, 1 special char and 8 chars long",
     "passwordNotMatch": "Password does not match",
     "tenant": "Organization",
