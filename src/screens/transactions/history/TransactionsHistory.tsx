@@ -220,7 +220,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
             <View style={style.content}>
               <TransactionsHistoryFilters
                 initialFilters={initialFilters}
-                onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: {...initialFilters, ...newFilters} }, () => this.refresh())}
+                onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
                 ref={(transactionsHistoryFilters: TransactionsHistoryFilters) =>
                   this.setScreenFilters(transactionsHistoryFilters)}
               />
