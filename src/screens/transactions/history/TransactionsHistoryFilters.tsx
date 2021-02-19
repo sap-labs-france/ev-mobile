@@ -57,7 +57,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
     if (applyFilters) {
       this.setState({
         filters: { ...this.state.filters, ...newFilters }
-      }, () => onFilterChanged(this.state.filters));
+      }, () => {onFilterChanged(this.state.filters)});
     } else {
       this.setState({
         filters: { ...this.state.filters, ...newFilters }

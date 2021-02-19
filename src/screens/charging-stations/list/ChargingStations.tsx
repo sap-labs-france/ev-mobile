@@ -18,7 +18,10 @@ import SimpleSearchComponent from '../../../components/search/simple/SimpleSearc
 import LocationManager from '../../../location/LocationManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
+import ChargingStation, {
+  ChargePointStatus,
+  Connector
+} from '../../../types/ChargingStation';
 import { DataResult } from '../../../types/DataResult';
 import { GlobalFilters } from '../../../types/Filter';
 import Constants from '../../../utils/Constants';

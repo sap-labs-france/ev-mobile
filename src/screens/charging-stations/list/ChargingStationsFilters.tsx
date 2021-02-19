@@ -48,7 +48,7 @@ export default class ChargingStationsFilters extends ScreenFilters {
     const { onFilterChanged } = this.props;
     this.setState({
       filters: { ...this.state.filters, ...newFilters }
-    }, () => onFilterChanged(newFilters));
+    }, () => onFilterChanged(this.state.filters));
   }
 
   public render = () => {

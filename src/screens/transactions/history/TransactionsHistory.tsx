@@ -43,6 +43,8 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
   public state: State;
   public props: Props;
   private searchText: string;
+  private minTransactionDate:Date;
+  private maxTransactionDate:Date;
 
   constructor(props: Props) {
     super(props);
@@ -61,12 +63,14 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     };
     // Set refresh period
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
+
   }
 
   public async componentDidMount() {
     // Get initial filters
     await this.loadInitialFilters();
     await super.componentDidMount();
+
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
@@ -83,12 +87,12 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     });
   }
 
-  public getTransactions = async (searchText: string, skip: number, limit: number): Promise<TransactionDataResult> => {
+  public getTransactions = async (searchText: string, skip: number, limit: number, userID:string): Promise<TransactionDataResult> => {
     try {
       // Get active transaction
       const transactions = await this.centralServerProvider.getTransactions({
         Statistics: 'history',
-        UserID: this.state.filters.userID,
+        UserID: userID,
         StartDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime.toISOString() : null,
         EndDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime.toISOString() : null,
         Search: searchText
@@ -98,7 +102,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
         // Request nbr of records
         const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactions({
           Statistics: 'history',
-          UserID: this.state.filters.userID,
+          UserID: userID,
           StartDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime.toISOString() : null,
           EndDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime.toISOString() : null,
           Search: searchText
@@ -141,15 +145,23 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       // Set
       const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Refresh All
-      const transactions = await this.getTransactions(this.searchText, 0, skip + limit);
+      const transactions = await this.getTransactions(this.searchText, 0, skip + limit, this.state.filters.userID);
+      // Set max and min transactions dates if not already
+      if(!this.minTransactionDate || !this.maxTransactionDate){
+        const allTransactions = await this.getTransactions(null, 0,1, null);
+        this.maxTransactionDate =  allTransactions.stats ? new Date(allTransactions.stats.lastTimestamp) : new Date();
+        this.minTransactionDate =  allTransactions.stats ? new Date(allTransactions.stats.firstTimestamp) : new Date();
+      }
+      const startDateTime = filters.startDateTime ? this.state.initialFilters.startDateTime : (transactions.stats.firstTimestamp ? new Date(transactions.stats.firstTimestamp) : this.minTransactionDate);
+      const endDateTime = filters.endDateTime ? this.state.initialFilters.endDateTime : (transactions.stats.lastTimestamp ? new Date(transactions.stats.lastTimestamp) : this.maxTransactionDate);
       // Set
       this.setState({
         loading: false,
         transactions: transactions ? transactions.result : [],
         initialFilters: {
           ...this.state.initialFilters,
-          startDateTime: filters.startDateTime ? this.state.initialFilters.startDateTime : new Date(transactions.stats.firstTimestamp),
-          endDateTime: filters.endDateTime ? this.state.initialFilters.endDateTime : new Date(transactions.stats.lastTimestamp),
+          startDateTime,
+          endDateTime,
         },
         count: transactions ? transactions.count : 0,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,
@@ -163,7 +175,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
-      const transactions = await this.getTransactions(this.searchText, skip + Constants.PAGING_SIZE, limit);
+      const transactions = await this.getTransactions(this.searchText, skip + Constants.PAGING_SIZE, limit, this.state.filters.userID);
       // Add sites
       this.setState((prevState) => ({
         transactions: transactions ? [...prevState.transactions, ...transactions.result] : prevState.transactions,
@@ -208,8 +220,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
             <View style={style.content}>
               <TransactionsHistoryFilters
                 initialFilters={initialFilters}
-                onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) =>
-                  this.setState({ filters: newFilters }, () => this.refresh())}
+                onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: {...initialFilters, ...newFilters} }, () => this.refresh())}
                 ref={(transactionsHistoryFilters: TransactionsHistoryFilters) =>
                   this.setScreenFilters(transactionsHistoryFilters)}
               />

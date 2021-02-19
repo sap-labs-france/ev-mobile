@@ -50,13 +50,12 @@ export default abstract class FilterContainerComponent extends React.Component<F
     this.filterControlComponents = filterControlComponents;
   }
 
-  public setFilter = async (filterID: string, filterValue: any) => {
+  public async setFilter (filterID: string, filterValue: any){
     // Search
     for (const filterControlComponent of this.filterControlComponents) {
       // Set
       if (filterControlComponent.getID() === filterID) {
-        filterControlComponent.setValue(filterValue);
-        this.notifyFilterChanged();
+        filterControlComponent.setValue(filterValue,  this.notifyFilterChanged.bind(this));
         break;
       }
     }
@@ -67,8 +66,7 @@ export default abstract class FilterContainerComponent extends React.Component<F
     for (const filterControlComponent of this.filterControlComponents) {
       if (filterControlComponent.getID() === filterID) {
         // Set
-        filterControlComponent.clearValue();
-        this.notifyFilterChanged();
+        filterControlComponent.clearValue(this.notifyFilterChanged.bind(this));
         break;
       }
     }
@@ -126,7 +124,7 @@ export default abstract class FilterContainerComponent extends React.Component<F
     this.notifyFilterChanged();
   }
 
-  public saveFilters = async () => {
+  public async saveFilters()  {
     // Build
     for (const filterControlComponent of this.filterControlComponents) {
       // Save

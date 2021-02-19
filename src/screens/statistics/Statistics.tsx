@@ -38,6 +38,8 @@ interface State {
 export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
+  private minTransactionDate:Date;
+  private maxTransactionDate:Date;
 
   constructor(props: Props) {
     super(props);
@@ -83,13 +85,21 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     const centralServerProvider = await ProviderFactory.getProvider();
     const securityProvider = centralServerProvider.getSecurityProvider();
     // Get the ongoing Transaction stats
-    const transactionStats = await this.getTransactionsStats();
+    const transactionStats = await this.getTransactionsStats(this.state.filters.userID);
+    // Set max and min transactions dates if not already
+    if(!this.minTransactionDate || !this.maxTransactionDate){
+      const allTransactions = await this.getTransactionsStats(null);
+      this.maxTransactionDate =  allTransactions.stats ? new Date(allTransactions.stats.lastTimestamp) : new Date();
+      this.minTransactionDate =  allTransactions.stats ? new Date(allTransactions.stats.firstTimestamp) : new Date();
+    }
+    const startDateTime = filters.startDateTime ? this.state.initialFilters.startDateTime : (transactionStats.stats.firstTimestamp ? new Date(transactionStats.stats.firstTimestamp) : this.minTransactionDate);
+    const endDateTime = filters.endDateTime ? this.state.initialFilters.endDateTime : (transactionStats.stats.lastTimestamp ? new Date(transactionStats.stats.lastTimestamp) : this.maxTransactionDate);
     // Set
     this.setState({
       initialFilters: {
         ...this.state.initialFilters,
-        startDateTime: filters.startDateTime ? this.state.initialFilters.startDateTime : new Date(transactionStats.stats.firstTimestamp),
-        endDateTime: filters.endDateTime ? this.state.initialFilters.endDateTime : new Date(transactionStats.stats.lastTimestamp),
+        startDateTime,
+        endDateTime,
       },
       totalNumberOfSession: transactionStats.stats.count,
       totalConsumptionWattHours: transactionStats.stats.totalConsumptionWattHours,
@@ -101,13 +111,13 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     });
   };
 
-  public getTransactionsStats = async (): Promise<TransactionDataResult> => {
+  public getTransactionsStats = async (userID:string): Promise<TransactionDataResult> => {
     try {
       // Get active transaction
       const transactions = await this.centralServerProvider.getTransactions(
         {
           Statistics: 'history',
-          UserID: this.state.filters.userID,
+          UserID: userID,
           StartDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime.toISOString() : null,
           EndDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime.toISOString() : null,
         },
@@ -156,7 +166,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
             <Content style={style.content}>
               <TransactionsHistoryFilters
                 initialFilters={initialFilters}
-                onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
+                onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: {...initialFilters, ...newFilters} }, () => this.refresh())}
                 ref={(transactionsHistoryFilters: TransactionsHistoryFilters) =>
                   this.setScreenFilters(transactionsHistoryFilters)}
               />

@@ -114,14 +114,14 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
     }
   }
 
-  private async addFilter(filterControlComponents: FilterControlComponent<any>[], newFilterComponent: FilterControlComponent<any>) {
+  private addFilter(filterControlComponents: FilterControlComponent<any>[], newFilterComponent: FilterControlComponent<any>) {
     // Search
     if (filterControlComponents) {
       for (let index = 0; index < filterControlComponents.length; index++) {
         const filterControlComponent = filterControlComponents[index];
         if (filterControlComponent.getID() === newFilterComponent.getID()) {
           // Replace
-          filterControlComponents.splice(index, 1, filterControlComponent);
+          filterControlComponents.splice(index, 1, newFilterComponent);
           return;
         }
       }
