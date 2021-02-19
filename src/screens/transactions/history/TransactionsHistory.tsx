@@ -63,14 +63,12 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     };
     // Set refresh period
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
-
   }
 
   public async componentDidMount() {
     // Get initial filters
     await this.loadInitialFilters();
     await super.componentDidMount();
-
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {

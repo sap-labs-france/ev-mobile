@@ -45,7 +45,6 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
         { type: ConnectorType.DOMESTIC, element: <Domestic width={connectorStyle.connectorTypeSVG.width} height={connectorStyle.connectorTypeSVG.height} fill={commonColor.textColor} />, selected: false },
       ],
       value : this.props.initialValue
-
     };
     // Default filter values
     const connectorTypes = this.getValue() as string;
