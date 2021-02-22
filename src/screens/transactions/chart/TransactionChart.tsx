@@ -180,7 +180,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       }
     } catch (error) {
       // Check if HTTP?
-      if (!error.request || error.request.status !== HTTPAuthError.ERROR) {
+      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
         // Other common Error
         Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
           'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
