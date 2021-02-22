@@ -1,6 +1,6 @@
 import { Action, Entity, Role } from '../types/Authorization';
-import { ComponentType } from '../types/Setting';
 import SiteArea from '../types/SiteArea';
+import TenantComponents from '../types/TenantComponents';
 import UserToken from '../types/UserToken';
 
 export default class SecurityProvider {
@@ -50,11 +50,11 @@ export default class SecurityProvider {
   }
 
   public isComponentPricingActive(): boolean {
-    return this.isComponentActive(ComponentType.PRICING);
+    return this.isComponentActive(TenantComponents.PRICING);
   }
 
   public isComponentOrganizationActive(): boolean {
-    return this.isComponentActive(ComponentType.ORGANIZATION);
+    return this.isComponentActive(TenantComponents.ORGANIZATION);
   }
 
   public isComponentActive(componentName: string): boolean {
@@ -73,7 +73,7 @@ export default class SecurityProvider {
       if (this.loggedUser.tagIDs.includes(badgeID)) {
         return true;
       }
-      if (this.isComponentActive(ComponentType.ORGANIZATION)) {
+      if (this.isComponentActive(TenantComponents.ORGANIZATION)) {
         return siteArea && this.isSiteAdmin(siteArea.siteID);
       }
       return this.isAdmin();
@@ -83,7 +83,7 @@ export default class SecurityProvider {
 
   public canStartTransaction(siteArea: SiteArea): boolean {
     if (this.canAccess(Entity.CHARGING_STATION, Action.REMOTE_START_TRANSACTION)) {
-      if (this.isComponentActive(ComponentType.ORGANIZATION)) {
+      if (this.isComponentActive(TenantComponents.ORGANIZATION)) {
         if (!siteArea) {
           return false;
         }

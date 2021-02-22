@@ -4,8 +4,8 @@ import React from 'react';
 import { Alert, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 
-import computeModalStyleSheet from '../../ModalStyles';
 import Configuration from '../../config/Configuration';
+import computeModalStyleSheet from '../../ModalStyles';
 import BaseProps from '../../types/BaseProps';
 import { EndpointCloud, TenantConnection } from '../../types/Tenant';
 import SecuredStorage from '../../utils/SecuredStorage';
@@ -46,11 +46,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    if (__DEV__) {
-      this.tenantEndpointClouds = Configuration.ENDPOINT_CLOUDS_QA;
-    } else {
-      this.tenantEndpointClouds = Configuration.ENDPOINT_CLOUDS_PROD;
-    }
+    this.tenantEndpointClouds = Configuration.ENDPOINT_CLOUDS;
     this.state = {
       newTenantSubDomain: null,
       newTenantName: null,
