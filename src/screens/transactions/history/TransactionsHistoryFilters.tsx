@@ -32,7 +32,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
   constructor(props: Props) {
     super(props);
     this.state = {
-      filters: {}
+      filters: {userID : this.props.initialFilters.userID}
     };
   }
 
