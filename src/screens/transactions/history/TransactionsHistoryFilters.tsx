@@ -19,6 +19,8 @@ export interface TransactionsHistoryFiltersDef {
   startDateTime?: Date;
   endDateTime?: Date;
   userID?: string;
+  maxTransactionDate?: Date;
+  minTransactionDate?: Date;
 }
 
 interface State extends ScreenFiltersState {
@@ -31,9 +33,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
 
   constructor(props: Props) {
     super(props);
-    this.state = {
-      filters: {userID : this.props.initialFilters.userID}
-    };
+    this.state = {filters : props.initialFilters};
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
@@ -68,6 +68,23 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
   public render = () => {
     const { initialFilters } = this.props;
     const { filters, isAdmin, hasSiteAdmin } = this.state;
+    const maxTransactionDate = initialFilters.maxTransactionDate;
+    const minTransactionDate = initialFilters.minTransactionDate;
+    let startDateTime = filters.startDateTime ? filters.startDateTime : minTransactionDate ;
+    let endDateTime = filters.endDateTime ? filters.endDateTime : maxTransactionDate;
+    // Check the dates interval and fix it if needed
+    if(startDateTime < minTransactionDate){
+      startDateTime = minTransactionDate
+      if(endDateTime < minTransactionDate){
+        endDateTime = minTransactionDate
+      }
+    }
+    if(endDateTime > maxTransactionDate){
+      endDateTime = maxTransactionDate
+      if(startDateTime > maxTransactionDate){
+        startDateTime = maxTransactionDate
+      }
+    }
     return (
       <View>
         {(isAdmin || hasSiteAdmin) &&
@@ -102,9 +119,9 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
             ref={(dateFilterControlComponent: DateFilterControlComponent) =>
               this.addModalFilter(dateFilterControlComponent)}
             locale={this.state.locale}
-            minimumDate={initialFilters.startDateTime}
-            defaultDate={filters.startDateTime ? filters.startDateTime : initialFilters.startDateTime}
-            maximumDate={filters.endDateTime ? filters.endDateTime : initialFilters.endDateTime}
+            minimumDate={minTransactionDate}
+            defaultDate={startDateTime}
+            maximumDate={endDateTime}
           />
           <DateFilterControlComponent
             filterID={'endDateTime'}
@@ -115,9 +132,9 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
             ref={(dateFilterControlComponent: DateFilterControlComponent) =>
               this.addModalFilter(dateFilterControlComponent)}
             locale={this.state.locale}
-            minimumDate={filters.startDateTime ? filters.startDateTime : initialFilters.startDateTime}
-            defaultDate={filters.endDateTime ? filters.endDateTime : initialFilters.endDateTime}
-            maximumDate={initialFilters.endDateTime}
+            minimumDate={startDateTime}
+            defaultDate={endDateTime}
+            maximumDate={maxTransactionDate}
           />
         </FilterModalContainerComponent>
       </View>
