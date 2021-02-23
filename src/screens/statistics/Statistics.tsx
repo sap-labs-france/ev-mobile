@@ -4,8 +4,8 @@ import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } f
 import React from 'react';
 
 import computeCardStyleSheet from '../../CardStyles';
-import I18nManager from '../../I18n/I18nManager';
 import HeaderComponent from '../../components/header/HeaderComponent';
+import I18nManager from '../../I18n/I18nManager';
 import ProviderFactory from '../../provider/ProviderFactory';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from '../../screens/transactions/history/TransactionsHistoryFilters';
 import BaseProps from '../../types/BaseProps';
@@ -126,7 +126,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
       return transactions;
     } catch (error) {
       // Check if HTTP?
-      if (!error.request || error.request.status !== HTTPAuthError.ERROR) {
+      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
         Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
           'transactions.transactionStatsUnexpectedError', this.props.navigation, this.refresh);
       }

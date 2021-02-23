@@ -6,9 +6,9 @@ import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity 
 
 import { default as noPhoto, default as noPhotoActive } from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
-import I18nManager from '../../../I18n/I18nManager';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
+import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
@@ -119,7 +119,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return transaction;
     } catch (error) {
       // Check if HTTP?
-      if (!error.request || error.request.status !== HTTPAuthError.ERROR) {
+      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
         Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
           'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
       }
@@ -134,7 +134,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return transaction;
     } catch (error) {
       // Check if HTTP?
-      if (!error.request || error.request.status !== HTTPAuthError.ERROR) {
+      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
         Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
           'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
       }
