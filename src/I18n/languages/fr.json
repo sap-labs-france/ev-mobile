@@ -213,7 +213,7 @@
     "free": "Libre(s)",
     "occupied": "Occupé(s)",
     "noSites": "Aucun Site trouvé",
-    "siteUnexpectedError": "Impossible de lire les sites"
+    "siteUnexpectedError": "Impossible de lire le site"
   },
   "siteAreas": {
     "title": "Zones",
