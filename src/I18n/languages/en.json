@@ -213,7 +213,7 @@
     "free": "Free",
     "occupied": "Occupied",
     "noSites": "No Site found",
-    "siteUnexpectedError": "Cannot read the sites"
+    "siteUnexpectedError": "Cannot read the site"
   },
   "siteAreas": {
     "title": "Site Areas",
