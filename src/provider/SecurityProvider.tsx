@@ -100,7 +100,7 @@ export default class SecurityProvider {
       if (this.loggedUser.tagIDs.includes(badgeID)) {
         return true;
       }
-      if (this.isComponentActive(ComponentType.ORGANIZATION) && siteArea) {
+      if (this.isComponentActive(TenantComponents.ORGANIZATION) && siteArea) {
         return this.isSiteAdmin(siteArea.siteID) || (this.isDemo() && this.isSiteUser(siteArea.siteID));
       }
       return this.isAdmin() || this.isDemo();
