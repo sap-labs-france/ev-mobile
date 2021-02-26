@@ -2,10 +2,7 @@ import { Switch, Text, View } from 'native-base';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import FilterControlComponent, {
-  FilterControlComponentProps,
-  FilterControlComponentState
-} from '../FilterControlComponent';
+import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
 
 export interface Props extends FilterControlComponentProps<boolean> {
@@ -23,7 +20,7 @@ export default class LocationSwitchFilterControlComponent extends FilterControlC
     super(props);
     this.state = {
       switchValue: !!this.getValue(),
-      value : this.props.initialValue
+      value: this.props.initialValue
     };
   }
 

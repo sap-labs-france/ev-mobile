@@ -4,8 +4,8 @@ import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } f
 import React from 'react';
 
 import computeCardStyleSheet from '../../CardStyles';
-import I18nManager from '../../I18n/I18nManager';
 import HeaderComponent from '../../components/header/HeaderComponent';
+import I18nManager from '../../I18n/I18nManager';
 import ProviderFactory from '../../provider/ProviderFactory';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from '../../screens/transactions/history/TransactionsHistoryFilters';
 import BaseProps from '../../types/BaseProps';
@@ -72,9 +72,9 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     const userID = await SecuredStorage.loadFilterValue(
       centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
     const startDateTimeString = await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(), GlobalFilters.STATISTICS_START_DATE_FILTER);
+      centralServerProvider.getUserInfo(), GlobalFilters.TRANSACTIONS_START_DATE_FILTER);
     const endDateTimeString = await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(), GlobalFilters.STATISTICS_END_DATE_FILTER);
+      centralServerProvider.getUserInfo(), GlobalFilters.TRANSACTIONS_END_DATE_FILTER);
     const startDateTime = startDateTimeString ? new Date(startDateTimeString) : null;
     const endDateTime = endDateTimeString ? new Date(endDateTimeString) : null
     const initialFilters = {

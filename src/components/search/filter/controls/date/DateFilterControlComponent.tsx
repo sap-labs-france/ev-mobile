@@ -57,7 +57,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
   public render = () => {
     const internalStyle = computeStyleSheet();
-    const {label, style, minimumDate, maximumDate, locale} = this.props;
+    const { label, style, minimumDate, maximumDate, locale } = this.props;
     return (
       <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
         <Text style={internalStyle.textFilter}>{label}</Text>

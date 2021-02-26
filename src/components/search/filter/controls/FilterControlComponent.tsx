@@ -38,7 +38,7 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
     return false;
   }
 
-  public setValue(value: any, callback?:()=>any) {
+  public setValue(value: any, callback?: () => void) {
     this.setState({value}, callback);
   }
 

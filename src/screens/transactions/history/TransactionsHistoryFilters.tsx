@@ -112,7 +112,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
         >
           <DateFilterControlComponent
             filterID={'startDateTime'}
-            internalFilterID={GlobalFilters.STATISTICS_START_DATE_FILTER}
+            internalFilterID={GlobalFilters.TRANSACTIONS_START_DATE_FILTER}
             label={I18n.t('general.startDate')}
             onFilterChanged={(id: string, value: Date) =>
               this.getFilterModalContainerComponent().setFilter(id, value)}
@@ -125,7 +125,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
           />
           <DateFilterControlComponent
             filterID={'endDateTime'}
-            internalFilterID={GlobalFilters.STATISTICS_END_DATE_FILTER}
+            internalFilterID={GlobalFilters.TRANSACTIONS_END_DATE_FILTER}
             label={I18n.t('general.endDate')}
             onFilterChanged={(id: string, value: Date) =>
               this.getFilterModalContainerComponent().setFilter(id, value)}

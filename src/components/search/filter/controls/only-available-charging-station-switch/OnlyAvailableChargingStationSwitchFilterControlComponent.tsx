@@ -3,10 +3,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 
 import { ChargePointStatus } from '../../../../../types/ChargingStation';
-import FilterControlComponent, {
-  FilterControlComponentProps,
-  FilterControlComponentState
-} from '../FilterControlComponent';
+import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
 
 export interface Props extends FilterControlComponentProps<ChargePointStatus> {
@@ -42,9 +39,13 @@ export default class OnlyAvailableChargingStationSwitchFilterControlComponent ex
     // Set Filter
     if (onFilterChanged) {
       if (newValue) {
-        this.setValue(this.status, () => { onFilterChanged(this.getID(), this.status) });
+        this.setValue(this.status, () => {
+          onFilterChanged(this.getID(), this.status)
+        });
       } else {
-        this.clearValue(() => { onFilterChanged(this.getID(), null) });
+        this.clearValue(() => {
+          onFilterChanged(this.getID(), null)
+        });
       }
     }
     // Update

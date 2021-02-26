@@ -3,10 +3,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 
 import ProviderFactory from '../../../../../provider/ProviderFactory';
-import FilterControlComponent, {
-  FilterControlComponentProps,
-  FilterControlComponentState
-} from '../FilterControlComponent';
+import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
 
 export interface Props extends FilterControlComponentProps<string> {
@@ -25,7 +22,7 @@ export default class MyUserSwitchFilterControlComponent extends FilterControlCom
     super(props);
     this.state = {
       switchValue: !!this.getValue(),
-      value:this.props.initialValue
+      value: this.props.initialValue
     };
   }
 
@@ -50,9 +47,13 @@ export default class MyUserSwitchFilterControlComponent extends FilterControlCom
     // Set Filter
     if (onFilterChanged) {
       if (newValue) {
-        this.setValue(this.userID, () => { onFilterChanged(this.getID(), this.userID) });
+        this.setValue(this.userID, () => {
+          onFilterChanged(this.getID(), this.userID)
+        });
       } else {
-        this.clearValue(() => { onFilterChanged(this.getID(), null) });
+        this.clearValue(() => {
+          onFilterChanged(this.getID(), null)
+        });
       }
     }
     // Update
