@@ -1,9 +1,9 @@
-import { DatePicker, Text, View } from 'native-base';
+import { Text, View } from 'native-base';
 import React from 'react';
 import { StyleSheet } from 'react-native';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
-import I18nManager from '../../../../../I18n/I18nManager';
-import FilterControlComponent, { FilterControlComponentProps } from '../FilterControlComponent';
+import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
 
 export interface Props extends FilterControlComponentProps<Date> {
@@ -12,7 +12,8 @@ export interface Props extends FilterControlComponentProps<Date> {
   maximumDate?: Date;
 }
 
-interface State {
+interface State extends FilterControlComponentState<Date>{
+  openDatePicker: boolean
 }
 
 export default class DateFilterControlComponent extends FilterControlComponent<Date> {
@@ -20,6 +21,8 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
   constructor(props: Props) {
     super(props);
     this.state = {
+      openDatePicker: false,
+      value: this.props.defaultDate
     };
   }
 
@@ -34,42 +37,49 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
     super.setState(state, callback);
   }
 
-  private onValueChanged = async (newValue: Date) => {
+  public canBeSaved() {
+    return true;
+  }
+
+  private onConfirm (newValue: Date) {
     const { onFilterChanged } = this.props;
     // Set Filter
     if (onFilterChanged) {
       if (newValue) {
-        this.setValue(newValue);
-        onFilterChanged(this.getID(), newValue);
+        this.setState({
+          openDatePicker: false
+        }, () => { onFilterChanged(this.getID(), newValue) });
       } else {
-        this.clearValue();
-        onFilterChanged(this.getID(), null);
+        this.clearValue( () => { onFilterChanged(this.getID(), null) });
       }
     }
   }
 
   public render = () => {
     const internalStyle = computeStyleSheet();
-    const { label, style, defaultDate, minimumDate, maximumDate, locale } = this.props;
+    const { label, style, minimumDate, maximumDate, locale } = this.props;
     return (
       <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
         <Text style={internalStyle.textFilter}>{label}</Text>
-        <DatePicker
-          defaultDate={defaultDate}
-          minimumDate={minimumDate}
+        <Text style={internalStyle.textFilter} onPress={() => this.openDatePicker(true)}>{this.getValue().toDateString()}</Text>
+        <DateTimePickerModal
+          isVisible={this.state.openDatePicker}
+          date={this.getValue()}
+          mode={'date'}
           maximumDate={maximumDate}
+          minimumDate={minimumDate}
           locale={locale}
-          timeZoneOffsetInMinutes={undefined}
-          modalTransparent={false}
-          animationType={'fade'}
-          androidMode={'spinner'}
-          textStyle={internalStyle.filterValue}
-          placeHolderTextStyle={internalStyle.filterValue}
-          onDateChange={this.onValueChanged}
-          disabled={false}
-          formatChosenDate={(date) => I18nManager.formatDateTime(date, 'LL')}
-        />
+          onCancel={() => {
+            this.openDatePicker(false)
+          }}
+          onConfirm={(date) => {
+            this.onConfirm(date)
+          }
+        }/>
       </View>
     );
+  }
+  private openDatePicker(openDatePicker: boolean) {
+    this.setState({ openDatePicker });
   }
 }

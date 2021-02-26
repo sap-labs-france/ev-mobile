@@ -71,9 +71,20 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     const centralServerProvider = await ProviderFactory.getProvider();
     const userID = await SecuredStorage.loadFilterValue(
       centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
+    const startDateTimeString = await SecuredStorage.loadFilterValue(
+      centralServerProvider.getUserInfo(), GlobalFilters.TRANSACTIONS_START_DATE_FILTER);
+    const endDateTimeString = await SecuredStorage.loadFilterValue(
+      centralServerProvider.getUserInfo(), GlobalFilters.TRANSACTIONS_END_DATE_FILTER);
+    const startDateTime = startDateTimeString ? new Date(startDateTimeString) : null;
+    const endDateTime = endDateTimeString ? new Date(endDateTimeString) : null
+    const initialFilters = {
+      userID,
+      startDateTime,
+      endDateTime,
+    }
     this.setState({
-      initialFilters: { userID },
-      filters: { userID }
+      initialFilters,
+      filters : initialFilters
     });
   }
 
@@ -83,33 +94,34 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     const centralServerProvider = await ProviderFactory.getProvider();
     const securityProvider = centralServerProvider.getSecurityProvider();
     // Get the ongoing Transaction stats
-    const transactionStats = await this.getTransactionsStats();
+    const transactionsStats = await this.getTransactionsStats(filters.startDateTime, filters.endDateTime);
+    // Retrieve all the transactions for the current userID
+    const allTransactions = await this.getTransactionsStats(null, null);
+    const allTransactionsStats = allTransactions.stats;
+    const minTransactionDate = allTransactionsStats.firstTimestamp ? new Date(allTransactions.stats.firstTimestamp) : new Date();
+    const maxTransactionDate = allTransactionsStats.lastTimestamp ? new Date(allTransactions.stats.lastTimestamp) : new Date();
     // Set
     this.setState({
-      initialFilters: {
-        ...this.state.initialFilters,
-        startDateTime: filters.startDateTime ? this.state.initialFilters.startDateTime : new Date(transactionStats.stats.firstTimestamp),
-        endDateTime: filters.endDateTime ? this.state.initialFilters.endDateTime : new Date(transactionStats.stats.lastTimestamp),
-      },
-      totalNumberOfSession: transactionStats.stats.count,
-      totalConsumptionWattHours: transactionStats.stats.totalConsumptionWattHours,
-      totalDurationSecs: transactionStats.stats.totalDurationSecs,
-      totalInactivitySecs: transactionStats.stats.totalInactivitySecs,
-      totalPrice: transactionStats.stats.totalPrice,
+      initialFilters: {...this.state.initialFilters, minTransactionDate, maxTransactionDate},
+      totalNumberOfSession: transactionsStats.stats.count,
+      totalConsumptionWattHours: transactionsStats.stats.totalConsumptionWattHours,
+      totalDurationSecs: transactionsStats.stats.totalDurationSecs,
+      totalInactivitySecs: transactionsStats.stats.totalInactivitySecs,
+      totalPrice: transactionsStats.stats.totalPrice,
       isPricingActive: securityProvider.isComponentPricingActive(),
       loading: false
     });
   };
 
-  public getTransactionsStats = async (): Promise<TransactionDataResult> => {
+  public getTransactionsStats = async ( startDateTime: Date, endDateTime:Date): Promise<TransactionDataResult> => {
     try {
       // Get active transaction
       const transactions = await this.centralServerProvider.getTransactions(
         {
           Statistics: 'history',
           UserID: this.state.filters.userID,
-          StartDateTime: this.state.filters.startDateTime ? this.state.filters.startDateTime.toISOString() : null,
-          EndDateTime: this.state.filters.endDateTime ? this.state.filters.endDateTime.toISOString() : null,
+          StartDateTime: startDateTime ? startDateTime.toISOString() : null,
+          EndDateTime: endDateTime ? endDateTime.toISOString() : null,
         },
         Constants.ONLY_RECORD_COUNT
       );

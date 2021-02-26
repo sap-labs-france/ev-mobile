@@ -2,13 +2,13 @@ import { Switch, Text, View } from 'native-base';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import FilterControlComponent, { FilterControlComponentProps } from '../FilterControlComponent';
+import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
 
 export interface Props extends FilterControlComponentProps<boolean> {
 }
 
-interface State {
+interface State extends FilterControlComponentState<boolean>{
   switchValue?: boolean;
 }
 
@@ -19,7 +19,8 @@ export default class LocationSwitchFilterControlComponent extends FilterControlC
   constructor(props: Props) {
     super(props);
     this.state = {
-      switchValue: !!this.getValue()
+      switchValue: !!this.getValue(),
+      value: this.props.initialValue
     };
   }
 
@@ -35,8 +36,7 @@ export default class LocationSwitchFilterControlComponent extends FilterControlC
     const { onFilterChanged } = this.props;
     // Set Filter
     if (onFilterChanged) {
-      this.setValue(newValue);
-      onFilterChanged(this.getID(), newValue);
+      this.setValue(newValue, () => { onFilterChanged(this.getID(), newValue) });
     }
     // Update
     this.setState({ switchValue: newValue });
