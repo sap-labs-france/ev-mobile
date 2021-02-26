@@ -228,7 +228,7 @@
     "noOCPPParameters": "No OCPP parameter",
     "noChargerParameters": "No Charging Station parameter",
     "chargerConfigurationUnexpectedError": "Cannot read the configuration of the charging station",
-    "chargerUnexpectedError": "Cannot read the charging stations",
+    "chargerUnexpectedError": "Cannot read the charging station",
     "chargerResetUnexpectedError": "Cannot reset the charging station",
     "chargerRebootUnexpectedError": "Cannot reboot the charging station",
     "chargerClearCacheUnexpectedError": "Cannot clear the cache of the charging station",

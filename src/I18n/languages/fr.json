@@ -228,7 +228,7 @@
     "noOCPPParameters": "Pas de parametre OCPP",
     "noChargerParameters": "Pas de parametre",
     "chargerConfigurationUnexpectedError": "Impossible de lire la configuration de la borne",
-    "chargerUnexpectedError": "Impossible de lire les bornes",
+    "chargerUnexpectedError": "Impossible de lire la borne",
     "chargerResetUnexpectedError": "Impossible de réinitialiser la borne",
     "chargerRebootUnexpectedError": "Impossible de redémarrer la borne",
     "chargerClearCacheUnexpectedError": "Impossible d'effacer le cache de la borne",
