@@ -1,11 +1,9 @@
-import {  Text, View } from 'native-base';
+import { Text, View } from 'native-base';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import FilterControlComponent, {
-  FilterControlComponentProps,
-  FilterControlComponentState
-} from '../FilterControlComponent';
+
+import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
 
 export interface Props extends FilterControlComponentProps<Date> {
@@ -15,7 +13,7 @@ export interface Props extends FilterControlComponentProps<Date> {
 }
 
 interface State extends FilterControlComponentState<Date>{
-  openDatePicker:boolean
+  openDatePicker: boolean
 }
 
 export default class DateFilterControlComponent extends FilterControlComponent<Date> {
@@ -23,8 +21,8 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
   constructor(props: Props) {
     super(props);
     this.state = {
-      openDatePicker:false,
-      value:this.props.defaultDate
+      openDatePicker: false,
+      value: this.props.defaultDate
     };
   }
 
@@ -49,7 +47,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
     if (onFilterChanged) {
       if (newValue) {
         this.setState({
-          openDatePicker:false
+          openDatePicker: false
         }, () => { onFilterChanged(this.getID(), newValue) });
       } else {
         this.clearValue( () => { onFilterChanged(this.getID(), null) });
@@ -74,13 +72,14 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
           onCancel={() => {
             this.openDatePicker(false)
           }}
-          onConfirm={
-            (date => {this.onConfirm(date) })
-          }/>
+          onConfirm={(date) => {
+            this.onConfirm(date)
+          }
+        }/>
       </View>
     );
   }
-  private openDatePicker(openDatePicker:boolean) {
-    this.setState({openDatePicker});
+  private openDatePicker(openDatePicker: boolean) {
+    this.setState({ openDatePicker });
   }
 }
