@@ -61,7 +61,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
     return (
       <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
         <Text style={internalStyle.textFilter}>{label}</Text>
-        <Text style={internalStyle.textFilter} onPress={() => this.openDatePicker(true)}>{this.getValue().toDateString()}</Text>
+        <Text style={internalStyle.textFilter} onPress={() => this.openDatePicker(true)}>{this.getValue()?.toDateString()}</Text>
         <DateTimePickerModal
           isVisible={this.state.openDatePicker}
           date={this.getValue()}
