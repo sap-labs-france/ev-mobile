@@ -40,6 +40,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
   public canBeSaved() {
     return true;
   }
+
   private onConfirm (newValue: Date) {
     const { onFilterChanged } = this.props;
     // Set Filter
