@@ -137,15 +137,6 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     return true;
   };
 
-  public manualRefresh = async () => {
-    // Display spinner
-    this.setState({ refreshing: true });
-    // Refresh
-    await this.refresh();
-    // Hide spinner
-    this.setState({ refreshing: false });
-  };
-
   public async refresh ()  {
     // Component Mounted?
     if (this.isMounted()) {
