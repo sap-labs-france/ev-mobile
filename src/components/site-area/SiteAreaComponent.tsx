@@ -14,6 +14,7 @@ import computeStyleSheet from './SiteAreaComponentStyles';
 
 export interface Props extends BaseProps {
   siteArea: SiteArea;
+  onNavigate?: () => void;
 }
 
 interface State {
@@ -34,7 +35,7 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { siteArea, navigation } = this.props;
+    const { siteArea, navigation, onNavigate } = this.props;
     const validGPSCoordinates = Utils.containsAddressGPSCoordinates(siteArea.address);
     // New backend?
     return (
@@ -44,6 +45,9 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity
           onPress={() => {
+            if (onNavigate) {
+              onNavigate();
+            }
             if (siteArea.connectorStats.totalConnectors > 0) {
               navigation.navigate(
                 'ChargingStations',
