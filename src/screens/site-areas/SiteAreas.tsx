@@ -2,9 +2,11 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
-import { FlatList, Platform, RefreshControl } from 'react-native';
+import { FlatList, Platform, RefreshControl, ScrollView } from 'react-native';
 import { Location } from 'react-native-location';
 import MapView, { Marker, Region } from 'react-native-maps';
+import Modal from 'react-native-modal';
+import { Modalize } from 'react-native-modalize';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
@@ -23,6 +25,7 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SiteAreasFilters, { SiteAreasFiltersDef } from './SiteAreasFilters';
 import computeStyleSheet from './SiteAreasStyles';
+import computeModalStyle from '../../ModalStyles';
 
 export interface Props extends BaseProps {
 }
@@ -37,6 +40,8 @@ interface State {
   initialFilters?: SiteAreasFiltersDef;
   filters?: SiteAreasFiltersDef;
   showMap?: boolean;
+  visible?: boolean;
+  siteAreaSelected?: SiteArea;
 }
 
 export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
@@ -59,6 +64,8 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       count: 0,
       initialFilters: {},
       showMap: false,
+      visible: false,
+      siteAreaSelected: null,
     };
   }
 
@@ -210,10 +217,44 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     this.setState({ showMap: !this.state.showMap })
   }
 
+  public showMapSiteDetail = (siteArea: SiteArea) => {
+    this.setState({
+      visible: true,
+      siteAreaSelected: siteArea
+    })
+  }
+
+  public buildModal(navigation: any, siteAreaSelected: SiteArea, modalStyle: any) {
+    if (Platform.OS === 'ios') {
+      return (
+        <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
+          <Modalize
+            alwaysOpen={175}
+            modalStyle={modalStyle.modalContainer}>
+            <SiteAreaComponent siteArea={siteAreaSelected} navigation={navigation} 
+                onNavigate={() => this.setState({ visible: false })} />
+          </Modalize>
+        </Modal>
+      )
+    } else {
+      return ( 
+        <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
+          <View style={modalStyle.modalContainer}>
+            <ScrollView>
+              <SiteAreaComponent siteArea={siteAreaSelected} navigation={navigation} 
+                onNavigate={() => this.setState({ visible: false })} />
+            </ScrollView>
+          </View>
+        </Modal>
+      )
+    }
+  }
+
   public render() {
     const style = computeStyleSheet();
+    const modalStyle = computeModalStyle();
     const { navigation } = this.props;
-    const { loading, skip, count, limit, initialFilters, showMap } = this.state;
+    const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.siteAreas)
     return (
       <Container style={style.container}>
@@ -242,25 +283,28 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
                 ref={(siteAreasFilters: SiteAreasFilters) => this.setScreenFilters(siteAreasFilters)}
               />
               {mapIsDisplayed ?
-                <MapView
-                  style={style.map}
-                  region={this.currentRegion}
-                  onRegionChange={this.onMapRegionChange}
-                >
-                  {this.state.siteAreas.map((siteArea: SiteArea) => {
-                    if (Utils.containsAddressGPSCoordinates(siteArea.address)) {
-                      return (
-                        <Marker
-                          key={siteArea.id}
-                          coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
-                          title={siteArea.name}
-                          description={siteArea.name}
-                        />
-                      );
-                    }
-                    return undefined;
-                  })}
-                </MapView>
+                <View style={style.map}>
+                  <MapView
+                    style={style.map}
+                    region={this.currentRegion}
+                    onRegionChange={this.onMapRegionChange}
+                  >
+                    {this.state.siteAreas.map((siteArea: SiteArea) => {
+                      if (Utils.containsAddressGPSCoordinates(siteArea.address)) {
+                        return (
+                          <Marker
+                            key={siteArea.id}
+                            coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
+                            title={siteArea.name}
+                            onPress={() => this.showMapSiteDetail(siteArea)}
+                          />
+                        );
+                      }
+                      return undefined;
+                    })}
+                  </MapView>
+                  {siteAreaSelected && this.buildModal(navigation, siteAreaSelected, modalStyle)}
+                </View>
                 :
                 <FlatList
                   data={this.state.siteAreas}
