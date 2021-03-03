@@ -69,7 +69,9 @@
     "transactionsHistory": "Historique Sessions",
     "transactionsInProgress": "Sessions En Cours",
     "statistics": "Statistiques",
-    "reportError": "Signaler Erreur"
+    "reportError": "Signaler Erreur",
+    "users": "Utilisateurs"
+
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",
@@ -162,7 +164,8 @@
     "scanChargingStationQrCodeTitle": "Scanner Borne"
   },
   "users": {
-    "userUnexpectedError": "Impossible de lire l'utilisateur"
+    "userUnexpectedError": "Impossible de lire l'utilisateur",
+    "noUsers": "Aucun utilisateur"
   },
   "transactions": {
     "transaction": "Session",

@@ -111,4 +111,9 @@ export default class SecurityProvider {
   public canAccess(resource: string, action: string): boolean {
     return this.loggedUser && this.loggedUser.scopes && this.loggedUser.scopes.includes(`${resource}:${action}`);
   }
+
+  public canListUsers(): boolean {
+    const answer = this.canAccess(Entity.USERS, Action.LIST)
+    return answer;
+  }
 }

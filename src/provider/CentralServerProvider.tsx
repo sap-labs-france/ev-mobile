@@ -6,8 +6,8 @@ import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { KeyValue } from 'types/Global';
 
-import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
+import Configuration from '../config/Configuration';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
@@ -18,6 +18,7 @@ import Site from '../types/Site';
 import SiteArea from '../types/SiteArea';
 import { TenantConnection } from '../types/Tenant';
 import Transaction from '../types/Transaction';
+import User from '../types/User';
 import UserToken from '../types/UserToken';
 import AxiosFactory from '../utils/AxiosFactory';
 import Constants from '../utils/Constants';
@@ -661,6 +662,18 @@ export default class CentralServerProvider {
       params,
     });
     return result.data;
+  }
+
+  public async getUsers(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING) : Promise<DataResult<User>> {
+    this.debugMethod('getUsers');
+    // Build Paging
+    this.buildPaging(paging, params);
+    // Call
+  const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.USERS}`, {
+    headers: this.buildSecuredHeaders(),
+    params,
+  });
+  return result.data;
   }
 
   public async requestChargingStationOcppParameters(id: string): Promise<ActionResponse> {

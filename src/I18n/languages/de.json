@@ -69,7 +69,8 @@
     "transactionsHistory": "Ladevorgangs Historie",
     "transactionsInProgress": "Laufende Ladevorgänge",
     "statistics": "Statistiken",
-    "reportError": "Fehler Melden"
+    "reportError": "Fehler Melden",
+    "users": "Users"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -162,7 +163,8 @@
     "scanChargingStationQrCodeTitle": "Ladestation scannen"
   },
   "users": {
-    "userUnexpectedError": "Benutzer kann nicht gelesen werden"
+    "userUnexpectedError": "Benutzer kann nicht gelesen werden",
+    "noUsers": "No users"
   },
   "transactions": {
     "transaction": "Ladevorgang",

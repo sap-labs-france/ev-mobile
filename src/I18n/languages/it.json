@@ -69,7 +69,9 @@
     "transactionsHistory": "Storico Sessioni",
     "transactionsInProgress": "Sessioni In Corso",
     "statistics": "Statistiche",
-    "reportError": "Segnala errore"
+    "reportError": "Segnala errore",
+    "users": "Users"
+
   },
 	"authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -162,7 +164,8 @@
     "scanChargingStationQrCodeTitle": "Scansiona Stazione di Ricarica"
   },
   "users": {
-    "userUnexpectedError": "Non posso leggere gli utenti"
+    "userUnexpectedError": "Non posso leggere gli utenti",
+    "noUsers": "No users"
   },
   "transactions": {
     "transaction": "Sessione",
