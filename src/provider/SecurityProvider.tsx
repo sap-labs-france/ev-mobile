@@ -115,4 +115,8 @@ export default class SecurityProvider {
   public canListUsers(): boolean {
     return this.canAccess(Entity.USERS, Action.LIST);
   }
+
+  public canListTags(): boolean {
+    return this.canAccess(Entity.TAGS, Action.LIST);
+  }
 }

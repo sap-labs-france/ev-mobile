@@ -71,7 +71,8 @@
     "transactionsInProgress": "Sessions En Cours",
     "statistics": "Statistiques",
     "reportError": "Signaler Erreur",
-    "users": "Utilisateurs"
+    "users": "Utilisateurs",
+    "badges": "Badges"
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",
@@ -288,6 +289,9 @@
     "comboCCS": "Combo",
     "chademo": "Chademo",
     "domestic": "Domestique"
+  },
+  "tag": {
+    "noBadges": "Aucun badge"
   },
   "details": {
     "connector": "Connecteur",

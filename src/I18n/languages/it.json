@@ -71,7 +71,8 @@
     "transactionsInProgress": "Sessioni In Corso",
     "statistics": "Statistiche",
     "reportError": "Segnala errore",
-    "users": "Users"
+    "users": "Users",
+    "badges": "Badges"
   },
 	"authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -288,6 +289,9 @@
     "comboCCS": "Combo",
     "chademo": "Chademo",
     "domestic": "Domestico"
+  },
+  "tag": {
+    "noBadges": "No badges"
   },
   "details": {
     "connector": "Presa",

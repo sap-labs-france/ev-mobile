@@ -16,6 +16,7 @@ import PagingParams from '../types/PagingParams';
 import { ServerAction } from '../types/Server';
 import Site from '../types/Site';
 import SiteArea from '../types/SiteArea';
+import Tag from '../types/Tag';
 import { TenantConnection } from '../types/Tenant';
 import Transaction from '../types/Transaction';
 import User from '../types/User';
@@ -670,6 +671,18 @@ export default class CentralServerProvider {
     this.buildPaging(paging, params);
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.USERS}`, {
+      headers: this.buildSecuredHeaders(),
+      params,
+    });
+    return result.data;
+  }
+
+  public async getTags(params= {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Tag>> {
+    this.debugMethod('getTags');
+    // Build Paging
+    this.buildPaging(paging, params);
+    // Call
+    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TAGS}`, {
       headers: this.buildSecuredHeaders(),
       params,
     });

@@ -71,7 +71,8 @@
     "transactionsInProgress": "Laufende Ladevorgänge",
     "statistics": "Statistiken",
     "reportError": "Fehler Melden",
-    "users": "Users"
+    "users": "Users",
+    "badges": "Badges"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -288,6 +289,9 @@
     "comboCCS": "Kombo",
     "chademo": "Chademo",
     "domestic": "Hausanschluss"
+  },
+  "tag": {
+    "noBadges": "No badges"
   },
   "details": {
     "connector": "Anschluss",

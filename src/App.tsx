@@ -40,6 +40,7 @@ import TransactionsInProgress from './screens/transactions/in-progress/Transacti
 import UsersList from './screens/users/list/UsersList';
 import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
+import TagsList from "./screens/tags/TagsList";
 
 // Init i18n
 I18nManager.initialize();
@@ -55,6 +56,7 @@ const TransactionHistoryStack = createStackNavigator();
 const TransactionInProgressStack = createStackNavigator();
 const rootStack = createStackNavigator();
 const UsersListStack = createStackNavigator();
+const TagsListStack = createStackNavigator();
 
 // Navigation Tab variable
 const ChargingStationDetailsTabs = createMaterialBottomTabNavigator();
@@ -257,6 +259,14 @@ function createUsersListNavigator(props: BaseProps) {
   );
 }
 
+function createTagsListNavigator(props: BaseProps) {
+  return (
+    <UsersListStack.Navigator initialRouteName='TagsList' headerMode='none'>
+      <UsersListStack.Screen name='TagsList' component={TagsList} initialParams={props?.route?.params?.params} />
+    </UsersListStack.Navigator>
+  );
+}
+
 function createAppDrawerNavigator(props: BaseProps) {
   const appStyles = computeStyleSheet();
   return (
@@ -270,6 +280,7 @@ function createAppDrawerNavigator(props: BaseProps) {
       <AppDrawer.Screen name='TransactionHistoryNavigator' component={createTransactionHistoryNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name='TransactionInProgressNavigator' component={createTransactionInProgressNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name='UsersListNavigator' component={createUsersListNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name='TagsListNavigator' component={createTagsListNavigator} initialParams={props?.route?.params?.params} />
     </AppDrawer.Navigator>
   );
 }
