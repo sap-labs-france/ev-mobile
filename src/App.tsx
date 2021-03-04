@@ -8,7 +8,6 @@ import React from 'react';
 import { StatusBar } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import BaseProps from 'types/BaseProps';
-
 import computeStyleSheet from './AppStyles';
 import I18nManager from './I18n/I18nManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
@@ -41,7 +40,6 @@ import TransactionsInProgress from './screens/transactions/in-progress/Transacti
 import UsersList from './screens/users/list/UsersList';
 import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
-import SecurityProvider from "./provider/SecurityProvider";
 
 // Init i18n
 I18nManager.initialize();

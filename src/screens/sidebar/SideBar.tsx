@@ -1,4 +1,4 @@
-import { DrawerActions, StackActions } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import moment from 'moment';
 import { Container, Content, Header, Icon, ListItem, Text, Thumbnail, View } from 'native-base';
