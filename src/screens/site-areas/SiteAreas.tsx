@@ -231,17 +231,17 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           <Modalize
             alwaysOpen={175}
             modalStyle={modalStyle.modalContainer}>
-            <SiteAreaComponent siteArea={siteAreaSelected} navigation={navigation} 
+            <SiteAreaComponent siteArea={siteAreaSelected} navigation={navigation}
                 onNavigate={() => this.setState({ visible: false })} />
           </Modalize>
         </Modal>
       )
     } else {
-      return ( 
+      return (
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
           <View style={modalStyle.modalContainer}>
             <ScrollView>
-              <SiteAreaComponent siteArea={siteAreaSelected} navigation={navigation} 
+              <SiteAreaComponent siteArea={siteAreaSelected} navigation={navigation}
                 onNavigate={() => this.setState({ visible: false })} />
             </ScrollView>
           </View>
