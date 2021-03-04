@@ -220,7 +220,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public showMapSiteDetail = (site : Site) => {
-    console.log('showSiteDetail in modal');
     this.setState({
       visible: true,
       siteSelected: site
@@ -235,17 +234,17 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
             alwaysOpen={175}
             modalStyle={modalStyle.modalContainer}>
             <SiteComponent site={siteSelected} navigation={navigation} 
-                onNavigate={() => this.setState({ visible: false })} /> 
+                onNavigate={() => this.setState({ visible: false })} />
           </Modalize>
         </Modal>
       )
     } else {
-      return ( 
+      return (
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
           <View style={modalStyle.modalContainer}>
             <ScrollView>
-              <SiteComponent site={siteSelected} navigation={navigation} 
-                onNavigate={() => this.setState({ visible: false })} /> 
+              <SiteComponent site={siteSelected} navigation={navigation}
+                onNavigate={() => this.setState({ visible: false })} />
             </ScrollView>
           </View>
         </Modal>
