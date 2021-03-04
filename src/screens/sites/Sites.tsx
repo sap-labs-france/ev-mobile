@@ -233,7 +233,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           <Modalize
             alwaysOpen={175}
             modalStyle={modalStyle.modalContainer}>
-            <SiteComponent site={siteSelected} navigation={navigation} 
+            <SiteComponent site={siteSelected} navigation={navigation}
                 onNavigate={() => this.setState({ visible: false })} />
           </Modalize>
         </Modal>
