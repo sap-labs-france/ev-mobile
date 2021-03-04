@@ -71,7 +71,6 @@
     "statistics": "Statistiques",
     "reportError": "Signaler Erreur",
     "users": "Utilisateurs"
-
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",
