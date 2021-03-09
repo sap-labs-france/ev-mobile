@@ -25,8 +25,7 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
-import {Car} from "../../../ev-server/src/types/Car";
-import Vehicle from "../types/Vehicle";
+import Vehicle from '../types/Vehicle';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
@@ -654,12 +653,25 @@ export default class CentralServerProvider {
     }
     return null;
   }
+
   public async getTransactions(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<TransactionDataResult> {
     this.debugMethod('getTransactions');
     // Build Paging
     this.buildPaging(paging, params);
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTIONS_COMPLETED}`, {
+      headers: this.buildSecuredHeaders(),
+      params,
+    });
+    return result.data;
+  }
+
+  public async getCars(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Vehicle>> {
+    this.debugMethod('getCars');
+    // Build Paging
+    this.buildPaging(paging, params);
+    // Call
+    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CARS}`, {
       headers: this.buildSecuredHeaders(),
       params,
     });
