@@ -2,6 +2,10 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
+<<<<<<< Updated upstream
+=======
+import { FlatList, Platform, RefreshControl } from 'react-native';
+>>>>>>> Stashed changes
 import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ItemsList from '../../../components/list/ItemsList';

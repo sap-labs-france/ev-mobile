@@ -19,6 +19,13 @@ import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../../transactions/TransactionsStyles';
 
 export interface Props extends  BaseProps {
+<<<<<<< Updated upstream
+=======
+  select?: ItemsListTypes;
+  modal?: boolean;
+  onUserSelected?: (selectedIds: {[key: string]: User }) => void;
+  initiallySelectedUsers?: {[key: string]: User };
+>>>>>>> Stashed changes
 }
 
 export interface State {
@@ -69,7 +76,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
     return null;
   }
 
-  public async getUserImage(id: string) {
+  public async getUserImage(id: string | number) {
     try {
       return await this.centralServerProvider.getUserImage({ID: id});
     } catch (error) {

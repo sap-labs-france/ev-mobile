@@ -2,9 +2,10 @@ import {DrawerActions} from '@react-navigation/native';
 import i18n from 'i18n-js';
 import {Container, Spinner} from 'native-base';
 import React from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ItemsList from '../../components/list/ItemsList';
+import ItemsList, {ItemsListTypes} from '../../components/list/ItemsList';
+import TagComponent from '../../components/tag/TagComponent';
 import BaseProps from '../../types/BaseProps';
 import {DataResult} from '../../types/DataResult';
 import {HTTPAuthError} from '../../types/HTTPError';
@@ -13,10 +14,8 @@ import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../transactions/TransactionsStyles';
-import TagComponent from "../../components/tag/TagComponent";
 
 export interface Props extends BaseProps {
-
 }
 
 interface State {
@@ -26,7 +25,6 @@ interface State {
   count?: number;
   refreshing?: boolean;
   loading? : boolean;
-
 }
 
 export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
@@ -107,11 +105,7 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const {tags, count, skip, limit, refreshing, loading} = this.state;
-    const duplicates = {}
-    tags.forEach((t) => {duplicates[t.id] = (duplicates[t.id] | 0) +1})
-    console.log(duplicates)
     const {navigation} = this.props;
-    // @ts-ignore
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -130,11 +124,12 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
         ) : (
           <View style={style.content}>
             <ItemsList<Tag>
+              select={ItemsListTypes.MULTI}
               data={tags} navigation={navigation}
               count={count} limit={limit}
               skip={skip}
               renderItem={(item: Tag, selected: boolean) => (
-                <TagComponent tag={item} navigation={navigation}/>)}
+                <TagComponent tag={item} isAdmin={this.centralServerProvider.getSecurityProvider().isAdmin()} selected={selected} navigation={navigation}/>)}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}
               onEndReached={this.onEndScroll}

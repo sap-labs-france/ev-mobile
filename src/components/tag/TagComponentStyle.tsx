@@ -11,9 +11,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     selected:{
       opacity: 0.5
     },
-    labelValue: {
+    text: {
       fontSize: '15@s',
       color: commonColor.textColor
+    },
+    icon: {
+      color: commonColor.textColor,
+      fontSize: '30@s'
+    },
+    description: {
+      textAlign: 'center'
     },
     tagContent: {
       flex: 1,
@@ -25,53 +32,40 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingTop: '5@s',
       paddingLeft: '5@s',
       paddingRight: '5@s',
+      paddingBottom: '5@s',
       height: '80@s',
       width: '100%'
     },
-    columnContainer: {
+    container: {
       flexDirection: 'column',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      flex:0.7,
-      paddingLeft: '5@s'
+      width: '100%'
     },
-    left: {
-      width:'25@s',
-      flex:0.2
-    },
-    rowContainer: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
+    header: {
       width: '100%',
-      flex:0
+      padding: '5@s',
+      borderBottomWidth: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      borderBottomColor: commonColor.listBorderColor,
+      backgroundColor: commonColor.listHeaderBgColor
     },
-    accessory: {
-      color: commonColor.textColor,
-      opacity:1
-    },
-    avatarSelected: {
-      color: commonColor.textColor,
-      opacity:0.3
-    },
-    avatarTitle: {
-      color: commonColor.textColor
-    },
-    avatar: {
-      backgroundColor: 'darkgray'
+    column: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: '33%',
+      justifyContent: 'center'
     },
     firstName:{
       marginRight:'7@s',
       maxWidth:'50%'
     },
-    name:{
-      flex:1
-    },
-    email:{
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
+    user: {
+      flexDirection: 'column',
       alignItems: 'center',
+      justifyContent: 'center',
       width: '100%'
+
     }
   });
   const portraitStyles = {};

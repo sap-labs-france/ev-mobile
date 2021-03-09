@@ -7,6 +7,10 @@ import ListFooterComponent from './footer/ListFooterComponent';
 
 export interface Props<T extends ListItem> extends BaseProps {
   renderItem: (item: T, selected: boolean) => Element;
+<<<<<<< Updated upstream
+=======
+  onSelect: (selectedIds: {[key: string]: T}) => void;
+>>>>>>> Stashed changes
   emptyTitle: string;
   manualRefresh: () => void;
   onEndReached: () => void;
@@ -16,6 +20,10 @@ export interface Props<T extends ListItem> extends BaseProps {
   count: number;
   limit: number;
   refreshing: boolean;
+<<<<<<< Updated upstream
+=======
+  initiallySelectedItems?: {[key: string]: T };
+>>>>>>> Stashed changes
 }
 
 export enum ItemsListTypes {
@@ -28,7 +36,7 @@ interface State {
   selectedIds?: Set<string>;
 }
 
-export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State> {
+export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State<T>> {
 
   public constructor(props: Props<T>) {
     super(props);
@@ -36,9 +44,16 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
   }
 
   public static defaultProps = {
+<<<<<<< Updated upstream
     select: ItemsListTypes.NONE
   };
   public state: State;
+=======
+    select: ItemsListTypes.NONE,
+    onSelect: () => {return; }
+  }
+  public state: State<T>;
+>>>>>>> Stashed changes
   public props: Props<T>;
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props<T>>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
@@ -46,7 +61,12 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
   }
 
   private onSelectItem(item: T) {
+<<<<<<< Updated upstream
     const { selectedIds } = this.state;
+=======
+    const { selectedItems } = this.state;
+    const { select } = this.props;
+>>>>>>> Stashed changes
     const id = item.id;
     // If the item is already selected, unselect it
     if (selectedIds.has(id)) {
