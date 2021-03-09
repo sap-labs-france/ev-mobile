@@ -25,6 +25,8 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
+import {Car} from "../../../ev-server/src/types/Car";
+import Vehicle from "../types/Vehicle";
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
