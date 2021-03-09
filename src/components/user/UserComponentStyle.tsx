@@ -35,7 +35,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingLeft: '5@s'
     },
     left: {
-      width:'25%'
+      width:'25%',
+      paddingLeft: '3%'
     },
     rowContainer: {
       flexDirection: 'row',
