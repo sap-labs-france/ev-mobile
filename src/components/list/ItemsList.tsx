@@ -1,9 +1,8 @@
 import React from 'react';
 import {FlatList, Platform, RefreshControl, TouchableOpacity} from 'react-native';
 import BaseProps from '../../types/BaseProps';
+import ListEmptyTextComponent from './empty-text/ListEmptyTextComponent';
 import ListFooterComponent from './footer/ListFooterComponent';
-import ListEmptyTextComponent from "./empty-text/ListEmptyTextComponent";
-import I18n from "i18n-js";
 
 export interface Props<T> extends BaseProps{
   renderItem: (item: T, selected: boolean) => Element;
@@ -28,12 +27,13 @@ interface State{
   selectedIds?: Set<string>;
 }
 
-export default class ItemsList<T> extends React.Component<Props<T>, State>{
+export default class ItemsList<T> extends React.Component<Props<T>, State> {
 
-  public constructor(props:Props<T>) {
+  public constructor(props: Props<T>) {
     super(props);
     this.state = {selectedIds: new Set<string>()};
   }
+
   public static defaultProps = {
     select: ItemsListTypes.NONE
   }
@@ -44,27 +44,39 @@ export default class ItemsList<T> extends React.Component<Props<T>, State>{
     super.setState(state, callback);
   }
 
-  private onSelectItem(item: T){
+  private onSelectItem(item: T) {
     const {selectedIds} = this.state;
     const id = item.id;
     // If the item is already selected, unselect it
-    if(selectedIds.has(id)){
+    if (selectedIds.has(id)) {
       const newSelectedIds = new Set(selectedIds);
       newSelectedIds.delete(id);
-      this.setState( {...this.state, selectedIds: newSelectedIds});
-    // Else, add the item to the selected Ids
+      this.setState({...this.state, selectedIds: newSelectedIds});
+      // Else, add the item to the selected Ids
     } else {
       switch (this.props.select) {
         case ItemsListTypes.MULTI:
-          this.setState({...this.state, selectedIds: new Set(selectedIds).add(item.id)}); break;
+          this.setState({...this.state, selectedIds: new Set(selectedIds).add(item.id)});
+          break;
         case ItemsListTypes.SINGLE:
-          this.setState({...this.state, selectedIds: new Set().add(id)}); break;
+          this.setState({...this.state, selectedIds: new Set().add(id)});
+          break;
       }
     }
   }
 
   public render() {
-    const {data, skip, count, limit, navigation, manualRefresh, refreshing, onEndReached, emptyTitle} = this.props;
+    const {
+      data,
+      skip,
+      count,
+      limit,
+      navigation,
+      manualRefresh,
+      refreshing,
+      onEndReached,
+      emptyTitle
+    } = this.props;
     const {selectedIds} = this.state;
     return (
       <FlatList
@@ -74,12 +86,14 @@ export default class ItemsList<T> extends React.Component<Props<T>, State>{
             {this.props.renderItem(item, selectedIds.has(item.id))}
           </TouchableOpacity>
         )}
-        keyExtractor={(item) => `${item.id}`}
+        keyExtractor={(item, index) => `${index}`}
         onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-        refreshControl={<RefreshControl onRefresh={manualRefresh} refreshing={refreshing} />}
-        ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit}/>}
+        refreshControl={<RefreshControl onRefresh={manualRefresh} refreshing={refreshing}/>}
+        ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip}
+                                                        count={count} limit={limit}/>}
         onEndReached={onEndReached}
-        ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={emptyTitle} />}
+        ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation}
+                                                          text={emptyTitle}/>}
       />
     )
   }

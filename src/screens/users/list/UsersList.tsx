@@ -67,7 +67,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
         Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-          'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
+          'users.userUnexpectedError', this.props.navigation, this.refresh);
       }
     }
     return null;
@@ -121,7 +121,6 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const {users, count, skip, limit, refreshing, loading} = this.state;
     const {navigation} = this.props;
-    // @ts-ignore
     return (
       <Container style={style.container}>
         <HeaderComponent

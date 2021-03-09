@@ -8,12 +8,6 @@ import Utils from '../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    container: {
-      flex: 1,
-      flexDirection: 'column',
-      borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
-    },
     selected:{
       opacity: 0.5
     },
@@ -28,7 +22,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderBottomWidth: 1,
       alignItems: 'center',
       borderBottomColor: commonColor.listBorderColor,
-      paddingTop: '5@s',
       paddingLeft: '5@s',
       paddingRight: '5@s',
       height: '80@s',
@@ -38,12 +31,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      flex:0.7,
+      width: '75%',
       paddingLeft: '5@s'
     },
     left: {
-      width:'25@s',
-      flex:0.2
+      width:'25%'
     },
     rowContainer: {
       flexDirection: 'row',
@@ -63,8 +55,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     avatarTitle: {
       color: commonColor.textColor
     },
-    avatar: {
-      backgroundColor: 'darkgray'
+    avatarContainer: {
+      backgroundColor: 'darkgray',
+      height: '100%',
+      width: '100%'
     },
     firstName:{
       marginRight:'7@s',
