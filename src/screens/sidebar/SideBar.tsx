@@ -170,6 +170,13 @@ export default class SideBar extends BaseScreen<Props, State> {
                 <Text style={style.linkText}>{I18n.t('sidebar.users')}</Text>
               </ListItem> : null
             }
+            {!this.centralServerProvider?.getSecurityProvider().canListCars() ?
+              <ListItem style={style.links} button={true} iconLeft={true}
+                        onPress={() => this.navigateTo('CarsListNavigator', 'CarsList')}>
+                <Icon style={style.linkIcon} type='MaterialIcons' name='directions-car'/>
+                <Text style={style.linkText}>{I18n.t('sidebar.cars')}</Text>
+              </ListItem> : null
+            }
             <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
               <Icon style={[style.linkIcon, { color: commonColor.brandDanger }]} type='MaterialIcons' name='error-outline' />
               <Text style={[style.linkText, { color: commonColor.brandDanger }]}>{I18n.t('sidebar.reportError')}</Text>

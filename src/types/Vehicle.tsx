@@ -1,22 +1,48 @@
 import CreatedUpdatedProps from './CreatedUpdatedProps';
 import ListItem from './ListItem';
+import User from './User';
 
 export default interface Vehicle extends CreatedUpdatedProps, ListItem {
-  images?: string[];
-  numberOfImages: number;
-  vehicleManufacturerID: string;
-  type: string;
-  model: string;
-  batteryKW: number;
-  autonomyKmWLTP: number;
-  autonomyKmReal: number;
-  horsePower: number;
-  torqueNm: number;
-  performance0To100kmh: number;
-  weightKg: number;
-  lengthMeter: number;
-  widthMeter: number;
-  heightMeter: number;
-  releasedOn: Date;
-  logo?: string;
+  vin: string;
+  licensePlate: string;
+  carCatalog?: CarCatalog;
+  carUsers?: UserCar[];
+  type?: CarType;
+  converter?: CarConverter;
+}
+
+export interface CarCatalog {
+  id: number;
+  vehicleMake: string;
+  vehicleModel: string;
+  vehicleModelVersion?: string;
+  image?: string;
+  fastChargePowerMax?: number;
+}
+
+export interface CarConverter {
+  powerWatts: number;
+  amperagePerPhase: number;
+  numberOfPhases: number;
+  type: CarConverterType;
+}
+
+export enum CarType {
+  PRIVATE = 'P',
+  COMPANY = 'C',
+  POOL_CAR = 'PC',
+}
+
+export interface UserCar {
+  id?: string;
+  user: User;
+  carID: string;
+  default?: boolean;
+  owner?: boolean;
+}
+
+export enum CarConverterType {
+  STANDARD = 'S',
+  OPTION = 'O',
+  ALTERNATIVE = 'A',
 }

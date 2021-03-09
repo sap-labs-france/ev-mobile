@@ -71,7 +71,12 @@
     "transactionsInProgress": "Sessões em progresso",
     "statistics": "Estatísticas",
     "reportError": "Comunicar erro",
-    "users": "Users"
+    "users": "Users",
+    "cars": "Cars"
+  },
+  "cars": {
+    "noCars": "No cars",
+    "carUnexpectedError": "An error occurred"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",

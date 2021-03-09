@@ -115,4 +115,8 @@ export default class SecurityProvider {
   public canListUsers(): boolean {
     return this.canAccess(Entity.USERS, Action.LIST);
   }
+
+  public canListCars(): boolean {
+    return this.canAccess(Entity.VEHICLES, Action.LIST)
+  }
 }

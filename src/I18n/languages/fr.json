@@ -71,7 +71,8 @@
     "transactionsInProgress": "Sessions En Cours",
     "statistics": "Statistiques",
     "reportError": "Signaler Erreur",
-    "users": "Utilisateurs"
+    "users": "Utilisateurs",
+    "cars": "Voitures"
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",
@@ -182,6 +183,10 @@
     "blocked": "Suspendu",
     "pending": "En Attente",
     "unknown": "Inconnu"
+  },
+  "cars": {
+    "noCars": "Aucune voiture",
+    "carUnexpectedError": "Une erreur est survenue"
   },
   "transactions": {
     "transaction": "Session",

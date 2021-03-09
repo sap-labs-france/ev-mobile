@@ -71,7 +71,8 @@
     "transactionsInProgress": "Laufende Ladevorgänge",
     "statistics": "Statistiken",
     "reportError": "Fehler Melden",
-    "users": "Users"
+    "users": "Users",
+    "cars": "Cars"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -182,6 +183,10 @@
     "blocked": "blocked",
     "pending": "pending",
     "unknown": "Unknown"
+  },
+  "cars": {
+    "noCars": "No cars",
+    "carUnexpectedError": "An error occurred"
   },
   "transactions": {
     "transaction": "Ladevorgang",
