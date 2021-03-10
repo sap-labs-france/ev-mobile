@@ -149,4 +149,13 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
       this.timerRefresh = null;
     }
   }
+
+  protected manualRefresh = async () => {
+    // Display spinner
+    this.setState({ refreshing: true });
+    // Refresh
+    await this.refresh();
+    // Hide spinner
+    this.setState({ refreshing: false });
+  };
 }

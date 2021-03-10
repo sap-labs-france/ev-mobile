@@ -1,5 +1,6 @@
 {
   "general": {
+    "notAuthorized": "You are not authorized to perform this action",
     "migrationError": "Error during migration of data",
     "cannotConnectBackend": "Connection has been lost",
     "unexpectedErrorBackend": "Unexpected Backend Error",
@@ -69,7 +70,8 @@
     "transactionsHistory": "Sessions History",
     "transactionsInProgress": "Sessions In Progress",
     "statistics": "Statistics",
-    "reportError": "Report Error"
+    "reportError": "Report Error",
+    "users": "Users"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -162,7 +164,8 @@
     "scanChargingStationQrCodeTitle": "Scan Charging Station"
   },
   "users": {
-    "userUnexpectedError": "Cannot read the users"
+    "userUnexpectedError": "Cannot read the users",
+    "noUsers": "No users"
   },
   "transactions": {
     "transaction": "Session",

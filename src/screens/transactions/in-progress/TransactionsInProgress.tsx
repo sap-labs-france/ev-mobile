@@ -114,15 +114,6 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     return true;
   };
 
-  public manualRefresh = async () => {
-    // Display spinner
-    this.setState({ refreshing: true });
-    // Refresh
-    await this.refresh();
-    // Hide spinner
-    this.setState({ refreshing: false });
-  };
-
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
