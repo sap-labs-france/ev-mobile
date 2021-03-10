@@ -13,6 +13,7 @@ import computeStyleSheet from './SiteComponentStyles';
 
 export interface Props extends BaseProps {
   site: Site;
+  onNavigate?: () => void;
 }
 
 interface State {
@@ -33,7 +34,7 @@ export default class SiteComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { site, navigation } = this.props;
+    const { site, navigation, onNavigate } = this.props;
     const validGPSCoordinates = Utils.containsAddressGPSCoordinates(site.address);
     let connectorStats: ConnectorStats;
     // New backend?
@@ -52,6 +53,9 @@ export default class SiteComponent extends React.Component<Props, State> {
         iterationCount={1}
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity onPress={() => {
+          if (onNavigate) {
+            onNavigate();
+          }
           navigation.navigate(
             'SiteAreas',
             {
