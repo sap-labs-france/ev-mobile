@@ -11,7 +11,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     modal: {
       backgroundColor: commonColor.containerTouchableBackgroundColor,
       padding: '20@s',
-      margin: 0,
+      margin: 0
     },
     modalContainer: {
       backgroundColor: commonColor.containerBgColor,

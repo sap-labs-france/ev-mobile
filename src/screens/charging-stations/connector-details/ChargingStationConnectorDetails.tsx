@@ -1,23 +1,35 @@
-import { DrawerActions } from '@react-navigation/native';
+import {DrawerActions} from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
+import {Container, Icon, Spinner, Text, Thumbnail, View} from 'native-base';
 import React from 'react';
-import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  Alert,
+  Image,
+  ImageStyle,
+  RefreshControl,
+  ScrollView,
+  TextInput,
+  TouchableOpacity
+} from 'react-native';
 
-import { default as noPhoto, default as noPhotoActive } from '../../../../assets/no-photo.png';
+import Modal from 'react-native-modal';
+import {default as noPhoto, default as noPhotoActive} from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
 import I18nManager from '../../../I18n/I18nManager';
-import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
+import ConnectorStatusComponent
+  from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
+import {ItemsListTypes} from '../../../components/list/ItemsList';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
-import { HTTPAuthError } from '../../../types/HTTPError';
+import ChargingStation, {ChargePointStatus, Connector} from '../../../types/ChargingStation';
+import {HTTPAuthError} from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
 import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
+import UsersList from '../../users/list/UsersList';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
 
 const START_TRANSACTION_NB_TRIAL = 4;
@@ -44,14 +56,19 @@ interface State {
   isPricingActive?: boolean;
   buttonDisabled?: boolean;
   refreshing?: boolean;
+  selectedUser?: User;
+  openUserModal?: boolean;
+  scrollOffset?: number
 }
 
 export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
+  public scrollViewRef: React.RefObject<ScrollView>;
 
   constructor(props: Props) {
     super(props);
+    this.scrollViewRef = React.createRef();
     this.state = {
       loading: true,
       chargingStation: null,
@@ -70,7 +87,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       startTransactionNbTrial: 0,
       isPricingActive: false,
       buttonDisabled: true,
-      refreshing: false
+      refreshing: false,
+      selectedUser: null,
+      openUserModal: false,
+      scrollOffset: null
     };
   }
 
@@ -97,7 +117,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         'sites.siteUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
-  }
+  };
 
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
@@ -110,7 +130,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         'chargers.chargerUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
-  }
+  };
 
   public getTransaction = async (transactionID: number): Promise<Transaction> => {
     try {
@@ -125,7 +145,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       }
     }
     return null;
-  }
+  };
 
   public getLastTransaction = async (chargeBoxID: string, connectorId: number): Promise<Transaction> => {
     try {
@@ -140,7 +160,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       }
     }
     return null;
-  }
+  };
 
   public getUserImage = async (user: User): Promise<string> => {
     try {
@@ -154,7 +174,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         'users.userUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
-  }
+  };
 
   public showLastTransaction = async () => {
     const { navigation } = this.props;
@@ -241,7 +261,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       ...durationInfos,
       loading: false
     });
-  }
+  };
 
   public canStopTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
@@ -252,7 +272,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return securityProvider.canStopTransaction(chargingStation.siteArea, connector.currentTagID);
     }
     return false;
-  }
+  };
 
   public canStartTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
@@ -263,7 +283,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return securityProvider.canStartTransaction(chargingStation.siteArea);
     }
     return false;
-  }
+  };
 
   public canDisplayTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
@@ -274,7 +294,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return securityProvider.canReadTransaction(chargingStation.siteArea, connector.currentTagID);
     }
     return false;
-  }
+  };
 
   public manualRefresh = async () => {
     // Display spinner
@@ -283,7 +303,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
-  }
+  };
 
   public startTransactionConfirm = () => {
     const { chargingStation } = this.state;
@@ -291,7 +311,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       { text: I18n.t('general.yes'), onPress: () => this.startTransaction() },
       { text: I18n.t('general.no') }
     ]);
-  }
+  };
 
   public startTransaction = async () => {
     const { chargingStation, connector } = this.state;
@@ -335,7 +355,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
         'transactions.transactionStartUnexpectedError', this.props.navigation, this.refresh);
     }
-  }
+  };
 
   public stopTransactionConfirm = async () => {
     const { chargingStation } = this.state;
@@ -344,7 +364,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       { text: I18n.t('general.yes'), onPress: () => this.stopTransaction() },
       { text: I18n.t('general.no') }
     ]);
-  }
+  };
 
   public stopTransaction = async () => {
     const { chargingStation, connector } = this.state;
@@ -364,7 +384,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
         'transactions.transactionStopUnexpectedError', this.props.navigation, this.refresh);
     }
-  }
+  };
 
   public getStartStopTransactionButtonStatus(connector: Connector): { buttonDisabled?: boolean; startTransactionNbTrial?: number; } {
     const { startTransactionNbTrial } = this.state;
@@ -446,8 +466,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
     return {
       elapsedTimeFormatted: Constants.DEFAULT_DURATION
-    };
-  }
+    }
+  };
 
   public renderConnectorStatus = (style: any) => {
     const { chargingStation, connector, isAdmin, isSiteAdmin } = this.state;
@@ -459,7 +479,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         )}
       </View>
     );
-  }
+  };
 
   public renderUserInfo = (style: any) => {
     const { userImage, transaction, isAdmin, isSiteAdmin } = this.state;
@@ -477,7 +497,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <Text style={[style.label, style.disabled]}>-</Text>
         </View>
       );
-  }
+  };
 
   public renderPrice = (style: any) => {
     const { transaction, connector } = this.state;
@@ -497,7 +517,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
         </View>
       );
-  }
+  };
 
   public renderInstantPower = (style: any) => {
     const { connector } = this.state;
@@ -515,7 +535,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
         </View>
       );
-  }
+  };
 
   public renderElapsedTime = (style: any) => {
     const { elapsedTimeFormatted, connector } = this.state;
@@ -531,7 +551,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
         </View>
       );
-  }
+  };
 
   public renderInactivity = (style: any) => {
     const { connector, inactivityFormatted } = this.state;
@@ -548,7 +568,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
         </View>
       );
-  }
+  };
 
   public renderTotalConsumption = (style: any) => {
     const { connector } = this.state;
@@ -566,7 +586,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
         </View>
       );
-  }
+  };
 
   public renderBatteryLevel = (style: any) => {
     const { transaction, connector } = this.state;
@@ -584,7 +604,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
         </View>
       );
-  }
+  };
 
   public renderShowLastTransactionButton = (style: any) => {
     const { isAdmin, isSiteAdmin, connector, canStartTransaction } = this.state;
@@ -600,7 +620,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return (
       <View style={[style.lastTransactionContainer]} />
     );
-  }
+  };
 
   public renderReportErrorButton = (style: any) => {
     const { connector, canStartTransaction } = this.state;
@@ -616,7 +636,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return (
       <View style={[style.lastTransactionContainer]} />
     );
-  }
+  };
 
   public renderStartTransactionButton = (style: any) => {
     const { buttonDisabled } = this.state;
@@ -640,7 +660,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         </View>
       </TouchableOpacity>
     );
-  }
+  };
 
   public renderStopTransactionButton = (style: any) => {
     const { buttonDisabled } = this.state;
@@ -664,17 +684,29 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         </View>
       </TouchableOpacity>
     );
-  }
+  };
 
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack();
     // Do not bubble up
     return true;
+  };
+
+  private openUserModal(open: boolean) {
+    this.setState({openUserModal: open})
+  }
+
+  private onUserSelected(users: {[key: string] : User}) {
+    const keys = Object.keys(users);
+    if(users && keys.length > 0){
+      this.setState({selectedUser: users[keys[0]]}, () => this.openUserModal(false))
+    }
   }
 
   public render() {
     const { navigation } = this.props;
+    const { openUserModal, selectedUser } = this.state;
     const style = computeStyleSheet();
     const { connector, canStopTransaction, canStartTransaction, chargingStation, loading, siteImage, isPricingActive } = this.state;
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
@@ -689,7 +721,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
               subTitle={connectorLetter ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}
-              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
+              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
               rightActionIcon={'menu'}
             />
             {/* Site Image */}
@@ -711,25 +743,64 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                   <View style={style.noButtonStopTransaction} />
                 )}
             {/* Details */}
-            <ScrollView contentContainerStyle={style.scrollViewContainer}
-              refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
-              <View style={style.rowContainer}>
-                {this.renderConnectorStatus(style)}
-                {this.renderUserInfo(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderInstantPower(style)}
-                {this.renderTotalConsumption(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderElapsedTime(style)}
-                {this.renderInactivity(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderBatteryLevel(style)}
-                {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
-              </View>
-            </ScrollView>
+            {connector.status === ChargePointStatus.AVAILABLE ?
+              <ScrollView contentContainerStyle={style.scrollViewContainer}
+                          refreshControl={openUserModal ? null : <RefreshControl refreshing={this.state.refreshing}
+                                                          onRefresh={this.manualRefresh}/>}>
+                <View style={style.rowContainer}>
+                  {this.renderConnectorStatus(style)}
+                </View>
+                <View style={style.rowContainer}>
+                  <View>
+                    <TouchableOpacity onPress={() => this.openUserModal(true)}>
+                      <TextInput editable={false} numberOfLines={1} placeholder={'select user...'} value={selectedUser ?  selectedUser.firstName + ' ' + selectedUser.name : null}/>
+                    </TouchableOpacity>
+                      <Modal testID={'modal'}
+                             propagateSwipe={true}
+                             supportedOrientations={['portrait', 'landscape']}
+                             onSwipeComplete={() => this.openUserModal(false)}
+                             style={style.modal}
+                             isVisible={this.state.openUserModal}
+                             swipeDirection={'down'}
+                             animationInTiming={500}
+                             onBackButtonPress={() => this.openUserModal(false)}
+                             animationOutTiming={1000}
+                             onBackdropPress={() => this.openUserModal(false)}
+                      >
+                        <View style={style.modalContent}>
+                          <View style={style.modalHeader}>
+                            <Icon type='MaterialIcons' name={'expand-more'} style={style.icon}/>
+                            <Text style={style.text}>selected: {(!selectedUser || Object.keys(selectedUser).length === 0) ? 0 : 1}</Text>
+                          </View>
+                          <UsersList onUserSelected={(selectedUsers) => this.onUserSelected(selectedUsers)} navigation={navigation} select={ItemsListTypes.SINGLE} modal={true}/>
+                        </View>
+                      </Modal>
+                  </View>
+                </View>
+              </ScrollView>
+              :
+              <ScrollView contentContainerStyle={style.scrollViewContainer}
+                          refreshControl={<RefreshControl refreshing={this.state.refreshing}
+                                                          onRefresh={this.manualRefresh}/>}>
+                <View style={style.rowContainer}>
+                  {this.renderConnectorStatus(style)}
+                  {this.renderUserInfo(style)}
+                </View>
+                <View style={style.rowContainer}>
+                  {this.renderInstantPower(style)}
+                  {this.renderTotalConsumption(style)}
+                </View>
+                <View style={style.rowContainer}>
+                  {this.renderElapsedTime(style)}
+                  {this.renderInactivity(style)}
+                </View>
+                <View style={style.rowContainer}>
+                  {this.renderBatteryLevel(style)}
+                  {isPricingActive ? this.renderPrice(style) :
+                    <View style={style.columnContainer}/>}
+                </View>
+              </ScrollView>
+            }
           </Container>
         )
     );

@@ -18,6 +18,9 @@ import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../../transactions/TransactionsStyles';
 
 export interface Props extends  BaseProps {
+  select?: ItemsListTypes;
+  modal?: boolean;
+  onUserSelected?: (selectedIds: {[key: string]: User }) => void;
 }
 
 export interface State {
@@ -30,6 +33,12 @@ export interface State {
 }
 
 export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
+
+  public static defaultProps = {
+    select: ItemsListTypes.NONE,
+    modal: false
+  }
+
   public state: State;
   public props: Props;
   private searchText: string;
@@ -133,21 +142,25 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const {users, count, skip, limit, refreshing, loading} = this.state;
-    const {navigation} = this.props;
+    const {navigation, modal, select, onUserSelected} = this.props;
     return (
       <Container style={style.container}>
-        <HeaderComponent
-          title={i18n.t('sidebar.users')}
-          navigation={this.props.navigation}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}` : null}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
-        />
+        {modal ?
+          null
+          :
+          <HeaderComponent
+            title={i18n.t('sidebar.users')}
+            navigation={this.props.navigation}
+            leftAction={this.onBack}
+            leftActionIcon={'navigate-before'}
+            subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}` : null}
+            rightAction={() => {
+              navigation.dispatch(DrawerActions.openDrawer());
+              return true;
+            }}
+            rightActionIcon={'menu'}
+          />
+        }
         {loading ? (
           <Spinner style={style.spinner} color='grey'/>
         ) : (
@@ -157,6 +170,8 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
               navigation={navigation}
             />
             <ItemsList<User>
+              select={select}
+              onSelect={onUserSelected}
               data={users}
               navigation={navigation}
               count={count}
@@ -166,7 +181,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
                 <UserComponent user={item} selected={selected}
                                navigation={this.props.navigation}/>)}
               refreshing={refreshing}
-              manualRefresh={this.manualRefresh}
+              manualRefresh={modal ? this.manualRefresh : () => {return;}}
               onEndReached={this.onEndScroll}
               emptyTitle={i18n.t('users.noUsers')}
             />

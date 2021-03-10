@@ -7,6 +7,7 @@ import ListFooterComponent from './footer/ListFooterComponent';
 
 export interface Props<T extends ListItem> extends BaseProps {
   renderItem: (item: T, selected: boolean) => Element;
+  onSelect: (selectedIds: {[key: string] : T}) => void;
   emptyTitle: string;
   manualRefresh: () => void;
   onEndReached: () => void;
@@ -24,43 +25,44 @@ export enum ItemsListTypes {
   SINGLE = 'single'
 }
 
-interface State {
-  selectedIds?: Set<string>;
+interface State<T> {
+  selectedItems?: {[key: string]: T};
 }
 
 export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State> {
 
   public constructor(props: Props<T>) {
     super(props);
-    this.state = {selectedIds: new Set<string>()};
+    this.state = {selectedItems: []};
   }
 
   public static defaultProps = {
     select: ItemsListTypes.NONE
-  };
-  public state: State;
+  }
+  public state: State<T>;
   public props: Props<T>;
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props<T>>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (state: State<T> | ((prevState: Readonly<State<T>>, props: Readonly<Props<T>>) => State<T> | Pick<State<T>, never>) | Pick<State<T>, never>, callback?: () => void) => {
     super.setState(state, callback);
   }
 
   private onSelectItem(item: T) {
-    const { selectedIds } = this.state;
+    const {selectedItems} = this.state;
+    const {select} = this.props
     const id = item.id;
     // If the item is already selected, unselect it
-    if (selectedIds.has(id)) {
-      const newSelectedIds = new Set(selectedIds);
-      newSelectedIds.delete(id);
-      this.setState({...this.state, selectedIds: newSelectedIds});
+    if (selectedItems[id]) {
+      delete selectedItems[id];
+      this.setState({selectedItems}, () => this.props.onSelect(this.state.selectedItems));
       // Else, add the item to the selected Ids
     } else {
-      switch (this.props.select) {
+      switch (select) {
         case ItemsListTypes.MULTI:
-          this.setState({...this.state, selectedIds: new Set(selectedIds).add(item.id)});
+          this.setState({...this.state, selectedItems: {...selectedItems, [id]: item}}, () => this.props.onSelect(this.state.selectedItems));
           break;
         case ItemsListTypes.SINGLE:
-          this.setState({...this.state, selectedIds: new Set().add(id)});
+          this.setState({...this.state, selectedItems: {[id]: item}}, () => this.props.onSelect(this.state.selectedItems)
+          );
           break;
       }
     }
@@ -76,18 +78,20 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
       manualRefresh,
       refreshing,
       onEndReached,
-      emptyTitle
+      emptyTitle,
+      select
     } = this.props;
-    const {selectedIds} = this.state;
+    const {selectedItems} = this.state;
     return (
       <FlatList
         data={data}
         renderItem={({item}) => (
-          <TouchableOpacity onPress={() => this.onSelectItem(item)}>
-            {this.props.renderItem(item, selectedIds.has(item.id))}
+          <TouchableOpacity onPress={select === ItemsListTypes.NONE ? null : () => this.onSelectItem(item)}>
+            {this.props.renderItem(item, selectedItems.hasOwnProperty(item.id))}
           </TouchableOpacity>
         )}
         keyExtractor={(item, index) => `${index}`}
+        maxToRenderPerBatch={15}
         onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
         refreshControl={<RefreshControl onRefresh={manualRefresh} refreshing={refreshing}/>}
         ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip}
