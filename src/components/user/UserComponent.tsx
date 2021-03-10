@@ -1,6 +1,7 @@
 import {Text, View} from 'native-base';
 import React from 'react';
 import {Avatar} from 'react-native-elements';
+
 import BaseProps from '../../types/BaseProps';
 import User from '../../types/User';
 import computeStyleSheet from './UserComponentStyle';
@@ -28,22 +29,22 @@ export default class UserComponent extends React.Component<Props, State>{
   public render() {
     const style = computeStyleSheet();
     const {user, selected} = this.props;
-    const uri = user.image;
+    const userImageURI = user.image;
     const userName = user.name ? (user.name.charAt(0).toUpperCase() + user.name.slice(1).toLowerCase()) : '';
     const userFirstName = user.firstName ? user.firstName : '';
     return(
       <View style={style.userContent}>
         <View style={style.left}>
-          {uri ?
-            <Avatar rounded={true}
-                    size={80}
-                    source={{uri}}
+          {userImageURI ?
+            <Avatar size={65}
+                    rounded={true}
+                    source={{uri: userImageURI}}
                     titleStyle={style.avatarTitle}
                     overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
               {selected ? <Avatar.Accessory name={'done'} size={40} {...style.accessory}/> : null}
             </Avatar>
                   :
-            <Avatar size={80}
+            <Avatar size={65}
                     rounded={true}
                     title={userFirstName.charAt(0) + userName.charAt(0)}
                     titleStyle={style.avatarTitle}

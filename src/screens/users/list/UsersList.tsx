@@ -1,14 +1,15 @@
-import {DrawerActions} from '@react-navigation/native';
+import { DrawerActions } from '@react-navigation/native';
 import i18n from 'i18n-js';
-import {Container, Spinner} from 'native-base';
+import { Container, Spinner } from 'native-base';
 import React from 'react';
-import {View} from 'react-native';
+import { View } from 'react-native';
+
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ItemsList, {ItemsListTypes} from '../../../components/list/ItemsList';
+import ItemsList from '../../../components/list/ItemsList';
 import UserComponent from '../../../components/user/UserComponent';
 import BaseProps from '../../../types/BaseProps';
-import {DataResult} from '../../../types/DataResult';
-import {HTTPAuthError} from '../../../types/HTTPError';
+import { DataResult } from '../../../types/DataResult';
+import { HTTPAuthError } from '../../../types/HTTPError';
 import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
@@ -26,6 +27,7 @@ export interface State {
   refreshing?: boolean;
   loading? : boolean;
 }
+
 export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
@@ -43,16 +45,12 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
-  public async componentDidMount(): Promise<void> {
-    await super.componentDidMount();
-  }
-
   public async getUsers(skip: number, limit: number): Promise<DataResult<User>> {
     try {
       return await this.centralServerProvider.getUsers({}, {skip, limit});
     } catch (error) {
       // Check if HTTP?
-      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+      if (!error.request) {
         Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
           'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
       }
@@ -65,7 +63,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
       return await this.centralServerProvider.getUserImage({ID: id});
     } catch (error) {
       // Check if HTTP?
-      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+      if (!error.request) {
         Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
           'users.userUnexpectedError', this.props.navigation, this.refresh);
       }

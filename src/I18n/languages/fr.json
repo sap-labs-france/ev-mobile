@@ -1,6 +1,7 @@
 {
   "general": {
-    "migrationError": "Error during migration of data",
+    "notAuthorized": "Vous n'êtes pas autorisé a exécuter cette action",
+    "migrationError": "Erreur pendant la migration des données",
     "cannotConnectBackend": "La connexion a été perdue",
     "unexpectedErrorBackend": "Erreur Backend Inattendue",
     "unexpectedError": "Erreur Applicative",

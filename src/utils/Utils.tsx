@@ -630,9 +630,12 @@ export default class Utils {
         case 0:
           Message.showError(I18n.t('general.cannotConnectBackend'));
           break;
+        // Backend not available
+        case StatusCodes.FORBIDDEN:
+          Message.showError(I18n.t('general.notAuthorized'));
+          break;
         // Not logged in?
         case StatusCodes.UNAUTHORIZED:
-        case StatusCodes.FORBIDDEN:
           // Force auto login
           await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;

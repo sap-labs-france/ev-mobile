@@ -35,7 +35,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingLeft: '5@s'
     },
     left: {
-      width:'25%',
+      width:'20%',
       paddingLeft: '3%'
     },
     rowContainer: {
@@ -47,11 +47,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     accessory: {
       color: commonColor.textColor,
-      opacity:1
+      opacity: 1
     },
     avatarSelected: {
       color: commonColor.textColor,
-      opacity:0.3
+      opacity: 0.3
     },
     avatarTitle: {
       color: commonColor.textColor

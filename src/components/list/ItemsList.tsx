@@ -1,10 +1,11 @@
 import React from 'react';
 import {FlatList, Platform, RefreshControl, TouchableOpacity} from 'react-native';
+
 import BaseProps from '../../types/BaseProps';
 import ListEmptyTextComponent from './empty-text/ListEmptyTextComponent';
 import ListFooterComponent from './footer/ListFooterComponent';
 
-export interface Props<T> extends BaseProps{
+export interface Props<T> extends BaseProps {
   renderItem: (item: T, selected: boolean) => Element;
   emptyTitle: string;
   manualRefresh: () => void;
@@ -23,7 +24,7 @@ export enum ItemsListTypes {
   SINGLE = 'single'
 }
 
-interface State{
+interface State {
   selectedIds?: Set<string>;
 }
 

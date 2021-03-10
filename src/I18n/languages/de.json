@@ -1,5 +1,6 @@
 ﻿{
   "general": {
+    "notAuthorized": "You are not authorized to perform this action",
     "migrationError": "Fehler während der Datenmigration",
     "cannotConnectBackend": "Die Verbindung wurde unterbrochen",
     "unexpectedErrorBackend": "Unerwarteter Backend Fehler",

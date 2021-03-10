@@ -113,7 +113,6 @@ export default class SecurityProvider {
   }
 
   public canListUsers(): boolean {
-    const answer = this.canAccess(Entity.USERS, Action.LIST)
-    return answer;
+    return this.canAccess(Entity.USERS, Action.LIST);
   }
 }

@@ -6,8 +6,8 @@ import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { KeyValue } from 'types/Global';
 
-import I18nManager from '../I18n/I18nManager';
 import Configuration from '../config/Configuration';
+import I18nManager from '../I18n/I18nManager';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
@@ -669,11 +669,11 @@ export default class CentralServerProvider {
     // Build Paging
     this.buildPaging(paging, params);
     // Call
-  const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.USERS}`, {
-    headers: this.buildSecuredHeaders(),
-    params,
-  });
-  return result.data;
+    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.USERS}`, {
+      headers: this.buildSecuredHeaders(),
+      params,
+    });
+    return result.data;
   }
 
   public async requestChargingStationOcppParameters(id: string): Promise<ActionResponse> {
