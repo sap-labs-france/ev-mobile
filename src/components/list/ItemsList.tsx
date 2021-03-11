@@ -17,6 +17,7 @@ export interface Props<T extends ListItem> extends BaseProps {
   count: number;
   limit: number;
   refreshing: boolean;
+  initiallySelectedItems?: {[key: string] : T };
 }
 
 export enum ItemsListTypes {
@@ -33,22 +34,30 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
 
   public constructor(props: Props<T>) {
     super(props);
-    this.state = {selectedItems: []};
+    this.state = {selectedItems: {}};
   }
 
   public static defaultProps = {
-    select: ItemsListTypes.NONE
+    select: ItemsListTypes.NONE,
+    onSelect: () => {return;}
   }
   public state: State<T>;
   public props: Props<T>;
+
+  public componentDidMount() {
+    const { initiallySelectedItems } = this.props;
+    if( initiallySelectedItems ) {
+      this.setState({selectedItems : initiallySelectedItems});
+    }
+  }
 
   public setState = (state: State<T> | ((prevState: Readonly<State<T>>, props: Readonly<Props<T>>) => State<T> | Pick<State<T>, never>) | Pick<State<T>, never>, callback?: () => void) => {
     super.setState(state, callback);
   }
 
   private onSelectItem(item: T) {
-    const {selectedItems} = this.state;
-    const {select} = this.props
+    const { selectedItems } = this.state;
+    const { select } = this.props
     const id = item.id;
     // If the item is already selected, unselect it
     if (selectedItems[id]) {
@@ -81,7 +90,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
       emptyTitle,
       select
     } = this.props;
-    const {selectedItems} = this.state;
+    const { selectedItems } = this.state;
     return (
       <FlatList
         data={data}

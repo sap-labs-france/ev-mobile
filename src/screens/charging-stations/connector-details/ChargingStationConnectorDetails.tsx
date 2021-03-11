@@ -1,6 +1,6 @@
 import {DrawerActions} from '@react-navigation/native';
 import I18n from 'i18n-js';
-import {Container, Icon, Spinner, Text, Thumbnail, View} from 'native-base';
+import {Button, Container, Icon, Spinner, Text, Thumbnail, View} from 'native-base';
 import React from 'react';
 import {
   Alert,
@@ -8,13 +8,13 @@ import {
   ImageStyle,
   RefreshControl,
   ScrollView,
-  TextInput,
   TouchableOpacity
 } from 'react-native';
-
 import Modal from 'react-native-modal';
+
 import {default as noPhoto, default as noPhotoActive} from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
+import computeFormStyleSheet from '../../../FormStyles';
 import I18nManager from '../../../I18n/I18nManager';
 import ConnectorStatusComponent
   from '../../../components/connector-status/ConnectorStatusComponent';
@@ -104,6 +104,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     if (startTransaction) {
       this.startTransactionConfirm();
     }
+    const currentUser = this.centralServerProvider.getUserInfo();
+    if(currentUser) {
+      this.setState({selectedUser : {id: currentUser.id, firstName: currentUser.firstName, name: currentUser.name }});
+    }
   }
 
   public getSiteImage = async (siteID: string): Promise<string> => {
@@ -147,7 +151,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return null;
   };
 
-  public getLastTransaction = async (chargeBoxID: string, connectorId: number): Promise<Transaction> => {
+  public getLastTransaction = async(chargeBoxID: string, connectorId: number): Promise<Transaction> => {
     try {
       // Get Transaction
       const transaction = await this.centralServerProvider.getLastTransaction(chargeBoxID, connectorId);
@@ -493,7 +497,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       </View>
     ) : (
         <View style={style.columnContainer}>
-          <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
+          <Thumbnail style={[style.userImage]} source={userImage ? {uri: userImage} : noPhoto} />
           <Text style={[style.label, style.disabled]}>-</Text>
         </View>
       );
@@ -520,7 +524,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public renderInstantPower = (style: any) => {
-    const { connector } = this.state;
+    const {connector } = this.state;
     return connector && connector.currentTransactionID && !isNaN(connector.currentInstantWatts) ? (
       <View style={style.columnContainer}>
         <Icon type='FontAwesome' name='bolt' style={[style.icon, style.info]} />
@@ -704,10 +708,54 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
   }
 
+  private renderUserSelection(style: any, formStyle: any) {
+    const { selectedUser } = this.state;
+    const { navigation } = this.props;
+    const currentUserInfos = this.centralServerProvider.getUserInfo();
+    const userName = selectedUser ? selectedUser.firstName + ' ' + selectedUser.name : currentUserInfos.firstName + ' ' + currentUserInfos.name;
+    return (
+      <View style={style.rowContainer}>
+        <Button block={true} style={formStyle.button} onPress={ () => this.openUserModal(true) }
+        >
+          <Text style={formStyle.buttonText} uppercase={false}>{userName}</Text>
+        </Button>
+        <Modal
+          propagateSwipe={true}
+          supportedOrientations={['portrait', 'landscape']}
+          style={style.modal}
+          isVisible={this.state.openUserModal}
+          swipeDirection={'down'}
+          animationInTiming={1000}
+          animationOutTiming={1000}
+          onSwipeComplete={() => this.openUserModal(false)}
+          onBackButtonPress={() => this.openUserModal(false)}
+          onBackdropPress={() => this.openUserModal(false)}
+          hideModalContentWhileAnimating={true}
+        >
+          <View style={style.modalContent}>
+            <View style={style.modalHeader}>
+              <Icon onPress={() => this.openUserModal(false)} type='MaterialIcons' name={'expand-more'} style={[style.icon, style.downArrow]}/>
+            </View>
+            <View style={style.modalHeader}>
+              <Text>Select user</Text>
+            </View>
+            <UsersList
+              initiallySelectedUsers={{[selectedUser?.id] : selectedUser}}
+              onUserSelected={(selectedUsers) => this.onUserSelected(selectedUsers)}
+              navigation={navigation}
+              select={ItemsListTypes.SINGLE}
+              modal={true}/>
+          </View>
+        </Modal>
+      </View>
+    );
+  }
+
   public render() {
     const { navigation } = this.props;
-    const { openUserModal, selectedUser } = this.state;
+    const { openUserModal, isAdmin } = this.state;
     const style = computeStyleSheet();
+    const formStyle = computeFormStyleSheet();
     const { connector, canStopTransaction, canStartTransaction, chargingStation, loading, siteImage, isPricingActive } = this.state;
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return (
@@ -743,40 +791,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                   <View style={style.noButtonStopTransaction} />
                 )}
             {/* Details */}
-            {connector.status === ChargePointStatus.AVAILABLE ?
+            {connector?.status === ChargePointStatus.AVAILABLE ?
               <ScrollView contentContainerStyle={style.scrollViewContainer}
                           refreshControl={openUserModal ? null : <RefreshControl refreshing={this.state.refreshing}
                                                           onRefresh={this.manualRefresh}/>}>
                 <View style={style.rowContainer}>
                   {this.renderConnectorStatus(style)}
                 </View>
-                <View style={style.rowContainer}>
-                  <View>
-                    <TouchableOpacity onPress={() => this.openUserModal(true)}>
-                      <TextInput editable={false} numberOfLines={1} placeholder={'select user...'} value={selectedUser ?  selectedUser.firstName + ' ' + selectedUser.name : null}/>
-                    </TouchableOpacity>
-                      <Modal testID={'modal'}
-                             propagateSwipe={true}
-                             supportedOrientations={['portrait', 'landscape']}
-                             onSwipeComplete={() => this.openUserModal(false)}
-                             style={style.modal}
-                             isVisible={this.state.openUserModal}
-                             swipeDirection={'down'}
-                             animationInTiming={500}
-                             onBackButtonPress={() => this.openUserModal(false)}
-                             animationOutTiming={1000}
-                             onBackdropPress={() => this.openUserModal(false)}
-                      >
-                        <View style={style.modalContent}>
-                          <View style={style.modalHeader}>
-                            <Icon type='MaterialIcons' name={'expand-more'} style={style.icon}/>
-                            <Text style={style.text}>selected: {(!selectedUser || Object.keys(selectedUser).length === 0) ? 0 : 1}</Text>
-                          </View>
-                          <UsersList onUserSelected={(selectedUsers) => this.onUserSelected(selectedUsers)} navigation={navigation} select={ItemsListTypes.SINGLE} modal={true}/>
-                        </View>
-                      </Modal>
-                  </View>
-                </View>
+                {isAdmin ?  this.renderUserSelection(style, formStyle) : null}
               </ScrollView>
               :
               <ScrollView contentContainerStyle={style.scrollViewContainer}

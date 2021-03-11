@@ -7,10 +7,17 @@ import { Location } from 'react-native-location';
 import MapView, { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
+<<<<<<< HEAD
 import I18nManager from '../../../I18n/I18nManager';
 import computeModalStyle from '../../../ModalStyles';
 import ChargingStationComponent
   from '../../../components/charging-station/ChargingStationComponent';
+=======
+
+import I18nManager from '../../../I18n/I18nManager';
+import computeModalStyle from '../../../ModalStyles';
+import ChargingStationComponent from '../../../components/charging-station/ChargingStationComponent';
+>>>>>>> 255df16 (style for user selection + initially selected user)
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ItemsList from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';

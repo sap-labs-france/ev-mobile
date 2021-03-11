@@ -13,7 +13,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'flex-end',
       backgroundColor: commonColor.containerBgColor,
       margin: 0,
-      marginTop: '35%'
+      marginTop: '100@s'
     },
     text: {
       color: commonColor.textColor,
@@ -30,10 +30,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       flexDirection: 'column',
       alignItems:'center',
-      borderBottomColor: commonColor.textColor,
-      borderTopColor: commonColor.textColor,
-      borderBottomWidth:3,
-      borderTopWidth:3,
+      borderBottomColor: commonColor.listBorderColor,
+      borderTopColor: commonColor.listBorderColor,
+      borderBottomWidth:1,
+      borderTopWidth:1,
       padding: '5@s'
     },
     container: {
@@ -195,6 +195,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     icon: {
       fontSize: '25@s',
       color: commonColor.textColor,
+    },
+    downArrow: {
+      fontSize: '30@s'
     },
     userImage: {
       height: '52@s',

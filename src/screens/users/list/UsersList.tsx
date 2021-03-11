@@ -20,7 +20,12 @@ import computeStyleSheet from '../../transactions/TransactionsStyles';
 export interface Props extends  BaseProps {
   select?: ItemsListTypes;
   modal?: boolean;
+<<<<<<< HEAD
   onUserSelected?: (selectedIds: {[key: string]: User }) => void;
+=======
+  onUserSelected?: (selectedIds: {[key: string] : User }) => void;
+  initiallySelectedUsers?: {[key: string] : User };
+>>>>>>> 255df16 (style for user selection + initially selected user)
 }
 
 export interface State {
@@ -142,7 +147,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const {users, count, skip, limit, refreshing, loading} = this.state;
-    const {navigation, modal, select, onUserSelected} = this.props;
+    const {navigation, modal, select, onUserSelected, initiallySelectedUsers} = this.props;
     return (
       <Container style={style.container}>
         {modal ?
@@ -177,6 +182,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
               count={count}
               limit={limit}
               skip={skip}
+              initiallySelectedItems = {initiallySelectedUsers}
               renderItem={(item: User, selected: boolean) => (
                 <UserComponent user={item} selected={selected}
                                navigation={this.props.navigation}/>)}
