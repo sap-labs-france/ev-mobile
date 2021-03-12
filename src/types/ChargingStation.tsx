@@ -1,11 +1,11 @@
 import CreatedUpdatedProps from './CreatedUpdatedProps';
 import { KeyValue } from './Global';
+import ListItem from './ListItem';
 import SiteArea from './SiteArea';
 import { InactivityStatus } from './Transaction';
 import User from './User';
 
-export default interface ChargingStation extends CreatedUpdatedProps {
-  id?: string;
+export default interface ChargingStation extends CreatedUpdatedProps, ListItem {
   siteAreaID: string;
   chargePointSerialNumber: string;
   chargePointModel: string;
