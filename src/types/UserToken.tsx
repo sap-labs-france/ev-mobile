@@ -1,5 +1,6 @@
-export default interface UserToken {
-  id?: string;
+import ListItem from './ListItem';
+
+export default interface UserToken extends ListItem{
   role?: string;
   name?: string;
   email?: string;

@@ -1,8 +1,8 @@
 import Address from './Address';
 import CreatedUpdatedProps from './CreatedUpdatedProps';
+import ListItem from './ListItem';
 
-export default interface User extends CreatedUpdatedProps {
-  id: string;
+export default interface User extends CreatedUpdatedProps, ListItem {
   email: string;
   phone?: string;
   mobile: string;

@@ -1,7 +1,7 @@
 import CreatedUpdatedProps from './CreatedUpdatedProps';
+import ListItem from './ListItem';
 
-export default interface Tenant extends CreatedUpdatedProps {
-  id: string;
+export default interface Tenant extends CreatedUpdatedProps, ListItem {
   name: string;
   email: string;
   subdomain: string;
