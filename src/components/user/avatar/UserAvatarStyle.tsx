@@ -9,7 +9,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     accessory: {
-      color: commonColor.textColor
+      color: commonColor.textColor,
+      fontSize: '30@s'
     },
     avatarSelected: {
       color: commonColor.textColor,

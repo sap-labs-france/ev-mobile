@@ -1,21 +1,21 @@
-import { DrawerActions } from '@react-navigation/native';
+import {DrawerActions} from '@react-navigation/native';
 import i18n from 'i18n-js';
-import { Container, Spinner } from 'native-base';
+import I18n from 'i18n-js';
+import {Container, Spinner} from 'native-base';
 import React from 'react';
-import { View } from 'react-native';
+import {View} from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ItemsList from '../../../components/list/ItemsList';
+import ItemsList, {ItemsListTypes} from '../../../components/list/ItemsList';
 import UserComponent from '../../../components/user/UserComponent';
 import BaseProps from '../../../types/BaseProps';
-import { DataResult } from '../../../types/DataResult';
+import {DataResult} from '../../../types/DataResult';
 import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../../transactions/TransactionsStyles';
 import I18nManager from "../../../I18n/I18nManager";
-import I18n from "i18n-js";
 
 export interface Props extends  BaseProps{
 }
@@ -147,8 +147,10 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
         ) : (
           <View style={style.content}>
             <ItemsList<User>
-              data={users} navigation={navigation}
-              count={count} limit={limit}
+              data={users}
+              navigation={navigation}
+              count={count}
+              limit={limit}
               skip={skip}
               renderItem={(item: User, selected: boolean) => (
                 <UserComponent user={item} selected={selected}
