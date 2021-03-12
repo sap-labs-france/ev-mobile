@@ -8,7 +8,7 @@ import Utils from '../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    selected:{
+    selected: {
       opacity: 0.5
     },
     labelValue: {
@@ -45,34 +45,20 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       flex:0
     },
-    accessory: {
-      color: commonColor.textColor,
-      opacity: 1
-    },
-    avatarSelected: {
-      color: commonColor.textColor,
-      opacity: 0.3
-    },
-    avatarTitle: {
-      color: commonColor.textColor
-    },
-    avatarContainer: {
-      backgroundColor: 'darkgray',
-      height: '100%',
-      width: '100%'
-    },
-    firstName:{
+    firstName: {
       marginRight:'7@s',
       maxWidth:'50%'
     },
-    name:{
+    name: {
       flex:1
     },
-    email:{
+    email: {
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
       width: '100%'
+    },
+    avatar: {
     }
   });
   const portraitStyles = {};
