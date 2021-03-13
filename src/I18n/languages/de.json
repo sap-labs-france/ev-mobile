@@ -165,7 +165,8 @@
   },
   "users": {
     "userUnexpectedError": "Benutzer kann nicht gelesen werden",
-    "noUsers": "No users"
+    "noUsers": "No users",
+    "users": "Users(s)"
   },
   "transactions": {
     "transaction": "Ladevorgang",

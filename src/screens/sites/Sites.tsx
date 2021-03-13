@@ -1,32 +1,30 @@
-import { DrawerActions } from '@react-navigation/native';
+import {DrawerActions} from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Spinner, View } from 'native-base';
+import {Container, Spinner, View} from 'native-base';
 import React from 'react';
-import { FlatList, Platform, RefreshControl } from 'react-native';
-import { Location } from 'react-native-location';
-import MapView, { Marker, Region } from 'react-native-maps';
+import {Platform} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
+import {Location} from 'react-native-location';
+import MapView, {Marker, Region} from 'react-native-maps';
 import Modal from 'react-native-modal';
-import { Modalize } from 'react-native-modalize';
-
+import {Modalize} from 'react-native-modalize';
+import computeModalStyle from '../../ModalStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
-import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
+import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteComponent from '../../components/site/SiteComponent';
 import LocationManager from '../../location/LocationManager';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
-import { DataResult } from '../../types/DataResult';
-import { GlobalFilters } from '../../types/Filter';
+import {DataResult} from '../../types/DataResult';
+import {GlobalFilters} from '../../types/Filter';
 import Site from '../../types/Site';
 import Constants from '../../utils/Constants';
 import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
-import SitesFilters, { SitesFiltersDef } from './SitesFilters';
+import SitesFilters, {SitesFiltersDef} from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
-import computeModalStyle from '../../ModalStyles';
-import { ScrollView } from 'react-native-gesture-handler';
 
 export interface Props extends BaseProps {
 }
@@ -256,7 +254,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
-    const { loading, skip, count, limit, initialFilters, showMap, siteSelected } = this.state;
+    const { loading, skip, count, limit, initialFilters, showMap, siteSelected, refreshing, sites } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.sites)
     return (
       <Container style={style.container}>
@@ -308,16 +306,18 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
                   {siteSelected && this.buildModal(navigation, siteSelected, modalStyle)}
                 </View>
                 :
-                <FlatList
-                  data={this.state.sites}
-                  renderItem={({ item }) => <SiteComponent site={item} navigation={this.props.navigation} />}
-                  keyExtractor={(item) => item.id}
-                  refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+                <ItemsList
+                  skip={skip}
+                  count={count}
                   onEndReached={this.onEndScroll}
-                  onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-                  ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('sites.noSites')} />}
-                  ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-                />
+                  renderItem={(site: Site ) => <SiteComponent site={site} navigation={navigation} />}
+                  data={sites}
+                  manualRefresh={this.manualRefresh}
+                  refreshing={refreshing}
+                  emptyTitle={I18n.t('sites.noSites')}
+                  navigation={navigation}
+                  limit={limit}
+                  />
               }
             </View>
           )

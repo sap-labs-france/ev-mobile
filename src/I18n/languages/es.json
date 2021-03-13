@@ -165,7 +165,8 @@
   },
   "users": {
     "userUnexpectedError": "No se ha podido cargar el usuario",
-    "noUsers": "No users"
+    "noUsers": "No users",
+    "users": "Users(s)",
   },
   "transactions": {
     "transaction": "Sesión",

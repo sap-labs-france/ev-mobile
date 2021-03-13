@@ -1,31 +1,30 @@
-import { DrawerActions } from '@react-navigation/native';
+import {DrawerActions} from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Spinner, View } from 'native-base';
+import {Container, Spinner, View} from 'native-base';
 import React from 'react';
-import { FlatList, Platform, RefreshControl, ScrollView } from 'react-native';
-import { Location } from 'react-native-location';
-import MapView, { Marker, Region } from 'react-native-maps';
+import {Platform, ScrollView} from 'react-native';
+import {Location} from 'react-native-location';
+import MapView, {Marker, Region} from 'react-native-maps';
 import Modal from 'react-native-modal';
-import { Modalize } from 'react-native-modalize';
-
-import ChargingStationComponent from '../../../components/charging-station/ChargingStationComponent';
-import HeaderComponent from '../../../components/header/HeaderComponent';
-import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
-import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
-import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
+import {Modalize} from 'react-native-modalize';
 import I18nManager from '../../../I18n/I18nManager';
-import LocationManager from '../../../location/LocationManager';
 import computeModalStyle from '../../../ModalStyles';
+import ChargingStationComponent
+  from '../../../components/charging-station/ChargingStationComponent';
+import HeaderComponent from '../../../components/header/HeaderComponent';
+import ItemsList from '../../../components/list/ItemsList';
+import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
+import LocationManager from '../../../location/LocationManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
-import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
-import { DataResult } from '../../../types/DataResult';
-import { GlobalFilters } from '../../../types/Filter';
+import ChargingStation, {ChargePointStatus, Connector} from '../../../types/ChargingStation';
+import {DataResult} from '../../../types/DataResult';
+import {GlobalFilters} from '../../../types/Filter';
 import Constants from '../../../utils/Constants';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
-import ChargingStationsFilters, { ChargingStationsFiltersDef } from './ChargingStationsFilters';
+import ChargingStationsFilters, {ChargingStationsFiltersDef} from './ChargingStationsFilters';
 import computeStyleSheet from './ChargingStationsStyles';
 
 export interface Props extends BaseProps {
@@ -310,7 +309,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
     const { loading, chargingStations, isAdmin, initialFilters,
-      skip, count, limit, filters, showMap, chargingStationSelected } = this.state;
+      skip, count, limit, filters, showMap, chargingStationSelected, refreshing } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.chargingStations);
     return (
       <Container style={style.container}>
@@ -366,18 +365,19 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
                   {chargingStationSelected && this.buildModal(isAdmin, navigation, chargingStationSelected, modalStyle)}
                 </View>
                 :
-                <FlatList
-                  data={chargingStations}
-                  renderItem={({ item }) =>
-                    <ChargingStationComponent chargingStation={item} isAdmin={isAdmin} navigation={navigation}
-                      isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteArea ? item.siteArea.siteID : '')} />}
-                  keyExtractor={(item) => item.id}
-                  refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+                <ItemsList<ChargingStation>
+                  skip={skip}
+                  count={count}
                   onEndReached={this.onEndScroll}
-                  onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-                  ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-                  ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargers')} />}
-                />
+                  renderItem={( chargingStation: ChargingStation ) =>
+                    <ChargingStationComponent chargingStation={chargingStation} isAdmin={isAdmin} navigation={navigation}
+                                              isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(chargingStation.siteArea ? chargingStation.siteArea.siteID : '')} />}
+                  data={chargingStations}
+                  manualRefresh={this.manualRefresh}
+                  refreshing={refreshing}
+                  emptyTitle={I18n.t('chargers.noChargers')}
+                  navigation={navigation}
+                  limit={limit}/>
               }
             </View>
           )

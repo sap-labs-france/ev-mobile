@@ -165,7 +165,8 @@
   },
   "users": {
     "userUnexpectedError": "Non posso leggere gli utenti",
-    "noUsers": "No users"
+    "noUsers": "No users",
+    "users": "Users(s)"
   },
   "transactions": {
     "transaction": "Sessione",

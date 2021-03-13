@@ -1,6 +1,7 @@
 import ChargingStation from '../types/ChargingStation';
 import Consumption from './Consumption';
 import User from './User';
+import ListItem from './ListItem';
 
 export enum InactivityStatus {
   INFO = 'I',
@@ -8,8 +9,7 @@ export enum InactivityStatus {
   ERROR = 'E'
 }
 
-export default interface Transaction {
-  id: number;
+export default interface Transaction extends ListItem {
   siteID: string;
   siteAreaID: string;
   connectorId: number;

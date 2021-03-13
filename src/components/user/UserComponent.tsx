@@ -1,9 +1,9 @@
-import {Text, View} from 'native-base';
+import { Text, View } from 'native-base';
 import React from 'react';
-import {Avatar} from 'react-native-elements';
 
 import BaseProps from '../../types/BaseProps';
 import User from '../../types/User';
+import UserAvatar from './avatar/UserAvatar';
 import computeStyleSheet from './UserComponentStyle';
 
 export interface Props extends BaseProps{
@@ -28,30 +28,13 @@ export default class UserComponent extends React.Component<Props, State>{
 
   public render() {
     const style = computeStyleSheet();
-    const {user, selected} = this.props;
-    const userImageURI = user.image;
+    const { user, selected, navigation } = this.props;
     const userName = user.name ? (user.name.charAt(0).toUpperCase() + user.name.slice(1).toLowerCase()) : '';
     const userFirstName = user.firstName ? user.firstName : '';
-    return(
+    return (
       <View style={style.userContent}>
         <View style={style.left}>
-          {userImageURI ?
-            <Avatar size={65}
-                    rounded={true}
-                    source={{uri: userImageURI}}
-                    titleStyle={style.avatarTitle}
-                    overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
-              {selected ? <Avatar.Accessory name={'done'} size={40} {...style.accessory}/> : null}
-            </Avatar>
-                  :
-            <Avatar size={65}
-                    rounded={true}
-                    title={userFirstName.charAt(0) + userName.charAt(0)}
-                    titleStyle={style.avatarTitle}
-                    overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
-              {selected ? <Avatar.Accessory name={'done'} size={40} {...style.accessory}/> : null}
-            </Avatar>
-          }
+          <UserAvatar user={user} selected={selected} navigation={navigation}/>
         </View>
         <View style={selected ?  [style.columnContainer, style.selected] : style.columnContainer }>
           <View style={style.rowContainer}>

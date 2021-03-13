@@ -1,11 +1,11 @@
 import React from 'react';
 import {FlatList, Platform, RefreshControl, TouchableOpacity} from 'react-native';
-
 import BaseProps from '../../types/BaseProps';
+import ListItem from '../../types/ListItem';
 import ListEmptyTextComponent from './empty-text/ListEmptyTextComponent';
 import ListFooterComponent from './footer/ListFooterComponent';
 
-export interface Props<T> extends BaseProps {
+export interface Props<T extends ListItem> extends BaseProps {
   renderItem: (item: T, selected: boolean) => Element;
   emptyTitle: string;
   manualRefresh: () => void;
@@ -28,7 +28,7 @@ interface State {
   selectedIds?: Set<string>;
 }
 
-export default class ItemsList<T> extends React.Component<Props<T>, State> {
+export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State> {
 
   public constructor(props: Props<T>) {
     super(props);
@@ -46,7 +46,7 @@ export default class ItemsList<T> extends React.Component<Props<T>, State> {
   }
 
   private onSelectItem(item: T) {
-    const {selectedIds} = this.state;
+    const { selectedIds } = this.state;
     const id = item.id;
     // If the item is already selected, unselect it
     if (selectedIds.has(id)) {

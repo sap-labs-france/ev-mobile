@@ -1,25 +1,23 @@
-import { DrawerActions } from '@react-navigation/native';
+import {DrawerActions} from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Spinner, View } from 'native-base';
+import {Container, Spinner, View} from 'native-base';
 import React from 'react';
-import { FlatList, Platform, RefreshControl } from 'react-native';
-
 import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
-import ListFooterComponent from '../../../components/list/footer/ListFooterComponent';
-import TransactionInProgressComponent from '../../../components/transaction/in-progress/TransactionInProgressComponent';
+import ItemsList from '../../../components/list/ItemsList';
+import TransactionInProgressComponent
+  from '../../../components/transaction/in-progress/TransactionInProgressComponent';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
-import { DataResult } from '../../../types/DataResult';
-import { GlobalFilters } from '../../../types/Filter';
+import {DataResult} from '../../../types/DataResult';
+import {GlobalFilters} from '../../../types/Filter';
 import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../TransactionsStyles';
-import TransactionsInProgressFilters, { TransactionsInProgressFiltersDef } from './TransactionsInProgressFilters';
+import TransactionsInProgressFilters, {TransactionsInProgressFiltersDef} from './TransactionsInProgressFilters';
 
 export interface Props extends BaseProps {
 }
@@ -158,7 +156,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading, isAdmin, hasSiteAdmin, transactions, isPricingActive,
-      skip, count, limit, initialFilters, filters } = this.state;
+      skip, count, limit, initialFilters, filters, refreshing } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -185,24 +183,25 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
                     this.setScreenFilters(transactionsInProgressFilters)}
                 />
               }
-              <FlatList
-                data={transactions}
-                renderItem={({ item }) => (
+              <ItemsList<Transaction>
+                skip={skip}
+                count={count}
+                onEndReached={this.onEndScroll}
+                renderItem={(transaction: Transaction) => (
                   <TransactionInProgressComponent
-                    transaction={item}
+                    transaction={transaction}
                     navigation={navigation}
                     isAdmin={isAdmin}
-                    isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(item.siteID)}
+                    isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(transaction.siteID)}
                     isPricingActive={isPricingActive}
                   />
                 )}
-                keyExtractor={(item) => `${item.id}`}
-                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-                onEndReached={this.onEndScroll}
-                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
-                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('transactions.noTransactionsInProgress')} />}
-              />
+                data={transactions}
+                manualRefresh={this.manualRefresh}
+                refreshing={refreshing}
+                emptyTitle={I18n.t('transactions.noTransactionsInProgress')}
+                navigation={navigation}
+                limit={limit}/>
             </View>
           )}
       </Container>

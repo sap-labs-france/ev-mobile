@@ -1,20 +1,21 @@
-import { DrawerActions } from '@react-navigation/native';
+import {DrawerActions} from '@react-navigation/native';
 import i18n from 'i18n-js';
-import { Container, Spinner } from 'native-base';
+import I18n from 'i18n-js';
+import {Container, Spinner} from 'native-base';
 import React from 'react';
-import { View } from 'react-native';
+import {View} from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ItemsList from '../../../components/list/ItemsList';
+import ItemsList, {ItemsListTypes} from '../../../components/list/ItemsList';
 import UserComponent from '../../../components/user/UserComponent';
 import BaseProps from '../../../types/BaseProps';
-import { DataResult } from '../../../types/DataResult';
-import { HTTPAuthError } from '../../../types/HTTPError';
+import {DataResult} from '../../../types/DataResult';
 import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../../transactions/TransactionsStyles';
+import I18nManager from "../../../I18n/I18nManager";
 
 export interface Props extends  BaseProps{
 }
@@ -47,7 +48,15 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
 
   public async getUsers(skip: number, limit: number): Promise<DataResult<User>> {
     try {
-      return await this.centralServerProvider.getUsers({}, {skip, limit});
+      const users = await this.centralServerProvider.getUsers({}, {skip, limit});
+      // Check
+      if (users.count === -1) {
+        // Request nbr of records
+        const transactionsNbrRecordsOnly = await this.centralServerProvider.getUsers({}, {skip, limit});
+        // Set
+        users.count = transactionsNbrRecordsOnly.count;
+      }
+      return users;
     } catch (error) {
       // Check if HTTP?
       if (!error.request) {
@@ -79,7 +88,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
   };
 
   public onEndScroll = async () => {
-    const {count, skip, limit} = this.state;
+    const { count, skip, limit } = this.state;
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
@@ -99,7 +108,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
 
   public async refresh(): Promise<void> {
     if (this.isMounted()) {
-      const {skip, limit} = this.state;
+      const { skip, limit } = this.state;
       // Refresh All
       const users = await this.getUsers(0, skip + limit);
       const usersResult = users ? users.result : []
@@ -126,6 +135,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
           navigation={this.props.navigation}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
+          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}` : null}
           rightAction={() => {
             navigation.dispatch(DrawerActions.openDrawer());
             return true
@@ -137,8 +147,10 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
         ) : (
           <View style={style.content}>
             <ItemsList<User>
-              data={users} navigation={navigation}
-              count={count} limit={limit}
+              data={users}
+              navigation={navigation}
+              count={count}
+              limit={limit}
               skip={skip}
               renderItem={(item: User, selected: boolean) => (
                 <UserComponent user={item} selected={selected}
