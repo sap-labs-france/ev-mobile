@@ -1,5 +1,6 @@
-import {Text, View} from 'native-base';
+import { Text, View } from 'native-base';
 import React from 'react';
+
 import BaseProps from '../../types/BaseProps';
 import User from '../../types/User';
 import UserAvatar from './avatar/UserAvatar';

@@ -25,7 +25,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%'
     },
     avatar: {
-      fontSize: '60@s'
+      fontSize: '50@s'
     }
   });
   const portraitStyles = {};

@@ -32,7 +32,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'flex-start',
       alignItems: 'center',
       width: '75%',
-      paddingLeft: '5@s'
+      paddingLeft: '3@s'
     },
     left: {
       width:'20%',

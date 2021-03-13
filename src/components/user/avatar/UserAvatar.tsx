@@ -1,6 +1,7 @@
-import {View} from 'native-base';
+import { View } from 'native-base';
 import React from 'react';
-import {Avatar} from 'react-native-elements';
+import { Avatar } from 'react-native-elements';
+
 import BaseProps from '../../../types/BaseProps';
 import User from '../../../types/User';
 import computeStyleSheet from './UserAvatarStyle';
