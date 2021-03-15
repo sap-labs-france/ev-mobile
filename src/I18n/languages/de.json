@@ -52,7 +52,7 @@
     "wrongTenant": "Sie sind mit der falschen Organisation verbunden",
     "tenantUnknown": "Unbekannte Organisation '{{tenantSubdomain}}'",
     "mustLoggedToTenant": "You must be logged to organization '{{tenantName}}'",
-    "tenantMissing": "The organization is missing",
+    "tenantMissing": "The organization isfuser missing",
     "tenantExists": "Die Organisation '{{tenantName}}' existiert bereits.",
     "createdOn": "Erstellt am",
     "createdBy": "Erstellt von",
@@ -167,6 +167,19 @@
     "userUnexpectedError": "Benutzer kann nicht gelesen werden",
     "noUsers": "No users",
     "users": "Users(s)"
+  },
+  "userRoles": {
+    "admin": "Admin",
+    "basic": "Basic",
+    "super": "Super Admin",
+    "demo": "Demo"
+  },
+  "userStatuses": {
+    "active": "active",
+    "inactive": "inactive",
+    "locked": "locked",
+    "blocked": "blocked",
+    "pending": "pending"
   },
   "transactions": {
     "transaction": "Ladevorgang",

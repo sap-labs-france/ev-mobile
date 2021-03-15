@@ -6,8 +6,8 @@ export default interface User extends CreatedUpdatedProps, ListItem {
   email: string;
   phone?: string;
   mobile: string;
-  role: string;
-  status: string;
+  role: UserRole;
+  status: UserStatus;
   locale: string;
   plateID?: string;
   address?: Address;
@@ -50,4 +50,19 @@ export interface UserSite {
   user: User;
   siteID: string;
   siteAdmin: boolean;
+}
+
+export enum UserStatus {
+  P = 'PENDING',
+  A = 'ACTIVE',
+  I = 'INACTIVE',
+  B = 'BLOCKED',
+  L = 'LOCKED'
+}
+
+export enum UserRole {
+  S = 'SUPER',
+  A = 'ADMIN',
+  B = 'BASIC',
+  D = 'DEMO'
 }

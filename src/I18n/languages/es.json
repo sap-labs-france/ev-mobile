@@ -168,6 +168,19 @@
     "noUsers": "No users",
     "users": "Users(s)",
   },
+  "userRoles": {
+    "admin": "Admin",
+    "basic": "Basic",
+    "super": "Super Admin",
+    "demo": "Demo"
+  },
+  "userStatuses": {
+    "active": "active",
+    "inactive": "inactive",
+    "locked": "locked",
+    "blocked": "blocked",
+    "pending": "pending"
+  },
   "transactions": {
     "transaction": "Sesión",
     "transactions": "Sesión(es)",

@@ -26,6 +26,24 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     avatar: {
       fontSize: '50@s'
+    },
+    status: {
+      width: '8@s',
+      height: '8@s',
+    },
+    statusContainer: {
+      position: 'absolute',
+      top: '3@s',
+      right: '2@s',
+    },
+    pending: {
+      backgroundColor: commonColor.brandWarningLight
+    },
+    inactive: {
+      backgroundColor: commonColor.danger
+    },
+    active: {
+      backgroundColor: commonColor.success
     }
   });
   const portraitStyles = {};

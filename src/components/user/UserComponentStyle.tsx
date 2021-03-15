@@ -11,7 +11,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     selected: {
       opacity: 0.5
     },
-    labelValue: {
+    text: {
       fontSize: '15@s',
       color: commonColor.textColor
     },
@@ -46,7 +46,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex:0
     },
     firstName: {
-      marginRight:'7@s',
+      marginRight:'5@s',
       maxWidth:'50%'
     },
     name: {
@@ -58,7 +58,36 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       width: '100%'
     },
-    avatar: {
+    status: {
+      backgroundColor: commonColor.containerBgColor,
+      borderWidth: 1
+    },
+    statusContainer: {
+      marginLeft: '7@s'
+    },
+    active: {
+      borderColor: commonColor.brandSuccess,
+      color: commonColor.brandSuccess
+    },
+    statusText: {
+      fontSize: '9@s'
+    },
+    inactive: {
+      color: commonColor.brandDanger,
+      borderColor: commonColor.brandDanger
+    },
+    pending: {
+      color: commonColor.brandWarning,
+      borderColor: commonColor.brandWarning
+    },
+    role: {
+      fontSize: '11@s'
+    },
+    roleContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      width: '100%'
     }
   });
   const portraitStyles = {};
