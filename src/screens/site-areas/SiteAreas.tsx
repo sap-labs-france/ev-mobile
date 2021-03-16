@@ -8,6 +8,7 @@ import MapView, { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
+import computeModalStyle from '../../ModalStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
@@ -25,7 +26,6 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SiteAreasFilters, { SiteAreasFiltersDef } from './SiteAreasFilters';
 import computeStyleSheet from './SiteAreasStyles';
-import computeModalStyle from '../../ModalStyles';
 
 export interface Props extends BaseProps {
 }
@@ -130,14 +130,14 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     }
     // Return
     return siteAreas;
-  };
+  }
 
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack();
     // Do not bubble up
     return true;
-  };
+  }
 
   public refreshCurrentRegion(siteAreas: SiteArea[], force = false) {
     // Set current region
@@ -170,7 +170,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         count: siteAreas ? siteAreas.count : 0
       });
     }
-  };
+  }
 
   public manualRefresh = async () => {
     // Display spinner
@@ -179,7 +179,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
-  };
+  }
 
   public onEndScroll = async () => {
     const { count, skip, limit } = this.state;
@@ -194,7 +194,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         refreshing: false
       }));
     }
-  };
+  }
 
   public search = async (searchText: string) => {
     this.searchText = searchText;
@@ -214,14 +214,14 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     // Refresh region
     this.refreshCurrentRegion(this.state.siteAreas, true);
     // Toggle map
-    this.setState({ showMap: !this.state.showMap })
+    this.setState({ showMap: !this.state.showMap });
   }
 
   public showMapSiteDetail = (siteArea: SiteArea) => {
     this.setState({
       visible: true,
       siteAreaSelected: siteArea
-    })
+    });
   }
 
   public buildModal(navigation: any, siteAreaSelected: SiteArea, modalStyle: any) {
@@ -235,7 +235,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
                 onNavigate={() => this.setState({ visible: false })} />
           </Modalize>
         </Modal>
-      )
+      );
     } else {
       return (
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
@@ -246,7 +246,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
             </ScrollView>
           </View>
         </Modal>
-      )
+      );
     }
   }
 
@@ -255,7 +255,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
     const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected } = this.state;
-    const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.siteAreas)
+    const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.siteAreas);
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -263,7 +263,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
           title={I18n.t('siteAreas.title')}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
-          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
           rightActionIcon={'menu'}
           displayMap={!Utils.isEmptyArray(this.state.siteAreas)}
           mapIsDisplayed={mapIsDisplayed}

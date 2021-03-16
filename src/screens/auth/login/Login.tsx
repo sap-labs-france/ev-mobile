@@ -107,7 +107,7 @@ export default class Login extends BaseScreen<Props, State> {
         I18n.t('authentication.noTenantFoundTitle'),
         I18n.t('authentication.noTenantFoundMessage'),
         [
-          {text: I18n.t('general.yes') , onPress:() => { this.goToTenants(true) }},
+          {text: I18n.t('general.yes') , onPress: () => { this.goToTenants(true); }},
           {text: I18n.t('general.no'), style: 'cancel' }
         ]
       );
@@ -145,12 +145,12 @@ export default class Login extends BaseScreen<Props, State> {
       tenantName: tenant ? tenant.name : I18n.t('authentication.tenant'),
       tenantSubDomain: tenant ? tenant.subdomain : null,
       initialLoading: false
-    }, async () => await this.checkAutoLogin(tenant, email, password));
+    }, async () => this.checkAutoLogin(tenant, email, password));
   }
 
   public async componentDidFocus() {
     super.componentDidFocus();
-    const tenantSubDomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', this.state.tenantSubDomain )
+    const tenantSubDomain = Utils.getParamFromNavigation(this.props.route, 'tenantSubDomain', this.state.tenantSubDomain );
     // Check if current Tenant selection is still valid (handle delete tenant usee case)
     if (tenantSubDomain) {
       // Get the current Tenant
@@ -180,7 +180,7 @@ export default class Login extends BaseScreen<Props, State> {
         key: `${Utils.randomNumber()}`,
         openQRCode
       }
-    )
+    );
 
   }
 
@@ -253,7 +253,7 @@ export default class Login extends BaseScreen<Props, State> {
         }
       }
     }
-  };
+  }
 
   public onBack = () => {
     // Exit?
@@ -265,7 +265,7 @@ export default class Login extends BaseScreen<Props, State> {
     );
     // Do not bubble up
     return true;
-  };
+  }
 
   public navigateToApp() {
     // Navigate to App
@@ -300,7 +300,7 @@ export default class Login extends BaseScreen<Props, State> {
         });
       }
     }
-  };
+  }
 
   public newUser = () => {
     const navigation = this.props.navigation;
@@ -318,7 +318,7 @@ export default class Login extends BaseScreen<Props, State> {
     } else {
       Message.showError(I18n.t('authentication.mustSelectTenant'));
     }
-  };
+  }
 
   public forgotPassword = () => {
     const navigation = this.props.navigation;
@@ -336,7 +336,7 @@ export default class Login extends BaseScreen<Props, State> {
       // Error
       Message.showError(I18n.t('authentication.mustSelectTenant'));
     }
-  };
+  }
 
   public async selectTenant(searchTenant: TenantConnection) {
     if (searchTenant) {

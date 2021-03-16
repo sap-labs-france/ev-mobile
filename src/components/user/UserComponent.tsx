@@ -1,14 +1,14 @@
 import { Text, View } from 'native-base';
 import React from 'react';
 
-import BaseProps from '../../types/BaseProps';
-import User, {UserRole, UserStatus} from '../../types/User';
-import UserAvatar from './avatar/UserAvatar';
-import computeStyleSheet from './UserComponentStyle';
-import {Badge} from 'react-native-elements';
 import I18n from 'i18n-js';
+import { Badge } from 'react-native-elements';
+import BaseProps from '../../types/BaseProps';
+import User, { UserRole, UserStatus } from '../../types/User';
+import computeStyleSheet from './UserComponentStyle';
+import UserAvatar from './avatar/UserAvatar';
 
-export interface Props extends BaseProps{
+export interface Props extends BaseProps {
   user: User;
   selected?: boolean;
 }
@@ -16,7 +16,7 @@ export interface Props extends BaseProps{
 interface State {
 }
 
-export default class UserComponent extends React.Component<Props, State>{
+export default class UserComponent extends React.Component<Props, State> {
   public props: Props;
   public state: State;
 
@@ -29,8 +29,8 @@ export default class UserComponent extends React.Component<Props, State>{
   }
 
   private computeStatusStyle(status: UserStatus, style: any) {
-    if(status) {
-      switch(status) {
+    if (status) {
+      switch (status) {
         case UserStatus.A: return style.active; break;
         case UserStatus.P: return style.pending; break;
         default: return style.inactive;
@@ -71,6 +71,6 @@ export default class UserComponent extends React.Component<Props, State>{
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.role]}>{I18n.t(`userRoles.${userRole?.toLowerCase()}`)}</Text>
           </View>
         </View>
-      </View>)
+      </View>);
   }
 }

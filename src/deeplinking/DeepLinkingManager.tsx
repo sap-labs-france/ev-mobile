@@ -41,7 +41,7 @@ export default class DeepLinkingManager {
       }
     }).catch((err) => {
       // tslint:disable-next-line: no-console
-      console.error('An error occurred', err)
+      console.error('An error occurred', err);
     });
   }
 

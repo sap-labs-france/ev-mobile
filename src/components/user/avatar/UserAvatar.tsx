@@ -1,9 +1,9 @@
-import {View} from 'native-base';
+import { View } from 'native-base';
 import React from 'react';
-import {Avatar, Badge} from 'react-native-elements';
+import { Avatar } from 'react-native-elements';
 
 import BaseProps from '../../../types/BaseProps';
-import User, {UserStatus} from '../../../types/User';
+import User from '../../../types/User';
 import computeStyleSheet from './UserAvatarStyle';
 
 interface State {
@@ -50,7 +50,7 @@ export default class UserAvatar extends React.Component<Props, State> {
           </Avatar>
         }
         </View>
-    )
+    );
   }
 }
 

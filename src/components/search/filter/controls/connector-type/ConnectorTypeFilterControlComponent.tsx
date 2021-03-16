@@ -18,7 +18,7 @@ import computeStyleSheet from '../FilterControlComponentStyles';
 export interface Props extends FilterControlComponentProps<string> {
 }
 
-interface State extends FilterControlComponentState<string>{
+interface State extends FilterControlComponentState<string> {
   connectorTypes: ConnectorFilter[];
 }
 
@@ -81,9 +81,9 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
     if (onFilterChanged) {
       if (connectorFilters.length) {
         const filterValue = connectorFilters.join('|');
-        this.setValue(filterValue, () => { onFilterChanged(this.getID(), filterValue) } );
+        this.setValue(filterValue, () => { onFilterChanged(this.getID(), filterValue); } );
       } else {
-        this.clearValue(() => { onFilterChanged(this.getID(), null) });
+        this.clearValue(() => { onFilterChanged(this.getID(), null); });
       }
     }
     // Update

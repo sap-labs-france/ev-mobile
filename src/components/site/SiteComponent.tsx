@@ -22,7 +22,7 @@ interface State {
 export default class SiteComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
-  private counter: number = 0;
+  private counter = 0;
 
   constructor(props: Props) {
     super(props);
@@ -64,7 +64,7 @@ export default class SiteComponent extends React.Component<Props, State> {
               },
               key: `${Utils.randomNumber()}`
             }
-          )
+          );
         }}>
           <View style={style.container}>
             <View style={style.headerContent}>

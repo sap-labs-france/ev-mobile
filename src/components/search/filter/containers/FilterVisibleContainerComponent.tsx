@@ -7,7 +7,7 @@ import computeStyleSheet from './FilterContainerComponentStyles';
 
 export interface Props extends FilterContainerComponentProps {
   expanded?: boolean;
-  onExpand?: (expanded: boolean) => void
+  onExpand?: (expanded: boolean) => void;
 }
 
 interface State extends FilterContainerComponentState {

@@ -1,7 +1,7 @@
 import ChargingStation from '../types/ChargingStation';
 import Consumption from './Consumption';
-import User from './User';
 import ListItem from './ListItem';
+import User from './User';
 
 export enum InactivityStatus {
   INFO = 'I',
@@ -85,5 +85,5 @@ export default interface Transaction extends ListItem {
   currentInstantAmpsDC?: number;
   uniqueId?: string;
   errorCode?: number;
-  values?: Consumption[]
+  values?: Consumption[];
 }

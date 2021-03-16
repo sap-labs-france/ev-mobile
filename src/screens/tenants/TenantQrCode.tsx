@@ -53,7 +53,7 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
       endpoint: newTenantEndpointCloud.endpoint
     };
     // Add
-    tenants.push(newTenant)
+    tenants.push(newTenant);
     // Save
     await SecuredStorage.saveTenants(tenants);
     // Close

@@ -23,7 +23,7 @@ interface State {
 export default class SiteAreaComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
-  private counter: number = 0;
+  private counter = 0;
 
   constructor(props: Props) {
     super(props);

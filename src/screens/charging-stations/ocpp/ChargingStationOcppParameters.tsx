@@ -36,7 +36,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
       loading: true,
       refreshing: false,
       chargingStationConfigurationKeyValues: null
-    }
+    };
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
@@ -73,7 +73,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
         chargingStationConfigurationKeyValues
       });
     }
-  };
+  }
 
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
@@ -86,7 +86,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
         'chargers.chargerUnexpectedError', this.props.navigation);
     }
     return null;
-  };
+  }
 
   public getChargingStationOcppParameters = async (chargingStationID: string): Promise<DataResult<KeyValue>> => {
     try {
@@ -99,7 +99,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
         'chargers.chargerConfigurationUnexpectedError', this.props.navigation);
     }
     return null;
-  };
+  }
 
   public manualRefresh = async () => {
     // Display spinner
@@ -108,14 +108,14 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
     await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
-  };
+  }
 
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack();
     // Do not bubble up
     return true;
-  };
+  }
 
   public requestChargingStationOcppParametersConfirm() {
     const { chargingStation } = this.state;
@@ -157,7 +157,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
           subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
-          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
           rightActionIcon={'menu'}
         />
         <Button disabled={chargingStation ? chargingStation.inactive : true} block={true} iconLeft={true} info={true}

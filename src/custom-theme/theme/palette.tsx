@@ -40,4 +40,4 @@ export default {
 
   light: '#FFF',
   lightDark: '#CCC',
-}
+};

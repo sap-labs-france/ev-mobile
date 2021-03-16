@@ -50,7 +50,7 @@ export default abstract class FilterContainerComponent extends React.Component<F
     this.filterControlComponents = filterControlComponents;
   }
 
-  public async setFilter (filterID: string, filterValue: any){
+  public async setFilter (filterID: string, filterValue: any) {
     // Search
     for (const filterControlComponent of this.filterControlComponents) {
       // Set
@@ -106,7 +106,7 @@ export default abstract class FilterContainerComponent extends React.Component<F
   }
 
   public getNumberOfFilters(): number {
-    let numberOfFilter = 0
+    let numberOfFilter = 0;
     for (const filterControlComponent of this.filterControlComponents) {
       if (filterControlComponent.getValue()) {
         numberOfFilter++;

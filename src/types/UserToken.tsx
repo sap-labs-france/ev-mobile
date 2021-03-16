@@ -1,5 +1,5 @@
 export default interface UserToken {
-  id?: string
+  id?: string;
   role?: string;
   name?: string;
   email?: string;

@@ -4,8 +4,8 @@ import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } f
 import React from 'react';
 
 import computeCardStyleSheet from '../../CardStyles';
-import HeaderComponent from '../../components/header/HeaderComponent';
 import I18nManager from '../../I18n/I18nManager';
+import HeaderComponent from '../../components/header/HeaderComponent';
 import ProviderFactory from '../../provider/ProviderFactory';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from '../../screens/transactions/history/TransactionsHistoryFilters';
 import BaseProps from '../../types/BaseProps';
@@ -76,12 +76,12 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     const endDateTimeString = await SecuredStorage.loadFilterValue(
       centralServerProvider.getUserInfo(), GlobalFilters.TRANSACTIONS_END_DATE_FILTER);
     const startDateTime = startDateTimeString ? new Date(startDateTimeString) : null;
-    const endDateTime = endDateTimeString ? new Date(endDateTimeString) : null
+    const endDateTime = endDateTimeString ? new Date(endDateTimeString) : null;
     const initialFilters = {
       userID,
       startDateTime,
       endDateTime,
-    }
+    };
     this.setState({
       initialFilters,
       filters : initialFilters
@@ -111,9 +111,9 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
       isPricingActive: securityProvider.isComponentPricingActive(),
       loading: false
     });
-  };
+  }
 
-  public getTransactionsStats = async ( startDateTime: Date, endDateTime:Date): Promise<TransactionDataResult> => {
+  public getTransactionsStats = async ( startDateTime: Date, endDateTime: Date): Promise<TransactionDataResult> => {
     try {
       // Get active transaction
       const transactions = await this.centralServerProvider.getTransactions(
@@ -134,21 +134,21 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
       }
     }
     return null;
-  };
+  }
 
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.navigate('HomeNavigator');
     // Do not bubble up
     return true;
-  };
+  }
 
   public render = () => {
     const style = computeStyleSheet();
     const cardStyle = computeCardStyleSheet();
     const { navigation } = this.props;
     const { loading, totalNumberOfSession, totalConsumptionWattHours, initialFilters, filters,
-      totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive } = this.state;
+            totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -158,7 +158,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
           title={I18n.t('home.statistics')}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
-          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
           rightActionIcon={'menu'}
           filters={filters}
         />
@@ -243,5 +243,5 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
           )}
       </Container>
     );
-  };
+  }
 }

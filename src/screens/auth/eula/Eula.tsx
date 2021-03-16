@@ -39,7 +39,7 @@ export default class Eula extends BaseScreen<Props, State> {
   public async componentDidMount() {
     await super.componentDidMount();
     await this.loadEndUserLicenseAgreement();
-  };
+  }
 
   public loadEndUserLicenseAgreement = async () => {
     const { i18nLanguage: i18nLanguage } = this.state;
@@ -61,14 +61,14 @@ export default class Eula extends BaseScreen<Props, State> {
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
         'general.eulaUnexpectedError', this.props.navigation);
     }
-  };
+  }
 
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.navigate('Login');
     // Do not bubble up
     return true;
-  };
+  }
 
   public render() {
     const style = computeStyleSheet();
@@ -78,7 +78,7 @@ export default class Eula extends BaseScreen<Props, State> {
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('authentication.eula')}
-          leftAction={() => { this.props.navigation.navigate('Login'); return true }}
+          leftAction={() => { this.props.navigation.navigate('Login'); return true; }}
           leftActionIcon={'navigate-before'}
           hideHomeAction={true}
         />

@@ -111,7 +111,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         ...transactionWithConsumptions
       });
     }
-  };
+  }
 
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
@@ -124,7 +124,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         'chargers.chargerUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
-  };
+  }
 
   public getTransactionWithConsumptions = async (transactionID: number):
     Promise<{ transaction: Transaction; values: Consumption[], consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[] }> => {
@@ -193,7 +193,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       consumptionValues: null,
       stateOfChargeValues: null
     };
-  };
+  }
 
   public canDisplayTransaction = (transaction: Transaction, chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
@@ -204,7 +204,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       return securityProvider.canReadTransaction(chargingStation.siteArea, transaction ? transaction.tagID : connector.currentTagID);
     }
     return false;
-  };
+  }
 
   public createChart(consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[]) {
     const commonColor = Utils.getCurrentCommonColor();
@@ -304,14 +304,14 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     this.props.navigation.goBack();
     // Do not bubble up
     return true;
-  };
+  }
 
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const { showTransactionDetails, isAdmin, isSiteAdmin, loading, transaction, chargingStation,
-      connector, consumptionValues, stateOfChargeValues, canDisplayTransaction } = this.state;
+            connector, consumptionValues, stateOfChargeValues, canDisplayTransaction } = this.state;
     const chartDefinition = this.createChart(consumptionValues, stateOfChargeValues);
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return (
@@ -325,7 +325,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
               subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}
-              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
+              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
               rightActionIcon={'menu'}
             />
             {showTransactionDetails && transaction && (

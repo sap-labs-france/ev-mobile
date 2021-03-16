@@ -102,5 +102,5 @@ export default class ChargingStationsFilters extends ScreenFilters {
         </FilterVisibleContainerComponent>
       </View>
     );
-  };
+  }
 }

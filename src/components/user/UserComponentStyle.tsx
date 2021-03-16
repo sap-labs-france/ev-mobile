@@ -35,7 +35,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingLeft: '3@s'
     },
     left: {
-      width:'20%',
+      width: '20%',
       paddingLeft: '3%'
     },
     rowContainer: {
@@ -43,14 +43,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'flex-start',
       alignItems: 'center',
       width: '100%',
-      flex:0
+      flex: 0
     },
     firstName: {
-      marginRight:'5@s',
-      maxWidth:'50%'
+      marginRight: '5@s',
+      maxWidth: '50%'
     },
     name: {
-      flex:1
+      flex: 1
     },
     email: {
       flexDirection: 'row',

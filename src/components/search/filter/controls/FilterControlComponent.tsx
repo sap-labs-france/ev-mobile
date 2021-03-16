@@ -12,7 +12,7 @@ export interface FilterControlComponentProps<T> {
 }
 
 export interface FilterControlComponentState<T> {
-  value?:T
+  value?: T;
 }
 
 export default class FilterControlComponent<T> extends React.Component<FilterControlComponentProps<T>, FilterControlComponentState<T>> {
@@ -20,7 +20,7 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
   constructor(props: FilterControlComponentProps<T>) {
     super(props);
     this.state = {
-      value:this.props.initialValue
+      value: this.props.initialValue
     };
   }
 
@@ -46,8 +46,8 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
     return this.state.value;
   }
 
-  public clearValue(callback?:()=>any) {
-    this.setState({value:null}, callback);
+  public clearValue(callback?: () => any) {
+    this.setState({value: null}, callback);
   }
 
   public getID(): string {

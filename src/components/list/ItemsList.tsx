@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, Platform, RefreshControl, TouchableOpacity} from 'react-native';
+import { FlatList, Platform, RefreshControl, TouchableOpacity } from 'react-native';
 import BaseProps from '../../types/BaseProps';
 import ListItem from '../../types/ListItem';
 import ListEmptyTextComponent from './empty-text/ListEmptyTextComponent';
@@ -37,7 +37,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
 
   public static defaultProps = {
     select: ItemsListTypes.NONE
-  }
+  };
   public state: State;
   public props: Props<T>;
 
@@ -96,6 +96,6 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
         ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation}
                                                           text={emptyTitle}/>}
       />
-    )
+    );
   }
 }

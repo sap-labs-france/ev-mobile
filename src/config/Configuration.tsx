@@ -23,5 +23,5 @@ export default class Configuration {
     { key: 'general.endpoint_scp_qa', value: Configuration.SCP_REST_ENDPOINT_QA },
   ];
 
-  public static isServerLocalePreferred: boolean = true;
+  public static isServerLocalePreferred = true;
 }

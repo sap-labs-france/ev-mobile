@@ -20,7 +20,7 @@ export default class NotificationManager {
   private removeTokenRefreshListener: () => any;
   private messageListener: () => any;
   private centralServerProvider: CentralServerProvider;
-  private lastNotification: NotificationOpen
+  private lastNotification: NotificationOpen;
 
   private constructor() {
   }

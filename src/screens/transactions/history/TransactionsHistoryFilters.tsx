@@ -57,7 +57,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
     if (applyFilters) {
       this.setState({
         filters: { ...this.state.filters, ...newFilters }
-      }, () => {onFilterChanged(this.state.filters)});
+      }, () => {onFilterChanged(this.state.filters); });
     } else {
       this.setState({
         filters: { ...this.state.filters, ...newFilters }
@@ -73,16 +73,16 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
     let startDateTime = filters.startDateTime ? filters.startDateTime : minTransactionDate ;
     let endDateTime = filters.endDateTime ? filters.endDateTime : maxTransactionDate;
     // Check the dates interval and fix it if needed
-    if(startDateTime < minTransactionDate){
-      startDateTime = minTransactionDate
-      if(endDateTime < minTransactionDate){
-        endDateTime = minTransactionDate
+    if (startDateTime < minTransactionDate) {
+      startDateTime = minTransactionDate;
+      if (endDateTime < minTransactionDate) {
+        endDateTime = minTransactionDate;
       }
     }
-    if(endDateTime > maxTransactionDate){
-      endDateTime = maxTransactionDate
-      if(startDateTime > maxTransactionDate){
-        startDateTime = maxTransactionDate
+    if (endDateTime > maxTransactionDate) {
+      endDateTime = maxTransactionDate;
+      if (startDateTime > maxTransactionDate) {
+        startDateTime = maxTransactionDate;
       }
     }
     return (
@@ -139,5 +139,5 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
         </FilterModalContainerComponent>
       </View>
     );
-  };
+  }
 }

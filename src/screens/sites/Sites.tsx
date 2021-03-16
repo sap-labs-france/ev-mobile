@@ -1,13 +1,13 @@
-import {DrawerActions} from '@react-navigation/native';
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import {Container, Spinner, View} from 'native-base';
+import { Container, Spinner, View } from 'native-base';
 import React from 'react';
-import {Platform} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
-import {Location} from 'react-native-location';
-import MapView, {Marker, Region} from 'react-native-maps';
+import { Platform } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Location } from 'react-native-location';
+import MapView, { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
-import {Modalize} from 'react-native-modalize';
+import { Modalize } from 'react-native-modalize';
 import computeModalStyle from '../../ModalStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
@@ -16,14 +16,14 @@ import SiteComponent from '../../components/site/SiteComponent';
 import LocationManager from '../../location/LocationManager';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
-import {DataResult} from '../../types/DataResult';
-import {GlobalFilters} from '../../types/Filter';
+import { DataResult } from '../../types/DataResult';
+import { GlobalFilters } from '../../types/Filter';
 import Site from '../../types/Site';
 import Constants from '../../utils/Constants';
 import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
-import SitesFilters, {SitesFiltersDef} from './SitesFilters';
+import SitesFilters, { SitesFiltersDef } from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
 
 export interface Props extends BaseProps {
@@ -129,14 +129,14 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     }
     // Return
     return sites;
-  };
+  }
 
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.navigate('HomeNavigator');
     // Do not bubble up
     return true;
-  };
+  }
 
   public refreshCurrentRegion(sites: Site[], force = false) {
     // Set current region
@@ -169,7 +169,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         count: sites ? sites.count : 0,
       });
     }
-  };
+  }
 
   public manualRefresh = async () => {
     // Display spinner
@@ -178,7 +178,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
-  };
+  }
 
   public onEndScroll = async () => {
     const { count, skip, limit } = this.state;
@@ -193,7 +193,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         refreshing: false
       }));
     }
-  };
+  }
 
   public search = async (searchText: string) => {
     this.searchText = searchText;
@@ -214,10 +214,10 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     // Refresh region
     this.refreshCurrentRegion(this.state.sites, true);
     // Toggle map
-    this.setState({ showMap: !this.state.showMap })
+    this.setState({ showMap: !this.state.showMap });
   }
 
-  public showMapSiteDetail = (site : Site) => {
+  public showMapSiteDetail = (site: Site) => {
     this.setState({
       visible: true,
       siteSelected: site
@@ -235,7 +235,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
                 onNavigate={() => this.setState({ visible: false })} />
           </Modalize>
         </Modal>
-      )
+      );
     } else {
       return (
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
@@ -246,7 +246,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
             </ScrollView>
           </View>
         </Modal>
-      )
+      );
     }
   }
 
@@ -255,7 +255,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
     const { loading, skip, count, limit, initialFilters, showMap, siteSelected, refreshing, sites } = this.state;
-    const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.sites)
+    const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.sites);
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -263,7 +263,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           title={I18n.t('sidebar.sites')}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
-          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
           rightActionIcon={'menu'}
           displayMap={!Utils.isEmptyArray(this.state.sites)}
           mapIsDisplayed={mapIsDisplayed}

@@ -1,6 +1,6 @@
-import {DrawerActions} from '@react-navigation/native';
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import {Container, Spinner, View} from 'native-base';
+import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -9,15 +9,15 @@ import TransactionInProgressComponent
   from '../../../components/transaction/in-progress/TransactionInProgressComponent';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
-import {DataResult} from '../../../types/DataResult';
-import {GlobalFilters} from '../../../types/Filter';
+import { DataResult } from '../../../types/DataResult';
+import { GlobalFilters } from '../../../types/Filter';
 import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../TransactionsStyles';
-import TransactionsInProgressFilters, {TransactionsInProgressFiltersDef} from './TransactionsInProgressFilters';
+import TransactionsInProgressFilters, { TransactionsInProgressFiltersDef } from './TransactionsInProgressFilters';
 
 export interface Props extends BaseProps {
 }
@@ -103,14 +103,14 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
         'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
-  };
+  }
 
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.navigate('HomeNavigator');
     // Do not bubble up
     return true;
-  };
+  }
 
   public refresh = async () => {
     // Component Mounted?
@@ -130,7 +130,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
         isPricingActive: securityProvider.isComponentPricingActive()
       });
     }
-  };
+  }
 
   public onEndScroll = async () => {
     const { count, skip, limit } = this.state;
@@ -145,7 +145,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
         refreshing: false
       }));
     }
-  };
+  }
 
   public search = async (searchText: string) => {
     this.searchText = searchText;
@@ -156,7 +156,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading, isAdmin, hasSiteAdmin, transactions, isPricingActive,
-      skip, count, limit, initialFilters, filters, refreshing } = this.state;
+            skip, count, limit, initialFilters, filters, refreshing } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -167,7 +167,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('transactions.transactions')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
-          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
           rightActionIcon={'menu'}
           filters={filters}
         />
@@ -206,5 +206,5 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           )}
       </Container>
     );
-  };
+  }
 }

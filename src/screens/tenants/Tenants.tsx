@@ -3,7 +3,7 @@ import I18n from 'i18n-js';
 import { Button, Icon, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, TouchableOpacity } from 'react-native';
-import { SwipeListView } from 'react-native-swipe-list-view'
+import { SwipeListView } from 'react-native-swipe-list-view';
 import { TenantConnection } from 'types/Tenant';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -20,9 +20,9 @@ export interface Props extends BaseProps {
 }
 
 interface State {
-  tenants?: TenantConnection[]
-  createTenantVisible?: boolean
-  createQrCodeTenantVisible?: boolean
+  tenants?: TenantConnection[];
+  createTenantVisible?: boolean;
+  createQrCodeTenantVisible?: boolean;
 }
 
 export default class Tenants extends BaseScreen<Props, State> {
@@ -34,7 +34,7 @@ export default class Tenants extends BaseScreen<Props, State> {
     this.state = {
       createQrCodeTenantVisible: false,
       createTenantVisible: false
-    }
+    };
   }
 
   public async componentDidMount() {
@@ -57,15 +57,15 @@ export default class Tenants extends BaseScreen<Props, State> {
       I18n.t('authentication.createTenantTitle'),
       I18n.t('authentication.createTenantText'),
       [
-        { text: I18n.t('qrCode.qrCode'), onPress: () => { this.setState({ createQrCodeTenantVisible: true }) } },
-        { text: I18n.t('general.manually'), onPress: () => { this.setState({ createTenantVisible: true }) } },
+        { text: I18n.t('qrCode.qrCode'), onPress: () => { this.setState({ createQrCodeTenantVisible: true }); } },
+        { text: I18n.t('general.manually'), onPress: () => { this.setState({ createTenantVisible: true }); } },
         { text: I18n.t('general.close'), style: 'cancel' },
       ]
-    )
+    );
   }
 
   private tenantCreated = async (newTenant: TenantConnection) => {
-    const navigation = this.props.navigation
+    const navigation = this.props.navigation;
     // Always close pop-up
     this.setState({
       createQrCodeTenantVisible: false,
@@ -104,16 +104,16 @@ export default class Tenants extends BaseScreen<Props, State> {
                 {
                   tenantSubDomain: newTenant.subdomain
                 }
-              )
+              );
         } },
           ]
         );
       }
     }
-  };
+  }
 
   private deleteTenant = async (index: number, subdomain: string) => {
-    const tenants = this.state.tenants
+    const tenants = this.state.tenants;
     // Remove
     const tenant = tenants.splice(index, 1)[0];
     // Save
@@ -122,11 +122,11 @@ export default class Tenants extends BaseScreen<Props, State> {
     await SecuredStorage.deleteUserCredentials(subdomain);
     this.setState({ tenants });
     Message.showSuccess(I18n.t('general.deleteTenantSuccess', { tenantName: tenant.name }));
-  };
+  }
 
   public render() {
-    const navigation = this.props.navigation
-    const { tenants, createTenantVisible, createQrCodeTenantVisible } = this.state
+    const navigation = this.props.navigation;
+    const { tenants, createTenantVisible, createQrCodeTenantVisible } = this.state;
     const tenantStyle = computeTenantStyleSheet();
     return (
       <View style={{ flex: 1 }}>
@@ -190,7 +190,7 @@ export default class Tenants extends BaseScreen<Props, State> {
                   )}
                   renderHiddenItem={({ item, index }) => (
                     <Button style={tenantStyle.trashIconButton} danger={true} onPress={() => {
-                      this.deleteTenant(index, item.subdomain)
+                      this.deleteTenant(index, item.subdomain);
                     }}>
                       <Icon style={tenantStyle.trashIcon} name='trash' />
                     </Button>

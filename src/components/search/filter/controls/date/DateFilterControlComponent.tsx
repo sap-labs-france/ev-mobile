@@ -12,8 +12,8 @@ export interface Props extends FilterControlComponentProps<Date> {
   maximumDate?: Date;
 }
 
-interface State extends FilterControlComponentState<Date>{
-  openDatePicker: boolean
+interface State extends FilterControlComponentState<Date> {
+  openDatePicker: boolean;
 }
 
 export default class DateFilterControlComponent extends FilterControlComponent<Date> {
@@ -48,9 +48,9 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
       if (newValue) {
         this.setState({
           openDatePicker: false
-        }, () => { onFilterChanged(this.getID(), newValue) });
+        }, () => { onFilterChanged(this.getID(), newValue); });
       } else {
-        this.clearValue( () => { onFilterChanged(this.getID(), null) });
+        this.clearValue( () => { onFilterChanged(this.getID(), null); });
       }
     }
   }
@@ -70,10 +70,10 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
           minimumDate={minimumDate}
           locale={locale}
           onCancel={() => {
-            this.openDatePicker(false)
+            this.openDatePicker(false);
           }}
           onConfirm={(date) => {
-            this.onConfirm(date)
+            this.onConfirm(date);
           }
         }/>
       </View>

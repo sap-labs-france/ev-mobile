@@ -64,11 +64,11 @@ export default class ReportError extends BaseScreen<Props, State> {
       subject: null,
       description: null,
     };
-  };
+  }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  };
+  }
 
   public async componentDidMount() {
     await super.componentDidMount();
@@ -84,7 +84,7 @@ export default class ReportError extends BaseScreen<Props, State> {
       if (chargingStation) {
         connector = chargingStation ? chargingStation.connectors[Utils.convertToInt(connectorID) - 1] : null;
         connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
-        this.setState({ subject: chargingStationID + ' - ' + connectorLetter })
+        this.setState({ subject: chargingStationID + ' - ' + connectorLetter });
       }
     }
     const securityProvider = this.centralServerProvider.getSecurityProvider();
@@ -109,7 +109,7 @@ export default class ReportError extends BaseScreen<Props, State> {
         'chargingStations.chargingStationUnexpectedError', this.props.navigation);
     }
     return null;
-  };
+  }
 
   public sendErrorReport = async () => {
     // Check field
@@ -141,7 +141,7 @@ export default class ReportError extends BaseScreen<Props, State> {
         }
       }
     }
-  };
+  }
 
   public clearInput = () => {
     this.setState({
@@ -153,14 +153,14 @@ export default class ReportError extends BaseScreen<Props, State> {
       errorSubject: [],
       errorMobile: []
     });
-  };
+  }
 
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack();
     // Do not bubble up
     return true;
-  };
+  }
 
   public changeMobileText(text: string) {
     if (!text) {
@@ -185,7 +185,7 @@ export default class ReportError extends BaseScreen<Props, State> {
               title={I18n.t('sidebar.reportError')}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}
-              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
+              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
               rightActionIcon={'menu'}
             />
             <ScrollView style={style.container}>
@@ -272,6 +272,6 @@ export default class ReportError extends BaseScreen<Props, State> {
             </ScrollView>
           </Animatable.View>
         )
-    )
+    );
   }
-};
+}

@@ -113,7 +113,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       }
     }
     return null;
-  };
+  }
 
   public getSiteImage = async (siteID: string): Promise<string> => {
     try {
@@ -124,7 +124,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         'sites.siteUnexpectedError', this.props.navigation);
     }
     return null;
-  };
+  }
 
   public getUserImage = async (user: User): Promise<string> => {
     try {
@@ -135,7 +135,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         'users.userUnexpectedError', this.props.navigation);
     }
     return null;
-  };
+  }
 
   public computeDurationInfos = (transaction: Transaction) => {
     if (transaction) {
@@ -160,7 +160,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         inactivityFormatted: Constants.DEFAULT_DURATION
       });
     }
-  };
+  }
 
   public renderUserInfo = (style: any) => {
     const { transaction, isAdmin, isSiteAdmin } = this.state;
@@ -179,7 +179,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
           <Text style={[style.label, style.disabled]}>-</Text>
         </View>
       );
-  };
+  }
 
   public renderPrice = (style: any) => {
     const { transaction } = this.state;
@@ -190,7 +190,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         <Text style={[style.subLabel, style.info]}>({transaction ? transaction.stop.priceUnit : '-'})</Text>
       </View>
     );
-  };
+  }
 
   public renderElapsedTime = (style: any) => {
     const { elapsedTimeFormatted } = this.state;
@@ -201,7 +201,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.duration')}</Text>
       </View>
     );
-  };
+  }
 
   public renderInactivity = (style: any) => {
     const { transaction } = this.state;
@@ -214,7 +214,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         <Text style={[style.subLabel, inactivityStyle]}>{I18n.t('details.duration')}</Text>
       </View>
     );
-  };
+  }
 
   public renderTotalConsumption = (style: any) => {
     const { transaction } = this.state;
@@ -225,7 +225,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
     );
-  };
+  }
 
   public renderBatteryLevel = (style: any) => {
     const { transaction } = this.state;
@@ -241,14 +241,14 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
           <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
         </View>
       );
-  };
+  }
 
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack();
     // Do not bubble up
     return true;
-  };
+  }
 
   public render() {
     const { navigation } = this.props;
@@ -267,7 +267,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
               subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}
-              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
+              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
               rightActionIcon={'menu'}
             />
             {/* Site Image */}

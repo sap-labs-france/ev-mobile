@@ -43,7 +43,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
       });
     }
     Alert.alert(I18n.t('chargers.heartBeat'), message, [{ text: I18n.t('general.ok') }]);
-  };
+  }
 
   public render() {
     const style = computeStyleSheet();

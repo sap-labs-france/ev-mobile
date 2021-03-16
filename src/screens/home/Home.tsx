@@ -141,7 +141,7 @@ export default class Home extends BaseScreen<Props, State> {
               <HeaderComponent
                 navigation={navigation}
                 title={I18n.t('sidebar.home')}
-                rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
+                rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
                 rightActionIcon={'menu'}
                 tenantLogo={this.centralServerProvider?.getCurrentTenantLogo()}
               />
@@ -223,5 +223,5 @@ export default class Home extends BaseScreen<Props, State> {
           )}
       </Container>
     );
-  };
+  }
 }

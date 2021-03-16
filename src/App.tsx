@@ -72,7 +72,7 @@ const createTabBarIcon = (props: { focused: boolean; tintColor?: string; horizon
     color: props.focused ? commonColor.topTabBarActiveTextColor : commonColor.topTabBarTextColor,
     paddingBottom: 5,
     fontSize: 23
-  }} type={type} name={name} />
+  }} type={type} name={name} />;
 };
 
 // save last page with state

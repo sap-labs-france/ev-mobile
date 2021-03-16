@@ -9,10 +9,10 @@ import Address from 'types/Address';
 import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
 
-import Configuration from '../config/Configuration';
-import { buildCommonColor } from '../custom-theme/customCommonColor';
-import ThemeManager from '../custom-theme/ThemeManager';
 import I18nManager from '../I18n/I18nManager';
+import Configuration from '../config/Configuration';
+import ThemeManager from '../custom-theme/ThemeManager';
+import { buildCommonColor } from '../custom-theme/customCommonColor';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
 import { EndpointCloud } from '../types/Tenant';
@@ -507,7 +507,7 @@ export default class Utils {
   }
 
   public static getParamFromNavigation(route: any, name: string, defaultValue: string|boolean, removeValue = false): string | number | boolean | object {
-    const params: any = route.params?.params ? route.params.params : route.params
+    const params: any = route.params?.params ? route.params.params : route.params;
     // Has param object?
     if (!params) {
       return defaultValue;
@@ -747,7 +747,7 @@ export default class Utils {
       default:
         return I18n.t('connector.unknown');
     }
-  };
+  }
 
   public static translateConnectorType = (type: string): string => {
     switch (type) {
@@ -762,7 +762,7 @@ export default class Utils {
       default:
         return I18n.t('connector.unknown');
     }
-  };
+  }
 
   public static formatDurationHHMMSS = (durationSecs: number, withSecs: boolean = true): string => {
     if (durationSecs <= 0) {
@@ -785,7 +785,7 @@ export default class Utils {
     }
     // Format
     return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}`;
-  };
+  }
 
   private static formatTimer = (val: number): string => {
     // Put 0 next to the digit if lower than 10
@@ -795,5 +795,5 @@ export default class Utils {
     }
     // Return new digit
     return valString;
-  };
+  }
 }
