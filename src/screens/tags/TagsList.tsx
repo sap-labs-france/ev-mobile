@@ -5,6 +5,7 @@ import React from 'react';
 import {View} from 'react-native';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList, {ItemsListTypes} from '../../components/list/ItemsList';
+import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import TagComponent from '../../components/tag/TagComponent';
 import BaseProps from '../../types/BaseProps';
 import {DataResult} from '../../types/DataResult';
@@ -30,6 +31,7 @@ interface State {
 export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
+  private searchText: string;
 
   public constructor(props: Props) {
     super(props);
@@ -52,9 +54,9 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
     super.setState(state, callback);
   }
 
-  public async getTags(skip: number, limit: number): Promise<DataResult<Tag>> {
+  public async getTags(searchText: string, skip: number, limit: number): Promise<DataResult<Tag>> {
     try {
-      return await this.centralServerProvider.getTags({}, {skip, limit});
+      return await this.centralServerProvider.getTags({ Search: searchText }, {skip, limit});
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
@@ -77,7 +79,7 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
-      const tags = await this.getTags(skip + Constants.PAGING_SIZE, limit);
+      const tags = await this.getTags(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState) => ({
         tags: tags ? [...prevState.tags, ...tags.result] : prevState.tags,
@@ -91,7 +93,7 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
     if (this.isMounted()) {
       const {skip, limit} = this.state;
       // Refresh All
-      const tags = await this.getTags(0, skip + limit);
+      const tags = await this.getTags(this.searchText, 0, skip + limit);
       const tagsResult = tags ? tags.result : []
       // Set
       this.setState({
@@ -100,6 +102,11 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
         count: tags.count
       });
     }
+  }
+
+  public search = async (searchText: string) => {
+    this.searchText = searchText;
+    await this.refresh();
   }
 
   public render = () => {
@@ -118,6 +125,10 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
             return true
           }}
           rightActionIcon={'menu'}
+        />
+        <SimpleSearchComponent
+          onChange={(searchText) => this.search(searchText)}
+          navigation={navigation}
         />
         {loading ? (
           <Spinner style={style.spinner} color='grey'/>
