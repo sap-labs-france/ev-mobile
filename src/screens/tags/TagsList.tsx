@@ -1,15 +1,17 @@
-import {DrawerActions} from '@react-navigation/native';
+import { DrawerActions } from '@react-navigation/native';
+import I18n from 'i18n-js';
 import i18n from 'i18n-js';
-import {Container, Spinner} from 'native-base';
+import { Container, Spinner } from 'native-base';
 import React from 'react';
-import {View} from 'react-native';
+import { View } from 'react-native';
+import I18nManager from '../../I18n/I18nManager';
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ItemsList, {ItemsListTypes} from '../../components/list/ItemsList';
+import ItemsList, { ItemsListTypes } from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import TagComponent from '../../components/tag/TagComponent';
 import BaseProps from '../../types/BaseProps';
-import {DataResult} from '../../types/DataResult';
-import {HTTPAuthError} from '../../types/HTTPError';
+import { DataResult } from '../../types/DataResult';
+import { HTTPAuthError } from '../../types/HTTPError';
 import Tag from '../../types/Tag';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
@@ -56,7 +58,14 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
 
   public async getTags(searchText: string, skip: number, limit: number): Promise<DataResult<Tag>> {
     try {
-      return await this.centralServerProvider.getTags({ Search: searchText }, {skip, limit});
+      const tags = await this.centralServerProvider.getTags({ Search: searchText }, {skip, limit});
+      if (tags.count === -1) {
+        // Request nbr of records
+        const tagsNbrRecordsOnly = await this.centralServerProvider.getTags({ Search: searchText }, Constants.ONLY_RECORD_COUNT);
+        // Set
+        tags.count = tagsNbrRecordsOnly.count;
+      }
+      return tags;
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
@@ -94,12 +103,11 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
       const {skip, limit} = this.state;
       // Refresh All
       const tags = await this.getTags(this.searchText, 0, skip + limit);
-      const tagsResult = tags ? tags.result : []
       // Set
       this.setState({
         loading: false,
-        tags: tagsResult,
-        count: tags.count
+        tags: tags ? tags.result : [],
+        count: tags ? tags.count : 0
       });
     }
   }
@@ -111,12 +119,13 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
 
   public render = () => {
     const style = computeStyleSheet();
-    const {tags, count, skip, limit, refreshing, loading} = this.state;
-    const {navigation} = this.props;
+    const { tags, count, skip, limit, refreshing, loading } = this.state;
+    const { navigation } = this.props;
     return (
       <Container style={style.container}>
         <HeaderComponent
           title={i18n.t('sidebar.badges')}
+          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('tags.tags')}` : null}
           navigation={this.props.navigation}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
@@ -144,7 +153,7 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}
               onEndReached={this.onEndScroll}
-              emptyTitle={i18n.t('tags.noBadges')}
+              emptyTitle={i18n.t('tags.noTags')}
             />
           </View>
         )}
