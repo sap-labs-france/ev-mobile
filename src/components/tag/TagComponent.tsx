@@ -1,19 +1,19 @@
 import I18n from 'i18n-js';
 import React from 'react';
-import {Text, View} from 'react-native';
+import { Text, View } from 'react-native';
 import { Chip } from 'react-native-paper';
 import BaseProps from '../../types/BaseProps';
 import Tag from '../../types/Tag';
 import computeStyleSheet from './TagComponentStyle';
 
-interface State{
+interface State {
 
 }
 
-export interface Props extends BaseProps{
+export interface Props extends BaseProps {
   tag: Tag;
   selected?: boolean;
-  isAdmin?: boolean
+  isAdmin?: boolean;
 }
 
 export default class TagComponent extends React.Component<Props, State> {
@@ -29,7 +29,7 @@ export default class TagComponent extends React.Component<Props, State> {
 
   }
 
-  public render(){
+  public render() {
     const style = computeStyleSheet();
     const { tag, isAdmin, selected } = this.props;
     const active = tag?.active;
@@ -55,6 +55,6 @@ export default class TagComponent extends React.Component<Props, State> {
           </View>
       </View>
     </View>
-    )
+    );
   }
 }

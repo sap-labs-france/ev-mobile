@@ -32,6 +32,7 @@ import Sidebar from './screens/sidebar/SideBar';
 import SiteAreas from './screens/site-areas/SiteAreas';
 import Sites from './screens/sites/Sites';
 import Statistics from './screens/statistics/Statistics';
+import TagsList from './screens/tags/TagsList';
 import Tenants from './screens/tenants/Tenants';
 import TransactionChart from './screens/transactions/chart/TransactionChart';
 import TransactionDetails from './screens/transactions/details/TransactionDetails';
@@ -40,7 +41,6 @@ import TransactionsInProgress from './screens/transactions/in-progress/Transacti
 import UsersList from './screens/users/list/UsersList';
 import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
-import TagsList from "./screens/tags/TagsList";
 
 // Init i18n
 I18nManager.initialize();
@@ -261,9 +261,9 @@ function createUsersListNavigator(props: BaseProps) {
 
 function createTagsListNavigator(props: BaseProps) {
   return (
-    <UsersListStack.Navigator initialRouteName='TagsList' headerMode='none'>
-      <UsersListStack.Screen name='TagsList' component={TagsList} initialParams={props?.route?.params?.params} />
-    </UsersListStack.Navigator>
+    <TagsListStack.Navigator initialRouteName='TagsList' headerMode='none'>
+      <TagsListStack.Screen name='TagsList' component={TagsList} initialParams={props?.route?.params?.params} />
+    </TagsListStack.Navigator>
   );
 }
 

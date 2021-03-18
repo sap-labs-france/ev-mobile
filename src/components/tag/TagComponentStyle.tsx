@@ -8,7 +8,7 @@ import Utils from '../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    selected:{
+    selected: {
       opacity: 0.5
     },
     text: {
