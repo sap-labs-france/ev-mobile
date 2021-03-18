@@ -144,7 +144,6 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
         ) : (
           <View style={style.content}>
             <ItemsList<Tag>
-              select={ItemsListTypes.MULTI}
               data={tags} navigation={navigation}
               count={count} limit={limit}
               skip={skip}

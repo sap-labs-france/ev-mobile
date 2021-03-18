@@ -19,13 +19,20 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       fontSize: '30@s'
     },
+    avatar: {
+      margin: 0,
+      alignSelf: 'center',
+      justifyContent: 'center',
+      width: '25%',
+      flexDirection: 'row'
+    },
     description: {
       textAlign: 'center'
     },
     tagContent: {
       flex: 1,
       flexDirection: 'row',
-      justifyContent: 'space-around',
+      justifyContent: 'space-between',
       borderBottomWidth: 1,
       alignItems: 'center',
       borderBottomColor: commonColor.listBorderColor,
@@ -33,8 +40,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingLeft: '5@s',
       paddingRight: '5@s',
       paddingBottom: '5@s',
-      height: '80@s',
+      height: '50@s',
       width: '100%'
+    },
+    id: {
+      marginRight: '7@s',
+      maxWidth: '60%'
     },
     container: {
       flexDirection: 'column',
@@ -50,22 +61,43 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderBottomColor: commonColor.listBorderColor,
       backgroundColor: commonColor.listHeaderBgColor
     },
-    column: {
-      flexDirection: 'column',
-      alignItems: 'center',
-      width: '33%',
-      justifyContent: 'center'
-    },
-    firstName:{
-      marginRight:'7@s',
-      maxWidth:'50%'
-    },
     user: {
-      flexDirection: 'column',
+      flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
-      width: '100%'
+      justifyContent: 'flex-end',
+      flex: 1
+    },
+    label: {
+      width: '70%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start'
+    },
+    status: {
+      width: '30%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      height: '100%'
+    },
+    tagActive: {
+      borderColor: commonColor.brandSuccess,
+      color: commonColor.brandSuccess
+    },
+    tagInactive: {
+      borderColor: commonColor.brandDanger,
+      color: commonColor.brandDanger
 
+    },
+    tagText: {
+      fontSize: '15@s',
+      paddingLeft: '10@s',
+      paddingRight: '10@s',
+      fontWeight: 'bold'
+    },
+    tag: {
+      backgroundColor: commonColor.containerBgColor,
+      borderWidth: 2
     }
   });
   const portraitStyles = {};

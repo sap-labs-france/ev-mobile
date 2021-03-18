@@ -290,8 +290,11 @@
     "chademo": "Chademo",
     "domestic": "Domestique"
   },
-  "tag": {
-    "noBadges": "Aucun badge"
+  "tags": {
+    "noTags": "Aucun badge",
+    "tags": "Badge(s)",
+    "active": "Actif",
+    "inactive": "Inactif"
   },
   "details": {
     "connector": "Connecteur",
