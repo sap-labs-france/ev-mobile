@@ -28,7 +28,7 @@ interface State {
   selectedIds?: Set<string>;
 }
 
-export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State<T>> {
+export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State> {
 
   public constructor(props: Props<T>) {
     super(props);

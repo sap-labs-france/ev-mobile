@@ -69,7 +69,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
     return null;
   }
 
-  public async getUserImage(id: string | number) {
+  public async getUserImage(id: string) {
     try {
       return await this.centralServerProvider.getUserImage({ID: id});
     } catch (error) {
@@ -94,7 +94,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
-      const users = await this.getUsers(this.searchText, + Constants.PAGING_SIZE, limit);
+      const users = await this.getUsers(skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState) => ({
         users: users ? [...prevState.users, ...users.result] : prevState.users,

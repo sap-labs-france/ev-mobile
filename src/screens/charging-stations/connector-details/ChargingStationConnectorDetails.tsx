@@ -685,7 +685,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <Container style={style.container}>
             <HeaderComponent
               navigation={this.props.navigation}
-              title={chargingStation ? chargingStation.id.toString() : '-'}
+              title={chargingStation ? chargingStation.id : '-'}
               subTitle={connectorLetter ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}
