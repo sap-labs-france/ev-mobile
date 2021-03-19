@@ -44,8 +44,7 @@ export default class UserComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { user, selected, navigation } = this.props;
-    const userName = user?.name ? (user.name.charAt(0).toUpperCase() + user.name.slice(1).toLowerCase()) : '';
-    const userFirstName = user?.firstName ? (user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1).toLowerCase()) : '';
+    const userFullName = Utils.buildUserName(user);``
     const userRole =  user ?  user.role : '';
     const userStatus = user ? user.status : '';
     const statusStyle = this.computeStatusStyle(userStatus, style);
@@ -56,11 +55,8 @@ export default class UserComponent extends React.Component<Props, State> {
         </View>
         <View style={selected ?  [style.columnContainer, style.selected] : style.columnContainer }>
           <View style={style.rowContainer}>
-            <View style={style.firstName}>
-              <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>{userFirstName}</Text>
-            </View>
             <View style={style.name}>
-              <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>{userName}</Text>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>{userFullName}</Text>
             </View>
             <View style={style.statusContainer}>
               <Chip style={[style.status, statusStyle]} textStyle={[style.statusText, statusStyle]}>{Utils.translateUserStatus(userStatus)}</Chip>
