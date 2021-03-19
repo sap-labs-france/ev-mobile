@@ -56,21 +56,27 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      width: '100%'
+      width: '100%',
+      marginBottom: '3@s'
     },
     status: {
       backgroundColor: commonColor.containerBgColor,
-      borderWidth: 1
+      borderWidth: 1,
+      margin: 0,
+      height: '21@s'
     },
     statusContainer: {
-      marginLeft: '7@s'
+      marginLeft: '7@s',
+      marginBottom: 0
     },
     active: {
       borderColor: commonColor.brandSuccess,
       color: commonColor.brandSuccess
     },
     statusText: {
-      fontSize: '9@s'
+      fontSize: '11@s',
+      fontWeight: 'bold',
+      lineHeight: 0
     },
     inactive: {
       color: commonColor.brandDanger,
@@ -81,7 +87,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderColor: commonColor.brandWarning
     },
     role: {
-      fontSize: '11@s'
+      fontSize: '12@s'
     },
     roleContainer: {
       flexDirection: 'row',

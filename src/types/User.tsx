@@ -53,16 +53,16 @@ export interface UserSite {
 }
 
 export enum UserStatus {
-  P = 'PENDING',
-  A = 'ACTIVE',
-  I = 'INACTIVE',
-  B = 'BLOCKED',
-  L = 'LOCKED'
+  PENDING = 'P',
+  ACTIVE = 'A',
+  INACTIVE = 'I',
+  BLOCKED = 'B',
+  LOCKED = 'L'
 }
 
 export enum UserRole {
-  S = 'SUPER',
-  A = 'ADMIN',
-  B = 'BASIC',
-  D = 'DEMO'
+  SUPER_ADMIN = 'S',
+  ADMIN = 'A',
+  BASIC = 'B',
+  DEMO = 'D'
 }

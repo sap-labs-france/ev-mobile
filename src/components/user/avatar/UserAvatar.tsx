@@ -27,8 +27,8 @@ export default class UserAvatar extends React.Component<Props, State> {
   public render() {
     const { user, selected } = this.props;
     const style = computeStyleSheet();
-    const userName = user.name ? (user.name.charAt(0).toUpperCase() + user.name.slice(1).toLowerCase()) : '';
-    const userFirstName = user.firstName ? user.firstName : '';
+    const userName = user?.name ? user.name : '';
+    const userFirstName = user?.firstName ? user.firstName : '';
     const userImageURI = user.image;
     return (
       <View>
@@ -43,7 +43,7 @@ export default class UserAvatar extends React.Component<Props, State> {
           :
           <Avatar size={style.avatar.fontSize}
                   rounded={true}
-                  title={userFirstName.charAt(0) + userName.charAt(0)}
+                  title={userFirstName.charAt(0).toUpperCase() + userName.charAt(0).toUpperCase()}
                   titleStyle={style.avatarTitle}
                   overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
             {selected ? <Avatar.Accessory name={'done'} size={style.accessory.fontSize} color={style.accessory.color}/> : null}

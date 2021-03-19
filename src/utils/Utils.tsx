@@ -17,7 +17,7 @@ import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorTy
 import { RequestError } from '../types/RequestError';
 import { EndpointCloud } from '../types/Tenant';
 import { InactivityStatus } from '../types/Transaction';
-import User from '../types/User';
+import User, { UserRole, UserStatus } from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
 
@@ -761,6 +761,38 @@ export default class Utils {
         return I18n.t('connector.domestic');
       default:
         return I18n.t('connector.unknown');
+    }
+  }
+
+  public static translateUserStatus(status: string) {
+    switch (status) {
+      case UserStatus.ACTIVE:
+        return I18n.t('userStatuses.active');
+      case UserStatus.PENDING:
+        return I18n.t('userStatuses.pending');
+      case UserStatus.INACTIVE:
+        return I18n.t('userStatuses.inactive');
+      case UserStatus.LOCKED:
+        return I18n.t('userStatuses.locked');
+      case UserStatus.BLOCKED:
+        return I18n.t('userStatuses.blocked');
+    default:
+      return I18n.t('userStatuses.unknown');
+    }
+  }
+
+  public static translateUserRole(role: string) {
+    switch (role) {
+      case UserRole.ADMIN:
+        return I18n.t('userRoles.admin');
+      case UserRole.BASIC:
+        return I18n.t('userRoles.basic');
+      case UserRole.DEMO:
+        return I18n.t('userRoles.demo');
+      case UserRole.SUPER_ADMIN:
+        return I18n.t('userRoles.superAdmin');
+      default:
+        return I18n.t('userRoles.unknown');
     }
   }
 

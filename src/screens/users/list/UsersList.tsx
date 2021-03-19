@@ -125,6 +125,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
       });
     }
   }
+
   public search = async (searchText: string) => {
     this.searchText = searchText;
     await this.refresh();

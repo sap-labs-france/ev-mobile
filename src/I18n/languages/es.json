@@ -171,15 +171,17 @@
   "userRoles": {
     "admin": "Admin",
     "basic": "Basic",
-    "super": "Super Admin",
-    "demo": "Demo"
+    "superAdmin": "Super Admin",
+    "demo": "Demo",
+    "unknown": "Unknown"
   },
   "userStatuses": {
     "active": "active",
     "inactive": "inactive",
     "locked": "locked",
     "blocked": "blocked",
-    "pending": "pending"
+    "pending": "pending",
+    "unknown": "Unknown"
   },
   "transactions": {
     "transaction": "Sesión",
