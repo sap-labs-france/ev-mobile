@@ -1,15 +1,14 @@
 import { DrawerActions } from '@react-navigation/native';
-import i18n from 'i18n-js';
-import I18n from 'i18n-js';
+import { default as I18n, default as i18n } from 'i18n-js';
 import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
-import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ItemsList from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import UserComponent from '../../../components/user/UserComponent';
+import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import { DataResult } from '../../../types/DataResult';
 import User from '../../../types/User';
@@ -94,7 +93,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
-      const users = await this.getUsers(skip + Constants.PAGING_SIZE, limit);
+      const users = await this.getUsers(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState) => ({
         users: users ? [...prevState.users, ...users.result] : prevState.users,
@@ -115,7 +114,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
       const users = await this.getUsers(this.searchText, 0, skip + limit);
       const usersResult = users ? users.result : [];
       usersResult.forEach(async (user: User) => {
-        user.image = await this.getUserImage(user.id);
+        user.image = await this.getUserImage(user.id as string);
       });
       // Set
       this.setState({
