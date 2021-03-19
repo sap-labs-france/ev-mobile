@@ -43,7 +43,7 @@ export default class UserAvatar extends React.Component<Props, State> {
           :
           <Avatar size={style.avatar.fontSize}
                   rounded={true}
-                  title={userFirstName.charAt(0).toUpperCase() + userName.charAt(0).toUpperCase()}
+                  title={userName.charAt(0).toUpperCase() + userFirstName.charAt(0).toUpperCase()}
                   titleStyle={style.avatarTitle}
                   overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
             {selected ? <Avatar.Accessory name={'done'} size={style.accessory.fontSize} color={style.accessory.color}/> : null}
