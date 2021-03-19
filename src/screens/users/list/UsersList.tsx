@@ -7,7 +7,7 @@ import { View } from 'react-native';
 
 import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ItemsList, { ItemsListTypes } from '../../../components/list/ItemsList';
+import ItemsList from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import UserComponent from '../../../components/user/UserComponent';
 import BaseProps from '../../../types/BaseProps';
@@ -19,13 +19,6 @@ import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../../transactions/TransactionsStyles';
 
 export interface Props extends  BaseProps {
-<<<<<<< Updated upstream
-=======
-  select?: ItemsListTypes;
-  modal?: boolean;
-  onUserSelected?: (selectedIds: {[key: string]: User }) => void;
-  initiallySelectedUsers?: {[key: string]: User };
->>>>>>> Stashed changes
 }
 
 export interface State {
@@ -101,7 +94,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
-      const users = await this.getUsers(skip + Constants.PAGING_SIZE, limit);
+      const users = await this.getUsers(this.searchText, + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState) => ({
         users: users ? [...prevState.users, ...users.result] : prevState.users,

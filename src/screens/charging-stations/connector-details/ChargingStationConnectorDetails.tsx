@@ -1,32 +1,14 @@
 import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-<<<<<<< Updated upstream
 import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
-=======
-import { Button, Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
-import React from 'react';
-import {
-  Alert,
-  Image,
-  ImageStyle,
-  RefreshControl,
-  ScrollView,
-  TouchableOpacity
-} from 'react-native';
-import Modal from 'react-native-modal';
->>>>>>> Stashed changes
 
 import { default as noPhoto, default as noPhotoActive } from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
 import I18nManager from '../../../I18n/I18nManager';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
-<<<<<<< Updated upstream
-=======
-import { ItemsListTypes } from '../../../components/list/ItemsList';
->>>>>>> Stashed changes
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
@@ -62,12 +44,6 @@ interface State {
   isPricingActive?: boolean;
   buttonDisabled?: boolean;
   refreshing?: boolean;
-<<<<<<< Updated upstream
-=======
-  selectedUser?: User;
-  openUserModal?: boolean;
-  scrollOffset?: number;
->>>>>>> Stashed changes
 }
 
 export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
@@ -108,13 +84,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     if (startTransaction) {
       this.startTransactionConfirm();
     }
-<<<<<<< Updated upstream
-=======
-    const currentUser = this.centralServerProvider.getUserInfo();
-    if (currentUser) {
-      this.setState({selectedUser : {id: currentUser.id, firstName: currentUser.firstName, name: currentUser.name }});
-    }
->>>>>>> Stashed changes
   }
 
   public getSiteImage = async (siteID: string): Promise<string> => {
@@ -702,63 +671,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     this.props.navigation.goBack();
     // Do not bubble up
     return true;
-<<<<<<< Updated upstream
-=======
-  }
-
-  private openUserModal(open: boolean) {
-    this.setState({openUserModal: open});
-  }
-
-  private onUserSelected(users: {[key: string]: User}) {
-    const keys = Object.keys(users);
-    if (users && keys.length > 0) {
-      this.setState({selectedUser: users[keys[0]]}, () => this.openUserModal(false));
-    }
-  }
-
-  private renderUserSelection(style: any, formStyle: any) {
-    const { selectedUser } = this.state;
-    const { navigation } = this.props;
-    const currentUserInfos = this.centralServerProvider.getUserInfo();
-    const userName = selectedUser ? selectedUser.firstName + ' ' + selectedUser.name : currentUserInfos.firstName + ' ' + currentUserInfos.name;
-    return (
-      <View style={style.rowContainer}>
-        <Button block={true} style={formStyle.button} onPress={ () => this.openUserModal(true) }
-        >
-          <Text style={formStyle.buttonText} uppercase={false}>{userName}</Text>
-        </Button>
-        <Modal
-          propagateSwipe={true}
-          supportedOrientations={['portrait', 'landscape']}
-          style={style.modal}
-          isVisible={this.state.openUserModal}
-          swipeDirection={'down'}
-          animationInTiming={1000}
-          animationOutTiming={1000}
-          onSwipeComplete={() => this.openUserModal(false)}
-          onBackButtonPress={() => this.openUserModal(false)}
-          onBackdropPress={() => this.openUserModal(false)}
-          hideModalContentWhileAnimating={true}
-        >
-          <View style={style.modalContent}>
-            <View style={style.modalHeader}>
-              <Icon onPress={() => this.openUserModal(false)} type='MaterialIcons' name={'expand-more'} style={[style.icon, style.downArrow]}/>
-            </View>
-            <View style={style.modalHeader}>
-              <Text>Select user</Text>
-            </View>
-            <UsersList
-              initiallySelectedUsers={{[selectedUser?.id] : selectedUser}}
-              onUserSelected={(selectedUsers) => this.onUserSelected(selectedUsers)}
-              navigation={navigation}
-              select={ItemsListTypes.SINGLE}
-              modal={true}/>
-          </View>
-        </Modal>
-      </View>
-    );
->>>>>>> Stashed changes
   }
 
   public render() {
