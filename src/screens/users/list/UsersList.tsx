@@ -20,12 +20,8 @@ import computeStyleSheet from '../../transactions/TransactionsStyles';
 export interface Props extends  BaseProps {
   select?: ItemsListTypes;
   modal?: boolean;
-<<<<<<< HEAD
   onUserSelected?: (selectedIds: {[key: string]: User }) => void;
-=======
-  onUserSelected?: (selectedIds: {[key: string] : User }) => void;
-  initiallySelectedUsers?: {[key: string] : User };
->>>>>>> 255df16 (style for user selection + initially selected user)
+  initiallySelectedUsers?: {[key: string]: User };
 }
 
 export interface State {
@@ -82,7 +78,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
     return null;
   }
 
-  public async getUserImage(id: string) {
+  public async getUserImage(id: string | number) {
     try {
       return await this.centralServerProvider.getUserImage({ID: id});
     } catch (error) {

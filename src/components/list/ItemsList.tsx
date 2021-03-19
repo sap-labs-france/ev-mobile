@@ -7,7 +7,7 @@ import ListFooterComponent from './footer/ListFooterComponent';
 
 export interface Props<T extends ListItem> extends BaseProps {
   renderItem: (item: T, selected: boolean) => Element;
-  onSelect: (selectedIds: {[key: string] : T}) => void;
+  onSelect: (selectedIds: {[key: string]: T}) => void;
   emptyTitle: string;
   manualRefresh: () => void;
   onEndReached: () => void;
@@ -17,7 +17,7 @@ export interface Props<T extends ListItem> extends BaseProps {
   count: number;
   limit: number;
   refreshing: boolean;
-  initiallySelectedItems?: {[key: string] : T };
+  initiallySelectedItems?: {[key: string]: T };
 }
 
 export enum ItemsListTypes {
@@ -30,7 +30,7 @@ interface State<T> {
   selectedItems?: {[key: string]: T};
 }
 
-export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State> {
+export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State<T>> {
 
   public constructor(props: Props<T>) {
     super(props);
@@ -39,7 +39,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
 
   public static defaultProps = {
     select: ItemsListTypes.NONE,
-    onSelect: () => {return;}
+    onSelect: () => {return; }
   }
   public state: State<T>;
   public props: Props<T>;
@@ -57,7 +57,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
 
   private onSelectItem(item: T) {
     const { selectedItems } = this.state;
-    const { select } = this.props
+    const { select } = this.props;
     const id = item.id;
     // If the item is already selected, unselect it
     if (selectedItems[id]) {
