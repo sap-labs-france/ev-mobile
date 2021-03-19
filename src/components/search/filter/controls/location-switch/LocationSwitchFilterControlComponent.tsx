@@ -8,7 +8,7 @@ import computeStyleSheet from '../FilterControlComponentStyles';
 export interface Props extends FilterControlComponentProps<boolean> {
 }
 
-interface State extends FilterControlComponentState<boolean>{
+interface State extends FilterControlComponentState<boolean> {
   switchValue?: boolean;
 }
 
@@ -36,7 +36,7 @@ export default class LocationSwitchFilterControlComponent extends FilterControlC
     const { onFilterChanged } = this.props;
     // Set Filter
     if (onFilterChanged) {
-      this.setValue(newValue, () => { onFilterChanged(this.getID(), newValue) });
+      this.setValue(newValue, () => { onFilterChanged(this.getID(), newValue); });
     }
     // Update
     this.setState({ switchValue: newValue });

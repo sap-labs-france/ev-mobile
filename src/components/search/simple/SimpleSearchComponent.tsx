@@ -9,7 +9,7 @@ import Utils from '../../../utils/Utils';
 import computeStyleSheet from './SimpleSearchComponentStyles';
 
 export interface Props extends BaseProps {
-  onChange: (search: string) => void,
+  onChange: (search: string) => void;
 }
 
 interface State {

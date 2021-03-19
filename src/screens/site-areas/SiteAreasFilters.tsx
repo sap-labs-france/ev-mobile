@@ -68,5 +68,5 @@ export default class SiteAreasFilters extends ScreenFilters {
         </FilterVisibleContainerComponent>
       </View>
     );
-  };
+  }
 }

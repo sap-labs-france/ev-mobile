@@ -32,6 +32,6 @@ const theme = (themeType: ThemeType) => {
   };
 
   return merge(currentTheme, customTheme);
-}
+};
 
 export default theme;

@@ -13,7 +13,7 @@ interface State {
 export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State> {
   private timerRefresh: ReturnType<typeof setTimeout>;
   private timerRefreshActive: boolean;
-  private refreshOngoing: boolean = false;
+  private refreshOngoing = false;
   private refreshPeriodMillis: number;
   private lastRefreshDate: Date;
 
@@ -157,5 +157,5 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
     await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
-  };
+  }
 }

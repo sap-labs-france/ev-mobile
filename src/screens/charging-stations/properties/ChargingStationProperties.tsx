@@ -95,7 +95,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
       loading: true,
       refreshing: false,
       chargingStation: null,
-    }
+    };
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
@@ -123,7 +123,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
         chargingStationProperties,
       });
     }
-  };
+  }
 
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
@@ -136,7 +136,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
         'chargers.chargerUnexpectedError', this.props.navigation);
     }
     return null;
-  };
+  }
 
   public manualRefresh = async () => {
     // Display spinner
@@ -145,14 +145,14 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
     await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
-  };
+  }
 
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack();
     // Do not bubble up
     return true;
-  };
+  }
 
   private buildChargerProperties(chargingStation: ChargingStation) {
     if (chargingStation) {
@@ -175,7 +175,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
           subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
-          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
           rightActionIcon={'menu'}
         />
         {loading ? (

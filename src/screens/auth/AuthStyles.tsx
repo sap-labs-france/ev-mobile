@@ -123,4 +123,4 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     landscape: deepmerge(commonStyles, landscapeStyles) as StyleSheet.NamedStyles<any>,
     portrait: deepmerge(commonStyles, portraitStyles) as StyleSheet.NamedStyles<any>
   });
-};
+}

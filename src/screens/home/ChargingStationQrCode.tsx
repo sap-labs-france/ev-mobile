@@ -27,7 +27,7 @@ interface State {
   activateQrCode?: boolean;
 }
 
-export default class ChargingStationQrCode extends BaseScreen<State, Props> {
+export default class ChargingStationQrCode extends BaseScreen<State, Props> {
   public state: State;
   public props: Props;
   private tenantEndpointClouds: EndpointCloud[];
@@ -36,7 +36,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
     super(props);
     this.state = {
       activateQrCode: true,
-    }
+    };
     this.tenantEndpointClouds = Utils.getEndpointCloud();
   }
 
@@ -193,10 +193,10 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('qrCode.scanChargingStationQrCodeTitle')}
-          leftAction={() => { this.close(); return true }}
+          leftAction={() => { this.close(); return true; }}
           leftActionIcon={'navigate-before'}
           hideHomeAction={true}
-          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
+          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
           rightActionIcon={'menu'}
         />
         {activateQrCode &&

@@ -1,4 +1,4 @@
-import { Buffer } from 'buffer'
+import { Buffer } from 'buffer';
 
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
@@ -6,8 +6,8 @@ import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { KeyValue } from 'types/Global';
 
-import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
+import Configuration from '../config/Configuration';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
@@ -28,7 +28,7 @@ import SecurityProvider from './SecurityProvider';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
-  private debug: boolean = false;
+  private debug = false;
   private captchaBaseUrl: string = Configuration.SCP_CAPTCHA_BASE_URL;
   private captchaSiteKey: string = Configuration.SCP_CAPTCHA_SITE_KEY;
 
@@ -42,7 +42,7 @@ export default class CentralServerProvider {
   private currency: string = null;
   private siteImages: Map<string, string> = new Map();
   private tenantLogo: string;
-  private autoLoginDisabled: boolean = false;
+  private autoLoginDisabled = false;
   private notificationManager: NotificationManager;
 
   private securityProvider: SecurityProvider = null;
@@ -55,12 +55,12 @@ export default class CentralServerProvider {
       // Debug Axios
       this.axiosInstance.interceptors.request.use(request => {
         // tslint:disable-next-line: no-console
-        console.log(new Date().toISOString() + ' - Axios - Request:', request)
+        console.log(new Date().toISOString() + ' - Axios - Request:', request);
         return request;
       });
       this.axiosInstance.interceptors.response.use(response => {
         // tslint:disable-next-line: no-console
-        console.log(new Date().toISOString() + ' - Axios - Response:', response)
+        console.log(new Date().toISOString() + ' - Axios - Response:', response);
         return response;
       });
     }
@@ -125,7 +125,7 @@ export default class CentralServerProvider {
     // Get the tenants from the storage first
     const tenants = await SecuredStorage.getTenants();
     if (!tenants) {
-      return []
+      return [];
     }
     return tenants.sort((tenant1: TenantConnection, tenant2: TenantConnection) => {
       if (tenant1.name < tenant2.name) {
@@ -664,7 +664,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getUsers(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING) : Promise<DataResult<User>> {
+  public async getUsers(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<User>> {
     this.debugMethod('getUsers');
     // Build Paging
     this.buildPaging(paging, params);

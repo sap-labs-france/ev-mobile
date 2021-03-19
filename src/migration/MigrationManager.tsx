@@ -8,7 +8,7 @@ import Utils from '../utils/Utils';
 
 export default class MigrationManager {
   private static instance: MigrationManager;
-  private currentMigrationVersion: string = '1.1';
+  private currentMigrationVersion = '1.1';
   private centralServerProvider: CentralServerProvider;
 
   private constructor() {

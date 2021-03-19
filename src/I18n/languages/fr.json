@@ -168,6 +168,21 @@
     "noUsers": "Aucun utilisateur",
     "users": "Utilisateur(s)"
   },
+  "userRoles": {
+    "admin": "Admin",
+    "basic": "Basique",
+    "superAdmin": "Super Admin",
+    "demo": "Demo",
+    "unknown": "Inconnu"
+  },
+  "userStatuses": {
+    "active": "Actif",
+    "inactive": "Inactif",
+    "locked": "Vérouillé",
+    "blocked": "Suspendu",
+    "pending": "En Attente",
+    "unknown": "Inconnu"
+  },
   "transactions": {
     "transaction": "Session",
     "transactions": "Session(s)",

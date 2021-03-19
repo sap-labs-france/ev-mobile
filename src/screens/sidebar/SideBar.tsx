@@ -55,7 +55,7 @@ export default class SideBar extends BaseScreen<Props, State> {
 
   public refresh = async () => {
     await this.getUserInfo();
-  };
+  }
 
   public async getUpdateDate() {
     const lastUpdateTime = await DeviceInfo.getLastUpdateTime();
@@ -78,7 +78,7 @@ export default class SideBar extends BaseScreen<Props, State> {
         await this.getUserImage();
       }
     );
-  };
+  }
 
   public async getUserImage() {
     const { userID } = this.state;
@@ -114,8 +114,8 @@ export default class SideBar extends BaseScreen<Props, State> {
     this.props.navigation.navigate(
       container,
       {screen}
-    )
-  };
+    );
+  }
 
   public render() {
     const style = computeStyleSheet();

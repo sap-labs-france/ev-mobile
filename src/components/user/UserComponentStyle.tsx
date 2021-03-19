@@ -11,7 +11,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     selected: {
       opacity: 0.5
     },
-    labelValue: {
+    text: {
       fontSize: '15@s',
       color: commonColor.textColor
     },
@@ -35,7 +35,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingLeft: '3@s'
     },
     left: {
-      width:'20%',
+      width: '20%',
       paddingLeft: '3%'
     },
     rowContainer: {
@@ -43,22 +43,57 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'flex-start',
       alignItems: 'center',
       width: '100%',
-      flex:0
+      flex: 0
     },
     firstName: {
-      marginRight:'7@s',
-      maxWidth:'50%'
+      marginRight: '5@s',
+      maxWidth: '50%'
     },
     name: {
-      flex:1
+      flex: 1
     },
     email: {
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      width: '100%'
+      width: '100%',
+      marginBottom: '3@s'
     },
-    avatar: {
+    status: {
+      backgroundColor: commonColor.containerBgColor,
+      borderWidth: 1,
+      margin: 0,
+      height: '21@s'
+    },
+    statusContainer: {
+      marginLeft: '7@s',
+      marginBottom: 0
+    },
+    active: {
+      borderColor: commonColor.brandSuccess,
+      color: commonColor.brandSuccess
+    },
+    statusText: {
+      fontSize: '11@s',
+      fontWeight: 'bold',
+      lineHeight: 0
+    },
+    inactive: {
+      color: commonColor.brandDanger,
+      borderColor: commonColor.brandDanger
+    },
+    pending: {
+      color: commonColor.brandWarning,
+      borderColor: commonColor.brandWarning
+    },
+    role: {
+      fontSize: '12@s'
+    },
+    roleContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      width: '100%'
     }
   });
   const portraitStyles = {};

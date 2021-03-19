@@ -92,7 +92,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
 
   public recaptchaResponseToken = (captcha: string) => {
     this.setState({ captcha });
-  };
+  }
 
   public resetPassword = async () => {
     // Check field
@@ -143,14 +143,14 @@ export default class ResetPassword extends BaseScreen<Props, State> {
         }
       }
     }
-  };
+  }
 
   public onBack = (): boolean => {
     // Back mobile button: Force navigation
     this.props.navigation.navigate('Login');
     // Do not bubble up
     return true;
-  };
+  }
 
   public render() {
     const style = computeStyleSheet();

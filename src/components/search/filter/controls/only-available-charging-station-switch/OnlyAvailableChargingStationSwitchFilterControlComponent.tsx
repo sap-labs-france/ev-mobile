@@ -9,7 +9,7 @@ import computeStyleSheet from '../FilterControlComponentStyles';
 export interface Props extends FilterControlComponentProps<ChargePointStatus> {
 }
 
-interface State extends FilterControlComponentState<ChargePointStatus>{
+interface State extends FilterControlComponentState<ChargePointStatus> {
   switchValue?: boolean;
 }
 
@@ -40,11 +40,11 @@ export default class OnlyAvailableChargingStationSwitchFilterControlComponent ex
     if (onFilterChanged) {
       if (newValue) {
         this.setValue(this.status, () => {
-          onFilterChanged(this.getID(), this.status)
+          onFilterChanged(this.getID(), this.status);
         });
       } else {
         this.clearValue(() => {
-          onFilterChanged(this.getID(), null)
+          onFilterChanged(this.getID(), null);
         });
       }
     }

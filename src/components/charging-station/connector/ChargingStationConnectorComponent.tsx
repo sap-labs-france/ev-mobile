@@ -160,7 +160,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
             (kW)
         </Text>
         </View>
-      );
+      )
 
   public render() {
     const style = computeStyleSheet();
@@ -182,7 +182,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
               },
               key: `${Utils.randomNumber()}`
             }
-          )
+          );
         }}>
         <Animatable.View animation={'flipInX'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
           <View style={style.connectorContainer}>

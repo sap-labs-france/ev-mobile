@@ -146,7 +146,7 @@ export default class SignUp extends BaseScreen<Props, State> {
 
   public recaptchaResponseToken = (captcha: string) => {
     this.setState({ captcha });
-  };
+  }
 
   public signUp = async () => {
     // Check field
@@ -200,7 +200,7 @@ export default class SignUp extends BaseScreen<Props, State> {
         }
       }
     }
-  };
+  }
 
   public onBack = (): boolean => {
     // Back mobile button: Force navigation
@@ -211,7 +211,7 @@ export default class SignUp extends BaseScreen<Props, State> {
     );
     // Do not bubble up
     return true;
-  };
+  }
 
   public render() {
     const style = computeStyleSheet();

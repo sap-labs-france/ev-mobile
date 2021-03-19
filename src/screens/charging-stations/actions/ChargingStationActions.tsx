@@ -40,7 +40,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
       spinnerClearCache: false,
       spinnerConnectors: new Map(),
       connectorsInactive: false
-    }
+    };
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
@@ -64,7 +64,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
         'chargers.chargerUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
-  };
+  }
 
   public resetHardConfirm() {
     const { chargingStation } = this.state;
@@ -100,12 +100,12 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
       this.setState({
         spinnerResetHard: false,
         spinnerResetSoft: false
-      })
+      });
     } catch (error) {
       this.setState({
         spinnerResetHard: false,
         spinnerResetSoft: false
-      })
+      });
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
         type === 'Hard' ? 'chargers.chargerRebootUnexpectedError' : 'chargers.chargerResetUnexpectedError',
@@ -123,7 +123,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
 
   public async clearCache(chargeBoxID: string) {
     try {
-      this.setState({ spinnerClearCache: true })
+      this.setState({ spinnerClearCache: true });
       // Clear Cache
       const status = await this.centralServerProvider.clearCache(chargeBoxID);
       // Check
@@ -132,9 +132,9 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
       } else {
         Message.showError(I18n.t('details.denied'));
       }
-      this.setState({ spinnerClearCache: false })
+      this.setState({ spinnerClearCache: false });
     } catch (error) {
-      this.setState({ spinnerClearCache: false })
+      this.setState({ spinnerClearCache: false });
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
         'chargers.chargerClearCacheUnexpectedError', this.props.navigation);
@@ -159,7 +159,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
       this.setState({
         spinnerConnectors,
         connectorsInactive: true
-      })
+      });
       // Unlock Connector
       const status = await this.centralServerProvider.unlockConnector(chargeBoxID, connectorID);
       // Check
@@ -172,13 +172,13 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
       this.setState({
         spinnerConnectors,
         connectorsInactive: false
-      })
+      });
     } catch (error) {
       spinnerConnectors.set(connectorID, false);
       this.setState({
         spinnerConnectors,
         connectorsInactive: false
-      })
+      });
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
         'chargers.chargerUnlockUnexpectedError', this.props.navigation);
@@ -190,7 +190,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
     this.props.navigation.goBack();
     // Do not bubble up
     return true;
-  };
+  }
 
   public refresh = async () => {
     if (this.isMounted()) {
@@ -208,7 +208,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
         }));
       }
     }
-  };
+  }
 
   // tslint:disable-next-line: cyclomatic-complexity
   public render() {
@@ -228,7 +228,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
               subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}
-              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true }}
+              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
               rightActionIcon={'menu'}
             />
             <ScrollView contentContainerStyle={style.scrollViewContainer}>

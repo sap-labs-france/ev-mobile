@@ -168,6 +168,21 @@
     "noUsers": "No users",
     "users": "Users(s)"
   },
+  "userRoles": {
+    "admin": "Admin",
+    "basic": "Basic",
+    "superAdmin": "Super Admin",
+    "demo": "Demo",
+    "unknown": "Unknown"
+  },
+  "userStatuses": {
+    "active": "active",
+    "inactive": "inactive",
+    "locked": "locked",
+    "blocked": "blocked",
+    "pending": "pending",
+    "unknown": "Unknown"
+  },
   "transactions": {
     "transaction": "Ladevorgang",
     "transactions": "Ladevorgänge",

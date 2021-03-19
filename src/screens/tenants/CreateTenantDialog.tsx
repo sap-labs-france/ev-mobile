@@ -4,8 +4,8 @@ import React from 'react';
 import { Alert, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 
-import Configuration from '../../config/Configuration';
 import computeModalStyleSheet from '../../ModalStyles';
+import Configuration from '../../config/Configuration';
 import BaseProps from '../../types/BaseProps';
 import { EndpointCloud, TenantConnection } from '../../types/Tenant';
 import SecuredStorage from '../../utils/SecuredStorage';
@@ -66,9 +66,9 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
       subdomain,
       name,
       endpoint: endpointCloud.endpoint
-    }
+    };
     if (formIsValid) {
-      const foundTenant = tenants.find((tenant) => tenant.subdomain === subdomain)
+      const foundTenant = tenants.find((tenant) => tenant.subdomain === subdomain);
       // Already exists
       if (foundTenant) {
         Alert.alert(
@@ -86,7 +86,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
         close(newTenant);
       }
     }
-  };
+  }
 
   public render() {
     const modalStyle = computeModalStyleSheet();
@@ -173,7 +173,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
               <Text style={modalStyle.modalTextButton} uppercase={false}>{I18n.t('general.create')}</Text>
             </Button>
             <Button style={[modalStyle.modalButton]} full={true} light={true}
-              onPress={() => { this.props.close() }} >
+              onPress={() => { this.props.close(); }} >
               <Text style={modalStyle.modalTextButton} uppercase={false}>{I18n.t('general.cancel')}</Text>
             </Button>
           </View>

@@ -9,7 +9,7 @@ import computeStyleSheet from '../FilterControlComponentStyles';
 export interface Props extends FilterControlComponentProps<string> {
 }
 
-interface State extends FilterControlComponentState<string>{
+interface State extends FilterControlComponentState<string> {
   switchValue?: boolean;
 }
 
@@ -48,11 +48,11 @@ export default class MyUserSwitchFilterControlComponent extends FilterControlCom
     if (onFilterChanged) {
       if (newValue) {
         this.setValue(this.userID, () => {
-          onFilterChanged(this.getID(), this.userID)
+          onFilterChanged(this.getID(), this.userID);
         });
       } else {
         this.clearValue(() => {
-          onFilterChanged(this.getID(), null)
+          onFilterChanged(this.getID(), null);
         });
       }
     }

@@ -1,6 +1,6 @@
 import deepmerge from 'deepmerge';
 import { Platform, StyleSheet } from 'react-native';
-import ResponsiveStylesSheet from 'react-native-responsive-stylesheet'
+import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';

@@ -1,4 +1,4 @@
-import { NavigationState } from '@react-navigation/native'
+import { NavigationState } from '@react-navigation/native';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
 import UserToken from 'types/UserToken';
 
