@@ -1,6 +1,7 @@
 import { Text, View } from 'native-base';
 import React from 'react';
 import { Chip } from 'react-native-paper';
+
 import BaseProps from '../../types/BaseProps';
 import User, { UserStatus } from '../../types/User';
 import Utils from '../../utils/Utils';
@@ -37,8 +38,6 @@ export default class UserComponent extends React.Component<Props, State> {
       case UserStatus.INACTIVE:
       case UserStatus.LOCKED:
         return style.inactive;
-      default:
-        return null;
     }
   }
 
