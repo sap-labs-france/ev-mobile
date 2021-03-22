@@ -261,9 +261,9 @@ function createUsersListNavigator(props: BaseProps) {
 
 function createCarsListNavigator(props: BaseProps) {
   return (
-    <UsersListStack.Navigator initialRouteName='CarsList' headerMode='none'>
-      <UsersListStack.Screen name='CarsList' component={CarsList} initialParams={props?.route?.params?.params} />
-    </UsersListStack.Navigator>
+    <CarsListStack.Navigator initialRouteName='CarsList' headerMode='none'>
+      <CarsListStack.Screen name='CarsList' component={CarsList} initialParams={props?.route?.params?.params} />
+    </CarsListStack.Navigator>
   );
 }
 

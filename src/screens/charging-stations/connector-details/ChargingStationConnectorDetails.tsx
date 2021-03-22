@@ -311,7 +311,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       // Disable the button
       this.setState({ buttonDisabled: true });
       // Start the Transaction
-      const status = await this.centralServerProvider.startTransaction(chargingStation.id, connector.connectorId, userInfo.tagIDs[0]);
+      const status = await this.centralServerProvider.startTransaction(chargingStation.id as string, connector.connectorId, userInfo.tagIDs[0]);
       // Check
       if (status && status.status === 'Accepted') {
         // Show message
@@ -352,7 +352,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       // Disable button
       this.setState({ buttonDisabled: true });
       // Stop the Transaction
-      const status = await this.centralServerProvider.stopTransaction(chargingStation.id, connector.currentTransactionID);
+      const status = await this.centralServerProvider.stopTransaction(chargingStation.id as string, connector.currentTransactionID);
       // Check
       if (status && status.status === 'Accepted') {
         Message.showSuccess(I18n.t('details.accepted'));
@@ -685,7 +685,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <Container style={style.container}>
             <HeaderComponent
               navigation={this.props.navigation}
-              title={chargingStation ? chargingStation.id : '-'}
+              title={chargingStation ? chargingStation.id as string : '-'}
               subTitle={connectorLetter ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
               leftAction={() => this.onBack()}
               leftActionIcon={'navigate-before'}
