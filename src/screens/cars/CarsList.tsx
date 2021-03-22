@@ -4,10 +4,11 @@ import i18n from 'i18n-js';
 import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
+import I18nManager from '../../I18n/I18nManager';
 import CarComponent from '../../components/car/CarComponent';
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ItemsList, { ItemsListTypes } from '../../components/list/ItemsList';
-import I18nManager from '../../I18n/I18nManager';
+import ItemsList from '../../components/list/ItemsList';
+import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
@@ -33,6 +34,7 @@ export interface Props extends BaseProps {
 export default class CarsList extends BaseAutoRefreshScreen<Props, State> {
   public props: Props;
   public state: State;
+  private searchText: string;
 
   public constructor(props: Props) {
     super(props);
@@ -55,14 +57,16 @@ export default class CarsList extends BaseAutoRefreshScreen<Props, State> {
     await super.componentDidMount();
   }
 
-  public async getCars(skip: number, limit: number): Promise<DataResult<Vehicle>> {
+  public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Vehicle>> {
     try {
       const cars = await this.centralServerProvider.getCars({
+        Search: searchText,
         WithUsers: true
         }, {skip, limit});
       if (cars.count === -1) {
         // Request nbr of records
         const carsNbrRecordsOnly = await this.centralServerProvider.getCars({
+          Search: searchText,
           WithUsers: true
         }, {skip, limit});
         // Set
@@ -91,7 +95,7 @@ export default class CarsList extends BaseAutoRefreshScreen<Props, State> {
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
-      const cars = await this.getCars(skip + Constants.PAGING_SIZE, limit);
+      const cars = await this.getCars(this.searchText, + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState) => ({
         cars: cars ? [...prevState.cars, ...cars.result] : prevState.cars,
@@ -105,7 +109,7 @@ export default class CarsList extends BaseAutoRefreshScreen<Props, State> {
     if (this.isMounted()) {
       const {skip, limit} = this.state;
       // Refresh All
-      const cars = await this.getCars(0, skip + limit);
+      const cars = await this.getCars(this.searchText, 0, skip + limit);
       const carsResult = cars ? cars.result : [];
       // Set
       this.setState({
@@ -114,6 +118,11 @@ export default class CarsList extends BaseAutoRefreshScreen<Props, State> {
         count: cars ? cars.count : 0
       });
     }
+  }
+
+  public search = async (searchText: string) => {
+    this.searchText = searchText;
+    await this.refresh();
   }
 
   public render() {
@@ -134,12 +143,15 @@ export default class CarsList extends BaseAutoRefreshScreen<Props, State> {
           }}
           rightActionIcon={'menu'}
         />
+        <SimpleSearchComponent
+          onChange={(searchText) => this.search(searchText)}
+          navigation={navigation}
+        />
         {loading ? (
           <Spinner style={style.spinner} color='grey'/>
         ) : (
           <View style={style.content}>
             <ItemsList<Vehicle>
-              select={ItemsListTypes.MULTI}
               data={cars} navigation={navigation}
               count={count} limit={limit}
               skip={skip}
