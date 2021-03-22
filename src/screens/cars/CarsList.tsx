@@ -1,14 +1,16 @@
-import {DrawerActions} from '@react-navigation/native';
+import { DrawerActions } from '@react-navigation/native';
+import I18n from 'i18n-js';
 import i18n from 'i18n-js';
-import {Container, Spinner} from 'native-base';
+import { Container, Spinner } from 'native-base';
 import React from 'react';
-import {View} from 'react-native';
+import { View } from 'react-native';
 import CarComponent from '../../components/car/CarComponent';
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ItemsList, {ItemsListTypes} from '../../components/list/ItemsList';
+import ItemsList, { ItemsListTypes } from '../../components/list/ItemsList';
+import I18nManager from '../../I18n/I18nManager';
 import BaseProps from '../../types/BaseProps';
-import {DataResult} from '../../types/DataResult';
-import {HTTPAuthError} from '../../types/HTTPError';
+import { DataResult } from '../../types/DataResult';
+import { HTTPAuthError } from '../../types/HTTPError';
 import Vehicle from '../../types/Vehicle';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
@@ -21,7 +23,7 @@ interface State {
   limit?: number;
   count?: number;
   refreshing?: boolean;
-  loading? : boolean;
+  loading?: boolean;
 }
 
 export interface Props extends BaseProps {
@@ -41,7 +43,7 @@ export default class CarsList extends BaseAutoRefreshScreen<Props, State> {
       count: 0,
       refreshing: false,
       loading: true
-    }
+    };
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
@@ -55,9 +57,18 @@ export default class CarsList extends BaseAutoRefreshScreen<Props, State> {
 
   public async getCars(skip: number, limit: number): Promise<DataResult<Vehicle>> {
     try {
-      return await this.centralServerProvider.getCars({
+      const cars = await this.centralServerProvider.getCars({
         WithUsers: true
         }, {skip, limit});
+      if (cars.count === -1) {
+        // Request nbr of records
+        const carsNbrRecordsOnly = await this.centralServerProvider.getCars({
+          WithUsers: true
+        }, {skip, limit});
+        // Set
+        cars.count = carsNbrRecordsOnly.count;
+      }
+      return cars;
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
@@ -73,7 +84,7 @@ export default class CarsList extends BaseAutoRefreshScreen<Props, State> {
     this.props.navigation.navigate('HomeNavigator');
     // Do not bubble up
     return true;
-  };
+  }
 
   public onEndScroll = async () => {
     const {count, skip, limit} = this.state;
@@ -88,19 +99,19 @@ export default class CarsList extends BaseAutoRefreshScreen<Props, State> {
         refreshing: false
       }));
     }
-  };
+  }
 
   public async refresh(): Promise<void> {
     if (this.isMounted()) {
       const {skip, limit} = this.state;
       // Refresh All
       const cars = await this.getCars(0, skip + limit);
-      const carsResult = cars ? cars.result : []
+      const carsResult = cars ? cars.result : [];
       // Set
       this.setState({
         loading: false,
         cars: carsResult,
-        count: cars.count
+        count: cars ? cars.count : 0
       });
     }
   }
@@ -113,12 +124,13 @@ export default class CarsList extends BaseAutoRefreshScreen<Props, State> {
       <Container style={style.container}>
         <HeaderComponent
           title={i18n.t('sidebar.cars')}
+          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('cars.cars')}` : null}
           navigation={this.props.navigation}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
           rightAction={() => {
             navigation.dispatch(DrawerActions.openDrawer());
-            return true
+            return true;
           }}
           rightActionIcon={'menu'}
         />
@@ -141,6 +153,6 @@ export default class CarsList extends BaseAutoRefreshScreen<Props, State> {
           </View>
         )}
       </Container>
-    )
+    );
   }
 }

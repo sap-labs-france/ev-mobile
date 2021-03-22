@@ -186,7 +186,8 @@
   },
   "cars": {
     "noCars": "Aucune voiture",
-    "carUnexpectedError": "Une erreur est survenue"
+    "carUnexpectedError": "Une erreur est survenue",
+    "cars": "Voiture(s)"
   },
   "transactions": {
     "transaction": "Session",

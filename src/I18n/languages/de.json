@@ -186,7 +186,8 @@
   },
   "cars": {
     "noCars": "No cars",
-    "carUnexpectedError": "An error occurred"
+    "carUnexpectedError": "An error occurred",
+    "cars": "Car(s)"
   },
   "transactions": {
     "transaction": "Ladevorgang",
