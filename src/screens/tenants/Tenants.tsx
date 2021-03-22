@@ -98,14 +98,17 @@ export default class Tenants extends BaseScreen<Props, State> {
                 );
               }
             },
-            { text: I18n.t('authentication.signIn'), style: 'cancel', onPress: () => {
-              navigation.navigate(
-                'Login',
-                {
-                  tenantSubDomain: newTenant.subdomain
-                }
-              );
-        } },
+            {
+              text: I18n.t('authentication.signIn'), style: 'cancel', onPress: () => {
+                navigation.navigate(
+                  'Login',
+                  {
+                    tenantSubDomain: newTenant.subdomain
+                  }
+                );
+              }
+            },
+            { text: I18n.t('general.close'), style: 'cancel' },
           ]
         );
       }
