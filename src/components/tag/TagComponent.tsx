@@ -4,10 +4,10 @@ import { Text, View } from 'react-native';
 import { Chip } from 'react-native-paper';
 import BaseProps from '../../types/BaseProps';
 import Tag from '../../types/Tag';
+import Utils from '../../utils/Utils';
 import computeStyleSheet from './TagComponentStyle';
 
 interface State {
-
 }
 
 export interface Props extends BaseProps {
@@ -26,13 +26,13 @@ export default class TagComponent extends React.Component<Props, State> {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-
   }
 
   public render() {
     const style = computeStyleSheet();
     const { tag, isAdmin, selected } = this.props;
     const active = tag?.active;
+    const userFullName = Utils.buildUserName(tag?.user);
     return (
       <View style={selected ? [style.container, style.selected] : [style.container]}>
         <View style={style.header}>
@@ -40,7 +40,7 @@ export default class TagComponent extends React.Component<Props, State> {
           {isAdmin && tag.user ?
             <View style={style.user}>
               <Text numberOfLines={1} ellipsizeMode={'tail'}
-                    style={[style.text, style.name]}>{tag.user.firstName} {tag.user.name}</Text>
+                    style={[style.text, style.name]}>{userFullName}</Text>
             </View>
             :
             null
