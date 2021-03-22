@@ -87,7 +87,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     tagInactive: {
       borderColor: commonColor.brandDanger,
       color: commonColor.brandDanger
-
     },
     tagText: {
       fontSize: '15@s',
