@@ -44,6 +44,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     active: {
       backgroundColor: commonColor.success
+    },
+    smallAvatar: {
+      fontSize: '35@s'
     }
   });
   const portraitStyles = {};

@@ -1,13 +1,15 @@
-import {Thumbnail} from 'native-base';
+import { Thumbnail } from 'native-base';
 import React from 'react';
-import {ImageStyle, Text, View} from 'react-native';
-import {Icon} from 'react-native-elements';
+import { ImageStyle, Text, View } from 'react-native';
+import { Icon } from 'react-native-elements';
+
 import BaseProps from '../../types/BaseProps';
 import Vehicle from '../../types/Vehicle';
+import Utils from '../../utils/Utils';
+import UserAvatar from '../user/avatar/UserAvatar';
 import computeStyleSheet from './CarComponentStyle';
 
 interface State {
-
 }
 
 export interface Props extends BaseProps {
@@ -27,9 +29,21 @@ export default class CarComponent extends React.Component<Props, State> {
     super.setState(state, callback);
   }
 
+  private renderNoUser(style: any) {
+    const { navigation } = this.props;
+    return (
+      <View style={style.line}>
+        <View style={style.avatar}>
+          <UserAvatar small={true} navigation={navigation}/>
+        </View>
+        <Text style={style.userName}>-</Text>
+      </View>
+    );
+  }
+
   public render() {
     const style = computeStyleSheet();
-    const {car, selected} = this.props;
+    const { car, selected, navigation } = this.props;
     const carUsers = car.carUsers ? car.carUsers : [];
     return (
       <View style={selected ? [style.container, style.selected] : style.container}>
@@ -45,38 +59,41 @@ export default class CarComponent extends React.Component<Props, State> {
         <View style={style.carContent}>
           <View style={style.carInfos}>
             <View style={style.carInfosLine}>
-              <View style={style.column}>
-                <Icon type='MaterialIcons' name='directions-car' iconStyle={style.icon}/>
-                <Text style={style.text}>{car.type}</Text>
-              </View>
-              <View style={style.column}>
-                {carUsers.length ?
-                  (carUsers.length > 1 ?
-                      <View style={style.column}>
-                        <Icon type={'MaterialIcons'} name={'people'} iconStyle={style.icon}/>
-                        <Text style={style.text}>{carUsers.length} users</Text>
+              {carUsers.length ?
+                (carUsers.length > 1 ?
+                    <View style={style.column}>
+                      <Icon type={'MaterialIcons'} name={'people'} iconStyle={style.icon}/>
+                      <Text style={style.text}>{carUsers.length} users</Text>
+                    </View>
+                    :
+                  (
+                    carUsers[0].user ?
+                      <View style={style.line}>
+                        <View style={style.avatar}>
+                          <UserAvatar small={true} user={carUsers[0].user} navigation={navigation}/>
+                        </View>
+                        <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.userName}>{Utils.buildUserName(carUsers[0].user)}</Text>
                       </View>
                       :
-                      <View style={style.column}>
-                        <Icon type={'MaterialIcons'} name={'person'} iconStyle={style.icon}/>
-                        <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.userName}>{carUsers[0].user?.firstName}</Text>
-                        <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.userName}>{carUsers[0].user?.name}</Text>
-
-                      </View>
+                      this.renderNoUser(style)
                   )
-                  :
-                  <Text style={style.text}>-</Text>
-                  }
-              </View>
+                )
+                :
+                this.renderNoUser(style)
+                }
             </View>
             <View style={style.carInfosLine}>
+              <View style={style.column}>
+                <Icon type='MaterialIcons' name='battery-full' iconStyle={style.icon}/>
+                <Text style={style.text}>{car.carCatalog?.batteryCapacityFull} kWh</Text>
+              </View>
               <View style={style.column}>
                 <View style={style.iconContainer}>
                   <Icon iconStyle={style.icon} type='MaterialIcons' name='bolt'/>
                   <Icon iconStyle={style.dcIcon} type='MaterialIcons' name='power-input'/>
                 </View>
                 {car.carCatalog?.fastChargePowerMax ?
-                  <Text style={style.text}>{car.carCatalog.fastChargePowerMax} kW</Text>
+                  <Text style={style.text}>{car?.carCatalog?.fastChargePowerMax} kW</Text>
                   :
                   <Text style={style.text}>-</Text>}
               </View>
@@ -85,15 +102,15 @@ export default class CarComponent extends React.Component<Props, State> {
                   <Icon iconStyle={style.icon} type='MaterialIcons' name='bolt'/>
                   <Text style={style.ac}>AC</Text>
                 </View>
-                <Text style={style.text}>{car.converter?.powerWatts} kW</Text>
+                <Text style={style.text}>{car?.converter?.powerWatts} kW</Text>
+                <Text style={style.text}>{car?.converter?.numberOfPhases} phase(s)</Text>
               </View>
             </View>
           </View>
-          <Thumbnail square={true} style={style.imageStyle as ImageStyle} source={{uri: car.carCatalog?.image}}/>
+          <Thumbnail square={true} style={style.imageStyle as ImageStyle} source={{uri: car?.carCatalog?.image}}/>
         </View>
         <View/>
       </View>
-
-    )
+    );
   }
 }

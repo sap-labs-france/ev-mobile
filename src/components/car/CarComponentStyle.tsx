@@ -17,9 +17,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     userName: {
-      fontSize: '10@s',
+      fontSize: '11@s',
       color: commonColor.textColor,
       textAlign: 'center'
+    },
+    avatar: {
+      marginRight: '7@s'
     },
     text: {
       color: commonColor.textColor,
@@ -48,11 +51,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     carContent: {
       flex: 1,
       flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingTop: '5@s',
-      paddingBottom: '5@s',
-      paddingLeft: '5@s',
-      paddingRight: '5@s',
+      justifyContent: 'center',
       height: '125@s',
       width: '100%',
       alignItems: 'center'
@@ -61,18 +60,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'column',
       justifyContent: 'space-around',
       width: '60%',
-      height: '100%',
+      height: '100%'
     },
     carInfosLine: {
       flexDirection: 'row',
-      justifyContent: 'space-around'
+      justifyContent: 'space-evenly',
+      alignItems: 'center',
+      width: '100%'
     },
     carName: {
       flexDirection: 'row',
       width: '75%',
       overflow: 'hidden',
-      marginRight: '5%',
-      paddingLeft: '5@s'
+      marginRight: '5%'
     },
     icon: {
       color: commonColor.textColor,
@@ -93,19 +93,28 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       overflow: 'hidden',
       backgroundColor: commonColor.listHeaderBgColor,
       alignItems: 'center',
-      padding: '5@s',
+      paddingVertical: '5@s',
+      paddingHorizontal: '7@s',
       borderBottomWidth: 1,
       justifyContent: 'space-around',
       borderBottomColor: commonColor.listBorderColor,
     },
     licensePlate: {
-      width: '25%'
+      width: '25%',
+      justifyContent: 'flex-end',
+      flexDirection: 'row'
     },
     column: {
       flexDirection: 'column',
       alignItems: 'center',
+      justifyContent: 'space-between'
+    },
+    line: {
+      flexDirection: 'row',
       justifyContent: 'center',
-      width: '50%'
+      alignItems: 'center',
+      width: '100%',
+      paddingHorizontal: '10@s'
     },
     imageStyle: {
       width: '40%',

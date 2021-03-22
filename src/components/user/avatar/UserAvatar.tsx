@@ -12,6 +12,7 @@ interface State {
 export interface Props extends BaseProps {
   user: User;
   selected: boolean;
+  small?: boolean;
 }
 
 export default class UserAvatar extends React.Component<Props, State> {
@@ -25,7 +26,7 @@ export default class UserAvatar extends React.Component<Props, State> {
   }
 
   public render() {
-    const { user, selected } = this.props;
+    const { user, selected, small } = this.props;
     const style = computeStyleSheet();
     const userName = user?.name ? user.name : '';
     const userFirstName = user?.firstName ? user.firstName : '';
@@ -33,7 +34,7 @@ export default class UserAvatar extends React.Component<Props, State> {
     return (
       <View>
         {userImageURI ?
-          <Avatar size={style.avatar.fontSize}
+          <Avatar size={small ? style.smallAvatar.fontSize : style.avatar.fontSize}
                   rounded={true}
                   source={{uri: userImageURI}}
                   titleStyle={style.avatarTitle}
@@ -41,7 +42,7 @@ export default class UserAvatar extends React.Component<Props, State> {
             {selected ? <Avatar.Accessory name={'done'} size={style.accessory.fontSize} color={style.accessory.color}/> : null}
           </Avatar>
           :
-          <Avatar size={style.avatar.fontSize}
+          <Avatar size={small ? style.smallAvatar.fontSize : style.avatar.fontSize}
                   rounded={true}
                   title={userName.charAt(0).toUpperCase() + userFirstName.charAt(0).toUpperCase()}
                   titleStyle={style.avatarTitle}
