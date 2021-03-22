@@ -5,8 +5,8 @@ import { Chip } from 'react-native-paper';
 import BaseProps from '../../types/BaseProps';
 import User, { UserStatus } from '../../types/User';
 import Utils from '../../utils/Utils';
-import UserAvatar from './avatar/UserAvatar';
 import computeStyleSheet from './UserComponentStyle';
+import UserAvatar from './avatar/UserAvatar';
 
 export interface Props extends BaseProps {
   user: User;
@@ -44,7 +44,7 @@ export default class UserComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { user, selected, navigation } = this.props;
-    const userFullName = Utils.buildUserName(user);``
+    const userFullName = Utils.buildUserName(user);
     const userRole =  user ?  user.role : '';
     const userStatus = user ? user.status : '';
     const statusStyle = this.computeStatusStyle(userStatus, style);
