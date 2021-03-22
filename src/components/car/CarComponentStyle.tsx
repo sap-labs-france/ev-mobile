@@ -22,7 +22,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       textAlign: 'center'
     },
     avatar: {
-      marginRight: '7@s'
+      marginRight: '7@s',
+      flexDirection: 'row',
+      justifyContent: 'flex-end'
     },
     text: {
       color: commonColor.textColor,
@@ -60,13 +62,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'column',
       justifyContent: 'space-around',
       width: '60%',
-      height: '100%'
+      height: '100%',
     },
     carInfosLine: {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
       alignItems: 'center',
-      width: '100%'
+      width: '100%',
     },
     carName: {
       flexDirection: 'row',
@@ -113,14 +115,18 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      width: '100%',
-      paddingHorizontal: '10@s'
+      width: '80%',
+      paddingHorizontal: '5@s'
     },
     imageStyle: {
       width: '40%',
       height: '100%',
       margin: 0,
       padding: 0
+    },
+    userNameContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start'
     }
   });
   const portraitStyles = {};
