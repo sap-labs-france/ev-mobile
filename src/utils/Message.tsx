@@ -30,7 +30,7 @@ export default class Message {
       duration: Toast.durations.LONG,
       opacity: 1,
       position: Toast.positions.TOP + (Platform.OS === 'ios' ? 20 : 0),
-      textColor: commonColor.inverseTextColor,
+      textColor: '#FFF',
       textStyle: {
         fontSize: scale(15),
         textAlign: 'center',
