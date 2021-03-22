@@ -1,12 +1,11 @@
 import { Text, View } from 'native-base';
 import React from 'react';
 import { Chip } from 'react-native-paper';
-
 import BaseProps from '../../types/BaseProps';
 import User, { UserStatus } from '../../types/User';
 import Utils from '../../utils/Utils';
-import UserAvatar from './avatar/UserAvatar';
 import computeStyleSheet from './UserComponentStyle';
+import UserAvatar from './avatar/UserAvatar';
 
 export interface Props extends BaseProps {
   user: User;

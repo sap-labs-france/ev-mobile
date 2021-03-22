@@ -36,7 +36,7 @@ export default class TagComponent extends React.Component<Props, State> {
     return (
       <View style={selected ? [style.container, style.selected] : [style.container]}>
         <View style={style.header}>
-          <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.id]}>{tag.id}</Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.id]}>{tag?.id}</Text>
           {isAdmin && tag.user ?
             <View style={style.user}>
               <Text numberOfLines={1} ellipsizeMode={'tail'}
@@ -48,7 +48,7 @@ export default class TagComponent extends React.Component<Props, State> {
         </View>
         <View style={style.tagContent}>
           <View style={style.label}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.description]}>{tag.description}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.description]}>{tag?.description}</Text>
           </View>
           <View style={style.status}>
             <Chip mode={'outlined'} style={[style.tag, active ? style.tagActive : style.tagInactive]} textStyle={[style.tagText, active ? style.tagActive : style.tagInactive]}>{I18n.t(active ? 'tags.active' : 'tags.inactive')}</Chip>

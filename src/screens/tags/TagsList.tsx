@@ -1,12 +1,11 @@
 import { DrawerActions } from '@react-navigation/native';
-import I18n from 'i18n-js';
 import i18n from 'i18n-js';
 import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 import I18nManager from '../../I18n/I18nManager';
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ItemsList, { ItemsListTypes } from '../../components/list/ItemsList';
+import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import TagComponent from '../../components/tag/TagComponent';
 import BaseProps from '../../types/BaseProps';
@@ -27,7 +26,7 @@ interface State {
   limit?: number;
   count?: number;
   refreshing?: boolean;
-  loading? : boolean;
+  loading?: boolean;
 }
 
 export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
@@ -44,7 +43,7 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
       count: 0,
       refreshing: false,
       loading: true
-    }
+    };
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
@@ -81,7 +80,7 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
     this.props.navigation.navigate('HomeNavigator');
     // Do not bubble up
     return true;
-  };
+  }
 
   public onEndScroll = async () => {
     const {count, skip, limit} = this.state;
@@ -96,7 +95,7 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
         refreshing: false
       }));
     }
-  };
+  }
 
   public async refresh(): Promise<void> {
     if (this.isMounted()) {
@@ -125,13 +124,13 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
       <Container style={style.container}>
         <HeaderComponent
           title={i18n.t('sidebar.badges')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('tags.tags')}` : null}
+          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${i18n.t('tags.tags')}` : null}
           navigation={this.props.navigation}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
           rightAction={() => {
             navigation.dispatch(DrawerActions.openDrawer());
-            return true
+            return true;
           }}
           rightActionIcon={'menu'}
         />
@@ -157,6 +156,6 @@ export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
           </View>
         )}
       </Container>
-    )
+    );
   }
 }
