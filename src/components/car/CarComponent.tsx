@@ -2,7 +2,7 @@ import { Icon, Thumbnail } from 'native-base';
 import React from 'react';
 import { ImageStyle, Text, View } from 'react-native';
 import BaseProps from '../../types/BaseProps';
-import Vehicle from '../../types/Vehicle';
+import Car from '../../types/Car';
 import Utils from '../../utils/Utils';
 import UserAvatar from '../user/avatar/UserAvatar';
 import computeStyleSheet from './CarComponentStyle';
@@ -11,7 +11,7 @@ interface State {
 }
 
 export interface Props extends BaseProps {
-  car: Vehicle;
+  car: Car;
   selected: boolean;
 }
 

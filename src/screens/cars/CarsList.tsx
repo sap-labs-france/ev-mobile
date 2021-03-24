@@ -12,14 +12,14 @@ import SimpleSearchComponent from '../../components/search/simple/SimpleSearchCo
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
-import Vehicle from '../../types/Vehicle';
+import Car from '../../types/Car';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../transactions/TransactionsStyles';
 
 interface State {
-  cars?: Vehicle[];
+  cars?: Car[];
   skip?: number;
   limit?: number;
   count?: number;
@@ -57,7 +57,7 @@ export default class CarsList extends BaseAutoRefreshScreen<Props, State> {
     await super.componentDidMount();
   }
 
-  public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Vehicle>> {
+  public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {
     try {
       const cars = await this.centralServerProvider.getCars({
         Search: searchText,
@@ -151,11 +151,11 @@ export default class CarsList extends BaseAutoRefreshScreen<Props, State> {
           <Spinner style={style.spinner} color='grey'/>
         ) : (
           <View style={style.content}>
-            <ItemsList<Vehicle>
+            <ItemsList<Car>
               data={cars} navigation={navigation}
               count={count} limit={limit}
               skip={skip}
-              renderItem={(item: Vehicle, selected: boolean) => (
+              renderItem={(item: Car, selected: boolean) => (
                 <CarComponent navigation={navigation} selected={selected} car={item}/>)}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}

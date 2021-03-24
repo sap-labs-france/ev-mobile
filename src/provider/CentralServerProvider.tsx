@@ -25,7 +25,7 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
-import Vehicle from '../types/Vehicle';
+import Car from '../types/Car';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
@@ -666,7 +666,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getCars(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Vehicle>> {
+  public async getCars(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Car>> {
     this.debugMethod('getCars');
     // Build Paging
     this.buildPaging(paging, params);

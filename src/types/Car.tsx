@@ -2,7 +2,7 @@ import CreatedUpdatedProps from './CreatedUpdatedProps';
 import ListItem from './ListItem';
 import User from './User';
 
-export default interface Vehicle extends CreatedUpdatedProps, ListItem {
+export default interface Car extends CreatedUpdatedProps, ListItem {
   vin: string;
   licensePlate: string;
   carCatalog?: CarCatalog;
