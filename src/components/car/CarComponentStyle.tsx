@@ -29,7 +29,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     text: {
       color: commonColor.textColor,
-      fontSize: '15@s'
+      fontSize: '12@s'
     },
     ac: {
       fontSize: '10@s',
@@ -47,8 +47,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     check: {
       fontSize: '50@s',
       alignSelf: 'center',
-      top:0,
-      left:0,
+      top: 0,
+      left: 0,
       position: 'absolute'
     },
     carContent: {
