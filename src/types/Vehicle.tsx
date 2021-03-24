@@ -18,6 +18,7 @@ export interface CarCatalog {
   vehicleModelVersion?: string;
   image?: string;
   fastChargePowerMax?: number;
+  batteryCapacityFull?: number;
 }
 
 export interface CarConverter {
