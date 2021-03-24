@@ -17,9 +17,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     userName: {
-      fontSize: '11@s',
+      fontSize: '12@s',
       color: commonColor.textColor,
-      textAlign: 'center'
+      textAlign: 'center',
+      marginBottom: '2@s'
     },
     avatar: {
       marginRight: '7@s',
@@ -54,7 +55,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'center',
-      height: '125@s',
+      height: '100@s',
       width: '100%',
       alignItems: 'center'
     },
@@ -63,6 +64,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'space-around',
       width: '60%',
       height: '100%',
+      paddingVertical: '5@s'
     },
     carInfosLine: {
       flexDirection: 'row',
@@ -82,7 +84,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     dcIcon: {
       color: commonColor.textColor,
-      fontSize: '15@s'
+      fontSize: '12@s'
     },
     iconContainer: {
       flexDirection: 'row',
