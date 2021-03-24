@@ -24,7 +24,7 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public async notifyFilterChanged() {
     const { onFilterChanged } = this.props;
@@ -40,7 +40,7 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
     onFilterChanged(this.getFilters(), true);
     // Close
     this.setVisible(false);
-  }
+  };
 
   public clearFiltersAndNotify = async () => {
     const { onFilterChanged } = this.props;
@@ -52,7 +52,7 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
     onFilterChanged(this.getFilters(), true);
     // Close
     this.setVisible(false);
-  }
+  };
 
   public render = () => {
     const style = computeStyleSheet();
@@ -67,15 +67,15 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
             {this.props.children}
           </View>
           <View style={style.modalButtonsContainer}>
-            <Button style={style.modalButton} full={true} light={true} onPress={this.applyFiltersAndNotify} >
+            <Button style={style.modalButton} full light onPress={this.applyFiltersAndNotify} >
               <Text style={style.modalTextButton}>{I18n.t('general.apply')}</Text>
             </Button>
-            <Button style={style.modalButton} full={true} danger={true} onPress={this.clearFiltersAndNotify} >
+            <Button style={style.modalButton} full danger onPress={this.clearFiltersAndNotify} >
               <Text style={style.modalTextButton}>{I18n.t('general.clear')}</Text>
             </Button>
           </View>
         </View>
       </Modal>
     );
-  }
+  };
 }

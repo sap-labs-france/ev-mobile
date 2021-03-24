@@ -62,7 +62,7 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public canBeSaved() {
     return true;
@@ -81,14 +81,18 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
     if (onFilterChanged) {
       if (connectorFilters.length) {
         const filterValue = connectorFilters.join('|');
-        this.setValue(filterValue, () => { onFilterChanged(this.getID(), filterValue); } );
+        this.setValue(filterValue, () => {
+          onFilterChanged(this.getID(), filterValue);
+        } );
       } else {
-        this.clearValue(() => { onFilterChanged(this.getID(), null); });
+        this.clearValue(() => {
+          onFilterChanged(this.getID(), null);
+        });
       }
     }
     // Update
     this.forceUpdate();
-  }
+  };
 
   public render = () => {
     const internalStyle = computeStyleSheet();
@@ -113,5 +117,5 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
         </View>
       </View>
     );
-  }
+  };
 }

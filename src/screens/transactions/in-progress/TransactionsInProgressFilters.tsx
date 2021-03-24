@@ -33,7 +33,7 @@ export default class TransactionsInProgressFilters extends ScreenFilters {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public onFilterChanged = (newFilters: TransactionsInProgressFiltersDef, applyFilters: boolean) => {
     const { onFilterChanged } = this.props;
@@ -46,7 +46,7 @@ export default class TransactionsInProgressFilters extends ScreenFilters {
         filters: { ...this.state.filters, ...newFilters }
       });
     }
-  }
+  };
 
   public render = () => {
     const { initialFilters } = this.props;
@@ -64,14 +64,14 @@ export default class TransactionsInProgressFilters extends ScreenFilters {
               internalFilterID={GlobalFilters.MY_USER_FILTER}
               initialValue={filters.hasOwnProperty('userID') ? filters.userID : initialFilters.userID}
               label={I18n.t('general.onlyMyTransactions')}
-              onFilterChanged={(id: string, value: string) =>
+              onFilterChanged={async (id: string, value: string) =>
                 this.getFilterVisibleContainerComponent().setFilter(id, value)}
-              ref={(myUserSwitchFilterControlComponent: MyUserSwitchFilterControlComponent) =>
+              ref={async (myUserSwitchFilterControlComponent: MyUserSwitchFilterControlComponent) =>
                 this.addVisibleFilter(myUserSwitchFilterControlComponent)}
             />
           </FilterVisibleContainerComponent>
         }
       </View>
     );
-  }
+  };
 }

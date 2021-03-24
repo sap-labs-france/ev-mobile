@@ -40,14 +40,13 @@ export default class DeepLinkingManager {
         Linking.openURL(url);
       }
     }).catch((err) => {
-      // tslint:disable-next-line: no-console
       console.error('An error occurred', err);
     });
   }
 
   private addResetPasswordRoute = () => {
     // Add Route
-    DeepLinking.addRoute('/resetPassword/:tenant/:hash', async (response: { tenant: string, hash: string }) => {
+    DeepLinking.addRoute('/resetPassword/:tenant/:hash', async (response: { tenant: string; hash: string }) => {
       // Check params
       if (!response.tenant) {
         Message.showError(I18n.t('authentication.mandatoryTenant'));
@@ -71,12 +70,12 @@ export default class DeepLinkingManager {
         })
       );
     });
-  }
+  };
 
   private addVerifyAccountRoute = () => {
     // Add Route
     DeepLinking.addRoute('/verifyAccount/:tenant/:email/:token/:resetToken',
-      async (response: { tenant: string, email: string, token: string, resetToken: string }) => {
+      async (response: { tenant: string; email: string; token: string; resetToken: string }) => {
         // Check params
         if (!response.tenant) {
           Message.showError(I18n.t('authentication.mandatoryTenant'));
@@ -126,29 +125,29 @@ export default class DeepLinkingManager {
           if (error.request) {
             // Show error
             switch (error.request.status) {
-              // Account already active
-              case HTTPError.USER_ACCOUNT_ALREADY_ACTIVE_ERROR:
-                Message.showError(I18n.t('authentication.accountAlreadyActive'));
-                break;
+            // Account already active
+            case HTTPError.USER_ACCOUNT_ALREADY_ACTIVE_ERROR:
+              Message.showError(I18n.t('authentication.accountAlreadyActive'));
+              break;
               // VerificationToken no longer valid
-              case HTTPError.INVALID_TOKEN_ERROR:
-                Message.showError(I18n.t('authentication.activationTokenNotValid'));
-                break;
+            case HTTPError.INVALID_TOKEN_ERROR:
+              Message.showError(I18n.t('authentication.activationTokenNotValid'));
+              break;
               // Email does not exist
-              case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
-                Message.showError(I18n.t('authentication.activationEmailNotValid'));
-                break;
+            case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
+              Message.showError(I18n.t('authentication.activationEmailNotValid'));
+              break;
               // Other common Error
-              default:
-                Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-                  'authentication.activationUnexpectedError');
+            default:
+              Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+                'authentication.activationUnexpectedError');
             }
           } else {
             Message.showError(I18n.t('authentication.activationUnexpectedError'));
           }
         }
       });
-  }
+  };
 
   public startListening() {
     Linking.addEventListener('url', this.handleUrl);
@@ -164,5 +163,5 @@ export default class DeepLinkingManager {
         DeepLinking.evaluateUrl(url);
       }
     });
-  }
+  };
 }

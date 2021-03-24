@@ -31,7 +31,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public showHeartbeatStatus = () => {
     const { chargingStation } = this.props;
@@ -43,7 +43,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
       });
     }
     Alert.alert(I18n.t('chargers.heartBeat'), message, [{ text: I18n.t('general.ok') }]);
-  }
+  };
 
   public render() {
     const style = computeStyleSheet();
@@ -65,7 +65,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
           </View>
           <View style={style.buttonContainer}>
             {(isAdmin || isSiteAdmin) &&
-              <Button transparent={true} style={style.button}
+              <Button transparent style={style.button}
                 onPress={() => {
                   if (onNavigate) {
                     onNavigate();
@@ -83,7 +83,9 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
                 <Icon style={[style.icon, style.iconRight, style.iconSettings]} type='MaterialIcons' name='tune' />
               </Button>
             }
-            <Button transparent={true} style={[style.button, style.buttonRight]} onPress={() => { this.showHeartbeatStatus(); }}>
+            <Button transparent style={[style.button, style.buttonRight]} onPress={() => {
+              this.showHeartbeatStatus();
+            }}>
               {chargingStation.inactive ?
                 <Animatable.Text animation='fadeIn' easing='ease-in-out' iterationCount='infinite' direction='alternate-reverse'>
                   <Icon style={style.deadHeartbeatIcon} type='FontAwesome' name='heartbeat' />

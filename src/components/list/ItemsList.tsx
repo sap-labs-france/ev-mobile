@@ -43,7 +43,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props<T>>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   private onSelectItem(item: T) {
     const { selectedIds } = this.state;
@@ -56,12 +56,12 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
       // Else, add the item to the selected Ids
     } else {
       switch (this.props.select) {
-        case ItemsListTypes.MULTI:
-          this.setState({...this.state, selectedIds: new Set(selectedIds).add(item.id)});
-          break;
-        case ItemsListTypes.SINGLE:
-          this.setState({...this.state, selectedIds: new Set().add(id)});
-          break;
+      case ItemsListTypes.MULTI:
+        this.setState({...this.state, selectedIds: new Set(selectedIds).add(item.id)});
+        break;
+      case ItemsListTypes.SINGLE:
+        this.setState({...this.state, selectedIds: new Set().add(id)});
+        break;
       }
     }
   }
@@ -91,10 +91,10 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
         onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
         refreshControl={<RefreshControl onRefresh={manualRefresh} refreshing={refreshing}/>}
         ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip}
-                                                        count={count} limit={limit}/>}
+          count={count} limit={limit}/>}
         onEndReached={onEndReached}
         ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation}
-                                                          text={emptyTitle}/>}
+          text={emptyTitle}/>}
       />
     );
   }

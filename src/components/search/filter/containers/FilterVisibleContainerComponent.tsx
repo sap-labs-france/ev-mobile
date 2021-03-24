@@ -33,7 +33,7 @@ export default class FilterVisibleContainerComponent extends FilterContainerComp
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   private toggleExpanded = () => {
     const { onExpand } = this.props;
@@ -44,7 +44,7 @@ export default class FilterVisibleContainerComponent extends FilterContainerComp
         onExpand(this.state.expanded);
       }
     });
-  }
+  };
 
   public render = () => {
     const style = computeStyleSheet();
@@ -64,5 +64,5 @@ export default class FilterVisibleContainerComponent extends FilterContainerComp
         }
       </View>
     );
-  }
+  };
 }

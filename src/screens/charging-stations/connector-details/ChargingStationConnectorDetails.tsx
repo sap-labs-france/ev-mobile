@@ -76,7 +76,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public async componentDidMount() {
     await super.componentDidMount();
@@ -97,7 +97,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         'sites.siteUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
-  }
+  };
 
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
@@ -110,7 +110,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         'chargers.chargerUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
-  }
+  };
 
   public getTransaction = async (transactionID: number): Promise<Transaction> => {
     try {
@@ -125,7 +125,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       }
     }
     return null;
-  }
+  };
 
   public getLastTransaction = async (chargeBoxID: string, connectorId: number): Promise<Transaction> => {
     try {
@@ -140,7 +140,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       }
     }
     return null;
-  }
+  };
 
   public getUserImage = async (user: User): Promise<string> => {
     try {
@@ -154,7 +154,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         'users.userUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
-  }
+  };
 
   public showLastTransaction = async () => {
     const { navigation } = this.props;
@@ -174,7 +174,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     } else {
       Alert.alert(I18n.t('chargers.noSession'), I18n.t('chargers.noSessionMessage'));
     }
-  }
+  };
 
   public showReportError = async () => {
     const { navigation } = this.props;
@@ -192,7 +192,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         key: `${Utils.randomNumber()}`
       }
     );
-  }
+  };
 
   // tslint:disable-next-line: cyclomatic-complexity
   public refresh = async () => {
@@ -241,7 +241,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       ...durationInfos,
       loading: false
     });
-  }
+  };
 
   public canStopTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
@@ -252,7 +252,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return securityProvider.canStopTransaction(chargingStation.siteArea, connector.currentTagID);
     }
     return false;
-  }
+  };
 
   public canStartTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
@@ -263,7 +263,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return securityProvider.canStartTransaction(chargingStation.siteArea);
     }
     return false;
-  }
+  };
 
   public canDisplayTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
@@ -274,7 +274,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return securityProvider.canReadTransaction(chargingStation.siteArea, connector.currentTagID);
     }
     return false;
-  }
+  };
 
   public manualRefresh = async () => {
     // Display spinner
@@ -283,15 +283,15 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
-  }
+  };
 
   public startTransactionConfirm = () => {
     const { chargingStation } = this.state;
     Alert.alert(I18n.t('details.startTransaction'), I18n.t('details.startTransactionMessage', { chargeBoxID: chargingStation.id }), [
-      { text: I18n.t('general.yes'), onPress: () => this.startTransaction() },
+      { text: I18n.t('general.yes'), onPress: async () => this.startTransaction() },
       { text: I18n.t('general.no') }
     ]);
-  }
+  };
 
   public startTransaction = async () => {
     const { chargingStation, connector } = this.state;
@@ -335,16 +335,16 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
         'transactions.transactionStartUnexpectedError', this.props.navigation, this.refresh);
     }
-  }
+  };
 
   public stopTransactionConfirm = async () => {
     const { chargingStation } = this.state;
     // Confirm
     Alert.alert(I18n.t('details.stopTransaction'), I18n.t('details.stopTransactionMessage', { chargeBoxID: chargingStation.id }), [
-      { text: I18n.t('general.yes'), onPress: () => this.stopTransaction() },
+      { text: I18n.t('general.yes'), onPress: async () => this.stopTransaction() },
       { text: I18n.t('general.no') }
     ]);
-  }
+  };
 
   public stopTransaction = async () => {
     const { chargingStation, connector } = this.state;
@@ -364,9 +364,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
         'transactions.transactionStopUnexpectedError', this.props.navigation, this.refresh);
     }
-  }
+  };
 
-  public getStartStopTransactionButtonStatus(connector: Connector): { buttonDisabled?: boolean; startTransactionNbTrial?: number; } {
+  public getStartStopTransactionButtonStatus(connector: Connector): { buttonDisabled?: boolean; startTransactionNbTrial?: number } {
     const { startTransactionNbTrial } = this.state;
     // Check if the Start/Stop Button should stay disabled
     if (connector &&
@@ -400,7 +400,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return {};
   }
 
-  public getDurationInfos = (transaction: Transaction, connector: Connector): { totalInactivitySecs?: number; elapsedTimeFormatted?: string; inactivityFormatted?: string; } => {
+  public getDurationInfos = (transaction: Transaction, connector: Connector): { totalInactivitySecs?: number; elapsedTimeFormatted?: string; inactivityFormatted?: string } => {
     // Transaction loaded?
     if (transaction) {
       let elapsedTimeFormatted = Constants.DEFAULT_DURATION;
@@ -447,7 +447,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return {
       elapsedTimeFormatted: Constants.DEFAULT_DURATION
     };
-  }
+  };
 
   public renderConnectorStatus = (style: any) => {
     const { chargingStation, connector, isAdmin, isSiteAdmin } = this.state;
@@ -459,7 +459,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         )}
       </View>
     );
-  }
+  };
 
   public renderUserInfo = (style: any) => {
     const { userImage, transaction, isAdmin, isSiteAdmin } = this.state;
@@ -472,12 +472,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         {(isAdmin || isSiteAdmin) && <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text>}
       </View>
     ) : (
-        <View style={style.columnContainer}>
-          <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
-          <Text style={[style.label, style.disabled]}>-</Text>
-        </View>
-      );
-  }
+      <View style={style.columnContainer}>
+        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
+        <Text style={[style.label, style.disabled]}>-</Text>
+      </View>
+    );
+  };
 
   public renderPrice = (style: any) => {
     const { transaction, connector } = this.state;
@@ -492,12 +492,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         <Text style={[style.subLabel, style.info]}>({transaction.stop ? transaction.stop.priceUnit : transaction.priceUnit})</Text>
       </View>
     ) : (
-        <View style={style.columnContainer}>
-          <Icon type='FontAwesome' name='money' style={[style.icon, style.disabled]} />
-          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
-        </View>
-      );
-  }
+      <View style={style.columnContainer}>
+        <Icon type='FontAwesome' name='money' style={[style.icon, style.disabled]} />
+        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+      </View>
+    );
+  };
 
   public renderInstantPower = (style: any) => {
     const { connector } = this.state;
@@ -510,12 +510,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.instant')} (kW)</Text>
       </View>
     ) : (
-        <View style={style.columnContainer}>
-          <Icon type='FontAwesome' name='bolt' style={[style.icon, style.disabled]} />
-          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
-        </View>
-      );
-  }
+      <View style={style.columnContainer}>
+        <Icon type='FontAwesome' name='bolt' style={[style.icon, style.disabled]} />
+        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+      </View>
+    );
+  };
 
   public renderElapsedTime = (style: any) => {
     const { elapsedTimeFormatted, connector } = this.state;
@@ -526,12 +526,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.duration')}</Text>
       </View>
     ) : (
-        <View style={style.columnContainer}>
-          <Icon type='MaterialIcons' name='timer' style={[style.icon, style.disabled]} />
-          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
-        </View>
-      );
-  }
+      <View style={style.columnContainer}>
+        <Icon type='MaterialIcons' name='timer' style={[style.icon, style.disabled]} />
+        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+      </View>
+    );
+  };
 
   public renderInactivity = (style: any) => {
     const { connector, inactivityFormatted } = this.state;
@@ -543,12 +543,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         <Text style={[style.subLabel, inactivityStyle]}>{I18n.t('details.duration')}</Text>
       </View>
     ) : (
-        <View style={style.columnContainer}>
-          <Icon type='MaterialIcons' name='timer-off' style={[style.icon, style.disabled]} />
-          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
-        </View>
-      );
-  }
+      <View style={style.columnContainer}>
+        <Icon type='MaterialIcons' name='timer-off' style={[style.icon, style.disabled]} />
+        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+      </View>
+    );
+  };
 
   public renderTotalConsumption = (style: any) => {
     const { connector } = this.state;
@@ -561,12 +561,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
     ) : (
-        <View style={style.columnContainer}>
-          <Icon style={[style.icon, style.disabled]} type='MaterialIcons' name='ev-station' />
-          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
-        </View>
-      );
-  }
+      <View style={style.columnContainer}>
+        <Icon style={[style.icon, style.disabled]} type='MaterialIcons' name='ev-station' />
+        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+      </View>
+    );
+  };
 
   public renderBatteryLevel = (style: any) => {
     const { transaction, connector } = this.state;
@@ -579,18 +579,18 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         <Text style={[style.subLabel, style.info]}>(%)</Text>
       </View>
     ) : (
-        <View style={style.columnContainer}>
-          <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.disabled]} />
-          <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
-        </View>
-      );
-  }
+      <View style={style.columnContainer}>
+        <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.disabled]} />
+        <Text style={[style.label, style.labelValue, style.disabled]}>-</Text>
+      </View>
+    );
+  };
 
   public renderShowLastTransactionButton = (style: any) => {
     const { isAdmin, isSiteAdmin, connector, canStartTransaction } = this.state;
     if ((isAdmin || isSiteAdmin) && canStartTransaction && connector && connector.currentTransactionID === 0) {
       return (
-        <TouchableOpacity style={style.lastTransactionContainer} onPress={() => this.showLastTransaction()}>
+        <TouchableOpacity style={style.lastTransactionContainer} onPress={async () => this.showLastTransaction()}>
           <View style={style.buttonLastTransaction}>
             <Icon style={style.lastTransactionIcon} type='MaterialCommunityIcons' name='history' />
           </View>
@@ -600,13 +600,13 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return (
       <View style={[style.lastTransactionContainer]} />
     );
-  }
+  };
 
   public renderReportErrorButton = (style: any) => {
     const { connector, canStartTransaction } = this.state;
     if (canStartTransaction && connector && connector.currentTransactionID === 0) {
       return (
-        <TouchableOpacity style={[style.reportErrorContainer]} onPress={() => this.showReportError()}>
+        <TouchableOpacity style={[style.reportErrorContainer]} onPress={async () => this.showReportError()}>
           <View style={style.reportErrorButton}>
             <Icon style={style.reportErrorIcon} type='MaterialIcons' name='error-outline' />
           </View>
@@ -616,7 +616,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return (
       <View style={[style.lastTransactionContainer]} />
     );
-  }
+  };
 
   public renderStartTransactionButton = (style: any) => {
     const { buttonDisabled } = this.state;
@@ -640,12 +640,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         </View>
       </TouchableOpacity>
     );
-  }
+  };
 
   public renderStopTransactionButton = (style: any) => {
     const { buttonDisabled } = this.state;
     return (
-      <TouchableOpacity onPress={() => this.stopTransactionConfirm()} disabled={buttonDisabled}>
+      <TouchableOpacity onPress={async () => this.stopTransactionConfirm()} disabled={buttonDisabled}>
         <View
           style={
             buttonDisabled
@@ -664,14 +664,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         </View>
       </TouchableOpacity>
     );
-  }
+  };
 
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack();
     // Do not bubble up
     return true;
-  }
+  };
 
   public render() {
     const { navigation } = this.props;
@@ -682,56 +682,58 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       loading ? (
         <Spinner style={style.spinner} color='grey' />
       ) : (
-          <Container style={style.container}>
-            <HeaderComponent
-              navigation={this.props.navigation}
-              title={chargingStation ? chargingStation.id : '-'}
-              subTitle={connectorLetter ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
-              leftAction={() => this.onBack()}
-              leftActionIcon={'navigate-before'}
-              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
-              rightActionIcon={'menu'}
-            />
-            {/* Site Image */}
-            <Image style={style.backgroundImage as ImageStyle} source={siteImage ? { uri: siteImage } : noSite} />
-            {/* Show Last Transaction */}
-            {this.renderShowLastTransactionButton(style)}
-            {/* Report Error */}
-            {this.renderReportErrorButton(style)}
-            {/* Start/Stop Transaction */}
-            {canStartTransaction && connector && connector.currentTransactionID === 0 ? (
-              <View style={style.transactionContainer}>
-                {this.renderStartTransactionButton(style)}
-              </View>
-            ) : canStopTransaction && connector && connector.currentTransactionID > 0 ? (
-              <View style={style.transactionContainer}>
-                {this.renderStopTransactionButton(style)}
-              </View>
-            ) : (
-                  <View style={style.noButtonStopTransaction} />
-                )}
-            {/* Details */}
-            <ScrollView contentContainerStyle={style.scrollViewContainer}
-              refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
-              <View style={style.rowContainer}>
-                {this.renderConnectorStatus(style)}
-                {this.renderUserInfo(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderInstantPower(style)}
-                {this.renderTotalConsumption(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderElapsedTime(style)}
-                {this.renderInactivity(style)}
-              </View>
-              <View style={style.rowContainer}>
-                {this.renderBatteryLevel(style)}
-                {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
-              </View>
-            </ScrollView>
-          </Container>
-        )
+        <Container style={style.container}>
+          <HeaderComponent
+            navigation={this.props.navigation}
+            title={chargingStation ? chargingStation.id : '-'}
+            subTitle={connectorLetter ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
+            leftAction={() => this.onBack()}
+            leftActionIcon={'navigate-before'}
+            rightAction={() => {
+              navigation.dispatch(DrawerActions.openDrawer()); return true;
+            }}
+            rightActionIcon={'menu'}
+          />
+          {/* Site Image */}
+          <Image style={style.backgroundImage as ImageStyle} source={siteImage ? { uri: siteImage } : noSite} />
+          {/* Show Last Transaction */}
+          {this.renderShowLastTransactionButton(style)}
+          {/* Report Error */}
+          {this.renderReportErrorButton(style)}
+          {/* Start/Stop Transaction */}
+          {canStartTransaction && connector && connector.currentTransactionID === 0 ? (
+            <View style={style.transactionContainer}>
+              {this.renderStartTransactionButton(style)}
+            </View>
+          ) : canStopTransaction && connector && connector.currentTransactionID > 0 ? (
+            <View style={style.transactionContainer}>
+              {this.renderStopTransactionButton(style)}
+            </View>
+          ) : (
+            <View style={style.noButtonStopTransaction} />
+          )}
+          {/* Details */}
+          <ScrollView contentContainerStyle={style.scrollViewContainer}
+            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
+            <View style={style.rowContainer}>
+              {this.renderConnectorStatus(style)}
+              {this.renderUserInfo(style)}
+            </View>
+            <View style={style.rowContainer}>
+              {this.renderInstantPower(style)}
+              {this.renderTotalConsumption(style)}
+            </View>
+            <View style={style.rowContainer}>
+              {this.renderElapsedTime(style)}
+              {this.renderInactivity(style)}
+            </View>
+            <View style={style.rowContainer}>
+              {this.renderBatteryLevel(style)}
+              {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
+            </View>
+          </ScrollView>
+        </Container>
+      )
     );
   }
 }

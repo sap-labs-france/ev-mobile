@@ -44,7 +44,7 @@ export default class SideBar extends BaseScreen<Props, State> {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public async componentDidMount() {
     await super.componentDidMount();
@@ -55,7 +55,7 @@ export default class SideBar extends BaseScreen<Props, State> {
 
   public refresh = async () => {
     await this.getUserInfo();
-  }
+  };
 
   public async getUpdateDate() {
     const lastUpdateTime = await DeviceInfo.getLastUpdateTime();
@@ -78,7 +78,7 @@ export default class SideBar extends BaseScreen<Props, State> {
         await this.getUserImage();
       }
     );
-  }
+  };
 
   public async getUserImage() {
     const { userID } = this.state;
@@ -89,7 +89,7 @@ export default class SideBar extends BaseScreen<Props, State> {
       }
     } catch (error) {
       // Other common Error
-      setTimeout(() => this.refresh(), Constants.AUTO_REFRESH_ON_ERROR_PERIOD_MILLIS);
+      setTimeout(async () => this.refresh(), Constants.AUTO_REFRESH_ON_ERROR_PERIOD_MILLIS);
     }
   }
 
@@ -115,7 +115,7 @@ export default class SideBar extends BaseScreen<Props, State> {
       container,
       {screen}
     );
-  }
+  };
 
   public render() {
     const style = computeStyleSheet();
@@ -137,40 +137,40 @@ export default class SideBar extends BaseScreen<Props, State> {
             {!Utils.isNullOrEmptyString(updateDate) && (<Text style={style.versionDate}>{updateDate}</Text>)}
           </Header>
           <View style={style.linkContainer}>
-            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('HomeNavigator', 'Home')}>
+            <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('HomeNavigator', 'Home')}>
               <Icon style={style.linkIcon} type='MaterialIcons' name='home' />
               <Text style={style.linkText}>{I18n.t('sidebar.home')}</Text>
             </ListItem>
             {isComponentOrganizationActive && (
-              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('SitesNavigator', 'Sites')}>
+              <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('SitesNavigator', 'Sites')}>
                 <Icon style={style.linkIcon} type='MaterialIcons' name='store-mall-directory' />
                 <Text style={style.linkText}>{I18n.t('sidebar.sites')}</Text>
               </ListItem>
             )}
-            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('ChargingStationsNavigator', 'ChargingStations')}>
+            <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('ChargingStationsNavigator', 'ChargingStations')}>
               <Icon style={style.linkIcon} type='MaterialIcons' name='ev-station' />
               <Text style={style.linkText}>{I18n.t('sidebar.chargers')}</Text>
             </ListItem>
-            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('TransactionHistoryNavigator', 'TransactionsHistory')}>
+            <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('TransactionHistoryNavigator', 'TransactionsHistory')}>
               <Icon style={style.linkIcon} type='MaterialCommunityIcons' name='history' />
               <Text style={style.linkText}>{I18n.t('sidebar.transactionsHistory')}</Text>
             </ListItem>
-            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('TransactionInProgressNavigator', 'TransactionsInProgress')}>
+            <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('TransactionInProgressNavigator', 'TransactionsInProgress')}>
               <Icon style={style.linkIcon} type='MaterialIcons' name='play-arrow' />
               <Text style={style.linkText}>{I18n.t('sidebar.transactionsInProgress')}</Text>
             </ListItem>
-            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('StatisticsNavigator', 'Statistics')}>
+            <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('StatisticsNavigator', 'Statistics')}>
               <Icon style={style.linkIcon} type='MaterialIcons' name='assessment' />
               <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
             </ListItem>
             {this.centralServerProvider?.getSecurityProvider().canListUsers() ?
-              <ListItem style={style.links} button={true} iconLeft={true}
-                        onPress={() => this.navigateTo('UsersListNavigator', 'UsersList')}>
+              <ListItem style={style.links} button iconLeft
+                onPress={() => this.navigateTo('UsersListNavigator', 'UsersList')}>
                 <Icon style={style.linkIcon} type='MaterialIcons' name='people'/>
                 <Text style={style.linkText}>{I18n.t('sidebar.users')}</Text>
               </ListItem> : null
             }
-            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
+            <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
               <Icon style={[style.linkIcon, { color: commonColor.brandDanger }]} type='MaterialIcons' name='error-outline' />
               <Text style={[style.linkText, { color: commonColor.brandDanger }]}>{I18n.t('sidebar.reportError')}</Text>
             </ListItem>
@@ -188,9 +188,9 @@ export default class SideBar extends BaseScreen<Props, State> {
           <View style={style.logoutButton}>
             <View style={style.gridLogoutContainer}>
               <View style={style.columnAccount}>
-                <TouchableOpacity style={style.buttonLogout} onPress={() => this.logoff()}>
+                <TouchableOpacity style={style.buttonLogout} onPress={async () => this.logoff()}>
                   <Text style={style.logoutText}>{I18n.t('authentication.logOut')}</Text>
-                  <Text note={true} style={style.userName}>
+                  <Text note style={style.userName}>
                     {userName}
                   </Text>
                 </TouchableOpacity>

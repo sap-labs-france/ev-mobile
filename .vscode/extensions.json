@@ -4,8 +4,7 @@
   "recommendations": [
     "amatiasq.sort-imports",
     "codezombiech.gitignore",
-    // "dbaeumer.vscode-eslint",
-    "ms-vscode.vscode-typescript-tslint-plugin",
+    "dbaeumer.vscode-eslint",
     "eamodio.gitlens",
     "EditorConfig.EditorConfig",
     "msjsdiag.vscode-react-native",

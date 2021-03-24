@@ -34,14 +34,14 @@ export default class SitesFilters extends ScreenFilters {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public onFilterChanged = (newFilters: SitesFiltersDef) => {
     const { onFilterChanged } = this.props;
     this.setState({
       filters: { ...this.state.filters, ...newFilters }
     }, () => onFilterChanged(newFilters));
-  }
+  };
 
   public render = () => {
     const { initialFilters, locationEnabled } = this.props;
@@ -59,14 +59,14 @@ export default class SitesFilters extends ScreenFilters {
               internalFilterID={GlobalFilters.LOCATION}
               initialValue={filters.hasOwnProperty('location') ? filters.location : initialFilters.location}
               label={I18n.t('general.location')}
-              onFilterChanged={(id: string, value: boolean) =>
+              onFilterChanged={async (id: string, value: boolean) =>
                 this.getFilterVisibleContainerComponent().setFilter(id, value)}
-              ref={(locationSwitchFilterControlComponent: LocationSwitchFilterControlComponent) =>
+              ref={async (locationSwitchFilterControlComponent: LocationSwitchFilterControlComponent) =>
                 this.addVisibleFilter(locationSwitchFilterControlComponent)}
             />
           }
         </FilterVisibleContainerComponent>
       </View>
     );
-  }
+  };
 }

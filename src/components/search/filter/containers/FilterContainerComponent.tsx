@@ -32,11 +32,11 @@ export default abstract class FilterContainerComponent extends React.Component<F
 
   public setState = (state: FilterContainerComponentState | ((prevState: Readonly<FilterContainerComponentState>, props: Readonly<FilterContainerComponentProps>) => FilterContainerComponentState | Pick<FilterContainerComponentState, never>) | Pick<FilterContainerComponentState, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public setVisible = (visible: boolean) => {
     this.setState({ visible });
-  }
+  };
 
   public async notifyFilterChanged() {
     const { onFilterChanged } = this.props;
@@ -70,7 +70,7 @@ export default abstract class FilterContainerComponent extends React.Component<F
         break;
       }
     }
-  }
+  };
 
   public getFilter = (id: string): any => {
     // Search
@@ -80,7 +80,7 @@ export default abstract class FilterContainerComponent extends React.Component<F
       }
     }
     return null;
-  }
+  };
 
   public getFilters = (): any => {
     const filters: any = {};
@@ -89,7 +89,7 @@ export default abstract class FilterContainerComponent extends React.Component<F
       filters[filterControlComponent.getID()] = filterControlComponent.getValue();
     }
     return filters;
-  }
+  };
 
   public async applyFiltersAndNotify() {
     // Save

@@ -69,7 +69,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public async componentDidMount() {
     // Get initial filters
@@ -129,14 +129,14 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     }
     // Return
     return sites;
-  }
+  };
 
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.navigate('HomeNavigator');
     // Do not bubble up
     return true;
-  }
+  };
 
   public refreshCurrentRegion(sites: Site[], force = false) {
     // Set current region
@@ -169,7 +169,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         count: sites ? sites.count : 0,
       });
     }
-  }
+  };
 
   public manualRefresh = async () => {
     // Display spinner
@@ -178,7 +178,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
-  }
+  };
 
   public onEndScroll = async () => {
     const { count, skip, limit } = this.state;
@@ -193,21 +193,21 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         refreshing: false
       }));
     }
-  }
+  };
 
   public search = async (searchText: string) => {
     this.searchText = searchText;
     delete this.currentRegion;
     await this.refresh();
-  }
+  };
 
   public onMapRegionChange = (region: Region) => {
     this.currentRegion = region;
-  }
+  };
 
   public filterChanged(newFilters: SitesFiltersDef) {
     delete this.currentRegion;
-    this.setState({ filters: newFilters }, () => this.refresh());
+    this.setState({ filters: newFilters }, async () => this.refresh());
   }
 
   public toggleDisplayMap = () => {
@@ -215,14 +215,14 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     this.refreshCurrentRegion(this.state.sites, true);
     // Toggle map
     this.setState({ showMap: !this.state.showMap });
-  }
+  };
 
   public showMapSiteDetail = (site: Site) => {
     this.setState({
       visible: true,
       siteSelected: site
     });
-  }
+  };
 
   public buildModal(navigation: any, siteSelected: Site, modalStyle: any) {
     if (Platform.OS === 'ios') {
@@ -232,7 +232,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
             alwaysOpen={175}
             modalStyle={modalStyle.modalContainer}>
             <SiteComponent site={siteSelected} navigation={navigation}
-                onNavigate={() => this.setState({ visible: false })} />
+              onNavigate={() => this.setState({ visible: false })} />
           </Modalize>
         </Modal>
       );
@@ -263,7 +263,9 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           title={I18n.t('sidebar.sites')}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
-          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
+          rightAction={() => {
+            navigation.dispatch(DrawerActions.openDrawer()); return true;
+          }}
           rightActionIcon={'menu'}
           displayMap={!Utils.isEmptyArray(this.state.sites)}
           mapIsDisplayed={mapIsDisplayed}
@@ -272,55 +274,55 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         {loading ? (
           <Spinner style={style.spinner} color='grey' />
         ) : (
-            <View style={style.content}>
-              <SimpleSearchComponent
-                onChange={(searchText) => this.search(searchText)}
+          <View style={style.content}>
+            <SimpleSearchComponent
+              onChange={async (searchText) => this.search(searchText)}
+              navigation={navigation}
+            />
+            <SitesFilters
+              initialFilters={initialFilters} locationEnabled={this.locationEnabled}
+              onFilterChanged={(newFilters: SitesFiltersDef) => this.filterChanged(newFilters)}
+              ref={(sitesFilters: SitesFilters) => this.setScreenFilters(sitesFilters)}
+            />
+            {mapIsDisplayed ?
+              <View style={style.map}>
+                <MapView
+                  style={style.map}
+                  region={this.currentRegion}
+                  onRegionChange={this.onMapRegionChange}
+                >
+                  {this.state.sites.map((site: Site) => {
+                    if (Utils.containsAddressGPSCoordinates(site.address)) {
+                      return (
+                        <Marker
+                          key={site.id}
+                          coordinate={{ longitude: site.address.coordinates[0], latitude: site.address.coordinates[1] }}
+                          title={site.name}
+                          onPress={() => this.showMapSiteDetail(site)}
+                        />
+                      );
+                    }
+                    return undefined;
+                  })}
+                </MapView>
+                {siteSelected && this.buildModal(navigation, siteSelected, modalStyle)}
+              </View>
+              :
+              <ItemsList
+                skip={skip}
+                count={count}
+                onEndReached={this.onEndScroll}
+                renderItem={(site: Site ) => <SiteComponent site={site} navigation={navigation} />}
+                data={sites}
+                manualRefresh={this.manualRefresh}
+                refreshing={refreshing}
+                emptyTitle={I18n.t('sites.noSites')}
                 navigation={navigation}
+                limit={limit}
               />
-              <SitesFilters
-                initialFilters={initialFilters} locationEnabled={this.locationEnabled}
-                onFilterChanged={(newFilters: SitesFiltersDef) => this.filterChanged(newFilters)}
-                ref={(sitesFilters: SitesFilters) => this.setScreenFilters(sitesFilters)}
-              />
-              {mapIsDisplayed ?
-                <View style={style.map}>
-                  <MapView
-                    style={style.map}
-                    region={this.currentRegion}
-                    onRegionChange={this.onMapRegionChange}
-                  >
-                    {this.state.sites.map((site: Site) => {
-                      if (Utils.containsAddressGPSCoordinates(site.address)) {
-                        return (
-                          <Marker
-                            key={site.id}
-                            coordinate={{ longitude: site.address.coordinates[0], latitude: site.address.coordinates[1] }}
-                            title={site.name}
-                            onPress={() => this.showMapSiteDetail(site)}
-                          />
-                        );
-                      }
-                      return undefined;
-                    })}
-                  </MapView>
-                  {siteSelected && this.buildModal(navigation, siteSelected, modalStyle)}
-                </View>
-                :
-                <ItemsList
-                  skip={skip}
-                  count={count}
-                  onEndReached={this.onEndScroll}
-                  renderItem={(site: Site ) => <SiteComponent site={site} navigation={navigation} />}
-                  data={sites}
-                  manualRefresh={this.manualRefresh}
-                  refreshing={refreshing}
-                  emptyTitle={I18n.t('sites.noSites')}
-                  navigation={navigation}
-                  limit={limit}
-                  />
-              }
-            </View>
-          )
+            }
+          </View>
+        )
         }
       </Container>
     );

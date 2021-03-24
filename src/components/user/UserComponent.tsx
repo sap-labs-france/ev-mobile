@@ -26,18 +26,18 @@ export default class UserComponent extends React.Component<Props, State> {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   private computeStatusStyle(status: string, style: any) {
     switch (status) {
-      case UserStatus.ACTIVE:
-        return style.active;
-      case UserStatus.PENDING:
-        return style.pending;
-      case UserStatus.BLOCKED:
-      case UserStatus.INACTIVE:
-      case UserStatus.LOCKED:
-        return style.inactive;
+    case UserStatus.ACTIVE:
+      return style.active;
+    case UserStatus.PENDING:
+      return style.pending;
+    case UserStatus.BLOCKED:
+    case UserStatus.INACTIVE:
+    case UserStatus.LOCKED:
+      return style.inactive;
     }
   }
 

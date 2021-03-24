@@ -70,7 +70,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public async loadInitialFilters() {
     const centralServerProvider = await ProviderFactory.getProvider();
@@ -133,7 +133,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     this.props.navigation.navigate('HomeNavigator');
     // Do not bubble up
     return true;
-  }
+  };
 
   public async refresh ()  {
     // Component Mounted?
@@ -173,12 +173,12 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
         refreshing: false
       }));
     }
-  }
+  };
 
   public search = async (searchText: string) => {
     this.searchText = searchText;
     await this.refresh();
-  }
+  };
 
   public render = () => {
     const style = computeStyleSheet();
@@ -196,47 +196,49 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
           subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('transactions.transactions')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
-          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
+          rightAction={() => {
+            navigation.dispatch(DrawerActions.openDrawer()); return true;
+          }}
           rightActionIcon={'menu'}
           filters={filters}
         />
         <SimpleSearchComponent
-          onChange={(searchText) => this.search(searchText)}
+          onChange={async (searchText) => this.search(searchText)}
           navigation={navigation}
         />
         {loading ? (
           <Spinner style={style.spinner} color='grey' />
         ) : (
-            <View style={style.content}>
-              <TransactionsHistoryFilters
-                initialFilters={initialFilters}
-                onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
-                ref={(transactionsHistoryFilters: TransactionsHistoryFilters) =>
-                  this.setScreenFilters(transactionsHistoryFilters)}
-              />
-              <ItemsList<Transaction>
-                skip={skip}
-                count={count}
-                onEndReached={this.onEndScroll}
-                renderItem={( transaction: Transaction ) => (
-                  <TransactionHistoryComponent
-                    navigation={navigation}
-                    transaction={transaction}
-                    isAdmin={isAdmin}
-                    isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(transaction.siteID)}
-                    isPricingActive={isPricingActive}
-                  />
-                )}
-                data={transactions}
-                manualRefresh={this.manualRefresh}
-                refreshing={refreshing}
-                emptyTitle={I18n.t('transactions.noTransactionsHistory')}
-                navigation={navigation}
-                limit={limit}
-              />
-            </View>
-          )}
+          <View style={style.content}>
+            <TransactionsHistoryFilters
+              initialFilters={initialFilters}
+              onFilterChanged={(newFilters: TransactionsHistoryFiltersDef) => this.setState({ filters: newFilters }, async () => this.refresh())}
+              ref={(transactionsHistoryFilters: TransactionsHistoryFilters) =>
+                this.setScreenFilters(transactionsHistoryFilters)}
+            />
+            <ItemsList<Transaction>
+              skip={skip}
+              count={count}
+              onEndReached={this.onEndScroll}
+              renderItem={( transaction: Transaction ) => (
+                <TransactionHistoryComponent
+                  navigation={navigation}
+                  transaction={transaction}
+                  isAdmin={isAdmin}
+                  isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(transaction.siteID)}
+                  isPricingActive={isPricingActive}
+                />
+              )}
+              data={transactions}
+              manualRefresh={this.manualRefresh}
+              refreshing={refreshing}
+              emptyTitle={I18n.t('transactions.noTransactionsHistory')}
+              navigation={navigation}
+              limit={limit}
+            />
+          </View>
+        )}
       </Container>
     );
-  }
+  };
 }

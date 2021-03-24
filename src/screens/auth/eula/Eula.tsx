@@ -34,7 +34,7 @@ export default class Eula extends BaseScreen<Props, State> {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public async componentDidMount() {
     await super.componentDidMount();
@@ -61,14 +61,14 @@ export default class Eula extends BaseScreen<Props, State> {
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
         'general.eulaUnexpectedError', this.props.navigation);
     }
-  }
+  };
 
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.navigate('Login');
     // Do not bubble up
     return true;
-  }
+  };
 
   public render() {
     const style = computeStyleSheet();
@@ -78,17 +78,19 @@ export default class Eula extends BaseScreen<Props, State> {
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('authentication.eula')}
-          leftAction={() => { this.props.navigation.navigate('Login'); return true; }}
+          leftAction={() => {
+            this.props.navigation.navigate('Login'); return true;
+          }}
           leftActionIcon={'navigate-before'}
-          hideHomeAction={true}
+          hideHomeAction
         />
         {loading ? (
           <Spinner style={style.spinner} color='grey' />
         ) : (
-            <ScrollView style={style.container}>
-              <HTMLView value={eulaTextHtml} />
-            </ScrollView>
-          )}
+          <ScrollView style={style.container}>
+            <HTMLView value={eulaTextHtml} />
+          </ScrollView>
+        )}
       </Container>
     );
   }

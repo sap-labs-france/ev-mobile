@@ -36,14 +36,10 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
     { key: 'currentIPAddress', title: 'details.currentIP' },
     { key: 'ocppVersion', title: 'details.ocppVersion' },
     {
-      key: 'lastReboot', title: 'details.lastReboot', formatter: (lastReboot: Date): string => {
-        return I18nManager.formatDateTime(lastReboot);
-      },
+      key: 'lastReboot', title: 'details.lastReboot', formatter: (lastReboot: Date): string => I18nManager.formatDateTime(lastReboot),
     },
     {
-      key: 'createdOn', title: 'general.createdOn', formatter: (createdOn: Date): string => {
-        return I18nManager.formatDateTime(createdOn);
-      },
+      key: 'createdOn', title: 'general.createdOn', formatter: (createdOn: Date): string => I18nManager.formatDateTime(createdOn),
     },
     {
       key: 'capabilities', title: 'details.capabilities', formatterWithComponents: true,
@@ -100,7 +96,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public async componentDidMount() {
     // Call parent
@@ -123,7 +119,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
         chargingStationProperties,
       });
     }
-  }
+  };
 
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
@@ -136,7 +132,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
         'chargers.chargerUnexpectedError', this.props.navigation);
     }
     return null;
-  }
+  };
 
   public manualRefresh = async () => {
     // Display spinner
@@ -145,14 +141,14 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
     await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
-  }
+  };
 
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.goBack();
     // Do not bubble up
     return true;
-  }
+  };
 
   private buildChargerProperties(chargingStation: ChargingStation) {
     if (chargingStation) {
@@ -175,38 +171,40 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
           subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
-          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
+          rightAction={() => {
+            navigation.dispatch(DrawerActions.openDrawer()); return true;
+          }}
           rightActionIcon={'menu'}
         />
         {loading ? (
           <Spinner style={style.spinner} color='grey' />
         ) : (
-            <FlatList
-              data={this.displayedProperties}
-              renderItem={({ item, index }) => (
-                <View style={index % 2 ? [style.descriptionContainer, style.rowBackground] : style.descriptionContainer}>
-                  <Text style={style.label}>{I18n.t(item.title)}</Text>
-                  {item.formatter && item.value !== '-' ?
-                    item.formatterWithComponents ?
-                      <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValues}>
-                        {item.formatter(item.value)}
-                      </ScrollView>
-                      :
-                      <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
-                        <Text style={style.value}>{item.formatter(item.value)}</Text>
-                      </ScrollView>
-                    :
-                    <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
-                      <Text style={style.value}>{item.value}</Text>
+          <FlatList
+            data={this.displayedProperties}
+            renderItem={({ item, index }) => (
+              <View style={index % 2 ? [style.descriptionContainer, style.rowBackground] : style.descriptionContainer}>
+                <Text style={style.label}>{I18n.t(item.title)}</Text>
+                {item.formatter && item.value !== '-' ?
+                  item.formatterWithComponents ?
+                    <ScrollView horizontal alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValues}>
+                      {item.formatter(item.value)}
                     </ScrollView>
-                  }
-                </View>
-              )}
-              keyExtractor={(item) => `${item.key}`}
-              refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargerParameters')} />}
-            />
-          )}
+                    :
+                    <ScrollView horizontal alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
+                      <Text style={style.value}>{item.formatter(item.value)}</Text>
+                    </ScrollView>
+                  :
+                  <ScrollView horizontal alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
+                    <Text style={style.value}>{item.value}</Text>
+                  </ScrollView>
+                }
+              </View>
+            )}
+            keyExtractor={(item) => `${item.key}`}
+            refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+            ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noChargerParameters')} />}
+          />
+        )}
       </Container>
     );
   }

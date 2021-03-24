@@ -56,7 +56,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   private createTenant = async (subdomain: string, name: string, endpointCloud: EndpointCloud) => {
     const { tenants, close } = this.props;
@@ -86,23 +86,23 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
         close(newTenant);
       }
     }
-  }
+  };
 
   public render() {
     const modalStyle = computeModalStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     // Render
     return (
-      <Modal style={modalStyle.modal} isVisible={true} onBackdropPress={() => this.props.close()}>
+      <Modal style={modalStyle.modal} isVisible onBackdropPress={() => this.props.close()}>
         <View style={modalStyle.modalContainer}>
           <View style={modalStyle.modalHeaderContainer}>
             <Text style={modalStyle.modalTextHeader}>{I18n.t('authentication.createTenantTitle')}</Text>
           </View>
           <View style={modalStyle.modalContentContainer}>
             <View style={modalStyle.modalRow}>
-              <Item inlineLabel={true} style={modalStyle.modalInputGroup}>
+              <Item inlineLabel style={modalStyle.modalInputGroup}>
                 <TextInput
-                  autoFocus={true}
+                  autoFocus
                   autoCapitalize={'none'}
                   autoCorrect={false}
                   placeholder={I18n.t('authentication.tenantSubdomain')}
@@ -121,7 +121,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
                 ))}
             </View>
             <View style={modalStyle.modalRow}>
-              <Item inlineLabel={true} style={modalStyle.modalInputGroup}>
+              <Item inlineLabel style={modalStyle.modalInputGroup}>
                 <TextInput
                   placeholder={I18n.t('authentication.tenantName')}
                   placeholderTextColor={commonColor.placeholderTextColor}
@@ -140,7 +140,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
                 ))}
             </View>
             <View style={modalStyle.modalRow}>
-              <Item picker={true} inlineLabel={true} style={modalStyle.modalPickerGroup}>
+              <Item picker inlineLabel style={modalStyle.modalPickerGroup}>
                 <Picker
                   mode='dialog'
                   style={modalStyle.modalPickerField}
@@ -166,14 +166,16 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
             </View>
           </View>
           <View style={modalStyle.modalButtonsContainer}>
-            <Button style={[modalStyle.modalButton]} full={true} danger={true}
+            <Button style={[modalStyle.modalButton]} full danger
               onPress={() => {
                 this.createTenant(this.state.newTenantSubDomain, this.state.newTenantName, this.state.newTenantEndpointCloud);
               }} >
               <Text style={modalStyle.modalTextButton} uppercase={false}>{I18n.t('general.create')}</Text>
             </Button>
-            <Button style={[modalStyle.modalButton]} full={true} light={true}
-              onPress={() => { this.props.close(); }} >
+            <Button style={[modalStyle.modalButton]} full light
+              onPress={() => {
+                this.props.close();
+              }} >
               <Text style={modalStyle.modalTextButton} uppercase={false}>{I18n.t('general.cancel')}</Text>
             </Button>
           </View>

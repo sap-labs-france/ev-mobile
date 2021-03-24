@@ -53,9 +53,9 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
-  public getConnectorStyles(style: any): { container: Record<string, unknown>[], value: Record<string, unknown>[], description: Record<string, unknown>[] } {
+  public getConnectorStyles(style: any): { container: Record<string, unknown>[]; value: Record<string, unknown>[]; description: Record<string, unknown>[] } {
     const { status, connector, inactive } = this.props;
     // Get the type
     let connectorType;
@@ -79,44 +79,44 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
       description: [style.commonConnectorDescription]
     };
     switch (connectorType) {
-      // Charging
-      case ChargePointStatus.CHARGING:
-      case ChargePointStatus.OCCUPIED:
-        styleStatusName = 'charging';
-        break;
+    // Charging
+    case ChargePointStatus.CHARGING:
+    case ChargePointStatus.OCCUPIED:
+      styleStatusName = 'charging';
+      break;
       // Preparing
-      case ChargePointStatus.PREPARING:
-        styleStatusName = 'preparing';
-        break;
+    case ChargePointStatus.PREPARING:
+      styleStatusName = 'preparing';
+      break;
       // Preparing
-      case ChargePointStatus.FINISHING:
-        styleStatusName = 'finishing';
-        break;
+    case ChargePointStatus.FINISHING:
+      styleStatusName = 'finishing';
+      break;
       // Reserved
-      case ChargePointStatus.RESERVED:
-        styleStatusName = 'reserved';
-        break;
+    case ChargePointStatus.RESERVED:
+      styleStatusName = 'reserved';
+      break;
       // Faulted
-      case ChargePointStatus.FAULTED:
-        styleStatusName = 'faulted';
-        break;
+    case ChargePointStatus.FAULTED:
+      styleStatusName = 'faulted';
+      break;
       // Unavailable
-      case ChargePointStatus.UNAVAILABLE:
-        styleStatusName = 'unavailable';
-        break;
+    case ChargePointStatus.UNAVAILABLE:
+      styleStatusName = 'unavailable';
+      break;
       // Suspending EV / EVSE
-      case ChargePointStatus.SUSPENDED_EVSE:
-      case ChargePointStatus.SUSPENDED_EV:
-        styleStatusName = 'suspended';
-        break;
+    case ChargePointStatus.SUSPENDED_EVSE:
+    case ChargePointStatus.SUSPENDED_EV:
+      styleStatusName = 'suspended';
+      break;
       // Available
-      case ChargePointStatus.AVAILABLE:
-        styleStatusName = 'available';
-        break;
+    case ChargePointStatus.AVAILABLE:
+      styleStatusName = 'available';
+      break;
       // Default
-      default:
-        styleStatusName = 'unavailable';
-        break;
+    default:
+      styleStatusName = 'unavailable';
+      break;
     }
     if (styleStatusName) {
       connectorStyles.container.push(style[styleStatusName + 'Connector']);
@@ -189,17 +189,17 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
             </View>
           </View>
         ) : (
-            <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
-              <View style={connectorStyles.container}>
-                <Animated.Text
-                  style={
-                    isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
-                  }>
-                  {value}
-                </Animated.Text>
-              </View>
-            </Animated.View>
-          )}
+          <Animated.View style={isAnimated ? { transform: [{ rotate: this.rotateClockwise }] } : undefined}>
+            <View style={connectorStyles.container}>
+              <Animated.Text
+                style={
+                  isAnimated ? [...connectorStyles.value, { transform: [{ rotate: this.rotateCounterClockwise }] }] : connectorStyles.value
+                }>
+                {value}
+              </Animated.Text>
+            </View>
+          </Animated.View>
+        )}
         {connectorText && <Text style={connectorStyles.description}>{connectorText}</Text>}
       </View>
     );

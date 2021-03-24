@@ -22,16 +22,16 @@ export default class ThemeManager {
       return themeDark;
     }
     return themeLight;
-  }
+  };
 
   public getThemeDefinition = (themeType: ThemeType): ThemeDefinition => {
     switch (themeType) {
-      case ThemeType.DARK:
-        return themeDark;
-      default:
-        return themeLight;
+    case ThemeType.DARK:
+      return themeDark;
+    default:
+      return themeLight;
     }
-  }
+  };
 
   public setThemeType(themeType: ThemeType) {
     this.themeType = themeType;

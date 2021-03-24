@@ -47,7 +47,7 @@ class ReactNativeRecaptchaV3 extends PureComponent<Props> {
         originWhitelist={['*']}
         style={{ width: 0, height: 0, backgroundColor: 'transparent' }}
         startInLoadingState={false}
-        javaScriptEnabled={true}
+        javaScriptEnabled
         source={{ html: recaptchaHtmlWithKey, baseUrl: url }}
         onMessage={event => onHandleToken(event.nativeEvent.data)}
       />

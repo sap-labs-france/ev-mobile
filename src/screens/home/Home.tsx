@@ -63,7 +63,7 @@ export default class Home extends BaseScreen<Props, State> {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public onBack = (): boolean => {
     Alert.alert(
@@ -73,7 +73,7 @@ export default class Home extends BaseScreen<Props, State> {
       { cancelable: false }
     );
     return true;
-  }
+  };
 
   public navigateToTransactionInProgress = async () => {
     const { navigation } = this.props;
@@ -117,7 +117,7 @@ export default class Home extends BaseScreen<Props, State> {
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
         'transactions.transactionUnexpectedError', this.props.navigation);
     }
-  }
+  };
 
   public render = () => {
     const style = computeStyleSheet();
@@ -137,91 +137,93 @@ export default class Home extends BaseScreen<Props, State> {
             }}
           />
         ) : (
-            <Container style={style.container}>
-              <HeaderComponent
-                navigation={navigation}
-                title={I18n.t('sidebar.home')}
-                rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
-                rightActionIcon={'menu'}
-                tenantLogo={this.centralServerProvider?.getCurrentTenantLogo()}
-              />
-              <Content style={cardStyle.cards}>
-                {isComponentOrganizationActive && (
-                  <Card style={cardStyle.card}>
-                    <CardItem style={cardStyle.cardItem} button={true}
-                      onPress={() => navigation.navigate('SitesNavigator', { screen: 'Sites', key: `${Utils.randomNumber()}` })}>
-                      <Left>
-                        <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='store-mall-directory' />
-                        <Body>
-                          <Text style={cardStyle.cardText}>{I18n.t('home.browseSites')}</Text>
-                          <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.browseSitesNote')}</Text>
-                        </Body>
-                      </Left>
-                    </CardItem>
-                  </Card>
-                )}
+          <Container style={style.container}>
+            <HeaderComponent
+              navigation={navigation}
+              title={I18n.t('sidebar.home')}
+              rightAction={() => {
+                navigation.dispatch(DrawerActions.openDrawer()); return true;
+              }}
+              rightActionIcon={'menu'}
+              tenantLogo={this.centralServerProvider?.getCurrentTenantLogo()}
+            />
+            <Content style={cardStyle.cards}>
+              {isComponentOrganizationActive && (
                 <Card style={cardStyle.card}>
-                  <CardItem style={cardStyle.cardItem} button={true}
-                    onPress={() => navigation.navigate('ChargingStationsNavigator', { screen: 'ChargingStations', key: `${Utils.randomNumber()}` })}>
+                  <CardItem style={cardStyle.cardItem} button
+                    onPress={() => navigation.navigate('SitesNavigator', { screen: 'Sites', key: `${Utils.randomNumber()}` })}>
                     <Left>
-                      <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='ev-station' />
+                      <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='store-mall-directory' />
                       <Body>
-                        <Text style={cardStyle.cardText}>{I18n.t('home.browseChargers')}</Text>
-                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.browseChargersNote')}</Text>
+                        <Text style={cardStyle.cardText}>{I18n.t('home.browseSites')}</Text>
+                        <Text note style={cardStyle.cardNote}>{I18n.t('home.browseSitesNote')}</Text>
                       </Body>
                     </Left>
                   </CardItem>
                 </Card>
-                <Card style={cardStyle.card}>
-                  <CardItem style={cardStyle.cardItem} button={true} onPress={() => this.setState({ qrCodeVisible: true })}>
-                    <Left>
-                      <Icon style={cardStyle.cardIcon} type='AntDesign' name='qrcode' />
-                      <Body>
-                        <Text style={cardStyle.cardText}>{I18n.t('qrCode.browseScan&Charge')}</Text>
-                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('qrCode.browseScan&ChargeNote')}</Text>
-                      </Body>
-                    </Left>
-                  </CardItem>
-                </Card>
-                <Card style={cardStyle.card}>
-                  <CardItem style={cardStyle.cardItem} button={true}
-                    onPress={() => navigation.navigate('TransactionHistoryNavigator', { screen: 'TransactionsHistory', key: `${Utils.randomNumber()}` })}>
-                    <Left>
-                      <Icon style={cardStyle.cardIcon} type='MaterialCommunityIcons' name='history' />
-                      <Body>
-                        <Text style={cardStyle.cardText}>{I18n.t('home.browseSessions')}</Text>
-                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.browseSessionsNote')}</Text>
-                      </Body>
-                    </Left>
-                  </CardItem>
-                </Card>
-                <Card style={cardStyle.card}>
-                  <CardItem style={cardStyle.cardItem} button={true} onPress={this.navigateToTransactionInProgress}>
-                    <Left>
-                      <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='play-arrow' />
-                      <Body>
-                        <Text style={cardStyle.cardText}>{I18n.t('home.ongoingSessions')}</Text>
-                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.ongoingSessionsNote')}</Text>
-                      </Body>
-                    </Left>
-                  </CardItem>
-                </Card>
-                <Card style={cardStyle.card}>
-                  <CardItem style={cardStyle.cardItem} button={true}
-                    onPress={() => navigation.navigate('StatisticsNavigator', { key: `${Utils.randomNumber()}` })}>
-                    <Left>
-                      <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='assessment' />
-                      <Body>
-                        <Text style={cardStyle.cardText}>{I18n.t('home.browseStatistics')}</Text>
-                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.browseStatisticsNote')}</Text>
-                      </Body>
-                    </Left>
-                  </CardItem>
-                </Card>
-              </Content>
-            </Container>
-          )}
+              )}
+              <Card style={cardStyle.card}>
+                <CardItem style={cardStyle.cardItem} button
+                  onPress={() => navigation.navigate('ChargingStationsNavigator', { screen: 'ChargingStations', key: `${Utils.randomNumber()}` })}>
+                  <Left>
+                    <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='ev-station' />
+                    <Body>
+                      <Text style={cardStyle.cardText}>{I18n.t('home.browseChargers')}</Text>
+                      <Text note style={cardStyle.cardNote}>{I18n.t('home.browseChargersNote')}</Text>
+                    </Body>
+                  </Left>
+                </CardItem>
+              </Card>
+              <Card style={cardStyle.card}>
+                <CardItem style={cardStyle.cardItem} button onPress={() => this.setState({ qrCodeVisible: true })}>
+                  <Left>
+                    <Icon style={cardStyle.cardIcon} type='AntDesign' name='qrcode' />
+                    <Body>
+                      <Text style={cardStyle.cardText}>{I18n.t('qrCode.browseScan&Charge')}</Text>
+                      <Text note style={cardStyle.cardNote}>{I18n.t('qrCode.browseScan&ChargeNote')}</Text>
+                    </Body>
+                  </Left>
+                </CardItem>
+              </Card>
+              <Card style={cardStyle.card}>
+                <CardItem style={cardStyle.cardItem} button
+                  onPress={() => navigation.navigate('TransactionHistoryNavigator', { screen: 'TransactionsHistory', key: `${Utils.randomNumber()}` })}>
+                  <Left>
+                    <Icon style={cardStyle.cardIcon} type='MaterialCommunityIcons' name='history' />
+                    <Body>
+                      <Text style={cardStyle.cardText}>{I18n.t('home.browseSessions')}</Text>
+                      <Text note style={cardStyle.cardNote}>{I18n.t('home.browseSessionsNote')}</Text>
+                    </Body>
+                  </Left>
+                </CardItem>
+              </Card>
+              <Card style={cardStyle.card}>
+                <CardItem style={cardStyle.cardItem} button onPress={this.navigateToTransactionInProgress}>
+                  <Left>
+                    <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='play-arrow' />
+                    <Body>
+                      <Text style={cardStyle.cardText}>{I18n.t('home.ongoingSessions')}</Text>
+                      <Text note style={cardStyle.cardNote}>{I18n.t('home.ongoingSessionsNote')}</Text>
+                    </Body>
+                  </Left>
+                </CardItem>
+              </Card>
+              <Card style={cardStyle.card}>
+                <CardItem style={cardStyle.cardItem} button
+                  onPress={() => navigation.navigate('StatisticsNavigator', { key: `${Utils.randomNumber()}` })}>
+                  <Left>
+                    <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='assessment' />
+                    <Body>
+                      <Text style={cardStyle.cardText}>{I18n.t('home.browseStatistics')}</Text>
+                      <Text note style={cardStyle.cardNote}>{I18n.t('home.browseStatisticsNote')}</Text>
+                    </Body>
+                  </Left>
+                </CardItem>
+              </Card>
+            </Content>
+          </Container>
+        )}
       </Container>
     );
-  }
+  };
 }

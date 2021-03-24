@@ -86,7 +86,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
     this.props.navigation.navigate('HomeNavigator');
     // Do not bubble up
     return true;
-  }
+  };
 
   public onEndScroll = async () => {
     const { count, skip, limit } = this.state;
@@ -101,11 +101,11 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
         refreshing: false
       }));
     }
-  }
+  };
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public async refresh(): Promise<void> {
     if (this.isMounted()) {
@@ -128,7 +128,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
   public search = async (searchText: string) => {
     this.searchText = searchText;
     await this.refresh();
-  }
+  };
 
   public render = () => {
     const style = computeStyleSheet();
@@ -153,7 +153,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
         ) : (
           <View style={style.content}>
             <SimpleSearchComponent
-              onChange={(searchText) => this.search(searchText)}
+              onChange={async (searchText) => this.search(searchText)}
               navigation={navigation}
             />
             <ItemsList<User>
@@ -164,7 +164,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
               skip={skip}
               renderItem={(item: User, selected: boolean) => (
                 <UserComponent user={item} selected={selected}
-                               navigation={this.props.navigation}/>)}
+                  navigation={this.props.navigation}/>)}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}
               onEndReached={this.onEndScroll}
@@ -174,5 +174,5 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
         )}
       </Container>
     );
-  }
+  };
 }

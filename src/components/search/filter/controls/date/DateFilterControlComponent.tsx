@@ -35,7 +35,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public canBeSaved() {
     return true;
@@ -48,9 +48,13 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
       if (newValue) {
         this.setState({
           openDatePicker: false
-        }, () => { onFilterChanged(this.getID(), newValue); });
+        }, () => {
+          onFilterChanged(this.getID(), newValue);
+        });
       } else {
-        this.clearValue( () => { onFilterChanged(this.getID(), null); });
+        this.clearValue( () => {
+          onFilterChanged(this.getID(), null);
+        });
       }
     }
   }
@@ -75,10 +79,10 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
           onConfirm={(date) => {
             this.onConfirm(date);
           }
-        }/>
+          }/>
       </View>
     );
-  }
+  };
   private openDatePicker(openDatePicker: boolean) {
     this.setState({ openDatePicker });
   }

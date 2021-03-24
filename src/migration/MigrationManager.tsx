@@ -39,7 +39,7 @@ export default class MigrationManager {
         Message.showError(I18n.t('general.migrationError'));
       }
     }
-  }
+  };
 
   private async removeUnusedTenants() {
     // Get tenants

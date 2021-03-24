@@ -22,7 +22,7 @@ export default class UserAvatar extends React.Component<Props, State> {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public render() {
     const { user, selected } = this.props;
@@ -34,22 +34,22 @@ export default class UserAvatar extends React.Component<Props, State> {
       <View>
         {userImageURI ?
           <Avatar size={style.avatar.fontSize}
-                  rounded={true}
-                  source={{uri: userImageURI}}
-                  titleStyle={style.avatarTitle}
-                  overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
+            rounded
+            source={{uri: userImageURI}}
+            titleStyle={style.avatarTitle}
+            overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
             {selected ? <Avatar.Accessory name={'done'} size={style.accessory.fontSize} color={style.accessory.color}/> : null}
           </Avatar>
           :
           <Avatar size={style.avatar.fontSize}
-                  rounded={true}
-                  title={userName.charAt(0).toUpperCase() + userFirstName.charAt(0).toUpperCase()}
-                  titleStyle={style.avatarTitle}
-                  overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
+            rounded
+            title={userName.charAt(0).toUpperCase() + userFirstName.charAt(0).toUpperCase()}
+            titleStyle={style.avatarTitle}
+            overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
             {selected ? <Avatar.Accessory name={'done'} size={style.accessory.fontSize} color={style.accessory.color}/> : null}
           </Avatar>
         }
-        </View>
+      </View>
     );
   }
 }

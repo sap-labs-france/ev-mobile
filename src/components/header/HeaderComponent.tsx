@@ -51,7 +51,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public getFilterModalContainerComponent(): FilterModalContainerComponent {
     return this.filterModalContainerComponent;
@@ -109,14 +109,14 @@ export default class HeaderComponent extends React.Component<Props, State> {
           {hasFilter && (
             <Icon type={'MaterialCommunityIcons'} name={this.filterModalContainerComponent &&
               this.filterModalContainerComponent.getNumberOfFilters() > 0 ? 'filter' : 'filter-outline'}
-              onPress={() => {
-                this.searchIsVisible = !this.searchIsVisible;
-                // Show Filter Search
-                if (this.filterModalContainerComponent) {
-                  this.filterModalContainerComponent.setVisible(this.searchIsVisible);
-                }
-              }}
-              style={style.iconRightHeader} />
+            onPress={() => {
+              this.searchIsVisible = !this.searchIsVisible;
+              // Show Filter Search
+              if (this.filterModalContainerComponent) {
+                this.filterModalContainerComponent.setVisible(this.searchIsVisible);
+              }
+            }}
+            style={style.iconRightHeader} />
           )}
           {displayMap && (
             <Icon type='MaterialCommunityIcons' name={mapIsDisplayed ? 'format-list-text' : 'earth'}
@@ -126,10 +126,10 @@ export default class HeaderComponent extends React.Component<Props, State> {
             <Icon type={rightActionIconType} name={rightActionIcon}
               style={style.iconRightHeader} onPress={rightAction} />
           ) : (
-              <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader as ImageStyle} />
-            )}
+            <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader as ImageStyle} />
+          )}
         </Right>
       </Header>
     );
-  }
+  };
 }

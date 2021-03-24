@@ -32,7 +32,7 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
 
   public setState = (state: FilterControlComponentState<T> | ((prevState: Readonly<FilterControlComponentState<T>>, props: Readonly<FilterControlComponentProps<T>>) => FilterControlComponentState<T> | Pick<FilterControlComponentState<T>, never>) | Pick<FilterControlComponentState<T>, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public canBeSaved() {
     return false;

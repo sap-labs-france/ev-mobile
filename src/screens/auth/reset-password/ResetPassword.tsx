@@ -76,7 +76,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public async componentDidMount() {
     // Call parent
@@ -92,7 +92,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
 
   public recaptchaResponseToken = (captcha: string) => {
     this.setState({ captcha });
-  }
+  };
 
   public resetPassword = async () => {
     // Check field
@@ -129,28 +129,28 @@ export default class ResetPassword extends BaseScreen<Props, State> {
         if (error.request) {
           // Show error
           switch (error.request.status) {
-            // Invalid Hash
-            case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
-              Message.showError(I18n.t('authentication.resetPasswordHashNotValid'));
-              break;
-            default:
-              // Other common Error
-              Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-                'authentication.resetPasswordUnexpectedError');
+          // Invalid Hash
+          case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
+            Message.showError(I18n.t('authentication.resetPasswordHashNotValid'));
+            break;
+          default:
+            // Other common Error
+            Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+              'authentication.resetPasswordUnexpectedError');
           }
         } else {
           Message.showError(I18n.t('authentication.resetPasswordUnexpectedError'));
         }
       }
     }
-  }
+  };
 
   public onBack = (): boolean => {
     // Back mobile button: Force navigation
     this.props.navigation.navigate('Login');
     // Do not bubble up
     return true;
-  }
+  };
 
   public render() {
     const style = computeStyleSheet();
@@ -165,8 +165,8 @@ export default class ResetPassword extends BaseScreen<Props, State> {
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} />
             <Form style={formStyle.form}>
-              <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
+              <Item inlineLabel style={formStyle.inputGroup}>
+                <Icon active name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   selectionColor={commonColor.textColor}
                   onSubmitEditing={() => this.repeatPasswordInput.focus()}
@@ -181,7 +181,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                   onChangeText={(text) => this.setState({ password: text })}
                   secureTextEntry={hidePassword}
                 />
-                <Icon active={true} name={hidePassword ? 'eye' : 'eye-off'}
+                <Icon active name={hidePassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hidePassword: !hidePassword })}
                   style={formStyle.inputIcon} />
               </Item>
@@ -191,8 +191,8 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
+              <Item inlineLabel style={formStyle.inputGroup}>
+                <Icon active name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
                   selectionColor={commonColor.textColor}
@@ -208,7 +208,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
                   onChangeText={(text) => this.setState({ repeatPassword: text })}
                   secureTextEntry={hideRepeatPassword}
                 />
-                <Icon active={true} name={hideRepeatPassword ? 'eye' : 'eye-off'}
+                <Icon active name={hideRepeatPassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
                   style={formStyle.inputIcon} />
               </Item>
@@ -221,16 +221,16 @@ export default class ResetPassword extends BaseScreen<Props, State> {
               {loading ? (
                 <Spinner style={formStyle.spinner} color='grey' />
               ) : (
-                  <Button primary={true} block={true} style={formStyle.button} onPress={() => this.resetPassword()}>
-                    <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.resetPassword')}</Text>
-                  </Button>
-                )}
+                <Button primary block style={formStyle.button} onPress={async () => this.resetPassword()}>
+                  <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.resetPassword')}</Text>
+                </Button>
+              )}
             </Form>
           </KeyboardAvoidingView>
         </ScrollView>
         <Footer style={style.footer}>
           <Left>
-            <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]}
+            <Button small transparent style={[style.linksButton, style.linksButtonLeft]}
               onPress={() => this.props.navigation.navigate('Login')}>
               <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>{I18n.t('authentication.backLogin')}</Text>
             </Button>

@@ -38,7 +38,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public onFilterChanged = (newFilters: TransactionsHistoryFiltersDef, applyFilters: boolean) => {
     const { onFilterChanged } = this.props;
@@ -57,13 +57,15 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
     if (applyFilters) {
       this.setState({
         filters: { ...this.state.filters, ...newFilters }
-      }, () => {onFilterChanged(this.state.filters); });
+      }, () => {
+        onFilterChanged(this.state.filters);
+      });
     } else {
       this.setState({
         filters: { ...this.state.filters, ...newFilters }
       });
     }
-  }
+  };
 
   public render = () => {
     const { initialFilters } = this.props;
@@ -98,9 +100,9 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
               internalFilterID={GlobalFilters.MY_USER_FILTER}
               initialValue={filters.hasOwnProperty('userID') ? filters.userID : initialFilters.userID}
               label={I18n.t('general.onlyMyTransactions')}
-              onFilterChanged={(id: string, value: string) =>
+              onFilterChanged={async (id: string, value: string) =>
                 this.getFilterVisibleContainerComponent().setFilter(id, value)}
-              ref={(myUserSwitchFilterControlComponent: MyUserSwitchFilterControlComponent) =>
+              ref={async (myUserSwitchFilterControlComponent: MyUserSwitchFilterControlComponent) =>
                 this.addVisibleFilter(myUserSwitchFilterControlComponent)}
             />
           </FilterVisibleContainerComponent>
@@ -114,9 +116,9 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
             filterID={'startDateTime'}
             internalFilterID={GlobalFilters.TRANSACTIONS_START_DATE_FILTER}
             label={I18n.t('general.startDate')}
-            onFilterChanged={(id: string, value: Date) =>
+            onFilterChanged={async (id: string, value: Date) =>
               this.getFilterModalContainerComponent().setFilter(id, value)}
-            ref={(dateFilterControlComponent: DateFilterControlComponent) =>
+            ref={async (dateFilterControlComponent: DateFilterControlComponent) =>
               this.addModalFilter(dateFilterControlComponent)}
             locale={this.state.locale}
             minimumDate={minTransactionDate}
@@ -127,9 +129,9 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
             filterID={'endDateTime'}
             internalFilterID={GlobalFilters.TRANSACTIONS_END_DATE_FILTER}
             label={I18n.t('general.endDate')}
-            onFilterChanged={(id: string, value: Date) =>
+            onFilterChanged={async (id: string, value: Date) =>
               this.getFilterModalContainerComponent().setFilter(id, value)}
-            ref={(dateFilterControlComponent: DateFilterControlComponent) =>
+            ref={async (dateFilterControlComponent: DateFilterControlComponent) =>
               this.addModalFilter(dateFilterControlComponent)}
             locale={this.state.locale}
             minimumDate={startDateTime}
@@ -139,5 +141,5 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
         </FilterModalContainerComponent>
       </View>
     );
-  }
+  };
 }

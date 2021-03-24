@@ -128,7 +128,7 @@ export default class SignUp extends BaseScreen<Props, State> {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public async componentDidMount() {
     // Call parent
@@ -146,7 +146,7 @@ export default class SignUp extends BaseScreen<Props, State> {
 
   public recaptchaResponseToken = (captcha: string) => {
     this.setState({ captcha });
-  }
+  };
 
   public signUp = async () => {
     // Check field
@@ -182,25 +182,25 @@ export default class SignUp extends BaseScreen<Props, State> {
         if (error.request) {
           // Show error
           switch (error.request.status) {
-            // Email already exists
-            case HTTPError.USER_EMAIL_ALREADY_EXIST_ERROR:
-              Message.showError(I18n.t('authentication.emailAlreadyExists'));
-              break;
+          // Email already exists
+          case HTTPError.USER_EMAIL_ALREADY_EXIST_ERROR:
+            Message.showError(I18n.t('authentication.emailAlreadyExists'));
+            break;
             // Invalid Captcha
-            case HTTPError.INVALID_CAPTCHA:
-              Message.showError(I18n.t('authentication.invalidCaptcha'));
-              break;
-            default:
-              // Other common Error
-              Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-                'authentication.registerUnexpectedError');
+          case HTTPError.INVALID_CAPTCHA:
+            Message.showError(I18n.t('authentication.invalidCaptcha'));
+            break;
+          default:
+            // Other common Error
+            Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+              'authentication.registerUnexpectedError');
           }
         } else {
           Message.showError(I18n.t('authentication.registerUnexpectedError'));
         }
       }
     }
-  }
+  };
 
   public onBack = (): boolean => {
     // Back mobile button: Force navigation
@@ -211,7 +211,7 @@ export default class SignUp extends BaseScreen<Props, State> {
     );
     // Do not bubble up
     return true;
-  }
+  };
 
   public render() {
     const style = computeStyleSheet();
@@ -227,8 +227,8 @@ export default class SignUp extends BaseScreen<Props, State> {
           <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
             <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo}/>
             <Form style={formStyle.form}>
-              <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='person' style={formStyle.inputIcon} />
+              <Item inlineLabel style={formStyle.inputGroup}>
+                <Icon active name='person' style={formStyle.inputIcon} />
                 <TextInput
                   onSubmitEditing={() => this.firstNameInput.focus()}
                   selectionColor={commonColor.textColor}
@@ -249,8 +249,8 @@ export default class SignUp extends BaseScreen<Props, State> {
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='person' style={formStyle.inputIcon} />
+              <Item inlineLabel style={formStyle.inputGroup}>
+                <Icon active name='person' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.firstNameInput = ref)}
                   selectionColor={commonColor.textColor}
@@ -273,8 +273,8 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 ))}
 
-              <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
+              <Item inlineLabel style={formStyle.inputGroup}>
+                <Icon active name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.emailInput = ref)}
                   selectionColor={commonColor.textColor}
@@ -299,8 +299,8 @@ export default class SignUp extends BaseScreen<Props, State> {
                   </Text>
                 ))}
 
-              <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
+              <Item inlineLabel style={formStyle.inputGroup}>
+                <Icon active name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
                   selectionColor={commonColor.textColor}
@@ -316,7 +316,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   onChangeText={(text) => this.setState({ password: text })}
                   secureTextEntry={hidePassword}
                 />
-                <Icon active={true} name={hidePassword ? 'eye' : 'eye-off'}
+                <Icon active name={hidePassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hidePassword: !hidePassword })}
                   style={formStyle.inputIcon} />
               </Item>
@@ -326,8 +326,8 @@ export default class SignUp extends BaseScreen<Props, State> {
                     {errorMessage}
                   </Text>
                 ))}
-              <Item inlineLabel={true} style={formStyle.inputGroup}>
-                <Icon active={true} name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
+              <Item inlineLabel style={formStyle.inputGroup}>
+                <Icon active name='lock' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
                 <TextInput
                   ref={(ref: TextInput) => (this.repeatPasswordInput = ref)}
                   selectionColor={commonColor.textColor}
@@ -343,7 +343,7 @@ export default class SignUp extends BaseScreen<Props, State> {
                   onChangeText={(text) => this.setState({ repeatPassword: text })}
                   secureTextEntry={hideRepeatPassword}
                 />
-                <Icon active={true} name={hideRepeatPassword ? 'eye' : 'eye-off'}
+                <Icon active name={hideRepeatPassword ? 'eye' : 'eye-off'}
                   onPress={() => this.setState({ hideRepeatPassword: !hideRepeatPassword })}
                   style={formStyle.inputIcon} />
               </Item>
@@ -371,10 +371,10 @@ export default class SignUp extends BaseScreen<Props, State> {
               {loading || (!captcha && this.state.eula) ? (
                 <Spinner style={formStyle.spinner} color='grey' />
               ) : (
-                  <Button primary={true} block={true} style={formStyle.button} onPress={() => this.signUp()}>
-                    <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.signUp')}</Text>
-                  </Button>
-                )}
+                <Button primary block style={formStyle.button} onPress={async () => this.signUp()}>
+                  <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.signUp')}</Text>
+                </Button>
+              )}
             </Form>
           </KeyboardAvoidingView>
           {this.state.eula && captchaSiteKey && captchaBaseUrl && (
@@ -388,7 +388,7 @@ export default class SignUp extends BaseScreen<Props, State> {
         </ScrollView>
         <Footer style={style.footer}>
           <Left>
-            <Button small={true} transparent={true} style={[style.linksButton, style.linksButtonLeft]}
+            <Button small transparent style={[style.linksButton, style.linksButtonLeft]}
               onPress={() => this.onBack()}>
               <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>
                 {I18n.t('authentication.backLogin')}

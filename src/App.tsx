@@ -64,7 +64,7 @@ const TransactionDetailsTabs = createMaterialBottomTabNavigator();
 // Navigation Drawer variable
 const AppDrawer = createDrawerNavigator();
 
-const createTabBarIcon = (props: { focused: boolean; tintColor?: string; horizontal?: boolean; },
+const createTabBarIcon = (props: { focused: boolean; tintColor?: string; horizontal?: boolean },
   type: 'AntDesign' | 'Entypo' | 'EvilIcons' | 'Feather' | 'FontAwesome' | 'FontAwesome5' | 'Foundation' | 'Ionicons' | 'MaterialCommunityIcons' | 'MaterialIcons' | 'Octicons' | 'SimpleLineIcons' | 'Zocial',
   name: string): React.ReactNode => {
   const commonColor = Utils.getCurrentCommonColor();
@@ -80,7 +80,6 @@ const persistNavigationState = async (navigationState: NavigationState) => {
   try {
     await SecuredStorage.saveNavigationState(navigationState);
   } catch (error) {
-    // tslint:disable-next-line: no-console
     console.log(error);
   }
 };
@@ -137,7 +136,7 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
   const barStyle = getTabStyle();
   return (
     <ChargingStationDetailsTabs.Navigator initialRouteName='ChargingStationActions' activeColor={commonColor.topTabBarActiveTextColor}
-      inactiveColor={commonColor.topTabBarTextColor} barStyle={barStyle} labeled={true} backBehavior='none'>
+      inactiveColor={commonColor.topTabBarTextColor} barStyle={barStyle} labeled backBehavior='none'>
       <ChargingStationDetailsTabs.Screen name='ChargingStationActions' component={ChargingStationActions}
         initialParams={props?.route?.params?.params}
         options={{
@@ -165,7 +164,7 @@ function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
   const barStyle = getTabStyle();
   return (
     <ChargingStationConnectorDetailsTabs.Navigator initialRouteName='ChargingStationConnectorDetails' activeColor={commonColor.topTabBarActiveTextColor}
-      inactiveColor={commonColor.topTabBarTextColor} barStyle={barStyle} labeled={true} backBehavior='none'>
+      inactiveColor={commonColor.topTabBarTextColor} barStyle={barStyle} labeled backBehavior='none'>
       <ChargingStationConnectorDetailsTabs.Screen name='ChargingStationConnectorDetails' component={ChargingStationConnectorDetails}
         initialParams={props?.route?.params?.params}
         options={{
@@ -187,7 +186,7 @@ function createTransactionDetailsTabsNavigator(props: BaseProps) {
   const barStyle = getTabStyle();
   return (
     <TransactionDetailsTabs.Navigator initialRouteName='TransactionDetails' activeColor={commonColor.topTabBarActiveTextColor}
-      inactiveColor={commonColor.topTabBarTextColor} barStyle={barStyle} labeled={true} backBehavior='none'>
+      inactiveColor={commonColor.topTabBarTextColor} barStyle={barStyle} labeled backBehavior='none'>
       <TransactionDetailsTabs.Screen name='TransactionDetails' component={TransactionDetails}
         initialParams={props?.route?.params?.params}
         options={{
@@ -282,7 +281,7 @@ function createRootNavigator(app: App, initialState: InitialState) {
         app.deepLinkingManager?.initialize(navigatorRef, app.centralServerProvider);
       }
     }}
-      onStateChange={persistNavigationState} initialState={initialState}>
+    onStateChange={persistNavigationState} initialState={initialState}>
       <rootStack.Navigator initialRouteName='AuthNavigator' headerMode='none'>
         <rootStack.Screen name='AuthNavigator' component={createAuthNavigator} />
         <rootStack.Screen name='AppDrawerNavigator' component={createAppDrawerNavigator} />
@@ -319,7 +318,7 @@ export default class App extends React.Component<Props, State> {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public async componentDidMount() {
     // Load Navigation State
@@ -365,7 +364,7 @@ export default class App extends React.Component<Props, State> {
     return (
       this.state.isNavigationStateLoaded &&
         <RootSiblingParent>
-          <StatusBar hidden={true} />
+          <StatusBar hidden />
           {createRootNavigator(this, this.state.navigationState)}
         </RootSiblingParent>
     );

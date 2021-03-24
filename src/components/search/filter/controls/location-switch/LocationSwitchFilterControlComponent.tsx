@@ -26,7 +26,7 @@ export default class LocationSwitchFilterControlComponent extends FilterControlC
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public canBeSaved() {
     return true;
@@ -36,11 +36,13 @@ export default class LocationSwitchFilterControlComponent extends FilterControlC
     const { onFilterChanged } = this.props;
     // Set Filter
     if (onFilterChanged) {
-      this.setValue(newValue, () => { onFilterChanged(this.getID(), newValue); });
+      this.setValue(newValue, () => {
+        onFilterChanged(this.getID(), newValue);
+      });
     }
     // Update
     this.setState({ switchValue: newValue });
-  }
+  };
 
   public render = () => {
     const internalStyle = computeStyleSheet();
@@ -56,5 +58,5 @@ export default class LocationSwitchFilterControlComponent extends FilterControlC
         />
       </View>
     );
-  }
+  };
 }

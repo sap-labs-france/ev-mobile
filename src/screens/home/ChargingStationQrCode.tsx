@@ -47,7 +47,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public async logoffAndNavigateToLogin(tenant: TenantConnection) {
     // Logoff
@@ -120,7 +120,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
               I18n.t('qrCode.wrongOrganizationMessage', { tenantName: tenant.name }),
               [
                 { text: I18n.t('general.no'), style: 'cancel', onPress: () => this.setState({ activateQrCode: true }) },
-                { text: I18n.t('general.yes'), onPress: () => this.logoffAndNavigateToLogin(tenant) }
+                { text: I18n.t('general.yes'), onPress: async () => this.logoffAndNavigateToLogin(tenant) }
               ],
               { cancelable: false }
             );
@@ -134,7 +134,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
               I18n.t('qrCode.unknownOrganizationMessage', { tenantName: chargingStationQrCode.tenantName }),
               [
                 { text: I18n.t('general.no'), style: 'cancel', onPress: () => this.setState({ activateQrCode: true }) },
-                { text: I18n.t('general.yes'), onPress: () => this.saveTenantAndLogOff(chargingStationQrCode, endpointCloud) }
+                { text: I18n.t('general.yes'), onPress: async () => this.saveTenantAndLogOff(chargingStationQrCode, endpointCloud) }
               ],
               { cancelable: false }
             );
@@ -193,19 +193,23 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('qrCode.scanChargingStationQrCodeTitle')}
-          leftAction={() => { this.close(); return true; }}
+          leftAction={() => {
+            this.close(); return true;
+          }}
           leftActionIcon={'navigate-before'}
-          hideHomeAction={true}
-          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
+          hideHomeAction
+          rightAction={() => {
+            navigation.dispatch(DrawerActions.openDrawer()); return true;
+          }}
           rightActionIcon={'menu'}
         />
         {activateQrCode &&
           <QRCodeScanner
             cameraProps={{ captureAudio: false }}
-            showMarker={true}
-            reactivate={true}
+            showMarker
+            reactivate
             reactivateTimeout={1000}
-            onRead={(qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)} />
+            onRead={async (qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)} />
         }
       </Container>
     );

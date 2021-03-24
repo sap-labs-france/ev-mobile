@@ -28,7 +28,7 @@ export default class OnlyAvailableChargingStationSwitchFilterControlComponent ex
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public canBeSaved() {
     return true;
@@ -50,7 +50,7 @@ export default class OnlyAvailableChargingStationSwitchFilterControlComponent ex
     }
     // Update
     this.setState({ switchValue: newValue });
-  }
+  };
 
   public render = () => {
     const internalStyle = computeStyleSheet();
@@ -66,5 +66,5 @@ export default class OnlyAvailableChargingStationSwitchFilterControlComponent ex
         />
       </View>
     );
-  }
+  };
 }

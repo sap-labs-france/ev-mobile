@@ -61,7 +61,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
-  }
+  };
 
   public async loadInitialFilters() {
     const centralServerProvider = await ProviderFactory.getProvider();
@@ -103,14 +103,14 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
         'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
-  }
+  };
 
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.navigate('HomeNavigator');
     // Do not bubble up
     return true;
-  }
+  };
 
   public refresh = async () => {
     // Component Mounted?
@@ -130,7 +130,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
         isPricingActive: securityProvider.isComponentPricingActive()
       });
     }
-  }
+  };
 
   public onEndScroll = async () => {
     const { count, skip, limit } = this.state;
@@ -145,12 +145,12 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
         refreshing: false
       }));
     }
-  }
+  };
 
   public search = async (searchText: string) => {
     this.searchText = searchText;
     await this.refresh();
-  }
+  };
 
   public render = () => {
     const style = computeStyleSheet();
@@ -167,44 +167,46 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
           subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('transactions.transactions')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
-          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
+          rightAction={() => {
+            navigation.dispatch(DrawerActions.openDrawer()); return true;
+          }}
           rightActionIcon={'menu'}
           filters={filters}
         />
         {loading ? (
           <Spinner style={style.spinner} color='grey' />
         ) : (
-            <View style={style.content}>
-              {(isAdmin || hasSiteAdmin) &&
+          <View style={style.content}>
+            {(isAdmin || hasSiteAdmin) &&
                 <TransactionsInProgressFilters
                   initialFilters={initialFilters}
-                  onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
+                  onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) => this.setState({ filters: newFilters }, async () => this.refresh())}
                   ref={(transactionsInProgressFilters: TransactionsInProgressFilters) =>
                     this.setScreenFilters(transactionsInProgressFilters)}
                 />
-              }
-              <ItemsList<Transaction>
-                skip={skip}
-                count={count}
-                onEndReached={this.onEndScroll}
-                renderItem={(transaction: Transaction) => (
-                  <TransactionInProgressComponent
-                    transaction={transaction}
-                    navigation={navigation}
-                    isAdmin={isAdmin}
-                    isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(transaction.siteID)}
-                    isPricingActive={isPricingActive}
-                  />
-                )}
-                data={transactions}
-                manualRefresh={this.manualRefresh}
-                refreshing={refreshing}
-                emptyTitle={I18n.t('transactions.noTransactionsInProgress')}
-                navigation={navigation}
-                limit={limit}/>
-            </View>
-          )}
+            }
+            <ItemsList<Transaction>
+              skip={skip}
+              count={count}
+              onEndReached={this.onEndScroll}
+              renderItem={(transaction: Transaction) => (
+                <TransactionInProgressComponent
+                  transaction={transaction}
+                  navigation={navigation}
+                  isAdmin={isAdmin}
+                  isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(transaction.siteID)}
+                  isPricingActive={isPricingActive}
+                />
+              )}
+              data={transactions}
+              manualRefresh={this.manualRefresh}
+              refreshing={refreshing}
+              emptyTitle={I18n.t('transactions.noTransactionsInProgress')}
+              navigation={navigation}
+              limit={limit}/>
+          </View>
+        )}
       </Container>
     );
-  }
+  };
 }
