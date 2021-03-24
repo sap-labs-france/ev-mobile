@@ -309,7 +309,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
     const { loading, chargingStations, isAdmin, initialFilters,
-            skip, count, limit, filters, showMap, chargingStationSelected, refreshing } = this.state;
+      skip, count, limit, filters, showMap, chargingStationSelected, refreshing } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.chargingStations);
     return (
       <Container style={style.container}>

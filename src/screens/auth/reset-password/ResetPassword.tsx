@@ -130,13 +130,13 @@ export default class ResetPassword extends BaseScreen<Props, State> {
           // Show error
           switch (error.request.status) {
           // Invalid Hash
-          case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
-            Message.showError(I18n.t('authentication.resetPasswordHashNotValid'));
-            break;
-          default:
+            case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
+              Message.showError(I18n.t('authentication.resetPasswordHashNotValid'));
+              break;
+            default:
             // Other common Error
-            Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-              'authentication.resetPasswordUnexpectedError');
+              Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+                'authentication.resetPasswordUnexpectedError');
           }
         } else {
           Message.showError(I18n.t('authentication.resetPasswordUnexpectedError'));

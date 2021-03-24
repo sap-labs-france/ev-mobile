@@ -80,43 +80,43 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     };
     switch (connectorType) {
     // Charging
-    case ChargePointStatus.CHARGING:
-    case ChargePointStatus.OCCUPIED:
-      styleStatusName = 'charging';
-      break;
+      case ChargePointStatus.CHARGING:
+      case ChargePointStatus.OCCUPIED:
+        styleStatusName = 'charging';
+        break;
       // Preparing
-    case ChargePointStatus.PREPARING:
-      styleStatusName = 'preparing';
-      break;
+      case ChargePointStatus.PREPARING:
+        styleStatusName = 'preparing';
+        break;
       // Preparing
-    case ChargePointStatus.FINISHING:
-      styleStatusName = 'finishing';
-      break;
+      case ChargePointStatus.FINISHING:
+        styleStatusName = 'finishing';
+        break;
       // Reserved
-    case ChargePointStatus.RESERVED:
-      styleStatusName = 'reserved';
-      break;
+      case ChargePointStatus.RESERVED:
+        styleStatusName = 'reserved';
+        break;
       // Faulted
-    case ChargePointStatus.FAULTED:
-      styleStatusName = 'faulted';
-      break;
+      case ChargePointStatus.FAULTED:
+        styleStatusName = 'faulted';
+        break;
       // Unavailable
-    case ChargePointStatus.UNAVAILABLE:
-      styleStatusName = 'unavailable';
-      break;
+      case ChargePointStatus.UNAVAILABLE:
+        styleStatusName = 'unavailable';
+        break;
       // Suspending EV / EVSE
-    case ChargePointStatus.SUSPENDED_EVSE:
-    case ChargePointStatus.SUSPENDED_EV:
-      styleStatusName = 'suspended';
-      break;
+      case ChargePointStatus.SUSPENDED_EVSE:
+      case ChargePointStatus.SUSPENDED_EV:
+        styleStatusName = 'suspended';
+        break;
       // Available
-    case ChargePointStatus.AVAILABLE:
-      styleStatusName = 'available';
-      break;
+      case ChargePointStatus.AVAILABLE:
+        styleStatusName = 'available';
+        break;
       // Default
-    default:
-      styleStatusName = 'unavailable';
-      break;
+      default:
+        styleStatusName = 'unavailable';
+        break;
     }
     if (styleStatusName) {
       connectorStyles.container.push(style[styleStatusName + 'Connector']);

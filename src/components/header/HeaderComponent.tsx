@@ -84,8 +84,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
     const style = computeStyleSheet();
     const { hasFilter } = this.state;
     const { title, subTitle, leftAction, leftActionIcon, leftActionIconType,
-            rightAction, rightActionIcon, rightActionIconType, hideHomeAction, tenantLogo,
-            displayMap, displayMapAction, mapIsDisplayed, navigation } = this.props;
+      rightAction, rightActionIcon, rightActionIconType, hideHomeAction, tenantLogo,
+      displayMap, displayMapAction, mapIsDisplayed, navigation } = this.props;
     return (
       <Header style={style.header}>
         {leftAction ?

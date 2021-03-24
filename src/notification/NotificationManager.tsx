@@ -79,15 +79,15 @@ export default class NotificationManager {
         // Check
         switch (notification.data.notificationType) {
         // Do nothing
-        case UserNotificationType.END_OF_SESSION:
-        case UserNotificationType.SESSION_STARTED:
-          break;
+          case UserNotificationType.END_OF_SESSION:
+          case UserNotificationType.SESSION_STARTED:
+            break;
           // Display notif
-        default:
-          if (Object.values(UserNotificationType).includes(notification.data.notificationType as UserNotificationType)) {
-            await firebase.notifications().displayNotification(notification);
-          }
-          break;
+          default:
+            if (Object.values(UserNotificationType).includes(notification.data.notificationType as UserNotificationType)) {
+              await firebase.notifications().displayNotification(notification);
+            }
+            break;
         }
       } else {
         // Always display it
@@ -201,116 +201,116 @@ export default class NotificationManager {
     // Check
     switch (notification.data.notificationType) {
     // End of Transaction
-    case UserNotificationType.END_OF_SESSION:
-      this.navigator.dispatch(
-        StackActions.replace(
-          'AppDrawerNavigator',
-          {
-            screen: 'TransactionHistoryNavigator',
-            initial: false,
-            params: {
-              screen: 'TransactionDetailsTabs',
-              key: `${Utils.randomNumber()}`,
+      case UserNotificationType.END_OF_SESSION:
+        this.navigator.dispatch(
+          StackActions.replace(
+            'AppDrawerNavigator',
+            {
+              screen: 'TransactionHistoryNavigator',
+              initial: false,
               params: {
+                screen: 'TransactionDetailsTabs',
+                key: `${Utils.randomNumber()}`,
                 params: {
-                  transactionID: Utils.convertToInt(notification.data.transactionId)
+                  params: {
+                    transactionID: Utils.convertToInt(notification.data.transactionId)
+                  }
                 }
               }
             }
-          }
-        ),
-      );
-      break;
+          ),
+        );
+        break;
       // Session In Progress
-    case UserNotificationType.SESSION_STARTED:
-    case UserNotificationType.END_OF_CHARGE:
-    case UserNotificationType.OPTIMAL_CHARGE_REACHED:
-      this.navigator.dispatch(
-        StackActions.replace(
-          'AppDrawerNavigator',
-          {
-            screen: 'TransactionInProgressNavigator',
-            initial: false,
-            params: {
-              screen: 'ChargingStationConnectorDetailsTabs',
-              key: `${Utils.randomNumber()}`,
+      case UserNotificationType.SESSION_STARTED:
+      case UserNotificationType.END_OF_CHARGE:
+      case UserNotificationType.OPTIMAL_CHARGE_REACHED:
+        this.navigator.dispatch(
+          StackActions.replace(
+            'AppDrawerNavigator',
+            {
+              screen: 'TransactionInProgressNavigator',
+              initial: false,
               params: {
+                screen: 'ChargingStationConnectorDetailsTabs',
+                key: `${Utils.randomNumber()}`,
                 params: {
-                  chargingStationID: notification.data.chargeBoxID,
-                  connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                  params: {
+                    chargingStationID: notification.data.chargeBoxID,
+                    connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                  }
                 }
               }
             }
-          }
-        ),
-      );
-      break;
-    case UserNotificationType.CHARGING_STATION_STATUS_ERROR:
-    case UserNotificationType.PREPARING_SESSION_NOT_STARTED:
-      this.navigator.dispatch(
-        StackActions.replace(
-          'AppDrawerNavigator',
-          {
-            screen: 'ChargingStationsNavigator',
-            initial: false,
-            params: {
-              screen: 'ChargingStationConnectorDetailsTabs',
-              key: `${Utils.randomNumber()}`,
+          ),
+        );
+        break;
+      case UserNotificationType.CHARGING_STATION_STATUS_ERROR:
+      case UserNotificationType.PREPARING_SESSION_NOT_STARTED:
+        this.navigator.dispatch(
+          StackActions.replace(
+            'AppDrawerNavigator',
+            {
+              screen: 'ChargingStationsNavigator',
+              initial: false,
               params: {
+                screen: 'ChargingStationConnectorDetailsTabs',
+                key: `${Utils.randomNumber()}`,
                 params: {
-                  chargingStationID: notification.data.chargeBoxID,
-                  connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                  params: {
+                    chargingStationID: notification.data.chargeBoxID,
+                    connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                  }
                 }
               }
             }
-          }
-        ),
-      );
-      break;
+          ),
+        );
+        break;
       // Charger just connected
-    case UserNotificationType.SESSION_NOT_STARTED_AFTER_AUTHORIZE:
-    case UserNotificationType.CHARGING_STATION_REGISTERED:
-      this.navigator.dispatch(
-        StackActions.replace(
-          'AppDrawerNavigator',
-          {
-            screen: 'ChargingStationsNavigator',
-            initial: false,
-            params: {
-              screen: 'ChargingStationConnectorDetailsTabs',
-              key: `${Utils.randomNumber()}`,
+      case UserNotificationType.SESSION_NOT_STARTED_AFTER_AUTHORIZE:
+      case UserNotificationType.CHARGING_STATION_REGISTERED:
+        this.navigator.dispatch(
+          StackActions.replace(
+            'AppDrawerNavigator',
+            {
+              screen: 'ChargingStationsNavigator',
+              initial: false,
               params: {
+                screen: 'ChargingStationConnectorDetailsTabs',
+                key: `${Utils.randomNumber()}`,
                 params: {
-                  chargingStationID: notification.data.chargeBoxID,
-                  connectorID: 1
+                  params: {
+                    chargingStationID: notification.data.chargeBoxID,
+                    connectorID: 1
+                  }
                 }
               }
             }
-          }
-        ),
-      );
-      break;
+          ),
+        );
+        break;
       // Go to Charger list
-    case UserNotificationType.OFFLINE_CHARGING_STATION:
-      this.navigator.dispatch(
-        StackActions.replace(
-          'AppDrawerNavigator',
-          {
-            screen: 'ChargingStationsNavigator',
-            initial: false,
-            key: `${Utils.randomNumber()}`,
-          }
-        ),
-      );
-      break;
+      case UserNotificationType.OFFLINE_CHARGING_STATION:
+        this.navigator.dispatch(
+          StackActions.replace(
+            'AppDrawerNavigator',
+            {
+              screen: 'ChargingStationsNavigator',
+              initial: false,
+              key: `${Utils.randomNumber()}`,
+            }
+          ),
+        );
+        break;
       // No need to navigate
-    case UserNotificationType.UNKNOWN_USER_BADGED:
-    case UserNotificationType.OCPI_PATCH_STATUS_ERROR:
-    case UserNotificationType.SMTP_AUTH_ERROR:
-    case UserNotificationType.USER_ACCOUNT_STATUS_CHANGED:
-    case UserNotificationType.USER_ACCOUNT_INACTIVITY:
-    case UserNotificationType.BILLING_USER_SYNCHRONIZATION_FAILED:
-      break;
+      case UserNotificationType.UNKNOWN_USER_BADGED:
+      case UserNotificationType.OCPI_PATCH_STATUS_ERROR:
+      case UserNotificationType.SMTP_AUTH_ERROR:
+      case UserNotificationType.USER_ACCOUNT_STATUS_CHANGED:
+      case UserNotificationType.USER_ACCOUNT_INACTIVITY:
+      case UserNotificationType.BILLING_USER_SYNCHRONIZATION_FAILED:
+        break;
     }
     return true;
   }

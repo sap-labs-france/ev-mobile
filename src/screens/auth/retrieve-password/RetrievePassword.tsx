@@ -112,17 +112,17 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
           // Show error
           switch (error.request.status) {
           // Invalid Captcha
-          case HTTPError.INVALID_CAPTCHA:
-            Message.showError(I18n.t('authentication.invalidCaptcha'));
-            break;
+            case HTTPError.INVALID_CAPTCHA:
+              Message.showError(I18n.t('authentication.invalidCaptcha'));
+              break;
             // Unknown Email
-          case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
-            Message.showError(I18n.t('authentication.wrongEmail'));
-            break;
-          default:
+            case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
+              Message.showError(I18n.t('authentication.wrongEmail'));
+              break;
+            default:
             // Other common Error
-            Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-              'authentication.resetPasswordUnexpectedError');
+              Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+                'authentication.resetPasswordUnexpectedError');
           }
         } else {
           Message.showError(I18n.t('authentication.resetPasswordUnexpectedError'));

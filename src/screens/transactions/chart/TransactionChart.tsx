@@ -311,7 +311,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const { showTransactionDetails, isAdmin, isSiteAdmin, loading, transaction, chargingStation,
-            connector, consumptionValues, stateOfChargeValues, canDisplayTransaction } = this.state;
+      connector, consumptionValues, stateOfChargeValues, canDisplayTransaction } = this.state;
     const chartDefinition = this.createChart(consumptionValues, stateOfChargeValues);
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return (

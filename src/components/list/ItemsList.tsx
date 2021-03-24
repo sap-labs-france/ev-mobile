@@ -56,12 +56,12 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
       // Else, add the item to the selected Ids
     } else {
       switch (this.props.select) {
-      case ItemsListTypes.MULTI:
-        this.setState({...this.state, selectedIds: new Set(selectedIds).add(item.id)});
-        break;
-      case ItemsListTypes.SINGLE:
-        this.setState({...this.state, selectedIds: new Set().add(id)});
-        break;
+        case ItemsListTypes.MULTI:
+          this.setState({...this.state, selectedIds: new Set(selectedIds).add(item.id)});
+          break;
+        case ItemsListTypes.SINGLE:
+          this.setState({...this.state, selectedIds: new Set().add(id)});
+          break;
       }
     }
   }

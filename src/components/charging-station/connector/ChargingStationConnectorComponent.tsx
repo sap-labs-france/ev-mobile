@@ -34,7 +34,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
   public props: Props;
   private timerAnimation: NodeJS.Timeout;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     // Init State
     this.state = {
@@ -78,25 +78,6 @@ export default class ChargingStationConnectorComponent extends React.Component<P
 
   );
 
-  private buildConnectorTypeSVG = (connectorType: ConnectorType, style: any): Element => {
-    const commonColor = Utils.getCurrentCommonColor();
-    switch (connectorType) {
-    case ConnectorType.CHADEMO:
-      return <Chademo width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30' />;
-    case ConnectorType.TYPE_2:
-      return <Type2 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10' />;
-    case ConnectorType.COMBO_CCS:
-      return <ComboCCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30' />;
-    case ConnectorType.DOMESTIC:
-      return <Domestic width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor} />;
-    case ConnectorType.TYPE_1:
-      return <Type1 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10' />;
-    case ConnectorType.TYPE_1_CCS:
-      return <Type1CCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10' />;
-    }
-    return <NoConnector width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor} />;
-  };
-
   public renderSecondConnectorDetails = (chargingStation: ChargingStation, connector: Connector, style: any) => connector.currentTransactionID !== 0 && !chargingStation.inactive ? (
     <View style={style.connectorDetail}>
       <Animatable.View
@@ -114,7 +95,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
           {I18n.t('details.instant')}
         </Text>
         <Text style={style.subLabel} numberOfLines={1}>
-            (kW)
+          (kW)
         </Text>
       </Animatable.View>
       <Animatable.View
@@ -126,7 +107,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
           {I18n.t('details.battery')}
         </Text>
         <Text style={style.subLabel} numberOfLines={1}>
-            (%)
+          (%)
         </Text>
       </Animatable.View>
     </View>
@@ -155,7 +136,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
           {I18n.t('details.maximum')}
         </Text>
         <Text style={style.subLabel} numberOfLines={1}>
-            (kW)
+          (kW)
         </Text>
       </View>
     );
@@ -197,4 +178,23 @@ export default class ChargingStationConnectorComponent extends React.Component<P
       </TouchableOpacity>
     );
   }
+
+  private buildConnectorTypeSVG = (connectorType: ConnectorType, style: any): Element => {
+    const commonColor = Utils.getCurrentCommonColor();
+    switch (connectorType) {
+      case ConnectorType.CHADEMO:
+        return <Chademo width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30' />;
+      case ConnectorType.TYPE_2:
+        return <Type2 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10' />;
+      case ConnectorType.COMBO_CCS:
+        return <ComboCCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30' />;
+      case ConnectorType.DOMESTIC:
+        return <Domestic width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor} />;
+      case ConnectorType.TYPE_1:
+        return <Type1 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10' />;
+      case ConnectorType.TYPE_1_CCS:
+        return <Type1CCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10' />;
+    }
+    return <NoConnector width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor} />;
+  };
 }

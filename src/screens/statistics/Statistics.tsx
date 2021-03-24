@@ -148,7 +148,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     const cardStyle = computeCardStyleSheet();
     const { navigation } = this.props;
     const { loading, totalNumberOfSession, totalConsumptionWattHours, initialFilters, filters,
-            totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive } = this.state;
+      totalDurationSecs, totalInactivitySecs, totalPrice, isPricingActive } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent

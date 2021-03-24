@@ -104,12 +104,12 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       return transaction;
     } catch (error) {
       switch (error.request.status) {
-      case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
-        Message.showError(I18n.t('transactions.transactionDoesNotExist'));
-        break;
-      default:
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-          'transactions.transactionUnexpectedError', this.props.navigation);
+        case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
+          Message.showError(I18n.t('transactions.transactionDoesNotExist'));
+          break;
+        default:
+          Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+            'transactions.transactionUnexpectedError', this.props.navigation);
       }
     }
     return null;

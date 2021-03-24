@@ -184,7 +184,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     const style = computeStyleSheet();
     const { navigation } = this.props;
     const { loading, isAdmin, transactions, isPricingActive,
-            skip, count, limit, initialFilters, filters, refreshing } = this.state;
+      skip, count, limit, initialFilters, filters, refreshing } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent

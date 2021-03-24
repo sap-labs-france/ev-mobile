@@ -80,7 +80,7 @@ module.exports = {
       "error",
       2,
       {
-        "ObjectExpression": "first"
+        "SwitchCase": 1
       }
     ],
     "@typescript-eslint/member-delimiter-style": [

@@ -583,14 +583,14 @@ export default class Utils {
   public static computeInactivityStyle(inactivityStatus: InactivityStatus): Record<string, unknown> {
     const commonColor = Utils.getCurrentCommonColor();
     switch (inactivityStatus) {
-    case InactivityStatus.INFO:
-      return { color: commonColor.success };
-    case InactivityStatus.WARNING:
-      return { color: commonColor.warning };
-    case InactivityStatus.ERROR:
-      return { color: commonColor.danger };
-    default:
-      return { color: commonColor.textColor };
+      case InactivityStatus.INFO:
+        return { color: commonColor.success };
+      case InactivityStatus.WARNING:
+        return { color: commonColor.warning };
+      case InactivityStatus.ERROR:
+        return { color: commonColor.danger };
+      default:
+        return { color: commonColor.textColor };
     }
   }
 
@@ -614,22 +614,22 @@ export default class Utils {
       // Status?
       switch (error.request.status) {
       // Backend not available
-      case 0:
-        Message.showError(I18n.t('general.cannotConnectBackend'));
-        break;
+        case 0:
+          Message.showError(I18n.t('general.cannotConnectBackend'));
+          break;
         // Backend not available
-      case StatusCodes.FORBIDDEN:
-        Message.showError(I18n.t('general.notAuthorized'));
-        break;
+        case StatusCodes.FORBIDDEN:
+          Message.showError(I18n.t('general.notAuthorized'));
+          break;
         // Not logged in?
-      case StatusCodes.UNAUTHORIZED:
+        case StatusCodes.UNAUTHORIZED:
         // Force auto login
-        await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
-        break;
+          await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
+          break;
         // Other errors
-      default:
-        Message.showError(I18n.t(defaultErrorMessage ? defaultErrorMessage : 'general.unexpectedErrorBackend'));
-        break;
+        default:
+          Message.showError(I18n.t(defaultErrorMessage ? defaultErrorMessage : 'general.unexpectedErrorBackend'));
+          break;
       }
     } else if (error.name === 'InvalidTokenError') {
       // Force auto login
@@ -711,75 +711,75 @@ export default class Utils {
 
   public static translateConnectorStatus = (status: string): string => {
     switch (status) {
-    case ChargePointStatus.AVAILABLE:
-      return I18n.t('connector.available');
-    case ChargePointStatus.CHARGING:
-      return I18n.t('connector.charging');
-    case ChargePointStatus.OCCUPIED:
-      return I18n.t('connector.occupied');
-    case ChargePointStatus.FAULTED:
-      return I18n.t('connector.faulted');
-    case ChargePointStatus.RESERVED:
-      return I18n.t('connector.reserved');
-    case ChargePointStatus.FINISHING:
-      return I18n.t('connector.finishing');
-    case ChargePointStatus.PREPARING:
-      return I18n.t('connector.preparing');
-    case ChargePointStatus.SUSPENDED_EVSE:
-      return I18n.t('connector.suspendedEVSE');
-    case ChargePointStatus.SUSPENDED_EV:
-      return I18n.t('connector.suspendedEV');
-    case ChargePointStatus.UNAVAILABLE:
-      return I18n.t('connector.unavailable');
-    default:
-      return I18n.t('connector.unknown');
+      case ChargePointStatus.AVAILABLE:
+        return I18n.t('connector.available');
+      case ChargePointStatus.CHARGING:
+        return I18n.t('connector.charging');
+      case ChargePointStatus.OCCUPIED:
+        return I18n.t('connector.occupied');
+      case ChargePointStatus.FAULTED:
+        return I18n.t('connector.faulted');
+      case ChargePointStatus.RESERVED:
+        return I18n.t('connector.reserved');
+      case ChargePointStatus.FINISHING:
+        return I18n.t('connector.finishing');
+      case ChargePointStatus.PREPARING:
+        return I18n.t('connector.preparing');
+      case ChargePointStatus.SUSPENDED_EVSE:
+        return I18n.t('connector.suspendedEVSE');
+      case ChargePointStatus.SUSPENDED_EV:
+        return I18n.t('connector.suspendedEV');
+      case ChargePointStatus.UNAVAILABLE:
+        return I18n.t('connector.unavailable');
+      default:
+        return I18n.t('connector.unknown');
     }
   };
 
   public static translateConnectorType = (type: string): string => {
     switch (type) {
-    case ConnectorType.TYPE_2:
-      return I18n.t('connector.type2');
-    case ConnectorType.COMBO_CCS:
-      return I18n.t('connector.comboCCS');
-    case ConnectorType.CHADEMO:
-      return I18n.t('connector.chademo');
-    case ConnectorType.DOMESTIC:
-      return I18n.t('connector.domestic');
-    default:
-      return I18n.t('connector.unknown');
+      case ConnectorType.TYPE_2:
+        return I18n.t('connector.type2');
+      case ConnectorType.COMBO_CCS:
+        return I18n.t('connector.comboCCS');
+      case ConnectorType.CHADEMO:
+        return I18n.t('connector.chademo');
+      case ConnectorType.DOMESTIC:
+        return I18n.t('connector.domestic');
+      default:
+        return I18n.t('connector.unknown');
     }
   };
 
   public static translateUserStatus(status: string) {
     switch (status) {
-    case UserStatus.ACTIVE:
-      return I18n.t('userStatuses.active');
-    case UserStatus.PENDING:
-      return I18n.t('userStatuses.pending');
-    case UserStatus.INACTIVE:
-      return I18n.t('userStatuses.inactive');
-    case UserStatus.LOCKED:
-      return I18n.t('userStatuses.locked');
-    case UserStatus.BLOCKED:
-      return I18n.t('userStatuses.blocked');
-    default:
-      return I18n.t('userStatuses.unknown');
+      case UserStatus.ACTIVE:
+        return I18n.t('userStatuses.active');
+      case UserStatus.PENDING:
+        return I18n.t('userStatuses.pending');
+      case UserStatus.INACTIVE:
+        return I18n.t('userStatuses.inactive');
+      case UserStatus.LOCKED:
+        return I18n.t('userStatuses.locked');
+      case UserStatus.BLOCKED:
+        return I18n.t('userStatuses.blocked');
+      default:
+        return I18n.t('userStatuses.unknown');
     }
   }
 
   public static translateUserRole(role: string) {
     switch (role) {
-    case UserRole.ADMIN:
-      return I18n.t('userRoles.admin');
-    case UserRole.BASIC:
-      return I18n.t('userRoles.basic');
-    case UserRole.DEMO:
-      return I18n.t('userRoles.demo');
-    case UserRole.SUPER_ADMIN:
-      return I18n.t('userRoles.superAdmin');
-    default:
-      return I18n.t('userRoles.unknown');
+      case UserRole.ADMIN:
+        return I18n.t('userRoles.admin');
+      case UserRole.BASIC:
+        return I18n.t('userRoles.basic');
+      case UserRole.DEMO:
+        return I18n.t('userRoles.demo');
+      case UserRole.SUPER_ADMIN:
+        return I18n.t('userRoles.superAdmin');
+      default:
+        return I18n.t('userRoles.unknown');
     }
   }
 

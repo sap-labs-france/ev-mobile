@@ -228,29 +228,29 @@ export default class Login extends BaseScreen<Props, State> {
           // Show error
           switch (error.request.status) {
           // Unknown Email
-          case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
-            Message.showError(I18n.t('authentication.wrongEmailOrPassword'));
-            break;
+            case HTTPError.OBJECT_DOES_NOT_EXIST_ERROR:
+              Message.showError(I18n.t('authentication.wrongEmailOrPassword'));
+              break;
             // Account is locked
-          case HTTPError.USER_ACCOUNT_LOCKED_ERROR:
-            Message.showError(I18n.t('authentication.accountLocked'));
-            break;
+            case HTTPError.USER_ACCOUNT_LOCKED_ERROR:
+              Message.showError(I18n.t('authentication.accountLocked'));
+              break;
             // Account not Active
-          case HTTPError.USER_ACCOUNT_INACTIVE_ERROR:
-            Message.showError(I18n.t('authentication.accountNotActive'));
-            break;
+            case HTTPError.USER_ACCOUNT_INACTIVE_ERROR:
+              Message.showError(I18n.t('authentication.accountNotActive'));
+              break;
             // Account Pending
-          case HTTPError.USER_ACCOUNT_PENDING_ERROR:
-            Message.showError(I18n.t('authentication.accountPending'));
-            break;
+            case HTTPError.USER_ACCOUNT_PENDING_ERROR:
+              Message.showError(I18n.t('authentication.accountPending'));
+              break;
             // Eula no accepted
-          case HTTPError.USER_EULA_ERROR:
-            Message.showError(I18n.t('authentication.eulaNotAccepted'));
-            break;
-          default:
+            case HTTPError.USER_EULA_ERROR:
+              Message.showError(I18n.t('authentication.eulaNotAccepted'));
+              break;
+            default:
             // Other common Error
-            Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-              'authentication.loginUnexpectedError');
+              Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+                'authentication.loginUnexpectedError');
           }
         }
       }
