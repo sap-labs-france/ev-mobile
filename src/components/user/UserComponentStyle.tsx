@@ -1,7 +1,8 @@
 import deepmerge from 'deepmerge';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
+import { PLATFORM } from '../../theme/variables/commonColor';
 
 import Utils from '../../utils/Utils';
 
@@ -76,7 +77,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     statusText: {
       fontSize: '11@s',
       fontWeight: 'bold',
-      lineHeight: 0
+      lineHeight: Platform.OS === PLATFORM.ANDROID ? 1 : 0
     },
     inactive: {
       color: commonColor.brandDanger,
