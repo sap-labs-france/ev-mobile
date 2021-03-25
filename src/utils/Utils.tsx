@@ -595,7 +595,7 @@ export default class Utils {
   }
 
   public static sortArrayOfKeyValue(element1: KeyValue, element2: KeyValue) {
-    // ignore upper and lowercase
+    // Ignore upper and lowercase
     const keyA = element1.key.toUpperCase();
     const keyB = element2.key.toUpperCase();
     if (keyA < keyB) {
@@ -613,7 +613,7 @@ export default class Utils {
     if (error.request) {
       // Status?
       switch (error.request.status) {
-      // Backend not available
+        // Backend not available
         case 0:
           Message.showError(I18n.t('general.cannotConnectBackend'));
           break;
@@ -623,7 +623,7 @@ export default class Utils {
           break;
         // Not logged in?
         case StatusCodes.UNAUTHORIZED:
-        // Force auto login
+          // Force auto login
           await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;
         // Other errors

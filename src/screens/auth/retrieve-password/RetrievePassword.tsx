@@ -111,7 +111,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
         if (error.request) {
           // Show error
           switch (error.request.status) {
-          // Invalid Captcha
+            // Invalid Captcha
             case HTTPError.INVALID_CAPTCHA:
               Message.showError(I18n.t('authentication.invalidCaptcha'));
               break;

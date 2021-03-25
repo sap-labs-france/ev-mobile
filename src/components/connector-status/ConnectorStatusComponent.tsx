@@ -79,7 +79,7 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
       description: [style.commonConnectorDescription]
     };
     switch (connectorType) {
-    // Charging
+      // Charging
       case ChargePointStatus.CHARGING:
       case ChargePointStatus.OCCUPIED:
         styleStatusName = 'charging';

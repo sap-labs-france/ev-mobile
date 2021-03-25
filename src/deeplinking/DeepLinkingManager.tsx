@@ -44,6 +44,22 @@ export default class DeepLinkingManager {
     });
   }
 
+  public startListening() {
+    Linking.addEventListener('url', this.handleUrl);
+  }
+
+  public stopListening() {
+    Linking.removeEventListener('url', this.handleUrl);
+  }
+
+  public handleUrl = ({ url }: { url: string }) => {
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        DeepLinking.evaluateUrl(url);
+      }
+    });
+  };
+
   private addResetPasswordRoute = () => {
     // Add Route
     DeepLinking.addRoute('/resetPassword/:tenant/:hash', async (response: { tenant: string; hash: string }) => {
@@ -125,7 +141,7 @@ export default class DeepLinkingManager {
           if (error.request) {
             // Show error
             switch (error.request.status) {
-            // Account already active
+              // Account already active
               case HTTPError.USER_ACCOUNT_ALREADY_ACTIVE_ERROR:
                 Message.showError(I18n.t('authentication.accountAlreadyActive'));
                 break;
@@ -147,21 +163,5 @@ export default class DeepLinkingManager {
           }
         }
       });
-  };
-
-  public startListening() {
-    Linking.addEventListener('url', this.handleUrl);
-  }
-
-  public stopListening() {
-    Linking.removeEventListener('url', this.handleUrl);
-  }
-
-  public handleUrl = ({ url }: { url: string }) => {
-    Linking.canOpenURL(url).then((supported) => {
-      if (supported) {
-        DeepLinking.evaluateUrl(url);
-      }
-    });
   };
 }

@@ -78,7 +78,7 @@ export default class NotificationManager {
       if (notification.data) {
         // Check
         switch (notification.data.notificationType) {
-        // Do nothing
+          // Do nothing
           case UserNotificationType.END_OF_SESSION:
           case UserNotificationType.SESSION_STARTED:
             break;
@@ -200,7 +200,7 @@ export default class NotificationManager {
     }
     // Check
     switch (notification.data.notificationType) {
-    // End of Transaction
+      // End of Transaction
       case UserNotificationType.END_OF_SESSION:
         this.navigator.dispatch(
           StackActions.replace(
