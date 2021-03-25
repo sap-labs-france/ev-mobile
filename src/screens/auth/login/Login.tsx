@@ -248,7 +248,7 @@ export default class Login extends BaseScreen<Props, State> {
               Message.showError(I18n.t('authentication.eulaNotAccepted'));
               break;
             default:
-            // Other common Error
+              // Other common Error
               Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
                 'authentication.loginUnexpectedError');
           }
