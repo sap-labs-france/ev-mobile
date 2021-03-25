@@ -11,7 +11,9 @@ https://github.com/typescript-eslint/tslint-to-eslint-config/blob/master/docs/FA
 
 Happy linting! 💖
 */
-module.exports = {
+const { defineConfig } = require('eslint-define-config');
+
+module.exports = defineConfig({
   "env": {
     "es6": true,
     "node": true
@@ -24,7 +26,10 @@ module.exports = {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "tsconfig.json",
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    },
   },
   "plugins": [
     "eslint-plugin-react",
@@ -186,6 +191,10 @@ module.exports = {
     "id-match": "error",
     "import/no-deprecated": "warn",
     "import/order": "error",
+    "import/named": "off",
+    "import/namespace": "off",
+    "import/default": "off",
+    "import/no-named-as-default-member": "off",
     "jsdoc/check-alignment": "error",
     "jsdoc/check-indentation": "error",
     "jsdoc/newline-after-description": "error",
@@ -299,5 +308,10 @@ module.exports = {
     ],
     "use-isnan": "error",
     "valid-typeof": "off",
-  }
-};
+  },
+  "settings": {
+    "react": {
+      "version": "detect",
+    },
+  },
+});
