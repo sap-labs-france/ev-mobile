@@ -5,7 +5,6 @@
     "tslint-react",
     "tslint-config-prettier"
   ],
-  "jsRules": {},
   "rules": {
     "cyclomatic-complexity": true,
     "no-empty-interface": false,

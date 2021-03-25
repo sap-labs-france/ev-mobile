@@ -4,11 +4,11 @@ import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
+import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ItemsList from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import UserComponent from '../../../components/user/UserComponent';
-import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import { DataResult } from '../../../types/DataResult';
 import User from '../../../types/User';
