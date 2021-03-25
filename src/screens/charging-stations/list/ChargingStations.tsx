@@ -89,7 +89,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const connectorStatus = await SecuredStorage.loadFilterValue(
       centralServerProvider.getUserInfo(), GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS) as ChargePointStatus;
     const connectorType = await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(), GlobalFilters.CONNECTOR_TYPES) ;
+      centralServerProvider.getUserInfo(), GlobalFilters.CONNECTOR_TYPES);
     let location = Utils.convertToBoolean(await SecuredStorage.loadFilterValue(
       centralServerProvider.getUserInfo(), GlobalFilters.LOCATION));
     if (!location) {

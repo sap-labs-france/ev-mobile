@@ -120,7 +120,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
               Message.showError(I18n.t('authentication.wrongEmail'));
               break;
             default:
-            // Other common Error
+              // Other common Error
               Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
                 'authentication.resetPasswordUnexpectedError');
           }

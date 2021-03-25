@@ -182,7 +182,7 @@ export default class SignUp extends BaseScreen<Props, State> {
         if (error.request) {
           // Show error
           switch (error.request.status) {
-          // Email already exists
+            // Email already exists
             case HTTPError.USER_EMAIL_ALREADY_EXIST_ERROR:
               Message.showError(I18n.t('authentication.emailAlreadyExists'));
               break;
@@ -191,7 +191,7 @@ export default class SignUp extends BaseScreen<Props, State> {
               Message.showError(I18n.t('authentication.invalidCaptcha'));
               break;
             default:
-            // Other common Error
+              // Other common Error
               Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
                 'authentication.registerUnexpectedError');
           }
