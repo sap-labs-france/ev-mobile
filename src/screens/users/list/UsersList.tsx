@@ -68,19 +68,6 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
     return null;
   }
 
-  public async getUserImage(id: string) {
-    try {
-      return await this.centralServerProvider.getUserImage({ID: id});
-    } catch (error) {
-      // Check if HTTP?
-      if (!error.request) {
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-          'users.userUnexpectedError', this.props.navigation, this.refresh);
-      }
-    }
-    return null;
-  }
-
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.navigate('HomeNavigator');
@@ -113,9 +100,6 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
       // Refresh All
       const users = await this.getUsers(this.searchText, 0, skip + limit);
       const usersResult = users ? users.result : [];
-      usersResult.forEach(async (user: User) => {
-        user.image = await this.getUserImage(user.id as string);
-      });
       // Set
       this.setState({
         loading: false,
