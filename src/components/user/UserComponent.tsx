@@ -20,26 +20,14 @@ export default class UserComponent extends React.Component<Props, State> {
   public props: Props;
   public state: State;
 
-  constructor(props: Props) {
+  // eslint-disable-next-line no-useless-constructor
+  public constructor(props: Props) {
     super(props);
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
   };
-
-  private computeStatusStyle(status: string, style: any) {
-    switch (status) {
-      case UserStatus.ACTIVE:
-        return style.active;
-      case UserStatus.PENDING:
-        return style.pending;
-      case UserStatus.BLOCKED:
-      case UserStatus.INACTIVE:
-      case UserStatus.LOCKED:
-        return style.inactive;
-    }
-  }
 
   public render() {
     const style = computeStyleSheet();
@@ -70,5 +58,18 @@ export default class UserComponent extends React.Component<Props, State> {
           </View>
         </View>
       </View>);
+  }
+
+  private computeStatusStyle(status: string, style: any) {
+    switch (status) {
+      case UserStatus.ACTIVE:
+        return style.active;
+      case UserStatus.PENDING:
+        return style.pending;
+      case UserStatus.BLOCKED:
+      case UserStatus.INACTIVE:
+      case UserStatus.LOCKED:
+        return style.inactive;
+    }
   }
 }

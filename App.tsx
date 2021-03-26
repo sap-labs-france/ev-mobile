@@ -22,7 +22,7 @@ interface State {
 export default class AppBootstrap extends React.Component<Props, State> {
   private themeSubscription: EventSubscription;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       switchTheme: false

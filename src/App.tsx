@@ -307,7 +307,7 @@ export default class App extends React.Component<Props, State> {
   public centralServerProvider: CentralServerProvider;
   private location: LocationManager;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       switchTheme: false,

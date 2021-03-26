@@ -29,7 +29,7 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
   private filterVisibleControlComponents: FilterControlComponent<any>[] = [];
   private expandableView: any;
 
-  constructor(props: ScreenFiltersProps) {
+  public constructor(props: ScreenFiltersProps) {
     super(props);
     this.state = {
       isAdmin: false,

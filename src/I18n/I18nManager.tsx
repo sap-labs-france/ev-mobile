@@ -90,14 +90,14 @@ export default class I18nManager {
     return RNLocalize.usesMetricSystem();
   }
 
-  private static isValidDate(date: Date): boolean {
-    return !isNaN(new Date(date).getTime());
-  }
-
-  public static formatDateTime(value: Date, format: string = 'LLL') {
+  public static formatDateTime(value: Date, format: string = 'LLL'): string {
     if (I18nManager.isValidDate(value)) {
       return moment(value).format(format);
     }
     return '-';
+  }
+
+  private static isValidDate(date: Date): boolean {
+    return !isNaN(new Date(date).getTime());
   }
 }

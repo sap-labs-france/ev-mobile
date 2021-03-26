@@ -30,16 +30,6 @@ interface State {
 }
 
 export default class HeaderComponent extends React.Component<Props, State> {
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      hasFilter: false,
-    };
-    // Default values
-    this.searchIsVisible = false;
-  }
-
   public static defaultProps = {
     leftActionIconType: 'MaterialIcons',
     rightActionIconType: 'MaterialIcons',
@@ -48,6 +38,15 @@ export default class HeaderComponent extends React.Component<Props, State> {
   public props: Props;
   private searchIsVisible: boolean;
   private filterModalContainerComponent: FilterModalContainerComponent;
+
+  public constructor(props: Props) {
+    super(props);
+    this.state = {
+      hasFilter: false,
+    };
+    // Default values
+    this.searchIsVisible = false;
+  }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);

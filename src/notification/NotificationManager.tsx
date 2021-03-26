@@ -22,8 +22,7 @@ export default class NotificationManager {
   private centralServerProvider: CentralServerProvider;
   private lastNotification: NotificationOpen;
 
-  private constructor() {
-  }
+  private constructor() {}
 
   public static getInstance(): NotificationManager {
     if (!NotificationManager.instance) {
@@ -121,7 +120,7 @@ export default class NotificationManager {
     });
   }
 
-  public async stop() {
+  public stop() {
     this.removeNotificationDisplayedListener();
     this.removeNotificationListener();
     this.removeNotificationOpenedListener();
