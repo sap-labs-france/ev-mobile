@@ -71,7 +71,8 @@
     "transactionsInProgress": "Laufende Ladevorgänge",
     "statistics": "Statistiken",
     "reportError": "Fehler Melden",
-    "users": "Users"
+    "users": "Users",
+    "badges": "Badges"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -176,11 +177,11 @@
     "unknown": "Unknown"
   },
   "userStatuses": {
-    "active": "active",
-    "inactive": "inactive",
-    "locked": "locked",
-    "blocked": "blocked",
-    "pending": "pending",
+    "active": "Active",
+    "inactive": "Inactive",
+    "locked": "Locked",
+    "blocked": "Blocked",
+    "pending": "Pending",
     "unknown": "Unknown"
   },
   "transactions": {
@@ -214,6 +215,10 @@
     "noOngoingSessions": "Keine laufenden Ladevorgänge",
     "ongoingSessionsNote": "Gehe zu laufenden Ladevorgänge",
     "statistics": "Statistiken",
+    "tags": "Badges",
+    "tagsNote": "Badge list",
+    "users": "Users",
+    "usersNote": "User list",
     "numberOfSessions": "{{nbrSessions}} Ladevorgänge",
     "noSessions": "Kein Ladevorgang gefunden",
     "numberOfSessionsNote": "Anzahl aller Ladevorgänge",
@@ -288,6 +293,12 @@
     "comboCCS": "Kombo",
     "chademo": "Chademo",
     "domestic": "Hausanschluss"
+  },
+  "tags": {
+    "noTags": "No badges",
+    "tags": "Badge(s)",
+    "active": "Active",
+    "inactive": "Inactive"
   },
   "details": {
     "connector": "Anschluss",

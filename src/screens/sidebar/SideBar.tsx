@@ -165,9 +165,16 @@ export default class SideBar extends BaseScreen<Props, State> {
             </ListItem>
             {this.centralServerProvider?.getSecurityProvider().canListUsers() ?
               <ListItem style={style.links} button={true} iconLeft={true}
-                        onPress={() => this.navigateTo('UsersListNavigator', 'UsersList')}>
+                        onPress={() => this.navigateTo('UsersNavigator', 'Users')}>
                 <Icon style={style.linkIcon} type='MaterialIcons' name='people'/>
                 <Text style={style.linkText}>{I18n.t('sidebar.users')}</Text>
+              </ListItem> : null
+            }
+            {this.centralServerProvider?.getSecurityProvider().canListTags() ?
+              <ListItem style={style.links} button={true} iconLeft={true}
+                        onPress={() => this.navigateTo('TagsNavigator', 'Tags')}>
+                <Icon style={style.linkIcon} type='MaterialCommunityIcons' name='credit-card'/>
+                <Text style={style.linkText}>{I18n.t('sidebar.badges')}</Text>
               </ListItem> : null
             }
             <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>

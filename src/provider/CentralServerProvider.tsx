@@ -6,16 +6,17 @@ import jwtDecode from 'jwt-decode';
 import NotificationManager from 'notification/NotificationManager';
 import { KeyValue } from 'types/Global';
 
-import I18nManager from '../I18n/I18nManager';
 import Configuration from '../config/Configuration';
+import I18nManager from '../I18n/I18nManager';
 import { ActionResponse } from '../types/ActionResponse';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
 import Eula, { EulaAccepted } from '../types/Eula';
 import PagingParams from '../types/PagingParams';
-import { ServerAction } from '../types/Server';
+import { ServerAction, ServerRoute } from '../types/Server';
 import Site from '../types/Site';
 import SiteArea from '../types/SiteArea';
+import Tag from '../types/Tag';
 import { TenantConnection } from '../types/Tenant';
 import Transaction from '../types/Transaction';
 import User from '../types/User';
@@ -300,7 +301,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.post(
-      `${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_SIGNIN}`,
+      `${this.buildRestServerAuthURL(tenant)}/${ServerRoute.REST_SIGNIN}`,
       {
         acceptEula,
         email,
@@ -351,7 +352,7 @@ export default class CentralServerProvider {
     // Get the Tenant
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
-    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_END_USER_LICENSE_AGREEMENT}`, {
+    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/${ServerRoute.REST_END_USER_LICENSE_AGREEMENT}`, {
       headers: this.buildHeaders(),
       params,
     });
@@ -363,7 +364,7 @@ export default class CentralServerProvider {
     // Get the Tenant
     const tenant = await this.getTenant(params.tenantSubDomain);
     // Call
-    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_END_USER_LICENSE_AGREEMENT_CHECK}`, {
+    const result = await this.axiosInstance.get(`${this.buildRestServerAuthURL(tenant)}/${ServerRoute.REST_END_USER_LICENSE_AGREEMENT_CHECK}`, {
       headers: this.buildHeaders(),
       params: {
         Email: params.email,
@@ -380,7 +381,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.post(
-      `${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_SIGNON}`,
+      `${this.buildRestServerAuthURL(tenant)}/${ServerRoute.REST_SIGNON}`,
       {
         acceptEula,
         captcha,
@@ -418,7 +419,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.post(
-      `${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_PASSWORD_RESET}`,
+      `${this.buildRestServerAuthURL(tenant)}/${ServerRoute.REST_PASSWORD_RESET}`,
       {
         tenant: tenantSubDomain,
         captcha,
@@ -437,7 +438,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.post(
-      `${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_PASSWORD_RESET}`,
+      `${this.buildRestServerAuthURL(tenant)}/${ServerRoute.REST_PASSWORD_RESET}`,
       {
         tenant: tenantSubDomain,
         hash,
@@ -456,7 +457,7 @@ export default class CentralServerProvider {
     const tenant = await this.getTenant(tenantSubDomain);
     // Call
     const result = await this.axiosInstance.get(
-      `${this.buildRestServerAuthURL(tenant)}/${ServerAction.REST_MAIL_CHECK}`, {
+      `${this.buildRestServerAuthURL(tenant)}/${ServerRoute.REST_MAIL_CHECK}`, {
       headers: this.buildHeaders(),
       params: {
         Tenant: tenantSubDomain,
@@ -670,6 +671,20 @@ export default class CentralServerProvider {
     this.buildPaging(paging, params);
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.USERS}`, {
+      headers: this.buildSecuredHeaders(),
+      params,
+    });
+    return result.data;
+  }
+
+  public async getTags(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Tag>> {
+    this.debugMethod('getTags');
+    // Build Paging
+    this.buildPaging(paging, params);
+    // Force only local tags
+    params['Issuer'] = true;
+    // Call
+    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TAGS}`, {
       headers: this.buildSecuredHeaders(),
       params,
     });

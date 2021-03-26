@@ -10,47 +10,53 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      borderBottomWidth: 1,
-      alignItems: 'center',
-      borderBottomColor: commonColor.listBorderColor,
-      paddingLeft: '5@s',
-      paddingRight: '5@s',
-      height: '80@s',
-    },
-    avatarContainer: {
-      paddingLeft: '10@s',
-      paddingRight: '15@s'
+      flexDirection: 'column',
+      width: '100%'
     },
     selected: {
       opacity: 0.5
+    },
+    header: {
+      padding: '5@s',
+      borderBottomWidth: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      borderBottomColor: commonColor.listBorderColor,
+      backgroundColor: commonColor.listHeaderBgColor
+    },
+    userConstainer: {
     },
     text: {
       fontSize: '15@s',
       color: commonColor.textColor
     },
-    userContainer: {
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
+    description: {
+      textAlign: 'center'
     },
-    userDetailsContainer: {
+    tagId: {
+      marginRight: '7@s',
+      maxWidth: '60%'
+    },
+    tagContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
+      borderBottomWidth: 1,
+      alignItems: 'center',
+      borderBottomColor: commonColor.listBorderColor,
+      padding: '10@s',
+      height: '60@s',
     },
-    name: {
-    },
-    emailContainer: {
+    labelContainer: {
     },
     statusContainer: {
+      alignSelf: 'flex-start',
     },
     status: {
+      height: '21@s',
       backgroundColor: commonColor.containerBgColor,
       borderWidth: 1,
       margin: 0,
-      height: '21@s',
     },
     statusText: {
       fontSize: '11@s',
@@ -62,19 +68,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.brandSuccess
     },
     inactive: {
-      color: commonColor.brandDanger,
-      borderColor: commonColor.brandDanger
+      borderColor: commonColor.brandDanger,
+      color: commonColor.brandDanger
     },
-    pending: {
-      color: commonColor.brandWarning,
-      borderColor: commonColor.brandWarning
-    },
-    role: {
-      fontSize: '12@s'
-    },
-    roleContainer: {
-      marginTop: '2@s'
-    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

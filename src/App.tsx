@@ -8,9 +8,10 @@ import React from 'react';
 import { StatusBar } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import BaseProps from 'types/BaseProps';
+
 import computeStyleSheet from './AppStyles';
-import I18nManager from './I18n/I18nManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
+import I18nManager from './I18n/I18nManager';
 import LocationManager from './location/LocationManager';
 import MigrationManager from './migration/MigrationManager';
 import NotificationManager from './notification/NotificationManager';
@@ -32,12 +33,13 @@ import Sidebar from './screens/sidebar/SideBar';
 import SiteAreas from './screens/site-areas/SiteAreas';
 import Sites from './screens/sites/Sites';
 import Statistics from './screens/statistics/Statistics';
+import Tags from './screens/tags/Tags';
 import Tenants from './screens/tenants/Tenants';
 import TransactionChart from './screens/transactions/chart/TransactionChart';
 import TransactionDetails from './screens/transactions/details/TransactionDetails';
 import TransactionsHistory from './screens/transactions/history/TransactionsHistory';
 import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
-import UsersList from './screens/users/list/UsersList';
+import Users from './screens/users/list/Users';
 import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
 
@@ -54,7 +56,8 @@ const ChargingStationsStack = createStackNavigator();
 const TransactionHistoryStack = createStackNavigator();
 const TransactionInProgressStack = createStackNavigator();
 const rootStack = createStackNavigator();
-const UsersListStack = createStackNavigator();
+const UsersStack = createStackNavigator();
+const TagsStack = createStackNavigator();
 
 // Navigation Tab variable
 const ChargingStationDetailsTabs = createMaterialBottomTabNavigator();
@@ -249,11 +252,19 @@ function createTransactionInProgressNavigator(props: BaseProps) {
   );
 }
 
-function createUsersListNavigator(props: BaseProps) {
+function createUsersNavigator(props: BaseProps) {
   return (
-    <UsersListStack.Navigator initialRouteName='UsersList' headerMode='none'>
-      <UsersListStack.Screen name='UsersList' component={UsersList} initialParams={props?.route?.params?.params} />
-    </UsersListStack.Navigator>
+    <UsersStack.Navigator initialRouteName='Users' headerMode='none'>
+      <UsersStack.Screen name='Users' component={Users} initialParams={props?.route?.params?.params} />
+    </UsersStack.Navigator>
+  );
+}
+
+function createTagsNavigator(props: BaseProps) {
+  return (
+    <TagsStack.Navigator initialRouteName='Tags' headerMode='none'>
+      <TagsStack.Screen name='Tags' component={Tags} initialParams={props?.route?.params?.params} />
+    </TagsStack.Navigator>
   );
 }
 
@@ -269,7 +280,8 @@ function createAppDrawerNavigator(props: BaseProps) {
       <AppDrawer.Screen name='ReportErrorNavigator' component={createReportErrorNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name='TransactionHistoryNavigator' component={createTransactionHistoryNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name='TransactionInProgressNavigator' component={createTransactionInProgressNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name='UsersListNavigator' component={createUsersListNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name='UsersNavigator' component={createUsersNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name='TagsNavigator' component={createTagsNavigator} initialParams={props?.route?.params?.params} />
     </AppDrawer.Navigator>
   );
 }
