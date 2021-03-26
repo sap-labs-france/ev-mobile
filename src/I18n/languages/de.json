@@ -215,6 +215,8 @@
     "noOngoingSessions": "Keine laufenden Ladevorgänge",
     "ongoingSessionsNote": "Gehe zu laufenden Ladevorgänge",
     "statistics": "Statistiken",
+    "tags": "Badges",
+    "tagsNote": "Badge list",
     "numberOfSessions": "{{nbrSessions}} Ladevorgänge",
     "noSessions": "Kein Ladevorgang gefunden",
     "numberOfSessionsNote": "Anzahl aller Ladevorgänge",

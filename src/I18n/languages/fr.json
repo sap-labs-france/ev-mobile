@@ -215,6 +215,8 @@
     "noOngoingSessions": "Pas de Session en cours",
     "ongoingSessionsNote": "Naviguez vers les Session en cours",
     "statistics": "Statistiques",
+    "tags": "Badges",
+    "tagsNote": "Liste des badges",
     "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "Pas de Session trouvée",
     "numberOfSessionsNote": "Nombre total de Sessions",
