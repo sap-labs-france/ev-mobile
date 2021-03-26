@@ -1,6 +1,8 @@
 import { Text, View } from 'native-base';
 import React from 'react';
 import { Chip } from 'react-native-paper';
+import CentralServerProvider from '../../provider/CentralServerProvider';
+import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import User, { UserStatus } from '../../types/User';
 import Utils from '../../utils/Utils';
@@ -13,18 +15,33 @@ export interface Props extends BaseProps {
 }
 
 interface State {
+  user?: User;
 }
 
 export default class UserComponent extends React.Component<Props, State> {
   public props: Props;
   public state: State;
+  private centralServerProvider: CentralServerProvider;
 
   constructor(props: Props) {
     super(props);
+    this.state = {
+      user: this.props.user
+    };
   }
 
   public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
     super.setState(state, callback);
+  }
+
+  public async componentDidMount() {
+    this.centralServerProvider = await ProviderFactory.getProvider();
+    const { user } = this.props;
+    if (user) {
+      const image = await this.getUserImage(user.id as string);
+      user.image = image;
+    }
+    this.setState({user});
   }
 
   private computeStatusStyle(status: string, style: any) {
@@ -40,9 +57,23 @@ export default class UserComponent extends React.Component<Props, State> {
     }
   }
 
+  private async getUserImage(id: string) {
+    try {
+      return await this.centralServerProvider.getUserImage({ID: id});
+    } catch (error) {
+      // Check if HTTP?
+      if (!error.request) {
+        Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+          'users.userUnexpectedError', this.props.navigation);
+      }
+    }
+    return null;
+  }
+
   public render() {
     const style = computeStyleSheet();
-    const { user, selected, navigation } = this.props;
+    const { selected, navigation } = this.props;
+    const { user } = this.state;
     const userFullName = Utils.buildUserName(user);
     const userRole =  user ?  user.role : '';
     const userStatus = user ? user.status : '';

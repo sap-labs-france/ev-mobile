@@ -49,15 +49,15 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     const { selectedIds } = this.state;
     const id = item.id;
     // If the item is already selected, unselect it
-    if (selectedIds.has(id)) {
+    if (selectedIds.has(id as string)) {
       const newSelectedIds = new Set(selectedIds);
-      newSelectedIds.delete(id);
+      newSelectedIds.delete(id as string);
       this.setState({...this.state, selectedIds: newSelectedIds});
       // Else, add the item to the selected Ids
     } else {
       switch (this.props.select) {
         case ItemsListTypes.MULTI:
-          this.setState({...this.state, selectedIds: new Set(selectedIds).add(item.id)});
+          this.setState({...this.state, selectedIds: new Set(selectedIds).add(item.id as string)});
           break;
         case ItemsListTypes.SINGLE:
           this.setState({...this.state, selectedIds: new Set().add(id)});
@@ -84,7 +84,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
         data={data}
         renderItem={({item}) => (
           <TouchableOpacity onPress={() => this.onSelectItem(item)}>
-            {this.props.renderItem(item, selectedIds.has(item.id))}
+            {this.props.renderItem(item, selectedIds.has(item.id as string))}
           </TouchableOpacity>
         )}
         keyExtractor={(item, index) => `${index}`}
