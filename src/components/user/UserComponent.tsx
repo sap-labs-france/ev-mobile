@@ -34,12 +34,11 @@ export default class UserComponent extends React.Component<Props, State> {
     super.setState(state, callback);
   }
 
-  public async componentDidMount() {
+  public async componentDidMount(): Promise<void> {
     this.centralServerProvider = await ProviderFactory.getProvider();
     const { user } = this.props;
     if (user) {
-      const image = await this.getUserImage(user.id as string);
-      user.image = image;
+      user.image = await this.getUserImage(user.id as string);
     }
     this.setState({user});
   }
