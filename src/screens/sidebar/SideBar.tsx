@@ -172,7 +172,7 @@ export default class SideBar extends BaseScreen<Props, State> {
             }
             {this.centralServerProvider?.getSecurityProvider().canListTags() ?
               <ListItem style={style.links} button={true} iconLeft={true}
-                        onPress={() => this.navigateTo('TagsListNavigator', 'TagsList')}>
+                        onPress={() => this.navigateTo('TagsNavigator', 'Tags')}>
                 <Icon style={style.linkIcon} type='MaterialCommunityIcons' name='credit-card-wireless'/>
                 <Text style={style.linkText}>{I18n.t('sidebar.badges')}</Text>
               </ListItem> : null

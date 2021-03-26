@@ -8,9 +8,10 @@ import React from 'react';
 import { StatusBar } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import BaseProps from 'types/BaseProps';
+
 import computeStyleSheet from './AppStyles';
-import I18nManager from './I18n/I18nManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
+import I18nManager from './I18n/I18nManager';
 import LocationManager from './location/LocationManager';
 import MigrationManager from './migration/MigrationManager';
 import NotificationManager from './notification/NotificationManager';
@@ -32,7 +33,7 @@ import Sidebar from './screens/sidebar/SideBar';
 import SiteAreas from './screens/site-areas/SiteAreas';
 import Sites from './screens/sites/Sites';
 import Statistics from './screens/statistics/Statistics';
-import TagsList from './screens/tags/TagsList';
+import Tags from './screens/tags/Tags';
 import Tenants from './screens/tenants/Tenants';
 import TransactionChart from './screens/transactions/chart/TransactionChart';
 import TransactionDetails from './screens/transactions/details/TransactionDetails';
@@ -56,7 +57,7 @@ const TransactionHistoryStack = createStackNavigator();
 const TransactionInProgressStack = createStackNavigator();
 const rootStack = createStackNavigator();
 const UsersListStack = createStackNavigator();
-const TagsListStack = createStackNavigator();
+const TagsStack = createStackNavigator();
 
 // Navigation Tab variable
 const ChargingStationDetailsTabs = createMaterialBottomTabNavigator();
@@ -259,11 +260,11 @@ function createUsersListNavigator(props: BaseProps) {
   );
 }
 
-function createTagsListNavigator(props: BaseProps) {
+function createTagsNavigator(props: BaseProps) {
   return (
-    <TagsListStack.Navigator initialRouteName='TagsList' headerMode='none'>
-      <TagsListStack.Screen name='TagsList' component={TagsList} initialParams={props?.route?.params?.params} />
-    </TagsListStack.Navigator>
+    <TagsStack.Navigator initialRouteName='Tags' headerMode='none'>
+      <TagsStack.Screen name='Tags' component={Tags} initialParams={props?.route?.params?.params} />
+    </TagsStack.Navigator>
   );
 }
 
@@ -280,7 +281,7 @@ function createAppDrawerNavigator(props: BaseProps) {
       <AppDrawer.Screen name='TransactionHistoryNavigator' component={createTransactionHistoryNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name='TransactionInProgressNavigator' component={createTransactionInProgressNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name='UsersListNavigator' component={createUsersListNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name='TagsListNavigator' component={createTagsListNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name='TagsNavigator' component={createTagsNavigator} initialParams={props?.route?.params?.params} />
     </AppDrawer.Navigator>
   );
 }

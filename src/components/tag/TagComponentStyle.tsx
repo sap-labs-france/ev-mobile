@@ -40,7 +40,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingLeft: '5@s',
       paddingRight: '5@s',
       paddingBottom: '5@s',
-      height: '50@s',
+      height: '60@s',
       width: '100%'
     },
     id: {
@@ -89,9 +89,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.brandDanger
     },
     tagText: {
-      fontSize: '15@s',
-      paddingLeft: '10@s',
-      paddingRight: '10@s',
+      fontSize: '13@s',
+      paddingLeft: '5@s',
+      paddingRight: '5@s',
       fontWeight: 'bold'
     },
     tag: {

@@ -3,11 +3,12 @@ import i18n from 'i18n-js';
 import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
-import I18nManager from '../../I18n/I18nManager';
+
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import TagComponent from '../../components/tag/TagComponent';
+import I18nManager from '../../I18n/I18nManager';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
@@ -29,7 +30,7 @@ interface State {
   loading?: boolean;
 }
 
-export default class TagsList extends BaseAutoRefreshScreen<Props, State> {
+export default class Tags extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;

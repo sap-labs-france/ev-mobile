@@ -677,10 +677,12 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getTags(params= {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Tag>> {
+  public async getTags(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Tag>> {
     this.debugMethod('getTags');
     // Build Paging
     this.buildPaging(paging, params);
+    // Force only local tags
+    params['Issuer'] = true;
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TAGS}`, {
       headers: this.buildSecuredHeaders(),
