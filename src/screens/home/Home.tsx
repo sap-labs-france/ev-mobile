@@ -218,18 +218,34 @@ export default class Home extends BaseScreen<Props, State> {
                     </Left>
                   </CardItem>
                 </Card>
-                <Card style={cardStyle.card}>
-                  <CardItem style={cardStyle.cardItem} button={true}
-                    onPress={() => navigation.navigate('TagsNavigator', { key: `${Utils.randomNumber()}` })}>
-                    <Left>
-                      <Icon style={cardStyle.cardIcon} type='MaterialCommunityIcons' name='credit-card' />
-                      <Body>
-                        <Text style={cardStyle.cardText}>{I18n.t('home.tags')}</Text>
-                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.tagsNote')}</Text>
-                      </Body>
-                    </Left>
-                  </CardItem>
-                </Card>
+                {this.centralServerProvider?.getSecurityProvider().canListTags() &&
+                  <Card style={cardStyle.card}>
+                    <CardItem style={cardStyle.cardItem} button={true}
+                      onPress={() => navigation.navigate('TagsNavigator', { key: `${Utils.randomNumber()}` })}>
+                      <Left>
+                        <Icon style={cardStyle.cardIcon} type='MaterialCommunityIcons' name='credit-card' />
+                        <Body>
+                          <Text style={cardStyle.cardText}>{I18n.t('home.tags')}</Text>
+                          <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.tagsNote')}</Text>
+                        </Body>
+                      </Left>
+                    </CardItem>
+                  </Card>
+                }
+                {this.centralServerProvider?.getSecurityProvider().canListUsers() &&
+                  <Card style={cardStyle.card}>
+                    <CardItem style={cardStyle.cardItem} button={true}
+                      onPress={() => navigation.navigate('UsersNavigator', { key: `${Utils.randomNumber()}` })}>
+                      <Left>
+                        <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='people' />
+                        <Body>
+                          <Text style={cardStyle.cardText}>{I18n.t('home.users')}</Text>
+                          <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.usersNote')}</Text>
+                        </Body>
+                      </Left>
+                    </CardItem>
+                  </Card>
+                }
               </Content>
             </Container>
           )}

@@ -217,6 +217,8 @@
     "statistics": "Statistics",
     "tags": "Badges",
     "tagsNote": "Badge list",
+    "users": "Users",
+    "usersNote": "User list",
     "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "No Session found",
     "numberOfSessionsNote": "Total number of Sessions",

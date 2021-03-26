@@ -32,32 +32,30 @@ export default class TagComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { tag, isAdmin, selected } = this.props;
-    const active = tag?.active;
     const userFullName = Utils.buildUserName(tag?.user);
+    const statusStyle = tag?.active ? style.active : style.inactive;
     return (
       <View style={selected ? [style.container, style.selected] : [style.container]}>
         <View style={style.header}>
-          <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.id]}>{tag?.id}</Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagId]}>{tag?.id}</Text>
           {isAdmin && tag.user &&
-            <View style={style.user}>
+            <View style={style.userConstainer}>
               <Text numberOfLines={1} ellipsizeMode={'tail'}
                     style={[style.text, style.name]}>{userFullName}</Text>
             </View>
           }
         </View>
-        <View style={style.tagContent}>
-          <View style={style.label}>
+        <View style={style.tagContainer}>
+          <View style={style.labelContainer}>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.description]}>{tag?.description}</Text>
           </View>
-          <View style={style.status}>
-            <Chip mode={'outlined'}
-              style={[style.tag, active ? style.tagActive : style.tagInactive]}
-              textStyle={[style.tagText, active ? style.tagActive : style.tagInactive]}>
-                {I18n.t(active ? 'tags.active' : 'tags.inactive')}
+          <View style={style.statusContainer}>
+            <Chip style={[style.status, statusStyle]} textStyle={[style.statusText, statusStyle]}>
+              {I18n.t(tag?.active ? 'tags.active' : 'tags.inactive')}
             </Chip>
           </View>
+        </View>
       </View>
-    </View>
     );
   }
 }

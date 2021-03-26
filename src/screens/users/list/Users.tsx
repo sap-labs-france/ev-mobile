@@ -4,18 +4,18 @@ import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
-import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ItemsList from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import UserComponent from '../../../components/user/UserComponent';
+import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import { DataResult } from '../../../types/DataResult';
 import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
-import computeStyleSheet from '../../transactions/TransactionsStyles';
+import computeStyleSheet from './UsersStyle';
 
 export interface Props extends  BaseProps {
 }
@@ -29,7 +29,7 @@ export interface State {
   loading?: boolean;
 }
 
-export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
+export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
@@ -147,8 +147,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
               limit={limit}
               skip={skip}
               renderItem={(item: User, selected: boolean) => (
-                <UserComponent user={item} selected={selected}
-                               navigation={this.props.navigation}/>)}
+                <UserComponent user={item} selected={selected} navigation={this.props.navigation}/>)}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}
               onEndReached={this.onEndScroll}

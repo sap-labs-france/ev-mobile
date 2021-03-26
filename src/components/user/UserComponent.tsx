@@ -1,13 +1,14 @@
 import { Text, View } from 'native-base';
 import React from 'react';
 import { Chip } from 'react-native-paper';
+
 import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import User, { UserStatus } from '../../types/User';
 import Utils from '../../utils/Utils';
-import computeStyleSheet from './UserComponentStyle';
 import UserAvatar from './avatar/UserAvatar';
+import computeStyleSheet from './UserComponentStyle';
 
 export interface Props extends BaseProps {
   user: User;
@@ -78,20 +79,22 @@ export default class UserComponent extends React.Component<Props, State> {
     const userStatus = user ? user.status : '';
     const statusStyle = this.computeStatusStyle(userStatus, style);
     return (
-      <View style={style.userContent}>
-        <View style={style.left}>
+      <View style={style.container}>
+        <View style={style.avatarContainer}>
           <UserAvatar user={user} selected={selected} navigation={navigation}/>
         </View>
-        <View style={selected ?  [style.columnContainer, style.selected] : style.columnContainer }>
-          <View style={style.rowContainer}>
+        <View style={selected ? [style.userContainer, style.selected] : style.userContainer }>
+          <View style={style.userDetailsContainer}>
             <View style={style.name}>
               <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>{userFullName}</Text>
             </View>
             <View style={style.statusContainer}>
-              <Chip style={[style.status, statusStyle]} textStyle={[style.statusText, statusStyle]}>{Utils.translateUserStatus(userStatus)}</Chip>
+              <Chip style={[style.status, statusStyle]} textStyle={[style.statusText, statusStyle]}>
+                {Utils.translateUserStatus(userStatus)}
+              </Chip>
             </View>
           </View>
-          <View style={style.email}>
+          <View style={style.emailContainer}>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>{user.email}</Text>
           </View>
           <View style={style.roleContainer}>
