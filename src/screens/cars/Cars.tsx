@@ -31,7 +31,7 @@ export interface Props extends BaseProps {
 
 }
 
-export default class CarsList extends BaseAutoRefreshScreen<Props, State> {
+export default class Cars extends BaseAutoRefreshScreen<Props, State> {
   public props: Props;
   public state: State;
   private searchText: string;

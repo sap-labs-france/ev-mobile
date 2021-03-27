@@ -10,8 +10,8 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 import BaseProps from 'types/BaseProps';
 
 import computeStyleSheet from './AppStyles';
-import DeepLinkingManager from './deeplinking/DeepLinkingManager';
 import I18nManager from './I18n/I18nManager';
+import DeepLinkingManager from './deeplinking/DeepLinkingManager';
 import LocationManager from './location/LocationManager';
 import MigrationManager from './migration/MigrationManager';
 import NotificationManager from './notification/NotificationManager';
@@ -22,6 +22,7 @@ import Login from './screens/auth/login/Login';
 import ResetPassword from './screens/auth/reset-password/ResetPassword';
 import RetrievePassword from './screens/auth/retrieve-password/RetrievePassword';
 import SignUp from './screens/auth/sign-up/SignUp';
+import Cars from './screens/cars/Cars';
 import ChargingStationActions from './screens/charging-stations/actions/ChargingStationActions';
 import ChargingStationConnectorDetails from './screens/charging-stations/connector-details/ChargingStationConnectorDetails';
 import ChargingStations from './screens/charging-stations/list/ChargingStations';
@@ -42,7 +43,6 @@ import TransactionsInProgress from './screens/transactions/in-progress/Transacti
 import Users from './screens/users/list/Users';
 import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
-import CarsList from "./screens/cars/CarsList";
 
 // Init i18n
 I18nManager.initialize();
@@ -59,7 +59,7 @@ const TransactionInProgressStack = createStackNavigator();
 const rootStack = createStackNavigator();
 const UsersStack = createStackNavigator();
 const TagsStack = createStackNavigator();
-const CarsListStack = createStackNavigator();
+const CarsStack = createStackNavigator();
 
 // Navigation Tab variable
 const ChargingStationDetailsTabs = createMaterialBottomTabNavigator();
@@ -270,11 +270,11 @@ function createTagsNavigator(props: BaseProps) {
   );
 }
 
-function createCarsListNavigator(props: BaseProps) {
+function createCarsNavigator(props: BaseProps) {
   return (
-    <CarsListStack.Navigator initialRouteName='CarsList' headerMode='none'>
-      <CarsListStack.Screen name='CarsList' component={CarsList} initialParams={props?.route?.params?.params} />
-    </CarsListStack.Navigator>
+    <CarsStack.Navigator initialRouteName='Cars' headerMode='none'>
+      <CarsStack.Screen name='Cars' component={Cars} initialParams={props?.route?.params?.params} />
+    </CarsStack.Navigator>
   );
 }
 
@@ -290,7 +290,7 @@ function createAppDrawerNavigator(props: BaseProps) {
       <AppDrawer.Screen name='ReportErrorNavigator' component={createReportErrorNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name='TransactionHistoryNavigator' component={createTransactionHistoryNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name='TransactionInProgressNavigator' component={createTransactionInProgressNavigator} initialParams={props?.route?.params?.params} />
-      <AppDrawer.Screen name='CarsListNavigator' component={createCarsListNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name='CarsNavigator' component={createCarsNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name='UsersNavigator' component={createUsersNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name='TagsNavigator' component={createTagsNavigator} initialParams={props?.route?.params?.params} />
     </AppDrawer.Navigator>

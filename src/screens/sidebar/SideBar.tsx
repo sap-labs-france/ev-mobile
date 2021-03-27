@@ -179,7 +179,7 @@ export default class SideBar extends BaseScreen<Props, State> {
             }
             {!this.centralServerProvider?.getSecurityProvider().canListCars() ?
               <ListItem style={style.links} button={true} iconLeft={true}
-                        onPress={() => this.navigateTo('CarsListNavigator', 'CarsList')}>
+                        onPress={() => this.navigateTo('CarsNavigator', 'Cars')}>
                 <Icon style={style.linkIcon} type='MaterialIcons' name='directions-car'/>
                 <Text style={style.linkText}>{I18n.t('sidebar.cars')}</Text>
               </ListItem> : null
