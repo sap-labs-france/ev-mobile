@@ -11,6 +11,7 @@ export default class MigrationManager {
   private currentMigrationVersion = '1.3';
   private centralServerProvider: CentralServerProvider;
 
+  // eslint-disable-next-line no-useless-constructor
   private constructor() {}
 
   public static getInstance(): MigrationManager {
