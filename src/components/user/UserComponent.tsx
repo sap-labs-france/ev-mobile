@@ -24,8 +24,7 @@ export default class UserComponent extends React.Component<Props, State> {
   public state: State;
   private centralServerProvider: CentralServerProvider;
 
-  // eslint-disable-next-line no-useless-constructor
-  public constructor(props: Props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       user: this.props.user
@@ -102,18 +101,5 @@ export default class UserComponent extends React.Component<Props, State> {
         </View>
       </View>
     );
-  }
-
-  private computeStatusStyle(status: string, style: any) {
-    switch (status) {
-      case UserStatus.ACTIVE:
-        return style.active;
-      case UserStatus.PENDING:
-        return style.pending;
-      case UserStatus.BLOCKED:
-      case UserStatus.INACTIVE:
-      case UserStatus.LOCKED:
-        return style.inactive;
-    }
   }
 }

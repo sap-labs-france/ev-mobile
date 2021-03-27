@@ -83,6 +83,7 @@ const persistNavigationState = async (navigationState: NavigationState) => {
   try {
     await SecuredStorage.saveNavigationState(navigationState);
   } catch (error) {
+    // tslint:disable-next-line: no-console
     console.log(error);
   }
 };
@@ -412,11 +413,11 @@ export default class App extends React.Component<Props, State> {
     });
   }
 
-  public componentWillUnmount() {
+  public async componentWillUnmount() {
     // Deactivate Deep links
     this.deepLinkingManager.stopListening();
     // Stop Notifications
-    this.notificationManager.stop();
+    await this.notificationManager.stop();
     // Stop Location
     this.location.stopListening();
   }
