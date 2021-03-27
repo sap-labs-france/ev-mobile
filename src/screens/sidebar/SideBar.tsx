@@ -170,19 +170,19 @@ export default class SideBar extends BaseScreen<Props, State> {
                 <Text style={style.linkText}>{I18n.t('sidebar.users')}</Text>
               </ListItem> : null
             }
-            {this.centralServerProvider?.getSecurityProvider().canListTags() ?
+            {this.centralServerProvider?.getSecurityProvider().canListTags() &&
               <ListItem style={style.links} button={true} iconLeft={true}
                         onPress={() => this.navigateTo('TagsNavigator', 'Tags')}>
                 <Icon style={style.linkIcon} type='MaterialCommunityIcons' name='credit-card'/>
                 <Text style={style.linkText}>{I18n.t('sidebar.badges')}</Text>
-              </ListItem> : null
+              </ListItem>
             }
-            {!this.centralServerProvider?.getSecurityProvider().canListCars() ?
+            {!this.centralServerProvider?.getSecurityProvider().canListCars() &&
               <ListItem style={style.links} button={true} iconLeft={true}
                         onPress={() => this.navigateTo('CarsNavigator', 'Cars')}>
                 <Icon style={style.linkIcon} type='MaterialIcons' name='directions-car'/>
                 <Text style={style.linkText}>{I18n.t('sidebar.cars')}</Text>
-              </ListItem> : null
+              </ListItem>
             }
             <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
               <Icon style={[style.linkIcon, { color: commonColor.brandDanger }]} type='MaterialIcons' name='error-outline' />
