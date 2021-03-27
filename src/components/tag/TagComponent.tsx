@@ -37,11 +37,15 @@ export default class TagComponent extends React.Component<Props, State> {
     return (
       <View style={selected ? [style.container, style.selected] : [style.container]}>
         <View style={style.header}>
-          <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagId]}>{tag?.id}</Text>
+          <View style={style.tagIdConstainer}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagId]}>
+              {tag?.id}
+            </Text>
+          </View>
           {isAdmin && tag.user &&
             <View style={style.userConstainer}>
               <Text numberOfLines={1} ellipsizeMode={'tail'}
-                    style={[style.text, style.name]}>{userFullName}</Text>
+                style={[style.text, style.fullName]}>{userFullName}</Text>
             </View>
           }
         </View>
