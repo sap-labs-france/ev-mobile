@@ -9,55 +9,45 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   let commonStyles: any;
   commonStyles = ScaledSheet.create({
-    selected: {
-      opacity: 0.3
-    },
-    headerText: {
-      fontSize: '15@s',
-      color: commonColor.textColor
-    },
-    userName: {
-      fontSize: '12@s',
-      color: commonColor.textColor,
-      textAlign: 'center',
-      marginBottom: '2@s'
-    },
-    avatar: {
-      marginRight: '7@s',
-      flexDirection: 'row',
-      justifyContent: 'flex-end'
-    },
-    text: {
-      color: commonColor.textColor,
-      fontSize: '12@s'
-    },
-    ac: {
-      fontSize: '10@s',
-      color: commonColor.textColor,
-    },
-    make: {
-      marginRight: '5@s'
-    },
     container: {
       width: '100%',
       flexDirection: 'column',
       borderBottomWidth: 1,
       borderBottomColor: commonColor.listBorderColor
     },
-    check: {
-      fontSize: '50@s',
-      alignSelf: 'center',
-      top: 0,
-      left: 0,
-      position: 'absolute'
+    selected: {
+      opacity: 0.3
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      backgroundColor: commonColor.listHeaderBgColor,
+      borderBottomColor: commonColor.listBorderColor,
+      paddingVertical: '5@s',
+      paddingHorizontal: '5@s',
+      borderBottomWidth: 1,
+    },
+    // Required to allow name truncation
+    carNameContainer: {
+      maxWidth: '72%'
+    },
+    // Required to allow license plate truncation
+    licensePlateContainer: {
+      width: '28%',
+      flexDirection: 'row',
+      justifyContent: 'flex-end'
+    },
+    headerText: {
+      fontSize: '15@s',
+      color: commonColor.textColor,
     },
     carContent: {
-      flex: 1,
       flexDirection: 'row',
       justifyContent: 'center',
+      alignItems: 'center',
       height: '100@s',
       width: '100%',
-      alignItems: 'center'
     },
     carInfos: {
       flexDirection: 'column',
@@ -66,59 +56,51 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '100%',
       paddingVertical: '5@s'
     },
-    carInfosLine: {
+    userContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      paddingHorizontal: '5@s'
+    },
+    avatarContainer: {
+      marginRight: '7@s',
+    },
+    userNameContainer: {
+      flexDirection: 'row',
+      maxWidth: '80%',
+      flexWrap: 'wrap',
+      justifyContent: 'flex-start'
+    },
+    text: {
+      color: commonColor.textColor,
+      fontSize: '12@s'
+    },
+    powerDetailsContainer: {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
       alignItems: 'center',
       width: '100%',
     },
-    carName: {
-      flexDirection: 'row',
-      width: '75%',
-      overflow: 'hidden',
-      marginRight: '5%'
-    },
-    icon: {
-      color: commonColor.textColor,
-      fontSize: '25@s'
-    },
-    dcIcon: {
-      color: commonColor.textColor,
-      fontSize: '12@s'
+    column: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      // To allow ellipsis truncation
+      maxWidth: '33%'
     },
     iconContainer: {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center'
     },
-    header: {
-      flexDirection: 'row',
-      width: '100%',
-      overflow: 'hidden',
-      backgroundColor: commonColor.listHeaderBgColor,
-      alignItems: 'center',
-      paddingVertical: '5@s',
-      paddingHorizontal: '7@s',
-      borderBottomWidth: 1,
-      justifyContent: 'space-around',
-      borderBottomColor: commonColor.listBorderColor,
+    icon: {
+      color: commonColor.textColor,
+      fontSize: '25@s'
     },
-    licensePlate: {
-      width: '25%',
-      justifyContent: 'flex-end',
-      flexDirection: 'row'
-    },
-    column: {
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'space-between'
-    },
-    line: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '80%',
-      paddingHorizontal: '5@s'
+    currentTypeIcon: {
+      fontSize: '10@s',
+      color: commonColor.textColor,
     },
     imageStyle: {
       width: '40%',
@@ -126,10 +108,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       margin: 0,
       padding: 0
     },
-    userNameContainer: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start'
-    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

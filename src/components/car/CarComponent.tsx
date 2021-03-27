@@ -30,8 +30,8 @@ export default class CarComponent extends React.Component<Props, State> {
   private renderNoUser(style: any) {
     const { navigation } = this.props;
     return (
-      <View style={style.line}>
-        <View style={style.avatar}>
+      <View style={style.userContainer}>
+        <View style={style.avatarContainer}>
           <UserAvatar small={true} navigation={navigation}/>
         </View>
         <Text style={style.userName}>-</Text>
@@ -45,57 +45,54 @@ export default class CarComponent extends React.Component<Props, State> {
     const carUsers = car?.carUsers ? car.carUsers : [];
     const defaultCarUser = carUsers.length === 1 ? carUsers[0] : carUsers?.find((userCar) => userCar.default === true);
     const otherUserCount = Math.max(carUsers.length - 1, 0);
+    const carFullName = car?.carCatalog?.vehicleMake + ' ' + car?.carCatalog?.vehicleModel + ' ' + car.carCatalog?.vehicleModelVersion;
     return (
       <View style={selected ? [style.container, style.selected] : style.container}>
         <View style={style.header}>
-          <View style={style.carName}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.headerText, style.make]}>{car.carCatalog?.vehicleMake} {car.carCatalog?.vehicleModel} {car.carCatalog?.vehicleModelVersion}</Text>
+          <View style={style.carNameContainer}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.headerText}>{carFullName}</Text>
           </View>
-          <View style={style.licensePlate}>
+          <View style={style.licensePlateContainer}>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.headerText}>{car.licensePlate}</Text>
           </View>
         </View>
         <View/>
         <View style={style.carContent}>
           <View style={style.carInfos}>
-            <View style={style.carInfosLine}>
-              {defaultCarUser ?
-                <View style={style.line}>
-                  <View style={style.avatar}>
-                    <UserAvatar small={true} user={defaultCarUser.user} navigation={navigation}/>
-                  </View>
-                  <View style={style.column}>
-                    <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.userName}>{Utils.buildUserName(defaultCarUser.user)}</Text>
-                    <View style={{width: '100%', justifyContent: 'flex-start', flexDirection: 'row' }}>
-                      {otherUserCount ? <Text style={style.text}>(+{otherUserCount})</Text> : null}
-                    </View>
-                  </View>
+            {defaultCarUser ?
+              <View style={style.userContainer}>
+                <View style={style.avatarContainer}>
+                  <UserAvatar small={true} user={defaultCarUser.user} navigation={navigation}/>
                 </View>
-                :
-                this.renderNoUser(style)
-                }
-            </View>
-            <View style={style.carInfosLine}>
+                <View style={style.userNameContainer}>
+                  <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>{Utils.buildUserName(defaultCarUser.user)}</Text>
+                  {(otherUserCount > 0) && <Text style={style.text}> (+{otherUserCount})</Text>}
+                </View>
+              </View>
+              :
+              this.renderNoUser(style)
+              }
+            <View style={style.powerDetailsContainer}>
               <View style={style.column}>
                 <Icon type='MaterialIcons' name='battery-full' style={style.icon}/>
-                <Text style={style.text}>{car.carCatalog?.batteryCapacityFull} kWh</Text>
+                <Text numberOfLines={2} ellipsizeMode={'tail'} style={style.text}>{car.carCatalog?.batteryCapacityFull} kWh</Text>
               </View>
               <View style={style.column}>
                 <View style={style.iconContainer}>
                   <Icon style={style.icon} type='MaterialIcons' name='bolt'/>
-                  <Icon style={style.dcIcon} type='MaterialIcons' name='power-input'/>
+                  <Icon style={style.currentTypeIcon} type='MaterialIcons' name='power-input'/>
                 </View>
-                {car.carCatalog?.fastChargePowerMax ?
-                  <Text style={style.text}>{car?.carCatalog?.fastChargePowerMax} kW</Text>
+                {car?.carCatalog?.fastChargePowerMax ?
+                  <Text numberOfLines={2} style={style.text}>{car?.carCatalog?.fastChargePowerMax} kW</Text>
                   :
                   <Text style={style.text}>-</Text>}
               </View>
               <View style={style.column}>
                 <View style={style.iconContainer}>
                   <Icon style={style.icon} type='MaterialIcons' name='bolt'/>
-                  <Icon style={style.dcIcon} type='MaterialCommunityIcons' name='sine-wave'/>
+                  <Icon style={style.currentTypeIcon} type='MaterialCommunityIcons' name='sine-wave'/>
                 </View>
-                <Text style={style.text}>{car?.converter?.powerWatts} kW ({car?.converter?.numberOfPhases})</Text>
+                <Text numberOfLines={2} style={style.text}>{car?.converter?.powerWatts} kW ({car?.converter?.numberOfPhases})</Text>
               </View>
             </View>
           </View>
