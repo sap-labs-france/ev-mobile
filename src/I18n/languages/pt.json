@@ -225,6 +225,8 @@
     "tagsNote": "Badge list",
     "users": "Users",
     "usersNote": "User list",
+    "cars": "Cars",
+    "carsNote": "Cars List",
     "numberOfSessions": "{{nbrSessions}} Sessões",
     "noSessions": "Sem sessões encontradas",
     "numberOfSessionsNote": "Numero Total de sessões",

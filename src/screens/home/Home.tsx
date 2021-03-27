@@ -246,6 +246,20 @@ export default class Home extends BaseScreen<Props, State> {
                     </CardItem>
                   </Card>
                 }
+                {!this.centralServerProvider?.getSecurityProvider().canListCars() &&
+                <Card style={cardStyle.card}>
+                  <CardItem style={cardStyle.cardItem} button={true}
+                            onPress={() => navigation.navigate('CarsNavigator', { key: `${Utils.randomNumber()}` })}>
+                    <Left>
+                      <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='directions-car' />
+                      <Body>
+                        <Text style={cardStyle.cardText}>{I18n.t('home.cars')}</Text>
+                        <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.carsNote')}</Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                </Card>
+                }
               </Content>
             </Container>
           )}

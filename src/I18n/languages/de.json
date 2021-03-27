@@ -225,6 +225,8 @@
     "tagsNote": "Badge list",
     "users": "Users",
     "usersNote": "User list",
+    "cars": "Cars",
+    "carsNote": "Cars List",
     "numberOfSessions": "{{nbrSessions}} Ladevorgänge",
     "noSessions": "Kein Ladevorgang gefunden",
     "numberOfSessionsNote": "Anzahl aller Ladevorgänge",
