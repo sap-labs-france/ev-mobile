@@ -21,7 +21,11 @@ module.exports = defineConfig({
   "extends": [
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:jsdoc/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -113,7 +117,7 @@ module.exports = defineConfig({
     ],
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-empty-interface": "off",
-    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-floating-promises": "warn",
     "@typescript-eslint/no-inferrable-types": [
       "error",
@@ -131,6 +135,8 @@ module.exports = defineConfig({
         "hoist": "all"
       }
     ],
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
     "@typescript-eslint/no-unused-expressions": "error",
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-var-requires": "error",
@@ -189,15 +195,6 @@ module.exports = defineConfig({
       "undefined"
     ],
     "id-match": "error",
-    "import/no-deprecated": "warn",
-    "import/order": "error",
-    "import/named": "off",
-    "import/namespace": "off",
-    "import/default": "off",
-    "import/no-named-as-default-member": "off",
-    "jsdoc/check-alignment": "error",
-    "jsdoc/check-indentation": "error",
-    "jsdoc/newline-after-description": "error",
     "linebreak-style": [
       "error",
       "unix"
@@ -248,11 +245,11 @@ module.exports = defineConfig({
     "no-duplicate-imports": "error",
     "no-empty": "off",
     "no-eval": "error",
-    "no-extra-semi": "off",
+    "no-extra-semi": "error",
     "no-fallthrough": "error",
     "no-invalid-this": "off",
     "no-irregular-whitespace": "error",
-    "no-multiple-empty-lines": "off",
+    "no-multiple-empty-lines": "error",
     "no-new-func": "error",
     "no-new-wrappers": "error",
     "no-redeclare": "error",

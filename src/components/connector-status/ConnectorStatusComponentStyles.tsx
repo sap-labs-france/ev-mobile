@@ -6,6 +6,9 @@ import { ScaledSheet } from 'react-native-size-matters';
 import ThemeManager from '../../custom-theme/ThemeManager';
 import Utils from '../../utils/Utils';
 
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const darkTheme = ThemeManager.getInstance().isThemeTypeIsDark();

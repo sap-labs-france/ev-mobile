@@ -29,7 +29,7 @@ export default class Tenants extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       createQrCodeTenantVisible: false,

@@ -6,6 +6,9 @@ import { PLATFORM } from '../../theme/variables/commonColor';
 
 import Utils from '../../utils/Utils';
 
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({

@@ -1,5 +1,3 @@
-// @flow
-
 import color from 'color';
 import { Dimensions, PixelRatio, Platform } from 'react-native';
 
@@ -8,7 +6,7 @@ import { PLATFORM } from './commonColor';
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
 const platform = Platform.OS;
-const platformStyle = undefined;
+const platformStyle: string = undefined;
 const isIphoneX =
   platform === PLATFORM.IOS &&
   (deviceHeight === 812 ||

@@ -8,13 +8,13 @@ import MapView, { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
-import computeModalStyle from '../../ModalStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteAreaComponent from '../../components/site-area/SiteAreaComponent';
 import LocationManager from '../../location/LocationManager';
+import computeModalStyle from '../../ModalStyles';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
@@ -53,7 +53,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   private locationEnabled: boolean;
   private currentRegion: Region;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       siteAreas: [],

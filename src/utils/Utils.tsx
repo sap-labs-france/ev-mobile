@@ -9,10 +9,10 @@ import Address from 'types/Address';
 import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
 
-import I18nManager from '../I18n/I18nManager';
 import Configuration from '../config/Configuration';
-import ThemeManager from '../custom-theme/ThemeManager';
 import { buildCommonColor } from '../custom-theme/customCommonColor';
+import ThemeManager from '../custom-theme/ThemeManager';
+import I18nManager from '../I18n/I18nManager';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
 import { RequestError } from '../types/RequestError';
 import { EndpointCloud } from '../types/Tenant';
@@ -134,7 +134,7 @@ export default class Utils {
     return true;
   }
 
-  public static jumpToMapWithAddress(title: string, address: Address) {
+  public static jumpToMapWithAddress(title: string, address: Address): void {
     if (!Utils.containsAddressGPSCoordinates(address)) {
       Message.showError(I18n.t('general.noGPSCoordinates'));
     } else {
@@ -142,11 +142,11 @@ export default class Utils {
     }
   }
 
-  public static jumpToMapWithCoordinates(title: string, coordinates: number[]) {
+  public static jumpToMapWithCoordinates(title: string, coordinates: number[]): void {
     if (!Utils.containsGPSCoordinates(coordinates)) {
       Message.showError(I18n.t('general.noGPSCoordinates'));
     } else {
-      showLocation({
+      void showLocation({
         longitude: coordinates[0],
         latitude: coordinates[1],
         title,

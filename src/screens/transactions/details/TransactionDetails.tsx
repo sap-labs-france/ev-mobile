@@ -6,10 +6,9 @@ import React from 'react';
 import { Image, ImageStyle, ScrollView } from 'react-native';
 
 import noPhotoActive from '../../../../assets/no-photo.png';
-import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
-import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
+import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
@@ -43,7 +42,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       loading: true,
@@ -175,7 +174,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
+        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhotoActive} />
         <Text style={[style.label, style.disabled]}>-</Text>
       </View>
     );
