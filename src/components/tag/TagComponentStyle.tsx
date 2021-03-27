@@ -13,58 +13,53 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      borderBottomWidth: 1,
-      alignItems: 'center',
-      borderBottomColor: commonColor.listBorderColor,
-      padding: '5@s',
-    },
-    avatarContainer: {
-      paddingLeft: '10@s',
-      paddingRight: '15@s'
+      flexDirection: 'column',
+      width: '100%'
     },
     selected: {
       opacity: 0.5
     },
-    userContainer: {
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'center',
-      height: '65@s'
-    },
-    userFullnameStatusContainer: {
+    header: {
+      padding: '5@s',
+      borderBottomWidth: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      borderBottomColor: commonColor.listBorderColor,
+      backgroundColor: commonColor.listHeaderBgColor
     },
-    fullNameContainer: {
-      width: '70%',
+    userConstainer: {
     },
-    fullName: {
-      fontSize: '17@s',
+    text: {
+      fontSize: '15@s',
       color: commonColor.textColor
     },
-    emailRoleContainer: {
-      width: '90%',
+    description: {
     },
-    email: {
-      fontSize: '15@s',
-      paddingTop: '5@s',
-      color: commonColor.textColor,
+    tagId: {
+      marginRight: '7@s',
+      maxWidth: '60%'
     },
-    role: {
-      fontSize: '12@s',
-      color: commonColor.textColor,
+    tagContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      borderBottomWidth: 1,
+      borderBottomColor: commonColor.listBorderColor,
+      padding: '10@s',
+      height: '60@s',
+    },
+    labelContainer: {
+      width: '75%',
     },
     statusContainer: {
+      alignSelf: 'flex-start',
     },
     status: {
+      height: '21@s',
       backgroundColor: commonColor.containerBgColor,
       borderWidth: 1,
       margin: 0,
-      height: '21@s',
     },
     statusText: {
       fontSize: '11@s',
@@ -76,19 +71,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.brandSuccess
     },
     inactive: {
-      color: commonColor.brandDanger,
-      borderColor: commonColor.brandDanger
+      borderColor: commonColor.brandDanger,
+      color: commonColor.brandDanger
     },
-    pending: {
-      color: commonColor.brandWarning,
-      borderColor: commonColor.brandWarning
-    },
-    role: {
-      fontSize: '12@s'
-    },
-    roleContainer: {
-      marginTop: '2@s'
-    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

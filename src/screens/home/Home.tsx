@@ -161,68 +161,37 @@ export default class Home extends BaseScreen<Props, State> {
                     </Left>
                   </CardItem>
                 </Card>
-              )}
-              <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem} button
-                  onPress={() => navigation.navigate('ChargingStationsNavigator', { screen: 'ChargingStations', key: `${Utils.randomNumber()}` })}>
-                  <Left>
-                    <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='ev-station' />
-                    <Body>
-                      <Text style={cardStyle.cardText}>{I18n.t('home.browseChargers')}</Text>
-                      <Text note style={cardStyle.cardNote}>{I18n.t('home.browseChargersNote')}</Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
-              <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem} button onPress={() => this.setState({ qrCodeVisible: true })}>
-                  <Left>
-                    <Icon style={cardStyle.cardIcon} type='AntDesign' name='qrcode' />
-                    <Body>
-                      <Text style={cardStyle.cardText}>{I18n.t('qrCode.browseScan&Charge')}</Text>
-                      <Text note style={cardStyle.cardNote}>{I18n.t('qrCode.browseScan&ChargeNote')}</Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
-              <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem} button
-                  onPress={() => navigation.navigate('TransactionHistoryNavigator', { screen: 'TransactionsHistory', key: `${Utils.randomNumber()}` })}>
-                  <Left>
-                    <Icon style={cardStyle.cardIcon} type='MaterialCommunityIcons' name='history' />
-                    <Body>
-                      <Text style={cardStyle.cardText}>{I18n.t('home.browseSessions')}</Text>
-                      <Text note style={cardStyle.cardNote}>{I18n.t('home.browseSessionsNote')}</Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
-              <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem} button onPress={this.navigateToTransactionInProgress}>
-                  <Left>
-                    <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='play-arrow' />
-                    <Body>
-                      <Text style={cardStyle.cardText}>{I18n.t('home.ongoingSessions')}</Text>
-                      <Text note style={cardStyle.cardNote}>{I18n.t('home.ongoingSessionsNote')}</Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
-              <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem} button
-                  onPress={() => navigation.navigate('StatisticsNavigator', { key: `${Utils.randomNumber()}` })}>
-                  <Left>
-                    <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='assessment' />
-                    <Body>
-                      <Text style={cardStyle.cardText}>{I18n.t('home.browseStatistics')}</Text>
-                      <Text note style={cardStyle.cardNote}>{I18n.t('home.browseStatisticsNote')}</Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
-            </Content>
-          </Container>
-        )}
+                {this.centralServerProvider?.getSecurityProvider().canListTags() &&
+                  <Card style={cardStyle.card}>
+                    <CardItem style={cardStyle.cardItem} button={true}
+                      onPress={() => navigation.navigate('TagsNavigator', { key: `${Utils.randomNumber()}` })}>
+                      <Left>
+                        <Icon style={cardStyle.cardIcon} type='MaterialCommunityIcons' name='credit-card' />
+                        <Body>
+                          <Text style={cardStyle.cardText}>{I18n.t('home.tags')}</Text>
+                          <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.tagsNote')}</Text>
+                        </Body>
+                      </Left>
+                    </CardItem>
+                  </Card>
+                }
+                {this.centralServerProvider?.getSecurityProvider().canListUsers() &&
+                  <Card style={cardStyle.card}>
+                    <CardItem style={cardStyle.cardItem} button={true}
+                      onPress={() => navigation.navigate('UsersNavigator', { key: `${Utils.randomNumber()}` })}>
+                      <Left>
+                        <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='people' />
+                        <Body>
+                          <Text style={cardStyle.cardText}>{I18n.t('home.users')}</Text>
+                          <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.usersNote')}</Text>
+                        </Body>
+                      </Left>
+                    </CardItem>
+                  </Card>
+                }
+              </Content>
+            </Container>
+          )}
       </Container>
     );
   };

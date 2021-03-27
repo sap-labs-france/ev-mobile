@@ -71,7 +71,8 @@
     "transactionsInProgress": "Sessions In Progress",
     "statistics": "Statistics",
     "reportError": "Report Error",
-    "users": "Users"
+    "users": "Users",
+    "badges": "Badges"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -176,11 +177,11 @@
     "unknown": "Unknown"
   },
   "userStatuses": {
-    "active": "active",
-    "inactive": "inactive",
-    "locked": "locked",
-    "blocked": "blocked",
-    "pending": "pending",
+    "active": "Active",
+    "inactive": "Inactive",
+    "locked": "Locked",
+    "blocked": "Blocked",
+    "pending": "Pending",
     "unknown": "Unknown"
   },
   "transactions": {
@@ -214,6 +215,10 @@
     "noOngoingSessions": "No Session In Progress",
     "ongoingSessionsNote": "Navigate to Sessions in progress",
     "statistics": "Statistics",
+    "tags": "Badges",
+    "tagsNote": "Badge list",
+    "users": "Users",
+    "usersNote": "User list",
     "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "No Session found",
     "numberOfSessionsNote": "Total number of Sessions",
@@ -288,6 +293,12 @@
     "comboCCS": "Combo",
     "chademo": "Chademo",
     "domestic": "Domestic"
+  },
+  "tags": {
+    "noTags": "No badges",
+    "tags": "Badge(s)",
+    "active": "Active",
+    "inactive": "Inactive"
   },
   "details": {
     "connector": "Connector",

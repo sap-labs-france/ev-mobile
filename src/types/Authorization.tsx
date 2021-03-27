@@ -16,6 +16,7 @@ export enum Entity {
   REPORT = 'Report',
   USER = 'User',
   USERS = 'Users',
+  TAGS = 'Tags',
   VEHICLE_MANUFACTURER = 'VehicleManufacturer',
   VEHICLE_MANUFACTURERS = 'VehicleManufacturers',
   VEHICLES = 'Vehicles',
