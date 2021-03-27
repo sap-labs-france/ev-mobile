@@ -17,15 +17,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       opacity: 0.5
     },
     header: {
-      padding: '5@s',
-      borderBottomWidth: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      padding: '5@s',
+      borderBottomWidth: 1,
       borderBottomColor: commonColor.listBorderColor,
       backgroundColor: commonColor.listHeaderBgColor
     },
+    tagIdConstainer: {
+      width: '40%'
+    },
     userConstainer: {
+      width: '60%'
     },
     text: {
       fontSize: '15@s',
@@ -34,8 +38,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     description: {
     },
     tagId: {
-      marginRight: '7@s',
-      maxWidth: '60%'
+      // width: '50%'
+      alignSelf: 'flex-start',
+    },
+    fullName: {
+      // width: '25%',
+      alignSelf: 'flex-end',
     },
     tagContainer: {
       flexDirection: 'row',
