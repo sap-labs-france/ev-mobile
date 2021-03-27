@@ -20,6 +20,7 @@ export default class TagComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
 
+  // eslint-disable-next-line no-useless-constructor
   public constructor(props: Props) {
     super(props);
   }
