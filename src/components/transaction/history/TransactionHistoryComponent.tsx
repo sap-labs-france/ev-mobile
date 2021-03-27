@@ -19,8 +19,7 @@ export interface Props extends BaseProps {
   visible?: boolean;
 }
 
-interface State {
-}
+interface State {}
 
 export default class TransactionHistoryComponent extends React.Component<Props, State> {
   public state: State;
@@ -34,7 +33,10 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
   };
 
@@ -54,35 +56,32 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate(
-              'TransactionDetailsTabs',
-              {
-                params: { transactionID: transaction.id },
-                key: `${Utils.randomNumber()}`
-              }
-            );
+            navigation.navigate('TransactionDetailsTabs', {
+              params: { transactionID: transaction.id },
+              key: `${Utils.randomNumber()}`
+            });
           }}>
           <View style={style.container}>
             <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} />
             <View style={style.transactionContent}>
               <View style={style.columnContainer}>
-                <Icon type='MaterialIcons' name='ev-station' style={[style.icon, style.info]} />
+                <Icon type="MaterialIcons" name="ev-station" style={[style.icon, style.info]} />
                 <Text style={[style.labelValue, style.info]}>{I18nManager.formatNumber(consumption)}</Text>
                 <Text style={[style.subLabelValue, style.info]}>(kW.h)</Text>
               </View>
               <View style={style.columnContainer}>
-                <Icon type='MaterialIcons' name='timer' style={[style.icon, style.info]} />
+                <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
                 <Text style={[style.labelValue, style.info]}>{duration}</Text>
                 <Text style={[style.subLabelValue, style.info]}>(hh:mm)</Text>
               </View>
               <View style={style.columnContainer}>
-                <Icon type='MaterialIcons' name='timer-off' style={[style.icon, inactivityStyle]} />
+                <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
                 <Text style={[style.labelValue, inactivityStyle]}>{inactivity}</Text>
                 <Text style={[style.subLabelValue, inactivityStyle]}>(hh:mm)</Text>
               </View>
               {isPricingActive && (
                 <View style={style.columnContainer}>
-                  <Icon type='FontAwesome' name='money' style={[style.icon, style.info]} />
+                  <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
                   <Text style={[style.labelValue, style.info]}>{I18nManager.formatCurrency(price)}</Text>
                   <Text style={[style.subLabelValue, style.info]}>({transaction.priceUnit})</Text>
                 </View>

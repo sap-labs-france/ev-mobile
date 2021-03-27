@@ -21,7 +21,7 @@ const theme = (themeType: ThemeType) => {
       shadowColor: commonColor.brandDark,
       shadowOffset: { width: 1, height: 3 },
       shadowOpacity: 0.2,
-      shadowRadius: 1.2,
+      shadowRadius: 1.2
     },
     'NativeBase.Header': {
       ...headerTheme(commonColor),

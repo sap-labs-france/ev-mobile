@@ -34,7 +34,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginTop: '-3@s'
     },
     info: {
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     success: {
       color: commonColor.brandSuccess
@@ -63,11 +63,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     labelValue: {
       fontSize: '15@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     subLabelValue: {
       fontSize: '10@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};

@@ -19,8 +19,7 @@ export interface Props extends BaseProps {
   close: (newTenant?: TenantConnection) => boolean;
 }
 
-interface State {
-}
+interface State {}
 
 export default class TenantQrCode extends BaseScreen<State, Props> {
   public state: State;
@@ -37,7 +36,10 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
     Orientation.lockToPortrait();
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
   };
 
@@ -45,7 +47,8 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
     const { tenants } = this.props;
     // Get Endpoint
     const newTenantEndpointCloud = this.tenantEndpointClouds.find(
-      (tenantEndpointCloud) => tenantEndpointCloud.id === tenantQrCode.endpoint);
+      (tenantEndpointCloud) => tenantEndpointCloud.id === tenantQrCode.endpoint
+    );
     // Create
     const newTenant: TenantConnection = {
       subdomain: tenantQrCode.tenantSubDomain,
@@ -67,15 +70,14 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
       // Parse
       const tenantQrCode = JSON.parse(decodedQrCodeData) as TenantQRCode;
       // Check mandatory props
-      if (!tenantQrCode.tenantSubDomain ||
-          !tenantQrCode.tenantName ||
-          !tenantQrCode.endpoint) {
+      if (!tenantQrCode.tenantSubDomain || !tenantQrCode.tenantName || !tenantQrCode.endpoint) {
         Message.showError(I18n.t('qrCode.invalidQRCode'));
         return;
       }
       // Check Endpoint
       const newTenantEndpointCloud = this.tenantEndpointClouds.find(
-        (tenantEndpointCloud) => tenantEndpointCloud.id === tenantQrCode.endpoint);
+        (tenantEndpointCloud) => tenantEndpointCloud.id === tenantQrCode.endpoint
+      );
       if (!newTenantEndpointCloud) {
         Message.showError(I18n.t('qrCode.unknownEndpoint', { endpoint: tenantQrCode.endpoint }));
         return;
@@ -112,7 +114,8 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
           showMarker
           reactivate
           reactivateTimeout={1000}
-          onRead={async (qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)} />
+          onRead={async (qrCode) => this.checkQrCodeDataAndNavigate(qrCode.data)}
+        />
       </Container>
     );
   }

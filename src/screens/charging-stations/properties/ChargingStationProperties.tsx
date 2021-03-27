@@ -14,8 +14,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './ChargingStationPropertiesStyles';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
 interface State {
   loading?: boolean;
@@ -36,13 +35,19 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
     { key: 'currentIPAddress', title: 'details.currentIP' },
     { key: 'ocppVersion', title: 'details.ocppVersion' },
     {
-      key: 'lastReboot', title: 'details.lastReboot', formatter: (lastReboot: Date): string => I18nManager.formatDateTime(lastReboot),
+      key: 'lastReboot',
+      title: 'details.lastReboot',
+      formatter: (lastReboot: Date): string => I18nManager.formatDateTime(lastReboot)
     },
     {
-      key: 'createdOn', title: 'general.createdOn', formatter: (createdOn: Date): string => I18nManager.formatDateTime(createdOn),
+      key: 'createdOn',
+      title: 'general.createdOn',
+      formatter: (createdOn: Date): string => I18nManager.formatDateTime(createdOn)
     },
     {
-      key: 'capabilities', title: 'details.capabilities', formatterWithComponents: true,
+      key: 'capabilities',
+      title: 'details.capabilities',
+      formatterWithComponents: true,
       formatter: (capabilities: ChargingStationCapabilities): Element[] => {
         const formatterValues: Element[] = [];
         if (capabilities) {
@@ -55,10 +60,12 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
           }
         }
         return formatterValues;
-      },
+      }
     },
     {
-      key: 'ocppStandardParameters', title: 'details.ocppStandardParams', formatterWithComponents: true,
+      key: 'ocppStandardParameters',
+      title: 'details.ocppStandardParams',
+      formatterWithComponents: true,
       formatter: (ocppStandardParameters: KeyValue[]): Element[] => {
         const formatterValues: Element[] = [];
         if (ocppStandardParameters) {
@@ -68,10 +75,12 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
           }
         }
         return formatterValues;
-      },
+      }
     },
     {
-      key: 'ocppVendorParameters', title: 'details.ocppVendorParams', formatterWithComponents: true,
+      key: 'ocppVendorParameters',
+      title: 'details.ocppVendorParams',
+      formatterWithComponents: true,
       formatter: (ocppVendorParameters: KeyValue[]): Element[] => {
         const formatterValues: Element[] = [];
         if (ocppVendorParameters) {
@@ -81,8 +90,8 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
           }
         }
         return formatterValues;
-      },
-    },
+      }
+    }
   ];
 
   constructor(props: Props) {
@@ -90,11 +99,14 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
     this.state = {
       loading: true,
       refreshing: false,
-      chargingStation: null,
+      chargingStation: null
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
   };
 
@@ -116,7 +128,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
       this.setState({
         loading: false,
         chargingStation,
-        chargingStationProperties,
+        chargingStationProperties
       });
     }
   };
@@ -128,8 +140,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
       return chargingStation;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'chargers.chargerUnexpectedError', this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'chargers.chargerUnexpectedError', this.props.navigation);
     }
     return null;
   };
@@ -172,32 +183,34 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
           rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer()); return true;
+            navigation.dispatch(DrawerActions.openDrawer());
+            return true;
           }}
           rightActionIcon={'menu'}
         />
         {loading ? (
-          <Spinner style={style.spinner} color='grey' />
+          <Spinner style={style.spinner} color="grey" />
         ) : (
           <FlatList
             data={this.displayedProperties}
             renderItem={({ item, index }) => (
               <View style={index % 2 ? [style.descriptionContainer, style.rowBackground] : style.descriptionContainer}>
                 <Text style={style.label}>{I18n.t(item.title)}</Text>
-                {item.formatter && item.value !== '-' ?
-                  item.formatterWithComponents ?
+                {item.formatter && item.value !== '-' ? (
+                  item.formatterWithComponents ? (
                     <ScrollView horizontal alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValues}>
                       {item.formatter(item.value)}
                     </ScrollView>
-                    :
+                  ) : (
                     <ScrollView horizontal alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
                       <Text style={style.value}>{item.formatter(item.value)}</Text>
                     </ScrollView>
-                  :
+                  )
+                ) : (
                   <ScrollView horizontal alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
                     <Text style={style.value}>{item.value}</Text>
                   </ScrollView>
-                }
+                )}
               </View>
             )}
             keyExtractor={(item) => `${item.key}`}

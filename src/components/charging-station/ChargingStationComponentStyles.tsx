@@ -31,7 +31,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      width: '70%',
+      width: '70%'
     },
     subHeaderContent: {
       flexDirection: 'row',
@@ -39,14 +39,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       height: '25@s',
       paddingRight: '5@s',
-      paddingLeft: '5@s',
+      paddingLeft: '5@s'
     },
     address: {
       width: '80%',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     distance: {
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     headerName: {
       marginLeft: '5@s',
@@ -57,28 +57,27 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     buttonContainer: {
       flexDirection: 'row',
       justifyContent: 'flex-end',
-      alignItems: 'center',
+      alignItems: 'center'
     },
-    button: {
-    },
+    button: {},
     buttonRight: {
-      marginRight: '10@s',
+      marginRight: '10@s'
     },
     icon: {
       fontSize: '30@s',
       color: commonColor.headerTextColor
     },
     iconLeft: {
-      marginLeft: '10@s',
+      marginLeft: '10@s'
     },
     iconRight: {
-      marginRight: '10@s',
+      marginRight: '10@s'
     },
     iconLocation: {
-      marginTop: '5@s',
+      marginTop: '5@s'
     },
     iconSettings: {
-      marginTop: Platform.OS === 'ios' ? '-3@s' : 0,
+      marginTop: Platform.OS === 'ios' ? '-3@s' : 0
     },
     heartbeatIcon: {
       color: commonColor.success,

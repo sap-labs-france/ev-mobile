@@ -10,8 +10,7 @@ export interface Props extends BaseProps {
   count: number;
 }
 
-interface State {
-}
+interface State {}
 
 export default class ListFooterComponent extends React.Component<Props, State> {
   public state: State;
@@ -21,7 +20,10 @@ export default class ListFooterComponent extends React.Component<Props, State> {
     super(props);
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
   };
 
@@ -31,7 +33,7 @@ export default class ListFooterComponent extends React.Component<Props, State> {
     if (skip + limit < count || count === -1) {
       return (
         <View style={style.spinnerContainer}>
-          <Spinner color='grey'/>
+          <Spinner color="grey" />
         </View>
       );
     }

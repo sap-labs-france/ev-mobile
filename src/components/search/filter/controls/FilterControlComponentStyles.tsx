@@ -17,13 +17,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '35@s',
       paddingLeft: '15@s',
       paddingRight: '15@s',
-      alignItems: 'center',
+      alignItems: 'center'
     },
     columnFilterContainer: {
       flexDirection: 'column',
       justifyContent: 'space-evenly',
       height: '100@s',
-      alignItems: 'center',
+      alignItems: 'center'
     },
     rowFilterWithBorder: {
       borderTopWidth: 1,
@@ -31,28 +31,28 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     textFilter: {
       fontSize: '15@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     filterValue: {
       fontSize: '15@s',
       color: commonColor.textColor
     },
     switchFilter: {
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     connectorTypeFilterContainer: {
       flexDirection: 'row',
       justifyContent: 'space-evenly',
-      width: '100%',
+      width: '100%'
     },
     connectorTypeButton: {
       width: '50@s',
-      height: '50@s',
+      height: '50@s'
     },
     connectorTypeSVG: {
       width: '40@s',
-      height: '40@s',
-    },
+      height: '40@s'
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

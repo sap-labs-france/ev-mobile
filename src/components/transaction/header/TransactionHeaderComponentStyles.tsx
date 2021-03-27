@@ -65,7 +65,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     label: {
       fontSize: '10@s',
       marginTop: '-3@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     info: {
       color: commonColor.primary
@@ -92,11 +92,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     icon: {
       fontSize: '30@s',
       justifyContent: 'flex-end',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     labelValue: {
       fontSize: '15@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};

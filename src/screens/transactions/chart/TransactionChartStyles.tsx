@@ -56,7 +56,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginTop: '20@s',
       fontSize: '14@s',
       textAlign: 'center',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};
@@ -66,7 +66,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     chartWithHeader: {
       height: '73%'
-    },
+    }
   };
   return ResponsiveStylesSheet.createOriented({
     landscape: deepmerge(commonStyles, landscapeStyles) as StyleSheet.NamedStyles<any>,

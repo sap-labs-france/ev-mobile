@@ -11,8 +11,7 @@ export default class MigrationManager {
   private currentMigrationVersion = '1.3';
   private centralServerProvider: CentralServerProvider;
 
-  private constructor() {
-  }
+  private constructor() {}
 
   public static getInstance(): MigrationManager {
     if (!MigrationManager.instance) {

@@ -84,7 +84,7 @@ export default class Utils {
         result = value;
       } else {
         // Convert
-        result = (value === 'true');
+        result = value === 'true';
       }
     }
     return result;
@@ -109,17 +109,15 @@ export default class Utils {
       distance *= 1.09361;
     }
     if (distance < 1000) {
-      return I18nManager.isMetricsSystem() ?
-        Math.round(distance).toString() + ' m' :
-        Math.round(distance).toString() + ' yd';
+      return I18nManager.isMetricsSystem() ? Math.round(distance).toString() + ' m' : Math.round(distance).toString() + ' yd';
     }
-    return I18nManager.isMetricsSystem() ?
-      I18nManager.formatNumber(Math.round(distance / 100) / 10) + ' km' :
-      I18nManager.formatNumber(Math.round(distance * 0.000621371)) + ' mi';
+    return I18nManager.isMetricsSystem()
+      ? I18nManager.formatNumber(Math.round(distance / 100) / 10) + ' km'
+      : I18nManager.formatNumber(Math.round(distance * 0.000621371)) + ' mi';
   }
 
   public static getValuesFromEnum(enumType: any): number[] {
-    const keys: string[] = Object.keys(enumType).filter(httpError => typeof enumType[httpError] === 'number');
+    const keys: string[] = Object.keys(enumType).filter((httpError) => typeof enumType[httpError] === 'number');
     const values: number[] = keys.map((httpErrorKey: string) => enumType[httpErrorKey]);
     return values;
   }
@@ -150,11 +148,11 @@ export default class Utils {
         longitude: coordinates[0],
         latitude: coordinates[1],
         title,
-        googleForceLatLon: true,  // optionally force GoogleMaps to use the latlon for the query instead of the title
+        googleForceLatLon: true, // optionally force GoogleMaps to use the latlon for the query instead of the title
         alwaysIncludeGoogle: true, // optional, true will always add Google Maps to iOS and open in Safari, even if app is not installed (default: false)
         dialogTitle: I18n.t('general.chooseApp'),
         dialogMessage: I18n.t('general.availableApps'),
-        cancelText: I18n.t('general.close'),
+        cancelText: I18n.t('general.close')
       });
     }
   }
@@ -179,8 +177,10 @@ export default class Utils {
     // Check if GPs are available
     if (coordinates && coordinates.length === 2 && coordinates[0] && coordinates[1]) {
       // Check Longitude & Latitude
-      if (new RegExp(Constants.REGEX_VALIDATION_LONGITUDE).test(coordinates[0].toString()) &&
-          new RegExp(Constants.REGEX_VALIDATION_LATITUDE).test(coordinates[1].toString())) {
+      if (
+        new RegExp(Constants.REGEX_VALIDATION_LONGITUDE).test(coordinates[0].toString()) &&
+        new RegExp(Constants.REGEX_VALIDATION_LATITUDE).test(coordinates[1].toString())
+      ) {
         return true;
       }
     }
@@ -221,7 +221,7 @@ export default class Utils {
             // Charging Station
             if (connectorId === 0 && chargePointOfCS.power) {
               totalPower += chargePointOfCS.power;
-            // Connector
+              // Connector
             } else if (chargePointOfCS.connectorIDs.includes(connectorId) && chargePointOfCS.power) {
               if (chargePointOfCS.cannotChargeInParallel || chargePointOfCS.sharePowerToAllConnectors) {
                 // Check Connector ID
@@ -348,7 +348,7 @@ export default class Utils {
             // Charging Station
             if (connectorId === 0 && chargePointOfCS.currentType) {
               return chargePointOfCS.currentType;
-            // Connector
+              // Connector
             } else if (chargePointOfCS.connectorIDs.includes(connectorId) && chargePointOfCS.currentType) {
               // Check Connector ID
               const connector = Utils.getConnectorFromID(chargingStation, connectorId);
@@ -430,8 +430,7 @@ export default class Utils {
             if (chargePointOfCS.excludeFromPowerLimitation) {
               continue;
             }
-            if (chargePointOfCS.cannotChargeInParallel ||
-              chargePointOfCS.sharePowerToAllConnectors) {
+            if (chargePointOfCS.cannotChargeInParallel || chargePointOfCS.sharePowerToAllConnectors) {
               // Add limit amp of one connector
               amperageLimit += Utils.getConnectorFromID(chargingStation, chargePointOfCS.connectorIDs[0]).amperageLimit;
             } else {
@@ -505,7 +504,12 @@ export default class Utils {
     return new Promise((resolve) => setTimeout(resolve, millis));
   }
 
-  public static getParamFromNavigation(route: any, name: string, defaultValue: string|boolean, removeValue = false): string | number | boolean | object {
+  public static getParamFromNavigation(
+    route: any,
+    name: string,
+    defaultValue: string | boolean,
+    removeValue = false
+  ): string | number | boolean | object {
     const params: any = route.params?.params ? route.params.params : route.params;
     // Has param object?
     if (!params) {
@@ -562,18 +566,18 @@ export default class Utils {
     const hours = Math.floor(durationSecs / 3600);
     durationSecs -= hours * 3600;
     const minutes = Math.floor(durationSecs / 60);
-    const seconds = Math.floor(durationSecs - (minutes * 60));
+    const seconds = Math.floor(durationSecs - minutes * 60);
     if (days !== 0) {
       result += `${days}${I18n.t('general.day')} `;
     }
-    if (((hours !== 0) || (days !== 0)) && (hours !== 0 || (minutes !== 0 && days === 0))) {
+    if ((hours !== 0 || days !== 0) && (hours !== 0 || (minutes !== 0 && days === 0))) {
       result += `${hours}${I18n.t('general.hour')} `;
     }
     if (days === 0) {
-      if ((minutes !== 0) || (hours !== 0) && (minutes !== 0 || (seconds !== 0 && hours === 0))) {
+      if (minutes !== 0 || (hours !== 0 && (minutes !== 0 || (seconds !== 0 && hours === 0)))) {
         result += `${minutes}${I18n.t('general.minute')} `;
       }
-      if ((hours === 0) && (seconds !== 0)) {
+      if (hours === 0 && seconds !== 0) {
         result += `${seconds}${I18n.t('general.second')}`;
       }
     }
@@ -607,7 +611,13 @@ export default class Utils {
     return 0;
   }
 
-  public static async handleHttpUnexpectedError(centralServerProvider: CentralServerProvider, error: RequestError, defaultErrorMessage: string, navigation?: NavigationContainerRef, fctRefresh?: () => void) {
+  public static async handleHttpUnexpectedError(
+    centralServerProvider: CentralServerProvider,
+    error: RequestError,
+    defaultErrorMessage: string,
+    navigation?: NavigationContainerRef,
+    fctRefresh?: () => void
+  ) {
     console.error('HTTP request error', error);
     // Check if HTTP?
     if (error.request) {
@@ -817,9 +827,7 @@ export default class Utils {
   };
 
   private static getDeviceLocale(): string {
-    return Platform.OS === 'ios' ?
-      NativeModules.SettingsManager.settings.AppleLocale :
-      NativeModules.I18nManager.localeIdentifier;
+    return Platform.OS === 'ios' ? NativeModules.SettingsManager.settings.AppleLocale : NativeModules.I18nManager.localeIdentifier;
   }
 
   private static getDeviceLanguage(): string {

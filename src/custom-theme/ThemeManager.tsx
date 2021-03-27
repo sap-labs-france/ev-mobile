@@ -6,8 +6,7 @@ export default class ThemeManager {
   private static instance: ThemeManager;
   private themeType?: ThemeType;
 
-  private constructor() {
-  }
+  private constructor() {}
 
   public static getInstance(): ThemeManager {
     if (!ThemeManager.instance) {

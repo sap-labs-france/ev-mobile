@@ -14,8 +14,7 @@ import BaseScreen from '../../base-screen/BaseScreen';
 import AuthHeader from '../AuthHeader';
 import computeStyleSheet from '../AuthStyles';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
 interface State {
   tenantSubDomain?: string;
@@ -56,7 +55,10 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
   };
 
@@ -95,13 +97,15 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
         this.props.navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{
-              name: 'Login',
-              params: {
-                tenantSubDomain: this.state.tenantSubDomain,
-                email: this.state.email
+            routes: [
+              {
+                name: 'Login',
+                params: {
+                  tenantSubDomain: this.state.tenantSubDomain,
+                  email: this.state.email
+                }
               }
-            }]
+            ]
           })
         );
       } catch (error) {
@@ -121,8 +125,7 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
               break;
             default:
               // Other common Error
-              Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-                'authentication.resetPasswordUnexpectedError');
+              Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.resetPasswordUnexpectedError');
           }
         } else {
           Message.showError(I18n.t('authentication.resetPasswordUnexpectedError'));
@@ -148,18 +151,18 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
     return (
       <View style={style.container}>
         <ScrollView contentContainerStyle={style.scrollContainer}>
-          <KeyboardAvoidingView style={style.keyboardContainer} behavior='padding'>
-            <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo}/>
+          <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
+            <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} />
             <Form style={formStyle.form}>
               <Item inlineLabel style={formStyle.inputGroup}>
-                <Icon active name='email' type='MaterialCommunityIcons' style={formStyle.inputIcon} />
+                <Icon active name="email" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType={'next'}
                   selectionColor={commonColor.textColor}
                   placeholder={I18n.t('authentication.email')}
                   placeholderTextColor={commonColor.placeholderTextColor}
                   style={formStyle.inputField}
-                  autoCapitalize='none'
+                  autoCapitalize="none"
                   blurOnSubmit={false}
                   autoCorrect={false}
                   keyboardType={'email-address'}
@@ -174,17 +177,19 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
                   </Text>
                 ))}
               {loading || !captcha ? (
-                <Spinner style={formStyle.spinner} color='grey' />
+                <Spinner style={formStyle.spinner} color="grey" />
               ) : (
                 <Button primary block style={formStyle.button} onPress={async () => this.retrievePassword()}>
-                  <Text style={formStyle.buttonText} uppercase={false}>{I18n.t('authentication.retrievePassword')}</Text>
+                  <Text style={formStyle.buttonText} uppercase={false}>
+                    {I18n.t('authentication.retrievePassword')}
+                  </Text>
                 </Button>
               )}
             </Form>
           </KeyboardAvoidingView>
           {captchaSiteKey && captchaBaseUrl && (
             <ReactNativeRecaptchaV3
-              action='ResetPassword'
+              action="ResetPassword"
               onHandleToken={this.recaptchaResponseToken}
               url={captchaBaseUrl}
               siteKey={captchaSiteKey}
@@ -194,7 +199,9 @@ export default class RetrievePassword extends BaseScreen<Props, State> {
         <Footer style={style.footer}>
           <Left>
             <Button small transparent style={[style.linksButton, style.linksButtonLeft]} onPress={() => this.props.navigation.goBack()}>
-              <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>{I18n.t('authentication.backLogin')}</Text>
+              <Text style={[style.linksTextButton, style.linksTextButtonLeft]} uppercase={false}>
+                {I18n.t('authentication.backLogin')}
+              </Text>
             </Button>
           </Left>
         </Footer>

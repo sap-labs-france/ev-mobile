@@ -22,9 +22,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor
     },
     content: {
-      backgroundColor: commonColor.headerBgColor,
+      backgroundColor: commonColor.headerBgColor
     },
-    tabHeader: {},
+    tabHeader: {}
   });
   const portraitStyles = {};
   const landscapeStyles = {};

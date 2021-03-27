@@ -13,8 +13,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     sideMenu: {
       width: '250@s',
-      color: commonColor.textColor,
-    },
+      color: commonColor.textColor
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

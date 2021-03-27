@@ -70,7 +70,7 @@ export const buildCommonColor = (currentTheme: ThemeDefinition) => ({
   buttonWarningBg: currentTheme.warning,
   buttonInfoBg: currentTheme.info,
   buttonSuccessBg: currentTheme.success,
-  buttonDisabledBg: palette.disabledDark,
+  buttonDisabledBg: palette.disabledDark
 });
 
 const themeManager = ThemeManager.getInstance();

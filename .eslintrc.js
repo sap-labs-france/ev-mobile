@@ -19,21 +19,19 @@ module.exports = defineConfig({
     "node": true
   },
   "extends": [
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:react/recommended",
-    "plugin:jsdoc/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:import/typescript"
+    "plugin:import/typescript",
+    "plugin:jsdoc/recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "@react-native-community"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "tsconfig.json",
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    },
+    "sourceType": "module"
   },
   "plugins": [
     "eslint-plugin-react",
@@ -275,20 +273,6 @@ module.exports = defineConfig({
     "prefer-const": "error",
     "quote-props": "off",
     "radix": "error",
-    "react/jsx-boolean-value": "error",
-    "react/jsx-curly-spacing": "off",
-    "react/jsx-equals-spacing": "off",
-    "react/jsx-key": "error",
-    "react/jsx-no-bind": "off",
-    "react/jsx-tag-spacing": [
-      "off",
-      {
-        "afterOpening": "allow",
-        "closingSlash": "allow"
-      }
-    ],
-    "react/jsx-wrap-multilines": "off",
-    "react/self-closing-comp": "error",
     "space-before-function-paren": "off",
     "space-in-parens": [
       "off",

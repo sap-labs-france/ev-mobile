@@ -12,14 +12,12 @@ export interface Props extends BaseProps {
   onChange: (search: string) => void;
 }
 
-interface State {
-}
+interface State {}
 
 export default class SimpleSearchComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   public static defaultProps = {
@@ -30,7 +28,10 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
   private textInput: TextInput;
   private currentSearchText: string;
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
   };
 
@@ -52,7 +53,7 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
     const commonColor = Utils.getCurrentCommonColor();
     return (
       <View style={style.container}>
-        <Icon type='MaterialIcons' name='search' style={style.icon} />
+        <Icon type="MaterialIcons" name="search" style={style.icon} />
         <TextInput
           ref={(ref) => {
             this.textInput = ref;
@@ -63,7 +64,7 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
           placeholderTextColor={commonColor.placeholderTextColor}
           onChangeText={(searchText) => this.searchHasChanged(searchText)}
         />
-        <Icon type='MaterialIcons' name='clear' style={style.icon} onPress={() => this.clearSearch()} />
+        <Icon type="MaterialIcons" name="clear" style={style.icon} onPress={() => this.clearSearch()} />
       </View>
     );
   }

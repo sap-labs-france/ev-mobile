@@ -22,7 +22,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
       paddingTop: '10@s',
       paddingLeft: '4@s',
-      flex: 0.2,
+      flex: 0.2
     },
 
     qrCodeTouchableOpacity: {
@@ -42,7 +42,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
 
     qrCodeIcon: {
       fontSize: '25@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
 
     spinner: {
@@ -57,7 +57,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginTop: '3%',
       paddingTop: '2%',
       paddingLeft: '5%'
-    },
+    }
   };
   return ResponsiveStylesSheet.createOriented({
     landscape: deepmerge(commonStyles, landscapeStyles) as StyleSheet.NamedStyles<any>,

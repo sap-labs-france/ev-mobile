@@ -41,7 +41,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginBottom: '5@s',
       fontSize: '12@s',
       fontWeight: 'bold',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     scrollViewValue: {
       marginTop: '5@s',
@@ -64,7 +64,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     rowBackground: {
       backgroundColor: commonColor.headerBgColor
-    },
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

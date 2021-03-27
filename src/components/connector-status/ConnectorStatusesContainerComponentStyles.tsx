@@ -12,7 +12,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-evenly',
-      alignItems: 'center',
+      alignItems: 'center'
     }
   });
   const portraitStyles = {};

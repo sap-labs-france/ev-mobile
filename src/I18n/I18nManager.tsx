@@ -31,7 +31,7 @@ export default class I18nManager {
       de: () => deJsonLanguage,
       es: () => esJsonLanguage,
       pt: () => ptJsonLanguage,
-      it: () => itJsonLanguage,
+      it: () => itJsonLanguage
     };
     // Fallback if no available language fits
     const fallback = { languageTag: Constants.DEFAULT_LANGUAGE, isRTL: false };

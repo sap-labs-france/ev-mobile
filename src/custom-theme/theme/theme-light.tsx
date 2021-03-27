@@ -17,6 +17,5 @@ export default {
   inverseTextColor: palette.light,
   subTextColor: palette.disabledDark,
   buttonBg: palette.disabled,
-  touchableBackgroundColor: 'rgba(0,0,0,0.4)',
+  touchableBackgroundColor: 'rgba(0,0,0,0.4)'
 };
-

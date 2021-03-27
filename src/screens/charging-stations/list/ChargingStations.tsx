@@ -8,8 +8,7 @@ import MapView, { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
-import ChargingStationComponent
-  from '../../../components/charging-station/ChargingStationComponent';
+import ChargingStationComponent from '../../../components/charging-station/ChargingStationComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ItemsList from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
@@ -28,8 +27,7 @@ import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import ChargingStationsFilters, { ChargingStationsFiltersDef } from './ChargingStationsFilters';
 import computeStyleSheet from './ChargingStationsStyles';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
 interface State {
   chargingStations?: ChargingStation[];
@@ -70,7 +68,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       count: 0,
       showMap: false,
       visible: false,
-      chargingStationSelected: null,
+      chargingStationSelected: null
     };
   }
 
@@ -81,18 +79,23 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     await super.componentDidMount();
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
   };
 
   public async loadInitialFilters() {
     const centralServerProvider = await ProviderFactory.getProvider();
-    const connectorStatus = await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(), GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS) as ChargePointStatus;
-    const connectorType = await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(), GlobalFilters.CONNECTOR_TYPES);
-    let location = Utils.convertToBoolean(await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(), GlobalFilters.LOCATION));
+    const connectorStatus = (await SecuredStorage.loadFilterValue(
+      centralServerProvider.getUserInfo(),
+      GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS
+    )) as ChargePointStatus;
+    const connectorType = await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.CONNECTOR_TYPES);
+    let location = Utils.convertToBoolean(
+      await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.LOCATION)
+    );
     if (!location) {
       location = false;
     }
@@ -121,32 +124,43 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       // Get current location
       this.currentLocation = await this.getCurrentLocation();
       // Get with the Site Area
-      chargingStations = await this.centralServerProvider.getChargingStations({
-        Search: searchText,
-        SiteAreaID: this.siteAreaID,
-        Issuer: true,
-        ConnectorStatus: filters.connectorStatus,
-        ConnectorType: filters.connectorType,
-        LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
-        LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
-        LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
-      }, { skip, limit });
-      // Check
-      if (chargingStations?.count === -1) {
-        // Request nbr of records
-        const chargingStationsNbrRecordsOnly = await this.centralServerProvider.getChargingStations({
+      chargingStations = await this.centralServerProvider.getChargingStations(
+        {
           Search: searchText,
           SiteAreaID: this.siteAreaID,
           Issuer: true,
-          ConnectorStatus: this.state.filters.connectorStatus
-        }, Constants.ONLY_RECORD_COUNT);
+          ConnectorStatus: filters.connectorStatus,
+          ConnectorType: filters.connectorType,
+          LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
+          LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
+          LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
+        },
+        { skip, limit }
+      );
+      // Check
+      if (chargingStations?.count === -1) {
+        // Request nbr of records
+        const chargingStationsNbrRecordsOnly = await this.centralServerProvider.getChargingStations(
+          {
+            Search: searchText,
+            SiteAreaID: this.siteAreaID,
+            Issuer: true,
+            ConnectorStatus: this.state.filters.connectorStatus
+          },
+          Constants.ONLY_RECORD_COUNT
+        );
         // Set
         chargingStations.count = chargingStationsNbrRecordsOnly.count;
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'chargers.chargerUnexpectedError', this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'chargers.chargerUnexpectedError',
+        this.props.navigation,
+        this.refresh
+      );
     }
     return chargingStations;
   };
@@ -189,7 +203,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         longitude: gpsCoordinates ? gpsCoordinates[0] : 2.3514616,
         latitude: gpsCoordinates ? gpsCoordinates[1] : 48.8566969,
         latitudeDelta: 0.003,
-        longitudeDelta: 0.003,
+        longitudeDelta: 0.003
       };
     }
   }
@@ -282,10 +296,15 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           <Modalize
             alwaysOpen={this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors)}
             modalStyle={modalStyle.modalContainer}>
-            <ChargingStationComponent chargingStation={chargingStationSelected} isAdmin={isAdmin}
+            <ChargingStationComponent
+              chargingStation={chargingStationSelected}
+              isAdmin={isAdmin}
               onNavigate={() => this.setState({ visible: false })}
               navigation={navigation}
-              isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID : '')} />
+              isSiteAdmin={this.centralServerProvider
+                .getSecurityProvider()
+                .isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID : '')}
+            />
           </Modalize>
         </Modal>
       );
@@ -294,10 +313,15 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
           <View style={[modalStyle.modalContainer, { height: this.setModalHeightByNumberOfConnector(chargingStationSelected.connectors) }]}>
             <ScrollView>
-              <ChargingStationComponent chargingStation={chargingStationSelected} isAdmin={isAdmin}
+              <ChargingStationComponent
+                chargingStation={chargingStationSelected}
+                isAdmin={isAdmin}
                 onNavigate={() => this.setState({ visible: false })}
                 navigation={navigation}
-                isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID : '')} />
+                isSiteAdmin={this.centralServerProvider
+                  .getSecurityProvider()
+                  .isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID : '')}
+              />
             </ScrollView>
           </View>
         </Modal>
@@ -309,21 +333,32 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const style = computeStyleSheet();
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
-    const { loading, chargingStations, isAdmin, initialFilters,
-      skip, count, limit, filters, showMap, chargingStationSelected, refreshing } = this.state;
+    const {
+      loading,
+      chargingStations,
+      isAdmin,
+      initialFilters,
+      skip,
+      count,
+      limit,
+      filters,
+      showMap,
+      chargingStationSelected,
+      refreshing
+    } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.chargingStations);
     return (
       <Container style={style.container}>
         <HeaderComponent
-          ref={(headerComponent: HeaderComponent) =>
-            this.setHeaderComponent(headerComponent)}
+          ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}
           navigation={navigation}
           title={I18n.t('chargers.title')}
           subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('chargers.chargers')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
           rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer()); return true;
+            navigation.dispatch(DrawerActions.openDrawer());
+            return true;
           }}
           rightActionIcon={'menu'}
           filters={filters}
@@ -332,25 +367,19 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           displayMapAction={() => this.toggleDisplayMap()}
         />
         {loading ? (
-          <Spinner style={style.spinner} color='grey' />
+          <Spinner style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
-            <SimpleSearchComponent
-              onChange={async (searchText) => this.search(searchText)}
-              navigation={navigation}
-            />
+            <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
             <ChargingStationsFilters
-              initialFilters={initialFilters} locationEnabled={this.locationEnabled}
+              initialFilters={initialFilters}
+              locationEnabled={this.locationEnabled}
               onFilterChanged={(newFilters: ChargingStationsFiltersDef) => this.filterChanged(newFilters)}
               ref={(chargingStationsFilters: ChargingStationsFilters) => this.setScreenFilters(chargingStationsFilters)}
             />
-            {mapIsDisplayed ?
+            {mapIsDisplayed ? (
               <View style={style.map}>
-                <MapView
-                  style={style.map}
-                  region={this.currentRegion}
-                  onRegionChange={this.onMapRegionChange}
-                >
+                <MapView style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
                   {this.state.chargingStations.map((chargingStation) => {
                     if (Utils.containsGPSCoordinates(chargingStation.coordinates)) {
                       return (
@@ -367,24 +396,31 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
                 </MapView>
                 {chargingStationSelected && this.buildModal(isAdmin, navigation, chargingStationSelected, modalStyle)}
               </View>
-              :
+            ) : (
               <ItemsList<ChargingStation>
                 skip={skip}
                 count={count}
                 onEndReached={this.onEndScroll}
-                renderItem={( chargingStation: ChargingStation ) =>
-                  <ChargingStationComponent chargingStation={chargingStation} isAdmin={isAdmin} navigation={navigation}
-                    isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(chargingStation.siteArea ? chargingStation.siteArea.siteID : '')} />}
+                renderItem={(chargingStation: ChargingStation) => (
+                  <ChargingStationComponent
+                    chargingStation={chargingStation}
+                    isAdmin={isAdmin}
+                    navigation={navigation}
+                    isSiteAdmin={this.centralServerProvider
+                      .getSecurityProvider()
+                      .isSiteAdmin(chargingStation.siteArea ? chargingStation.siteArea.siteID : '')}
+                  />
+                )}
                 data={chargingStations}
                 manualRefresh={this.manualRefresh}
                 refreshing={refreshing}
                 emptyTitle={I18n.t('chargers.noChargers')}
                 navigation={navigation}
-                limit={limit}/>
-            }
+                limit={limit}
+              />
+            )}
           </View>
-        )
-        }
+        )}
       </Container>
     );
   }

@@ -42,7 +42,10 @@ export default class ChargingStationConnectorComponent extends React.Component<P
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
   };
 
@@ -75,48 +78,48 @@ export default class ChargingStationConnectorComponent extends React.Component<P
 
   public renderFirstConnectorDetails = (chargingStation: ChargingStation, connector: Connector) => (
     <ConnectorStatusComponent navigation={this.props.navigation} connector={connector} inactive={chargingStation.inactive} />
-
   );
 
-  public renderSecondConnectorDetails = (chargingStation: ChargingStation, connector: Connector, style: any) => connector.currentTransactionID !== 0 && !chargingStation.inactive ? (
-    <View style={style.connectorDetail}>
-      <Animatable.View
-        animation={!this.state.showBatteryLevel ? 'fadeIn' : 'fadeOut'}
-        style={style.connectorDetailAnimated}
-        duration={Constants.ANIMATION_ROTATION_MILLIS}>
-        <Text style={style.connectorValues}>
-          {connector.currentInstantWatts / 1000 < 10
-            ? connector.currentInstantWatts > 0
-              ? (I18nManager.formatNumber(Math.round(connector.currentInstantWatts / 10) / 100))
-              : 0
-            : I18nManager.formatNumber(Math.trunc(connector.currentInstantWatts / 1000))}
-        </Text>
-        <Text style={style.label} numberOfLines={1}>
-          {I18n.t('details.instant')}
-        </Text>
-        <Text style={style.subLabel} numberOfLines={1}>
-          (kW)
-        </Text>
-      </Animatable.View>
-      <Animatable.View
-        animation={this.state.showBatteryLevel ? 'fadeIn' : 'fadeOut'}
-        style={style.connectorDetailAnimated}
-        duration={Constants.ANIMATION_ROTATION_MILLIS}>
-        <Text style={style.connectorValues}>{connector.currentStateOfCharge}</Text>
-        <Text style={style.label} numberOfLines={1}>
-          {I18n.t('details.battery')}
-        </Text>
-        <Text style={style.subLabel} numberOfLines={1}>
-          (%)
-        </Text>
-      </Animatable.View>
-    </View>
-  ) : (
-    <View style={style.connectorDetail}>
-      {this.buildConnectorTypeSVG(connector.type, style)}
-      <Text style={style.labelImage}>{Utils.translateConnectorType(connector.type)}</Text>
-    </View>
-  );
+  public renderSecondConnectorDetails = (chargingStation: ChargingStation, connector: Connector, style: any) =>
+    connector.currentTransactionID !== 0 && !chargingStation.inactive ? (
+      <View style={style.connectorDetail}>
+        <Animatable.View
+          animation={!this.state.showBatteryLevel ? 'fadeIn' : 'fadeOut'}
+          style={style.connectorDetailAnimated}
+          duration={Constants.ANIMATION_ROTATION_MILLIS}>
+          <Text style={style.connectorValues}>
+            {connector.currentInstantWatts / 1000 < 10
+              ? connector.currentInstantWatts > 0
+                ? I18nManager.formatNumber(Math.round(connector.currentInstantWatts / 10) / 100)
+                : 0
+              : I18nManager.formatNumber(Math.trunc(connector.currentInstantWatts / 1000))}
+          </Text>
+          <Text style={style.label} numberOfLines={1}>
+            {I18n.t('details.instant')}
+          </Text>
+          <Text style={style.subLabel} numberOfLines={1}>
+            (kW)
+          </Text>
+        </Animatable.View>
+        <Animatable.View
+          animation={this.state.showBatteryLevel ? 'fadeIn' : 'fadeOut'}
+          style={style.connectorDetailAnimated}
+          duration={Constants.ANIMATION_ROTATION_MILLIS}>
+          <Text style={style.connectorValues}>{connector.currentStateOfCharge}</Text>
+          <Text style={style.label} numberOfLines={1}>
+            {I18n.t('details.battery')}
+          </Text>
+          <Text style={style.subLabel} numberOfLines={1}>
+            (%)
+          </Text>
+        </Animatable.View>
+      </View>
+    ) : (
+      <View style={style.connectorDetail}>
+        {this.buildConnectorTypeSVG(connector.type, style)}
+        <Text style={style.labelImage}>{Utils.translateConnectorType(connector.type)}</Text>
+      </View>
+    );
 
   public renderThirdConnectorDetails = (chargingStation: ChargingStation, connector: Connector, style: any) =>
     connector.currentTransactionID !== 0 && !chargingStation.inactive ? (
@@ -152,16 +155,13 @@ export default class ChargingStationConnectorComponent extends React.Component<P
           if (onNavigate) {
             onNavigate();
           }
-          navigation.navigate(
-            'ChargingStationConnectorDetailsTabs',
-            {
-              params: {
-                chargingStationID: chargingStation.id,
-                connectorID: connector.connectorId
-              },
-              key: `${Utils.randomNumber()}`
-            }
-          );
+          navigation.navigate('ChargingStationConnectorDetailsTabs', {
+            params: {
+              chargingStationID: chargingStation.id,
+              connectorID: connector.connectorId
+            },
+            key: `${Utils.randomNumber()}`
+          });
         }}>
         <Animatable.View animation={'flipInX'} iterationCount={1} duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
           <View style={style.connectorContainer}>
@@ -169,9 +169,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
               {this.renderFirstConnectorDetails(chargingStation, connector)}
               {this.renderSecondConnectorDetails(chargingStation, connector, style)}
               {this.renderThirdConnectorDetails(chargingStation, connector, style)}
-              {!chargingStation.inactive &&
-                <Icon style={style.icon} type='MaterialIcons' name='navigate-next' />
-              }
+              {!chargingStation.inactive && <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />}
             </View>
           </View>
         </Animatable.View>
@@ -183,17 +181,27 @@ export default class ChargingStationConnectorComponent extends React.Component<P
     const commonColor = Utils.getCurrentCommonColor();
     switch (connectorType) {
       case ConnectorType.CHADEMO:
-        return <Chademo width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30' />;
+        return (
+          <Chademo width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth="30" />
+        );
       case ConnectorType.TYPE_2:
-        return <Type2 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10' />;
+        return (
+          <Type2 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth="10" />
+        );
       case ConnectorType.COMBO_CCS:
-        return <ComboCCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='30' />;
+        return (
+          <ComboCCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth="30" />
+        );
       case ConnectorType.DOMESTIC:
         return <Domestic width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor} />;
       case ConnectorType.TYPE_1:
-        return <Type1 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10' />;
+        return (
+          <Type1 width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth="10" />
+        );
       case ConnectorType.TYPE_1_CCS:
-        return <Type1CCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth='10' />;
+        return (
+          <Type1CCS width={style.connectorSVG.width} height={style.connectorSVG.height} stroke={commonColor.textColor} strokeWidth="10" />
+        );
     }
     return <NoConnector width={style.connectorSVG.width} height={style.connectorSVG.height} fill={commonColor.textColor} />;
   };

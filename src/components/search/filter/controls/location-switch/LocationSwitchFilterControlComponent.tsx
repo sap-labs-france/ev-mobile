@@ -5,8 +5,7 @@ import { StyleSheet } from 'react-native';
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
 
-export interface Props extends FilterControlComponentProps<boolean> {
-}
+export interface Props extends FilterControlComponentProps<boolean> {}
 
 interface State extends FilterControlComponentState<boolean> {
   switchValue?: boolean;
@@ -24,7 +23,10 @@ export default class LocationSwitchFilterControlComponent extends FilterControlC
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
   };
 
@@ -51,11 +53,7 @@ export default class LocationSwitchFilterControlComponent extends FilterControlC
     return (
       <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
         <Text style={internalStyle.textFilter}>{label}</Text>
-        <Switch
-          style={internalStyle.switchFilter}
-          value={switchValue}
-          onValueChange={this.onValueChanged}
-        />
+        <Switch style={internalStyle.switchFilter} value={switchValue} onValueChange={this.onValueChanged} />
       </View>
     );
   };

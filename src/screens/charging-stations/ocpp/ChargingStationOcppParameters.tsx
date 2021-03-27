@@ -15,8 +15,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './ChargingStationOcppParametersStyles';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
 interface State {
   loading?: boolean;
@@ -39,7 +38,10 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
   };
 
@@ -82,8 +84,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
       return chargingStation;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'chargers.chargerUnexpectedError', this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'chargers.chargerUnexpectedError', this.props.navigation);
     }
     return null;
   };
@@ -95,8 +96,12 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
       return chargingStationConfiguration;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'chargers.chargerConfigurationUnexpectedError', this.props.navigation);
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'chargers.chargerConfigurationUnexpectedError',
+        this.props.navigation
+      );
     }
     return null;
   };
@@ -119,12 +124,14 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
 
   public requestChargingStationOcppParametersConfirm() {
     const { chargingStation } = this.state;
-    Alert.alert
-    (I18n.t('chargers.requestConfiguration', { chargeBoxID: chargingStation.id }),
-      I18n.t('chargers.requestConfigurationMessage', { chargeBoxID: chargingStation.id }), [
+    Alert.alert(
+      I18n.t('chargers.requestConfiguration', { chargeBoxID: chargingStation.id }),
+      I18n.t('chargers.requestConfigurationMessage', { chargeBoxID: chargingStation.id }),
+      [
         { text: I18n.t('general.yes'), onPress: async () => this.requestChargingStationOcppParameters(chargingStation.id) },
         { text: I18n.t('general.cancel') }
-      ]);
+      ]
+    );
   }
 
   public async requestChargingStationOcppParameters(chargeBoxID: string) {
@@ -140,8 +147,12 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'chargers.chargerConfigurationUnexpectedError', this.props.navigation);
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'chargers.chargerConfigurationUnexpectedError',
+        this.props.navigation
+      );
     }
   }
 
@@ -158,19 +169,25 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
           rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer()); return true;
+            navigation.dispatch(DrawerActions.openDrawer());
+            return true;
           }}
           rightActionIcon={'menu'}
         />
-        <Button disabled={chargingStation ? chargingStation.inactive : true} block iconLeft info
-          style={style.actionButton} onPress={() => this.requestChargingStationOcppParametersConfirm()}>
-          <Icon style={style.actionButtonIcon} type='MaterialIcons' name='get-app' />
+        <Button
+          disabled={chargingStation ? chargingStation.inactive : true}
+          block
+          iconLeft
+          info
+          style={style.actionButton}
+          onPress={() => this.requestChargingStationOcppParametersConfirm()}>
+          <Icon style={style.actionButtonIcon} type="MaterialIcons" name="get-app" />
           <Text uppercase={false} style={style.actionButtonText}>
             {I18n.t('chargers.requestConfiguration')}
           </Text>
         </Button>
         {loading ? (
-          <Spinner style={style.spinner} color='grey' />
+          <Spinner style={style.spinner} color="grey" />
         ) : (
           <FlatList
             data={chargingStationConfigurationKeyValues}

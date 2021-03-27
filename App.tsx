@@ -12,8 +12,7 @@ import ThemeManager from './src/custom-theme/ThemeManager';
 import BaseProps from './src/types/BaseProps';
 import { ThemeType } from './src/types/Theme';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
 interface State {
   switchTheme?: boolean;
@@ -59,19 +58,18 @@ export default class AppBootstrap extends React.Component<Props, State> {
     const themeManager = ThemeManager.getInstance();
     const theme: Theme = {
       ...DefaultTheme,
-      dark: themeManager.isThemeTypeIsDark(),
+      dark: themeManager.isThemeTypeIsDark()
     };
-    return (
-      switchTheme ?
-        <AppearanceProvider>
-          <StyleProvider style={buildTheme(Appearance.getColorScheme() as ThemeType)}>
-            <PaperProvider theme={theme}>
-              <App />
-            </PaperProvider>
-          </StyleProvider>
-        </AppearanceProvider>
-        :
-        <View />
+    return switchTheme ? (
+      <AppearanceProvider>
+        <StyleProvider style={buildTheme(Appearance.getColorScheme() as ThemeType)}>
+          <PaperProvider theme={theme}>
+            <App />
+          </PaperProvider>
+        </StyleProvider>
+      </AppearanceProvider>
+    ) : (
+      <View />
     );
   }
 }

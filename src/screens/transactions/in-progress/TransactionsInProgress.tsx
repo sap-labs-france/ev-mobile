@@ -5,8 +5,7 @@ import React from 'react';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ItemsList from '../../../components/list/ItemsList';
-import TransactionInProgressComponent
-  from '../../../components/transaction/in-progress/TransactionInProgressComponent';
+import TransactionInProgressComponent from '../../../components/transaction/in-progress/TransactionInProgressComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
@@ -20,8 +19,7 @@ import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../TransactionsStyles';
 import TransactionsInProgressFilters, { TransactionsInProgressFiltersDef } from './TransactionsInProgressFilters';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
 interface State {
   transactions?: Transaction[];
@@ -60,14 +58,16 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
   };
 
   public async loadInitialFilters() {
     const centralServerProvider = await ProviderFactory.getProvider();
-    const userID = await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
+    const userID = await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.MY_USER_FILTER);
     this.setState({
       initialFilters: { userID },
       filters: { userID }
@@ -83,25 +83,36 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
   public getTransactionsInProgress = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
     try {
       // Get the Transactions
-      const transactions = await this.centralServerProvider.getTransactionsActive({
-        UserID: this.state.filters.userID,
-        Search: searchText
-      }, { skip, limit });
+      const transactions = await this.centralServerProvider.getTransactionsActive(
+        {
+          UserID: this.state.filters.userID,
+          Search: searchText
+        },
+        { skip, limit }
+      );
       // Check
       if (transactions.count === -1) {
         // Request nbr of records
-        const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactionsActive({
-          UserID: this.state.filters.userID,
-          Search: searchText
-        }, Constants.ONLY_RECORD_COUNT);
+        const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactionsActive(
+          {
+            UserID: this.state.filters.userID,
+            Search: searchText
+          },
+          Constants.ONLY_RECORD_COUNT
+        );
         // Set
         transactions.count = transactionsNbrRecordsOnly.count;
       }
       return transactions;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'transactions.transactionUnexpectedError',
+        this.props.navigation,
+        this.refresh
+      );
     }
     return null;
   };
@@ -156,36 +167,48 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const { loading, isAdmin, hasSiteAdmin, transactions, isPricingActive,
-      skip, count, limit, initialFilters, filters, refreshing } = this.state;
+    const {
+      loading,
+      isAdmin,
+      hasSiteAdmin,
+      transactions,
+      isPricingActive,
+      skip,
+      count,
+      limit,
+      initialFilters,
+      filters,
+      refreshing
+    } = this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
-          ref={(headerComponent: HeaderComponent) =>
-            this.setHeaderComponent(headerComponent)}
+          ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}
           navigation={navigation}
           title={I18n.t('transactions.transactionsInProgress')}
           subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('transactions.transactions')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
           rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer()); return true;
+            navigation.dispatch(DrawerActions.openDrawer());
+            return true;
           }}
           rightActionIcon={'menu'}
           filters={filters}
         />
         {loading ? (
-          <Spinner style={style.spinner} color='grey' />
+          <Spinner style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
-            {(isAdmin || hasSiteAdmin) &&
-                <TransactionsInProgressFilters
-                  initialFilters={initialFilters}
-                  onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) => this.setState({ filters: newFilters }, async () => this.refresh())}
-                  ref={(transactionsInProgressFilters: TransactionsInProgressFilters) =>
-                    this.setScreenFilters(transactionsInProgressFilters)}
-                />
-            }
+            {(isAdmin || hasSiteAdmin) && (
+              <TransactionsInProgressFilters
+                initialFilters={initialFilters}
+                onFilterChanged={(newFilters: TransactionsInProgressFiltersDef) =>
+                  this.setState({ filters: newFilters }, async () => this.refresh())
+                }
+                ref={(transactionsInProgressFilters: TransactionsInProgressFilters) => this.setScreenFilters(transactionsInProgressFilters)}
+              />
+            )}
             <ItemsList<Transaction>
               skip={skip}
               count={count}
@@ -204,7 +227,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
               refreshing={refreshing}
               emptyTitle={I18n.t('transactions.noTransactionsInProgress')}
               navigation={navigation}
-              limit={limit}/>
+              limit={limit}
+            />
           </View>
         )}
       </Container>

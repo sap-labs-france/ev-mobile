@@ -18,8 +18,7 @@ export interface Props extends BaseProps {
   onNavigate?: () => void;
 }
 
-interface State {
-}
+interface State {}
 
 export default class ChargingStationComponent extends React.Component<Props, State> {
   public state: State;
@@ -29,7 +28,10 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
     super(props);
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
   };
 
@@ -53,73 +55,79 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
       <View style={style.container}>
         <View style={style.headerContent}>
           <View style={style.titleContainer}>
-            <TouchableOpacity disabled={!validGPSCoordinates}
+            <TouchableOpacity
+              disabled={!validGPSCoordinates}
               onPress={() => Utils.jumpToMapWithCoordinates(chargingStation.id, chargingStation.coordinates)}>
-              {validGPSCoordinates ?
-                <Icon style={[style.icon, style.iconLeft]} type='MaterialIcons' name='place' />
-                :
-                <Icon style={[style.icon, style.iconLeft]} type='MaterialCommunityIcons' name='map-marker-off' />
-              }
+              {validGPSCoordinates ? (
+                <Icon style={[style.icon, style.iconLeft]} type="MaterialIcons" name="place" />
+              ) : (
+                <Icon style={[style.icon, style.iconLeft]} type="MaterialCommunityIcons" name="map-marker-off" />
+              )}
             </TouchableOpacity>
-            <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>{chargingStation.id}</Text>
+            <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>
+              {chargingStation.id}
+            </Text>
           </View>
           <View style={style.buttonContainer}>
-            {(isAdmin || isSiteAdmin) &&
-              <Button transparent style={style.button}
+            {(isAdmin || isSiteAdmin) && (
+              <Button
+                transparent
+                style={style.button}
                 onPress={() => {
                   if (onNavigate) {
                     onNavigate();
                   }
-                  navigation.navigate(
-                    'ChargingStationDetailsTabs',
-                    {
-                      params: {
-                        chargingStationID: chargingStation.id,
-                      },
-                      key: `${Utils.randomNumber()}`
-                    }
-                  );
+                  navigation.navigate('ChargingStationDetailsTabs', {
+                    params: {
+                      chargingStationID: chargingStation.id
+                    },
+                    key: `${Utils.randomNumber()}`
+                  });
                 }}>
-                <Icon style={[style.icon, style.iconRight, style.iconSettings]} type='MaterialIcons' name='tune' />
+                <Icon style={[style.icon, style.iconRight, style.iconSettings]} type="MaterialIcons" name="tune" />
               </Button>
-            }
-            <Button transparent style={[style.button, style.buttonRight]} onPress={() => {
-              this.showHeartbeatStatus();
-            }}>
-              {chargingStation.inactive ?
-                <Animatable.Text animation='fadeIn' easing='ease-in-out' iterationCount='infinite' direction='alternate-reverse'>
-                  <Icon style={style.deadHeartbeatIcon} type='FontAwesome' name='heartbeat' />
+            )}
+            <Button
+              transparent
+              style={[style.button, style.buttonRight]}
+              onPress={() => {
+                this.showHeartbeatStatus();
+              }}>
+              {chargingStation.inactive ? (
+                <Animatable.Text animation="fadeIn" easing="ease-in-out" iterationCount="infinite" direction="alternate-reverse">
+                  <Icon style={style.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
                 </Animatable.Text>
-                :
-                <Animatable.Text animation='pulse' easing='ease-out' iterationCount='infinite' style={{ textAlign: 'center' }}>
-                  <Icon style={style.heartbeatIcon} type='FontAwesome' name='heartbeat' />
+              ) : (
+                <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center' }}>
+                  <Icon style={style.heartbeatIcon} type="FontAwesome" name="heartbeat" />
                 </Animatable.Text>
-              }
+              )}
             </Button>
           </View>
         </View>
         <View style={style.subHeaderContent}>
-          {chargingStation.siteArea ?
-            <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1} >
+          {chargingStation.siteArea ? (
+            <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1}>
               {Utils.formatAddress(chargingStation.siteArea.address)}
             </Text>
-            :
+          ) : (
             <Text>-</Text>
-          }
-          {(chargingStation.distanceMeters > 0) &&
-            <Text style={style.distance}>{Utils.formatDistance(chargingStation.distanceMeters)}</Text>
-          }
+          )}
+          {chargingStation.distanceMeters > 0 && <Text style={style.distance}>{Utils.formatDistance(chargingStation.distanceMeters)}</Text>}
         </View>
         <View style={style.connectorsContainer}>
-          {chargingStation.connectors.map((connector) => (
-            connector && <ChargingStationConnectorComponent
-              onNavigate={onNavigate}
-              key={`${chargingStation.id}~${connector.connectorId}`}
-              chargingStation={chargingStation}
-              connector={connector}
-              navigation={navigation}
-            />
-          ))}
+          {chargingStation.connectors.map(
+            (connector) =>
+              connector && (
+                <ChargingStationConnectorComponent
+                  onNavigate={onNavigate}
+                  key={`${chargingStation.id}~${connector.connectorId}`}
+                  chargingStation={chargingStation}
+                  connector={connector}
+                  navigation={navigation}
+                />
+              )
+          )}
         </View>
       </View>
     );

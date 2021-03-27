@@ -96,7 +96,7 @@ export enum ChargePointStatus {
   FINISHING = 'Finishing',
   RESERVED = 'Reserved',
   UNAVAILABLE = 'Unavailable',
-  FAULTED = 'Faulted',
+  FAULTED = 'Faulted'
 }
 
 export enum ConnectorType {
@@ -106,7 +106,7 @@ export enum ConnectorType {
   TYPE_1 = 'T1',
   TYPE_1_CCS = 'T1CCS',
   DOMESTIC = 'D',
-  UNKNOWN = 'U',
+  UNKNOWN = 'U'
 }
 
 export interface ChargingStationCapabilities {
@@ -122,7 +122,7 @@ export interface OcppCommand {
 
 export enum SiteAreaLimitSource {
   CHARGING_STATIONS = 'CS',
-  SITE_AREA = 'SA',
+  SITE_AREA = 'SA'
 }
 
 export enum ConnectorCurrentLimitSource {

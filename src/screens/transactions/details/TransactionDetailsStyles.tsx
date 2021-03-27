@@ -60,13 +60,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.headerTextColor,
       fontSize: '14@s',
       marginLeft: '5@s',
-      marginRight: '5@s',
+      marginRight: '5@s'
     },
     subSubHeaderName: {
       color: commonColor.headerTextColor,
       fontSize: '12@s',
       marginLeft: '5@s',
-      marginRight: '5@s',
+      marginRight: '5@s'
     },
     scrollViewContainer: {
       flexDirection: 'column',
@@ -92,16 +92,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     label: {
       fontSize: '16@s',
       alignSelf: 'center',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     labelValue: {
       fontSize: '25@s',
       fontWeight: 'bold',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     labelUser: {
       fontSize: '10@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     subLabel: {
       fontSize: '10@s',
@@ -116,11 +116,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     subLabelUser: {
       fontSize: '8@s',
       marginTop: '0@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     icon: {
       fontSize: '25@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     userImage: {
       height: '52@s',

@@ -14,8 +14,7 @@ export default class DeepLinkingManager {
   private navigator: NavigationContainerRef;
   private centralServerProvider: CentralServerProvider;
 
-  private constructor() {
-  }
+  private constructor() {}
 
   public static getInstance(): DeepLinkingManager {
     if (!DeepLinkingManager.instance) {
@@ -35,13 +34,15 @@ export default class DeepLinkingManager {
     this.addResetPasswordRoute();
     this.addVerifyAccountRoute();
     // Init URL
-    Linking.getInitialURL().then((url) => {
-      if (url) {
-        Linking.openURL(url);
-      }
-    }).catch((err) => {
-      console.error('An error occurred', err);
-    });
+    Linking.getInitialURL()
+      .then((url) => {
+        if (url) {
+          Linking.openURL(url);
+        }
+      })
+      .catch((err) => {
+        console.error('An error occurred', err);
+      });
   }
 
   public startListening() {
@@ -90,7 +91,8 @@ export default class DeepLinkingManager {
 
   private addVerifyAccountRoute = () => {
     // Add Route
-    DeepLinking.addRoute('/verifyAccount/:tenant/:email/:token/:resetToken',
+    DeepLinking.addRoute(
+      '/verifyAccount/:tenant/:email/:token/:resetToken',
       async (response: { tenant: string; email: string; token: string; resetToken: string }) => {
         // Check params
         if (!response.tenant) {
@@ -155,13 +157,13 @@ export default class DeepLinkingManager {
                 break;
               // Other common Error
               default:
-                Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-                  'authentication.activationUnexpectedError');
+                Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.activationUnexpectedError');
             }
           } else {
             Message.showError(I18n.t('authentication.activationUnexpectedError'));
           }
         }
-      });
+      }
+    );
   };
 }

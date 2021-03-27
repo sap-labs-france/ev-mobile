@@ -38,7 +38,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '50@s',
       alignSelf: 'center',
       margin: '5@s',
-      marginBottom: '10@s',
+      marginBottom: '10@s'
     },
     tenantName: {
       color: commonColor.textColor,
@@ -54,7 +54,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       margin: '2@s',
       alignSelf: 'center',
       fontWeight: 'bold',
-      marginBottom: '10@s',
+      marginBottom: '10@s'
     },
     versionDate: {
       color: commonColor.textColor,
@@ -64,7 +64,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginBottom: '2@s'
     },
     linkContainer: {
-      paddingTop: '10@s',
+      paddingTop: '10@s'
     },
     links: {
       borderBottomWidth: 0,
@@ -92,7 +92,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     logoutButton: {
       paddingTop: '10@s',
-      flexDirection: 'row',
+      flexDirection: 'row'
     },
     gridLogoutContainer: {
       flex: 1,

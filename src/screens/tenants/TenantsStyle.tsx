@@ -32,10 +32,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     tenantNameText: {
       color: commonColor.textColor,
       fontSize: '16@s',
-      textAlign: 'center',
+      textAlign: 'center'
     },
     icon: {
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     trashIconButton: {
       alignSelf: 'flex-end',

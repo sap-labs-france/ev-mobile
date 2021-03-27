@@ -15,7 +15,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       flexDirection: 'column',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
+      borderBottomColor: commonColor.listBorderColor
     },
     headerContent: {
       flexDirection: 'row',
@@ -24,13 +24,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '40@s',
       borderBottomWidth: 1,
       borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.listHeaderBgColor,
+      backgroundColor: commonColor.listHeaderBgColor
     },
     titleContainer: {
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      width: '80%',
+      width: '80%'
     },
     subHeaderContent: {
       flexDirection: 'row',
@@ -40,11 +40,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingRight: '5@s',
       paddingLeft: '5@s',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
+      borderBottomColor: commonColor.listBorderColor
     },
     address: {
       width: '80%',
-      color: commonColor.headerTextColor,
+      color: commonColor.headerTextColor
     },
     headerName: {
       marginLeft: '5@s',
@@ -58,17 +58,17 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingTop: '12@s',
       paddingBottom: '12@s',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.brandPrimaryDark,
+      borderBottomColor: commonColor.brandPrimaryDark
     },
     icon: {
       color: commonColor.headerTextColor
     },
     iconLeft: {
-      marginLeft: '10@s',
+      marginLeft: '10@s'
     },
     iconRight: {
-      marginRight: '10@s',
-    },
+      marginRight: '10@s'
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

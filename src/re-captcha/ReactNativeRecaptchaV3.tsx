@@ -49,7 +49,7 @@ class ReactNativeRecaptchaV3 extends PureComponent<Props> {
         startInLoadingState={false}
         javaScriptEnabled
         source={{ html: recaptchaHtmlWithKey, baseUrl: url }}
-        onMessage={event => onHandleToken(event.nativeEvent.data)}
+        onMessage={(event) => onHandleToken(event.nativeEvent.data)}
       />
     );
   }

@@ -19,7 +19,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderBottomWidth: 1,
       alignItems: 'center',
       borderBottomColor: commonColor.listBorderColor,
-      padding: '5@s',
+      padding: '5@s'
     },
     avatarContainer: {
       paddingLeft: '10@s',
@@ -37,34 +37,33 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     userFullnameStatusContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center',
+      alignItems: 'center'
     },
     fullNameContainer: {
-      width: '70%',
+      width: '70%'
     },
     fullName: {
       fontSize: '17@s',
       color: commonColor.textColor
     },
     emailRoleContainer: {
-      width: '90%',
+      width: '90%'
     },
     email: {
       fontSize: '15@s',
       paddingTop: '5@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     role: {
       fontSize: '12@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
-    statusContainer: {
-    },
+    statusContainer: {},
     status: {
       backgroundColor: commonColor.containerBgColor,
       borderWidth: 1,
       margin: 0,
-      height: '21@s',
+      height: '21@s'
     },
     statusText: {
       fontSize: '11@s',

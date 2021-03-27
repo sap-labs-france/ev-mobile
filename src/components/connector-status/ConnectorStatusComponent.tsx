@@ -16,8 +16,7 @@ export interface Props extends BaseProps {
   inactive?: boolean;
 }
 
-interface State {
-}
+interface State {}
 
 export default class ConnectorStatusComponent extends React.Component<Props, State> {
   public state: State;
@@ -51,11 +50,16 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     });
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
   };
 
-  public getConnectorStyles(style: any): { container: Record<string, unknown>[]; value: Record<string, unknown>[]; description: Record<string, unknown>[] } {
+  public getConnectorStyles(
+    style: any
+  ): { container: Record<string, unknown>[]; value: Record<string, unknown>[]; description: Record<string, unknown>[] } {
     const { status, connector, inactive } = this.props;
     // Get the type
     let connectorType;

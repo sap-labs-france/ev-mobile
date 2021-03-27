@@ -21,7 +21,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.listHeaderBgColor
     },
     leftHeader: {
-      flexDirection: 'row',
+      flexDirection: 'row'
     },
     rightHeader: {
       flexDirection: 'row',

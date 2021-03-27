@@ -27,8 +27,7 @@ import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SitesFilters, { SitesFiltersDef } from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
 interface State {
   sites?: Site[];
@@ -64,11 +63,14 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       count: 0,
       showMap: false,
       visible: false,
-      siteSelected: null,
+      siteSelected: null
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
   };
 
@@ -86,8 +88,9 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
 
   public async loadInitialFilters() {
     const centralServerProvider = await ProviderFactory.getProvider();
-    let location = Utils.convertToBoolean(await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(), GlobalFilters.LOCATION));
+    let location = Utils.convertToBoolean(
+      await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.LOCATION)
+    );
     if (!location) {
       location = false;
     }
@@ -115,18 +118,20 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       // Get current location
       this.currentLocation = await this.getCurrentLocation();
       // Get the Sites
-      sites = await this.centralServerProvider.getSites({
-        Search: searchText,
-        Issuer: true,
-        WithAvailableChargers: true,
-        LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
-        LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
-        LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
-      }, { skip, limit });
+      sites = await this.centralServerProvider.getSites(
+        {
+          Search: searchText,
+          Issuer: true,
+          WithAvailableChargers: true,
+          LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
+          LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
+          LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
+        },
+        { skip, limit }
+      );
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'sites.siteUnexpectedError', this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'sites.siteUnexpectedError', this.props.navigation, this.refresh);
     }
     // Return
     return sites;
@@ -150,7 +155,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         longitude: gpsCoordinates ? gpsCoordinates[0] : 2.3514616,
         latitude: gpsCoordinates ? gpsCoordinates[1] : 48.8566969,
         latitudeDelta: 0.009,
-        longitudeDelta: 0.009,
+        longitudeDelta: 0.009
       };
     }
   }
@@ -167,7 +172,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       this.setState({
         loading: false,
         sites: sites ? sites.result : [],
-        count: sites ? sites.count : 0,
+        count: sites ? sites.count : 0
       });
     }
   };
@@ -229,11 +234,8 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     if (Platform.OS === 'ios') {
       return (
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
-          <Modalize
-            alwaysOpen={175}
-            modalStyle={modalStyle.modalContainer}>
-            <SiteComponent site={siteSelected} navigation={navigation}
-              onNavigate={() => this.setState({ visible: false })} />
+          <Modalize alwaysOpen={175} modalStyle={modalStyle.modalContainer}>
+            <SiteComponent site={siteSelected} navigation={navigation} onNavigate={() => this.setState({ visible: false })} />
           </Modalize>
         </Modal>
       );
@@ -242,8 +244,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
           <View style={modalStyle.modalContainer}>
             <ScrollView>
-              <SiteComponent site={siteSelected} navigation={navigation}
-                onNavigate={() => this.setState({ visible: false })} />
+              <SiteComponent site={siteSelected} navigation={navigation} onNavigate={() => this.setState({ visible: false })} />
             </ScrollView>
           </View>
         </Modal>
@@ -265,7 +266,8 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
           rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer()); return true;
+            navigation.dispatch(DrawerActions.openDrawer());
+            return true;
           }}
           rightActionIcon={'menu'}
           displayMap={!Utils.isEmptyArray(this.state.sites)}
@@ -273,25 +275,19 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           displayMapAction={() => this.toggleDisplayMap()}
         />
         {loading ? (
-          <Spinner style={style.spinner} color='grey' />
+          <Spinner style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
-            <SimpleSearchComponent
-              onChange={async (searchText) => this.search(searchText)}
-              navigation={navigation}
-            />
+            <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
             <SitesFilters
-              initialFilters={initialFilters} locationEnabled={this.locationEnabled}
+              initialFilters={initialFilters}
+              locationEnabled={this.locationEnabled}
               onFilterChanged={(newFilters: SitesFiltersDef) => this.filterChanged(newFilters)}
               ref={(sitesFilters: SitesFilters) => this.setScreenFilters(sitesFilters)}
             />
-            {mapIsDisplayed ?
+            {mapIsDisplayed ? (
               <View style={style.map}>
-                <MapView
-                  style={style.map}
-                  region={this.currentRegion}
-                  onRegionChange={this.onMapRegionChange}
-                >
+                <MapView style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
                   {this.state.sites.map((site: Site) => {
                     if (Utils.containsAddressGPSCoordinates(site.address)) {
                       return (
@@ -308,12 +304,12 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
                 </MapView>
                 {siteSelected && this.buildModal(navigation, siteSelected, modalStyle)}
               </View>
-              :
+            ) : (
               <ItemsList
                 skip={skip}
                 count={count}
                 onEndReached={this.onEndScroll}
-                renderItem={(site: Site ) => <SiteComponent site={site} navigation={navigation} />}
+                renderItem={(site: Site) => <SiteComponent site={site} navigation={navigation} />}
                 data={sites}
                 manualRefresh={this.manualRefresh}
                 refreshing={refreshing}
@@ -321,10 +317,9 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
                 navigation={navigation}
                 limit={limit}
               />
-            }
+            )}
           </View>
-        )
-        }
+        )}
       </Container>
     );
   }

@@ -4,11 +4,9 @@ import BaseProps from '../../types/BaseProps';
 import Constants from '../../utils/Constants';
 import BaseScreen from './BaseScreen';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
-interface State {
-}
+interface State {}
 
 export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State> {
   private timerRefresh: ReturnType<typeof setTimeout>;

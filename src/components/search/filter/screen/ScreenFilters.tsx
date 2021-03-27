@@ -8,8 +8,7 @@ import FilterModalContainerComponent from '../containers/FilterModalContainerCom
 import FilterVisibleContainerComponent from '../containers/FilterVisibleContainerComponent';
 import FilterControlComponent from '../controls/FilterControlComponent';
 
-export interface ScreenFiltersProps {
-}
+export interface ScreenFiltersProps {}
 
 export interface ScreenFiltersState {
   isAdmin?: boolean;
@@ -35,7 +34,7 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
       isAdmin: false,
       hasSiteAdmin: false,
       locale: null,
-      expanded: false,
+      expanded: false
     };
   }
 
@@ -76,7 +75,16 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
     }
   };
 
-  public setState = (state: ScreenFiltersState | ((prevState: Readonly<ScreenFiltersState>, props: Readonly<ScreenFiltersProps>) => ScreenFiltersState | Pick<ScreenFiltersState, never>) | Pick<ScreenFiltersState, never>, callback?: () => void) => {
+  public setState = (
+    state:
+    | ScreenFiltersState
+    | ((
+      prevState: Readonly<ScreenFiltersState>,
+      props: Readonly<ScreenFiltersProps>
+    ) => ScreenFiltersState | Pick<ScreenFiltersState, never>)
+    | Pick<ScreenFiltersState, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
   };
 
