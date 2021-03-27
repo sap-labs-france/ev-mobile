@@ -1,6 +1,5 @@
 import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import i18n from 'i18n-js';
 import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
@@ -10,9 +9,9 @@ import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import BaseProps from '../../types/BaseProps';
+import Car from '../../types/Car';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
-import Car from '../../types/Car';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
@@ -132,7 +131,7 @@ export default class Cars extends BaseAutoRefreshScreen<Props, State> {
     return (
       <Container style={style.container}>
         <HeaderComponent
-          title={i18n.t('sidebar.cars')}
+          title={I18n.t('sidebar.cars')}
           subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('cars.cars')}` : null}
           navigation={this.props.navigation}
           leftAction={this.onBack}
@@ -160,7 +159,7 @@ export default class Cars extends BaseAutoRefreshScreen<Props, State> {
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}
               onEndReached={this.onEndScroll}
-              emptyTitle={i18n.t('cars.noCars')}
+              emptyTitle={I18n.t('cars.noCars')}
             />
           </View>
         )}
