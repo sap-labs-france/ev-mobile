@@ -22,6 +22,7 @@ export default class NotificationManager {
   private centralServerProvider: CentralServerProvider;
   private lastNotification: NotificationOpen;
 
+  // eslint-disable-next-line no-useless-constructor
   private constructor() {}
 
   public static getInstance(): NotificationManager {
@@ -145,6 +146,7 @@ export default class NotificationManager {
     }
   }
 
+  // eslint-disable-next-line complexity
   private async processOpenedNotification(notificationOpen: NotificationOpen): Promise<boolean> {
     let connectionIsValid = true;
     // Not valid

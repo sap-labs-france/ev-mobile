@@ -1,5 +1,6 @@
 import React from 'react';
 import { FlatList, Platform, RefreshControl, TouchableOpacity } from 'react-native';
+
 import BaseProps from '../../types/BaseProps';
 import ListItem from '../../types/ListItem';
 import ListEmptyTextComponent from './empty-text/ListEmptyTextComponent';

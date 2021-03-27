@@ -413,11 +413,11 @@ export default class App extends React.Component<Props, State> {
     });
   }
 
-  public async componentWillUnmount() {
+  public componentWillUnmount() {
     // Deactivate Deep links
     this.deepLinkingManager.stopListening();
     // Stop Notifications
-    await this.notificationManager.stop();
+    this.notificationManager.stop();
     // Stop Location
     this.location.stopListening();
   }

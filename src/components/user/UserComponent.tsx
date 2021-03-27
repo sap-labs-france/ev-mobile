@@ -24,7 +24,7 @@ export default class UserComponent extends React.Component<Props, State> {
   public state: State;
   private centralServerProvider: CentralServerProvider;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       user: this.props.user
@@ -42,32 +42,6 @@ export default class UserComponent extends React.Component<Props, State> {
       user.image = await this.getUserImage(user.id as string);
     }
     this.setState({user});
-  }
-
-  private computeStatusStyle(status: string, style: any) {
-    switch (status) {
-      case UserStatus.ACTIVE:
-        return style.active;
-      case UserStatus.PENDING:
-        return style.pending;
-      case UserStatus.BLOCKED:
-      case UserStatus.INACTIVE:
-      case UserStatus.LOCKED:
-        return style.inactive;
-    }
-  }
-
-  private async getUserImage(id: string) {
-    try {
-      return await this.centralServerProvider.getUserImage({ID: id});
-    } catch (error) {
-      // Check if HTTP?
-      if (!error.request) {
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-          'users.userUnexpectedError', this.props.navigation);
-      }
-    }
-    return null;
   }
 
   public render() {
@@ -101,5 +75,31 @@ export default class UserComponent extends React.Component<Props, State> {
         </View>
       </View>
     );
+  }
+
+  private computeStatusStyle(status: string, style: any) {
+    switch (status) {
+      case UserStatus.ACTIVE:
+        return style.active;
+      case UserStatus.PENDING:
+        return style.pending;
+      case UserStatus.BLOCKED:
+      case UserStatus.INACTIVE:
+      case UserStatus.LOCKED:
+        return style.inactive;
+    }
+  }
+
+  private async getUserImage(id: string) {
+    try {
+      return await this.centralServerProvider.getUserImage({ID: id});
+    } catch (error) {
+      // Check if HTTP?
+      if (!error.request) {
+        Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
+          'users.userUnexpectedError', this.props.navigation);
+      }
+    }
+    return null;
   }
 }

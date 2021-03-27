@@ -25,7 +25,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
   }
 

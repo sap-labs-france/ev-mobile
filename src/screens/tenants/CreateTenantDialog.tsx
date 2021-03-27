@@ -4,8 +4,8 @@ import React from 'react';
 import { Alert, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 
-import computeModalStyleSheet from '../../ModalStyles';
 import Configuration from '../../config/Configuration';
+import computeModalStyleSheet from '../../ModalStyles';
 import BaseProps from '../../types/BaseProps';
 import { EndpointCloud, TenantConnection } from '../../types/Tenant';
 import SecuredStorage from '../../utils/SecuredStorage';

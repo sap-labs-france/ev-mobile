@@ -30,7 +30,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
   public props: Props;
   private chargingStationID: string;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       loading: true,
