@@ -16,9 +16,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderBottomWidth: 1,
       alignItems: 'center',
       borderBottomColor: commonColor.listBorderColor,
-      paddingLeft: '5@s',
-      paddingRight: '5@s',
-      height: '80@s',
+      padding: '5@s',
     },
     avatarContainer: {
       paddingLeft: '10@s',
@@ -27,22 +25,35 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     selected: {
       opacity: 0.5
     },
-    text: {
-      fontSize: '15@s',
-      color: commonColor.textColor
-    },
     userContainer: {
       flex: 1,
       flexDirection: 'column',
-      justifyContent: 'flex-start',
+      justifyContent: 'center',
+      height: '65@s'
     },
-    userDetailsContainer: {
+    userFullnameStatusContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
+      alignItems: 'center',
     },
-    name: {
+    fullNameContainer: {
+      width: '70%',
     },
-    emailContainer: {
+    fullName: {
+      fontSize: '17@s',
+      color: commonColor.textColor
+    },
+    emailRoleContainer: {
+      width: '90%',
+    },
+    email: {
+      fontSize: '15@s',
+      paddingTop: '5@s',
+      color: commonColor.textColor,
+    },
+    role: {
+      fontSize: '12@s',
+      color: commonColor.textColor,
     },
     statusContainer: {
     },
