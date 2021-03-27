@@ -72,6 +72,7 @@
     "statistics": "Estadísticas",
     "reportError": "Reportar error",
     "users": "Users",
+    "badges": "Badges",
     "cars": "Cars"
   },
   "authentication": {
@@ -177,11 +178,11 @@
     "unknown": "Unknown"
   },
   "userStatuses": {
-    "active": "active",
-    "inactive": "inactive",
-    "locked": "locked",
-    "blocked": "blocked",
-    "pending": "pending",
+    "active": "Active",
+    "inactive": "Inactive",
+    "locked": "Locked",
+    "blocked": "Blocked",
+    "pending": "Pending",
     "unknown": "Unknown"
   },
   "cars": {
@@ -220,6 +221,10 @@
     "noOngoingSessions": "Ninguna sesión en progreso",
     "ongoingSessionsNote": "Navegar a las Sesiones en progreso",
     "statistics": "Estadísticas",
+    "tags": "Badges",
+    "tagsNote": "Badge list",
+    "users": "Users",
+    "usersNote": "User list",
     "numberOfSessions": "{{nbrSessions}} sesiones",
     "noSessions": "Ninguna sesión encontrada",
     "numberOfSessionsNote": "Número total de sesiones",
@@ -294,6 +299,12 @@
     "comboCCS": "Combo",
     "chademo": "Chademo",
     "domestic": "Doméstico"
+  },
+  "tags": {
+    "noTags": "No badges",
+    "tags": "Badge(s)",
+    "active": "Active",
+    "inactive": "Inactive"
   },
   "details": {
     "connector": "Connector",

@@ -72,6 +72,7 @@
     "statistics": "Statistiques",
     "reportError": "Signaler Erreur",
     "users": "Utilisateurs",
+    "badges": "Badges",
     "cars": "Voitures"
   },
   "authentication": {
@@ -220,6 +221,10 @@
     "noOngoingSessions": "Pas de Session en cours",
     "ongoingSessionsNote": "Naviguez vers les Session en cours",
     "statistics": "Statistiques",
+    "tags": "Badges",
+    "tagsNote": "Liste des Badges",
+    "users": "Utilisateurs",
+    "usersNote": "Liste des Utilisateurs",
     "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "Pas de Session trouvée",
     "numberOfSessionsNote": "Nombre total de Sessions",
@@ -294,6 +299,12 @@
     "comboCCS": "Combo",
     "chademo": "Chademo",
     "domestic": "Domestique"
+  },
+  "tags": {
+    "noTags": "Aucun badge",
+    "tags": "Badge(s)",
+    "active": "Actif",
+    "inactive": "Inactif"
   },
   "details": {
     "connector": "Connecteur",

@@ -72,6 +72,7 @@
     "statistics": "Statistiche",
     "reportError": "Segnala errore",
     "users": "Users",
+    "badges": "Badges",
     "cars": "Cars"
   },
   "cars": {
@@ -182,11 +183,11 @@
     "unknown": "Unknown"
   },
   "userStatuses": {
-    "active": "active",
-    "inactive": "inactive",
-    "locked": "locked",
-    "blocked": "blocked",
-    "pending": "pending",
+    "active": "Active",
+    "inactive": "Inactive",
+    "locked": "Locked",
+    "blocked": "Blocked",
+    "pending": "Pending",
     "unknown": "Unknown"
   },
   "transactions": {
@@ -220,6 +221,10 @@
     "noOngoingSessions": "Nessuna Sessione In Corso",
     "ongoingSessionsNote": "Vai a Sessioni in corso",
     "statistics": "Statistiche",
+    "tags": "Badges",
+    "tagsNote": "Badge list",
+    "users": "Users",
+    "usersNote": "User list",
     "numberOfSessions": "{{nbrSessions}} Sessioni",
     "noSessions": "Nessuna Sessione trovata",
     "numberOfSessionsNote": "Numero totale di Sessioni",
@@ -294,6 +299,12 @@
     "comboCCS": "Combo",
     "chademo": "Chademo",
     "domestic": "Domestico"
+  },
+  "tags": {
+    "noTags": "No badges",
+    "tags": "Badge(s)",
+    "active": "Active",
+    "inactive": "Inactive"
   },
   "details": {
     "connector": "Presa",
