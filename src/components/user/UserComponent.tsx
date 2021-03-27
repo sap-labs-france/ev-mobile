@@ -84,9 +84,9 @@ export default class UserComponent extends React.Component<Props, State> {
           <UserAvatar user={user} selected={selected} navigation={navigation}/>
         </View>
         <View style={selected ? [style.userContainer, style.selected] : style.userContainer }>
-          <View style={style.userDetailsContainer}>
-            <View style={style.name}>
-              <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>{userFullName}</Text>
+          <View style={style.userFullnameStatusContainer}>
+            <View style={style.fullNameContainer}>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.fullName}>{userFullName}</Text>
             </View>
             <View style={style.statusContainer}>
               <Chip style={[style.status, statusStyle]} textStyle={[style.statusText, statusStyle]}>
@@ -94,11 +94,9 @@ export default class UserComponent extends React.Component<Props, State> {
               </Chip>
             </View>
           </View>
-          <View style={style.emailContainer}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>{user.email}</Text>
-          </View>
-          <View style={style.roleContainer}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.role]}>{Utils.translateUserRole(userRole)}</Text>
+          <View style={style.emailRoleContainer}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.email}>{user.email}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.role}>{Utils.translateUserRole(userRole)}</Text>
           </View>
         </View>
       </View>

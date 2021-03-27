@@ -32,7 +32,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     description: {
-      textAlign: 'center'
     },
     tagId: {
       marginRight: '7@s',
@@ -41,13 +40,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     tagContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      borderBottomWidth: 1,
       alignItems: 'center',
+      borderBottomWidth: 1,
       borderBottomColor: commonColor.listBorderColor,
       padding: '10@s',
       height: '60@s',
     },
     labelContainer: {
+      width: '75%',
     },
     statusContainer: {
       alignSelf: 'flex-start',
