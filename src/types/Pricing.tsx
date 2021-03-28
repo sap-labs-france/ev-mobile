@@ -1,9 +1,10 @@
 export class PricedConsumption {
-  constructor(
-    readonly amount: number,
-    readonly cumulatedAmount: number,
-    readonly roundedAmount: number,
-    readonly currencyCode: string,
-    readonly pricingSource: string
+  // eslint-disable-next-line no-useless-constructor
+  public constructor(
+    public readonly amount: number,
+    public readonly cumulatedAmount: number,
+    public readonly roundedAmount: number,
+    public readonly currencyCode: string,
+    public readonly pricingSource: string
   ) {}
 }

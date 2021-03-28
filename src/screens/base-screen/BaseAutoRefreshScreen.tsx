@@ -85,13 +85,6 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
     console.log('BaseAutoRefreshScreen: Refresh not implemented!!!');
   }
 
-  private canRefresh(): boolean {
-    if (!this.lastRefreshDate) {
-      return true;
-    }
-    return moment().diff(this.lastRefreshDate) > Constants.AUTO_REFRESH_DUPS_INTERVAL;
-  }
-
   protected manualRefresh = async () => {
     // Display spinner
     this.setState({ refreshing: true });
@@ -100,6 +93,13 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
     // Hide spinner
     this.setState({ refreshing: false });
   };
+
+  private canRefresh(): boolean {
+    if (!this.lastRefreshDate) {
+      return true;
+    }
+    return moment().diff(this.lastRefreshDate) > Constants.AUTO_REFRESH_DUPS_INTERVAL;
+  }
 
   private startRefreshTimer() {
     // Start the timer

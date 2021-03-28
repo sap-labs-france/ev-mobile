@@ -19,7 +19,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   private componentFocusUnsubscribe: () => void;
   private componentBlurUnsubscribe: () => void;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.mounted = false;
   }
@@ -35,7 +35,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     this.componentFocusUnsubscribe = this.props.navigation.addListener('focus', this.componentDidFocus.bind(this));
     this.componentBlurUnsubscribe = this.props.navigation.addListener('blur', this.componentDidBlur.bind(this));
     // Remove Backhandler for Android
-    BackHandler.removeEventListener('hardwareBackPress', this.onBack);
+    BackHandler.removeEventListener('hardwareBackPress', this.onBack.bind(this));
     // Ok
     this.mounted = true;
   }

@@ -58,6 +58,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '12@s',
       color: commonColor.textColor
     },
+    roleContainer: {
+      marginTop: '2@s'
+    },
     statusContainer: {},
     status: {
       backgroundColor: commonColor.containerBgColor,
@@ -81,12 +84,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     pending: {
       color: commonColor.brandWarning,
       borderColor: commonColor.brandWarning
-    },
-    role: {
-      fontSize: '12@s'
-    },
-    roleContainer: {
-      marginTop: '2@s'
     }
   });
   const portraitStyles = {};
