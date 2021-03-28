@@ -273,11 +273,7 @@ module.exports = defineConfig({
     "prefer-const": "error",
     "quote-props": "off",
     "radix": "error",
-    "space-before-function-paren": "off",
-    "space-in-parens": [
-      "off",
-      "never"
-    ],
+    "semi": "off",
     "spaced-comment": [
       "error",
       "always",
