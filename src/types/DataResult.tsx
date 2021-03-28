@@ -44,4 +44,3 @@ export interface LogoResult {
   id: string;
   logo: string;
 }
-

@@ -3,8 +3,7 @@ import CentralServerProvider from './CentralServerProvider';
 export default class ProviderFactory {
   private static centralServerProviderInstance: CentralServerProvider;
 
-  private constructor() {
-  }
+  private constructor() {}
 
   public static async getProvider(): Promise<CentralServerProvider> {
     // Handling singleton

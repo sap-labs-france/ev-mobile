@@ -27,16 +27,16 @@ export interface SettingLink {
 
 export interface SettingDBContent {
   type:
-    RoamingSettingsType
-    | AnalyticsSettingsType
-    | RefundSettingsType
-    | PricingSettingsType
-    | BillingSettingsType
-    | SmartChargingSettingsType
-    | AssetSettingsType
-    | SmartChargingContentType
-    | CryptoSettingsType
-    | UserSettingsType;
+  | RoamingSettingsType
+  | AnalyticsSettingsType
+  | RefundSettingsType
+  | PricingSettingsType
+  | BillingSettingsType
+  | SmartChargingSettingsType
+  | AssetSettingsType
+  | SmartChargingContentType
+  | CryptoSettingsType
+  | UserSettingsType;
   ocpi?: OcpiSetting;
   simple?: SimplePricingSetting;
   convergentCharging?: ConvergentChargingPricingSetting;
@@ -52,7 +52,7 @@ export interface SettingDBContent {
 
 export enum PricingSettingsType {
   SIMPLE = 'simple',
-  CONVERGENT_CHARGING = 'convergentCharging',
+  CONVERGENT_CHARGING = 'convergentCharging'
 }
 
 export interface PricingSettings extends Setting {
@@ -63,12 +63,11 @@ export interface PricingSettings extends Setting {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface PricingSetting {
-}
+export interface PricingSetting {}
 
 export enum PricingContentType {
   SIMPLE = 'simple',
-  CONVERGENT_CHARGING = 'convergentCharging',
+  CONVERGENT_CHARGING = 'convergentCharging'
 }
 
 export interface SimplePricingSetting extends PricingSetting {
@@ -146,11 +145,10 @@ export interface SmartChargingSettings extends Setting {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface SmartChargingSetting {
-}
+export interface SmartChargingSetting {}
 
 export enum SmartChargingContentType {
-  SAP_SMART_CHARGING = 'sapSmartCharging',
+  SAP_SMART_CHARGING = 'sapSmartCharging'
 }
 
 export interface SapSmartChargingSetting extends SmartChargingSetting {
@@ -163,7 +161,7 @@ export interface SapSmartChargingSetting extends SmartChargingSetting {
 }
 
 export enum RefundSettingsType {
-  CONCUR = 'concur',
+  CONCUR = 'concur'
 }
 
 export interface RefundSettings extends Setting {
@@ -173,8 +171,7 @@ export interface RefundSettings extends Setting {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface RefundSetting {
-}
+export interface RefundSetting {}
 
 export interface ConcurRefundSetting extends RefundSetting {
   authenticationUrl: string;
@@ -216,7 +213,7 @@ export interface StripeBillingSetting extends BillingSetting {
 }
 
 export enum BillingContentType {
-  STRIPE = 'stripe',
+  STRIPE = 'stripe'
 }
 
 export interface AssetSettings extends Setting {
@@ -226,7 +223,7 @@ export interface AssetSettings extends Setting {
 }
 
 export enum AssetSettingsType {
-  ASSET = 'asset',
+  ASSET = 'asset'
 }
 
 export interface AssetSetting {
@@ -260,8 +257,7 @@ export interface AssetGreencomConnectionType {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface AssetSchneiderConnectionType extends AssetUserPasswordConnectionType {
-}
+export interface AssetSchneiderConnectionType extends AssetUserPasswordConnectionType {}
 
 export enum CryptoSettingsType {
   CRYPTO = 'crypto'
@@ -285,7 +281,7 @@ export interface CryptoKeyProperties {
   operationMode: string;
 }
 export enum UserSettingsType {
-  USER = 'user',
+  USER = 'user'
 }
 
 export interface UserSettings extends Setting {

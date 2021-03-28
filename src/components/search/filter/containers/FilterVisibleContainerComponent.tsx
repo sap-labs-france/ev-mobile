@@ -15,7 +15,6 @@ interface State extends FilterContainerComponentState {
 }
 
 export default class FilterVisibleContainerComponent extends FilterContainerComponent {
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -31,20 +30,26 @@ export default class FilterVisibleContainerComponent extends FilterContainerComp
   public state: State;
   public props: Props;
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   private toggleExpanded = () => {
     const { onExpand } = this.props;
-    this.setState({
-      expanded: !this.state.expanded
-    }, () => {
-      if (onExpand) {
-        onExpand(this.state.expanded);
+    this.setState(
+      {
+        expanded: !this.state.expanded
+      },
+      () => {
+        if (onExpand) {
+          onExpand(this.state.expanded);
+        }
       }
-    });
-  }
+    );
+  };
 
   public render = () => {
     const style = computeStyleSheet();
@@ -53,16 +58,16 @@ export default class FilterVisibleContainerComponent extends FilterContainerComp
     return (
       <View style={style.visibleContainer}>
         {this.props.children}
-        {onExpand &&
+        {onExpand && (
           <TouchableOpacity style={style.visibleExpandedContainer} onPress={this.toggleExpanded}>
-            {expanded ?
-              <Icon style={style.visibleExpandedIcon} type='MaterialIcons' name='keyboard-arrow-up' />
-              :
-              <Icon style={style.visibleExpandedIcon} type='MaterialIcons' name='keyboard-arrow-down' />
-            }
+            {expanded ? (
+              <Icon style={style.visibleExpandedIcon} type="MaterialIcons" name="keyboard-arrow-up" />
+            ) : (
+              <Icon style={style.visibleExpandedIcon} type="MaterialIcons" name="keyboard-arrow-down" />
+            )}
           </TouchableOpacity>
-        }
+        )}
       </View>
     );
-  }
+  };
 }

@@ -358,7 +358,7 @@ export enum ServerAction {
   SYNCHRONIZE_REFUNDED_TRANSACTIONS = 'SynchronizeRefundedTransactions',
 
   SETTING_CREATE = 'SettingCreate',
-  SETTING_BY_INDENTIFIER = 'SettingByIdentifier',
+  SETTING_BY_IDENTIFIER = 'SettingByIdentifier',
   SETTINGS = 'Settings',
   SETTING = 'Setting',
   SETTING_UPDATE = 'SettingUpdate',
@@ -487,7 +487,7 @@ export enum ServerRoute {
 
   REST_PING = 'ping',
 
-  REST_TENANTS = 'tenants',
+  REST_TENANTS = 'tenants'
 
   // shouldn't we have this rest here ?? for the route building
   // REST_BILLING_PAYMENT_METHODS = 'billing/paymentmethods'

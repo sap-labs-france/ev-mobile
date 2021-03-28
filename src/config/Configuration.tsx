@@ -12,16 +12,12 @@ export default class Configuration {
   public static readonly ENDPOINT_CLOUDS: EndpointCloud[] = [
     { id: 'scp', name: 'SAP Cloud Platform', endpoint: Configuration.SCP_REST_ENDPOINT_PROD },
     { id: 'aws', name: 'Amazon Web Service', endpoint: Configuration.AWS_REST_ENDPOINT_PROD },
-    { id: 'scpqa', name: 'SAP Cloud Platform QA', endpoint: Configuration.SCP_REST_ENDPOINT_QA },
+    { id: 'scpqa', name: 'SAP Cloud Platform QA', endpoint: Configuration.SCP_REST_ENDPOINT_QA }
   ];
 
-  public static ENDPOINTS_PROD: KeyValue[] = [
-    { key: 'general.endpoint_scp_prod', value: Configuration.SCP_REST_ENDPOINT_PROD },
-  ];
+  public static ENDPOINTS_PROD: KeyValue[] = [{ key: 'general.endpoint_scp_prod', value: Configuration.SCP_REST_ENDPOINT_PROD }];
 
-  public static ENDPOINTS_QA: KeyValue[] = [
-    { key: 'general.endpoint_scp_qa', value: Configuration.SCP_REST_ENDPOINT_QA },
-  ];
+  public static ENDPOINTS_QA: KeyValue[] = [{ key: 'general.endpoint_scp_qa', value: Configuration.SCP_REST_ENDPOINT_QA }];
 
   public static isServerLocalePreferred = true;
 }

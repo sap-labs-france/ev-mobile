@@ -87,8 +87,7 @@ export default class SecurityProvider {
         if (!siteArea) {
           return false;
         }
-        return !siteArea.accessControl || this.isSiteAdmin(siteArea.siteID) ||
-          this.loggedUser.sites.includes(siteArea.siteID);
+        return !siteArea.accessControl || this.isSiteAdmin(siteArea.siteID) || this.loggedUser.sites.includes(siteArea.siteID);
       }
       return true;
     }

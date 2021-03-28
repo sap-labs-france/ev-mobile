@@ -5,6 +5,9 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -21,7 +24,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     iconContainer: {
       flex: 1,
       marginTop: '15@s',
-      alignItems: 'center',
+      alignItems: 'center'
     },
     reportErrorIcon: {
       fontSize: '100@s',
@@ -30,18 +33,18 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     formContainer: {
       flex: 3,
       alignItems: 'center',
-      padding: '10@s',
+      padding: '10@s'
     },
     buttonContainer: {
       flex: 1,
-      width: '94%',
+      width: '94%'
     },
     input: {
       height: '40@s',
       width: '94%',
       marginTop: '15@s',
       paddingLeft: '10@s',
-      paddingRight: '10@s',
+      paddingRight: '10@s'
     },
     descriptionInput: {
       width: '94%',
@@ -63,7 +66,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     sendButton: {
-      marginTop: '15@s',
+      marginTop: '15@s'
     },
     sendTextButton: {
       color: 'white',
@@ -74,32 +77,32 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '12@s',
       marginLeft: '20@s',
       color: commonColor.brandDanger,
-      alignSelf: 'flex-start',
+      alignSelf: 'flex-start'
     },
     errorSubjectText: {
       fontSize: '12@s',
       marginLeft: '20@s',
       color: commonColor.brandDanger,
-      alignSelf: 'flex-start',
+      alignSelf: 'flex-start'
     },
     errorDescriptionText: {
       fontSize: '12@s',
       marginLeft: '20@s',
       color: commonColor.brandDanger,
-      alignSelf: 'flex-start',
+      alignSelf: 'flex-start'
     }
   });
   const portraitStyles = {};
   const landscapeStyles = {
     input: {
-      width: '80%',
+      width: '80%'
     },
     descriptionInput: {
-      width: '80%',
+      width: '80%'
     },
     buttonContainer: {
-      width: '80%',
-    },
+      width: '80%'
+    }
   };
   return ResponsiveStylesSheet.createOriented({
     landscape: deepmerge(commonStyles, landscapeStyles) as StyleSheet.NamedStyles<any>,

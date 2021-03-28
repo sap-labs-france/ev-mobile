@@ -5,5 +5,5 @@ export enum ComponentEnum {
   BILLING = 'billing',
   REFUND = 'refund',
   STATISTICS = 'statistics',
-  ANALYTICS = 'analytics',
+  ANALYTICS = 'analytics'
 }

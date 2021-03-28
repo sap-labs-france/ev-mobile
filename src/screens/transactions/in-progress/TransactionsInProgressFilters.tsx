@@ -31,47 +31,53 @@ export default class TransactionsInProgressFilters extends ScreenFilters {
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public onFilterChanged = (newFilters: TransactionsInProgressFiltersDef, applyFilters: boolean) => {
     const { onFilterChanged } = this.props;
     if (applyFilters) {
-      this.setState({
-        filters: { ...this.state.filters, ...newFilters }
-      }, () => onFilterChanged(newFilters));
+      this.setState(
+        {
+          filters: { ...this.state.filters, ...newFilters }
+        },
+        () => onFilterChanged(newFilters)
+      );
     } else {
       this.setState({
         filters: { ...this.state.filters, ...newFilters }
       });
     }
-  }
+  };
 
   public render = () => {
     const { initialFilters } = this.props;
     const { filters, isAdmin, hasSiteAdmin } = this.state;
     return (
       <View>
-        {(isAdmin || hasSiteAdmin) &&
+        {(isAdmin || hasSiteAdmin) && (
           <FilterVisibleContainerComponent
             onFilterChanged={this.onFilterChanged}
             ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) =>
-              this.setFilterVisibleContainerComponent(filterVisibleContainerComponent)}
-          >
+              this.setFilterVisibleContainerComponent(filterVisibleContainerComponent)
+            }>
             <MyUserSwitchFilterControlComponent
               filterID={'userID'}
               internalFilterID={GlobalFilters.MY_USER_FILTER}
               initialValue={filters.hasOwnProperty('userID') ? filters.userID : initialFilters.userID}
               label={I18n.t('general.onlyMyTransactions')}
-              onFilterChanged={(id: string, value: string) =>
-                this.getFilterVisibleContainerComponent().setFilter(id, value)}
-              ref={(myUserSwitchFilterControlComponent: MyUserSwitchFilterControlComponent) =>
-                this.addVisibleFilter(myUserSwitchFilterControlComponent)}
+              onFilterChanged={async (id: string, value: string) => this.getFilterVisibleContainerComponent().setFilter(id, value)}
+              ref={async (myUserSwitchFilterControlComponent: MyUserSwitchFilterControlComponent) =>
+                this.addVisibleFilter(myUserSwitchFilterControlComponent)
+              }
             />
           </FilterVisibleContainerComponent>
-        }
+        )}
       </View>
     );
-  }
+  };
 }

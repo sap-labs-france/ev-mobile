@@ -6,8 +6,8 @@ import buildTheme from '../theme/components';
 import buttonTheme from '../theme/components/Button';
 import headerTheme from '../theme/components/Header';
 import { ThemeType } from '../types/Theme';
-import ThemeManager from './ThemeManager';
 import { buildCommonColor } from './customCommonColor';
+import ThemeManager from './ThemeManager';
 
 const theme = (themeType: ThemeType) => {
   // Build the theme
@@ -21,7 +21,7 @@ const theme = (themeType: ThemeType) => {
       shadowColor: commonColor.brandDark,
       shadowOffset: { width: 1, height: 3 },
       shadowOpacity: 0.2,
-      shadowRadius: 1.2,
+      shadowRadius: 1.2
     },
     'NativeBase.Header': {
       ...headerTheme(commonColor),

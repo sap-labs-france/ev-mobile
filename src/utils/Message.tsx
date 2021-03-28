@@ -33,7 +33,7 @@ export default class Message {
       textColor: '#FFF',
       textStyle: {
         fontSize: scale(15),
-        textAlign: 'center',
+        textAlign: 'center'
       },
       backgroundColor: commonColor[type]
     });

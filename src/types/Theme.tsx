@@ -1,6 +1,6 @@
 export enum ThemeType {
   DARK = 'dark',
-  LIGHT = 'light',
+  LIGHT = 'light'
 }
 
 export default interface ThemeDefinition {

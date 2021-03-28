@@ -14,8 +14,7 @@ export default class DeepLinkingManager {
   private navigator: NavigationContainerRef;
   private centralServerProvider: CentralServerProvider;
 
-  private constructor() {
-  }
+  private constructor() {}
 
   public static getInstance(): DeepLinkingManager {
     if (!DeepLinkingManager.instance) {
@@ -35,19 +34,36 @@ export default class DeepLinkingManager {
     this.addResetPasswordRoute();
     this.addVerifyAccountRoute();
     // Init URL
-    Linking.getInitialURL().then((url) => {
-      if (url) {
-        Linking.openURL(url);
-      }
-    }).catch((err) => {
-      // tslint:disable-next-line: no-console
-      console.error('An error occurred', err);
-    });
+    Linking.getInitialURL()
+      .then((url) => {
+        if (url) {
+          Linking.openURL(url);
+        }
+      })
+      .catch((err) => {
+        console.error('An error occurred', err);
+      });
   }
+
+  public startListening() {
+    Linking.addEventListener('url', this.handleUrl);
+  }
+
+  public stopListening() {
+    Linking.removeEventListener('url', this.handleUrl);
+  }
+
+  public handleUrl = ({ url }: { url: string }) => {
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        DeepLinking.evaluateUrl(url);
+      }
+    });
+  };
 
   private addResetPasswordRoute = () => {
     // Add Route
-    DeepLinking.addRoute('/resetPassword/:tenant/:hash', async (response: { tenant: string, hash: string }) => {
+    DeepLinking.addRoute('/resetPassword/:tenant/:hash', async (response: { tenant: string; hash: string }) => {
       // Check params
       if (!response.tenant) {
         Message.showError(I18n.t('authentication.mandatoryTenant'));
@@ -71,12 +87,13 @@ export default class DeepLinkingManager {
         })
       );
     });
-  }
+  };
 
   private addVerifyAccountRoute = () => {
     // Add Route
-    DeepLinking.addRoute('/verifyAccount/:tenant/:email/:token/:resetToken',
-      async (response: { tenant: string, email: string, token: string, resetToken: string }) => {
+    DeepLinking.addRoute(
+      '/verifyAccount/:tenant/:email/:token/:resetToken',
+      async (response: { tenant: string; email: string; token: string; resetToken: string }) => {
         // Check params
         if (!response.tenant) {
           Message.showError(I18n.t('authentication.mandatoryTenant'));
@@ -140,29 +157,13 @@ export default class DeepLinkingManager {
                 break;
               // Other common Error
               default:
-                Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-                  'authentication.activationUnexpectedError');
+                Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.activationUnexpectedError');
             }
           } else {
             Message.showError(I18n.t('authentication.activationUnexpectedError'));
           }
         }
-      });
-  }
-
-  public startListening() {
-    Linking.addEventListener('url', this.handleUrl);
-  }
-
-  public stopListening() {
-    Linking.removeEventListener('url', this.handleUrl);
-  }
-
-  public handleUrl = ({ url }: { url: string }) => {
-    Linking.canOpenURL(url).then((supported) => {
-      if (supported) {
-        DeepLinking.evaluateUrl(url);
       }
-    });
-  }
+    );
+  };
 }

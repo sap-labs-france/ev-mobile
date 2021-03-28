@@ -6,6 +6,9 @@ import { ScaledSheet } from 'react-native-size-matters';
 import { PLATFORM } from '../../theme/variables/commonColor';
 import Utils from '../../utils/Utils';
 
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -35,15 +38,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '15@s',
       color: commonColor.textColor
     },
-    description: {
-    },
+    description: {},
     tagId: {
       // width: '50%'
-      alignSelf: 'flex-start',
+      alignSelf: 'flex-start'
     },
     fullName: {
       // width: '25%',
-      alignSelf: 'flex-end',
+      alignSelf: 'flex-end'
     },
     tagContainer: {
       flexDirection: 'row',
@@ -52,19 +54,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderBottomWidth: 1,
       borderBottomColor: commonColor.listBorderColor,
       padding: '10@s',
-      height: '60@s',
+      height: '60@s'
     },
     labelContainer: {
-      width: '75%',
+      width: '75%'
     },
     statusContainer: {
-      alignSelf: 'flex-start',
+      alignSelf: 'flex-start'
     },
     status: {
       height: '21@s',
       backgroundColor: commonColor.containerBgColor,
       borderWidth: 1,
-      margin: 0,
+      margin: 0
     },
     statusText: {
       fontSize: '11@s',
@@ -78,7 +80,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     inactive: {
       borderColor: commonColor.brandDanger,
       color: commonColor.brandDanger
-    },
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

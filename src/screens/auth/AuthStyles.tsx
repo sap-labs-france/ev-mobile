@@ -5,6 +5,9 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -32,7 +35,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '75%',
       height: '100@s',
       marginTop: '10@s',
-      resizeMode: 'contain',
+      resizeMode: 'contain'
     },
     appText: {
       color: commonColor.textColor,
@@ -48,7 +51,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       marginTop: '20@s',
       fontSize: '15@s',
-      alignSelf: 'center',
+      alignSelf: 'center'
     },
     appTenantName: {
       color: commonColor.textColor,
@@ -56,7 +59,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginBottom: '5@s',
       fontSize: '15@s',
       fontWeight: 'bold',
-      alignSelf: 'center',
+      alignSelf: 'center'
     },
     formErrorTextEula: {
       alignSelf: 'center',
@@ -70,7 +73,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     linksButton: {
       alignSelf: 'center',
-      marginBottom: '15@s',
+      marginBottom: '15@s'
     },
     linksTextButton: {
       fontSize: '13@s',
@@ -87,7 +90,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.brandDanger
     },
     fab: {
-      backgroundColor: commonColor.buttonBg,
+      backgroundColor: commonColor.buttonBg
     },
     fabIcon: {
       color: commonColor.textColor
@@ -110,13 +113,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     qrCodeIcon: {
       fontSize: '25@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};
   const landscapeStyles = {
     qrCodeContainer: {
-      marginTop: '5%',
+      marginTop: '5%'
     }
   };
   return ResponsiveStylesSheet.createOriented({

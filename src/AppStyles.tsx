@@ -5,13 +5,16 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from './utils/Utils';
 
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     sideMenu: {
       width: '250@s',
-      color: commonColor.textColor,
-    },
+      color: commonColor.textColor
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};
