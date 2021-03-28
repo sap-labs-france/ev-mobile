@@ -5,6 +5,9 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -29,10 +32,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     tenantNameText: {
       color: commonColor.textColor,
       fontSize: '16@s',
-      textAlign: 'center',
+      textAlign: 'center'
     },
     icon: {
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     trashIconButton: {
       alignSelf: 'flex-end',

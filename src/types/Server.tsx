@@ -489,7 +489,7 @@ export enum ServerRoute {
 
   REST_PING = 'ping',
 
-  REST_TENANTS = 'tenants',
+  REST_TENANTS = 'tenants'
 
   // shouldn't we have this rest here ?? for the route building
   // REST_BILLING_PAYMENT_METHODS = 'billing/paymentmethods'

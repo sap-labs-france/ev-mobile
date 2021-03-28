@@ -5,6 +5,9 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../utils/Utils';
 
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -20,15 +23,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor
     },
     map: {
-      flex: 1,
+      flex: 1
     },
     filtersExpanded: {
       opacity: 1,
-      height: '180@s',
+      height: '180@s'
     },
     filtersHidden: {
       opacity: 0,
-      height: '0@s',
+      height: '0@s'
     }
   });
   const portraitStyles = {};

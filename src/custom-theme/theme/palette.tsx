@@ -39,5 +39,5 @@ export default {
   darkLight: '#333',
 
   light: '#FFF',
-  lightDark: '#CCC',
+  lightDark: '#CCC'
 };

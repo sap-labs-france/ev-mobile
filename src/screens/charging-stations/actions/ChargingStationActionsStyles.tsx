@@ -5,6 +5,9 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../utils/Utils';
 
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -38,10 +41,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center'
     },
     actionButtonIcon: {
-      fontSize: '20@s',
+      fontSize: '20@s'
     },
     actionButtonText: {
-      fontSize: '18@s',
+      fontSize: '18@s'
     }
   });
   const portraitStyles = {};

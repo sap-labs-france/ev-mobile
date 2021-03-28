@@ -18,8 +18,7 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './TransactionChartStyles';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
 interface State {
   loading?: boolean;
@@ -61,9 +60,12 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   // tslint:disable-next-line: cyclomatic-complexity
   public refresh = async () => {
@@ -84,7 +86,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
             connector = chargingStation ? chargingStation.connectors[transactionWithConsumptions.transaction.connectorId - 1] : null;
           }
         }
-      // Get chargingStation and Transaction
+        // Get chargingStation and Transaction
       } else if (chargingStationID) {
         // Get chargingStation
         chargingStation = await this.getChargingStation(chargingStationID);
@@ -105,13 +107,21 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         chargingStation: !this.state.chargingStation ? chargingStation : this.state.chargingStation,
         connector,
         isAdmin: securityProvider ? securityProvider.isAdmin() : false,
-        isSiteAdmin: securityProvider && chargingStation && chargingStation.siteArea ? securityProvider.isSiteAdmin(chargingStation.siteArea.siteID) : false,
-        canDisplayTransaction: chargingStation ? this.canDisplayTransaction(
-          transactionWithConsumptions ? transactionWithConsumptions.transaction : null, chargingStation, connector) : false,
+        isSiteAdmin:
+          securityProvider && chargingStation && chargingStation.siteArea
+            ? securityProvider.isSiteAdmin(chargingStation.siteArea.siteID)
+            : false,
+        canDisplayTransaction: chargingStation
+          ? this.canDisplayTransaction(
+            transactionWithConsumptions ? transactionWithConsumptions.transaction : null,
+            chargingStation,
+            connector
+          )
+          : false,
         ...transactionWithConsumptions
       });
     }
-  }
+  };
 
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
@@ -120,14 +130,20 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       return chargingStation;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'chargers.chargerUnexpectedError', this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'chargers.chargerUnexpectedError',
+        this.props.navigation,
+        this.refresh
+      );
     }
     return null;
-  }
+  };
 
-  public getTransactionWithConsumptions = async (transactionID: number):
-    Promise<{ transaction: Transaction; values: Consumption[], consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[] }> => {
+  public getTransactionWithConsumptions = async (
+    transactionID: number
+  ): Promise<{ transaction: Transaction; values: Consumption[]; consumptionValues: ChartPoint[]; stateOfChargeValues: ChartPoint[] }> => {
     try {
       // Active Transaction?
       if (transactionID) {
@@ -139,7 +155,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           if (transaction.values.length > 0) {
             transaction.values.push({
               ...transaction.values[transaction.values.length - 1],
-              startedAt: transaction.values[transaction.values.length - 1].endedAt,
+              startedAt: transaction.values[transaction.values.length - 1].endedAt
             });
           }
           // Convert
@@ -182,8 +198,13 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
         // Other common Error
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-          'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
+        Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          'transactions.transactionUnexpectedError',
+          this.props.navigation,
+          this.refresh
+        );
       }
     }
     // Clear
@@ -193,7 +214,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       consumptionValues: null,
       stateOfChargeValues: null
     };
-  }
+  };
 
   public canDisplayTransaction = (transaction: Transaction, chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
@@ -204,7 +225,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       return securityProvider.canReadTransaction(chargingStation.siteArea, transaction ? transaction.tagID : connector.currentTagID);
     }
     return false;
-  }
+  };
 
   public createChart(consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[]) {
     const commonColor = Utils.getCurrentCommonColor();
@@ -304,82 +325,98 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     this.props.navigation.goBack();
     // Do not bubble up
     return true;
-  }
+  };
 
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { showTransactionDetails, isAdmin, isSiteAdmin, loading, transaction, chargingStation,
-            connector, consumptionValues, stateOfChargeValues, canDisplayTransaction } = this.state;
+    const {
+      showTransactionDetails,
+      isAdmin,
+      isSiteAdmin,
+      loading,
+      transaction,
+      chargingStation,
+      connector,
+      consumptionValues,
+      stateOfChargeValues,
+      canDisplayTransaction
+    } = this.state;
     const chartDefinition = this.createChart(consumptionValues, stateOfChargeValues);
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
-    return (
-      loading ? (
-        <Spinner style={style.spinner} color='grey' />
-      ) : (
-          <View style={style.container}>
-            <HeaderComponent
-              navigation={this.props.navigation}
-              title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
-              subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
-              leftAction={() => this.onBack()}
-              leftActionIcon={'navigate-before'}
-              rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
-              rightActionIcon={'menu'}
-            />
-            {showTransactionDetails && transaction && (
-              <TransactionHeaderComponent navigation={navigation} transaction={transaction}
-                isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} displayNavigationIcon={false} />
-            )}
-            {transaction && consumptionValues && consumptionValues.length > 1 && canDisplayTransaction ? (
-              <LineChart
-                style={showTransactionDetails && transaction ? style.chartWithHeader : style.chart}
-                data={chartDefinition.data}
-                chartDescription={{ text: '' }}
-                legend={{
-                  enabled: true,
-                  textSize: scale(8),
-                  textColor: processColor(commonColor.textColor)
-                }}
-                marker={{
-                  enabled: true,
-                  markerColor: processColor(commonColor.disabled),
-                  textSize: scale(12),
-                  textColor: processColor(commonColor.inverseTextColor)
-                }}
-                xAxis={chartDefinition.xAxis}
-                yAxis={chartDefinition.yAxis}
-                autoScaleMinMaxEnabled={false}
-                animation={{
-                  durationX: 1000,
-                  durationY: 1000,
-                  easingY: 'EaseInOutQuart'
-                }}
-                drawGridBackground={false}
-                drawBorders={false}
-                touchEnabled={true}
-                dragEnabled={true}
-                scaleEnabled={false}
-                scaleXEnabled={true}
-                scaleYEnabled={false}
-                pinchZoom={true}
-                doubleTapToZoomEnabled={false}
-                dragDecelerationEnabled={true}
-                dragDecelerationFrictionCoef={0.99}
-                keepPositionOnRotation={false}
-              />
-            ) : (
-                (transaction || (connector && connector.currentTransactionID)) ?
-                  canDisplayTransaction ?
-                    <Text style={style.notData}>{I18n.t('details.noConsumptionData')}</Text>
-                    :
-                    <Text style={style.notData}>{I18n.t('details.notAuthorized')}</Text>
-                  :
-                  <Text style={style.notData}>{I18n.t('details.noConsumptionData')}</Text>
-              )}
-          </View>
-        )
+    return loading ? (
+      <Spinner style={style.spinner} color="grey" />
+    ) : (
+      <View style={style.container}>
+        <HeaderComponent
+          navigation={this.props.navigation}
+          title={chargingStation ? chargingStation.id : I18n.t('connector.unknown')}
+          subTitle={`(${I18n.t('details.connector')} ${connectorLetter})`}
+          leftAction={() => this.onBack()}
+          leftActionIcon={'navigate-before'}
+          rightAction={() => {
+            navigation.dispatch(DrawerActions.openDrawer());
+            return true;
+          }}
+          rightActionIcon={'menu'}
+        />
+        {showTransactionDetails && transaction && (
+          <TransactionHeaderComponent
+            navigation={navigation}
+            transaction={transaction}
+            isAdmin={isAdmin}
+            isSiteAdmin={isSiteAdmin}
+            displayNavigationIcon={false}
+          />
+        )}
+        {transaction && consumptionValues && consumptionValues.length > 1 && canDisplayTransaction ? (
+          <LineChart
+            style={showTransactionDetails && transaction ? style.chartWithHeader : style.chart}
+            data={chartDefinition.data}
+            chartDescription={{ text: '' }}
+            legend={{
+              enabled: true,
+              textSize: scale(8),
+              textColor: processColor(commonColor.textColor)
+            }}
+            marker={{
+              enabled: true,
+              markerColor: processColor(commonColor.disabled),
+              textSize: scale(12),
+              textColor: processColor(commonColor.inverseTextColor)
+            }}
+            xAxis={chartDefinition.xAxis}
+            yAxis={chartDefinition.yAxis}
+            autoScaleMinMaxEnabled={false}
+            animation={{
+              durationX: 1000,
+              durationY: 1000,
+              easingY: 'EaseInOutQuart'
+            }}
+            drawGridBackground={false}
+            drawBorders={false}
+            touchEnabled
+            dragEnabled
+            scaleEnabled={false}
+            scaleXEnabled
+            scaleYEnabled={false}
+            pinchZoom
+            doubleTapToZoomEnabled={false}
+            dragDecelerationEnabled
+            dragDecelerationFrictionCoef={0.99}
+            keepPositionOnRotation={false}
+          />
+        ) : transaction || (connector && connector.currentTransactionID) ? (
+          canDisplayTransaction ? (
+            <Text style={style.notData}>{I18n.t('details.noConsumptionData')}</Text>
+          ) : (
+            <Text style={style.notData}>{I18n.t('details.notAuthorized')}</Text>
+          )
+        ) : (
+          <Text style={style.notData}>{I18n.t('details.noConsumptionData')}</Text>
+        )}
+      </View>
     );
   }
 }

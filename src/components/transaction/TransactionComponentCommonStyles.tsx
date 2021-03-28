@@ -5,6 +5,9 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -31,7 +34,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginTop: '-3@s'
     },
     info: {
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     success: {
       color: commonColor.brandSuccess
@@ -60,11 +63,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     labelValue: {
       fontSize: '15@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     subLabelValue: {
       fontSize: '10@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};

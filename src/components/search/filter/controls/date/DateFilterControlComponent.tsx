@@ -17,7 +17,6 @@ interface State extends FilterControlComponentState<Date> {
 }
 
 export default class DateFilterControlComponent extends FilterControlComponent<Date> {
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -33,24 +32,34 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
   public state: State;
   public props: Props;
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public canBeSaved() {
     return true;
   }
 
-  private onConfirm (newValue: Date) {
+  private onConfirm(newValue: Date) {
     const { onFilterChanged } = this.props;
     // Set Filter
     if (onFilterChanged) {
       if (newValue) {
-        this.setState({
-          openDatePicker: false
-        }, () => { onFilterChanged(this.getID(), newValue); });
+        this.setState(
+          {
+            openDatePicker: false
+          },
+          () => {
+            onFilterChanged(this.getID(), newValue);
+          }
+        );
       } else {
-        this.clearValue( () => { onFilterChanged(this.getID(), null); });
+        this.clearValue(() => {
+          onFilterChanged(this.getID(), null);
+        });
       }
     }
   }
@@ -61,7 +70,9 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
     return (
       <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
         <Text style={internalStyle.textFilter}>{label}</Text>
-        <Text style={internalStyle.textFilter} onPress={() => this.openDatePicker(true)}>{this.getValue()?.toDateString()}</Text>
+        <Text style={internalStyle.textFilter} onPress={() => this.openDatePicker(true)}>
+          {this.getValue()?.toDateString()}
+        </Text>
         <DateTimePickerModal
           isVisible={this.state.openDatePicker}
           date={this.getValue()}
@@ -74,11 +85,11 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
           }}
           onConfirm={(date) => {
             this.onConfirm(date);
-          }
-        }/>
+          }}
+        />
       </View>
     );
-  }
+  };
   private openDatePicker(openDatePicker: boolean) {
     this.setState({ openDatePicker });
   }

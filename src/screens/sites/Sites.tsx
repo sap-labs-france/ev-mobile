@@ -8,12 +8,13 @@ import { Location } from 'react-native-location';
 import MapView, { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
-import computeModalStyle from '../../ModalStyles';
+
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteComponent from '../../components/site/SiteComponent';
 import LocationManager from '../../location/LocationManager';
+import computeModalStyle from '../../ModalStyles';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
@@ -26,8 +27,7 @@ import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SitesFilters, { SitesFiltersDef } from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
 interface State {
   sites?: Site[];
@@ -63,13 +63,16 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       count: 0,
       showMap: false,
       visible: false,
-      siteSelected: null,
+      siteSelected: null
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public async componentDidMount() {
     // Get initial filters
@@ -85,8 +88,9 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
 
   public async loadInitialFilters() {
     const centralServerProvider = await ProviderFactory.getProvider();
-    let location = Utils.convertToBoolean(await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(), GlobalFilters.LOCATION));
+    let location = Utils.convertToBoolean(
+      await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.LOCATION)
+    );
     if (!location) {
       location = false;
     }
@@ -114,29 +118,31 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       // Get current location
       this.currentLocation = await this.getCurrentLocation();
       // Get the Sites
-      sites = await this.centralServerProvider.getSites({
-        Search: searchText,
-        Issuer: true,
-        WithAvailableChargers: true,
-        LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
-        LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
-        LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
-      }, { skip, limit });
+      sites = await this.centralServerProvider.getSites(
+        {
+          Search: searchText,
+          Issuer: true,
+          WithAvailableChargers: true,
+          LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
+          LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
+          LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
+        },
+        { skip, limit }
+      );
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'sites.siteUnexpectedError', this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'sites.siteUnexpectedError', this.props.navigation, this.refresh);
     }
     // Return
     return sites;
-  }
+  };
 
   public onBack = () => {
     // Back mobile button: Force navigation
     this.props.navigation.navigate('HomeNavigator');
     // Do not bubble up
     return true;
-  }
+  };
 
   public refreshCurrentRegion(sites: Site[], force = false) {
     // Set current region
@@ -149,7 +155,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         longitude: gpsCoordinates ? gpsCoordinates[0] : 2.3514616,
         latitude: gpsCoordinates ? gpsCoordinates[1] : 48.8566969,
         latitudeDelta: 0.009,
-        longitudeDelta: 0.009,
+        longitudeDelta: 0.009
       };
     }
   }
@@ -166,10 +172,10 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       this.setState({
         loading: false,
         sites: sites ? sites.result : [],
-        count: sites ? sites.count : 0,
+        count: sites ? sites.count : 0
       });
     }
-  }
+  };
 
   public manualRefresh = async () => {
     // Display spinner
@@ -178,7 +184,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     await this.refresh();
     // Hide spinner
     this.setState({ refreshing: false });
-  }
+  };
 
   public onEndScroll = async () => {
     const { count, skip, limit } = this.state;
@@ -193,21 +199,21 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         refreshing: false
       }));
     }
-  }
+  };
 
   public search = async (searchText: string) => {
     this.searchText = searchText;
     delete this.currentRegion;
     await this.refresh();
-  }
+  };
 
   public onMapRegionChange = (region: Region) => {
     this.currentRegion = region;
-  }
+  };
 
   public filterChanged(newFilters: SitesFiltersDef) {
     delete this.currentRegion;
-    this.setState({ filters: newFilters }, () => this.refresh());
+    this.setState({ filters: newFilters }, async () => this.refresh());
   }
 
   public toggleDisplayMap = () => {
@@ -215,24 +221,21 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     this.refreshCurrentRegion(this.state.sites, true);
     // Toggle map
     this.setState({ showMap: !this.state.showMap });
-  }
+  };
 
   public showMapSiteDetail = (site: Site) => {
     this.setState({
       visible: true,
       siteSelected: site
     });
-  }
+  };
 
   public buildModal(navigation: any, siteSelected: Site, modalStyle: any) {
     if (Platform.OS === 'ios') {
       return (
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
-          <Modalize
-            alwaysOpen={175}
-            modalStyle={modalStyle.modalContainer}>
-            <SiteComponent site={siteSelected} navigation={navigation}
-                onNavigate={() => this.setState({ visible: false })} />
+          <Modalize alwaysOpen={175} modalStyle={modalStyle.modalContainer}>
+            <SiteComponent site={siteSelected} navigation={navigation} onNavigate={() => this.setState({ visible: false })} />
           </Modalize>
         </Modal>
       );
@@ -241,8 +244,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
           <View style={modalStyle.modalContainer}>
             <ScrollView>
-              <SiteComponent site={siteSelected} navigation={navigation}
-                onNavigate={() => this.setState({ visible: false })} />
+              <SiteComponent site={siteSelected} navigation={navigation} onNavigate={() => this.setState({ visible: false })} />
             </ScrollView>
           </View>
         </Modal>
@@ -263,65 +265,61 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
           title={I18n.t('sidebar.sites')}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
-          rightAction={() => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
+          rightAction={() => {
+            navigation.dispatch(DrawerActions.openDrawer());
+            return true;
+          }}
           rightActionIcon={'menu'}
           displayMap={!Utils.isEmptyArray(this.state.sites)}
           mapIsDisplayed={mapIsDisplayed}
           displayMapAction={() => this.toggleDisplayMap()}
         />
         {loading ? (
-          <Spinner style={style.spinner} color='grey' />
+          <Spinner style={style.spinner} color="grey" />
         ) : (
-            <View style={style.content}>
-              <SimpleSearchComponent
-                onChange={(searchText) => this.search(searchText)}
+          <View style={style.content}>
+            <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+            <SitesFilters
+              initialFilters={initialFilters}
+              locationEnabled={this.locationEnabled}
+              onFilterChanged={(newFilters: SitesFiltersDef) => this.filterChanged(newFilters)}
+              ref={(sitesFilters: SitesFilters) => this.setScreenFilters(sitesFilters)}
+            />
+            {mapIsDisplayed ? (
+              <View style={style.map}>
+                <MapView style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
+                  {this.state.sites.map((site: Site) => {
+                    if (Utils.containsAddressGPSCoordinates(site.address)) {
+                      return (
+                        <Marker
+                          key={site.id}
+                          coordinate={{ longitude: site.address.coordinates[0], latitude: site.address.coordinates[1] }}
+                          title={site.name}
+                          onPress={() => this.showMapSiteDetail(site)}
+                        />
+                      );
+                    }
+                    return undefined;
+                  })}
+                </MapView>
+                {siteSelected && this.buildModal(navigation, siteSelected, modalStyle)}
+              </View>
+            ) : (
+              <ItemsList
+                skip={skip}
+                count={count}
+                onEndReached={this.onEndScroll}
+                renderItem={(site: Site) => <SiteComponent site={site} navigation={navigation} />}
+                data={sites}
+                manualRefresh={this.manualRefresh}
+                refreshing={refreshing}
+                emptyTitle={I18n.t('sites.noSites')}
                 navigation={navigation}
+                limit={limit}
               />
-              <SitesFilters
-                initialFilters={initialFilters} locationEnabled={this.locationEnabled}
-                onFilterChanged={(newFilters: SitesFiltersDef) => this.filterChanged(newFilters)}
-                ref={(sitesFilters: SitesFilters) => this.setScreenFilters(sitesFilters)}
-              />
-              {mapIsDisplayed ?
-                <View style={style.map}>
-                  <MapView
-                    style={style.map}
-                    region={this.currentRegion}
-                    onRegionChange={this.onMapRegionChange}
-                  >
-                    {this.state.sites.map((site: Site) => {
-                      if (Utils.containsAddressGPSCoordinates(site.address)) {
-                        return (
-                          <Marker
-                            key={site.id}
-                            coordinate={{ longitude: site.address.coordinates[0], latitude: site.address.coordinates[1] }}
-                            title={site.name}
-                            onPress={() => this.showMapSiteDetail(site)}
-                          />
-                        );
-                      }
-                      return undefined;
-                    })}
-                  </MapView>
-                  {siteSelected && this.buildModal(navigation, siteSelected, modalStyle)}
-                </View>
-                :
-                <ItemsList
-                  skip={skip}
-                  count={count}
-                  onEndReached={this.onEndScroll}
-                  renderItem={(site: Site ) => <SiteComponent site={site} navigation={navigation} />}
-                  data={sites}
-                  manualRefresh={this.manualRefresh}
-                  refreshing={refreshing}
-                  emptyTitle={I18n.t('sites.noSites')}
-                  navigation={navigation}
-                  limit={limit}
-                  />
-              }
-            </View>
-          )
-        }
+            )}
+          </View>
+        )}
       </Container>
     );
   }

@@ -4,8 +4,8 @@ import React from 'react';
 import { Alert, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 
-import computeModalStyleSheet from '../../ModalStyles';
 import Configuration from '../../config/Configuration';
+import computeModalStyleSheet from '../../ModalStyles';
 import BaseProps from '../../types/BaseProps';
 import { EndpointCloud, TenantConnection } from '../../types/Tenant';
 import SecuredStorage from '../../utils/SecuredStorage';
@@ -40,8 +40,8 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
       presence: {
         allowEmpty: false,
         message: '^' + I18n.t('authentication.mandatoryTenantName')
-      },
-    },
+      }
+    }
   };
 
   constructor(props: Props) {
@@ -54,9 +54,12 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   private createTenant = async (subdomain: string, name: string, endpointCloud: EndpointCloud) => {
     const { tenants, close } = this.props;
@@ -77,7 +80,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
           [{ text: I18n.t('general.ok'), style: 'cancel' }],
           { cancelable: false }
         );
-      // Add new Tenant and Save
+        // Add new Tenant and Save
       } else {
         // Save
         tenants.push(newTenant);
@@ -86,23 +89,23 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
         close(newTenant);
       }
     }
-  }
+  };
 
   public render() {
     const modalStyle = computeModalStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     // Render
     return (
-      <Modal style={modalStyle.modal} isVisible={true} onBackdropPress={() => this.props.close()}>
+      <Modal style={modalStyle.modal} isVisible onBackdropPress={() => this.props.close()}>
         <View style={modalStyle.modalContainer}>
           <View style={modalStyle.modalHeaderContainer}>
             <Text style={modalStyle.modalTextHeader}>{I18n.t('authentication.createTenantTitle')}</Text>
           </View>
           <View style={modalStyle.modalContentContainer}>
             <View style={modalStyle.modalRow}>
-              <Item inlineLabel={true} style={modalStyle.modalInputGroup}>
+              <Item inlineLabel style={modalStyle.modalInputGroup}>
                 <TextInput
-                  autoFocus={true}
+                  autoFocus
                   autoCapitalize={'none'}
                   autoCorrect={false}
                   placeholder={I18n.t('authentication.tenantSubdomain')}
@@ -121,7 +124,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
                 ))}
             </View>
             <View style={modalStyle.modalRow}>
-              <Item inlineLabel={true} style={modalStyle.modalInputGroup}>
+              <Item inlineLabel style={modalStyle.modalInputGroup}>
                 <TextInput
                   placeholder={I18n.t('authentication.tenantName')}
                   placeholderTextColor={commonColor.placeholderTextColor}
@@ -140,9 +143,9 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
                 ))}
             </View>
             <View style={modalStyle.modalRow}>
-              <Item picker={true} inlineLabel={true} style={modalStyle.modalPickerGroup}>
+              <Item picker inlineLabel style={modalStyle.modalPickerGroup}>
                 <Picker
-                  mode='dialog'
+                  mode="dialog"
                   style={modalStyle.modalPickerField}
                   placeholder={I18n.t('authentication.tenantEndpoint')}
                   headerBackButtonText={I18n.t('general.back')}
@@ -156,25 +159,36 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
                   itemStyle={modalStyle.modalPickerModal}
                   modalStyle={modalStyle.modalPickerModal}
                   selectedValue={this.state.newTenantEndpointCloud}
-                  onValueChange={(value) => this.setState({ newTenantEndpointCloud: value })}
-                >
-                  {this.tenantEndpointClouds.map((tenantEndpointCloud) =>
-                    <Picker.Item key={tenantEndpointCloud.id} value={tenantEndpointCloud} label={tenantEndpointCloud.name} />)
-                  }
+                  onValueChange={(value) => this.setState({ newTenantEndpointCloud: value })}>
+                  {this.tenantEndpointClouds.map((tenantEndpointCloud) => (
+                    <Picker.Item key={tenantEndpointCloud.id} value={tenantEndpointCloud} label={tenantEndpointCloud.name} />
+                  ))}
                 </Picker>
               </Item>
             </View>
           </View>
           <View style={modalStyle.modalButtonsContainer}>
-            <Button style={[modalStyle.modalButton]} full={true} danger={true}
+            <Button
+              style={[modalStyle.modalButton]}
+              full
+              danger
               onPress={() => {
                 this.createTenant(this.state.newTenantSubDomain, this.state.newTenantName, this.state.newTenantEndpointCloud);
-              }} >
-              <Text style={modalStyle.modalTextButton} uppercase={false}>{I18n.t('general.create')}</Text>
+              }}>
+              <Text style={modalStyle.modalTextButton} uppercase={false}>
+                {I18n.t('general.create')}
+              </Text>
             </Button>
-            <Button style={[modalStyle.modalButton]} full={true} light={true}
-              onPress={() => { this.props.close(); }} >
-              <Text style={modalStyle.modalTextButton} uppercase={false}>{I18n.t('general.cancel')}</Text>
+            <Button
+              style={[modalStyle.modalButton]}
+              full
+              light
+              onPress={() => {
+                this.props.close();
+              }}>
+              <Text style={modalStyle.modalTextButton} uppercase={false}>
+                {I18n.t('general.cancel')}
+              </Text>
             </Button>
           </View>
         </View>

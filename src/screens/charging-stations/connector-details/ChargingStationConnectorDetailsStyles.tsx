@@ -5,6 +5,9 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../utils/Utils';
 
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -20,7 +23,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     backgroundImage: {
       width: '100%',
-      height: '125@s',
+      height: '125@s'
     },
     lastTransactionContainer: {
       width: '50@s',
@@ -95,11 +98,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     lastTransactionIcon: {
       fontSize: '25@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     reportErrorIcon: {
       fontSize: '25@s',
-      color: commonColor.brandDanger,
+      color: commonColor.brandDanger
     },
     startTransactionIcon: {
       color: commonColor.success
@@ -143,11 +146,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     labelValue: {
       fontSize: '25@s',
       fontWeight: 'bold',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     labelUser: {
       fontSize: '10@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     subLabel: {
       fontSize: '10@s',
@@ -162,11 +165,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     subLabelUser: {
       fontSize: '8@s',
       marginTop: '0@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     icon: {
       fontSize: '25@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     userImage: {
       height: '52@s',

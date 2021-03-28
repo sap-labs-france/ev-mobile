@@ -7,11 +7,9 @@ import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
-interface State {
-}
+interface State {}
 
 export default class BaseScreen<P, S> extends React.Component<Props, State> {
   protected mounted: boolean;
@@ -90,5 +88,5 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   }
 
   // tslint:disable-next-line: no-empty
-  public async componentDidBlur() { }
+  public async componentDidBlur() {}
 }
