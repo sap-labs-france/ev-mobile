@@ -17,7 +17,8 @@ export default class ConnectorStatusesContainerComponent extends React.Component
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  // eslint-disable-next-line no-useless-constructor
+  public constructor(props: Props) {
     super(props);
   }
 

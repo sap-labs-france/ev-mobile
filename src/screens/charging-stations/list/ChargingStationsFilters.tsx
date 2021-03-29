@@ -33,7 +33,7 @@ export default class ChargingStationsFilters extends ScreenFilters {
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       filters: {}

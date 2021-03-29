@@ -41,7 +41,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
   public props: Props;
   private searchText: string;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     // Init State
     this.state = {
@@ -142,7 +142,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
           error,
           'transactions.transactionUnexpectedError',
           this.props.navigation,
-          this.refresh
+          this.refresh.bind(this)
         );
       }
     }

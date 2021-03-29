@@ -47,7 +47,7 @@ export default class AppBootstrap extends React.Component<Props, State> {
     });
   }
 
-  public async componentWillUnmount() {
+  public componentWillUnmount() {
     if (this.themeSubscription) {
       this.themeSubscription.remove();
     }

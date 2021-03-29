@@ -65,7 +65,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
           error,
           'transactions.transactionUnexpectedError',
           this.props.navigation,
-          this.refresh
+          this.refresh.bind(this)
         );
       }
     }

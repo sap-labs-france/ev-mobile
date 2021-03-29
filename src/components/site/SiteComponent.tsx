@@ -23,7 +23,8 @@ export default class SiteComponent extends React.Component<Props, State> {
   public props: Props;
   private counter = 0;
 
-  constructor(props: Props) {
+  // eslint-disable-next-line no-useless-constructor
+  public constructor(props: Props) {
     super(props);
   }
 

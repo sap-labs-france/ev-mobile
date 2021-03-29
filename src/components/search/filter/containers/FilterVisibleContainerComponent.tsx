@@ -15,13 +15,6 @@ interface State extends FilterContainerComponentState {
 }
 
 export default class FilterVisibleContainerComponent extends FilterContainerComponent {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      expanded: props.expanded ? props.expanded : false
-    };
-  }
-
   public static defaultProps = {
     visible: false,
     showExpandControl: false,
@@ -30,25 +23,18 @@ export default class FilterVisibleContainerComponent extends FilterContainerComp
   public state: State;
   public props: Props;
 
+  public constructor(props: Props) {
+    super(props);
+    this.state = {
+      expanded: props.expanded ? props.expanded : false
+    };
+  }
+
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
     callback?: () => void
   ) => {
     super.setState(state, callback);
-  };
-
-  private toggleExpanded = () => {
-    const { onExpand } = this.props;
-    this.setState(
-      {
-        expanded: !this.state.expanded
-      },
-      () => {
-        if (onExpand) {
-          onExpand(this.state.expanded);
-        }
-      }
-    );
   };
 
   public render = () => {
@@ -68,6 +54,20 @@ export default class FilterVisibleContainerComponent extends FilterContainerComp
           </TouchableOpacity>
         )}
       </View>
+    );
+  };
+
+  private toggleExpanded = () => {
+    const { onExpand } = this.props;
+    this.setState(
+      {
+        expanded: !this.state.expanded
+      },
+      () => {
+        if (onExpand) {
+          onExpand(this.state.expanded);
+        }
+      }
     );
   };
 }

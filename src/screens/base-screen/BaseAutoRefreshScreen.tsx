@@ -82,7 +82,7 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
   }
 
   public async refresh() {
-    console.log('BaseAutoRefreshScreen: Refresh not implemented!!!');
+    console.warn('BaseAutoRefreshScreen: Refresh not implemented!!!');
   }
 
   protected manualRefresh = async () => {

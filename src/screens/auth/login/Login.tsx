@@ -74,7 +74,7 @@ export default class Login extends BaseScreen<Props, State> {
     }
   };
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       activeFab: false,
@@ -177,13 +177,6 @@ export default class Login extends BaseScreen<Props, State> {
         });
       }
     }
-  }
-
-  private goToTenants(openQRCode = false) {
-    this.props.navigation.navigate('Tenants', {
-      key: `${Utils.randomNumber()}`,
-      openQRCode
-    });
   }
 
   public async checkAutoLogin(tenant: TenantConnection, email: string, password: string) {
@@ -468,5 +461,12 @@ export default class Login extends BaseScreen<Props, State> {
         </ScrollView>
       </View>
     );
+  }
+
+  private goToTenants(openQRCode = false) {
+    this.props.navigation.navigate('Tenants', {
+      key: `${Utils.randomNumber()}`,
+      openQRCode
+    });
   }
 }

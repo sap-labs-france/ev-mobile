@@ -17,7 +17,7 @@ export default class OnlyAvailableChargingStationSwitchFilterControlComponent ex
   public props: Props;
   private status: ChargePointStatus = ChargePointStatus.AVAILABLE;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       switchValue: !!this.getValue(),
@@ -36,6 +36,18 @@ export default class OnlyAvailableChargingStationSwitchFilterControlComponent ex
     return true;
   }
 
+  public render = () => {
+    const internalStyle = computeStyleSheet();
+    const { label, style } = this.props;
+    const { switchValue } = this.state;
+    return (
+      <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
+        <Text style={internalStyle.textFilter}>{label}</Text>
+        <Switch style={internalStyle.switchFilter} value={switchValue} onValueChange={this.onValueChanged} />
+      </View>
+    );
+  };
+
   private onValueChanged = async (newValue: boolean) => {
     const { onFilterChanged } = this.props;
     // Set Filter
@@ -52,17 +64,5 @@ export default class OnlyAvailableChargingStationSwitchFilterControlComponent ex
     }
     // Update
     this.setState({ switchValue: newValue });
-  };
-
-  public render = () => {
-    const internalStyle = computeStyleSheet();
-    const { label, style } = this.props;
-    const { switchValue } = this.state;
-    return (
-      <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
-        <Text style={internalStyle.textFilter}>{label}</Text>
-        <Switch style={internalStyle.switchFilter} value={switchValue} onValueChange={this.onValueChanged} />
-      </View>
-    );
   };
 }

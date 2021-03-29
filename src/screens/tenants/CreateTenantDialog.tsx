@@ -44,7 +44,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
     }
   };
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.tenantEndpointClouds = Configuration.ENDPOINT_CLOUDS;
     this.state = {
@@ -59,36 +59,6 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
     callback?: () => void
   ) => {
     super.setState(state, callback);
-  };
-
-  private createTenant = async (subdomain: string, name: string, endpointCloud: EndpointCloud) => {
-    const { tenants, close } = this.props;
-    // Check field
-    const formIsValid = Utils.validateInput(this, this.formCreateTenantValidationDef);
-    const newTenant: TenantConnection = {
-      subdomain,
-      name,
-      endpoint: endpointCloud.endpoint
-    };
-    if (formIsValid) {
-      const foundTenant = tenants.find((tenant) => tenant.subdomain === subdomain);
-      // Already exists
-      if (foundTenant) {
-        Alert.alert(
-          I18n.t('general.error'),
-          I18n.t('general.tenantExists', { tenantName: foundTenant.name }),
-          [{ text: I18n.t('general.ok'), style: 'cancel' }],
-          { cancelable: false }
-        );
-        // Add new Tenant and Save
-      } else {
-        // Save
-        tenants.push(newTenant);
-        await SecuredStorage.saveTenants(tenants);
-        // Hide Modal
-        close(newTenant);
-      }
-    }
   };
 
   public render() {
@@ -195,4 +165,34 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
       </Modal>
     );
   }
+
+  private createTenant = async (subdomain: string, name: string, endpointCloud: EndpointCloud) => {
+    const { tenants, close } = this.props;
+    // Check field
+    const formIsValid = Utils.validateInput(this, this.formCreateTenantValidationDef);
+    const newTenant: TenantConnection = {
+      subdomain,
+      name,
+      endpoint: endpointCloud.endpoint
+    };
+    if (formIsValid) {
+      const foundTenant = tenants.find((tenant) => tenant.subdomain === subdomain);
+      // Already exists
+      if (foundTenant) {
+        Alert.alert(
+          I18n.t('general.error'),
+          I18n.t('general.tenantExists', { tenantName: foundTenant.name }),
+          [{ text: I18n.t('general.ok'), style: 'cancel' }],
+          { cancelable: false }
+        );
+        // Add new Tenant and Save
+      } else {
+        // Save
+        tenants.push(newTenant);
+        await SecuredStorage.saveTenants(tenants);
+        // Hide Modal
+        close(newTenant);
+      }
+    }
+  };
 }
