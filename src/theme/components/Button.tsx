@@ -243,25 +243,25 @@ export default (variables /* : * */ = variable) => {
       shadowOpacity: null,
       ...primaryCommon,
       '.dark': {
-        ...darkCommon,
+        ...darkCommon
       },
       '.danger': {
-        ...dangerCommon,
+        ...dangerCommon
       },
       '.warning': {
-        ...warningCommon,
+        ...warningCommon
       },
       '.info': {
-        ...infoCommon,
+        ...infoCommon
       },
       '.primary': {
-        ...primaryCommon,
+        ...primaryCommon
       },
       '.success': {
-        ...successCommon,
+        ...successCommon
       },
       '.light': {
-        ...lightCommon,
+        ...lightCommon
       },
       '.disabled': {
         backgroundColor: 'transparent',
@@ -373,10 +373,8 @@ export default (variables /* : * */ = variable) => {
     height: 45,
     flexDirection: 'row',
     elevation: 2,
-    shadowColor:
-      platformStyle === PLATFORM.MATERIAL ? variables.brandDark : undefined,
-    shadowOffset:
-      platformStyle === PLATFORM.MATERIAL ? { width: 0, height: 2 } : undefined,
+    shadowColor: platformStyle === PLATFORM.MATERIAL ? variables.brandDark : undefined,
+    shadowOffset: platformStyle === PLATFORM.MATERIAL ? { width: 0, height: 2 } : undefined,
     shadowOpacity: platformStyle === PLATFORM.MATERIAL ? 0.2 : undefined,
     shadowRadius: platformStyle === PLATFORM.MATERIAL ? 1.2 : undefined,
     alignItems: 'center',

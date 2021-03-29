@@ -9,8 +9,7 @@ export interface Props extends BaseProps {
   text?: string;
 }
 
-interface State {
-}
+interface State {}
 
 export default class ListEmptyTextComponent extends React.Component<Props, State> {
   public state: State;

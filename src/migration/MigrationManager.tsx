@@ -11,8 +11,8 @@ export default class MigrationManager {
   private currentMigrationVersion = '1.3';
   private centralServerProvider: CentralServerProvider;
 
-  private constructor() {
-  }
+  // eslint-disable-next-line no-useless-constructor
+  private constructor() {}
 
   public static getInstance(): MigrationManager {
     if (!MigrationManager.instance) {
@@ -39,7 +39,7 @@ export default class MigrationManager {
         Message.showError(I18n.t('general.migrationError'));
       }
     }
-  }
+  };
 
   private async removeUnusedTenants() {
     // Get tenants

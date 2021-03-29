@@ -8,8 +8,7 @@ import Tag from '../../types/Tag';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './TagComponentStyle';
 
-interface State {
-}
+interface State {}
 
 export interface Props extends BaseProps {
   tag: Tag;
@@ -21,13 +20,17 @@ export default class TagComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
 
+  // eslint-disable-next-line no-useless-constructor
   public constructor(props: Props) {
     super(props);
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public render() {
     const style = computeStyleSheet();
@@ -42,16 +45,19 @@ export default class TagComponent extends React.Component<Props, State> {
               {tag?.id}
             </Text>
           </View>
-          {isAdmin && tag.user &&
+          {isAdmin && tag.user && (
             <View style={style.userConstainer}>
-              <Text numberOfLines={1} ellipsizeMode={'tail'}
-                style={[style.text, style.fullName]}>{userFullName}</Text>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.fullName]}>
+                {userFullName}
+              </Text>
             </View>
-          }
+          )}
         </View>
         <View style={style.tagContainer}>
           <View style={style.labelContainer}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.description]}>{tag?.description}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.description]}>
+              {tag?.description}
+            </Text>
           </View>
           <View style={style.statusContainer}>
             <Chip style={[style.status, statusStyle]} textStyle={[style.statusText, statusStyle]}>

@@ -14,8 +14,10 @@ export interface FilterContainerComponentState {
   visible?: boolean;
 }
 
-export default abstract class FilterContainerComponent extends React.Component<FilterContainerComponentProps, FilterContainerComponentState> {
-
+export default abstract class FilterContainerComponent extends React.Component<
+FilterContainerComponentProps,
+FilterContainerComponentState
+> {
   constructor(props: FilterContainerComponentProps) {
     super(props);
     this.state = {
@@ -30,13 +32,22 @@ export default abstract class FilterContainerComponent extends React.Component<F
   public props: FilterContainerComponentProps;
   private filterControlComponents: FilterControlComponent<any>[] = [];
 
-  public setState = (state: FilterContainerComponentState | ((prevState: Readonly<FilterContainerComponentState>, props: Readonly<FilterContainerComponentProps>) => FilterContainerComponentState | Pick<FilterContainerComponentState, never>) | Pick<FilterContainerComponentState, never>, callback?: () => void) => {
+  public setState = (
+    state:
+    | FilterContainerComponentState
+    | ((
+      prevState: Readonly<FilterContainerComponentState>,
+      props: Readonly<FilterContainerComponentProps>
+    ) => FilterContainerComponentState | Pick<FilterContainerComponentState, never>)
+    | Pick<FilterContainerComponentState, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public setVisible = (visible: boolean) => {
     this.setState({ visible });
-  }
+  };
 
   public async notifyFilterChanged() {
     const { onFilterChanged } = this.props;
@@ -50,12 +61,12 @@ export default abstract class FilterContainerComponent extends React.Component<F
     this.filterControlComponents = filterControlComponents;
   }
 
-  public async setFilter (filterID: string, filterValue: any) {
+  public async setFilter(filterID: string, filterValue: any) {
     // Search
     for (const filterControlComponent of this.filterControlComponents) {
       // Set
       if (filterControlComponent.getID() === filterID) {
-        filterControlComponent.setValue(filterValue,  this.notifyFilterChanged.bind(this));
+        filterControlComponent.setValue(filterValue, this.notifyFilterChanged.bind(this));
         break;
       }
     }
@@ -70,7 +81,7 @@ export default abstract class FilterContainerComponent extends React.Component<F
         break;
       }
     }
-  }
+  };
 
   public getFilter = (id: string): any => {
     // Search
@@ -80,7 +91,7 @@ export default abstract class FilterContainerComponent extends React.Component<F
       }
     }
     return null;
-  }
+  };
 
   public getFilters = (): any => {
     const filters: any = {};
@@ -89,7 +100,7 @@ export default abstract class FilterContainerComponent extends React.Component<F
       filters[filterControlComponent.getID()] = filterControlComponent.getValue();
     }
     return filters;
-  }
+  };
 
   public async applyFiltersAndNotify() {
     // Save
@@ -124,7 +135,7 @@ export default abstract class FilterContainerComponent extends React.Component<F
     this.notifyFilterChanged();
   }
 
-  public async saveFilters()  {
+  public async saveFilters() {
     // Build
     for (const filterControlComponent of this.filterControlComponents) {
       // Save

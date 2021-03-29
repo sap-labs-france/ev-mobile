@@ -6,7 +6,7 @@ import UserToken from '../types/UserToken';
 export default class SecurityProvider {
   private loggedUser: UserToken;
 
-  constructor(loggedUser: UserToken) {
+  public constructor(loggedUser: UserToken) {
     this.loggedUser = loggedUser;
   }
 
@@ -31,7 +31,7 @@ export default class SecurityProvider {
     return false;
   }
 
-  public isSiteUser(siteID: string) {
+  public isSiteUser(siteID: string): boolean {
     if (this.isAdmin()) {
       return true;
     }
@@ -87,8 +87,7 @@ export default class SecurityProvider {
         if (!siteArea) {
           return false;
         }
-        return !siteArea.accessControl || this.isSiteAdmin(siteArea.siteID) ||
-          this.loggedUser.sites.includes(siteArea.siteID);
+        return !siteArea.accessControl || this.isSiteAdmin(siteArea.siteID) || this.loggedUser.sites.includes(siteArea.siteID);
       }
       return true;
     }

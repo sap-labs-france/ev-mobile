@@ -6,8 +6,7 @@ import { ChargePointStatus } from '../../../../../types/ChargingStation';
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
 
-export interface Props extends FilterControlComponentProps<ChargePointStatus> {
-}
+export interface Props extends FilterControlComponentProps<ChargePointStatus> {}
 
 interface State extends FilterControlComponentState<ChargePointStatus> {
   switchValue?: boolean;
@@ -22,13 +21,16 @@ export default class OnlyAvailableChargingStationSwitchFilterControlComponent ex
     super(props);
     this.state = {
       switchValue: !!this.getValue(),
-      value : this.props.initialValue
+      value: this.props.initialValue
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public canBeSaved() {
     return true;
@@ -50,7 +52,7 @@ export default class OnlyAvailableChargingStationSwitchFilterControlComponent ex
     }
     // Update
     this.setState({ switchValue: newValue });
-  }
+  };
 
   public render = () => {
     const internalStyle = computeStyleSheet();
@@ -59,12 +61,8 @@ export default class OnlyAvailableChargingStationSwitchFilterControlComponent ex
     return (
       <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
         <Text style={internalStyle.textFilter}>{label}</Text>
-        <Switch
-          style={internalStyle.switchFilter}
-          value={switchValue}
-          onValueChange={this.onValueChanged}
-        />
+        <Switch style={internalStyle.switchFilter} value={switchValue} onValueChange={this.onValueChanged} />
       </View>
     );
-  }
+  };
 }

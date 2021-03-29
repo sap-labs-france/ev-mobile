@@ -5,6 +5,9 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from './utils/Utils';
 
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -35,7 +38,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignSelf: 'center',
       height: '40@s',
       marginBottom: '10@s',
-      backgroundColor: commonColor.buttonBg,
+      backgroundColor: commonColor.buttonBg
     },
     buttonText: {
       width: '100%',
@@ -84,12 +87,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     checkbox: {
       marginRight: '15@s',
       borderColor: commonColor.textColor,
-      backgroundColor: commonColor.containerBgColor,
+      backgroundColor: commonColor.containerBgColor
     },
     checkboxText: {
       fontSize: '13@s',
-      color: commonColor.textColor,
-    },
+      color: commonColor.textColor
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

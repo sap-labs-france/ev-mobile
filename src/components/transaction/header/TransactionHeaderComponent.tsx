@@ -16,8 +16,7 @@ export interface Props extends BaseProps {
   visible?: boolean;
 }
 
-interface State {
-}
+interface State {}
 export default class TransactionHeaderComponent extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
@@ -30,9 +29,12 @@ export default class TransactionHeaderComponent extends BaseScreen<Props, State>
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public render() {
     const style = computeStyleSheet();
@@ -43,7 +45,7 @@ export default class TransactionHeaderComponent extends BaseScreen<Props, State>
           <View style={style.rowContainer}>
             <Text style={style.headerName}>{I18nManager.formatDateTime(transaction.timestamp)}</Text>
           </View>
-          {displayNavigationIcon && <Icon style={style.icon} type='MaterialIcons' name='navigate-next' />}
+          {displayNavigationIcon && <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />}
         </View>
         <View style={style.subHeader}>
           <Text numberOfLines={1} style={[style.subHeaderName, style.subHeaderNameLeft]}>

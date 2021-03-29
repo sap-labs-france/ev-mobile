@@ -18,8 +18,7 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../transactions/TransactionsStyles';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
 interface State {
   tags?: Tag[];
@@ -52,13 +51,16 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
     await super.componentDidMount();
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public async getTags(searchText: string, skip: number, limit: number): Promise<DataResult<Tag>> {
     try {
-      const tags = await this.centralServerProvider.getTags({ Search: searchText }, {skip, limit});
+      const tags = await this.centralServerProvider.getTags({ Search: searchText }, { skip, limit });
       if (tags.count === -1) {
         // Request nbr of records
         const tagsNbrRecordsOnly = await this.centralServerProvider.getTags({ Search: searchText }, Constants.ONLY_RECORD_COUNT);
@@ -69,8 +71,13 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-          'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
+        Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          'transactions.transactionUnexpectedError',
+          this.props.navigation,
+          this.refresh
+        );
       }
     }
     return null;
@@ -81,10 +88,10 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
     this.props.navigation.navigate('HomeNavigator');
     // Do not bubble up
     return true;
-  }
+  };
 
   public onEndScroll = async () => {
-    const {count, skip, limit} = this.state;
+    const { count, skip, limit } = this.state;
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
@@ -96,11 +103,11 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
         refreshing: false
       }));
     }
-  }
+  };
 
   public async refresh(): Promise<void> {
     if (this.isMounted()) {
-      const {skip, limit} = this.state;
+      const { skip, limit } = this.state;
       // Refresh All
       const tags = await this.getTags(this.searchText, 0, skip + limit);
       // Set
@@ -115,7 +122,7 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
   public search = async (searchText: string) => {
     this.searchText = searchText;
     await this.refresh();
-  }
+  };
 
   public render = () => {
     const style = computeStyleSheet();
@@ -135,20 +142,25 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
           }}
           rightActionIcon={'menu'}
         />
-        <SimpleSearchComponent
-          onChange={(searchText) => this.search(searchText)}
-          navigation={navigation}
-        />
+        <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
         {loading ? (
-          <Spinner style={style.spinner} color='grey'/>
+          <Spinner style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
             <ItemsList<Tag>
-              data={tags} navigation={navigation}
-              count={count} limit={limit}
+              data={tags}
+              navigation={navigation}
+              count={count}
+              limit={limit}
               skip={skip}
               renderItem={(item: Tag, selected: boolean) => (
-                <TagComponent tag={item} isAdmin={this.centralServerProvider.getSecurityProvider().isAdmin()} selected={selected} navigation={navigation}/>)}
+                <TagComponent
+                  tag={item}
+                  isAdmin={this.centralServerProvider.getSecurityProvider().isAdmin()}
+                  selected={selected}
+                  navigation={navigation}
+                />
+              )}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}
               onEndReached={this.onEndScroll}
@@ -158,5 +170,5 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
         )}
       </Container>
     );
-  }
+  };
 }

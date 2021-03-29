@@ -16,8 +16,7 @@ import CreateTenantDialog from './CreateTenantDialog';
 import CreateTenantQrCode from './TenantQrCode';
 import computeTenantStyleSheet from './TenantsStyle';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
 interface State {
   tenants?: TenantConnection[];
@@ -29,7 +28,7 @@ export default class Tenants extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       createQrCodeTenantVisible: false,
@@ -40,28 +39,36 @@ export default class Tenants extends BaseScreen<Props, State> {
   public async componentDidMount() {
     await super.componentDidMount();
     const tenants = await this.centralServerProvider.getTenants();
-    const createQrCodeTenantVisible = Utils.getParamFromNavigation(
-      this.props.route, 'openQRCode', this.state.createQrCodeTenantVisible);
+    const createQrCodeTenantVisible = Utils.getParamFromNavigation(this.props.route, 'openQRCode', this.state.createQrCodeTenantVisible);
     this.setState({
       tenants,
       createQrCodeTenantVisible
     });
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public createTenant() {
-    Alert.alert(
-      I18n.t('authentication.createTenantTitle'),
-      I18n.t('authentication.createTenantText'),
-      [
-        { text: I18n.t('qrCode.qrCode'), onPress: () => { this.setState({ createQrCodeTenantVisible: true }); } },
-        { text: I18n.t('general.manually'), onPress: () => { this.setState({ createTenantVisible: true }); } },
-        { text: I18n.t('general.close'), style: 'cancel' },
-      ]
-    );
+    Alert.alert(I18n.t('authentication.createTenantTitle'), I18n.t('authentication.createTenantText'), [
+      {
+        text: I18n.t('qrCode.qrCode'),
+        onPress: () => {
+          this.setState({ createQrCodeTenantVisible: true });
+        }
+      },
+      {
+        text: I18n.t('general.manually'),
+        onPress: () => {
+          this.setState({ createTenantVisible: true });
+        }
+      },
+      { text: I18n.t('general.close'), style: 'cancel' }
+    ]);
   }
 
   private tenantCreated = async (newTenant: TenantConnection) => {
@@ -69,7 +76,7 @@ export default class Tenants extends BaseScreen<Props, State> {
     // Always close pop-up
     this.setState({
       createQrCodeTenantVisible: false,
-      createTenantVisible: false,
+      createTenantVisible: false
     });
     if (newTenant) {
       const foundTenant = this.state.tenants.find((tenant: TenantConnection) => tenant.subdomain === newTenant.subdomain);
@@ -80,40 +87,32 @@ export default class Tenants extends BaseScreen<Props, State> {
         // Refresh
         const tenants = await this.centralServerProvider.getTenants();
         this.setState({
-          tenants,
+          tenants
         });
         Message.showSuccess(I18n.t('general.createTenantSuccess', { tenantName: newTenant.name }));
-        Alert.alert(
-          I18n.t('general.registerToNewTenantTitle'),
-          I18n.t('general.registerToNewTenant', { tenantName: newTenant.name }),
-          [
-            {
-              text: I18n.t('authentication.signUp'),
-              onPress: () => {
-                navigation.navigate(
-                  'SignUp',
-                  {
-                    tenantSubDomain: newTenant.subdomain
-                  }
-                );
-              }
-            },
-            {
-              text: I18n.t('authentication.signIn'), style: 'cancel', onPress: () => {
-                navigation.navigate(
-                  'Login',
-                  {
-                    tenantSubDomain: newTenant.subdomain
-                  }
-                );
-              }
-            },
-            { text: I18n.t('general.close'), style: 'cancel' },
-          ]
-        );
+        Alert.alert(I18n.t('general.registerToNewTenantTitle'), I18n.t('general.registerToNewTenant', { tenantName: newTenant.name }), [
+          {
+            text: I18n.t('authentication.signUp'),
+            onPress: () => {
+              navigation.navigate('SignUp', {
+                tenantSubDomain: newTenant.subdomain
+              });
+            }
+          },
+          {
+            text: I18n.t('authentication.signIn'),
+            style: 'cancel',
+            onPress: () => {
+              navigation.navigate('Login', {
+                tenantSubDomain: newTenant.subdomain
+              });
+            }
+          },
+          { text: I18n.t('general.close'), style: 'cancel' }
+        ]);
       }
     }
-  }
+  };
 
   private deleteTenant = async (index: number, subdomain: string) => {
     const tenants = this.state.tenants;
@@ -125,7 +124,7 @@ export default class Tenants extends BaseScreen<Props, State> {
     await SecuredStorage.deleteUserCredentials(subdomain);
     this.setState({ tenants });
     Message.showSuccess(I18n.t('general.deleteTenantSuccess', { tenantName: tenant.name }));
-  }
+  };
 
   public render() {
     const navigation = this.props.navigation;
@@ -134,76 +133,81 @@ export default class Tenants extends BaseScreen<Props, State> {
     return (
       <View style={{ flex: 1 }}>
         {createQrCodeTenantVisible ? (
-          <CreateTenantQrCode tenants={Utils.cloneObject(this.state.tenants)} navigation={navigation}
+          <CreateTenantQrCode
+            tenants={Utils.cloneObject(this.state.tenants)}
+            navigation={navigation}
             close={(tenant: TenantConnection) => {
               this.tenantCreated(tenant);
               return true;
             }}
           />
         ) : (
-            <View style={tenantStyle.container}>
-              <HeaderComponent
-                navigation={this.props.navigation}
-                title={I18n.t('authentication.tenant')}
-                rightActionIcon={null}
-                hideHomeAction={true}
-                leftActionIcon='navigate-before'
-                leftActionIconType='MaterialIcons'
-                leftAction={() => {
-                  this.props.navigation.goBack();
-                  return true;
-                }}
-              />
-              <View>
-                <View style={tenantStyle.toolBar}>
-                  <Button style={tenantStyle.createTenantButton} transparent={true} onPress={() => this.createTenant()}>
-                    <Icon style={tenantStyle.icon} type={'MaterialIcons'} name='add' />
-                  </Button>
-                  {createTenantVisible &&
-                    <CreateTenantDialog navigation={navigation} tenants={Utils.cloneObject(this.state.tenants)}
-                      close={(newTenant: TenantConnection) => {
-                        this.tenantCreated(newTenant);
-                      }}
-                    />
-                  }
-                </View>
-                <SwipeListView
-                  disableRightSwipe={true}
-                  useFlatList={true}
-                  data={tenants}
-                  renderItem={({ item }) => (
-                    <View style={tenantStyle.tenantNameView}>
-                      <TouchableOpacity onPress={() => {
+          <View style={tenantStyle.container}>
+            <HeaderComponent
+              navigation={this.props.navigation}
+              title={I18n.t('authentication.tenant')}
+              rightActionIcon={null}
+              hideHomeAction
+              leftActionIcon="navigate-before"
+              leftActionIconType="MaterialIcons"
+              leftAction={() => {
+                this.props.navigation.goBack();
+                return true;
+              }}
+            />
+            <View>
+              <View style={tenantStyle.toolBar}>
+                <Button style={tenantStyle.createTenantButton} transparent onPress={() => this.createTenant()}>
+                  <Icon style={tenantStyle.icon} type={'MaterialIcons'} name="add" />
+                </Button>
+                {createTenantVisible && (
+                  <CreateTenantDialog
+                    navigation={navigation}
+                    tenants={Utils.cloneObject(this.state.tenants)}
+                    close={(newTenant: TenantConnection) => {
+                      this.tenantCreated(newTenant);
+                    }}
+                  />
+                )}
+              </View>
+              <SwipeListView
+                disableRightSwipe
+                useFlatList
+                data={tenants}
+                renderItem={({ item }) => (
+                  <View style={tenantStyle.tenantNameView}>
+                    <TouchableOpacity
+                      onPress={() => {
                         this.props.navigation.dispatch(
-                          StackActions.replace(
-                            'AuthNavigator',
-                            {
-                              name: 'Login',
-                              params: {
-                                tenantSubDomain: item.subdomain,
-                              },
-                              key: `${Utils.randomNumber()}`,
-                            }
-                          ),
+                          StackActions.replace('AuthNavigator', {
+                            name: 'Login',
+                            params: {
+                              tenantSubDomain: item.subdomain
+                            },
+                            key: `${Utils.randomNumber()}`
+                          })
                         );
                       }}>
-                        <Text style={tenantStyle.tenantNameText}>{item.name}</Text>
-                      </TouchableOpacity>
-                    </View>
-                  )}
-                  renderHiddenItem={({ item, index }) => (
-                    <Button style={tenantStyle.trashIconButton} danger={true} onPress={() => {
+                      <Text style={tenantStyle.tenantNameText}>{item.name}</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+                renderHiddenItem={({ item, index }) => (
+                  <Button
+                    style={tenantStyle.trashIconButton}
+                    danger
+                    onPress={() => {
                       this.deleteTenant(index, item.subdomain);
                     }}>
-                      <Icon style={tenantStyle.trashIcon} name='trash' />
-                    </Button>
-                  )}
-                  rightOpenValue={-65}
-                  keyExtractor={(item) => item.subdomain}
-                />
-              </View>
+                    <Icon style={tenantStyle.trashIcon} name="trash" />
+                  </Button>
+                )}
+                rightOpenValue={-65}
+                keyExtractor={(item) => item.subdomain}
+              />
             </View>
-          )}
+          </View>
+        )}
       </View>
     );
   }

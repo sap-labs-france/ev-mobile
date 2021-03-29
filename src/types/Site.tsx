@@ -21,4 +21,3 @@ export interface SiteUser {
   userID: string;
   siteAdmin: boolean;
 }
-

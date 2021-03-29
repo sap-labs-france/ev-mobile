@@ -24,16 +24,19 @@ export default class UserComponent extends React.Component<Props, State> {
   public state: State;
   private centralServerProvider: CentralServerProvider;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       user: this.props.user
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public async componentDidMount(): Promise<void> {
     this.centralServerProvider = await ProviderFactory.getProvider();
@@ -41,7 +44,46 @@ export default class UserComponent extends React.Component<Props, State> {
     if (user) {
       user.image = await this.getUserImage(user.id as string);
     }
-    this.setState({user});
+    this.setState({ user });
+  }
+
+  public render() {
+    const style = computeStyleSheet();
+    const { selected, navigation } = this.props;
+    const { user } = this.state;
+    const userFullName = Utils.buildUserName(user);
+    const userRole = user ? user.role : '';
+    const userStatus = user ? user.status : '';
+    const statusStyle = this.computeStatusStyle(userStatus, style);
+    return (
+      <View style={style.container}>
+        <View style={style.avatarContainer}>
+          <UserAvatar user={user} selected={selected} navigation={navigation} />
+        </View>
+        <View style={selected ? [style.userContainer, style.selected] : style.userContainer}>
+          <View style={style.userFullnameStatusContainer}>
+            <View style={style.fullNameContainer}>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.fullName}>
+                {userFullName}
+              </Text>
+            </View>
+            <View style={style.statusContainer}>
+              <Chip style={[style.status, statusStyle]} textStyle={[style.statusText, statusStyle]}>
+                {Utils.translateUserStatus(userStatus)}
+              </Chip>
+            </View>
+          </View>
+          <View style={style.emailRoleContainer}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.email}>
+              {user.email}
+            </Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.role}>
+              {Utils.translateUserRole(userRole)}
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
   }
 
   private computeStatusStyle(status: string, style: any) {
@@ -59,47 +101,13 @@ export default class UserComponent extends React.Component<Props, State> {
 
   private async getUserImage(id: string) {
     try {
-      return await this.centralServerProvider.getUserImage({ID: id});
+      return await this.centralServerProvider.getUserImage({ ID: id });
     } catch (error) {
       // Check if HTTP?
       if (!error.request) {
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-          'users.userUnexpectedError', this.props.navigation);
+        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'users.userUnexpectedError', this.props.navigation);
       }
     }
     return null;
-  }
-
-  public render() {
-    const style = computeStyleSheet();
-    const { selected, navigation } = this.props;
-    const { user } = this.state;
-    const userFullName = Utils.buildUserName(user);
-    const userRole =  user ?  user.role : '';
-    const userStatus = user ? user.status : '';
-    const statusStyle = this.computeStatusStyle(userStatus, style);
-    return (
-      <View style={style.container}>
-        <View style={style.avatarContainer}>
-          <UserAvatar user={user} selected={selected} navigation={navigation}/>
-        </View>
-        <View style={selected ? [style.userContainer, style.selected] : style.userContainer }>
-          <View style={style.userFullnameStatusContainer}>
-            <View style={style.fullNameContainer}>
-              <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.fullName}>{userFullName}</Text>
-            </View>
-            <View style={style.statusContainer}>
-              <Chip style={[style.status, statusStyle]} textStyle={[style.statusText, statusStyle]}>
-                {Utils.translateUserStatus(userStatus)}
-              </Chip>
-            </View>
-          </View>
-          <View style={style.emailRoleContainer}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.email}>{user.email}</Text>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.role}>{Utils.translateUserRole(userRole)}</Text>
-          </View>
-        </View>
-      </View>
-    );
   }
 }

@@ -31,7 +31,7 @@ export default class I18nManager {
       de: () => deJsonLanguage,
       es: () => esJsonLanguage,
       pt: () => ptJsonLanguage,
-      it: () => itJsonLanguage,
+      it: () => itJsonLanguage
     };
     // Fallback if no available language fits
     const fallback = { languageTag: Constants.DEFAULT_LANGUAGE, isRTL: false };
@@ -90,14 +90,14 @@ export default class I18nManager {
     return RNLocalize.usesMetricSystem();
   }
 
-  private static isValidDate(date: Date): boolean {
-    return !isNaN(new Date(date).getTime());
-  }
-
-  public static formatDateTime(value: Date, format: string = 'LLL') {
+  public static formatDateTime(value: Date, format: string = 'LLL'): string {
     if (I18nManager.isValidDate(value)) {
       return moment(value).format(format);
     }
     return '-';
+  }
+
+  private static isValidDate(date: Date): boolean {
+    return !isNaN(new Date(date).getTime());
   }
 }

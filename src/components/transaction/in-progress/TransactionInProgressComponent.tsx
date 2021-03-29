@@ -8,8 +8,8 @@ import BaseProps from '../../../types/BaseProps';
 import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
-import computeStyleSheet from '../TransactionComponentCommonStyles';
 import TransactionHeaderComponent from '../header/TransactionHeaderComponent';
+import computeStyleSheet from '../TransactionComponentCommonStyles';
 
 export interface Props extends BaseProps {
   transaction: Transaction;
@@ -19,8 +19,7 @@ export interface Props extends BaseProps {
   visible?: boolean;
 }
 
-interface State {
-}
+interface State {}
 
 export default class TransactionInProgressComponent extends React.Component<Props, State> {
   public state: State;
@@ -34,9 +33,12 @@ export default class TransactionInProgressComponent extends React.Component<Prop
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public render() {
     const style = computeStyleSheet();
@@ -56,50 +58,47 @@ export default class TransactionInProgressComponent extends React.Component<Prop
         duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate(
-              'ChargingStationConnectorDetailsTabs',
-              {
-                params: {
-                  chargingStationID: transaction.chargeBoxID,
-                  connectorID: transaction.connectorId
-                },
-                key: `${Utils.randomNumber()}`
-              }
-            );
+            navigation.navigate('ChargingStationConnectorDetailsTabs', {
+              params: {
+                chargingStationID: transaction.chargeBoxID,
+                connectorID: transaction.connectorId
+              },
+              key: `${Utils.randomNumber()}`
+            });
           }}>
           <View style={style.container}>
             <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} />
             <View style={style.transactionContent}>
               <View style={style.columnContainer}>
-                <Icon type='FontAwesome' name='bolt' style={[style.icon, style.info]} />
+                <Icon type="FontAwesome" name="bolt" style={[style.icon, style.info]} />
                 <Text style={[style.labelValue, style.info]}>{I18nManager.formatNumber(consumption)}</Text>
                 <Text style={[style.subLabelValue, style.info]}>(kW)</Text>
               </View>
               <View style={style.columnContainer}>
-                <Icon type='MaterialIcons' name='ev-station' style={[style.icon, style.info]} />
+                <Icon type="MaterialIcons" name="ev-station" style={[style.icon, style.info]} />
                 <Text style={[style.labelValue, style.info]}>{I18nManager.formatNumber(totalConsumption)}</Text>
                 <Text style={[style.subLabelValue, style.info]}>(kW.h)</Text>
               </View>
               <View style={style.columnContainer}>
-                <Icon type='MaterialIcons' name='battery-charging-full' style={[style.icon, style.info]} />
+                <Icon type="MaterialIcons" name="battery-charging-full" style={[style.icon, style.info]} />
                 <Text style={[style.labelValue, style.info]}>{batteryLevel}</Text>
                 <Text style={[style.subLabelValue, style.info]}>(%)</Text>
               </View>
             </View>
             <View style={style.transactionContent}>
               <View style={style.columnContainer}>
-                <Icon type='MaterialIcons' name='timer' style={[style.icon, style.info]} />
+                <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
                 <Text style={[style.labelValue, style.info]}>{duration}</Text>
                 <Text style={[style.subLabelValue, style.info]}>(hh:mm)</Text>
               </View>
               <View style={style.columnContainer}>
-                <Icon type='MaterialIcons' name='timer-off' style={[style.icon, inactivityStyle]} />
+                <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
                 <Text style={[style.labelValue, inactivityStyle]}>{inactivity}</Text>
                 <Text style={[style.subLabelValue, inactivityStyle]}>(hh:mm)</Text>
               </View>
               {isPricingActive && (
                 <View style={style.columnContainer}>
-                  <Icon type='FontAwesome' name='money' style={[style.icon, style.info]} />
+                  <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
                   <Text style={[style.labelValue, style.info]}>{price}</Text>
                   <Text style={[style.subLabelValue, style.info]}>({transaction.priceUnit})</Text>
                 </View>

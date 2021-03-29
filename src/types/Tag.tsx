@@ -1,5 +1,5 @@
-import { OCPIToken } from '../../../ev-server/src/types/ocpi/OCPIToken';
 import ListItem from './ListItem';
+// import { OCPIToken } from './OCPIToken';
 import User from './User';
 
 export default interface Tag extends ListItem {
@@ -8,7 +8,7 @@ export default interface Tag extends ListItem {
   active: boolean;
   userID?: string;
   transactionsCount?: number;
-  ocpiToken?: OCPIToken;
+  // ocpiToken?: OCPIToken;
   user?: User;
   default?: boolean;
   deleted?: boolean;
