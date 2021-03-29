@@ -14,6 +14,7 @@ export default class DeepLinkingManager {
   private navigator: NavigationContainerRef;
   private centralServerProvider: CentralServerProvider;
 
+  // eslint-disable-next-line no-useless-constructor
   private constructor() {}
 
   public static getInstance(): DeepLinkingManager {

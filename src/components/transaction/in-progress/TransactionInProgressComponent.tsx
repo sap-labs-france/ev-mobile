@@ -26,7 +26,7 @@ export default class TransactionInProgressComponent extends React.Component<Prop
   public props: Props;
   private counter = 0;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       isVisible: this.props.visible

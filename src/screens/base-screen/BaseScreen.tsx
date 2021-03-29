@@ -40,7 +40,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     this.mounted = true;
   }
 
-  public async componentWillUnmount() {
+  public componentWillUnmount() {
     this.mounted = false;
     if (this.componentFocusUnsubscribe) {
       this.componentFocusUnsubscribe();
@@ -83,7 +83,7 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     return false;
   }
 
-  public async componentDidFocus() {
+  public componentDidFocus() {
     BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
   }
 

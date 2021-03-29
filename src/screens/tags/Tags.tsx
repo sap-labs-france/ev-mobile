@@ -76,7 +76,7 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
           error,
           'transactions.transactionUnexpectedError',
           this.props.navigation,
-          this.refresh
+          this.refresh.bind(this)
         );
       }
     }

@@ -40,7 +40,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
   public props: Props;
   private searchText: string;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     // Init State
     this.state = {

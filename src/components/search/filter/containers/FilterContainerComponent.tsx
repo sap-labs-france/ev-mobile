@@ -18,19 +18,19 @@ export default abstract class FilterContainerComponent extends React.Component<
 FilterContainerComponentProps,
 FilterContainerComponentState
 > {
-  constructor(props: FilterContainerComponentProps) {
-    super(props);
-    this.state = {
-      visible: props.visible ? props.visible : false
-    };
-  }
-
   public static defaultProps = {
     visible: false
   };
   public state: FilterContainerComponentState;
   public props: FilterContainerComponentProps;
   private filterControlComponents: FilterControlComponent<any>[] = [];
+
+  public constructor(props: FilterContainerComponentProps) {
+    super(props);
+    this.state = {
+      visible: props.visible ? props.visible : false
+    };
+  }
 
   public setState = (
     state:
@@ -57,11 +57,11 @@ FilterContainerComponentState
     onFilterChanged(this.getFilters(), true);
   }
 
-  public async setFilterControlComponents(filterControlComponents: FilterControlComponent<any>[]) {
+  public setFilterControlComponents(filterControlComponents: FilterControlComponent<any>[]) {
     this.filterControlComponents = filterControlComponents;
   }
 
-  public async setFilter(filterID: string, filterValue: any) {
+  public setFilter(filterID: string, filterValue: any) {
     // Search
     for (const filterControlComponent of this.filterControlComponents) {
       // Set
@@ -128,7 +128,7 @@ FilterContainerComponentState
 
   public async clearFiltersAndNotify() {
     // Clear
-    await this.clearFilters();
+    this.clearFilters();
     // Save
     await this.saveFilters();
     // Trigger notif
@@ -143,7 +143,7 @@ FilterContainerComponentState
         // Get Provider
         const centralServerProvider = await ProviderFactory.getProvider();
         // Get Token
-        const user = await centralServerProvider.getUserInfo();
+        const user = centralServerProvider.getUserInfo();
         // Save
         await SecuredStorage.saveFilterValue(user, filterControlComponent.getInternalID(), filterControlComponent.getValue());
       }

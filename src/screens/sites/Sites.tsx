@@ -51,7 +51,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   private locationEnabled: boolean;
   private currentRegion: Region;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       sites: [],

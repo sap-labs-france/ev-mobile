@@ -24,7 +24,7 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
   private rotateClockwise: Animated.AnimatedInterpolation;
   private rotateCounterClockwise: Animated.AnimatedInterpolation;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {};
     // Create
@@ -136,7 +136,7 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     if (connector) {
       return Utils.getConnectorLetterFromConnectorID(connector.connectorId);
     } else if (value >= 0) {
-      return '' + value;
+      return String(value);
     } else {
       return '-';
     }

@@ -17,20 +17,20 @@ interface State extends FilterControlComponentState<Date> {
 }
 
 export default class DateFilterControlComponent extends FilterControlComponent<Date> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      openDatePicker: false,
-      value: this.props.defaultDate
-    };
-  }
-
   public static defaultProps = {
     style: {},
     defaultDate: new Date()
   };
   public state: State;
   public props: Props;
+
+  public constructor(props: Props) {
+    super(props);
+    this.state = {
+      openDatePicker: false,
+      value: this.props.defaultDate
+    };
+  }
 
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
@@ -41,27 +41,6 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
 
   public canBeSaved() {
     return true;
-  }
-
-  private onConfirm(newValue: Date) {
-    const { onFilterChanged } = this.props;
-    // Set Filter
-    if (onFilterChanged) {
-      if (newValue) {
-        this.setState(
-          {
-            openDatePicker: false
-          },
-          () => {
-            onFilterChanged(this.getID(), newValue);
-          }
-        );
-      } else {
-        this.clearValue(() => {
-          onFilterChanged(this.getID(), null);
-        });
-      }
-    }
   }
 
   public render = () => {
@@ -90,6 +69,28 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
       </View>
     );
   };
+
+  private onConfirm(newValue: Date) {
+    const { onFilterChanged } = this.props;
+    // Set Filter
+    if (onFilterChanged) {
+      if (newValue) {
+        this.setState(
+          {
+            openDatePicker: false
+          },
+          () => {
+            onFilterChanged(this.getID(), newValue);
+          }
+        );
+      } else {
+        this.clearValue(() => {
+          onFilterChanged(this.getID(), null);
+        });
+      }
+    }
+  }
+
   private openDatePicker(openDatePicker: boolean) {
     this.setState({ openDatePicker });
   }

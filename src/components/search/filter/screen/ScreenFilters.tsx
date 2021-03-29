@@ -77,12 +77,12 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
 
   public setState = (
     state:
-    | ScreenFiltersState
-    | ((
-      prevState: Readonly<ScreenFiltersState>,
-      props: Readonly<ScreenFiltersProps>
-    ) => ScreenFiltersState | Pick<ScreenFiltersState, never>)
-    | Pick<ScreenFiltersState, never>,
+      | ScreenFiltersState
+      | ((
+          prevState: Readonly<ScreenFiltersState>,
+          props: Readonly<ScreenFiltersProps>
+        ) => ScreenFiltersState | Pick<ScreenFiltersState, never>)
+      | Pick<ScreenFiltersState, never>,
     callback?: () => void
   ) => {
     super.setState(state, callback);
@@ -110,13 +110,13 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
     }
   }
 
-  public async addModalFilter(newFilterComponent: FilterControlComponent<any>) {
+  public addModalFilter(newFilterComponent: FilterControlComponent<any>) {
     if (newFilterComponent) {
       this.addFilter(this.filterModalControlComponents, newFilterComponent);
     }
   }
 
-  public async addVisibleFilter(newFilterComponent: FilterControlComponent<any>) {
+  public addVisibleFilter(newFilterComponent: FilterControlComponent<any>) {
     if (newFilterComponent) {
       this.addFilter(this.filterVisibleControlComponents, newFilterComponent);
     }
