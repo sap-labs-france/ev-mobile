@@ -26,9 +26,7 @@ interface State {
   loading?: boolean;
 }
 
-export interface Props extends BaseProps {
-
-}
+export interface Props extends BaseProps {}
 
 export default class Cars extends BaseAutoRefreshScreen<Props, State> {
   public props: Props;
@@ -48,9 +46,12 @@ export default class Cars extends BaseAutoRefreshScreen<Props, State> {
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ): void => {
     super.setState(state, callback);
-  }
+  };
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
@@ -58,16 +59,22 @@ export default class Cars extends BaseAutoRefreshScreen<Props, State> {
 
   public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {
     try {
-      const cars = await this.centralServerProvider.getCars({
-        Search: searchText,
-        WithUsers: true
-        }, {skip, limit});
-      if (cars.count === -1) {
-        // Request nbr of records
-        const carsNbrRecordsOnly = await this.centralServerProvider.getCars({
+      const cars = await this.centralServerProvider.getCars(
+        {
           Search: searchText,
           WithUsers: true
-        }, {skip, limit});
+        },
+        { skip, limit }
+      );
+      if (cars.count === -1) {
+        // Request nbr of records
+        const carsNbrRecordsOnly = await this.centralServerProvider.getCars(
+          {
+            Search: searchText,
+            WithUsers: true
+          },
+          { skip, limit }
+        );
         // Set
         cars.count = carsNbrRecordsOnly.count;
       }
@@ -75,8 +82,7 @@ export default class Cars extends BaseAutoRefreshScreen<Props, State> {
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-          'cars.carUnexpectedError', this.props.navigation, this.refresh);
+        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'cars.carUnexpectedError', this.props.navigation, this.refresh);
       }
     }
     return null;
@@ -87,14 +93,14 @@ export default class Cars extends BaseAutoRefreshScreen<Props, State> {
     this.props.navigation.navigate('HomeNavigator');
     // Do not bubble up
     return true;
-  }
+  };
 
-  public onEndScroll = async () => {
-    const {count, skip, limit} = this.state;
+  public onEndScroll = async (): Promise<void> => {
+    const { count, skip, limit } = this.state;
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
-      const cars = await this.getCars(this.searchText, + Constants.PAGING_SIZE, limit);
+      const cars = await this.getCars(this.searchText, +Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState) => ({
         cars: cars ? [...prevState.cars, ...cars.result] : prevState.cars,
@@ -102,11 +108,11 @@ export default class Cars extends BaseAutoRefreshScreen<Props, State> {
         refreshing: false
       }));
     }
-  }
+  };
 
   public async refresh(): Promise<void> {
     if (this.isMounted()) {
-      const {skip, limit} = this.state;
+      const { skip, limit } = this.state;
       // Refresh All
       const cars = await this.getCars(this.searchText, 0, skip + limit);
       const carsResult = cars ? cars.result : [];
@@ -119,15 +125,15 @@ export default class Cars extends BaseAutoRefreshScreen<Props, State> {
     }
   }
 
-  public search = async (searchText: string) => {
+  public search = async (searchText: string): Promise<void> => {
     this.searchText = searchText;
     await this.refresh();
-  }
+  };
 
   public render() {
     const style = computeStyleSheet();
-    const {cars, count, skip, limit, refreshing, loading} = this.state;
-    const {navigation} = this.props;
+    const { cars, count, skip, limit, refreshing, loading } = this.state;
+    const { navigation } = this.props;
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -142,20 +148,18 @@ export default class Cars extends BaseAutoRefreshScreen<Props, State> {
           }}
           rightActionIcon={'menu'}
         />
-        <SimpleSearchComponent
-          onChange={(searchText) => this.search(searchText)}
-          navigation={navigation}
-        />
+        <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
         {loading ? (
-          <Spinner style={style.spinner} color='grey'/>
+          <Spinner style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
             <ItemsList<Car>
-              data={cars} navigation={navigation}
-              count={count} limit={limit}
+              data={cars}
+              navigation={navigation}
+              count={count}
+              limit={limit}
               skip={skip}
-              renderItem={(item: Car, selected: boolean) => (
-                <CarComponent navigation={navigation} selected={selected} car={item}/>)}
+              renderItem={(item: Car, selected: boolean) => <CarComponent navigation={navigation} selected={selected} car={item} />}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}
               onEndReached={this.onEndScroll}

@@ -80,7 +80,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
             {this.props.renderItem(item, selectedIds.has(item.id as string))}
           </TouchableOpacity>
         )}
-        keyExtractor={(item, index) => item.id as string + index}
+        keyExtractor={(item, index) => (item.id as string) + index.toString()}
         onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
         refreshControl={<RefreshControl onRefresh={manualRefresh} refreshing={refreshing} />}
         ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}

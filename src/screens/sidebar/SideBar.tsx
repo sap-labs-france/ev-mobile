@@ -167,28 +167,30 @@ export default class SideBar extends BaseScreen<Props, State> {
               <Icon style={style.linkIcon} type="MaterialIcons" name="assessment" />
               <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
             </ListItem>
-            {this.centralServerProvider?.getSecurityProvider().canListUsers() &&
+            {this.centralServerProvider?.getSecurityProvider().canListUsers() && (
               <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('UsersNavigator', 'Users')}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="people" />
                 <Text style={style.linkText}>{I18n.t('sidebar.users')}</Text>
               </ListItem>
-            }
-            {this.centralServerProvider?.getSecurityProvider().canListTags() &&
-              <ListItem style={style.links} button={true} iconLeft={true}
-                        onPress={() => this.navigateTo('TagsNavigator', 'Tags')}>
-                <Icon style={style.linkIcon} type='MaterialCommunityIcons' name='credit-card'/>
+            )}
+            {this.centralServerProvider?.getSecurityProvider().canListTags() && (
+              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('TagsNavigator', 'Tags')}>
+                <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="credit-card" />
                 <Text style={style.linkText}>{I18n.t('sidebar.badges')}</Text>
               </ListItem>
-            }
-            {!this.centralServerProvider?.getSecurityProvider().canListCars() &&
-              <ListItem style={style.links} button={true} iconLeft={true}
-                        onPress={() => this.navigateTo('CarsNavigator', 'Cars')}>
-                <Icon style={style.linkIcon} type='MaterialIcons' name='directions-car'/>
+            )}
+            {!this.centralServerProvider?.getSecurityProvider().canListCars() && (
+              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('CarsNavigator', 'Cars')}>
+                <Icon style={style.linkIcon} type="MaterialIcons" name="directions-car" />
                 <Text style={style.linkText}>{I18n.t('sidebar.cars')}</Text>
               </ListItem>
-            }
-            <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
-              <Icon style={[style.linkIcon, { color: commonColor.brandDanger }]} type='MaterialIcons' name='error-outline' />
+            )}
+            <ListItem
+              style={style.links}
+              button={true}
+              iconLeft={true}
+              onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
+              <Icon style={[style.linkIcon, { color: commonColor.brandDanger }]} type="MaterialIcons" name="error-outline" />
               <Text style={[style.linkText, { color: commonColor.brandDanger }]}>{I18n.t('sidebar.reportError')}</Text>
             </ListItem>
             {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>

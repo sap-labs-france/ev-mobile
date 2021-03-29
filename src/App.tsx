@@ -7,7 +7,6 @@ import { Icon } from 'native-base';
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
-import BaseProps from 'types/BaseProps';
 
 import computeStyleSheet from './AppStyles';
 import I18nManager from './I18n/I18nManager';
@@ -41,6 +40,7 @@ import TransactionDetails from './screens/transactions/details/TransactionDetail
 import TransactionsHistory from './screens/transactions/history/TransactionsHistory';
 import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
 import Users from './screens/users/list/Users';
+import BaseProps from './types/BaseProps';
 import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
 

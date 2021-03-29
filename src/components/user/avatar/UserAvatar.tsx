@@ -15,7 +15,6 @@ export interface Props extends BaseProps {
 }
 
 export default class UserAvatar extends React.Component<Props, State> {
-
   public static defaultProps = {
     selected: false
   };
@@ -43,7 +42,7 @@ export default class UserAvatar extends React.Component<Props, State> {
           <Avatar
             size={small ? style.smallAvatar.fontSize : style.avatar.fontSize}
             rounded={true}
-            source={user ? {uri: userImageURI} : userImageURI}
+            source={user ? { uri: userImageURI } : userImageURI}
             titleStyle={style.avatarTitle}
             overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
             {selected ? <Avatar.Accessory name={'done'} size={style.accessory.fontSize} color={style.accessory.color}/> : null}

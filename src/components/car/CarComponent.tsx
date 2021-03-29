@@ -7,8 +7,7 @@ import Utils from '../../utils/Utils';
 import UserAvatar from '../user/avatar/UserAvatar';
 import computeStyleSheet from './CarComponentStyle';
 
-interface State {
-}
+interface State {}
 
 export interface Props extends BaseProps {
   car: Car;
@@ -23,21 +22,12 @@ export default class CarComponent extends React.Component<Props, State> {
     super(props);
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
-
-  private renderNoUser(style: any) {
-    const { navigation } = this.props;
-    return (
-      <View style={style.userContainer}>
-        <View style={style.avatarContainer}>
-          <UserAvatar small={true} navigation={navigation}/>
-        </View>
-        <Text style={style.userName}>-</Text>
-      </View>
-    );
-  }
+  };
 
   public render() {
     const style = computeStyleSheet();
@@ -50,55 +40,79 @@ export default class CarComponent extends React.Component<Props, State> {
       <View style={selected ? [style.container, style.selected] : style.container}>
         <View style={style.header}>
           <View style={style.carNameContainer}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.headerText}>{carFullName}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.headerText}>
+              {carFullName}
+            </Text>
           </View>
           <View style={style.licensePlateContainer}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.headerText}>{car.licensePlate}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.headerText}>
+              {car.licensePlate}
+            </Text>
           </View>
         </View>
-        <View/>
+        <View />
         <View style={style.carContent}>
           <View style={style.carInfos}>
-            {defaultCarUser ?
+            {defaultCarUser ? (
               <View style={style.userContainer}>
                 <View style={style.avatarContainer}>
-                  <UserAvatar small={true} user={defaultCarUser.user} navigation={navigation}/>
+                  <UserAvatar small={true} user={defaultCarUser.user} navigation={navigation} />
                 </View>
                 <View style={style.userNameContainer}>
-                  <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>{Utils.buildUserName(defaultCarUser.user)}</Text>
-                  {(otherUserCount > 0) && <Text style={style.text}> (+{otherUserCount})</Text>}
+                  <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>
+                    {Utils.buildUserName(defaultCarUser.user)}
+                  </Text>
+                  {otherUserCount > 0 && <Text style={style.text}> (+{otherUserCount})</Text>}
                 </View>
               </View>
-              :
+            ) : (
               this.renderNoUser(style)
-              }
+            )}
             <View style={style.powerDetailsContainer}>
               <View style={style.column}>
-                <Icon type='MaterialIcons' name='battery-full' style={style.icon}/>
-                <Text numberOfLines={2} ellipsizeMode={'tail'} style={style.text}>{car.carCatalog?.batteryCapacityFull} kWh</Text>
+                <Icon type="MaterialIcons" name="battery-full" style={style.icon} />
+                <Text numberOfLines={2} ellipsizeMode={'tail'} style={style.text}>
+                  {car.carCatalog?.batteryCapacityFull} kWh
+                </Text>
               </View>
               <View style={style.column}>
                 <View style={style.iconContainer}>
-                  <Icon style={style.icon} type='MaterialIcons' name='bolt'/>
-                  <Icon style={style.currentTypeIcon} type='MaterialIcons' name='power-input'/>
+                  <Icon style={style.icon} type="MaterialIcons" name="bolt" />
+                  <Icon style={style.currentTypeIcon} type="MaterialIcons" name="power-input" />
                 </View>
-                {car?.carCatalog?.fastChargePowerMax ?
-                  <Text numberOfLines={2} style={style.text}>{car?.carCatalog?.fastChargePowerMax} kW</Text>
-                  :
-                  <Text style={style.text}>-</Text>}
+                {car?.carCatalog?.fastChargePowerMax ? (
+                  <Text numberOfLines={2} style={style.text}>
+                    {car?.carCatalog?.fastChargePowerMax} kW
+                  </Text>
+                ) : (
+                  <Text style={style.text}>-</Text>
+                )}
               </View>
               <View style={style.column}>
                 <View style={style.iconContainer}>
-                  <Icon style={style.icon} type='MaterialIcons' name='bolt'/>
-                  <Icon style={style.currentTypeIcon} type='MaterialCommunityIcons' name='sine-wave'/>
+                  <Icon style={style.icon} type="MaterialIcons" name="bolt" />
+                  <Icon style={style.currentTypeIcon} type="MaterialCommunityIcons" name="sine-wave" />
                 </View>
-                <Text numberOfLines={2} style={style.text}>{car?.converter?.powerWatts} kW ({car?.converter?.numberOfPhases})</Text>
+                <Text numberOfLines={2} style={style.text}>
+                  {car?.converter?.powerWatts} kW ({car?.converter?.numberOfPhases})
+                </Text>
               </View>
             </View>
           </View>
-          <Thumbnail square={true} style={style.imageStyle as ImageStyle} source={{uri: car?.carCatalog?.image}}/>
+          <Thumbnail square={true} style={style.imageStyle as ImageStyle} source={{ uri: car?.carCatalog?.image }} />
         </View>
-        <View/>
+      </View>
+    );
+  }
+
+  private renderNoUser(style: any) {
+    const { navigation } = this.props;
+    return (
+      <View style={style.userContainer}>
+        <View style={style.avatarContainer}>
+          <UserAvatar small={true} navigation={navigation} />
+        </View>
+        <Text style={style.userName}>-</Text>
       </View>
     );
   }

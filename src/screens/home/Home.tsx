@@ -3,14 +3,14 @@ import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Text } from 'native-base';
 import React from 'react';
 import { Alert, BackHandler } from 'react-native';
-import ChargingStation from 'types/ChargingStation';
-import { TenantConnection } from 'types/Tenant';
-import Transaction from 'types/Transaction';
 
 import computeCardStyleSheet from '../../CardStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import BaseProps from '../../types/BaseProps';
+import ChargingStation from '../../types/ChargingStation';
 import QrCode from '../../types/QrCode';
+import { TenantConnection } from '../../types/Tenant';
+import Transaction from '../../types/Transaction';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
@@ -283,20 +283,24 @@ export default class Home extends BaseScreen<Props, State> {
                   </CardItem>
                 </Card>
               )}
-              {!this.centralServerProvider?.getSecurityProvider().canListCars() &&
-              <Card style={cardStyle.card}>
-                <CardItem style={cardStyle.cardItem} button={true}
-                          onPress={() => navigation.navigate('CarsNavigator', { key: `${Utils.randomNumber()}` })}>
-                  <Left>
-                    <Icon style={cardStyle.cardIcon} type='MaterialIcons' name='directions-car' />
-                    <Body>
-                      <Text style={cardStyle.cardText}>{I18n.t('home.cars')}</Text>
-                      <Text note={true} style={cardStyle.cardNote}>{I18n.t('home.carsNote')}</Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
-              }
+              {!this.centralServerProvider?.getSecurityProvider().canListCars() && (
+                <Card style={cardStyle.card}>
+                  <CardItem
+                    style={cardStyle.cardItem}
+                    button={true}
+                    onPress={() => navigation.navigate('CarsNavigator', { key: `${Utils.randomNumber()}` })}>
+                    <Left>
+                      <Icon style={cardStyle.cardIcon} type="MaterialIcons" name="directions-car" />
+                      <Body>
+                        <Text style={cardStyle.cardText}>{I18n.t('home.cars')}</Text>
+                        <Text note={true} style={cardStyle.cardNote}>
+                          {I18n.t('home.carsNote')}
+                        </Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                </Card>
+              )}
             </Content>
           </Container>
         )}

@@ -26,7 +26,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderBottomColor: commonColor.listBorderColor,
       paddingVertical: '5@s',
       paddingHorizontal: '5@s',
-      borderBottomWidth: 1,
+      borderBottomWidth: 1
     },
     // Required to allow name truncation
     carNameContainer: {
@@ -40,7 +40,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     headerText: {
       fontSize: '15@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     carContent: {
       flexDirection: 'row',
@@ -100,7 +100,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     currentTypeIcon: {
       fontSize: '10@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     imageStyle: {
       width: '40%',
