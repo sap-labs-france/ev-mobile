@@ -126,6 +126,7 @@ export default class Home extends BaseScreen<Props, State> {
     const cardStyle = computeCardStyleSheet();
     const { navigation } = this.props;
     const { isComponentOrganizationActive, qrCodeVisible } = this.state;
+    const securityProvider = this.centralServerProvider?.getSecurityProvider();
     return (
       <Container style={style.container}>
         {qrCodeVisible ? (
@@ -247,7 +248,7 @@ export default class Home extends BaseScreen<Props, State> {
                   </Left>
                 </CardItem>
               </Card>
-              {this.centralServerProvider?.getSecurityProvider().canListTags() && (
+              {securityProvider?.canListTags() && (
                 <Card style={cardStyle.card}>
                   <CardItem
                     style={cardStyle.cardItem}
@@ -265,7 +266,7 @@ export default class Home extends BaseScreen<Props, State> {
                   </CardItem>
                 </Card>
               )}
-              {this.centralServerProvider?.getSecurityProvider().canListUsers() && (
+              {securityProvider?.canListUsers() && (
                 <Card style={cardStyle.card}>
                   <CardItem
                     style={cardStyle.cardItem}
@@ -283,7 +284,7 @@ export default class Home extends BaseScreen<Props, State> {
                   </CardItem>
                 </Card>
               )}
-              {!this.centralServerProvider?.getSecurityProvider().canListCars() && (
+              {securityProvider?.canListCars() && securityProvider?.isComponentCarActive() && (
                 <Card style={cardStyle.card}>
                   <CardItem
                     style={cardStyle.cardItem}
