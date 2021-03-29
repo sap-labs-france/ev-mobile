@@ -49,7 +49,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       loading: true,
@@ -203,7 +203,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     });
   };
 
-  // tslint:disable-next-line: cyclomatic-complexity
+  // eslint-disable-next-line complexity
   public refresh = async () => {
     let siteImage = null;
     let userImage = null;

@@ -65,11 +65,11 @@ export default class CentralServerProvider {
     }
   }
 
-  public setNotificationManager(notificationManager: NotificationManager) {
+  public setNotificationManager(notificationManager: NotificationManager): void {
     this.notificationManager = notificationManager;
   }
 
-  public async initialize() {
+  public async initialize(): Promise<void> {
     // Get stored data
     const credentials = await SecuredStorage.getUserCredentials(this.tenant?.subdomain);
     if (credentials) {
@@ -162,7 +162,7 @@ export default class CentralServerProvider {
     return this.tenantLogo;
   }
 
-  public async triggerAutoLogin(navigation: NavigationContainerRef, fctRefresh: () => void) {
+  public async triggerAutoLogin(navigation: NavigationContainerRef, fctRefresh: () => void): Promise<void> {
     this.debugMethod('triggerAutoLogin');
     try {
       // Force log the user
@@ -223,7 +223,7 @@ export default class CentralServerProvider {
     return false;
   }
 
-  public async clearUserPassword() {
+  public async clearUserPassword(): Promise<void> {
     await SecuredStorage.clearUserPassword(this.tenant.subdomain);
     this.password = null;
   }
@@ -274,11 +274,11 @@ export default class CentralServerProvider {
     return this.autoLoginDisabled;
   }
 
-  public setAutoLoginDisabled(autoLoginDisabled: boolean) {
+  public setAutoLoginDisabled(autoLoginDisabled: boolean): void {
     this.autoLoginDisabled = autoLoginDisabled;
   }
 
-  public async logoff() {
+  public async logoff(): Promise<void> {
     this.debugMethod('logoff');
     // Clear the token and tenant
     if (this.tenant) {
@@ -292,7 +292,7 @@ export default class CentralServerProvider {
     this.password = null;
   }
 
-  public async login(email: string, password: string, acceptEula: boolean, tenantSubDomain: string) {
+  public async login(email: string, password: string, acceptEula: boolean, tenantSubDomain: string): Promise<void> {
     this.debugMethod('login');
     // Get the Tenant
     const tenant = await this.getTenant(tenantSubDomain);

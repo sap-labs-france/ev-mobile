@@ -32,7 +32,7 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
   public props: Props;
   private tenantEndpointClouds: EndpointCloud[];
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       activateQrCode: true
@@ -186,11 +186,6 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
     }
   }
 
-  private close() {
-    Orientation.unlockAllOrientations();
-    this.props.close();
-  }
-
   public render() {
     const { navigation } = this.props;
     const { activateQrCode } = this.state;
@@ -222,5 +217,10 @@ export default class ChargingStationQrCode extends BaseScreen<State, Props> {
         )}
       </Container>
     );
+  }
+
+  private close() {
+    Orientation.unlockAllOrientations();
+    this.props.close();
   }
 }

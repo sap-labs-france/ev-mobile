@@ -28,7 +28,7 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       chargingStation: null,
@@ -62,10 +62,10 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
         chargingStation = await this.getChargingStation(chargingStationID);
       }
       // Get Charging Station Config
-      const chargingStationConfiguration = await this.getChargingStationOcppParameters(chargingStation.id);
+      const chargingStationConfiguration = await this.getChargingStationOcppParameters(chargingStation.id.toString());
       // Sort
       if (chargingStationConfiguration && chargingStationConfiguration.count > 0) {
-        chargingStationConfiguration.result.sort(Utils.sortArrayOfKeyValue);
+        chargingStationConfiguration.result.sort(Utils.sortArrayOfKeyValue.bind(this));
         chargingStationConfigurationKeyValues = chargingStationConfiguration.result;
       }
       // Set

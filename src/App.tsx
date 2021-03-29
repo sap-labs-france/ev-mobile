@@ -67,9 +67,7 @@ const TransactionDetailsTabs = createMaterialBottomTabNavigator();
 // Navigation Drawer variable
 const AppDrawer = createDrawerNavigator();
 
-const createTabBarIcon = (
-  props: { focused: boolean; tintColor?: string; horizontal?: boolean },
-  type:
+type TabBarIconType =
   | 'AntDesign'
   | 'Entypo'
   | 'EvilIcons'
@@ -82,7 +80,11 @@ const createTabBarIcon = (
   | 'MaterialIcons'
   | 'Octicons'
   | 'SimpleLineIcons'
-  | 'Zocial',
+  | 'Zocial';
+
+const createTabBarIcon = (
+  props: { focused: boolean; tintColor?: string; horizontal?: boolean },
+  type: TabBarIconType,
   name: string
 ): React.ReactNode => {
   const commonColor = Utils.getCurrentCommonColor();

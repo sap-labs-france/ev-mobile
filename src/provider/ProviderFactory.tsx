@@ -3,6 +3,7 @@ import CentralServerProvider from './CentralServerProvider';
 export default class ProviderFactory {
   private static centralServerProviderInstance: CentralServerProvider;
 
+  // eslint-disable-next-line no-useless-constructor
   private constructor() {}
 
   public static async getProvider(): Promise<CentralServerProvider> {

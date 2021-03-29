@@ -509,7 +509,7 @@ export default class Utils {
     name: string,
     defaultValue: string | boolean,
     removeValue = false
-  ): string | number | boolean | object {
+  ): string | number | boolean | Record<string, unknown> {
     const params: any = route.params?.params ? route.params.params : route.params;
     // Has param object?
     if (!params) {
@@ -529,7 +529,7 @@ export default class Utils {
     return value;
   }
 
-  public static getLanguageFromLocale(locale: string) {
+  public static getLanguageFromLocale(locale: string): string {
     let language = null;
     // Set the user's locale
     if (locale && locale.length >= 2) {
@@ -598,7 +598,7 @@ export default class Utils {
     }
   }
 
-  public static sortArrayOfKeyValue(element1: KeyValue, element2: KeyValue) {
+  public static sortArrayOfKeyValue(element1: KeyValue, element2: KeyValue): number {
     // Ignore upper and lowercase
     const keyA = element1.key.toUpperCase();
     const keyB = element2.key.toUpperCase();
@@ -617,7 +617,7 @@ export default class Utils {
     defaultErrorMessage: string,
     navigation?: NavigationContainerRef,
     fctRefresh?: () => void
-  ) {
+  ): Promise<void> {
     console.error('HTTP request error', error);
     // Check if HTTP?
     if (error.request) {
@@ -689,7 +689,7 @@ export default class Utils {
     if (error) {
       // Set in state the errors
       for (const key in error) {
-        if (error.hasOwnProperty(key)) {
+        if (Utils.objectHasProperty(error, key)) {
           errorState['error' + Utils.capitalizeFirstLetter(key)] = error[key];
         }
       }
@@ -761,7 +761,7 @@ export default class Utils {
     }
   };
 
-  public static translateUserStatus(status: string) {
+  public static translateUserStatus(status: string): string {
     switch (status) {
       case UserStatus.ACTIVE:
         return I18n.t('userStatuses.active');
@@ -778,7 +778,7 @@ export default class Utils {
     }
   }
 
-  public static translateUserRole(role: string) {
+  public static translateUserRole(role: string): string {
     switch (role) {
       case UserRole.ADMIN:
         return I18n.t('userRoles.admin');
@@ -816,14 +816,14 @@ export default class Utils {
     return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}`;
   };
 
-  private static formatTimer = (val: number): string => {
+  private static formatTimer = (value: number): string => {
     // Put 0 next to the digit if lower than 10
-    const valString = val + '';
-    if (valString.length < 2) {
-      return '0' + valString;
+    const valueStr = value.toString();
+    if (valueStr.length < 2) {
+      return '0' + valueStr;
     }
     // Return new digit
-    return valString;
+    return valueStr;
   };
 
   private static getDeviceLocale(): string {
