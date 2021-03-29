@@ -4,7 +4,8 @@ import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 
-import noPhotoActive from '../../../../assets/no-photo.png';
+import noPhotoActive from '../../../../assets/no-photo-active.png';
+import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -498,7 +499,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhotoActive} />
+        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
         <Text style={[style.label, style.disabled]}>-</Text>
       </View>
     );
