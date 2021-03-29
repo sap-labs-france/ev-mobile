@@ -120,6 +120,6 @@ export default class SecurityProvider {
   }
 
   public canListCars(): boolean {
-    return this.canAccess(Entity.VEHICLES, Action.LIST)
+    return this.canAccess(Entity.CARS, Action.LIST);
   }
 }
