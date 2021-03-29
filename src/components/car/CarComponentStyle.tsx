@@ -24,23 +24,24 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'space-between',
       backgroundColor: commonColor.listHeaderBgColor,
       borderBottomColor: commonColor.listBorderColor,
-      paddingVertical: '5@s',
-      paddingHorizontal: '5@s',
+      padding: '5@s',
       borderBottomWidth: 1
     },
-    // Required to allow name truncation
     carNameContainer: {
-      maxWidth: '72%'
+      width: '72%'
     },
-    // Required to allow license plate truncation
     licensePlateContainer: {
       width: '28%',
-      flexDirection: 'row',
-      justifyContent: 'flex-end'
     },
     headerText: {
       fontSize: '15@s',
       color: commonColor.textColor
+    },
+    licensePlate: {
+      alignSelf: 'flex-end'
+    },
+    carName: {
+      alignSelf: 'flex-start'
     },
     carContent: {
       flexDirection: 'row',

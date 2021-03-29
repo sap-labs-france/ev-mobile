@@ -40,12 +40,12 @@ export default class CarComponent extends React.Component<Props, State> {
       <View style={selected ? [style.container, style.selected] : style.container}>
         <View style={style.header}>
           <View style={style.carNameContainer}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.headerText}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.headerText, style.carName]}>
               {carFullName}
             </Text>
           </View>
           <View style={style.licensePlateContainer}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.headerText}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.headerText, style.licensePlate]}>
               {car.licensePlate}
             </Text>
           </View>
