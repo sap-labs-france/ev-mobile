@@ -48,7 +48,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
       alignItems: 'center',
       height: '100@s',
-      width: '100%',
+      width: '100%'
     },
     carInfos: {
       flexDirection: 'column',
@@ -59,13 +59,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     userContainer: {
       flexDirection: 'row',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
       alignItems: 'center',
-      width: '100%',
-      paddingHorizontal: '5@s'
+      width: '90%',
+      marginLeft: '10%',
+      paddingRight: '10@s'
     },
     avatarContainer: {
-      marginRight: '7@s',
+      marginRight: '7@s'
     },
     userNameContainer: {
       flexDirection: 'row',
@@ -75,13 +76,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     text: {
       color: commonColor.textColor,
-      fontSize: '12@s'
+      fontSize: '12@s',
+      textAlign: 'center'
     },
     powerDetailsContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-evenly',
+      justifyContent: 'space-between',
       alignItems: 'center',
-      width: '100%',
+      width: '80%',
+      marginHorizontal: '10%'
     },
     column: {
       flexDirection: 'column',
@@ -101,7 +104,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     currentTypeIcon: {
       fontSize: '10@s',
-      color: commonColor.textColor
+      color: commonColor.textColor,
     },
     imageStyle: {
       width: '40%',

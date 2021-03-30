@@ -1,6 +1,6 @@
-import { Icon, Thumbnail } from 'native-base';
+import { Icon } from 'native-base';
 import React from 'react';
-import { ImageStyle, Text, View } from 'react-native';
+import { Image, ImageStyle, Text, View } from 'react-native';
 import BaseProps from '../../types/BaseProps';
 import Car from '../../types/Car';
 import Utils from '../../utils/Utils';
@@ -22,6 +22,9 @@ export default class CarComponent extends React.Component<Props, State> {
     super(props);
   }
 
+  public componentDidMount() {
+  }
+
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
     callback?: () => void
@@ -33,7 +36,8 @@ export default class CarComponent extends React.Component<Props, State> {
     const style = computeStyleSheet();
     const { car, selected, navigation } = this.props;
     const carUsers = car?.carUsers ? car.carUsers : [];
-    const defaultCarUser = carUsers.length === 1 ? carUsers[0] : carUsers?.find((userCar) => userCar.default === true);
+    const defaultCarUser = carUsers.length === 1 ? carUsers[0] : carUsers?.find((carUser) => carUser.default === true);
+    const defaultCarUserName = Utils.buildUserName(defaultCarUser?.user);
     const otherUserCount = Math.max(carUsers.length - 1, 0);
     const carFullName = car?.carCatalog?.vehicleMake + ' ' + car?.carCatalog?.vehicleModel + ' ' + car.carCatalog?.vehicleModelVersion;
     return (
@@ -60,7 +64,7 @@ export default class CarComponent extends React.Component<Props, State> {
                 </View>
                 <View style={style.userNameContainer}>
                   <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>
-                    {Utils.buildUserName(defaultCarUser.user)}
+                    {defaultCarUserName}
                   </Text>
                   {otherUserCount > 0 && <Text style={style.text}> (+{otherUserCount})</Text>}
                 </View>
@@ -99,7 +103,7 @@ export default class CarComponent extends React.Component<Props, State> {
               </View>
             </View>
           </View>
-          <Thumbnail square={true} style={style.imageStyle as ImageStyle} source={{ uri: car?.carCatalog?.image }} />
+          <Image style={style.imageStyle as ImageStyle} source={{ uri: car?.carCatalog?.image }} />
         </View>
       </View>
     );
