@@ -102,9 +102,9 @@ export default class Tenants extends BaseScreen<Props, State> {
             />
             <View>
               <View style={tenantStyle.toolBar}>
-                <Button style={tenantStyle.createTenantButton} transparent onPress={() => this.createTenant()}>
+                <TouchableOpacity style={tenantStyle.createTenantButton} onPress={() => this.createTenant()}>
                   <Icon style={tenantStyle.icon} type={'MaterialIcons'} name="add" />
-                </Button>
+                </TouchableOpacity>
                 {createTenantVisible && (
                   <CreateTenantDialog
                     navigation={navigation}

@@ -18,11 +18,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     toolBar: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      paddingTop: '5@s',
-      paddingBottom: '5@s',
+      alignItems: 'center',
       borderBottomWidth: 1,
       borderColor: commonColor.textColor,
-      borderRadius: 1
+      borderRadius: 1,
+      height: '40@s',
+      padding: '5@s'
     },
     tenantNameView: {
       paddingTop: '15@s',
@@ -35,7 +36,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       textAlign: 'center'
     },
     icon: {
-      color: commonColor.textColor
+      color: commonColor.textColor,
+      fontSize: '20@s'
     },
     trashIconButton: {
       alignSelf: 'flex-end',
