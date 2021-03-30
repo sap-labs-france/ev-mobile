@@ -1,7 +1,15 @@
 import I18n from 'i18n-js';
 import { Button, CheckBox, Form, Icon, Item, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
+import {
+  Alert,
+  BackHandler,
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+  TextInput,
+  TouchableOpacity
+} from 'react-native';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
@@ -354,11 +362,11 @@ export default class Login extends BaseScreen<Props, State> {
         <ScrollView contentContainerStyle={style.scrollContainer}>
           <KeyboardAvoidingView style={style.keyboardContainer} behavior="padding">
             <AuthHeader navigation={this.props.navigation} tenantLogo={tenantLogo} />
-            <Button small transparent style={[style.linksButton]} onPress={() => this.newUser()}>
+            <TouchableOpacity style={[style.linksButton]} onPress={() => this.newUser()}>
               <Text style={style.linksTextButton} uppercase={false}>
                 {I18n.t('authentication.newUser')}
               </Text>
-            </Button>
+            </TouchableOpacity>
             <Form style={formStyle.form}>
               <Button block style={formStyle.button} onPress={() => this.goToTenants()}>
                 <Text style={formStyle.buttonText} uppercase={false}>
@@ -427,11 +435,11 @@ export default class Login extends BaseScreen<Props, State> {
                     {errorMessage}
                   </Text>
                 ))}
-              <Button small transparent style={[style.linksButton]} onPress={() => this.forgotPassword()}>
+              <TouchableOpacity style={[style.linksButton]} onPress={() => this.forgotPassword()}>
                 <Text style={[style.linksTextButton, style.linksTextButton]} uppercase={false}>
                   {I18n.t('authentication.forgotYourPassword')}
                 </Text>
-              </Button>
+              </TouchableOpacity>
               <View style={formStyle.formCheckboxContainer}>
                 <CheckBox style={formStyle.checkbox} checked={eula} onPress={() => this.setState({ eula: !eula })} />
                 <Text style={formStyle.checkboxText}>
