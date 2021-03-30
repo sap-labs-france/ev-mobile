@@ -28,7 +28,7 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     // Init
     const connectorStyle = computeStyleSheet();
@@ -110,6 +110,31 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
     return true;
   }
 
+  public render = () => {
+    const internalStyle = computeStyleSheet();
+    const { style, label } = this.props;
+    return (
+      <View style={StyleSheet.compose(internalStyle.columnFilterContainer, style)}>
+        <Text style={internalStyle.textFilter}>{label}</Text>
+        <View style={internalStyle.connectorTypeFilterContainer}>
+          {this.state.connectorTypes.map((connector) => (
+            <ToggleButton
+              style={internalStyle.connectorTypeButton}
+              key={connector.type}
+              icon={() => connector.element}
+              value="bluetooth"
+              status={connector.selected ? 'checked' : 'unchecked'}
+              onPress={() => {
+                connector.selected = !connector.selected;
+                this.onValueChanged();
+              }}
+            />
+          ))}
+        </View>
+      </View>
+    );
+  };
+
   private onValueChanged = async () => {
     const { onFilterChanged } = this.props;
     // Build Filter
@@ -134,30 +159,5 @@ export default class ConnectorTypeFilterControlComponent extends FilterControlCo
     }
     // Update
     this.forceUpdate();
-  };
-
-  public render = () => {
-    const internalStyle = computeStyleSheet();
-    const { style, label } = this.props;
-    return (
-      <View style={StyleSheet.compose(internalStyle.columnFilterContainer, style)}>
-        <Text style={internalStyle.textFilter}>{label}</Text>
-        <View style={internalStyle.connectorTypeFilterContainer}>
-          {this.state.connectorTypes.map((connector) => (
-            <ToggleButton
-              style={internalStyle.connectorTypeButton}
-              key={connector.type}
-              icon={() => connector.element}
-              value="bluetooth"
-              status={connector.selected ? 'checked' : 'unchecked'}
-              onPress={() => {
-                connector.selected = !connector.selected;
-                this.onValueChanged();
-              }}
-            />
-          ))}
-        </View>
-      </View>
-    );
   };
 }

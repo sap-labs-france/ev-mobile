@@ -30,16 +30,16 @@ interface State {
 }
 
 export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State> {
-  public constructor(props: Props<T>) {
-    super(props);
-    this.state = { selectedIds: new Set<string>() };
-  }
-
   public static defaultProps = {
     select: ItemsListTypes.NONE
   };
   public state: State;
   public props: Props<T>;
+
+  public constructor(props: Props<T>) {
+    super(props);
+    this.state = { selectedIds: new Set<string>() };
+  }
 
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props<T>>) => State | Pick<State, never>) | Pick<State, never>,
@@ -47,27 +47,6 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
   ) => {
     super.setState(state, callback);
   };
-
-  private onSelectItem(item: T) {
-    const { selectedIds } = this.state;
-    const id = item.id;
-    // If the item is already selected, unselect it
-    if (selectedIds.has(id as string)) {
-      const newSelectedIds = new Set(selectedIds);
-      newSelectedIds.delete(id as string);
-      this.setState({ ...this.state, selectedIds: newSelectedIds });
-      // Else, add the item to the selected Ids
-    } else {
-      switch (this.props.select) {
-        case ItemsListTypes.MULTI:
-          this.setState({ ...this.state, selectedIds: new Set(selectedIds).add(item.id as string) });
-          break;
-        case ItemsListTypes.SINGLE:
-          this.setState({ ...this.state, selectedIds: new Set().add(id) });
-          break;
-      }
-    }
-  }
 
   public render() {
     const { data, skip, count, limit, navigation, manualRefresh, refreshing, onEndReached, emptyTitle } = this.props;
@@ -88,5 +67,26 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
         ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={emptyTitle} />}
       />
     );
+  }
+
+  private onSelectItem(item: T) {
+    const { selectedIds } = this.state;
+    const id = item.id;
+    // If the item is already selected, unselect it
+    if (selectedIds.has(id as string)) {
+      const newSelectedIds = new Set(selectedIds);
+      newSelectedIds.delete(id as string);
+      this.setState({ ...this.state, selectedIds: newSelectedIds });
+      // Else, add the item to the selected Ids
+    } else {
+      switch (this.props.select) {
+        case ItemsListTypes.MULTI:
+          this.setState({ ...this.state, selectedIds: new Set(selectedIds).add(item.id as string) });
+          break;
+        case ItemsListTypes.SINGLE:
+          this.setState({ ...this.state, selectedIds: new Set().add(id) });
+          break;
+      }
+    }
   }
 }

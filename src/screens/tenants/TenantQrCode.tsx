@@ -26,7 +26,7 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
   public props: Props;
   public tenantEndpointClouds: EndpointCloud[];
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.tenantEndpointClouds = Utils.getEndpointCloud();
   }
@@ -94,11 +94,6 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
     }
   }
 
-  private close(tenant?: TenantConnection) {
-    Orientation.unlockAllOrientations();
-    this.props.close(tenant);
-  }
-
   public render() {
     return (
       <Container>
@@ -118,5 +113,10 @@ export default class TenantQrCode extends BaseScreen<State, Props> {
         />
       </Container>
     );
+  }
+
+  private close(tenant?: TenantConnection) {
+    Orientation.unlockAllOrientations();
+    this.props.close(tenant);
   }
 }

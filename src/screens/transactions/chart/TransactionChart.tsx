@@ -43,7 +43,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       loading: true,
@@ -67,7 +67,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     super.setState(state, callback);
   };
 
-  // tslint:disable-next-line: cyclomatic-complexity
+  // eslint-disable-next-line complexity
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {

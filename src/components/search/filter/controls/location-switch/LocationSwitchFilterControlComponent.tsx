@@ -15,7 +15,7 @@ export default class LocationSwitchFilterControlComponent extends FilterControlC
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       switchValue: !!this.getValue(),
@@ -34,18 +34,6 @@ export default class LocationSwitchFilterControlComponent extends FilterControlC
     return true;
   }
 
-  private onValueChanged = async (newValue: boolean) => {
-    const { onFilterChanged } = this.props;
-    // Set Filter
-    if (onFilterChanged) {
-      this.setValue(newValue, () => {
-        onFilterChanged(this.getID(), newValue);
-      });
-    }
-    // Update
-    this.setState({ switchValue: newValue });
-  };
-
   public render = () => {
     const internalStyle = computeStyleSheet();
     const { label, style } = this.props;
@@ -56,5 +44,17 @@ export default class LocationSwitchFilterControlComponent extends FilterControlC
         <Switch style={internalStyle.switchFilter} value={switchValue} onValueChange={this.onValueChanged} />
       </View>
     );
+  };
+
+  private onValueChanged = async (newValue: boolean) => {
+    const { onFilterChanged } = this.props;
+    // Set Filter
+    if (onFilterChanged) {
+      this.setValue(newValue, () => {
+        onFilterChanged(this.getID(), newValue);
+      });
+    }
+    // Update
+    this.setState({ switchValue: newValue });
   };
 }

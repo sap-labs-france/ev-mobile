@@ -71,61 +71,6 @@ export default class Tenants extends BaseScreen<Props, State> {
     ]);
   }
 
-  private tenantCreated = async (newTenant: TenantConnection) => {
-    const navigation = this.props.navigation;
-    // Always close pop-up
-    this.setState({
-      createQrCodeTenantVisible: false,
-      createTenantVisible: false
-    });
-    if (newTenant) {
-      const foundTenant = this.state.tenants.find((tenant: TenantConnection) => tenant.subdomain === newTenant.subdomain);
-      if (foundTenant) {
-        // Tenant already exists
-        Message.showInfo(I18n.t('general.tenantExists', { tenantName: foundTenant.name }));
-      } else {
-        // Refresh
-        const tenants = await this.centralServerProvider.getTenants();
-        this.setState({
-          tenants
-        });
-        Message.showSuccess(I18n.t('general.createTenantSuccess', { tenantName: newTenant.name }));
-        Alert.alert(I18n.t('general.registerToNewTenantTitle'), I18n.t('general.registerToNewTenant', { tenantName: newTenant.name }), [
-          {
-            text: I18n.t('authentication.signUp'),
-            onPress: () => {
-              navigation.navigate('SignUp', {
-                tenantSubDomain: newTenant.subdomain
-              });
-            }
-          },
-          {
-            text: I18n.t('authentication.signIn'),
-            style: 'cancel',
-            onPress: () => {
-              navigation.navigate('Login', {
-                tenantSubDomain: newTenant.subdomain
-              });
-            }
-          },
-          { text: I18n.t('general.close'), style: 'cancel' }
-        ]);
-      }
-    }
-  };
-
-  private deleteTenant = async (index: number, subdomain: string) => {
-    const tenants = this.state.tenants;
-    // Remove
-    const tenant = tenants.splice(index, 1)[0];
-    // Save
-    await SecuredStorage.saveTenants(tenants);
-    // Remove cache
-    await SecuredStorage.deleteUserCredentials(subdomain);
-    this.setState({ tenants });
-    Message.showSuccess(I18n.t('general.deleteTenantSuccess', { tenantName: tenant.name }));
-  };
-
   public render() {
     const navigation = this.props.navigation;
     const { tenants, createTenantVisible, createQrCodeTenantVisible } = this.state;
@@ -211,4 +156,59 @@ export default class Tenants extends BaseScreen<Props, State> {
       </View>
     );
   }
+
+  private tenantCreated = async (newTenant: TenantConnection) => {
+    const navigation = this.props.navigation;
+    // Always close pop-up
+    this.setState({
+      createQrCodeTenantVisible: false,
+      createTenantVisible: false
+    });
+    if (newTenant) {
+      const foundTenant = this.state.tenants.find((tenant: TenantConnection) => tenant.subdomain === newTenant.subdomain);
+      if (foundTenant) {
+        // Tenant already exists
+        Message.showInfo(I18n.t('general.tenantExists', { tenantName: foundTenant.name }));
+      } else {
+        // Refresh
+        const tenants = await this.centralServerProvider.getTenants();
+        this.setState({
+          tenants
+        });
+        Message.showSuccess(I18n.t('general.createTenantSuccess', { tenantName: newTenant.name }));
+        Alert.alert(I18n.t('general.registerToNewTenantTitle'), I18n.t('general.registerToNewTenant', { tenantName: newTenant.name }), [
+          {
+            text: I18n.t('authentication.signUp'),
+            onPress: () => {
+              navigation.navigate('SignUp', {
+                tenantSubDomain: newTenant.subdomain
+              });
+            }
+          },
+          {
+            text: I18n.t('authentication.signIn'),
+            style: 'cancel',
+            onPress: () => {
+              navigation.navigate('Login', {
+                tenantSubDomain: newTenant.subdomain
+              });
+            }
+          },
+          { text: I18n.t('general.close'), style: 'cancel' }
+        ]);
+      }
+    }
+  };
+
+  private deleteTenant = async (index: number, subdomain: string) => {
+    const tenants = this.state.tenants;
+    // Remove
+    const tenant = tenants.splice(index, 1)[0];
+    // Save
+    await SecuredStorage.saveTenants(tenants);
+    // Remove cache
+    await SecuredStorage.deleteUserCredentials(subdomain);
+    this.setState({ tenants });
+    Message.showSuccess(I18n.t('general.deleteTenantSuccess', { tenantName: tenant.name }));
+  };
 }

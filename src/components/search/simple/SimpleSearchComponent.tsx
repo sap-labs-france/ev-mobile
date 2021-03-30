@@ -15,11 +15,6 @@ export interface Props extends BaseProps {
 interface State {}
 
 export default class SimpleSearchComponent extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {};
-  }
-
   public static defaultProps = {
     visible: false
   };
@@ -27,6 +22,11 @@ export default class SimpleSearchComponent extends React.Component<Props, State>
   public props: Props;
   private textInput: TextInput;
   private currentSearchText: string;
+
+  public constructor(props: Props) {
+    super(props);
+    this.state = {};
+  }
 
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,

@@ -1,4 +1,4 @@
-import UserMin from '../types/User';
+import { UserMin } from '../types/User';
 
 export default interface CreatedUpdatedProps {
   createdBy: UserMin;
