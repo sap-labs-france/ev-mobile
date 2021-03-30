@@ -38,7 +38,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     // Init State
     this.state = {

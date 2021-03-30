@@ -5,7 +5,8 @@ import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, ScrollView } from 'react-native';
 
-import noPhotoActive from '../../../../assets/no-photo.png';
+import noPhotoActive from '../../../../assets/no-photo-active.png';
+import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import I18nManager from '../../../I18n/I18nManager';
@@ -180,7 +181,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhotoActive} />
+        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
         <Text style={[style.label, style.disabled]}>-</Text>
       </View>
     );

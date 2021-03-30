@@ -49,7 +49,7 @@ export default class ChargingStationConnectorComponent extends React.Component<P
     super.setState(state, callback);
   };
 
-  public async componentDidMount() {
+  public componentDidMount() {
     // Refresh every minutes
     this.timerAnimation = setInterval(() => {
       // Animate

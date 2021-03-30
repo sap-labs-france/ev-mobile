@@ -44,7 +44,7 @@ export default class LocationManager {
     return LocationManager.instance;
   }
 
-  public async startListening() {
+  public startListening() {
     if (this.granted) {
       this.locationSubscription = RNLocation.subscribeToLocationUpdates((locations: Location[]) => {
         if (!Utils.isEmptyArray(locations)) {
@@ -57,7 +57,7 @@ export default class LocationManager {
     }
   }
 
-  public async stopListening() {
+  public stopListening() {
     if (this.locationSubscription) {
       this.locationSubscription = null; // Must be a method to call in location
     }

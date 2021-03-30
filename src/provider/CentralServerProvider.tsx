@@ -653,7 +653,7 @@ export default class CentralServerProvider {
     this.debugMethod('getLastTransaction');
     const params: { [param: string]: string } = {};
     params.ChargeBoxID = chargeBoxID;
-    params.ConnectorId = connectorId + '';
+    params.ConnectorId = connectorId.toString();
     params.Limit = '1';
     params.Skip = '0';
     params.SortFields = '-timestamp';

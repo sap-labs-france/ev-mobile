@@ -6,6 +6,7 @@ export default class ThemeManager {
   private static instance: ThemeManager;
   private themeType?: ThemeType;
 
+  // eslint-disable-next-line no-useless-constructor
   private constructor() {}
 
   public static getInstance(): ThemeManager {

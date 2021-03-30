@@ -15,6 +15,7 @@ export interface Props extends BaseProps {
 }
 
 export default class UserAvatar extends React.Component<Props, State> {
+  // eslint-disable-next-line no-useless-constructor
   public static defaultProps = {
     selected: false
   };

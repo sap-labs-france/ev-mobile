@@ -54,7 +54,6 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
           const style = computeStyleSheet();
           for (const key in capabilities) {
             if (capabilities.hasOwnProperty(key)) {
-              // @ts-ignore
               formatterValues.push(<Text style={style.values}>{`${key}: ${capabilities[key]}`}</Text>);
             }
           }
@@ -94,7 +93,7 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
     }
   ];
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       loading: true,
@@ -161,15 +160,6 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
     return true;
   };
 
-  private buildChargerProperties(chargingStation: ChargingStation) {
-    if (chargingStation) {
-      for (const displayedProperty of this.displayedProperties) {
-        // @ts-ignore
-        displayedProperty.value = chargingStation && chargingStation[displayedProperty.key] ? chargingStation[displayedProperty.key] : '-';
-      }
-    }
-  }
-
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
@@ -220,5 +210,13 @@ export default class ChargingStationProperties extends BaseScreen<Props, State> 
         )}
       </Container>
     );
+  }
+
+  private buildChargerProperties(chargingStation: ChargingStation) {
+    if (chargingStation) {
+      for (const displayedProperty of this.displayedProperties) {
+        displayedProperty.value = chargingStation && chargingStation[displayedProperty.key] ? chargingStation[displayedProperty.key] : '-';
+      }
+    }
   }
 }

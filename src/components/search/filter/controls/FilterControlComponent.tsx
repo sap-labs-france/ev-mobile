@@ -16,27 +16,27 @@ export interface FilterControlComponentState<T> {
 }
 
 export default class FilterControlComponent<T> extends React.Component<FilterControlComponentProps<T>, FilterControlComponentState<T>> {
-  constructor(props: FilterControlComponentProps<T>) {
-    super(props);
-    this.state = {
-      value: this.props.initialValue
-    };
-  }
-
   public static defaultProps = {
     style: {}
   };
   public state: FilterControlComponentState<T>;
   public props: FilterControlComponentProps<T>;
 
+  public constructor(props: FilterControlComponentProps<T>) {
+    super(props);
+    this.state = {
+      value: this.props.initialValue
+    };
+  }
+
   public setState = (
     state:
-    | FilterControlComponentState<T>
-    | ((
-      prevState: Readonly<FilterControlComponentState<T>>,
-      props: Readonly<FilterControlComponentProps<T>>
-    ) => FilterControlComponentState<T> | Pick<FilterControlComponentState<T>, never>)
-    | Pick<FilterControlComponentState<T>, never>,
+      | FilterControlComponentState<T>
+      | ((
+          prevState: Readonly<FilterControlComponentState<T>>,
+          props: Readonly<FilterControlComponentProps<T>>
+        ) => FilterControlComponentState<T> | Pick<FilterControlComponentState<T>, never>)
+      | Pick<FilterControlComponentState<T>, never>,
     callback?: () => void
   ) => {
     super.setState(state, callback);

@@ -194,11 +194,11 @@ export default class SideBar extends BaseScreen<Props, State> {
               <Icon style={[style.linkIcon, { color: commonColor.brandDanger }]} type="MaterialIcons" name="error-outline" />
               <Text style={[style.linkText, { color: commonColor.brandDanger }]}>{I18n.t('sidebar.reportError')}</Text>
             </ListItem>
-            {/* <ListItem button onPress={() => navigation.navigate("Settings")} iconLeft style={style.links}>
+            {/* <ListItem button onPress={() => navigation.navigate('Settings')} iconLeft style={style.links}>
               <Icon name="ios-settings-outline" />
               <Text style={style.linkText}>SETTINGS</Text>
-            </ListItem> */}
-            {/* <ListItem button onPress={() => navigation.navigate("Feedback")} iconLeft style={style.links}>
+            </ListItem>
+            <ListItem button onPress={() => navigation.navigate('Feedback')} iconLeft style={style.links}>
               <Icon name="ios-paper-outline" />
               <Text style={style.linkText}>FEEDBACK</Text>
             </ListItem> */}
