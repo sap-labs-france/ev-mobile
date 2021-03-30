@@ -247,7 +247,7 @@ export default class Home extends BaseScreen<Props, State> {
                   </Left>
                 </CardItem>
               </Card>
-              {this.centralServerProvider?.getSecurityProvider().canListTags() && (
+              {this.centralServerProvider?.getSecurityProvider()?.canListTags() && (
                 <Card style={cardStyle.card}>
                   <CardItem
                     style={cardStyle.cardItem}
@@ -265,7 +265,7 @@ export default class Home extends BaseScreen<Props, State> {
                   </CardItem>
                 </Card>
               )}
-              {this.centralServerProvider?.getSecurityProvider().canListUsers() && (
+              {this.centralServerProvider?.getSecurityProvider()?.canListUsers() && (
                 <Card style={cardStyle.card}>
                   <CardItem
                     style={cardStyle.cardItem}

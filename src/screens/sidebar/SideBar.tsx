@@ -167,13 +167,13 @@ export default class SideBar extends BaseScreen<Props, State> {
               <Icon style={style.linkIcon} type="MaterialIcons" name="assessment" />
               <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
             </ListItem>
-            {this.centralServerProvider?.getSecurityProvider().canListUsers() ? (
+            {this.centralServerProvider?.getSecurityProvider()?.canListUsers() ? (
               <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('UsersNavigator', 'Users')}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="people" />
                 <Text style={style.linkText}>{I18n.t('sidebar.users')}</Text>
               </ListItem>
             ) : null}
-            {this.centralServerProvider?.getSecurityProvider().canListTags() ? (
+            {this.centralServerProvider?.getSecurityProvider()?.canListTags() ? (
               <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('TagsNavigator', 'Tags')}>
                 <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="credit-card" />
                 <Text style={style.linkText}>{I18n.t('sidebar.badges')}</Text>
