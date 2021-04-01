@@ -1,6 +1,7 @@
 import { Icon } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, Text, View } from 'react-native';
+
 import BaseProps from '../../types/BaseProps';
 import Car from '../../types/Car';
 import Utils from '../../utils/Utils';
@@ -55,7 +56,7 @@ export default class CarComponent extends React.Component<Props, State> {
           </View>
         </View>
         <View />
-        <View style={style.carContent}>
+        <View style={style.carContainer}>
           <View style={style.carInfos}>
             {defaultCarUser ? (
               <View style={style.userContainer}>
@@ -73,13 +74,13 @@ export default class CarComponent extends React.Component<Props, State> {
               this.renderNoUser(style)
             )}
             <View style={style.powerDetailsContainer}>
-              <View style={style.column}>
+              <View style={style.columnContainer}>
                 <Icon type="MaterialIcons" name="battery-full" style={style.icon} />
                 <Text numberOfLines={2} ellipsizeMode={'tail'} style={style.text}>
                   {car.carCatalog?.batteryCapacityFull} kWh
                 </Text>
               </View>
-              <View style={style.column}>
+              <View style={style.columnContainer}>
                 <View style={style.iconContainer}>
                   <Icon style={style.icon} type="MaterialIcons" name="bolt" />
                   <Icon style={style.currentTypeIcon} type="MaterialIcons" name="power-input" />
@@ -92,7 +93,7 @@ export default class CarComponent extends React.Component<Props, State> {
                   <Text style={style.text}>-</Text>
                 )}
               </View>
-              <View style={style.column}>
+              <View style={style.columnContainer}>
                 <View style={style.iconContainer}>
                   <Icon style={style.icon} type="MaterialIcons" name="bolt" />
                   <Icon style={style.currentTypeIcon} type="MaterialCommunityIcons" name="sine-wave" />

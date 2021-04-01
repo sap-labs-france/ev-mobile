@@ -43,7 +43,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     carName: {
       alignSelf: 'flex-start'
     },
-    carContent: {
+    carContainer: {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
@@ -86,7 +86,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '80%',
       marginHorizontal: '10%'
     },
-    column: {
+    columnContainer: {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'space-between',
