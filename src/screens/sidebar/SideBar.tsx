@@ -118,6 +118,7 @@ export default class SideBar extends BaseScreen<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     const { navigation } = this.props;
     const { userName, userImage, tenantName, isComponentOrganizationActive, updateDate } = this.state;
+    const securityProvider = this.centralServerProvider?.getSecurityProvider();
     // Get logo
     const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
@@ -167,19 +168,29 @@ export default class SideBar extends BaseScreen<Props, State> {
               <Icon style={style.linkIcon} type="MaterialIcons" name="assessment" />
               <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
             </ListItem>
-            {this.centralServerProvider?.getSecurityProvider()?.canListUsers() ? (
+            {securityProvider?.canListUsers() && (
               <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('UsersNavigator', 'Users')}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="people" />
                 <Text style={style.linkText}>{I18n.t('sidebar.users')}</Text>
               </ListItem>
-            ) : null}
-            {this.centralServerProvider?.getSecurityProvider()?.canListTags() ? (
-              <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('TagsNavigator', 'Tags')}>
+            )}
+            {securityProvider?.canListTags() && (
+              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('TagsNavigator', 'Tags')}>
                 <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="credit-card" />
                 <Text style={style.linkText}>{I18n.t('sidebar.badges')}</Text>
               </ListItem>
-            ) : null}
-            <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
+            )}
+            {securityProvider?.canListCars() && securityProvider?.isComponentCarActive() && (
+              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('CarsNavigator', 'Cars')}>
+                <Icon style={style.linkIcon} type="MaterialIcons" name="directions-car" />
+                <Text style={style.linkText}>{I18n.t('sidebar.cars')}</Text>
+              </ListItem>
+            )}
+            <ListItem
+              style={style.links}
+              button={true}
+              iconLeft={true}
+              onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
               <Icon style={[style.linkIcon, { color: commonColor.brandDanger }]} type="MaterialIcons" name="error-outline" />
               <Text style={[style.linkText, { color: commonColor.brandDanger }]}>{I18n.t('sidebar.reportError')}</Text>
             </ListItem>

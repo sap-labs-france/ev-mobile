@@ -72,7 +72,13 @@
     "statistics": "Estatísticas",
     "reportError": "Comunicar erro",
     "users": "Users",
-    "badges": "Badges"
+    "badges": "Badges",
+    "cars": "Cars"
+  },
+  "cars": {
+    "noCars": "No cars",
+    "carUnexpectedError": "An error occurred",
+    "cars": "Car(s)"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -219,6 +225,8 @@
     "tagsNote": "Badge list",
     "users": "Users",
     "usersNote": "User list",
+    "cars": "Cars",
+    "carsNote": "Cars List",
     "numberOfSessions": "{{nbrSessions}} Sessões",
     "noSessions": "Sem sessões encontradas",
     "numberOfSessionsNote": "Numero Total de sessões",

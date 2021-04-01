@@ -72,7 +72,8 @@
     "statistics": "Statistics",
     "reportError": "Report Error",
     "users": "Users",
-    "badges": "Badges"
+    "badges": "Badges",
+    "cars": "Cars"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -184,6 +185,11 @@
     "pending": "Pending",
     "unknown": "Unknown"
   },
+  "cars": {
+    "noCars": "No cars",
+    "carUnexpectedError": "An error occurred",
+    "cars": "Car(s)"
+  },
   "transactions": {
     "transaction": "Session",
     "transactions": "Session(s)",
@@ -219,6 +225,8 @@
     "tagsNote": "Badge list",
     "users": "Users",
     "usersNote": "User list",
+    "cars": "Cars",
+    "carsNote": "Cars List",
     "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "No Session found",
     "numberOfSessionsNote": "Total number of Sessions",

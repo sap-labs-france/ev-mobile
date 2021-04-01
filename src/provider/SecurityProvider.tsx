@@ -57,6 +57,10 @@ export default class SecurityProvider {
     return this.isComponentActive(TenantComponents.ORGANIZATION);
   }
 
+  public isComponentCarActive(): boolean {
+    return this.isComponentActive(TenantComponents.CAR);
+  }
+
   public isComponentActive(componentName: string): boolean {
     if (this.loggedUser && this.loggedUser.activeComponents) {
       return this.loggedUser.activeComponents.includes(componentName);
@@ -117,5 +121,9 @@ export default class SecurityProvider {
 
   public canListTags(): boolean {
     return this.canAccess(Entity.TAGS, Action.LIST);
+  }
+
+  public canListCars(): boolean {
+    return this.canAccess(Entity.CARS, Action.LIST);
   }
 }
