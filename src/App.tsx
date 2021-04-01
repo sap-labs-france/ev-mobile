@@ -107,7 +107,6 @@ const persistNavigationState = async (navigationState: NavigationState) => {
   try {
     await SecuredStorage.saveNavigationState(navigationState);
   } catch (error) {
-    // tslint:disable-next-line: no-console
     console.log(error);
   }
 };

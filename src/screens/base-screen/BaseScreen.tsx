@@ -87,6 +87,5 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
   }
 
-  // tslint:disable-next-line: no-empty
   public async componentDidBlur() {}
 }
