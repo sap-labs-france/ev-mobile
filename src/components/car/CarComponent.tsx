@@ -23,8 +23,7 @@ export default class CarComponent extends React.Component<Props, State> {
     super(props);
   }
 
-  public componentDidMount() {
-  }
+  public componentDidMount() {}
 
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,

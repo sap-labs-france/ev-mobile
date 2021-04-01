@@ -693,7 +693,7 @@ export default class CentralServerProvider {
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CARS}`, {
       headers: this.buildSecuredHeaders(),
-      params,
+      params
     });
     return result.data;
   }
