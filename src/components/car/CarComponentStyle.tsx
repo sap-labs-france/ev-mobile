@@ -5,6 +5,9 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   let commonStyles: any;
@@ -31,7 +34,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '72%'
     },
     licensePlateContainer: {
-      width: '28%',
+      width: '28%'
     },
     headerText: {
       fontSize: '15@s',
@@ -104,19 +107,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     currentTypeIcon: {
       fontSize: '10@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     imageStyle: {
       width: '40%',
       height: '100%',
       margin: 0,
       padding: 0
-    },
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};
   return ResponsiveStylesSheet.createOriented({
-    landscape: deepmerge(commonStyles, landscapeStyles) as StyleSheet.NamedStyles<any>,
-    portrait: deepmerge(commonStyles, portraitStyles) as StyleSheet.NamedStyles<any>
+    landscape: deepmerge(commonStyles, landscapeStyles),
+    portrait: deepmerge(commonStyles, portraitStyles)
   });
 }

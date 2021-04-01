@@ -323,7 +323,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       // Disable the button
       this.setState({ buttonDisabled: true });
       // Start the Transaction
-      const status = await this.centralServerProvider.startTransaction(chargingStation.id as string, connector.connectorId, userInfo.tagIDs[0]);
+      const status = await this.centralServerProvider.startTransaction(
+        chargingStation.id as string,
+        connector.connectorId,
+        userInfo.tagIDs[0]
+      );
       // Check
       if (status && status.status === 'Accepted') {
         // Show message
