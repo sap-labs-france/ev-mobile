@@ -9,8 +9,8 @@ import { StatusBar } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 
 import computeStyleSheet from './AppStyles';
-import I18nManager from './I18n/I18nManager';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
+import I18nManager from './I18n/I18nManager';
 import LocationManager from './location/LocationManager';
 import MigrationManager from './migration/MigrationManager';
 import NotificationManager from './notification/NotificationManager';
@@ -103,7 +103,6 @@ const createTabBarIcon = (
   );
 };
 
-// save last page with state
 const persistNavigationState = async (navigationState: NavigationState) => {
   try {
     await SecuredStorage.saveNavigationState(navigationState);
@@ -113,9 +112,6 @@ const persistNavigationState = async (navigationState: NavigationState) => {
   }
 };
 
-/**
- * @param props
- */
 function createAuthNavigator(props: BaseProps) {
   return (
     <AuthStack.Navigator initialRouteName={'Login'} headerMode="none">
@@ -129,9 +125,6 @@ function createAuthNavigator(props: BaseProps) {
   );
 }
 
-/**
- * @param props
- */
 function createHomeNavigator(props: BaseProps) {
   return (
     <HomeStack.Navigator initialRouteName="Home" headerMode="none">
@@ -140,9 +133,6 @@ function createHomeNavigator(props: BaseProps) {
   );
 }
 
-/**
- * @param props
- */
 function createStatsNavigator(props: BaseProps) {
   return (
     <StatsStack.Navigator initialRouteName="Statistics" headerMode="none">
@@ -151,9 +141,6 @@ function createStatsNavigator(props: BaseProps) {
   );
 }
 
-/**
- * @param props
- */
 function createReportErrorNavigator(props: BaseProps) {
   return (
     <ReportErrorStack.Navigator initialRouteName="ReportError" headerMode="none">
@@ -162,9 +149,6 @@ function createReportErrorNavigator(props: BaseProps) {
   );
 }
 
-/**
- *
- */
 function getTabStyle(): any {
   const commonColor = Utils.getCurrentCommonColor();
   return {
@@ -175,9 +159,6 @@ function getTabStyle(): any {
   };
 }
 
-/**
- * @param props
- */
 function createChargingStationDetailsTabsNavigator(props: BaseProps) {
   const commonColor = Utils.getCurrentCommonColor();
   const barStyle = getTabStyle();
@@ -220,9 +201,6 @@ function createChargingStationDetailsTabsNavigator(props: BaseProps) {
   );
 }
 
-/**
- * @param props
- */
 function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
   const commonColor = Utils.getCurrentCommonColor();
   const barStyle = getTabStyle();
@@ -256,9 +234,6 @@ function createChargingStationConnectorDetailsTabsNavigator(props: BaseProps) {
   );
 }
 
-/**
- * @param props
- */
 function createTransactionDetailsTabsNavigator(props: BaseProps) {
   const commonColor = Utils.getCurrentCommonColor();
   const barStyle = getTabStyle();
@@ -292,9 +267,6 @@ function createTransactionDetailsTabsNavigator(props: BaseProps) {
   );
 }
 
-/**
- * @param props
- */
 function createSitesNavigator(props: BaseProps) {
   return (
     <SitesStack.Navigator initialRouteName="Sites" headerMode="none">
@@ -321,9 +293,6 @@ function createSitesNavigator(props: BaseProps) {
   );
 }
 
-/**
- * @param props
- */
 function createChargingStationsNavigator(props: BaseProps) {
   return (
     <ChargingStationsStack.Navigator initialRouteName="ChargingStations" headerMode="none">
@@ -348,9 +317,6 @@ function createChargingStationsNavigator(props: BaseProps) {
   );
 }
 
-/**
- * @param props
- */
 function createTransactionHistoryNavigator(props: BaseProps) {
   return (
     <TransactionHistoryStack.Navigator initialRouteName="TransactionsHistory" headerMode="none">
@@ -368,9 +334,6 @@ function createTransactionHistoryNavigator(props: BaseProps) {
   );
 }
 
-/**
- * @param props
- */
 function createTransactionInProgressNavigator(props: BaseProps) {
   return (
     <TransactionInProgressStack.Navigator initialRouteName="TransactionsInProgress" headerMode="none">
@@ -393,9 +356,6 @@ function createTransactionInProgressNavigator(props: BaseProps) {
   );
 }
 
-/**
- * @param props
- */
 function createUsersNavigator(props: BaseProps) {
   return (
     <UsersStack.Navigator initialRouteName="Users" headerMode="none">
@@ -404,9 +364,6 @@ function createUsersNavigator(props: BaseProps) {
   );
 }
 
-/**
- * @param props
- */
 function createTagsNavigator(props: BaseProps) {
   return (
     <TagsStack.Navigator initialRouteName="Tags" headerMode="none">
@@ -423,9 +380,6 @@ function createCarsNavigator(props: BaseProps) {
   );
 }
 
-/**
- * @param props
- */
 function createAppDrawerNavigator(props: BaseProps) {
   const appStyles = computeStyleSheet();
   return (
@@ -461,10 +415,6 @@ function createAppDrawerNavigator(props: BaseProps) {
   );
 }
 
-/**
- * @param app
- * @param initialState
- */
 function createRootNavigator(app: App, initialState: InitialState) {
   return (
     <NavigationContainer
