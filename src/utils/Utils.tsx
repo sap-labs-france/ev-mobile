@@ -661,7 +661,13 @@ export default class Utils {
         return `${user.name}`;
       }
     }
-    return userName;
+    return userName.trim();
+  }
+
+  public static buildUserInitials(user: User): string {
+    const userName = user?.name ?? '';
+    const userFirstName = user?.firstName ?? '';
+    return userName.charAt(0).toUpperCase() + userFirstName.charAt(0).toUpperCase();
   }
 
   public static capitalizeFirstLetter(word: string): string {
