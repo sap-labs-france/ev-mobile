@@ -117,7 +117,7 @@ export default class CarComponent extends React.Component<Props, State> {
         <View style={style.avatarContainer}>
           <UserAvatar small={true} navigation={navigation} />
         </View>
-        <Text style={style.userName}>-</Text>
+        <Text style={style.text}>-</Text>
       </View>
     );
   }
