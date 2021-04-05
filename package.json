@@ -163,7 +163,7 @@
     "babel-preset-react-native-stage-0": "^1.0.1",
     "cross-env": "^7.0.3",
     "eslint": "^7.23.0",
-    "eslint-define-config": "^1.0.5",
+    "eslint-define-config": "^1.0.7",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsdoc": "^32.3.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
