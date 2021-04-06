@@ -1,7 +1,6 @@
 import { Icon } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, LayoutChangeEvent, Text, View } from 'react-native';
-import HTMLView from 'react-native-htmlview';
 
 import BaseProps from '../../types/BaseProps';
 import Car from '../../types/Car';
