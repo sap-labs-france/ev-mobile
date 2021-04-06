@@ -77,9 +77,7 @@ export default class CarComponent extends React.Component<Props, State> {
             </View>
             <View style={style.powerDetailsContainer}>
               <View style={style.columnContainer}>
-                <View>
-                  <Icon type="MaterialIcons" name="battery-full" style={style.icon} />
-                </View>
+                <Icon type="MaterialIcons" name="battery-full" style={style.icon} />
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>
                   {car.carCatalog?.batteryCapacityFull} kWh
                 </Text>

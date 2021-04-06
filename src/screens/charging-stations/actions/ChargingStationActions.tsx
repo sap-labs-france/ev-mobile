@@ -227,7 +227,6 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
     }
   };
 
-  // tslint:disable-next-line: cyclomatic-complexity
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();

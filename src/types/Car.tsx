@@ -31,7 +31,7 @@ export interface CarConverter {
 export enum CarType {
   PRIVATE = 'P',
   COMPANY = 'C',
-  POOL_CAR = 'PC',
+  POOL_CAR = 'PC'
 }
 
 export interface UserCar {
@@ -45,5 +45,5 @@ export interface UserCar {
 export enum CarConverterType {
   STANDARD = 'S',
   OPTION = 'O',
-  ALTERNATIVE = 'A',
+  ALTERNATIVE = 'A'
 }
