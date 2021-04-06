@@ -1,6 +1,7 @@
 import { Icon } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle, Text, View } from 'react-native';
+import { Image, ImageStyle, LayoutChangeEvent, Text, View } from 'react-native';
+import HTMLView from 'react-native-htmlview';
 
 import BaseProps from '../../types/BaseProps';
 import Car from '../../types/Car';
@@ -8,7 +9,9 @@ import Utils from '../../utils/Utils';
 import UserAvatar from '../user/avatar/UserAvatar';
 import computeStyleSheet from './CarComponentStyle';
 
-interface State {}
+interface State {
+  userNameLeftMargin?: number;
+}
 
 export interface Props extends BaseProps {
   car: Car;
@@ -21,9 +24,7 @@ export default class CarComponent extends React.Component<Props, State> {
 
   public constructor(props: Props) {
     super(props);
-  }
-
-  public componentDidMount() {
+    this.state = {};
   }
 
   public setState = (
@@ -36,11 +37,15 @@ export default class CarComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { car, selected, navigation } = this.props;
-    const carUsers = car?.carUsers ? car.carUsers : [];
+    const carUsers = car?.carUsers ?? [];
     const defaultCarUser = carUsers.length === 1 ? carUsers[0] : carUsers?.find((carUser) => carUser.default === true);
     const defaultCarUserName = Utils.buildUserName(defaultCarUser?.user);
     const otherUserCount = Math.max(carUsers.length - 1, 0);
-    const carFullName = car?.carCatalog?.vehicleMake + ' ' + car?.carCatalog?.vehicleModel + ' ' + car.carCatalog?.vehicleModelVersion;
+    const carCatalog = car?.carCatalog;
+    const carMake = carCatalog?.vehicleMake ?? '';
+    const carModel = carCatalog?.vehicleModel ?? '';
+    const carModelVersion = carCatalog?.vehicleModelVersion ?? '';
+    const carFullName = carMake + ' ' + carModel + ' ' + carModelVersion;
     return (
       <View style={selected ? [style.container, style.selected] : style.container}>
         <View style={style.header}>
@@ -58,25 +63,25 @@ export default class CarComponent extends React.Component<Props, State> {
         <View />
         <View style={style.carContainer}>
           <View style={style.carInfos}>
-            {defaultCarUser ? (
-              <View style={style.userContainer}>
-                <View style={style.avatarContainer}>
-                  <UserAvatar small={true} user={defaultCarUser.user} navigation={navigation} />
-                </View>
-                <View style={style.userNameContainer}>
-                  <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>
-                    {defaultCarUserName}
-                  </Text>
-                  {otherUserCount > 0 && <Text style={style.text}> (+{otherUserCount})</Text>}
+            <View style={style.userContainer}>
+              <View style={[style.avatarContainer]}>
+                <View onLayout={(event: LayoutChangeEvent) => this.onLayout(event)}>
+                  <UserAvatar small={true} user={defaultCarUser?.user} navigation={navigation} />
                 </View>
               </View>
-            ) : (
-              this.renderNoUser(style)
-            )}
+              <View style={[style.userNameContainer, { marginLeft: this.state.userNameLeftMargin }]}>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>
+                  {defaultCarUserName}
+                </Text>
+                {otherUserCount > 0 && <Text style={style.text}> (+{otherUserCount})</Text>}
+              </View>
+            </View>
             <View style={style.powerDetailsContainer}>
               <View style={style.columnContainer}>
-                <Icon type="MaterialIcons" name="battery-full" style={style.icon} />
-                <Text numberOfLines={2} ellipsizeMode={'tail'} style={style.text}>
+                <View>
+                  <Icon type="MaterialIcons" name="battery-full" style={style.icon} />
+                </View>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>
                   {car.carCatalog?.batteryCapacityFull} kWh
                 </Text>
               </View>
@@ -86,7 +91,7 @@ export default class CarComponent extends React.Component<Props, State> {
                   <Icon style={style.currentTypeIcon} type="MaterialIcons" name="power-input" />
                 </View>
                 {car?.carCatalog?.fastChargePowerMax ? (
-                  <Text numberOfLines={2} style={style.text}>
+                  <Text numberOfLines={1} style={style.text}>
                     {car?.carCatalog?.fastChargePowerMax} kW
                   </Text>
                 ) : (
@@ -98,7 +103,7 @@ export default class CarComponent extends React.Component<Props, State> {
                   <Icon style={style.icon} type="MaterialIcons" name="bolt" />
                   <Icon style={style.currentTypeIcon} type="MaterialCommunityIcons" name="sine-wave" />
                 </View>
-                <Text numberOfLines={2} style={style.text}>
+                <Text numberOfLines={1} style={style.text}>
                   {car?.converter?.powerWatts} kW ({car?.converter?.numberOfPhases})
                 </Text>
               </View>
@@ -110,15 +115,8 @@ export default class CarComponent extends React.Component<Props, State> {
     );
   }
 
-  private renderNoUser(style: any) {
-    const { navigation } = this.props;
-    return (
-      <View style={style.userContainer}>
-        <View style={style.avatarContainer}>
-          <UserAvatar small={true} navigation={navigation} />
-        </View>
-        <Text style={style.text}>-</Text>
-      </View>
-    );
+  private onLayout(event: LayoutChangeEvent): void {
+    const userNameLeftMargin = (event.nativeEvent.layout.x + event.nativeEvent.layout.width) * 1.1;
+    this.setState({ userNameLeftMargin });
   }
 }

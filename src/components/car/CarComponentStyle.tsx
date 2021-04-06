@@ -31,7 +31,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '72%'
     },
     licensePlateContainer: {
-      width: '28%',
+      width: '28%'
     },
     headerText: {
       fontSize: '15@s',
@@ -47,32 +47,35 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      height: '100@s',
+      height: '115@s',
       width: '100%'
     },
     carInfos: {
       flexDirection: 'column',
-      justifyContent: 'space-around',
+      justifyContent: 'space-between',
       width: '60%',
       height: '100%',
-      paddingVertical: '5@s'
+      paddingVertical: '10@s',
+      paddingHorizontal: '5@s'
     },
     userContainer: {
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      width: '90%',
-      marginLeft: '10%',
-      paddingRight: '10@s'
+      width: '100%',
+      paddingVertical: '5@s'
     },
     avatarContainer: {
-      marginRight: '7@s'
+      width: '33%',
+      justifyContent: 'center',
+      flexDirection: 'row'
     },
     userNameContainer: {
       flexDirection: 'row',
-      maxWidth: '80%',
       flexWrap: 'wrap',
-      justifyContent: 'flex-start'
+      justifyContent: 'flex-start',
+      position: 'absolute',
+      width: '67%'
     },
     text: {
       color: commonColor.textColor,
@@ -83,15 +86,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      width: '80%',
-      marginHorizontal: '10%'
+      width: '100%'
     },
     columnContainer: {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'space-between',
-      // To allow ellipsis truncation
-      maxWidth: '33%'
+      width: '33%'
     },
     iconContainer: {
       flexDirection: 'row',
@@ -104,19 +105,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     currentTypeIcon: {
       fontSize: '10@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     imageStyle: {
       width: '40%',
       height: '100%',
       margin: 0,
       padding: 0
-    },
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};
   return ResponsiveStylesSheet.createOriented({
-    landscape: deepmerge(commonStyles, landscapeStyles) as StyleSheet.NamedStyles<any>,
-    portrait: deepmerge(commonStyles, portraitStyles) as StyleSheet.NamedStyles<any>
+    landscape: deepmerge(commonStyles, landscapeStyles),
+    portrait: deepmerge(commonStyles, portraitStyles)
   });
 }
