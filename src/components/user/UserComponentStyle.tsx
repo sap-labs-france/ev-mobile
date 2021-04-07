@@ -60,30 +60,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     roleContainer: {
       marginTop: '2@s'
-    },
-    statusContainer: {},
-    status: {
-      backgroundColor: commonColor.containerBgColor,
-      borderWidth: 1,
-      margin: 0,
-      height: '21@s'
-    },
-    statusText: {
-      fontSize: '11@s',
-      fontWeight: 'bold',
-      lineHeight: Platform.OS === PLATFORM.ANDROID ? 1 : 0
-    },
-    active: {
-      borderColor: commonColor.brandSuccess,
-      color: commonColor.brandSuccess
-    },
-    inactive: {
-      color: commonColor.brandDanger,
-      borderColor: commonColor.brandDanger
-    },
-    pending: {
-      color: commonColor.brandWarning,
-      borderColor: commonColor.brandWarning
     }
   });
   const portraitStyles = {};

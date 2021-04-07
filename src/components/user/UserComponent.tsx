@@ -1,14 +1,16 @@
 import { Text, View } from 'native-base';
 import React from 'react';
-import { Chip } from 'react-native-paper';
 
 import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import User, { UserStatus } from '../../types/User';
 import Utils from '../../utils/Utils';
+import Chip from '../chip/Chip';
 import UserAvatar from './avatar/UserAvatar';
 import computeStyleSheet from './UserComponentStyle';
+import computeChipStyleSheet from '../chip/ChipStyle';
+
 
 export interface Props extends BaseProps {
   user: User;
@@ -49,12 +51,13 @@ export default class UserComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
+    const chipStyle = computeChipStyleSheet();
     const { selected, navigation } = this.props;
     const { user } = this.state;
     const userFullName = Utils.buildUserName(user);
     const userRole = user ? user.role : '';
     const userStatus = user ? user.status : '';
-    const statusStyle = this.computeStatusStyle(userStatus, style);
+    const statusStyle = this.computeStatusStyle(userStatus, chipStyle);
     return (
       <View style={style.container}>
         <View style={style.avatarContainer}>
@@ -67,11 +70,7 @@ export default class UserComponent extends React.Component<Props, State> {
                 {userFullName}
               </Text>
             </View>
-            <View style={style.statusContainer}>
-              <Chip style={[style.status, statusStyle]} textStyle={[style.statusText, statusStyle]}>
-                {Utils.translateUserStatus(userStatus)}
-              </Chip>
-            </View>
+            <Chip statusStyle={statusStyle} text={Utils.translateUserStatus(userStatus)} navigation={navigation} />
           </View>
           <View style={style.emailRoleContainer}>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.email}>
