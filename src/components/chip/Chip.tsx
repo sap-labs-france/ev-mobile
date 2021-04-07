@@ -1,4 +1,3 @@
-import I18n from 'i18n-js';
 import React from 'react';
 import { Text, View } from 'react-native';
 import BaseProps from '../../types/BaseProps';

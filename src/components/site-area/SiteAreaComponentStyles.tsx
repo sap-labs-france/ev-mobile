@@ -43,8 +43,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderBottomColor: commonColor.listBorderColor
     },
     address: {
-      width: '80%',
-      color: commonColor.headerTextColor
+      color: commonColor.headerTextColor,
+      fontSize: '12@s'
     },
     headerName: {
       marginLeft: '5@s',
@@ -63,6 +63,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     icon: {
       fontSize: '30@s',
       color: commonColor.headerTextColor
+    },
+    arrowIcon: {
+      fontSize: '30@s'
     },
     iconLeft: {
       marginLeft: '10@s'

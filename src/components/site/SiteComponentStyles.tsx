@@ -37,14 +37,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'space-between',
       alignItems: 'center',
       height: '25@s',
+      width: '100%',
       paddingRight: '5@s',
       paddingLeft: '5@s',
       borderBottomWidth: 1,
       borderBottomColor: commonColor.listBorderColor
     },
     address: {
-      width: '80%',
-      color: commonColor.headerTextColor
+      color: commonColor.headerTextColor,
+      fontSize: '12@s'
     },
     headerName: {
       marginLeft: '5@s',
@@ -62,6 +63,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     icon: {
       color: commonColor.headerTextColor
+    },
+    arrowIcon: {
+      fontSize: '30@s'
     },
     iconLeft: {
       marginLeft: '10@s'

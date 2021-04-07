@@ -70,9 +70,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
           </View>
           <View style={style.buttonContainer}>
             {(isAdmin || isSiteAdmin) && (
-              <Button
-                transparent
-                style={style.button}
+              <TouchableOpacity
                 onPress={() => {
                   if (onNavigate) {
                     onNavigate();
@@ -84,12 +82,10 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
                     key: `${Utils.randomNumber()}`
                   });
                 }}>
-                <Icon style={[style.icon, style.iconRight, style.iconSettings]} type="MaterialIcons" name="tune" />
-              </Button>
+                <Icon style={[style.icon, style.iconRight, style.settingsIcon]} type="MaterialIcons" name="tune" />
+              </TouchableOpacity>
             )}
-            <Button
-              transparent
-              style={[style.button, style.buttonRight]}
+            <TouchableOpacity
               onPress={() => {
                 this.showHeartbeatStatus();
               }}>
@@ -102,7 +98,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
                   <Icon style={style.heartbeatIcon} type="FontAwesome" name="heartbeat" />
                 </Animatable.Text>
               )}
-            </Button>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={style.subHeaderContent}>

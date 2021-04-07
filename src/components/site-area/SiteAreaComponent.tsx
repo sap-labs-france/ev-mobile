@@ -79,7 +79,7 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
                 </Text>
               </View>
               <Icon
-                style={siteArea.connectorStats.totalConnectors > 0 ? style.icon : style.iconHidden}
+                style={siteArea.connectorStats.totalConnectors > 0 ? [style.icon, style.arrowIcon] : style.iconHidden}
                 type="MaterialIcons"
                 name="navigate-next"
               />
