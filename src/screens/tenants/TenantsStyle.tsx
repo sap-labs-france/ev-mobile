@@ -25,10 +25,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '40@s',
       padding: '5@s'
     },
-    tenantNameView: {
-      paddingTop: '15@s',
-      backgroundColor: commonColor.containerBgColor,
+    tenantContainer: {
       height: '50@s'
+    },
+    tenantNameContainer: {
+      backgroundColor: commonColor.containerBgColor,
+      height: '100%',
+      alignItems: 'center',
+      justifyContent: 'center'
     },
     tenantNameText: {
       color: commonColor.textColor,
@@ -40,11 +44,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '20@s'
     },
     trashIconButton: {
-      alignSelf: 'flex-end',
-      height: '50@s'
+      height: '100%',
+      width: '50@s',
+      backgroundColor: commonColor.brandDanger,
+      justifyContent: 'center',
+      alignItems: 'center'
     },
     trashIcon: {
-      color: 'white'
+      color: 'white',
+      fontSize: '20@s'
+
     }
   });
   const portraitStyles = {};
