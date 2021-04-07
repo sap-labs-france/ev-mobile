@@ -67,13 +67,12 @@ export default class SideBar extends BaseScreen<Props, State> {
   public getUserInfo = async () => {
     // Logoff
     const userInfo = this.centralServerProvider.getUserInfo();
-    const securityProvider = this.centralServerProvider.getSecurityProvider();
     // Add sites
     this.setState(
       {
         userName: userInfo ? `${userInfo.name} ${userInfo.firstName}` : '',
         userID: userInfo ? `${userInfo.id}` : '',
-        isComponentOrganizationActive: securityProvider ? securityProvider.isComponentOrganizationActive() : false,
+        isComponentOrganizationActive: this.securityProvider ? this.securityProvider.isComponentOrganizationActive() : false,
         tenantName: userInfo.tenantName
       },
       async () => {
@@ -118,7 +117,6 @@ export default class SideBar extends BaseScreen<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     const { navigation } = this.props;
     const { userName, userImage, tenantName, isComponentOrganizationActive, updateDate } = this.state;
-    const securityProvider = this.centralServerProvider?.getSecurityProvider();
     // Get logo
     const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
@@ -168,19 +166,19 @@ export default class SideBar extends BaseScreen<Props, State> {
               <Icon style={style.linkIcon} type="MaterialIcons" name="assessment" />
               <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
             </ListItem>
-            {securityProvider?.canListUsers() && (
+            {this.securityProvider?.canListUsers() && (
               <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('UsersNavigator', 'Users')}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="people" />
                 <Text style={style.linkText}>{I18n.t('sidebar.users')}</Text>
               </ListItem>
             )}
-            {securityProvider?.canListTags() && (
+            {this.securityProvider?.canListTags() && (
               <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('TagsNavigator', 'Tags')}>
                 <Icon style={style.linkIcon} type="MaterialCommunityIcons" name="credit-card" />
                 <Text style={style.linkText}>{I18n.t('sidebar.badges')}</Text>
               </ListItem>
             )}
-            {securityProvider?.canListCars() && securityProvider?.isComponentCarActive() && (
+            {this.securityProvider?.canListCars() && this.securityProvider?.isComponentCarActive() && (
               <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('CarsNavigator', 'Cars')}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="directions-car" />
                 <Text style={style.linkText}>{I18n.t('sidebar.cars')}</Text>

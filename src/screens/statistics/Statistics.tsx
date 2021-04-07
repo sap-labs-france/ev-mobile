@@ -95,9 +95,6 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
 
   public refresh = async () => {
     const { filters } = this.state;
-    // Get the provider
-    const centralServerProvider = await ProviderFactory.getProvider();
-    const securityProvider = centralServerProvider.getSecurityProvider();
     // Get the ongoing Transaction stats
     const transactionsStats = await this.getTransactionsStats(filters.startDateTime, filters.endDateTime);
     // Retrieve all the transactions for the current userID
@@ -113,7 +110,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
       totalDurationSecs: transactionsStats.stats.totalDurationSecs,
       totalInactivitySecs: transactionsStats.stats.totalInactivitySecs,
       totalPrice: transactionsStats.stats.totalPrice,
-      isPricingActive: securityProvider.isComponentPricingActive(),
+      isPricingActive: this.securityProvider?.isComponentPricingActive(),
       loading: false
     });
   };
