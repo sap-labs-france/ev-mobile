@@ -232,22 +232,6 @@ export default class Home extends BaseScreen<Props, State> {
                   </Left>
                 </CardItem>
               </Card>
-              <Card style={cardStyle.card}>
-                <CardItem
-                  style={cardStyle.cardItem}
-                  button
-                  onPress={() => navigation.navigate('StatisticsNavigator', { key: `${Utils.randomNumber()}` })}>
-                  <Left>
-                    <Icon style={cardStyle.cardIcon} type="MaterialIcons" name="assessment" />
-                    <Body>
-                      <Text style={cardStyle.cardText}>{I18n.t('home.browseStatistics')}</Text>
-                      <Text note style={cardStyle.cardNote}>
-                        {I18n.t('home.browseStatisticsNote')}
-                      </Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
               {securityProvider?.canListTags() && (
                 <Card style={cardStyle.card}>
                   <CardItem
@@ -302,6 +286,22 @@ export default class Home extends BaseScreen<Props, State> {
                   </CardItem>
                 </Card>
               )}
+              <Card style={cardStyle.card}>
+                <CardItem
+                  style={cardStyle.cardItem}
+                  button
+                  onPress={() => navigation.navigate('StatisticsNavigator', { key: `${Utils.randomNumber()}` })}>
+                  <Left>
+                    <Icon style={cardStyle.cardIcon} type="MaterialIcons" name="assessment" />
+                    <Body>
+                      <Text style={cardStyle.cardText}>{I18n.t('home.browseStatistics')}</Text>
+                      <Text note style={cardStyle.cardNote}>
+                        {I18n.t('home.browseStatisticsNote')}
+                      </Text>
+                    </Body>
+                  </Left>
+                </CardItem>
+              </Card>
             </Content>
           </Container>
         )}
