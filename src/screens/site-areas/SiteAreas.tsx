@@ -115,22 +115,20 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     try {
       // Get current location
       this.currentLocation = await this.getCurrentLocation();
+      const params = {
+        Search: searchText,
+        SiteID: this.siteID,
+        Issuer: true,
+        WithAvailableChargers: true,
+        LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
+        LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
+        LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
+      }
       // Get the Site Areas
-      siteAreas = await this.centralServerProvider.getSiteAreas(
-        {
-          Search: searchText,
-          SiteID: this.siteID,
-          Issuer: true,
-          WithAvailableChargers: true,
-          LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
-          LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
-          LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
-        },
-        { skip, limit }
-      );
+      siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit });
       if (siteAreas.count === -1) {
         // Request nbr of records
-        const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSites({ Search: searchText }, Constants.ONLY_RECORD_COUNT);
+        const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
         // Set
         siteAreas.count = sitesAreasNbrRecordsOnly.count;
       }

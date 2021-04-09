@@ -118,21 +118,19 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     try {
       // Get current location
       this.currentLocation = await this.getCurrentLocation();
+      const params = {
+        Search: searchText,
+        Issuer: true,
+        WithAvailableChargers: true,
+        LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
+        LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
+        LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
+      }
       // Get the Sites
-      sites = await this.centralServerProvider.getSites(
-        {
-          Search: searchText,
-          Issuer: true,
-          WithAvailableChargers: true,
-          LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
-          LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
-          LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
-        },
-        { skip, limit }
-      );
+      sites = await this.centralServerProvider.getSites(params, { skip, limit });
       if (sites.count === -1) {
         // Request nbr of records
-        const sitesNbrRecordsOnly = await this.centralServerProvider.getSites({ Search: searchText }, Constants.ONLY_RECORD_COUNT);
+        const sitesNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
         // Set
         sites.count = sitesNbrRecordsOnly.count;
       }
