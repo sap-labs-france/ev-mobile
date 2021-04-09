@@ -245,13 +245,15 @@
     "free": "Free",
     "occupied": "Occupied",
     "noSites": "No Site found",
-    "siteUnexpectedError": "Cannot read the site"
+    "siteUnexpectedError": "Cannot read the site",
+    "sites": "Site(s)"
   },
   "siteAreas": {
     "title": "Site Areas",
     "noChargers": "This Site Area has no Charger",
     "noSiteAreas": "No Site Area found",
-    "siteAreaUnexpectedError": "Cannot read the site areas"
+    "siteAreaUnexpectedError": "Cannot read the site areas",
+    "siteAreas": "Site Area(s)"
   },
   "chargers": {
     "title": "Charging Stations",

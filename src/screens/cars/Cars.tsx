@@ -73,7 +73,7 @@ export default class Cars extends BaseAutoRefreshScreen<Props, State> {
             Search: searchText,
             WithUsers: true
           },
-          { skip, limit }
+          Constants.ONLY_RECORD_COUNT
         );
         // Set
         cars.count = carsNbrRecordsOnly.count;

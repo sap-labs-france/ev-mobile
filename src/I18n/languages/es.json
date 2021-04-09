@@ -245,13 +245,15 @@
     "free": "Disponible",
     "occupied": "Ocupado",
     "noSites": "Sitio no encontrado",
-    "siteUnexpectedError": "No se ha podido cargar el sitio"
+    "siteUnexpectedError": "No se ha podido cargar el sitio",
+    "sites": "Site(s)"
   },
   "siteAreas": {
     "title": "Zona",
     "noChargers": "Esta zona no tiene cargadores",
     "noSiteAreas": "Zona no encontrada",
-    "siteAreaUnexpectedError": "No se ha podido cargar la zona"
+    "siteAreaUnexpectedError": "No se ha podido cargar la zona",
+    "siteAreas": "Site Area(s)"
   },
   "chargers": {
     "title": "Estaciones de carga",
