@@ -245,13 +245,15 @@
     "free": "Frei",
     "occupied": "Besetzt",
     "noSites": "Kein Standort gefunden",
-    "siteUnexpectedError": "Standort konnte nicht gelesen werden"
+    "siteUnexpectedError": "Standort konnte nicht gelesen werden",
+    "sites": "Site(s)"
   },
   "siteAreas": {
     "title": "Standortbereiche",
     "noChargers": "Dieser Standortbereich hat keine Ladestationen",
     "noSiteAreas": "Kein Standortbereich gefunden",
-    "siteAreaUnexpectedError": "Standortbereich wurde nicht erkannt"
+    "siteAreaUnexpectedError": "Standortbereich wurde nicht erkannt",
+    "siteAreas": "Site Area(s)"
   },
   "chargers": {
     "title": "Ladestationen",

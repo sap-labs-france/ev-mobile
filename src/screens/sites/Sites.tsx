@@ -26,6 +26,7 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SitesFilters, { SitesFiltersDef } from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
+import I18nManager from "../../I18n/I18nManager";
 
 export interface Props extends BaseProps {}
 
@@ -263,6 +264,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         <HeaderComponent
           navigation={navigation}
           title={I18n.t('sidebar.sites')}
+          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('sites.sites')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
           rightAction={() => {
