@@ -2,13 +2,17 @@ import { View } from 'native-base';
 import React from 'react';
 import { Avatar } from 'react-native-elements';
 import noPhoto from '../../../../assets/no-photo.png';
+import CentralServerProvider from '../../../provider/CentralServerProvider';
+import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UserAvatarStyle';
 
-interface State {}
+interface State {
+  user?: User;
+}
 
 export interface Props extends BaseProps {
   user?: User;
@@ -20,9 +24,22 @@ export default class UserAvatar extends React.Component<Props, State> {
   public static defaultProps = {
     selected: false
   };
+  private centralServerProvider: CentralServerProvider;
 
   public constructor(props: Props) {
     super(props);
+    this.state = {
+      user: this.props.user
+    };
+  }
+
+  public async componentDidMount(): Promise<void> {
+    this.centralServerProvider = await ProviderFactory.getProvider();
+    const { user } = this.props;
+    if (user) {
+      user.image = await this.getUserImage(user.id as string);
+    }
+    this.setState({ user });
   }
 
   public setState = (
@@ -33,12 +50,13 @@ export default class UserAvatar extends React.Component<Props, State> {
   };
 
   public render() {
-    const { user, selected, small } = this.props;
+    const { selected, small } = this.props;
+    const { user } = this.state;
     const style = computeStyleSheet();
     const userInitials = Utils.buildUserInitials(user);
     const userName = Utils.buildUserName(user);
-    const isAnonymized = userName === Constants.ANONYMIZED_VALUE;
-    const userImageURI = user ? (isAnonymized ? noPhoto : user.image) : noPhoto;
+    const isNameHyphen = userName === Constants.HYPHEN;
+    const userImageURI = user ? (isNameHyphen ? noPhoto : user.image) : noPhoto;
     return (
       <View>
         {userImageURI ? (
@@ -62,5 +80,17 @@ export default class UserAvatar extends React.Component<Props, State> {
         )}
       </View>
     );
+  }
+
+  private async getUserImage(id: string) {
+    try {
+      return await this.centralServerProvider.getUserImage({ ID: id });
+    } catch (error) {
+      // Check if HTTP?
+      if (!error.request) {
+        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'users.userUnexpectedError', this.props.navigation);
+      }
+    }
+    return null;
   }
 }
