@@ -245,13 +245,15 @@
     "free": "Libre(s)",
     "occupied": "Occupé(s)",
     "noSites": "Aucun Site trouvé",
-    "siteUnexpectedError": "Impossible de lire le site"
+    "siteUnexpectedError": "Impossible de lire le site",
+    "sites": "Site(s)"
   },
   "siteAreas": {
     "title": "Zones",
     "noChargers": "Cette Zone n'a pas de Borne",
     "noSiteAreas": "Aucune Zone trouvée",
-    "siteAreaUnexpectedError": "Impossible de lire les zones"
+    "siteAreaUnexpectedError": "Impossible de lire les zones",
+    "siteAreas": "Zone(s)"
   },
   "chargers": {
     "title": "Bornes",
