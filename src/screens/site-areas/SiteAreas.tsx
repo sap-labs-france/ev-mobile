@@ -128,6 +128,13 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         },
         { skip, limit }
       );
+      if (siteAreas.count === -1) {
+        // Request nbr of records
+        const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSites({ Search: searchText }, Constants.ONLY_RECORD_COUNT);
+        // Set
+        siteAreas.count = sitesAreasNbrRecordsOnly.count;
+      }
+      return siteAreas;
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(

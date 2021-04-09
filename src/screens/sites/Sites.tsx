@@ -130,6 +130,13 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         },
         { skip, limit }
       );
+      if (sites.count === -1) {
+        // Request nbr of records
+        const sitesNbrRecordsOnly = await this.centralServerProvider.getSites({ Search: searchText }, Constants.ONLY_RECORD_COUNT);
+        // Set
+        sites.count = sitesNbrRecordsOnly.count;
+      }
+      return sites;
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'sites.siteUnexpectedError', this.props.navigation, this.refresh);
