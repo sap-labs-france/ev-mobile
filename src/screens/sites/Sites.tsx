@@ -26,7 +26,7 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SitesFilters, { SitesFiltersDef } from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
-import I18nManager from "../../I18n/I18nManager";
+import I18nManager from '../../I18n/I18nManager';
 
 export interface Props extends BaseProps {}
 
@@ -114,7 +114,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public getSites = async (searchText = '', skip: number, limit: number): Promise<DataResult<Site>> => {
-    let sites: DataResult<Site>;
     try {
       // Get current location
       this.currentLocation = await this.getCurrentLocation();
@@ -125,9 +124,9 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
         LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
         LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
-      }
+      };
       // Get the Sites
-      sites = await this.centralServerProvider.getSites(params, { skip, limit });
+      const sites = await this.centralServerProvider.getSites(params, { skip, limit });
       if (sites.count === -1) {
         // Request nbr of records
         const sitesNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
@@ -139,8 +138,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'sites.siteUnexpectedError', this.props.navigation, this.refresh);
     }
-    // Return
-    return sites;
   };
 
   public onBack = () => {
