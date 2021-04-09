@@ -55,8 +55,8 @@ export default class UserAvatar extends React.Component<Props, State> {
     const style = computeStyleSheet();
     const userInitials = Utils.buildUserInitials(user);
     const userName = Utils.buildUserName(user);
-    const isAnonymized = userName === Constants.ANONYMIZED_VALUE;
-    const userImageURI = user ? (isAnonymized ? noPhoto : user.image) : noPhoto;
+    const isNameHyphen = userName === Constants.HYPHEN;
+    const userImageURI = user ? (isNameHyphen ? noPhoto : user.image) : noPhoto;
     return (
       <View>
         {userImageURI ? (
