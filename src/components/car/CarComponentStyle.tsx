@@ -69,18 +69,18 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingVertical: '5@s'
     },
     avatarContainer: {
-      width: '33%',
-      justifyContent: 'center',
+      width: '25%',
+      justifyContent: 'flex-end',
       flexDirection: 'row'
     },
     userNameContainer: {
-      flexWrap: 'wrap',
+      marginLeft: '10@s',
       width: '67%'
     },
     text: {
       color: commonColor.textColor,
-      fontSize: '12@s',
-      textAlign: 'center'
+      fontSize: '13@s',
+      textAlign: 'left'
     },
     powerDetailsContainer: {
       flexDirection: 'row',

@@ -652,22 +652,22 @@ export default class Utils {
 
   public static buildUserName(user: User): string {
     const userName = '-';
-    // User?
     if (user) {
-      // Firstname provided?
-      if (user.name && user.firstName) {
-        return `${user.name} ${user.firstName}`;
-      } else {
-        return `${user.name}`;
+      if (user.name && user.name !== Constants.ANONYMIZED_VALUE) {
+        if (user.firstName) {
+          return `${user.name} ${user.firstName}`;
+        } else {
+          return `${user.name}`;
+        }
       }
     }
     return userName.trim();
   }
 
   public static buildUserInitials(user: User): string {
-    const userName = user?.name ?? '';
-    const userFirstName = user?.firstName ?? '';
-    return userName.charAt(0).toUpperCase() + userFirstName.charAt(0).toUpperCase();
+    const userName = user?.name && user?.name !== Constants.ANONYMIZED_VALUE ? user?.name.charAt(0).toUpperCase() : '';
+    const userFirstName = user?.firstName ? user?.firstName.charAt(0).toUpperCase() : '';
+    return userName + userFirstName;
   }
 
   public static capitalizeFirstLetter(word: string): string {
