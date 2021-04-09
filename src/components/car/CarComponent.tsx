@@ -1,6 +1,6 @@
 import { Icon } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle, LayoutChangeEvent, Text, View } from 'react-native';
+import { Image, ImageStyle, Text, View } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import Car from '../../types/Car';
@@ -8,9 +8,7 @@ import Utils from '../../utils/Utils';
 import UserAvatar from '../user/avatar/UserAvatar';
 import computeStyleSheet from './CarComponentStyle';
 
-interface State {
-  userNameLeftMargin?: number;
-}
+interface State {}
 
 export interface Props extends BaseProps {
   car: Car;
@@ -64,11 +62,9 @@ export default class CarComponent extends React.Component<Props, State> {
           <View style={style.carInfos}>
             <View style={style.userContainer}>
               <View style={[style.avatarContainer]}>
-                <View onLayout={(event: LayoutChangeEvent) => this.onLayout(event)}>
-                  <UserAvatar small={true} user={defaultCarUser?.user} navigation={navigation} />
-                </View>
+                <UserAvatar small={true} user={defaultCarUser?.user} navigation={navigation} />
               </View>
-              <View style={[style.userNameContainer, { marginLeft: this.state.userNameLeftMargin }]}>
+              <View style={[style.userNameContainer]}>
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>
                   {defaultCarUserName}
                 </Text>
@@ -110,10 +106,5 @@ export default class CarComponent extends React.Component<Props, State> {
         </View>
       </View>
     );
-  }
-
-  private onLayout(event: LayoutChangeEvent): void {
-    const userNameLeftMargin = (event.nativeEvent.layout.x + event.nativeEvent.layout.width) * 1.1;
-    this.setState({ userNameLeftMargin });
   }
 }
