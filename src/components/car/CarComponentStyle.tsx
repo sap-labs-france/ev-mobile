@@ -74,10 +74,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row'
     },
     userNameContainer: {
-      flexDirection: 'row',
       flexWrap: 'wrap',
-      justifyContent: 'flex-start',
-      position: 'absolute',
       width: '67%'
     },
     text: {
