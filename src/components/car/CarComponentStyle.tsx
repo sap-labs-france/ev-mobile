@@ -50,51 +50,49 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      height: '100@s',
+      height: '115@s',
       width: '100%'
     },
     carInfos: {
       flexDirection: 'column',
-      justifyContent: 'space-around',
+      justifyContent: 'space-between',
       width: '60%',
       height: '100%',
-      paddingVertical: '5@s'
+      paddingVertical: '10@s',
+      paddingHorizontal: '5@s'
     },
     userContainer: {
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      width: '90%',
-      marginLeft: '10%',
-      paddingRight: '10@s'
+      width: '100%',
+      paddingVertical: '5@s'
     },
     avatarContainer: {
-      marginRight: '7@s'
+      width: '25%',
+      justifyContent: 'flex-end',
+      flexDirection: 'row'
     },
     userNameContainer: {
-      flexDirection: 'row',
-      maxWidth: '80%',
-      flexWrap: 'wrap',
-      justifyContent: 'flex-start'
+      marginLeft: '10@s',
+      width: '67%'
     },
     text: {
       color: commonColor.textColor,
-      fontSize: '12@s',
-      textAlign: 'center'
+      fontSize: '13@s',
+      textAlign: 'left'
     },
     powerDetailsContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      width: '80%',
-      marginHorizontal: '10%'
+      width: '100%'
     },
     columnContainer: {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'space-between',
-      // To allow ellipsis truncation
-      maxWidth: '33%'
+      width: '33%'
     },
     iconContainer: {
       flexDirection: 'row',

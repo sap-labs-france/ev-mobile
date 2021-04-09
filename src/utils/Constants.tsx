@@ -11,6 +11,8 @@ export default class Constants {
   public static readonly DEFAULT_DURATION = '00:00';
   public static readonly DEFAULT_DURATION_WITH_SECS = '00:00:00';
 
+  public static readonly ANONYMIZED_VALUE = '####';
+
   // Auto Refresh
   public static readonly AUTO_REFRESH_DUPS_INTERVAL = 2 * 1000;
   public static readonly AUTO_REFRESH_ON_ERROR_PERIOD_MILLIS = 2 * 1000;
