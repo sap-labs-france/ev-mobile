@@ -51,11 +51,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     email: {
       fontSize: '15@s',
-      paddingTop: '5@s',
       color: commonColor.textColor
     },
     role: {
       fontSize: '12@s',
+      paddingTop: '3@s',
       color: commonColor.textColor
     },
     roleContainer: {
@@ -66,7 +66,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor,
       borderWidth: 1,
       margin: 0,
-      height: '21@s'
+      height: '22@s'
     },
     statusText: {
       fontSize: '11@s',

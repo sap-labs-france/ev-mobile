@@ -63,7 +63,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignSelf: 'flex-start'
     },
     status: {
-      height: '21@s',
+      height: '22@s',
       backgroundColor: commonColor.containerBgColor,
       borderWidth: 1,
       margin: 0

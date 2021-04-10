@@ -26,6 +26,7 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SiteAreasFilters, { SiteAreasFiltersDef } from './SiteAreasFilters';
 import computeStyleSheet from './SiteAreasStyles';
+import I18nManager from '../../I18n/I18nManager';
 
 export interface Props extends BaseProps {}
 
@@ -110,23 +111,27 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public getSiteAreas = async (searchText: string, skip: number, limit: number): Promise<DataResult<SiteArea>> => {
-    let siteAreas: DataResult<SiteArea>;
     try {
       // Get current location
       this.currentLocation = await this.getCurrentLocation();
+      const params = {
+        Search: searchText,
+        SiteID: this.siteID,
+        Issuer: true,
+        WithAvailableChargers: true,
+        LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
+        LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
+        LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
+      };
       // Get the Site Areas
-      siteAreas = await this.centralServerProvider.getSiteAreas(
-        {
-          Search: searchText,
-          SiteID: this.siteID,
-          Issuer: true,
-          WithAvailableChargers: true,
-          LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
-          LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
-          LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
-        },
-        { skip, limit }
-      );
+      const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit });
+      if (siteAreas.count === -1) {
+        // Request nbr of records
+        const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
+        // Set
+        siteAreas.count = sitesAreasNbrRecordsOnly.count;
+      }
+      return siteAreas;
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(
@@ -137,8 +142,6 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         this.refresh
       );
     }
-    // Return
-    return siteAreas;
   };
 
   public onBack = () => {
@@ -266,6 +269,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         <HeaderComponent
           navigation={navigation}
           title={I18n.t('siteAreas.title')}
+          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('siteAreas.siteAreas')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
           rightAction={() => {

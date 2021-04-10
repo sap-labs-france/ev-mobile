@@ -66,24 +66,21 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'flex-start',
       alignItems: 'center',
       width: '100%',
-      paddingVertical: '5@s'
+      marginTop: '5@s'
     },
     avatarContainer: {
-      width: '33%',
-      justifyContent: 'center',
+      width: '25%',
+      justifyContent: 'flex-end',
       flexDirection: 'row'
     },
     userNameContainer: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'flex-start',
-      position: 'absolute',
+      marginLeft: '10@s',
       width: '67%'
     },
     text: {
       color: commonColor.textColor,
-      fontSize: '12@s',
-      textAlign: 'center'
+      fontSize: '13@s',
+      textAlign: 'left'
     },
     powerDetailsContainer: {
       flexDirection: 'row',
@@ -118,7 +115,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     }
   });
   const portraitStyles = {};
-  const landscapeStyles = {};
+  const landscapeStyles = {
+    avatarContainer: {
+      width: '20%'
+    },
+    userNameContainer: {
+      width: '80%'
+    }
+  };
   return ResponsiveStylesSheet.createOriented({
     landscape: deepmerge(commonStyles, landscapeStyles),
     portrait: deepmerge(commonStyles, portraitStyles)
