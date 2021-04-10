@@ -817,8 +817,6 @@ export default class CentralServerProvider {
   }
 
   public getSecurityProvider(): SecurityProvider {
-    const tmp = this.securityProvider;
-    console.log('werewqrwgeerwg');
     return this.securityProvider;
   }
 
