@@ -94,7 +94,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
       isSiteAdmin:
         this.securityProvider && transaction && transaction.siteID ? this.securityProvider.isSiteAdmin(transaction.siteID) : false,
-      isPricingActive: this.securityProvider.isComponentPricingActive()
+      isPricingActive: this.securityProvider?.isComponentPricingActive()
     });
   }
 
