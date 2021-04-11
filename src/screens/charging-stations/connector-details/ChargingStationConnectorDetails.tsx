@@ -232,8 +232,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const startStopTransactionButtonStatus = this.getStartStopTransactionButtonStatus(connector);
     // Compute Duration
     const durationInfos = this.getDurationInfos(transaction, connector);
-    // Get the provider
-    const securityProvider = this.centralServerProvider.getSecurityProvider();
     // Set
     this.setState({
       chargingStation,
@@ -241,15 +239,15 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       transaction,
       siteImage: siteImage ? siteImage : this.state.siteImage,
       userImage: userImage ? userImage : transaction ? this.state.userImage : null,
-      isAdmin: securityProvider ? securityProvider.isAdmin() : false,
+      isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
       isSiteAdmin:
-        securityProvider && chargingStation && chargingStation.siteArea
-          ? securityProvider.isSiteAdmin(chargingStation.siteArea.siteID)
+        this.securityProvider && chargingStation && chargingStation.siteArea
+          ? this.securityProvider.isSiteAdmin(chargingStation.siteArea.siteID)
           : false,
       canDisplayTransaction: chargingStation ? this.canDisplayTransaction(chargingStation, connector) : false,
       canStartTransaction: chargingStation ? this.canStartTransaction(chargingStation, connector) : false,
       canStopTransaction: chargingStation ? this.canStopTransaction(chargingStation, connector) : false,
-      isPricingActive: securityProvider.isComponentPricingActive(),
+      isPricingActive: this.securityProvider?.isComponentPricingActive(),
       ...startStopTransactionButtonStatus,
       ...durationInfos,
       loading: false
@@ -259,10 +257,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   public canStopTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
     if (connector && connector.currentTransactionID !== 0) {
-      // Get the Security Provider
-      const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Check Auth
-      return securityProvider.canStopTransaction(chargingStation.siteArea, connector.currentTagID);
+      return this.securityProvider?.canStopTransaction(chargingStation.siteArea, connector.currentTagID);
     }
     return false;
   };
@@ -270,10 +266,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   public canStartTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
     if (connector && connector.currentTransactionID === 0) {
-      // Get the Security Provider
-      const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Check Auth
-      return securityProvider.canStartTransaction(chargingStation.siteArea);
+      return this.securityProvider?.canStartTransaction(chargingStation.siteArea);
     }
     return false;
   };
@@ -281,10 +275,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   public canDisplayTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
     if (connector && connector.currentTransactionID !== 0) {
-      // Get the Security Provider
-      const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Check Auth
-      return securityProvider.canReadTransaction(chargingStation.siteArea, connector.currentTagID);
+      return this.securityProvider?.canReadTransaction(chargingStation.siteArea, connector.currentTagID);
     }
     return false;
   };

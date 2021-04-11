@@ -154,12 +154,7 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
               limit={limit}
               skip={skip}
               renderItem={(item: Tag, selected: boolean) => (
-                <TagComponent
-                  tag={item}
-                  isAdmin={this.centralServerProvider.getSecurityProvider().isAdmin()}
-                  selected={selected}
-                  navigation={navigation}
-                />
+                <TagComponent tag={item} isAdmin={this.securityProvider?.isAdmin()} selected={selected} navigation={navigation} />
               )}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}

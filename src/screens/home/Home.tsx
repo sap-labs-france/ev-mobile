@@ -50,13 +50,12 @@ export default class Home extends BaseScreen<Props, State> {
   public async componentDidMount() {
     await super.componentDidMount();
     // Get the security provider
-    const securityProvider = this.centralServerProvider.getSecurityProvider();
     this.tenants = await this.centralServerProvider.getTenants();
     this.tenantSubDomain = this.centralServerProvider.getUserTenant().subdomain;
     this.userID = this.centralServerProvider.getUserInfo().id;
     this.setState({
       loading: false,
-      isComponentOrganizationActive: securityProvider ? securityProvider.isComponentOrganizationActive() : false
+      isComponentOrganizationActive: this.securityProvider ? this.securityProvider.isComponentOrganizationActive() : false
     });
   }
 
@@ -126,7 +125,6 @@ export default class Home extends BaseScreen<Props, State> {
     const cardStyle = computeCardStyleSheet();
     const { navigation } = this.props;
     const { isComponentOrganizationActive, qrCodeVisible } = this.state;
-    const securityProvider = this.centralServerProvider?.getSecurityProvider();
     return (
       <Container style={style.container}>
         {qrCodeVisible ? (
@@ -232,7 +230,7 @@ export default class Home extends BaseScreen<Props, State> {
                   </Left>
                 </CardItem>
               </Card>
-              {securityProvider?.canListTags() && (
+              {this.securityProvider?.canListTags() && (
                 <Card style={cardStyle.card}>
                   <CardItem
                     style={cardStyle.cardItem}
@@ -250,7 +248,7 @@ export default class Home extends BaseScreen<Props, State> {
                   </CardItem>
                 </Card>
               )}
-              {securityProvider?.canListUsers() && (
+              {this.securityProvider?.canListUsers() && (
                 <Card style={cardStyle.card}>
                   <CardItem
                     style={cardStyle.cardItem}
@@ -268,7 +266,7 @@ export default class Home extends BaseScreen<Props, State> {
                   </CardItem>
                 </Card>
               )}
-              {securityProvider?.canListCars() && securityProvider?.isComponentCarActive() && (
+              {this.securityProvider?.canListCars() && this.securityProvider?.isComponentCarActive() && (
                 <Card style={cardStyle.card}>
                   <CardItem
                     style={cardStyle.cardItem}

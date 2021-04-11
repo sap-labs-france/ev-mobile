@@ -131,15 +131,14 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
       // Refresh All
       const transactions = await this.getTransactionsInProgress(this.searchText, 0, skip + limit);
       // Refresh Admin
-      const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Set
       this.setState({
         loading: false,
         transactions: transactions ? transactions.result : [],
         count: transactions ? transactions.count : 0,
-        isAdmin: securityProvider ? securityProvider.isAdmin() : false,
-        hasSiteAdmin: securityProvider ? securityProvider.hasSiteAdmin() : false,
-        isPricingActive: securityProvider.isComponentPricingActive()
+        isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
+        hasSiteAdmin: this.securityProvider ? this.securityProvider.hasSiteAdmin() : false,
+        isPricingActive: this.securityProvider ? this.securityProvider.isComponentPricingActive() : false
       });
     }
   };
@@ -218,7 +217,7 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
                   transaction={transaction}
                   navigation={navigation}
                   isAdmin={isAdmin}
-                  isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(transaction.siteID)}
+                  isSiteAdmin={this.securityProvider?.isSiteAdmin(transaction.siteID)}
                   isPricingActive={isPricingActive}
                 />
               )}

@@ -81,8 +81,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     // Call parent
     await super.componentDidMount();
     // No Site Management: Go to chargers
-    const securityProvider = this.centralServerProvider.getSecurityProvider();
-    if (securityProvider && !securityProvider.isComponentOrganizationActive()) {
+    if (this.securityProvider && !this.securityProvider.isComponentOrganizationActive()) {
       this.props.navigation.navigate('ChargingStations', { key: `${Utils.randomNumber()}` });
     }
   }

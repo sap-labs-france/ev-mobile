@@ -98,22 +98,20 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           }
         }
       }
-      // Get the provider
-      const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Set
       this.setState({
         loading: false,
         transaction: transactionWithConsumptions ? transactionWithConsumptions.transaction : this.state.transaction,
         chargingStation: !this.state.chargingStation ? chargingStation : this.state.chargingStation,
         connector,
-        isAdmin: securityProvider ? securityProvider.isAdmin() : false,
+        isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
         isSiteAdmin:
-          securityProvider && chargingStation && chargingStation.siteArea
-            ? securityProvider.isSiteAdmin(chargingStation.siteArea.siteID)
+          this.securityProvider && chargingStation && chargingStation.siteArea
+            ? this.securityProvider?.isSiteAdmin(chargingStation.siteArea.siteID)
             : false,
         canDisplayTransaction: chargingStation
           ? this.canDisplayTransaction(
-            transactionWithConsumptions ? transactionWithConsumptions.transaction : null,
+              transactionWithConsumptions ? transactionWithConsumptions.transaction : null,
             chargingStation,
             connector
           )
@@ -219,10 +217,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
   public canDisplayTransaction = (transaction: Transaction, chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
     if (chargingStation) {
-      // Get the Security Provider
-      const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Check Auth
-      return securityProvider.canReadTransaction(chargingStation.siteArea, transaction ? transaction.tagID : connector.currentTagID);
+      return this.securityProvider?.canReadTransaction(chargingStation.siteArea, transaction ? transaction.tagID : connector.currentTagID);
     }
     return false;
   };

@@ -85,17 +85,16 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     }
     // Compute Duration
     this.computeDurationInfos(transaction);
-    // Get the provider
-    const securityProvider = this.centralServerProvider.getSecurityProvider();
     // Set
     this.setState({
       transaction,
       loading: false,
       siteImage,
       userImage,
-      isAdmin: securityProvider ? securityProvider.isAdmin() : false,
-      isSiteAdmin: securityProvider && transaction && transaction.siteID ? securityProvider.isSiteAdmin(transaction.siteID) : false,
-      isPricingActive: securityProvider.isComponentPricingActive()
+      isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
+      isSiteAdmin:
+        this.securityProvider && transaction && transaction.siteID ? this.securityProvider.isSiteAdmin(transaction.siteID) : false,
+      isPricingActive: this.securityProvider?.isComponentPricingActive()
     });
   }
 
