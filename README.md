@@ -4,7 +4,7 @@
 
 This application is the Electric Vehicle Charging Station (EVSE) mobile application for Android and iOS.
 
-It's linked to the ev-server backend: https://github.com/LucasBrazi06/ev-server
+It's linked to the ev-server backend: https://github.com/sap-labs-france/ev-server
 
 **App Stores**
 
@@ -16,7 +16,6 @@ It's linked to the ev-server backend: https://github.com/LucasBrazi06/ev-server
 ## Installation
 
 * Install NodeJS: https://nodejs.org/ (install the LTS version)
-* Install Python version 2.7 (not the version 3.7!)
 * Install Java SE Development Kit 8
 * Install React Native: https://facebook.github.io/react-native/
   ```
@@ -46,13 +45,13 @@ It's linked to the ev-server backend: https://github.com/LucasBrazi06/ev-server
 * On Windows with **chocolatey** (https://chocolatey.org/), do as an administrator:
 
 ```
-choco install -y nodejs-lts python2 jdk8 androidstudio
+choco install -y nodejs-lts jdk8 androidstudio
 ```
 
 * On Mac OSX with **Homebrew** (https://brew.sh/), do:
 
 ```
-brew install node openjdk cocoapods react-native-cli watchman && brew cask install android-studio
+brew install node openjdk cocoapods react-native-cli watchman android-studio
 ```
 
 ## Running the application on a virtual device
