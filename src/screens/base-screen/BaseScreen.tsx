@@ -5,6 +5,7 @@ import HeaderComponent from '../../components/header/HeaderComponent';
 import ScreenFilters from '../../components/search/filter/screen/ScreenFilters';
 import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
+import SecurityProvider from '../../provider/SecurityProvider';
 import BaseProps from '../../types/BaseProps';
 
 export interface Props extends BaseProps {}
@@ -14,6 +15,7 @@ interface State {}
 export default class BaseScreen<P, S> extends React.Component<Props, State> {
   protected mounted: boolean;
   protected centralServerProvider: CentralServerProvider;
+  protected securityProvider: SecurityProvider;
   private headerComponent: HeaderComponent;
   private screenFilters: ScreenFilters;
   private componentFocusUnsubscribe: () => void;
@@ -29,8 +31,9 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   }
 
   public async componentDidMount() {
-    // Get provider
+    // Get providers
     this.centralServerProvider = await ProviderFactory.getProvider();
+    this.securityProvider = this.centralServerProvider.getSecurityProvider();
     // Add listeners
     this.componentFocusUnsubscribe = this.props.navigation.addListener('focus', this.componentDidFocus.bind(this));
     this.componentBlurUnsubscribe = this.props.navigation.addListener('blur', this.componentDidBlur.bind(this));
@@ -87,6 +90,5 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
   }
 
-  // tslint:disable-next-line: no-empty
   public async componentDidBlur() {}
 }

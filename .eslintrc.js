@@ -54,22 +54,27 @@ module.exports = defineConfig({
       {
         "types": {
           "Object": {
-            "message": "Avoid using the `Object` type. Did you mean `object`?"
+            "message": "Avoid using the `Object` type. Did you mean `object`?",
+            "fixWith": "object"
           },
           "Function": {
             "message": "Avoid using the `Function` type. Prefer a specific function type, like `() => void`."
           },
           "Boolean": {
-            "message": "Avoid using the `Boolean` type. Did you mean `boolean`?"
+            "message": "Avoid using the `Boolean` type. Did you mean `boolean`?",
+            "fixWith": "boolean"
           },
           "Number": {
-            "message": "Avoid using the `Number` type. Did you mean `number`?"
+            "message": "Avoid using the `Number` type. Did you mean `number`?",
+            "fixWith": "number"
           },
           "String": {
-            "message": "Avoid using the `String` type. Did you mean `string`?"
+            "message": "Avoid using the `String` type. Did you mean `string`?",
+            "fixWith": "string"
           },
           "Symbol": {
-            "message": "Avoid using the `Symbol` type. Did you mean `symbol`?"
+            "message": "Avoid using the `Symbol` type. Did you mean `symbol`?",
+            "fixWith": "symbol"
           }
         }
       }
@@ -190,7 +195,9 @@ module.exports = defineConfig({
       "Boolean",
       "boolean",
       "Undefined",
-      "undefined"
+      "undefined",
+      "Symbol",
+      "symbol"
     ],
     "id-match": "error",
     "linebreak-style": [

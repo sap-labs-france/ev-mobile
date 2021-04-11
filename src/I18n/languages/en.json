@@ -72,7 +72,8 @@
     "statistics": "Statistics",
     "reportError": "Report Error",
     "users": "Users",
-    "badges": "Badges"
+    "badges": "Badges",
+    "cars": "Cars"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -184,6 +185,11 @@
     "pending": "Pending",
     "unknown": "Unknown"
   },
+  "cars": {
+    "noCars": "No cars",
+    "carUnexpectedError": "An error occurred",
+    "cars": "Car(s)"
+  },
   "transactions": {
     "transaction": "Session",
     "transactions": "Session(s)",
@@ -219,6 +225,8 @@
     "tagsNote": "Badge list",
     "users": "Users",
     "usersNote": "User list",
+    "cars": "Cars",
+    "carsNote": "Cars List",
     "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "No Session found",
     "numberOfSessionsNote": "Total number of Sessions",
@@ -237,13 +245,15 @@
     "free": "Free",
     "occupied": "Occupied",
     "noSites": "No Site found",
-    "siteUnexpectedError": "Cannot read the site"
+    "siteUnexpectedError": "Cannot read the site",
+    "sites": "Site(s)"
   },
   "siteAreas": {
     "title": "Site Areas",
     "noChargers": "This Site Area has no Charger",
     "noSiteAreas": "No Site Area found",
-    "siteAreaUnexpectedError": "Cannot read the site areas"
+    "siteAreaUnexpectedError": "Cannot read the site areas",
+    "siteAreas": "Site Area(s)"
   },
   "chargers": {
     "title": "Charging Stations",

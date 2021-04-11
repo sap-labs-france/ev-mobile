@@ -72,7 +72,8 @@
     "statistics": "Statistiques",
     "reportError": "Signaler Erreur",
     "users": "Utilisateurs",
-    "badges": "Badges"
+    "badges": "Badges",
+    "cars": "Voitures"
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",
@@ -184,6 +185,11 @@
     "pending": "En Attente",
     "unknown": "Inconnu"
   },
+  "cars": {
+    "noCars": "Aucune voiture",
+    "carUnexpectedError": "Une erreur est survenue",
+    "cars": "Voiture(s)"
+  },
   "transactions": {
     "transaction": "Session",
     "transactions": "Session(s)",
@@ -219,6 +225,8 @@
     "tagsNote": "Liste des Badges",
     "users": "Utilisateurs",
     "usersNote": "Liste des Utilisateurs",
+    "cars": "Voitures",
+    "carsNote": "Liste des Voitures",
     "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "Pas de Session trouvée",
     "numberOfSessionsNote": "Nombre total de Sessions",
@@ -237,13 +245,15 @@
     "free": "Libre(s)",
     "occupied": "Occupé(s)",
     "noSites": "Aucun Site trouvé",
-    "siteUnexpectedError": "Impossible de lire le site"
+    "siteUnexpectedError": "Impossible de lire le site",
+    "sites": "Site(s)"
   },
   "siteAreas": {
     "title": "Zones",
     "noChargers": "Cette Zone n'a pas de Borne",
     "noSiteAreas": "Aucune Zone trouvée",
-    "siteAreaUnexpectedError": "Impossible de lire les zones"
+    "siteAreaUnexpectedError": "Impossible de lire les zones",
+    "siteAreas": "Zone(s)"
   },
   "chargers": {
     "title": "Bornes",

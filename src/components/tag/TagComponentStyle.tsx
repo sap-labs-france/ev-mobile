@@ -59,7 +59,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '75%'
     },
     statusContainer: {
-      alignSelf: 'flex-start'
+      alignSelf: 'flex-start',
+      height: '22@s'
     }
   });
   const portraitStyles = {};

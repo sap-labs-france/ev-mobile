@@ -214,8 +214,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       const { skip, limit } = this.state;
       // Refresh All
       const chargingStations = await this.getChargingStations(this.searchText, 0, skip + limit);
-      // Get the provider
-      const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Refresh region
       if (chargingStations) {
         this.refreshCurrentRegion(chargingStations.result);
@@ -225,7 +223,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         loading: false,
         chargingStations: chargingStations ? chargingStations.result : [],
         count: chargingStations ? chargingStations.count : 0,
-        isAdmin: securityProvider ? securityProvider.isAdmin() : false
+        isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false
       }));
     }
   };
@@ -301,9 +299,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
               isAdmin={isAdmin}
               onNavigate={() => this.setState({ visible: false })}
               navigation={navigation}
-              isSiteAdmin={this.centralServerProvider
-                .getSecurityProvider()
-                .isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID : '')}
+              isSiteAdmin={this.securityProvider?.isSiteAdmin(
+                chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID : ''
+              )}
             />
           </Modalize>
         </Modal>
@@ -318,9 +316,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
                 isAdmin={isAdmin}
                 onNavigate={() => this.setState({ visible: false })}
                 navigation={navigation}
-                isSiteAdmin={this.centralServerProvider
-                  .getSecurityProvider()
-                  .isSiteAdmin(chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID : '')}
+                isSiteAdmin={this.securityProvider?.isSiteAdmin(
+                  chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID : '')}
               />
             </ScrollView>
           </View>
@@ -406,9 +403,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
                     chargingStation={chargingStation}
                     isAdmin={isAdmin}
                     navigation={navigation}
-                    isSiteAdmin={this.centralServerProvider
-                      .getSecurityProvider()
-                      .isSiteAdmin(chargingStation.siteArea ? chargingStation.siteArea.siteID : '')}
+                    isSiteAdmin={this.securityProvider?.isSiteAdmin(chargingStation.siteArea ? chargingStation.siteArea.siteID : '')}
                   />
                 )}
                 data={chargingStations}

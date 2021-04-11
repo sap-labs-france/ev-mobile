@@ -1,8 +1,6 @@
 import { Text, View } from 'native-base';
 import React from 'react';
 
-import CentralServerProvider from '../../provider/CentralServerProvider';
-import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import User, { UserStatus } from '../../types/User';
 import Utils from '../../utils/Utils';
@@ -17,20 +15,14 @@ export interface Props extends BaseProps {
   selected?: boolean;
 }
 
-interface State {
-  user?: User;
-}
+interface State {}
 
 export default class UserComponent extends React.Component<Props, State> {
   public props: Props;
   public state: State;
-  private centralServerProvider: CentralServerProvider;
 
   public constructor(props: Props) {
     super(props);
-    this.state = {
-      user: this.props.user
-    };
   }
 
   public setState = (
@@ -40,20 +32,10 @@ export default class UserComponent extends React.Component<Props, State> {
     super.setState(state, callback);
   };
 
-  public async componentDidMount(): Promise<void> {
-    this.centralServerProvider = await ProviderFactory.getProvider();
-    const { user } = this.props;
-    if (user) {
-      user.image = await this.getUserImage(user.id as string);
-    }
-    this.setState({ user });
-  }
-
   public render() {
     const style = computeStyleSheet();
     const chipStyle = computeChipStyleSheet();
-    const { selected, navigation } = this.props;
-    const { user } = this.state;
+    const { user, selected, navigation } = this.props;
     const userFullName = Utils.buildUserName(user);
     const userRole = user ? user.role : '';
     const userStatus = user ? user.status : '';
@@ -96,17 +78,5 @@ export default class UserComponent extends React.Component<Props, State> {
       case UserStatus.LOCKED:
         return style.inactive;
     }
-  }
-
-  private async getUserImage(id: string) {
-    try {
-      return await this.centralServerProvider.getUserImage({ ID: id });
-    } catch (error) {
-      // Check if HTTP?
-      if (!error.request) {
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'users.userUnexpectedError', this.props.navigation);
-      }
-    }
-    return null;
   }
 }

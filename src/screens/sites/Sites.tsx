@@ -26,6 +26,7 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SitesFilters, { SitesFiltersDef } from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
+import I18nManager from '../../I18n/I18nManager';
 
 export interface Props extends BaseProps {}
 
@@ -80,8 +81,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     // Call parent
     await super.componentDidMount();
     // No Site Management: Go to chargers
-    const securityProvider = this.centralServerProvider.getSecurityProvider();
-    if (securityProvider && !securityProvider.isComponentOrganizationActive()) {
+    if (this.securityProvider && !this.securityProvider.isComponentOrganizationActive()) {
       this.props.navigation.navigate('ChargingStations', { key: `${Utils.randomNumber()}` });
     }
   }
@@ -113,28 +113,30 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public getSites = async (searchText = '', skip: number, limit: number): Promise<DataResult<Site>> => {
-    let sites: DataResult<Site>;
     try {
       // Get current location
       this.currentLocation = await this.getCurrentLocation();
+      const params = {
+        Search: searchText,
+        Issuer: true,
+        WithAvailableChargers: true,
+        LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
+        LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
+        LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
+      };
       // Get the Sites
-      sites = await this.centralServerProvider.getSites(
-        {
-          Search: searchText,
-          Issuer: true,
-          WithAvailableChargers: true,
-          LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
-          LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
-          LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
-        },
-        { skip, limit }
-      );
+      const sites = await this.centralServerProvider.getSites(params, { skip, limit });
+      if (sites.count === -1) {
+        // Request nbr of records
+        const sitesNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
+        // Set
+        sites.count = sitesNbrRecordsOnly.count;
+      }
+      return sites;
     } catch (error) {
       // Other common Error
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'sites.siteUnexpectedError', this.props.navigation, this.refresh);
     }
-    // Return
-    return sites;
   };
 
   public onBack = () => {
@@ -263,6 +265,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         <HeaderComponent
           navigation={navigation}
           title={I18n.t('sidebar.sites')}
+          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('sites.sites')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
           rightAction={() => {

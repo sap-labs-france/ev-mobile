@@ -1,9 +1,8 @@
 import deepmerge from 'deepmerge';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
-import { PLATFORM } from '../../theme/variables/commonColor';
 import Utils from '../../utils/Utils';
 
 /**
@@ -51,11 +50,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     email: {
       fontSize: '15@s',
-      paddingTop: '5@s',
       color: commonColor.textColor
     },
     role: {
       fontSize: '12@s',
+      paddingTop: '3@s',
       color: commonColor.textColor
     },
     roleContainer: {

@@ -160,8 +160,6 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit, filters } = this.state;
-      // Set
-      const securityProvider = this.centralServerProvider.getSecurityProvider();
       // Refresh All
       const transactions = await this.getTransactions(this.searchText, 0, skip + limit, filters.startDateTime, filters.endDateTime);
       // Retrieve all the transactions for the current userID
@@ -175,8 +173,8 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
         transactions: transactions ? transactions.result : [],
         initialFilters: { ...this.state.initialFilters, minTransactionDate, maxTransactionDate },
         count: transactions ? transactions.count : 0,
-        isAdmin: securityProvider ? securityProvider.isAdmin() : false,
-        isPricingActive: securityProvider ? securityProvider.isComponentPricingActive() : false
+        isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
+        isPricingActive: this.securityProvider ? this.securityProvider.isComponentPricingActive() : false
       });
     }
   }
@@ -250,7 +248,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
                   navigation={navigation}
                   transaction={transaction}
                   isAdmin={isAdmin}
-                  isSiteAdmin={this.centralServerProvider.getSecurityProvider().isSiteAdmin(transaction.siteID)}
+                  isSiteAdmin={this.securityProvider?.isSiteAdmin(transaction.siteID)}
                   isPricingActive={isPricingActive}
                 />
               )}

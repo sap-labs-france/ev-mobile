@@ -1,27 +1,24 @@
 import { DrawerActions } from '@react-navigation/native';
-import i18n from 'i18n-js';
+import I18n from 'i18n-js';
 import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
-
+import I18nManager from '../../I18n/I18nManager';
+import CarComponent from '../../components/car/CarComponent';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
-import TagComponent from '../../components/tag/TagComponent';
-import I18nManager from '../../I18n/I18nManager';
 import BaseProps from '../../types/BaseProps';
+import Car from '../../types/Car';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
-import Tag from '../../types/Tag';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../transactions/TransactionsStyles';
 
-export interface Props extends BaseProps {}
-
 interface State {
-  tags?: Tag[];
+  cars?: Car[];
   skip?: number;
   limit?: number;
   count?: number;
@@ -29,15 +26,17 @@ interface State {
   loading?: boolean;
 }
 
-export default class Tags extends BaseAutoRefreshScreen<Props, State> {
-  public state: State;
+export interface Props extends BaseProps {}
+
+export default class Cars extends BaseAutoRefreshScreen<Props, State> {
   public props: Props;
+  public state: State;
   private searchText: string;
 
   public constructor(props: Props) {
     super(props);
     this.state = {
-      tags: [],
+      cars: [],
       skip: 0,
       limit: Constants.PAGING_SIZE,
       count: 0,
@@ -47,37 +46,43 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ): void => {
+    super.setState(state, callback);
+  };
+
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
   }
 
-  public setState = (
-    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
-    callback?: () => void
-  ) => {
-    super.setState(state, callback);
-  };
-
-  public async getTags(searchText: string, skip: number, limit: number): Promise<DataResult<Tag>> {
+  public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {
     try {
-      const tags = await this.centralServerProvider.getTags({ Search: searchText }, { skip, limit });
-      if (tags.count === -1) {
+      const cars = await this.centralServerProvider.getCars(
+        {
+          Search: searchText,
+          WithUsers: true
+        },
+        { skip, limit }
+      );
+      if (cars.count === -1) {
         // Request nbr of records
-        const tagsNbrRecordsOnly = await this.centralServerProvider.getTags({ Search: searchText }, Constants.ONLY_RECORD_COUNT);
+        const carsNbrRecordsOnly = await this.centralServerProvider.getCars(
+          {
+            Search: searchText,
+            WithUsers: true
+          },
+          Constants.ONLY_RECORD_COUNT
+        );
         // Set
-        tags.count = tagsNbrRecordsOnly.count;
+        cars.count = carsNbrRecordsOnly.count;
       }
-      return tags;
+      return cars;
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-        Utils.handleHttpUnexpectedError(
-          this.centralServerProvider,
-          error,
-          'transactions.transactionUnexpectedError',
-          this.props.navigation,
-          this.refresh.bind(this)
-        );
+        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'cars.carUnexpectedError', this.props.navigation, this.refresh);
       }
     }
     return null;
@@ -90,15 +95,15 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
     return true;
   };
 
-  public onEndScroll = async () => {
+  public onEndScroll = async (): Promise<void> => {
     const { count, skip, limit } = this.state;
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
-      const tags = await this.getTags(this.searchText, skip + Constants.PAGING_SIZE, limit);
+      const cars = await this.getCars(this.searchText, +Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState) => ({
-        tags: tags ? [...prevState.tags, ...tags.result] : prevState.tags,
+        cars: cars ? [...prevState.cars, ...cars.result] : prevState.cars,
         skip: prevState.skip + Constants.PAGING_SIZE,
         refreshing: false
       }));
@@ -109,30 +114,31 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
-      const tags = await this.getTags(this.searchText, 0, skip + limit);
+      const cars = await this.getCars(this.searchText, 0, skip + limit);
+      const carsResult = cars ? cars.result : [];
       // Set
       this.setState({
         loading: false,
-        tags: tags ? tags.result : [],
-        count: tags ? tags.count : 0
+        cars: carsResult,
+        count: cars ? cars.count : 0
       });
     }
   }
 
-  public search = async (searchText: string) => {
+  public search = async (searchText: string): Promise<void> => {
     this.searchText = searchText;
     await this.refresh();
   };
 
-  public render = () => {
+  public render() {
     const style = computeStyleSheet();
-    const { tags, count, skip, limit, refreshing, loading } = this.state;
+    const { cars, count, skip, limit, refreshing, loading } = this.state;
     const { navigation } = this.props;
     return (
       <Container style={style.container}>
         <HeaderComponent
-          title={i18n.t('sidebar.badges')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${i18n.t('tags.tags')}` : null}
+          title={I18n.t('sidebar.cars')}
+          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('cars.cars')}` : null}
           navigation={this.props.navigation}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
@@ -147,23 +153,21 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
           <Spinner style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
-            <ItemsList<Tag>
-              data={tags}
+            <ItemsList<Car>
+              data={cars}
               navigation={navigation}
               count={count}
               limit={limit}
               skip={skip}
-              renderItem={(item: Tag, selected: boolean) => (
-                <TagComponent tag={item} isAdmin={this.securityProvider?.isAdmin()} selected={selected} navigation={navigation} />
-              )}
+              renderItem={(item: Car, selected: boolean) => <CarComponent navigation={navigation} selected={selected} car={item} />}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}
               onEndReached={this.onEndScroll}
-              emptyTitle={i18n.t('tags.noTags')}
+              emptyTitle={I18n.t('cars.noCars')}
             />
           </View>
         )}
       </Container>
     );
-  };
+  }
 }

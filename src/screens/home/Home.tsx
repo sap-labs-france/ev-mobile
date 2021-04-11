@@ -3,14 +3,14 @@ import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Text } from 'native-base';
 import React from 'react';
 import { Alert, BackHandler } from 'react-native';
-import ChargingStation from 'types/ChargingStation';
-import { TenantConnection } from 'types/Tenant';
-import Transaction from 'types/Transaction';
 
 import computeCardStyleSheet from '../../CardStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import BaseProps from '../../types/BaseProps';
+import ChargingStation from '../../types/ChargingStation';
 import QrCode from '../../types/QrCode';
+import { TenantConnection } from '../../types/Tenant';
+import Transaction from '../../types/Transaction';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
@@ -50,13 +50,12 @@ export default class Home extends BaseScreen<Props, State> {
   public async componentDidMount() {
     await super.componentDidMount();
     // Get the security provider
-    const securityProvider = this.centralServerProvider.getSecurityProvider();
     this.tenants = await this.centralServerProvider.getTenants();
     this.tenantSubDomain = this.centralServerProvider.getUserTenant().subdomain;
     this.userID = this.centralServerProvider.getUserInfo().id;
     this.setState({
       loading: false,
-      isComponentOrganizationActive: securityProvider ? securityProvider.isComponentOrganizationActive() : false
+      isComponentOrganizationActive: this.securityProvider ? this.securityProvider.isComponentOrganizationActive() : false
     });
   }
 
@@ -231,23 +230,7 @@ export default class Home extends BaseScreen<Props, State> {
                   </Left>
                 </CardItem>
               </Card>
-              <Card style={cardStyle.card}>
-                <CardItem
-                  style={cardStyle.cardItem}
-                  button
-                  onPress={() => navigation.navigate('StatisticsNavigator', { key: `${Utils.randomNumber()}` })}>
-                  <Left>
-                    <Icon style={cardStyle.cardIcon} type="MaterialIcons" name="assessment" />
-                    <Body>
-                      <Text style={cardStyle.cardText}>{I18n.t('home.browseStatistics')}</Text>
-                      <Text note style={cardStyle.cardNote}>
-                        {I18n.t('home.browseStatisticsNote')}
-                      </Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-              </Card>
-              {this.centralServerProvider?.getSecurityProvider()?.canListTags() && (
+              {this.securityProvider?.canListTags() && (
                 <Card style={cardStyle.card}>
                   <CardItem
                     style={cardStyle.cardItem}
@@ -265,7 +248,7 @@ export default class Home extends BaseScreen<Props, State> {
                   </CardItem>
                 </Card>
               )}
-              {this.centralServerProvider?.getSecurityProvider()?.canListUsers() && (
+              {this.securityProvider?.canListUsers() && (
                 <Card style={cardStyle.card}>
                   <CardItem
                     style={cardStyle.cardItem}
@@ -283,6 +266,40 @@ export default class Home extends BaseScreen<Props, State> {
                   </CardItem>
                 </Card>
               )}
+              {this.securityProvider?.canListCars() && this.securityProvider?.isComponentCarActive() && (
+                <Card style={cardStyle.card}>
+                  <CardItem
+                    style={cardStyle.cardItem}
+                    button={true}
+                    onPress={() => navigation.navigate('CarsNavigator', { key: `${Utils.randomNumber()}` })}>
+                    <Left>
+                      <Icon style={cardStyle.cardIcon} type="MaterialIcons" name="directions-car" />
+                      <Body>
+                        <Text style={cardStyle.cardText}>{I18n.t('home.cars')}</Text>
+                        <Text note={true} style={cardStyle.cardNote}>
+                          {I18n.t('home.carsNote')}
+                        </Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                </Card>
+              )}
+              <Card style={cardStyle.card}>
+                <CardItem
+                  style={cardStyle.cardItem}
+                  button
+                  onPress={() => navigation.navigate('StatisticsNavigator', { key: `${Utils.randomNumber()}` })}>
+                  <Left>
+                    <Icon style={cardStyle.cardIcon} type="MaterialIcons" name="assessment" />
+                    <Body>
+                      <Text style={cardStyle.cardText}>{I18n.t('home.browseStatistics')}</Text>
+                      <Text note style={cardStyle.cardNote}>
+                        {I18n.t('home.browseStatisticsNote')}
+                      </Text>
+                    </Body>
+                  </Left>
+                </CardItem>
+              </Card>
             </Content>
           </Container>
         )}

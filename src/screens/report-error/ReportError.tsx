@@ -89,16 +89,15 @@ export default class ReportError extends BaseScreen<Props, State> {
         this.setState({ subject: chargingStationID + ' - ' + connectorLetter });
       }
     }
-    const securityProvider = this.centralServerProvider.getSecurityProvider();
     this.setState({
       loading: false,
       chargingStation,
       connector,
       mobile: userMobile,
-      isAdmin: securityProvider ? securityProvider.isAdmin() : false,
+      isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
       isSiteAdmin:
-        securityProvider && chargingStation && chargingStation.siteArea
-          ? securityProvider.isSiteAdmin(chargingStation.siteArea.siteID)
+        this.securityProvider && chargingStation && chargingStation.siteArea
+          ? this.securityProvider.isSiteAdmin(chargingStation.siteArea.siteID)
           : false
     });
   }

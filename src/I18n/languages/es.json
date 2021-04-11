@@ -72,7 +72,8 @@
     "statistics": "Estadísticas",
     "reportError": "Reportar error",
     "users": "Users",
-    "badges": "Badges"
+    "badges": "Badges",
+    "cars": "Cars"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -184,6 +185,11 @@
     "pending": "Pending",
     "unknown": "Unknown"
   },
+  "cars": {
+    "noCars": "No cars",
+    "carUnexpectedError": "An error occurred",
+    "cars": "Car(s)"
+  },
   "transactions": {
     "transaction": "Sesión",
     "transactions": "Sesión(es)",
@@ -219,6 +225,8 @@
     "tagsNote": "Badge list",
     "users": "Users",
     "usersNote": "User list",
+    "cars": "Cars",
+    "carsNote": "Cars List",
     "numberOfSessions": "{{nbrSessions}} sesiones",
     "noSessions": "Ninguna sesión encontrada",
     "numberOfSessionsNote": "Número total de sesiones",
@@ -237,13 +245,15 @@
     "free": "Disponible",
     "occupied": "Ocupado",
     "noSites": "Sitio no encontrado",
-    "siteUnexpectedError": "No se ha podido cargar el sitio"
+    "siteUnexpectedError": "No se ha podido cargar el sitio",
+    "sites": "Site(s)"
   },
   "siteAreas": {
     "title": "Zona",
     "noChargers": "Esta zona no tiene cargadores",
     "noSiteAreas": "Zona no encontrada",
-    "siteAreaUnexpectedError": "No se ha podido cargar la zona"
+    "siteAreaUnexpectedError": "No se ha podido cargar la zona",
+    "siteAreas": "Site Area(s)"
   },
   "chargers": {
     "title": "Estaciones de carga",

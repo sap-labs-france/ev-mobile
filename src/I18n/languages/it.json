@@ -72,7 +72,13 @@
     "statistics": "Statistiche",
     "reportError": "Segnala errore",
     "users": "Users",
-    "badges": "Badges"
+    "badges": "Badges",
+    "cars": "Cars"
+  },
+  "cars": {
+    "noCars": "No cars",
+    "carUnexpectedError": "An error occurred",
+    "cars": "Car(s)"
   },
 	"authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -219,6 +225,8 @@
     "tagsNote": "Badge list",
     "users": "Users",
     "usersNote": "User list",
+    "cars": "Cars",
+    "carsNote": "Cars List",
     "numberOfSessions": "{{nbrSessions}} Sessioni",
     "noSessions": "Nessuna Sessione trovata",
     "numberOfSessionsNote": "Numero totale di Sessioni",
@@ -237,13 +245,15 @@
     "free": "Gratuito",
     "occupied": "Occupato",
     "noSites": "Nessun Sito trovato",
-    "siteUnexpectedError": "Impossibile leggere i siti"
+    "siteUnexpectedError": "Impossibile leggere i siti",
+    "sites": "Site(s)"
   },
   "siteAreas": {
     "title": "Aree Sito",
     "noChargers": "Questa Area del Sito non ha Caricatori",
     "noSiteAreas": "Nessuna Area del Sito trovata",
-    "siteAreaUnexpectedError": "Impossibile leggere le aree del sito"
+    "siteAreaUnexpectedError": "Impossibile leggere le aree del sito",
+    "siteAreas": "Site Area(s)"
   },
   "chargers": {
     "title": "Stazione di Ricarica",

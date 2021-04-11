@@ -7,7 +7,6 @@ import { Icon } from 'native-base';
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
-import BaseProps from 'types/BaseProps';
 
 import computeStyleSheet from './AppStyles';
 import DeepLinkingManager from './deeplinking/DeepLinkingManager';
@@ -22,6 +21,7 @@ import Login from './screens/auth/login/Login';
 import ResetPassword from './screens/auth/reset-password/ResetPassword';
 import RetrievePassword from './screens/auth/retrieve-password/RetrievePassword';
 import SignUp from './screens/auth/sign-up/SignUp';
+import Cars from './screens/cars/Cars';
 import ChargingStationActions from './screens/charging-stations/actions/ChargingStationActions';
 import ChargingStationConnectorDetails from './screens/charging-stations/connector-details/ChargingStationConnectorDetails';
 import ChargingStations from './screens/charging-stations/list/ChargingStations';
@@ -40,6 +40,7 @@ import TransactionDetails from './screens/transactions/details/TransactionDetail
 import TransactionsHistory from './screens/transactions/history/TransactionsHistory';
 import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
 import Users from './screens/users/list/Users';
+import BaseProps from './types/BaseProps';
 import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
 
@@ -58,6 +59,7 @@ const TransactionInProgressStack = createStackNavigator();
 const rootStack = createStackNavigator();
 const UsersStack = createStackNavigator();
 const TagsStack = createStackNavigator();
+const CarsStack = createStackNavigator();
 
 // Navigation Tab variable
 const ChargingStationDetailsTabs = createMaterialBottomTabNavigator();
@@ -101,12 +103,10 @@ const createTabBarIcon = (
   );
 };
 
-// save last page with state
 const persistNavigationState = async (navigationState: NavigationState) => {
   try {
     await SecuredStorage.saveNavigationState(navigationState);
   } catch (error) {
-    // tslint:disable-next-line: no-console
     console.log(error);
   }
 };
@@ -416,6 +416,17 @@ function createTagsNavigator(props: BaseProps) {
 /**
  * @param props
  */
+function createCarsNavigator(props: BaseProps) {
+  return (
+    <CarsStack.Navigator initialRouteName="Cars" headerMode="none">
+      <CarsStack.Screen name="Cars" component={Cars} initialParams={props?.route?.params?.params} />
+    </CarsStack.Navigator>
+  );
+}
+
+/**
+ * @param props
+ */
 function createAppDrawerNavigator(props: BaseProps) {
   const appStyles = computeStyleSheet();
   return (
@@ -446,6 +457,7 @@ function createAppDrawerNavigator(props: BaseProps) {
       />
       <AppDrawer.Screen name="UsersNavigator" component={createUsersNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="TagsNavigator" component={createTagsNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name="CarsNavigator" component={createCarsNavigator} initialParams={props?.route?.params?.params} />
     </AppDrawer.Navigator>
   );
 }
