@@ -67,7 +67,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.headerTextColor
     },
     iconLeft: {
-      marginLeft: '10@s'
+      marginLeft: '10@s',
+      fontSize: '30@s'
     },
     iconRight: {
       marginRight: '10@s'

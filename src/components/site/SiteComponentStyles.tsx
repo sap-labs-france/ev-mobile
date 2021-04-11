@@ -68,7 +68,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '30@s'
     },
     iconLeft: {
-      marginLeft: '10@s'
+      marginLeft: '10@s',
+      fontSize: '30@s'
     },
     iconRight: {
       marginRight: '10@s'
