@@ -81,7 +81,7 @@ export default class SiteComponent extends React.Component<Props, State> {
                   {site.name}
                 </Text>
               </View>
-              <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />
+              <Icon style={[style.icon, style.arrowIcon]} type="MaterialIcons" name="navigate-next" />
             </View>
             <View style={style.subHeaderContent}>
               <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1}>

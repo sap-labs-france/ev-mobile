@@ -1,9 +1,8 @@
 import deepmerge from 'deepmerge';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
-import { PLATFORM } from '../../theme/variables/commonColor';
 import Utils from '../../utils/Utils';
 
 /**
@@ -60,30 +59,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     roleContainer: {
       marginTop: '2@s'
-    },
-    statusContainer: {},
-    status: {
-      backgroundColor: commonColor.containerBgColor,
-      borderWidth: 1,
-      margin: 0,
-      height: '22@s'
-    },
-    statusText: {
-      fontSize: '11@s',
-      fontWeight: 'bold',
-      lineHeight: Platform.OS === PLATFORM.ANDROID ? 1 : 0
-    },
-    active: {
-      borderColor: commonColor.brandSuccess,
-      color: commonColor.brandSuccess
-    },
-    inactive: {
-      color: commonColor.brandDanger,
-      borderColor: commonColor.brandDanger
-    },
-    pending: {
-      color: commonColor.brandWarning,
-      borderColor: commonColor.brandWarning
     }
   });
   const portraitStyles = {};

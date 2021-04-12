@@ -1,12 +1,13 @@
 import I18n from 'i18n-js';
 import React from 'react';
 import { Text, View } from 'react-native';
-import { Chip } from 'react-native-paper';
 
 import BaseProps from '../../types/BaseProps';
 import Tag from '../../types/Tag';
 import Utils from '../../utils/Utils';
+import Chip from '../chip/Chip';
 import computeStyleSheet from './TagComponentStyle';
+import computeChipStyleSheet from '../chip/ChipStyle';
 
 interface State {}
 
@@ -34,9 +35,10 @@ export default class TagComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { tag, isAdmin, selected } = this.props;
+    const chipStyle = computeChipStyleSheet();
+    const { tag, isAdmin, selected, navigation } = this.props;
     const userFullName = Utils.buildUserName(tag?.user);
-    const statusStyle = tag?.active ? style.active : style.inactive;
+    const statusStyle = tag?.active ? chipStyle.active : chipStyle.inactive;
     return (
       <View style={selected ? [style.container, style.selected] : [style.container]}>
         <View style={style.header}>
@@ -60,9 +62,7 @@ export default class TagComponent extends React.Component<Props, State> {
             </Text>
           </View>
           <View style={style.statusContainer}>
-            <Chip style={[style.status, statusStyle]} textStyle={[style.statusText, statusStyle]}>
-              {I18n.t(tag?.active ? 'tags.active' : 'tags.inactive')}
-            </Chip>
+            <Chip statusStyle={statusStyle} text={I18n.t(tag?.active ? 'tags.active' : 'tags.inactive')} navigation={navigation} />
           </View>
         </View>
       </View>

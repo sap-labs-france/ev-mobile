@@ -1,11 +1,8 @@
-import { StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Button, Icon, Text, View } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import React from 'react';
-import { Alert, TouchableOpacity } from 'react-native';
-import { SwipeListView } from 'react-native-swipe-list-view';
+import { Alert, FlatList, TouchableOpacity } from 'react-native';
 import { TenantConnection } from 'types/Tenant';
-
 import HeaderComponent from '../../components/header/HeaderComponent';
 import BaseProps from '../../types/BaseProps';
 import Message from '../../utils/Message';
@@ -15,6 +12,7 @@ import BaseScreen from '../base-screen/BaseScreen';
 import CreateTenantDialog from './CreateTenantDialog';
 import CreateTenantQrCode from './TenantQrCode';
 import computeTenantStyleSheet from './TenantsStyle';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 export interface Props extends BaseProps {}
 
@@ -102,9 +100,9 @@ export default class Tenants extends BaseScreen<Props, State> {
             />
             <View>
               <View style={tenantStyle.toolBar}>
-                <Button style={tenantStyle.createTenantButton} transparent onPress={() => this.createTenant()}>
+                <TouchableOpacity style={tenantStyle.createTenantButton} onPress={() => this.createTenant()}>
                   <Icon style={tenantStyle.icon} type={'MaterialIcons'} name="add" />
-                </Button>
+                </TouchableOpacity>
                 {createTenantVisible && (
                   <CreateTenantDialog
                     navigation={navigation}
@@ -115,40 +113,27 @@ export default class Tenants extends BaseScreen<Props, State> {
                   />
                 )}
               </View>
-              <SwipeListView
-                disableRightSwipe
-                useFlatList
+              <FlatList
                 data={tenants}
-                renderItem={({ item }) => (
-                  <View style={tenantStyle.tenantNameView}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.props.navigation.dispatch(
-                          StackActions.replace('AuthNavigator', {
-                            name: 'Login',
-                            params: {
-                              tenantSubDomain: item.subdomain
-                            },
-                            key: `${Utils.randomNumber()}`
-                          })
-                        );
-                      }}>
-                      <Text style={tenantStyle.tenantNameText}>{item.name}</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-                renderHiddenItem={({ item, index }) => (
-                  <Button
-                    style={tenantStyle.trashIconButton}
-                    danger
-                    onPress={() => {
-                      this.deleteTenant(index, item.subdomain);
-                    }}>
-                    <Icon style={tenantStyle.trashIcon} name="trash" />
-                  </Button>
-                )}
-                rightOpenValue={-65}
                 keyExtractor={(item) => item.subdomain}
+                renderItem={({ item, index }) => (
+                  <Swipeable
+                    overshootRight={false}
+                    overshootLeft={false}
+                    containerStyle={tenantStyle.tenantContainer}
+                    childrenContainerStyle={tenantStyle.tenantNameContainer}
+                    renderRightActions={() => (
+                      <TouchableOpacity
+                        style={tenantStyle.trashIconButton}
+                        onPress={() => {
+                          this.deleteTenant(index, item.subdomain);
+                        }}>
+                        <Icon style={tenantStyle.trashIcon} name="trash" />
+                      </TouchableOpacity>
+                    )}>
+                    <Text style={tenantStyle.tenantNameText}>{item.name}</Text>
+                  </Swipeable>
+                )}
               />
             </View>
           </View>
