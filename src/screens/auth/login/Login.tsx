@@ -1,15 +1,7 @@
 import I18n from 'i18n-js';
 import { Button, CheckBox, Form, Icon, Item, Spinner, Text, View } from 'native-base';
 import React from 'react';
-import {
-  Alert,
-  BackHandler,
-  Keyboard,
-  KeyboardAvoidingView,
-  ScrollView,
-  TextInput,
-  TouchableOpacity
-} from 'react-native';
+import { Alert, BackHandler, Keyboard, KeyboardAvoidingView, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 
 import computeFormStyleSheet from '../../../FormStyles';
 import BaseProps from '../../../types/BaseProps';
