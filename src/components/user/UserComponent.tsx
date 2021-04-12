@@ -9,7 +9,6 @@ import UserAvatar from './avatar/UserAvatar';
 import computeStyleSheet from './UserComponentStyle';
 import computeChipStyleSheet from '../chip/ChipStyle';
 
-
 export interface Props extends BaseProps {
   user: User;
   selected?: boolean;
