@@ -16,6 +16,7 @@ import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './UsersStyle';
+import {notEqual} from "assert";
 
 export interface Props extends BaseProps {}
 
@@ -32,6 +33,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
+  private userIDs: string;
 
   public constructor(props: Props) {
     super(props);
@@ -46,9 +48,20 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
+  public async componentDidMount(): Promise<void> {
+    this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string;
+    console.log(this.userIDs)
+    console.log(Utils.getParamFromNavigation(this.props.route, 'userIDs', null) )
+    await super.componentDidMount();
+  }
+
   public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
     try {
-      const users = await this.centralServerProvider.getUsers({ Search: searchText }, { skip, limit });
+      const params = {
+        Search: searchText,
+        UserID: this.userIDs
+      };
+      const users = await this.centralServerProvider.getUsers(params, { skip, limit });
       // Check
       if (users.count === -1) {
         // Request nbr of records
