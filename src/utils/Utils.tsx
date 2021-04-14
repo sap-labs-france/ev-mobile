@@ -651,7 +651,7 @@ export default class Utils {
   }
 
   public static buildUserName(user: User): string {
-    const userName = '-';
+    const userName = Constants.HYPHEN;
     if (user) {
       if (user.name && user.name !== Constants.ANONYMIZED_VALUE) {
         if (user.firstName) {
