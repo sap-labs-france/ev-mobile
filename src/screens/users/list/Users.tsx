@@ -87,7 +87,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate('HomeNavigator');
+    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };
