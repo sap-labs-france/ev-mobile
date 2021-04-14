@@ -1,6 +1,6 @@
 import I18n from 'i18n-js';
 import moment from 'moment';
-import { Button, Icon, Text, View } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -24,6 +24,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
   public state: State;
   public props: Props;
 
+  // eslint-disable-next-line no-useless-constructor
   public constructor(props: Props) {
     super(props);
   }

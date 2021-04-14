@@ -64,6 +64,10 @@ export interface ChargePoint {
   connectorIDs: number[];
 }
 
+export enum StaticLimitAmps {
+  MIN_LIMIT_PER_PHASE = 13
+}
+
 export interface Connector {
   connectorId: number;
   currentInstantWatts: number;
