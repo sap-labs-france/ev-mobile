@@ -5,6 +5,11 @@ import SiteArea from './SiteArea';
 import { InactivityStatus } from './Transaction';
 import User from './User';
 
+export enum Voltage {
+  VOLTAGE_230 = 230,
+  VOLTAGE_110 = 110
+}
+
 export default interface ChargingStation extends CreatedUpdatedProps, ListItem {
   siteAreaID: string;
   chargePointSerialNumber: string;
@@ -26,7 +31,7 @@ export default interface ChargingStation extends CreatedUpdatedProps, ListItem {
   lastReboot: Date;
   chargingStationURL: string;
   maximumPower: number;
-  voltage: number;
+  voltage: Voltage;
   powerLimitUnit: string;
   coordinates: number[];
   chargePoints: ChargePoint[];
@@ -47,7 +52,7 @@ export enum CurrentType {
 export interface ChargePoint {
   chargePointID: number;
   currentType: CurrentType;
-  voltage: number;
+  voltage: Voltage;
   amperage: number;
   numberOfConnectedPhase: number;
   cannotChargeInParallel: boolean;
@@ -75,7 +80,7 @@ export interface Connector {
   vendorErrorCode?: string;
   power: number;
   type: ConnectorType;
-  voltage?: number;
+  voltage?: Voltage;
   amperage?: number;
   userID?: string;
   user?: User;
