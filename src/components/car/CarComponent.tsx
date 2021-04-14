@@ -47,6 +47,7 @@ export default class CarComponent extends React.Component<Props, State> {
     const carModel = carCatalog?.vehicleModel ?? '';
     const carModelVersion = carCatalog?.vehicleModelVersion ?? '';
     const carFullName = carMake + ' ' + carModel + ' ' + carModelVersion;
+    const carLicensePlate = car.licensePlate;
     const userIDs = carUsers.map((userCar: UserCar) => userCar?.user?.id).join('|');
     return (
       <View style={selected ? [style.container, style.selected] : style.container}>
@@ -70,7 +71,9 @@ export default class CarComponent extends React.Component<Props, State> {
               onPress={() => {
                 navigation.navigate('UsersNavigator', {
                   params: {
-                    userIDs
+                    userIDs,
+                    carFullName,
+                    carLicensePlate
                   },
                   key: `${Utils.randomNumber()}`
                 });

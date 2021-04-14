@@ -16,7 +16,6 @@ import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './UsersStyle';
-import {notEqual} from "assert";
 
 export interface Props extends BaseProps {}
 
@@ -34,6 +33,8 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public props: Props;
   private searchText: string;
   private userIDs: string;
+  private carFullName: string;
+  private carLicensePlate: string;
 
   public constructor(props: Props) {
     super(props);
@@ -50,8 +51,8 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
 
   public async componentDidMount(): Promise<void> {
     this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string;
-    console.log(this.userIDs)
-    console.log(Utils.getParamFromNavigation(this.props.route, 'userIDs', null) )
+    this.carFullName = Utils.getParamFromNavigation(this.props.route, 'carFullName', null) as string;
+    this.carLicensePlate = Utils.getParamFromNavigation(this.props.route, 'carLicensePlate', null) as string;
     await super.componentDidMount();
   }
 
@@ -59,7 +60,8 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
     try {
       const params = {
         Search: searchText,
-        UserID: this.userIDs
+        UserID: this.userIDs,
+        CarFullName: this.carFullName
       };
       const users = await this.centralServerProvider.getUsers(params, { skip, limit });
       // Check
@@ -137,11 +139,15 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const { users, count, skip, limit, refreshing, loading } = this.state;
-    const { navigation } = this.props;
+    const { navigation, } = this.props;
+    const carFullName = this.carFullName;
+    const carLicensePlate = this.carLicensePlate;
     return (
       <Container style={style.container}>
         <HeaderComponent
-          title={i18n.t('sidebar.users')}
+          title={i18n.t('sidebar.users' )}
+          carModel={carFullName}
+          carLicensePlate={carLicensePlate}
           navigation={this.props.navigation}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
