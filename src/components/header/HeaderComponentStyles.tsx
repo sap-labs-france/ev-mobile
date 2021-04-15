@@ -38,6 +38,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     titleHeaderWithSubTitle: {
       fontSize: '16@s'
     },
+    titleHeaderWithSubTitles: {
+      fontSize: '16@s'
+    },
     subTitleHeader: {
       color: commonColor.textColor,
       fontWeight: 'bold',
