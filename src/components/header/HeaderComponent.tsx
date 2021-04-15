@@ -12,7 +12,6 @@ export interface Props extends BaseProps {
   title: string;
   subTitle?: string;
   subTitleSecondLine?: string;
-  subTitleThirdLine?: string;
   hideHomeAction?: boolean;
   leftAction?: () => boolean;
   leftActionIcon?: string;
@@ -91,7 +90,6 @@ export default class HeaderComponent extends React.Component<Props, State> {
       title,
       subTitle,
       subTitleSecondLine,
-      subTitleThirdLine,
       leftAction,
       leftActionIcon,
       leftActionIconType,
@@ -121,16 +119,12 @@ export default class HeaderComponent extends React.Component<Props, State> {
         )}
         <Body style={style.bodyHeader}>
           {!subTitleSecondLine && (
-            <Title
-              style={[
-                subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader,
-                subTitleThirdLine ? [style.titleHeader, style.titleHeaderWithSubTitles] : style.titleHeader
-              ]}>
-              {title}
-            </Title>
+            <Title style={[subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader]}>{title}</Title>
           )}
-          {subTitleSecondLine && <Subtitle style={[style.titleHeader, style.titleHeaderWithSubTitles]}>{subTitleSecondLine}</Subtitle>}
-          {subTitleThirdLine && <Subtitle style={style.subTitleHeader}>{subTitleThirdLine}</Subtitle>}
+          {subTitleSecondLine && (
+            <Title style={[subTitle ? [style.titleHeader, style.titleHeaderWithSubTitles] : style.titleHeader]}>{title}</Title>
+          )}
+          {subTitleSecondLine && <Subtitle style={style.subTitleHeader}>{subTitleSecondLine}</Subtitle>}
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
         </Body>
         <Right style={style.rightHeader}>
