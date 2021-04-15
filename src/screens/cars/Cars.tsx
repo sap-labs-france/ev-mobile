@@ -3,11 +3,12 @@ import I18n from 'i18n-js';
 import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
-import I18nManager from '../../I18n/I18nManager';
+
 import CarComponent from '../../components/car/CarComponent';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
+import I18nManager from '../../I18n/I18nManager';
 import BaseProps from '../../types/BaseProps';
 import Car from '../../types/Car';
 import { DataResult } from '../../types/DataResult';

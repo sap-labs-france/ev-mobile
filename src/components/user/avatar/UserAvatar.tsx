@@ -1,6 +1,7 @@
 import { View } from 'native-base';
 import React from 'react';
 import { Avatar } from 'react-native-elements';
+
 import noPhoto from '../../../../assets/no-photo.png';
 import CentralServerProvider from '../../../provider/CentralServerProvider';
 import ProviderFactory from '../../../provider/ProviderFactory';
