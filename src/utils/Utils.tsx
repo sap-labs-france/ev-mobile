@@ -844,4 +844,11 @@ export default class Utils {
   private static getDeviceLanguage(): string {
     return Utils.getLanguageFromLocale(Utils.getDeviceLocale());
   }
+
+  public static xor(firstCondition: string, SecondCondition: string) {
+    if ((firstCondition && !SecondCondition) || (!firstCondition && SecondCondition)) {
+      return true;
+    }
+    return false;
+  }
 }
