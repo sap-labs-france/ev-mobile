@@ -15,7 +15,6 @@ interface State {}
 export interface Props extends BaseProps {
   car: Car;
   selected: boolean;
-  onNavigate?: () => void;
 }
 
 export default class CarComponent extends React.Component<Props, State> {
