@@ -42,7 +42,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       fontWeight: 'bold',
       fontSize: '11@s',
-      marginTop: Platform.OS === 'ios' ? 0 : '-3@s',
+      marginTop: Platform.OS === 'ios' ? 0 : '-3@s'
     },
     logoHeader: {
       width: '45@s',
