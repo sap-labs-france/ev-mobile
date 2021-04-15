@@ -139,7 +139,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const { users, count, skip, limit, refreshing, loading } = this.state;
-    const { navigation, } = this.props;
+    const { navigation } = this.props;
     const carFullName = this.carFullName;
     const carLicensePlate = this.carLicensePlate;
     return (

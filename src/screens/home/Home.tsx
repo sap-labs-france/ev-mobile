@@ -253,7 +253,9 @@ export default class Home extends BaseScreen<Props, State> {
                   <CardItem
                     style={cardStyle.cardItem}
                     button
-                    onPress={() => navigation.navigate('UsersNavigator', {params: {userIDs: undefined }, key: `${Utils.randomNumber()}` })}>
+                    onPress={() =>
+                      navigation.navigate('UsersNavigator', { params: { userIDs: undefined }, key: `${Utils.randomNumber()}` })
+                    }>
                     <Left>
                       <Icon style={cardStyle.cardIcon} type="MaterialIcons" name="people" />
                       <Body>
