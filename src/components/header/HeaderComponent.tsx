@@ -124,12 +124,12 @@ export default class HeaderComponent extends React.Component<Props, State> {
             <Title
               style={[
                 subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader,
-                subTitleThirdLine ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader
+                subTitleThirdLine ? [style.titleHeader, style.titleHeaderWithSubTitles] : style.titleHeader
               ]}>
               {title}
             </Title>
           )}
-          {subTitleSecondLine && <Subtitle style={style.subTitleHeader}>{subTitleSecondLine}</Subtitle>}
+          {subTitleSecondLine && <Subtitle style={[style.titleHeader, style.titleHeaderWithSubTitles]}>{subTitleSecondLine}</Subtitle>}
           {subTitleThirdLine && <Subtitle style={style.subTitleHeader}>{subTitleThirdLine}</Subtitle>}
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
         </Body>

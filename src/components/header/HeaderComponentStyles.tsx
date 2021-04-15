@@ -38,11 +38,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     titleHeaderWithSubTitle: {
       fontSize: '16@s'
     },
+    titleHeaderWithSubTitles: {
+      fontSize: '14@s'
+    },
     subTitleHeader: {
       color: commonColor.textColor,
       fontWeight: 'bold',
-      fontSize: '11@s',
-      marginTop: Platform.OS === 'ios' ? 0 : '-3@s',
+      fontSize: '12@s',
+      marginTop: Platform.OS === 'ios' ? 0 : '-3@s'
     },
     logoHeader: {
       width: '45@s',
