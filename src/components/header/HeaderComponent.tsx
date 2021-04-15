@@ -120,9 +120,12 @@ export default class HeaderComponent extends React.Component<Props, State> {
           </Left>
         )}
         <Body style={style.bodyHeader}>
-          { !carModel && <Title style={[subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader,
-            carModel ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader,
-            carLicensePlate ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader]}>{title}</Title>}
+          {!carModel && (
+            <Title
+              style={[
+                subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader,
+                carModel ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader,
+                carLicensePlate ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader]}>{title}</Title>)}
           {carModel && <Subtitle style={style.subTitleHeader}>{carModel}</Subtitle>}
           {carLicensePlate && <Subtitle style={style.subTitleHeader}>{carLicensePlate}</Subtitle>}
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
