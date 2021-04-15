@@ -827,6 +827,10 @@ export default class Utils {
     return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}`;
   };
 
+  public static xor(firstCondition: any, secondCondition: any): boolean {
+    return (!firstCondition && !!secondCondition) || (!!firstCondition && !secondCondition);
+  }
+
   private static formatTimer = (value: number): string => {
     // Put 0 next to the digit if lower than 10
     const valueStr = value.toString();
@@ -843,12 +847,5 @@ export default class Utils {
 
   private static getDeviceLanguage(): string {
     return Utils.getLanguageFromLocale(Utils.getDeviceLocale());
-  }
-
-  public static xor(firstCondition: string, SecondCondition: string) {
-    if ((firstCondition && !SecondCondition) || (!firstCondition && SecondCondition)) {
-      return true;
-    }
-    return false;
   }
 }
