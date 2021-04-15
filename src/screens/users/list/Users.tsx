@@ -60,8 +60,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
     try {
       const params = {
         Search: searchText,
-        UserID: this.userIDs,
-        CarFullName: this.carFullName
+        UserID: this.userIDs
       };
       const users = await this.centralServerProvider.getUsers(params, { skip, limit });
       // Check
