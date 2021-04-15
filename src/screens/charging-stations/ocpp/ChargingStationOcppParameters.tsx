@@ -3,13 +3,13 @@ import I18n from 'i18n-js';
 import { Button, Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, FlatList, RefreshControl, ScrollView } from 'react-native';
-import { DataResult } from 'types/DataResult';
-import { KeyValue } from 'types/Global';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation from '../../../types/ChargingStation';
+import { DataResult } from '../../../types/DataResult';
+import { KeyValue } from '../../../types/Global';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';

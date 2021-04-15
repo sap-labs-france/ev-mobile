@@ -5,10 +5,9 @@ import BaseProps from '../../types/BaseProps';
 import User, { UserStatus } from '../../types/User';
 import Utils from '../../utils/Utils';
 import Chip from '../chip/Chip';
+import computeChipStyleSheet from '../chip/ChipStyle';
 import UserAvatar from './avatar/UserAvatar';
 import computeStyleSheet from './UserComponentStyle';
-import computeChipStyleSheet from '../chip/ChipStyle';
-
 
 export interface Props extends BaseProps {
   user: User;

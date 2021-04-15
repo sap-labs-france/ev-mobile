@@ -3,15 +3,16 @@ import { Buffer } from 'buffer';
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
 import jwtDecode from 'jwt-decode';
-import NotificationManager from 'notification/NotificationManager';
-import { KeyValue } from 'types/Global';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
+import NotificationManager from '../notification/NotificationManager';
 import { ActionResponse } from '../types/ActionResponse';
+import Car from '../types/Car';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
 import Eula, { EulaAccepted } from '../types/Eula';
+import { KeyValue } from '../types/Global';
 import PagingParams from '../types/PagingParams';
 import { ServerAction, ServerRoute } from '../types/Server';
 import Site from '../types/Site';
@@ -26,7 +27,6 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
-import Car from '../types/Car';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;

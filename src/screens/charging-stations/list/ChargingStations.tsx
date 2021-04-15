@@ -317,7 +317,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
                 onNavigate={() => this.setState({ visible: false })}
                 navigation={navigation}
                 isSiteAdmin={this.securityProvider?.isSiteAdmin(
-                  chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID : '')}
+                  chargingStationSelected.siteArea ? chargingStationSelected.siteArea.siteID : ''
+                )}
               />
             </ScrollView>
           </View>
