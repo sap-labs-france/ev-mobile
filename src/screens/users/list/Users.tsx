@@ -145,11 +145,11 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
       <Container style={style.container}>
         <HeaderComponent
           title={carFullName ?? i18n.t('sidebar.users')}
-          subTitleSecondLine={carLicensePlate}
+          subTitle={carLicensePlate}
+          subTitleSecondLine={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}` : null}
           navigation={this.props.navigation}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}` : null}
           rightAction={() => {
             navigation.dispatch(DrawerActions.openDrawer());
             return true;

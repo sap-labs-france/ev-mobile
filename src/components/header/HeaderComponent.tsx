@@ -127,9 +127,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
               style={[subTitle ? [style.titleHeader, style.titleHeaderWithSubTitles] : [style.titleHeader, style.titleHeaderWithSubTitle]]}>
               {title}
             </Title>
-          )}
-          {subTitleSecondLine && <Subtitle style={style.subTitleHeader}>{subTitleSecondLine}</Subtitle>}
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
+          {subTitleSecondLine && <Subtitle style={style.subTitleHeader}>{subTitleSecondLine}</Subtitle>}
         </Body>
         <Right style={style.rightHeader}>
           {hasFilter && (
