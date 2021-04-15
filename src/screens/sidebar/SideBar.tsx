@@ -107,9 +107,9 @@ export default class SideBar extends BaseScreen<Props, State> {
     );
   }
 
-  public navigateTo = (container: string, screen: string) => {
+  public navigateTo = (container: string, screen: string, params?: {}) => {
     // Navigate
-    this.props.navigation.navigate(container, { screen });
+    this.props.navigation.navigate(container, { screen, params, key: Utils.randomNumber().toString() });
   };
 
   public render() {
@@ -167,7 +167,11 @@ export default class SideBar extends BaseScreen<Props, State> {
               <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
             </ListItem>
             {this.securityProvider?.canListUsers() && (
-              <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('UsersNavigator', 'Users')}>
+              <ListItem
+                style={style.links}
+                button
+                iconLeft
+                onPress={() => this.navigateTo('UsersNavigator', 'Users', { userIDs: undefined })}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="people" />
                 <Text style={style.linkText}>{I18n.t('sidebar.users')}</Text>
               </ListItem>
