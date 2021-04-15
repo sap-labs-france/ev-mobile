@@ -13,6 +13,7 @@ import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteComponent from '../../components/site/SiteComponent';
+import I18nManager from '../../I18n/I18nManager';
 import LocationManager from '../../location/LocationManager';
 import computeModalStyle from '../../ModalStyles';
 import ProviderFactory from '../../provider/ProviderFactory';
@@ -26,7 +27,6 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SitesFilters, { SitesFiltersDef } from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
-import I18nManager from '../../I18n/I18nManager';
 
 export interface Props extends BaseProps {}
 

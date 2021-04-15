@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+
 import BaseProps from '../../types/BaseProps';
 import computeStyleSheet from './ChipStyle';
 
@@ -11,6 +12,7 @@ export interface Props extends BaseProps {
 interface State {}
 
 export default class Chip extends React.Component<Props, State> {
+  // eslint-disable-next-line no-useless-constructor
   public constructor(props: Props) {
     super(props);
   }

@@ -1,10 +1,10 @@
 import { NavigationState } from '@react-navigation/native';
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage';
-import UserToken from 'types/UserToken';
 
 import { SecuredStorageKey } from '../types/SecuredStorageKeys';
 import Tenant, { TenantConnection } from '../types/Tenant';
 import { UserCredentials } from '../types/User';
+import UserToken from '../types/UserToken';
 import Utils from './Utils';
 
 // Generate a new Id for persisting the navigation each time the app is launched for the first time

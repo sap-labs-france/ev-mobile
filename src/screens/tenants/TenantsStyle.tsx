@@ -53,7 +53,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     trashIcon: {
       color: 'white',
       fontSize: '20@s'
-
     }
   });
   const portraitStyles = {};

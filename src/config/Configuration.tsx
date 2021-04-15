@@ -1,5 +1,5 @@
-import { KeyValue } from 'types/Global';
-import { EndpointCloud } from 'types/Tenant';
+import { KeyValue } from '../types/Global';
+import { EndpointCloud } from '../types/Tenant';
 
 export default class Configuration {
   public static readonly SCP_REST_ENDPOINT_PROD = 'https://sap-ev-rest-server.cfapps.eu10.hana.ondemand.com';

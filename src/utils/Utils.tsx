@@ -2,18 +2,18 @@ import { NavigationContainerRef } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import _ from 'lodash';
-import CentralServerProvider from 'provider/CentralServerProvider';
 import { NativeModules, Platform } from 'react-native';
 import { showLocation } from 'react-native-map-link';
-import Address from 'types/Address';
-import { KeyValue } from 'types/Global';
 import validate from 'validate.js';
 
 import Configuration from '../config/Configuration';
 import { buildCommonColor } from '../custom-theme/customCommonColor';
 import ThemeManager from '../custom-theme/ThemeManager';
 import I18nManager from '../I18n/I18nManager';
-import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
+import CentralServerProvider from '../provider/CentralServerProvider';
+import Address from '../types/Address';
+import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType, Voltage } from '../types/ChargingStation';
+import { KeyValue } from '../types/Global';
 import { RequestError } from '../types/RequestError';
 import { EndpointCloud } from '../types/Tenant';
 import { InactivityStatus } from '../types/Transaction';
@@ -297,7 +297,7 @@ export default class Utils {
     return 1;
   }
 
-  public static getChargingStationVoltage(chargingStation: ChargingStation, chargePoint?: ChargePoint, connectorId = 0): number {
+  public static getChargingStationVoltage(chargingStation: ChargingStation, chargePoint?: ChargePoint, connectorId = 0): Voltage {
     if (chargingStation) {
       // Check at charging station level
       if (chargingStation.voltage) {
@@ -336,7 +336,7 @@ export default class Utils {
         }
       }
     }
-    return 0;
+    return Voltage.VOLTAGE_230;
   }
 
   public static getChargingStationCurrentType(chargingStation: ChargingStation, chargePoint: ChargePoint, connectorId = 0): CurrentType {
@@ -448,6 +448,11 @@ export default class Utils {
           amperageLimit += connector.amperageLimit;
         }
       }
+    }
+    const amperageMax = Utils.getChargingStationAmperage(chargingStation, chargePoint, connectorId);
+    // Check and default
+    if (amperageLimit === 0 || amperageLimit > amperageMax) {
+      amperageLimit = amperageMax;
     }
     return amperageLimit;
   }

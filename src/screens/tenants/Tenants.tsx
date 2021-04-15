@@ -2,7 +2,9 @@ import I18n from 'i18n-js';
 import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, FlatList, TouchableOpacity } from 'react-native';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { TenantConnection } from 'types/Tenant';
+
 import HeaderComponent from '../../components/header/HeaderComponent';
 import BaseProps from '../../types/BaseProps';
 import Message from '../../utils/Message';
@@ -12,7 +14,6 @@ import BaseScreen from '../base-screen/BaseScreen';
 import CreateTenantDialog from './CreateTenantDialog';
 import CreateTenantQrCode from './TenantQrCode';
 import computeTenantStyleSheet from './TenantsStyle';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 export interface Props extends BaseProps {}
 

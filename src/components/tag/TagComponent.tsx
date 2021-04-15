@@ -6,8 +6,8 @@ import BaseProps from '../../types/BaseProps';
 import Tag from '../../types/Tag';
 import Utils from '../../utils/Utils';
 import Chip from '../chip/Chip';
-import computeStyleSheet from './TagComponentStyle';
 import computeChipStyleSheet from '../chip/ChipStyle';
+import computeStyleSheet from './TagComponentStyle';
 
 interface State {}
 
