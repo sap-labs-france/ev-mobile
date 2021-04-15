@@ -11,8 +11,8 @@ import computeStyleSheet from './HeaderComponentStyles';
 export interface Props extends BaseProps {
   title: string;
   subTitle?: string;
-  carModel?: string;
-  carLicensePlate?: string;
+  subTitleSecondLine?: string;
+  subTitleThirdLine?: string;
   hideHomeAction?: boolean;
   leftAction?: () => boolean;
   leftActionIcon?: string;
@@ -89,9 +89,9 @@ export default class HeaderComponent extends React.Component<Props, State> {
     const { hasFilter } = this.state;
     const {
       title,
-      carModel,
-      carLicensePlate,
       subTitle,
+      subTitleSecondLine,
+      subTitleThirdLine,
       leftAction,
       leftActionIcon,
       leftActionIconType,
@@ -120,14 +120,17 @@ export default class HeaderComponent extends React.Component<Props, State> {
           </Left>
         )}
         <Body style={style.bodyHeader}>
-          {!carModel && (
+          {!subTitleSecondLine && (
             <Title
               style={[
                 subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader,
-                carModel ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader,
-                carLicensePlate ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader]}>{title}</Title>)}
-          {carModel && <Subtitle style={style.subTitleHeader}>{carModel}</Subtitle>}
-          {carLicensePlate && <Subtitle style={style.subTitleHeader}>{carLicensePlate}</Subtitle>}
+                subTitleThirdLine ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader
+              ]}>
+              {title}
+            </Title>
+          )}
+          {subTitleSecondLine && <Subtitle style={style.subTitleHeader}>{subTitleSecondLine}</Subtitle>}
+          {subTitleThirdLine && <Subtitle style={style.subTitleHeader}>{subTitleThirdLine}</Subtitle>}
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
         </Body>
         <Right style={style.rightHeader}>
