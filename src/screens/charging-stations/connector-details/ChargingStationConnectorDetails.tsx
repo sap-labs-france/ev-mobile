@@ -50,17 +50,14 @@ interface State {
   refreshing?: boolean;
   selectedUser?: User;
   openUserModal?: boolean;
-  scrollOffset?: number;
 }
 
 export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
-  public scrollViewRef: React.RefObject<ScrollView>;
 
   public constructor(props: Props) {
     super(props);
-    this.scrollViewRef = React.createRef();
     this.state = {
       loading: true,
       chargingStation: null,
@@ -82,7 +79,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       refreshing: false,
       selectedUser: null,
       openUserModal: false,
-      scrollOffset: null
     };
   }
 
