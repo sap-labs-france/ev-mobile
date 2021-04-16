@@ -71,7 +71,9 @@
     "transactionsInProgress": "Laufende Ladevorgänge",
     "statistics": "Statistiken",
     "reportError": "Fehler Melden",
-    "users": "Users"
+    "users": "Users",
+    "cars": "Cars",
+    "badges": "Badges"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -176,12 +178,17 @@
     "unknown": "Unknown"
   },
   "userStatuses": {
-    "active": "active",
-    "inactive": "inactive",
-    "locked": "locked",
-    "blocked": "blocked",
-    "pending": "pending",
+    "active": "Active",
+    "inactive": "Inactive",
+    "locked": "Locked",
+    "blocked": "Blocked",
+    "pending": "Pending",
     "unknown": "Unknown"
+  },
+  "cars": {
+    "noCars": "No cars",
+    "carUnexpectedError": "An error occurred",
+    "cars": "Car(s)"
   },
   "transactions": {
     "transaction": "Ladevorgang",
@@ -214,6 +221,12 @@
     "noOngoingSessions": "Keine laufenden Ladevorgänge",
     "ongoingSessionsNote": "Gehe zu laufenden Ladevorgänge",
     "statistics": "Statistiken",
+    "tags": "Badges",
+    "tagsNote": "Badge list",
+    "users": "Users",
+    "usersNote": "User list",
+    "cars": "Cars",
+    "carsNote": "Cars List",
     "numberOfSessions": "{{nbrSessions}} Ladevorgänge",
     "noSessions": "Kein Ladevorgang gefunden",
     "numberOfSessionsNote": "Anzahl aller Ladevorgänge",
@@ -232,13 +245,15 @@
     "free": "Frei",
     "occupied": "Besetzt",
     "noSites": "Kein Standort gefunden",
-    "siteUnexpectedError": "Standort konnte nicht gelesen werden"
+    "siteUnexpectedError": "Standort konnte nicht gelesen werden",
+    "sites": "Site(s)"
   },
   "siteAreas": {
     "title": "Standortbereiche",
     "noChargers": "Dieser Standortbereich hat keine Ladestationen",
     "noSiteAreas": "Kein Standortbereich gefunden",
-    "siteAreaUnexpectedError": "Standortbereich wurde nicht erkannt"
+    "siteAreaUnexpectedError": "Standortbereich wurde nicht erkannt",
+    "siteAreas": "Site Area(s)"
   },
   "chargers": {
     "title": "Ladestationen",
@@ -288,6 +303,12 @@
     "comboCCS": "Kombo",
     "chademo": "Chademo",
     "domestic": "Hausanschluss"
+  },
+  "tags": {
+    "noTags": "No badges",
+    "tags": "Badge(s)",
+    "active": "Active",
+    "inactive": "Inactive"
   },
   "details": {
     "connector": "Anschluss",

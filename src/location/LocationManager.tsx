@@ -26,7 +26,7 @@ export default class LocationManager {
       headingFilter: 1, // Degrees
       headingOrientation: 'portrait',
       pausesLocationUpdatesAutomatically: false,
-      showsBackgroundLocationIndicator: false,
+      showsBackgroundLocationIndicator: false
     });
   }
 
@@ -44,13 +44,12 @@ export default class LocationManager {
     return LocationManager.instance;
   }
 
-  public async startListening() {
+  public startListening() {
     if (this.granted) {
       this.locationSubscription = RNLocation.subscribeToLocationUpdates((locations: Location[]) => {
         if (!Utils.isEmptyArray(locations)) {
           // Sort DESC
-          locations = locations.sort((location1: Location, location2: Location) =>
-            location2.timestamp - location1.timestamp);
+          locations = locations.sort((location1: Location, location2: Location) => location2.timestamp - location1.timestamp);
           // Take the first one
           this.currentLocation = locations[0];
         }
@@ -58,7 +57,7 @@ export default class LocationManager {
     }
   }
 
-  public async stopListening() {
+  public stopListening() {
     if (this.locationSubscription) {
       this.locationSubscription = null; // Must be a method to call in location
     }

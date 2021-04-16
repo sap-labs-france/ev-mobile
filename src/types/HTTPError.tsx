@@ -58,11 +58,11 @@ export enum HTTPError {
 
   THREE_PHASE_CHARGER_ON_SINGLE_PHASE_SITE_AREA = 539,
 
-  CANNOT_ACQUIRE_LOCK = 510,
-  INVALID_FILE_FORMAT = 583,
+  CANNOT_ACQUIRE_LOCK = 510, // Override an already defined status code: Not extended (RFC 2774)
+  INVALID_FILE_FORMAT = 583
 }
 
 export enum HTTPAuthError {
   UNAUTHORIZED = StatusCodes.UNAUTHORIZED,
-  FORBIDDEN = StatusCodes.FORBIDDEN,
+  FORBIDDEN = StatusCodes.FORBIDDEN
 }

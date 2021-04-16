@@ -5,35 +5,36 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../utils/Utils';
 
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   let commonStyles: any;
   commonStyles = ScaledSheet.create({
     modal: {
-      justifyContent: 'flex-end',
       backgroundColor: commonColor.containerBgColor,
       margin: 0,
-      marginTop: '100@s'
+      marginTop: '100@s',
+      width: '100%'
     },
     text: {
       color: commonColor.textColor,
       textAlign: 'center'
     },
-    modalContent: {
-      width: '100%',
-      height: '100%',
+    modalContainer: {
       flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center'
+      height: '100%'
     },
-    modalHeader:{
+    modalHeader: {
       width: '100%',
       flexDirection: 'column',
-      alignItems:'center',
+      alignItems: 'center',
       borderBottomColor: commonColor.listBorderColor,
       borderTopColor: commonColor.listBorderColor,
-      borderBottomWidth:1,
-      borderTopWidth:1,
+      backgroundColor: commonColor.containerBgColor,
+      borderBottomWidth: 1,
+      borderTopWidth: 1,
       padding: '5@s'
     },
     container: {
@@ -48,7 +49,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     backgroundImage: {
       width: '100%',
-      height: '125@s',
+      height: '125@s'
     },
     lastTransactionContainer: {
       width: '50@s',
@@ -123,11 +124,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     lastTransactionIcon: {
       fontSize: '25@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     reportErrorIcon: {
       fontSize: '25@s',
-      color: commonColor.brandDanger,
+      color: commonColor.brandDanger
     },
     startTransactionIcon: {
       color: commonColor.success
@@ -171,11 +172,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     labelValue: {
       fontSize: '25@s',
       fontWeight: 'bold',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     labelUser: {
       fontSize: '10@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     subLabel: {
       fontSize: '10@s',
@@ -190,14 +191,18 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     subLabelUser: {
       fontSize: '8@s',
       marginTop: '0@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     icon: {
       fontSize: '25@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     downArrow: {
       fontSize: '30@s'
+    },
+    listContainer: {
+      width: '100%',
+      height: '100%'
     },
     userImage: {
       height: '52@s',

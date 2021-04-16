@@ -8,8 +8,7 @@ import FilterModalContainerComponent from '../containers/FilterModalContainerCom
 import FilterVisibleContainerComponent from '../containers/FilterVisibleContainerComponent';
 import FilterControlComponent from '../controls/FilterControlComponent';
 
-export interface ScreenFiltersProps {
-}
+export interface ScreenFiltersProps {}
 
 export interface ScreenFiltersState {
   isAdmin?: boolean;
@@ -29,13 +28,13 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
   private filterVisibleControlComponents: FilterControlComponent<any>[] = [];
   private expandableView: any;
 
-  constructor(props: ScreenFiltersProps) {
+  public constructor(props: ScreenFiltersProps) {
     super(props);
     this.state = {
       isAdmin: false,
       hasSiteAdmin: false,
       locale: null,
-      expanded: false,
+      expanded: false
     };
   }
 
@@ -68,17 +67,26 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
       this.expandableView.animate({ from: styleTo, to: styleFrom }, 250);
     }
     this.setState({ expanded });
-  }
+  };
 
   public setExpandableView = (expandableView: any) => {
     if (expandableView) {
       this.expandableView = expandableView;
     }
-  }
+  };
 
-  public setState = (state: ScreenFiltersState | ((prevState: Readonly<ScreenFiltersState>, props: Readonly<ScreenFiltersProps>) => ScreenFiltersState | Pick<ScreenFiltersState, never>) | Pick<ScreenFiltersState, never>, callback?: () => void) => {
+  public setState = (
+    state:
+      | ScreenFiltersState
+      | ((
+          prevState: Readonly<ScreenFiltersState>,
+          props: Readonly<ScreenFiltersProps>
+        ) => ScreenFiltersState | Pick<ScreenFiltersState, never>)
+      | Pick<ScreenFiltersState, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public getFilterModalContainerComponent(): FilterModalContainerComponent {
     return this.filterModalContainerComponent;
@@ -102,13 +110,13 @@ export default class ScreenFilters extends React.Component<ScreenFiltersProps, S
     }
   }
 
-  public async addModalFilter(newFilterComponent: FilterControlComponent<any>) {
+  public addModalFilter(newFilterComponent: FilterControlComponent<any>) {
     if (newFilterComponent) {
       this.addFilter(this.filterModalControlComponents, newFilterComponent);
     }
   }
 
-  public async addVisibleFilter(newFilterComponent: FilterControlComponent<any>) {
+  public addVisibleFilter(newFilterComponent: FilterControlComponent<any>) {
     if (newFilterComponent) {
       this.addFilter(this.filterVisibleControlComponents, newFilterComponent);
     }

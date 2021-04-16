@@ -6,8 +6,7 @@ import ProviderFactory from '../../../../../provider/ProviderFactory';
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
 
-export interface Props extends FilterControlComponentProps<string> {
-}
+export interface Props extends FilterControlComponentProps<string> {}
 
 interface State extends FilterControlComponentState<string> {
   switchValue?: boolean;
@@ -18,7 +17,7 @@ export default class MyUserSwitchFilterControlComponent extends FilterControlCom
   public props: Props;
   private userID: string;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       switchValue: !!this.getValue(),
@@ -26,9 +25,12 @@ export default class MyUserSwitchFilterControlComponent extends FilterControlCom
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public canBeSaved() {
     return true;
@@ -42,7 +44,19 @@ export default class MyUserSwitchFilterControlComponent extends FilterControlCom
     }
   }
 
-  private onValueChanged = async (newValue: boolean) => {
+  public render = () => {
+    const internalStyle = computeStyleSheet();
+    const { label, style } = this.props;
+    const { switchValue } = this.state;
+    return (
+      <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
+        <Text style={internalStyle.textFilter}>{label}</Text>
+        <Switch style={internalStyle.switchFilter} value={switchValue} onValueChange={this.onValueChanged} />
+      </View>
+    );
+  };
+
+  private onValueChanged = (newValue: boolean) => {
     const { onFilterChanged } = this.props;
     // Set Filter
     if (onFilterChanged) {
@@ -58,21 +72,5 @@ export default class MyUserSwitchFilterControlComponent extends FilterControlCom
     }
     // Update
     this.setState({ switchValue: newValue });
-  }
-
-  public render = () => {
-    const internalStyle = computeStyleSheet();
-    const { label, style } = this.props;
-    const { switchValue } = this.state;
-    return (
-      <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
-        <Text style={internalStyle.textFilter}>{label}</Text>
-        <Switch
-          style={internalStyle.switchFilter}
-          value={switchValue}
-          onValueChange={this.onValueChanged}
-        />
-      </View>
-    );
-  }
+  };
 }

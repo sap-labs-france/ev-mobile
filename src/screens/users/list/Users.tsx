@@ -15,13 +15,13 @@ import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
-import computeStyleSheet from '../../transactions/TransactionsStyles';
+import computeStyleSheet from './UsersStyle';
 
-export interface Props extends  BaseProps {
+export interface Props extends BaseProps {
   select?: ItemsListTypes;
   modal?: boolean;
-  onUserSelected?: (selectedIds: {[key: string]: User }) => void;
-  initiallySelectedUsers?: {[key: string]: User };
+  onUserSelected?: (selectedIds: { [key: string]: User }) => void;
+  initiallySelectedUsers?: { [key: string]: User };
 }
 
 export interface State {
@@ -33,12 +33,11 @@ export interface State {
   loading?: boolean;
 }
 
-export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
-
+export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public static defaultProps = {
     select: ItemsListTypes.NONE,
     modal: false
-  }
+  };
 
   public state: State;
   public props: Props;
@@ -59,11 +58,11 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
 
   public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
     try {
-      const users = await this.centralServerProvider.getUsers({Search: searchText}, {skip, limit});
+      const users = await this.centralServerProvider.getUsers({ Search: searchText }, { skip, limit });
       // Check
       if (users.count === -1) {
         // Request nbr of records
-        const transactionsNbrRecordsOnly = await this.centralServerProvider.getUsers({Search: searchText}, {skip, limit});
+        const transactionsNbrRecordsOnly = await this.centralServerProvider.getUsers({ Search: searchText }, Constants.ONLY_RECORD_COUNT);
         // Set
         users.count = transactionsNbrRecordsOnly.count;
       }
@@ -71,21 +70,13 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
     } catch (error) {
       // Check if HTTP?
       if (!error.request) {
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-          'transactions.transactionUnexpectedError', this.props.navigation, this.refresh);
-      }
-    }
-    return null;
-  }
-
-  public async getUserImage(id: string | number) {
-    try {
-      return await this.centralServerProvider.getUserImage({ID: id});
-    } catch (error) {
-      // Check if HTTP?
-      if (!error.request) {
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-          'users.userUnexpectedError', this.props.navigation, this.refresh);
+        Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          'transactions.transactionUnexpectedError',
+          this.props.navigation,
+          this.refresh.bind(this)
+        );
       }
     }
     return null;
@@ -96,7 +87,7 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
     this.props.navigation.navigate('HomeNavigator');
     // Do not bubble up
     return true;
-  }
+  };
 
   public onEndScroll = async () => {
     const { count, skip, limit } = this.state;
@@ -111,11 +102,14 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
         refreshing: false
       }));
     }
-  }
+  };
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public async refresh(): Promise<void> {
     if (this.isMounted()) {
@@ -123,9 +117,6 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
       // Refresh All
       const users = await this.getUsers(this.searchText, 0, skip + limit);
       const usersResult = users ? users.result : [];
-      usersResult.forEach(async (user: User) => {
-        user.image = await this.getUserImage(user.id as string);
-      });
       // Set
       this.setState({
         loading: false,
@@ -138,17 +129,15 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
   public search = async (searchText: string) => {
     this.searchText = searchText;
     await this.refresh();
-  }
+  };
 
   public render = () => {
     const style = computeStyleSheet();
-    const {users, count, skip, limit, refreshing, loading} = this.state;
-    const {navigation, modal, select, onUserSelected, initiallySelectedUsers} = this.props;
+    const { users, count, skip, limit, refreshing, loading } = this.state;
+    const { navigation, modal, select, onUserSelected, initiallySelectedUsers } = this.props;
     return (
       <Container style={style.container}>
-        {modal ?
-          null
-          :
+        {!modal && (
           <HeaderComponent
             title={i18n.t('sidebar.users')}
             navigation={this.props.navigation}
@@ -161,15 +150,12 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
             }}
             rightActionIcon={'menu'}
           />
-        }
+        )}
         {loading ? (
-          <Spinner style={style.spinner} color='grey'/>
+          <Spinner style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
-            <SimpleSearchComponent
-              onChange={(searchText) => this.search(searchText)}
-              navigation={navigation}
-            />
+            <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
             <ItemsList<User>
               select={select}
               onSelect={onUserSelected}
@@ -178,12 +164,18 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
               count={count}
               limit={limit}
               skip={skip}
-              initiallySelectedItems = {initiallySelectedUsers}
+              initiallySelectedItems={initiallySelectedUsers}
               renderItem={(item: User, selected: boolean) => (
-                <UserComponent user={item} selected={selected}
-                               navigation={this.props.navigation}/>)}
+                <UserComponent user={item} selected={selected} navigation={this.props.navigation} />
+              )}
               refreshing={refreshing}
-              manualRefresh={modal ? this.manualRefresh : () => {return;}}
+              manualRefresh={
+                modal
+                  ? this.manualRefresh
+                  : () => {
+                    return;
+                  }
+              }
               onEndReached={this.onEndScroll}
               emptyTitle={i18n.t('users.noUsers')}
             />
@@ -191,5 +183,5 @@ export default class UsersList extends BaseAutoRefreshScreen<Props, State> {
         )}
       </Container>
     );
-  }
+  };
 }

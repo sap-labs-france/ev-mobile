@@ -71,7 +71,9 @@
     "transactionsInProgress": "Sesiones en progreso",
     "statistics": "Estadísticas",
     "reportError": "Reportar error",
-    "users": "Users"
+    "users": "Users",
+    "badges": "Badges",
+    "cars": "Cars"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -176,12 +178,17 @@
     "unknown": "Unknown"
   },
   "userStatuses": {
-    "active": "active",
-    "inactive": "inactive",
-    "locked": "locked",
-    "blocked": "blocked",
-    "pending": "pending",
+    "active": "Active",
+    "inactive": "Inactive",
+    "locked": "Locked",
+    "blocked": "Blocked",
+    "pending": "Pending",
     "unknown": "Unknown"
+  },
+  "cars": {
+    "noCars": "No cars",
+    "carUnexpectedError": "An error occurred",
+    "cars": "Car(s)"
   },
   "transactions": {
     "transaction": "Sesión",
@@ -214,6 +221,12 @@
     "noOngoingSessions": "Ninguna sesión en progreso",
     "ongoingSessionsNote": "Navegar a las Sesiones en progreso",
     "statistics": "Estadísticas",
+    "tags": "Badges",
+    "tagsNote": "Badge list",
+    "users": "Users",
+    "usersNote": "User list",
+    "cars": "Cars",
+    "carsNote": "Cars List",
     "numberOfSessions": "{{nbrSessions}} sesiones",
     "noSessions": "Ninguna sesión encontrada",
     "numberOfSessionsNote": "Número total de sesiones",
@@ -232,13 +245,15 @@
     "free": "Disponible",
     "occupied": "Ocupado",
     "noSites": "Sitio no encontrado",
-    "siteUnexpectedError": "No se ha podido cargar el sitio"
+    "siteUnexpectedError": "No se ha podido cargar el sitio",
+    "sites": "Site(s)"
   },
   "siteAreas": {
     "title": "Zona",
     "noChargers": "Esta zona no tiene cargadores",
     "noSiteAreas": "Zona no encontrada",
-    "siteAreaUnexpectedError": "No se ha podido cargar la zona"
+    "siteAreaUnexpectedError": "No se ha podido cargar la zona",
+    "siteAreas": "Site Area(s)"
   },
   "chargers": {
     "title": "Estaciones de carga",
@@ -288,6 +303,12 @@
     "comboCCS": "Combo",
     "chademo": "Chademo",
     "domestic": "Doméstico"
+  },
+  "tags": {
+    "noTags": "No badges",
+    "tags": "Badge(s)",
+    "active": "Active",
+    "inactive": "Inactive"
   },
   "details": {
     "connector": "Connector",

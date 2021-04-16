@@ -71,7 +71,14 @@
     "transactionsInProgress": "Sessões em progresso",
     "statistics": "Estatísticas",
     "reportError": "Comunicar erro",
-    "users": "Users"
+    "users": "Users",
+    "badges": "Badges",
+    "cars": "Cars"
+  },
+  "cars": {
+    "noCars": "No cars",
+    "carUnexpectedError": "An error occurred",
+    "cars": "Car(s)"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -176,11 +183,11 @@
     "unknown": "Unknown"
   },
   "userStatuses": {
-    "active": "active",
-    "inactive": "inactive",
-    "locked": "locked",
-    "blocked": "blocked",
-    "pending": "pending",
+    "active": "Active",
+    "inactive": "Inactive",
+    "locked": "Locked",
+    "blocked": "Blocked",
+    "pending": "Pending",
     "unknown": "Unknown"
   },
   "transactions": {
@@ -214,6 +221,12 @@
     "noOngoingSessions": "Sem sessões em progresso",
     "ongoingSessionsNote": "Navegue para as sessões em progresso",
     "statistics": "Estatísticas",
+    "tags": "Badges",
+    "tagsNote": "Badge list",
+    "users": "Users",
+    "usersNote": "User list",
+    "cars": "Cars",
+    "carsNote": "Cars List",
     "numberOfSessions": "{{nbrSessions}} Sessões",
     "noSessions": "Sem sessões encontradas",
     "numberOfSessionsNote": "Numero Total de sessões",
@@ -232,13 +245,15 @@
     "free": "Livre",
     "occupied": "Ocupado",
     "noSites": "Ponto de carregamento não encontrado",
-    "siteUnexpectedError": "Não posso ler o ponto de carregamento"
+    "siteUnexpectedError": "Não posso ler o ponto de carregamento",
+    "sites": "Site(s)"
   },
   "siteAreas": {
     "title": "Areas de Carregamento",
     "noChargers": "Esta área de carregemento não tem carga",
     "noSiteAreas": "Área de carregamento não encontrada",
-    "siteAreaUnexpectedError": "Não posso ler as areas de carregamento"
+    "siteAreaUnexpectedError": "Não posso ler as areas de carregamento",
+    "siteAreas": "Site Area(s)"
   },
   "chargers": {
     "title": "Estáções de Carregamento",
@@ -288,6 +303,12 @@
     "comboCCS": "Combo",
     "chademo": "Chademo",
     "domestic": "Domestico"
+  },
+  "tags": {
+    "noTags": "No badges",
+    "tags": "Badge(s)",
+    "active": "Active",
+    "inactive": "Inactive"
   },
   "details": {
     "connector": "Connector",

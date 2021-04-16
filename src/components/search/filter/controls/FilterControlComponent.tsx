@@ -16,30 +16,38 @@ export interface FilterControlComponentState<T> {
 }
 
 export default class FilterControlComponent<T> extends React.Component<FilterControlComponentProps<T>, FilterControlComponentState<T>> {
-
-  constructor(props: FilterControlComponentProps<T>) {
-    super(props);
-    this.state = {
-      value: this.props.initialValue
-    };
-  }
-
   public static defaultProps = {
     style: {}
   };
   public state: FilterControlComponentState<T>;
   public props: FilterControlComponentProps<T>;
 
-  public setState = (state: FilterControlComponentState<T> | ((prevState: Readonly<FilterControlComponentState<T>>, props: Readonly<FilterControlComponentProps<T>>) => FilterControlComponentState<T> | Pick<FilterControlComponentState<T>, never>) | Pick<FilterControlComponentState<T>, never>, callback?: () => void) => {
-    super.setState(state, callback);
+  public constructor(props: FilterControlComponentProps<T>) {
+    super(props);
+    this.state = {
+      value: this.props.initialValue
+    };
   }
+
+  public setState = (
+    state:
+      | FilterControlComponentState<T>
+      | ((
+          prevState: Readonly<FilterControlComponentState<T>>,
+          props: Readonly<FilterControlComponentProps<T>>
+        ) => FilterControlComponentState<T> | Pick<FilterControlComponentState<T>, never>)
+      | Pick<FilterControlComponentState<T>, never>,
+    callback?: () => void
+  ) => {
+    super.setState(state, callback);
+  };
 
   public canBeSaved() {
     return false;
   }
 
   public setValue(value: any, callback?: () => void) {
-    this.setState({value}, callback);
+    this.setState({ value }, callback);
   }
 
   public getValue(): any {
@@ -47,7 +55,7 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
   }
 
   public clearValue(callback?: () => any) {
-    this.setState({value: null}, callback);
+    this.setState({ value: null }, callback);
   }
 
   public getID(): string {

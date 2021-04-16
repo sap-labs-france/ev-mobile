@@ -1,6 +1,6 @@
 import I18n from 'i18n-js';
-import { TenantConnection } from 'types/Tenant';
 
+import Configuration from '../config/Configuration';
 import CentralServerProvider from '../provider/CentralServerProvider';
 import Message from '../utils/Message';
 import SecuredStorage from '../utils/SecuredStorage';
@@ -8,11 +8,11 @@ import Utils from '../utils/Utils';
 
 export default class MigrationManager {
   private static instance: MigrationManager;
-  private currentMigrationVersion = '1.1';
+  private currentMigrationVersion = '1.3';
   private centralServerProvider: CentralServerProvider;
 
-  private constructor() {
-  }
+  // eslint-disable-next-line no-useless-constructor
+  private constructor() {}
 
   public static getInstance(): MigrationManager {
     if (!MigrationManager.instance) {
@@ -39,7 +39,7 @@ export default class MigrationManager {
         Message.showError(I18n.t('general.migrationError'));
       }
     }
-  }
+  };
 
   private async removeUnusedTenants() {
     // Get tenants
@@ -52,6 +52,11 @@ export default class MigrationManager {
         if (!userCredentials) {
           // Remove the tenant
           tenants.splice(i, 1);
+          continue;
+        }
+        // Proviridis: Switch cloud
+        if (tenant.subdomain === 'proviridis') {
+          tenant.endpoint = Configuration.AWS_REST_ENDPOINT_PROD;
         }
       }
     }

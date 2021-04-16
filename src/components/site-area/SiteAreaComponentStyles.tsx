@@ -5,6 +5,9 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -27,7 +30,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      width: '80%',
+      width: '80%'
     },
     subHeaderContent: {
       flexDirection: 'row',
@@ -37,11 +40,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingRight: '5@s',
       paddingLeft: '5@s',
       borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
+      borderBottomColor: commonColor.listBorderColor
     },
     address: {
-      width: '80%',
       color: commonColor.headerTextColor,
+      fontSize: '12@s'
     },
     headerName: {
       marginLeft: '5@s',
@@ -61,11 +64,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '30@s',
       color: commonColor.headerTextColor
     },
+    arrowIcon: {
+      fontSize: '30@s'
+    },
     iconLeft: {
       marginLeft: '10@s',
+      fontSize: '30@s'
     },
     iconRight: {
-      marginRight: '10@s',
+      marginRight: '10@s'
     },
     iconHidden: {
       opacity: 0

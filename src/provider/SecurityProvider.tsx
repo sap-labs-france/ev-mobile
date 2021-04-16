@@ -6,7 +6,7 @@ import UserToken from '../types/UserToken';
 export default class SecurityProvider {
   private loggedUser: UserToken;
 
-  constructor(loggedUser: UserToken) {
+  public constructor(loggedUser: UserToken) {
     this.loggedUser = loggedUser;
   }
 
@@ -31,7 +31,7 @@ export default class SecurityProvider {
     return false;
   }
 
-  public isSiteUser(siteID: string) {
+  public isSiteUser(siteID: string): boolean {
     if (this.isAdmin()) {
       return true;
     }
@@ -55,6 +55,10 @@ export default class SecurityProvider {
 
   public isComponentOrganizationActive(): boolean {
     return this.isComponentActive(TenantComponents.ORGANIZATION);
+  }
+
+  public isComponentCarActive(): boolean {
+    return this.isComponentActive(TenantComponents.CAR);
   }
 
   public isComponentActive(componentName: string): boolean {
@@ -87,8 +91,7 @@ export default class SecurityProvider {
         if (!siteArea) {
           return false;
         }
-        return !siteArea.accessControl || this.isSiteAdmin(siteArea.siteID) ||
-          this.loggedUser.sites.includes(siteArea.siteID);
+        return !siteArea.accessControl || this.isSiteAdmin(siteArea.siteID) || this.loggedUser.sites.includes(siteArea.siteID);
       }
       return true;
     }
@@ -114,5 +117,13 @@ export default class SecurityProvider {
 
   public canListUsers(): boolean {
     return this.canAccess(Entity.USERS, Action.LIST);
+  }
+
+  public canListTags(): boolean {
+    return this.canAccess(Entity.TAGS, Action.LIST);
+  }
+
+  public canListCars(): boolean {
+    return this.canAccess(Entity.CARS, Action.LIST);
   }
 }

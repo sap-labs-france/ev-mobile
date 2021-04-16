@@ -25,23 +25,29 @@ export default class SiteAreasFilters extends ScreenFilters {
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       filters: {}
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public onFilterChanged = (newFilters: SiteAreasFiltersDef) => {
     const { onFilterChanged } = this.props;
-    this.setState({
-      filters: { ...this.state.filters, ...newFilters }
-    }, () => onFilterChanged(newFilters));
-  }
+    this.setState(
+      {
+        filters: { ...this.state.filters, ...newFilters }
+      },
+      () => onFilterChanged(newFilters)
+    );
+  };
 
   public render = () => {
     const { initialFilters, locationEnabled } = this.props;
@@ -51,22 +57,22 @@ export default class SiteAreasFilters extends ScreenFilters {
         <FilterVisibleContainerComponent
           onFilterChanged={this.onFilterChanged}
           ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) =>
-            this.setFilterVisibleContainerComponent(filterVisibleContainerComponent)}
-        >
-          {locationEnabled &&
+            this.setFilterVisibleContainerComponent(filterVisibleContainerComponent)
+          }>
+          {locationEnabled && (
             <LocationSwitchFilterControlComponent
               filterID={'location'}
               internalFilterID={GlobalFilters.LOCATION}
               initialValue={filters.hasOwnProperty('location') ? filters.location : initialFilters.location}
               label={I18n.t('general.location')}
-              onFilterChanged={(id: string, value: boolean) =>
-                this.getFilterVisibleContainerComponent().setFilter(id, value)}
-              ref={(locationSwitchFilterControlComponent: LocationSwitchFilterControlComponent) =>
-                this.addVisibleFilter(locationSwitchFilterControlComponent)}
+              onFilterChanged={async (id: string, value: boolean) => this.getFilterVisibleContainerComponent().setFilter(id, value)}
+              ref={async (locationSwitchFilterControlComponent: LocationSwitchFilterControlComponent) =>
+                this.addVisibleFilter(locationSwitchFilterControlComponent)
+              }
             />
-          }
+          )}
         </FilterVisibleContainerComponent>
       </View>
     );
-  }
+  };
 }

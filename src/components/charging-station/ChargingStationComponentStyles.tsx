@@ -1,10 +1,13 @@
 import deepmerge from 'deepmerge';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
+/**
+ *
+ */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -29,6 +32,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'flex-start',
       alignItems: 'center',
       width: '70%',
+      paddingRight: '5%'
     },
     subHeaderContent: {
       flexDirection: 'row',
@@ -36,14 +40,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       height: '25@s',
       paddingRight: '5@s',
-      paddingLeft: '5@s',
+      paddingLeft: '5@s'
     },
     address: {
-      width: '80%',
       color: commonColor.textColor,
+      fontSize: '12@s'
     },
     distance: {
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     headerName: {
       marginLeft: '5@s',
@@ -55,11 +59,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'flex-end',
       alignItems: 'center',
-    },
-    button: {
-    },
-    buttonRight: {
-      marginRight: '10@s',
+      paddingRight: '10@s',
+      width: '30%'
     },
     icon: {
       fontSize: '30@s',
@@ -67,25 +68,26 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     iconLeft: {
       marginLeft: '10@s',
+      fontSize: '30@s'
     },
     iconRight: {
-      marginRight: '10@s',
+      marginRight: '10@s'
     },
     iconLocation: {
-      marginTop: '5@s',
+      marginTop: '5@s'
     },
-    iconSettings: {
-      marginTop: Platform.OS === 'ios' ? '-3@s' : 0,
+    settingsIcon: {
+      fontSize: '30@s'
     },
     heartbeatIcon: {
       color: commonColor.success,
       paddingLeft: '20@s',
-      fontSize: '18@s'
+      fontSize: '25@s'
     },
     deadHeartbeatIcon: {
       color: commonColor.danger,
       paddingLeft: '20@s',
-      fontSize: '18@s'
+      fontSize: '25@s'
     },
     connectorsContainer: {
       flexDirection: 'row',

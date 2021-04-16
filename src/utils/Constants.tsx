@@ -11,6 +11,9 @@ export default class Constants {
   public static readonly DEFAULT_DURATION = '00:00';
   public static readonly DEFAULT_DURATION_WITH_SECS = '00:00:00';
 
+  public static readonly ANONYMIZED_VALUE = '####';
+  public static readonly HYPHEN = '-';
+
   // Auto Refresh
   public static readonly AUTO_REFRESH_DUPS_INTERVAL = 2 * 1000;
   public static readonly AUTO_REFRESH_ON_ERROR_PERIOD_MILLIS = 2 * 1000;
@@ -31,11 +34,11 @@ export default class Constants {
   public static readonly PAGING_SIZE = 50;
   public static readonly DEFAULT_PAGING: PagingParams = {
     limit: Constants.PAGING_SIZE,
-    skip: 0,
+    skip: 0
   };
   public static readonly ONLY_ONE_RECORD: PagingParams = {
     limit: 1,
-    skip: 0,
+    skip: 0
   };
   public static readonly ONLY_RECORD_COUNT: PagingParams = {
     limit: 1,
