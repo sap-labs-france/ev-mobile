@@ -29,7 +29,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     bodyHeader: {
       flex: 3,
-      paddingLeft: Platform.OS === 'ios' ? 0 : '40@s'
+      paddingLeft: Platform.OS === 'ios' ? 0 : '40@s',
+      height: '100%',
+      justifyContent: 'center'
     },
     titleHeader: {
       color: commonColor.textColor,
