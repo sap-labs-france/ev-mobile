@@ -5,7 +5,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ItemsList from '../../../components/list/ItemsList';
+import ItemsList, { ItemsListTypes } from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import UserComponent from '../../../components/user/UserComponent';
 import I18nManager from '../../../I18n/I18nManager';
