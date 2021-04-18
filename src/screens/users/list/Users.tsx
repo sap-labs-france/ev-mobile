@@ -66,9 +66,9 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
       // Check
       if (users.count === -1) {
         // Request nbr of records
-        const transactionsNbrRecordsOnly = await this.centralServerProvider.getUsers({ Search: searchText }, Constants.ONLY_RECORD_COUNT);
+        const usersNbrRecordsOnly = await this.centralServerProvider.getUsers(params, Constants.ONLY_RECORD_COUNT);
         // Set
-        users.count = transactionsNbrRecordsOnly.count;
+        users.count = usersNbrRecordsOnly.count;
       }
       return users;
     } catch (error) {
