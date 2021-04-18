@@ -4,7 +4,6 @@ import { Image, ImageStyle, Text, TouchableOpacity, View } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import Car, { UserCar } from '../../types/Car';
-import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import UserAvatar from '../user/avatar/UserAvatar';
 import computeStyleSheet from './CarComponentStyle';
@@ -40,11 +39,7 @@ export default class CarComponent extends React.Component<Props, State> {
     const defaultCarUser = carUsers.length === 1 ? carUsers[0] : carUsers?.find((carUser) => carUser.default === true);
     const defaultCarUserName = Utils.buildUserName(defaultCarUser?.user);
     const otherUserCount = Math.max(carUsers.length - 1, 0);
-    const carCatalog = car?.carCatalog;
-    const carMake = carCatalog?.vehicleMake ?? '';
-    const carModel = carCatalog?.vehicleModel ?? '';
-    const carModelVersion = carCatalog?.vehicleModelVersion ?? '';
-    const carFullName = carMake + ' ' + carModel + ' ' + carModelVersion;
+    const carFullName = Utils.buildCarCatalogName(car?.carCatalog);
     const carLicensePlate = car.licensePlate;
     const userIDs = carUsers.map((userCar: UserCar) => userCar?.user?.id).join('|');
     return (
