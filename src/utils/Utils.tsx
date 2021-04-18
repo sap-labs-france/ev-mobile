@@ -4,6 +4,7 @@ import I18n from 'i18n-js';
 import _ from 'lodash';
 import { NativeModules, Platform } from 'react-native';
 import { showLocation } from 'react-native-map-link';
+import Car, { CarCatalog } from 'types/Car';
 import validate from 'validate.js';
 
 import Configuration from '../config/Configuration';
@@ -614,6 +615,43 @@ export default class Utils {
       return 1;
     }
     return 0;
+  }
+
+  public static buildCarCatalogName(carCatalog: CarCatalog, withID = false): string {
+    let carCatalogName: string;
+    if (!carCatalog) {
+      return '-';
+    }
+    carCatalogName = carCatalog.vehicleMake;
+    if (carCatalog.vehicleModel) {
+      carCatalogName += ` ${carCatalog.vehicleModel}`;
+    }
+    if (carCatalog.vehicleModelVersion) {
+      carCatalogName += ` ${carCatalog.vehicleModelVersion}`;
+    }
+    if (withID && carCatalog.id) {
+      carCatalogName += ` (${carCatalog.id})`;
+    }
+    return carCatalogName;
+  }
+
+  public static buildCarName(car: Car, withID = false): string {
+    let carName: string;
+    if (!car) {
+      return '-';
+    }
+    if (car.carCatalog) {
+      carName = Utils.buildCarCatalogName(car.carCatalog, withID);
+    }
+    if (!carName) {
+      carName = `VIN '${car.vin}', License Plate '${car.licensePlate}'`;
+    } else {
+      carName += ` with VIN '${car.vin}' and License Plate '${car.licensePlate}'`;
+    }
+    if (withID && car.id) {
+      carName += ` (${car.id})`;
+    }
+    return carName;
   }
 
   public static async handleHttpUnexpectedError(
