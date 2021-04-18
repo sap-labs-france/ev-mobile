@@ -39,7 +39,6 @@ export default class CarComponent extends React.Component<Props, State> {
     const carUsers = car?.carUsers ?? [];
     const defaultCarUser = carUsers.length === 1 ? carUsers[0] : carUsers?.find((carUser) => carUser.default === true);
     const defaultCarUserName = Utils.buildUserName(defaultCarUser?.user);
-    const isNameHyphen = defaultCarUserName === Constants.HYPHEN;
     const otherUserCount = Math.max(carUsers.length - 1, 0);
     const carCatalog = car?.carCatalog;
     const carMake = carCatalog?.vehicleMake ?? '';
@@ -66,7 +65,7 @@ export default class CarComponent extends React.Component<Props, State> {
         <View style={style.carContainer}>
           <View style={style.carInfos}>
             <TouchableOpacity
-              disabled={isNameHyphen}
+              disabled={!defaultCarUser?.user}
               onPress={() => {
                 navigation.navigate('UsersNavigator', {
                   params: {
