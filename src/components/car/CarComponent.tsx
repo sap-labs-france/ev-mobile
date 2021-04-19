@@ -36,7 +36,7 @@ export default class CarComponent extends React.Component<Props, State> {
     const style = computeStyleSheet();
     const { car, selected, navigation } = this.props;
     const carUsers = car?.carUsers ?? [];
-    const defaultCarUser = carUsers.length === 1 ? carUsers[0] : carUsers?.find((carUser) => carUser.default === true);
+    const defaultCarUser = carUsers.find((carUser) => carUser.default);
     const defaultCarUserName = Utils.buildUserName(defaultCarUser?.user);
     const otherUserCount = Math.max(carUsers.length - 1, 0);
     const carFullName = Utils.buildCarCatalogName(car?.carCatalog);
