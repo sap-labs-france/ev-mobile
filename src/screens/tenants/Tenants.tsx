@@ -1,3 +1,4 @@
+import { StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Icon, Text, View } from 'native-base';
 import React from 'react';
@@ -132,7 +133,20 @@ export default class Tenants extends BaseScreen<Props, State> {
                         <Icon style={tenantStyle.trashIcon} name="trash" />
                       </TouchableOpacity>
                     )}>
-                    <Text style={tenantStyle.tenantNameText}>{item.name}</Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.props.navigation.dispatch(
+                          StackActions.replace('AuthNavigator', {
+                            name: 'Login',
+                            params: {
+                              tenantSubDomain: item.subdomain
+                            },
+                            key: `${Utils.randomNumber()}`
+                          })
+                        );
+                      }}>
+                      <Text style={tenantStyle.tenantNameText}>{item.name}</Text>
+                    </TouchableOpacity>
                   </Swipeable>
                 )}
               />
