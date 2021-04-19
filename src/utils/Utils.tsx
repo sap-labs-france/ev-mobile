@@ -515,7 +515,7 @@ export default class Utils {
     name: string,
     defaultValue: string | boolean,
     removeValue = false
-  ): string | number | boolean | Record<string, unknown> {
+  ): string | number | boolean | Record<string, unknown> | [] {
     const params: any = route.params?.params ? route.params.params : route.params;
     // Has param object?
     if (!params) {

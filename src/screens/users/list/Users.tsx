@@ -32,7 +32,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
-  private userIDs: string;
+  private userIDs: string[];
 
   public constructor(props: Props) {
     super(props);
@@ -48,7 +48,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public async componentDidMount(): Promise<void> {
-    this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string;
+    this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string[];
     await super.componentDidMount();
   }
 
@@ -56,7 +56,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
     try {
       const params = {
         Search: searchText,
-        UserID: this.userIDs
+        UserID: this.userIDs.join('|')
       };
       const users = await this.centralServerProvider.getUsers(params, { skip, limit });
       // Check
