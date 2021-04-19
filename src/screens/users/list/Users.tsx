@@ -33,8 +33,6 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public props: Props;
   private searchText: string;
   private userIDs: string;
-  private carFullName: string;
-  private carLicensePlate: string;
 
   public constructor(props: Props) {
     super(props);
@@ -51,8 +49,6 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
 
   public async componentDidMount(): Promise<void> {
     this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string;
-    this.carFullName = Utils.getParamFromNavigation(this.props.route, 'carFullName', null) as string;
-    this.carLicensePlate = Utils.getParamFromNavigation(this.props.route, 'carLicensePlate', null) as string;
     await super.componentDidMount();
   }
 
@@ -139,14 +135,11 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const { users, count, skip, limit, refreshing, loading } = this.state;
     const { navigation } = this.props;
-    const carFullName = this.carFullName;
-    const carLicensePlate = this.carLicensePlate;
     return (
       <Container style={style.container}>
         <HeaderComponent
-          title={carFullName ?? i18n.t('sidebar.users')}
-          subTitle={carLicensePlate}
-          subTitleSecondLine={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}` : null}
+          title={i18n.t('sidebar.users')}
+          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}` : null}
           navigation={this.props.navigation}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
