@@ -4,6 +4,7 @@ import { Button, Container, Icon, Spinner, Text, Thumbnail, View } from 'native-
 import React from 'react';
 import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
+import * as Util from 'util';
 
 import noPhotoActive from '../../../../assets/no-photo-active.png';
 import noPhoto from '../../../../assets/no-photo.png';
@@ -18,6 +19,7 @@ import ChargingStation, { ChargePointStatus, Connector } from '../../../types/Ch
 import { HTTPAuthError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
 import User from '../../../types/User';
+import UserToken from '../../../types/UserToken';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
@@ -55,6 +57,7 @@ interface State {
 export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
+  private currentUser: UserToken;
 
   public constructor(props: Props) {
     super(props);
@@ -78,7 +81,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       buttonDisabled: true,
       refreshing: false,
       selectedUser: null,
-      openUserModal: false,
+      openUserModal: false
     };
   }
 
@@ -95,9 +98,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     if (startTransaction) {
       this.startTransactionConfirm();
     }
-    const currentUser = this.centralServerProvider.getUserInfo();
-    if (currentUser) {
-      this.setState({ selectedUser: { id: currentUser.id, firstName: currentUser.firstName, name: currentUser.name } });
+    this.currentUser = this.centralServerProvider.getUserInfo();
+    if (this.currentUser) {
+      this.setState({ selectedUser: { id: this.currentUser.id, firstName: this.currentUser.firstName, name: this.currentUser.name } });
     }
   }
 
@@ -717,15 +720,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   private renderUserSelection(style: any, formStyle: any) {
     const { selectedUser } = this.state;
     const { navigation } = this.props;
-    const currentUserInfos = this.centralServerProvider.getUserInfo();
-    const userName = selectedUser
-      ? selectedUser.firstName + ' ' + selectedUser.name
-      : currentUserInfos.firstName + ' ' + currentUserInfos.name;
+    const userFullName = Utils.buildUserName(selectedUser);
     return (
       <View style={style.rowContainer}>
         <Button block={true} style={formStyle.button} onPress={() => this.openUserModal(true)}>
           <Text style={formStyle.buttonText} uppercase={false}>
-            {userName}
+            {userFullName}
           </Text>
         </Button>
         <Modal
