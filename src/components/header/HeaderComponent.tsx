@@ -7,7 +7,6 @@ import FilterModalContainerComponent from '../../components/search/filter/contai
 import BaseProps from '../../types/BaseProps';
 import { IconType } from '../../types/Icon';
 import computeStyleSheet from './HeaderComponentStyles';
-import Utils from "../../utils/Utils";
 
 export interface Props extends BaseProps {
   title: string;
@@ -119,18 +118,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
           </Left>
         )}
         <Body style={style.bodyHeader}>
-          <Title
-            style={[
-              style.titleHeader,
-              subTitle && subTitleSecondLine ? style.titleHeaderWithSubTitles : null,
-              Utils.xor(subTitle, subTitleSecondLine) ? style.titleHeaderWithSubTitle : null
-            ]}>
-            {title}
-          </Title>
+          <Title style={[style.titleHeader]}>{title}</Title>
           {subTitle && <Subtitle style={[style.subTitleHeader, subTitleSecondLine ? style.subTitlesHeader : null]}>{subTitle}</Subtitle>}
-          {subTitleSecondLine && (
-            <Subtitle style={[style.subTitleHeader, subTitle ? style.subTitlesHeader : null]}>{subTitleSecondLine}</Subtitle>
-          )}
         </Body>
         <Right style={style.rightHeader}>
           {hasFilter && (

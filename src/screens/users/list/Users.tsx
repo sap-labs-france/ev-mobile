@@ -33,6 +33,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public props: Props;
   private searchText: string;
   private userIDs: string[];
+  private carName: string;
 
   public constructor(props: Props) {
     super(props);
@@ -49,6 +50,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
 
   public async componentDidMount(): Promise<void> {
     this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string[];
+    this.carName = Utils.getParamFromNavigation(this.props.route, 'carFullName', null) as string;
     await super.componentDidMount();
   }
 
@@ -56,7 +58,8 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
     try {
       const params = {
         Search: searchText,
-        UserID: this.userIDs.join('|')
+        UserID: this.userIDs.join('|'),
+        carName: this.carName
       };
       const users = await this.centralServerProvider.getUsers(params, { skip, limit });
       // Check
@@ -135,10 +138,11 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const { users, count, skip, limit, refreshing, loading } = this.state;
     const { navigation } = this.props;
+    const carName = this.carName;
     return (
       <Container style={style.container}>
         <HeaderComponent
-          title={i18n.t('sidebar.users')}
+          title={carName ?? i18n.t('sidebar.users')}
           subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}` : null}
           navigation={this.props.navigation}
           leftAction={this.onBack}
