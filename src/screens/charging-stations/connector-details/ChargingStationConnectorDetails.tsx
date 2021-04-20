@@ -4,7 +4,6 @@ import { Button, Container, Icon, Spinner, Text, Thumbnail, View } from 'native-
 import React from 'react';
 import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
-import * as Util from 'util';
 
 import noPhotoActive from '../../../../assets/no-photo-active.png';
 import noPhoto from '../../../../assets/no-photo.png';
