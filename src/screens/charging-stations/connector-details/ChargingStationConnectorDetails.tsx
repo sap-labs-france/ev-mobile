@@ -781,7 +781,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   }
 
   private onUserSelected(users: User[]): void {
-    if (users) {
+    if (users && users.length > 0) {
       this.setState({ selectedUser: users[0] }, () => this.openUserModal(false));
     }
   }

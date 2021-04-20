@@ -169,7 +169,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
                 <UserComponent user={item} selected={selected} navigation={this.props.navigation} />
               )}
               refreshing={refreshing}
-              manualRefresh={modal ? this.manualRefresh : () => {return; }}
+              manualRefresh={modal ? this.manualRefresh : null}
               onEndReached={this.onEndScroll}
               emptyTitle={i18n.t('users.noUsers')}
             />
