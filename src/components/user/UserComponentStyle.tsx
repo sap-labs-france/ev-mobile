@@ -33,7 +33,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
       height: '65@s'
     },
-    userFullnameStatusContainer: {
+    userFullNameStatusContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center'

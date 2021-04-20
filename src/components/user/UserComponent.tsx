@@ -42,10 +42,10 @@ export default class UserComponent extends React.Component<Props, State> {
     return (
       <View style={style.container}>
         <View style={style.avatarContainer}>
-          <UserAvatar user={user} selected={selected} navigation={navigation} />
+          <UserAvatar user={user} accessoryIcon={selected ? 'done' : null} navigation={navigation} />
         </View>
-        <View style={selected ? [style.userContainer, style.selected] : style.userContainer}>
-          <View style={style.userFullnameStatusContainer}>
+        <View style={[style.userContainer, selected ? style.selected : null]}>
+          <View style={style.userFullNameStatusContainer}>
             <View style={style.fullNameContainer}>
               <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.fullName}>
                 {userFullName}
