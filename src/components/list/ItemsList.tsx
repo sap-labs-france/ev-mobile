@@ -85,14 +85,17 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     );
   }
 
-  private onSelectItem(item: T) {
+  private onSelectItem(item: T): void {
     const { selectedItems } = this.state;
     const { select } = this.props;
     const id = item.id;
-    // If the item is already selected, unselect it
+    // If the item is already selected
     if (selectedItems[id]) {
-      delete selectedItems[id];
-      this.setState({ selectedItems }, () => this.props.onSelect(this.state.selectedItems));
+      // If the item is not the only one selected, unselect it
+      if (Object.keys(selectedItems).length > 1) {
+        delete selectedItems[id];
+        this.setState({ selectedItems }, () => this.props.onSelect(this.state.selectedItems));
+      }
       // Else, add the item to the selected Ids
     } else {
       switch (select) {
