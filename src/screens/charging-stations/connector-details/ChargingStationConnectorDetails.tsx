@@ -777,11 +777,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     );
   }
 
-  private openUserModal(open: boolean) {
+  private openUserModal(open: boolean): void {
     this.setState({ openUserModal: open });
   }
 
-  private onUserSelected(users: { [key: string]: User }) {
+  private onUserSelected(users: { [key: string]: User }): void {
     const keys = Object.keys(users);
     if (users && keys.length > 0) {
       this.setState({ selectedUser: users[keys[0]] }, () => this.openUserModal(false));
