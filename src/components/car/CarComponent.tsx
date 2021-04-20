@@ -64,7 +64,7 @@ export default class CarComponent extends React.Component<Props, State> {
                 navigation.navigate('UsersNavigator', {
                   params: {
                     userIDs,
-                    carFullName
+                    title: carFullName
                   },
                   key: `${Utils.randomNumber()}`
                 });
