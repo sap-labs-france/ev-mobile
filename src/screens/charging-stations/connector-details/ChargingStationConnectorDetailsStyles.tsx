@@ -32,7 +32,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       borderBottomColor: commonColor.listBorderColor,
       borderTopColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.containerBgColor,
       borderBottomWidth: 1,
       borderTopWidth: 1,
       padding: '5@s'
