@@ -11,7 +11,6 @@ import computeStyleSheet from './HeaderComponentStyles';
 export interface Props extends BaseProps {
   title: string;
   subTitle?: string;
-  subTitleSecondLine?: string;
   hideHomeAction?: boolean;
   leftAction?: () => boolean;
   leftActionIcon?: string;
@@ -89,7 +88,6 @@ export default class HeaderComponent extends React.Component<Props, State> {
     const {
       title,
       subTitle,
-      subTitleSecondLine,
       leftAction,
       leftActionIcon,
       leftActionIconType,
@@ -119,7 +117,7 @@ export default class HeaderComponent extends React.Component<Props, State> {
         )}
         <Body style={style.bodyHeader}>
           <Title style={[style.titleHeader]}>{title}</Title>
-          {subTitle && <Subtitle style={[style.subTitleHeader, subTitleSecondLine ? style.subTitlesHeader : null]}>{subTitle}</Subtitle>}
+          {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
         </Body>
         <Right style={style.rightHeader}>
           {hasFilter && (
