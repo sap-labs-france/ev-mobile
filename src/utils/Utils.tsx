@@ -864,11 +864,7 @@ export default class Utils {
     // Format
     return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}`;
   };
-
-  public static xor(firstCondition: any, secondCondition: any): boolean {
-    return (!firstCondition && !!secondCondition) || (!!firstCondition && !secondCondition);
-  }
-
+  
   private static formatTimer = (value: number): string => {
     // Put 0 next to the digit if lower than 10
     const valueStr = value.toString();
