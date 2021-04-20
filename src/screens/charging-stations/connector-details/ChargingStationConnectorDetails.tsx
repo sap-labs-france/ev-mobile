@@ -706,64 +706,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return true;
   };
 
-  private openUserModal(open: boolean) {
-    this.setState({ openUserModal: open });
-  }
-
-  private onUserSelected(users: { [key: string]: User }) {
-    const keys = Object.keys(users);
-    if (users && keys.length > 0) {
-      this.setState({ selectedUser: users[keys[0]] }, () => this.openUserModal(false));
-    }
-  }
-
-  private renderUserSelection(style: any, formStyle: any) {
-    const { selectedUser } = this.state;
-    const { navigation } = this.props;
-    const userFullName = Utils.buildUserName(selectedUser);
-    return (
-      <View style={style.rowContainer}>
-        <Button block={true} style={formStyle.button} onPress={() => this.openUserModal(true)}>
-          <Text style={formStyle.buttonText} uppercase={false}>
-            {userFullName}
-          </Text>
-        </Button>
-        <Modal
-          propagateSwipe={true}
-          supportedOrientations={['portrait', 'landscape']}
-          style={style.modal}
-          isVisible={this.state.openUserModal}
-          swipeDirection={'down'}
-          animationInTiming={1000}
-          onSwipeComplete={() => this.openUserModal(false)}
-          onBackButtonPress={() => this.openUserModal(false)}
-          onBackdropPress={() => this.openUserModal(false)}
-          hideModalContentWhileAnimating={true}>
-          <View style={style.modalContainer}>
-            <View style={style.modalHeader}>
-              <Icon
-                onPress={() => this.openUserModal(false)}
-                type="MaterialIcons"
-                name={'expand-more'}
-                style={[style.icon, style.downArrow]}
-              />
-              <Text>Select user</Text>
-            </View>
-            <View style={style.listContainer}>
-              <Users
-                initiallySelectedUsers={{ [selectedUser?.id]: selectedUser }}
-                onUserSelected={(selectedUsers) => this.onUserSelected(selectedUsers)}
-                navigation={navigation}
-                select={ItemsListTypes.SINGLE}
-                modal={true}
-              />
-            </View>
-          </View>
-        </Modal>
-      </View>
-    );
-  }
-
   public render() {
     const { navigation } = this.props;
     const { openUserModal, isAdmin } = this.state;
@@ -832,6 +774,64 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           </ScrollView>
         )}
       </Container>
+    );
+  }
+
+  private openUserModal(open: boolean) {
+    this.setState({ openUserModal: open });
+  }
+
+  private onUserSelected(users: { [key: string]: User }) {
+    const keys = Object.keys(users);
+    if (users && keys.length > 0) {
+      this.setState({ selectedUser: users[keys[0]] }, () => this.openUserModal(false));
+    }
+  }
+
+  private renderUserSelection(style: any, formStyle: any) {
+    const { selectedUser } = this.state;
+    const { navigation } = this.props;
+    const userFullName = Utils.buildUserName(selectedUser);
+    return (
+      <View style={style.rowContainer}>
+        <Button block={true} style={formStyle.button} onPress={() => this.openUserModal(true)}>
+          <Text style={formStyle.buttonText} uppercase={false}>
+            {userFullName}
+          </Text>
+        </Button>
+        <Modal
+          propagateSwipe={true}
+          supportedOrientations={['portrait', 'landscape']}
+          style={style.modal}
+          isVisible={this.state.openUserModal}
+          swipeDirection={'down'}
+          animationInTiming={1000}
+          onSwipeComplete={() => this.openUserModal(false)}
+          onBackButtonPress={() => this.openUserModal(false)}
+          onBackdropPress={() => this.openUserModal(false)}
+          hideModalContentWhileAnimating={true}>
+          <View style={style.modalContainer}>
+            <View style={style.modalHeader}>
+              <Icon
+                onPress={() => this.openUserModal(false)}
+                type="MaterialIcons"
+                name={'expand-more'}
+                style={[style.icon, style.downArrow]}
+              />
+              <Text>Select user</Text>
+            </View>
+            <View style={style.listContainer}>
+              <Users
+                initiallySelectedUsers={{ [selectedUser?.id]: selectedUser }}
+                onUserSelected={(selectedUsers) => this.onUserSelected(selectedUsers)}
+                navigation={navigation}
+                select={ItemsListTypes.SINGLE}
+                modal={true}
+              />
+            </View>
+          </View>
+        </Modal>
+      </View>
     );
   }
 }
