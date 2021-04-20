@@ -20,8 +20,8 @@ import computeStyleSheet from './UsersStyle';
 export interface Props extends BaseProps {
   select?: ItemsListTypes;
   modal?: boolean;
-  onUserSelected?: (selectedIds: { [key: string]: User }) => void;
-  initiallySelectedUsers?: { [key: string]: User };
+  onUserSelected?: (selectedIds: User[]) => void;
+  initiallySelectedUsers?: Set<string | number>;
 }
 
 export interface State {
@@ -131,7 +131,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
     await this.refresh();
   };
 
-  public render = () => {
+  public render() {
     const style = computeStyleSheet();
     const { users, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, modal, select, onUserSelected, initiallySelectedUsers } = this.props;
@@ -158,7 +158,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
             <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
             <ItemsList<User>
               select={select}
-              onSelect={onUserSelected}
+              onSelect={(userIds: Set<string | number>) => onUserSelected(this.getUsersFromIds(userIds))}
               data={users}
               navigation={navigation}
               count={count}
@@ -177,5 +177,10 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
         )}
       </Container>
     );
-  };
+  }
+
+  private getUsersFromIds(ids: Set<string | number>): User[] {
+    const { users } = this.state;
+    return users.filter((item: User) => ids.has(item.id));
+  }
 }

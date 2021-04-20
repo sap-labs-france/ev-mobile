@@ -781,10 +781,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     this.setState({ openUserModal: open });
   }
 
-  private onUserSelected(users: { [key: string]: User }): void {
-    const keys = Object.keys(users);
-    if (users && keys.length > 0) {
-      this.setState({ selectedUser: users[keys[0]] }, () => this.openUserModal(false));
+  private onUserSelected(users: User[]): void {
+    if (users) {
+      this.setState({ selectedUser: users[0] }, () => this.openUserModal(false));
     }
   }
 
@@ -822,7 +821,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             </View>
             <View style={style.listContainer}>
               <Users
-                initiallySelectedUsers={{ [selectedUser?.id]: selectedUser }}
+                initiallySelectedUsers={new Set<string | number>([selectedUser?.id])}
                 onUserSelected={(selectedUsers) => this.onUserSelected(selectedUsers)}
                 navigation={navigation}
                 select={ItemsListTypes.SINGLE}

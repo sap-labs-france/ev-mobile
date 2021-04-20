@@ -7,7 +7,7 @@ import ListFooterComponent from './footer/ListFooterComponent';
 
 export interface Props<T extends ListItem> extends BaseProps {
   renderItem: (item: T, selected: boolean) => Element;
-  onSelect?: (selectedIds: { [key: string]: T }) => void;
+  onSelect?: (selectedIds: Set<string | number>) => void;
   emptyTitle: string;
   manualRefresh: () => void;
   onEndReached: () => void;
@@ -17,7 +17,7 @@ export interface Props<T extends ListItem> extends BaseProps {
   count: number;
   limit: number;
   refreshing: boolean;
-  initiallySelectedItems?: { [key: string]: T };
+  initiallySelectedItems?: Set<string | number>;
 }
 
 export enum ItemsListTypes {
@@ -26,11 +26,11 @@ export enum ItemsListTypes {
   SINGLE = 'single'
 }
 
-interface State<T> {
-  selectedItems?: { [key: string]: T };
+interface State {
+  selectedItems?: Set<string | number>;
 }
 
-export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State<T>> {
+export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State> {
   public static defaultProps = {
     select: ItemsListTypes.NONE,
     onSelect: () => {
@@ -38,12 +38,12 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     }
   };
 
-  public state: State<T>;
+  public state: State;
   public props: Props<T>;
 
   public constructor(props: Props<T>) {
     super(props);
-    this.state = { selectedItems: {} };
+    this.state = { selectedItems: new Set<string>() };
   }
 
   public componentDidMount() {
@@ -54,10 +54,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
   }
 
   public setState = (
-    state:
-    | State<T>
-      | ((prevState: Readonly<State<T>>, props: Readonly<Props<T>>) => State<T> | Pick<State<T>, never>)
-      | Pick<State<T>, never>,
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props<T>>) => State | Pick<State, never>) | Pick<State, never>,
     callback?: () => void
   ) => {
     super.setState(state, callback);
@@ -71,7 +68,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
         data={data}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={select === ItemsListTypes.NONE ? null : () => this.onSelectItem(item)}>
-            {this.props.renderItem(item, selectedItems.hasOwnProperty(item.id))}
+            {this.props.renderItem(item, selectedItems.has(item.id))}
           </TouchableOpacity>
         )}
         keyExtractor={(item, index) => item.id.toString() + index.toString()}
@@ -90,22 +87,23 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     const { select } = this.props;
     const id = item.id;
     // If the item is already selected
-    if (selectedItems[id]) {
+    if (selectedItems.has(id)) {
       // If the item is not the only one selected, unselect it
-      if (Object.keys(selectedItems).length > 1) {
-        delete selectedItems[id];
+      if (selectedItems.size > 1) {
+        selectedItems.delete(id);
         this.setState({ selectedItems }, () => this.props.onSelect(this.state.selectedItems));
       }
       // Else, add the item to the selected Ids
     } else {
       switch (select) {
         case ItemsListTypes.MULTI:
-          this.setState({ ...this.state, selectedItems: { ...selectedItems, [id]: item } }, () =>
-            this.props.onSelect(this.state.selectedItems)
-          );
+          this.setState({ selectedItems: selectedItems.add(id) }, () => this.props.onSelect(this.state.selectedItems));
           break;
         case ItemsListTypes.SINGLE:
-          this.setState({ ...this.state, selectedItems: { [id]: item } }, () => this.props.onSelect(this.state.selectedItems));
+          this.setState(
+            { selectedItems: new Set<string | number>([id]) },
+            () => this.props.onSelect(this.state.selectedItems)
+          );
           break;
       }
     }
