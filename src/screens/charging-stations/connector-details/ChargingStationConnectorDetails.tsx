@@ -749,7 +749,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             contentContainerStyle={style.scrollViewContainer}
             refreshControl={openUserModal ? null : <RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
             <View style={style.rowContainer}>{this.renderConnectorStatus(style)}</View>
-            {isAdmin ? this.renderUserSelection(style, formStyle) : null}
+            {isAdmin && this.renderUserSelection(style, formStyle)}
           </ScrollView>
         ) : (
           <ScrollView
