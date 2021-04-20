@@ -7,7 +7,7 @@ import ListFooterComponent from './footer/ListFooterComponent';
 
 export interface Props<T extends ListItem> extends BaseProps {
   renderItem: (item: T, selected: boolean) => Element;
-  onSelect: (selectedIds: { [key: string]: T }) => void;
+  onSelect?: (selectedIds: { [key: string]: T }) => void;
   emptyTitle: string;
   manualRefresh: () => void;
   onEndReached: () => void;
