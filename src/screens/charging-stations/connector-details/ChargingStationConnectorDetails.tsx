@@ -816,7 +816,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                 name={'expand-more'}
                 style={[style.icon, style.downArrow]}
               />
-              <Text>Select user</Text>
+              <Text style={style.modalTitle}>{I18n.t('users.selectUser')}</Text>
             </View>
             <View style={style.listContainer}>
               <Users

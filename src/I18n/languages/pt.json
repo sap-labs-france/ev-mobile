@@ -173,7 +173,8 @@
   "users": {
     "userUnexpectedError": "Não posso ler os utilizadores",
     "noUsers": "No users",
-    "users": "Users(s)"
+    "users": "Users(s)",
+    "selectUser" : "Select user"
   },
   "userRoles": {
     "admin": "Admin",

@@ -35,6 +35,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderTopWidth: 1,
       padding: '5@s'
     },
+    modalTitle: {
+      fontSize: '16@s'
+    },
     container: {
       flex: 1,
       flexDirection: 'column',
