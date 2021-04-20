@@ -167,11 +167,7 @@ export default class SideBar extends BaseScreen<Props, State> {
               <Text style={style.linkText}>{I18n.t('sidebar.statistics')}</Text>
             </ListItem>
             {this.securityProvider?.canListUsers() && (
-              <ListItem
-                style={style.links}
-                button
-                iconLeft
-                onPress={() => this.navigateTo('UsersNavigator', 'Users', { userIDs: undefined })}>
+              <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('UsersNavigator', 'Users')}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="people" />
                 <Text style={style.linkText}>{I18n.t('sidebar.users')}</Text>
               </ListItem>
