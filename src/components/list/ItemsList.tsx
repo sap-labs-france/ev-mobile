@@ -32,10 +32,7 @@ interface State {
 
 export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State> {
   public static defaultProps = {
-    select: ItemsListTypes.NONE,
-    onSelect: () => {
-      return;
-    }
+    select: ItemsListTypes.NONE
   };
 
   public state: State;
@@ -61,13 +58,14 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
   };
 
   public render() {
-    const { data, skip, count, limit, navigation, manualRefresh, refreshing, onEndReached, emptyTitle, select } = this.props;
+    const { data, skip, count, limit, navigation, manualRefresh, refreshing, onEndReached, emptyTitle, select, onSelect } = this.props;
     const { selectedItems } = this.state;
+    const selectionEnabled = select !== ItemsListTypes.NONE && onSelect;
     return (
       <FlatList
         data={data}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={select === ItemsListTypes.NONE ? null : () => this.onSelectItem(item)}>
+          <TouchableOpacity onPress={selectionEnabled ? () => this.onSelectItem(item) : null}>
             {this.props.renderItem(item, selectedItems.has(item.id))}
           </TouchableOpacity>
         )}
@@ -83,25 +81,26 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
 
   private onSelectItem(item: T): void {
     const { selectedItems } = this.state;
-    const { select } = this.props;
+    const { onSelect, select } = this.props;
+    const callback = onSelect ? () => onSelect(this.state.selectedItems) : null;
     const id = item.id;
     // If the item is already selected
     if (selectedItems.has(id)) {
       // If the item is not the only one selected, unselect it
       if (selectedItems.size > 1) {
         selectedItems.delete(id);
-        this.setState({ selectedItems }, () => this.props.onSelect(this.state.selectedItems));
+        this.setState({ selectedItems }, callback);
       }
       // Else, add the item to the selected Ids
     } else {
       switch (select) {
         case ItemsListTypes.MULTI:
-          this.setState({ selectedItems: selectedItems.add(id) }, () => this.props.onSelect(this.state.selectedItems));
+          this.setState({ selectedItems: selectedItems.add(id) }, callback);
           break;
         case ItemsListTypes.SINGLE:
           this.setState(
             { selectedItems: new Set<string | number>([id]) },
-            () => this.props.onSelect(this.state.selectedItems)
+            callback
           );
           break;
       }
