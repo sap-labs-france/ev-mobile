@@ -2,12 +2,12 @@ import { Icon } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, Text, TouchableOpacity, View } from 'react-native';
 
+import I18nManager from '../../I18n/I18nManager';
 import BaseProps from '../../types/BaseProps';
 import Car, { UserCar } from '../../types/Car';
 import Utils from '../../utils/Utils';
 import UserAvatar from '../user/avatar/UserAvatar';
 import computeStyleSheet from './CarComponentStyle';
-import I18nManager from '../../I18n/I18nManager';
 
 interface State {}
 
@@ -40,7 +40,7 @@ export default class CarComponent extends React.Component<Props, State> {
     const defaultCarUserName = Utils.buildUserName(defaultCarUser?.user);
     const otherUserCount = Math.max(carUsers.length - 1, 0);
     const carFullName = Utils.buildCarCatalogName(car?.carCatalog);
-    const userIDs = carUsers.map((userCar: UserCar) => userCar?.user?.id);
+    const userIDs = carUsers.map((userCar: UserCar) => userCar?.user?.id).filter((userID) => userID);
     return (
       <View style={selected ? [style.container, style.selected] : style.container}>
         <View style={style.header}>
