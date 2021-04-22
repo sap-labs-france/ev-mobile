@@ -42,9 +42,13 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
+  private userIDs: string[];
+  private title: string;
 
   public constructor(props: Props) {
     super(props);
+    this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string[];
+    this.title = Utils.getParamFromNavigation(this.props.route, 'title', null) as string;
     this.state = {
       users: [],
       skip: 0,
@@ -56,15 +60,24 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+  }
+
   public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
     try {
-      const users = await this.centralServerProvider.getUsers({ Search: searchText }, { skip, limit });
+      const params = {
+        Search: searchText,
+        UserID: this.userIDs?.join('|'),
+        carName: this.title
+      };
+      const users = await this.centralServerProvider.getUsers(params, { skip, limit });
       // Check
       if (users.count === -1) {
         // Request nbr of records
-        const transactionsNbrRecordsOnly = await this.centralServerProvider.getUsers({ Search: searchText }, Constants.ONLY_RECORD_COUNT);
+        const usersNbrRecordsOnly = await this.centralServerProvider.getUsers(params, Constants.ONLY_RECORD_COUNT);
         // Set
-        users.count = transactionsNbrRecordsOnly.count;
+        users.count = usersNbrRecordsOnly.count;
       }
       return users;
     } catch (error) {
@@ -84,7 +97,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate('HomeNavigator');
+    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };
@@ -139,11 +152,11 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
       <Container style={style.container}>
         {!modal && (
           <HeaderComponent
-            title={i18n.t('sidebar.users')}
+            title={this.title ?? i18n.t('sidebar.users')}
+            subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}` : null}
             navigation={this.props.navigation}
             leftAction={this.onBack}
             leftActionIcon={'navigate-before'}
-            subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}` : null}
             rightAction={() => {
               navigation.dispatch(DrawerActions.openDrawer());
               return true;

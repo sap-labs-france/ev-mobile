@@ -54,10 +54,11 @@ export default class MigrationManager {
           tenants.splice(i, 1);
           continue;
         }
+        // TODO: Uncomment these lines + Increase the migration version when Proviridis will have switched to AWS
         // Proviridis: Switch cloud
-        if (tenant.subdomain === 'proviridis') {
-          tenant.endpoint = Configuration.AWS_REST_ENDPOINT_PROD;
-        }
+        // if (tenant.subdomain === 'proviridis') {
+        //   tenant.endpoint = Configuration.AWS_REST_ENDPOINT_PROD;
+        // }
       }
     }
     // Save

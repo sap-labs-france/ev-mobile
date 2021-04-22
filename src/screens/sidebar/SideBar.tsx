@@ -107,9 +107,9 @@ export default class SideBar extends BaseScreen<Props, State> {
     );
   }
 
-  public navigateTo = (container: string, screen: string) => {
+  public navigateTo = (container: string, screen: string, params?: {}) => {
     // Navigate
-    this.props.navigation.navigate(container, { screen });
+    this.props.navigation.navigate(container, { screen, params, key: Utils.randomNumber().toString() });
   };
 
   public render() {

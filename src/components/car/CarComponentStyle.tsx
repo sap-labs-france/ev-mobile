@@ -75,7 +75,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     userNameContainer: {
       marginLeft: '10@s',
-      width: '67%'
+      width: '67%',
+      flexWrap: 'wrap',
+      flexDirection: 'row'
+    },
+    userName: {
+      marginRight: '5@s'
     },
     text: {
       color: commonColor.textColor,
