@@ -7,7 +7,7 @@ import ListFooterComponent from './footer/ListFooterComponent';
 
 export interface Props<T extends ListItem> extends BaseProps {
   renderItem: (item: T, selected: boolean) => Element;
-  onSelect?: (selectedIds: Set<string | number>) => void;
+  onSelect?: (selectedItems: T[]) => void;
   emptyTitle: string;
   manualRefresh: () => void;
   onEndReached: () => void;
@@ -17,7 +17,7 @@ export interface Props<T extends ListItem> extends BaseProps {
   count: number;
   limit: number;
   refreshing: boolean;
-  initiallySelectedItems?: Set<string | number>;
+  initiallySelectedItems?: T[];
 }
 
 export enum ItemsListTypes {
@@ -26,32 +26,37 @@ export enum ItemsListTypes {
   SINGLE = 'single'
 }
 
-interface State {
-  selectedItems?: Set<string | number>;
+interface State<T> {
+  selectedItems?: Map<string | number, T>;
 }
 
-export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State> {
+export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State<T>> {
   public static defaultProps = {
-    select: ItemsListTypes.NONE
+    select: ItemsListTypes.NONE,
+    initiallySelectedItems: []
   };
-
-  public state: State;
+  public state: State<T>;
   public props: Props<T>;
 
   public constructor(props: Props<T>) {
     super(props);
-    this.state = { selectedItems: new Set<string>() };
+    this.state = { selectedItems: new Map<string | number, T>() };
   }
 
   public componentDidMount() {
     const { initiallySelectedItems } = this.props;
     if (initiallySelectedItems) {
-      this.setState({ selectedItems: initiallySelectedItems });
+      const selectedItems = new Map<string | number, T>();
+      initiallySelectedItems.forEach((item) => selectedItems.set(item.id, item));
+      this.setState({ selectedItems });
     }
   }
 
   public setState = (
-    state: State | ((prevState: Readonly<State>, props: Readonly<Props<T>>) => State | Pick<State, never>) | Pick<State, never>,
+    state:
+      | State<T>
+      | ((prevState: Readonly<State<T>>, props: Readonly<Props<T>>) => State<T> | Pick<State<T>, never>)
+      | Pick<State<T>, never>,
     callback?: () => void
   ) => {
     super.setState(state, callback);
@@ -82,7 +87,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
   private onSelectItem(item: T): void {
     const { selectedItems } = this.state;
     const { onSelect, select } = this.props;
-    const callback = onSelect ? () => onSelect(this.state.selectedItems) : null;
+    const callback = onSelect ? () => onSelect([...this.state.selectedItems.values()]) : null;
     const id = item.id;
     // If the item is already selected
     if (selectedItems.has(id)) {
@@ -95,11 +100,11 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     } else {
       switch (select) {
         case ItemsListTypes.MULTI:
-          this.setState({ selectedItems: selectedItems.add(id) }, callback);
+          this.setState({ selectedItems: selectedItems.set(id, item) }, callback);
           break;
         case ItemsListTypes.SINGLE:
           this.setState(
-            { selectedItems: new Set<string | number>([id]) },
+            { selectedItems: new Map<string | number, T>([[id, item]]) },
             callback
           );
           break;

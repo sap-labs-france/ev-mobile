@@ -820,7 +820,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             </View>
             <View style={style.listContainer}>
               <Users
-                initiallySelectedUsers={new Set<string | number>([selectedUser?.id])}
+                initiallySelectedUsers={[selectedUser]}
                 onUserSelected={(selectedUsers) => this.onUserSelected(selectedUsers)}
                 navigation={navigation}
                 select={ItemsListTypes.SINGLE}

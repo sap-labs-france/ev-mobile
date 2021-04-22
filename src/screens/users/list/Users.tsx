@@ -20,8 +20,8 @@ import computeStyleSheet from './UsersStyle';
 export interface Props extends BaseProps {
   select?: ItemsListTypes;
   modal?: boolean;
-  onUserSelected?: (selectedIds: User[]) => void;
-  initiallySelectedUsers?: Set<string | number>;
+  onUserSelected?: (selectedUsers: User[]) => void;
+  initiallySelectedUsers?: User[];
 }
 
 export interface State {
@@ -36,7 +36,8 @@ export interface State {
 export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public static defaultProps = {
     select: ItemsListTypes.NONE,
-    modal: false
+    modal: false,
+    initiallySelectedUsers: []
   };
 
   public state: State;
@@ -86,7 +87,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
         Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
-          'transactions.transactionUnexpectedError',
+          'users.userUnexpectedError',
           this.props.navigation,
           this.refresh.bind(this)
         );
@@ -171,7 +172,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
             <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
             <ItemsList<User>
               select={select}
-              onSelect={(userIds: Set<string | number>) => onUserSelected(this.getUsersFromIds(userIds))}
+              onSelect={(userIds: User[]) => onUserSelected(userIds)}
               data={users}
               navigation={navigation}
               count={count}
@@ -190,10 +191,5 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
         )}
       </Container>
     );
-  }
-
-  private getUsersFromIds(ids: Set<string | number>): User[] {
-    const { users } = this.state;
-    return users.filter((item: User) => ids.has(item.id));
   }
 }
