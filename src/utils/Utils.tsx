@@ -820,8 +820,8 @@ export default class Utils {
         return I18n.t('userStatuses.inactive');
       case UserStatus.LOCKED:
         return I18n.t('userStatuses.locked');
-      case UserStatus.BLOCKED:
-        return I18n.t('userStatuses.blocked');
+      case UserStatus.SUSPENDED:
+        return I18n.t('userStatuses.suspended');
       default:
         return I18n.t('userStatuses.unknown');
     }
@@ -864,7 +864,7 @@ export default class Utils {
     // Format
     return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}`;
   };
-  
+
   private static formatTimer = (value: number): string => {
     // Put 0 next to the digit if lower than 10
     const valueStr = value.toString();

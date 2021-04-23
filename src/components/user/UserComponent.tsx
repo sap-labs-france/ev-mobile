@@ -73,7 +73,7 @@ export default class UserComponent extends React.Component<Props, State> {
         return style.active;
       case UserStatus.PENDING:
         return style.pending;
-      case UserStatus.BLOCKED:
+      case UserStatus.SUSPENDED:
       case UserStatus.INACTIVE:
       case UserStatus.LOCKED:
         return style.inactive;
