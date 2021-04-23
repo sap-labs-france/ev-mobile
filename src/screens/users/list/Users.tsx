@@ -5,7 +5,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ItemsList, { ItemsListTypes } from '../../../components/list/ItemsList';
+import ItemsList, { ItemSelectionMode } from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import UserComponent from '../../../components/user/UserComponent';
 import I18nManager from '../../../I18n/I18nManager';
@@ -18,7 +18,7 @@ import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './UsersStyle';
 
 export interface Props extends BaseProps {
-  select?: ItemsListTypes;
+  selectionMode?: ItemSelectionMode;
   modal?: boolean;
   onUserSelected?: (selectedUsers: User[]) => void;
   initiallySelectedUsers?: User[];
@@ -35,7 +35,7 @@ export interface State {
 
 export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public static defaultProps = {
-    select: ItemsListTypes.NONE,
+    select: ItemSelectionMode.NONE,
     modal: false,
     initiallySelectedUsers: []
   };
@@ -148,7 +148,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { users, count, skip, limit, refreshing, loading } = this.state;
-    const { navigation, modal, select, onUserSelected, initiallySelectedUsers } = this.props;
+    const { navigation, modal, selectionMode, onUserSelected, initiallySelectedUsers } = this.props;
     return (
       <Container style={style.container}>
         {!modal && (
@@ -171,7 +171,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
           <View style={style.content}>
             <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
             <ItemsList<User>
-              select={select}
+              selectionMode={selectionMode}
               onSelect={(userIds: User[]) => onUserSelected(userIds)}
               data={users}
               navigation={navigation}

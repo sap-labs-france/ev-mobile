@@ -12,7 +12,7 @@ export interface Props<T extends ListItem> extends BaseProps {
   manualRefresh: () => void;
   onEndReached: () => void;
   data: T[];
-  select?: ItemsListTypes;
+  selectionMode?: ItemSelectionMode;
   skip: number;
   count: number;
   limit: number;
@@ -20,7 +20,7 @@ export interface Props<T extends ListItem> extends BaseProps {
   initiallySelectedItems?: T[];
 }
 
-export enum ItemsListTypes {
+export enum ItemSelectionMode {
   NONE = 'none',
   MULTI = 'multi',
   SINGLE = 'single'
@@ -32,7 +32,7 @@ interface State<T> {
 
 export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State<T>> {
   public static defaultProps = {
-    select: ItemsListTypes.NONE,
+    selectionMode: ItemSelectionMode.NONE,
     initiallySelectedItems: []
   };
   public state: State<T>;
@@ -63,9 +63,21 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
   };
 
   public render() {
-    const { data, skip, count, limit, navigation, manualRefresh, refreshing, onEndReached, emptyTitle, select, onSelect } = this.props;
+    const {
+      data,
+      skip,
+      count,
+      limit,
+      navigation,
+      manualRefresh,
+      refreshing,
+      onEndReached,
+      emptyTitle,
+      selectionMode,
+      onSelect
+    } = this.props;
     const { selectedItems } = this.state;
-    const selectionEnabled = select !== ItemsListTypes.NONE && onSelect;
+    const selectionEnabled = selectionMode !== ItemSelectionMode.NONE && onSelect;
     return (
       <FlatList
         data={data}
@@ -86,7 +98,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
 
   private onSelectItem(item: T): void {
     const { selectedItems } = this.state;
-    const { onSelect, select } = this.props;
+    const { onSelect, selectionMode } = this.props;
     const callback = onSelect ? () => onSelect([...this.state.selectedItems.values()]) : null;
     const id = item.id;
     // If the item is already selected
@@ -98,11 +110,11 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
       }
       // Else, add the item to the selected Ids
     } else {
-      switch (select) {
-        case ItemsListTypes.MULTI:
+      switch (selectionMode) {
+        case ItemSelectionMode.MULTI:
           this.setState({ selectedItems: selectedItems.set(id, item) }, callback);
           break;
-        case ItemsListTypes.SINGLE:
+        case ItemSelectionMode.SINGLE:
           this.setState(
             { selectedItems: new Map<string | number, T>([[id, item]]) },
             callback
