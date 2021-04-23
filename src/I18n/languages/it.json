@@ -75,11 +75,6 @@
     "badges": "Badges",
     "cars": "Cars"
   },
-  "cars": {
-    "noCars": "No cars",
-    "carUnexpectedError": "An error occurred",
-    "cars": "Car(s)"
-  },
 	"authentication": {
     "noTenantFoundTitle" : "No organization found",
     "noTenantFoundMessage" : "Do you want to register a new organization using a QR-Code?",
@@ -174,7 +169,7 @@
     "userUnexpectedError": "Non posso leggere gli utenti",
     "noUsers": "No users",
     "users": "Users(s)",
-    "selectUser" : "Select user"
+    "selectUser" : "Select User"
   },
   "userRoles": {
     "admin": "Admin",
@@ -190,6 +185,11 @@
     "blocked": "Blocked",
     "pending": "Pending",
     "unknown": "Unknown"
+  },
+  "cars": {
+    "noCars": "No cars",
+    "carUnexpectedError": "An error occurred",
+    "cars": "Car(s)"
   },
   "transactions": {
     "transaction": "Sessione",

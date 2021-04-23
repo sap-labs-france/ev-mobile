@@ -169,7 +169,7 @@
     "userUnexpectedError": "No se ha podido cargar el usuario",
     "noUsers": "No users",
     "users": "Users(s)",
-    "selectUser" : "Select user"
+    "selectUser" : "Select User"
   },
   "userRoles": {
     "admin": "Admin",
