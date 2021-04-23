@@ -1,4 +1,5 @@
 import React from 'react';
+import { ImageStyle, StyleProp, TextStyle, ViewStyle } from 'react-native';
 
 export interface FilterControlComponentProps<T> {
   internalFilterID: string;
@@ -6,47 +7,55 @@ export interface FilterControlComponentProps<T> {
   label: string;
   locale?: string;
   initialValue?: T;
-  style?: object;
+  style?: StyleProp<ViewStyle | TextStyle | ImageStyle>;
   onFilterChanged: (id: string, value: T) => void;
 }
 
-interface FilterControlComponentState {
+export interface FilterControlComponentState<T> {
+  value?: T;
 }
 
-export default class FilterControlComponent<T> extends React.Component<FilterControlComponentProps<T>, FilterControlComponentState> {
-
-  constructor(props: FilterControlComponentProps<T>) {
-    super(props);
-    this.value = this.props.initialValue;
-    this.state = {
-    };
-  }
-
+export default class FilterControlComponent<T> extends React.Component<FilterControlComponentProps<T>, FilterControlComponentState<T>> {
   public static defaultProps = {
     style: {}
   };
-  public state: FilterControlComponentState;
+  public state: FilterControlComponentState<T>;
   public props: FilterControlComponentProps<T>;
-  private value: T = null;
 
-  public setState = (state: FilterControlComponentState | ((prevState: Readonly<FilterControlComponentState>, props: Readonly<FilterControlComponentProps<T>>) => FilterControlComponentState | Pick<FilterControlComponentState, never>) | Pick<FilterControlComponentState, never>, callback?: () => void) => {
-    super.setState(state, callback);
+  public constructor(props: FilterControlComponentProps<T>) {
+    super(props);
+    this.state = {
+      value: this.props.initialValue
+    };
   }
+
+  public setState = (
+    state:
+      | FilterControlComponentState<T>
+      | ((
+          prevState: Readonly<FilterControlComponentState<T>>,
+          props: Readonly<FilterControlComponentProps<T>>
+        ) => FilterControlComponentState<T> | Pick<FilterControlComponentState<T>, never>)
+      | Pick<FilterControlComponentState<T>, never>,
+    callback?: () => void
+  ) => {
+    super.setState(state, callback);
+  };
 
   public canBeSaved() {
     return false;
   }
 
-  public async setValue(value: any) {
-    this.value = value;
+  public setValue(value: any, callback?: () => void) {
+    this.setState({ value }, callback);
   }
 
   public getValue(): any {
-    return this.value;
+    return this.state.value;
   }
 
-  public async clearValue() {
-    this.value = null;
+  public clearValue(callback?: () => any) {
+    this.setState({ value: null }, callback);
   }
 
   public getID(): string {

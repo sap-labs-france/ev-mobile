@@ -1,7 +1,7 @@
+import { CommonActions, NavigationContainerRef } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Linking } from 'react-native';
 import DeepLinking from 'react-native-deep-linking';
-import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
 
 import CentralServerProvider from '../provider/CentralServerProvider';
 import { HTTPError } from '../types/HTTPError';
@@ -11,11 +11,11 @@ import Utils from '../utils/Utils';
 
 export default class DeepLinkingManager {
   private static instance: DeepLinkingManager;
-  private navigator: NavigationContainerComponent;
+  private navigator: NavigationContainerRef;
   private centralServerProvider: CentralServerProvider;
 
-  private constructor() {
-  }
+  // eslint-disable-next-line no-useless-constructor
+  private constructor() {}
 
   public static getInstance(): DeepLinkingManager {
     if (!DeepLinkingManager.instance) {
@@ -24,7 +24,7 @@ export default class DeepLinkingManager {
     return DeepLinkingManager.instance;
   }
 
-  public initialize(navigator: NavigationContainerComponent, centralServerProvider: CentralServerProvider) {
+  public initialize(navigator: NavigationContainerRef, centralServerProvider: CentralServerProvider) {
     // Keep
     this.navigator = navigator;
     this.centralServerProvider = centralServerProvider;
@@ -35,19 +35,36 @@ export default class DeepLinkingManager {
     this.addResetPasswordRoute();
     this.addVerifyAccountRoute();
     // Init URL
-    Linking.getInitialURL().then((url) => {
-      if (url) {
-        Linking.openURL(url);
-      }
-    }).catch((err) => {
-      // tslint:disable-next-line: no-console
-      console.error('An error occurred', err)
-    });
+    Linking.getInitialURL()
+      .then((url) => {
+        if (url) {
+          Linking.openURL(url);
+        }
+      })
+      .catch((err) => {
+        console.error('An error occurred', err);
+      });
   }
+
+  public startListening() {
+    Linking.addEventListener('url', this.handleUrl);
+  }
+
+  public stopListening() {
+    Linking.removeEventListener('url', this.handleUrl);
+  }
+
+  public handleUrl = ({ url }: { url: string }) => {
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        DeepLinking.evaluateUrl(url);
+      }
+    });
+  };
 
   private addResetPasswordRoute = () => {
     // Add Route
-    DeepLinking.addRoute('/resetPassword/:tenant/:hash', async (response: {tenant: string, hash: string}) => {
+    DeepLinking.addRoute('/resetPassword/:tenant/:hash', async (response: { tenant: string; hash: string }) => {
       // Check params
       if (!response.tenant) {
         Message.showError(I18n.t('authentication.mandatoryTenant'));
@@ -64,19 +81,20 @@ export default class DeepLinkingManager {
       this.centralServerProvider.setAutoLoginDisabled(true);
       // Navigate
       this.navigator.dispatch(
-        NavigationActions.navigate({
-          routeName: 'ResetPassword',
+        CommonActions.navigate({
+          name: 'ResetPassword',
           key: `${Utils.randomNumber()}`,
           params: { tenantSubDomain: response.tenant, hash: response.hash }
         })
       );
     });
-  }
+  };
 
   private addVerifyAccountRoute = () => {
     // Add Route
-    DeepLinking.addRoute('/verifyAccount/:tenant/:email/:token/:resetToken',
-      async (response: { tenant: string, email: string, token: string, resetToken: string }) => {
+    DeepLinking.addRoute(
+      '/verifyAccount/:tenant/:email/:token/:resetToken',
+      async (response: { tenant: string; email: string; token: string; resetToken: string }) => {
         // Check params
         if (!response.tenant) {
           Message.showError(I18n.t('authentication.mandatoryTenant'));
@@ -97,8 +115,8 @@ export default class DeepLinkingManager {
         this.centralServerProvider.logoff();
         // Navigate to login page
         this.navigator.dispatch(
-          NavigationActions.navigate({
-            routeName: 'Login',
+          CommonActions.navigate({
+            name: 'Login',
             key: `${Utils.randomNumber()}`,
             params: { tenantSubDomain: response.tenant, email: response.email }
           })
@@ -108,14 +126,13 @@ export default class DeepLinkingManager {
           // Validate Account
           const result = await this.centralServerProvider.verifyEmail(response.tenant, response.email, response.token);
           if (result.status === Constants.REST_RESPONSE_SUCCESS) {
-            // Ok
             Message.showSuccess(I18n.t('authentication.accountVerifiedSuccess'));
             // Check if user has to change his password
             if (response.resetToken && response.resetToken !== 'null') {
               // Change password
               this.navigator.dispatch(
-                NavigationActions.navigate({
-                  routeName: 'ResetPassword',
+                CommonActions.navigate({
+                  name: 'ResetPassword',
                   key: `${Utils.randomNumber()}`,
                   params: { tenantSubDomain: response.tenant, hash: response.resetToken }
                 })
@@ -141,29 +158,13 @@ export default class DeepLinkingManager {
                 break;
               // Other common Error
               default:
-                Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-                  'authentication.activationUnexpectedError');
+                Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.activationUnexpectedError');
             }
           } else {
             Message.showError(I18n.t('authentication.activationUnexpectedError'));
           }
         }
-      });
-  }
-
-  public startListening() {
-    Linking.addEventListener('url', this.handleUrl);
-  }
-
-  public stopListening() {
-    Linking.removeEventListener('url', this.handleUrl);
-  }
-
-  public handleUrl = ({ url }: { url: string }) => {
-    Linking.canOpenURL(url).then((supported) => {
-      if (supported) {
-        DeepLinking.evaluateUrl(url);
       }
-    });
-  }
+    );
+  };
 }

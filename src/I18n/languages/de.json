@@ -1,6 +1,7 @@
 ﻿{
   "general": {
-    "migrationError": "Error during migration of data",
+    "notAuthorized": "You are not authorized to perform this action",
+    "migrationError": "Fehler während der Datenmigration",
     "cannotConnectBackend": "Die Verbindung wurde unterbrochen",
     "unexpectedErrorBackend": "Unerwarteter Backend Fehler",
     "unexpectedError": "Unerwarteter Fehler",
@@ -12,10 +13,11 @@
     "noGPSCoordinates": "Keine GPS-Koordinaten verfügbar",
     "chooseApp": "Wählen Sie eine Anwendung",
     "availableApps": "Verfügbare Anwendungen",
-    "back": "Back",
+    "back": "Zurück",
     "ok": "Ok",
     "yes": "Ja",
     "no": "Nein",
+    "manually": "Manuell",
     "filters": "Filter",
     "create": "Erstellen",
     "clear": "Löschen",
@@ -30,8 +32,13 @@
     "exitAppConfirm": "Möchten Sie die Anwendung wirklich beenden?",
     "deleteTenant": "Organisation löschen",
     "deleteTenantConfirm": "Möchten Sie die Organisation '{{tenantName}}' wirklich löschen?",
+    "deleteTenantSuccess": "Organisation '{{tenantName}}' wurde gelöscht",
     "restoreTenants": "Organisationen wiederherstellen?",
     "restoreTenantsConfirm": "Möchten Sie wirklich die ursprüngliche Liste der Organisationen wiederherstellen?",
+    "restoreTenantsSuccess": "Liste der Organisationen wurde wieder hergestellt",
+    "createTenantSuccess": "New tenant '{{tenantName}}' has been registered",
+    "registerToNewTenantTitle": "Sign up",
+    "registerToNewTenant": "Do you want to sign up in the new organization '{{tenantName}}'?",
     "noRecordFound": "Kein Eintrag gefunden",
     "day": "d",
     "hour": "h",
@@ -43,13 +50,18 @@
     "onlyMyTransactions": "Meine Ladevorgäng",
     "onlyAvailableChargers": "Verfügbare Ladestationen",
     "wrongTenant": "Sie sind mit der falschen Organisation verbunden",
-    "tenantExists": "Die Organisation existiert bereits.",
+    "tenantUnknown": "Unbekannte Organisation '{{tenantSubdomain}}'",
+    "mustLoggedToTenant": "You must be logged to organization '{{tenantName}}'",
+    "tenantMissing": "The organization is missing",
+    "tenantExists": "Die Organisation '{{tenantName}}' existiert bereits.",
     "createdOn": "Erstellt am",
     "createdBy": "Erstellt von",
     "lastChangedOn": "Letzte Änderung am",
     "lastChangedBy": "Letzte Änderung von",
+    "mobile": "Handy",
     "errorTitle": "Fehlertitel",
-    "errorDescription": "Beschreibung"
+    "errorDescription": "Beschreibung",
+    "scanQrCodeSuccess": "Der QR-Code wurde erfolgreich gescannt"
   },
   "sidebar": {
     "home": "Home",
@@ -57,9 +69,15 @@
     "chargers": "Ladestationen",
     "transactionsHistory": "Ladevorgangs Historie",
     "transactionsInProgress": "Laufende Ladevorgänge",
-    "statistics": "Statistiken"
+    "statistics": "Statistiken",
+    "reportError": "Fehler Melden",
+    "users": "Users",
+    "cars": "Cars",
+    "badges": "Badges"
   },
-	"authentication": {
+  "authentication": {
+    "noTenantFoundTitle" : "No organization found",
+    "noTenantFoundMessage" : "Do you want to register a new organization using a QR-Code?",
     "tenantTitle": "Organization",
     "mandatoryTenantSubDomain": "Die Subdomain der Organisation ist notwendig",
     "mandatoryTenantName": "Der Name der Organisation ist notwendig",
@@ -69,6 +87,7 @@
     "mandatoryFirstName": "Der Vorname ist notwendig",
     "mandatoryEmail": "Die E-Mail ist notwendig",
     "invalidEmail": "Die E-Mail ist ungültig",
+    "invalidMobile": "Die Handynummer ist ungültig",
     "mandatoryPassword": "Das Passwort ist notwendig",
     "logOut": "Ausloggen",
     "mustSelectTenant": "Wählen Sie eine Organisation",
@@ -98,8 +117,8 @@
     "acceptEula": "Ich bestätige den ",
     "eula": "Endnutzer-Lizenzvertrag",
     "login": "Anmelden",
-		"registerSuccess": "Konto erfolgreich erstellt, überprüfen Sie bitte Ihre E-Mails!",
-		"resetPasswordSuccess": "Passwort erfolgreich aktualisiert!",
+    "registerSuccess": "Konto erfolgreich erstellt, überprüfen Sie bitte Ihre E-Mails!",
+    "resetPasswordSuccess": "Passwort erfolgreich aktualisiert!",
     "resetPasswordHashNotValid": "Anfrage nicht mehr gültig, fordern Sie erneut ein neues Passwort an",
     "resetPasswordUnexpectedError": "Passwort kann nicht zurückgesetzt werden",
     "verifyAccountTokenNotValid": "Anfrage ist nicht länger gültig, fordern sie eine neue Accountverifizierung an",
@@ -110,22 +129,66 @@
     "password": "Passwort",
     "repeatPassword": "Passwort wiederholen",
     "signUp": "Konto erstellen",
+    "signIn": "Sign In",
     "passwordRule": "Muss einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl, ein Sonderzeichen und mindestens 8 Zeichen beinhalten.",
     "passwordNotMatch": "Passwörter stimmen nicht miteinander überein",
-    "tenant": "Wählen Sie eine Organisation",
+    "tenant": "Organisation",
     "createTenantTitle": "Organisation Erstellen",
+    "createTenantText": "Wie möchten Sie die Organisation erstelllen?",
     "tenantSubdomain": "Subdomain",
     "tenantName": "Name",
     "tenantEndpoint": "Cloud",
-    "phone" : "Telefonnummer",
-    "mandatoryPhone": "die Telefonnummer ist notwendig",
-    "mandatoryErrorTitle": "der Titel ist notwendig",
-    "mandatoryErrorDescription": "die Fehlerbeschreibung ist notwendig",
-    "reportErrorSuccess": "The error has been reported successfully",
-    "reportErrorFailed": "Cannot report the error"
+    "phone": "Telefonnummer",
+    "mandatoryPhone": "Die Telefonnummer ist notwendig",
+    "mandatoryErrorTitle": "Der Titel ist notwendig",
+    "mandatoryErrorSubject": "Das Thema ist notwendig",
+    "mandatoryErrorDescription": "Die Beschreibung ist notwendig",
+    "reportErrorSuccess": "Der Fehler wurde erfolgreich gemeldet",
+    "reportErrorFailed": "Der Fehler kann nicht gemeldet werden"
+  },
+  "qrCode": {
+    "qrCode": "QR Code",
+    "browseScan&Charge": "Scannen & Laden",
+    "browseScan&ChargeNote": "Scanne den QR Code der Ladestation",
+    "wrongOrganizationTitle": "Organisation wechseln",
+    "wrongOrganizationMessage": "The charging Station you are trying to access is not in this organization, do you want to switch to '{{tenantName}}'?",
+    "invalidQRCode": "Ungültiger QR Code",
+    "unknownQRCode": "Unbekannter QR Code",
+    "unknownEndpoint": "Unbekannte Cloud '{{endpoint}}'",
+    "unknownOrganizationTitle": "Unbekannte Organisation",
+    "unknownOrganizationMessage": "Sie haben eine unbekannte Onranisation gescannt '{{tenantName}}', möchten Sie sie erstellen und sich anmelden?",
+    "newOrganizationTitle": "Neue Organisation",
+    "newOrganizationMessage": "Möchten Sie die neue Organisation '{{tenantName}}' speichern??",
+    "unknownChargingStation": "Unbekannte Ladestation '{{chargingStationID}}'",
+    "unknownConnector": "Unbekannter Anschluss: '{{connectorID}}'",
+    "scanTenantQrCodeTitle": "Tenant scannen",
+    "scanTenantQrCodeSuccess": "Die Organisation '{{tenantName}}' wurde erfolgreich gespeichert",
+    "scanChargingStationQrCodeTitle": "Ladestation scannen"
   },
   "users": {
-    "userUnexpectedError": "Benutzer kann nicht gelesen werden"
+    "userUnexpectedError": "Benutzer kann nicht gelesen werden",
+    "noUsers": "No users",
+    "users": "Users(s)"
+  },
+  "userRoles": {
+    "admin": "Admin",
+    "basic": "Basic",
+    "superAdmin": "Super Admin",
+    "demo": "Demo",
+    "unknown": "Unknown"
+  },
+  "userStatuses": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "locked": "Locked",
+    "blocked": "Blocked",
+    "pending": "Pending",
+    "unknown": "Unknown"
+  },
+  "cars": {
+    "noCars": "No cars",
+    "carUnexpectedError": "An error occurred",
+    "cars": "Car(s)"
   },
   "transactions": {
     "transaction": "Ladevorgang",
@@ -141,6 +204,8 @@
     "transactionUnexpectedError": "Ladevorgang konnte nicht gelesen werden",
     "transactionStatsUnexpectedError": "Statistiken konnten nicht gelesen werden",
     "transactionStartUnexpectedError": "Ladevorgang konnte nicht gstartet werden",
+    "carNotConnectedError": "Ihr Fahzeug ist mit keiner Ladestation verbunden",
+    "connectorNotAvailable": "Der Anschluss der Ladestation ist nicht verfügbar",
     "transactionStopUnexpectedError": "Ladevorgang konnte nicht beendet werden"
   },
   "home": {
@@ -156,6 +221,12 @@
     "noOngoingSessions": "Keine laufenden Ladevorgänge",
     "ongoingSessionsNote": "Gehe zu laufenden Ladevorgänge",
     "statistics": "Statistiken",
+    "tags": "Badges",
+    "tagsNote": "Badge list",
+    "users": "Users",
+    "usersNote": "User list",
+    "cars": "Cars",
+    "carsNote": "Cars List",
     "numberOfSessions": "{{nbrSessions}} Ladevorgänge",
     "noSessions": "Kein Ladevorgang gefunden",
     "numberOfSessionsNote": "Anzahl aller Ladevorgänge",
@@ -174,13 +245,15 @@
     "free": "Frei",
     "occupied": "Besetzt",
     "noSites": "Kein Standort gefunden",
-    "siteUnexpectedError": "Standort konnte nicht gelesen werden"
+    "siteUnexpectedError": "Standort konnte nicht gelesen werden",
+    "sites": "Site(s)"
   },
   "siteAreas": {
     "title": "Standortbereiche",
     "noChargers": "Dieser Standortbereich hat keine Ladestationen",
     "noSiteAreas": "Kein Standortbereich gefunden",
-    "siteAreaUnexpectedError": "Standortbereich wurde nicht erkannt"
+    "siteAreaUnexpectedError": "Standortbereich wurde nicht erkannt",
+    "siteAreas": "Site Area(s)"
   },
   "chargers": {
     "title": "Ladestationen",
@@ -195,7 +268,7 @@
     "chargerClearCacheUnexpectedError": "Cache der Ladestation konnte nicht gelöscht werden",
     "chargerUnlockUnexpectedError": "Ladepunkt konnte nicht entsperrt werden",
     "heartBeatOkMessage": "'{{chargeBoxID}}' funktioniert ordentlich und hat vor einer Minute einen Herzschlag gesendet",
-    "heartBeatKoMessage": "'{{chargeBoxID}}' ist fehlerhaft und hat zuletzt {{lastHeartBeat}} einen Herzschlag gesendet",
+    "heartBeatKoMessage": "'{{chargeBoxID}}' ist fehlerhaft und hat zuletzt {{lastSeen}} einen Herzschlag gesendet",
     "resetHard": "Neustarten",
     "resetHardMessage": "Möchten Sie wirklich die Ladestation '{{chargeBoxID}}' neu starten?",
     "resetSoft": "Reset",
@@ -231,6 +304,12 @@
     "chademo": "Chademo",
     "domestic": "Hausanschluss"
   },
+  "tags": {
+    "noTags": "No badges",
+    "tags": "Badge(s)",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
   "details": {
     "connector": "Anschluss",
     "connectors": "Stecker",
@@ -250,7 +329,7 @@
     "notAuthorised": "Sie dürfen die Ladesitzung nicht beenden.",
     "accepted": "Anfrage wurde angenommen",
     "noBadgeID": "Kein Badge in Ihrem Profil!",
-    "denied": "Anfrage fehlgeschlagen",
+    "denied": "Anfrage wurde abgelehnt",
     "duration": "(hh:mm)",
     "total": "Summe",
     "maximum": "Maximum",
@@ -268,6 +347,7 @@
     "connectorMax": "Max. Leistung Anschluss (kW)",
     "noData": "Nicht Daten",
     "noSessionInProgress": "Kein laufender Ladvorgang",
+    "noConsumptionData": "Keine Verbrauchsdaten",
     "serialNumber": "Seriennummer",
     "privateURL": "Private URL",
     "publicURL": "Öffentliche URL",

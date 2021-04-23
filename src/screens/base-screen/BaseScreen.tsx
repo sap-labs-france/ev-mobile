@@ -1,28 +1,27 @@
 import React from 'react';
 import { BackHandler } from 'react-native';
-import { NavigationEventSubscription } from 'react-navigation';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ScreenFilters from '../../components/search/filter/screen/ScreenFilters';
 import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
+import SecurityProvider from '../../provider/SecurityProvider';
 import BaseProps from '../../types/BaseProps';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
-interface State {
-}
+interface State {}
 
 export default class BaseScreen<P, S> extends React.Component<Props, State> {
   protected mounted: boolean;
   protected centralServerProvider: CentralServerProvider;
-  private didFocus: NavigationEventSubscription;
-  private didBlur: NavigationEventSubscription;
+  protected securityProvider: SecurityProvider;
   private headerComponent: HeaderComponent;
   private screenFilters: ScreenFilters;
+  private componentFocusUnsubscribe: () => void;
+  private componentBlurUnsubscribe: () => void;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.mounted = false;
   }
@@ -32,25 +31,25 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
   }
 
   public async componentDidMount() {
-    // Add listeners
-    this.didFocus = this.props.navigation.addListener('didFocus', this.componentDidFocus.bind(this));
-    this.didBlur = this.props.navigation.addListener('didBlur', this.componentDidBlur.bind(this));
-    // Get provider
+    // Get providers
     this.centralServerProvider = await ProviderFactory.getProvider();
+    this.securityProvider = this.centralServerProvider.getSecurityProvider();
+    // Add listeners
+    this.componentFocusUnsubscribe = this.props.navigation.addListener('focus', this.componentDidFocus.bind(this));
+    this.componentBlurUnsubscribe = this.props.navigation.addListener('blur', this.componentDidBlur.bind(this));
     // Remove Backhandler for Android
-    BackHandler.removeEventListener('hardwareBackPress', this.onBack);
+    BackHandler.removeEventListener('hardwareBackPress', this.onBack.bind(this));
     // Ok
     this.mounted = true;
   }
 
-  public async componentWillUnmount() {
+  public componentWillUnmount() {
     this.mounted = false;
-    // Remove listeners
-    if (this.didFocus) {
-      this.didFocus.remove();
+    if (this.componentFocusUnsubscribe) {
+      this.componentFocusUnsubscribe();
     }
-    if (this.didBlur) {
-      this.didBlur.remove();
+    if (this.componentBlurUnsubscribe) {
+      this.componentBlurUnsubscribe();
     }
   }
 
@@ -87,10 +86,9 @@ export default class BaseScreen<P, S> extends React.Component<Props, State> {
     return false;
   }
 
-  public async componentDidFocus() {
+  public componentDidFocus() {
     BackHandler.addEventListener('hardwareBackPress', this.onBack.bind(this));
   }
 
-  // tslint:disable-next-line: no-empty
-  public async componentDidBlur() { }
+  public async componentDidBlur() {}
 }

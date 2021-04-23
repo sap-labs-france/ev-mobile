@@ -1,11 +1,14 @@
 import deepmerge from 'deepmerge';
-import { Platform } from 'react-native';
-import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
+import { Platform, StyleSheet } from 'react-native';
+import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../utils/Utils';
 
-export default function computeStyleSheet(): any {
+/**
+ *
+ */
+export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
@@ -25,7 +28,7 @@ export default function computeStyleSheet(): any {
     lastTransactionContainer: {
       width: '50@s',
       height: '50@s',
-      marginTop: '-90@s',
+      marginTop: '-85@s',
       marginLeft: '45@s',
       marginBottom: '25@s',
       backgroundColor: 'transparent'
@@ -37,6 +40,25 @@ export default function computeStyleSheet(): any {
       borderStyle: 'solid',
       borderWidth: '4@s',
       borderColor: commonColor.textColor,
+      backgroundColor: commonColor.containerBgColor,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    reportErrorContainer: {
+      width: '50@s',
+      height: '50@s',
+      marginTop: '-75@s',
+      marginLeft: '250@s',
+      marginBottom: '25@s',
+      backgroundColor: 'transparent'
+    },
+    reportErrorButton: {
+      width: '50@s',
+      height: '50@s',
+      borderRadius: '25@s',
+      borderStyle: 'solid',
+      borderWidth: '4@s',
+      borderColor: commonColor.brandDanger,
       backgroundColor: commonColor.containerBgColor,
       justifyContent: 'center',
       alignItems: 'center'
@@ -76,7 +98,11 @@ export default function computeStyleSheet(): any {
     },
     lastTransactionIcon: {
       fontSize: '25@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
+    },
+    reportErrorIcon: {
+      fontSize: '25@s',
+      color: commonColor.brandDanger
     },
     startTransactionIcon: {
       color: commonColor.success
@@ -95,7 +121,7 @@ export default function computeStyleSheet(): any {
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      paddingTop: '10@s'
+      paddingTop: '20@s'
     },
     rowContainer: {
       flexDirection: 'row',
@@ -120,11 +146,11 @@ export default function computeStyleSheet(): any {
     labelValue: {
       fontSize: '25@s',
       fontWeight: 'bold',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     labelUser: {
       fontSize: '10@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     subLabel: {
       fontSize: '10@s',
@@ -139,11 +165,11 @@ export default function computeStyleSheet(): any {
     subLabelUser: {
       fontSize: '8@s',
       marginTop: '0@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     icon: {
       fontSize: '25@s',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     userImage: {
       height: '52@s',
@@ -173,9 +199,13 @@ export default function computeStyleSheet(): any {
     }
   });
   const portraitStyles = {};
-  const landscapeStyles = {};
-  return ResponsiveStylesheet.createOriented({
-    landscape: deepmerge(commonStyles, landscapeStyles),
-    portrait: deepmerge(commonStyles, portraitStyles)
+  const landscapeStyles = {
+    reportErrorContainer: {
+      marginLeft: '84%'
+    }
+  };
+  return ResponsiveStylesSheet.createOriented({
+    landscape: deepmerge(commonStyles, landscapeStyles) as StyleSheet.NamedStyles<any>,
+    portrait: deepmerge(commonStyles, portraitStyles) as StyleSheet.NamedStyles<any>
   });
 }

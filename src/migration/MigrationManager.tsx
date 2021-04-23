@@ -1,18 +1,18 @@
 import I18n from 'i18n-js';
-import { TenantConnection } from 'types/Tenant';
 
 import Configuration from '../config/Configuration';
 import CentralServerProvider from '../provider/CentralServerProvider';
 import Message from '../utils/Message';
 import SecuredStorage from '../utils/SecuredStorage';
+import Utils from '../utils/Utils';
 
 export default class MigrationManager {
   private static instance: MigrationManager;
-  private currentMigrationVersion: string = '1.0';
+  private currentMigrationVersion = '1.3';
   private centralServerProvider: CentralServerProvider;
 
-  private constructor() {
-  }
+  // eslint-disable-next-line no-useless-constructor
+  private constructor() {}
 
   public static getInstance(): MigrationManager {
     if (!MigrationManager.instance) {
@@ -31,7 +31,7 @@ export default class MigrationManager {
     if (lastMigrationVersion !== this.currentMigrationVersion) {
       try {
         // Migrate Tenant endpoints
-        await this.migrateTenantEndpoints();
+        await this.removeUnusedTenants();
         // Save
         await SecuredStorage.setLastMigrationVersion(this.currentMigrationVersion);
       } catch (error) {
@@ -39,44 +39,29 @@ export default class MigrationManager {
         Message.showError(I18n.t('general.migrationError'));
       }
     }
-  }
+  };
 
-  private async migrateTenantEndpoints() {
-    if (__DEV__) {
-      // Override
-      await SecuredStorage.saveTenants(Configuration.DEFAULT_TENANTS_LIST_QA);
-    } else {
-      // Get tenants
-      const tenants = await this.centralServerProvider.getTenants();
-      for (const tenant of tenants) {
-        if (!tenant.endpoint) {
-          // Default to SCP
-          tenant.endpoint = Configuration.SCP_REST_ENDPOINT_PROD;
+  private async removeUnusedTenants() {
+    // Get tenants
+    const tenants = await this.centralServerProvider.getTenants();
+    if (!Utils.isEmptyArray(tenants)) {
+      for (let i = tenants.length - 1; i >= 0; i--) {
+        const tenant = tenants[i];
+        // Check if user has used this tenant
+        const userCredentials = await SecuredStorage.getUserCredentials(tenant.subdomain);
+        if (!userCredentials) {
+          // Remove the tenant
+          tenants.splice(i, 1);
+          continue;
         }
+        // TODO: Uncomment these lines + Increase the migration version when Proviridis will have switched to AWS
+        // Proviridis: Switch cloud
+        // if (tenant.subdomain === 'proviridis') {
+        //   tenant.endpoint = Configuration.AWS_REST_ENDPOINT_PROD;
+        // }
       }
-      // Add new tenants
-      this.addNewTenant(tenants, {
-        subdomain: 'mairiedemonaco', name: 'Mairie de Monaco', endpoint: Configuration.AWS_REST_ENDPOINT_PROD,
-      });
-      this.addNewTenant(tenants, {
-        subdomain: 'sapfrance', name: 'SAP France', endpoint: Configuration.SCP_REST_ENDPOINT_PROD,
-      });
-      this.addNewTenant(tenants, {
-        subdomain: 'sapfrancecah', name: 'SAP France (charge@home)', endpoint: Configuration.SCP_REST_ENDPOINT_PROD,
-      });
-      // Save
-      await SecuredStorage.saveTenants(tenants);
     }
-  }
-
-  private async addNewTenant(tenants: TenantConnection[], newTenant: TenantConnection) {
-    if (!tenants) {
-      return;
-    }
-    const foundTenant = tenants.find((tenant) => tenant.subdomain === newTenant.subdomain);
-    // Add tenant
-    if (!foundTenant) {
-      tenants.push(newTenant);
-    }
+    // Save
+    await SecuredStorage.saveTenants(tenants);
   }
 }

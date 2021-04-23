@@ -1,11 +1,14 @@
 import deepmerge from 'deepmerge';
-import { Platform } from 'react-native';
-import ResponsiveStylesheet from 'react-native-responsive-stylesheet'
+import { Platform, StyleSheet } from 'react-native';
+import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
-export default function computeStyleSheet(): any {
+/**
+ *
+ */
+export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
@@ -35,7 +38,7 @@ export default function computeStyleSheet(): any {
       height: '50@s',
       alignSelf: 'center',
       margin: '5@s',
-      marginBottom: '10@s',
+      marginBottom: '10@s'
     },
     tenantName: {
       color: commonColor.textColor,
@@ -51,7 +54,7 @@ export default function computeStyleSheet(): any {
       margin: '2@s',
       alignSelf: 'center',
       fontWeight: 'bold',
-      marginBottom: '10@s',
+      marginBottom: '10@s'
     },
     versionDate: {
       color: commonColor.textColor,
@@ -61,14 +64,14 @@ export default function computeStyleSheet(): any {
       marginBottom: '2@s'
     },
     linkContainer: {
-      paddingTop: '10@s',
+      paddingTop: '10@s'
     },
     links: {
       borderBottomWidth: 0,
       borderBottomColor: 'transparent',
-      height: Platform.OS === 'ios' ? undefined : '35@s',
+      height: Platform.OS === 'ios' ? undefined : '40@s',
       paddingTop: '10@s',
-      paddingBottom: Platform.OS === 'ios' ? 0 : '10@s'
+      paddingBottom: '10@s'
     },
     linkIcon: {
       fontSize: '30@s',
@@ -89,7 +92,7 @@ export default function computeStyleSheet(): any {
     },
     logoutButton: {
       paddingTop: '10@s',
-      flexDirection: 'row',
+      flexDirection: 'row'
     },
     gridLogoutContainer: {
       flex: 1,
@@ -129,8 +132,8 @@ export default function computeStyleSheet(): any {
   });
   const portraitStyles = {};
   const landscapeStyles = {};
-  return ResponsiveStylesheet.createOriented({
-    landscape: deepmerge(commonStyles, landscapeStyles),
-    portrait: deepmerge(commonStyles, portraitStyles)
+  return ResponsiveStylesSheet.createOriented({
+    landscape: deepmerge(commonStyles, landscapeStyles) as StyleSheet.NamedStyles<any>,
+    portrait: deepmerge(commonStyles, portraitStyles) as StyleSheet.NamedStyles<any>
   });
 }

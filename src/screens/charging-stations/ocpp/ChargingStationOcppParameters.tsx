@@ -1,22 +1,21 @@
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Button, Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, FlatList, RefreshControl, ScrollView } from 'react-native';
-import { DrawerActions } from 'react-navigation-drawer';
-import { DataResult } from 'types/DataResult';
-import { KeyValue } from 'types/Global';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../../components/list/empty-text/ListEmptyTextComponent';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation from '../../../types/ChargingStation';
+import { DataResult } from '../../../types/DataResult';
+import { KeyValue } from '../../../types/Global';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './ChargingStationOcppParametersStyles';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
 interface State {
   loading?: boolean;
@@ -29,19 +28,22 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       chargingStation: null,
       loading: true,
       refreshing: false,
       chargingStationConfigurationKeyValues: null
-    }
+    };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public async componentDidMount() {
     // Call parent
@@ -56,14 +58,14 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
       // Get Charging Station
       let chargingStation = this.state.chargingStation;
       if (!chargingStation) {
-        const chargingStationID = Utils.getParamFromNavigation(this.props.navigation, 'chargingStationID', null);
+        const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
         chargingStation = await this.getChargingStation(chargingStationID);
       }
       // Get Charging Station Config
-      const chargingStationConfiguration = await this.getChargingStationOcppParameters(chargingStation.id);
+      const chargingStationConfiguration = await this.getChargingStationOcppParameters(chargingStation.id.toString());
       // Sort
       if (chargingStationConfiguration && chargingStationConfiguration.count > 0) {
-        chargingStationConfiguration.result.sort(Utils.sortArrayOfKeyValue);
+        chargingStationConfiguration.result.sort(Utils.sortArrayOfKeyValue.bind(this));
         chargingStationConfigurationKeyValues = chargingStationConfiguration.result;
       }
       // Set
@@ -78,12 +80,11 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
   public getChargingStation = async (chargingStationID: string): Promise<ChargingStation> => {
     try {
       // Get chargingStation
-      const chargingStation = await this.centralServerProvider.getChargingStation({ ID: chargingStationID });
+      const chargingStation = await this.centralServerProvider.getChargingStation(chargingStationID);
       return chargingStation;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'chargers.chargerUnexpectedError', this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'chargers.chargerUnexpectedError', this.props.navigation);
     }
     return null;
   };
@@ -95,8 +96,12 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
       return chargingStationConfiguration;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'chargers.chargerConfigurationUnexpectedError', this.props.navigation);
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'chargers.chargerConfigurationUnexpectedError',
+        this.props.navigation
+      );
     }
     return null;
   };
@@ -112,19 +117,21 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.goBack(null);
+    this.props.navigation.goBack();
     // Do not bubble up
     return true;
   };
 
   public requestChargingStationOcppParametersConfirm() {
     const { chargingStation } = this.state;
-    Alert.alert
-      (I18n.t('chargers.requestConfiguration', { chargeBoxID: chargingStation.id }),
-        I18n.t('chargers.requestConfigurationMessage', { chargeBoxID: chargingStation.id }), [
-        { text: I18n.t('general.yes'), onPress: () => this.requestChargingStationOcppParameters(chargingStation.id) },
+    Alert.alert(
+      I18n.t('chargers.requestConfiguration', { chargeBoxID: chargingStation.id }),
+      I18n.t('chargers.requestConfigurationMessage', { chargeBoxID: chargingStation.id }),
+      [
+        { text: I18n.t('general.yes'), onPress: async () => this.requestChargingStationOcppParameters(chargingStation.id) },
         { text: I18n.t('general.cancel') }
-      ]);
+      ]
+    );
   }
 
   public async requestChargingStationOcppParameters(chargeBoxID: string) {
@@ -140,8 +147,12 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'chargers.chargerConfigurationUnexpectedError', this.props.navigation);
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'chargers.chargerConfigurationUnexpectedError',
+        this.props.navigation
+      );
     }
   }
 
@@ -157,34 +168,42 @@ export default class ChargingStationOcppParameters extends BaseScreen<Props, Sta
           subTitle={chargingStation && chargingStation.inactive ? `(${I18n.t('details.inactive')})` : null}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
-          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+          rightAction={() => {
+            navigation.dispatch(DrawerActions.openDrawer());
+            return true;
+          }}
           rightActionIcon={'menu'}
         />
-        <Button disabled={chargingStation ? chargingStation.inactive : true} block={true} iconLeft={true} info={true}
-          style={style.actionButton} onPress={() => this.requestChargingStationOcppParametersConfirm()}>
-          <Icon style={style.actionButtonIcon} type='MaterialIcons' name='get-app' />
+        <Button
+          disabled={chargingStation ? chargingStation.inactive : true}
+          block
+          iconLeft
+          info
+          style={style.actionButton}
+          onPress={() => this.requestChargingStationOcppParametersConfirm()}>
+          <Icon style={style.actionButtonIcon} type="MaterialIcons" name="get-app" />
           <Text uppercase={false} style={style.actionButtonText}>
             {I18n.t('chargers.requestConfiguration')}
           </Text>
         </Button>
         {loading ? (
-          <Spinner style={style.spinner} color='grey' />
+          <Spinner style={style.spinner} color="grey" />
         ) : (
-            <FlatList
-              data={chargingStationConfigurationKeyValues}
-              renderItem={({ item, index }) => (
-                <View style={index % 2 ? [style.descriptionContainer, style.rowBackground] : style.descriptionContainer}>
-                  <Text style={style.label}>{item.key}</Text>
-                  <ScrollView horizontal={true} alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
-                    <Text style={style.value}>{item.value}</Text>
-                  </ScrollView>
-                </View>
-              )}
-              keyExtractor={(item) => `${item.key}`}
-              refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
-              ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noOCPPParameters')} />}
-            />
-          )}
+          <FlatList
+            data={chargingStationConfigurationKeyValues}
+            renderItem={({ item, index }) => (
+              <View style={index % 2 ? [style.descriptionContainer, style.rowBackground] : style.descriptionContainer}>
+                <Text style={style.label}>{item.key}</Text>
+                <ScrollView horizontal alwaysBounceHorizontal={false} contentContainerStyle={style.scrollViewValue}>
+                  <Text style={style.value}>{item.value}</Text>
+                </ScrollView>
+              </View>
+            )}
+            keyExtractor={(item) => `${item.key}`}
+            refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+            ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('chargers.noOCPPParameters')} />}
+          />
+        )}
       </Container>
     );
   }

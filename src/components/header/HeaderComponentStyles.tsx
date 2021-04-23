@@ -1,11 +1,14 @@
 import deepmerge from 'deepmerge';
-import { Platform } from 'react-native';
-import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
+import { Platform, StyleSheet } from 'react-native';
+import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
-export default function computeStyleSheet(): any {
+/**
+ *
+ */
+export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     header: {
@@ -15,10 +18,10 @@ export default function computeStyleSheet(): any {
       margin: 0,
       borderBottomWidth: 1,
       borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.headerBgColor
+      backgroundColor: commonColor.listHeaderBgColor
     },
     leftHeader: {
-      flexDirection: 'row',
+      flexDirection: 'row'
     },
     rightHeader: {
       flexDirection: 'row',
@@ -26,14 +29,16 @@ export default function computeStyleSheet(): any {
     },
     bodyHeader: {
       flex: 3,
-      paddingLeft: Platform.OS === 'ios' ? 0 : '40@s'
+      paddingLeft: Platform.OS === 'ios' ? 0 : '40@s',
+      height: '100%',
+      justifyContent: 'center'
     },
     titleHeader: {
       color: commonColor.textColor,
-      fontSize: '18@s'
+      fontSize: '19@s'
     },
     titleHeaderWithSubTitle: {
-      fontSize: '18@s'
+      fontSize: '16@s'
     },
     subTitleHeader: {
       color: commonColor.textColor,
@@ -43,6 +48,7 @@ export default function computeStyleSheet(): any {
     },
     logoHeader: {
       width: '45@s',
+      height: '45@s',
       marginLeft: '5@s',
       resizeMode: 'contain'
     },
@@ -59,8 +65,8 @@ export default function computeStyleSheet(): any {
   });
   const portraitStyles = {};
   const landscapeStyles = {};
-  return ResponsiveStylesheet.createOriented({
-    landscape: deepmerge(commonStyles, landscapeStyles),
-    portrait: deepmerge(commonStyles, portraitStyles)
+  return ResponsiveStylesSheet.createOriented({
+    landscape: deepmerge(commonStyles, landscapeStyles) as StyleSheet.NamedStyles<any>,
+    portrait: deepmerge(commonStyles, portraitStyles) as StyleSheet.NamedStyles<any>
   });
 }

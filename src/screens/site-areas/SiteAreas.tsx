@@ -1,17 +1,21 @@
+import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
-import { FlatList, Platform, RefreshControl } from 'react-native';
+import { FlatList, Platform, RefreshControl, ScrollView } from 'react-native';
 import { Location } from 'react-native-location';
 import MapView, { Marker, Region } from 'react-native-maps';
-import { DrawerActions } from 'react-navigation-drawer';
+import Modal from 'react-native-modal';
+import { Modalize } from 'react-native-modalize';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteAreaComponent from '../../components/site-area/SiteAreaComponent';
+import I18nManager from '../../I18n/I18nManager';
 import LocationManager from '../../location/LocationManager';
+import computeModalStyle from '../../ModalStyles';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
@@ -24,8 +28,7 @@ import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SiteAreasFilters, { SiteAreasFiltersDef } from './SiteAreasFilters';
 import computeStyleSheet from './SiteAreasStyles';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
 interface State {
   siteAreas?: SiteArea[];
@@ -37,6 +40,8 @@ interface State {
   initialFilters?: SiteAreasFiltersDef;
   filters?: SiteAreasFiltersDef;
   showMap?: boolean;
+  visible?: boolean;
+  siteAreaSelected?: SiteArea;
 }
 
 export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
@@ -48,7 +53,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   private locationEnabled: boolean;
   private currentRegion: Region;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       siteAreas: [],
@@ -59,25 +64,31 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       count: 0,
       initialFilters: {},
       showMap: false,
+      visible: false,
+      siteAreaSelected: null
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public async componentDidMount() {
     // Get initial filters
     await this.loadInitialFilters();
     // Get initial filters
-    this.siteID = Utils.getParamFromNavigation(this.props.navigation, 'siteID', null);
+    this.siteID = Utils.getParamFromNavigation(this.props.route, 'siteID', null) as string;
     await super.componentDidMount();
   }
 
   public async loadInitialFilters() {
     const centralServerProvider = await ProviderFactory.getProvider();
-    let location = Utils.convertToBoolean(await SecuredStorage.loadFilterValue(
-      centralServerProvider.getUserInfo(), GlobalFilters.LOCATION));
+    let location = Utils.convertToBoolean(
+      await SecuredStorage.loadFilterValue(centralServerProvider.getUserInfo(), GlobalFilters.LOCATION)
+    );
     if (!location) {
       location = false;
     }
@@ -100,12 +111,10 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public getSiteAreas = async (searchText: string, skip: number, limit: number): Promise<DataResult<SiteArea>> => {
-    let siteAreas: DataResult<SiteArea>;
     try {
       // Get current location
       this.currentLocation = await this.getCurrentLocation();
-      // Get the Site Areas
-      siteAreas = await this.centralServerProvider.getSiteAreas({
+      const params = {
         Search: searchText,
         SiteID: this.siteID,
         Issuer: true,
@@ -113,16 +122,26 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
         LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
         LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
-      },
-        { skip, limit }
-      );
+      };
+      // Get the Site Areas
+      const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit });
+      if (siteAreas.count === -1) {
+        // Request nbr of records
+        const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
+        // Set
+        siteAreas.count = sitesAreasNbrRecordsOnly.count;
+      }
+      return siteAreas;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'siteAreas.siteAreaUnexpectedError', this.props.navigation, this.refresh);
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'siteAreas.siteAreaUnexpectedError',
+        this.props.navigation,
+        this.refresh
+      );
     }
-    // Return
-    return siteAreas;
   };
 
   public onBack = () => {
@@ -143,7 +162,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         longitude: gpsCoordinates ? gpsCoordinates[0] : 2.3514616,
         latitude: gpsCoordinates ? gpsCoordinates[1] : 48.8566969,
         latitudeDelta: 0.009,
-        longitudeDelta: 0.009,
+        longitudeDelta: 0.009
       };
     }
   }
@@ -192,76 +211,107 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   public search = async (searchText: string) => {
     this.searchText = searchText;
     await this.refresh();
-  }
+  };
 
   public onMapRegionChange = (region: Region) => {
     this.currentRegion = region;
-  }
+  };
 
   public filterChanged(newFilters: SiteAreasFiltersDef) {
     delete this.currentRegion;
-    this.setState({ filters: newFilters }, () => this.refresh());
+    this.setState({ filters: newFilters }, async () => this.refresh());
   }
 
   public toggleDisplayMap = () => {
     // Refresh region
     this.refreshCurrentRegion(this.state.siteAreas, true);
     // Toggle map
-    this.setState({ showMap: !this.state.showMap })
+    this.setState({ showMap: !this.state.showMap });
+  };
+
+  public showMapSiteDetail = (siteArea: SiteArea) => {
+    this.setState({
+      visible: true,
+      siteAreaSelected: siteArea
+    });
+  };
+
+  public buildModal(navigation: any, siteAreaSelected: SiteArea, modalStyle: any) {
+    if (Platform.OS === 'ios') {
+      return (
+        <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
+          <Modalize alwaysOpen={175} modalStyle={modalStyle.modalContainer}>
+            <SiteAreaComponent siteArea={siteAreaSelected} navigation={navigation} onNavigate={() => this.setState({ visible: false })} />
+          </Modalize>
+        </Modal>
+      );
+    } else {
+      return (
+        <Modal style={modalStyle.modalBottomHalf} isVisible={this.state.visible} onBackdropPress={() => this.setState({ visible: false })}>
+          <View style={modalStyle.modalContainer}>
+            <ScrollView>
+              <SiteAreaComponent siteArea={siteAreaSelected} navigation={navigation} onNavigate={() => this.setState({ visible: false })} />
+            </ScrollView>
+          </View>
+        </Modal>
+      );
+    }
   }
 
   public render() {
     const style = computeStyleSheet();
+    const modalStyle = computeModalStyle();
     const { navigation } = this.props;
-    const { loading, skip, count, limit, initialFilters, showMap } = this.state;
-    const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.siteAreas)
+    const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected } = this.state;
+    const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.siteAreas);
     return (
       <Container style={style.container}>
         <HeaderComponent
           navigation={navigation}
           title={I18n.t('siteAreas.title')}
+          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('siteAreas.siteAreas')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
-          rightAction={() => navigation.dispatch(DrawerActions.openDrawer())}
+          rightAction={() => {
+            navigation.dispatch(DrawerActions.openDrawer());
+            return true;
+          }}
           rightActionIcon={'menu'}
-          diplayMap={!Utils.isEmptyArray(this.state.siteAreas)}
+          displayMap={!Utils.isEmptyArray(this.state.siteAreas)}
           mapIsDisplayed={mapIsDisplayed}
-          diplayMapAction={() => this.toggleDisplayMap()}
+          displayMapAction={() => this.toggleDisplayMap()}
         />
         {loading ? (
-          <Spinner style={style.spinner} color='grey' />
+          <Spinner style={style.spinner} color="grey" />
         ) : (
           <View style={style.content}>
-            <SimpleSearchComponent
-              onChange={(searchText) => this.search(searchText)}
-              navigation={navigation}
-            />
+            <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
             <SiteAreasFilters
-              initialFilters={initialFilters} locationEnabled={this.locationEnabled}
-              onFilterChanged={(newFilters: SiteAreasFiltersDef) => this.setState({ filters: newFilters }, () => this.refresh())}
+              initialFilters={initialFilters}
+              locationEnabled={this.locationEnabled}
+              onFilterChanged={(newFilters: SiteAreasFiltersDef) => this.setState({ filters: newFilters }, async () => this.refresh())}
               ref={(siteAreasFilters: SiteAreasFilters) => this.setScreenFilters(siteAreasFilters)}
             />
-            {mapIsDisplayed ?
-              <MapView
-                style={style.map}
-                region={this.currentRegion}
-                onRegionChange={this.onMapRegionChange}
-              >
-                {this.state.siteAreas.map((siteArea: SiteArea) => {
-                  if (Utils.containsAddressGPSCoordinates(siteArea.address)) {
-                    return (
-                      <Marker
-                        key={siteArea.id}
-                        coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
-                        title={siteArea.name}
-                        description={siteArea.name}
-                      />
-                    );
-                  }
-                  return undefined;
-                })}
-              </MapView>
-            :
+            {mapIsDisplayed ? (
+              <View style={style.map}>
+                <MapView style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
+                  {this.state.siteAreas.map((siteArea: SiteArea) => {
+                    if (Utils.containsAddressGPSCoordinates(siteArea.address)) {
+                      return (
+                        <Marker
+                          key={siteArea.id}
+                          coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
+                          title={siteArea.name}
+                          onPress={() => this.showMapSiteDetail(siteArea)}
+                        />
+                      );
+                    }
+                    return undefined;
+                  })}
+                </MapView>
+                {siteAreaSelected && this.buildModal(navigation, siteAreaSelected, modalStyle)}
+              </View>
+            ) : (
               <FlatList
                 data={this.state.siteAreas}
                 renderItem={({ item }) => <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />}
@@ -272,10 +322,9 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
                 ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('siteAreas.noSiteAreas')} />}
                 ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
               />
-            }
+            )}
           </View>
-        )
-      }
+        )}
       </Container>
     );
   }

@@ -1,10 +1,14 @@
 import deepmerge from 'deepmerge';
-import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
+import { StyleSheet } from 'react-native';
+import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../utils/Utils';
 
-export default function computeStyleSheet(): any {
+/**
+ *
+ */
+export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
@@ -37,7 +41,7 @@ export default function computeStyleSheet(): any {
       marginBottom: '5@s',
       fontSize: '12@s',
       fontWeight: 'bold',
-      color: commonColor.textColor,
+      color: commonColor.textColor
     },
     scrollViewValue: {
       marginTop: '5@s',
@@ -60,12 +64,12 @@ export default function computeStyleSheet(): any {
     },
     rowBackground: {
       backgroundColor: commonColor.headerBgColor
-    },
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};
-  return ResponsiveStylesheet.createOriented({
-    landscape: deepmerge(commonStyles, landscapeStyles),
-    portrait: deepmerge(commonStyles, portraitStyles)
+  return ResponsiveStylesSheet.createOriented({
+    landscape: deepmerge(commonStyles, landscapeStyles) as StyleSheet.NamedStyles<any>,
+    portrait: deepmerge(commonStyles, portraitStyles) as StyleSheet.NamedStyles<any>
   });
 }

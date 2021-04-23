@@ -1,11 +1,15 @@
 import deepmerge from 'deepmerge';
-import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
+import { StyleSheet } from 'react-native';
+import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
 import ThemeManager from '../../custom-theme/ThemeManager';
 import Utils from '../../utils/Utils';
 
-export default function computeStyleSheet(): any {
+/**
+ *
+ */
+export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const darkTheme = ThemeManager.getInstance().isThemeTypeIsDark();
   const connectorSuccessColor = darkTheme ? commonColor.brandSuccessLight : commonColor.brandSuccess;
@@ -13,7 +17,7 @@ export default function computeStyleSheet(): any {
   const connectorWarningBorderColor = darkTheme ? commonColor.brandWarning : commonColor.brandWarningDark;
   const connectorDangerColor = darkTheme ? commonColor.brandDangerLight : commonColor.brandDanger;
   const connectorDangerBorderColor = darkTheme ? commonColor.brandDanger : commonColor.brandDangerDark;
-  const connectorDisabledColor = darkTheme ? commonColor.brandDisabledLight : commonColor.brandDisabled;
+  const connectorDisabledColor = darkTheme ? commonColor.brandDisabledLight : commonColor.brandDisabledDark;
   const connectorDisabledBorderColor = darkTheme ? commonColor.brandDisabled : commonColor.brandDisabledDark;
   const connectorPrimaryColor = darkTheme ? commonColor.brandPrimaryLight : commonColor.brandPrimary;
   const connectorPrimaryBorderColor = darkTheme ? commonColor.brandPrimary : commonColor.brandPrimaryDark;
@@ -135,8 +139,8 @@ export default function computeStyleSheet(): any {
   });
   const portraitStyles = {};
   const landscapeStyles = {};
-  return ResponsiveStylesheet.createOriented({
-    landscape: deepmerge(commonStyles, landscapeStyles),
-    portrait: deepmerge(commonStyles, portraitStyles)
+  return ResponsiveStylesSheet.createOriented({
+    landscape: deepmerge(commonStyles, landscapeStyles) as StyleSheet.NamedStyles<any>,
+    portrait: deepmerge(commonStyles, portraitStyles) as StyleSheet.NamedStyles<any>
   });
 }

@@ -2,15 +2,17 @@ import { StyleProvider, View } from 'native-base';
 import React from 'react';
 import { EventSubscription } from 'react-native';
 import { Appearance, AppearanceProvider } from 'react-native-appearance';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { Theme } from 'react-native-paper/lib/typescript/src/types';
 import SplashScreen from 'react-native-splash-screen';
 
 import App from './src/App';
 import buildTheme from './src/custom-theme';
 import ThemeManager from './src/custom-theme/ThemeManager';
+import BaseProps from './src/types/BaseProps';
 import { ThemeType } from './src/types/Theme';
 
-export interface Props {
-}
+export interface Props extends BaseProps {}
 
 interface State {
   switchTheme?: boolean;
@@ -19,7 +21,7 @@ interface State {
 export default class AppBootstrap extends React.Component<Props, State> {
   private themeSubscription: EventSubscription;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       switchTheme: false
@@ -35,17 +37,17 @@ export default class AppBootstrap extends React.Component<Props, State> {
     // Set theme
     themeManager.setThemeType(Appearance.getColorScheme() as ThemeType);
     // Display
-    this.setState({switchTheme: true});
+    this.setState({ switchTheme: true });
     // Subscribe
     this.themeSubscription = Appearance.addChangeListener(({ colorScheme }) => {
       // Set the new theme
       themeManager.setThemeType(Appearance.getColorScheme() as ThemeType);
       // Refresh
-      this.setState({switchTheme: false}, () => this.setState({switchTheme: true}));
+      this.setState({ switchTheme: false }, () => this.setState({ switchTheme: true }));
     });
   }
 
-  public async componentWillUnmount() {
+  public componentWillUnmount() {
     if (this.themeSubscription) {
       this.themeSubscription.remove();
     }
@@ -53,15 +55,21 @@ export default class AppBootstrap extends React.Component<Props, State> {
 
   public render() {
     const { switchTheme } = this.state;
-    return (
-      switchTheme ?
-        <AppearanceProvider>
-          <StyleProvider style={buildTheme(Appearance.getColorScheme() as ThemeType)}>
-            <App/>
-          </StyleProvider>
-        </AppearanceProvider>
-      :
-        <View/>
-    )
+    const themeManager = ThemeManager.getInstance();
+    const theme: Theme = {
+      ...DefaultTheme,
+      dark: themeManager.isThemeTypeIsDark()
+    };
+    return switchTheme ? (
+      <AppearanceProvider>
+        <StyleProvider style={buildTheme(Appearance.getColorScheme() as ThemeType)}>
+          <PaperProvider theme={theme}>
+            <App />
+          </PaperProvider>
+        </StyleProvider>
+      </AppearanceProvider>
+    ) : (
+      <View />
+    );
   }
 }

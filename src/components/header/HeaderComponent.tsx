@@ -1,8 +1,8 @@
 import { Body, Header, Icon, Left, Right, Subtitle, Title } from 'native-base';
 import React from 'react';
-import { BackHandler, Image } from 'react-native';
+import { BackHandler, Image, ImageStyle } from 'react-native';
 
-import logo from '../../../assets/logo-low.png';
+import defaultTenantLogo from '../../../assets/logo-low.png';
 import FilterModalContainerComponent from '../../components/search/filter/containers/FilterModalContainerComponent';
 import BaseProps from '../../types/BaseProps';
 import { IconType } from '../../types/Icon';
@@ -11,16 +11,18 @@ import computeStyleSheet from './HeaderComponentStyles';
 export interface Props extends BaseProps {
   title: string;
   subTitle?: string;
-  leftAction?: () => void;
+  hideHomeAction?: boolean;
+  leftAction?: () => boolean;
   leftActionIcon?: string;
   leftActionIconType?: IconType;
-  rightAction?: () => void;
+  rightAction?: () => boolean;
   rightActionIcon?: string;
   rightActionIconType?: IconType;
   filters?: any;
-  diplayMap?: boolean;
+  displayMap?: boolean;
   mapIsDisplayed?: boolean;
-  diplayMapAction?: () => void;
+  displayMapAction?: () => void;
+  tenantLogo?: string;
 }
 
 interface State {
@@ -28,28 +30,30 @@ interface State {
 }
 
 export default class HeaderComponent extends React.Component<Props, State> {
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      hasFilter: false,
-    }
-    // Default values
-    this.searchIsVisible = false;
-  }
-
   public static defaultProps = {
     leftActionIconType: 'MaterialIcons',
-    rightActionIconType: 'MaterialIcons',
+    rightActionIconType: 'MaterialIcons'
   };
   public state: State;
   public props: Props;
   private searchIsVisible: boolean;
   private filterModalContainerComponent: FilterModalContainerComponent;
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
-    super.setState(state, callback);
+  public constructor(props: Props) {
+    super(props);
+    this.state = {
+      hasFilter: false
+    };
+    // Default values
+    this.searchIsVisible = false;
   }
+
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
+    super.setState(state, callback);
+  };
 
   public getFilterModalContainerComponent(): FilterModalContainerComponent {
     return this.filterModalContainerComponent;
@@ -81,31 +85,49 @@ export default class HeaderComponent extends React.Component<Props, State> {
   public render = () => {
     const style = computeStyleSheet();
     const { hasFilter } = this.state;
-    const { title, subTitle, leftAction, leftActionIcon, leftActionIconType,
-      rightAction, rightActionIcon, rightActionIconType,
-      diplayMap, diplayMapAction, mapIsDisplayed, navigation } = this.props;
+    const {
+      title,
+      subTitle,
+      leftAction,
+      leftActionIcon,
+      leftActionIconType,
+      rightAction,
+      rightActionIcon,
+      rightActionIconType,
+      hideHomeAction,
+      tenantLogo,
+      displayMap,
+      displayMapAction,
+      mapIsDisplayed,
+      navigation
+    } = this.props;
     return (
       <Header style={style.header}>
-        {leftAction ?
+        {leftAction ? (
           <Left style={style.leftHeader}>
-            <Icon type={leftActionIconType} name={leftActionIcon}
-              style={style.iconLeftHeader} onPress={() => leftAction()}/>
-            <Icon type='MaterialIcons' name='home'
-              style={style.iconLeftHeader} onPress={() => navigation.navigate({ routeName: 'HomeNavigator' })} />
+            <Icon type={leftActionIconType} name={leftActionIcon} style={style.iconLeftHeader} onPress={leftAction} />
+            {!hideHomeAction && (
+              <Icon type="MaterialIcons" name="home" style={style.iconLeftHeader} onPress={() => navigation.navigate('HomeNavigator')} />
+            )}
           </Left>
-        :
+        ) : (
           <Left style={style.leftHeader}>
-            <Image source={logo} style={style.logoHeader} />
+            <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader as ImageStyle} />
           </Left>
-        }
+        )}
         <Body style={style.bodyHeader}>
           <Title style={subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader}>{title}</Title>
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
         </Body>
         <Right style={style.rightHeader}>
           {hasFilter && (
-            <Icon type={'MaterialCommunityIcons'} name={this.filterModalContainerComponent &&
-              this.filterModalContainerComponent.getNumberOfFilters() > 0 ? 'filter' : 'filter-outline'}
+            <Icon
+              type={'MaterialCommunityIcons'}
+              name={
+                this.filterModalContainerComponent && this.filterModalContainerComponent.getNumberOfFilters() > 0
+                  ? 'filter'
+                  : 'filter-outline'
+              }
               onPress={() => {
                 this.searchIsVisible = !this.searchIsVisible;
                 // Show Filter Search
@@ -113,20 +135,24 @@ export default class HeaderComponent extends React.Component<Props, State> {
                   this.filterModalContainerComponent.setVisible(this.searchIsVisible);
                 }
               }}
-              style={style.iconRightHeader} />
+              style={style.iconRightHeader}
+            />
           )}
-          {diplayMap && (
-            <Icon type='MaterialCommunityIcons' name={mapIsDisplayed ? 'format-list-text' : 'earth'}
-              style={style.iconRightHeader} onPress={() => diplayMapAction()}/>
+          {displayMap && (
+            <Icon
+              type="MaterialCommunityIcons"
+              name={mapIsDisplayed ? 'format-list-text' : 'earth'}
+              style={style.iconRightHeader}
+              onPress={displayMapAction}
+            />
           )}
           {rightAction ? (
-            <Icon type={rightActionIconType} name={rightActionIcon}
-              style={style.iconRightHeader} onPress={() => rightAction()}/>
+            <Icon type={rightActionIconType} name={rightActionIcon} style={style.iconRightHeader} onPress={rightAction} />
           ) : (
-            <Image source={logo} style={style.logoHeader} />
+            <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader as ImageStyle} />
           )}
         </Right>
       </Header>
     );
-  }
+  };
 }

@@ -10,8 +10,7 @@ import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './EulaStyles';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
 interface State {
   i18nLanguage?: string;
@@ -23,43 +22,42 @@ export default class Eula extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       eulaTextHtml: '',
       i18nLanguage: Utils.getLanguageFromLocale(I18n.currentLocale()),
-      loading: true,
+      loading: true
     };
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public async componentDidMount() {
     await super.componentDidMount();
     await this.loadEndUserLicenseAgreement();
-  };
+  }
 
   public loadEndUserLicenseAgreement = async () => {
     const { i18nLanguage: i18nLanguage } = this.state;
     // Get the first tenant for the EULA (same in all tenants)
-    const tenants = await  this.centralServerProvider.getTenants();
+    const tenants = await this.centralServerProvider.getTenants();
     try {
-      const result: any = await this.centralServerProvider.getEndUserLicenseAgreement(
-        tenants[0].subdomain,
-        {
-          Language: i18nLanguage
-        }
-      );
+      const result: any = await this.centralServerProvider.getEndUserLicenseAgreement(tenants[0].subdomain, {
+        Language: i18nLanguage
+      });
       this.setState({
         loading: false,
         eulaTextHtml: result.text
       });
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error,
-        'general.eulaUnexpectedError', this.props.navigation);
+      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'general.eulaUnexpectedError', this.props.navigation);
     }
   };
 
@@ -78,16 +76,20 @@ export default class Eula extends BaseScreen<Props, State> {
         <HeaderComponent
           navigation={this.props.navigation}
           title={I18n.t('authentication.eula')}
-          leftAction={() => this.props.navigation.navigate('Login')}
+          leftAction={() => {
+            this.props.navigation.navigate('Login');
+            return true;
+          }}
           leftActionIcon={'navigate-before'}
+          hideHomeAction
         />
         {loading ? (
-          <Spinner style={style.spinner} color='grey' />
+          <Spinner style={style.spinner} color="grey" />
         ) : (
-            <ScrollView style={style.container}>
-              <HTMLView value={eulaTextHtml} />
-            </ScrollView>
-          )}
+          <ScrollView style={style.container}>
+            <HTMLView value={eulaTextHtml} />
+          </ScrollView>
+        )}
       </Container>
     );
   }

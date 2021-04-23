@@ -1,10 +1,14 @@
 import deepmerge from 'deepmerge';
-import ResponsiveStylesheet from 'react-native-responsive-stylesheet';
+import { StyleSheet } from 'react-native';
+import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
-export default function computeStyleSheet(): any {
+/**
+ *
+ */
+export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     noDisplay: {
@@ -28,9 +32,10 @@ export default function computeStyleSheet(): any {
       alignItems: 'center'
     },
     logo: {
-      resizeMode: 'contain',
+      width: '75%',
+      height: '100@s',
       marginTop: '10@s',
-      height: '100@s'
+      resizeMode: 'contain'
     },
     appText: {
       color: commonColor.textColor,
@@ -46,7 +51,7 @@ export default function computeStyleSheet(): any {
       color: commonColor.textColor,
       marginTop: '20@s',
       fontSize: '15@s',
-      alignSelf: 'center',
+      alignSelf: 'center'
     },
     appTenantName: {
       color: commonColor.textColor,
@@ -54,7 +59,7 @@ export default function computeStyleSheet(): any {
       marginBottom: '5@s',
       fontSize: '15@s',
       fontWeight: 'bold',
-      alignSelf: 'center',
+      alignSelf: 'center'
     },
     formErrorTextEula: {
       alignSelf: 'center',
@@ -68,7 +73,7 @@ export default function computeStyleSheet(): any {
     },
     linksButton: {
       alignSelf: 'center',
-      marginBottom: '15@s',
+      marginBottom: '15@s'
     },
     linksTextButton: {
       fontSize: '13@s',
@@ -85,19 +90,40 @@ export default function computeStyleSheet(): any {
       backgroundColor: commonColor.brandDanger
     },
     fab: {
-      backgroundColor: commonColor.buttonBg,
+      backgroundColor: commonColor.buttonBg
     },
     fabIcon: {
       color: commonColor.textColor
     },
     footer: {
       backgroundColor: commonColor.containerBgColor
+    },
+    qrCodeContainer: {
+      marginBottom: '15@s',
+      marginLeft: '15@s',
+      width: '50@s'
+    },
+    qrCodeButton: {
+      width: '50@s',
+      height: '50@s',
+      borderRadius: '35@s',
+      backgroundColor: commonColor.buttonBg,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    qrCodeIcon: {
+      fontSize: '25@s',
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};
-  const landscapeStyles = {};
-  return ResponsiveStylesheet.createOriented({
-    landscape: deepmerge(commonStyles, landscapeStyles),
-    portrait: deepmerge(commonStyles, portraitStyles)
+  const landscapeStyles = {
+    qrCodeContainer: {
+      marginTop: '5%'
+    }
+  };
+  return ResponsiveStylesSheet.createOriented({
+    landscape: deepmerge(commonStyles, landscapeStyles) as StyleSheet.NamedStyles<any>,
+    portrait: deepmerge(commonStyles, portraitStyles) as StyleSheet.NamedStyles<any>
   });
 }

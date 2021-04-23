@@ -1,13 +1,13 @@
 import Address from './Address';
 import CreatedUpdatedProps from './CreatedUpdatedProps';
+import ListItem from './ListItem';
 
-export default interface User extends CreatedUpdatedProps {
-  id: string;
+export default interface User extends CreatedUpdatedProps, ListItem {
   email: string;
   phone?: string;
   mobile: string;
-  role: string;
-  status: string;
+  role: UserRole;
+  status: UserStatus;
   locale: string;
   plateID?: string;
   address?: Address;
@@ -50,4 +50,19 @@ export interface UserSite {
   user: User;
   siteID: string;
   siteAdmin: boolean;
+}
+
+export enum UserStatus {
+  PENDING = 'P',
+  ACTIVE = 'A',
+  INACTIVE = 'I',
+  BLOCKED = 'B',
+  LOCKED = 'L'
+}
+
+export enum UserRole {
+  SUPER_ADMIN = 'S',
+  ADMIN = 'A',
+  BASIC = 'B',
+  DEMO = 'D'
 }

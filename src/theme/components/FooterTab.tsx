@@ -67,8 +67,7 @@ export default (variables /* : * */ = variable) => {
         lineHeight: 16
       }
     },
-    backgroundColor:
-      Platform.OS === PLATFORM.ANDROID ? variables.footerDefaultBg : undefined,
+    backgroundColor: Platform.OS === PLATFORM.ANDROID ? variables.footerDefaultBg : undefined,
     flexDirection: 'row',
     justifyContent: 'space-between',
     flex: 1,

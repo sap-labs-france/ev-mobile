@@ -6,25 +6,25 @@ import Modal from 'react-native-modal';
 import computeStyleSheet from '../../../../ModalStyles';
 import FilterContainerComponent, { FilterContainerComponentProps, FilterContainerComponentState } from './FilterContainerComponent';
 
-export interface Props extends FilterContainerComponentProps {
-}
+export interface Props extends FilterContainerComponentProps {}
 
-interface State extends FilterContainerComponentState {
-}
+interface State extends FilterContainerComponentState {}
 
 export default class FilterModalContainerComponent extends FilterContainerComponent {
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public async notifyFilterChanged() {
     const { onFilterChanged } = this.props;
@@ -40,7 +40,7 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
     onFilterChanged(this.getFilters(), true);
     // Close
     this.setVisible(false);
-  }
+  };
 
   public clearFiltersAndNotify = async () => {
     const { onFilterChanged } = this.props;
@@ -52,30 +52,28 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
     onFilterChanged(this.getFilters(), true);
     // Close
     this.setVisible(false);
-  }
+  };
 
   public render = () => {
     const style = computeStyleSheet();
     const { visible } = this.state;
     return (
       <Modal style={style.modal} isVisible={visible} onBackdropPress={() => this.setState({ visible: false })}>
-        <View style ={style.modalContainer}>
-          <View style ={style.modalHeaderContainer}>
+        <View style={style.modalContainer}>
+          <View style={style.modalHeaderContainer}>
             <Text style={style.modalTextHeader}>{I18n.t('general.filters')}</Text>
           </View>
-          <View style={style.modalContentContainer}>
-            {this.props.children}
-          </View>
+          <View style={style.modalContentContainer}>{this.props.children}</View>
           <View style={style.modalButtonsContainer}>
-            <Button style={style.modalButton} full={true} light={true} onPress={this.applyFiltersAndNotify} >
+            <Button style={style.modalButton} full light onPress={this.applyFiltersAndNotify}>
               <Text style={style.modalTextButton}>{I18n.t('general.apply')}</Text>
             </Button>
-            <Button style={style.modalButton} full={true} danger={true} onPress={this.clearFiltersAndNotify} >
+            <Button style={style.modalButton} full danger onPress={this.clearFiltersAndNotify}>
               <Text style={style.modalTextButton}>{I18n.t('general.clear')}</Text>
             </Button>
           </View>
         </View>
       </Modal>
     );
-  }
+  };
 }

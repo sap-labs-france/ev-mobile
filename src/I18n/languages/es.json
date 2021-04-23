@@ -1,5 +1,6 @@
 {
   "general": {
+    "notAuthorized": "You are not authorized to perform this action",
     "migrationError": "Error during migration of data",
     "cannotConnectBackend": "Se ha perdido la conexión",
     "unexpectedErrorBackend": "Error inesperado en el backend",
@@ -16,6 +17,7 @@
     "ok": "Ok",
     "yes": "Sí",
     "no": "No",
+    "manually": "Manually",
     "filters": "Filtros",
     "create": "Crear",
     "clear": "Borrar",
@@ -30,8 +32,13 @@
     "exitAppConfirm": "¿Está seguro que desea salir de la aplicación?",
     "deleteTenant": "Eliminar organización",
     "deleteTenantConfirm": "¿Está seguro que desea eliminar la organización: '{{tenantName}}'?",
+    "deleteTenantSuccess": "Organization '{{tenantName}}' has been deleted",
     "restoreTenants": "Resaurar organizaciones",
     "restoreTenantsConfirm": "¿Está seguro que desea restaurar la lista de organizaciones?",
+    "restoreTenantsSuccess": "Organization list has been restored",
+    "createTenantSuccess": "New tenant '{{tenantName}}' has been registered",
+    "registerToNewTenantTitle": "Sign up",
+    "registerToNewTenant": "Do you want to sign up in the new organization '{{tenantName}}'?",
     "noRecordFound": "Ningún registro fue encontrado",
     "day": "d",
     "hour": "h",
@@ -43,13 +50,18 @@
     "onlyMyTransactions": "Mis sesiones",
     "onlyAvailableChargers": "Cargadores disponibles",
     "wrongTenant": "Se ha conectado a la organización equivocada",
-    "tenantExists": "La organización ya existe",
+    "tenantUnknown": "Unknown organization '{{tenantSubdomain}}'",
+    "mustLoggedToTenant": "You must be logged to organization '{{tenantName}}'",
+    "tenantMissing": "The organization is missing",
+    "tenantExists": "La organización '{{tenantName}}' ya existe",
     "createdOn": "Creado en",
     "createdBy": "Creado por",
     "lastChangedOn": "Última modificación hecha en",
     "lastChangedBy": "Última modificación hecha por",
+    "mobile": "Móvil",
     "errorTitle": "Titulo del error",
-    "errorDescription": "Descripción del error"
+    "errorDescription": "Descripción del error",
+    "scanQrCodeSuccess": "El código QR se ha escaneado correctamente"
   },
   "sidebar": {
     "home": "Menú principal",
@@ -57,9 +69,15 @@
     "chargers": " Estaciones de carga",
     "transactionsHistory": "Historial de sesiones",
     "transactionsInProgress": "Sesiones en progreso",
-    "statistics": "Estadísticas"
+    "statistics": "Estadísticas",
+    "reportError": "Reportar error",
+    "users": "Users",
+    "badges": "Badges",
+    "cars": "Cars"
   },
-	"authentication": {
+  "authentication": {
+    "noTenantFoundTitle" : "No organization found",
+    "noTenantFoundMessage" : "Do you want to register a new organization using a QR-Code?",
     "tenantTitle": "Organización",
     "mandatoryTenantSubDomain": "El subdominio de la organización es obligatorio",
     "mandatoryTenantName": "El nombre de la organizacion es obligatorio",
@@ -69,6 +87,7 @@
     "mandatoryFirstName": "El nombre es obligatorio",
     "mandatoryEmail": "El correo electrónico es obligatorio",
     "invalidEmail": "El correo electrónico es inválido",
+    "invalidMobile": "El móvil no es válido",
     "mandatoryPassword": "La contraseña es obligatoria",
     "logOut": "Cerrar sesión",
     "mustSelectTenant": "Seleccione una organización",
@@ -110,22 +129,66 @@
     "password": "Contraseña",
     "repeatPassword": "Repita la contraseña",
     "signUp": "Registrarse",
+    "signIn": "Sign In",
     "passwordRule": "La contraseña debe contener al menos 8 caracteres; 1 letra minúscula, 1 mayúscula, 1 número y 1 símbolo especial",
     "passwordNotMatch": "Las contraseñas no coinciden",
-    "tenant": "Escoja una organización",
+    "tenant": "Organización",
     "createTenantTitle": "Crear organización",
+    "createTenantText": "How do you want to create the organization ?",
     "tenantSubdomain": "Subdominio",
     "tenantName": "Nombre",
     "tenantEndpoint": "Cloud",
-    "phone" : "Teléfono",
+    "phone": "Teléfono",
     "mandatoryPhone": "El número de teléfono es obligatorio",
     "mandatoryErrorTitle": "El título del error es obligatorio",
-    "mandatoryErrorDescription": "La descripción del error es obligatoria",
-    "reportErrorSuccess": "The error has been reported successfully",
-    "reportErrorFailed": "Cannot report the error"
+    "mandatoryErrorSubject": "El tema es obligatorio",
+    "mandatoryErrorDescription": "La descripción es obligatoria",
+    "reportErrorSuccess": "El error se ha informado correctamente",
+    "reportErrorFailed": "No se puede informar el error"
+  },
+  "qrCode": {
+    "qrCode": "QR Code",
+    "browseScan&Charge": "Scan & Charge",
+    "browseScan&ChargeNote": "Scan the Charging Station's QR Code",
+    "wrongOrganizationTitle": "Change Organization",
+    "wrongOrganizationMessage": "The charging Station you are trying to access is not in this organization, do you want to switch to '{{tenantName}}'?",
+    "invalidQRCode": "Invalid QR Code",
+    "unknownQRCode": "Unknown QR Code",
+    "unknownEndpoint": "Unknown cloud '{{endpoint}}'",
+    "unknownOrganizationTitle": "Unknown Organization",
+    "unknownOrganizationMessage": "You scanned an unknown organization '{{tenantName}}', do you want to create it and log into it?",
+    "newOrganizationTitle": "New Organization",
+    "newOrganizationMessage": "Do you want to save the new organization '{{tenantName}}'?",
+    "unknownChargingStation": "Unknown Charging Station '{{chargingStationID}}'",
+    "unknownConnector": "Unknown Connector ID '{{connectorID}}'",
+    "scanTenantQrCodeTitle": "Scan Tenant",
+    "scanTenantQrCodeSuccess": "Organization '{{tenantName}}' has saved",
+    "scanChargingStationQrCodeTitle": "Scan Charging Station"
   },
   "users": {
-    "userUnexpectedError": "No se ha podido cargar el usuario"
+    "userUnexpectedError": "No se ha podido cargar el usuario",
+    "noUsers": "No users",
+    "users": "Users(s)",
+  },
+  "userRoles": {
+    "admin": "Admin",
+    "basic": "Basic",
+    "superAdmin": "Super Admin",
+    "demo": "Demo",
+    "unknown": "Unknown"
+  },
+  "userStatuses": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "locked": "Locked",
+    "blocked": "Blocked",
+    "pending": "Pending",
+    "unknown": "Unknown"
+  },
+  "cars": {
+    "noCars": "No cars",
+    "carUnexpectedError": "An error occurred",
+    "cars": "Car(s)"
   },
   "transactions": {
     "transaction": "Sesión",
@@ -141,6 +204,8 @@
     "transactionUnexpectedError": "No se ha podido cargar la sesión",
     "transactionStatsUnexpectedError": "No se pueden leer las estadísticas",
     "transactionStartUnexpectedError": "No puede comenzar la sesión",
+    "carNotConnectedError": "Your car is not connected to the charging station",
+    "connectorNotAvailable": "This charging station's connector is not available",
     "transactionStopUnexpectedError": "No se puede detener la sesión"
   },
   "home": {
@@ -156,6 +221,12 @@
     "noOngoingSessions": "Ninguna sesión en progreso",
     "ongoingSessionsNote": "Navegar a las Sesiones en progreso",
     "statistics": "Estadísticas",
+    "tags": "Badges",
+    "tagsNote": "Badge list",
+    "users": "Users",
+    "usersNote": "User list",
+    "cars": "Cars",
+    "carsNote": "Cars List",
     "numberOfSessions": "{{nbrSessions}} sesiones",
     "noSessions": "Ninguna sesión encontrada",
     "numberOfSessionsNote": "Número total de sesiones",
@@ -174,13 +245,15 @@
     "free": "Disponible",
     "occupied": "Ocupado",
     "noSites": "Sitio no encontrado",
-    "siteUnexpectedError": "No se ha podido cargar el sitio"
+    "siteUnexpectedError": "No se ha podido cargar el sitio",
+    "sites": "Site(s)"
   },
   "siteAreas": {
     "title": "Zona",
     "noChargers": "Esta zona no tiene cargadores",
     "noSiteAreas": "Zona no encontrada",
-    "siteAreaUnexpectedError": "No se ha podido cargar la zona"
+    "siteAreaUnexpectedError": "No se ha podido cargar la zona",
+    "siteAreas": "Site Area(s)"
   },
   "chargers": {
     "title": "Estaciones de carga",
@@ -195,7 +268,7 @@
     "chargerClearCacheUnexpectedError": "No se puede borrar el caché de la estación de carga",
     "chargerUnlockUnexpectedError": "No se puede desbloquear el conector",
     "heartBeatOkMessage": "'{{chargeBoxID}}' funciona correctamente e informó su estatus hace un minuto.",
-    "heartBeatKoMessage": "'{{chargeBoxID}}' no funciona correctamente y no ha informado su estatus desde {{lastHeartBeat}}.",
+    "heartBeatKoMessage": "'{{chargeBoxID}}' no funciona correctamente y no ha informado su estatus desde {{lastSeen}}.",
     "resetHard": "Reiniciar",
     "resetHardMessage": "¿Está seguro que desea reiniciar '{{chargeBoxID}}'?",
     "resetSoft": "Resetear",
@@ -231,8 +304,14 @@
     "chademo": "Chademo",
     "domestic": "Doméstico"
   },
+  "tags": {
+    "noTags": "No badges",
+    "tags": "Badge(s)",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
   "details": {
-    "connector": "Conector",
+    "connector": "Connector",
     "connectors": "Conectores",
     "stoppedAt": "Detenido en",
     "stoppedBy": "Detenido por",
@@ -250,7 +329,7 @@
     "notAuthorised": "No está autorizado para detener la transacción.",
     "accepted": "La solicitud ha sido aceptada",
     "noBadgeID": "Ninguna insignia en su perfil",
-    "denied": "La solicitud ha fallado",
+    "denied": "Request has has been rejected",
     "duration": "(hh:mm)",
     "total": "Total",
     "maximum": "Máximo",
@@ -268,6 +347,7 @@
     "connectorMax": "Conector de potencia máxima (kW)",
     "noData": "Sin datos",
     "noSessionInProgress": "Ninguna sesión en progreso",
+    "noConsumptionData": "No consumption data",
     "serialNumber": "Número de serie",
     "privateURL": "URL privada",
     "publicURL": "URL pública",

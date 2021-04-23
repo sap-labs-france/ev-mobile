@@ -1,5 +1,6 @@
 {
   "general": {
+    "notAuthorized": "You are not authorized to perform this action",
     "migrationError": "Error during migration of data",
     "cannotConnectBackend": "Connection has been lost",
     "unexpectedErrorBackend": "Unexpected Backend Error",
@@ -16,6 +17,7 @@
     "ok": "Ok",
     "yes": "Yes",
     "no": "No",
+    "manually": "Manually",
     "filters": "Filters",
     "create": "Create",
     "clear": "Clear",
@@ -30,8 +32,13 @@
     "exitAppConfirm": "Do you really want to exit the application?",
     "deleteTenant": "Delete Organization",
     "deleteTenantConfirm": "Do you really want to delete the organization '{{tenantName}}'?",
+    "deleteTenantSuccess": "Organization '{{tenantName}}' has been deleted",
     "restoreTenants": "Restore Organizations",
     "restoreTenantsConfirm": "Do you really want to restore the initial list of organizations?",
+    "restoreTenantsSuccess": "Organization list has been restored",
+    "createTenantSuccess": "New tenant '{{tenantName}}' has been registered",
+    "registerToNewTenantTitle": "Sign up",
+    "registerToNewTenant": "Do you want to sign up in the new organization '{{tenantName}}'?",
     "noRecordFound": "No record found",
     "day": "d",
     "hour": "h",
@@ -43,13 +50,18 @@
     "onlyMyTransactions": "My Sessions",
     "onlyAvailableChargers": "Available charging stations",
     "wrongTenant": "You are connected to the wrong organization",
-    "tenantExists": "The organization already exists.",
+    "tenantUnknown": "Unknown organization '{{tenantSubdomain}}'",
+    "mustLoggedToTenant": "You must be logged to organization '{{tenantName}}'",
+    "tenantMissing": "The organization is missing",
+    "tenantExists": "The organization '{{tenantName}}' already exists",
     "createdOn": "Created On",
     "createdBy": "Created By",
     "lastChangedOn": "Last Changed On",
     "lastChangedBy": "Last Changed By",
+    "mobile": "Mobile",
     "errorTitle": "Error title",
-    "errorDescription": "Description"
+    "errorDescription": "Description",
+    "scanQrCodeSuccess": "The QR code has been scanned successfully"
   },
   "sidebar": {
     "home": "Home",
@@ -57,9 +69,15 @@
     "chargers": "Charging Stations",
     "transactionsHistory": "Sessions History",
     "transactionsInProgress": "Sessions In Progress",
-    "statistics": "Statistics"
+    "statistics": "Statistics",
+    "reportError": "Report Error",
+    "users": "Users",
+    "badges": "Badges",
+    "cars": "Cars"
   },
-	"authentication": {
+  "authentication": {
+    "noTenantFoundTitle" : "No organization found",
+    "noTenantFoundMessage" : "Do you want to register a new organization using a QR-Code?",
     "tenantTitle": "Organization",
     "mandatoryTenantSubDomain": "The Organization subdomain is mandatory",
     "mandatoryTenantName": "The Organization name is mandatory",
@@ -69,6 +87,7 @@
     "mandatoryFirstName": "The First Name is mandatory",
     "mandatoryEmail": "The email is mandatory",
     "invalidEmail": "The email is invalid",
+    "invalidMobile": "The mobile is invalid",
     "mandatoryPassword": "The Password is mandatory",
     "logOut": "Log Out",
     "mustSelectTenant": "Select an Organization",
@@ -110,22 +129,66 @@
     "password": "Password",
     "repeatPassword": "Repeat password",
     "signUp": "Sign Up",
+    "signIn": "Sign In",
     "passwordRule": "Must contain 1 letter lowercase and uppercase, 1 number, 1 special char and 8 chars long",
     "passwordNotMatch": "Password does not match",
-    "tenant": "Choose an Organization",
+    "tenant": "Organization",
     "createTenantTitle": "Create Organization",
+    "createTenantText": "How do you want to create the organization ?",
     "tenantSubdomain": "Subdomain",
     "tenantName": "Name",
     "tenantEndpoint": "Cloud",
-    "phone" : "Phone",
+    "phone": "Phone",
     "mandatoryPhone": "The phone number is mandatory",
     "mandatoryErrorTitle": "The title is mandatory",
-    "mandatoryErrorDescription": "The error description is mandatory",
+    "mandatoryErrorSubject": "The subject is mandatory",
+    "mandatoryErrorDescription": "The description is mandatory",
     "reportErrorSuccess": "The error has been reported successfully",
     "reportErrorFailed": "Cannot report the error"
   },
+  "qrCode": {
+    "qrCode": "QR Code",
+    "browseScan&Charge": "Scan & Charge",
+    "browseScan&ChargeNote": "Scan the Charging Station's QR Code",
+    "wrongOrganizationTitle": "Change Organization",
+    "wrongOrganizationMessage": "The charging Station you are trying to access is not in this organization, do you want to switch to '{{tenantName}}'?",
+    "invalidQRCode": "Invalid QR Code",
+    "unknownQRCode": "Unknown QR Code",
+    "unknownEndpoint": "Unknown cloud '{{endpoint}}'",
+    "unknownOrganizationTitle": "Unknown Organization",
+    "unknownOrganizationMessage": "You scanned an unknown organization '{{tenantName}}', do you want to create it and log into it?",
+    "newOrganizationTitle": "New Organization",
+    "newOrganizationMessage": "Do you want to save the new organization '{{tenantName}}'?",
+    "unknownChargingStation": "Unknown Charging Station '{{chargingStationID}}'",
+    "unknownConnector": "Unknown Connector ID '{{connectorID}}'",
+    "scanTenantQrCodeTitle": "Scan Tenant",
+    "scanTenantQrCodeSuccess": "Organization '{{tenantName}}' has been saved successfully",
+    "scanChargingStationQrCodeTitle": "Scan Charging Station"
+  },
   "users": {
-    "userUnexpectedError": "Cannot read the users"
+    "userUnexpectedError": "Cannot read the users",
+    "noUsers": "No users",
+    "users": "Users(s)"
+  },
+  "userRoles": {
+    "admin": "Admin",
+    "basic": "Basic",
+    "superAdmin": "Super Admin",
+    "demo": "Demo",
+    "unknown": "Unknown"
+  },
+  "userStatuses": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "locked": "Locked",
+    "blocked": "Blocked",
+    "pending": "Pending",
+    "unknown": "Unknown"
+  },
+  "cars": {
+    "noCars": "No cars",
+    "carUnexpectedError": "An error occurred",
+    "cars": "Car(s)"
   },
   "transactions": {
     "transaction": "Session",
@@ -141,6 +204,8 @@
     "transactionUnexpectedError": "Cannot read the session",
     "transactionStatsUnexpectedError": "Cannot read the statistics",
     "transactionStartUnexpectedError": "Cannot start the session",
+    "carNotConnectedError": "Your car is not connected to the charging station",
+    "connectorNotAvailable": "This charging station's connector is not available",
     "transactionStopUnexpectedError": "Cannot stop the session"
   },
   "home": {
@@ -156,6 +221,12 @@
     "noOngoingSessions": "No Session In Progress",
     "ongoingSessionsNote": "Navigate to Sessions in progress",
     "statistics": "Statistics",
+    "tags": "Badges",
+    "tagsNote": "Badge list",
+    "users": "Users",
+    "usersNote": "User list",
+    "cars": "Cars",
+    "carsNote": "Cars List",
     "numberOfSessions": "{{nbrSessions}} Sessions",
     "noSessions": "No Session found",
     "numberOfSessionsNote": "Total number of Sessions",
@@ -174,13 +245,15 @@
     "free": "Free",
     "occupied": "Occupied",
     "noSites": "No Site found",
-    "siteUnexpectedError": "Cannot read the sites"
+    "siteUnexpectedError": "Cannot read the site",
+    "sites": "Site(s)"
   },
   "siteAreas": {
     "title": "Site Areas",
     "noChargers": "This Site Area has no Charger",
     "noSiteAreas": "No Site Area found",
-    "siteAreaUnexpectedError": "Cannot read the site areas"
+    "siteAreaUnexpectedError": "Cannot read the site areas",
+    "siteAreas": "Site Area(s)"
   },
   "chargers": {
     "title": "Charging Stations",
@@ -189,13 +262,13 @@
     "noOCPPParameters": "No OCPP parameter",
     "noChargerParameters": "No Charging Station parameter",
     "chargerConfigurationUnexpectedError": "Cannot read the configuration of the charging station",
-    "chargerUnexpectedError": "Cannot read the charging stations",
+    "chargerUnexpectedError": "Cannot read the charging station",
     "chargerResetUnexpectedError": "Cannot reset the charging station",
     "chargerRebootUnexpectedError": "Cannot reboot the charging station",
     "chargerClearCacheUnexpectedError": "Cannot clear the cache of the charging station",
     "chargerUnlockUnexpectedError": "Cannot unlock the connector",
     "heartBeatOkMessage": "'{{chargeBoxID}}' is working properly and reported its status a minute ago",
-    "heartBeatKoMessage": "'{{chargeBoxID}}' is not working properly and hasn't reported its status since {{lastHeartBeat}}",
+    "heartBeatKoMessage": "'{{chargeBoxID}}' is not working properly and hasn't reported its status since {{lastSeen}}",
     "resetHard": "Reboot",
     "resetHardMessage": "Do you really want to reboot '{{chargeBoxID}}'?",
     "resetSoft": "Reset",
@@ -231,6 +304,12 @@
     "chademo": "Chademo",
     "domestic": "Domestic"
   },
+  "tags": {
+    "noTags": "No badges",
+    "tags": "Badge(s)",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
   "details": {
     "connector": "Connector",
     "connectors": "Connectors",
@@ -250,7 +329,7 @@
     "notAuthorised": "You are not authorized to stop the transaction.",
     "accepted": "Request has been accepted",
     "noBadgeID": "No badge in your profile",
-    "denied": "Request has failed",
+    "denied": "Request has has been rejected",
     "duration": "(hh:mm)",
     "total": "Total",
     "maximum": "Maximum",
@@ -268,6 +347,7 @@
     "connectorMax": "Connector Max Power (kW)",
     "noData": "No Data",
     "noSessionInProgress": "No Session in progress",
+    "noConsumptionData": "No consumption data",
     "serialNumber": "Serial Number",
     "privateURL": "Private URL",
     "publicURL": "Public URL",

@@ -1,6 +1,6 @@
 import I18n from 'i18n-js';
 import moment from 'moment';
-import { Button, Icon, Text, View } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -18,20 +18,23 @@ export interface Props extends BaseProps {
   onNavigate?: () => void;
 }
 
-interface State {
-}
+interface State {}
 
 export default class ChargingStationComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
 
-  constructor(props: Props) {
+  // eslint-disable-next-line no-useless-constructor
+  public constructor(props: Props) {
     super(props);
   }
 
-  public setState = (state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>, callback?: () => void) => {
+  public setState = (
+    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
+    callback?: () => void
+  ) => {
     super.setState(state, callback);
-  }
+  };
 
   public showHeartbeatStatus = () => {
     const { chargingStation } = this.props;
@@ -39,7 +42,7 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
     if (chargingStation.inactive) {
       message = I18n.t('chargers.heartBeatKoMessage', {
         chargeBoxID: chargingStation.id,
-        lastHeartBeat: moment(new Date(chargingStation.lastHeartBeat),null, true).fromNow(true)
+        lastSeen: moment(new Date(chargingStation.lastSeen), null, true).fromNow(true)
       });
     }
     Alert.alert(I18n.t('chargers.heartBeat'), message, [{ text: I18n.t('general.ok') }]);
@@ -53,69 +56,75 @@ export default class ChargingStationComponent extends React.Component<Props, Sta
       <View style={style.container}>
         <View style={style.headerContent}>
           <View style={style.titleContainer}>
-            <TouchableOpacity disabled={!validGPSCoordinates}
-                onPress={() => Utils.jumpToMapWithCoordinates(chargingStation.id, chargingStation.coordinates)}>
-              { validGPSCoordinates ?
-                <Icon style={[style.icon, style.iconLeft]} type='MaterialIcons' name='place' />
-              :
-                <Icon style={[style.icon, style.iconLeft]} type='MaterialCommunityIcons' name='map-marker-off' />
-              }
+            <TouchableOpacity
+              disabled={!validGPSCoordinates}
+              onPress={() => Utils.jumpToMapWithCoordinates(chargingStation.id, chargingStation.coordinates)}>
+              {validGPSCoordinates ? (
+                <Icon style={[style.icon, style.iconLeft]} type="MaterialIcons" name="place" />
+              ) : (
+                <Icon style={[style.icon, style.iconLeft]} type="MaterialCommunityIcons" name="map-marker-off" />
+              )}
             </TouchableOpacity>
-            <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>{chargingStation.id}</Text>
+            <Text ellipsizeMode={'tail'} numberOfLines={1} style={style.headerName}>
+              {chargingStation.id}
+            </Text>
           </View>
           <View style={style.buttonContainer}>
-            {(isAdmin || isSiteAdmin) &&
-              <Button transparent={true} style={style.button}
+            {(isAdmin || isSiteAdmin) && (
+              <TouchableOpacity
                 onPress={() => {
                   if (onNavigate) {
                     onNavigate();
                   }
-                  navigation.navigate({
-                    routeName: 'ChargingStationDetailsTabs',
+                  navigation.navigate('ChargingStationDetailsTabs', {
                     params: {
                       chargingStationID: chargingStation.id
                     },
                     key: `${Utils.randomNumber()}`
                   });
                 }}>
-                <Icon style={[style.icon, style.iconRight, style.iconSettings]} type='MaterialIcons' name='tune' />
-              </Button>
-            }
-            <Button transparent={true} style={[style.button, style.buttonRight]} onPress={() => { this.showHeartbeatStatus(); }}>
-              {chargingStation.inactive ?
-                <Animatable.Text animation='fadeIn' easing='ease-in-out' iterationCount='infinite' direction='alternate-reverse'>
-                  <Icon style={style.deadHeartbeatIcon} type='FontAwesome' name='heartbeat' />
+                <Icon style={[style.icon, style.iconRight, style.settingsIcon]} type="MaterialIcons" name="tune" />
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity
+              onPress={() => {
+                this.showHeartbeatStatus();
+              }}>
+              {chargingStation.inactive ? (
+                <Animatable.Text animation="fadeIn" easing="ease-in-out" iterationCount="infinite" direction="alternate-reverse">
+                  <Icon style={style.deadHeartbeatIcon} type="FontAwesome" name="heartbeat" />
                 </Animatable.Text>
-              :
-                <Animatable.Text animation='pulse' easing='ease-out' iterationCount='infinite' style={{ textAlign: 'center' }}>
-                  <Icon style={style.heartbeatIcon} type='FontAwesome' name='heartbeat' />
+              ) : (
+                <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ textAlign: 'center' }}>
+                  <Icon style={style.heartbeatIcon} type="FontAwesome" name="heartbeat" />
                 </Animatable.Text>
-              }
-            </Button>
+              )}
+            </TouchableOpacity>
           </View>
         </View>
         <View style={style.subHeaderContent}>
-          {chargingStation.siteArea ?
-            <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1} >
+          {chargingStation.siteArea ? (
+            <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1}>
               {Utils.formatAddress(chargingStation.siteArea.address)}
             </Text>
-          :
+          ) : (
             <Text>-</Text>
-          }
-          {(chargingStation.distanceMeters > 0) &&
-            <Text style={style.distance}>{Utils.formatDistance(chargingStation.distanceMeters)}</Text>
-          }
+          )}
+          {chargingStation.distanceMeters > 0 && <Text style={style.distance}>{Utils.formatDistance(chargingStation.distanceMeters)}</Text>}
         </View>
         <View style={style.connectorsContainer}>
-          {chargingStation.connectors.map((connector) => (
-            <ChargingStationConnectorComponent
-              onNavigate={onNavigate}
-              key={`${chargingStation.id}~${connector.connectorId}`}
-              chargingStation={chargingStation}
-              connector={connector}
-              navigation={navigation}
-            />
-          ))}
+          {chargingStation.connectors.map(
+            (connector) =>
+              connector && (
+                <ChargingStationConnectorComponent
+                  onNavigate={onNavigate}
+                  key={`${chargingStation.id}~${connector.connectorId}`}
+                  chargingStation={chargingStation}
+                  connector={connector}
+                  navigation={navigation}
+                />
+              )
+          )}
         </View>
       </View>
     );

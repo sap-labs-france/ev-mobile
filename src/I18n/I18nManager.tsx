@@ -1,29 +1,37 @@
+// Get the supported locales for moment
+import 'moment/locale/de';
+import 'moment/locale/en-gb';
+import 'moment/locale/es';
+import 'moment/locale/fr';
+import 'moment/locale/it';
+import 'moment/locale/pt-br';
+
 import i18n from 'i18n-js';
 import moment from 'moment';
 import { I18nManager as I18nReactNativeManager } from 'react-native';
 import * as RNLocalize from 'react-native-localize';
 
 import Constants from '../utils/Constants';
+import Utils from '../utils/Utils';
 import deJsonLanguage from './languages/de.json';
 import enJsonLanguage from './languages/en.json';
 import esJsonLanguage from './languages/es.json';
 import frJsonLanguage from './languages/fr.json';
+import itJsonLanguage from './languages/it.json';
+import ptJsonLanguage from './languages/pt.json';
 
 export default class I18nManager {
   private static currency: string;
 
-  public static async initialize() {
-    // Get the supported locales for moment
-    require('moment/locale/fr');
-    require('moment/locale/de');
-    require('moment/locale/en-gb');
-    require('moment/locale/es');
+  public static initialize(): void {
     // Translation files
     const translationGetters: any = {
       en: () => enJsonLanguage,
       fr: () => frJsonLanguage,
       de: () => deJsonLanguage,
       es: () => esJsonLanguage,
+      pt: () => ptJsonLanguage,
+      it: () => itJsonLanguage
     };
     // Fallback if no available language fits
     const fallback = { languageTag: Constants.DEFAULT_LANGUAGE, isRTL: false };
@@ -34,6 +42,8 @@ export default class I18nManager {
     i18n.translations.fr = frJsonLanguage;
     i18n.translations.de = deJsonLanguage;
     i18n.translations.es = esJsonLanguage;
+    i18n.translations.pt = ptJsonLanguage;
+    i18n.translations.it = itJsonLanguage;
     // Update layout direction
     I18nReactNativeManager.forceRTL(isRTL);
     // Default
@@ -64,7 +74,7 @@ export default class I18nManager {
       if (currency) {
         return new Intl.NumberFormat(i18n.locale, { style: 'currency', currency }).format(value);
       }
-      return I18nManager.formatNumber(Math.round(value * 100) / 100);
+      return I18nManager.formatNumber(Utils.roundTo(value, 2));
     }
     return '-';
   }
@@ -80,14 +90,14 @@ export default class I18nManager {
     return RNLocalize.usesMetricSystem();
   }
 
-  private static isValidDate(date: Date): boolean {
-    return !isNaN(new Date(date).getTime());
-  }
-
-  public static formatDateTime(value: Date, format: string = 'LLL') {
+  public static formatDateTime(value: Date, format: string = 'LLL'): string {
     if (I18nManager.isValidDate(value)) {
       return moment(value).format(format);
     }
     return '-';
+  }
+
+  private static isValidDate(date: Date): boolean {
+    return !isNaN(new Date(date).getTime());
   }
 }

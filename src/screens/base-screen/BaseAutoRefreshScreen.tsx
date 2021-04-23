@@ -4,20 +4,18 @@ import BaseProps from '../../types/BaseProps';
 import Constants from '../../utils/Constants';
 import BaseScreen from './BaseScreen';
 
-export interface Props extends BaseProps {
-}
+export interface Props extends BaseProps {}
 
-interface State {
-}
+interface State {}
 
 export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State> {
   private timerRefresh: ReturnType<typeof setTimeout>;
   private timerRefreshActive: boolean;
-  private refreshOngoing: boolean = false;
+  private refreshOngoing = false;
   private refreshPeriodMillis: number;
   private lastRefreshDate: Date;
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     // Init
     this.timerRefresh = null;
@@ -54,23 +52,15 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
     this.startRefreshTimer();
   }
 
-  private canRefresh(): boolean {
-    if (!this.lastRefreshDate) {
-      return true;
-    }
-    return moment().diff(this.lastRefreshDate) > Constants.AUTO_REFRESH_DUPS_INTERVAL;
-  }
-
   public async componentDidBlur() {
     await super.componentDidBlur();
     // Clear the timer
     this.clearRefreshTimer();
   }
 
-  public onBack = (): boolean => {
+  public onBack = (): boolean =>
     // Not Handled: has to be taken in the sub-classes
-    return false;
-  }
+    false;
 
   public setActive(active: boolean) {
     this.timerRefreshActive = active;
@@ -92,8 +82,23 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
   }
 
   public async refresh() {
-    // tslint:disable-next-line: no-console
-    console.log('BaseAutoRefreshScreen: Refresh not implemented!!!');
+    console.warn('BaseAutoRefreshScreen: Refresh not implemented!!!');
+  }
+
+  protected manualRefresh = async () => {
+    // Display spinner
+    this.setState({ refreshing: true });
+    // Refresh
+    await this.refresh();
+    // Hide spinner
+    this.setState({ refreshing: false });
+  };
+
+  private canRefresh(): boolean {
+    if (!this.lastRefreshDate) {
+      return true;
+    }
+    return moment().diff(this.lastRefreshDate) > Constants.AUTO_REFRESH_DUPS_INTERVAL;
   }
 
   private startRefreshTimer() {
@@ -140,7 +145,7 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
       // Start the timer
       this.startRefreshTimer();
     }
-  }
+  };
 
   private clearRefreshTimer = () => {
     // Stop the timer
@@ -148,5 +153,5 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
       clearTimeout(this.timerRefresh);
       this.timerRefresh = null;
     }
-  }
+  };
 }

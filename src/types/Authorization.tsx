@@ -16,10 +16,10 @@ export enum Entity {
   REPORT = 'Report',
   USER = 'User',
   USERS = 'Users',
+  TAGS = 'Tags',
   VEHICLE_MANUFACTURER = 'VehicleManufacturer',
   VEHICLE_MANUFACTURERS = 'VehicleManufacturers',
-  VEHICLES = 'Vehicles',
-  VEHICLE = 'Vehicle',
+  CARS = 'Cars',
   LOGGINGS = 'Loggings',
   LOGGING = 'Logging',
   PRICING = 'Pricing',
@@ -31,14 +31,14 @@ export enum Entity {
   OCPI_ENDPOINT = 'OcpiEndpoint',
   OCPI_ENDPOINTS = 'OcpiEndpoints',
   CONNECTION = 'Connection',
-  CONNECTIONS = 'Connections',
+  CONNECTIONS = 'Connections'
 }
 
 export enum Role {
   SUPER_ADMIN = 'S',
   ADMIN = 'A',
   BASIC = 'B',
-  DEMO = 'D',
+  DEMO = 'D'
 }
 
 export enum Action {
@@ -69,6 +69,5 @@ export enum Action {
   READ_BILLING_TAXES = 'ReadBillingTaxes',
   POWER_LIMITATION = 'PowerLimitation',
   SET_CHARGING_PROFILE = 'SetChargingProfile',
-  EXPORT_PARAMS = 'ExportParams',
+  EXPORT = 'Export'
 }
-

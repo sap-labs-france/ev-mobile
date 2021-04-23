@@ -3,13 +3,16 @@ import PagingParams from '../types/PagingParams';
 export default class Constants {
   public static readonly REST_RESPONSE_SUCCESS = 'Success';
 
-  public static readonly SUPPORTED_LOCALES = ['en_US', 'fr_FR', 'de_DE', 'es_MX'];
-  public static readonly SUPPORTED_LANGUAGES = ['en', 'fr', 'de', 'es'];
+  public static readonly SUPPORTED_LOCALES = ['en_US', 'fr_FR', 'de_DE', 'es_MX', 'pt_PT', 'it_IT'];
+  public static readonly SUPPORTED_LANGUAGES = ['en', 'fr', 'de', 'es', 'pt', 'it'];
   public static readonly DEFAULT_LOCALE = 'en_US';
   public static readonly DEFAULT_LANGUAGE = 'en';
 
   public static readonly DEFAULT_DURATION = '00:00';
   public static readonly DEFAULT_DURATION_WITH_SECS = '00:00:00';
+
+  public static readonly ANONYMIZED_VALUE = '####';
+  public static readonly HYPHEN = '-';
 
   // Auto Refresh
   public static readonly AUTO_REFRESH_DUPS_INTERVAL = 2 * 1000;
@@ -31,13 +34,13 @@ export default class Constants {
   public static readonly PAGING_SIZE = 50;
   public static readonly DEFAULT_PAGING: PagingParams = {
     limit: Constants.PAGING_SIZE,
-    skip: 0,
+    skip: 0
   };
-  public static readonly ONLY_ONE_PAGING: PagingParams = {
+  public static readonly ONLY_ONE_RECORD: PagingParams = {
     limit: 1,
-    skip: 0,
+    skip: 0
   };
-  public static readonly ONLY_RECORD_COUNT_PAGING: PagingParams = {
+  public static readonly ONLY_RECORD_COUNT: PagingParams = {
     limit: 1,
     skip: 0,
     onlyRecordCount: true

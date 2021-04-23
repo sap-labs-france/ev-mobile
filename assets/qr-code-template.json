@@ -1,0 +1,7 @@
+{
+  "tenantSubDomain": "slf",
+  "tenantName": "SAP Labs France",
+  "endpoint": "scp",
+  "chargingStationID": "SAP-Mougins-18",
+  "connectorID": 2
+}

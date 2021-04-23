@@ -1,31 +1,34 @@
+import { NavigationContainerRef } from '@react-navigation/native';
+import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
-import CentralServerProvider from 'provider/CentralServerProvider';
+import _ from 'lodash';
 import { NativeModules, Platform } from 'react-native';
 import { showLocation } from 'react-native-map-link';
-import { NavigationParams, NavigationScreenProp, NavigationState } from 'react-navigation';
-import Address from 'types/Address';
-import { KeyValue } from 'types/Global';
+import Car, { CarCatalog } from 'types/Car';
 import validate from 'validate.js';
 
-import I18nManager from '../I18n/I18nManager';
-import ThemeManager from '../custom-theme/ThemeManager';
+import Configuration from '../config/Configuration';
 import { buildCommonColor } from '../custom-theme/customCommonColor';
-import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType } from '../types/ChargingStation';
+import ThemeManager from '../custom-theme/ThemeManager';
+import I18nManager from '../I18n/I18nManager';
+import CentralServerProvider from '../provider/CentralServerProvider';
+import Address from '../types/Address';
+import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType, Voltage } from '../types/ChargingStation';
+import { KeyValue } from '../types/Global';
 import { RequestError } from '../types/RequestError';
+import { EndpointCloud } from '../types/Tenant';
 import { InactivityStatus } from '../types/Transaction';
-import User from '../types/User';
+import User, { UserRole, UserStatus } from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
 
 export default class Utils {
-  public static canAutoLogin(centralServerProvider: CentralServerProvider, navigation: NavigationScreenProp<NavigationState, NavigationParams>): boolean {
-    const tenant = centralServerProvider.getUserTenant();
-    const email = centralServerProvider.getUserEmail();
-    const password = centralServerProvider.getUserPassword();
-    return !centralServerProvider.hasAutoLoginDisabled() &&
-      !Utils.isNullOrEmptyString(tenant?.subdomain) &&
-      !Utils.isNullOrEmptyString(email) &&
-      !Utils.isNullOrEmptyString(password);
+  public static getEndpointCloud(): EndpointCloud[] {
+    return Configuration.ENDPOINT_CLOUDS;
+  }
+
+  public static objectHasProperty(object: any, key: string): boolean {
+    return _.has(object, key);
   }
 
   public static getCurrentCommonColor(): any {
@@ -43,17 +46,17 @@ export default class Utils {
     // Check
     if (typeof value === 'string') {
       // Create Object
-      changedValue = parseInt(value);
+      changedValue = parseInt(value, 10);
     }
     return changedValue;
   }
 
   public static formatAddress(address: Address): string {
     const addresses: string[] = [];
-    if (address.address1 && address.address1.length > 0) {
+    if (address?.address1 && address?.address1.length > 0) {
       addresses.push(address.address1);
     }
-    if (address.city && address.city.length > 0) {
+    if (address?.city && address?.city.length > 0) {
       addresses.push(address.city);
     }
     return addresses.join(', ');
@@ -82,22 +85,22 @@ export default class Utils {
         result = value;
       } else {
         // Convert
-        result = (value === 'true');
+        result = value === 'true';
       }
     }
     return result;
   }
 
-  public static convertToDate(date: any): Date {
+  public static convertToDate(value: any): Date {
     // Check
-    if (!date) {
+    if (!value) {
       return null;
     }
     // Check Type
-    if (!(date instanceof Date)) {
-      return new Date(date);
+    if (!(value instanceof Date)) {
+      return new Date(value);
     }
-    return date;
+    return value;
   }
 
   public static formatDistance(distanceMeters: number): string {
@@ -107,22 +110,20 @@ export default class Utils {
       distance *= 1.09361;
     }
     if (distance < 1000) {
-      return I18nManager.isMetricsSystem() ?
-        Math.round(distance) + ' m' :
-        Math.round(distance) + ' yd';
+      return I18nManager.isMetricsSystem() ? Math.round(distance).toString() + ' m' : Math.round(distance).toString() + ' yd';
     }
-    return I18nManager.isMetricsSystem() ?
-      I18nManager.formatNumber(Math.round(distance / 100) / 10) + ' km' :
-      I18nManager.formatNumber(Math.round(distance * 0.000621371)) + ' mi';
+    return I18nManager.isMetricsSystem()
+      ? I18nManager.formatNumber(Math.round(distance / 100) / 10) + ' km'
+      : I18nManager.formatNumber(Math.round(distance * 0.000621371)) + ' mi';
   }
 
   public static getValuesFromEnum(enumType: any): number[] {
-    const keys: string[] = Object.keys(enumType).filter(httpError => typeof enumType[httpError] === 'number');
+    const keys: string[] = Object.keys(enumType).filter((httpError) => typeof enumType[httpError] === 'number');
     const values: number[] = keys.map((httpErrorKey: string) => enumType[httpErrorKey]);
     return values;
   }
 
-  public static isEmptyArray(array: any): boolean {
+  public static isEmptyArray(array: any[]): boolean {
     if (!array) {
       return true;
     }
@@ -132,7 +133,7 @@ export default class Utils {
     return true;
   }
 
-  public static jumpToMapWithAddress(title: string, address: Address) {
+  public static jumpToMapWithAddress(title: string, address: Address): void {
     if (!Utils.containsAddressGPSCoordinates(address)) {
       Message.showError(I18n.t('general.noGPSCoordinates'));
     } else {
@@ -140,19 +141,19 @@ export default class Utils {
     }
   }
 
-  public static jumpToMapWithCoordinates(title: string, coordinates: number[]) {
+  public static jumpToMapWithCoordinates(title: string, coordinates: number[]): void {
     if (!Utils.containsGPSCoordinates(coordinates)) {
       Message.showError(I18n.t('general.noGPSCoordinates'));
     } else {
-      showLocation({
+      void showLocation({
         longitude: coordinates[0],
         latitude: coordinates[1],
         title,
-        googleForceLatLon: true,  // optionally force GoogleMaps to use the latlon for the query instead of the title
+        googleForceLatLon: true, // optionally force GoogleMaps to use the latlon for the query instead of the title
         alwaysIncludeGoogle: true, // optional, true will always add Google Maps to iOS and open in Safari, even if app is not installed (default: false)
         dialogTitle: I18n.t('general.chooseApp'),
         dialogMessage: I18n.t('general.availableApps'),
-        cancelText: I18n.t('general.close'),
+        cancelText: I18n.t('general.close')
       });
     }
   }
@@ -166,7 +167,7 @@ export default class Utils {
   }
 
   public static containsAddressGPSCoordinates(address: Address): boolean {
-      // Check if GPS are available
+    // Check if GPS are available
     if (address && Utils.containsGPSCoordinates(address.coordinates)) {
       return true;
     }
@@ -177,8 +178,10 @@ export default class Utils {
     // Check if GPs are available
     if (coordinates && coordinates.length === 2 && coordinates[0] && coordinates[1]) {
       // Check Longitude & Latitude
-      if (new RegExp(Constants.REGEX_VALIDATION_LONGITUDE).test(coordinates[0].toString()) &&
-          new RegExp(Constants.REGEX_VALIDATION_LATITUDE).test(coordinates[1].toString())) {
+      if (
+        new RegExp(Constants.REGEX_VALIDATION_LONGITUDE).test(coordinates[0].toString()) &&
+        new RegExp(Constants.REGEX_VALIDATION_LATITUDE).test(coordinates[1].toString())
+      ) {
         return true;
       }
     }
@@ -208,7 +211,7 @@ export default class Utils {
     return totalAmps;
   }
 
-  // tslint:disable-next-line: cyclomatic-complexity
+  // eslint-disable-next-line complexity
   public static getChargingStationPower(chargingStation: ChargingStation, chargePoint: ChargePoint, connectorId = 0): number {
     let totalPower = 0;
     if (chargingStation) {
@@ -295,7 +298,7 @@ export default class Utils {
     return 1;
   }
 
-  public static getChargingStationVoltage(chargingStation: ChargingStation, chargePoint?: ChargePoint, connectorId = 0): number {
+  public static getChargingStationVoltage(chargingStation: ChargingStation, chargePoint?: ChargePoint, connectorId = 0): Voltage {
     if (chargingStation) {
       // Check at charging station level
       if (chargingStation.voltage) {
@@ -334,7 +337,7 @@ export default class Utils {
         }
       }
     }
-    return 0;
+    return Voltage.VOLTAGE_230;
   }
 
   public static getChargingStationCurrentType(chargingStation: ChargingStation, chargePoint: ChargePoint, connectorId = 0): CurrentType {
@@ -374,7 +377,6 @@ export default class Utils {
     return null;
   }
 
-  // tslint:disable-next-line: cyclomatic-complexity
   public static getChargingStationAmperage(chargingStation: ChargingStation, chargePoint?: ChargePoint, connectorId = 0): number {
     let totalAmps = 0;
     if (chargingStation) {
@@ -429,8 +431,7 @@ export default class Utils {
             if (chargePointOfCS.excludeFromPowerLimitation) {
               continue;
             }
-            if (chargePointOfCS.cannotChargeInParallel ||
-              chargePointOfCS.sharePowerToAllConnectors) {
+            if (chargePointOfCS.cannotChargeInParallel || chargePointOfCS.sharePowerToAllConnectors) {
               // Add limit amp of one connector
               amperageLimit += Utils.getConnectorFromID(chargingStation, chargePointOfCS.connectorIDs[0]).amperageLimit;
             } else {
@@ -448,6 +449,11 @@ export default class Utils {
           amperageLimit += connector.amperageLimit;
         }
       }
+    }
+    const amperageMax = Utils.getChargingStationAmperage(chargingStation, chargePoint, connectorId);
+    // Check and default
+    if (amperageLimit === 0 || amperageLimit > amperageMax) {
+      amperageLimit = amperageMax;
     }
     return amperageLimit;
   }
@@ -468,11 +474,12 @@ export default class Utils {
     return 0;
   }
 
-  public static getRoundedNumberToTwoDecimals(numberToRound: number): number {
-    return Math.round(numberToRound * 100) / 100;
+  public static roundTo(value: number, scale: number): number {
+    const roundPower = Math.pow(10, scale);
+    return Math.round(value * roundPower) / roundPower;
   }
 
-  public static countJsonProps(jsonDoc: object): number {
+  public static countJsonProps(jsonDoc: Record<string, unknown>): number {
     let count = 0;
     if (!jsonDoc) {
       return count;
@@ -485,15 +492,15 @@ export default class Utils {
     return count;
   }
 
-  public static cloneJSonDocument(jsonDocument: object): object {
-    return JSON.parse(JSON.stringify(jsonDocument));
+  public static cloneObject<T>(object: T): T {
+    return JSON.parse(JSON.stringify(object)) as T;
   }
 
-  public static isNullOrEmptyString(value: string) {
+  public static isNullOrEmptyString(value: string): boolean {
     if (!value) {
       return true;
     }
-    if (value.length === 0) {
+    if (value === null || value.length === 0) {
       return true;
     }
     return false;
@@ -503,37 +510,38 @@ export default class Utils {
     return new Promise((resolve) => setTimeout(resolve, millis));
   }
 
-  public static getParamFromNavigation(navigation: NavigationScreenProp<NavigationState, NavigationParams>,
-    name: string, defaultValue: string): string {
+  public static getParamFromNavigation(
+    route: any,
+    name: string,
+    defaultValue: string | boolean,
+    removeValue = false
+  ): string | number | boolean | Record<string, unknown> | [] {
+    const params: any = route.params?.params ? route.params.params : route.params;
     // Has param object?
-    if (!navigation.state.params) {
+    if (!params) {
       return defaultValue;
     }
-    // Has param
-    if (!navigation.state.params[name]) {
+    // Has no param
+    if (!Utils.objectHasProperty(params, name)) {
       return defaultValue;
+    }
+    // Get
+    const value = params[name];
+    // Delete
+    if (removeValue) {
+      delete params[name];
     }
     // Ok, return the value
-    return navigation.state.params[name];
+    return value;
   }
 
-  public static getLanguageFromLocale(locale: string) {
+  public static getLanguageFromLocale(locale: string): string {
     let language = null;
     // Set the user's locale
     if (locale && locale.length >= 2) {
       language = locale.substring(0, 2);
     }
     return language;
-  }
-
-  private static getDeviceLocale(): string {
-    return Platform.OS === 'ios' ?
-      NativeModules.SettingsManager.settings.AppleLocale :
-      NativeModules.I18nManager.localeIdentifier;
-  }
-
-  private static getDeviceLanguage(): string {
-    return Utils.getLanguageFromLocale(Utils.getDeviceLocale());
   }
 
   public static getDeviceDefaultSupportedLocale(): string {
@@ -564,25 +572,25 @@ export default class Utils {
     const hours = Math.floor(durationSecs / 3600);
     durationSecs -= hours * 3600;
     const minutes = Math.floor(durationSecs / 60);
-    const seconds = Math.floor(durationSecs - (minutes * 60));
+    const seconds = Math.floor(durationSecs - minutes * 60);
     if (days !== 0) {
       result += `${days}${I18n.t('general.day')} `;
     }
-    if (((hours !== 0) || (days !== 0)) && (hours !== 0 || (minutes !== 0 && days === 0))) {
+    if ((hours !== 0 || days !== 0) && (hours !== 0 || (minutes !== 0 && days === 0))) {
       result += `${hours}${I18n.t('general.hour')} `;
     }
     if (days === 0) {
-      if ((minutes !== 0) || (hours !== 0) && (minutes !== 0 || (seconds !== 0 && hours === 0))) {
+      if (minutes !== 0 || (hours !== 0 && (minutes !== 0 || (seconds !== 0 && hours === 0)))) {
         result += `${minutes}${I18n.t('general.minute')} `;
       }
-      if ((hours === 0) && (seconds !== 0)) {
+      if (hours === 0 && seconds !== 0) {
         result += `${seconds}${I18n.t('general.second')}`;
       }
     }
     return result;
   }
 
-  public static computeInactivityStyle(inactivityStatus: InactivityStatus): object {
+  public static computeInactivityStyle(inactivityStatus: InactivityStatus): Record<string, unknown> {
     const commonColor = Utils.getCurrentCommonColor();
     switch (inactivityStatus) {
       case InactivityStatus.INFO:
@@ -596,8 +604,8 @@ export default class Utils {
     }
   }
 
-  public static sortArrayOfKeyValue(element1: KeyValue, element2: KeyValue) {
-    // ignore upper and lowercase
+  public static sortArrayOfKeyValue(element1: KeyValue, element2: KeyValue): number {
+    // Ignore upper and lowercase
     const keyA = element1.key.toUpperCase();
     const keyB = element2.key.toUpperCase();
     if (keyA < keyB) {
@@ -609,14 +617,51 @@ export default class Utils {
     return 0;
   }
 
-  public static async handleHttpUnexpectedError(centralServerProvider: CentralServerProvider,
-    error: RequestError, defaultErrorMessage: string, navigation?: NavigationScreenProp<NavigationState, NavigationParams>, fctRefresh?: () => void) {
-    // Override
-    fctRefresh = () => {
-      setTimeout(() => fctRefresh, 2000);
-    };
-    // tslint:disable-next-line: no-console
-    console.log(`HTTP request error`, error);
+  public static buildCarCatalogName(carCatalog: CarCatalog, withID = false): string {
+    let carCatalogName: string;
+    if (!carCatalog) {
+      return '-';
+    }
+    carCatalogName = carCatalog.vehicleMake;
+    if (carCatalog.vehicleModel) {
+      carCatalogName += ` ${carCatalog.vehicleModel}`;
+    }
+    if (carCatalog.vehicleModelVersion) {
+      carCatalogName += ` ${carCatalog.vehicleModelVersion}`;
+    }
+    if (withID && carCatalog.id) {
+      carCatalogName += ` (${carCatalog.id})`;
+    }
+    return carCatalogName;
+  }
+
+  public static buildCarName(car: Car, withID = false): string {
+    let carName: string;
+    if (!car) {
+      return '-';
+    }
+    if (car.carCatalog) {
+      carName = Utils.buildCarCatalogName(car.carCatalog, withID);
+    }
+    if (!carName) {
+      carName = `VIN '${car.vin}', License Plate '${car.licensePlate}'`;
+    } else {
+      carName += ` with VIN '${car.vin}' and License Plate '${car.licensePlate}'`;
+    }
+    if (withID && car.id) {
+      carName += ` (${car.id})`;
+    }
+    return carName;
+  }
+
+  public static async handleHttpUnexpectedError(
+    centralServerProvider: CentralServerProvider,
+    error: RequestError,
+    defaultErrorMessage: string,
+    navigation?: NavigationContainerRef,
+    fctRefresh?: () => void
+  ): Promise<void> {
+    console.error('HTTP request error', error);
     // Check if HTTP?
     if (error.request) {
       // Status?
@@ -625,9 +670,12 @@ export default class Utils {
         case 0:
           Message.showError(I18n.t('general.cannotConnectBackend'));
           break;
+        // Backend not available
+        case StatusCodes.FORBIDDEN:
+          Message.showError(I18n.t('general.notAuthorized'));
+          break;
         // Not logged in?
-        case 401:
-        case 403:
+        case StatusCodes.UNAUTHORIZED:
           // Force auto login
           await centralServerProvider.triggerAutoLogin(navigation, fctRefresh);
           break;
@@ -646,24 +694,30 @@ export default class Utils {
   }
 
   public static buildUserName(user: User): string {
-    const userName = '-';
-    // User?
+    const userName = Constants.HYPHEN;
     if (user) {
-      // Firstname provided?
-      if (user.name && user.firstName) {
-        return `${user.name} ${user.firstName}`;
-      } else {
-        return `${user.name}`;
+      if (user.name && user.name !== Constants.ANONYMIZED_VALUE) {
+        if (user.firstName) {
+          return `${user.name} ${user.firstName}`;
+        } else {
+          return `${user.name}`;
+        }
       }
     }
-    return userName;
+    return userName.trim();
+  }
+
+  public static buildUserInitials(user: User): string {
+    const userName = user?.name && user?.name !== Constants.ANONYMIZED_VALUE ? user?.name.charAt(0).toUpperCase() : '';
+    const userFirstName = user?.firstName ? user?.firstName.charAt(0).toUpperCase() : '';
+    return userName + userFirstName;
   }
 
   public static capitalizeFirstLetter(word: string): string {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
-  public static validateInput(screen: React.Component, constraints: object): boolean {
+  public static validateInput(screen: React.Component, constraints: Record<string, unknown>): boolean {
     let formValid = true;
     const errorState: any = {};
     // Reset all errors
@@ -684,7 +738,7 @@ export default class Utils {
     if (error) {
       // Set in state the errors
       for (const key in error) {
-        if (error.hasOwnProperty(key)) {
+        if (Utils.objectHasProperty(error, key)) {
           errorState['error' + Utils.capitalizeFirstLetter(key)] = error[key];
         }
       }
@@ -756,6 +810,38 @@ export default class Utils {
     }
   };
 
+  public static translateUserStatus(status: string): string {
+    switch (status) {
+      case UserStatus.ACTIVE:
+        return I18n.t('userStatuses.active');
+      case UserStatus.PENDING:
+        return I18n.t('userStatuses.pending');
+      case UserStatus.INACTIVE:
+        return I18n.t('userStatuses.inactive');
+      case UserStatus.LOCKED:
+        return I18n.t('userStatuses.locked');
+      case UserStatus.BLOCKED:
+        return I18n.t('userStatuses.blocked');
+      default:
+        return I18n.t('userStatuses.unknown');
+    }
+  }
+
+  public static translateUserRole(role: string): string {
+    switch (role) {
+      case UserRole.ADMIN:
+        return I18n.t('userRoles.admin');
+      case UserRole.BASIC:
+        return I18n.t('userRoles.basic');
+      case UserRole.DEMO:
+        return I18n.t('userRoles.demo');
+      case UserRole.SUPER_ADMIN:
+        return I18n.t('userRoles.superAdmin');
+      default:
+        return I18n.t('userRoles.unknown');
+    }
+  }
+
   public static formatDurationHHMMSS = (durationSecs: number, withSecs: boolean = true): string => {
     if (durationSecs <= 0) {
       return withSecs ? Constants.DEFAULT_DURATION_WITH_SECS : Constants.DEFAULT_DURATION;
@@ -778,14 +864,22 @@ export default class Utils {
     // Format
     return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}`;
   };
-
-  private static formatTimer = (val: number): string => {
+  
+  private static formatTimer = (value: number): string => {
     // Put 0 next to the digit if lower than 10
-    const valString = val + '';
-    if (valString.length < 2) {
-      return '0' + valString;
+    const valueStr = value.toString();
+    if (valueStr.length < 2) {
+      return '0' + valueStr;
     }
     // Return new digit
-    return valString;
+    return valueStr;
   };
+
+  private static getDeviceLocale(): string {
+    return Platform.OS === 'ios' ? NativeModules.SettingsManager.settings.AppleLocale : NativeModules.I18nManager.localeIdentifier;
+  }
+
+  private static getDeviceLanguage(): string {
+    return Utils.getLanguageFromLocale(Utils.getDeviceLocale());
+  }
 }

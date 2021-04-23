@@ -1,28 +1,29 @@
+import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Platform } from 'react-native';
 import firebase from 'react-native-firebase';
 import { Notification, NotificationOpen } from 'react-native-firebase/notifications';
-import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
 
 import CentralServerProvider from '../provider/CentralServerProvider';
 import { UserNotificationType } from '../types/UserNotifications';
 import Message from '../utils/Message';
+import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 
 export default class NotificationManager {
   private static instance: NotificationManager;
   private token: string;
-  private navigator: NavigationContainerComponent;
+  private navigator: NavigationContainerRef;
   private removeNotificationDisplayedListener: () => any;
   private removeNotificationListener: () => any;
   private removeNotificationOpenedListener: () => any;
   private removeTokenRefreshListener: () => any;
   private messageListener: () => any;
   private centralServerProvider: CentralServerProvider;
-  private lastNotification: NotificationOpen
+  private lastNotification: NotificationOpen;
 
-  private constructor() {
-  }
+  // eslint-disable-next-line no-useless-constructor
+  private constructor() {}
 
   public static getInstance(): NotificationManager {
     if (!NotificationManager.instance) {
@@ -35,7 +36,7 @@ export default class NotificationManager {
     this.centralServerProvider = centralServerProvider;
   }
 
-  public async initialize(navigator: NavigationContainerComponent) {
+  public async initialize(navigator: NavigationContainerRef) {
     // Keep the nav
     this.navigator = navigator;
     // Check if user has given permission
@@ -81,10 +82,11 @@ export default class NotificationManager {
           case UserNotificationType.END_OF_SESSION:
           case UserNotificationType.SESSION_STARTED:
             break;
-
-          // Force display notif
+          // Display notif
           default:
-            await firebase.notifications().displayNotification(notification);
+            if (Object.values(UserNotificationType).includes(notification.data.notificationType as UserNotificationType)) {
+              await firebase.notifications().displayNotification(notification);
+            }
             break;
         }
       } else {
@@ -114,13 +116,12 @@ export default class NotificationManager {
           });
         }
       } catch (error) {
-        // tslint:disable-next-line: no-console
         console.log('Error saving Mobile Token:', error);
       }
     });
   }
 
-  public async stop() {
+  public stop() {
     this.removeNotificationDisplayedListener();
     this.removeNotificationListener();
     this.removeNotificationOpenedListener();
@@ -145,112 +146,148 @@ export default class NotificationManager {
     }
   }
 
+  // eslint-disable-next-line complexity
   private async processOpenedNotification(notificationOpen: NotificationOpen): Promise<boolean> {
+    let connectionIsValid = true;
+    // Not valid
+    if (!notificationOpen?.notification?.data) {
+      return true;
+    }
     // Get information about the notification that was opened
     const notification: Notification = notificationOpen.notification;
-    // No: meaning the user got the notif and clicked on it, then navigate to the right screen
     // User must be logged and Navigation available
-    if (!this.centralServerProvider.isUserConnectionValid() || !this.navigator) {
-      // Process it later
+    if (!this.navigator || !this.centralServerProvider) {
+      // Process later
       this.lastNotification = notificationOpen;
       return false;
     }
-    // Check Tenant
-    if (this.centralServerProvider.getUserInfo().tenantID !== notification.data.tenantID) {
-      Message.showError(I18n.t('general.wrongTenant'));
+    // Check tenant
+    if (!notification.data.tenantSubdomain) {
+      Message.showError(I18n.t('general.tenantMissing'));
       return false;
+    }
+    // Check if tenant exists
+    const tenant = await this.centralServerProvider.getTenant(notification.data.tenantSubdomain);
+    if (!tenant) {
+      Message.showError(I18n.t('general.tenantUnknown', { tenantSubdomain: notification.data.tenantSubdomain }));
+      return false;
+    }
+    // Check current connection
+    if (!this.centralServerProvider.isUserConnectionValid()) {
+      connectionIsValid = false;
+      // Check current Tenant
+    } else if (this.centralServerProvider.getUserInfo().tenantSubdomain !== tenant.subdomain) {
+      connectionIsValid = false;
+    }
+    // Establish connection
+    if (!connectionIsValid) {
+      // Try to login
+      const userCredentials = await SecuredStorage.getUserCredentials(tenant.subdomain);
+      if (userCredentials) {
+        // Login
+        try {
+          await this.centralServerProvider.login(userCredentials.email, userCredentials.password, true, userCredentials.tenantSubDomain);
+        } catch (error) {
+          // Cannot login
+          Message.showError(I18n.t('general.mustLoggedToTenant', { tenantName: tenant.name }));
+          return false;
+        }
+      } else {
+        // Cannot login
+        Message.showError(I18n.t('general.mustLoggedToTenant', { tenantName: tenant.name }));
+        return false;
+      }
     }
     // Check
     switch (notification.data.notificationType) {
       // End of Transaction
       case UserNotificationType.END_OF_SESSION:
-        // Navigate
         this.navigator.dispatch(
-          NavigationActions.navigate({
-            routeName: 'TransactionHistoryNavigator',
-            key: `${Utils.randomNumber()}`,
-            action: NavigationActions.navigate({
-              routeName: 'TransactionDetailsTabs',
+          StackActions.replace('AppDrawerNavigator', {
+            screen: 'TransactionHistoryNavigator',
+            initial: false,
+            params: {
+              screen: 'TransactionDetailsTabs',
               key: `${Utils.randomNumber()}`,
               params: {
-                transactionID: parseInt(notification.data.transactionId, 10)
+                params: {
+                  transactionID: Utils.convertToInt(notification.data.transactionId)
+                }
               }
-            }),
+            }
           })
         );
         break;
-
       // Session In Progress
       case UserNotificationType.SESSION_STARTED:
       case UserNotificationType.END_OF_CHARGE:
       case UserNotificationType.OPTIMAL_CHARGE_REACHED:
-        // Navigate
         this.navigator.dispatch(
-          NavigationActions.navigate({
-            routeName: 'TransactionInProgressNavigator',
-            key: `${Utils.randomNumber()}`,
-            action: NavigationActions.navigate({
-              routeName: 'ChargingStationConnectorDetailsTabs',
+          StackActions.replace('AppDrawerNavigator', {
+            screen: 'TransactionInProgressNavigator',
+            initial: false,
+            params: {
+              screen: 'ChargingStationConnectorDetailsTabs',
               key: `${Utils.randomNumber()}`,
               params: {
-                chargingStationID: notification.data.chargeBoxID,
-                connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                params: {
+                  chargingStationID: notification.data.chargeBoxID,
+                  connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                }
               }
-            }),
+            }
           })
         );
         break;
-
       case UserNotificationType.CHARGING_STATION_STATUS_ERROR:
       case UserNotificationType.PREPARING_SESSION_NOT_STARTED:
-        // Navigate
         this.navigator.dispatch(
-          NavigationActions.navigate({
-            routeName: 'ChargingStationsNavigator',
-            key: `${Utils.randomNumber()}`,
-            action: NavigationActions.navigate({
-              routeName: 'ChargingStationConnectorDetailsTabs',
+          StackActions.replace('AppDrawerNavigator', {
+            screen: 'ChargingStationsNavigator',
+            initial: false,
+            params: {
+              screen: 'ChargingStationConnectorDetailsTabs',
               key: `${Utils.randomNumber()}`,
               params: {
-                chargingStationID: notification.data.chargeBoxID,
-                connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                params: {
+                  chargingStationID: notification.data.chargeBoxID,
+                  connectorID: Utils.getConnectorIDFromConnectorLetter(notification.data.connectorId)
+                }
               }
-            }),
+            }
           })
         );
         break;
-
       // Charger just connected
       case UserNotificationType.SESSION_NOT_STARTED_AFTER_AUTHORIZE:
       case UserNotificationType.CHARGING_STATION_REGISTERED:
-        // Navigate
         this.navigator.dispatch(
-          NavigationActions.navigate({
-            routeName: 'ChargingStationsNavigator',
-            key: `${Utils.randomNumber()}`,
-            action: NavigationActions.navigate({
-              routeName: 'ChargingStationConnectorDetailsTabs',
+          StackActions.replace('AppDrawerNavigator', {
+            screen: 'ChargingStationsNavigator',
+            initial: false,
+            params: {
+              screen: 'ChargingStationConnectorDetailsTabs',
               key: `${Utils.randomNumber()}`,
               params: {
-                chargingStationID: notification.data.chargeBoxID,
-                connectorID: 1
+                params: {
+                  chargingStationID: notification.data.chargeBoxID,
+                  connectorID: 1
+                }
               }
-            }),
+            }
           })
         );
         break;
-
       // Go to Charger list
       case UserNotificationType.OFFLINE_CHARGING_STATION:
-        // Navigate
         this.navigator.dispatch(
-          NavigationActions.navigate({
-            routeName: 'ChargingStations',
+          StackActions.replace('AppDrawerNavigator', {
+            screen: 'ChargingStationsNavigator',
+            initial: false,
             key: `${Utils.randomNumber()}`
           })
         );
         break;
-
       // No need to navigate
       case UserNotificationType.UNKNOWN_USER_BADGED:
       case UserNotificationType.OCPI_PATCH_STATUS_ERROR:

@@ -6,8 +6,8 @@ export default class ThemeManager {
   private static instance: ThemeManager;
   private themeType?: ThemeType;
 
-  private constructor() {
-  }
+  // eslint-disable-next-line no-useless-constructor
+  private constructor() {}
 
   public static getInstance(): ThemeManager {
     if (!ThemeManager.instance) {
@@ -22,7 +22,7 @@ export default class ThemeManager {
       return themeDark;
     }
     return themeLight;
-  }
+  };
 
   public getThemeDefinition = (themeType: ThemeType): ThemeDefinition => {
     switch (themeType) {
@@ -31,7 +31,7 @@ export default class ThemeManager {
       default:
         return themeLight;
     }
-  }
+  };
 
   public setThemeType(themeType: ThemeType) {
     this.themeType = themeType;

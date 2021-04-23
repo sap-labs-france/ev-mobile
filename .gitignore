@@ -58,7 +58,6 @@ android/app/*.keystore
 
 # CocoaPods
 /ios/Pods/
-/ios/Podfile.lock
 
 # Jest
 .jest/
@@ -102,3 +101,5 @@ production/
 # Firebase
 android/app/google-services.json
 ios/GoogleService-Info.plist
+
+*.log

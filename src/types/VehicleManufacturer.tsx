@@ -1,9 +1,9 @@
+import Car from './Car';
 import CreatedUpdatedProps from './CreatedUpdatedProps';
-import Vehicle from './Vehicle';
+import ListItem from './ListItem';
 
-export default interface VehicleManufacturer extends CreatedUpdatedProps {
-  id: string;
+export default interface VehicleManufacturer extends CreatedUpdatedProps, ListItem {
   name: string;
   logo?: string;
-  vehicles?: Vehicle[];
+  vehicles?: Car[];
 }

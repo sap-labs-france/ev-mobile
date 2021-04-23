@@ -1,11 +1,16 @@
 import CreatedUpdatedProps from './CreatedUpdatedProps';
 import { KeyValue } from './Global';
+import ListItem from './ListItem';
 import SiteArea from './SiteArea';
 import { InactivityStatus } from './Transaction';
 import User from './User';
 
-export default interface ChargingStation extends CreatedUpdatedProps {
-  id?: string;
+export enum Voltage {
+  VOLTAGE_230 = 230,
+  VOLTAGE_110 = 110
+}
+
+export default interface ChargingStation extends CreatedUpdatedProps, ListItem {
   siteAreaID: string;
   chargePointSerialNumber: string;
   chargePointModel: string;
@@ -20,13 +25,13 @@ export default interface ChargingStation extends CreatedUpdatedProps {
   ocppVersion: string;
   ocppProtocol: string;
   cfApplicationIDAndInstanceIndex: string;
-  lastHeartBeat: Date;
+  lastSeen: Date;
   deleted: boolean;
   inactive: boolean;
   lastReboot: Date;
   chargingStationURL: string;
   maximumPower: number;
-  voltage: number;
+  voltage: Voltage;
   powerLimitUnit: string;
   coordinates: number[];
   chargePoints: ChargePoint[];
@@ -47,7 +52,7 @@ export enum CurrentType {
 export interface ChargePoint {
   chargePointID: number;
   currentType: CurrentType;
-  voltage: number;
+  voltage: Voltage;
   amperage: number;
   numberOfConnectedPhase: number;
   cannotChargeInParallel: boolean;
@@ -57,6 +62,10 @@ export interface ChargePoint {
   power: number;
   efficiency: number;
   connectorIDs: number[];
+}
+
+export enum StaticLimitAmps {
+  MIN_LIMIT_PER_PHASE = 6
 }
 
 export interface Connector {
@@ -75,7 +84,7 @@ export interface Connector {
   vendorErrorCode?: string;
   power: number;
   type: ConnectorType;
-  voltage?: number;
+  voltage?: Voltage;
   amperage?: number;
   userID?: string;
   user?: User;
@@ -96,7 +105,7 @@ export enum ChargePointStatus {
   FINISHING = 'Finishing',
   RESERVED = 'Reserved',
   UNAVAILABLE = 'Unavailable',
-  FAULTED = 'Faulted',
+  FAULTED = 'Faulted'
 }
 
 export enum ConnectorType {
@@ -106,7 +115,7 @@ export enum ConnectorType {
   TYPE_1 = 'T1',
   TYPE_1_CCS = 'T1CCS',
   DOMESTIC = 'D',
-  UNKNOWN = 'U',
+  UNKNOWN = 'U'
 }
 
 export interface ChargingStationCapabilities {
@@ -122,7 +131,7 @@ export interface OcppCommand {
 
 export enum SiteAreaLimitSource {
   CHARGING_STATIONS = 'CS',
-  SITE_AREA = 'SA',
+  SITE_AREA = 'SA'
 }
 
 export enum ConnectorCurrentLimitSource {
