@@ -65,12 +65,18 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
     await super.componentDidMount();
   }
 
-  public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
+  public async getUsers(
+    searchText: string,
+    skip: number,
+    limit: number,
+    userIDs?: (string | number)[],
+    excludeUserIDs?: (string | number)[]
+  ): Promise<DataResult<User>> {
     try {
       const params = {
         Search: searchText,
-        UserID: this.userIDs?.join('|'),
-        carName: this.title
+        UserID: userIDs?.join('|'),
+        ExcludeUserIDs: excludeUserIDs?.join('|'),
       };
       const users = await this.centralServerProvider.getUsers(params, { skip, limit });
       // Check
@@ -105,10 +111,11 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
 
   public onEndScroll = async () => {
     const { count, skip, limit } = this.state;
+    const { initiallySelectedUsers } = this.props;
     // No reached the end?
     if (skip + limit < count || count === -1) {
       // No: get next sites
-      const users = await this.getUsers(this.searchText, skip + Constants.PAGING_SIZE, limit);
+      const users = await this.getUsers(this.searchText, skip + Constants.PAGING_SIZE, limit, this.userIDs, initiallySelectedUsers.map((user) => user.id));
       // Add sites
       this.setState((prevState) => ({
         users: users ? [...prevState.users, ...users.result] : prevState.users,
@@ -128,14 +135,32 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public async refresh(): Promise<void> {
     if (this.isMounted()) {
       const { skip, limit } = this.state;
+      const { initiallySelectedUsers } = this.props;
       // Refresh All
-      const users = await this.getUsers(this.searchText, 0, skip + limit);
+      const users = await this.getUsers(
+        this.searchText,
+        0,
+        skip + limit,
+        this.userIDs,
+        initiallySelectedUsers.map((user) => user.id)
+      );
+      const selectedUsers =
+        initiallySelectedUsers.length > 0
+          ? await this.getUsers(
+              this.searchText,
+              0,
+              initiallySelectedUsers.length,
+              initiallySelectedUsers.map((user) => user.id)
+            )
+          : { count: 0, result: [] };
       const usersResult = users ? users.result : [];
+      const selectedUsersResult = selectedUsers ? selectedUsers.result : [];
+      const orderedUsers = selectedUsersResult.concat(usersResult);
       // Set
       this.setState({
         loading: false,
-        users: usersResult,
-        count: users.count
+        users: orderedUsers,
+        count: selectedUsers.count + users.count
       });
     }
   }
