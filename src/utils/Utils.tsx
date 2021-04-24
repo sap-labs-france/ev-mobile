@@ -820,7 +820,7 @@ export default class Utils {
         return I18n.t('userStatuses.inactive');
       case UserStatus.LOCKED:
         return I18n.t('userStatuses.locked');
-      case UserStatus.SUSPENDED:
+      case UserStatus.BLOCKED:
         return I18n.t('userStatuses.suspended');
       default:
         return I18n.t('userStatuses.unknown');

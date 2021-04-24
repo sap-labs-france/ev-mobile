@@ -56,7 +56,7 @@ export enum UserStatus {
   PENDING = 'P',
   ACTIVE = 'A',
   INACTIVE = 'I',
-  SUSPENDED = 'B',
+  BLOCKED = 'B',
   LOCKED = 'L'
 }
 
