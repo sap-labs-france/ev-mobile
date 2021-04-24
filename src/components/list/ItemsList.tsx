@@ -82,7 +82,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
       <FlatList
         data={data}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={selectionEnabled ? () => this.onSelectItem(item) : null}>
+          <TouchableOpacity disabled={!selectionEnabled} onPress={() => this.onSelectItem(item)}>
             {this.props.renderItem(item, selectedItems.has(item.id))}
           </TouchableOpacity>
         )}
@@ -99,26 +99,25 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
   private onSelectItem(item: T): void {
     const { selectedItems } = this.state;
     const { onSelect, selectionMode } = this.props;
-    const callback = onSelect ? () => onSelect([...this.state.selectedItems.values()]) : null;
-    const id = item.id;
+    const itemSelectedCallback = onSelect ? () => onSelect([...this.state.selectedItems.values()]) : null;
     // If the item is already selected
-    if (selectedItems.has(id)) {
+    if (selectedItems.has(item.id)) {
       // If the item is not the only one selected, unselect it
       if (selectedItems.size > 1) {
-        selectedItems.delete(id);
-        this.setState({ selectedItems }, callback);
+        selectedItems.delete(item.id);
+        this.setState({ selectedItems }, itemSelectedCallback);
       }
       // Else, add the item to the selected Ids
     } else {
       switch (selectionMode) {
         case ItemSelectionMode.MULTI:
-          this.setState({ selectedItems: selectedItems.set(id, item) }, callback);
+          selectedItems.set(item.id, item);
+          this.setState({ selectedItems }, itemSelectedCallback);
           break;
         case ItemSelectionMode.SINGLE:
-          this.setState(
-            { selectedItems: new Map<string | number, T>([[id, item]]) },
-            callback
-          );
+          selectedItems.clear();
+          selectedItems.set(item.id, item);
+          this.setState({ selectedItems }, itemSelectedCallback);
           break;
       }
     }

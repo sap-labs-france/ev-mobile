@@ -12,7 +12,7 @@ import ConnectorStatusComponent from '../../../components/connector-status/Conne
 import computeFormStyleSheet from '../../../FormStyles';
 import I18nManager from '../../../I18n/I18nManager';
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import { ItemsListTypes } from '../../../components/list/ItemsList';
+import { ItemSelectionMode } from '../../../components/list/ItemsList';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
@@ -50,7 +50,7 @@ interface State {
   buttonDisabled?: boolean;
   refreshing?: boolean;
   selectedUser?: User;
-  openUserModal?: boolean;
+  isUserModalVisible?: boolean;
 }
 
 export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
@@ -80,7 +80,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       buttonDisabled: true,
       refreshing: false,
       selectedUser: null,
-      openUserModal: false
+      isUserModalVisible: false
     };
   }
 
@@ -99,7 +99,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
     this.currentUser = this.centralServerProvider.getUserInfo();
     if (this.currentUser) {
-      this.setState({ selectedUser: { id: this.currentUser.id, firstName: this.currentUser.firstName, name: this.currentUser.name } });
+      this.setState({
+        selectedUser: {
+            id: this.currentUser.id,
+            firstName: this.currentUser.firstName,
+            name: this.currentUser.name
+          } });
     }
   }
 
@@ -707,7 +712,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public render() {
     const { navigation } = this.props;
-    const { openUserModal, isAdmin } = this.state;
+    const { isUserModalVisible, isAdmin } = this.state;
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
     const { connector, canStopTransaction, canStartTransaction, chargingStation, loading, siteImage, isPricingActive } = this.state;
@@ -746,7 +751,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         {connector?.status === ChargePointStatus.AVAILABLE ? (
           <ScrollView
             contentContainerStyle={style.scrollViewContainer}
-            refreshControl={openUserModal ? null : <RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
+            refreshControl={
+              isUserModalVisible ? null : <RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />
+            }>
             <View style={style.rowContainer}>{this.renderConnectorStatus(style)}</View>
             {isAdmin && this.renderUserSelection(style, formStyle)}
           </ScrollView>
@@ -776,13 +783,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     );
   }
 
-  private openUserModal(open: boolean): void {
-    this.setState({ openUserModal: open });
-  }
-
   private onUserSelected(users: User[]): void {
     if (users && users.length > 0) {
-      this.setState({ selectedUser: users[0] }, () => this.openUserModal(false));
+      this.setState({ selectedUser: users[0], isUserModalVisible: false });
     }
   }
 
@@ -792,7 +795,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const userFullName = Utils.buildUserName(selectedUser);
     return (
       <View style={style.rowContainer}>
-        <Button block={true} style={formStyle.button} onPress={() => this.openUserModal(true)}>
+        <Button block={true} style={formStyle.button} onPress={() => this.setState({ isUserModalVisible: true })}>
           <Text style={formStyle.buttonText} uppercase={false}>
             {userFullName}
           </Text>
@@ -801,17 +804,17 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           propagateSwipe={true}
           supportedOrientations={['portrait', 'landscape']}
           style={style.modal}
-          isVisible={this.state.openUserModal}
+          isVisible={this.state.isUserModalVisible}
           swipeDirection={'down'}
           animationInTiming={1000}
-          onSwipeComplete={() => this.openUserModal(false)}
-          onBackButtonPress={() => this.openUserModal(false)}
-          onBackdropPress={() => this.openUserModal(false)}
+          onSwipeComplete={() => this.setState({ isUserModalVisible: false })}
+          onBackButtonPress={() => this.setState({ isUserModalVisible: false })}
+          onBackdropPress={() => this.setState({ isUserModalVisible: false })}
           hideModalContentWhileAnimating={true}>
           <View style={style.modalContainer}>
             <View style={style.modalHeader}>
               <Icon
-                onPress={() => this.openUserModal(false)}
+                onPress={() => this.setState({ isUserModalVisible: false })}
                 type="MaterialIcons"
                 name={'expand-more'}
                 style={[style.icon, style.downArrow]}
@@ -823,8 +826,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
                 initiallySelectedUsers={[selectedUser]}
                 onUserSelected={(selectedUsers) => this.onUserSelected(selectedUsers)}
                 navigation={navigation}
-                select={ItemsListTypes.SINGLE}
-                modal={true}
+                selectionMode={ItemSelectionMode.SINGLE}
+                isModal={true}
               />
             </View>
           </View>

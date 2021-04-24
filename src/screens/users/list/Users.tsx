@@ -19,7 +19,7 @@ import computeStyleSheet from './UsersStyle';
 
 export interface Props extends BaseProps {
   selectionMode?: ItemSelectionMode;
-  modal?: boolean;
+  isModal?: boolean;
   onUserSelected?: (selectedUsers: User[]) => void;
   initiallySelectedUsers?: User[];
 }
@@ -36,7 +36,7 @@ export interface State {
 export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public static defaultProps = {
     select: ItemSelectionMode.NONE,
-    modal: false,
+    isModal: false,
     initiallySelectedUsers: []
   };
 
@@ -148,10 +148,10 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { users, count, skip, limit, refreshing, loading } = this.state;
-    const { navigation, modal, selectionMode, onUserSelected, initiallySelectedUsers } = this.props;
+    const { navigation, isModal, selectionMode, onUserSelected, initiallySelectedUsers } = this.props;
     return (
       <Container style={style.container}>
-        {!modal && (
+        {!isModal && (
           <HeaderComponent
             title={this.title ?? i18n.t('sidebar.users')}
             subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}` : null}
@@ -172,7 +172,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
             <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
             <ItemsList<User>
               selectionMode={selectionMode}
-              onSelect={(userIds: User[]) => onUserSelected(userIds)}
+              onSelect={onUserSelected}
               data={users}
               navigation={navigation}
               count={count}
@@ -183,7 +183,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
                 <UserComponent user={item} selected={selected} navigation={this.props.navigation} />
               )}
               refreshing={refreshing}
-              manualRefresh={modal ? this.manualRefresh : null}
+              manualRefresh={isModal ? null : this.manualRefresh}
               onEndReached={this.onEndScroll}
               emptyTitle={i18n.t('users.noUsers')}
             />
