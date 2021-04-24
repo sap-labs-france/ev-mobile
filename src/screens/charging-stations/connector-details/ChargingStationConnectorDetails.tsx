@@ -723,7 +723,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       <Container style={style.container}>
         <HeaderComponent
           navigation={this.props.navigation}
-          title={chargingStation ? chargingStation.id.toString() : '-'}
+          title={chargingStation ? (chargingStation.id as string) : '-'}
           subTitle={connectorLetter ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
@@ -784,7 +784,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   }
 
   private onUserSelected(users: User[]): void {
-    if (users && users.length > 0) {
+    if (users && !Utils.isEmptyArray(users)) {
       this.setState({ selectedUser: users[0], isUserModalVisible: false });
     }
   }
