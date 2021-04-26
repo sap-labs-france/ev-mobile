@@ -179,9 +179,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
               limit={limit}
               skip={skip}
               initiallySelectedItems={initiallySelectedUsers}
-              renderItem={(item: User, selected: boolean) => (
-                <UserComponent user={item} selected={selected} navigation={this.props.navigation} />
-              )}
+              renderItem={(item: User) => <UserComponent user={item} navigation={this.props.navigation} />}
               refreshing={refreshing}
               manualRefresh={isModal ? null : this.manualRefresh}
               onEndReached={this.onEndScroll}
