@@ -11,8 +11,10 @@ import { Modalize } from 'react-native-modalize';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
 import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
+import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteAreaComponent from '../../components/site-area/SiteAreaComponent';
+import SiteComponent from '../../components/site/SiteComponent';
 import I18nManager from '../../I18n/I18nManager';
 import LocationManager from '../../location/LocationManager';
 import computeModalStyle from '../../ModalStyles';
@@ -20,6 +22,7 @@ import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
 import { GlobalFilters } from '../../types/Filter';
+import Site from '../../types/Site';
 import SiteArea from '../../types/SiteArea';
 import Constants from '../../utils/Constants';
 import SecuredStorage from '../../utils/SecuredStorage';
@@ -262,7 +265,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
-    const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected } = this.state;
+    const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected, siteAreas, refreshing } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.siteAreas);
     return (
       <Container style={style.container}>
@@ -312,15 +315,17 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
                 {siteAreaSelected && this.buildModal(navigation, siteAreaSelected, modalStyle)}
               </View>
             ) : (
-              <FlatList
-                data={this.state.siteAreas}
-                renderItem={({ item }) => <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />}
-                keyExtractor={(item) => item.id}
-                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
+              <ItemsList<SiteArea>
+                skip={skip}
+                count={count}
                 onEndReached={this.onEndScroll}
-                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
-                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('siteAreas.noSiteAreas')} />}
-                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
+                renderItem={(site: SiteArea) => <SiteAreaComponent siteArea={site} navigation={this.props.navigation} />}
+                data={siteAreas}
+                manualRefresh={this.manualRefresh}
+                refreshing={refreshing}
+                emptyTitle={I18n.t('siteAreas.noSiteAreas')}
+                navigation={navigation}
+                limit={limit}
               />
             )}
           </View>
