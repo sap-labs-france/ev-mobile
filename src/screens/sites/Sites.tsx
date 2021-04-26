@@ -308,11 +308,11 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
                 {siteSelected && this.buildModal(navigation, siteSelected, modalStyle)}
               </View>
             ) : (
-              <ItemsList
+              <ItemsList<Site>
                 skip={skip}
                 count={count}
                 onEndReached={this.onEndScroll}
-                renderItem={(site: Site) => <SiteComponent site={site} navigation={navigation} />}
+                renderItem={(site: Site) => <SiteComponent site={site} navigation={navigation}/>}
                 data={sites}
                 manualRefresh={this.manualRefresh}
                 refreshing={refreshing}

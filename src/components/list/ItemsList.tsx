@@ -1,17 +1,21 @@
 import React from 'react';
-import { FlatList, Platform, RefreshControl, TouchableOpacity } from 'react-native';
+import { FlatList, Platform, RefreshControl, TouchableOpacity, View } from 'react-native';
+import { Checkbox, RadioButton } from 'react-native-paper';
 import BaseProps from '../../types/BaseProps';
 import ListItem from '../../types/ListItem';
 import ListEmptyTextComponent from './empty-text/ListEmptyTextComponent';
 import ListFooterComponent from './footer/ListFooterComponent';
+import computeStyleSheet from './ItemsListStyle';
+const style = computeStyleSheet();
 
 export interface Props<T extends ListItem> extends BaseProps {
-  renderItem: (item: T, selected: boolean) => Element;
+  renderItem: (item: T) => Element;
   onSelect?: (selectedItems: T[]) => void;
   emptyTitle: string;
   manualRefresh: () => void;
   onEndReached: () => void;
   data: T[];
+  renderItemsSeparator: () => Element;
   selectionMode?: ItemSelectionMode;
   skip: number;
   count: number;
@@ -33,7 +37,8 @@ interface State<T> {
 export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State<T>> {
   public static defaultProps = {
     selectionMode: ItemSelectionMode.NONE,
-    initiallySelectedItems: []
+    initiallySelectedItems: [],
+    renderItemsSeparator: () => <View style={style.rowSeparator} />
   };
   public state: State<T>;
   public props: Props<T>;
@@ -74,7 +79,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
       onEndReached,
       emptyTitle,
       selectionMode,
-      onSelect
+      onSelect,
     } = this.props;
     const { selectedItems } = this.state;
     const selectionEnabled = selectionMode !== ItemSelectionMode.NONE && onSelect;
@@ -82,9 +87,28 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
       <FlatList
         data={data}
         renderItem={({ item }) => (
-          <TouchableOpacity disabled={!selectionEnabled} onPress={() => this.onSelectItem(item)}>
-            {this.props.renderItem(item, selectedItems.has(item.id))}
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity disabled={!selectionEnabled} onPress={() => this.onSelectItem(item)}>
+              <View style={style.rowContainer}>
+                {selectionMode === ItemSelectionMode.SINGLE && (
+                  <RadioButton.Android
+                    uncheckedColor={style.checkbox.color}
+                    color={style.checkbox.color}
+                    status={selectedItems.has(item.id) ? 'checked' : 'unchecked'}
+                  />
+                )}
+                {selectionMode === ItemSelectionMode.MULTI && (
+                  <Checkbox.Android
+                    uncheckedColor={style.checkbox.color}
+                    color={style.checkbox.color}
+                    status={selectedItems.has(item.id) ? 'checked' : 'unchecked'}
+                  />
+                )}
+                {this.props.renderItem(item)}
+              </View>
+            </TouchableOpacity>
+            {this.props.renderItemsSeparator()}
+          </View>
         )}
         keyExtractor={(item, index) => item.id.toString() + index.toString()}
         onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}

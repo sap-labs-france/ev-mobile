@@ -15,9 +15,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'flex-start',
-      borderBottomWidth: 1,
       alignItems: 'center',
-      borderBottomColor: commonColor.listBorderColor,
       padding: '5@s'
     },
     avatarContainer: {
