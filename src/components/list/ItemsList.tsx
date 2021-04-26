@@ -6,7 +6,6 @@ import ListItem from '../../types/ListItem';
 import ListEmptyTextComponent from './empty-text/ListEmptyTextComponent';
 import ListFooterComponent from './footer/ListFooterComponent';
 import computeStyleSheet from './ItemsListStyle';
-const style = computeStyleSheet();
 
 export interface Props<T extends ListItem> extends BaseProps {
   renderItem: (item: T) => Element;
@@ -38,7 +37,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
   public static defaultProps = {
     selectionMode: ItemSelectionMode.NONE,
     initiallySelectedItems: [],
-    renderItemsSeparator: () => <View style={style.rowSeparator} />
+    renderItemsSeparator: () => <View style={computeStyleSheet().rowSeparator} />
   };
   public state: State<T>;
   public props: Props<T>;
@@ -83,6 +82,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     } = this.props;
     const { selectedItems } = this.state;
     const selectionEnabled = selectionMode !== ItemSelectionMode.NONE && onSelect;
+    const style = computeStyleSheet();
     return (
       <FlatList
         data={data}
