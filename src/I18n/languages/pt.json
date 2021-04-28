@@ -186,7 +186,7 @@
     "active": "Active",
     "inactive": "Inactive",
     "locked": "Locked",
-    "blocked": "Blocked",
+    "suspended": "Suspended",
     "pending": "Pending",
     "unknown": "Unknown"
   },

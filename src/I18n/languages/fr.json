@@ -181,7 +181,7 @@
     "active": "Actif",
     "inactive": "Inactif",
     "locked": "Vérouillé",
-    "blocked": "Suspendu",
+    "suspended": "Suspendu",
     "pending": "En Attente",
     "unknown": "Inconnu"
   },
