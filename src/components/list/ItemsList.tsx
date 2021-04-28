@@ -51,7 +51,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     const { initiallySelectedItems } = this.props;
     if (initiallySelectedItems) {
       const selectedItems = new Map<string | number, T>();
-      initiallySelectedItems.forEach((item) => selectedItems.set(item.id, item));
+      initiallySelectedItems.forEach((item) => selectedItems.set(item?.id, item));
       this.setState({ selectedItems });
     }
   }
@@ -78,7 +78,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
       onEndReached,
       emptyTitle,
       selectionMode,
-      onSelect,
+      onSelect
     } = this.props;
     const { selectedItems } = this.state;
     const selectionEnabled = selectionMode !== ItemSelectionMode.NONE && onSelect;
