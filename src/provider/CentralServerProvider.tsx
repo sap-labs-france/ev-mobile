@@ -516,7 +516,7 @@ export default class CentralServerProvider {
     this.debugMethod('getChargingStationOcppParameters');
     // Call
     const result = await this.axiosInstance.get(
-      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CHARGING_STATIONS_OCPP_PARAMETERS}?ChargeBoxID=${id}`,
+      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CHARGING_STATIONS_OCPP_PARAMETERS}?ChargingStationID=${id}`,
       {
         headers: this.buildSecuredHeaders()
       }
@@ -548,7 +548,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async startTransaction(chargeBoxID: string, connectorId: number, tagID: string): Promise<ActionResponse> {
+  public async startTransaction(chargingStationID: string, connectorId: number, tagID: string): Promise<ActionResponse> {
     this.debugMethod('startTransaction');
     // Call
     const result = await this.axiosInstance.post(
@@ -558,7 +558,7 @@ export default class CentralServerProvider {
           connectorId,
           tagID
         },
-        chargeBoxID
+        chargingStationID
       },
       {
         headers: this.buildSecuredHeaders()
@@ -567,7 +567,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async stopTransaction(chargeBoxID: string, transactionId: number): Promise<ActionResponse> {
+  public async stopTransaction(chargingStationID: string, transactionId: number): Promise<ActionResponse> {
     this.debugMethod('stopTransaction');
     // Call
     const result = await this.axiosInstance.post(
@@ -576,7 +576,7 @@ export default class CentralServerProvider {
         args: {
           transactionId
         },
-        chargeBoxID
+        chargingStationID
       },
       {
         headers: this.buildSecuredHeaders()
@@ -585,7 +585,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async reset(chargeBoxID: string, type: 'Soft' | 'Hard'): Promise<ActionResponse> {
+  public async reset(chargingStationID: string, type: 'Soft' | 'Hard'): Promise<ActionResponse> {
     this.debugMethod('reset');
     // Call
     const result = await this.axiosInstance.post(
@@ -594,7 +594,7 @@ export default class CentralServerProvider {
         args: {
           type
         },
-        chargeBoxID
+        chargingStationID
       },
       {
         headers: this.buildSecuredHeaders()
@@ -603,14 +603,14 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async clearCache(chargeBoxID: string): Promise<ActionResponse> {
+  public async clearCache(chargingStationID: string): Promise<ActionResponse> {
     this.debugMethod('clearCache');
     // Call
     const result = await this.axiosInstance.post(
       `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CHARGING_STATION_CLEAR_CACHE}`,
       {
         args: {},
-        chargeBoxID
+        chargingStationID
       },
       {
         headers: this.buildSecuredHeaders()
@@ -619,7 +619,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async unlockConnector(chargeBoxID: string, connectorId: number): Promise<ActionResponse> {
+  public async unlockConnector(chargingStationID: string, connectorId: number): Promise<ActionResponse> {
     this.debugMethod('unlockConnector');
     // Call
     const result = await this.axiosInstance.post(
@@ -628,7 +628,7 @@ export default class CentralServerProvider {
         args: {
           connectorId
         },
-        chargeBoxID
+        chargingStationID
       },
       {
         headers: this.buildSecuredHeaders()
@@ -649,10 +649,10 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getLastTransaction(chargeBoxID: string, connectorId: number): Promise<Transaction> {
+  public async getLastTransaction(chargingStationID: string, connectorId: number): Promise<Transaction> {
     this.debugMethod('getLastTransaction');
     const params: { [param: string]: string } = {};
-    params.ChargeBoxID = chargeBoxID;
+    params.ChargingStationID = chargingStationID;
     params.ConnectorId = connectorId.toString();
     params.Limit = '1';
     params.Skip = '0';
@@ -730,7 +730,7 @@ export default class CentralServerProvider {
     const result = await this.axiosInstance.post(
       `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CHARGING_STATION_REQUEST_OCPP_PARAMETERS}`,
       {
-        chargeBoxID: id,
+        chargingStationID: id,
         forceUpdateOCPPParamsFromTemplate: false
       },
       {
