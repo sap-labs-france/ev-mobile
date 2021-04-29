@@ -68,8 +68,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     links: {
       borderBottomWidth: 0,
-      borderBottomColor: 'transparent',
-      height: Platform.OS === 'ios' ? undefined : '40@s',
       paddingTop: '10@s',
       paddingBottom: '10@s'
     },
