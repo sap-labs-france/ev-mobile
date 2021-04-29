@@ -17,7 +17,7 @@
 
       <meta-data
         android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyAHaa3pnWi6NGPZb-sGawBW-kIf2jQH4QE"/>
+        android:value="AIzaSyDwIRnqLmxjCzNkSH1Q6NlmGv6ldOZvHlo"/>
       <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 
       <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
@@ -64,6 +64,5 @@
             <data android:scheme="eMobility" />
         </intent-filter>
       </activity>
-      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>
 </manifest>
