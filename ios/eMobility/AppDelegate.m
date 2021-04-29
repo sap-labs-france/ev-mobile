@@ -74,10 +74,10 @@ static void InitializeFlipper(UIApplication *application) {
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"eMobility" initialProperties:nil];
 
   if (@available(iOS 13.0, *)) {
-          rootView.backgroundColor = [UIColor systemBackgroundColor];
-      } else {
-          rootView.backgroundColor = [UIColor whiteColor];
-      }
+    rootView.backgroundColor = [UIColor systemBackgroundColor];
+  } else {
+    rootView.backgroundColor = [UIColor whiteColor];
+  }
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
