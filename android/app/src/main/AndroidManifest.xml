@@ -17,7 +17,7 @@
 
       <meta-data
         android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyAHaa3pnWi6NGPZb-sGawBW-kIf2jQH4QE"/>
+        android:value="AIzaSyAkTPaxSFLk2UJEf0IJd3exWzoAgd3DZPk"/>
       <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 
       <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
