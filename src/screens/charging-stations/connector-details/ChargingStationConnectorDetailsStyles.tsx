@@ -11,32 +11,9 @@ import Utils from '../../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    modal: {
-      backgroundColor: commonColor.containerBgColor,
-      margin: 0,
-      marginTop: '100@s',
-      width: '100%'
-    },
     text: {
       color: commonColor.textColor,
       textAlign: 'center'
-    },
-    modalContainer: {
-      flexDirection: 'column',
-      height: '100%'
-    },
-    modalHeader: {
-      width: '100%',
-      flexDirection: 'column',
-      alignItems: 'center',
-      borderBottomColor: commonColor.listBorderColor,
-      borderTopColor: commonColor.listBorderColor,
-      borderBottomWidth: 1,
-      borderTopWidth: 1,
-      padding: '5@s'
-    },
-    modalTitle: {
-      fontSize: '16@s'
     },
     container: {
       flex: 1,

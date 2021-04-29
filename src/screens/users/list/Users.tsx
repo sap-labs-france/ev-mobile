@@ -35,7 +35,7 @@ export interface State {
 
 export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public static defaultProps = {
-    select: ItemSelectionMode.NONE,
+    selectionMode: ItemSelectionMode.NONE,
     isModal: false,
     initiallySelectedUsers: []
   };

@@ -1,18 +1,26 @@
 import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Button, Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
+import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
-import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
-import Modal from 'react-native-modal';
+import {
+  Alert,
+  Image,
+  ImageStyle,
+  RefreshControl,
+  ScrollView,
+  TouchableOpacity
+} from 'react-native';
 
 import noPhotoActive from '../../../../assets/no-photo-active.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
-import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
-import computeFormStyleSheet from '../../../FormStyles';
-import I18nManager from '../../../I18n/I18nManager';
+import ConnectorStatusComponent
+  from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import { ItemSelectionMode } from '../../../components/list/ItemsList';
+import UserModalSelect from '../../../components/modal/UserModalSelect';
+import computeFormStyleSheet from '../../../FormStyles';
+import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
@@ -23,7 +31,6 @@ import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
-import Users from '../../users/list/Users';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
 
 const START_TRANSACTION_NB_TRIAL = 4;
@@ -50,7 +57,6 @@ interface State {
   buttonDisabled?: boolean;
   refreshing?: boolean;
   selectedUser?: User;
-  isUserModalVisible?: boolean;
 }
 
 export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
@@ -79,8 +85,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       isPricingActive: false,
       buttonDisabled: true,
       refreshing: false,
-      selectedUser: null,
-      isUserModalVisible: false
+      selectedUser: null
     };
   }
 
@@ -101,10 +106,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     if (this.currentUser) {
       this.setState({
         selectedUser: {
-            id: this.currentUser.id,
-            firstName: this.currentUser.firstName,
-            name: this.currentUser.name
-          } });
+          id: this.currentUser.id,
+          firstName: this.currentUser.firstName,
+          name: this.currentUser.name
+        }
+      });
     }
   }
 
@@ -755,7 +761,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
               isUserModalVisible ? null : <RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />
             }>
             <View style={style.rowContainer}>{this.renderConnectorStatus(style)}</View>
-            {isAdmin && this.renderUserSelection(style, formStyle)}
+            {isAdmin && this.renderUserSelection(style)}
           </ScrollView>
         ) : (
           <ScrollView
@@ -785,53 +791,21 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private onUserSelected(users: User[]): void {
     if (users && !Utils.isEmptyArray(users)) {
-      this.setState({ selectedUser: users[0], isUserModalVisible: false });
+      this.setState({ selectedUser: users[0] });
     }
   }
 
-  private renderUserSelection(style: any, formStyle: any) {
-    const { selectedUser } = this.state;
+  private renderUserSelection(style: any) {
     const { navigation } = this.props;
-    const userFullName = Utils.buildUserName(selectedUser);
+    const { selectedUser } = this.state;
     return (
       <View style={style.rowContainer}>
-        <Button block={true} style={formStyle.button} onPress={() => this.setState({ isUserModalVisible: true })}>
-          <Text style={formStyle.buttonText} uppercase={false}>
-            {userFullName}
-          </Text>
-        </Button>
-        <Modal
-          propagateSwipe={true}
-          supportedOrientations={['portrait', 'landscape']}
-          style={style.modal}
-          isVisible={this.state.isUserModalVisible}
-          swipeDirection={'down'}
-          animationInTiming={1000}
-          onSwipeComplete={() => this.setState({ isUserModalVisible: false })}
-          onBackButtonPress={() => this.setState({ isUserModalVisible: false })}
-          onBackdropPress={() => this.setState({ isUserModalVisible: false })}
-          hideModalContentWhileAnimating={true}>
-          <View style={style.modalContainer}>
-            <View style={style.modalHeader}>
-              <Icon
-                onPress={() => this.setState({ isUserModalVisible: false })}
-                type="MaterialIcons"
-                name={'expand-more'}
-                style={[style.icon, style.downArrow]}
-              />
-              <Text style={style.modalTitle}>{I18n.t('users.selectUser')}</Text>
-            </View>
-            <View style={style.listContainer}>
-              <Users
-                initiallySelectedUsers={[selectedUser]}
-                onUserSelected={(selectedUsers) => this.onUserSelected(selectedUsers)}
-                navigation={navigation}
-                selectionMode={ItemSelectionMode.SINGLE}
-                isModal={true}
-              />
-            </View>
-          </View>
-        </Modal>
+        <UserModalSelect
+          defaultUser={selectedUser}
+          onUserSelected={(users: User[]) => this.onUserSelected(users)}
+          navigation={navigation}
+          selectionMode={ItemSelectionMode.SINGLE}
+        />
       </View>
     );
   }
