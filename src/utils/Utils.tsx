@@ -4,7 +4,6 @@ import I18n from 'i18n-js';
 import _ from 'lodash';
 import { NativeModules, Platform } from 'react-native';
 import { showLocation } from 'react-native-map-link';
-import Car, { CarCatalog } from 'types/Car';
 import validate from 'validate.js';
 
 import Configuration from '../config/Configuration';
@@ -13,6 +12,7 @@ import ThemeManager from '../custom-theme/ThemeManager';
 import I18nManager from '../I18n/I18nManager';
 import CentralServerProvider from '../provider/CentralServerProvider';
 import Address from '../types/Address';
+import Car, { CarCatalog } from '../types/Car';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType, Voltage } from '../types/ChargingStation';
 import { KeyValue } from '../types/Global';
 import { RequestError } from '../types/RequestError';
@@ -123,7 +123,7 @@ export default class Utils {
     return values;
   }
 
-  public static isEmptyArray(array: any[]): boolean {
+  public static isEmptyArray(array: any): boolean {
     if (!array) {
       return true;
     }
@@ -821,7 +821,7 @@ export default class Utils {
       case UserStatus.LOCKED:
         return I18n.t('userStatuses.locked');
       case UserStatus.BLOCKED:
-        return I18n.t('userStatuses.blocked');
+        return I18n.t('userStatuses.suspended');
       default:
         return I18n.t('userStatuses.unknown');
     }
