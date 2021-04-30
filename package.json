@@ -82,6 +82,7 @@
     "@react-navigation/material-bottom-tabs": "^5.3.10",
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
+    "@stripe/stripe-react-native": "file:.yalc/@stripe/stripe-react-native",
     "axios": "^0.21.1",
     "base-64": "^1.0.0",
     "buffer": "^6.0.3",
