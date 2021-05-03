@@ -3,11 +3,12 @@ import { Buffer } from 'buffer';
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
 import jwtDecode from 'jwt-decode';
+import { Alert } from 'react-native';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import NotificationManager from '../notification/NotificationManager';
-import { ActionResponse } from '../types/ActionResponse';
+import { ActionResponse, BillingOperationResponse } from '../types/ActionResponse';
 import Car from '../types/Car';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
@@ -816,6 +817,16 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  public async setUpPaymentMethod(userID: string): Promise<BillingOperationResponse> {
+    const url = `${this.buildRestServerAPIURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_SETUP}`.replace(':userID', userID);
+    try{
+      const result = await this.axiosInstance.post(url, { userID }, { headers: this.buildSecuredHeaders() });
+      return result.data;
+    } catch ( e ) {
+      console.log(e);
+    }
+  }
+
   public getSecurityProvider(): SecurityProvider {
     return this.securityProvider;
   }
@@ -858,6 +869,10 @@ export default class CentralServerProvider {
 
   private buildRestServerAuthURL(tenant: TenantConnection): string {
     return tenant?.endpoint + '/v1/auth';
+  }
+
+  private buildRestServerAPIURL(): string {
+    return this.tenant?.endpoint + '/v1/api';
   }
 
   private buildCentralRestServerServiceUtilURL(tenant: TenantConnection): string {

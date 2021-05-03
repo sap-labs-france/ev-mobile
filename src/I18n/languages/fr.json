@@ -73,7 +73,9 @@
     "reportError": "Signaler Erreur",
     "users": "Utilisateurs",
     "badges": "Badges",
-    "cars": "Voitures"
+    "cars": "Voitures",
+    "invoices": "Factures"
+
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",
@@ -189,6 +191,11 @@
     "noCars": "Aucune voiture",
     "carUnexpectedError": "Une erreur est survenue",
     "cars": "Voiture(s)"
+  },
+  "invoices": {
+    "noInvoices": "Aucune facture",
+    "invoiceUnexpectedError": "Une erreur est survenue",
+    "invoices": "Facture(s)"
   },
   "transactions": {
     "transaction": "Session",

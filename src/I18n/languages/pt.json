@@ -73,12 +73,18 @@
     "reportError": "Comunicar erro",
     "users": "Users",
     "badges": "Badges",
-    "cars": "Cars"
+    "cars": "Cars",
+    "invoices": "Invoices"
   },
   "cars": {
     "noCars": "No cars",
     "carUnexpectedError": "An error occurred",
     "cars": "Car(s)"
+  },
+  "invoices": {
+    "noInvoices": "Aucune facture",
+    "invoiceUnexpectedError": "Une erreur est survenue",
+    "invoices": "Facture(s)"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",

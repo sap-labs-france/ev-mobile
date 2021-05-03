@@ -23,6 +23,7 @@ export enum Entity {
   LOGGINGS = 'Loggings',
   LOGGING = 'Logging',
   PRICING = 'Pricing',
+  INVOICES = 'Invoices',
   BILLING = 'Billing',
   SETTING = 'Setting',
   SETTINGS = 'Settings',

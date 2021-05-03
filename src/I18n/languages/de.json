@@ -73,7 +73,8 @@
     "reportError": "Fehler Melden",
     "users": "Users",
     "cars": "Cars",
-    "badges": "Badges"
+    "badges": "Badges",
+    "invoices": "Invoices"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -189,6 +190,11 @@
     "noCars": "No cars",
     "carUnexpectedError": "An error occurred",
     "cars": "Car(s)"
+  },
+  "invoices": {
+    "noInvoices": "No Invoices",
+    "invoiceUnexpectedError": "An error occurred",
+    "invoices": "Invoice(s)"
   },
   "transactions": {
     "transaction": "Ladevorgang",

@@ -28,6 +28,7 @@ import ChargingStations from './screens/charging-stations/list/ChargingStations'
 import ChargingStationOcppParameters from './screens/charging-stations/ocpp/ChargingStationOcppParameters';
 import ChargingStationProperties from './screens/charging-stations/properties/ChargingStationProperties';
 import Home from './screens/home/Home';
+import Invoices from './screens/invoices/Invoices';
 import ReportError from './screens/report-error/ReportError';
 import Sidebar from './screens/sidebar/SideBar';
 import SiteAreas from './screens/site-areas/SiteAreas';
@@ -43,6 +44,7 @@ import Users from './screens/users/list/Users';
 import BaseProps from './types/BaseProps';
 import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
+import { StripeProvider } from '@stripe/stripe-react-native';
 
 // Init i18n
 I18nManager.initialize();
@@ -60,6 +62,7 @@ const rootStack = createStackNavigator();
 const UsersStack = createStackNavigator();
 const TagsStack = createStackNavigator();
 const CarsStack = createStackNavigator();
+const InvoicesStack = createStackNavigator();
 
 // Navigation Tab variable
 const ChargingStationDetailsTabs = createMaterialBottomTabNavigator();
@@ -427,6 +430,20 @@ function createCarsNavigator(props: BaseProps) {
 /**
  * @param props
  */
+function createInvoicesNavigator(props: BaseProps) {
+  return (
+    <StripeProvider
+      publishableKey={'pk_test_51I7N4EF5e1VSb1v6OKWFi3IkP4HoiYqULUUhAaSzPmJ6p39NQ6UE0kAdwrm2c4TBMwODjusjail734qbGI52zhh800naeZEE9d'}>
+      <InvoicesStack.Navigator initialRouteName="Invoices" headerMode="none">
+        <InvoicesStack.Screen name="Invoices" component={Invoices} initialParams={props?.route?.params?.params} />
+      </InvoicesStack.Navigator>
+    </StripeProvider>
+  );
+}
+
+/**
+ * @param props
+ */
 function createAppDrawerNavigator(props: BaseProps) {
   const appStyles = computeStyleSheet();
   return (
@@ -458,6 +475,7 @@ function createAppDrawerNavigator(props: BaseProps) {
       <AppDrawer.Screen name="UsersNavigator" component={createUsersNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="TagsNavigator" component={createTagsNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="CarsNavigator" component={createCarsNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name="InvoicesNavigator" component={createInvoicesNavigator} initialParams={props?.route?.params?.params} />
     </AppDrawer.Navigator>
   );
 }
