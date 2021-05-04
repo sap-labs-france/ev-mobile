@@ -1,2 +1,0 @@
-Object.defineProperty(exports,"__esModule",{value:true});exports.ApplePay=void 0;var ApplePay;exports.ApplePay=ApplePay;(function(_ApplePay){})(ApplePay||(exports.ApplePay=ApplePay={}));
-//# sourceMappingURL=ApplePay.js.map

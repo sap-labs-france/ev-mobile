@@ -1,2 +1,0 @@
-Object.defineProperty(exports,"__esModule",{value:true});exports.ApplePayButtonComponent=void 0;var ApplePayButtonComponent;exports.ApplePayButtonComponent=ApplePayButtonComponent;(function(_ApplePayButtonComponent){})(ApplePayButtonComponent||(exports.ApplePayButtonComponent=ApplePayButtonComponent={}));
-//# sourceMappingURL=ApplePayButtonComponent.js.map
