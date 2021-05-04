@@ -124,8 +124,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     scrollViewContainer: {
       flexDirection: 'column',
       justifyContent: 'flex-start',
-      alignItems: 'center',
-      paddingTop: '20@s'
+      alignItems: 'center'
     },
     rowContainer: {
       flexDirection: 'row',

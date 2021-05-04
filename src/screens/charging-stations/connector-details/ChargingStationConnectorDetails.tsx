@@ -718,9 +718,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public render() {
     const { navigation } = this.props;
-    const { isUserModalVisible, isAdmin } = this.state;
+    const { isAdmin } = this.state;
     const style = computeStyleSheet();
-    const formStyle = computeFormStyleSheet();
     const { connector, canStopTransaction, canStartTransaction, chargingStation, loading, siteImage, isPricingActive } = this.state;
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return loading ? (
@@ -758,7 +757,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <ScrollView
             contentContainerStyle={style.scrollViewContainer}
             refreshControl={
-              isUserModalVisible ? null : <RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />
+             <RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />
             }>
             <View style={style.rowContainer}>{this.renderConnectorStatus(style)}</View>
             {isAdmin && this.renderUserSelection(style)}
