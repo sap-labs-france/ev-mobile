@@ -8,7 +8,7 @@ import { ItemSelectionMode } from '../list/ItemsList';
 import ModalSelect from './ModalSelect';
 
 export interface Props extends BaseProps {
-  onUserSelected: (items: User[]) => void;
+  onUsersSelected: (items: User[]) => void;
   defaultUser?: User;
   selectionMode: ItemSelectionMode;
 }
