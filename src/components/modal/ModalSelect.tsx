@@ -64,7 +64,9 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
                 style={[style.icon, style.downArrow]}
               />
             </View>
-            <View style={style.listContainer}>{renderItemsList(this.onItemSelected.bind(this), selectedItemsInitialized)}</View>
+            <View style={style.listContainer}>
+              {renderItemsList(this.onItemSelected.bind(this), selectedItemsInitialized)}
+            </View>
           </View>
         </Modal>
       </View>
