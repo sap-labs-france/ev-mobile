@@ -16,7 +16,6 @@ export interface Props extends BaseProps {
 interface State {}
 
 export default class UserModalSelect extends React.Component<Props, State> {
-
   public state: State;
   public props: Props;
 
