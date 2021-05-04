@@ -169,7 +169,8 @@
     "userUnexpectedError": "Impossible de lire l'utilisateur",
     "noUsers": "Aucun utilisateur",
     "users": "Utilisateur(s)",
-    "selectUser" : "Sélectionnez un utilisateur"
+    "selectUser" : "Sélectionnez un utilisateur",
+    "selectUsers" : "Sélectionnez des utilisateurs"
   },
   "userRoles": {
     "admin": "Admin",

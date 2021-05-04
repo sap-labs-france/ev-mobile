@@ -1,6 +1,6 @@
 import { Body, Header, Icon, Left, Right, Subtitle, Title } from 'native-base';
 import React from 'react';
-import { BackHandler, Image, ImageStyle } from 'react-native';
+import { BackHandler, Image, ImageStyle, View } from 'react-native';
 
 import defaultTenantLogo from '../../../assets/logo-low.png';
 import FilterModalContainerComponent from '../../components/search/filter/containers/FilterModalContainerComponent';
@@ -23,6 +23,7 @@ export interface Props extends BaseProps {
   mapIsDisplayed?: boolean;
   displayMapAction?: () => void;
   tenantLogo?: string;
+  displayTenantLogo?: boolean;
 }
 
 interface State {
@@ -32,7 +33,8 @@ interface State {
 export default class HeaderComponent extends React.Component<Props, State> {
   public static defaultProps = {
     leftActionIconType: 'MaterialIcons',
-    rightActionIconType: 'MaterialIcons'
+    rightActionIconType: 'MaterialIcons',
+    displayTenantLogo: true
   };
   public state: State;
   public props: Props;
@@ -99,22 +101,25 @@ export default class HeaderComponent extends React.Component<Props, State> {
       displayMap,
       displayMapAction,
       mapIsDisplayed,
-      navigation
+      navigation,
+      displayTenantLogo
     } = this.props;
     return (
       <Header style={style.header}>
-        {leftAction ? (
-          <Left style={style.leftHeader}>
-            <Icon type={leftActionIconType} name={leftActionIcon} style={style.iconLeftHeader} onPress={leftAction} />
-            {!hideHomeAction && (
-              <Icon type="MaterialIcons" name="home" style={style.iconLeftHeader} onPress={() => navigation.navigate('HomeNavigator')} />
-            )}
-          </Left>
-        ) : (
-          <Left style={style.leftHeader}>
-            <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader as ImageStyle} />
-          </Left>
-        )}
+        <Left style={style.leftHeader}>
+          {leftAction ? (
+            <View style={style.leftHeader}>
+              <Icon type={leftActionIconType} name={leftActionIcon} style={style.iconLeftHeader} onPress={leftAction} />
+              {!hideHomeAction && (
+                <Icon type="MaterialIcons" name="home" style={style.iconLeftHeader} onPress={() => navigation.navigate('HomeNavigator')} />
+              )}
+            </View>
+          ) : (
+            displayTenantLogo && (
+              <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader as ImageStyle} />
+            )
+          )}
+        </Left>
         <Body style={style.bodyHeader}>
           <Title style={subTitle ? [style.titleHeader, style.titleHeaderWithSubTitle] : style.titleHeader}>{title}</Title>
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
@@ -149,7 +154,9 @@ export default class HeaderComponent extends React.Component<Props, State> {
           {rightAction ? (
             <Icon type={rightActionIconType} name={rightActionIcon} style={style.iconRightHeader} onPress={rightAction} />
           ) : (
-            <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader as ImageStyle} />
+            displayTenantLogo && (
+              <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader as ImageStyle} />
+            )
           )}
         </Right>
       </Header>

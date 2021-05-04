@@ -31,6 +31,8 @@ export interface State {
   count?: number;
   refreshing?: boolean;
   loading?: boolean;
+  selectedUsersCount: number;
+  totalUsersCount: number;
 }
 
 export default class Users extends BaseAutoRefreshScreen<Props, State> {
@@ -56,23 +58,27 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
       limit: Constants.PAGING_SIZE,
       count: 0,
       refreshing: false,
-      loading: true
+      loading: true,
+      selectedUsersCount: 0,
+      totalUsersCount: 0
     };
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
+    const { initiallySelectedUsers } = this.props;
+    this.setState({ selectedUsersCount: initiallySelectedUsers.length });
   }
 
-  public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
+  public async getUsers(searchText: string, skip: number, limit: number, onlyCount?: boolean = false): Promise<DataResult<User>> {
     try {
       const params = {
         Search: searchText,
         UserID: this.userIDs?.join('|'),
         carName: this.title
       };
-      const users = await this.centralServerProvider.getUsers(params, { skip, limit });
+      const users = await this.centralServerProvider.getUsers(params, onlyCount ? Constants.ONLY_RECORD_COUNT : { skip, limit });
       // Check
       if (users.count === -1) {
         // Request nbr of records
@@ -131,11 +137,14 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
       // Refresh All
       const users = await this.getUsers(this.searchText, 0, skip + limit);
       const usersResult = users ? users.result : [];
+      const allUsers = await this.getUsers(undefined, 0, limit, true);
+      const totalUsersCount = allUsers?.count;
       // Set
       this.setState({
         loading: false,
         users: usersResult,
-        count: users.count
+        count: users.count,
+        totalUsersCount
       });
     }
   }
@@ -147,24 +156,40 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { users, count, skip, limit, refreshing, loading } = this.state;
-    const { navigation, isModal, selectionMode, onUsersSelected, initiallySelectedUsers } = this.props;
+    const { users, count, skip, limit, refreshing, loading, selectedUsersCount, totalUsersCount } = this.state;
+    const { navigation, isModal, selectionMode, initiallySelectedUsers } = this.props;
+    const title = isModal
+      ? selectionMode === ItemSelectionMode.SINGLE
+        ? I18n.t('users.selectUser')
+        : selectionMode === ItemSelectionMode.MULTI
+        ? I18n.t('users.selectUsers')
+        : null
+      : this.title ?? i18n.t('sidebar.users');
+    const subTitle =
+      isModal && count
+      ? `${selectedUsersCount}/${totalUsersCount}`
+      : count > 0
+      ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}`
+      : null;
     return (
       <Container style={style.container}>
-        {!isModal && (
-          <HeaderComponent
-            title={this.title ?? i18n.t('sidebar.users')}
-            subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}` : null}
-            navigation={this.props.navigation}
-            leftAction={this.onBack}
-            leftActionIcon={'navigate-before'}
-            rightAction={() => {
-              navigation.dispatch(DrawerActions.openDrawer());
-              return true;
-            }}
-            rightActionIcon={'menu'}
-          />
-        )}
+        <HeaderComponent
+          title={title}
+          subTitle={subTitle}
+          navigation={this.props.navigation}
+          leftAction={isModal ? null : this.onBack}
+          leftActionIcon={isModal ? null : 'navigate-before'}
+          displayTenantLogo={false}
+          rightAction={
+            isModal
+              ? null
+              : () => {
+                  navigation.dispatch(DrawerActions.openDrawer());
+                  return true;
+                }
+          }
+          rightActionIcon={isModal ? null : 'menu'}
+        />
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (
@@ -172,7 +197,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
             <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
             <ItemsList<User>
               selectionMode={selectionMode}
-              onSelect={onUsersSelected}
+              onSelect={this.onUsersSelected.bind(this)}
               data={users}
               navigation={navigation}
               count={count}
@@ -189,5 +214,10 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
         )}
       </Container>
     );
+  }
+
+  private onUsersSelected(selectedUsers: User[]): void {
+    this.setState({ selectedUsersCount: selectedUsers.length });
+    this.props.onUsersSelected(selectedUsers);
   }
 }

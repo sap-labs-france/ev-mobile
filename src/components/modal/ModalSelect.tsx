@@ -1,4 +1,3 @@
-import I18n from 'i18n-js';
 import { Button, Icon, Text, View } from 'native-base';
 import React from 'react';
 import Modal from 'react-native-modal';
@@ -36,7 +35,7 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
     const { renderItemsList, buildItemName, defaultItem } = this.props;
-    const { selectedItems } = this.state;
+    const { selectedItems, isVisible } = this.state;
     const selectedItemsInitialized = Utils.isEmptyArray(selectedItems) ? [defaultItem] : selectedItems;
     return (
       <View>
@@ -49,7 +48,7 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
           propagateSwipe={true}
           supportedOrientations={['portrait', 'landscape']}
           style={style.modal}
-          isVisible={this.state.isVisible}
+          isVisible={isVisible}
           swipeDirection={'down'}
           animationInTiming={1000}
           onSwipeComplete={() => this.setState({ isVisible: false })}
@@ -64,7 +63,6 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
                 name={'expand-more'}
                 style={[style.icon, style.downArrow]}
               />
-              <Text style={style.modalTitle}>{I18n.t('users.selectUser')}</Text>
             </View>
             <View style={style.listContainer}>{renderItemsList(this.onItemSelected.bind(this), selectedItemsInitialized)}</View>
           </View>
