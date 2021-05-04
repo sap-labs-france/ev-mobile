@@ -37,7 +37,7 @@ export default class UserModalSelect extends React.Component<Props, State> {
             selectionMode={selectionMode}
             initiallySelectedUsers={initiallySelectedItems}
             isModal={true}
-            onUserSelected={onSelectCallback}
+            onUsersSelected={onSelectCallback}
           />
         )}
       />

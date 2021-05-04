@@ -20,7 +20,7 @@ import computeStyleSheet from './UsersStyle';
 export interface Props extends BaseProps {
   selectionMode?: ItemSelectionMode;
   isModal?: boolean;
-  onUserSelected?: (selectedUsers: User[]) => void;
+  onUsersSelected?: (selectedUsers: User[]) => void;
   initiallySelectedUsers?: User[];
 }
 
@@ -148,7 +148,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { users, count, skip, limit, refreshing, loading } = this.state;
-    const { navigation, isModal, selectionMode, onUserSelected, initiallySelectedUsers } = this.props;
+    const { navigation, isModal, selectionMode, onUsersSelected, initiallySelectedUsers } = this.props;
     return (
       <Container style={style.container}>
         {!isModal && (
@@ -172,7 +172,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
             <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
             <ItemsList<User>
               selectionMode={selectionMode}
-              onSelect={onUserSelected}
+              onSelect={onUsersSelected}
               data={users}
               navigation={navigation}
               count={count}
