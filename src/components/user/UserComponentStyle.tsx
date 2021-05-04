@@ -37,7 +37,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center'
     },
     fullNameContainer: {
-      width: '70%'
+      flex: 1
     },
     fullName: {
       fontSize: '17@s',
