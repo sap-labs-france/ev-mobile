@@ -819,12 +819,8 @@ export default class CentralServerProvider {
 
   public async setUpPaymentMethod(userID: string): Promise<BillingOperationResponse> {
     const url = `${this.buildRestServerAPIURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_SETUP}`.replace(':userID', userID);
-    try{
-      const result = await this.axiosInstance.post(url, { userID }, { headers: this.buildSecuredHeaders() });
-      return result.data;
-    } catch ( e ) {
-      console.log(e);
-    }
+    const result = await this.axiosInstance.post(url, { userID }, { headers: this.buildSecuredHeaders() });
+    return result.data as BillingOperationResponse;
   }
 
   public getSecurityProvider(): SecurityProvider {

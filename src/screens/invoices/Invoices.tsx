@@ -1,9 +1,10 @@
+import { CardField, CardFieldInput, PaymentMethodCreateParams, useConfirmSetupIntent } from '@stripe/stripe-react-native';
 import React, { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+
 import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import { BillingOperationResponse } from '../../types/ActionResponse';
-import { CardField, CardFieldInput, useConfirmSetupIntent } from '@stripe/stripe-react-native';
 
 /**
  *
@@ -17,10 +18,10 @@ export default function Invoices() {
     /**
      *
      */
-    async function getProvider() {
+    async function setProviderInstance() {
       setProvider(await ProviderFactory.getProvider());
     }
-    getProvider();
+    setProviderInstance();
   }, []);
 
   const addPaymentMethod = async (): Promise<void> => {
@@ -30,22 +31,30 @@ export default function Invoices() {
     console.log('###########################################\n');
     console.log(setUpIntent);
 
-   const result = await confirmSetupIntent(
-      setUpIntent?.clientSecret,
-      {
+    const clientSecret = setUpIntent?.client_secret;
+    if (!clientSecret) {
+      console.log('Unexpected situation - client secret is null - check the billing settings!!!');
+    } else {
+      console.log('Client secret is propery set!');
+
+      // This is useless
+      const billingDetails: PaymentMethodCreateParams.BillingDetails = {
+        email: 'claude.rossi@sap.com'
+      };
+
+      console.log('Now calling confirmSetupIntent!');
+      const { error, setupIntent: setupIntentResult } = await confirmSetupIntent(clientSecret, {
         type: 'Card',
-        billingDetails: {
-          email: 'alixhumbert@gmail.com'
-        }
+        billingDetails
+      });
+
+      if (error) {
+        console.log('Setup intent confirmation error', error.message);
+      } else if (setupIntentResult) {
+        console.log(`Success: Setup intent created. Intent status: ${setupIntentResult.status}`);
+        // TODO - call the backend to set the new payment method as the default one
       }
-      // TODO: put email and address
-      // billing_details: {
-      //   name: this.centralServerService.getCurrentUserSubject().value.email + new Date(),
-      // },
-    );
-
-   console.log(result);
-
+    }
   };
 
   return (

@@ -2,6 +2,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { InitialState, NavigationContainer, NavigationState } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { StripeProvider } from '@stripe/stripe-react-native';
 import I18n from 'i18n-js';
 import { Icon } from 'native-base';
 import React from 'react';
@@ -44,7 +45,6 @@ import Users from './screens/users/list/Users';
 import BaseProps from './types/BaseProps';
 import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
-import { StripeProvider } from '@stripe/stripe-react-native';
 
 // Init i18n
 I18nManager.initialize();
@@ -432,8 +432,11 @@ function createCarsNavigator(props: BaseProps) {
  */
 function createInvoicesNavigator(props: BaseProps) {
   return (
+    // --------------------------------------------------------
+    // Publishable key of the test system!
+    // --------------------------------------------------------
     <StripeProvider
-      publishableKey={'pk_test_51I7N4EF5e1VSb1v6OKWFi3IkP4HoiYqULUUhAaSzPmJ6p39NQ6UE0kAdwrm2c4TBMwODjusjail734qbGI52zhh800naeZEE9d'}>
+      publishableKey={'pk_test_51IW3RCDZWHsAGVIVC5fV95OtVn3f1uGN0qVGbIzDMmEAP5R7EDCx9bD4OSRAAbheJ6WnYsQu79fIAW1nEj9Yd3bp00yCzpZfOE'}>
       <InvoicesStack.Navigator initialRouteName="Invoices" headerMode="none">
         <InvoicesStack.Screen name="Invoices" component={Invoices} initialParams={props?.route?.params?.params} />
       </InvoicesStack.Navigator>
