@@ -103,3 +103,5 @@ android/app/google-services.json
 ios/GoogleService-Info.plist
 
 *.log
+
+.yalc/

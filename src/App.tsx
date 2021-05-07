@@ -2,7 +2,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { InitialState, NavigationContainer, NavigationState } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StripeProvider } from '@stripe/stripe-react-native';
+import { initStripe, StripeProvider } from '@stripe/stripe-react-native';
 import I18n from 'i18n-js';
 import { Icon } from 'native-base';
 import React from 'react';
@@ -30,6 +30,9 @@ import ChargingStationOcppParameters from './screens/charging-stations/ocpp/Char
 import ChargingStationProperties from './screens/charging-stations/properties/ChargingStationProperties';
 import Home from './screens/home/Home';
 import Invoices from './screens/invoices/Invoices';
+
+import CreatePaymentMethod from './screens/paymentMethods/CreatePaymentMethod';
+import PaymentMethods from './screens/paymentMethods/PaymentMethods';
 import ReportError from './screens/report-error/ReportError';
 import Sidebar from './screens/sidebar/SideBar';
 import SiteAreas from './screens/site-areas/SiteAreas';
@@ -43,6 +46,7 @@ import TransactionsHistory from './screens/transactions/history/TransactionsHist
 import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
 import Users from './screens/users/list/Users';
 import BaseProps from './types/BaseProps';
+import { BillingSettings } from './types/Setting';
 import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
 
@@ -63,6 +67,7 @@ const UsersStack = createStackNavigator();
 const TagsStack = createStackNavigator();
 const CarsStack = createStackNavigator();
 const InvoicesStack = createStackNavigator();
+const PaymentMethodsStack = createStackNavigator();
 
 // Navigation Tab variable
 const ChargingStationDetailsTabs = createMaterialBottomTabNavigator();
@@ -432,15 +437,22 @@ function createCarsNavigator(props: BaseProps) {
  */
 function createInvoicesNavigator(props: BaseProps) {
   return (
-    // --------------------------------------------------------
-    // Publishable key of the test system!
-    // --------------------------------------------------------
-    <StripeProvider
-      publishableKey={'pk_test_51IW3RCDZWHsAGVIVC5fV95OtVn3f1uGN0qVGbIzDMmEAP5R7EDCx9bD4OSRAAbheJ6WnYsQu79fIAW1nEj9Yd3bp00yCzpZfOE'}>
-      <InvoicesStack.Navigator initialRouteName="Invoices" headerMode="none">
-        <InvoicesStack.Screen name="Invoices" component={Invoices} initialParams={props?.route?.params?.params} />
-      </InvoicesStack.Navigator>
-    </StripeProvider>
+    <InvoicesStack.Navigator initialRouteName="Invoices" headerMode="none">
+      <InvoicesStack.Screen name="Invoices" component={Invoices} initialParams={props?.route?.params?.params} />
+    </InvoicesStack.Navigator>
+  );
+}
+
+function createPaymentMethodsNavigator(props: BaseProps) {
+  return (
+    <PaymentMethodsStack.Navigator initialRouteName="PaymentMethods" headerMode="none">
+      <PaymentMethodsStack.Screen name="PaymentMethods" component={PaymentMethods} initialParams={props?.route?.params?.params} />
+      <PaymentMethodsStack.Screen
+        name="CreatePaymentMethod"
+        component={CreatePaymentMethod}
+        initialParams={props?.route?.params?.params}
+      />
+    </PaymentMethodsStack.Navigator>
   );
 }
 
@@ -562,6 +574,9 @@ export default class App extends React.Component<Props, State> {
     const migrationManager = MigrationManager.getInstance();
     migrationManager.setCentralServerProvider(this.centralServerProvider);
     await migrationManager.migrate();
+    // Billing Settings
+    const billingSettings = await this.centralServerProvider.getBillingSettings();
+    initStripe({ publishableKey: billingSettings?.stripe?.publicKey });
     // Set
     this.setState({
       navigationState,

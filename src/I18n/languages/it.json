@@ -61,7 +61,8 @@
     "mobile": "Cellulare",
     "errorTitle": "Titolo Errore",
     "errorDescription": "Descrizione",
-    "scanQrCodeSuccess": "Il codice QR è stato scansionato con successo"
+    "scanQrCodeSuccess": "Il codice QR è stato scansionato con successo",
+    "default": "Default"
   },
   "sidebar": {
     "home": "Home",
@@ -75,16 +76,6 @@
     "badges": "Badges",
     "cars": "Cars",
     "invoices": "Invoices"
-  },
-  "cars": {
-    "noCars": "No cars",
-    "carUnexpectedError": "An error occurred",
-    "cars": "Car(s)"
-  },
-  "invoices": {
-    "noInvoices": "Aucune facture",
-    "invoiceUnexpectedError": "Une erreur est survenue",
-    "invoices": "Facture(s)"
   },
 	"authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -155,7 +146,7 @@
     "mandatoryErrorSubject": "Il soggetto è obbligatorio",
     "mandatoryErrorDescription": "La descrizione è obbligatoria",
     "reportErrorSuccess": "L'errore è stato segnalato con successo",
-    "reportErrorFailed": "Impossibile segnalare l'errore",
+    "reportErrorFailed": "Impossibile segnalare l'errore"
   },
   "qrCode": {
     "qrCode": "Codice QR",
@@ -181,6 +172,18 @@
     "noUsers": "No users",
     "users": "Users(s)"
   },
+  "paymentMethods": {
+    "paymentMethodUnexpectedError": "An error occurred",
+    "noPaymentMethod": "No payment method",
+    "paymentMethods": "Payment method(s)",
+    "addPaymentMethodError": "Failed to add payment method",
+    "addPaymentMethodSuccess" : "New payment method added successfully"
+  },
+  "paymentMethodStatus": {
+    "valid": "Valid",
+    "expired": "Expired",
+    "expiringSoon": "Expiring soon"
+  },
   "userRoles": {
     "admin": "Admin",
     "basic": "Basic",
@@ -195,6 +198,16 @@
     "suspended": "Suspended",
     "pending": "Pending",
     "unknown": "Unknown"
+  },
+  "cars": {
+    "noCars": "No cars",
+    "carUnexpectedError": "An error occurred",
+    "cars": "Car(s)"
+  },
+  "invoices": {
+    "noInvoices": "No Invoices",
+    "invoiceUnexpectedError": "An error occurred",
+    "invoices": "Invoice(s)"
   },
   "transactions": {
     "transaction": "Sessione",

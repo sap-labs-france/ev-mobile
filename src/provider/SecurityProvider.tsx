@@ -134,4 +134,8 @@ export default class SecurityProvider {
   public canListInvoices(): boolean {
     return this.canAccess(Entity.INVOICES, Action.LIST);
   }
+
+  public canListPaymentMethods(): boolean {
+    return this.canAccess(Entity.PAYMENT_METHODS, Action.LIST);
+  }
 }

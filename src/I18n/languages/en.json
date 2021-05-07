@@ -61,7 +61,8 @@
     "mobile": "Mobile",
     "errorTitle": "Error title",
     "errorDescription": "Description",
-    "scanQrCodeSuccess": "The QR code has been scanned successfully"
+    "scanQrCodeSuccess": "The QR code has been scanned successfully",
+    "default": "Default"
   },
   "sidebar": {
     "home": "Home",
@@ -170,6 +171,18 @@
     "userUnexpectedError": "Cannot read the users",
     "noUsers": "No users",
     "users": "Users(s)"
+  },
+  "paymentMethods": {
+    "paymentMethodUnexpectedError": "An error occurred",
+    "noPaymentMethod": "No payment method",
+    "paymentMethods": "Payment method(s)",
+    "addPaymentMethodError": "Failed to add payment method",
+    "addPaymentMethodSuccess" : "New payment method added successfully"
+  },
+  "paymentMethodStatus": {
+    "valid": "Valid",
+    "expired": "Expired",
+    "expiringSoon": "Expiring soon"
   },
   "userRoles": {
     "admin": "Admin",

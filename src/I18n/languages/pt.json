@@ -61,7 +61,8 @@
     "mobile": "Número de telemóvel",
     "errorTitle": "Título do erro",
     "errorDescription": "Descrição",
-    "scanQrCodeSuccess": "The QR code has been scanned successfully"
+    "scanQrCodeSuccess": "The QR code has been scanned successfully",
+    "default": "Default"
   },
   "sidebar": {
     "home": "Home",
@@ -174,12 +175,24 @@
     "unknownConnector": "Unknown Connector ID '{{connectorID}}'",
     "scanTenantQrCodeTitle": "Scan Tenant",
     "scanTenantQrCodeSuccess": "Organization '{{tenantName}}' has saved",
-    "scanChargingStationQrCodeTitle": "Scan Charging Station"
+    "scanChargingStationQrCodeTitle": "Scan Charging Station",
+    "addPaymentMethodError": "Failed to add payment method"
   },
   "users": {
     "userUnexpectedError": "Não posso ler os utilizadores",
     "noUsers": "No users",
     "users": "Users(s)"
+  },
+  "paymentMethods": {
+    "paymentMethodUnexpectedError": "An error occurred",
+    "noPaymentMethod": "No payment method",
+    "paymentMethods": "Payment method(s)",
+    "addPaymentMethodSuccess" : "New payment method added successfully"
+  },
+  "paymentMethodStatus": {
+    "valid": "Valid",
+    "expired": "Expired",
+    "expiringSoon": "Expiring soon"
   },
   "userRoles": {
     "admin": "Admin",

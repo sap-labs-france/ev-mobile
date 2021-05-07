@@ -483,7 +483,7 @@ PODS:
     - React
   - Stripe (21.4.0):
     - Stripe/Stripe3DS2 (= 21.4.0)
-  - "stripe-react-native (0.0.1+ab0fb0b5)":
+  - "stripe-react-native (0.0.1+d04c378c)":
     - React
     - Stripe (~> 21.4.0)
   - Stripe/Stripe3DS2 (21.4.0)
@@ -805,7 +805,7 @@ SPEC CHECKSUMS:
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   Stripe: 7c594b943abb65cf7bc28e37fd5124e65db3ce9e
-  stripe-react-native: 41ae23498808eca4448ab7daf9359168a5152dc2
+  stripe-react-native: 808b7a3494fbdd46c64c93f5d614681d4363630a
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   toolbar-android: 85f3ef4d691469f2d304e7dee4bca013aa1ba1ff
   Yoga: 8c8436d4171c87504c648ae23b1d81242bdf3bbf

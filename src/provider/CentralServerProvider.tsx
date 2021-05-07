@@ -16,6 +16,7 @@ import Eula, { EulaAccepted } from '../types/Eula';
 import { KeyValue } from '../types/Global';
 import PagingParams from '../types/PagingParams';
 import { ServerAction, ServerRoute } from '../types/Server';
+import { BillingSettings } from '../types/Setting';
 import Site from '../types/Site';
 import SiteArea from '../types/SiteArea';
 import Tag from '../types/Tag';
@@ -821,6 +822,16 @@ export default class CentralServerProvider {
     const url = `${this.buildRestServerAPIURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_SETUP}`.replace(':userID', userID);
     const result = await this.axiosInstance.post(url, { userID }, { headers: this.buildSecuredHeaders() });
     return result.data as BillingOperationResponse;
+  }
+
+  public async getBillingSettings(): Promise<BillingSettings> {
+    // Build the URL
+    const url = `${this.buildRestServerAPIURL()}/${ServerRoute.REST_BILLING_SETTING}`;
+    // Execute the REST Service
+    const result = await this.axiosInstance.get<BillingSettings>(url, {
+      headers: this.buildSecuredHeaders()
+    });
+    return result.data;
   }
 
   public getSecurityProvider(): SecurityProvider {
