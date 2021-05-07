@@ -5,4 +5,5 @@ export interface ActionResponse {
 
 export interface BillingOperationResponse extends ActionResponse {
   internalData: Record<string, unknown>;
+  succeeded: boolean;
 }
