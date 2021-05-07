@@ -30,7 +30,6 @@ import ChargingStationOcppParameters from './screens/charging-stations/ocpp/Char
 import ChargingStationProperties from './screens/charging-stations/properties/ChargingStationProperties';
 import Home from './screens/home/Home';
 import Invoices from './screens/invoices/Invoices';
-
 import CreatePaymentMethod from './screens/paymentMethods/CreatePaymentMethod';
 import PaymentMethods from './screens/paymentMethods/PaymentMethods';
 import ReportError from './screens/report-error/ReportError';

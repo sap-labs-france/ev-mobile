@@ -497,7 +497,6 @@ export enum ServerRoute {
 
   REST_TENANTS = 'tenants',
 
-
   REST_BILLING_SETTING = 'billing-setting',
 
   // BILLING URLs for CRUD operations on PAYMENT METHODS

@@ -44,8 +44,7 @@ export default function Invoices() {
 
       console.log('Now calling confirmSetupIntent!');
       const { error, setupIntent: setupIntentResult } = await confirmSetupIntent(clientSecret, {
-        type: 'Card',
-        billingDetails
+        type: 'Card'
       });
 
       if (error) {
@@ -58,7 +57,6 @@ export default function Invoices() {
   };
 
   return (
-
     <View style={{paddingTop: 200, alignSelf: 'center'}}>
       <Text>To be implemented...</Text>
     </View>

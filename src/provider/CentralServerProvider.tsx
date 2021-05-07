@@ -834,6 +834,16 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  public async getBillingSettings(): Promise<BillingSettings> {
+    // Build the URL
+    const url = `${this.buildRestServerAPIURL()}/${ServerRoute.REST_BILLING_SETTING}`;
+    // Execute the REST Service
+    const result = await this.axiosInstance.get<BillingSettings>(url, {
+      headers: this.buildSecuredHeaders()
+    });
+    return result.data;
+  }
+
   public getSecurityProvider(): SecurityProvider {
     return this.securityProvider;
   }
