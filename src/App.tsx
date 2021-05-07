@@ -491,6 +491,11 @@ function createAppDrawerNavigator(props: BaseProps) {
       <AppDrawer.Screen name="TagsNavigator" component={createTagsNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="CarsNavigator" component={createCarsNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="InvoicesNavigator" component={createInvoicesNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen
+        name="PaymentMethodsNavigator"
+        component={createPaymentMethodsNavigator}
+        initialParams={props?.route?.params?.params}
+      />
     </AppDrawer.Navigator>
   );
 }

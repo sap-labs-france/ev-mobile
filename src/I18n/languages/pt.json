@@ -75,7 +75,8 @@
     "users": "Users",
     "badges": "Badges",
     "cars": "Cars",
-    "invoices": "Invoices"
+    "invoices": "Invoices",
+    "paymentMethods": "Payment Methods"
   },
   "cars": {
     "noCars": "No cars",

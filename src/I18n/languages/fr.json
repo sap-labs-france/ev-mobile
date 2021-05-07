@@ -75,8 +75,8 @@
     "users": "Utilisateurs",
     "badges": "Badges",
     "cars": "Voitures",
-    "invoices": "Factures"
-
+    "invoices": "Factures",
+    "paymentMethods": "Méthodes de paiement"
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",
