@@ -10,7 +10,11 @@ import MasterCard from '../../../assets/payment-methods/mastercard.svg';
 import UnionPay from '../../../assets/payment-methods/unionpay.svg';
 import Visa from '../../../assets/payment-methods/visa.svg';
 import BaseProps from '../../types/BaseProps';
-import { BillingPaymentMethod, BillingPaymentMethodStatus, PaymentMethodBrands } from '../../types/Billing';
+import {
+  BillingPaymentMethod,
+  BillingPaymentMethodStatus,
+  PaymentMethodBrands
+} from '../../types/Billing';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './PaymentMethodComponentStyle';
 

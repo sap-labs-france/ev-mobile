@@ -3,7 +3,6 @@ import { Buffer } from 'buffer';
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
 import jwtDecode from 'jwt-decode';
-import { Alert } from 'react-native';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
