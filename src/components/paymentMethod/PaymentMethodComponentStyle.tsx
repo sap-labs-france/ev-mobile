@@ -15,16 +15,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       flexDirection: 'row',
       alignItems: 'center',
-      height: '70@s',
+      height: '80@s',
       paddingHorizontal: '5@s'
     },
     paymentMethodDetailsContainer: {
       justifyContent: 'center',
-      flex: 1
+      flex: 1,
+      height: '100%'
     },
     paymentMethodLogoContainer: {
       marginRight: '15@s',
-      paddingLeft: '10@s'
+      paddingLeft: '10@s',
+      height: '100%',
+      justifyContent: 'center'
     },
     cardSVG: {
       height: '70@s',
@@ -36,7 +39,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '15@s'
     },
     badgeText: {
-      fontSize: '11@s',
+      fontSize: '10@s',
       color: commonColor.brandLight,
       paddingVertical: '1@s',
       paddingHorizontal: '3@s'
@@ -47,16 +50,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     status: {
       marginLeft: '7@s',
-      borderRadius: 0
+      borderRadius: '2@s'
     },
     cardNumberContainer: {
       flexDirection: 'row',
       alignItems: 'center'
     },
     maskCharacter: {
-      width: '6@s',
-      height: '6@s',
-      borderRadius: '3@s',
+      width: '5@s',
+      height: '5@s',
+      borderRadius: '2.5@s',
       backgroundColor: commonColor.textColor,
       marginRight: '1@s'
     },
@@ -74,7 +77,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     defaultContainer: {
       backgroundColor: commonColor.brandDisabledDark,
-      marginLeft: '5@s'
+      marginLeft: '5@s',
+      borderRadius: '2@s'
     }
   });
   const portraitStyles = {};
