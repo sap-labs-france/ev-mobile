@@ -27,7 +27,7 @@ interface State {
 export default class CreateTenantDialog extends React.Component<Props, State> {
   public state: State;
   public props: Props;
-  public tenantEndpointClouds: EndpointCloud[];
+  public tenantEndpointClouds: EndpointCloud[] = [];
 
   private formCreateTenantValidationDef = {
     newTenantSubDomain: {
@@ -46,12 +46,16 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
 
   public constructor(props: Props) {
     super(props);
-    this.tenantEndpointClouds = Configuration.ENDPOINT_CLOUDS;
     this.state = {
       newTenantSubDomain: null,
       newTenantName: null,
-      newTenantEndpointCloud: this.tenantEndpointClouds.find((tenantEndpointCloud) => tenantEndpointCloud.id === 'scp')
+      newTenantEndpointCloud: null
     };
+  }
+
+  public componentDidMount() {
+    this.tenantEndpointClouds = Configuration.ENDPOINT_CLOUDS;
+    this.setState({ newTenantEndpointCloud: this.tenantEndpointClouds.find((tenantEndpointCloud) => tenantEndpointCloud.id === 'scp') });
   }
 
   public setState = (
@@ -113,7 +117,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
                 ))}
             </View>
             <View style={modalStyle.modalRow}>
-              <Item picker inlineLabel style={modalStyle.modalPickerGroup}>
+              <View style={modalStyle.modalPickerGroup}>
                 <Picker
                   mode="dialog"
                   style={modalStyle.modalPickerField}
@@ -130,11 +134,11 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
                   modalStyle={modalStyle.modalPickerModal}
                   selectedValue={this.state.newTenantEndpointCloud}
                   onValueChange={(value) => this.setState({ newTenantEndpointCloud: value })}>
-                  {this.tenantEndpointClouds.map((tenantEndpointCloud) => (
-                    <Picker.Item key={tenantEndpointCloud.id} value={tenantEndpointCloud} label={tenantEndpointCloud.name} />
+                  {this.tenantEndpointClouds.map((tenantEndpointCLoud) => (
+                    <Picker.Item key={tenantEndpointCLoud.id} value={tenantEndpointCLoud} label={tenantEndpointCLoud.name} />
                   ))}
                 </Picker>
-              </Item>
+              </View>
             </View>
           </View>
           <View style={modalStyle.modalButtonsContainer}>
