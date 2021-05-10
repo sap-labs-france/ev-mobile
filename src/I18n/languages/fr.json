@@ -62,7 +62,8 @@
     "errorTitle": "Titre de l'erreur",
     "errorDescription": "Description",
     "scanQrCodeSuccess": "Le QR code a bien été scanné",
-    "default": "Par défaut"
+    "default": "Par défaut",
+    "save": "Sauvegarder"
   },
   "sidebar": {
     "home": "Home",
@@ -178,7 +179,8 @@
     "noPaymentMethod": "Aucune méthode de paiement",
     "paymentMethods": "Méthode(s) de paiement",
     "addPaymentMethodError": "Impossible d'ajouter la méthode de paiement",
-    "addPaymentMethodSuccess" : "Nouvelle méthode de paiement ajoutée"
+    "addPaymentMethodSuccess" : "Nouvelle méthode de paiement ajoutée",
+    "addPaymentMethod": "Ajouter une méthode de paiment"
   },
   "paymentMethodStatus": {
     "valid": "Valide",

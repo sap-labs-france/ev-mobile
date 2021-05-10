@@ -62,7 +62,8 @@
     "errorTitle": "Titulo del error",
     "errorDescription": "Descripción del error",
     "scanQrCodeSuccess": "El código QR se ha escaneado correctamente",
-    "default": "Default"
+    "default": "Default",
+    "save": "Save"
   },
   "sidebar": {
     "home": "Menú principal",
@@ -171,14 +172,15 @@
   "users": {
     "userUnexpectedError": "No se ha podido cargar el usuario",
     "noUsers": "No users",
-    "users": "Users(s)",
+    "users": "Users(s)"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "An error occurred",
     "noPaymentMethod": "No payment method",
     "paymentMethods": "Payment method(s)",
     "addPaymentMethodError": "Failed to add payment method",
-    "addPaymentMethodSuccess" : "New payment method added successfully"
+    "addPaymentMethodSuccess" : "New payment method added successfully",
+    "addPaymentMethod": "Add new payment method"
   },
   "paymentMethodStatus": {
     "valid": "Valid",

@@ -112,7 +112,7 @@ export default function CreatePaymentMethod(props: Props) {
   return (
     <View style={style.container}>
       <HeaderComponent
-        title={'Ajouter une méthode de paiement'}
+        title={I18n.t('paymentMethods.addPaymentMethod')}
         navigation={props.navigation}
         leftAction={onBack}
         leftActionIcon={'navigate-before'}
@@ -140,7 +140,7 @@ export default function CreatePaymentMethod(props: Props) {
             light
             block
             onPress={async () => addPaymentMethod()}>
-            <Text style={[style.buttonText, !cardDetails?.complete && style.buttonTextDisabled]}>Sauvegarder</Text>
+            <Text style={[style.buttonText, !cardDetails?.complete && style.buttonTextDisabled]}>{I18n.t('general.save')}</Text>
           </Button>
         )}
       </View>
