@@ -578,6 +578,9 @@ export default class App extends React.Component<Props, State> {
     const migrationManager = MigrationManager.getInstance();
     migrationManager.setCentralServerProvider(this.centralServerProvider);
     await migrationManager.migrate();
+    // Billing
+    const billingSettings = await this.centralServerProvider.getBillingSettings();
+    initStripe({ publishableKey: billingSettings?.stripe?.publicKey });
     // Set
     this.setState({
       navigationState,
