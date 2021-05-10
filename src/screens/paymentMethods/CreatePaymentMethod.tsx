@@ -14,9 +14,7 @@ import Utils from '../../utils/Utils';
 
 import computeStyleSheet from './CreatePaymentMethodStyles';
 
-interface Props extends BaseProps {
-  close: () => void;
-}
+interface Props extends BaseProps {}
 
 /**
  * @param props
