@@ -131,7 +131,7 @@ export default function CreatePaymentMethod(props: Props) {
       <View style={style.buttonContainer}>
         {loading ? (
           <Button style={style.button} light block onPress={async () => addPaymentMethod()}>
-            <Spinner color={'grey'} />
+            <Spinner color={style.spinner.color} />
           </Button>
         ) : (
           <Button

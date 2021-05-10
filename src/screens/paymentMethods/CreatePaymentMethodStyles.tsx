@@ -29,6 +29,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.buttonBg,
       alignSelf: 'center'
     },
+    buttonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly'
+    },
     button: {
       marginTop: '30@s',
       alignSelf: 'center',
@@ -51,9 +55,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     buttonTextDisabled: {
       color: commonColor.brandDisabledLight
     },
-    buttonContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-evenly'
+    spinner: {
+      color: commonColor.brandDisabledDark
     }
   });
   const portraitStyles = {};
