@@ -259,7 +259,9 @@
     "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
     "totalInactivityNote": "Durata Totale Inattività",
     "totalPrice": "{{totalPrice}}",
-    "totalPriceNote": "Costo totale"
+    "totalPriceNote": "Costo totale",
+    "paymentMethods": "Payment Methods",
+    "paymentMethodsNote" : "Browse and create payment methods"
   },
   "sites": {
     "freeChargers": "Caricatori gratuiti",

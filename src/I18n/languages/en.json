@@ -259,7 +259,9 @@
     "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
     "totalInactivityNote": "Total Inactivity duration",
     "totalPrice": "{{totalPrice}}",
-    "totalPriceNote": "Total cost"
+    "totalPriceNote": "Total cost",
+    "paymentMethods": "Payment Methods",
+    "paymentMethodsNote" : "Browse and create payment methods"
   },
   "sites": {
     "freeChargers": "Free chargers",

@@ -259,7 +259,9 @@
     "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
     "totalInactivityNote": "Gesamte Inkativitätsdauer",
     "totalPrice": "{{totalPrice}}",
-    "totalPriceNote": "Gesamtkosten"
+    "totalPriceNote": "Gesamtkosten",
+    "paymentMethods": "Payment Methods",
+    "paymentMethodsNote" : "Browse and create payment methods"
   },
   "sites": {
     "freeChargers": "Freie Ladestationen",

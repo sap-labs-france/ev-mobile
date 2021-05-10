@@ -153,7 +153,7 @@
   "qrCode": {
     "qrCode": "QR Code",
     "browseScan&Charge": "Scan & Charge",
-    "browseScan&ChargeNote": "Scan the Charging Station's QR Code",
+    "browseScan&ChargeNote": "Scanner un QR Code",
     "wrongOrganizationTitle": "Changement d'Organisation",
     "wrongOrganizationMessage": "La borne que vous essayez d'atteindre n'est pas dans votre organisation, voulez-vous changer pour '{{tenantName}}'?",
     "invalidQRCode": "QR Code invalide",
@@ -259,7 +259,9 @@
     "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
     "totalInactivityNote": "Durée totale d'inactivité",
     "totalPrice": "{{totalPrice}}",
-    "totalPriceNote": "Cout total"
+    "totalPriceNote": "Cout total",
+    "paymentMethods": "Méthodes de paiement",
+    "paymentMethodsNote" : "Consulter et créer des méthodes de paiement"
   },
   "sites": {
     "freeChargers": "Chargeurs disponibles",
