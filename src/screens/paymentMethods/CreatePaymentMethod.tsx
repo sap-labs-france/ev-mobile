@@ -28,69 +28,61 @@ export default function CreatePaymentMethod(props: Props) {
   const [cardDetails, setCardDetails] = useState<CardFieldInput.Details>(null);
   const style = computeStyleSheet();
 
-  /**
-   *
-   */
-  async function getProvider() {
-    return ProviderFactory.getProvider();
-  }
-
   useEffect(() => {
-    /**
-     *
-     */
     async function setUp() {
-      const csProvider = await getProvider();
+      const csProvider = await ProviderFactory.getProvider();
       setProvider(csProvider);
     }
     setUp();
   }, []);
 
-  /**
-   *
-   */
   async function addPaymentMethod(): Promise<void> {
     if (cardDetails?.complete) {
       try {
         setLoading(true);
-        // Step 1 - call Back-End to create intent
+        // STEP 1 - Call Back-End to create intent
         const response: BillingOperationResponse = await provider.setUpPaymentMethod({ userID: provider.getUserInfo().id });
         if (response?.succeeded) {
           const internalData: any = response?.internalData;
           const clientSecret = internalData?.client_secret;
 
+          // We continue only if we have a client secret
           if (!clientSecret) {
             console.log('Unexpected situation - client secret is null - check the billing settings!!!');
           } else {
             console.log('Client secret is properly set!');
 
-            // Step 2 - call Stripe API to confirm intent
+            // STEP 2 - Call Stripe API to confirm intent
             const { error, setupIntent } = await confirmSetupIntent(clientSecret, {
               type: 'Card'
             });
             if (error) {
               console.log('Setup intent confirmation error', error.code, error.message);
+              // We continue only if we have a setUpIntent
             } else if (setupIntent) {
               console.log(`Success: Setup intent created. Intent status: ${setupIntent.status}`);
 
-              // Step 3 - Call Back-End to flag the payment method as default
+              // STEP 3 - Call Back-End to flag the payment method as default
               const attachResponse: BillingOperationResponse = await provider.attachPaymentMethod({
-                setupIntentId: setupIntent?.id,
-                paymentMethodId: setupIntent?.paymentMethodId,
+                setupIntentId: setupIntent.id,
+                paymentMethodId: setupIntent.paymentMethodId,
                 userID: provider.getUserInfo().id
               });
               if (attachResponse?.succeeded) {
                 setLoading(false);
                 props.navigation.goBack();
                 Message.showSuccess(I18n.t('paymentMethods.addPaymentMethodSuccess'));
+                // Return to prevent showError from triggering
                 return;
               }
             }
           }
         }
-        showError();
+        // Every failure other than HTTP is handled here
+        Message.showError(I18n.t('paymentMethods.addPaymentMethodError'));
         setLoading(false);
-      } catch ( error ) {
+        // Handle HTTP errors
+      } catch (error) {
         Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
@@ -101,18 +93,11 @@ export default function CreatePaymentMethod(props: Props) {
     }
   }
 
-  /**
-   *
-   */
   function onBack() {
     // Back mobile button: Force navigation
     props.navigation.goBack();
     // Do not bubble up
     return true;
-  }
-
-  function showError() {
-    Message.showError(I18n.t('paymentMethods.addPaymentMethodError'));
   }
 
   function buildCardFieldStyle() {
@@ -124,7 +109,6 @@ export default function CreatePaymentMethod(props: Props) {
     };
   }
 
-  // Render
   return (
     <View style={style.container}>
       <HeaderComponent
