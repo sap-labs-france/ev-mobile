@@ -134,8 +134,8 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
                   modalStyle={modalStyle.modalPickerModal}
                   selectedValue={this.state.newTenantEndpointCloud}
                   onValueChange={(value) => this.setState({ newTenantEndpointCloud: value })}>
-                  {this.tenantEndpointClouds.map((tenantEndpointCLoud) => (
-                    <Picker.Item key={tenantEndpointCLoud.id} value={tenantEndpointCLoud} label={tenantEndpointCLoud.name} />
+                  {this.tenantEndpointClouds.map((tenantEndpointCloud) => (
+                    <Picker.Item key={tenantEndpointCloud.id} value={tenantEndpointCloud} label={tenantEndpointCloud.name} />
                   ))}
                 </Picker>
               </View>
