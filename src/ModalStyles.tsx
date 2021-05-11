@@ -65,6 +65,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'flex-start',
       marginTop: '10@s',
       marginLeft: 0,
+      paddingLeft: Platform.OS === 'ios' ? 0 : '10@s',
       backgroundColor: commonColor.buttonBg,
       borderColor: 'transparent'
     },
@@ -89,7 +90,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     modalPickerField: {
       fontSize: '14@s',
-      marginLeft: '10@s',
       color: commonColor.textColor
     },
     modalPickerPlaceHolder: {
@@ -115,6 +115,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     modalTextButton: {
       height: '100%',
+      marginTop: Platform.OS === 'ios' ? '12@s' : '7@s',
       fontSize: '14@s',
       fontWeight: 'bold'
     },
