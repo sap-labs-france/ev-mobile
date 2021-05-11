@@ -30,7 +30,6 @@ export default function CreatePaymentMethod(props: Props) {
   const [loading, setLoading] = useState<boolean>(false);
   const [cardDetails, setCardDetails] = useState<CardFieldInput.Details>(null);
   const style = computeStyleSheet();
-  const commonColors = Utils.getCurrentCommonColor();
 
   useEffect(() => {
     async function setUp() {
@@ -110,9 +109,10 @@ export default function CreatePaymentMethod(props: Props) {
   function buildCardFieldStyle() {
     const commonColors = Utils.getCurrentCommonColor();
     return {
+      backgroundColor: commonColors.buttonBg,
+      textColor: commonColors.textColor,
       placeholderColor: commonColors.brandDisabledDark,
-      cursorColor: commonColors.textColor,
-      textColor: commonColors.textColor
+      cursorColor: commonColors.textColor
     };
   }
 
@@ -130,11 +130,7 @@ export default function CreatePaymentMethod(props: Props) {
         rightActionIcon={'menu'}
       />
       <CardField
-        cardStyle={{
-          placeholderColor: 'red',
-          cursorColor: commonColors.textColor,
-          textColor: 'red'
-        }}
+        cardStyle={buildCardFieldStyle()}
         onCardChange={(details: CardFieldInput.Details) => setCardDetails(details)}
         postalCodeEnabled={false}
         style={style.cardFieldContainer}
@@ -151,7 +147,7 @@ export default function CreatePaymentMethod(props: Props) {
             light
             block
             onPress={async () => addPaymentMethod()}>
-            <Text style={[style.buttonText, !cardDetails?.complete && style.buttonTextDisabled]}>{I18n.t('general.save')}</Text>
+            <Text style={style.buttonText}>{I18n.t('general.save')}</Text>
           </Button>
         )}
       </View>

@@ -26,7 +26,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       marginTop: '50@s',
       color: commonColor.textColor,
-      backgroundColor: 'red',
       alignSelf: 'center'
     },
     buttonContainer: {
@@ -41,19 +40,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderRadius: '20@s'
     },
     buttonDisabled: {
-      backgroundColor: commonColor.brandDisabledDark,
+      backgroundColor: commonColor.brandDisabled,
       opacity: 0.3
     },
     buttonEnabled: {
-      backgroundColor: commonColor.brandLight
+      backgroundColor: commonColor.buttonBg
     },
     buttonText: {
-      color: commonColor.brandDark,
+      color: commonColor.textColor,
       padding: '5@s',
       opacity: 1
-    },
-    buttonTextDisabled: {
-      color: commonColor.brandDisabledLight
     },
     spinner: {
       color: commonColor.brandDisabledDark
