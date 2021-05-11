@@ -26,7 +26,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       marginTop: '50@s',
       color: commonColor.textColor,
-      backgroundColor: commonColor.buttonBg,
+      backgroundColor: 'red',
       alignSelf: 'center'
     },
     buttonContainer: {

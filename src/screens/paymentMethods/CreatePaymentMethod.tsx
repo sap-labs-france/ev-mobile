@@ -1,5 +1,10 @@
 import { DrawerActions } from '@react-navigation/native';
-import { CardField, CardFieldInput, useConfirmSetupIntent } from '@stripe/stripe-react-native';
+import {
+  CardFieldInput,
+  useConfirmSetupIntent,
+  CardField,
+  initStripe
+} from '@stripe/stripe-react-native';
 import I18n from 'i18n-js';
 import { Button, Spinner, View } from 'native-base';
 import React, { useEffect, useState } from 'react';
@@ -25,14 +30,18 @@ export default function CreatePaymentMethod(props: Props) {
   const [loading, setLoading] = useState<boolean>(false);
   const [cardDetails, setCardDetails] = useState<CardFieldInput.Details>(null);
   const style = computeStyleSheet();
+  const commonColors = Utils.getCurrentCommonColor();
 
   useEffect(() => {
     async function setUp() {
       const csProvider = await ProviderFactory.getProvider();
       setProvider(csProvider);
+      // Billing
+      const billingSettings = await provider.getBillingSettings();
+      initStripe({ publishableKey: billingSettings?.stripe?.publicKey });
     }
     setUp();
-  }, []);
+  });
 
   async function addPaymentMethod(): Promise<void> {
     if (cardDetails?.complete) {
@@ -121,7 +130,11 @@ export default function CreatePaymentMethod(props: Props) {
         rightActionIcon={'menu'}
       />
       <CardField
-        cardStyle={buildCardFieldStyle()}
+        cardStyle={{
+          placeholderColor: 'red',
+          cursorColor: commonColors.textColor,
+          textColor: 'red'
+        }}
         onCardChange={(details: CardFieldInput.Details) => setCardDetails(details)}
         postalCodeEnabled={false}
         style={style.cardFieldContainer}
