@@ -1,9 +1,0 @@
-{
-  "version": "v1",
-  "packages": {
-    "@stripe/stripe-react-native": {
-      "signature": "ab0fb0b56035d4b459834a1bd9486b72",
-      "file": true
-    }
-  }
-}

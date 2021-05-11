@@ -481,12 +481,12 @@ PODS:
     - React
   - RNVectorIcons (7.1.0):
     - React
-  - Stripe (21.4.0):
-    - Stripe/Stripe3DS2 (= 21.4.0)
-  - "stripe-react-native (0.0.1+02eab08f)":
+  - Stripe (21.5.1):
+    - Stripe/Stripe3DS2 (= 21.5.1)
+  - stripe-react-native (0.1.0):
     - React
-    - Stripe (~> 21.4.0)
-  - Stripe/Stripe3DS2 (21.4.0)
+    - Stripe (~> 21.5.1)
+  - Stripe/Stripe3DS2 (21.5.1)
   - SwiftyJSON (5.0.0)
   - toolbar-android (0.1.0-rc.2):
     - React
@@ -573,7 +573,7 @@ DEPENDENCIES:
   - RNSecureStorage (from `../node_modules/rn-secure-storage/ios`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
-  - "stripe-react-native (from `../.yalc/@stripe/stripe-react-native`)"
+  - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
   - SwiftyJSON (= 5.0)
   - "toolbar-android (from `../node_modules/@react-native-community/toolbar-android`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -717,7 +717,7 @@ EXTERNAL SOURCES:
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   stripe-react-native:
-    :path: "../.yalc/@stripe/stripe-react-native"
+    :path: "../node_modules/@stripe/stripe-react-native"
   toolbar-android:
     :path: "../node_modules/@react-native-community/toolbar-android"
   Yoga:
@@ -804,8 +804,8 @@ SPEC CHECKSUMS:
   RNSecureStorage: 8b2b07278d80c48b3a881c56e604ab147372f243
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
-  Stripe: 7c594b943abb65cf7bc28e37fd5124e65db3ce9e
-  stripe-react-native: 42dcfcdbfe443ef50c8cae48c6cd9dce0fcb687b
+  Stripe: 515db5536fd659b5d79a0898ce1b882b61ab597e
+  stripe-react-native: e35c84fdbe5d0135bc26ce5a28d519157d825b60
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   toolbar-android: 85f3ef4d691469f2d304e7dee4bca013aa1ba1ff
   Yoga: 8c8436d4171c87504c648ae23b1d81242bdf3bbf
