@@ -4,7 +4,7 @@ import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { Platform, ScrollView } from 'react-native';
 import { Location } from 'react-native-location';
-import MapView, { Marker, Region } from 'react-native-maps';
+import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
@@ -26,6 +26,7 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import ChargingStationsFilters, { ChargingStationsFiltersDef } from './ChargingStationsFilters';
 import computeStyleSheet from './ChargingStationsStyles';
+import { ClusterMap } from 'react-native-cluster-map';
 
 export interface Props extends BaseProps {}
 
@@ -377,11 +378,12 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
             />
             {mapIsDisplayed ? (
               <View style={style.map}>
-                <MapView style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
+                <ClusterMap style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
                   {this.state.chargingStations.map((chargingStation) => {
                     if (Utils.containsGPSCoordinates(chargingStation.coordinates)) {
                       return (
                         <Marker
+                          image={Utils.buildChargingStationStatusMarker(chargingStation.connectors, chargingStation.inactive)}
                           key={chargingStation.id}
                           coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
                           title={chargingStation.id}
@@ -391,7 +393,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
                     }
                     return undefined;
                   })}
-                </MapView>
+                </ClusterMap>
                 {chargingStationSelected && this.buildModal(isAdmin, navigation, chargingStationSelected, modalStyle)}
               </View>
             ) : (

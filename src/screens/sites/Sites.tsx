@@ -5,7 +5,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Location } from 'react-native-location';
-import MapView, { Marker, Region } from 'react-native-maps';
+import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
@@ -27,6 +27,7 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SitesFilters, { SitesFiltersDef } from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
+import { ClusterMap } from 'react-native-cluster-map';
 
 export interface Props extends BaseProps {}
 
@@ -290,11 +291,12 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
             />
             {mapIsDisplayed ? (
               <View style={style.map}>
-                <MapView style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
+                <ClusterMap style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
                   {this.state.sites.map((site: Site) => {
                     if (Utils.containsAddressGPSCoordinates(site.address)) {
                       return (
                         <Marker
+                          image={Utils.buildSiteStatusMarker(site.connectorStats)}
                           key={site.id}
                           coordinate={{ longitude: site.address.coordinates[0], latitude: site.address.coordinates[1] }}
                           title={site.name}
@@ -304,7 +306,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
                     }
                     return undefined;
                   })}
-                </MapView>
+                </ClusterMap>
                 {siteSelected && this.buildModal(navigation, siteSelected, modalStyle)}
               </View>
             ) : (

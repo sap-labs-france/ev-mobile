@@ -4,7 +4,7 @@ import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl, ScrollView } from 'react-native';
 import { Location } from 'react-native-location';
-import MapView, { Marker, Region } from 'react-native-maps';
+import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
@@ -27,6 +27,7 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SiteAreasFilters, { SiteAreasFiltersDef } from './SiteAreasFilters';
 import computeStyleSheet from './SiteAreasStyles';
+import { ClusterMap } from 'react-native-cluster-map';
 
 export interface Props extends BaseProps {}
 
@@ -294,11 +295,12 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
             />
             {mapIsDisplayed ? (
               <View style={style.map}>
-                <MapView style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
+                <ClusterMap style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
                   {this.state.siteAreas.map((siteArea: SiteArea) => {
                     if (Utils.containsAddressGPSCoordinates(siteArea.address)) {
                       return (
                         <Marker
+                          image={Utils.buildSiteStatusMarker(siteArea.connectorStats)}
                           key={siteArea.id}
                           coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
                           title={siteArea.name}
@@ -308,7 +310,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
                     }
                     return undefined;
                   })}
-                </MapView>
+                </ClusterMap>
                 {siteAreaSelected && this.buildModal(navigation, siteAreaSelected, modalStyle)}
               </View>
             ) : (
