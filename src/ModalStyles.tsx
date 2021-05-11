@@ -89,7 +89,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     modalPickerField: {
-      fontSize: '14@s'
+      fontSize: '14@s',
+      color: commonColor.textColor
     },
     modalPickerPlaceHolder: {
       color: commonColor.placeholderTextColor
