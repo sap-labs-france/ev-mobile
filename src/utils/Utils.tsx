@@ -19,8 +19,6 @@ import { RequestError } from '../types/RequestError';
 import { EndpointCloud } from '../types/Tenant';
 import { InactivityStatus } from '../types/Transaction';
 import User, { UserRole, UserStatus } from '../types/User';
-import SiteArea from '../types/SiteArea';
-import Site from '../types/Site';
 import Constants from './Constants';
 import Message from './Message';
 import statusMarkerAvailable from '../../assets/icon/charging_station_available.png';
