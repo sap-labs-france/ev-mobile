@@ -578,14 +578,13 @@ export default class App extends React.Component<Props, State> {
     const migrationManager = MigrationManager.getInstance();
     migrationManager.setCentralServerProvider(this.centralServerProvider);
     await migrationManager.migrate();
-
     // Set
     this.setState({
       navigationState,
       isNavigationStateLoaded: true
     });
   }
-  
+
   public componentWillUnmount() {
     // Deactivate Deep links
     this.deepLinkingManager.stopListening();
