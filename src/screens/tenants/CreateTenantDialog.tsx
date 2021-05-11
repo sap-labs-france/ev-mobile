@@ -27,7 +27,7 @@ interface State {
 export default class CreateTenantDialog extends React.Component<Props, State> {
   public state: State;
   public props: Props;
-  public tenantEndpointClouds: EndpointCloud[] = [];
+  public tenantEndpointClouds: EndpointCloud[];
 
   private formCreateTenantValidationDef = {
     newTenantSubDomain: {
