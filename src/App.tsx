@@ -585,6 +585,7 @@ export default class App extends React.Component<Props, State> {
       isNavigationStateLoaded: true
     });
   }
+  
   public componentWillUnmount() {
     // Deactivate Deep links
     this.deepLinkingManager.stopListening();
