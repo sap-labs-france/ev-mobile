@@ -90,13 +90,6 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
           <View>
             <TouchableOpacity disabled={!selectionEnabled} onPress={() => this.onSelectItem(item)}>
               <View style={style.rowContainer}>
-                {selectionMode === ItemSelectionMode.SINGLE && (
-                  <RadioButton.Android
-                    uncheckedColor={style.checkbox.color}
-                    color={style.checkbox.color}
-                    status={selectedItems.has(item.id) ? 'checked' : 'unchecked'}
-                  />
-                )}
                 {selectionMode === ItemSelectionMode.MULTI && (
                   <Checkbox.Android
                     uncheckedColor={style.checkbox.color}
