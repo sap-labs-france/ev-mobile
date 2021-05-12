@@ -15,6 +15,11 @@ export default class Configuration {
     { id: 'scpqa', name: 'SAP Cloud Platform QA', endpoint: Configuration.SCP_REST_ENDPOINT_QA }
   ];
 
+  public static readonly ENDPOINT_CLOUDS_DEV: EndpointCloud[] = [
+    ...Configuration.ENDPOINT_CLOUDS,
+    { id: 'localhost', name: 'LOCALHOST', endpoint: 'http://127.0.0.1:8020' }
+  ];
+
   public static ENDPOINTS_PROD: KeyValue[] = [{ key: 'general.endpoint_scp_prod', value: Configuration.SCP_REST_ENDPOINT_PROD }];
 
   public static ENDPOINTS_QA: KeyValue[] = [{ key: 'general.endpoint_scp_qa', value: Configuration.SCP_REST_ENDPOINT_QA }];

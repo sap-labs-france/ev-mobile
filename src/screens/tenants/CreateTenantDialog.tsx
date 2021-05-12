@@ -19,7 +19,8 @@ export interface Props extends BaseProps {
 interface State {
   newTenantSubDomain?: string;
   newTenantName?: string;
-  newTenantEndpointCloud?: EndpointCloud;
+  tenantEndpointClouds: EndpointCloud[];
+  newTenantEndpointCloudId?: string;
   errorNewTenantName?: Record<string, unknown>[];
   errorNewTenantSubDomain?: Record<string, unknown>[];
 }
@@ -46,24 +47,27 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
 
   public constructor(props: Props) {
     super(props);
-    this.tenantEndpointClouds = Configuration.ENDPOINT_CLOUDS;
+    let tenantEndpointClouds: EndpointCloud[];
+    if (__DEV__) {
+      tenantEndpointClouds = Configuration.ENDPOINT_CLOUDS_DEV;
+    } else {
+      tenantEndpointClouds = Configuration.ENDPOINT_CLOUDS;
+    }
+    const newTenantEndpointCloudId = tenantEndpointClouds.find((tenantEndpointCloud) => tenantEndpointCloud.id === 'scp').id;
     this.state = {
       newTenantSubDomain: null,
       newTenantName: null,
-      newTenantEndpointCloud: this.tenantEndpointClouds.find((tenantEndpointCloud) => tenantEndpointCloud.id === 'scp')
+      tenantEndpointClouds,
+      newTenantEndpointCloudId
     };
   }
-
-  public setState = (
-    state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,
-    callback?: () => void
-  ) => {
-    super.setState(state, callback);
-  };
 
   public render() {
     const modalStyle = computeModalStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
+    const pickerItems = this.state.tenantEndpointClouds.map((tenantEndpointCloud) => (
+      <Picker.Item key={tenantEndpointCloud.id} value={tenantEndpointCloud.id} label={tenantEndpointCloud.name} />
+    ));
     // Render
     return (
       <Modal style={modalStyle.modal} isVisible onBackdropPress={() => this.props.close()}>
@@ -128,11 +132,9 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
                   itemTextStyle={modalStyle.modalPickerText}
                   itemStyle={modalStyle.modalPickerModal}
                   modalStyle={modalStyle.modalPickerModal}
-                  selectedValue={this.state.newTenantEndpointCloud}
-                  onValueChange={(value) => this.setState({ newTenantEndpointCloud: value })}>
-                  {this.tenantEndpointClouds.map((tenantEndpointCloud) => (
-                    <Picker.Item key={tenantEndpointCloud.id} value={tenantEndpointCloud} label={tenantEndpointCloud.name} />
-                  ))}
+                  selectedValue={this.state.newTenantEndpointCloudId}
+                  onValueChange={(value) => this.setState({ newTenantEndpointCloudId: value })}>
+                  {pickerItems}
                 </Picker>
               </View>
             </View>
@@ -143,7 +145,10 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
               full
               danger
               onPress={() => {
-                this.createTenant(this.state.newTenantSubDomain, this.state.newTenantName, this.state.newTenantEndpointCloud);
+                const selectedTenantEndpointCloud = this.state.tenantEndpointClouds.find(
+                  (tenantEndpointCloud) => tenantEndpointCloud.id === this.state.newTenantEndpointCloudId
+                );
+                this.createTenant(this.state.newTenantSubDomain, this.state.newTenantName, selectedTenantEndpointCloud);
               }}>
               <Text style={modalStyle.modalTextButton} uppercase={false}>
                 {I18n.t('general.create')}
