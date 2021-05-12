@@ -113,7 +113,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
                 ))}
             </View>
             <View style={modalStyle.modalRow}>
-              <Item picker inlineLabel style={modalStyle.modalPickerGroup}>
+              <View style={modalStyle.modalPickerGroup}>
                 <Picker
                   mode="dialog"
                   style={modalStyle.modalPickerField}
@@ -134,7 +134,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
                     <Picker.Item key={tenantEndpointCloud.id} value={tenantEndpointCloud} label={tenantEndpointCloud.name} />
                   ))}
                 </Picker>
-              </Item>
+              </View>
             </View>
           </View>
           <View style={modalStyle.modalButtonsContainer}>
