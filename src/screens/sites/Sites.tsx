@@ -265,6 +265,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     const { navigation } = this.props;
     const { loading, skip, count, limit, initialFilters, showMap, siteSelected, refreshing, sites } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.sites);
+    const siteWithAddress = sites.filter((site) => Utils.containsAddressGPSCoordinates(site.address));
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -295,22 +296,19 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
             />
             {mapIsDisplayed ? (
               <View style={style.map}>
-                <ClusterMap style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
-                  {this.state.sites.map((site: Site) => {
-                    if (Utils.containsAddressGPSCoordinates(site.address)) {
-                      return (
-                        <Marker
-                          image={Utils.buildSiteStatusMarker(site.connectorStats)}
-                          key={site.id}
-                          coordinate={{ longitude: site.address.coordinates[0], latitude: site.address.coordinates[1] }}
-                          title={site.name}
-                          onPress={() => this.showMapSiteDetail(site)}
-                        />
-                      );
-                    }
-                    return undefined;
-                  })}
-                </ClusterMap>
+                {this.currentRegion && (
+                  <ClusterMap style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
+                    {siteWithAddress.map((site: Site) => (
+                      <Marker
+                        image={Utils.buildSiteStatusMarker(site.connectorStats)}
+                        key={site.id}
+                        coordinate={{ longitude: site.address.coordinates[0], latitude: site.address.coordinates[1] }}
+                        title={site.name}
+                        onPress={() => this.showMapSiteDetail(site)}
+                      />
+                    ))}
+                  </ClusterMap>
+                )}
                 {siteSelected && this.buildModal(navigation, siteSelected, modalStyle)}
               </View>
             ) : (

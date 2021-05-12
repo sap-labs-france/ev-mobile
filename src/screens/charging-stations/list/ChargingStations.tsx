@@ -348,6 +348,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       refreshing
     } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.chargingStations);
+    const chargingStationsWithAddress = chargingStations.filter((chargingStation) =>
+      Utils.containsGPSCoordinates(chargingStation.coordinates)
+    );
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -380,22 +383,19 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
             />
             {mapIsDisplayed ? (
               <View style={style.map}>
-                <ClusterMap style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
-                  {this.state.chargingStations.map((chargingStation) => {
-                    if (Utils.containsGPSCoordinates(chargingStation.coordinates)) {
-                      return (
-                        <Marker
-                          image={Utils.buildChargingStationStatusMarker(chargingStation.connectors, chargingStation.inactive)}
-                          key={chargingStation.id}
-                          coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
-                          title={chargingStation.id}
-                          onPress={() => this.showMapChargingStationDetail(chargingStation)}
-                        />
-                      );
-                    }
-                    return undefined;
-                  })}
-                </ClusterMap>
+                {this.currentRegion && (
+                  <ClusterMap style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
+                    {chargingStationsWithAddress.map((chargingStation) => (
+                      <Marker
+                        image={Utils.buildChargingStationStatusMarker(chargingStation.connectors, chargingStation.inactive)}
+                        key={chargingStation.id}
+                        coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
+                        title={chargingStation.id}
+                        onPress={() => this.showMapChargingStationDetail(chargingStation)}
+                      />
+                    ))}
+                  </ClusterMap>
+                )}
                 {chargingStationSelected && this.buildModal(isAdmin, navigation, chargingStationSelected, modalStyle)}
               </View>
             ) : (

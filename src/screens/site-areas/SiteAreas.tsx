@@ -267,8 +267,9 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
-    const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected } = this.state;
+    const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected, siteAreas } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.siteAreas);
+    const siteAreaWithAddress = siteAreas.filter((siteArea) => Utils.containsAddressGPSCoordinates(siteArea.address));
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -299,22 +300,19 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
             />
             {mapIsDisplayed ? (
               <View style={style.map}>
-                <ClusterMap style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
-                  {this.state.siteAreas.map((siteArea: SiteArea) => {
-                    if (Utils.containsAddressGPSCoordinates(siteArea.address)) {
-                      return (
-                        <Marker
-                          image={Utils.buildSiteStatusMarker(siteArea.connectorStats)}
-                          key={siteArea.id}
-                          coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
-                          title={siteArea.name}
-                          onPress={() => this.showMapSiteDetail(siteArea)}
-                        />
-                      );
-                    }
-                    return undefined;
-                  })}
-                </ClusterMap>
+                {this.currentRegion && (
+                  <ClusterMap style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
+                    {siteAreaWithAddress.map((siteArea: SiteArea) => (
+                      <Marker
+                        image={Utils.buildSiteStatusMarker(siteArea.connectorStats)}
+                        key={siteArea.id}
+                        coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
+                        title={siteArea.name}
+                        onPress={() => this.showMapSiteDetail(siteArea)}
+                      />
+                    ))}
+                  </ClusterMap>
+                )}
                 {siteAreaSelected && this.buildModal(navigation, siteAreaSelected, modalStyle)}
               </View>
             ) : (
