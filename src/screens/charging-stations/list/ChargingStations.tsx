@@ -185,6 +185,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     if (this.siteAreaID) {
       // Go Back
       this.props.navigation.goBack();
+    } else if (this.state.showMap && !Utils.isEmptyArray(this.state.chargingStations)) {
+      this.setState({ showMap: false });
     } else {
       // Go back to the top
       this.props.navigation.goBack();
