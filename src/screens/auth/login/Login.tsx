@@ -157,7 +157,7 @@ export default class Login extends BaseScreen<Props, State> {
         return await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
       }
     } catch (error) {
-      // Tenangt has no logo
+      // Tenant has no logo
     }
     return null;
   };

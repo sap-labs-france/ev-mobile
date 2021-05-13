@@ -17,7 +17,8 @@ export default class Configuration {
 
   public static readonly ENDPOINT_CLOUDS_DEV: EndpointCloud[] = [
     ...Configuration.ENDPOINT_CLOUDS,
-    { id: 'localhost', name: 'LOCALHOST', endpoint: 'http://127.0.0.1:8020' }
+    { id: 'localhost:8020', name: '127.0.0.1:8020', endpoint: 'http://127.0.0.1:8020' },
+    { id: 'android:localhost:8020', name: '10.0.2.2:8020', endpoint: 'http://10.0.2.2:8020' }
   ];
 
   public static ENDPOINTS_PROD: KeyValue[] = [{ key: 'general.endpoint_scp_prod', value: Configuration.SCP_REST_ENDPOINT_PROD }];
