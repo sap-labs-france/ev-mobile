@@ -24,6 +24,9 @@ export default class SelectableList<T extends ListItem> extends BaseAutoRefreshS
 
   protected onItemsSelected(selectedItems: T[]): void {
     this.setState({ selectedItems });
-    this.props.onItemsSelected(selectedItems);
+    const { onItemsSelected } = this.props;
+    if (onItemsSelected) {
+      onItemsSelected(selectedItems);
+    }
   }
 }
