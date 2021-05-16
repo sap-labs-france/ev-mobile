@@ -3,19 +3,17 @@ import React from 'react';
 import Modal from 'react-native-modal';
 import computeFormStyleSheet from '../../FormStyles';
 import BaseProps from '../../types/BaseProps';
-import ListItem from '../../types/ListItem';
 import Utils from '../../utils/Utils';
 import { ItemSelectionMode } from '../list/ItemsList';
-import Items from '../list/test/Items';
 import computeStyleSheet from './ModalStyles';
 import I18n from 'i18n-js';
 import SelectableList from '../../screens/base-screen/SelectableList';
 
 export interface Props<T> extends BaseProps {
-  renderItemsList?: (onSelectCallback: (items: ListItem[]) => void, initiallySelectedItems: T[]) => Items<T>;
   defaultItem: T;
   buildItemName: (item: T) => string;
   selectionMode: ItemSelectionMode;
+  onItemsSelected: (selectedItems: T[]) => void;
 }
 interface State<T> {
   isVisible: boolean;
@@ -103,11 +101,12 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
   }
 
   private onItemSelected(selectedItems: T[]) {
-    const { selectionMode } = this.props;
+    const { selectionMode, onItemsSelected } = this.props;
     if (selectionMode === ItemSelectionMode.MULTI) {
       this.setState({ canValidateMultiSelection: selectedItems.length > 0 });
     } else if (selectionMode === ItemSelectionMode.SINGLE && selectedItems && !Utils.isEmptyArray(selectedItems)) {
       this.setState({ selectedItems, isVisible: false });
     }
+    onItemsSelected(selectedItems);
   }
 }

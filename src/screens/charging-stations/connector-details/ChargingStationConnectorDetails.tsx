@@ -32,6 +32,8 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
+import Users from '../../users/list/Users';
+import ModalSelect from '../../../components/modal/ModalSelect';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -799,12 +801,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { selectedUser } = this.state;
     return (
       <View style={style.rowContainer}>
-        <UserModalSelect
-          defaultUser={selectedUser}
-          onUsersSelected={(users: User[]) => this.onUserSelected(users)}
+        <ModalSelect<User>
+          defaultItem={selectedUser}
+          onItemsSelected={(selectedUsers: User[]) => this.setState({ selectedUser: selectedUsers?.[0] })}
+          buildItemName={Utils.buildUserName}
           navigation={navigation}
-          selectionMode={ItemSelectionMode.SINGLE}
-        />
+          selectionMode={ItemSelectionMode.SINGLE}>
+          <Users navigation={navigation} />
+        </ModalSelect>
       </View>
     );
   }
