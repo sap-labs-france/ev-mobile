@@ -20,7 +20,6 @@ export interface Props<T extends ListItem> extends BaseProps {
   count: number;
   limit: number;
   refreshing: boolean;
-  initiallySelectedItems?: T[];
 }
 
 export enum ItemSelectionMode {
@@ -36,7 +35,6 @@ interface State<T> {
 export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State<T>> {
   public static defaultProps = {
     selectionMode: ItemSelectionMode.NONE,
-    initiallySelectedItems: [],
     renderItemsSeparator: () => <View style={computeStyleSheet().rowSeparator} />
   };
   public state: State<T>;
@@ -51,7 +49,6 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     const { initiallySelectedItems } = this.props;
     if (initiallySelectedItems) {
       const selectedItems = new Map<string | number, T>();
-      initiallySelectedItems.forEach((item) => selectedItems.set(item?.id, item));
       this.setState({ selectedItems });
     }
   }
