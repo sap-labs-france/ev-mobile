@@ -69,7 +69,15 @@ export default class Users extends SelectableList<User> {
         UserID: this.userIDs?.join('|'),
         carName: this.title
       };
-      const users = await this.centralServerProvider.getUsers(params, onlyCount ? Constants.ONLY_RECORD_COUNT : { skip, limit });
+      const users = await this.centralServerProvider.getUsers(
+        params,
+        onlyCount
+          ? Constants.ONLY_RECORD_COUNT
+          : {
+              skip,
+              limit
+            }
+      );
       // Check
       if (users.count === -1) {
         // Request nbr of records
@@ -149,24 +157,12 @@ export default class Users extends SelectableList<User> {
     const style = computeStyleSheet();
     const { users, count, skip, limit, refreshing, loading, selectedItems, totalUsersCount } = this.state;
     const { navigation, isModal, selectionMode } = this.props;
-    const title = isModal
-      ? selectionMode === ItemSelectionMode.SINGLE
-        ? I18n.t('users.selectUser')
-        : selectionMode === ItemSelectionMode.MULTI
-        ? I18n.t('users.selectUsers')
-        : null
-      : this.title ?? I18n.t('sidebar.users');
-    const subTitle =
-      isModal && count
-      ? `${selectedItems.length}/${totalUsersCount}`
-      : count > 0
-      ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}`
-      : null;
+
     return (
       <Container style={style.container}>
         <HeaderComponent
-          title={title}
-          subTitle={subTitle}
+          title={this.buildHeaderTitle()}
+          subTitle={this.buildHeaderSubtitle()}
           navigation={this.props.navigation}
           leftAction={isModal ? null : this.onBack}
           leftActionIcon={isModal ? null : 'navigate-before'}
@@ -177,7 +173,7 @@ export default class Users extends SelectableList<User> {
               : () => {
                 navigation.dispatch(DrawerActions.openDrawer());
                 return true;
-            }
+              }
           }
           rightActionIcon={isModal ? null : 'menu'}
         />
@@ -204,5 +200,29 @@ export default class Users extends SelectableList<User> {
         )}
       </Container>
     );
+  }
+
+  private buildHeaderTitle(): string {
+    const { selectionMode } = this.props;
+    switch (selectionMode) {
+      case ItemSelectionMode.SINGLE:
+        return I18n.t('users.selectUser');
+      case ItemSelectionMode.MULTI:
+        return I18n.t('users.selectUsers');
+      default:
+        return this.title ?? I18n.t('sidebar.users');
+    }
+  }
+
+  private buildHeaderSubtitle(): string {
+    const { selectionMode } = this.props;
+    const { selectedItems, totalUsersCount, count } = this.state;
+    switch (selectionMode) {
+      case ItemSelectionMode.MULTI:
+      case ItemSelectionMode.SINGLE:
+        return `${I18nManager.formatNumber(selectedItems.length)}/${I18nManager.formatNumber(totalUsersCount)}`;
+      default:
+        return count > 0 && `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}`;
+    }
   }
 }

@@ -81,7 +81,12 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
             </View>
             {selectionMode === ItemSelectionMode.MULTI && (
               <View style={style.bottomButtonContainer}>
-                <Button disabled={!canValidateMultiSelection} block light style={[style.buttonDisabled, canValidateMultiSelection && style.buttonEnabled]} onPress={() => this.validateSelection()}>
+                <Button
+                  disabled={!canValidateMultiSelection}
+                  block
+                  light
+                  style={[style.buttonDisabled, canValidateMultiSelection && style.buttonEnabled]}
+                  onPress={() => this.validateSelection()}>
                   <Text style={style.buttonText}>{I18n.t('general.validate')}</Text>
                 </Button>
               </View>
@@ -101,7 +106,7 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
     const { selectionMode } = this.props;
     if (selectionMode === ItemSelectionMode.MULTI) {
       this.setState({ canValidateMultiSelection: selectedItems.length > 0 });
-    } else if (selectedItems && !Utils.isEmptyArray(selectedItems) && this.props.selectionMode === ItemSelectionMode.SINGLE) {
+    } else if (selectionMode === ItemSelectionMode.SINGLE && selectedItems && !Utils.isEmptyArray(selectedItems)) {
       this.setState({ selectedItems, isVisible: false });
     }
   }
