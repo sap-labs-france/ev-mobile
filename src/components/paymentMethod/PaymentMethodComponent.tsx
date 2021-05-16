@@ -39,7 +39,6 @@ export default class PaymentMethodComponent extends React.Component<Props, State
     const expirationDate = moment(paymentMethod.expiringOn).format('MM/YYYY');
     const status = Utils.buildPaymentMethodStatus(paymentMethod);
     const statusStyle = this.buildStatusStyle(status, style);
-    const maskCharacter = '\u25CF';
     const paymentMethodType = Utils.capitalizeFirstLetter(paymentMethod?.type);
     return (
       <View style={style.paymentMethodContainer}>

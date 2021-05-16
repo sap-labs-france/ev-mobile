@@ -2,7 +2,6 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { InitialState, NavigationContainer, NavigationState } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { initStripe, StripeProvider } from '@stripe/stripe-react-native';
 import I18n from 'i18n-js';
 import { Icon } from 'native-base';
 import React from 'react';
@@ -45,7 +44,6 @@ import TransactionsHistory from './screens/transactions/history/TransactionsHist
 import TransactionsInProgress from './screens/transactions/in-progress/TransactionsInProgress';
 import Users from './screens/users/list/Users';
 import BaseProps from './types/BaseProps';
-import { BillingSettings } from './types/Setting';
 import SecuredStorage from './utils/SecuredStorage';
 import Utils from './utils/Utils';
 
