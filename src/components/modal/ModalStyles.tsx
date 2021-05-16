@@ -36,7 +36,23 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     listContainer: {
       width: '100%',
-      height: '100%'
+      flex: 1
+    },
+    bottomButtonContainer: {
+      width: '100%',
+      justifyContent: 'center'
+    },
+    buttonDisabled: {
+      alignSelf: 'center',
+      marginTop: '15@s',
+      opacity: 0.3
+    },
+    buttonEnabled: {
+      opacity: 1
+    },
+    buttonText: {
+      fontSize: '15@s',
+      color: commonColor.textColor
     }
   });
   const portraitStyles = {};

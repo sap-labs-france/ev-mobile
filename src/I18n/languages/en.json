@@ -61,7 +61,8 @@
     "mobile": "Mobile",
     "errorTitle": "Error title",
     "errorDescription": "Description",
-    "scanQrCodeSuccess": "The QR code has been scanned successfully"
+    "scanQrCodeSuccess": "The QR code has been scanned successfully",
+    "validate": "Validate"
   },
   "sidebar": {
     "home": "Home",

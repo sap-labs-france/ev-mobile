@@ -117,13 +117,10 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     const { selectedItems } = this.state;
     const { onSelect, selectionMode } = this.props;
     const itemSelectedCallback = onSelect ? () => onSelect([...this.state.selectedItems.values()]) : null;
-    // If the item is already selected
+    // If the item is already selected, unselect it
     if (selectedItems.has(item.id)) {
-      // If the item is not the only one selected, unselect it
-      if (selectedItems.size > 1) {
-        selectedItems.delete(item.id);
-        this.setState({ selectedItems }, itemSelectedCallback);
-      }
+      selectedItems.delete(item.id);
+      this.setState({ selectedItems }, itemSelectedCallback);
       // Else, add the item to the selected Ids
     } else {
       switch (selectionMode) {

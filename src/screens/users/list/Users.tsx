@@ -1,5 +1,5 @@
 import { DrawerActions } from '@react-navigation/native';
-import { default as I18n, default as i18n } from 'i18n-js';
+import { default as I18n } from 'i18n-js';
 import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
@@ -9,37 +9,29 @@ import ItemsList, { ItemSelectionMode } from '../../../components/list/ItemsList
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import UserComponent from '../../../components/user/UserComponent';
 import I18nManager from '../../../I18n/I18nManager';
-import BaseProps from '../../../types/BaseProps';
 import { DataResult } from '../../../types/DataResult';
 import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
-import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './UsersStyle';
+import SelectableList, { SelectableProps, SelectableState } from '../../base-screen/SelectableList';
 
-export interface Props extends BaseProps {
-  selectionMode?: ItemSelectionMode;
-  isModal?: boolean;
-  onUsersSelected?: (selectedUsers: User[]) => void;
-  initiallySelectedUsers?: User[];
-}
+export interface Props extends SelectableProps<User> {}
 
-export interface State {
+export interface State extends SelectableState<Users> {
   users?: User[];
   skip?: number;
   limit?: number;
   count?: number;
   refreshing?: boolean;
   loading?: boolean;
-  selectedUsersCount: number;
   totalUsersCount: number;
 }
 
-export default class Users extends BaseAutoRefreshScreen<Props, State> {
+export default class Users extends SelectableList<User> {
   public static defaultProps = {
     selectionMode: ItemSelectionMode.NONE,
-    isModal: false,
-    initiallySelectedUsers: []
+    isModal: false
   };
 
   public state: State;
@@ -53,25 +45,24 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
     this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string[];
     this.title = Utils.getParamFromNavigation(this.props.route, 'title', null) as string;
     this.state = {
+      ...super.state,
       users: [],
       skip: 0,
       limit: Constants.PAGING_SIZE,
       count: 0,
       refreshing: false,
       loading: true,
-      selectedUsersCount: 0,
-      totalUsersCount: 0
+      totalUsersCount: 0,
+      selectedItems: []
     };
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
-    const { initiallySelectedUsers } = this.props;
-    this.setState({ selectedUsersCount: initiallySelectedUsers.length });
   }
 
-  public async getUsers(searchText: string, skip: number, limit: number, onlyCount?: boolean = false): Promise<DataResult<User>> {
+  public async getUsers(searchText: string, skip: number, limit: number, onlyCount: boolean = false): Promise<DataResult<User>> {
     try {
       const params = {
         Search: searchText,
@@ -154,20 +145,20 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
     await this.refresh();
   };
 
-  public render() {
+  public render(): React.ReactElement {
     const style = computeStyleSheet();
-    const { users, count, skip, limit, refreshing, loading, selectedUsersCount, totalUsersCount } = this.state;
-    const { navigation, isModal, selectionMode, initiallySelectedUsers } = this.props;
+    const { users, count, skip, limit, refreshing, loading, selectedItems, totalUsersCount } = this.state;
+    const { navigation, isModal, selectionMode } = this.props;
     const title = isModal
       ? selectionMode === ItemSelectionMode.SINGLE
         ? I18n.t('users.selectUser')
         : selectionMode === ItemSelectionMode.MULTI
         ? I18n.t('users.selectUsers')
         : null
-      : this.title ?? i18n.t('sidebar.users');
+      : this.title ?? I18n.t('sidebar.users');
     const subTitle =
       isModal && count
-      ? `${selectedUsersCount}/${totalUsersCount}`
+      ? `${selectedItems.length}/${totalUsersCount}`
       : count > 0
       ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}`
       : null;
@@ -184,9 +175,9 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
             isModal
               ? null
               : () => {
-                  navigation.dispatch(DrawerActions.openDrawer());
-                  return true;
-                }
+                navigation.dispatch(DrawerActions.openDrawer());
+                return true;
+            }
           }
           rightActionIcon={isModal ? null : 'menu'}
         />
@@ -197,27 +188,21 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
             <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
             <ItemsList<User>
               selectionMode={selectionMode}
-              onSelect={this.onUsersSelected.bind(this)}
+              onSelect={this.onItemsSelected.bind(this)}
               data={users}
               navigation={navigation}
               count={count}
               limit={limit}
               skip={skip}
-              initiallySelectedItems={initiallySelectedUsers}
               renderItem={(item: User) => <UserComponent user={item} navigation={this.props.navigation} />}
               refreshing={refreshing}
               manualRefresh={isModal ? null : this.manualRefresh}
               onEndReached={this.onEndScroll}
-              emptyTitle={i18n.t('users.noUsers')}
+              emptyTitle={I18n.t('users.noUsers')}
             />
           </View>
         )}
       </Container>
     );
-  }
-
-  private onUsersSelected(selectedUsers: User[]): void {
-    this.setState({ selectedUsersCount: selectedUsers.length });
-    this.props.onUsersSelected(selectedUsers);
   }
 }

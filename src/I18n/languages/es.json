@@ -61,7 +61,8 @@
     "mobile": "Móvil",
     "errorTitle": "Titulo del error",
     "errorDescription": "Descripción del error",
-    "scanQrCodeSuccess": "El código QR se ha escaneado correctamente"
+    "scanQrCodeSuccess": "El código QR se ha escaneado correctamente",
+    "validate": "Validate"
   },
   "sidebar": {
     "home": "Menú principal",
