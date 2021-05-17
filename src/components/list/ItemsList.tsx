@@ -8,13 +8,13 @@ import ListFooterComponent from './footer/ListFooterComponent';
 import computeStyleSheet from './ItemsListStyle';
 
 export interface Props<T extends ListItem> extends BaseProps {
-  renderItem: (item: T) => Element;
+  renderItem: (item: T) => React.ReactElement;
   onSelect?: (selectedItems: T[]) => void;
   emptyTitle: string;
   manualRefresh: () => void;
   onEndReached: () => void;
   data: T[];
-  renderItemsSeparator: () => Element;
+  renderItemsSeparator: () => React.ReactElement;
   selectionMode?: ItemSelectionMode;
   skip: number;
   count: number;
