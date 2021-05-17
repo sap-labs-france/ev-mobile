@@ -29,7 +29,7 @@ It's linked to the ev-server backend: https://github.com/sap-labs-france/ev-serv
     * Add **C:\Users\YOUR_USERNAME\AppData\Local\Android\Sdk\platform-tools** to user paths
   * OSX/*nix:
     * Add to your shell profile:
-    ```
+    ```bash
     export ANDROID_HOME=$HOME/Library/Android/sdk
     export PATH=$PATH:$ANDROID_HOME/emulator
     export PATH=$PATH:$ANDROID_HOME/tools
@@ -44,13 +44,13 @@ It's linked to the ev-server backend: https://github.com/sap-labs-france/ev-serv
 
 * On Windows with **chocolatey** (https://chocolatey.org/), do as an administrator:
 
-```
+```powershell
 choco install -y nodejs-lts jdk8 androidstudio
 ```
 
 * On Mac OSX with **Homebrew** (https://brew.sh/), do:
 
-```
+```shell
 brew install node openjdk cocoapods react-native-cli watchman android-studio
 ```
 
@@ -60,20 +60,20 @@ Open a terminal in the **ev-mobile** directory
 
 * Install CocoaPods on Mac OSX:
 
-  ```
+  ```shell
   npm run pod:install
   ```
 
 * Run on Android:
 
-  ```
+  ```shell
   npm run build:prepare
   npm run android
   ```
 
 * Run on iOS:
 
-  ```
+  ```shell
   npm run build:prepare
   npm run ios
   ```
