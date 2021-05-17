@@ -155,7 +155,7 @@ export default class Users extends SelectableList<User> {
 
   public render(): React.ReactElement {
     const style = computeStyleSheet();
-    const { users, count, skip, limit, refreshing, loading, selectedItems, totalUsersCount } = this.state;
+    const { users, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, isModal, selectionMode } = this.props;
 
     return (
