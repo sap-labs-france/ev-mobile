@@ -46,11 +46,8 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
   }
 
   public componentDidMount() {
-    const { initiallySelectedItems } = this.props;
-    if (initiallySelectedItems) {
-      const selectedItems = new Map<string | number, T>();
-      this.setState({ selectedItems });
-    }
+    const selectedItems = new Map<string | number, T>();
+    this.setState({ selectedItems });
   }
 
   public setState = (
