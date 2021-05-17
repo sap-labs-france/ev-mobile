@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList, Platform, RefreshControl, TouchableOpacity, View } from 'react-native';
-import { Checkbox, RadioButton } from 'react-native-paper';
+import { Checkbox } from 'react-native-paper';
 import BaseProps from '../../types/BaseProps';
 import ListItem from '../../types/ListItem';
 import ListEmptyTextComponent from './empty-text/ListEmptyTextComponent';
