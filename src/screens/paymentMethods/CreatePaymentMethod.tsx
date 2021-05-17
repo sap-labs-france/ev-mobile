@@ -38,9 +38,11 @@ export default function CreatePaymentMethod(props: Props) {
       setProvider(csProvider);
       // Billing
       const billingSettings: BillingSettings = await provider.getBillingSettings();
-      initStripe({ publishableKey: billingSettings?.stripe?.publicKey });
+      await initStripe({ publishableKey: billingSettings?.stripe?.publicKey });
     }
-    setUp();
+    setUp().catch((error) => {
+      console.error(I18n.t('paymentMethods.paymentMethodUnexpectedError'), error);
+    });
   });
 
   async function addPaymentMethod(): Promise<void> {
