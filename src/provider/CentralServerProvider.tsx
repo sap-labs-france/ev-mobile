@@ -818,7 +818,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async setUpPaymentMethod(params): Promise<BillingOperationResponse> {
+  public async setUpPaymentMethod(params: { userID: string }): Promise<BillingOperationResponse> {
     const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_SETUP}`.replace(':userID', params.userID);
     const result = await this.axiosInstance.post(url, { userID: params.userID }, { headers: this.buildSecuredHeaders() });
     return result.data as BillingOperationResponse;

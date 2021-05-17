@@ -175,7 +175,7 @@
     "users": "Utilisateur(s)"
   },
   "paymentMethods": {
-    "paymentMethodUnexpectedError": "Impossible de lire la méthode de paiement",
+    "paymentMethodUnexpectedError": "Une erreur est survenue",
     "noPaymentMethod": "Aucune méthode de paiement",
     "paymentMethods": "Méthode(s) de paiement",
     "addPaymentMethodError": "Impossible d'ajouter la méthode de paiement",

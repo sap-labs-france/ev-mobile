@@ -37,7 +37,7 @@ export default function CreatePaymentMethod(props: Props) {
       const csProvider = await ProviderFactory.getProvider();
       setProvider(csProvider);
       // Billing
-      const billingSettings: BillingSettings = await provider.getBillingSettings();
+      const billingSettings: BillingSettings = await csProvider.getBillingSettings();
       await initStripe({ publishableKey: billingSettings?.stripe?.publicKey });
     }
     setUp().catch((error) => {
