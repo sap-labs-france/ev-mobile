@@ -46,7 +46,7 @@ export default class PaymentMethodComponent extends React.Component<Props, State
         <View style={style.paymentMethodDetailsContainer}>
           <View style={style.cardNumberContainer}>
             {[...Array(12)].map((el, index: number) => (
-              <View style={{flexDirection: 'row'}}>
+              <View key={index} style={{ flexDirection: 'row' }}>
                 <View style={[style.maskCharacter, (index + 1) % 4 === 0 && style.maskCharacterSpace]}></View>
               </View>
             ))}
