@@ -18,6 +18,7 @@ import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 
 import computeStyleSheet from './CreatePaymentMethodStyles';
+import { BillingSettings } from '../../types/Setting';
 
 interface Props extends BaseProps {}
 
@@ -32,11 +33,11 @@ export default function CreatePaymentMethod(props: Props) {
   const style = computeStyleSheet();
 
   useEffect(() => {
-    async function setUp() {
+    async function setUp(): Promise<void> {
       const csProvider = await ProviderFactory.getProvider();
       setProvider(csProvider);
       // Billing
-      const billingSettings = await provider.getBillingSettings();
+      const billingSettings: BillingSettings = await provider.getBillingSettings();
       initStripe({ publishableKey: billingSettings?.stripe?.publicKey });
     }
     setUp();

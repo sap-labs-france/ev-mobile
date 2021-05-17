@@ -819,25 +819,28 @@ export default class CentralServerProvider {
   }
 
   public async setUpPaymentMethod(params): Promise<BillingOperationResponse> {
-    const url = `${this.buildRestServerAPIURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_SETUP}`.replace(':userID', params.userID);
+    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_SETUP}`.replace(':userID', params.userID);
     const result = await this.axiosInstance.post(url, { userID: params.userID }, { headers: this.buildSecuredHeaders() });
     return result.data as BillingOperationResponse;
   }
 
-  public async attachPaymentMethod(params): Promise<BillingOperationResponse> {
-    const url = `${this.buildRestServerAPIURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_ATTACH}`
+  public async attachPaymentMethod(params: { userID: string; paymentMethodId: string }): Promise<BillingOperationResponse> {
+    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_ATTACH}`
       .replace(':userID', params.userID)
       .replace(':paymentMethodID', params.paymentMethodId);
     const result = await this.axiosInstance.post(url, { params }, { headers: this.buildSecuredHeaders() });
     return result.data as BillingOperationResponse;
   }
 
-  public async getPaymentMethods(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<BillingPaymentMethod>> {
+  public async getPaymentMethods(
+    params: { currentUserID: string },
+    paging: PagingParams = Constants.DEFAULT_PAGING
+  ): Promise<DataResult<BillingPaymentMethod>> {
     this.debugMethod('getPaymentMethods');
     // Build Paging
     this.buildPaging(paging, params);
     // Call
-    const url = `${this.buildRestServerAPIURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHODS}`.replace(':userID', params.currentUserID);
+    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHODS}`.replace(':userID', params.currentUserID);
     const result = await this.axiosInstance.get(url, {
       headers: this.buildSecuredHeaders()
     });
@@ -846,7 +849,7 @@ export default class CentralServerProvider {
 
   public async getBillingSettings(): Promise<BillingSettings> {
     // Build the URL
-    const url = `${this.buildRestServerAPIURL()}/${ServerRoute.REST_BILLING_SETTING}`;
+    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_SETTING}`;
     // Execute the REST Service
     const result = await this.axiosInstance.get<BillingSettings>(url, {
       headers: this.buildSecuredHeaders()
@@ -898,7 +901,7 @@ export default class CentralServerProvider {
     return tenant?.endpoint + '/v1/auth';
   }
 
-  private buildRestServerAPIURL(): string {
+  private buildRestServerURL(): string {
     return this.tenant?.endpoint + '/v1/api';
   }
 
