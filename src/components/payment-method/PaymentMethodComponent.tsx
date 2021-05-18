@@ -73,7 +73,7 @@ export default class PaymentMethodComponent extends React.Component<Props, State
     switch (brand) {
       case StripePaymentMethodBrands.AMEX:
         return <Amex width={style.cardSVG.width} height={style.cardSVG.height} />;
-      case StripePaymentMethodBrands.DINER_CLUB:
+      case StripePaymentMethodBrands.DINERS_CLUB:
         return <DinersClub width={style.cardSVG.width} height={style.cardSVG.height} />;
       case StripePaymentMethodBrands.DISCOVER:
         return <Discover width={style.cardSVG.width} height={style.cardSVG.height} />;

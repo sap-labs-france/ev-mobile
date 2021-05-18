@@ -43,7 +43,7 @@ export default class TransactionsHistoryFilters extends ScreenFilters {
     super.setState(state, callback);
   };
 
-  public onFilterChanged = (newFilters: TransactionsHistoryFiltersDef, applyFilters: boolean, callback) => {
+  public onFilterChanged = (newFilters: TransactionsHistoryFiltersDef, applyFilters: boolean) => {
     const { onFilterChanged } = this.props;
     // User ID has been changed: Clear Start/End Date
     if (applyFilters && newFilters.hasOwnProperty('userID') && this.state.filters.userID !== newFilters.userID) {

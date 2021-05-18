@@ -18,7 +18,7 @@ export enum BillingPaymentMethodStatus {
 export enum StripePaymentMethodBrands {
   AMEX = 'amex',
   CB = 'cartes_bancaires',
-  DINER_CLUB = 'diners_club',
+  DINERS_CLUB = 'diners_club',
   DISCOVER = 'discover',
   JCB = 'jcb',
   MASTERCARD = 'mastercard',
