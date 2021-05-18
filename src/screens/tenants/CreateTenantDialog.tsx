@@ -53,12 +53,12 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
     } else {
       tenantEndpointClouds = Configuration.ENDPOINT_CLOUDS;
     }
-    const newTenantEndpointCloudId = tenantEndpointClouds.find((tenantEndpointCloud) => tenantEndpointCloud.id === 'scp')?.id;
+    // Set initial state
     this.state = {
       newTenantSubDomain: null,
       newTenantName: null,
       tenantEndpointClouds,
-      newTenantEndpointCloudId
+      newTenantEndpointCloudId: Configuration.DEFAULT_ENDPOINT
     };
   }
 
