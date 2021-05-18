@@ -29,8 +29,8 @@ import ChargingStationOcppParameters from './screens/charging-stations/ocpp/Char
 import ChargingStationProperties from './screens/charging-stations/properties/ChargingStationProperties';
 import Home from './screens/home/Home';
 import Invoices from './screens/invoices/Invoices';
-import CreatePaymentMethod from './screens/paymentMethods/CreatePaymentMethod';
-import PaymentMethods from './screens/paymentMethods/PaymentMethods';
+import StripePaymentMethodCreationForm from './screens/payment-methods/stripe/StripePaymentMethodCreationForm';
+import PaymentMethods from './screens/payment-methods/PaymentMethods';
 import ReportError from './screens/report-error/ReportError';
 import Sidebar from './screens/sidebar/SideBar';
 import SiteAreas from './screens/site-areas/SiteAreas';
@@ -445,8 +445,8 @@ function createPaymentMethodsNavigator(props: BaseProps) {
     <PaymentMethodsStack.Navigator initialRouteName="PaymentMethods" headerMode="none">
       <PaymentMethodsStack.Screen name="PaymentMethods" component={PaymentMethods} initialParams={props?.route?.params?.params} />
       <PaymentMethodsStack.Screen
-        name="CreatePaymentMethod"
-        component={CreatePaymentMethod}
+        name="StripePaymentMethodCreationForm"
+        component={StripePaymentMethodCreationForm}
         initialParams={props?.route?.params?.params}
       />
     </PaymentMethodsStack.Navigator>

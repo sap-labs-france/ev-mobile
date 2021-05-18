@@ -5,7 +5,7 @@ import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
-import PaymentMethodComponent from '../../components/paymentMethod/PaymentMethodComponent';
+import PaymentMethodComponent from '../../components/payment-method/PaymentMethodComponent';
 import I18nManager from '../../I18n/I18nManager';
 import BaseProps from '../../types/BaseProps';
 import { BillingPaymentMethod } from '../../types/Billing';
@@ -134,7 +134,7 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
           }}
           rightActionIcon={'menu'}
         />
-        <TouchableOpacity onPress={() => navigation.navigate('CreatePaymentMethod')} style={style.addPMContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate('StripePaymentMethodCreationForm')} style={style.addPMContainer}>
           <Icon type={'MaterialIcons'} name={'add'} style={style.icon} />
         </TouchableOpacity>
         {loading ? (

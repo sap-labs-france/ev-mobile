@@ -13,7 +13,7 @@ import BaseProps from '../../types/BaseProps';
 import {
   BillingPaymentMethod,
   BillingPaymentMethodStatus,
-  PaymentMethodBrands
+  StripePaymentMethodBrands
 } from '../../types/Billing';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './PaymentMethodComponentStyle';
@@ -71,19 +71,19 @@ export default class PaymentMethodComponent extends React.Component<Props, State
 
   private renderPaymentMethodLogo(brand: string, style: any) {
     switch (brand) {
-      case PaymentMethodBrands.AMEX:
+      case StripePaymentMethodBrands.AMEX:
         return <Amex width={style.cardSVG.width} height={style.cardSVG.height} />;
-      case PaymentMethodBrands.DINER_CLUB:
+      case StripePaymentMethodBrands.DINER_CLUB:
         return <DinersClub width={style.cardSVG.width} height={style.cardSVG.height} />;
-      case PaymentMethodBrands.DISCOVER:
+      case StripePaymentMethodBrands.DISCOVER:
         return <Discover width={style.cardSVG.width} height={style.cardSVG.height} />;
-      case PaymentMethodBrands.JCB:
+      case StripePaymentMethodBrands.JCB:
         return <Jcb width={style.cardSVG.width} height={style.cardSVG.height} />;
-      case PaymentMethodBrands.MASTERCARD:
+      case StripePaymentMethodBrands.MASTERCARD:
         return <MasterCard width={style.cardSVG.width} height={style.cardSVG.height} />;
-      case PaymentMethodBrands.UNION_PAY:
+      case StripePaymentMethodBrands.UNION_PAY:
         return <UnionPay width={style.cardSVG.width} height={style.cardSVG.height} />;
-      case PaymentMethodBrands.VISA:
+      case StripePaymentMethodBrands.VISA:
         return <Visa width={style.cardSVG.width} height={style.cardSVG.height} />;
       // TODO add case for carte bancaire
       default:

@@ -15,7 +15,7 @@ export enum BillingPaymentMethodStatus {
   VALID = 'valid'
 }
 
-export enum PaymentMethodBrands {
+export enum StripePaymentMethodBrands {
   AMEX = 'amex',
   CB = 'cartes_bancaires',
   DINER_CLUB = 'diners_club',

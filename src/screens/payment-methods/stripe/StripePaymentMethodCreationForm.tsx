@@ -9,23 +9,23 @@ import I18n from 'i18n-js';
 import { Button, Spinner, View } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
-import HeaderComponent from '../../components/header/HeaderComponent';
-import CentralServerProvider from '../../provider/CentralServerProvider';
-import ProviderFactory from '../../provider/ProviderFactory';
-import { BillingOperationResponse } from '../../types/ActionResponse';
-import BaseProps from '../../types/BaseProps';
-import Message from '../../utils/Message';
-import Utils from '../../utils/Utils';
+import HeaderComponent from '../../../components/header/HeaderComponent';
+import CentralServerProvider from '../../../provider/CentralServerProvider';
+import ProviderFactory from '../../../provider/ProviderFactory';
+import { BillingOperationResponse } from '../../../types/ActionResponse';
+import BaseProps from '../../../types/BaseProps';
+import Message from '../../../utils/Message';
+import Utils from '../../../utils/Utils';
 
-import computeStyleSheet from './CreatePaymentMethodStyles';
-import { BillingSettings } from '../../types/Setting';
+import computeStyleSheet from './StripePaymentMethodCreationFormStyles';
+import { BillingSettings } from '../../../types/Setting';
 
 interface Props extends BaseProps {}
 
 /**
  * @param props
  */
-export default function CreatePaymentMethod(props: Props) {
+export default function StripePaymentMethodCreationForm(props: Props) {
   const { confirmSetupIntent } = useConfirmSetupIntent();
   const [provider, setProvider] = useState<CentralServerProvider>(null);
   const [loading, setLoading] = useState<boolean>(false);
