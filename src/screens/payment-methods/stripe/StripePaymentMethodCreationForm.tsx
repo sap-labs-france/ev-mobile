@@ -1,10 +1,5 @@
 import { DrawerActions } from '@react-navigation/native';
-import {
-  CardFieldInput,
-  useConfirmSetupIntent,
-  CardField,
-  initStripe
-} from '@stripe/stripe-react-native';
+import { CardFieldInput, useConfirmSetupIntent, CardField, initStripe } from '@stripe/stripe-react-native';
 import I18n from 'i18n-js';
 import { Button, Spinner, View } from 'native-base';
 import React, { useEffect, useState } from 'react';
@@ -22,28 +17,27 @@ import { BillingSettings } from '../../../types/Setting';
 
 interface Props extends BaseProps {}
 
-/**
- * @param props
- */
 export default function StripePaymentMethodCreationForm(props: Props) {
   const { confirmSetupIntent } = useConfirmSetupIntent();
   const [provider, setProvider] = useState<CentralServerProvider>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [cardDetails, setCardDetails] = useState<CardFieldInput.Details>(null);
   const style = computeStyleSheet();
+  const commonColor = Utils.getCurrentCommonColor();
 
   useEffect(() => {
-    async function setUp(): Promise<void> {
-      const csProvider = await ProviderFactory.getProvider();
-      setProvider(csProvider);
-      // Billing
-      const billingSettings: BillingSettings = await csProvider.getBillingSettings();
-      await initStripe({ publishableKey: billingSettings?.stripe?.publicKey });
-    }
     setUp().catch((error) => {
       console.error(I18n.t('paymentMethods.paymentMethodUnexpectedError'), error);
     });
   });
+
+  async function setUp(): Promise<void> {
+    const csProvider = await ProviderFactory.getProvider();
+    setProvider(csProvider);
+    // Billing
+    const billingSettings: BillingSettings = await csProvider.getBillingSettings();
+    await initStripe({ publishableKey: billingSettings?.stripe?.publicKey });
+  }
 
   async function addPaymentMethod(): Promise<void> {
     if (cardDetails?.complete) {
@@ -52,8 +46,8 @@ export default function StripePaymentMethodCreationForm(props: Props) {
         // STEP 1 - Call Back-End to create intent
         const response: BillingOperationResponse = await provider.setUpPaymentMethod({ userID: provider.getUserInfo().id });
         if (response?.succeeded) {
-          const internalData: any = response?.internalData;
-          const clientSecret = internalData?.client_secret;
+          const internalData: Record<string, unknown> = response?.internalData;
+          const clientSecret: string = internalData?.client_secret as string;
 
           // We continue only if we have a client secret
           if (!clientSecret) {
@@ -73,7 +67,6 @@ export default function StripePaymentMethodCreationForm(props: Props) {
 
               // STEP 3 - Call Back-End to flag the payment method as default
               const attachResponse: BillingOperationResponse = await provider.attachPaymentMethod({
-                setupIntentId: setupIntent.id,
                 paymentMethodId: setupIntent.paymentMethodId,
                 userID: provider.getUserInfo().id
               });
@@ -141,7 +134,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
       <View style={style.buttonContainer}>
         {loading ? (
           <Button style={style.button} light block onPress={async () => addPaymentMethod()}>
-            <Spinner color={style.spinner.color} />
+            <Spinner color={commonColor.brandDisabledDark} />
           </Button>
         ) : (
           <Button
