@@ -11,9 +11,7 @@ import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UserAvatarStyle';
 
-interface State {
-  user?: User;
-}
+interface State {}
 
 export interface Props extends BaseProps {
   user?: User;
@@ -52,7 +50,7 @@ export default class UserAvatar extends React.Component<Props, State> {
 
   public render() {
     const { selected, small } = this.props;
-    const { user } = this.state;
+    const { user } = this.props;
     const style = computeStyleSheet();
     const userInitials = Utils.buildUserInitials(user);
     const userName = Utils.buildUserName(user);
