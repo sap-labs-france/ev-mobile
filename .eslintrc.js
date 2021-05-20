@@ -41,7 +41,6 @@ module.exports = defineConfig({
     "@typescript-eslint",
   ],
   "rules": {
-    "jsdoc/require-returns": "off",
     "jsdoc/require-jsdoc": "off",
     "@typescript-eslint/adjacent-overload-signatures": "error",
     "@typescript-eslint/array-type": [
