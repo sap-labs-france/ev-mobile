@@ -187,6 +187,9 @@
     "expired": "Expired",
     "expiringSoon": "Expiring soon"
   },
+  "paymentMethodType": {
+    "card": "Card"
+  },
   "userRoles": {
     "admin": "Admin",
     "basic": "Basic",
