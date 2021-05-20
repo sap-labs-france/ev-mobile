@@ -1,6 +1,6 @@
 import { Text, View } from 'native-base';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
@@ -49,9 +49,9 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
     return (
       <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
         <Text style={internalStyle.textFilter}>{label}</Text>
-        <Text style={internalStyle.textFilter} onPress={() => this.openDatePicker(true)}>
-          {this.getValue()?.toDateString()}
-        </Text>
+        <TouchableOpacity onPress={() => this.openDatePicker(true)}>
+          <Text style={internalStyle.textFilter}>{this.getValue()?.toDateString()}</Text>
+        </TouchableOpacity>
         <DateTimePickerModal
           isVisible={this.state.openDatePicker}
           date={this.getValue()}

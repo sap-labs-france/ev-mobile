@@ -85,9 +85,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginTop: '10@s'
     },
     checkbox: {
-      marginRight: '15@s',
+      marginRight: '25@s',
       borderColor: commonColor.textColor,
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: commonColor.containerBgColor,
+      height: '22@s',
+      width: '22@s',
+      alignItems: 'center'
     },
     checkboxText: {
       fontSize: '13@s',
