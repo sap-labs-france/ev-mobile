@@ -28,6 +28,9 @@ import ChargingStations from './screens/charging-stations/list/ChargingStations'
 import ChargingStationOcppParameters from './screens/charging-stations/ocpp/ChargingStationOcppParameters';
 import ChargingStationProperties from './screens/charging-stations/properties/ChargingStationProperties';
 import Home from './screens/home/Home';
+import Invoices from './screens/invoices/Invoices';
+import StripePaymentMethodCreationForm from './screens/payment-methods/stripe/StripePaymentMethodCreationForm';
+import PaymentMethods from './screens/payment-methods/PaymentMethods';
 import ReportError from './screens/report-error/ReportError';
 import Sidebar from './screens/sidebar/SideBar';
 import SiteAreas from './screens/site-areas/SiteAreas';
@@ -60,6 +63,8 @@ const rootStack = createStackNavigator();
 const UsersStack = createStackNavigator();
 const TagsStack = createStackNavigator();
 const CarsStack = createStackNavigator();
+const InvoicesStack = createStackNavigator();
+const PaymentMethodsStack = createStackNavigator();
 
 // Navigation Tab variable
 const ChargingStationDetailsTabs = createMaterialBottomTabNavigator();
@@ -427,6 +432,30 @@ function createCarsNavigator(props: BaseProps) {
 /**
  * @param props
  */
+function createInvoicesNavigator(props: BaseProps) {
+  return (
+    <InvoicesStack.Navigator initialRouteName="Invoices" headerMode="none">
+      <InvoicesStack.Screen name="Invoices" component={Invoices} initialParams={props?.route?.params?.params} />
+    </InvoicesStack.Navigator>
+  );
+}
+
+function createPaymentMethodsNavigator(props: BaseProps) {
+  return (
+    <PaymentMethodsStack.Navigator initialRouteName="PaymentMethods" headerMode="none">
+      <PaymentMethodsStack.Screen name="PaymentMethods" component={PaymentMethods} initialParams={props?.route?.params?.params} />
+      <PaymentMethodsStack.Screen
+        name="StripePaymentMethodCreationForm"
+        component={StripePaymentMethodCreationForm}
+        initialParams={props?.route?.params?.params}
+      />
+    </PaymentMethodsStack.Navigator>
+  );
+}
+
+/**
+ * @param props
+ */
 function createAppDrawerNavigator(props: BaseProps) {
   const appStyles = computeStyleSheet();
   return (
@@ -458,6 +487,12 @@ function createAppDrawerNavigator(props: BaseProps) {
       <AppDrawer.Screen name="UsersNavigator" component={createUsersNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="TagsNavigator" component={createTagsNavigator} initialParams={props?.route?.params?.params} />
       <AppDrawer.Screen name="CarsNavigator" component={createCarsNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen name="InvoicesNavigator" component={createInvoicesNavigator} initialParams={props?.route?.params?.params} />
+      <AppDrawer.Screen
+        name="PaymentMethodsNavigator"
+        component={createPaymentMethodsNavigator}
+        initialParams={props?.route?.params?.params}
+      />
     </AppDrawer.Navigator>
   );
 }

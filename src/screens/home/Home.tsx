@@ -286,6 +286,24 @@ export default class Home extends BaseScreen<Props, State> {
                   </CardItem>
                 </Card>
               )}
+              {this.securityProvider?.canListPaymentMethods() && this.securityProvider?.isComponentBillingActive() && (
+                <Card style={cardStyle.card}>
+                  <CardItem
+                    style={cardStyle.cardItem}
+                    button={true}
+                    onPress={() => navigation.navigate('PaymentMethodsNavigator', { key: `${Utils.randomNumber()}` })}>
+                    <Left>
+                      <Icon style={cardStyle.cardIcon} type="FontAwesome5" name="credit-card" />
+                      <Body>
+                        <Text style={cardStyle.cardText}>{I18n.t('home.paymentMethods')}</Text>
+                        <Text note={true} style={cardStyle.cardNote}>
+                          {I18n.t('home.paymentMethodsNote')}
+                        </Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                </Card>
+              )}
               <Card style={cardStyle.card}>
                 <CardItem
                   style={cardStyle.cardItem}
