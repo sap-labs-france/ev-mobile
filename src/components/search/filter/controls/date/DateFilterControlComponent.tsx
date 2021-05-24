@@ -46,26 +46,33 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
   public render = () => {
     const internalStyle = computeStyleSheet();
     const { label, style, minimumDate, maximumDate, locale } = this.props;
+    const value = this.getValue() as Date;
     return (
       <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
         <Text style={internalStyle.textFilter}>{label}</Text>
-        <TouchableOpacity onPress={() => this.openDatePicker(true)}>
-          <Text style={internalStyle.textFilter}>{this.getValue()?.toDateString()}</Text>
-        </TouchableOpacity>
-        <DateTimePickerModal
-          isVisible={this.state.openDatePicker}
-          date={this.getValue()}
-          mode={'date'}
-          maximumDate={maximumDate}
-          minimumDate={minimumDate}
-          locale={locale}
-          onCancel={() => {
-            this.openDatePicker(false);
-          }}
-          onConfirm={(date) => {
-            this.onConfirm(date);
-          }}
-        />
+        {value ? (
+          <View>
+            <TouchableOpacity onPress={() => this.openDatePicker(true)}>
+              <Text style={internalStyle.textFilter}>{value.toDateString()}</Text>
+            </TouchableOpacity>
+            <DateTimePickerModal
+              isVisible={this.state.openDatePicker}
+              date={this.getValue()}
+              mode={'date'}
+              maximumDate={maximumDate}
+              minimumDate={minimumDate}
+              locale={locale}
+              onCancel={() => {
+                this.openDatePicker(false);
+              }}
+              onConfirm={(date) => {
+                this.onConfirm(date);
+              }}
+            />
+          </View>
+        ) : (
+          <Text>-</Text>
+        )}
       </View>
     );
   };

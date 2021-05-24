@@ -58,7 +58,7 @@ export default class FilterModalContainerComponent extends FilterContainerCompon
     const style = computeStyleSheet();
     const { visible } = this.state;
     return (
-      <Modal style={style.modal} isVisible={visible} onBackdropPress={() => this.setState({ visible: false })}>
+      <Modal coverScreen={true} style={style.modal} isVisible={visible} onBackdropPress={() => this.setState({ visible: false })}>
         <View style={style.modalContainer}>
           <View style={style.modalHeaderContainer}>
             <Text style={style.modalTextHeader}>{I18n.t('general.filters')}</Text>
