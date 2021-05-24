@@ -5,6 +5,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
+import Constants from '../../../../../utils/Constants';
 
 export interface Props extends FilterControlComponentProps<Date> {
   defaultDate?: Date;
@@ -71,7 +72,7 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
             />
           </View>
         ) : (
-          <Text>-</Text>
+          <Text>{Constants.HYPHEN}</Text>
         )}
       </View>
     );
