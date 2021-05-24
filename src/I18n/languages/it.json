@@ -62,7 +62,7 @@
     "errorTitle": "Titolo Errore",
     "errorDescription": "Descrizione",
     "scanQrCodeSuccess": "Il codice QR è stato scansionato con successo",
-    "validate": "Validate"
+    "validate": "Validate",
     "default": "Default",
     "save": "Save"
   },
@@ -76,7 +76,7 @@
     "reportError": "Segnala errore",
     "users": "Users",
     "badges": "Badges",
-    "cars": "Cars"
+    "cars": "Cars",
     "invoices": "Invoices",
     "paymentMethods": "Payment Methods"
   },

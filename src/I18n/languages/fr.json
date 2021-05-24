@@ -62,7 +62,7 @@
     "errorTitle": "Titre de l'erreur",
     "errorDescription": "Description",
     "scanQrCodeSuccess": "Le QR code a bien été scanné",
-    "validate": "Valider"
+    "validate": "Valider",
     "default": "Par défaut",
     "save": "Sauvegarder"
   },
