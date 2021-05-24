@@ -63,6 +63,8 @@
     "errorDescription": "Description",
     "scanQrCodeSuccess": "The QR code has been scanned successfully",
     "validate": "Validate"
+    "default": "Default",
+    "save": "Save"
   },
   "sidebar": {
     "home": "Home",
@@ -74,7 +76,9 @@
     "reportError": "Report Error",
     "users": "Users",
     "badges": "Badges",
-    "cars": "Cars"
+    "cars": "Cars",
+    "invoices": "Invoices",
+    "paymentMethods": "Payment Methods"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -173,6 +177,22 @@
     "selectUser" : "Select User",
     "selectUsers" : "Select Users"
   },
+  "paymentMethods": {
+    "paymentMethodUnexpectedError": "An error occurred",
+    "noPaymentMethod": "No payment method",
+    "paymentMethods": "Payment method(s)",
+    "addPaymentMethodError": "Failed to add payment method",
+    "addPaymentMethodSuccess" : "New payment method added successfully",
+    "addPaymentMethod": "Add new payment method"
+  },
+  "paymentMethodStatus": {
+    "valid": "Valid",
+    "expired": "Expired",
+    "expiringSoon": "Expiring soon"
+  },
+  "paymentMethodType": {
+    "card": "Card"
+  },
   "userRoles": {
     "admin": "Admin",
     "basic": "Basic",
@@ -192,6 +212,11 @@
     "noCars": "No cars",
     "carUnexpectedError": "An error occurred",
     "cars": "Car(s)"
+  },
+  "invoices": {
+    "noInvoices": "No Invoices",
+    "invoiceUnexpectedError": "An error occurred",
+    "invoices": "Invoice(s)"
   },
   "transactions": {
     "transaction": "Session",
@@ -240,7 +265,9 @@
     "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
     "totalInactivityNote": "Total Inactivity duration",
     "totalPrice": "{{totalPrice}}",
-    "totalPriceNote": "Total cost"
+    "totalPriceNote": "Total cost",
+    "paymentMethods": "Payment Methods",
+    "paymentMethodsNote" : "Browse and create payment methods"
   },
   "sites": {
     "freeChargers": "Free chargers",

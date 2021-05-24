@@ -184,6 +184,16 @@ export default class SideBar extends BaseScreen<Props, State> {
                 <Text style={style.linkText}>{I18n.t('sidebar.cars')}</Text>
               </ListItem>
             )}
+            {this.securityProvider?.canListPaymentMethods() && this.securityProvider?.isComponentBillingActive() && (
+              <ListItem
+                style={style.links}
+                button={true}
+                iconLeft={true}
+                onPress={() => this.navigateTo('PaymentMethodsNavigator', 'PaymentMethods')}>
+                <Icon style={style.linkIcon} type="FontAwesome5" name="credit-card" />
+                <Text style={style.linkText}>{I18n.t('sidebar.paymentMethods')}</Text>
+              </ListItem>
+            )}
             <ListItem
               style={style.links}
               button={true}

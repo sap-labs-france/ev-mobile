@@ -63,6 +63,8 @@
     "errorDescription": "Descrição",
     "scanQrCodeSuccess": "The QR code has been scanned successfully",
     "validate": "Validate"
+    "default": "Default",
+    "save": "Save"
   },
   "sidebar": {
     "home": "Home",
@@ -74,7 +76,9 @@
     "reportError": "Comunicar erro",
     "users": "Users",
     "badges": "Badges",
-    "cars": "Cars"
+    "cars": "Cars",
+    "invoices": "Invoices",
+    "paymentMethods": "Payment Methods"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -164,7 +168,8 @@
     "unknownConnector": "Unknown Connector ID '{{connectorID}}'",
     "scanTenantQrCodeTitle": "Scan Tenant",
     "scanTenantQrCodeSuccess": "Organization '{{tenantName}}' has saved",
-    "scanChargingStationQrCodeTitle": "Scan Charging Station"
+    "scanChargingStationQrCodeTitle": "Scan Charging Station",
+    "addPaymentMethodError": "Failed to add payment method"
   },
   "users": {
     "userUnexpectedError": "Não posso ler os utilizadores",
@@ -172,6 +177,21 @@
     "users": "Users(s)",
     "selectUser" : "Select User",
     "selectUsers" : "Select Users"
+  },
+  "paymentMethods": {
+    "paymentMethodUnexpectedError": "An error occurred",
+    "noPaymentMethod": "No payment method",
+    "paymentMethods": "Payment method(s)",
+    "addPaymentMethodSuccess" : "New payment method added successfully",
+    "addPaymentMethod": "Add new payment method"
+  },
+  "paymentMethodStatus": {
+    "valid": "Valid",
+    "expired": "Expired",
+    "expiringSoon": "Expiring soon"
+  },
+  "paymentMethodType": {
+    "card": "Card"
   },
   "userRoles": {
     "admin": "Admin",
@@ -192,6 +212,11 @@
     "noCars": "No cars",
     "carUnexpectedError": "An error occurred",
     "cars": "Car(s)"
+  },
+  "invoices": {
+    "noInvoices": "Aucune facture",
+    "invoiceUnexpectedError": "Une erreur est survenue",
+    "invoices": "Facture(s)"
   },
   "transactions": {
     "transaction": "Sessões",
@@ -240,7 +265,9 @@
     "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
     "totalInactivityNote": "Duração total de invatividade",
     "totalPrice": "{{totalPrice}}",
-    "totalPriceNote": "Custo Total"
+    "totalPriceNote": "Custo Total",
+    "paymentMethods": "Payment Methods",
+    "paymentMethodsNote" : "Browse and create payment methods"
   },
   "sites": {
     "freeChargers": "Carregamentos Gratis",

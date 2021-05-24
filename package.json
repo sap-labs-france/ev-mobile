@@ -82,6 +82,7 @@
     "@react-navigation/material-bottom-tabs": "^5.3.15",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.4",
+    "@stripe/stripe-react-native": "^0.1.0",
     "axios": "^0.21.1",
     "base-64": "^1.0.0",
     "buffer": "^6.0.3",
