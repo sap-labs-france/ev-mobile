@@ -105,10 +105,12 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
   public async refresh(): Promise<void> {
     if (this.isMounted()) {
       const { skip, limit } = this.state;
+      this.setState({ refreshing: true });
       // Refresh All
       const paymentMethods = await this.getPaymentMethods(0, skip + limit);
       // Set
       this.setState({
+        refreshing: false,
         loading: false,
         paymentMethods: paymentMethods ? paymentMethods.result : [],
         count: paymentMethods ? paymentMethods.count : 0
