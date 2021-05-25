@@ -2,6 +2,7 @@ import { NavigationContainerRef } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import _ from 'lodash';
+import moment from 'moment';
 import { NativeModules, Platform } from 'react-native';
 import { showLocation } from 'react-native-map-link';
 import validate from 'validate.js';
@@ -12,6 +13,7 @@ import ThemeManager from '../custom-theme/ThemeManager';
 import I18nManager from '../I18n/I18nManager';
 import CentralServerProvider from '../provider/CentralServerProvider';
 import Address from '../types/Address';
+import { BillingPaymentMethod, BillingPaymentMethodStatus } from '../types/Billing';
 import Car, { CarCatalog } from '../types/Car';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType, Voltage } from '../types/ChargingStation';
 import { KeyValue } from '../types/Global';
@@ -847,6 +849,20 @@ export default class Utils {
       default:
         return I18n.t('userRoles.unknown');
     }
+  }
+
+  public static buildPaymentMethodStatus(paymentMethod: BillingPaymentMethod): BillingPaymentMethodStatus {
+    const expirationDate = moment(paymentMethod.expiringOn);
+    if (expirationDate) {
+      if (expirationDate.isBefore(moment())) {
+        return BillingPaymentMethodStatus.EXPIRED;
+      }
+      if (expirationDate.isBefore(moment().add(2, 'months'))) {
+        return BillingPaymentMethodStatus.EXPIRING_SOON;
+      }
+      return BillingPaymentMethodStatus.VALID;
+    }
+    return null;
   }
 
   public static formatDurationHHMMSS = (durationSecs: number, withSecs: boolean = true): string => {

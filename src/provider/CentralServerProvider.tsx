@@ -7,7 +7,8 @@ import jwtDecode from 'jwt-decode';
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import NotificationManager from '../notification/NotificationManager';
-import { ActionResponse } from '../types/ActionResponse';
+import { ActionResponse, BillingOperationResponse } from '../types/ActionResponse';
+import { BillingPaymentMethod } from '../types/Billing';
 import Car from '../types/Car';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
@@ -15,6 +16,7 @@ import Eula, { EulaAccepted } from '../types/Eula';
 import { KeyValue } from '../types/Global';
 import PagingParams from '../types/PagingParams';
 import { ServerAction, ServerRoute } from '../types/Server';
+import { BillingSettings } from '../types/Setting';
 import Site from '../types/Site';
 import SiteArea from '../types/SiteArea';
 import Tag from '../types/Tag';
@@ -816,6 +818,45 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  public async setUpPaymentMethod(params: { userID: string }): Promise<BillingOperationResponse> {
+    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_SETUP}`.replace(':userID', params.userID);
+    const result = await this.axiosInstance.post(url, { userID: params.userID }, { headers: this.buildSecuredHeaders() });
+    return result.data as BillingOperationResponse;
+  }
+
+  public async attachPaymentMethod(params: { userID: string; paymentMethodId: string }): Promise<BillingOperationResponse> {
+    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_ATTACH}`
+      .replace(':userID', params.userID)
+      .replace(':paymentMethodID', params.paymentMethodId);
+    const result = await this.axiosInstance.post(url, { params }, { headers: this.buildSecuredHeaders() });
+    return result.data as BillingOperationResponse;
+  }
+
+  public async getPaymentMethods(
+    params: { currentUserID: string },
+    paging: PagingParams = Constants.DEFAULT_PAGING
+  ): Promise<DataResult<BillingPaymentMethod>> {
+    this.debugMethod('getPaymentMethods');
+    // Build Paging
+    this.buildPaging(paging, params);
+    // Call
+    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHODS}`.replace(':userID', params.currentUserID);
+    const result = await this.axiosInstance.get(url, {
+      headers: this.buildSecuredHeaders()
+    });
+    return result.data as DataResult<BillingPaymentMethod>;
+  }
+
+  public async getBillingSettings(): Promise<BillingSettings> {
+    // Build the URL
+    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_SETTING}`;
+    // Execute the REST Service
+    const result = await this.axiosInstance.get<BillingSettings>(url, {
+      headers: this.buildSecuredHeaders()
+    });
+    return result.data;
+  }
+
   public getSecurityProvider(): SecurityProvider {
     return this.securityProvider;
   }
@@ -858,6 +899,10 @@ export default class CentralServerProvider {
 
   private buildRestServerAuthURL(tenant: TenantConnection): string {
     return tenant?.endpoint + '/v1/auth';
+  }
+
+  private buildRestServerURL(): string {
+    return this.tenant?.endpoint + '/v1/api';
   }
 
   private buildCentralRestServerServiceUtilURL(tenant: TenantConnection): string {
