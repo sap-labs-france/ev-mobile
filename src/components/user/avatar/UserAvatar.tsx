@@ -42,7 +42,9 @@ export default class UserAvatar extends React.Component<Props, State> {
     const { user } = this.props;
     if (user) {
       user.image = await this.getUserImage(user.id as string);
-      this.setState({ user });
+      if (JSON.stringify(this.state.user) !== JSON.stringify(user)) {
+        this.setState({ user });
+      }
     }
   }
 
