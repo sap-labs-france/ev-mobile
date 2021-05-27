@@ -8,7 +8,6 @@ import DeviceInfo from 'react-native-device-info';
 
 import defaultTenantLogo from '../../../assets/logo-low.png';
 import BaseProps from '../../types/BaseProps';
-import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './SideBarStyles';
