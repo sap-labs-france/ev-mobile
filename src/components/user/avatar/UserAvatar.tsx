@@ -11,7 +11,9 @@ import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UserAvatarStyle';
 
-interface State {}
+interface State {
+  user?: User;
+}
 
 export interface Props extends BaseProps {
   user?: User;
@@ -34,11 +36,14 @@ export default class UserAvatar extends React.Component<Props, State> {
 
   public async componentDidMount(): Promise<void> {
     this.centralServerProvider = await ProviderFactory.getProvider();
+  }
+
+  public async componentDidUpdate() {
     const { user } = this.props;
     if (user) {
       user.image = await this.getUserImage(user.id as string);
+      this.setState({ user });
     }
-    this.setState({ user });
   }
 
   public setState = (
@@ -50,7 +55,7 @@ export default class UserAvatar extends React.Component<Props, State> {
 
   public render() {
     const { selected, small } = this.props;
-    const { user } = this.props;
+    const { user } = this.state;
     const style = computeStyleSheet();
     const userInitials = Utils.buildUserInitials(user);
     const userName = Utils.buildUserName(user);

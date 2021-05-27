@@ -20,7 +20,6 @@ export interface Props extends BaseProps {}
 
 interface State {
   userToken?: UserToken;
-  userImage?: string;
   tenantName?: string;
   isComponentOrganizationActive?: boolean;
   updateDate?: string;
@@ -34,7 +33,6 @@ export default class SideBar extends BaseScreen<Props, State> {
     super(props);
     this.state = {
       userToken: null,
-      userImage: '',
       tenantName: '',
       isComponentOrganizationActive: false,
       updateDate: ''
@@ -68,30 +66,12 @@ export default class SideBar extends BaseScreen<Props, State> {
     // Logoff
     const userInfo = this.centralServerProvider.getUserInfo();
     // Add sites(
-    this.setState(
-      {
-        userToken: this.centralServerProvider.getUserInfo(),
-        isComponentOrganizationActive: this.securityProvider ? this.securityProvider.isComponentOrganizationActive() : false,
-        tenantName: userInfo.tenantName
-      },
-      async () => {
-        await this.getUserImage();
-      }
-    );
+    this.setState({
+      userToken: this.centralServerProvider.getUserInfo(),
+      isComponentOrganizationActive: this.securityProvider ? this.securityProvider.isComponentOrganizationActive() : false,
+      tenantName: userInfo.tenantName
+    });
   };
-
-  public async getUserImage() {
-    const { userToken } = this.state;
-    try {
-      const image = await this.centralServerProvider.getUserImage({ ID: userToken.id });
-      if (image) {
-        this.setState({ userImage: image });
-      }
-    } catch (error) {
-      // Other common Error
-      setTimeout(async () => this.refresh(), Constants.AUTO_REFRESH_ON_ERROR_PERIOD_MILLIS);
-    }
-  }
 
   public async logoff() {
     // Logoff
@@ -115,8 +95,8 @@ export default class SideBar extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const { navigation } = this.props;
-    const { userToken, tenantName, isComponentOrganizationActive, updateDate, userImage } = this.state;
-    const user = { firstName: userToken?.firstName, name: userToken?.name, id: userToken?.id, image: userImage } as User;
+    const { userToken, tenantName, isComponentOrganizationActive, updateDate } = this.state;
+    const user = { firstName: userToken?.firstName, name: userToken?.name, id: userToken?.id } as User;
     // Get logo
     const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
