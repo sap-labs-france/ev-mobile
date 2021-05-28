@@ -215,6 +215,11 @@
     "invoiceUnexpectedError": "Une erreur est survenue",
     "invoices": "Facture(s)"
   },
+  "invoiceStatus": {
+    "paid": "Paid",
+    "draft": "Draft",
+    "unpaid": "Unpaid"
+  },
   "transactions": {
     "transaction": "Sessões",
     "transactions": "Sessão/õe(s)",
