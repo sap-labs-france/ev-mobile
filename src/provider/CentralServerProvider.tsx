@@ -8,7 +8,7 @@ import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import NotificationManager from '../notification/NotificationManager';
 import { ActionResponse, BillingOperationResponse } from '../types/ActionResponse';
-import { BillingPaymentMethod } from '../types/Billing';
+import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
 import Car from '../types/Car';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
@@ -723,8 +723,21 @@ export default class CentralServerProvider {
       headers: this.buildSecuredHeaders(),
       params
     });
-    return result.data;
+    return result.data as DataResult<Tag>;
   }
+
+  public async getInvoices(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<BillingInvoice>> {
+    this.debugMethod('getInvoices');
+    // Build Paging
+    this.buildPaging(paging, params);
+    // Call
+    const result = await this.axiosInstance.get(`${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_INVOICES}`, {
+      headers: this.buildSecuredHeaders(),
+      params
+    });
+    return result.data as DataResult<BillingInvoice>;
+  }
+
 
   public async requestChargingStationOcppParameters(id: string): Promise<ActionResponse> {
     this.debugMethod('requestChargingStationOCPPConfiguration');

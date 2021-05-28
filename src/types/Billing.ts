@@ -25,3 +25,28 @@ export enum StripePaymentMethodBrands {
   VISA = 'visa',
   UNION_PAY = 'unionpay'
 }
+
+export interface BillingInvoice extends ListItem {
+  createdOn?: Date;
+  invoiceID: string;
+  userID?: string;
+  // eslint-disable-next-line id-blacklist
+  number: string;
+  status: BillingInvoiceStatus;
+  amount?: number;
+  currency: string;
+  downloadable: boolean;
+  sessions: BillingSessionData[];
+}
+
+export enum BillingInvoiceStatus {
+  PAID = 'paid',
+  OPEN = 'open',
+  DRAFT = 'draft'
+}
+
+export interface BillingSessionData {
+  transactionID: number;
+  description: string;
+  pricingData: any;
+}

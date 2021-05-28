@@ -17,5 +17,6 @@ export default {
   inverseTextColor: palette.dark,
   subTextColor: palette.disabledDark,
   buttonBg: palette.darkLight,
+  listShadowedItemBackgroundColor: palette.disabled,
   touchableBackgroundColor: 'rgba(255,255,255,0.1)'
 };
