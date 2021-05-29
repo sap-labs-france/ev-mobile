@@ -2,6 +2,7 @@ import I18n from 'i18n-js';
 import moment from 'moment';
 import React from 'react';
 import { Text, View } from 'react-native';
+
 import Amex from '../../../assets/payment-methods/amex.svg';
 import DinersClub from '../../../assets/payment-methods/diners.svg';
 import Discover from '../../../assets/payment-methods/discover.svg';
@@ -10,11 +11,7 @@ import MasterCard from '../../../assets/payment-methods/mastercard.svg';
 import UnionPay from '../../../assets/payment-methods/unionpay.svg';
 import Visa from '../../../assets/payment-methods/visa.svg';
 import BaseProps from '../../types/BaseProps';
-import {
-  BillingPaymentMethod,
-  BillingPaymentMethodStatus,
-  StripePaymentMethodBrands
-} from '../../types/Billing';
+import { BillingPaymentMethod, BillingPaymentMethodStatus, StripePaymentMethodBrands } from '../../types/Billing';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './PaymentMethodComponentStyle';
 
@@ -47,7 +44,7 @@ export default class PaymentMethodComponent extends React.Component<Props, State
           <View style={style.cardNumberContainer}>
             {[...Array(12)].map((el, index: number) => (
               <View key={index} style={{ flexDirection: 'row' }}>
-                <View style={[style.maskCharacter, (index + 1) % 4 === 0 && style.maskCharacterSpace]}></View>
+                <View style={[style.maskCharacter, (index + 1) % 4 === 0 && style.maskCharacterSpace]} />
               </View>
             ))}
             <Text style={style.text}>{paymentMethod.last4} </Text>
