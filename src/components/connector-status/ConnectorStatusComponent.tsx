@@ -57,9 +57,11 @@ export default class ConnectorStatusComponent extends React.Component<Props, Sta
     super.setState(state, callback);
   };
 
-  public getConnectorStyles(
-    style: any
-  ): { container: Record<string, unknown>[]; value: Record<string, unknown>[]; description: Record<string, unknown>[] } {
+  public getConnectorStyles(style: any): {
+    container: Record<string, unknown>[];
+    value: Record<string, unknown>[];
+    description: Record<string, unknown>[];
+  } {
     const { status, connector, inactive } = this.props;
     // Get the type
     let connectorType;
