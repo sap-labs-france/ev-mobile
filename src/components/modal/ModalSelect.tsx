@@ -103,7 +103,7 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
   private onItemSelected(selectedItems: T[]): void {
     const { selectionMode, onItemsSelected } = this.props;
     if (selectionMode === ItemSelectionMode.MULTI) {
-      this.setState({ canValidateMultiSelection: selectedItems.length > 0 });
+      this.setState({ canValidateMultiSelection: !Utils.isEmptyArray(selectedItems) });
     } else if (selectionMode === ItemSelectionMode.SINGLE && selectedItems && !Utils.isEmptyArray(selectedItems)) {
       this.setState({ selectedItems, isVisible: false });
     }
