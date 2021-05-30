@@ -110,7 +110,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
   private onSelectItem(item: T): void {
     const { selectedItems } = this.state;
     const { onSelect, selectionMode } = this.props;
-    const itemSelectedCallback = onSelect ? () => onSelect([...this.state.selectedItems.values()]) : null;
+    const itemSelectedCallback = onSelect ? () => onSelect([...this.state.selectedItems.values()]) : () => {};
     // If the item is already selected, unselect it
     if (selectedItems.has(item.id)) {
       selectedItems.delete(item.id);
