@@ -2,24 +2,14 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
 import React from 'react';
-import {
-  Alert,
-  Image,
-  ImageStyle,
-  RefreshControl,
-  ScrollView,
-  TouchableOpacity
-} from 'react-native';
+import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 
 import noPhotoActive from '../../../../assets/no-photo-active.png';
 import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
-import ConnectorStatusComponent
-  from '../../../components/connector-status/ConnectorStatusComponent';
+import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import { ItemSelectionMode } from '../../../components/list/ItemsList';
-import UserModalSelect from '../../../components/modal/UserModalSelect';
-import computeFormStyleSheet from '../../../FormStyles';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
@@ -758,9 +748,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         {connector?.status === ChargePointStatus.AVAILABLE ? (
           <ScrollView
             contentContainerStyle={style.scrollViewContainer}
-            refreshControl={
-             <RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />
-            }>
+            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
             <View style={style.rowContainer}>{this.renderConnectorStatus(style)}</View>
             {isAdmin && this.renderUserSelection(style)}
           </ScrollView>
@@ -806,7 +794,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           onItemsSelected={(selectedUsers: User[]) => this.setState({ selectedUser: selectedUsers?.[0] })}
           buildItemName={Utils.buildUserName}
           navigation={navigation}
-          selectionMode={ItemSelectionMode.SINGLE}>
+          selectionMode={ItemSelectionMode.MULTI}>
           <Users navigation={navigation} />
         </ModalSelect>
       </View>

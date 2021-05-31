@@ -40,11 +40,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     bottomButtonContainer: {
       width: '100%',
-      justifyContent: 'center'
+      flexDirection: 'row',
+      justifyContent: 'center',
+      height: '80@s',
+      alignItems: 'center',
+      borderTopWidth: 1,
+      paddingBottom: '20@s',
+      borderTopColor: commonColor.listBorderColor
+    },
+    button: {
+      marginTop: '15@s',
+      backgroundColor: commonColor.buttonBg
     },
     buttonDisabled: {
-      alignSelf: 'center',
-      marginTop: '15@s',
       opacity: 0.3
     },
     buttonEnabled: {

@@ -83,7 +83,7 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
                   disabled={!canValidateMultiSelection}
                   block
                   light
-                  style={[style.buttonDisabled, canValidateMultiSelection && style.buttonEnabled]}
+                  style={[style.button, canValidateMultiSelection ? style.buttonEnabled : style.buttonDisabled]}
                   onPress={() => this.validateSelection()}>
                   <Text style={style.buttonText}>{I18n.t('general.validate')}</Text>
                 </Button>
