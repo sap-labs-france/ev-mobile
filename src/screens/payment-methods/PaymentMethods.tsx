@@ -3,6 +3,7 @@ import i18n from 'i18n-js';
 import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
+
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
 import PaymentMethodComponent from '../../components/payment-method/PaymentMethodComponent';
@@ -105,10 +106,12 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
   public async refresh(): Promise<void> {
     if (this.isMounted()) {
       const { skip, limit } = this.state;
+      this.setState({ refreshing: true });
       // Refresh All
       const paymentMethods = await this.getPaymentMethods(0, skip + limit);
       // Set
       this.setState({
+        refreshing: false,
         loading: false,
         paymentMethods: paymentMethods ? paymentMethods.result : [],
         count: paymentMethods ? paymentMethods.count : 0
