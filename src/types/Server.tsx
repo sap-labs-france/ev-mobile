@@ -398,6 +398,7 @@ export enum ServerAction {
   NOTIFICATIONS = 'Notifications',
 
   BILLING = 'Billing',
+  INVOICES = 'Invoices',
   BILLING_TAX = 'BillingTax',
   BILLING_TRANSACTION = 'BillingTransaction',
   BILLING_SEND_INVOICE = 'BillingSendInvoice',
@@ -503,5 +504,8 @@ export enum ServerRoute {
   // BILLING URLs for Non-CRUD Operations on PAYMENT METHODS
   REST_BILLING_PAYMENT_METHOD_SETUP = 'users/:userID/payment-methods/setup',
   REST_BILLING_PAYMENT_METHOD_ATTACH = 'users/:userID/payment-methods/:paymentMethodID/attach',
-  REST_BILLING_PAYMENT_METHOD_DETACH = 'users/:userID/payment-methods/:paymentMethodID/detach'
+  REST_BILLING_PAYMENT_METHOD_DETACH = 'users/:userID/payment-methods/:paymentMethodID/detach',
+
+  // BILLING URLs for CRUD operations on INVOICES
+  REST_BILLING_INVOICES = 'invoices'
 }

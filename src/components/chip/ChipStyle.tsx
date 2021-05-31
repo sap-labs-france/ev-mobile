@@ -12,7 +12,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     status: {
-      backgroundColor: commonColor.containerBgColor,
       borderWidth: 1,
       borderRadius: '12@s'
     },
@@ -23,17 +22,21 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingVertical: '3@s',
       paddingHorizontal: '10@s'
     },
-    active: {
+    success: {
       borderColor: commonColor.brandSuccess,
       color: commonColor.brandSuccess
     },
-    inactive: {
+    danger: {
       color: commonColor.brandDanger,
       borderColor: commonColor.brandDanger
     },
-    pending: {
+    warning: {
       color: commonColor.brandWarning,
       borderColor: commonColor.brandWarning
+    },
+    default: {
+      color: commonColor.brandDisabledDark,
+      borderColor: commonColor.brandDisabledDark
     }
   });
   const portraitStyles = {};
