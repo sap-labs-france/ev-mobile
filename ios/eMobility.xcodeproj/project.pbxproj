@@ -967,6 +967,7 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTAnimation\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTBlob\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTImage\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTLinking\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTNetwork\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTSettings\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTText\"",
