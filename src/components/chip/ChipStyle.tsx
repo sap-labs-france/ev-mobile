@@ -12,7 +12,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     status: {
-      backgroundColor: commonColor.listShadowedItemBackgroundColor,
+      backgroundColor: commonColor.listHeaderBgColor,
       borderWidth: 1,
       borderRadius: '12@s'
     },
