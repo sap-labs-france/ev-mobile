@@ -24,7 +24,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: NDK install
-      run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;21.0.6113669"
+      run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;22.1.7171670"
     - name: npm install
       run: npm ci
     - name: npm run android:assembleDebug
