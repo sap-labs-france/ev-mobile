@@ -21,6 +21,7 @@ export default function InvoiceComponent(props: Props) {
   const { invoice, navigation } = props;
   const style = computeStyleSheet();
   const [user, setUser] = useState<User>(null);
+  const invoiceAmount = invoice.amount && invoice.amount / 100;
 
   useEffect(() => {
     async function setUp(): Promise<void> {
@@ -107,7 +108,7 @@ export default function InvoiceComponent(props: Props) {
             </View>
             <View style={style.invoiceAmountContainer}>
               <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.invoiceAmount]}>
-                {I18nManager.formatCurrency(invoice.amount)}
+                {I18nManager.formatCurrency(invoiceAmount, invoice.currency)}
               </Text>
             </View>
             {invoice.downloadable && (

@@ -68,9 +68,9 @@ export default class I18nManager {
     return '-';
   }
 
-  public static formatCurrency(value: number): string {
+  public static formatCurrency(value: number, currency: string): string {
+    currency = currency ? currency.toUpperCase() : I18nManager.currency;
     if (!isNaN(value)) {
-      const currency = I18nManager.currency;
       if (currency) {
         return new Intl.NumberFormat(i18n.locale, { style: 'currency', currency }).format(value);
       }
