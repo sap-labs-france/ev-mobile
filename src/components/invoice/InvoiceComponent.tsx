@@ -23,17 +23,16 @@ export default function InvoiceComponent(props: Props) {
   const [user, setUser] = useState<User>(null);
 
   useEffect(() => {
+    async function setUp(): Promise<void> {
+      const centralServerProvider = await ProviderFactory.getProvider();
+      const result: DataResult<User> = await centralServerProvider.getUsers({ UserID: invoice.userID });
+      const fetchedUser = result?.result?.[0];
+      setUser(fetchedUser);
+    }
     setUp().catch((error) => {
       console.error(I18n.t('invoices.invoicesUnexpectedError'), error);
     });
-  });
-
-  async function setUp(): Promise<void> {
-    const centralServerProvider = await ProviderFactory.getProvider();
-    const result: DataResult<User> = await centralServerProvider.getUsers({ UserID: invoice.userID });
-    const fetchedUser = result?.result?.[0];
-    setUser(fetchedUser);
-  }
+  }, [invoice.userID]);
 
   function buildStatus(invoiceStatus: BillingInvoiceStatus): string {
     switch (invoiceStatus) {

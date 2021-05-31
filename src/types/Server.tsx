@@ -398,7 +398,6 @@ export enum ServerAction {
   NOTIFICATIONS = 'Notifications',
 
   BILLING = 'Billing',
-  INVOICES = 'Invoices',
   BILLING_TAX = 'BillingTax',
   BILLING_TRANSACTION = 'BillingTransaction',
   BILLING_SEND_INVOICE = 'BillingSendInvoice',
