@@ -10,7 +10,7 @@ import I18n from 'i18n-js';
 import SelectableList from '../../screens/base-screen/SelectableList';
 
 export interface Props<T> extends BaseProps {
-  defaultItem: T;
+  defaultItem?: T;
   buildItemName: (item: T) => string;
   selectionMode: ItemSelectionMode;
   onItemsSelected: (selectedItems: T[]) => void;
