@@ -61,7 +61,9 @@
     "mobile": "Mobile",
     "errorTitle": "Titre de l'erreur",
     "errorDescription": "Description",
-    "scanQrCodeSuccess": "Le QR code a bien été scanné"
+    "scanQrCodeSuccess": "Le QR code a bien été scanné",
+    "default": "Par défaut",
+    "save": "Sauvegarder"
   },
   "sidebar": {
     "home": "Home",
@@ -73,7 +75,9 @@
     "reportError": "Signaler Erreur",
     "users": "Utilisateurs",
     "badges": "Badges",
-    "cars": "Voitures"
+    "cars": "Voitures",
+    "invoices": "Factures",
+    "paymentMethods": "Méthodes de paiement"
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",
@@ -149,7 +153,7 @@
   "qrCode": {
     "qrCode": "QR Code",
     "browseScan&Charge": "Scan & Charge",
-    "browseScan&ChargeNote": "Scan the Charging Station's QR Code",
+    "browseScan&ChargeNote": "Scanner un QR Code",
     "wrongOrganizationTitle": "Changement d'Organisation",
     "wrongOrganizationMessage": "La borne que vous essayez d'atteindre n'est pas dans votre organisation, voulez-vous changer pour '{{tenantName}}'?",
     "invalidQRCode": "QR Code invalide",
@@ -170,6 +174,22 @@
     "noUsers": "Aucun utilisateur",
     "users": "Utilisateur(s)"
   },
+  "paymentMethods": {
+    "paymentMethodUnexpectedError": "Une erreur est survenue",
+    "noPaymentMethod": "Aucune méthode de paiement",
+    "paymentMethods": "Méthode(s) de paiement",
+    "addPaymentMethodError": "Impossible d'ajouter la méthode de paiement",
+    "addPaymentMethodSuccess" : "Nouvelle méthode de paiement ajoutée",
+    "addPaymentMethod": "Ajouter une méthode de paiment"
+  },
+  "paymentMethodStatus": {
+    "valid": "Valide",
+    "expired": "Expirée",
+    "expiringSoon": "Expire bientôt"
+  },
+  "paymentMethodType": {
+    "card": "Carte"
+  },
   "userRoles": {
     "admin": "Admin",
     "basic": "Basique",
@@ -189,6 +209,11 @@
     "noCars": "Aucune voiture",
     "carUnexpectedError": "Une erreur est survenue",
     "cars": "Voiture(s)"
+  },
+  "invoices": {
+    "noInvoices": "Aucune facture",
+    "invoiceUnexpectedError": "Une erreur est survenue",
+    "invoices": "Facture(s)"
   },
   "transactions": {
     "transaction": "Session",
@@ -237,7 +262,9 @@
     "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
     "totalInactivityNote": "Durée totale d'inactivité",
     "totalPrice": "{{totalPrice}}",
-    "totalPriceNote": "Cout total"
+    "totalPriceNote": "Cout total",
+    "paymentMethods": "Méthodes de paiement",
+    "paymentMethodsNote" : "Consulter et créer des méthodes de paiement"
   },
   "sites": {
     "freeChargers": "Chargeurs disponibles",

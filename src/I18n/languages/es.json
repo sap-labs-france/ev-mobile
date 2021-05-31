@@ -61,7 +61,9 @@
     "mobile": "Móvil",
     "errorTitle": "Titulo del error",
     "errorDescription": "Descripción del error",
-    "scanQrCodeSuccess": "El código QR se ha escaneado correctamente"
+    "scanQrCodeSuccess": "El código QR se ha escaneado correctamente",
+    "default": "Default",
+    "save": "Save"
   },
   "sidebar": {
     "home": "Menú principal",
@@ -73,7 +75,9 @@
     "reportError": "Reportar error",
     "users": "Users",
     "badges": "Badges",
-    "cars": "Cars"
+    "cars": "Cars",
+    "invoices": "Invoices",
+    "paymentMethods": "Payment Methods"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -168,7 +172,23 @@
   "users": {
     "userUnexpectedError": "No se ha podido cargar el usuario",
     "noUsers": "No users",
-    "users": "Users(s)",
+    "users": "Users(s)"
+  },
+  "paymentMethods": {
+    "paymentMethodUnexpectedError": "An error occurred",
+    "noPaymentMethod": "No payment method",
+    "paymentMethods": "Payment method(s)",
+    "addPaymentMethodError": "Failed to add payment method",
+    "addPaymentMethodSuccess" : "New payment method added successfully",
+    "addPaymentMethod": "Add new payment method"
+  },
+  "paymentMethodStatus": {
+    "valid": "Valid",
+    "expired": "Expired",
+    "expiringSoon": "Expiring soon"
+  },
+  "paymentMethodType": {
+    "card": "Card"
   },
   "userRoles": {
     "admin": "Admin",
@@ -189,6 +209,11 @@
     "noCars": "No cars",
     "carUnexpectedError": "An error occurred",
     "cars": "Car(s)"
+  },
+  "invoices": {
+    "noInvoices": "No Invoices",
+    "invoiceUnexpectedError": "An error occurred",
+    "invoices": "Invoice(s)"
   },
   "transactions": {
     "transaction": "Sesión",
@@ -237,7 +262,9 @@
     "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
     "totalInactivityNote": "Duración total de inactividad",
     "totalPrice": "{{totalPrice}}",
-    "totalPriceNote": "Precio total"
+    "totalPriceNote": "Precio total",
+    "paymentMethods": "Payment Methods",
+    "paymentMethodsNote" : "Browse and create payment methods"
   },
   "sites": {
     "freeChargers": "Cargadores disponibles",
