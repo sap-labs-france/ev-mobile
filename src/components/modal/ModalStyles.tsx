@@ -50,6 +50,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     button: {
       marginTop: '15@s',
+      width: '100%',
       backgroundColor: commonColor.buttonBg
     },
     buttonDisabled: {
