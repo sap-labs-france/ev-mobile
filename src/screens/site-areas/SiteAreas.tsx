@@ -269,7 +269,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const { navigation } = this.props;
     const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected, siteAreas } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.siteAreas);
-    const siteAreaWithAddress = siteAreas.filter((siteArea) => Utils.containsAddressGPSCoordinates(siteArea.address));
+    const siteAreasWithGPSCoordinates = siteAreas.filter((siteArea) => Utils.containsAddressGPSCoordinates(siteArea.address));
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -302,7 +302,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
               <View style={style.map}>
                 {this.currentRegion && (
                   <ClusterMap style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
-                    {siteAreaWithAddress.map((siteArea: SiteArea) => (
+                    {siteAreasWithGPSCoordinates.map((siteArea: SiteArea) => (
                       <Marker
                         image={Utils.buildSiteStatusMarker(siteArea.connectorStats)}
                         key={siteArea.id}

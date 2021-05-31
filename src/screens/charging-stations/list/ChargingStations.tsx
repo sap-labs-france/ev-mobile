@@ -345,7 +345,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       refreshing
     } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.chargingStations);
-    const chargingStationsWithAddress = chargingStations.filter((chargingStation) =>
+    const chargingStationsWithGPSCoordinates = chargingStations.filter((chargingStation) =>
       Utils.containsGPSCoordinates(chargingStation.coordinates)
     );
     return (
@@ -382,7 +382,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
               <View style={style.map}>
                 {this.currentRegion && (
                   <ClusterMap style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
-                    {chargingStationsWithAddress.map((chargingStation) => (
+                    {chargingStationsWithGPSCoordinates.map((chargingStation) => (
                       <Marker
                         image={Utils.buildChargingStationStatusMarker(chargingStation.connectors, chargingStation.inactive)}
                         key={chargingStation.id}
