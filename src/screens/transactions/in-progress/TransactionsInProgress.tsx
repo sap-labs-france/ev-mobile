@@ -166,19 +166,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const {
-      loading,
-      isAdmin,
-      hasSiteAdmin,
-      transactions,
-      isPricingActive,
-      skip,
-      count,
-      limit,
-      initialFilters,
-      filters,
-      refreshing
-    } = this.state;
+    const { loading, isAdmin, hasSiteAdmin, transactions, isPricingActive, skip, count, limit, initialFilters, filters, refreshing } =
+      this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent
