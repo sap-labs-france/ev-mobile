@@ -152,7 +152,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     const user = transaction.user;
     return transaction ? (
       <View style={style.columnContainer}>
-        <UserAvatar user={user} navigation={this.props.navigation} />
+        <UserAvatar size={44} user={user} navigation={this.props.navigation} />
         <Text numberOfLines={1} style={[style.label, style.labelUser, style.info]}>
           {Utils.buildUserName(user)}
         </Text>
