@@ -11,7 +11,6 @@ import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
-import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
@@ -24,7 +23,6 @@ export interface Props extends BaseProps {}
 interface State {
   loading?: boolean;
   transaction?: Transaction;
-  userImage?: string;
   siteImage?: string;
   elapsedTimeFormatted?: string;
   totalInactivitySecs?: number;
@@ -45,7 +43,6 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     super(props);
     this.state = {
       loading: true,
-      userImage: null,
       siteImage: null,
       isAdmin: false,
       isSiteAdmin: false,
@@ -69,7 +66,6 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   public async componentDidMount() {
     await super.componentDidMount();
     let siteImage = null;
-    let userImage = null;
     // Get IDs
     const transactionID = Utils.getParamFromNavigation(this.props.route, 'transactionID', null) as number;
     // Get Transaction
@@ -78,10 +74,6 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     if (transaction && transaction.siteID && this.isMounted()) {
       siteImage = await this.getSiteImage(transaction.siteID);
     }
-    // Get the User Image
-    if (transaction && transaction.user && this.isMounted()) {
-      userImage = await this.getUserImage(transaction.user);
-    }
     // Compute Duration
     this.computeDurationInfos(transaction);
     // Set
@@ -89,7 +81,6 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       transaction,
       loading: false,
       siteImage,
-      userImage,
       isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
       isSiteAdmin:
         this.securityProvider && transaction && transaction.siteID ? this.securityProvider.isSiteAdmin(transaction.siteID) : false,
@@ -125,16 +116,6 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       return siteImage;
     } catch (error) {
       Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'sites.siteUnexpectedError', this.props.navigation);
-    }
-    return null;
-  };
-
-  public getUserImage = async (user: User): Promise<string> => {
-    try {
-      const userImage = await this.centralServerProvider.getUserImage({ ID: user.id });
-      return userImage;
-    } catch (error) {
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'users.userUnexpectedError', this.props.navigation);
     }
     return null;
   };
