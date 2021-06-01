@@ -381,7 +381,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
             {mapIsDisplayed ? (
               <View style={style.map}>
                 {this.currentRegion && (
-                  <ClusterMap style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
+                  <ClusterMap provider={'google'} style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
                     {chargingStationsWithGPSCoordinates.map((chargingStation) => (
                       <Marker
                         image={Utils.buildChargingStationStatusMarker(chargingStation.connectors, chargingStation.inactive)}
