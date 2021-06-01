@@ -37,6 +37,11 @@ export default class UserAvatar extends React.Component<Props, State> {
 
   public async componentDidMount(): Promise<void> {
     this.centralServerProvider = await ProviderFactory.getProvider();
+    const { user } = this.props;
+    if (user) {
+      user.image = await this.getUserImage(user.id as string);
+      this.setState({ user });
+    }
   }
 
   public async componentDidUpdate() {
