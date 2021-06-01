@@ -28,6 +28,7 @@ import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SitesFilters, { SitesFiltersDef } from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
 import { ClusterMap } from 'react-native-cluster-map';
+import ThemeManager from '../../custom-theme/ThemeManager';
 
 export interface Props extends BaseProps {}
 
@@ -52,6 +53,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   private currentLocation: Location;
   private locationEnabled: boolean;
   private currentRegion: Region;
+  private darkMapTheme = require('../../utils/google-maps-dark-style.json');
 
   public constructor(props: Props) {
     super(props);
@@ -266,6 +268,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     const { loading, skip, count, limit, initialFilters, showMap, siteSelected, refreshing, sites } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.sites);
     const sitesWithGPSCoordinates = sites.filter((site) => Utils.containsAddressGPSCoordinates(site.address));
+    const isDarkModeEnabled = ThemeManager.getInstance().isThemeTypeIsDark();
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -297,7 +300,12 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
             {mapIsDisplayed ? (
               <View style={style.map}>
                 {this.currentRegion && (
-                  <ClusterMap provider={'google'} style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
+                  <ClusterMap
+                    provider={'google'}
+                    customMapStyle={isDarkModeEnabled && this.darkMapTheme}
+                    style={style.map}
+                    region={this.currentRegion}
+                    onRegionChange={this.onMapRegionChange}>
                     {sitesWithGPSCoordinates.map((site: Site) => (
                       <Marker
                         image={Utils.buildSiteStatusMarker(site.connectorStats)}

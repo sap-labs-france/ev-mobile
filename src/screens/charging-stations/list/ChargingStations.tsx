@@ -27,6 +27,7 @@ import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import ChargingStationsFilters, { ChargingStationsFiltersDef } from './ChargingStationsFilters';
 import computeStyleSheet from './ChargingStationsStyles';
 import { ClusterMap } from 'react-native-cluster-map';
+import ThemeManager from '../../../custom-theme/ThemeManager';
 
 export interface Props extends BaseProps {}
 
@@ -53,6 +54,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   private currentLocation: Location;
   private locationEnabled: boolean;
   private currentRegion: Region;
+  private darkMapTheme = require('../../../utils/google-maps-dark-style.json');
 
   public constructor(props: Props) {
     super(props);
@@ -348,6 +350,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const chargingStationsWithGPSCoordinates = chargingStations.filter((chargingStation) =>
       Utils.containsGPSCoordinates(chargingStation.coordinates)
     );
+    const isDarkModeEnabled = ThemeManager.getInstance().isThemeTypeIsDark();
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -381,7 +384,12 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
             {mapIsDisplayed ? (
               <View style={style.map}>
                 {this.currentRegion && (
-                  <ClusterMap provider={'google'} style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
+                  <ClusterMap
+                    provider={'google'}
+                    customMapStyle={isDarkModeEnabled && this.darkMapTheme}
+                    style={style.map}
+                    region={this.currentRegion}
+                    onRegionChange={this.onMapRegionChange}>
                     {chargingStationsWithGPSCoordinates.map((chargingStation) => (
                       <Marker
                         image={Utils.buildChargingStationStatusMarker(chargingStation.connectors, chargingStation.inactive)}

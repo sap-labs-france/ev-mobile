@@ -28,6 +28,7 @@ import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SiteAreasFilters, { SiteAreasFiltersDef } from './SiteAreasFilters';
 import computeStyleSheet from './SiteAreasStyles';
 import { ClusterMap } from 'react-native-cluster-map';
+import ThemeManager from '../../custom-theme/ThemeManager';
 
 export interface Props extends BaseProps {}
 
@@ -53,6 +54,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   private currentLocation: Location;
   private locationEnabled: boolean;
   private currentRegion: Region;
+  private darkMapTheme = require('../../utils/google-maps-dark-style.json');
 
   public constructor(props: Props) {
     super(props);
@@ -270,6 +272,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected, siteAreas } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.siteAreas);
     const siteAreasWithGPSCoordinates = siteAreas.filter((siteArea) => Utils.containsAddressGPSCoordinates(siteArea.address));
+    const isDarkModeEnabled = ThemeManager.getInstance().isThemeTypeIsDark();
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -301,7 +304,12 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
             {mapIsDisplayed ? (
               <View style={style.map}>
                 {this.currentRegion && (
-                  <ClusterMap provider={'google'} style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
+                  <ClusterMap
+                    provider={'google'}
+                    customMapStyle={isDarkModeEnabled && this.darkMapTheme}
+                    style={style.map}
+                    region={this.currentRegion}
+                    onRegionChange={this.onMapRegionChange}>
                     {siteAreasWithGPSCoordinates.map((siteArea: SiteArea) => (
                       <Marker
                         image={Utils.buildSiteStatusMarker(siteArea.connectorStats)}
