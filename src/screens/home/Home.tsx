@@ -304,6 +304,24 @@ export default class Home extends BaseScreen<Props, State> {
                   </CardItem>
                 </Card>
               )}
+              {this.securityProvider?.canListInvoices() && this.securityProvider?.isComponentBillingActive() && (
+                <Card style={cardStyle.card}>
+                  <CardItem
+                    style={cardStyle.cardItem}
+                    button={true}
+                    onPress={() => navigation.navigate('InvoicesNavigator', { key: `${Utils.randomNumber()}` })}>
+                    <Left>
+                      <Icon style={cardStyle.cardIcon} type="FontAwesome5" name="file-invoice" />
+                      <Body>
+                        <Text style={cardStyle.cardText}>{I18n.t('home.invoices')}</Text>
+                        <Text note={true} style={cardStyle.cardNote}>
+                          {I18n.t('home.invoicesNote')}
+                        </Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                </Card>
+              )}
               <Card style={cardStyle.card}>
                 <CardItem
                   style={cardStyle.cardItem}

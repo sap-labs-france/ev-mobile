@@ -21,23 +21,22 @@ export default function InvoiceComponent(props: Props) {
   const { invoice, navigation } = props;
   const style = computeStyleSheet();
   const [user, setUser] = useState<User>(null);
-  const commonColor = Utils.getCurrentCommonColor();
 
   useEffect(() => {
-    setUp().catch((error) => {
+    async function setUp(): Promise<void> {
+      const centralServerProvider = await ProviderFactory.getProvider();
+      const result: DataResult<User> = await centralServerProvider.getUsers({ UserID: invoice.userID });
+      const fetchedUser = result?.result?.[0];
+      setUser(fetchedUser);
+    }
+    try {
+      setUp();
+    } catch (error) {
       console.error(I18n.t('invoices.invoicesUnexpectedError'), error);
-    });
-  });
+    }
+  }, [invoice.userID]);
 
-  async function setUp(): Promise<void> {
-    const centralServerProvider = await ProviderFactory.getProvider();
-    // Billing
-    const result: DataResult<User> = await centralServerProvider.getUsers({ UserID: invoice.userID });
-    const fetchedUser = result?.result?.[0];
-    setUser(fetchedUser);
-  }
-
-  function buildStatus(invoiceStatus: BillingInvoiceStatus): string {
+  const buildStatus = (invoiceStatus: BillingInvoiceStatus) => {
     switch (invoiceStatus) {
       case BillingInvoiceStatus.DRAFT:
         return I18n.t('invoiceStatus.draft');
@@ -46,9 +45,9 @@ export default function InvoiceComponent(props: Props) {
       case BillingInvoiceStatus.PAID:
         return I18n.t('invoiceStatus.paid');
     }
-  }
+  };
 
-  function buildStatusStyle(invoiceStatus: BillingInvoiceStatus): any {
+  const buildStatusStyle = (invoiceStatus: BillingInvoiceStatus) => {
     const chipStyle = computeChipStyleSheet();
     switch (invoiceStatus) {
       case BillingInvoiceStatus.DRAFT:
@@ -58,24 +57,23 @@ export default function InvoiceComponent(props: Props) {
       case BillingInvoiceStatus.PAID:
         return chipStyle.success;
     }
-  }
+  };
 
-  function buildStatusColor(invoiceStatus: BillingInvoiceStatus): any {
+  const buildStatusIndicatorStyle = (invoiceStatus: BillingInvoiceStatus) => {
     switch (invoiceStatus) {
       case BillingInvoiceStatus.DRAFT:
-        return { backgroundColor: commonColor.brandDisabledDark };
+        return style.statusDraft;
       case BillingInvoiceStatus.OPEN:
-        return { backgroundColor: commonColor.brandDanger };
+        return style.statusUnpaid;
       case BillingInvoiceStatus.PAID:
-        return { backgroundColor: commonColor.brandSuccess };
+        return style.statusPaid;
     }
-  }
+  };
 
-  // TODO use the invoice currency
   return (
     <Card style={style.invoiceContainer}>
       <CardItem style={style.invoiceContent}>
-        <View style={[buildStatusColor(invoice.status), style.statusIndicator]} />
+        <View style={[buildStatusIndicatorStyle(invoice.status), style.statusIndicator]} />
         <View style={style.invoiceInfosContainer}>
           <View style={style.leftContainer}>
             <View style={style.userInfosContainer}>
@@ -88,13 +86,14 @@ export default function InvoiceComponent(props: Props) {
             </View>
             <View style={style.invoiceDetailsContainer}>
               <View style={style.transactionContainer}>
-                <Text numberOfLines={1} style={style.text}>
+                <Text numberOfLines={1} style={[style.text, style.sessionsCount]}>
                   {invoice.sessions?.length}
                 </Text>
-                <Text numberOfLines={1} style={style.text}>
-                  {' '}
-                  {I18n.t('transactions.transactions')}
-                </Text>
+                {invoice.sessions && (
+                  <Text numberOfLines={1} style={style.text}>
+                    {I18n.t('transactions.transactions')}
+                  </Text>
+                )}
               </View>
               <Text numberOfLines={1} style={style.text}>
                 {invoice.number}
@@ -105,16 +104,16 @@ export default function InvoiceComponent(props: Props) {
             </View>
           </View>
           <View style={style.rightContainer}>
-            <View style={style.topLine}>
+            <View style={style.invoiceStatusContainer}>
               <Chip statusStyle={[buildStatusStyle(invoice.status)]} text={buildStatus(invoice.status)} navigation={navigation} />
             </View>
-            <View style={style.middleLine}>
+            <View style={style.invoiceAmountContainer}>
               <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.invoiceAmount]}>
-                {I18nManager.formatCurrency(invoice.amount)}
+                {I18nManager.formatCurrency(invoice.amount, invoice.currency)}
               </Text>
             </View>
             {invoice.downloadable && (
-              <TouchableOpacity style={style.bottomLine}>
+              <TouchableOpacity style={style.downloadButtonContainer}>
                 <Icon style={style.downloadIcon} type={'Feather'} name={'download'} />
               </TouchableOpacity>
             )}

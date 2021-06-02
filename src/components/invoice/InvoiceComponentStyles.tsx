@@ -5,9 +5,6 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
-/**
- *
- */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -32,7 +29,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       height: '100%',
       justifyContent: 'space-between',
-      backgroundColor: commonColor.listShadowedItemBackgroundColor,
+      backgroundColor: commonColor.listHeaderBgColor,
       flexDirection: 'row',
       margin: 0,
       flex: 1,
@@ -45,6 +42,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '100%',
       width: '5@s'
     },
+    statusUnpaid: {
+      backgroundColor: commonColor.brandDanger
+    },
+    statusPaid: {
+      backgroundColor: commonColor.brandSuccess
+    },
+    statusDraft: {
+      backgroundColor: commonColor.brandDisabledDark
+    },
     invoiceInfosContainer: {
       flexDirection: 'row',
       flex: 1,
@@ -53,23 +59,33 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       height: '100%'
     },
-    text: {
-      color: commonColor.textColor,
-      fontSize: '13@s'
+    leftContainer: {
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      height: '100%',
+      flex: 1
     },
     userInfosContainer: {
       marginBottom: '10@s',
       width: '100%'
     },
+    text: {
+      color: commonColor.textColor,
+      fontSize: '13@s'
+    },
+    userName: {
+      fontSize: '15@s',
+      fontWeight: 'bold'
+    },
     invoiceDetailsContainer: {
       width: '100%'
     },
-    invoiceAmount: {
-      fontWeight: 'bold',
-      fontSize: '23@s',
-      width: '100%',
-      textAlign: 'right',
-      marginBottom: '2@s'
+    transactionContainer: {
+      flexDirection: 'row'
+    },
+    sessionsCount: {
+      paddingRight: '3@s'
     },
     rightContainer: {
       flexDirection: 'column',
@@ -78,29 +94,22 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100@s',
       height: '100%'
     },
-    transactionContainer: {
-      flexDirection: 'row'
-    },
-    bottomLine: {
-      justifyContent: 'flex-end'
-    },
-    topLine: {
+    invoiceStatusContainer: {
       justifyContent: 'flex-start'
     },
-    middleLine: {
+    invoiceAmountContainer: {
       flex: 1,
       justifyContent: 'center'
     },
-    leftContainer: {
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      justifyContent: 'space-between',
-      height: '100%',
-      flex: 1
+    invoiceAmount: {
+      fontWeight: 'bold',
+      fontSize: '23@s',
+      width: '100%',
+      textAlign: 'right',
+      marginBottom: '2@s'
     },
-    userName: {
-      fontSize: '15@s',
-      fontWeight: 'bold'
+    downloadButtonContainer: {
+      justifyContent: 'flex-end'
     },
     downloadIcon: {
       color: commonColor.textColor,

@@ -10,6 +10,7 @@ import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UserAvatarStyle';
+import { scale } from 'react-native-size-matters';
 
 interface State {
   user?: User;
@@ -18,7 +19,7 @@ interface State {
 export interface Props extends BaseProps {
   user?: User;
   selected?: boolean;
-  small?: boolean;
+  size?: number;
 }
 
 export default class UserAvatar extends React.Component<Props, State> {
@@ -39,8 +40,18 @@ export default class UserAvatar extends React.Component<Props, State> {
     const { user } = this.props;
     if (user) {
       user.image = await this.getUserImage(user.id as string);
+      this.setState({ user });
     }
-    this.setState({ user });
+  }
+
+  public async componentDidUpdate() {
+    const { user } = this.props;
+    if (user) {
+      user.image = await this.getUserImage(user.id as string);
+      if (JSON.stringify(this.state.user) !== JSON.stringify(user)) {
+        this.setState({ user });
+      }
+    }
   }
 
   public setState = (
@@ -51,7 +62,7 @@ export default class UserAvatar extends React.Component<Props, State> {
   };
 
   public render() {
-    const { selected, small } = this.props;
+    const { selected, size } = this.props;
     const { user } = this.state;
     const style = computeStyleSheet();
     const userInitials = Utils.buildUserInitials(user);
@@ -62,7 +73,7 @@ export default class UserAvatar extends React.Component<Props, State> {
       <View>
         {userImageURI ? (
           <Avatar
-            size={small ? style.smallAvatar.fontSize : style.avatar.fontSize}
+            size={size ? scale(size) : style.avatar.fontSize}
             rounded={true}
             source={userImageURI === noPhoto ? noPhoto : { uri: userImageURI }}
             titleStyle={style.avatarTitle}
@@ -71,7 +82,7 @@ export default class UserAvatar extends React.Component<Props, State> {
           </Avatar>
         ) : (
           <Avatar
-            size={small ? style.smallAvatar.fontSize : style.avatar.fontSize}
+            size={size ? scale(size) : style.avatar.fontSize}
             rounded={true}
             title={userInitials}
             titleStyle={style.avatarTitle}
