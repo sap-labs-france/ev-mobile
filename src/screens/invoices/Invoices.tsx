@@ -1,20 +1,21 @@
+import { DrawerActions } from '@react-navigation/native';
+import i18n from 'i18n-js';
+import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
-import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
+
+import HeaderComponent from '../../components/header/HeaderComponent';
+import InvoiceComponent from '../../components/invoice/InvoiceComponent';
+import ItemsList from '../../components/list/ItemsList';
+import I18nManager from '../../I18n/I18nManager';
 import BaseProps from '../../types/BaseProps';
 import { BillingInvoice, BillingInvoiceStatus } from '../../types/Billing';
-import Constants from '../../utils/Constants';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
+import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
-import HeaderComponent from '../../components/header/HeaderComponent';
-import i18n from 'i18n-js';
-import I18nManager from '../../I18n/I18nManager';
-import { DrawerActions } from '@react-navigation/native';
-import { Container, Spinner } from 'native-base';
-import ItemsList from '../../components/list/ItemsList';
+import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../transactions/TransactionsStyles';
-import InvoiceComponent from '../../components/invoice/InvoiceComponent';
 
 export interface Props extends BaseProps {}
 
@@ -27,7 +28,7 @@ interface State {
   count?: number;
 }
 
-export default class Invoices extends BaseAutoRefreshScreen<Props, State>{
+export default class Invoices extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
 
