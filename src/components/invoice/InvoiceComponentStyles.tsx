@@ -84,6 +84,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     transactionContainer: {
       flexDirection: 'row'
     },
+    sessionsCount: {
+      paddingRight: '3@s'
+    },
     rightContainer: {
       flexDirection: 'column',
       alignItems: 'flex-end',

@@ -1,20 +1,18 @@
 import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
+import { Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 
-import noPhotoActive from '../../../../assets/no-photo-active.png';
-import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
+import UserAvatar from '../../../components/user/avatar/UserAvatar';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
-import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
@@ -35,7 +33,6 @@ interface State {
   canStartTransaction?: boolean;
   canStopTransaction?: boolean;
   canDisplayTransaction?: boolean;
-  userImage?: string;
   siteImage?: string;
   elapsedTimeFormatted?: string;
   totalInactivitySecs?: number;
@@ -62,7 +59,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       canStartTransaction: false,
       canStopTransaction: false,
       canDisplayTransaction: false,
-      userImage: null,
       siteImage: null,
       elapsedTimeFormatted: '-',
       totalInactivitySecs: 0,
@@ -159,19 +155,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return null;
   };
 
-  public getUserImage = async (user: User): Promise<string> => {
-    try {
-      // User provided?
-      if (user) {
-        return await this.centralServerProvider.getUserImage({ ID: user.id });
-      }
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'users.userUnexpectedError', this.props.navigation, this.refresh);
-    }
-    return null;
-  };
-
   public showLastTransaction = async () => {
     const { navigation } = this.props;
     const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
@@ -207,7 +190,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   // eslint-disable-next-line complexity
   public refresh = async () => {
     let siteImage = null;
-    let userImage = null;
     let transaction = null;
     const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
     const connectorID: number = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
@@ -221,12 +203,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     // Get Current Transaction
     if (connector && connector.currentTransactionID) {
       transaction = await this.getTransaction(connector.currentTransactionID);
-      if (transaction) {
-        // Get User Picture
-        if (!this.state.transaction || (transaction && transaction.id !== this.state.transaction.id)) {
-          userImage = await this.getUserImage(transaction.user);
-        }
-      }
     }
     // Check to enable the buttons after a certain period of time
     const startStopTransactionButtonStatus = this.getStartStopTransactionButtonStatus(connector);
@@ -238,7 +214,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       connector: chargingStation ? Utils.getConnectorFromID(chargingStation, connectorID) : null,
       transaction,
       siteImage: siteImage ? siteImage : this.state.siteImage,
-      userImage: userImage ? userImage : transaction ? this.state.userImage : null,
       isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
       isSiteAdmin:
         this.securityProvider && chargingStation && chargingStation.siteArea
@@ -484,10 +459,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public renderUserInfo = (style: any) => {
-    const { userImage, transaction, isAdmin, isSiteAdmin } = this.state;
+    const { transaction, isAdmin, isSiteAdmin } = this.state;
     return transaction ? (
       <View style={style.columnContainer}>
-        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhotoActive} />
+        <UserAvatar size={44} user={transaction.user} navigation={this.props.navigation} />
         <Text numberOfLines={1} style={[style.label, style.labelUser, style.info]}>
           {Utils.buildUserName(transaction.user)}
         </Text>
@@ -495,7 +470,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
+        <UserAvatar size={44} navigation={this.props.navigation} />
         <Text style={[style.label, style.disabled]}>-</Text>
       </View>
     );

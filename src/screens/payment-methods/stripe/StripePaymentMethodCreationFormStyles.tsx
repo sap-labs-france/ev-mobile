@@ -36,6 +36,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginTop: '30@s',
       alignSelf: 'center',
       width: '30%',
+      height: '40@s',
       marginBottom: '10@s',
       borderRadius: '20@s'
     },
@@ -49,6 +50,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     buttonText: {
       color: commonColor.textColor,
       padding: '5@s',
+      fontSize: '12@s',
       opacity: 1
     },
     spinner: {

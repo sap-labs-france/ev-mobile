@@ -41,7 +41,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     icon: {
       color: commonColor.textColor,
-      fontSize: '20@s'
+      fontSize: '25@s'
     },
     trashIconButton: {
       height: '100%',

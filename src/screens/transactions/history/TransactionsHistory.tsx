@@ -159,6 +159,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
   public async refresh() {
     // Component Mounted?
     if (this.isMounted()) {
+      this.setState({ refreshing: true });
       const { skip, limit, filters } = this.state;
       // Refresh All
       const transactions = await this.getTransactions(this.searchText, 0, skip + limit, filters.startDateTime, filters.endDateTime);
@@ -170,6 +171,7 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       // Set
       this.setState({
         loading: false,
+        refreshing: false,
         transactions: transactions ? transactions.result : [],
         initialFilters: { ...this.state.initialFilters, minTransactionDate, maxTransactionDate },
         count: transactions ? transactions.count : 0,
