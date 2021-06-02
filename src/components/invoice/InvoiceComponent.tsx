@@ -30,9 +30,11 @@ export default function InvoiceComponent(props: Props) {
       const fetchedUser = result?.result?.[0];
       setUser(fetchedUser);
     }
-    setUp().catch((error) => {
+    try {
+      setUp();
+    } catch (error) {
       console.error(I18n.t('invoices.invoicesUnexpectedError'), error);
-    });
+    }
   }, [invoice.userID]);
 
   function buildStatus(invoiceStatus: BillingInvoiceStatus): string {
