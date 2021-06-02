@@ -7,6 +7,7 @@ import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity 
 import noSite from '../../../../assets/no-site.png';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
+import UserAvatar from '../../../components/user/avatar/UserAvatar';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
@@ -17,7 +18,6 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
-import UserAvatar from '../../../components/user/avatar/UserAvatar';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -460,18 +460,17 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public renderUserInfo = (style: any) => {
     const { transaction, isAdmin, isSiteAdmin } = this.state;
-    const user = transaction.user;
     return transaction ? (
       <View style={style.columnContainer}>
-        <UserAvatar size={44} user={user} navigation={this.props.navigation} />
+        <UserAvatar size={44} user={transaction.user} navigation={this.props.navigation} />
         <Text numberOfLines={1} style={[style.label, style.labelUser, style.info]}>
-          {Utils.buildUserName(user)}
+          {Utils.buildUserName(transaction.user)}
         </Text>
         {(isAdmin || isSiteAdmin) && <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text>}
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <UserAvatar size={44} user={user} navigation={this.props.navigation} />
+        <UserAvatar size={44} navigation={this.props.navigation} />
         <Text style={[style.label, style.disabled]}>-</Text>
       </View>
     );
