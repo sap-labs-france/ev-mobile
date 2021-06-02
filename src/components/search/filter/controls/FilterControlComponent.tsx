@@ -54,7 +54,7 @@ export default class FilterControlComponent<T> extends React.Component<FilterCon
     return this.state.value;
   }
 
-  public clearValue(callback?: () => any) {
+  public clearValue(callback?: () => unknown) {
     this.setState({ value: null }, callback);
   }
 
