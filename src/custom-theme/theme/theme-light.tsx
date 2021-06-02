@@ -1,5 +1,4 @@
 import palette from './palette';
-import commonColor from '../../theme/variables/commonColor';
 
 // Dark theme
 export default {
