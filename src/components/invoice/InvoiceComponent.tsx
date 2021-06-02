@@ -12,31 +12,101 @@ import User from '../../types/User';
 import { DataResult } from '../../types/DataResult';
 import { Card, CardItem, Icon } from 'native-base';
 import Utils from '../../utils/Utils';
+import CentralServerProvider from '../../provider/CentralServerProvider';
 
 export interface Props extends BaseProps {
   invoice: BillingInvoice;
 }
 
-export default function InvoiceComponent(props: Props) {
-  const { invoice, navigation } = props;
-  const style = computeStyleSheet();
-  const [user, setUser] = useState<User>(null);
+interface State {
+  user: User;
+}
 
-  useEffect(() => {
-    async function setUp(): Promise<void> {
-      const centralServerProvider = await ProviderFactory.getProvider();
-      const result: DataResult<User> = await centralServerProvider.getUsers({ UserID: invoice.userID });
-      const fetchedUser = result?.result?.[0];
-      setUser(fetchedUser);
-    }
-    try {
-      setUp();
-    } catch (error) {
-      console.error(I18n.t('invoices.invoicesUnexpectedError'), error);
-    }
-  }, [invoice.userID]);
+export default class InvoiceComponent extends React.Component<Props, State> {
+  public state: State;
+  public props: Props;
+  private centralServerProvider: CentralServerProvider;
 
-  const buildStatus = (invoiceStatus: BillingInvoiceStatus) => {
+  public constructor(props: Props) {
+    super(props);
+    this.state = { user: null };
+  }
+
+  public async componentDidMount() {
+    this.centralServerProvider = await ProviderFactory.getProvider();
+    const user = await this.getUser();
+    this.setState({ user });
+  }
+
+  public render() {
+    const style = computeStyleSheet();
+    const { invoice, navigation } = this.props;
+    const { user } = this.state;
+    return (
+      <Card style={style.invoiceContainer}>
+        <CardItem style={style.invoiceContent}>
+          <View style={[this.buildStatusIndicatorStyle(invoice.status), style.statusIndicator]} />
+          <View style={style.invoiceInfosContainer}>
+            <View style={style.leftContainer}>
+              <View style={style.userInfosContainer}>
+                <Text numberOfLines={1} style={[style.text, style.userName]}>
+                  {Utils.buildUserName(user)}
+                </Text>
+                <Text numberOfLines={1} style={style.text}>
+                  {user?.email}
+                </Text>
+              </View>
+              <View style={style.invoiceDetailsContainer}>
+                <View style={style.transactionContainer}>
+                  <Text numberOfLines={1} style={[style.text, style.sessionsCount]}>
+                    {invoice.sessions?.length}
+                  </Text>
+                  {invoice.sessions && (
+                    <Text numberOfLines={1} style={style.text}>
+                      {I18n.t('transactions.transactions')}
+                    </Text>
+                  )}
+                </View>
+                <Text numberOfLines={1} style={style.text}>
+                  {invoice.number}
+                </Text>
+                <Text numberOfLines={1} style={style.text}>
+                  {I18nManager.formatDateTime(invoice.createdOn)}
+                </Text>
+              </View>
+            </View>
+            <View style={style.rightContainer}>
+              <View style={style.invoiceStatusContainer}>
+                <Chip
+                  statusStyle={[this.buildStatusStyle(invoice.status)]}
+                  text={this.buildStatus(invoice.status)}
+                  navigation={navigation}
+                />
+              </View>
+              <View style={style.invoiceAmountContainer}>
+                <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.invoiceAmount]}>
+                  {I18nManager.formatCurrency(invoice.amount, invoice.currency)}
+                </Text>
+              </View>
+              {invoice.downloadable && (
+                <TouchableOpacity style={style.downloadButtonContainer}>
+                  <Icon style={style.downloadIcon} type={'Feather'} name={'download'} />
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
+        </CardItem>
+      </Card>
+    );
+  }
+
+  private async getUser(): Promise<User> {
+    const { invoice } = this.props;
+    const result: DataResult<User> = await this.centralServerProvider.getUsers({ UserID: invoice.userID });
+    return result?.result?.[0];
+  }
+
+  private buildStatus(invoiceStatus: BillingInvoiceStatus) {
     switch (invoiceStatus) {
       case BillingInvoiceStatus.DRAFT:
         return I18n.t('invoiceStatus.draft');
@@ -45,9 +115,9 @@ export default function InvoiceComponent(props: Props) {
       case BillingInvoiceStatus.PAID:
         return I18n.t('invoiceStatus.paid');
     }
-  };
+  }
 
-  const buildStatusStyle = (invoiceStatus: BillingInvoiceStatus) => {
+  private buildStatusStyle(invoiceStatus: BillingInvoiceStatus) {
     const chipStyle = computeChipStyleSheet();
     switch (invoiceStatus) {
       case BillingInvoiceStatus.DRAFT:
@@ -57,9 +127,10 @@ export default function InvoiceComponent(props: Props) {
       case BillingInvoiceStatus.PAID:
         return chipStyle.success;
     }
-  };
+  }
 
-  const buildStatusIndicatorStyle = (invoiceStatus: BillingInvoiceStatus) => {
+  private buildStatusIndicatorStyle(invoiceStatus: BillingInvoiceStatus) {
+    const style = computeStyleSheet();
     switch (invoiceStatus) {
       case BillingInvoiceStatus.DRAFT:
         return style.statusDraft;
@@ -68,58 +139,5 @@ export default function InvoiceComponent(props: Props) {
       case BillingInvoiceStatus.PAID:
         return style.statusPaid;
     }
-  };
-
-  return (
-    <Card style={style.invoiceContainer}>
-      <CardItem style={style.invoiceContent}>
-        <View style={[buildStatusIndicatorStyle(invoice.status), style.statusIndicator]} />
-        <View style={style.invoiceInfosContainer}>
-          <View style={style.leftContainer}>
-            <View style={style.userInfosContainer}>
-              <Text numberOfLines={1} style={[style.text, style.userName]}>
-                {Utils.buildUserName(user)}
-              </Text>
-              <Text numberOfLines={1} style={style.text}>
-                {user?.email}
-              </Text>
-            </View>
-            <View style={style.invoiceDetailsContainer}>
-              <View style={style.transactionContainer}>
-                <Text numberOfLines={1} style={[style.text, style.sessionsCount]}>
-                  {invoice.sessions?.length}
-                </Text>
-                {invoice.sessions && (
-                  <Text numberOfLines={1} style={style.text}>
-                    {I18n.t('transactions.transactions')}
-                  </Text>
-                )}
-              </View>
-              <Text numberOfLines={1} style={style.text}>
-                {invoice.number}
-              </Text>
-              <Text numberOfLines={1} style={style.text}>
-                {I18nManager.formatDateTime(invoice.createdOn)}
-              </Text>
-            </View>
-          </View>
-          <View style={style.rightContainer}>
-            <View style={style.invoiceStatusContainer}>
-              <Chip statusStyle={[buildStatusStyle(invoice.status)]} text={buildStatus(invoice.status)} navigation={navigation} />
-            </View>
-            <View style={style.invoiceAmountContainer}>
-              <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.invoiceAmount]}>
-                {I18nManager.formatCurrency(invoice.amount, invoice.currency)}
-              </Text>
-            </View>
-            {invoice.downloadable && (
-              <TouchableOpacity style={style.downloadButtonContainer}>
-                <Icon style={style.downloadIcon} type={'Feather'} name={'download'} />
-              </TouchableOpacity>
-            )}
-          </View>
-        </View>
-      </CardItem>
-    </Card>
-  );
+  }
 }
