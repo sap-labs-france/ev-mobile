@@ -3,7 +3,6 @@ import { Buffer } from 'buffer';
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
 import jwtDecode from 'jwt-decode';
-
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import NotificationManager from '../notification/NotificationManager';
@@ -738,7 +737,6 @@ export default class CentralServerProvider {
     return result.data as DataResult<BillingInvoice>;
   }
 
-
   public async requestChargingStationOcppParameters(id: string): Promise<ActionResponse> {
     this.debugMethod('requestChargingStationOCPPConfiguration');
     // Call
@@ -868,6 +866,15 @@ export default class CentralServerProvider {
       headers: this.buildSecuredHeaders()
     });
     return result.data;
+  }
+
+  public async downloadInvoice(invoiceID: string): Promise<any> {
+    const url = `${this.buildRestServerURL()}/${ServerAction.BILLING_DOWNLOAD_INVOICE}`.replace(':invoiceID', invoiceID);
+    const result = await this.axiosInstance.get(url, {
+      headers: this.buildSecuredHeaders(),
+      responseType: 'blob'
+    });
+    return result;
   }
 
   public getSecurityProvider(): SecurityProvider {

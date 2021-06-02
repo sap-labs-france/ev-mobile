@@ -506,5 +506,8 @@ export enum ServerRoute {
   REST_BILLING_PAYMENT_METHOD_DETACH = 'users/:userID/payment-methods/:paymentMethodID/detach',
 
   // BILLING URLs for CRUD operations on INVOICES
-  REST_BILLING_INVOICES = 'invoices'
+  REST_BILLING_INVOICES = 'invoices',
+
+  // BILLING URLs for Non-CRUD operations on INVOICES
+  REST_BILLING_DOWNLOAD_INVOICE = 'invoices/:invoiceID/download'
 }
