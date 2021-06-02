@@ -37,7 +37,7 @@ export default function InvoiceComponent(props: Props) {
     }
   }, [invoice.userID]);
 
-  function buildStatus(invoiceStatus: BillingInvoiceStatus): string {
+  const buildStatus = (invoiceStatus: BillingInvoiceStatus) => {
     switch (invoiceStatus) {
       case BillingInvoiceStatus.DRAFT:
         return I18n.t('invoiceStatus.draft');
@@ -46,9 +46,9 @@ export default function InvoiceComponent(props: Props) {
       case BillingInvoiceStatus.PAID:
         return I18n.t('invoiceStatus.paid');
     }
-  }
+  };
 
-  function buildStatusStyle(invoiceStatus: BillingInvoiceStatus): any {
+  const buildStatusStyle = (invoiceStatus: BillingInvoiceStatus) => {
     const chipStyle = computeChipStyleSheet();
     switch (invoiceStatus) {
       case BillingInvoiceStatus.DRAFT:
@@ -58,9 +58,9 @@ export default function InvoiceComponent(props: Props) {
       case BillingInvoiceStatus.PAID:
         return chipStyle.success;
     }
-  }
+  };
 
-  function buildStatusIndicatorStyle(invoiceStatus: BillingInvoiceStatus): any {
+  const buildStatusIndicatorStyle = (invoiceStatus: BillingInvoiceStatus) => {
     switch (invoiceStatus) {
       case BillingInvoiceStatus.DRAFT:
         return style.statusDraft;
@@ -69,9 +69,8 @@ export default function InvoiceComponent(props: Props) {
       case BillingInvoiceStatus.PAID:
         return style.statusPaid;
     }
-  }
+  };
 
-  // TODO use the invoice currency (cf. task #2488)
   return (
     <Card style={style.invoiceContainer}>
       <CardItem style={style.invoiceContent}>
