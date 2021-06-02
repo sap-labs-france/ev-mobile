@@ -29,8 +29,8 @@ import ChargingStationOcppParameters from './screens/charging-stations/ocpp/Char
 import ChargingStationProperties from './screens/charging-stations/properties/ChargingStationProperties';
 import Home from './screens/home/Home';
 import Invoices from './screens/invoices/Invoices';
-import StripePaymentMethodCreationForm from './screens/payment-methods/stripe/StripePaymentMethodCreationForm';
 import PaymentMethods from './screens/payment-methods/PaymentMethods';
+import StripePaymentMethodCreationForm from './screens/payment-methods/stripe/StripePaymentMethodCreationForm';
 import ReportError from './screens/report-error/ReportError';
 import Sidebar from './screens/sidebar/SideBar';
 import SiteAreas from './screens/site-areas/SiteAreas';

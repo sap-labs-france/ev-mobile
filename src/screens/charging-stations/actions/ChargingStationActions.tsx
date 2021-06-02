@@ -230,15 +230,8 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
   public render() {
     const { navigation } = this.props;
     const style = computeStyleSheet();
-    const {
-      loading,
-      chargingStation,
-      spinnerResetHard,
-      spinnerResetSoft,
-      spinnerConnectors,
-      spinnerClearCache,
-      connectorsInactive
-    } = this.state;
+    const { loading, chargingStation, spinnerResetHard, spinnerResetSoft, spinnerConnectors, spinnerClearCache, connectorsInactive } =
+      this.state;
     const chargingStationIsDisabled = chargingStation
       ? chargingStation.inactive || spinnerResetHard || spinnerResetSoft || spinnerClearCache || connectorsInactive
       : false;
