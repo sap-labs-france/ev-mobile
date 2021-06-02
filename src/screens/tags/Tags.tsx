@@ -5,7 +5,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ItemsList from '../../components/list/ItemsList';
+import ItemsList, { ItemsSeparatorType } from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import TagComponent from '../../components/tag/TagComponent';
 import I18nManager from '../../I18n/I18nManager';
@@ -153,6 +153,7 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
               count={count}
               limit={limit}
               skip={skip}
+              itemsSeparator={ItemsSeparatorType.DEFAULT}
               renderItem={(item: Tag, selected: boolean) => (
                 <TagComponent tag={item} isAdmin={this.securityProvider?.isAdmin()} selected={selected} navigation={navigation} />
               )}

@@ -1,5 +1,11 @@
 import React from 'react';
-import { FlatList, Platform, RefreshControl, TouchableOpacity, View } from 'react-native';
+import {
+  FlatList,
+  Platform,
+  RefreshControl,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { Checkbox } from 'react-native-paper';
 import BaseProps from '../../types/BaseProps';
 import ListItem from '../../types/ListItem';
@@ -14,7 +20,7 @@ export interface Props<T extends ListItem> extends BaseProps {
   manualRefresh: () => void;
   onEndReached: () => void;
   data: T[];
-  renderItemsSeparator: () => React.ReactElement;
+  itemsSeparator: ItemsSeparatorType;
   selectionMode?: ItemSelectionMode;
   skip: number;
   count: number;
@@ -28,14 +34,17 @@ export enum ItemSelectionMode {
   SINGLE = 'single'
 }
 
+export enum ItemsSeparatorType {
+  DEFAULT = 'default'
+}
+
 interface State<T> {
   selectedItems?: Map<string | number, T>;
 }
 
 export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State<T>> {
   public static defaultProps = {
-    selectionMode: ItemSelectionMode.NONE,
-    renderItemsSeparator: () => <View style={computeStyleSheet().rowSeparator} />
+    selectionMode: ItemSelectionMode.NONE
   };
   public state: State<T>;
   public props: Props<T>;
@@ -72,7 +81,8 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
       onEndReached,
       emptyTitle,
       selectionMode,
-      onSelect
+      onSelect,
+      itemsSeparator
     } = this.props;
     const { selectedItems } = this.state;
     const selectionEnabled = selectionMode !== ItemSelectionMode.NONE && onSelect;
@@ -94,7 +104,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
                 {this.props.renderItem(item)}
               </View>
             </TouchableOpacity>
-            {this.props.renderItemsSeparator()}
+            {this.renderItemsSeparator(itemsSeparator, style)}
           </View>
         )}
         keyExtractor={(item, index) => item.id.toString() + index.toString()}
@@ -128,6 +138,15 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
           this.setState({ selectedItems }, itemSelectedCallback);
           break;
       }
+    }
+  }
+
+  private renderItemsSeparator(itemsSeparatorType: ItemsSeparatorType, style: any) {
+    switch (itemsSeparatorType) {
+      case ItemsSeparatorType.DEFAULT:
+        return <View style={style.rowSeparator} />;
+      default:
+        return null;
     }
   }
 }

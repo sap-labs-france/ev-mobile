@@ -6,7 +6,7 @@ import { View } from 'react-native';
 
 import CarComponent from '../../components/car/CarComponent';
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ItemsList from '../../components/list/ItemsList';
+import ItemsList, { ItemsSeparatorType } from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import I18nManager from '../../I18n/I18nManager';
 import BaseProps from '../../types/BaseProps';
@@ -160,6 +160,7 @@ export default class Cars extends BaseAutoRefreshScreen<Props, State> {
               count={count}
               limit={limit}
               skip={skip}
+              itemsSeparator={ItemsSeparatorType.DEFAULT}
               renderItem={(item: Car, selected: boolean) => <CarComponent navigation={navigation} selected={selected} car={item} />}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}

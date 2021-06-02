@@ -9,7 +9,7 @@ import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ItemsList from '../../components/list/ItemsList';
+import ItemsList, { ItemsSeparatorType } from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteAreaComponent from '../../components/site-area/SiteAreaComponent';
 import I18nManager from '../../I18n/I18nManager';
@@ -327,6 +327,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
                 skip={skip}
                 count={count}
                 onEndReached={this.onEndScroll}
+                itemsSeparator={ItemsSeparatorType.DEFAULT}
                 renderItem={(site: SiteArea) => <SiteAreaComponent siteArea={site} navigation={this.props.navigation} />}
                 data={siteAreas}
                 manualRefresh={this.manualRefresh}
