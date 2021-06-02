@@ -4,7 +4,7 @@ import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl, ScrollView } from 'react-native';
 import { Location } from 'react-native-location';
-import MapView, { Marker, Region } from 'react-native-maps';
+import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
@@ -27,6 +27,8 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SiteAreasFilters, { SiteAreasFiltersDef } from './SiteAreasFilters';
 import computeStyleSheet from './SiteAreasStyles';
+import { ClusterMap } from 'react-native-cluster-map';
+import ThemeManager from '../../custom-theme/ThemeManager';
 
 export interface Props extends BaseProps {}
 
@@ -52,6 +54,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   private currentLocation: Location;
   private locationEnabled: boolean;
   private currentRegion: Region;
+  private darkMapTheme = require('../../utils/map/google-maps-night-style.json');
 
   public constructor(props: Props) {
     super(props);
@@ -146,7 +149,11 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.goBack();
+    if (this.state.showMap && !Utils.isEmptyArray(this.state.siteAreas)) {
+      this.setState({ showMap: false });
+    } else {
+      this.props.navigation.goBack();
+    }
     // Do not bubble up
     return true;
   };
@@ -262,8 +269,10 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
-    const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected } = this.state;
+    const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected, siteAreas } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.siteAreas);
+    const siteAreasWithGPSCoordinates = siteAreas.filter((siteArea) => Utils.containsAddressGPSCoordinates(siteArea.address));
+    const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -294,21 +303,24 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
             />
             {mapIsDisplayed ? (
               <View style={style.map}>
-                <MapView style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
-                  {this.state.siteAreas.map((siteArea: SiteArea) => {
-                    if (Utils.containsAddressGPSCoordinates(siteArea.address)) {
-                      return (
-                        <Marker
-                          key={siteArea.id}
-                          coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
-                          title={siteArea.name}
-                          onPress={() => this.showMapSiteDetail(siteArea)}
-                        />
-                      );
-                    }
-                    return undefined;
-                  })}
-                </MapView>
+                {this.currentRegion && (
+                  <ClusterMap
+                    provider={'google'}
+                    customMapStyle={isDarkModeEnabled && this.darkMapTheme}
+                    style={style.map}
+                    region={this.currentRegion}
+                    onRegionChange={this.onMapRegionChange}>
+                    {siteAreasWithGPSCoordinates.map((siteArea: SiteArea) => (
+                      <Marker
+                        image={Utils.buildSiteStatusMarker(siteArea.connectorStats)}
+                        key={siteArea.id}
+                        coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
+                        title={siteArea.name}
+                        onPress={() => this.showMapSiteDetail(siteArea)}
+                      />
+                    ))}
+                  </ClusterMap>
+                )}
                 {siteAreaSelected && this.buildModal(navigation, siteAreaSelected, modalStyle)}
               </View>
             ) : (
