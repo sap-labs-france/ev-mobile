@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList, Platform, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { Checkbox } from 'react-native-paper';
+
 import BaseProps from '../../types/BaseProps';
 import ListItem from '../../types/ListItem';
 import ListEmptyTextComponent from './empty-text/ListEmptyTextComponent';
@@ -61,19 +62,8 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
   };
 
   public render() {
-    const {
-      data,
-      skip,
-      count,
-      limit,
-      navigation,
-      manualRefresh,
-      refreshing,
-      onEndReached,
-      emptyTitle,
-      selectionMode,
-      onSelect
-    } = this.props;
+    const { data, skip, count, limit, navigation, manualRefresh, refreshing, onEndReached, emptyTitle, selectionMode, onSelect } =
+      this.props;
     const { selectedItems } = this.state;
     const selectionEnabled = selectionMode !== ItemSelectionMode.NONE && onSelect;
     const style = computeStyleSheet();

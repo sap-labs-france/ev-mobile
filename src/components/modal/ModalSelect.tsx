@@ -1,13 +1,14 @@
+import I18n from 'i18n-js';
 import { Button, Icon, Text, View } from 'native-base';
 import React from 'react';
 import Modal from 'react-native-modal';
+
 import computeFormStyleSheet from '../../FormStyles';
+import SelectableList from '../../screens/base-screen/SelectableList';
 import BaseProps from '../../types/BaseProps';
 import Utils from '../../utils/Utils';
 import { ItemSelectionMode } from '../list/ItemsList';
 import computeStyleSheet from './ModalStyles';
-import I18n from 'i18n-js';
-import SelectableList from '../../screens/base-screen/SelectableList';
 
 export interface Props<T> extends BaseProps {
   defaultItem?: T;

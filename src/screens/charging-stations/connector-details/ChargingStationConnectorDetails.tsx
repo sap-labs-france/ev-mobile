@@ -8,6 +8,7 @@ import noSite from '../../../../assets/no-site.png';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import { ItemSelectionMode } from '../../../components/list/ItemsList';
+import ModalSelect from '../../../components/modal/ModalSelect';
 import UserAvatar from '../../../components/user/avatar/UserAvatar';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
@@ -20,9 +21,8 @@ import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
-import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
 import Users from '../../users/list/Users';
-import ModalSelect from '../../../components/modal/ModalSelect';
+import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -696,7 +696,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       <Container style={style.container}>
         <HeaderComponent
           navigation={this.props.navigation}
-          title={chargingStation ? chargingStation.id as string : '-'}
+          title={chargingStation ? (chargingStation.id as string) : '-'}
           subTitle={connectorLetter ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}

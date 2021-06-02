@@ -1,6 +1,6 @@
 import { Body, Header, Icon, Left, Right, Subtitle, Title } from 'native-base';
 import React from 'react';
-import { BackHandler, Image, ImageStyle, View, TouchableOpacity } from 'react-native';
+import { BackHandler, Image, ImageStyle, TouchableOpacity, View } from 'react-native';
 
 import defaultTenantLogo from '../../../assets/logo-low.png';
 import FilterModalContainerComponent from '../../components/search/filter/containers/FilterModalContainerComponent';

@@ -3,6 +3,7 @@ import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { Platform } from 'react-native';
+import { ClusterMap } from 'react-native-cluster-map';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Location } from 'react-native-location';
 import { Marker, Region } from 'react-native-maps';
@@ -13,6 +14,7 @@ import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteComponent from '../../components/site/SiteComponent';
+import ThemeManager from '../../custom-theme/ThemeManager';
 import I18nManager from '../../I18n/I18nManager';
 import LocationManager from '../../location/LocationManager';
 import computeModalStyle from '../../ModalStyles';
@@ -27,8 +29,6 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SitesFilters, { SitesFiltersDef } from './SitesFilters';
 import computeStyleSheet from './SitesStyles';
-import { ClusterMap } from 'react-native-cluster-map';
-import ThemeManager from '../../custom-theme/ThemeManager';
 
 export interface Props extends BaseProps {}
 
@@ -324,7 +324,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
                 skip={skip}
                 count={count}
                 onEndReached={this.onEndScroll}
-                renderItem={(site: Site) => <SiteComponent site={site} navigation={navigation}/>}
+                renderItem={(site: Site) => <SiteComponent site={site} navigation={navigation} />}
                 data={sites}
                 manualRefresh={this.manualRefresh}
                 refreshing={refreshing}

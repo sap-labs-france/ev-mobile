@@ -1,8 +1,9 @@
 import React from 'react';
-import BaseProps from '../../types/BaseProps';
-import BaseAutoRefreshScreen from './BaseAutoRefreshScreen';
+
 import { ItemSelectionMode } from '../../components/list/ItemsList';
+import BaseProps from '../../types/BaseProps';
 import ListItem from '../../types/ListItem';
+import BaseAutoRefreshScreen from './BaseAutoRefreshScreen';
 
 export interface SelectableProps<T> extends BaseProps {
   selectionMode?: ItemSelectionMode;
