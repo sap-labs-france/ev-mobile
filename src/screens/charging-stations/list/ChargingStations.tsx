@@ -54,7 +54,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   private currentLocation: Location;
   private locationEnabled: boolean;
   private currentRegion: Region;
-  private darkMapTheme = require('../../../utils/google-maps-dark-style.json');
+  private darkMapTheme = require('../../../utils/map/google-maps-night-style.json');
 
   public constructor(props: Props) {
     super(props);
@@ -350,7 +350,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     const chargingStationsWithGPSCoordinates = chargingStations.filter((chargingStation) =>
       Utils.containsGPSCoordinates(chargingStation.coordinates)
     );
-    const isDarkModeEnabled = ThemeManager.getInstance().isThemeTypeIsDark();
+    const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
     return (
       <Container style={style.container}>
         <HeaderComponent

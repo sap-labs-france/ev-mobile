@@ -53,7 +53,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   private currentLocation: Location;
   private locationEnabled: boolean;
   private currentRegion: Region;
-  private darkMapTheme = require('../../utils/google-maps-dark-style.json');
+  private darkMapTheme = require('../../utils/map/google-maps-night-style.json');
 
   public constructor(props: Props) {
     super(props);
@@ -268,7 +268,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     const { loading, skip, count, limit, initialFilters, showMap, siteSelected, refreshing, sites } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.sites);
     const sitesWithGPSCoordinates = sites.filter((site) => Utils.containsAddressGPSCoordinates(site.address));
-    const isDarkModeEnabled = ThemeManager.getInstance().isThemeTypeIsDark();
+    const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
     return (
       <Container style={style.container}>
         <HeaderComponent
