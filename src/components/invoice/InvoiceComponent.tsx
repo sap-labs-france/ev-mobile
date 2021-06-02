@@ -86,12 +86,11 @@ export default function InvoiceComponent(props: Props) {
             </View>
             <View style={style.invoiceDetailsContainer}>
               <View style={style.transactionContainer}>
-                <Text numberOfLines={1} style={style.text}>
+                <Text numberOfLines={1} style={[style.text, style.sessionsCount]}>
                   {invoice.sessions?.length}
                 </Text>
                 {invoice.sessions && (
                   <Text numberOfLines={1} style={style.text}>
-                    {' '}
                     {I18n.t('transactions.transactions')}
                   </Text>
                 )}
