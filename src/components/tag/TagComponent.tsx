@@ -38,7 +38,7 @@ export default class TagComponent extends React.Component<Props, State> {
     const chipStyle = computeChipStyleSheet();
     const { tag, isAdmin, selected, navigation } = this.props;
     const userFullName = Utils.buildUserName(tag?.user);
-    const statusStyle = tag?.active ? chipStyle.active : chipStyle.inactive;
+    const statusStyle = tag?.active ? chipStyle.success : chipStyle.danger;
     return (
       <View style={selected ? [style.container, style.selected] : [style.container]}>
         <View style={style.header}>
