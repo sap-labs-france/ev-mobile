@@ -1,6 +1,7 @@
 import { View } from 'native-base';
 import React from 'react';
 import { Avatar } from 'react-native-elements';
+import { scale } from 'react-native-size-matters';
 
 import noPhoto from '../../../../assets/no-photo.png';
 import CentralServerProvider from '../../../provider/CentralServerProvider';
@@ -10,7 +11,6 @@ import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UserAvatarStyle';
-import { scale } from 'react-native-size-matters';
 
 interface State {
   user?: User;

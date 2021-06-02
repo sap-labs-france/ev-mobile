@@ -49,7 +49,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
     super(props);
     let tenantEndpointClouds: EndpointCloud[];
     if (__DEV__) {
-      tenantEndpointClouds = Configuration.ENDPOINT_CLOUDS_DEV;
+      tenantEndpointClouds = Configuration.DEVELOPMENT_ENDPOINT_CLOUDS;
     } else {
       tenantEndpointClouds = Configuration.ENDPOINT_CLOUDS;
     }
@@ -58,7 +58,7 @@ export default class CreateTenantDialog extends React.Component<Props, State> {
       newTenantSubDomain: null,
       newTenantName: null,
       tenantEndpointClouds,
-      newTenantEndpointCloudId: Configuration.DEFAULT_ENDPOINT
+      newTenantEndpointCloudId: Configuration.DEFAULT_ENDPOINT_CLOUD_ID
     };
   }
 
