@@ -218,6 +218,11 @@
     "invoiceUnexpectedError": "Une erreur est survenue",
     "invoices": "Facture(s)"
   },
+  "invoiceStatus": {
+    "paid": "Payée",
+    "draft": "Brouillon",
+    "unpaid": "Impayée"
+  },
   "transactions": {
     "transaction": "Session",
     "transactions": "Session(s)",
@@ -267,7 +272,9 @@
     "totalPrice": "{{totalPrice}}",
     "totalPriceNote": "Cout total",
     "paymentMethods": "Méthodes de paiement",
-    "paymentMethodsNote" : "Consulter et créer des méthodes de paiement"
+    "paymentMethodsNote" : "Consulter et créer des méthodes de paiement",
+    "invoices": "Factures",
+    "invoicesNote": "Consulter et télécharger des factures"
   },
   "sites": {
     "freeChargers": "Chargeurs disponibles",

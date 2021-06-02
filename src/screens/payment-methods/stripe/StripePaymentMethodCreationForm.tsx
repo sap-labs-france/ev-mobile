@@ -11,6 +11,7 @@ import { BillingOperationResponse } from '../../../types/ActionResponse';
 import BaseProps from '../../../types/BaseProps';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
+import { scale } from 'react-native-size-matters';
 
 import computeStyleSheet from './StripePaymentMethodCreationFormStyles';
 import { BillingSettings } from '../../../types/Setting';
@@ -23,7 +24,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
   const [loading, setLoading] = useState<boolean>(false);
   const [cardDetails, setCardDetails] = useState<CardFieldInput.Details>(null);
   const style = computeStyleSheet();
-  const commonColor = Utils.getCurrentCommonColor();
+  const commonColors = Utils.getCurrentCommonColor();
 
   useEffect(() => {
     setUp().catch((error) => {
@@ -103,12 +104,12 @@ export default function StripePaymentMethodCreationForm(props: Props) {
   }
 
   function buildCardFieldStyle() {
-    const commonColors = Utils.getCurrentCommonColor();
     return {
       backgroundColor: commonColors.buttonBg,
       textColor: commonColors.textColor,
       placeholderColor: commonColors.brandDisabledDark,
-      cursorColor: commonColors.textColor
+      cursorColor: commonColors.textColor,
+      fontSize: Math.round(scale(15))
     };
   }
 
@@ -134,7 +135,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
       <View style={style.buttonContainer}>
         {loading ? (
           <Button style={style.button} light block onPress={async () => addPaymentMethod()}>
-            <Spinner color={commonColor.brandDisabledDark} />
+            <Spinner color={commonColors.brandDisabledDark} />
           </Button>
         ) : (
           <Button

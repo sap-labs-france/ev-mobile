@@ -23,6 +23,13 @@ import { InactivityStatus } from '../types/Transaction';
 import User, { UserRole, UserStatus } from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
+import statusMarkerAvailable from '../../assets/icon/charging_station_available.png';
+import statusMarkerChargingOrOccupied from '../../assets/icon/charging_station_charging.png';
+import statusMarkerFaulted from '../../assets/icon/charging_station_faulted.png';
+import statusMarkerPreparingOrFinishing from '../../assets/icon/charging_station_finishing.png';
+import statusMarkerSuspended from '../../assets/icon/charging_station_suspended.png';
+import statusMarkerUnavailable from '../../assets/icon/charging_station_unavailable.png';
+import ConnectorStats from "../types/ConnectorStats";
 
 export default class Utils {
   public static getEndpointCloud(): EndpointCloud[] {
@@ -897,5 +904,42 @@ export default class Utils {
 
   private static getDeviceLanguage(): string {
     return Utils.getLanguageFromLocale(Utils.getDeviceLocale());
+  }
+
+  public static buildChargingStationStatusMarker(connectors: Connector[], inactive: boolean) {
+    if (inactive) {
+      return statusMarkerUnavailable;
+    } else if (connectors.find((connector) => connector.status === ChargePointStatus.AVAILABLE)) {
+      return statusMarkerAvailable;
+    } else if (
+      connectors.find((connector) => connector.status === ChargePointStatus.FINISHING) ||
+      connectors.find((connector) => connector.status === ChargePointStatus.PREPARING)
+    ) {
+      return statusMarkerPreparingOrFinishing;
+    } else if (
+      connectors.find((connector) => connector.status === ChargePointStatus.CHARGING) ||
+      connectors.find((connector) => connector.status === ChargePointStatus.OCCUPIED)
+    ) {
+      return statusMarkerChargingOrOccupied;
+    } else if (
+      connectors.find((connector) => connector.status === ChargePointStatus.SUSPENDED_EVSE) ||
+      connectors.find((connector) => connector.status === ChargePointStatus.SUSPENDED_EV)
+    ) {
+      return statusMarkerSuspended;
+    } else if (connectors.find((connector) => connector.status === ChargePointStatus.FAULTED)) {
+      return statusMarkerFaulted;
+    }
+  }
+
+  public static buildSiteStatusMarker(connectorStats: ConnectorStats) {
+    if (connectorStats.availableConnectors > 0) {
+      return statusMarkerAvailable;
+    } else if (connectorStats.chargingConnectors > 0) {
+      return statusMarkerChargingOrOccupied;
+    } else if (connectorStats.unavailableConnectors > 0) {
+      return statusMarkerUnavailable;
+    } else {
+      return statusMarkerUnavailable;
+    }
   }
 }

@@ -1,25 +1,24 @@
 import { StackActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import moment from 'moment';
-import { Container, Content, Header, Icon, ListItem, Text, Thumbnail, View } from 'native-base';
+import { Container, Content, Header, Icon, ListItem, Text, View } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, TouchableOpacity } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 import defaultTenantLogo from '../../../assets/logo-low.png';
-import noPhoto from '../../../assets/no-photo-inverse.png';
 import BaseProps from '../../types/BaseProps';
-import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './SideBarStyles';
+import UserAvatar from '../../components/user/avatar/UserAvatar';
+import UserToken from '../../types/UserToken';
+import User from '../../types/User';
 
 export interface Props extends BaseProps {}
 
 interface State {
-  userName?: string;
-  userID?: string;
-  userImage?: string;
+  userToken?: UserToken;
   tenantName?: string;
   isComponentOrganizationActive?: boolean;
   updateDate?: string;
@@ -32,9 +31,7 @@ export default class SideBar extends BaseScreen<Props, State> {
   public constructor(props: Props) {
     super(props);
     this.state = {
-      userName: '',
-      userID: '',
-      userImage: '',
+      userToken: null,
       tenantName: '',
       isComponentOrganizationActive: false,
       updateDate: ''
@@ -67,32 +64,13 @@ export default class SideBar extends BaseScreen<Props, State> {
   public getUserInfo = async () => {
     // Logoff
     const userInfo = this.centralServerProvider.getUserInfo();
-    // Add sites
-    this.setState(
-      {
-        userName: userInfo ? `${userInfo.name} ${userInfo.firstName}` : '',
-        userID: userInfo ? `${userInfo.id}` : '',
-        isComponentOrganizationActive: this.securityProvider ? this.securityProvider.isComponentOrganizationActive() : false,
-        tenantName: userInfo.tenantName
-      },
-      async () => {
-        await this.getUserImage();
-      }
-    );
+    // Add sites(
+    this.setState({
+      userToken: this.centralServerProvider.getUserInfo(),
+      isComponentOrganizationActive: this.securityProvider ? this.securityProvider.isComponentOrganizationActive() : false,
+      tenantName: userInfo.tenantName
+    });
   };
-
-  public async getUserImage() {
-    const { userID } = this.state;
-    try {
-      const image = await this.centralServerProvider.getUserImage({ ID: userID });
-      if (image) {
-        this.setState({ userImage: image });
-      }
-    } catch (error) {
-      // Other common Error
-      setTimeout(async () => this.refresh(), Constants.AUTO_REFRESH_ON_ERROR_PERIOD_MILLIS);
-    }
-  }
 
   public async logoff() {
     // Logoff
@@ -116,7 +94,8 @@ export default class SideBar extends BaseScreen<Props, State> {
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
     const { navigation } = this.props;
-    const { userName, userImage, tenantName, isComponentOrganizationActive, updateDate } = this.state;
+    const { userToken, tenantName, isComponentOrganizationActive, updateDate } = this.state;
+    const user = { firstName: userToken?.firstName, name: userToken?.name, id: userToken?.id } as User;
     // Get logo
     const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
@@ -194,6 +173,16 @@ export default class SideBar extends BaseScreen<Props, State> {
                 <Text style={style.linkText}>{I18n.t('sidebar.paymentMethods')}</Text>
               </ListItem>
             )}
+            {this.securityProvider?.canListInvoices() && this.securityProvider?.isComponentBillingActive() && (
+              <ListItem
+                style={style.links}
+                button={true}
+                iconLeft={true}
+                onPress={() => this.navigateTo('InvoicesNavigator', 'Invoices')}>
+                <Icon style={style.linkIcon} type="FontAwesome5" name="file-invoice" />
+                <Text style={style.linkText}>{I18n.t('sidebar.invoices')}</Text>
+              </ListItem>
+            )}
             <ListItem
               style={style.links}
               button={true}
@@ -219,13 +208,13 @@ export default class SideBar extends BaseScreen<Props, State> {
                 <TouchableOpacity style={style.buttonLogout} onPress={async () => this.logoff()}>
                   <Text style={style.logoutText}>{I18n.t('authentication.logOut')}</Text>
                   <Text note style={style.userName}>
-                    {userName}
+                    {Utils.buildUserName(user)}
                   </Text>
                 </TouchableOpacity>
               </View>
               <View style={style.columnThumbnail}>
                 <TouchableOpacity style={style.buttonThumbnail} onPress={() => navigation.navigate('Profile')}>
-                  <Thumbnail style={style.profilePic as ImageStyle} source={userImage ? { uri: userImage } : noPhoto} />
+                  <UserAvatar user={user} navigation={this.props.navigation} />
                 </TouchableOpacity>
               </View>
             </View>

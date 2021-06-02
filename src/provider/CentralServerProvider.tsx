@@ -8,7 +8,7 @@ import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import NotificationManager from '../notification/NotificationManager';
 import { ActionResponse, BillingOperationResponse } from '../types/ActionResponse';
-import { BillingPaymentMethod } from '../types/Billing';
+import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
 import Car from '../types/Car';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
@@ -385,7 +385,7 @@ export default class CentralServerProvider {
     passwords: { password: string; repeatPassword: string },
     acceptEula: boolean,
     captcha: string
-  ) {
+  ): Promise<any> {
     this.debugMethod('register');
     // Get the Tenant
     const tenant = await this.getTenant(tenantSubDomain);
@@ -407,7 +407,7 @@ export default class CentralServerProvider {
       }
     );
     // Clear the token and tenant
-    SecuredStorage.clearUserToken(tenantSubDomain);
+    await SecuredStorage.clearUserToken(tenantSubDomain);
     // Save
     await SecuredStorage.saveUserCredentials(tenantSubDomain, {
       email,
@@ -423,7 +423,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async retrievePassword(tenantSubDomain: string, email: string, captcha: string) {
+  public async retrievePassword(tenantSubDomain: string, email: string, captcha: string): Promise<any> {
     this.debugMethod('retrievePassword');
     // Get the Tenant
     const tenant = await this.getTenant(tenantSubDomain);
@@ -442,7 +442,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async resetPassword(tenantSubDomain: string, hash: string, passwords: { password: string; repeatPassword: string }) {
+  public async resetPassword(tenantSubDomain: string, hash: string, passwords: { password: string; repeatPassword: string }): Promise<any> {
     this.debugMethod('resetPassword');
     // Get the Tenant
     const tenant = await this.getTenant(tenantSubDomain);
@@ -723,8 +723,21 @@ export default class CentralServerProvider {
       headers: this.buildSecuredHeaders(),
       params
     });
-    return result.data;
+    return result.data as DataResult<Tag>;
   }
+
+  public async getInvoices(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<BillingInvoice>> {
+    this.debugMethod('getInvoices');
+    // Build Paging
+    this.buildPaging(paging, params);
+    // Call
+    const result = await this.axiosInstance.get(`${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_INVOICES}`, {
+      headers: this.buildSecuredHeaders(),
+      params
+    });
+    return result.data as DataResult<BillingInvoice>;
+  }
+
 
   public async requestChargingStationOcppParameters(id: string): Promise<ActionResponse> {
     this.debugMethod('requestChargingStationOCPPConfiguration');
@@ -802,7 +815,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async sendErrorReport(mobile: string, subject: string, description: string) {
+  public async sendErrorReport(mobile: string, subject: string, description: string): Promise<any> {
     this.debugMethod('sendErrorReport');
     const result = await this.axiosInstance.post(
       `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.END_USER_REPORT_ERROR}`,

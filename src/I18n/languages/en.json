@@ -218,6 +218,11 @@
     "invoiceUnexpectedError": "An error occurred",
     "invoices": "Invoice(s)"
   },
+  "invoiceStatus": {
+    "paid": "Paid",
+    "draft": "Draft",
+    "unpaid": "Unpaid"
+  },
   "transactions": {
     "transaction": "Session",
     "transactions": "Session(s)",
@@ -267,7 +272,9 @@
     "totalPrice": "{{totalPrice}}",
     "totalPriceNote": "Total cost",
     "paymentMethods": "Payment Methods",
-    "paymentMethodsNote" : "Browse and create payment methods"
+    "paymentMethodsNote" : "Browse and create payment methods",
+    "invoices": "Invoices",
+    "invoicesNote": "Browse and download invoices"
   },
   "sites": {
     "freeChargers": "Free chargers",

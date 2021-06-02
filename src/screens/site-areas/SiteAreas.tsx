@@ -2,19 +2,16 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
-import { FlatList, Platform, RefreshControl, ScrollView } from 'react-native';
+import { Platform,ScrollView } from 'react-native';
 import { Location } from 'react-native-location';
-import MapView, { Marker, Region } from 'react-native-maps';
+import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
-import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
 import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteAreaComponent from '../../components/site-area/SiteAreaComponent';
-import SiteComponent from '../../components/site/SiteComponent';
 import I18nManager from '../../I18n/I18nManager';
 import LocationManager from '../../location/LocationManager';
 import computeModalStyle from '../../ModalStyles';
@@ -22,7 +19,6 @@ import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
 import { GlobalFilters } from '../../types/Filter';
-import Site from '../../types/Site';
 import SiteArea from '../../types/SiteArea';
 import Constants from '../../utils/Constants';
 import SecuredStorage from '../../utils/SecuredStorage';
@@ -30,6 +26,8 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SiteAreasFilters, { SiteAreasFiltersDef } from './SiteAreasFilters';
 import computeStyleSheet from './SiteAreasStyles';
+import { ClusterMap } from 'react-native-cluster-map';
+import ThemeManager from '../../custom-theme/ThemeManager';
 
 export interface Props extends BaseProps {}
 
@@ -55,6 +53,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   private currentLocation: Location;
   private locationEnabled: boolean;
   private currentRegion: Region;
+  private darkMapTheme = require('../../utils/map/google-maps-night-style.json');
 
   public constructor(props: Props) {
     super(props);
@@ -149,7 +148,11 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.goBack();
+    if (this.state.showMap && !Utils.isEmptyArray(this.state.siteAreas)) {
+      this.setState({ showMap: false });
+    } else {
+      this.props.navigation.goBack();
+    }
     // Do not bubble up
     return true;
   };
@@ -267,6 +270,8 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const { navigation } = this.props;
     const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected, siteAreas, refreshing } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.siteAreas);
+    const siteAreasWithGPSCoordinates = siteAreas.filter((siteArea) => Utils.containsAddressGPSCoordinates(siteArea.address));
+    const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -297,21 +302,24 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
             />
             {mapIsDisplayed ? (
               <View style={style.map}>
-                <MapView style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
-                  {this.state.siteAreas.map((siteArea: SiteArea) => {
-                    if (Utils.containsAddressGPSCoordinates(siteArea.address)) {
-                      return (
-                        <Marker
-                          key={siteArea.id}
-                          coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
-                          title={siteArea.name}
-                          onPress={() => this.showMapSiteDetail(siteArea)}
-                        />
-                      );
-                    }
-                    return undefined;
-                  })}
-                </MapView>
+                {this.currentRegion && (
+                  <ClusterMap
+                    provider={'google'}
+                    customMapStyle={isDarkModeEnabled && this.darkMapTheme}
+                    style={style.map}
+                    region={this.currentRegion}
+                    onRegionChange={this.onMapRegionChange}>
+                    {siteAreasWithGPSCoordinates.map((siteArea: SiteArea) => (
+                      <Marker
+                        image={Utils.buildSiteStatusMarker(siteArea.connectorStats)}
+                        key={siteArea.id}
+                        coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
+                        title={siteArea.name}
+                        onPress={() => this.showMapSiteDetail(siteArea)}
+                      />
+                    ))}
+                  </ClusterMap>
+                )}
                 {siteAreaSelected && this.buildModal(navigation, siteAreaSelected, modalStyle)}
               </View>
             ) : (
