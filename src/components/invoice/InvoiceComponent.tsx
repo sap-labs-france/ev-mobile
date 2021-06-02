@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import I18n from 'i18n-js';
+import { Card, CardItem, Icon } from 'native-base';
+import React from 'react';
+import { Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+
+import I18nManager from '../../I18n/I18nManager';
+import CentralServerProvider from '../../provider/CentralServerProvider';
+import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { BillingInvoice, BillingInvoiceStatus } from '../../types/Billing';
-import { Text, TouchableOpacity, View } from 'react-native';
-import computeStyleSheet from './InvoiceComponentStyles';
-import computeChipStyleSheet from '../chip/ChipStyle';
-import I18nManager from '../../I18n/I18nManager';
-import I18n from 'i18n-js';
-import Chip from '../chip/Chip';
-import ProviderFactory from '../../provider/ProviderFactory';
-import User from '../../types/User';
 import { DataResult } from '../../types/DataResult';
-import { Card, CardItem, Icon } from 'native-base';
+import User from '../../types/User';
 import Utils from '../../utils/Utils';
-import CentralServerProvider from '../../provider/CentralServerProvider';
+import Chip from '../chip/Chip';
+import computeChipStyleSheet from '../chip/ChipStyle';
+import computeStyleSheet from './InvoiceComponentStyles';
 
 export interface Props extends BaseProps {
   invoice: BillingInvoice;
@@ -106,7 +107,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
     return result?.result?.[0];
   }
 
-  private buildStatus(invoiceStatus: BillingInvoiceStatus) {
+  private buildStatus(invoiceStatus: BillingInvoiceStatus): string {
     switch (invoiceStatus) {
       case BillingInvoiceStatus.DRAFT:
         return I18n.t('invoiceStatus.draft');
@@ -117,7 +118,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
     }
   }
 
-  private buildStatusStyle(invoiceStatus: BillingInvoiceStatus) {
+  private buildStatusStyle(invoiceStatus: BillingInvoiceStatus): ViewStyle {
     const chipStyle = computeChipStyleSheet();
     switch (invoiceStatus) {
       case BillingInvoiceStatus.DRAFT:
@@ -129,7 +130,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
     }
   }
 
-  private buildStatusIndicatorStyle(invoiceStatus: BillingInvoiceStatus) {
+  private buildStatusIndicatorStyle(invoiceStatus: BillingInvoiceStatus): ViewStyle {
     const style = computeStyleSheet();
     switch (invoiceStatus) {
       case BillingInvoiceStatus.DRAFT:
