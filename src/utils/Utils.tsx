@@ -7,12 +7,6 @@ import { NativeModules, Platform } from 'react-native';
 import { showLocation } from 'react-native-map-link';
 import validate from 'validate.js';
 
-import statusMarkerAvailable from '../../assets/icon/charging_station_available.png';
-import statusMarkerChargingOrOccupied from '../../assets/icon/charging_station_charging.png';
-import statusMarkerFaulted from '../../assets/icon/charging_station_faulted.png';
-import statusMarkerPreparingOrFinishing from '../../assets/icon/charging_station_finishing.png';
-import statusMarkerSuspended from '../../assets/icon/charging_station_suspended.png';
-import statusMarkerUnavailable from '../../assets/icon/charging_station_unavailable.png';
 import Configuration from '../config/Configuration';
 import { buildCommonColor } from '../custom-theme/customCommonColor';
 import ThemeManager from '../custom-theme/ThemeManager';
@@ -22,7 +16,6 @@ import Address from '../types/Address';
 import { BillingPaymentMethod, BillingPaymentMethodStatus } from '../types/Billing';
 import Car, { CarCatalog } from '../types/Car';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType, Voltage } from '../types/ChargingStation';
-import ConnectorStats from '../types/ConnectorStats';
 import { KeyValue } from '../types/Global';
 import { RequestError } from '../types/RequestError';
 import { EndpointCloud } from '../types/Tenant';
@@ -30,6 +23,13 @@ import { InactivityStatus } from '../types/Transaction';
 import User, { UserRole, UserStatus } from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
+import statusMarkerAvailable from '../../assets/icon/charging_station_available.png';
+import statusMarkerChargingOrOccupied from '../../assets/icon/charging_station_charging.png';
+import statusMarkerFaulted from '../../assets/icon/charging_station_faulted.png';
+import statusMarkerPreparingOrFinishing from '../../assets/icon/charging_station_finishing.png';
+import statusMarkerSuspended from '../../assets/icon/charging_station_suspended.png';
+import statusMarkerUnavailable from '../../assets/icon/charging_station_unavailable.png';
+import ConnectorStats from "../types/ConnectorStats";
 
 export default class Utils {
   public static getEndpointCloud(): EndpointCloud[] {
@@ -525,7 +525,7 @@ export default class Utils {
     defaultValue: string | boolean,
     removeValue = false
   ): string | number | boolean | Record<string, unknown> | [] {
-    const params: any = route?.params?.params ?? route?.params;
+    const params: any = route.params?.params ? route.params.params : route.params;
     // Has param object?
     if (!params) {
       return defaultValue;

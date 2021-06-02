@@ -28,15 +28,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center'
     },
     bodyHeader: {
-      flex: 4,
+      flex: 3,
       paddingLeft: Platform.OS === 'ios' ? 0 : '40@s',
       height: '100%',
       justifyContent: 'center'
     },
     titleHeader: {
       color: commonColor.textColor,
-      fontSize: '19@s',
-      textAlign: 'center'
+      fontSize: '19@s'
     },
     titleHeaderWithSubTitle: {
       fontSize: '16@s'

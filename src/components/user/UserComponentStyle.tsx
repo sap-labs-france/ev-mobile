@@ -15,7 +15,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'flex-start',
+      borderBottomWidth: 1,
       alignItems: 'center',
+      borderBottomColor: commonColor.listBorderColor,
       padding: '5@s'
     },
     avatarContainer: {
@@ -31,13 +33,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center',
       height: '65@s'
     },
-    userFullNameStatusContainer: {
+    userFullnameStatusContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center'
     },
     fullNameContainer: {
-      flex: 1
+      width: '70%'
     },
     fullName: {
       fontSize: '17@s',

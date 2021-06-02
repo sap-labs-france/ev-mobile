@@ -62,7 +62,6 @@
     "errorTitle": "Titolo Errore",
     "errorDescription": "Descrizione",
     "scanQrCodeSuccess": "Il codice QR è stato scansionato con successo",
-    "validate": "Validate",
     "default": "Default",
     "save": "Save"
   },
@@ -173,9 +172,7 @@
   "users": {
     "userUnexpectedError": "Non posso leggere gli utenti",
     "noUsers": "No users",
-    "users": "Users(s)",
-    "selectUser" : "Select User",
-    "selectUsers" : "Select Users"
+    "users": "Users(s)"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "An error occurred",

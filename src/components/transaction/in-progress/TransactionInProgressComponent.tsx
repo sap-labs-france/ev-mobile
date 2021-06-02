@@ -68,7 +68,7 @@ export default class TransactionInProgressComponent extends React.Component<Prop
           }}>
           <View style={style.container}>
             <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} />
-            <View style={[style.transactionContent, style.transactionContentTop]}>
+            <View style={style.transactionContent}>
               <View style={style.columnContainer}>
                 <Icon type="FontAwesome" name="bolt" style={[style.icon, style.info]} />
                 <Text style={[style.labelValue, style.info]}>{I18nManager.formatNumber(consumption)}</Text>

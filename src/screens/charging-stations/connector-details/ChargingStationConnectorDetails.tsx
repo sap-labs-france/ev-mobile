@@ -7,21 +7,16 @@ import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity 
 import noSite from '../../../../assets/no-site.png';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import { ItemSelectionMode } from '../../../components/list/ItemsList';
-import ModalSelect from '../../../components/modal/ModalSelect';
 import UserAvatar from '../../../components/user/avatar/UserAvatar';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
-import User from '../../../types/User';
-import UserToken from '../../../types/UserToken';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
-import Users from '../../users/list/Users';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
 
 const START_TRANSACTION_NB_TRIAL = 4;
@@ -46,13 +41,11 @@ interface State {
   isPricingActive?: boolean;
   buttonDisabled?: boolean;
   refreshing?: boolean;
-  selectedUser?: User;
 }
 
 export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
-  private currentUser: UserToken;
 
   public constructor(props: Props) {
     super(props);
@@ -73,8 +66,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       startTransactionNbTrial: 0,
       isPricingActive: false,
       buttonDisabled: true,
-      refreshing: false,
-      selectedUser: null
+      refreshing: false
     };
   }
 
@@ -90,16 +82,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null, true) as boolean;
     if (startTransaction) {
       this.startTransactionConfirm();
-    }
-    this.currentUser = this.centralServerProvider.getUserInfo();
-    if (this.currentUser) {
-      this.setState({
-        selectedUser: {
-          id: this.currentUser.id,
-          firstName: this.currentUser.firstName,
-          name: this.currentUser.name
-        }
-      });
     }
   }
 
@@ -686,7 +668,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public render() {
     const { navigation } = this.props;
-    const { isAdmin } = this.state;
     const style = computeStyleSheet();
     const { connector, canStopTransaction, canStartTransaction, chargingStation, loading, siteImage, isPricingActive } = this.state;
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
@@ -696,7 +677,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       <Container style={style.container}>
         <HeaderComponent
           navigation={this.props.navigation}
-          title={chargingStation ? (chargingStation.id as string) : '-'}
+          title={chargingStation ? chargingStation.id : '-'}
           subTitle={connectorLetter ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
@@ -721,59 +702,27 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           <View style={style.noButtonStopTransaction} />
         )}
         {/* Details */}
-        {connector?.status === ChargePointStatus.AVAILABLE ? (
-          <ScrollView
-            contentContainerStyle={style.scrollViewContainer}
-            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
-            <View style={style.rowContainer}>{this.renderConnectorStatus(style)}</View>
-            {isAdmin && this.renderUserSelection(style)}
-          </ScrollView>
-        ) : (
-          <ScrollView
-            contentContainerStyle={style.scrollViewContainer}
-            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
-            <View style={style.rowContainer}>
-              {this.renderConnectorStatus(style)}
-              {this.renderUserInfo(style)}
-            </View>
-            <View style={style.rowContainer}>
-              {this.renderInstantPower(style)}
-              {this.renderTotalConsumption(style)}
-            </View>
-            <View style={style.rowContainer}>
-              {this.renderElapsedTime(style)}
-              {this.renderInactivity(style)}
-            </View>
-            <View style={style.rowContainer}>
-              {this.renderBatteryLevel(style)}
-              {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
-            </View>
-          </ScrollView>
-        )}
+        <ScrollView
+          contentContainerStyle={style.scrollViewContainer}
+          refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
+          <View style={style.rowContainer}>
+            {this.renderConnectorStatus(style)}
+            {this.renderUserInfo(style)}
+          </View>
+          <View style={style.rowContainer}>
+            {this.renderInstantPower(style)}
+            {this.renderTotalConsumption(style)}
+          </View>
+          <View style={style.rowContainer}>
+            {this.renderElapsedTime(style)}
+            {this.renderInactivity(style)}
+          </View>
+          <View style={style.rowContainer}>
+            {this.renderBatteryLevel(style)}
+            {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
+          </View>
+        </ScrollView>
       </Container>
-    );
-  }
-
-  private onUserSelected(users: User[]): void {
-    if (users && !Utils.isEmptyArray(users)) {
-      this.setState({ selectedUser: users[0] });
-    }
-  }
-
-  private renderUserSelection(style: any) {
-    const { navigation } = this.props;
-    const { selectedUser } = this.state;
-    return (
-      <View style={style.rowContainer}>
-        <ModalSelect<User>
-          defaultItem={selectedUser}
-          onItemsSelected={(selectedUsers: User[]) => this.setState({ selectedUser: selectedUsers?.[0] })}
-          buildItemName={Utils.buildUserName}
-          navigation={navigation}
-          selectionMode={ItemSelectionMode.SINGLE}>
-          <Users navigation={navigation} />
-        </ModalSelect>
-      </View>
     );
   }
 }

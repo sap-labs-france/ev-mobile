@@ -51,23 +51,22 @@ export default class SiteComponent extends React.Component<Props, State> {
       };
     }
     return (
-      <TouchableOpacity
-        style={style.outerContainer}
-        onPress={() => {
-          if (onNavigate) {
-            onNavigate();
-          }
-          navigation.navigate('SiteAreas', {
-            params: {
-              siteID: site.id
-            },
-            key: `${Utils.randomNumber()}`
-          });
-        }}>
-        <Animatable.View
-          animation={this.counter++ % 2 === 0 ? 'flipInX' : 'flipInX'}
-          iterationCount={1}
-          duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+      <Animatable.View
+        animation={this.counter++ % 2 === 0 ? 'flipInX' : 'flipInX'}
+        iterationCount={1}
+        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
+        <TouchableOpacity
+          onPress={() => {
+            if (onNavigate) {
+              onNavigate();
+            }
+            navigation.navigate('SiteAreas', {
+              params: {
+                siteID: site.id
+              },
+              key: `${Utils.randomNumber()}`
+            });
+          }}>
           <View style={style.container}>
             <View style={style.headerContent}>
               <View style={style.titleContainer}>
@@ -94,8 +93,8 @@ export default class SiteComponent extends React.Component<Props, State> {
               <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={connectorStats} />
             </View>
           </View>
-        </Animatable.View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </Animatable.View>
     );
   }
 }

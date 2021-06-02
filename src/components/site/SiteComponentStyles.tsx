@@ -11,12 +11,11 @@ import Utils from '../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    outerContainer: {
-      width: '100%'
-    },
     container: {
       flex: 1,
-      flexDirection: 'column'
+      flexDirection: 'column',
+      borderBottomWidth: 1,
+      borderBottomColor: commonColor.listBorderColor
     },
     headerContent: {
       flexDirection: 'row',
@@ -38,6 +37,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'space-between',
       alignItems: 'center',
       height: '25@s',
+      width: '100%',
       paddingRight: '5@s',
       paddingLeft: '5@s',
       borderBottomWidth: 1,
@@ -54,8 +54,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.headerTextColor
     },
     connectorContent: {
+      flexDirection: 'row',
+      justifyContent: 'center',
       paddingTop: '12@s',
-      paddingBottom: '12@s'
+      paddingBottom: '12@s',
+      borderBottomWidth: 1,
+      borderBottomColor: commonColor.brandPrimaryDark
     },
     icon: {
       color: commonColor.headerTextColor

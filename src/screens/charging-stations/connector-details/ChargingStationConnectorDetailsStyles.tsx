@@ -11,10 +11,6 @@ import Utils from '../../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    text: {
-      color: commonColor.textColor,
-      textAlign: 'center'
-    },
     container: {
       flex: 1,
       flexDirection: 'column',
@@ -124,7 +120,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     scrollViewContainer: {
       flexDirection: 'column',
       justifyContent: 'flex-start',
-      alignItems: 'center'
+      alignItems: 'center',
+      paddingTop: '20@s'
     },
     rowContainer: {
       flexDirection: 'row',
@@ -173,13 +170,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     icon: {
       fontSize: '25@s',
       color: commonColor.textColor
-    },
-    downArrow: {
-      fontSize: '30@s'
-    },
-    listContainer: {
-      width: '100%',
-      height: '100%'
     },
     userImage: {
       height: '52@s',

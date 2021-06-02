@@ -3,9 +3,9 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
-import Constants from '../../../../../utils/Constants';
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
+import Constants from '../../../../../utils/Constants';
 
 export interface Props extends FilterControlComponentProps<Date> {
   defaultDate?: Date;

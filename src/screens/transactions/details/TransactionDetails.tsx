@@ -7,7 +7,6 @@ import { Image, ImageStyle, ScrollView } from 'react-native';
 
 import noSite from '../../../../assets/no-site.png';
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import UserAvatar from '../../../components/user/avatar/UserAvatar';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
@@ -17,6 +16,7 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseScreen from '../../base-screen/BaseScreen';
 import computeStyleSheet from './TransactionDetailsStyles';
+import UserAvatar from '../../../components/user/avatar/UserAvatar';
 
 export interface Props extends BaseProps {}
 

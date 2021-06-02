@@ -2,18 +2,17 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
-import { Platform, ScrollView } from 'react-native';
-import { ClusterMap } from 'react-native-cluster-map';
+import { FlatList, Platform, RefreshControl, ScrollView } from 'react-native';
 import { Location } from 'react-native-location';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ItemsList from '../../components/list/ItemsList';
+import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTextComponent';
+import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteAreaComponent from '../../components/site-area/SiteAreaComponent';
-import ThemeManager from '../../custom-theme/ThemeManager';
 import I18nManager from '../../I18n/I18nManager';
 import LocationManager from '../../location/LocationManager';
 import computeModalStyle from '../../ModalStyles';
@@ -28,6 +27,8 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SiteAreasFilters, { SiteAreasFiltersDef } from './SiteAreasFilters';
 import computeStyleSheet from './SiteAreasStyles';
+import { ClusterMap } from 'react-native-cluster-map';
+import ThemeManager from '../../custom-theme/ThemeManager';
 
 export interface Props extends BaseProps {}
 
@@ -268,7 +269,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
-    const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected, siteAreas, refreshing } = this.state;
+    const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected, siteAreas } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.siteAreas);
     const siteAreasWithGPSCoordinates = siteAreas.filter((siteArea) => Utils.containsAddressGPSCoordinates(siteArea.address));
     const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
@@ -323,17 +324,15 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
                 {siteAreaSelected && this.buildModal(navigation, siteAreaSelected, modalStyle)}
               </View>
             ) : (
-              <ItemsList<SiteArea>
-                skip={skip}
-                count={count}
+              <FlatList
+                data={this.state.siteAreas}
+                renderItem={({ item }) => <SiteAreaComponent siteArea={item} navigation={this.props.navigation} />}
+                keyExtractor={(item) => item.id}
+                refreshControl={<RefreshControl onRefresh={this.manualRefresh} refreshing={this.state.refreshing} />}
                 onEndReached={this.onEndScroll}
-                renderItem={(site: SiteArea) => <SiteAreaComponent siteArea={site} navigation={this.props.navigation} />}
-                data={siteAreas}
-                manualRefresh={this.manualRefresh}
-                refreshing={refreshing}
-                emptyTitle={I18n.t('siteAreas.noSiteAreas')}
-                navigation={navigation}
-                limit={limit}
+                onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
+                ListEmptyComponent={() => <ListEmptyTextComponent navigation={navigation} text={I18n.t('siteAreas.noSiteAreas')} />}
+                ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}
               />
             )}
           </View>

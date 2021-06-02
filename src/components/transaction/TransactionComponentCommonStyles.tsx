@@ -13,20 +13,20 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
-      flexDirection: 'column'
+      flexDirection: 'column',
+      borderBottomWidth: 1,
+      borderBottomColor: commonColor.listBorderColor
     },
     transactionContent: {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-evenly',
+      borderBottomWidth: 1,
+      borderBottomColor: commonColor.listBorderColor,
       paddingLeft: '5@s',
       paddingRight: '5@s',
       height: '80@s',
       width: '100%'
-    },
-    transactionContentTop: {
-      borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor
     },
     label: {
       color: commonColor.textColor,

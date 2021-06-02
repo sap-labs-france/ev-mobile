@@ -1,20 +1,20 @@
 import { DrawerActions } from '@react-navigation/native';
-import { CardField, CardFieldInput, initStripe, useConfirmSetupIntent } from '@stripe/stripe-react-native';
+import { CardFieldInput, useConfirmSetupIntent, CardField, initStripe } from '@stripe/stripe-react-native';
 import I18n from 'i18n-js';
 import { Button, Spinner, View } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
-import { scale } from 'react-native-size-matters';
-
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import CentralServerProvider from '../../../provider/CentralServerProvider';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import { BillingOperationResponse } from '../../../types/ActionResponse';
 import BaseProps from '../../../types/BaseProps';
-import { BillingSettings } from '../../../types/Setting';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
+import { scale } from 'react-native-size-matters';
+
 import computeStyleSheet from './StripePaymentMethodCreationFormStyles';
+import { BillingSettings } from '../../../types/Setting';
 
 interface Props extends BaseProps {}
 

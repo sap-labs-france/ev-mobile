@@ -738,6 +738,7 @@ export default class CentralServerProvider {
     return result.data as DataResult<BillingInvoice>;
   }
 
+
   public async requestChargingStationOcppParameters(id: string): Promise<ActionResponse> {
     this.debugMethod('requestChargingStationOCPPConfiguration');
     // Call

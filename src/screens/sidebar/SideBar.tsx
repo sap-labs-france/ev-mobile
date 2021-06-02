@@ -7,13 +7,13 @@ import { Image, ImageStyle, TouchableOpacity } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 import defaultTenantLogo from '../../../assets/logo-low.png';
-import UserAvatar from '../../components/user/avatar/UserAvatar';
 import BaseProps from '../../types/BaseProps';
-import User from '../../types/User';
-import UserToken from '../../types/UserToken';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './SideBarStyles';
+import UserAvatar from '../../components/user/avatar/UserAvatar';
+import UserToken from '../../types/UserToken';
+import User from '../../types/User';
 
 export interface Props extends BaseProps {}
 
@@ -174,7 +174,11 @@ export default class SideBar extends BaseScreen<Props, State> {
               </ListItem>
             )}
             {this.securityProvider?.canListInvoices() && this.securityProvider?.isComponentBillingActive() && (
-              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('InvoicesNavigator', 'Invoices')}>
+              <ListItem
+                style={style.links}
+                button={true}
+                iconLeft={true}
+                onPress={() => this.navigateTo('InvoicesNavigator', 'Invoices')}>
                 <Icon style={style.linkIcon} type="FontAwesome5" name="file-invoice" />
                 <Text style={style.linkText}>{I18n.t('sidebar.invoices')}</Text>
               </ListItem>

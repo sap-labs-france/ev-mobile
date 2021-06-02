@@ -1,7 +1,6 @@
 import { View } from 'native-base';
 import React from 'react';
 import { Avatar } from 'react-native-elements';
-import { scale } from 'react-native-size-matters';
 
 import noPhoto from '../../../../assets/no-photo.png';
 import CentralServerProvider from '../../../provider/CentralServerProvider';
@@ -11,6 +10,7 @@ import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UserAvatarStyle';
+import { scale } from 'react-native-size-matters';
 
 interface State {
   user?: User;
@@ -18,12 +18,14 @@ interface State {
 
 export interface Props extends BaseProps {
   user?: User;
-  accessoryIcon?: string;
   selected?: boolean;
   size?: number;
 }
 
 export default class UserAvatar extends React.Component<Props, State> {
+  public static defaultProps = {
+    selected: false
+  };
   private centralServerProvider: CentralServerProvider;
 
   public constructor(props: Props) {
@@ -60,7 +62,7 @@ export default class UserAvatar extends React.Component<Props, State> {
   };
 
   public render() {
-    const { accessoryIcon, size } = this.props;
+    const { selected, size } = this.props;
     const { user } = this.state;
     const style = computeStyleSheet();
     const userInitials = Utils.buildUserInitials(user);
@@ -75,8 +77,8 @@ export default class UserAvatar extends React.Component<Props, State> {
             rounded={true}
             source={userImageURI === noPhoto ? noPhoto : { uri: userImageURI }}
             titleStyle={style.avatarTitle}
-            overlayContainerStyle={[style.avatarContainer, accessoryIcon ? style.avatarSelected : null]}>
-            {accessoryIcon && <Avatar.Accessory name={accessoryIcon} size={style.accessory.fontSize} color={style.accessory.color} />}
+            overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
+            {selected && <Avatar.Accessory name={'done'} size={style.accessory.fontSize} color={style.accessory.color} />}
           </Avatar>
         ) : (
           <Avatar
@@ -84,8 +86,8 @@ export default class UserAvatar extends React.Component<Props, State> {
             rounded={true}
             title={userInitials}
             titleStyle={style.avatarTitle}
-            overlayContainerStyle={[style.avatarContainer, accessoryIcon ? style.avatarSelected : null]}>
-            {accessoryIcon && <Avatar.Accessory name={accessoryIcon} size={style.accessory.fontSize} color={style.accessory.color} />}
+            overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
+            {selected && <Avatar.Accessory name={'done'} size={style.accessory.fontSize} color={style.accessory.color} />}
           </Avatar>
         )}
       </View>
@@ -94,7 +96,7 @@ export default class UserAvatar extends React.Component<Props, State> {
 
   private async getUserImage(id: string) {
     try {
-      return await this.centralServerProvider?.getUserImage({ ID: id });
+      return await this.centralServerProvider.getUserImage({ ID: id });
     } catch (error) {
       // Check if HTTP?
       if (!error.request) {

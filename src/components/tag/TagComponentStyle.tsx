@@ -50,6 +50,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      borderBottomWidth: 1,
+      borderBottomColor: commonColor.listBorderColor,
       padding: '10@s',
       height: '60@s'
     },

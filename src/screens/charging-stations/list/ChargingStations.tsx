@@ -3,7 +3,6 @@ import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { Platform, ScrollView } from 'react-native';
-import { ClusterMap } from 'react-native-cluster-map';
 import { Location } from 'react-native-location';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
@@ -13,7 +12,6 @@ import ChargingStationComponent from '../../../components/charging-station/Charg
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import ItemsList from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
-import ThemeManager from '../../../custom-theme/ThemeManager';
 import I18nManager from '../../../I18n/I18nManager';
 import LocationManager from '../../../location/LocationManager';
 import computeModalStyle from '../../../ModalStyles';
@@ -28,6 +26,8 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import ChargingStationsFilters, { ChargingStationsFiltersDef } from './ChargingStationsFilters';
 import computeStyleSheet from './ChargingStationsStyles';
+import { ClusterMap } from 'react-native-cluster-map';
+import ThemeManager from '../../../custom-theme/ThemeManager';
 
 export interface Props extends BaseProps {}
 
