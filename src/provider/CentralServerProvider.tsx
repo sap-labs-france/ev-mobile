@@ -898,19 +898,6 @@ export default class CentralServerProvider {
     return res;
   }
 
-  /*public async downloadInvoiceWithRNFS(invoiceID: string): Promise<any> {
-    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_DOWNLOAD_INVOICE}`.replace(':invoiceID', invoiceID);
-    const path = `${RNFS.DocumentDirectoryPath}/invoice.pdf`;
-    const { promise } = RNFS.downloadFile({
-      fromUrl: url,
-      toFile: path,
-      headers: this.buildSecuredHeaders()
-    });
-    const res = await promise;
-    Message.showInfo(path);
-    return res;
-  }*/
-
   public getSecurityProvider(): SecurityProvider {
     return this.securityProvider;
   }
