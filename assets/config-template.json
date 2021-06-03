@@ -6,9 +6,9 @@
       "endpoint": "http://127.0.0.1:8020"
     },
     {
-      "id": "localhost:8020",
-      "name": "localhost:8020",
-      "endpoint": "http://localhost:8020"
+      "id": "10.0.2.2::8020",
+      "name": "android-local:8020",
+      "endpoint": "http://10.0.2.2:8020"
     }
   ]
 }
