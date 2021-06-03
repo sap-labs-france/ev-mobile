@@ -42,6 +42,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { invoice, navigation } = this.props;
+    const invoiceAmount = invoice.amount && invoice.amount / 100;
     const { user } = this.state;
     return (
       <Card style={style.invoiceContainer}>
@@ -86,7 +87,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
               </View>
               <View style={style.invoiceAmountContainer}>
                 <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[style.text, style.invoiceAmount]}>
-                  {I18nManager.formatCurrency(invoice.amount, invoice.currency)}
+                  {I18nManager.formatCurrency(invoiceAmount, invoice.currency)}
                 </Text>
               </View>
               {invoice.downloadable && (
