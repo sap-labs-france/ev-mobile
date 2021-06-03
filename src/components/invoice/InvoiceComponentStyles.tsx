@@ -117,9 +117,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     downloadIcon: {
       color: commonColor.textColor,
       fontSize: '26@s'
-    },
-    spinner: {
-      color: commonColor.textColor
     }
   });
   const portraitStyles = {};
