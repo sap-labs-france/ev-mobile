@@ -180,6 +180,9 @@
     "paymentMethods": "Méthode(s) de paiement",
     "addPaymentMethodError": "Impossible d'ajouter la méthode de paiement",
     "addPaymentMethodSuccess" : "Nouvelle méthode de paiement ajoutée",
+    "deletePaymentMethodSuccess": "Méthode de paiement supprimée",
+    "deletePaymentMethodTitle": "Supprimer une méthode de paiement",
+    "deletePaymentMethodSubtitle": "Voulez-vous vraiment supprimer la carte {{cardBrand}} finissant par {{cardLast4}}",
     "addPaymentMethod": "Ajouter une méthode de paiment"
   },
   "paymentMethodStatus": {

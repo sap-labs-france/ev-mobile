@@ -2,7 +2,7 @@ import { DrawerActions } from '@react-navigation/native';
 import i18n from 'i18n-js';
 import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Alert, TouchableOpacity, View } from 'react-native';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
@@ -16,6 +16,9 @@ import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './PaymentMethodsStyle';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import Message from '../../utils/Message';
+import I18n from 'i18n-js';
 
 export interface Props extends BaseProps {}
 
@@ -150,7 +153,15 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
               count={count}
               limit={limit}
               skip={skip}
-              renderItem={(item: BillingPaymentMethod) => <PaymentMethodComponent paymentMethod={item} navigation={navigation} />}
+              renderItem={(paymentMethod: BillingPaymentMethod) => (
+                <Swipeable
+                  overshootRight={false}
+                  overshootLeft={false}
+                  containerStyle={style.swiperContainer}
+                  renderRightActions={() => this.renderSwipeableActions(paymentMethod, style)}>
+                  <PaymentMethodComponent paymentMethod={paymentMethod} navigation={navigation} />
+                </Swipeable>
+              )}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}
               onEndReached={this.onEndScroll}
@@ -161,4 +172,52 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
       </Container>
     );
   };
+
+  private renderSwipeableActions(paymentMethod: BillingPaymentMethod, style: any) {
+    return paymentMethod.isDefault ? null : (
+      <TouchableOpacity
+        style={style.trashIconButton}
+        onPress={() => {
+          this.onPressDelete(paymentMethod);
+        }}>
+        <Icon style={style.trashIcon} name="trash" />
+      </TouchableOpacity>
+    );
+  }
+
+  private onPressDelete(paymentMethod: BillingPaymentMethod): void {
+    Alert.alert(
+      I18n.t('paymentMethods.deletePaymentMethodTitle'),
+      I18n.t('paymentMethods.deletePaymentMethodSubtitle', { cardBrand: paymentMethod.brand, cardLast4: paymentMethod.last4 }),
+      [
+        {
+          text: I18n.t('general.yes'),
+          onPress: () => {
+            this.deletePaymentMethod(paymentMethod.id as string);
+          }
+        },
+        { text: I18n.t('general.cancel') }
+      ]
+    );
+  }
+
+  private async deletePaymentMethod(paymentMethodID: string): Promise<void> {
+    const userID = this.centralServerProvider?.getUserInfo()?.id;
+    try {
+      await this.centralServerProvider.deletePaymentMethod(userID, paymentMethodID);
+    } catch (error) {
+      // Check if HTTP?
+      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
+        Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          'paymentMethods.paymentMethodUnexpectedError',
+          this.props.navigation,
+          this.refresh.bind(this)
+        );
+      }
+    }
+    await this.refresh();
+    Message.showSuccess(I18n.t('paymentMethods.deletePaymentMethodSuccess'));
+  }
 }
