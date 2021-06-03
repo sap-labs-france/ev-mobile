@@ -215,7 +215,8 @@
     "invoiceUnexpectedError": "An error occurred",
     "invoices": "Invoice(s)",
     "invoice": "Invoice",
-    "downloadedSuccessfully": "Invoice download successfully"
+    "downloadedSuccessfully": "Invoice download successfully",
+    "invoiceFileDescription": "e-Mobility charge invoice"
   },
   "invoiceStatus": {
     "paid": "Paid",

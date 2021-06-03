@@ -215,7 +215,8 @@
     "invoiceUnexpectedError": "Une erreur est survenue",
     "invoices": "Facture(s)",
     "invoice": "Facture",
-    "downloadedSuccessfully": "Facture téléchargée"
+    "downloadedSuccessfully": "Facture téléchargée",
+    "invoiceFileDescription": "Facture de recharge e-Mobility"
   },
   "invoiceStatus": {
     "paid": "Payée",

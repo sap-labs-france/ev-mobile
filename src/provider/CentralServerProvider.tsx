@@ -891,7 +891,7 @@ export default class CentralServerProvider {
               // Make the file scannable  by media scanner
               mediaScannable: true,
               // File description (not notification description)
-              description: 'Charge invoice downloaded from e-Mobility'
+              description: `${I18n.t('invoices.invoiceFileDescription')} ${invoice.number}`
             }
           };
     const res = await RNFetchBlob.config(config).fetch('GET', url, this.buildSecuredHeaders());
