@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
-import { Card, CardItem, Icon } from 'native-base';
+import { Card, CardItem, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import I18nManager from '../../I18n/I18nManager';
 import CentralServerProvider from '../../provider/CentralServerProvider';
@@ -14,6 +14,8 @@ import Utils from '../../utils/Utils';
 import Chip from '../chip/Chip';
 import computeChipStyleSheet from '../chip/ChipStyle';
 import computeStyleSheet from './InvoiceComponentStyles';
+import Message from '../../utils/Message';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {
   invoice: BillingInvoice;
@@ -21,6 +23,7 @@ export interface Props extends BaseProps {
 
 interface State {
   user: User;
+  downloading: boolean;
 }
 
 export default class InvoiceComponent extends React.Component<Props, State> {
@@ -30,7 +33,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
 
   public constructor(props: Props) {
     super(props);
-    this.state = { user: null };
+    this.state = { user: null, downloading: false };
   }
 
   public async componentDidMount() {
@@ -41,9 +44,10 @@ export default class InvoiceComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
+    const commonColor = Utils.getCurrentCommonColor();
     const { invoice, navigation } = this.props;
     const invoiceAmount = invoice.amount && invoice.amount / 100;
-    const { user } = this.state;
+    const { user, downloading } = this.state;
     return (
       <Card style={style.invoiceContainer}>
         <CardItem style={style.invoiceContent}>
@@ -91,8 +95,12 @@ export default class InvoiceComponent extends React.Component<Props, State> {
                 </Text>
               </View>
               {invoice.downloadable && (
-                <TouchableOpacity style={style.downloadButtonContainer}>
-                  <Icon style={style.downloadIcon} type={'Feather'} name={'download'} />
+                <TouchableOpacity style={style.downloadButtonContainer} onPress={async () => this.downloadInvoice()}>
+                  {downloading ? (
+                    <ActivityIndicator size={scale(26)} color={commonColor.textColor} />
+                  ) : (
+                    <Icon style={style.downloadIcon} type={'Feather'} name={'download'} />
+                  )}
                 </TouchableOpacity>
               )}
             </View>
@@ -141,5 +149,13 @@ export default class InvoiceComponent extends React.Component<Props, State> {
       case BillingInvoiceStatus.PAID:
         return style.statusPaid;
     }
+  }
+
+  private async downloadInvoice() {
+    const { invoice } = this.props;
+    this.setState({ downloading: true });
+    await this.centralServerProvider.downloadInvoice(invoice);
+    Message.showSuccess(`${I18n.t('invoices.downloadedSuccessfully')}!`);
+    this.setState({ downloading: false });
   }
 }

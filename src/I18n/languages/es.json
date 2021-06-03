@@ -213,7 +213,9 @@
   "invoices": {
     "noInvoices": "No Invoices",
     "invoiceUnexpectedError": "An error occurred",
-    "invoices": "Invoice(s)"
+    "invoices": "Invoice(s)",
+    "invoice": "Invoice",
+    "downloadedSuccessfully": "Invoice download successfully"
   },
   "invoiceStatus": {
     "paid": "Paid",

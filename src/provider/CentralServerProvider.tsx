@@ -28,6 +28,10 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
+import RNFetchBlob, { FetchBlobResponse } from 'rn-fetch-blob';
+import { Platform } from 'react-native';
+import { PLATFORM } from '../theme/variables/commonColor';
+import I18n from 'i18n-js';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
@@ -868,14 +872,44 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async downloadInvoice(invoiceID: string): Promise<any> {
-    const url = `${this.buildRestServerURL()}/${ServerAction.BILLING_DOWNLOAD_INVOICE}`.replace(':invoiceID', invoiceID);
-    const result = await this.axiosInstance.get(url, {
-      headers: this.buildSecuredHeaders(),
-      responseType: 'blob'
-    });
-    return result;
+  /* eslint-disable @typescript-eslint/indent */
+  public async downloadInvoice(invoice: BillingInvoice): Promise<FetchBlobResponse> {
+    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_DOWNLOAD_INVOICE}`.replace(':invoiceID', invoice.id as string);
+    const fileName = `${I18n.t('invoices.invoice')}_${invoice.number}.pdf`;
+    const downloadedFilePath = RNFetchBlob.fs.dirs.DownloadDir + '/' + fileName;
+    const config =
+      Platform.OS === PLATFORM.IOS
+        ? { fileCache: true, path: downloadedFilePath, appendExt: 'png' }
+        : {
+            addAndroidDownloads: {
+              path: downloadedFilePath,
+              useDownloadManager: true, // <-- this is the only thing required
+              mime: 'application/pdf',
+              notification: true,
+              // Title of download notification
+              title: fileName,
+              // Make the file scannable  by media scanner
+              mediaScannable: true,
+              // File description (not notification description)
+              description: 'Charge invoice downloaded from e-Mobility'
+            }
+          };
+    const res = await RNFetchBlob.config(config).fetch('GET', url, this.buildSecuredHeaders());
+    return res;
   }
+
+  /*public async downloadInvoiceWithRNFS(invoiceID: string): Promise<any> {
+    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_DOWNLOAD_INVOICE}`.replace(':invoiceID', invoiceID);
+    const path = `${RNFS.DocumentDirectoryPath}/invoice.pdf`;
+    const { promise } = RNFS.downloadFile({
+      fromUrl: url,
+      toFile: path,
+      headers: this.buildSecuredHeaders()
+    });
+    const res = await promise;
+    Message.showInfo(path);
+    return res;
+  }*/
 
   public getSecurityProvider(): SecurityProvider {
     return this.securityProvider;
