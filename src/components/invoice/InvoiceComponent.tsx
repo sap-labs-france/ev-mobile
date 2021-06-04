@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
 import { Card, CardItem, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { ActivityIndicator, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { ActivityIndicator, Alert, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import I18nManager from '../../I18n/I18nManager';
 import CentralServerProvider from '../../provider/CentralServerProvider';
@@ -95,7 +95,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
                 </Text>
               </View>
               {invoice.downloadable && (
-                <TouchableOpacity style={style.downloadButtonContainer} onPress={async () => this.downloadInvoice()}>
+                <TouchableOpacity style={style.downloadButtonContainer} onPress={() => this.onPressDownload()}>
                   {downloading ? (
                     <ActivityIndicator size={scale(26)} color={commonColor.textColor} />
                   ) : (
@@ -149,6 +149,17 @@ export default class InvoiceComponent extends React.Component<Props, State> {
       case BillingInvoiceStatus.PAID:
         return style.statusPaid;
     }
+  }
+
+  private onPressDownload() {
+    const invoice = this.props.invoice;
+    const user = this.state.user;
+    const invoiceDate = I18nManager.formatDateTime(invoice.createdOn);
+    Alert.alert(
+      I18n.t('invoices.downloadInvoiceTitle'),
+      I18n.t('invoices.downloadInvoiceSubtitle', { user: Utils.buildUserName(user), invoiceDate }),
+      [{ text: I18n.t('general.yes'), onPress: async () => this.downloadInvoice() }, { text: I18n.t('general.cancel') }]
+    );
   }
 
   private async downloadInvoice() {

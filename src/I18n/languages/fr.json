@@ -216,7 +216,9 @@
     "invoices": "Facture(s)",
     "invoice": "Facture",
     "downloadedSuccessfully": "Facture téléchargée",
-    "invoiceFileDescription": "Facture de recharge e-Mobility"
+    "invoiceFileDescription": "Facture de recharge e-Mobility",
+    "downloadInvoiceTitle": "Télécharger une facture",
+    "downloadInvoiceSubtitle": "Télécharger la facture de {{user}} du {{invoiceDate}}?"
   },
   "invoiceStatus": {
     "paid": "Payée",
