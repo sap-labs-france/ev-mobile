@@ -28,7 +28,7 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
-import RNFetchBlob, { FetchBlobResponse } from 'rn-fetch-blob';
+import ReactNativeBlobUtil, { FetchBlobResponse } from 'react-native-blob-util';
 import { Platform } from 'react-native';
 import { PLATFORM } from '../theme/variables/commonColor';
 import I18n from 'i18n-js';
@@ -876,11 +876,12 @@ export default class CentralServerProvider {
   public async downloadInvoice(invoice: BillingInvoice): Promise<FetchBlobResponse> {
     const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_DOWNLOAD_INVOICE}`.replace(':invoiceID', invoice.id as string);
     const fileName = `${I18n.t('invoices.invoice')}_${invoice.number}.pdf`;
-    const downloadedFilePath = RNFetchBlob.fs.dirs.DownloadDir + '/' + fileName;
+    const downloadedFilePath = ReactNativeBlobUtil.fs.dirs.DownloadDir + '/' + fileName;
     const config =
       Platform.OS === PLATFORM.IOS
-        ? { fileCache: true, path: downloadedFilePath, appendExt: 'png' }
+        ? { fileCache: true, path: downloadedFilePath, appendExt: 'pdf' }
         : {
+            fileCache: true,
             addAndroidDownloads: {
               path: downloadedFilePath,
               useDownloadManager: true, // <-- this is the only thing required
@@ -894,7 +895,7 @@ export default class CentralServerProvider {
               description: `${I18n.t('invoices.invoiceFileDescription')} ${invoice.number}`
             }
           };
-    const res = await RNFetchBlob.config(config).fetch('GET', url, this.buildSecuredHeaders());
+    const res = await ReactNativeBlobUtil.config(config).fetch('GET', url, this.buildSecuredHeaders());
     return res;
   }
 
