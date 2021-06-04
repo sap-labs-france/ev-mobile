@@ -606,7 +606,7 @@ export default class CentralServerProvider {
     this.debugMethod('clearCache');
     // Call
     const result = await this.axiosInstance.put(
-      `${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS}/cache/clear`,
+      `${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS_CACHE_CLEAR}`,
       {
         headers: this.buildSecuredHeaders()
       }
@@ -618,7 +618,7 @@ export default class CentralServerProvider {
     this.debugMethod('unlockConnector');
     // Call
     const result = await this.axiosInstance.put(
-      `${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS}/${chargingStationID}/connector/${connectorId}/unlock`,
+      `${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS}/${chargingStationID}/connectors/${connectorId}/unlock`,
       {
         headers: this.buildSecuredHeaders()
       }
@@ -729,7 +729,7 @@ export default class CentralServerProvider {
     this.debugMethod('requestChargingStationOCPPConfiguration');
     // Call
     const result = await this.axiosInstance.post(
-      `${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS}/ocpp/parameters`,
+      `${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS_REQUEST_OCPP_PARAMETERS}`,
       {
         chargingStationID: id,
         forceUpdateOCPPParamsFromTemplate: false
