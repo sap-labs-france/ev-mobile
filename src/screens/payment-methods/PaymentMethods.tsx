@@ -157,7 +157,7 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
                 <Swipeable
                   overshootRight={false}
                   overshootLeft={false}
-                  containerStyle={style.swiperContainer}
+                  childrenContainerStyle={style.swiperChildrenContainer}
                   renderRightActions={() => this.renderSwipeableActions(paymentMethod, style)}>
                   <PaymentMethodComponent paymentMethod={paymentMethod} navigation={navigation} />
                 </Swipeable>
@@ -201,6 +201,7 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
     );
   }
 
+  // TODO show spinner or similar to indicate download is in progress
   private async deletePaymentMethod(paymentMethodID: string): Promise<void> {
     const userID = this.centralServerProvider?.getUserInfo()?.id;
     try {

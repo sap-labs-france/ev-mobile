@@ -44,9 +44,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: 'white',
       fontSize: '20@s'
     },
-    swiperContainer: {
-      alignItems: 'center',
-      justifyContent: 'center'
+    swiperChildrenContainer: {
+      backgroundColor: commonColor.containerBgColor
     }
   });
   const portraitStyles = {};
