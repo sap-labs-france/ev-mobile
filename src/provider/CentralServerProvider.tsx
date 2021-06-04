@@ -3,6 +3,7 @@ import { Buffer } from 'buffer';
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
 import jwtDecode from 'jwt-decode';
+import SafeUrlAssembler from 'safe-url-assembler';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
@@ -482,7 +483,7 @@ export default class CentralServerProvider {
     // Build Paging
     this.buildPaging(paging, params);
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CHARGING_STATIONS}`, {
+    const result = await this.axiosInstance.get(`${this.buildRestServerURL()}/${ServerAction.CHARGING_STATIONS}`, {
       headers: this.buildSecuredHeaders(),
       params
     });
@@ -504,8 +505,9 @@ export default class CentralServerProvider {
 
   public async getChargingStation(id: string): Promise<ChargingStation> {
     this.debugMethod('getChargingStation');
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATION, { id });
     // Call
-    const result = await this.axiosInstance.get(`${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS}/${id}`, {
+    const result = await this.axiosInstance.get(url, {
       headers: this.buildSecuredHeaders(),
       params: {
         ID: id
@@ -516,9 +518,9 @@ export default class CentralServerProvider {
 
   public async getChargingStationOcppParameters(id: string): Promise<DataResult<KeyValue>> {
     this.debugMethod('getChargingStationOcppParameters');
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATION_GET_OCPP_PARAMETERS, { id });
     // Call
-    const result = await this.axiosInstance.get(
-      `${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS}/${id}/ocpp/parameters`,
+    const result = await this.axiosInstance.get(url,
       {
         headers: this.buildSecuredHeaders()
       }
@@ -552,9 +554,9 @@ export default class CentralServerProvider {
 
   public async startTransaction(chargingStationID: string, connectorId: number, tagID: string): Promise<ActionResponse> {
     this.debugMethod('startTransaction');
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_REMOTE_START, { id: chargingStationID });
     // Call
-    const result = await this.axiosInstance.put(
-      `${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS}/${chargingStationID}/remote/start`,
+    const result = await this.axiosInstance.put(url,
       {
         args: {
           connectorId,
@@ -570,9 +572,9 @@ export default class CentralServerProvider {
 
   public async stopTransaction(chargingStationID: string, transactionId: number): Promise<ActionResponse> {
     this.debugMethod('stopTransaction');
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_REMOTE_STOP, { id: chargingStationID });
     // Call
-    const result = await this.axiosInstance.put(
-      `${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS}/${chargingStationID}/remote/stop`,
+    const result = await this.axiosInstance.put(url,
       {
         args: {
           transactionId
@@ -587,9 +589,9 @@ export default class CentralServerProvider {
 
   public async reset(chargingStationID: string, type: 'Soft' | 'Hard'): Promise<ActionResponse> {
     this.debugMethod('reset');
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_RESET, { id: chargingStationID });
     // Call
-    const result = await this.axiosInstance.put(
-      `${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS}/${chargingStationID}/reset`,
+    const result = await this.axiosInstance.put(url,
       {
         args: {
           type
@@ -604,9 +606,9 @@ export default class CentralServerProvider {
 
   public async clearCache(chargingStationID: string): Promise<ActionResponse> {
     this.debugMethod('clearCache');
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_CACHE_CLEAR, { id: chargingStationID });
     // Call
-    const result = await this.axiosInstance.put(
-      `${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS}/${chargingStationID}/cache/clear`,
+    const result = await this.axiosInstance.put(url,
       {
         headers: this.buildSecuredHeaders()
       }
@@ -616,9 +618,9 @@ export default class CentralServerProvider {
 
   public async unlockConnector(chargingStationID: string, connectorId: number): Promise<ActionResponse> {
     this.debugMethod('unlockConnector');
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_UNLOCK_CONNECTOR, { id: chargingStationID, connectorId });
     // Call
-    const result = await this.axiosInstance.put(
-      `${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS}/${chargingStationID}/connectors/${connectorId}/unlock`,
+    const result = await this.axiosInstance.put(url,
       {
         headers: this.buildSecuredHeaders()
       }
@@ -645,9 +647,9 @@ export default class CentralServerProvider {
     params.Limit = '1';
     params.Skip = '0';
     params.SortFields = '-timestamp';
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_TRANSACTIONS, { id: chargingStationID });
     // Call
-    const result = await this.axiosInstance.get(
-      `${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS}/${chargingStationID}/transactions`,
+    const result = await this.axiosInstance.get(url,
       {
         headers: this.buildSecuredHeaders(),
         params
@@ -910,5 +912,15 @@ export default class CentralServerProvider {
 
   private buildCentralRestServerServiceSecuredURL(): string {
     return this.tenant?.endpoint + '/client/api';
+  }
+
+  private buildRestEndpointUrl(urlPatternAsString: ServerRoute, params: {
+    // Just a flat list of key/value pairs!
+    [name: string]: string | number | null;
+  } = {}) {
+    const url = SafeUrlAssembler(this.buildRestServerURL())
+      .template('/' + urlPatternAsString)
+      .param(params);
+    return url.toString();
   }
 }
