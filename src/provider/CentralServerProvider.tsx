@@ -606,7 +606,7 @@ export default class CentralServerProvider {
     this.debugMethod('clearCache');
     // Call
     const result = await this.axiosInstance.put(
-      `${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS_CACHE_CLEAR}`,
+      `${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS}/${chargingStationID}/cache/clear`,
       {
         headers: this.buildSecuredHeaders()
       }
