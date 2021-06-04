@@ -183,7 +183,7 @@
     "deletePaymentMethodSuccess": "Méthode de paiement supprimée",
     "deletePaymentMethodTitle": "Supprimer une méthode de paiement",
     "deletePaymentMethodSubtitle": "Voulez-vous vraiment supprimer la carte {{cardBrand}} finissant par {{cardLast4}}",
-    "addPaymentMethod": "Ajouter une méthode de paiment"
+    "addPaymentMethod": "Ajouter une méthode de paiement"
   },
   "paymentMethodStatus": {
     "valid": "Valide",

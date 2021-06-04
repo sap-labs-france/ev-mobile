@@ -846,7 +846,7 @@ export default class CentralServerProvider {
   }
 
   public async deletePaymentMethod(userID: string, paymentMethodID: string): Promise<any> {
-    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_DETACH}`
+    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD}`
       .replace(':userID', userID)
       .replace(':paymentMethodID', paymentMethodID);
     const res = await this.axiosInstance.delete(url, { headers: this.buildSecuredHeaders() });

@@ -29,7 +29,7 @@ interface State {
   count?: number;
   refreshing?: boolean;
   loading?: boolean;
-  downloads?: Record<string, boolean>;
+  deleteOperationsStates?: Record<string, boolean>;
 }
 
 export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> {
@@ -45,7 +45,7 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
       count: 0,
       refreshing: false,
       loading: true,
-      downloads: {}
+      deleteOperationsStates: {}
     };
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
@@ -176,16 +176,16 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
   };
 
   private renderSwipeableActions(paymentMethod: BillingPaymentMethod, style: any) {
-    const downloading = this.state.downloads?.[paymentMethod.id];
+    const deleteInProgress = this.state.deleteOperationsStates?.[paymentMethod.id];
     const commonColors = Utils.getCurrentCommonColor();
     return paymentMethod.isDefault ? null : (
       <TouchableOpacity
-        disabled={downloading}
+        disabled={deleteInProgress}
         style={style.trashIconButton}
         onPress={() => {
           this.onPressDelete(paymentMethod);
         }}>
-        {downloading ? (
+        {deleteInProgress ? (
           <ActivityIndicator size={scale(20)} color={commonColors.textColor} />
         ) : (
           <Icon style={style.trashIcon} name="trash" />
@@ -212,19 +212,12 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
 
   private async deletePaymentMethod(paymentMethodID: string): Promise<void> {
     const userID = this.centralServerProvider?.getUserInfo()?.id;
-    this.setState({ downloads: { ...this.state.downloads, [paymentMethodID]: true } });
+    this.setState({ deleteOperationsStates: { ...this.state.deleteOperationsStates, [paymentMethodID]: true } });
     try {
       // TODO check res data success (waiting for server change)
       const res = await this.centralServerProvider.deletePaymentMethod(userID, paymentMethodID);
-      const { downloads } = this.state;
-      delete downloads[paymentMethodID];
-      this.setState({ downloads });
-      await this.refresh();
       Message.showSuccess(I18n.t('paymentMethods.deletePaymentMethodSuccess'));
     } catch (error) {
-      const { downloads } = this.state;
-      delete downloads[paymentMethodID];
-      this.setState({ downloads });
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
         Utils.handleHttpUnexpectedError(
@@ -235,6 +228,11 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
           this.refresh.bind(this)
         );
       }
+    } finally {
+      const deleteOperationsStates = this.state.deleteOperationsStates;
+      delete deleteOperationsStates[paymentMethodID];
+      this.setState({ deleteOperationsStates });
+      await this.refresh();
     }
   }
 }
