@@ -218,7 +218,7 @@
     "downloadedSuccessfully": "Invoice downloaded successfully",
     "invoiceFileDescription": "e-Mobility charging session invoice",
     "downloadInvoiceTitle": "Download invoice",
-    "downloadInvoiceSubtitle": "Download the invoice of {{user}} from the {{invoiceDate}}"
+    "downloadInvoiceSubtitle": "Download the invoice of {{user}} from {{invoiceDate}}"
   },
   "invoiceStatus": {
     "paid": "Paid",
