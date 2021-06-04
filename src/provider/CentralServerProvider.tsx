@@ -845,12 +845,12 @@ export default class CentralServerProvider {
     return result.data as BillingOperationResponse;
   }
 
-  public async deletePaymentMethod(userID: string, paymentMethodID: string): Promise<void> {
+  public async deletePaymentMethod(userID: string, paymentMethodID: string): Promise<any> {
     const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_DETACH}`
       .replace(':userID', userID)
       .replace(':paymentMethodID', paymentMethodID);
     const res = await this.axiosInstance.delete(url, { headers: this.buildSecuredHeaders() });
-    console.log(res);
+    return res;
   }
 
   public async getPaymentMethods(

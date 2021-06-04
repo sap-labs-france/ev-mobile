@@ -1,8 +1,8 @@
 import { DrawerActions } from '@react-navigation/native';
-import i18n from 'i18n-js';
+import I18n from 'i18n-js';
 import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { Alert, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, TouchableOpacity, View } from 'react-native';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
@@ -18,7 +18,7 @@ import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './PaymentMethodsStyle';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Message from '../../utils/Message';
-import I18n from 'i18n-js';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -29,6 +29,7 @@ interface State {
   count?: number;
   refreshing?: boolean;
   loading?: boolean;
+  downloads?: Record<string, boolean>;
 }
 
 export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> {
@@ -43,7 +44,8 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
       limit: Constants.PAGING_SIZE,
       count: 0,
       refreshing: false,
-      loading: true
+      loading: true,
+      downloads: {}
     };
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
@@ -129,8 +131,8 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
     return (
       <Container style={style.container}>
         <HeaderComponent
-          title={i18n.t('sidebar.paymentMethods')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${i18n.t('paymentMethods.paymentMethods')}` : null}
+          title={I18n.t('sidebar.paymentMethods')}
+          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('paymentMethods.paymentMethods')}` : null}
           navigation={this.props.navigation}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
@@ -165,7 +167,7 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}
               onEndReached={this.onEndScroll}
-              emptyTitle={i18n.t('paymentMethods.noPaymentMethod')}
+              emptyTitle={I18n.t('paymentMethods.noPaymentMethod')}
             />
           </View>
         )}
@@ -174,13 +176,20 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
   };
 
   private renderSwipeableActions(paymentMethod: BillingPaymentMethod, style: any) {
+    const downloading = this.state.downloads?.[paymentMethod.id];
+    const commonColors = Utils.getCurrentCommonColor();
     return paymentMethod.isDefault ? null : (
       <TouchableOpacity
+        disabled={downloading}
         style={style.trashIconButton}
         onPress={() => {
           this.onPressDelete(paymentMethod);
         }}>
-        <Icon style={style.trashIcon} name="trash" />
+        {downloading ? (
+          <ActivityIndicator size={scale(20)} color={commonColors.textColor} />
+        ) : (
+          <Icon style={style.trashIcon} name="trash" />
+        )}
       </TouchableOpacity>
     );
   }
@@ -201,12 +210,21 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
     );
   }
 
-  // TODO show spinner or similar to indicate download is in progress
   private async deletePaymentMethod(paymentMethodID: string): Promise<void> {
     const userID = this.centralServerProvider?.getUserInfo()?.id;
+    this.setState({ downloads: { ...this.state.downloads, [paymentMethodID]: true } });
     try {
-      await this.centralServerProvider.deletePaymentMethod(userID, paymentMethodID);
+      // TODO check res data success (waiting for server change)
+      const res = await this.centralServerProvider.deletePaymentMethod(userID, paymentMethodID);
+      const { downloads } = this.state;
+      delete downloads[paymentMethodID];
+      this.setState({ downloads });
+      await this.refresh();
+      Message.showSuccess(I18n.t('paymentMethods.deletePaymentMethodSuccess'));
     } catch (error) {
+      const { downloads } = this.state;
+      delete downloads[paymentMethodID];
+      this.setState({ downloads });
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
         Utils.handleHttpUnexpectedError(
@@ -218,7 +236,5 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
         );
       }
     }
-    await this.refresh();
-    Message.showSuccess(I18n.t('paymentMethods.deletePaymentMethodSuccess'));
   }
 }
