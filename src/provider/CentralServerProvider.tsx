@@ -849,8 +849,7 @@ export default class CentralServerProvider {
     const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD}`
       .replace(':userID', userID)
       .replace(':paymentMethodID', paymentMethodID);
-    const res = await this.axiosInstance.delete(url, { headers: this.buildSecuredHeaders() });
-    return res;
+    await this.axiosInstance.delete(url, { headers: this.buildSecuredHeaders() });
   }
 
   public async getPaymentMethods(
