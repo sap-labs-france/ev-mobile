@@ -5,6 +5,8 @@ export enum ServerAction {
   PING = 'Ping',
   CHECK_CONNECTION = 'CheckConnection',
 
+  OBJECT_CLONE = 'ObjectClone',
+
   CHARGING_STATION_CLIENT_INITIALIZATION = 'ChargingStationClientInitialization',
   CHARGING_STATION_RESET = 'ChargingStationReset',
   CHARGING_STATION_REQUEST_OCPP_PARAMETERS = 'ChargingStationRequestOcppParameters',
@@ -391,6 +393,7 @@ export enum ServerAction {
   TAG_DELETE = 'TagDelete',
   TAGS_DELETE = 'TagsDelete',
   TAGS_IMPORT = 'TagsImport',
+  TAGS_EXPORT = 'TagsExport',
   USER = 'User',
   USERS_EXPORT = 'UsersExport',
   USERS_IMPORT = 'UsersImport',
@@ -408,13 +411,16 @@ export enum ServerAction {
   BILLING_FORCE_SYNCHRONIZE_USER = 'BillingForceSynchronizeUser',
   CHECK_BILLING_CONNECTION = 'CheckBillingConnection',
   BILLING_TAXES = 'BillingTaxes',
-  BILLING_INVOICES = 'BillingUserInvoices',
-  BILLING_USER_INVOICE = 'BillingUserInvoice',
+  BILLING_INVOICES = 'BillingInvoices',
+  BILLING_INVOICE = 'BillingInvoice',
   BILLING_SYNCHRONIZE_INVOICES = 'BillingSynchronizeInvoices',
+  BILLING_PERFORM_OPERATIONS = 'BillingPeriodicOperations',
   BILLING_FORCE_SYNCHRONIZE_USER_INVOICES = 'BillingForceSynchronizeUserInvoices',
   BILLING_DOWNLOAD_INVOICE = 'BillingDownloadInvoice',
   BILLING_CREATE_TRANSACTION_INVOICE = 'BillingCreateTransactionInvoice',
   BILLING_NEW_INVOICE = 'BillingNewInvoice',
+  BILLING_NEW_INVOICE_PAID = 'BillingNewInvoicePaid',
+  BILLING_NEW_INVOICE_OPEN = 'BillingNewInvoiceOpen',
   BILLING_SETUP_PAYMENT_METHOD = 'BillingSetupPaymentMethod',
   BILLING_PAYMENT_METHODS = 'BillingPaymentMethods',
   BILLING_DELETE_PAYMENT_METHOD = 'BillingDeletePaymentMethod',
@@ -473,6 +479,8 @@ export enum ServerRoute {
   REST_CHARGING_STATIONS_TRANSACTIONS = 'charging-stations/:id/transactions',
   REST_CHARGING_STATIONS_IN_ERROR = 'charging-stations/status/in-error',
   REST_CHARGING_STATIONS_EXPORT = 'charging-stations/action/export',
+  REST_CHARGING_STATIONS_BOOT_NOTIFICATIONS = 'charging-stations/notifications/boot',
+  REST_CHARGING_STATIONS_STATUS_NOTIFICATIONS = 'charging-stations/notifications/status',
 
   REST_CHARGING_STATION_CHECK_SMART_CHARGING_CONNECTION = 'charging-stations/smartcharging/connection/check',
   REST_CHARGING_STATION_TRIGGER_SMART_CHARGING = 'charging-stations/smartcharging/trigger',
@@ -494,8 +502,6 @@ export enum ServerRoute {
 
   REST_TENANTS = 'tenants',
 
-  REST_BILLING_SETTING = 'billing-setting',
-
   // BILLING URLs for CRUD operations on PAYMENT METHODS
   REST_BILLING_PAYMENT_METHODS = 'users/:userID/payment-methods',
   REST_BILLING_PAYMENT_METHOD = 'users/:userID/payment-methods/:paymentMethodID',
@@ -505,9 +511,25 @@ export enum ServerRoute {
   REST_BILLING_PAYMENT_METHOD_ATTACH = 'users/:userID/payment-methods/:paymentMethodID/attach',
   REST_BILLING_PAYMENT_METHOD_DETACH = 'users/:userID/payment-methods/:paymentMethodID/detach',
 
+  REST_BILLING_SETTING = 'billing-setting', // GET and PUT
+  REST_BILLING_CHECK = 'billing/check',
+
   // BILLING URLs for CRUD operations on INVOICES
   REST_BILLING_INVOICES = 'invoices',
+  REST_BILLING_INVOICE = 'invoices/:invoiceID',
 
   // BILLING URLs for Non-CRUD operations on INVOICES
   REST_BILLING_DOWNLOAD_INVOICE = 'invoices/:invoiceID/download'
+}
+
+export enum ServerProtocol {
+  HTTP = 'http',
+  HTTPS = 'https',
+  WS = 'ws',
+  WSS = 'wss'
+}
+
+export enum WSServerProtocol {
+  OCPP16 = 'ocpp1.6',
+  REST = 'rest'
 }
