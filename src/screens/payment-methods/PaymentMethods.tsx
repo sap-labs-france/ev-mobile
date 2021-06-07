@@ -229,9 +229,8 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
         this.refresh.bind(this)
       );
     } finally {
-      const deleteOperationsStates = this.state.deleteOperationsStates;
-      delete deleteOperationsStates[paymentMethodID];
-      this.setState({ deleteOperationsStates }, this.refresh.bind(this));
+      delete this.state.deleteOperationsStates[paymentMethodID];
+      this.setState(this.state);
     }
   }
 }
