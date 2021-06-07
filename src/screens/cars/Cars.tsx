@@ -83,7 +83,13 @@ export default class Cars extends BaseAutoRefreshScreen<Props, State> {
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'cars.carUnexpectedError', this.props.navigation, this.refresh);
+        await Utils.handleHttpUnexpectedError(
+          this.centralServerProvider,
+          error,
+          'cars.carUnexpectedError',
+          this.props.navigation,
+          this.refresh.bind(this)
+        );
       }
     }
     return null;

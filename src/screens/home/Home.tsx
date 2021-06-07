@@ -116,7 +116,12 @@ export default class Home extends BaseScreen<Props, State> {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'transactions.transactionUnexpectedError', this.props.navigation);
+      await Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'transactions.transactionUnexpectedError',
+        this.props.navigation
+      );
     }
   };
 
