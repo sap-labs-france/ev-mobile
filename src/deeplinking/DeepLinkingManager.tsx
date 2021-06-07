@@ -64,6 +64,7 @@ export default class DeepLinkingManager {
 
   private addResetPasswordRoute = () => {
     // Add Route
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     DeepLinking.addRoute('/resetPassword/:tenant/:hash', async (response: { tenant: string; hash: string }) => {
       // Check params
       if (!response.tenant) {
@@ -94,6 +95,7 @@ export default class DeepLinkingManager {
     // Add Route
     DeepLinking.addRoute(
       '/verifyAccount/:tenant/:email/:token/:resetToken',
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       async (response: { tenant: string; email: string; token: string; resetToken: string }) => {
         // Check params
         if (!response.tenant) {
@@ -112,7 +114,7 @@ export default class DeepLinkingManager {
         }
         // Disable
         this.centralServerProvider.setAutoLoginDisabled(true);
-        this.centralServerProvider.logoff();
+        await this.centralServerProvider.logoff();
         // Navigate to login page
         this.navigator.dispatch(
           CommonActions.navigate({
@@ -158,7 +160,7 @@ export default class DeepLinkingManager {
                 break;
               // Other common Error
               default:
-                Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.activationUnexpectedError');
+                await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.activationUnexpectedError');
             }
           } else {
             Message.showError(I18n.t('authentication.activationUnexpectedError'));
