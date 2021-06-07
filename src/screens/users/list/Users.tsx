@@ -92,7 +92,7 @@ export default class Users extends SelectableList<User> {
     } catch (error) {
       // Check if HTTP?
       if (!error.request) {
-        Utils.handleHttpUnexpectedError(
+        await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
           'users.userUnexpectedError',

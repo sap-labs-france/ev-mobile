@@ -110,7 +110,13 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return siteImage;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'sites.siteUnexpectedError', this.props.navigation, this.refresh);
+      await Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'sites.siteUnexpectedError',
+        this.props.navigation,
+        this.refresh.bind(this)
+      );
     }
     return null;
   };
@@ -122,12 +128,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return chargingStation;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
+      await Utils.handleHttpUnexpectedError(
         this.centralServerProvider,
         error,
         'chargers.chargerUnexpectedError',
         this.props.navigation,
-        this.refresh
+        this.refresh.bind(this)
       );
     }
     return null;
@@ -141,12 +147,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-        Utils.handleHttpUnexpectedError(
+        await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
           'transactions.transactionUnexpectedError',
           this.props.navigation,
-          this.refresh
+          this.refresh.bind(this)
         );
       }
     }
@@ -161,12 +167,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-        Utils.handleHttpUnexpectedError(
+        await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
           'transactions.transactionUnexpectedError',
           this.props.navigation,
-          this.refresh
+          this.refresh.bind(this)
         );
       }
     }
@@ -333,12 +339,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       // Enable the button
       this.setState({ buttonDisabled: false });
       // Other common Error
-      Utils.handleHttpUnexpectedError(
+      await Utils.handleHttpUnexpectedError(
         this.centralServerProvider,
         error,
         'transactions.transactionStartUnexpectedError',
         this.props.navigation,
-        this.refresh
+        this.refresh.bind(this)
       );
     }
   };
@@ -367,12 +373,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
+      await Utils.handleHttpUnexpectedError(
         this.centralServerProvider,
         error,
         'transactions.transactionStopUnexpectedError',
         this.props.navigation,
-        this.refresh
+        this.refresh.bind(this)
       );
     }
   };

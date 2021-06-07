@@ -1,6 +1,7 @@
 import { View } from 'native-base';
 import React from 'react';
 import { Avatar } from 'react-native-elements';
+import { scale } from 'react-native-size-matters';
 
 import noPhoto from '../../../../assets/no-photo.png';
 import CentralServerProvider from '../../../provider/CentralServerProvider';
@@ -10,7 +11,6 @@ import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UserAvatarStyle';
-import { scale } from 'react-native-size-matters';
 
 interface State {
   user?: User;
@@ -98,7 +98,7 @@ export default class UserAvatar extends React.Component<Props, State> {
     } catch (error) {
       // Check if HTTP?
       if (!error.request) {
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'users.userUnexpectedError', this.props.navigation);
+        await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'users.userUnexpectedError', this.props.navigation);
       }
     }
     return null;
