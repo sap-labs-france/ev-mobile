@@ -160,7 +160,7 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
                   overshootRight={false}
                   overshootLeft={false}
                   childrenContainerStyle={style.swiperChildrenContainer}
-                  renderRightActions={() => this.renderSwipeableActions(paymentMethod, style)}>
+                  renderRightActions={() => this.renderPaymentMethodRightActions(paymentMethod, style)}>
                   <PaymentMethodComponent paymentMethod={paymentMethod} navigation={navigation} />
                 </Swipeable>
               )}
@@ -175,26 +175,28 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
     );
   };
 
-  private renderSwipeableActions(paymentMethod: BillingPaymentMethod, style: any) {
+  private renderPaymentMethodRightActions(paymentMethod: BillingPaymentMethod, style: any) {
     const deleteInProgress = this.state.deleteOperationsStates?.[paymentMethod.id];
     const commonColors = Utils.getCurrentCommonColor();
-    return paymentMethod.isDefault ? null : (
-      <TouchableOpacity
-        disabled={deleteInProgress}
-        style={style.trashIconButton}
-        onPress={() => {
-          this.onPressDelete(paymentMethod);
-        }}>
-        {deleteInProgress ? (
-          <ActivityIndicator size={scale(20)} color={commonColors.textColor} />
-        ) : (
-          <Icon style={style.trashIcon} name="trash" />
-        )}
-      </TouchableOpacity>
+    return (
+      !paymentMethod.isDefault && (
+        <TouchableOpacity
+          disabled={deleteInProgress}
+          style={style.trashIconButton}
+          onPress={() => {
+            this.deletePaymentMethodConfirm(paymentMethod);
+          }}>
+          {deleteInProgress ? (
+            <ActivityIndicator size={scale(20)} color={commonColors.textColor} />
+          ) : (
+            <Icon style={style.trashIcon} name="trash" />
+          )}
+        </TouchableOpacity>
+      )
     );
   }
 
-  private onPressDelete(paymentMethod: BillingPaymentMethod): void {
+  private deletePaymentMethodConfirm(paymentMethod: BillingPaymentMethod): void {
     Alert.alert(
       I18n.t('paymentMethods.deletePaymentMethodTitle'),
       I18n.t('paymentMethods.deletePaymentMethodSubtitle', { cardBrand: paymentMethod.brand, cardLast4: paymentMethod.last4 }),
@@ -231,8 +233,7 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
     } finally {
       const deleteOperationsStates = this.state.deleteOperationsStates;
       delete deleteOperationsStates[paymentMethodID];
-      this.setState({ deleteOperationsStates });
-      await this.refresh();
+      this.setState({ deleteOperationsStates }, this.refresh.bind(this));
     }
   }
 }
