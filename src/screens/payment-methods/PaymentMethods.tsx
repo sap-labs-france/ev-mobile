@@ -221,15 +221,13 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
       Message.showSuccess(I18n.t('paymentMethods.deletePaymentMethodSuccess'));
     } catch (error) {
       // Check if HTTP?
-      if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-        Utils.handleHttpUnexpectedError(
-          this.centralServerProvider,
-          error,
-          'paymentMethods.paymentMethodUnexpectedError',
-          this.props.navigation,
-          this.refresh.bind(this)
-        );
-      }
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'paymentMethods.paymentMethodUnexpectedError',
+        this.props.navigation,
+        this.refresh.bind(this)
+      );
     } finally {
       const deleteOperationsStates = this.state.deleteOperationsStates;
       delete deleteOperationsStates[paymentMethodID];
