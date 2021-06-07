@@ -857,7 +857,7 @@ export default class CentralServerProvider {
   }
 
   /* eslint-disable @typescript-eslint/indent */
-  public async downloadInvoice(invoice: BillingInvoice): Promise<FetchBlobResponse> {
+  public async downloadInvoice(invoice: BillingInvoice): Promise<void> {
     const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_DOWNLOAD_INVOICE}`.replace(':invoiceID', invoice.id.toString());
     const fileName = `${I18n.t('invoices.invoice')}_${invoice.number}.pdf`;
     const downloadedFilePath = ReactNativeBlobUtil.fs.dirs.DownloadDir + '/' + fileName;
