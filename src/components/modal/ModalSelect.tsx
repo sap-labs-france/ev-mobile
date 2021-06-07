@@ -40,13 +40,11 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
     const { buildItemName, selectionMode, defaultItem } = this.props;
     const { selectedItems, isVisible, canValidateMultiSelection } = this.state;
     const itemsList = React.Children.only(this.props.children);
-    const otherSelectedItemsCount = Math.max(selectedItems?.length - 1, 0);
-    const initializedSelectedItems = Utils.isEmptyArray(selectedItems) ? [defaultItem] : selectedItems;
     return (
       <View>
         <Button block={true} style={formStyle.button} onPress={() => this.setState({ isVisible: true })}>
           <Text style={formStyle.buttonText} uppercase={false}>
-            {buildItemName(initializedSelectedItems?.[0])} {otherSelectedItemsCount > 0 && `(+${otherSelectedItemsCount})`}
+            {buildItemName(defaultItem)} {selectedItems.length > 1 && `(+${selectedItems.length - 1})`}
           </Text>
         </Button>
         <Modal
@@ -96,8 +94,9 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
   }
 
   private validateSelection(): void {
+    const { onItemsSelected } = this.props;
     const selectedItems = this.itemsListRef?.state.selectedItems;
-    this.setState({ selectedItems, isVisible: false, canValidateMultiSelection: false });
+    this.setState({ selectedItems, isVisible: false, canValidateMultiSelection: false }, () => onItemsSelected(selectedItems));
   }
 
   private onItemSelected(selectedItems: T[]): void {
@@ -105,8 +104,7 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
     if (selectionMode === ItemSelectionMode.MULTI) {
       this.setState({ canValidateMultiSelection: !Utils.isEmptyArray(selectedItems) });
     } else if (selectionMode === ItemSelectionMode.SINGLE && selectedItems && !Utils.isEmptyArray(selectedItems)) {
-      this.setState({ selectedItems, isVisible: false });
+      this.setState({ selectedItems, isVisible: false }, () => onItemsSelected(selectedItems));
     }
-    onItemsSelected(selectedItems);
   }
 }
