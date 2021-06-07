@@ -5,10 +5,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ItemsList, {
-  ItemSelectionMode,
-  ItemsSeparatorType
-} from '../../../components/list/ItemsList';
+import ItemsList, { ItemSelectionMode, ItemsSeparatorType } from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import UserComponent from '../../../components/user/UserComponent';
 import I18nManager from '../../../I18n/I18nManager';
@@ -72,15 +69,7 @@ export default class Users extends SelectableList<User> {
         UserID: this.userIDs?.join('|'),
         carName: this.title
       };
-      const users = await this.centralServerProvider.getUsers(
-        params,
-        onlyCount
-          ? Constants.ONLY_RECORD_COUNT
-          : {
-              skip,
-              limit
-            }
-      );
+      const users = await this.centralServerProvider.getUsers(params, onlyCount ? Constants.ONLY_RECORD_COUNT : { skip, limit });
       // Check
       if (users.count === -1) {
         // Request nbr of records
@@ -160,7 +149,6 @@ export default class Users extends SelectableList<User> {
     const style = computeStyleSheet();
     const { users, count, skip, limit, refreshing, loading } = this.state;
     const { navigation, isModal, selectionMode } = this.props;
-
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -170,14 +158,7 @@ export default class Users extends SelectableList<User> {
           leftAction={isModal ? null : this.onBack}
           leftActionIcon={isModal ? null : 'navigate-before'}
           displayTenantLogo={false}
-          rightAction={
-            isModal
-              ? null
-              : () => {
-                navigation.dispatch(DrawerActions.openDrawer());
-                return true;
-              }
-          }
+          rightAction={isModal ? null : () => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
           rightActionIcon={isModal ? null : 'menu'}
         />
         {loading ? (
