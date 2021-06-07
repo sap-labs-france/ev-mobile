@@ -874,29 +874,30 @@ export default class CentralServerProvider {
 
   /* eslint-disable @typescript-eslint/indent */
   public async downloadInvoice(invoice: BillingInvoice): Promise<FetchBlobResponse> {
-    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_DOWNLOAD_INVOICE}`.replace(':invoiceID', invoice.id as string);
+    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_DOWNLOAD_INVOICE}`.replace(':invoiceID', invoice.id.toString());
     const fileName = `${I18n.t('invoices.invoice')}_${invoice.number}.pdf`;
     const downloadedFilePath = ReactNativeBlobUtil.fs.dirs.DownloadDir + '/' + fileName;
-    const config =
-      Platform.OS === PLATFORM.IOS
-        ? { fileCache: true, path: downloadedFilePath, appendExt: 'pdf' }
-        : {
-            fileCache: true,
-            addAndroidDownloads: {
-              path: downloadedFilePath,
-              useDownloadManager: true, // <-- this is the only thing required
-              mime: 'application/pdf',
-              notification: true,
-              // Title of download notification
-              title: fileName,
-              // Make the file scannable  by media scanner
-              mediaScannable: true,
-              // File description (not notification description)
-              description: `${I18n.t('invoices.invoiceFileDescription')} ${invoice.number}`
-            }
-          };
-    const res = await ReactNativeBlobUtil.config(config).fetch('GET', url, this.buildSecuredHeaders());
-    return res;
+    let config = {};
+    if (Platform.OS === PLATFORM.IOS) {
+      config = { fileCache: true, path: downloadedFilePath, appendExt: 'pdf' };
+    } else if (Platform.OS === PLATFORM.ANDROID) {
+      config = {
+        fileCache: true,
+        addAndroidDownloads: {
+          path: downloadedFilePath,
+          useDownloadManager: true, // <-- this is the only thing required
+          mime: 'application/pdf',
+          notification: true,
+          // Title of download notification
+          title: fileName,
+          // Make the file scannable  by media scanner
+          mediaScannable: true,
+          // File description (not notification description)
+          description: `${I18n.t('invoices.invoiceFileDescription')} ${invoice.number}`
+        }
+      };
+    }
+    await ReactNativeBlobUtil.config(config).fetch('GET', url, this.buildSecuredHeaders());
   }
 
   public getSecurityProvider(): SecurityProvider {

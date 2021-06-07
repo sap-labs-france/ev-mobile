@@ -95,7 +95,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
                 </Text>
               </View>
               {invoice.downloadable && (
-                <TouchableOpacity style={style.downloadButtonContainer} onPress={() => this.onPressDownload()}>
+                <TouchableOpacity style={style.downloadButtonContainer} onPress={() => this.downloadInvoiceConfirm()}>
                   {downloading ? (
                     <ActivityIndicator size={scale(26)} color={commonColor.textColor} />
                   ) : (
@@ -151,22 +151,34 @@ export default class InvoiceComponent extends React.Component<Props, State> {
     }
   }
 
-  private onPressDownload() {
-    const invoice = this.props.invoice;
-    const user = this.state.user;
+  private downloadInvoiceConfirm() {
+    const { invoice } = this.props;
+    const { user } = this.state;
     const invoiceDate = I18nManager.formatDateTime(invoice.createdOn);
     Alert.alert(
       I18n.t('invoices.downloadInvoiceTitle'),
-      I18n.t('invoices.downloadInvoiceSubtitle', { user: Utils.buildUserName(user), invoiceDate }),
-      [{ text: I18n.t('general.yes'), onPress: async () => this.downloadInvoice() }, { text: I18n.t('general.cancel') }]
+      I18n.t('invoices.downloadInvoiceSubtitle',
+        { user: Utils.buildUserName(user), invoiceDate }),
+        [
+          { text: I18n.t('general.yes'),onPress: async () => this.downloadInvoice() },
+          { text: I18n.t('general.cancel') }]
     );
   }
 
   private async downloadInvoice() {
     const { invoice } = this.props;
     this.setState({ downloading: true });
-    await this.centralServerProvider.downloadInvoice(invoice);
-    Message.showSuccess(`${I18n.t('invoices.downloadedSuccessfully')}!`);
-    this.setState({ downloading: false });
+    try {
+      await this.centralServerProvider.downloadInvoice(invoice);
+      Message.showSuccess(`${I18n.t('invoices.downloadedSuccessfully')}!`);
+      this.setState({ downloading: false });
+    } catch (error) {
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'paymentMethods.paymentMethodUnexpectedError',
+        this.props.navigation
+      );
+    }
   }
 }
