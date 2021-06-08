@@ -861,7 +861,7 @@ export default class CentralServerProvider {
     const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_DOWNLOAD_INVOICE}`.replace(':invoiceID', invoice.id.toString());
     const fileName = `${I18n.t('invoices.invoice')}_${invoice.number}.pdf`;
     const downloadedFilePath = ReactNativeBlobUtil.fs.dirs.DownloadDir + '/' + fileName;
-    let config = {};
+    let config;
     if (Platform.OS === PLATFORM.IOS) {
       config = { fileCache: true, path: downloadedFilePath, appendExt: 'pdf' };
     } else if (Platform.OS === PLATFORM.ANDROID) {
@@ -881,7 +881,9 @@ export default class CentralServerProvider {
         }
       };
     }
-    await ReactNativeBlobUtil.config(config).fetch('GET', url, this.buildSecuredHeaders());
+    if (config) {
+      await ReactNativeBlobUtil.config(config).fetch('GET', url, this.buildSecuredHeaders());
+    }
   }
 
   public getSecurityProvider(): SecurityProvider {
