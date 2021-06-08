@@ -11,7 +11,7 @@ import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ItemsList from '../../components/list/ItemsList';
+import ItemsList, { ItemsSeparatorType } from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteComponent from '../../components/site/SiteComponent';
 import ThemeManager from '../../custom-theme/ThemeManager';
@@ -326,11 +326,12 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
                 {siteSelected && this.buildModal(navigation, siteSelected, modalStyle)}
               </View>
             ) : (
-              <ItemsList
+              <ItemsList<Site>
                 skip={skip}
                 count={count}
                 onEndReached={this.onEndScroll}
-                renderItem={(site: Site) => <SiteComponent site={site} navigation={navigation} />}
+                itemsSeparator={ItemsSeparatorType.DEFAULT}
+                renderItem={(site: Site) => <SiteComponent site={site} navigation={navigation}/>}
                 data={sites}
                 manualRefresh={this.manualRefresh}
                 refreshing={refreshing}

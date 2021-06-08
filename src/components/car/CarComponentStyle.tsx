@@ -14,9 +14,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   commonStyles = ScaledSheet.create({
     container: {
       width: '100%',
-      flexDirection: 'column',
-      borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor
+      flexDirection: 'column'
     },
     selected: {
       opacity: 0.3

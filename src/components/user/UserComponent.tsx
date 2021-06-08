@@ -11,7 +11,6 @@ import computeStyleSheet from './UserComponentStyle';
 
 export interface Props extends BaseProps {
   user: User;
-  selected?: boolean;
 }
 
 interface State {}
@@ -35,7 +34,7 @@ export default class UserComponent extends React.Component<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const chipStyle = computeChipStyleSheet();
-    const { user, selected, navigation } = this.props;
+    const { user, navigation } = this.props;
     const userFullName = Utils.buildUserName(user);
     const userRole = user ? user.role : '';
     const userStatus = user ? user.status : '';
@@ -43,10 +42,10 @@ export default class UserComponent extends React.Component<Props, State> {
     return (
       <View style={style.container}>
         <View style={style.avatarContainer}>
-          <UserAvatar user={user} selected={selected} navigation={navigation} />
+          <UserAvatar user={user} navigation={navigation} />
         </View>
-        <View style={selected ? [style.userContainer, style.selected] : style.userContainer}>
-          <View style={style.userFullnameStatusContainer}>
+        <View style={style.userContainer}>
+          <View style={style.userFullNameStatusContainer}>
             <View style={style.fullNameContainer}>
               <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.fullName}>
                 {userFullName}
