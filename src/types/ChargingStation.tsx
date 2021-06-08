@@ -11,6 +11,7 @@ export enum Voltage {
 }
 
 export default interface ChargingStation extends CreatedUpdatedProps, ListItem {
+  id: string;
   siteAreaID: string;
   chargePointSerialNumber: string;
   chargePointModel: string;

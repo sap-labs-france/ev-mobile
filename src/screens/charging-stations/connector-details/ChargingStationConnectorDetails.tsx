@@ -702,7 +702,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       <Container style={style.container}>
         <HeaderComponent
           navigation={this.props.navigation}
-          title={chargingStation ? chargingStation.id as string : '-'}
+          title={chargingStation ? chargingStation.id : '-'}
           subTitle={connectorLetter ? `(${I18n.t('details.connector')} ${connectorLetter})` : ''}
           leftAction={() => this.onBack()}
           leftActionIcon={'navigate-before'}
@@ -760,12 +760,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     );
   }
 
-  private onUserSelected(users: User[]): void {
-    if (users && !Utils.isEmptyArray(users)) {
-      this.setState({ selectedUser: users[0] });
-    }
-  }
-
   private renderUserSelection(style: any) {
     const { navigation } = this.props;
     const { selectedUser } = this.state;
@@ -776,7 +770,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           onItemsSelected={(selectedUsers: User[]) => this.setState({ selectedUser: selectedUsers?.[0] })}
           buildItemName={Utils.buildUserName}
           navigation={navigation}
-          selectionMode={ItemSelectionMode.SINGLE}>
+          selectionMode={ItemSelectionMode.MULTI}>
           <Users navigation={navigation} />
         </ModalSelect>
       </View>

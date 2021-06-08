@@ -18,7 +18,7 @@ export interface Props<T> extends BaseProps {
 interface State<T> {
   isVisible: boolean;
   selectedItems: T[];
-  canValidateMultiSelection: boolean;
+  selectedItemsCount: number;
 }
 
 export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> {
@@ -30,7 +30,7 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
     this.state = {
       isVisible: false,
       selectedItems: [],
-      canValidateMultiSelection: false
+      selectedItemsCount: 0
     };
   }
 
@@ -38,7 +38,7 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
     const { buildItemName, selectionMode, defaultItem } = this.props;
-    const { selectedItems, isVisible, canValidateMultiSelection } = this.state;
+    const { selectedItems, isVisible, selectedItemsCount } = this.state;
     const itemsList = React.Children.only(this.props.children);
     return (
       <View>
@@ -78,10 +78,10 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
             {selectionMode === ItemSelectionMode.MULTI && (
               <View style={style.bottomButtonContainer}>
                 <Button
-                  disabled={!canValidateMultiSelection}
+                  disabled={selectedItemsCount === 0}
                   block
                   light
-                  style={[style.button, canValidateMultiSelection ? style.buttonEnabled : style.buttonDisabled]}
+                  style={[style.button, selectedItemsCount > 0 ? style.buttonEnabled : style.buttonDisabled]}
                   onPress={() => this.validateSelection()}>
                   <Text style={style.buttonText}>{I18n.t('general.validate')}</Text>
                 </Button>
@@ -96,13 +96,13 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
   private validateSelection(): void {
     const { onItemsSelected } = this.props;
     const selectedItems = this.itemsListRef?.state.selectedItems;
-    this.setState({ selectedItems, isVisible: false, canValidateMultiSelection: false }, () => onItemsSelected(selectedItems));
+    this.setState({ selectedItems: [], isVisible: false, selectedItemsCount: selectedItems.length }, () => onItemsSelected(selectedItems));
   }
 
   private onItemSelected(selectedItems: T[]): void {
     const { selectionMode, onItemsSelected } = this.props;
     if (selectionMode === ItemSelectionMode.MULTI) {
-      this.setState({ canValidateMultiSelection: !Utils.isEmptyArray(selectedItems) });
+      this.setState({ selectedItemsCount: selectedItems.length });
     } else if (selectionMode === ItemSelectionMode.SINGLE && selectedItems && !Utils.isEmptyArray(selectedItems)) {
       this.setState({ selectedItems, isVisible: false }, () => onItemsSelected(selectedItems));
     }
