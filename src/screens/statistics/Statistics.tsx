@@ -131,12 +131,12 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-        Utils.handleHttpUnexpectedError(
+        await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
           'transactions.transactionStatsUnexpectedError',
           this.props.navigation,
-          this.refresh
+          this.refresh.bind(this)
         );
       }
     }

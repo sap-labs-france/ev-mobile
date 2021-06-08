@@ -57,7 +57,7 @@ export default class Eula extends BaseScreen<Props, State> {
       });
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'general.eulaUnexpectedError', this.props.navigation);
+      await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'general.eulaUnexpectedError', this.props.navigation);
     }
   };
 

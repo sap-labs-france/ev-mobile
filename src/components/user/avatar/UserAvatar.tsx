@@ -100,7 +100,7 @@ export default class UserAvatar extends React.Component<Props, State> {
     } catch (error) {
       // Check if HTTP?
       if (!error.request) {
-        Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'users.userUnexpectedError', this.props.navigation);
+        await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'users.userUnexpectedError', this.props.navigation);
       }
     }
     return null;

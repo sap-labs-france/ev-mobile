@@ -86,7 +86,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
         setLoading(false);
         // Handle HTTP errors
       } catch (error) {
-        Utils.handleHttpUnexpectedError(
+        await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
           'paymentMethods.paymentMethodUnexpectedError',
