@@ -38,13 +38,13 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
     const style = computeStyleSheet();
     const formStyle = computeFormStyleSheet();
     const { buildItemName, selectionMode, defaultItem } = this.props;
-    const { selectedItems, isVisible, selectedItemsCount } = this.state;
+    const { isVisible, selectedItemsCount, selectedItems } = this.state;
     const itemsList = React.Children.only(this.props.children);
     return (
       <View>
         <Button block={true} style={formStyle.button} onPress={() => this.setState({ isVisible: true })}>
           <Text style={formStyle.buttonText} uppercase={false}>
-            {buildItemName(defaultItem)} {selectedItems.length > 1 && `(+${selectedItems.length - 1})`}
+            {buildItemName(defaultItem)} {selectedItemsCount > 1 && `(+${selectedItemsCount - 1})`}
           </Text>
         </Button>
         <Modal
@@ -78,10 +78,10 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
             {selectionMode === ItemSelectionMode.MULTI && (
               <View style={style.bottomButtonContainer}>
                 <Button
-                  disabled={selectedItemsCount === 0}
+                  disabled={Utils.isEmptyArray(selectedItems)}
                   block
                   light
-                  style={[style.button, selectedItemsCount > 0 ? style.buttonEnabled : style.buttonDisabled]}
+                  style={[style.button, !Utils.isEmptyArray(selectedItems) ? style.buttonEnabled : style.buttonDisabled]}
                   onPress={() => this.validateSelection()}>
                   <Text style={style.buttonText}>{I18n.t('general.validate')}</Text>
                 </Button>
@@ -96,13 +96,16 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
   private validateSelection(): void {
     const { onItemsSelected } = this.props;
     const selectedItems = this.itemsListRef?.state.selectedItems;
-    this.setState({ selectedItems: [], isVisible: false, selectedItemsCount: selectedItems.length }, () => onItemsSelected(selectedItems));
+    if (!Utils.isEmptyArray(selectedItems)) {
+      this.setState({ selectedItems: [], isVisible: false, selectedItemsCount: selectedItems.length }, () => onItemsSelected(selectedItems)
+      );
+    }
   }
 
   private onItemSelected(selectedItems: T[]): void {
     const { selectionMode, onItemsSelected } = this.props;
     if (selectionMode === ItemSelectionMode.MULTI) {
-      this.setState({ selectedItemsCount: selectedItems.length });
+      this.setState({ selectedItems });
     } else if (selectionMode === ItemSelectionMode.SINGLE && selectedItems && !Utils.isEmptyArray(selectedItems)) {
       this.setState({ selectedItems, isVisible: false }, () => onItemsSelected(selectedItems));
     }
