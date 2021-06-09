@@ -5,9 +5,6 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../utils/Utils';
 
-/**
- *
- */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -38,14 +35,45 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '30%',
       height: '40@s',
       marginBottom: '10@s',
-      borderRadius: '20@s'
+      borderRadius: '20@s',
+      backgroundColor: commonColor.buttonBg
     },
     buttonDisabled: {
-      backgroundColor: commonColor.brandDisabled,
-      opacity: 0.3
+      opacity: 0.4
     },
     buttonEnabled: {
-      backgroundColor: commonColor.buttonBg
+      opacity: 1
+    },
+    eulaContainer: {
+      marginTop: '10@s'
+    },
+    checkboxContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingLeft: '10@s',
+      paddingRight: '10@s'
+    },
+    checkbox: {
+      color: commonColor.textColor,
+      borderColor: commonColor.textColor,
+      backgroundColor: commonColor.containerBgColor,
+      marginRight: '10@s'
+    },
+    text: {
+      color: commonColor.textColor,
+      fontSize: '12@s'
+    },
+    eulaText: {
+      textAlign: 'justify',
+      fontSize: '11@s',
+      fontStyle: 'italic',
+      padding: '7@s'
+    },
+    checkboxText: {
+      textAlign: 'justify',
+      marginTop: '10@s',
+      paddingHorizontal: '10@s'
     },
     buttonText: {
       color: commonColor.textColor,

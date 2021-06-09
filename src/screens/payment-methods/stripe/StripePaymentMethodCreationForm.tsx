@@ -1,7 +1,7 @@
 import { DrawerActions } from '@react-navigation/native';
 import { CardField, CardFieldInput, initStripe, useConfirmSetupIntent } from '@stripe/stripe-react-native';
 import I18n from 'i18n-js';
-import { Button, Spinner, View } from 'native-base';
+import { Button, Spinner, View, CheckBox } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { scale } from 'react-native-size-matters';
@@ -22,6 +22,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
   const { confirmSetupIntent } = useConfirmSetupIntent();
   const [provider, setProvider] = useState<CentralServerProvider>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [eulaChecked, setEulaChecked] = useState<boolean>(false);
   const [cardDetails, setCardDetails] = useState<CardFieldInput.Details>(null);
   const style = computeStyleSheet();
   const commonColors = Utils.getCurrentCommonColor();
@@ -41,7 +42,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
   }
 
   async function addPaymentMethod(): Promise<void> {
-    if (cardDetails?.complete) {
+    if (cardDetails?.complete && eulaChecked) {
       try {
         setLoading(true);
         // STEP 1 - Call Back-End to create intent
@@ -132,6 +133,13 @@ export default function StripePaymentMethodCreationForm(props: Props) {
         postalCodeEnabled={false}
         style={style.cardFieldContainer}
       />
+      <View style={style.eulaContainer}>
+        <Text style={[style.text, style.eulaText]}>{I18n.t('paymentMethods.paymentMethodCreationRules')}</Text>
+        <View style={style.checkboxContainer}>
+          <CheckBox style={style.checkbox} checked={eulaChecked} onPress={() => setEulaChecked(!eulaChecked)} />
+          <Text style={[style.text, style.checkboxText]}>{I18n.t('paymentMethods.paymentMethodsCreationCheckboxText')}</Text>
+        </View>
+      </View>
       <View style={style.buttonContainer}>
         {loading ? (
           <Button style={style.button} light block onPress={async () => addPaymentMethod()}>
@@ -139,8 +147,8 @@ export default function StripePaymentMethodCreationForm(props: Props) {
           </Button>
         ) : (
           <Button
-            disabled={!cardDetails?.complete}
-            style={[style.button, cardDetails?.complete ? style.buttonEnabled : style.buttonDisabled]}
+            disabled={!(cardDetails?.complete && eulaChecked)}
+            style={[style.button, cardDetails?.complete && eulaChecked ? style.buttonEnabled : style.buttonDisabled]}
             light
             block
             onPress={async () => addPaymentMethod()}>
