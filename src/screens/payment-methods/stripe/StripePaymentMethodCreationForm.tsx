@@ -42,7 +42,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
   }
 
   async function addPaymentMethod(): Promise<void> {
-    if (cardDetails?.complete) {
+    if (cardDetails?.complete && eulaChecked) {
       try {
         setLoading(true);
         // STEP 1 - Call Back-End to create intent
