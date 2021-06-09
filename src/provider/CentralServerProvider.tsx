@@ -818,15 +818,16 @@ export default class CentralServerProvider {
   }
 
   public async setUpPaymentMethod(params: { userID: string }): Promise<BillingOperationResponse> {
-    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_SETUP}`.replace(':userID', params.userID);
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHOD_SETUP, { userID: params.userID });
     const result = await this.axiosInstance.post(url, { userID: params.userID }, { headers: this.buildSecuredHeaders() });
     return result.data as BillingOperationResponse;
   }
 
   public async attachPaymentMethod(params: { userID: string; paymentMethodId: string }): Promise<BillingOperationResponse> {
-    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_ATTACH}`
-      .replace(':userID', params.userID)
-      .replace(':paymentMethodID', params.paymentMethodId);
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHOD_ATTACH, {
+      userID: params.userID,
+      paymentMethodID: params.paymentMethodId
+    });
     const result = await this.axiosInstance.post(url, { params }, { headers: this.buildSecuredHeaders() });
     return result.data as BillingOperationResponse;
   }
@@ -846,7 +847,7 @@ export default class CentralServerProvider {
     // Build Paging
     this.buildPaging(paging, params);
     // Call
-    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHODS}`.replace(':userID', params.currentUserID);
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHODS, { userID: params.currentUserID });
     const result = await this.axiosInstance.get(url, {
       headers: this.buildSecuredHeaders()
     });
@@ -865,7 +866,7 @@ export default class CentralServerProvider {
 
   /* eslint-disable @typescript-eslint/indent */
   public async downloadInvoice(invoice: BillingInvoice): Promise<void> {
-    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_DOWNLOAD_INVOICE}`.replace(':invoiceID', invoice.id.toString());
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_DOWNLOAD_INVOICE, { invoiceID: invoice.id });
     const fileName = `${I18n.t('invoices.invoice')}_${invoice.number}.pdf`;
     const downloadedFilePath = ReactNativeBlobUtil.fs.dirs.DownloadDir + '/' + fileName;
     let config;
