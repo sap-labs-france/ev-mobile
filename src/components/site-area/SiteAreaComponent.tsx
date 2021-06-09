@@ -42,26 +42,27 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
     const validGPSCoordinates = Utils.containsAddressGPSCoordinates(siteArea.address);
     // New backend?
     return (
-      <Animatable.View
-        animation={this.counter++ % 2 === 0 ? 'flipInX' : 'flipInX'}
-        iterationCount={1}
-        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
-        <TouchableOpacity
-          onPress={() => {
-            if (onNavigate) {
-              onNavigate();
-            }
-            if (siteArea.connectorStats.totalConnectors > 0) {
-              navigation.navigate('ChargingStations', {
-                params: {
-                  siteAreaID: siteArea.id
-                },
-                key: `${Utils.randomNumber()}`
-              });
-            } else {
-              Message.showError(I18n.t('siteAreas.noChargers'));
-            }
-          }}>
+      <TouchableOpacity
+        style={style.outerContainer}
+        onPress={() => {
+          if (onNavigate) {
+            onNavigate();
+          }
+          if (siteArea.connectorStats.totalConnectors > 0) {
+            navigation.navigate('ChargingStations', {
+              params: {
+                siteAreaID: siteArea.id
+              },
+              key: `${Utils.randomNumber()}`
+            });
+          } else {
+            Message.showError(I18n.t('siteAreas.noChargers'));
+          }
+        }}>
+        <Animatable.View
+          animation={this.counter++ % 2 === 0 ? 'flipInX' : 'flipInX'}
+          iterationCount={1}
+          duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
           <View style={style.container}>
             <View style={style.headerContent}>
               <View style={style.titleContainer}>
@@ -94,8 +95,8 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
               <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={siteArea.connectorStats} />
             </View>
           </View>
-        </TouchableOpacity>
-      </Animatable.View>
+        </Animatable.View>
+      </TouchableOpacity>
     );
   }
 }

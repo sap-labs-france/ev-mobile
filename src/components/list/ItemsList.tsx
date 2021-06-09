@@ -1,63 +1,86 @@
 import React from 'react';
-import { FlatList, Platform, RefreshControl, TouchableOpacity } from 'react-native';
-
+import { FlatList, Platform, RefreshControl, TouchableOpacity, View } from 'react-native';
+import { Checkbox } from 'react-native-paper';
 import BaseProps from '../../types/BaseProps';
 import ListItem from '../../types/ListItem';
 import ListEmptyTextComponent from './empty-text/ListEmptyTextComponent';
 import ListFooterComponent from './footer/ListFooterComponent';
+import computeStyleSheet from './ItemsListStyle';
 
 export interface Props<T extends ListItem> extends BaseProps {
-  renderItem: (item: T, selected: boolean) => Element;
+  renderItem: (item: T) => React.ReactElement;
+  onSelect?: (selectedItems: T[]) => void;
   emptyTitle: string;
   manualRefresh: () => void;
   onEndReached: () => void;
   data: T[];
-  select?: ItemsListTypes;
+  itemsSeparator: ItemsSeparatorType;
+  selectionMode?: ItemSelectionMode;
   skip: number;
   count: number;
   limit: number;
   refreshing: boolean;
 }
 
-export enum ItemsListTypes {
+export enum ItemSelectionMode {
   NONE = 'none',
   MULTI = 'multi',
   SINGLE = 'single'
 }
 
-interface State {
-  selectedIds?: Set<string>;
+export enum ItemsSeparatorType {
+  DEFAULT = 'default'
 }
 
-export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State> {
+interface State<T> {
+  selectedItems?: Map<string | number, T>;
+}
+
+export default class ItemsList<T extends ListItem> extends React.Component<Props<T>, State<T>> {
   public static defaultProps = {
-    select: ItemsListTypes.NONE
+    selectionMode: ItemSelectionMode.NONE
   };
-  public state: State;
+  public state: State<T>;
   public props: Props<T>;
 
   public constructor(props: Props<T>) {
     super(props);
-    this.state = { selectedIds: new Set<string>() };
+    this.state = {
+      selectedItems: new Map<string | number, T>()
+    };
   }
 
   public setState = (
-    state: State | ((prevState: Readonly<State>, props: Readonly<Props<T>>) => State | Pick<State, never>) | Pick<State, never>,
+    state: State<T> | ((prevState: Readonly<State<T>>, props: Readonly<Props<T>>) => State<T> | Pick<State<T>, never>) | Pick<State<T>, never>,
     callback?: () => void
   ) => {
     super.setState(state, callback);
   };
 
   public render() {
-    const { data, skip, count, limit, navigation, manualRefresh, refreshing, onEndReached, emptyTitle } = this.props;
-    const { selectedIds } = this.state;
+    const { data, skip, count, limit, navigation, manualRefresh, refreshing, onEndReached, emptyTitle, selectionMode, onSelect, itemsSeparator } = this.props;
+    const { selectedItems } = this.state;
+    const selectionEnabled = selectionMode !== ItemSelectionMode.NONE && onSelect;
+    const style = computeStyleSheet();
     return (
       <FlatList
         data={data}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => this.onSelectItem(item)}>
-            {this.props.renderItem(item, selectedIds.has(item.id as string))}
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity disabled={!selectionEnabled} onPress={() => this.onSelectItem(item)}>
+              <View style={style.rowContainer}>
+                {selectionMode === ItemSelectionMode.MULTI && (
+                  <Checkbox.Android
+                    uncheckedColor={style.checkbox.color}
+                    color={style.checkbox.color}
+                    status={selectedItems.has(item.id) ? 'checked' : 'unchecked'}
+                  />
+                )}
+                {this.props.renderItem(item)}
+              </View>
+            </TouchableOpacity>
+            {this.renderItemsSeparator(itemsSeparator, style)}
+          </View>
         )}
         keyExtractor={(item, index) => item.id.toString() + index.toString()}
         onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
@@ -69,24 +92,36 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     );
   }
 
-  private onSelectItem(item: T) {
-    const { selectedIds } = this.state;
-    const id = item.id;
+  private onSelectItem(item: T): void {
+    const { selectedItems } = this.state;
+    const { onSelect, selectionMode } = this.props;
+    const itemSelectedCallback = onSelect ? () => onSelect([...this.state.selectedItems.values()]) : () => {};
     // If the item is already selected, unselect it
-    if (selectedIds.has(id as string)) {
-      const newSelectedIds = new Set(selectedIds);
-      newSelectedIds.delete(id as string);
-      this.setState({ ...this.state, selectedIds: newSelectedIds });
+    if (selectedItems.has(item.id)) {
+      selectedItems.delete(item.id);
+      this.setState({ selectedItems }, itemSelectedCallback);
       // Else, add the item to the selected Ids
     } else {
-      switch (this.props.select) {
-        case ItemsListTypes.MULTI:
-          this.setState({ ...this.state, selectedIds: new Set(selectedIds).add(item.id as string) });
+      switch (selectionMode) {
+        case ItemSelectionMode.MULTI:
+          selectedItems.set(item.id, item);
+          this.setState({ selectedItems }, itemSelectedCallback);
           break;
-        case ItemsListTypes.SINGLE:
-          this.setState({ ...this.state, selectedIds: new Set().add(id) });
+        case ItemSelectionMode.SINGLE:
+          selectedItems.clear();
+          selectedItems.set(item.id, item);
+          this.setState({ selectedItems }, itemSelectedCallback);
           break;
       }
+    }
+  }
+
+  private renderItemsSeparator(itemsSeparatorType: ItemsSeparatorType, style: any) {
+    switch (itemsSeparatorType) {
+      case ItemsSeparatorType.DEFAULT:
+        return <View style={style.rowSeparator} />;
+      default:
+        return null;
     }
   }
 }

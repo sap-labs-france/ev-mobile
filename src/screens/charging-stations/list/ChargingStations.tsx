@@ -9,9 +9,10 @@ import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
-import ChargingStationComponent from '../../../components/charging-station/ChargingStationComponent';
+import ChargingStationComponent
+  from '../../../components/charging-station/ChargingStationComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ItemsList from '../../../components/list/ItemsList';
+import ItemsList, { ItemsSeparatorType } from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import ThemeManager from '../../../custom-theme/ThemeManager';
 import I18nManager from '../../../I18n/I18nManager';
@@ -408,6 +409,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
                 skip={skip}
                 count={count}
                 onEndReached={this.onEndScroll}
+                itemsSeparator={ItemsSeparatorType.DEFAULT}
                 renderItem={(chargingStation: ChargingStation) => (
                   <ChargingStationComponent
                     chargingStation={chargingStation}

@@ -1,34 +1,39 @@
 import { DrawerActions } from '@react-navigation/native';
-import { default as I18n, default as i18n } from 'i18n-js';
+import { default as I18n } from 'i18n-js';
 import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
-import ItemsList from '../../../components/list/ItemsList';
+import ItemsList, { ItemSelectionMode, ItemsSeparatorType } from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import UserComponent from '../../../components/user/UserComponent';
 import I18nManager from '../../../I18n/I18nManager';
-import BaseProps from '../../../types/BaseProps';
 import { DataResult } from '../../../types/DataResult';
 import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
-import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './UsersStyle';
+import SelectableList, { SelectableProps, SelectableState } from '../../base-screen/SelectableList';
 
-export interface Props extends BaseProps {}
+export interface Props extends SelectableProps<User> {}
 
-export interface State {
+export interface State extends SelectableState<Users> {
   users?: User[];
   skip?: number;
   limit?: number;
   count?: number;
   refreshing?: boolean;
   loading?: boolean;
+  totalUsersCount: number;
 }
 
-export default class Users extends BaseAutoRefreshScreen<Props, State> {
+export default class Users extends SelectableList<User> {
+  public static defaultProps = {
+    selectionMode: ItemSelectionMode.NONE,
+    isModal: false
+  };
+
   public state: State;
   public props: Props;
   private searchText: string;
@@ -37,31 +42,34 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
 
   public constructor(props: Props) {
     super(props);
+    this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string[];
+    this.title = Utils.getParamFromNavigation(this.props.route, 'title', null) as string;
     this.state = {
+      ...super.state,
       users: [],
       skip: 0,
       limit: Constants.PAGING_SIZE,
       count: 0,
       refreshing: false,
-      loading: true
+      loading: true,
+      totalUsersCount: 0,
+      selectedItems: []
     };
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   public async componentDidMount(): Promise<void> {
-    this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string[];
-    this.title = Utils.getParamFromNavigation(this.props.route, 'title', null) as string;
     await super.componentDidMount();
   }
 
-  public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
+  public async getUsers(searchText: string, skip: number, limit: number, onlyCount: boolean = false): Promise<DataResult<User>> {
     try {
       const params = {
         Search: searchText,
         UserID: this.userIDs?.join('|'),
         carName: this.title
       };
-      const users = await this.centralServerProvider.getUsers(params, { skip, limit });
+      const users = await this.centralServerProvider.getUsers(params, onlyCount ? Constants.ONLY_RECORD_COUNT : { skip, limit });
       // Check
       if (users.count === -1) {
         // Request nbr of records
@@ -76,7 +84,7 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
         await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
-          'transactions.transactionUnexpectedError',
+          'users.userUnexpectedError',
           this.props.navigation,
           this.refresh.bind(this)
         );
@@ -120,11 +128,14 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
       // Refresh All
       const users = await this.getUsers(this.searchText, 0, skip + limit);
       const usersResult = users ? users.result : [];
+      const allUsers = await this.getUsers(undefined, 0, limit, true);
+      const totalUsersCount = allUsers?.count;
       // Set
       this.setState({
         loading: false,
         users: usersResult,
-        count: users.count
+        count: users.count,
+        totalUsersCount
       });
     }
   }
@@ -134,23 +145,21 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
     await this.refresh();
   };
 
-  public render = () => {
+  public render(): React.ReactElement {
     const style = computeStyleSheet();
     const { users, count, skip, limit, refreshing, loading } = this.state;
-    const { navigation } = this.props;
+    const { navigation, isModal, selectionMode } = this.props;
     return (
       <Container style={style.container}>
         <HeaderComponent
-          title={this.title ?? i18n.t('sidebar.users')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}` : null}
+          title={this.buildHeaderTitle()}
+          subTitle={this.buildHeaderSubtitle()}
           navigation={this.props.navigation}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
+          leftAction={isModal ? null : this.onBack}
+          leftActionIcon={isModal ? null : 'navigate-before'}
+          displayTenantLogo={false}
+          rightAction={isModal ? null : () => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
+          rightActionIcon={isModal ? null : 'menu'}
         />
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
@@ -158,22 +167,47 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
           <View style={style.content}>
             <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
             <ItemsList<User>
+              selectionMode={selectionMode}
+              onSelect={this.onItemsSelected.bind(this)}
               data={users}
               navigation={navigation}
               count={count}
               limit={limit}
               skip={skip}
-              renderItem={(item: User, selected: boolean) => (
-                <UserComponent user={item} selected={selected} navigation={this.props.navigation} />
-              )}
+              renderItem={(item: User) => <UserComponent user={item} navigation={this.props.navigation} />}
+              itemsSeparator={ItemsSeparatorType.DEFAULT}
               refreshing={refreshing}
-              manualRefresh={this.manualRefresh}
+              manualRefresh={isModal ? null : this.manualRefresh}
               onEndReached={this.onEndScroll}
-              emptyTitle={i18n.t('users.noUsers')}
+              emptyTitle={I18n.t('users.noUsers')}
             />
           </View>
         )}
       </Container>
     );
-  };
+  }
+
+  private buildHeaderTitle(): string {
+    const { selectionMode } = this.props;
+    switch (selectionMode) {
+      case ItemSelectionMode.SINGLE:
+        return I18n.t('users.selectUser');
+      case ItemSelectionMode.MULTI:
+        return I18n.t('users.selectUsers');
+      default:
+        return this.title ?? I18n.t('sidebar.users');
+    }
+  }
+
+  private buildHeaderSubtitle(): string {
+    const { selectionMode } = this.props;
+    const { selectedItems, totalUsersCount, count } = this.state;
+    switch (selectionMode) {
+      case ItemSelectionMode.MULTI:
+      case ItemSelectionMode.SINGLE:
+        return `${I18nManager.formatNumber(selectedItems.length)}/${I18nManager.formatNumber(totalUsersCount)}`;
+      default:
+        return count > 0 && `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}`;
+    }
+  }
 }

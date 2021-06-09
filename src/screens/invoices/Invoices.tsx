@@ -6,10 +6,10 @@ import { View } from 'react-native';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import InvoiceComponent from '../../components/invoice/InvoiceComponent';
-import ItemsList from '../../components/list/ItemsList';
+import ItemsList, { ItemsSeparatorType } from '../../components/list/ItemsList';
 import I18nManager from '../../I18n/I18nManager';
 import BaseProps from '../../types/BaseProps';
-import { BillingInvoice, BillingInvoiceStatus } from '../../types/Billing';
+import { BillingInvoice } from '../../types/Billing';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';

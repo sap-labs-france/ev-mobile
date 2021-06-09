@@ -18,14 +18,12 @@ interface State {
 
 export interface Props extends BaseProps {
   user?: User;
+  accessoryIcon?: string;
   selected?: boolean;
   size?: number;
 }
 
 export default class UserAvatar extends React.Component<Props, State> {
-  public static defaultProps = {
-    selected: false
-  };
   private centralServerProvider: CentralServerProvider;
 
   public constructor(props: Props) {
@@ -62,7 +60,7 @@ export default class UserAvatar extends React.Component<Props, State> {
   };
 
   public render() {
-    const { selected, size } = this.props;
+    const { accessoryIcon, size } = this.props;
     const { user } = this.state;
     const style = computeStyleSheet();
     const userInitials = Utils.buildUserInitials(user);
@@ -77,8 +75,8 @@ export default class UserAvatar extends React.Component<Props, State> {
             rounded={true}
             source={userImageURI === noPhoto ? noPhoto : { uri: userImageURI }}
             titleStyle={style.avatarTitle}
-            overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
-            {selected && <Avatar.Accessory name={'done'} size={style.accessory.fontSize} color={style.accessory.color} />}
+            overlayContainerStyle={[style.avatarContainer, accessoryIcon ? style.avatarSelected : null]}>
+            {accessoryIcon && <Avatar.Accessory name={accessoryIcon} size={style.accessory.fontSize} color={style.accessory.color} />}
           </Avatar>
         ) : (
           <Avatar
@@ -86,8 +84,8 @@ export default class UserAvatar extends React.Component<Props, State> {
             rounded={true}
             title={userInitials}
             titleStyle={style.avatarTitle}
-            overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
-            {selected && <Avatar.Accessory name={'done'} size={style.accessory.fontSize} color={style.accessory.color} />}
+            overlayContainerStyle={[style.avatarContainer, accessoryIcon ? style.avatarSelected : null]}>
+            {accessoryIcon && <Avatar.Accessory name={accessoryIcon} size={style.accessory.fontSize} color={style.accessory.color} />}
           </Avatar>
         )}
       </View>
