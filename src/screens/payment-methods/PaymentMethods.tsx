@@ -5,7 +5,7 @@ import React from 'react';
 import { ActivityIndicator, Alert, TouchableOpacity, View } from 'react-native';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ItemsList, { ItemsSeparatorType } from '../../components/list/ItemsList';
+import ItemsList from '../../components/list/ItemsList';
 import PaymentMethodComponent from '../../components/payment-method/PaymentMethodComponent';
 import I18nManager from '../../I18n/I18nManager';
 import BaseProps from '../../types/BaseProps';
@@ -159,6 +159,7 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
                 <Swipeable
                   overshootRight={false}
                   overshootLeft={false}
+                  containerStyle={style.swiperContainer}
                   childrenContainerStyle={style.swiperChildrenContainer}
                   renderRightActions={() => this.renderPaymentMethodRightActions(paymentMethod, style)}>
                   <PaymentMethodComponent paymentMethod={paymentMethod} navigation={navigation} />
