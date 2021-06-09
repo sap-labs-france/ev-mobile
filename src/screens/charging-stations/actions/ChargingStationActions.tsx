@@ -62,12 +62,12 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
       return chargingStation;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
+      await Utils.handleHttpUnexpectedError(
         this.centralServerProvider,
         error,
         'chargers.chargerUnexpectedError',
         this.props.navigation,
-        this.refresh
+        this.refresh.bind(this)
       );
     }
     return null;
@@ -114,7 +114,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
         spinnerResetSoft: false
       });
       // Other common Error
-      Utils.handleHttpUnexpectedError(
+      await Utils.handleHttpUnexpectedError(
         this.centralServerProvider,
         error,
         type === 'Hard' ? 'chargers.chargerRebootUnexpectedError' : 'chargers.chargerResetUnexpectedError',
@@ -146,7 +146,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
     } catch (error) {
       this.setState({ spinnerClearCache: false });
       // Other common Error
-      Utils.handleHttpUnexpectedError(
+      await Utils.handleHttpUnexpectedError(
         this.centralServerProvider,
         error,
         'chargers.chargerClearCacheUnexpectedError',
@@ -198,7 +198,12 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
         connectorsInactive: false
       });
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'chargers.chargerUnlockUnexpectedError', this.props.navigation);
+      await Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'chargers.chargerUnlockUnexpectedError',
+        this.props.navigation
+      );
     }
   }
 

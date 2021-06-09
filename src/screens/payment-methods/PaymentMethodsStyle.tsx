@@ -32,6 +32,20 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     icon: {
       color: commonColor.textColor,
       fontSize: '25@s'
+    },
+    trashIconButton: {
+      height: '100%',
+      width: '80@s',
+      backgroundColor: commonColor.brandDanger,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    trashIcon: {
+      color: 'white',
+      fontSize: '20@s'
+    },
+    swiperChildrenContainer: {
+      backgroundColor: commonColor.containerBgColor
     }
   });
   const portraitStyles = {};

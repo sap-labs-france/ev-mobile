@@ -5,17 +5,14 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
-/**
- *
- */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     paymentMethodContainer: {
       width: '100%',
+      height: '80@s',
       flexDirection: 'row',
       alignItems: 'center',
-      height: '80@s',
       paddingHorizontal: '5@s'
     },
     paymentMethodDetailsContainer: {

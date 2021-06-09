@@ -180,6 +180,9 @@
     "paymentMethods": "Méthode(s) de paiement",
     "addPaymentMethodError": "Impossible d'ajouter la méthode de paiement",
     "addPaymentMethodSuccess" : "Nouvelle méthode de paiement ajoutée",
+    "deletePaymentMethodSuccess": "Méthode de paiement supprimée",
+    "deletePaymentMethodTitle": "Supprimer une méthode de paiement",
+    "deletePaymentMethodSubtitle": "Voulez-vous vraiment supprimer la carte {{cardBrand}} finissant par {{cardLast4}}",
     "addPaymentMethod": "Ajouter une méthode de paiment",
     "paymentMethodCreationRules": "Pour des raisons de sécurité, nous ne stockons ni ne traitons vos informations de moyen de paiement. Les informations collectées sont envoyées de manière sécurisée à notre partenaire STRIPE qui fournit l'infrastructure de facturation et de paiement.",
     "paymentMethodsCreationCheckboxText": "J'ai lu les conditions générales d'utilisation et j'accepte que mes informations de paiement soient utilisées pour payer mes futures sessions de recharge."
@@ -215,7 +218,12 @@
   "invoices": {
     "noInvoices": "Aucune facture",
     "invoiceUnexpectedError": "Une erreur est survenue",
-    "invoices": "Facture(s)"
+    "invoices": "Facture(s)",
+    "invoice": "Facture",
+    "downloadedSuccessfully": "Facture téléchargée",
+    "invoiceFileDescription": "Facture de recharge e-Mobility",
+    "downloadInvoiceTitle": "Télécharger une facture",
+    "downloadInvoiceSubtitle": "Télécharger la facture de {{user}} du {{invoiceDate}}?"
   },
   "invoiceStatus": {
     "paid": "Payée",
