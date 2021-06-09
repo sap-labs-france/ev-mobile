@@ -1,8 +1,8 @@
 import { DrawerActions } from '@react-navigation/native';
-import i18n from 'i18n-js';
+import I18n from 'i18n-js';
 import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, TouchableOpacity, View } from 'react-native';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
@@ -16,6 +16,9 @@ import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './PaymentMethodsStyle';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import Message from '../../utils/Message';
+import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -26,6 +29,7 @@ interface State {
   count?: number;
   refreshing?: boolean;
   loading?: boolean;
+  deleteOperationsStates?: Record<string, boolean>;
 }
 
 export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> {
@@ -40,7 +44,8 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
       limit: Constants.PAGING_SIZE,
       count: 0,
       refreshing: false,
-      loading: true
+      loading: true,
+      deleteOperationsStates: {}
     };
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
@@ -126,8 +131,8 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
     return (
       <Container style={style.container}>
         <HeaderComponent
-          title={i18n.t('sidebar.paymentMethods')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${i18n.t('paymentMethods.paymentMethods')}` : null}
+          title={I18n.t('sidebar.paymentMethods')}
+          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('paymentMethods.paymentMethods')}` : null}
           navigation={this.props.navigation}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
@@ -150,15 +155,82 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
               count={count}
               limit={limit}
               skip={skip}
-              renderItem={(item: BillingPaymentMethod) => <PaymentMethodComponent paymentMethod={item} navigation={navigation} />}
+              renderItem={(paymentMethod: BillingPaymentMethod) => (
+                <Swipeable
+                  overshootRight={false}
+                  overshootLeft={false}
+                  childrenContainerStyle={style.swiperChildrenContainer}
+                  renderRightActions={() => this.renderPaymentMethodRightActions(paymentMethod, style)}>
+                  <PaymentMethodComponent paymentMethod={paymentMethod} navigation={navigation} />
+                </Swipeable>
+              )}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}
               onEndReached={this.onEndScroll}
-              emptyTitle={i18n.t('paymentMethods.noPaymentMethod')}
+              emptyTitle={I18n.t('paymentMethods.noPaymentMethod')}
             />
           </View>
         )}
       </Container>
     );
   };
+
+  private renderPaymentMethodRightActions(paymentMethod: BillingPaymentMethod, style: any) {
+    const deleteInProgress = this.state.deleteOperationsStates?.[paymentMethod.id];
+    const commonColors = Utils.getCurrentCommonColor();
+    return (
+      !paymentMethod.isDefault && (
+        <TouchableOpacity
+          disabled={deleteInProgress}
+          style={style.trashIconButton}
+          onPress={() => {
+            this.deletePaymentMethodConfirm(paymentMethod);
+          }}>
+          {deleteInProgress ? (
+            <ActivityIndicator size={scale(20)} color={commonColors.textColor} />
+          ) : (
+            <Icon style={style.trashIcon} name="trash" />
+          )}
+        </TouchableOpacity>
+      )
+    );
+  }
+
+  private deletePaymentMethodConfirm(paymentMethod: BillingPaymentMethod): void {
+    Alert.alert(
+      I18n.t('paymentMethods.deletePaymentMethodTitle'),
+      I18n.t('paymentMethods.deletePaymentMethodSubtitle', { cardBrand: paymentMethod.brand, cardLast4: paymentMethod.last4 }),
+      [
+        {
+          text: I18n.t('general.yes'),
+          onPress: () => {
+            this.deletePaymentMethod(paymentMethod.id as string);
+          }
+        },
+        { text: I18n.t('general.cancel') }
+      ]
+    );
+  }
+
+  private async deletePaymentMethod(paymentMethodID: string): Promise<void> {
+    const userID = this.centralServerProvider?.getUserInfo()?.id;
+    this.setState({ deleteOperationsStates: { ...this.state.deleteOperationsStates, [paymentMethodID]: true } });
+    try {
+      // TODO check res data success (waiting for server change)
+      await this.centralServerProvider.deletePaymentMethod(userID, paymentMethodID);
+      Message.showSuccess(I18n.t('paymentMethods.deletePaymentMethodSuccess'));
+    } catch (error) {
+      // Check if HTTP?
+      Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'paymentMethods.paymentMethodUnexpectedError',
+        this.props.navigation,
+        this.refresh.bind(this)
+      );
+    } finally {
+      delete this.state.deleteOperationsStates[paymentMethodID];
+      this.setState(this.state, this.refresh.bind(this));
+    }
+  }
 }
