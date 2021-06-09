@@ -167,8 +167,7 @@
     "unknownConnector": "Unknown Connector ID '{{connectorID}}'",
     "scanTenantQrCodeTitle": "Scan Tenant",
     "scanTenantQrCodeSuccess": "Organization '{{tenantName}}' has saved",
-    "scanChargingStationQrCodeTitle": "Scan Charging Station",
-    "addPaymentMethodError": "Failed to add payment method"
+    "scanChargingStationQrCodeTitle": "Scan Charging Station"
   },
   "users": {
     "userUnexpectedError": "Não posso ler os utilizadores",
