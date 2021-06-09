@@ -180,6 +180,9 @@
     "noPaymentMethod": "No payment method",
     "paymentMethods": "Payment method(s)",
     "addPaymentMethodSuccess" : "New payment method added successfully",
+    "deletePaymentMethodSuccess": "Payment method removed successfully",
+    "deletePaymentMethodTitle": "Delete payment method",
+    "deletePaymentMethodSubtitle": "Do you really want to delete the {{cardBrand}} card ending with {{cardLast4}}",
     "addPaymentMethod": "Add new payment method"
   },
   "paymentMethodStatus": {
