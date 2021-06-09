@@ -216,7 +216,12 @@
   "invoices": {
     "noInvoices": "No Invoices",
     "invoiceUnexpectedError": "An error occurred",
-    "invoices": "Invoice(s)"
+    "invoices": "Invoice(s)",
+    "invoice": "Invoice",
+    "downloadedSuccessfully": "Invoice downloaded successfully",
+    "invoiceFileDescription": "e-Mobility charging session invoice",
+    "downloadInvoiceTitle": "Download invoice",
+    "downloadInvoiceSubtitle": "Download the invoice of {{user}} from {{invoiceDate}}"
   },
   "invoiceStatus": {
     "paid": "Paid",

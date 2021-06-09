@@ -96,7 +96,7 @@ export default class UserAvatar extends React.Component<Props, State> {
 
   private async getUserImage(id: string) {
     try {
-      return await this.centralServerProvider.getUserImage({ ID: id });
+      return await this.centralServerProvider?.getUserImage({ ID: id });
     } catch (error) {
       // Check if HTTP?
       if (!error.request) {

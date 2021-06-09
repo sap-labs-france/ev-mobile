@@ -30,6 +30,10 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
+import ReactNativeBlobUtil, { FetchBlobResponse } from 'react-native-blob-util';
+import { Platform } from 'react-native';
+import { PLATFORM } from '../theme/variables/commonColor';
+import I18n from 'i18n-js';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
@@ -857,6 +861,36 @@ export default class CentralServerProvider {
       headers: this.buildSecuredHeaders()
     });
     return result.data;
+  }
+
+  /* eslint-disable @typescript-eslint/indent */
+  public async downloadInvoice(invoice: BillingInvoice): Promise<void> {
+    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_DOWNLOAD_INVOICE}`.replace(':invoiceID', invoice.id.toString());
+    const fileName = `${I18n.t('invoices.invoice')}_${invoice.number}.pdf`;
+    const downloadedFilePath = ReactNativeBlobUtil.fs.dirs.DownloadDir + '/' + fileName;
+    let config;
+    if (Platform.OS === PLATFORM.IOS) {
+      config = { fileCache: true, path: downloadedFilePath, appendExt: 'pdf' };
+    } else if (Platform.OS === PLATFORM.ANDROID) {
+      config = {
+        fileCache: true,
+        addAndroidDownloads: {
+          path: downloadedFilePath,
+          useDownloadManager: true, // <-- this is the only thing required
+          mime: 'application/pdf',
+          notification: true,
+          // Title of download notification
+          title: fileName,
+          // Make the file scannable  by media scanner
+          mediaScannable: true,
+          // File description (not notification description)
+          description: `${I18n.t('invoices.invoiceFileDescription')} ${invoice.number}`
+        }
+      };
+    }
+    if (config) {
+      await ReactNativeBlobUtil.config(config).fetch('GET', url, this.buildSecuredHeaders());
+    }
   }
 
   public getSecurityProvider(): SecurityProvider {
