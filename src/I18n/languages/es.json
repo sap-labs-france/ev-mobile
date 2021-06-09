@@ -180,7 +180,9 @@
     "paymentMethods": "Payment method(s)",
     "addPaymentMethodError": "Failed to add payment method",
     "addPaymentMethodSuccess" : "New payment method added successfully",
-    "addPaymentMethod": "Add new payment method"
+    "addPaymentMethod": "Add new payment method",
+    "paymentMethodCreationRules": "For security reasons, we do not store nor process your bank and card details directly. The collected information is sent via a secure channel to our STRIPE partner which provides the billing and payment infrastructure.",
+    "paymentMethodsCreationCheckboxText": " I have read the End-user License Agreement and agree that my bank details will be used for paying future EV Charging Sessions."
   },
   "paymentMethodStatus": {
     "valid": "Valid",

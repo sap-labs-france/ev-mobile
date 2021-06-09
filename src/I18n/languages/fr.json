@@ -180,7 +180,9 @@
     "paymentMethods": "Méthode(s) de paiement",
     "addPaymentMethodError": "Impossible d'ajouter la méthode de paiement",
     "addPaymentMethodSuccess" : "Nouvelle méthode de paiement ajoutée",
-    "addPaymentMethod": "Ajouter une méthode de paiment"
+    "addPaymentMethod": "Ajouter une méthode de paiment",
+    "paymentMethodCreationRules": "Pour des raisons de sécurité, nous ne stockons ni ne traitons vos informations de moyen de paiement. Les informations collectées sont envoyées de manière sécurisée à notre partenaire STRIPE qui fournit l'infrastructure de facturation et de paiement.",
+    "paymentMethodsCreationCheckboxText": "J'ai lu les conditions générales d'utilisation et j'accepte que mes informations de paiement soient utilisées pour payer mes futures sessions de recharge."
   },
   "paymentMethodStatus": {
     "valid": "Valide",
