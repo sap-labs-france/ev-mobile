@@ -1,5 +1,5 @@
 import { Button, Icon, Text, View } from 'native-base';
-import React from 'react';
+import React, { createRef } from 'react';
 import Modal from 'react-native-modal';
 import computeFormStyleSheet from '../../FormStyles';
 import BaseProps from '../../types/BaseProps';
@@ -24,7 +24,7 @@ interface State<T> {
 export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> {
   public state: State<T>;
   public props: Props<T>;
-  private itemsListRef = React.createRef<SelectableList<T>>();
+  private itemsListRef = createRef<SelectableList<T>>();
   public constructor(props: Props<T>) {
     super(props);
     this.state = {
@@ -72,11 +72,14 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
                 onItemsSelected: (selected: T[]) => this.onItemSelected(selected),
                 selectionMode,
                 isModal: true,
-                ref: (ref: React.RefObject<SelectableList<T>>) => (this.itemsListRef = ref)
+                ref: this.itemsListRef
               })}
             </View>
             {selectionMode === ItemSelectionMode.MULTI && (
               <View style={style.bottomButtonContainer}>
+                <Button style={style.button} block light onPress={() => this.clearSelection()}>
+                  <Text style={style.buttonText}>{I18n.t('general.reset')}</Text>
+                </Button>
                 <Button
                   disabled={Utils.isEmptyArray(selectedItems)}
                   block
@@ -93,9 +96,13 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
     );
   }
 
+  private clearSelection(): void {
+    this.itemsListRef?.current?.clearSelectedItems();
+  }
+
   private validateSelection(): void {
     const { onItemsSelected } = this.props;
-    const selectedItems = this.itemsListRef?.state.selectedItems;
+    const selectedItems = this.itemsListRef?.current?.state.selectedItems;
     if (!Utils.isEmptyArray(selectedItems)) {
       this.setState({ selectedItems: [], isVisible: false, selectedItemsCount: selectedItems.length }, () => onItemsSelected(selectedItems)
       );

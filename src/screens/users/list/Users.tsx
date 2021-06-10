@@ -126,12 +126,15 @@ export default class Users extends SelectableList<User> {
     if (this.isMounted()) {
       const { skip, limit } = this.state;
       // Refresh All
+      this.setState({refreshing: true});
       const users = await this.getUsers(this.searchText, 0, skip + limit);
       const usersResult = users ? users.result : [];
-      this.getUsers(this.searchText, 0, limit, true).then((res: DataResult<User>) => this.setState({ totalUsersCount: res?.count }));
+      this.getUsers(this.searchText, 0, limit, true).then(
+        (res: DataResult<User>) => this.setState({ totalUsersCount: res?.count }));
       // Set
       this.setState({
         loading: false,
+        refreshing: false,
         users: usersResult,
         count: users.count
       });
@@ -165,6 +168,7 @@ export default class Users extends SelectableList<User> {
           <View style={style.content}>
             <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
             <ItemsList<User>
+              ref={this.itemsListRef}
               selectionMode={selectionMode}
               onSelect={this.onItemsSelected.bind(this)}
               data={users}
@@ -203,7 +207,7 @@ export default class Users extends SelectableList<User> {
     switch (selectionMode) {
       case ItemSelectionMode.MULTI:
       case ItemSelectionMode.SINGLE:
-        return `${I18nManager.formatNumber(selectedItems.length)}/${I18nManager.formatNumber(totalUsersCount)}`;
+        return `${I18n.t('general.selected')}: ${I18nManager.formatNumber(selectedItems.length)} - ${I18n.t('general.results')}: ${I18nManager.formatNumber(totalUsersCount)}`;
       default:
         return count > 0 && `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}`;
     }

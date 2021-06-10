@@ -1,11 +1,13 @@
 import React from 'react';
 import { FlatList, Platform, RefreshControl, TouchableOpacity, View } from 'react-native';
-import { Checkbox } from 'react-native-paper';
 import BaseProps from '../../types/BaseProps';
 import ListItem from '../../types/ListItem';
 import ListEmptyTextComponent from './empty-text/ListEmptyTextComponent';
 import ListFooterComponent from './footer/ListFooterComponent';
 import computeStyleSheet from './ItemsListStyle';
+import { CheckBox } from 'react-native-elements';
+import Utils from '../../utils/Utils';
+import { scale } from 'react-native-size-matters';
 
 export interface Props<T extends ListItem> extends BaseProps {
   renderItem: (item: T) => React.ReactElement;
@@ -57,11 +59,17 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     super.setState(state, callback);
   };
 
+  public clearSelectedItems(): void {
+    const itemSelectedCallback = this.props.onSelect ? () => this.props.onSelect([...this.state.selectedItems.values()]) : () => {};
+    this.setState({ selectedItems: new Map<string | number, T>() }, itemSelectedCallback);
+  }
+
   public render() {
     const { data, skip, count, limit, navigation, manualRefresh, refreshing, onEndReached, emptyTitle, selectionMode, onSelect, itemsSeparator } = this.props;
     const { selectedItems } = this.state;
     const selectionEnabled = selectionMode !== ItemSelectionMode.NONE && onSelect;
     const style = computeStyleSheet();
+    const commonColors = Utils.getCurrentCommonColor();
     return (
       <FlatList
         data={data}
@@ -70,10 +78,13 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
             <TouchableOpacity disabled={!selectionEnabled} onPress={() => this.onSelectItem(item)}>
               <View style={style.rowContainer}>
                 {selectionMode === ItemSelectionMode.MULTI && (
-                  <Checkbox.Android
-                    uncheckedColor={style.checkbox.color}
-                    color={style.checkbox.color}
-                    status={selectedItems.has(item.id) ? 'checked' : 'unchecked'}
+                  <CheckBox
+                    size={scale(35)}
+                    disabled={true}
+                    checkedIcon={'check-square'}
+                    checkedColor={commonColors.textColor}
+                    containerStyle={style.checkbox}
+                    checked={selectedItems.has(item.id)}
                   />
                 )}
                 {this.props.renderItem(item)}

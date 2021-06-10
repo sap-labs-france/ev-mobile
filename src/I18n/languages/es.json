@@ -64,7 +64,10 @@
     "scanQrCodeSuccess": "El código QR se ha escaneado correctamente",
     "validate": "Validate",
     "default": "Default",
-    "save": "Save"
+    "save": "Save",
+    "reset": "Reset",
+    "selected": "Selected",
+    "results": "Result(s)"
   },
   "sidebar": {
     "home": "Menú principal",

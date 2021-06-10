@@ -38,7 +38,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     bottomButtonContainer: {
       width: '100%',
       flexDirection: 'row',
-      justifyContent: 'center',
+      justifyContent: 'space-evenly',
       height: '80@s',
       alignItems: 'center',
       borderTopWidth: 1,
@@ -47,11 +47,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     button: {
       marginTop: '15@s',
-      width: '100%',
+      alignSelf: 'center',
+      width: '40%',
       backgroundColor: commonColor.buttonBg
     },
     buttonDisabled: {
-      opacity: 0.3
+      opacity: 0.4
     },
     buttonEnabled: {
       opacity: 1

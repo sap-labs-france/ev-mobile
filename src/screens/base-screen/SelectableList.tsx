@@ -1,7 +1,7 @@
 import React from 'react';
 import BaseProps from '../../types/BaseProps';
 import BaseAutoRefreshScreen from './BaseAutoRefreshScreen';
-import { ItemSelectionMode } from '../../components/list/ItemsList';
+import ItemsList, { ItemSelectionMode } from '../../components/list/ItemsList';
 import ListItem from '../../types/ListItem';
 
 export interface SelectableProps<T> extends BaseProps {
@@ -21,6 +21,11 @@ export default class SelectableList<T extends ListItem> extends BaseAutoRefreshS
   };
   public state: SelectableState<T>;
   public props: SelectableProps<T>;
+  protected itemsListRef = React.createRef<ItemsList<T>>();
+
+  public clearSelectedItems(): void {
+    this.itemsListRef.current?.clearSelectedItems();
+  }
 
   protected onItemsSelected(selectedItems: T[]): void {
     this.setState({ selectedItems });
