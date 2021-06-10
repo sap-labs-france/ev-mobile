@@ -37,9 +37,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     bottomButtonContainer: {
       width: '100%',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      height: '110@s',
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      height: '80@s',
       alignItems: 'center',
       borderTopWidth: 1,
       paddingBottom: '20@s',
@@ -48,7 +48,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     button: {
       marginTop: '15@s',
       alignSelf: 'center',
-      width: '95%',
+      width: '40%',
       backgroundColor: commonColor.buttonBg
     },
     buttonDisabled: {
@@ -60,11 +60,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     buttonText: {
       fontSize: '15@s',
       color: commonColor.textColor
-    },
-    resetButtonText: {
-      marginTop: '10@s',
-      fontSize: '14@s',
-      textDecorationLine: 'underline'
     }
   });
   const portraitStyles = {};

@@ -1,5 +1,5 @@
 import { Button, Icon, Text, View } from 'native-base';
-import React, { createRef, RefObject } from 'react';
+import React, { createRef } from 'react';
 import Modal from 'react-native-modal';
 import computeFormStyleSheet from '../../FormStyles';
 import BaseProps from '../../types/BaseProps';
@@ -77,6 +77,9 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
             </View>
             {selectionMode === ItemSelectionMode.MULTI && (
               <View style={style.bottomButtonContainer}>
+                <Button style={style.button} block light onPress={() => this.clearSelection()}>
+                  <Text style={style.resetButtonText}>{I18n.t('general.reset')}</Text>
+                </Button>
                 <Button
                   disabled={Utils.isEmptyArray(selectedItems)}
                   block
@@ -85,7 +88,6 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
                   onPress={() => this.validateSelection()}>
                   <Text style={style.buttonText}>{I18n.t('general.validate')}</Text>
                 </Button>
-                <Text style={style.resetButtonText} onPress={() => this.clearSelection()}>{I18n.t('general.reset')}</Text>
               </View>
             )}
           </View>
