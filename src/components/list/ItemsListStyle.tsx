@@ -14,7 +14,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%'
     },
     checkbox: {
-      color: commonColor.textColor
+      padding: 0,
+      marginRight: 0
     },
     rowSeparator: {
       borderBottomColor: commonColor.listBorderColor,
