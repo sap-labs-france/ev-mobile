@@ -13,11 +13,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
-      backgroundColor: commonColor.containerBgColor,
-      width: '100%'
+      width: '100%',
+      backgroundColor: commonColor.containerBgColor
     },
     content: {
-      flex: 1
+      flex: 1,
+      width: '100%'
     },
     spinner: {
       flex: 1,
@@ -45,8 +46,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: 'white',
       fontSize: '20@s'
     },
+    swiperContainer: {
+      width: '100%'
+    },
     swiperChildrenContainer: {
-      backgroundColor: commonColor.containerBgColor
+      backgroundColor: commonColor.containerBgColor,
+      width: '100%'
     }
   });
   const portraitStyles = {};
