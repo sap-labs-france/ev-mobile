@@ -44,9 +44,11 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
   };
   public state: State<T>;
   public props: Props<T>;
+  private itemsSelectedCallback: () => void;
 
   public constructor(props: Props<T>) {
     super(props);
+    this.itemsSelectedCallback = this.props.onSelect ? () => this.props.onSelect([...this.state.selectedItems.values()]) : () => {};
     this.state = {
       selectedItems: new Map<string | number, T>()
     };
@@ -60,8 +62,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
   };
 
   public clearSelectedItems(): void {
-    const itemSelectedCallback = this.props.onSelect ? () => this.props.onSelect([...this.state.selectedItems.values()]) : () => {};
-    this.setState({ selectedItems: new Map<string | number, T>() }, itemSelectedCallback);
+    this.setState({ selectedItems: new Map<string | number, T>() }, this.itemsSelectedCallback);
   }
 
   public render() {
@@ -105,23 +106,22 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
 
   private onSelectItem(item: T): void {
     const { selectedItems } = this.state;
-    const { onSelect, selectionMode } = this.props;
-    const itemSelectedCallback = onSelect ? () => onSelect([...this.state.selectedItems.values()]) : () => {};
+    const { selectionMode } = this.props;
     // If the item is already selected, unselect it
     if (selectedItems.has(item.id)) {
       selectedItems.delete(item.id);
-      this.setState({ selectedItems }, itemSelectedCallback);
+      this.setState({ selectedItems }, this.itemsSelectedCallback);
       // Else, add the item to the selected Ids
     } else {
       switch (selectionMode) {
         case ItemSelectionMode.MULTI:
           selectedItems.set(item.id, item);
-          this.setState({ selectedItems }, itemSelectedCallback);
+          this.setState({ selectedItems }, this.itemsSelectedCallback);
           break;
         case ItemSelectionMode.SINGLE:
           selectedItems.clear();
           selectedItems.set(item.id, item);
-          this.setState({ selectedItems }, itemSelectedCallback);
+          this.setState({ selectedItems }, this.itemsSelectedCallback);
           break;
       }
     }
