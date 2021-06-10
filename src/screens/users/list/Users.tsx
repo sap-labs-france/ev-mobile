@@ -129,15 +129,14 @@ export default class Users extends SelectableList<User> {
       this.setState({refreshing: true});
       const users = await this.getUsers(this.searchText, 0, skip + limit);
       const usersResult = users ? users.result : [];
-      const allUsers = await this.getUsers(this.searchText, 0, limit, true);
-      const totalUsersCount = allUsers?.count;
+      this.getUsers(this.searchText, 0, limit, true).then(
+        (res: DataResult<User>) => this.setState({ totalUsersCount: res?.count }));
       // Set
       this.setState({
         loading: false,
         refreshing: false,
         users: usersResult,
-        count: users.count,
-        totalUsersCount
+        count: users.count
       });
     }
   }
