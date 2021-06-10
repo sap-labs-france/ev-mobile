@@ -52,7 +52,7 @@ export default class Users extends SelectableList<User> {
       count: 0,
       refreshing: false,
       loading: true,
-      totalUsersCount: 0,
+      totalUsersCount: undefined,
       selectedItems: []
     };
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
@@ -129,8 +129,8 @@ export default class Users extends SelectableList<User> {
       this.setState({refreshing: true});
       const users = await this.getUsers(this.searchText, 0, skip + limit);
       const usersResult = users ? users.result : [];
-      this.getUsers(this.searchText, 0, limit, true).then(
-        (res: DataResult<User>) => this.setState({ totalUsersCount: res?.count }));
+      this.getUsers(this.searchText, 0, limit, true)
+        .then((res: DataResult<User>) => this.setState({ totalUsersCount: res?.count }));
       // Set
       this.setState({
         loading: false,
