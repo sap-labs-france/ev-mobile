@@ -78,7 +78,7 @@ export default class ModalSelect<T> extends React.Component<Props<T>, State<T>> 
             {selectionMode === ItemSelectionMode.MULTI && (
               <View style={style.bottomButtonContainer}>
                 <Button style={style.button} block light onPress={() => this.clearSelection()}>
-                  <Text style={style.resetButtonText}>{I18n.t('general.reset')}</Text>
+                  <Text style={style.buttonText}>{I18n.t('general.reset')}</Text>
                 </Button>
                 <Button
                   disabled={Utils.isEmptyArray(selectedItems)}
