@@ -519,7 +519,7 @@ export enum ServerRoute {
   REST_BILLING_INVOICE = 'invoices/:invoiceID',
 
   // BILLING URLs for Non-CRUD operations on INVOICES
-  REST_BILLING_DOWNLOAD_INVOICE = 'invoices/:invoiceID/download',
+  REST_BILLING_DOWNLOAD_INVOICE = 'invoices/:invoiceID/download'
 }
 
 export enum ServerProtocol {

@@ -8,7 +8,7 @@ import SafeUrlAssembler from 'safe-url-assembler';
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import NotificationManager from '../notification/NotificationManager';
-import { ActionResponse, BillingOperationResponse } from '../types/ActionResponse';
+import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
 import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
 import Car from '../types/Car';
 import ChargingStation from '../types/ChargingStation';
@@ -30,6 +30,10 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
+import ReactNativeBlobUtil, { FetchBlobResponse } from 'react-native-blob-util';
+import { Platform } from 'react-native';
+import { PLATFORM } from '../theme/variables/commonColor';
+import I18n from 'i18n-js';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
@@ -813,18 +817,25 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async setUpPaymentMethod(params: { userID: string }): Promise<BillingOperationResponse> {
-    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_SETUP}`.replace(':userID', params.userID);
+  public async setUpPaymentMethod(params: { userID: string }): Promise<BillingOperationResult> {
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHOD_SETUP, { userID: params.userID });
     const result = await this.axiosInstance.post(url, { userID: params.userID }, { headers: this.buildSecuredHeaders() });
-    return result.data as BillingOperationResponse;
+    return result.data as BillingOperationResult;
   }
 
-  public async attachPaymentMethod(params: { userID: string; paymentMethodId: string }): Promise<BillingOperationResponse> {
-    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_ATTACH}`
-      .replace(':userID', params.userID)
-      .replace(':paymentMethodID', params.paymentMethodId);
+  public async attachPaymentMethod(params: { userID: string; paymentMethodId: string }): Promise<BillingOperationResult> {
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHOD_ATTACH, {
+      userID: params.userID,
+      paymentMethodID: params.paymentMethodId
+    });
     const result = await this.axiosInstance.post(url, { params }, { headers: this.buildSecuredHeaders() });
-    return result.data as BillingOperationResponse;
+    return result.data as BillingOperationResult;
+  }
+
+  public async deletePaymentMethod(userID: string, paymentMethodID: string): Promise<BillingOperationResult> {
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHOD, { userID, paymentMethodID });
+    const res = await this.axiosInstance.delete(url, { headers: this.buildSecuredHeaders() });
+    return res?.data as BillingOperationResult;
   }
 
   public async getPaymentMethods(
@@ -835,7 +846,7 @@ export default class CentralServerProvider {
     // Build Paging
     this.buildPaging(paging, params);
     // Call
-    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHODS}`.replace(':userID', params.currentUserID);
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHODS, { userID: params.currentUserID });
     const result = await this.axiosInstance.get(url, {
       headers: this.buildSecuredHeaders()
     });
@@ -850,6 +861,36 @@ export default class CentralServerProvider {
       headers: this.buildSecuredHeaders()
     });
     return result.data;
+  }
+
+  /* eslint-disable @typescript-eslint/indent */
+  public async downloadInvoice(invoice: BillingInvoice): Promise<void> {
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_DOWNLOAD_INVOICE, { invoiceID: invoice.id });
+    const fileName = `${I18n.t('invoices.invoice')}_${invoice.number}.pdf`;
+    const downloadedFilePath = ReactNativeBlobUtil.fs.dirs.DownloadDir + '/' + fileName;
+    let config;
+    if (Platform.OS === PLATFORM.IOS) {
+      config = { fileCache: true, path: downloadedFilePath, appendExt: 'pdf' };
+    } else if (Platform.OS === PLATFORM.ANDROID) {
+      config = {
+        fileCache: true,
+        addAndroidDownloads: {
+          path: downloadedFilePath,
+          useDownloadManager: true, // <-- this is the only thing required
+          mime: 'application/pdf',
+          notification: true,
+          // Title of download notification
+          title: fileName,
+          // Make the file scannable  by media scanner
+          mediaScannable: true,
+          // File description (not notification description)
+          description: `${I18n.t('invoices.invoiceFileDescription')} ${invoice.number}`
+        }
+      };
+    }
+    if (config) {
+      await ReactNativeBlobUtil.config(config).fetch('GET', url, this.buildSecuredHeaders());
+    }
   }
 
   public getSecurityProvider(): SecurityProvider {

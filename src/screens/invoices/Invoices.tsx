@@ -71,7 +71,7 @@ export default class Invoices extends BaseAutoRefreshScreen<Props, State> {
         await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
-          'transactions.transactionUnexpectedError',
+          'invoices.invoiceUnexpectedError',
           this.props.navigation,
           this.refresh.bind(this)
         );

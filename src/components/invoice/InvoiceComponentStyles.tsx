@@ -95,7 +95,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '100%'
     },
     invoiceStatusContainer: {
-      justifyContent: 'flex-start'
+      justifyContent: 'flex-start',
+      height: '30@s'
     },
     invoiceAmountContainer: {
       flex: 1,
@@ -109,11 +110,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginBottom: '2@s'
     },
     downloadButtonContainer: {
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-end',
+      alignItems: 'flex-end',
+      height: '30@s'
     },
     downloadIcon: {
       color: commonColor.textColor,
-      fontSize: '24@s'
+      fontSize: '26@s'
     }
   });
   const portraitStyles = {};
