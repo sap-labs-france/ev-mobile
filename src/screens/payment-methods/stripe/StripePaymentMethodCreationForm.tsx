@@ -9,7 +9,7 @@ import { scale } from 'react-native-size-matters';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import CentralServerProvider from '../../../provider/CentralServerProvider';
 import ProviderFactory from '../../../provider/ProviderFactory';
-import { BillingOperationResponse } from '../../../types/ActionResponse';
+import { BillingOperationResult } from '../../../types/ActionResponse';
 import BaseProps from '../../../types/BaseProps';
 import { BillingSettings } from '../../../types/Setting';
 import Message from '../../../utils/Message';
@@ -46,9 +46,9 @@ export default function StripePaymentMethodCreationForm(props: Props) {
       try {
         setLoading(true);
         // STEP 1 - Call Back-End to create intent
-        const response: BillingOperationResponse = await provider.setUpPaymentMethod({ userID: provider.getUserInfo().id });
+        const response: BillingOperationResult = await provider.setUpPaymentMethod({ userID: provider.getUserInfo().id });
         if (response?.succeeded) {
-          const internalData: Record<string, unknown> = response?.internalData;
+          const internalData: Record<string, unknown> = response?.internalData as Record<string, unknown>;
           const clientSecret: string = internalData?.client_secret as string;
 
           // We continue only if we have a client secret
@@ -68,7 +68,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
               console.log(`Success: Setup intent created. Intent status: ${setupIntent.status}`);
 
               // STEP 3 - Call Back-End to flag the payment method as default
-              const attachResponse: BillingOperationResponse = await provider.attachPaymentMethod({
+              const attachResponse: BillingOperationResult = await provider.attachPaymentMethod({
                 paymentMethodId: setupIntent.paymentMethodId,
                 userID: provider.getUserInfo().id
               });

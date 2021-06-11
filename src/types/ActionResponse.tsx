@@ -6,5 +6,5 @@ export interface ActionResponse {
 export interface BillingOperationResult {
   succeeded: boolean;
   error?: Error;
-  internalData?: Record<string, unknown>;
+  internalData?: unknown;
 }
