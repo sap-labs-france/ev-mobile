@@ -3,7 +3,8 @@ export interface ActionResponse {
   error: string;
 }
 
-export interface BillingOperationResponse extends ActionResponse {
-  internalData: Record<string, unknown>;
+export interface BillingOperationResult {
   succeeded: boolean;
+  error?: Error;
+  internalData?: Record<string, unknown>;
 }
