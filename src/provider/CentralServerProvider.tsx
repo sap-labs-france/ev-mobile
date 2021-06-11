@@ -8,7 +8,7 @@ import SafeUrlAssembler from 'safe-url-assembler';
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import NotificationManager from '../notification/NotificationManager';
-import { ActionResponse, BillingOperationResponse } from '../types/ActionResponse';
+import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
 import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
 import Car from '../types/Car';
 import ChargingStation from '../types/ChargingStation';
@@ -817,26 +817,25 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async setUpPaymentMethod(params: { userID: string }): Promise<BillingOperationResponse> {
+  public async setUpPaymentMethod(params: { userID: string }): Promise<BillingOperationResult> {
     const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHOD_SETUP, { userID: params.userID });
     const result = await this.axiosInstance.post(url, { userID: params.userID }, { headers: this.buildSecuredHeaders() });
-    return result.data as BillingOperationResponse;
+    return result.data as BillingOperationResult;
   }
 
-  public async attachPaymentMethod(params: { userID: string; paymentMethodId: string }): Promise<BillingOperationResponse> {
+  public async attachPaymentMethod(params: { userID: string; paymentMethodId: string }): Promise<BillingOperationResult> {
     const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHOD_ATTACH, {
       userID: params.userID,
       paymentMethodID: params.paymentMethodId
     });
     const result = await this.axiosInstance.post(url, { params }, { headers: this.buildSecuredHeaders() });
-    return result.data as BillingOperationResponse;
+    return result.data as BillingOperationResult;
   }
 
-  public async deletePaymentMethod(userID: string, paymentMethodID: string): Promise<any> {
-    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD}`
-      .replace(':userID', userID)
-      .replace(':paymentMethodID', paymentMethodID);
-    await this.axiosInstance.delete(url, { headers: this.buildSecuredHeaders() });
+  public async deletePaymentMethod(userID: string, paymentMethodID: string): Promise<BillingOperationResult> {
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHOD, { userID, paymentMethodID });
+    const res = await this.axiosInstance.delete(url, { headers: this.buildSecuredHeaders() });
+    return res?.data as BillingOperationResult;
   }
 
   public async getPaymentMethods(
