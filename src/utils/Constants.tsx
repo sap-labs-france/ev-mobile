@@ -1,4 +1,4 @@
-import PagingParams from '../types/PagingParams';
+import { PagingParams } from '../types/QueryParams';
 
 export default class Constants {
   public static readonly REST_RESPONSE_SUCCESS = 'Success';
