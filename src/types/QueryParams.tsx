@@ -6,7 +6,6 @@ export interface PagingParams {
   limit: number;
   skip: number;
   onlyRecordCount?: boolean;
-  sort?: any;
 }
 
 export default interface QueryParams {
