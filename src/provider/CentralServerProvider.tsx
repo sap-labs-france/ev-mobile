@@ -35,7 +35,6 @@ import { Platform } from 'react-native';
 import { PLATFORM } from '../theme/variables/commonColor';
 import I18n from 'i18n-js';
 
-
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
   private debug = false;
