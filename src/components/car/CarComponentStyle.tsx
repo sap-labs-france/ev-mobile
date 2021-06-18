@@ -16,9 +16,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       flexDirection: 'column'
     },
-    selected: {
-      opacity: 0.3
-    },
     header: {
       flexDirection: 'row',
       alignItems: 'center',

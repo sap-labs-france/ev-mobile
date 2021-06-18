@@ -194,6 +194,7 @@ export default class Users extends SelectableList<User> {
               limit={limit}
               skip={skip}
               renderItem={(item: User) => <UserComponent user={item} navigation={this.props.navigation} />}
+              itemsSeparator={ItemsSeparatorType.DEFAULT}
               refreshing={refreshing}
               manualRefresh={isModal ? null : this.manualRefresh}
               onEndReached={this.onEndScroll}

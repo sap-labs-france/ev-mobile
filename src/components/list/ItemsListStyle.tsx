@@ -8,6 +8,9 @@ import Utils from '../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
+    container: {
+      width: '100%'
+    },
     rowContainer: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -20,6 +23,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     rowSeparator: {
       borderBottomColor: commonColor.listBorderColor,
       borderBottomWidth: 1
+    },
+    itemContainer: {
+      flex: 1
     }
   });
   const portraitStyles = {};

@@ -75,7 +75,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
       <FlatList
         data={data}
         renderItem={({ item }) => (
-          <View>
+          <View style={style.container}>
             <TouchableOpacity disabled={!selectionEnabled} onPress={() => this.onSelectItem(item)}>
               <View style={style.rowContainer}>
                 {selectionMode === ItemSelectionMode.MULTI && (
@@ -88,7 +88,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
                     checked={selectedItems.has(item.id)}
                   />
                 )}
-                {this.props.renderItem(item)}
+                <View style={style.itemContainer}>{this.props.renderItem(item)}</View>
               </View>
             </TouchableOpacity>
             {this.renderItemsSeparator(itemsSeparator, style)}
