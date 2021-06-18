@@ -52,7 +52,6 @@ export default class Users extends SelectableList<User> {
       count: 0,
       refreshing: false,
       loading: true,
-      totalItemCount: undefined,
       selectedItems: []
     };
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
@@ -66,7 +65,7 @@ export default class Users extends SelectableList<User> {
     this.cancelTokenSource.cancel(Constants.AXIOS_CANCEL_REQUEST_MESSAGE);
   }
 
-  public async getUsers(searchText: string, skip: number, limit: number, onlyCount: boolean = false): Promise<DataResult<User>> {
+  public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
     try {
       const params = {
         Search: searchText,
@@ -75,7 +74,7 @@ export default class Users extends SelectableList<User> {
       };
       const users = await this.centralServerProvider.getUsers(
         params,
-        onlyCount ? Constants.ONLY_RECORD_COUNT : { skip, limit },
+        { skip, limit },
         this.cancelTokenSource?.token
       );
       // Check
@@ -147,11 +146,6 @@ export default class Users extends SelectableList<User> {
       this.setState({ refreshing: true });
       const users = await this.getUsers(this.searchText, 0, skip + limit);
       const usersResult = users ? users.result : [];
-      this.getUsers(this.searchText, 0, limit, true).then((res: DataResult<User>) => {
-        if (res) {
-          this.setState({ totalItemCount: res?.count });
-        }
-      });
       // Set
       if (users) {
         this.setState({
@@ -200,7 +194,6 @@ export default class Users extends SelectableList<User> {
               limit={limit}
               skip={skip}
               renderItem={(item: User) => <UserComponent user={item} navigation={this.props.navigation} />}
-              itemsSeparator={ItemsSeparatorType.DEFAULT}
               refreshing={refreshing}
               manualRefresh={isModal ? null : this.manualRefresh}
               onEndReached={this.onEndScroll}

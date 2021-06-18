@@ -13,7 +13,7 @@ interface State {}
 
 export interface Props extends BaseProps {
   car: Car;
-  selected: boolean;
+  navigateToUsers?: boolean;
 }
 
 export default class CarComponent extends React.Component<Props, State> {
@@ -34,7 +34,7 @@ export default class CarComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { car, selected, navigation } = this.props;
+    const { car, navigation, navigateToUsers } = this.props;
     const carUsers = car?.carUsers ?? [];
     const defaultCarUser = carUsers.find((carUser) => carUser.default);
     const defaultCarUserName = Utils.buildUserName(defaultCarUser?.user);
@@ -42,7 +42,7 @@ export default class CarComponent extends React.Component<Props, State> {
     const carFullName = Utils.buildCarCatalogName(car?.carCatalog);
     const userIDs = carUsers.map((userCar: UserCar) => userCar?.user?.id).filter((userID) => userID);
     return (
-      <View style={selected ? [style.container, style.selected] : style.container}>
+      <View style={style.container}>
         <View style={style.header}>
           <View style={style.carNameContainer}>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.headerText, style.carName]}>
@@ -57,9 +57,10 @@ export default class CarComponent extends React.Component<Props, State> {
         </View>
         <View />
         <View style={style.carContainer}>
+          <Image style={style.imageStyle as ImageStyle} source={{ uri: car?.carCatalog?.image }} />
           <View style={style.carInfos}>
             <TouchableOpacity
-              disabled={!defaultCarUser?.user}
+              disabled={!(navigateToUsers && defaultCarUser?.user)}
               onPress={() => {
                 navigation.navigate('UsersNavigator', {
                   params: {
@@ -112,7 +113,6 @@ export default class CarComponent extends React.Component<Props, State> {
               </View>
             </View>
           </View>
-          <Image style={style.imageStyle as ImageStyle} source={{ uri: car?.carCatalog?.image }} />
         </View>
       </View>
     );

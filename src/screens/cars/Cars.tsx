@@ -8,41 +8,42 @@ import CarComponent from '../../components/car/CarComponent';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList, { ItemsSeparatorType } from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
-import I18nManager from '../../I18n/I18nManager';
-import BaseProps from '../../types/BaseProps';
 import Car from '../../types/Car';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
-import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../transactions/TransactionsStyles';
+import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 
-interface State {
+interface State extends SelectableState<Car> {
   cars?: Car[];
   skip?: number;
   limit?: number;
-  count?: number;
   refreshing?: boolean;
   loading?: boolean;
 }
 
-export interface Props extends BaseProps {}
+export interface Props extends SelectableProps<Car> {}
 
-export default class Cars extends BaseAutoRefreshScreen<Props, State> {
+export default class Cars extends SelectableList<Car> {
   public props: Props;
   public state: State;
   private searchText: string;
 
   public constructor(props: Props) {
     super(props);
+    this.selectMultipleTitle = 'cars.selectCars';
+    this.selectSingleTitle = 'cars.selectCar';
+    this.title = I18n.t('cars.cars');
     this.state = {
       cars: [],
       skip: 0,
       limit: Constants.PAGING_SIZE,
       count: 0,
       refreshing: false,
-      loading: true
+      loading: true,
+      selectedItems: []
     };
     this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
@@ -140,20 +141,18 @@ export default class Cars extends BaseAutoRefreshScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const { cars, count, skip, limit, refreshing, loading } = this.state;
-    const { navigation } = this.props;
+    const { navigation, selectionMode, isModal } = this.props;
     return (
       <Container style={style.container}>
         <HeaderComponent
-          title={I18n.t('sidebar.cars')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('cars.cars')}` : null}
+          title={this.buildHeaderTitle()}
+          subTitle={this.buildHeaderSubtitle()}
           navigation={this.props.navigation}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
+          leftAction={isModal ? null : this.onBack}
+          leftActionIcon={isModal ? null : 'navigate-before'}
+          displayTenantLogo={false}
+          rightAction={isModal ? null : () => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
+          rightActionIcon={isModal ? null : 'menu'}
         />
         <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
         {loading ? (
@@ -166,8 +165,10 @@ export default class Cars extends BaseAutoRefreshScreen<Props, State> {
               count={count}
               limit={limit}
               skip={skip}
+              onSelect={this.onItemsSelected.bind(this)}
+              selectionMode={selectionMode}
               itemsSeparator={ItemsSeparatorType.DEFAULT}
-              renderItem={(item: Car, selected: boolean) => <CarComponent navigation={navigation} selected={selected} car={item} />}
+              renderItem={(item: Car) => <CarComponent navigation={navigation} navigateToUsers={!isModal} car={item} />}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}
               onEndReached={this.onEndScroll}
