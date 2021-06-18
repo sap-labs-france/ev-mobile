@@ -1,17 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Buffer } from 'buffer';
 
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
 import I18n from 'i18n-js';
 import jwtDecode from 'jwt-decode';
-import { Platform, Platform } from 'react-native';
-import ReactNativeBlobUtil, { FetchBlobResponse } from 'react-native-blob-util';
+import { ReactNativeBlobUtil } from 'react-native-blob-util';
 import SafeUrlAssembler from 'safe-url-assembler';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import NotificationManager from '../notification/NotificationManager';
-import { PLATFORM, PLATFORM } from '../theme/variables/commonColor';
+import { PLATFORM } from '../theme/variables/commonColor';
 import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
 import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
 import Car from '../types/Car';
