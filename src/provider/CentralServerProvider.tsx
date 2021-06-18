@@ -2,12 +2,16 @@ import { Buffer } from 'buffer';
 
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
+import I18n from 'i18n-js';
 import jwtDecode from 'jwt-decode';
+import { Platform } from 'react-native';
+import ReactNativeBlobUtil, { FetchBlobResponse } from 'react-native-blob-util';
 import SafeUrlAssembler from 'safe-url-assembler';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import NotificationManager from '../notification/NotificationManager';
+import { PLATFORM } from '../theme/variables/commonColor';
 import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
 import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
 import Car from '../types/Car';
@@ -30,10 +34,6 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
-import ReactNativeBlobUtil, { FetchBlobResponse } from 'react-native-blob-util';
-import { Platform } from 'react-native';
-import { PLATFORM } from '../theme/variables/commonColor';
-import I18n from 'i18n-js';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
@@ -348,7 +348,7 @@ export default class CentralServerProvider {
       console.log('Error saving Mobile Token:', error);
     }
     // Check on hold notification
-    this.notificationManager.checkOnHoldNotification();
+    await this.notificationManager.checkOnHoldNotification();
   }
 
   public async getEndUserLicenseAgreement(tenantSubDomain: string, params: { Language: string }): Promise<Eula> {
