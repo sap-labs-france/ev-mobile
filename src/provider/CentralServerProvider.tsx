@@ -4,14 +4,14 @@ import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
 import I18n from 'i18n-js';
 import jwtDecode from 'jwt-decode';
-import { Platform } from 'react-native';
+import { Platform, Platform } from 'react-native';
 import ReactNativeBlobUtil, { FetchBlobResponse } from 'react-native-blob-util';
 import SafeUrlAssembler from 'safe-url-assembler';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import NotificationManager from '../notification/NotificationManager';
-import { PLATFORM } from '../theme/variables/commonColor';
+import { PLATFORM, PLATFORM } from '../theme/variables/commonColor';
 import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
 import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
 import Car from '../types/Car';
@@ -19,7 +19,7 @@ import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
 import Eula, { EulaAccepted } from '../types/Eula';
 import { KeyValue } from '../types/Global';
-import PagingParams from '../types/PagingParams';
+import QueryParams, { PagingParams, SortingParam } from '../types/QueryParams';
 import { ServerAction, ServerRoute } from '../types/Server';
 import { BillingSettings } from '../types/Setting';
 import Site from '../types/Site';
@@ -713,10 +713,16 @@ export default class CentralServerProvider {
     return result.data as DataResult<Tag>;
   }
 
-  public async getInvoices(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<BillingInvoice>> {
+  public async getInvoices(
+    params = {},
+    paging: PagingParams = Constants.DEFAULT_PAGING,
+    sorting: SortingParam[] = []
+  ): Promise<DataResult<BillingInvoice>> {
     this.debugMethod('getInvoices');
     // Build Paging
     this.buildPaging(paging, params);
+    // Build Sorting
+    this.buildSorting(sorting, params);
     // Call
     const result = await this.axiosInstance.get(`${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_INVOICES}`, {
       headers: this.buildSecuredHeaders(),
@@ -897,20 +903,27 @@ export default class CentralServerProvider {
     return this.securityProvider;
   }
 
-  private buildPaging(paging: PagingParams, queryString: any) {
+  private buildPaging(paging: PagingParams, queryParams: QueryParams): void {
     if (paging) {
       // Limit
       if (paging.limit) {
-        queryString.Limit = paging.limit;
+        queryParams.Limit = paging.limit;
       }
       // Skip
       if (paging.skip) {
-        queryString.Skip = paging.skip;
+        queryParams.Skip = paging.skip;
       }
       // Record count
       if (paging.onlyRecordCount) {
-        queryString.OnlyRecordCount = paging.onlyRecordCount;
+        queryParams.OnlyRecordCount = paging.onlyRecordCount;
       }
+    }
+  }
+
+  private buildSorting(sortingParams: SortingParam[], queryParams: QueryParams): void {
+    const sortFields = sortingParams.flatMap((sortingParam) => (sortingParam.field ? [sortingParam.field] : []));
+    if (!Utils.isEmptyArray(sortFields)) {
+      queryParams.SortFields = sortFields;
     }
   }
 
