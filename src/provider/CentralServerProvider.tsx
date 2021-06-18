@@ -1,7 +1,7 @@
 import { Buffer } from 'buffer';
 
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
-import { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, CancelToken, CancelTokenSource } from 'axios';
 import jwtDecode from 'jwt-decode';
 import SafeUrlAssembler from 'safe-url-assembler';
 
@@ -30,7 +30,7 @@ import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
-import ReactNativeBlobUtil, { FetchBlobResponse } from 'react-native-blob-util';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 import { Platform } from 'react-native';
 import { PLATFORM } from '../theme/variables/commonColor';
 import I18n from 'i18n-js';
@@ -687,16 +687,17 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getUsers(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<User>> {
+  public async getUsers(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING, cancelToken: CancelToken): Promise<DataResult<User>> {
     this.debugMethod('getUsers');
     // Build Paging
     this.buildPaging(paging, params);
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.USERS}`, {
+      cancelToken,
       headers: this.buildSecuredHeaders(),
       params
     });
-    return result.data;
+    return result.data as DataResult<User>;
   }
 
   public async getUserDefaultTagCar(userID: string): Promise<UserDefaultTagCar> {
@@ -762,14 +763,15 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getUserImage(params = {}): Promise<string> {
+  public async getUserImage(params = {}, cancelToken: CancelToken): Promise<string> {
     this.debugMethod('getUserImage');
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.USER_IMAGE}`, {
+      cancelToken,
       headers: this.buildSecuredHeaders(),
       params
     });
-    return result.data.image;
+    return result.data.image as string;
   }
 
   public async getSiteImage(id: string): Promise<string> {

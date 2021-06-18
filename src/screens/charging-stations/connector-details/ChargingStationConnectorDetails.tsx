@@ -101,12 +101,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     if (this.currentUser) {
       this.setState(
         {
-        selectedUser: {
-          id: this.currentUser.id,
-          firstName: this.currentUser.firstName,
-          name: this.currentUser.name
-        }
-      }, () => this.loadSelectedUserDefaultTagAndCar());
+          selectedUser: {
+            id: this.currentUser.id,
+            firstName: this.currentUser.firstName,
+            name: this.currentUser.name
+          }
+        },
+        this.loadSelectedUserDefaultTagAndCar.bind(this)
+      );
     }
   }
 
@@ -816,7 +818,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   }
 
   private onUserSelected(selectedUsers: User[]): void {
-    this.setState({ selectedUser: selectedUsers?.[0] }, () => this.loadSelectedUserDefaultTagAndCar());
+    this.setState({ selectedUser: selectedUsers?.[0] }, this.loadSelectedUserDefaultTagAndCar.bind(this));
   }
 
   private async loadSelectedUserDefaultTagAndCar(): Promise<void> {

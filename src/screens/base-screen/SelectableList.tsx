@@ -29,7 +29,6 @@ export default class SelectableList<T extends ListItem> extends BaseAutoRefreshS
   protected selectSingleTitle: string;
   protected selectMultipleTitle: string;
   protected selectSingleSubTitle: string;
-  protected sidebarTitle: string;
   protected title: string;
 
   public clearSelectedItems(): void {
@@ -52,7 +51,7 @@ export default class SelectableList<T extends ListItem> extends BaseAutoRefreshS
       case ItemSelectionMode.MULTI:
         return I18n.t(this.selectMultipleTitle);
       default:
-        return this.title ?? I18n.t(this.sidebarTitle);
+        return this.title;
     }
   }
 

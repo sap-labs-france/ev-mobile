@@ -11,6 +11,7 @@ import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UserAvatarStyle';
+import axios, { CancelTokenSource } from 'axios';
 
 interface State {
   user?: User;
@@ -24,10 +25,14 @@ export interface Props extends BaseProps {
 }
 
 export default class UserAvatar extends React.Component<Props, State> {
+  public state: State;
+  public props: Props;
   private centralServerProvider: CentralServerProvider;
+  private cancelTokenSource: CancelTokenSource;
 
   public constructor(props: Props) {
     super(props);
+    this.cancelTokenSource = axios.CancelToken.source();
     this.state = {
       user: this.props.user
     };
@@ -37,8 +42,10 @@ export default class UserAvatar extends React.Component<Props, State> {
     this.centralServerProvider = await ProviderFactory.getProvider();
     const { user } = this.props;
     if (user) {
-      user.image = await this.getUserImage(user.id as string);
-      this.setState({ user });
+      const image = await this.getUserImage(user.id as string);
+      if (image) {
+        this.setState({ user: { ...user, image } });
+      }
     }
   }
 
@@ -46,10 +53,14 @@ export default class UserAvatar extends React.Component<Props, State> {
     const { user } = this.props;
     if (user) {
       user.image = await this.getUserImage(user.id as string);
-      if (JSON.stringify(this.state.user) !== JSON.stringify(user)) {
+      if (user.image && JSON.stringify(this.state.user) !== JSON.stringify(user)) {
         this.setState({ user });
       }
     }
+  }
+
+  public componentWillUnmount() {
+    this.cancelTokenSource.cancel();
   }
 
   public setState = (
@@ -94,8 +105,12 @@ export default class UserAvatar extends React.Component<Props, State> {
 
   private async getUserImage(id: string) {
     try {
-      return await this.centralServerProvider?.getUserImage({ ID: id });
+      return await this.centralServerProvider?.getUserImage({ ID: id }, this.cancelTokenSource.token);
     } catch (error) {
+      if (axios.isCancel(error)) {
+        console.log(`${Constants.UNMOUNTING_COMPONENT} UserAvatar - getUserImage ${Constants.AXIOS_CANCEL_REQUEST_MESSAGE}`);
+        return null;
+      }
       // Check if HTTP?
       if (!error.request) {
         await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'users.userUnexpectedError', this.props.navigation);

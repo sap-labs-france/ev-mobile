@@ -14,6 +14,7 @@ import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UsersStyle';
 import SelectableList, { SelectableProps, SelectableState } from '../../base-screen/SelectableList';
+import axios, { CancelTokenSource } from 'axios';
 
 export interface Props extends SelectableProps<User> {}
 
@@ -35,16 +36,16 @@ export default class Users extends SelectableList<User> {
   public props: Props;
   private searchText: string;
   private userIDs: string[];
-  private title: string;
+  private cancelTokenSource: CancelTokenSource;
 
   public constructor(props: Props) {
     super(props);
+    this.cancelTokenSource = axios.CancelToken.source();
     this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string[];
-    this.title = Utils.getParamFromNavigation(this.props.route, 'title', null) as string;
+    this.title = (Utils.getParamFromNavigation(this.props.route, 'title', null) as string) ?? I18n.t('users.users');
     this.selectMultipleTitle = 'users.selectUsers';
     this.selectSingleTitle = 'users.selectUser';
     this.state = {
-      ...super.state,
       users: [],
       skip: 0,
       limit: Constants.PAGING_SIZE,
@@ -61,6 +62,10 @@ export default class Users extends SelectableList<User> {
     await super.componentDidMount();
   }
 
+  public componentWillUnmount(): void {
+    this.cancelTokenSource.cancel(Constants.AXIOS_CANCEL_REQUEST_MESSAGE);
+  }
+
   public async getUsers(searchText: string, skip: number, limit: number, onlyCount: boolean = false): Promise<DataResult<User>> {
     try {
       const params = {
@@ -68,16 +73,28 @@ export default class Users extends SelectableList<User> {
         UserID: this.userIDs?.join('|'),
         carName: this.title
       };
-      const users = await this.centralServerProvider.getUsers(params, onlyCount ? Constants.ONLY_RECORD_COUNT : { skip, limit });
+      const users = await this.centralServerProvider.getUsers(
+        params,
+        onlyCount ? Constants.ONLY_RECORD_COUNT : { skip, limit },
+        this.cancelTokenSource?.token
+      );
       // Check
       if (users.count === -1) {
         // Request nbr of records
-        const usersNbrRecordsOnly = await this.centralServerProvider.getUsers(params, Constants.ONLY_RECORD_COUNT);
+        const usersNbrRecordsOnly = await this.centralServerProvider.getUsers(
+          params,
+          Constants.ONLY_RECORD_COUNT,
+          this.cancelTokenSource?.token
+        );
         // Set
         users.count = usersNbrRecordsOnly.count;
       }
       return users;
     } catch (error) {
+      if (axios.isCancel(error)) {
+        console.log(`${Constants.UNMOUNTING_COMPONENT} Users - getUsers ${Constants.AXIOS_CANCEL_REQUEST_MESSAGE}`);
+        return null;
+      }
       // Check if HTTP?
       if (!error.request) {
         await Utils.handleHttpUnexpectedError(
@@ -106,11 +123,13 @@ export default class Users extends SelectableList<User> {
       // No: get next sites
       const users = await this.getUsers(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
-      this.setState((prevState) => ({
-        users: users ? [...prevState.users, ...users.result] : prevState.users,
-        skip: prevState.skip + Constants.PAGING_SIZE,
-        refreshing: false
-      }));
+      if (users) {
+        this.setState((prevState) => ({
+          users: users ? [...prevState.users, ...users.result] : prevState.users,
+          skip: prevState.skip + Constants.PAGING_SIZE,
+          refreshing: false
+        }));
+      }
     }
   };
 
@@ -128,15 +147,20 @@ export default class Users extends SelectableList<User> {
       this.setState({ refreshing: true });
       const users = await this.getUsers(this.searchText, 0, skip + limit);
       const usersResult = users ? users.result : [];
-      this.getUsers(this.searchText, 0, limit, true)
-        .then((res: DataResult<User>) => this.setState({ totalItemCount: res?.count }));
-      // Set
-      this.setState({
-        loading: false,
-        refreshing: false,
-        users: usersResult,
-        count: users.count
+      this.getUsers(this.searchText, 0, limit, true).then((res: DataResult<User>) => {
+        if (res) {
+          this.setState({ totalItemCount: res?.count });
+        }
       });
+      // Set
+      if (users) {
+        this.setState({
+          loading: false,
+          refreshing: false,
+          users: usersResult,
+          count: users.count
+        });
+      }
     }
   }
 
