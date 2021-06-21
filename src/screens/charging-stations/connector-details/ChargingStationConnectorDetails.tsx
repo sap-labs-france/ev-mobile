@@ -795,7 +795,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           buildItemName={(car: Car) => Utils.buildCarCatalogName(car?.carCatalog)}
           navigation={navigation}
           selectionMode={ItemSelectionMode.SINGLE}>
-          <Cars navigation={navigation} />
           <Cars userIDs={[selectedUser?.id as string]} navigation={navigation} />
         </ModalSelect>
       </View>
