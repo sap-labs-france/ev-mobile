@@ -24,7 +24,9 @@ interface State extends SelectableState<Car> {
   loading?: boolean;
 }
 
-export interface Props extends SelectableProps<Car> {}
+export interface Props extends SelectableProps<Car> {
+  userIDs?: string[];
+}
 
 export default class Cars extends SelectableList<Car> {
   public props: Props;
@@ -64,7 +66,8 @@ export default class Cars extends SelectableList<Car> {
       const cars = await this.centralServerProvider.getCars(
         {
           Search: searchText,
-          WithUsers: true
+          WithUsers: true,
+          UserID: this.props.userIDs?.join('|')
         },
         { skip, limit }
       );
