@@ -785,7 +785,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private renderCarSelection(style: any) {
     const { navigation } = this.props;
-    const { selectedCar, carLoading } = this.state;
+    const { selectedCar, carLoading, selectedUser } = this.state;
     return (
       <View style={style.rowContainer}>
         <ModalSelect<Car>
@@ -796,6 +796,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           navigation={navigation}
           selectionMode={ItemSelectionMode.SINGLE}>
           <Cars navigation={navigation} />
+          <Cars userIDs={[selectedUser?.id as string]} navigation={navigation} />
         </ModalSelect>
       </View>
     );
