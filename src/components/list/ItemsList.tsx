@@ -5,18 +5,15 @@ import ListItem from '../../types/ListItem';
 import ListEmptyTextComponent from './empty-text/ListEmptyTextComponent';
 import ListFooterComponent from './footer/ListFooterComponent';
 import computeStyleSheet from './ItemsListStyle';
-import { CheckBox } from 'react-native-elements';
-import Utils from '../../utils/Utils';
-import { scale } from 'react-native-size-matters';
 
 export interface Props<T extends ListItem> extends BaseProps {
-  renderItem: (item: T) => React.ReactElement;
+  renderItem: (item: T, selected?: boolean) => React.ReactElement;
   onSelect?: (selectedItems: T[]) => void;
   emptyTitle: string;
   manualRefresh: () => void;
   onEndReached: () => void;
   data: T[];
-  itemsSeparator: ItemsSeparatorType;
+  itemsSeparator?: ItemsSeparatorType;
   selectionMode?: ItemSelectionMode;
   skip: number;
   count: number;
@@ -70,26 +67,13 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
     const { selectedItems } = this.state;
     const selectionEnabled = selectionMode !== ItemSelectionMode.NONE && onSelect;
     const style = computeStyleSheet();
-    const commonColors = Utils.getCurrentCommonColor();
     return (
       <FlatList
         data={data}
         renderItem={({ item }) => (
           <View>
             <TouchableOpacity disabled={!selectionEnabled} onPress={() => this.onSelectItem(item)}>
-              <View style={style.rowContainer}>
-                {selectionMode === ItemSelectionMode.MULTI && (
-                  <CheckBox
-                    size={scale(35)}
-                    disabled={true}
-                    checkedIcon={'check-square'}
-                    checkedColor={commonColors.textColor}
-                    containerStyle={style.checkbox}
-                    checked={selectedItems.has(item.id)}
-                  />
-                )}
-                {this.props.renderItem(item)}
-              </View>
+              <View style={style.rowContainer}>{this.props.renderItem(item, selectedItems.has(item.id))}</View>
             </TouchableOpacity>
             {this.renderItemsSeparator(itemsSeparator, style)}
           </View>
