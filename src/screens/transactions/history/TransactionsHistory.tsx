@@ -229,7 +229,9 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
           rightActionIcon={'menu'}
           filters={filters}
         />
-        <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+        <View style={style.searchBar}>
+          <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+        </View>
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (
