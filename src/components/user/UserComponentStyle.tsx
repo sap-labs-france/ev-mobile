@@ -16,14 +16,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      padding: '5@s'
+      padding: '5@s',
+      borderRadius: '12@s',
+      borderWidth: 1,
+      borderColor: commonColor.listBg,
+      marginBottom: '3@s'
     },
     avatarContainer: {
       paddingLeft: '10@s',
       paddingRight: '15@s'
     },
     selected: {
-      opacity: 0.5
+      backgroundColor: commonColor.listHeaderBgColor,
+      opacity: 0.8
     },
     userContainer: {
       flex: 1,

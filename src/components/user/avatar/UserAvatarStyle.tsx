@@ -15,9 +15,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       fontSize: '30@s'
     },
-    avatarSelected: {
+    avatarWithAccessory: {
       color: commonColor.textColor,
-      opacity: 0.3
+      opacity: 1
     },
     avatarTitle: {
       color: commonColor.textColor
