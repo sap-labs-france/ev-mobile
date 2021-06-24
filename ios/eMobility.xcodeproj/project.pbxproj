@@ -947,6 +947,7 @@
 				DEVELOPMENT_TEAM = SG7N28T3A2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = eMobility.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1018,6 +1019,7 @@
 				DEVELOPMENT_TEAM = SG7N28T3A2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = eMobility.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
