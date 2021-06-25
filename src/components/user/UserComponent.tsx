@@ -43,7 +43,11 @@ export default class UserComponent extends React.Component<Props, State> {
     return (
       <View style={[style.container, selected && style.selected]}>
         <View style={style.avatarContainer}>
-          <UserAvatar icon={selected && 'check'} user={user} navigation={navigation} />
+          {selected ? (
+            <UserAvatar icon={'check'} user={user} navigation={navigation} />
+          ) : (
+            <UserAvatar user={user} navigation={navigation} />
+          )}
         </View>
         <View style={style.userContainer}>
           <View style={style.userFullNameStatusContainer}>

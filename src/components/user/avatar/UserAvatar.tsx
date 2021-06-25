@@ -16,9 +16,8 @@ interface State {
 }
 
 export interface Props extends BaseProps {
-  user?: User;
+  user: User;
   accessoryIcon?: string;
-  selected?: boolean;
   size?: number;
   icon?: string;
 }
