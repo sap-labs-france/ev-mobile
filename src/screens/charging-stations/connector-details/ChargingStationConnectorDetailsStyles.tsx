@@ -196,6 +196,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     disabled: {
       color: commonColor.buttonDisabledBg,
       borderColor: commonColor.buttonDisabledBg
+    },
+    errorMessage: {
+      textAlign: 'center'
     }
   });
   const portraitStyles = {};
