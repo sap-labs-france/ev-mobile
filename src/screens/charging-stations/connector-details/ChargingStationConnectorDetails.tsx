@@ -262,7 +262,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     // Transaction?
     if (connector && connector.currentTransactionID !== 0) {
       // Check Auth
-      this.securityProvider?.canReadTransaction(chargingStation.siteArea, connector.currentTagID);
+      return this.securityProvider?.canReadTransaction(chargingStation.siteArea, connector.currentTagID);
     }
     return false;
   };
