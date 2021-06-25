@@ -23,7 +23,7 @@ import SiteArea from '../types/SiteArea';
 import Tag from '../types/Tag';
 import { TenantConnection } from '../types/Tenant';
 import Transaction from '../types/Transaction';
-import User from '../types/User';
+import User, { UserDefaultTagCar } from '../types/User';
 import UserToken from '../types/UserToken';
 import AxiosFactory from '../utils/AxiosFactory';
 import Constants from '../utils/Constants';
@@ -697,6 +697,16 @@ export default class CentralServerProvider {
       params
     });
     return result.data;
+  }
+
+  public async getUserDefaultTagCar(userID: string): Promise<UserDefaultTagCar> {
+    this.debugMethod('getUserDefaultTagCar');
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_USER_DEFAULT_TAG_CAR, { id: userID });
+    const res = await this.axiosInstance.get(url, {
+      headers: this.buildSecuredHeaders(),
+      params: { UserID: userID }
+    });
+    return res.data as UserDefaultTagCar;
   }
 
   public async getTags(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Tag>> {

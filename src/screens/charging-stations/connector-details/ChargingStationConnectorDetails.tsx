@@ -12,12 +12,14 @@ import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
-import Transaction from '../../../types/Transaction';
+import Transaction, { StartTransactionErrorCode } from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
+import { UserDefaultTagCar } from '../../../types/User';
+import UserToken from '../../../types/UserToken';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -41,11 +43,13 @@ interface State {
   isPricingActive?: boolean;
   buttonDisabled?: boolean;
   refreshing?: boolean;
+  errorCodes?: string[];
 }
 
 export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
+  private currentUser: UserToken;
 
   public constructor(props: Props) {
     super(props);
@@ -55,6 +59,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       connector: null,
       transaction: null,
       isAdmin: false,
+      buttonDisabled: true,
       isSiteAdmin: false,
       canStartTransaction: false,
       canStopTransaction: false,
@@ -65,7 +70,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       inactivityFormatted: '-',
       startTransactionNbTrial: 0,
       isPricingActive: false,
-      buttonDisabled: true,
       refreshing: false
     };
   }
@@ -83,6 +87,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     if (startTransaction) {
       this.startTransactionConfirm();
     }
+    this.currentUser = this.centralServerProvider.getUserInfo();
   }
 
   public getSiteImage = async (siteID: string): Promise<string> => {
@@ -211,7 +216,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       transaction = await this.getTransaction(connector.currentTransactionID);
     }
     // Check to enable the buttons after a certain period of time
-    const startStopTransactionButtonStatus = this.getStartStopTransactionButtonStatus(connector);
+    const startStopTransactionButtonStatus = await this.getStartStopTransactionButtonStatus(connector);
     // Compute Duration
     const durationInfos = this.getDurationInfos(transaction, connector);
     // Set
@@ -244,20 +249,20 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return false;
   };
 
-  public canStartTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
+  public canStartTransaction(chargingStation: ChargingStation, connector: Connector): boolean {
     // Transaction?
     if (connector && connector.currentTransactionID === 0) {
       // Check Auth
       return this.securityProvider?.canStartTransaction(chargingStation.siteArea);
     }
     return false;
-  };
+  }
 
   public canDisplayTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
     // Transaction?
     if (connector && connector.currentTransactionID !== 0) {
       // Check Auth
-      return this.securityProvider?.canReadTransaction(chargingStation.siteArea, connector.currentTagID);
+      this.securityProvider?.canReadTransaction(chargingStation.siteArea, connector.currentTagID);
     }
     return false;
   };
@@ -296,11 +301,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       // Disable the button
       this.setState({ buttonDisabled: true });
       // Start the Transaction
-      const status = await this.centralServerProvider.startTransaction(
-        chargingStation.id as string,
-        connector.connectorId,
-        userInfo.tagIDs[0]
-      );
+      const status = await this.centralServerProvider.startTransaction(chargingStation.id as string, connector.connectorId, userInfo.tagIDs[0]);
       // Check
       if (status && status.status === 'Accepted') {
         // Show message
@@ -365,8 +366,16 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
   };
 
-  public getStartStopTransactionButtonStatus(connector: Connector): { buttonDisabled?: boolean; startTransactionNbTrial?: number } {
+  public async getStartStopTransactionButtonStatus(connector: Connector): Promise<{ buttonDisabled?: boolean; startTransactionNbTrial?: number; errorCodes?: string[] }> {
     const { startTransactionNbTrial } = this.state;
+    // Check if error codes
+    const errorCodes = await this.getErrorCodes();
+    if (!Utils.isEmptyArray(errorCodes) || !errorCodes) {
+      return {
+        buttonDisabled: true,
+        errorCodes
+      };
+    }
     // Check if the Start/Stop Button should stay disabled
     if (
       connector &&
@@ -674,6 +683,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public render() {
     const { navigation } = this.props;
+    const { errorCodes } = this.state;
     const style = computeStyleSheet();
     const { connector, canStopTransaction, canStartTransaction, chargingStation, loading, siteImage, isPricingActive } = this.state;
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
@@ -707,28 +717,71 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         ) : (
           <View style={style.noButtonStopTransaction} />
         )}
+        {/* Error message*/}
+        {!Utils.isEmptyArray(errorCodes) && this.renderErrorMessages(style)}
         {/* Details */}
-        <ScrollView
-          contentContainerStyle={style.scrollViewContainer}
-          refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
-          <View style={style.rowContainer}>
-            {this.renderConnectorStatus(style)}
-            {this.renderUserInfo(style)}
-          </View>
-          <View style={style.rowContainer}>
-            {this.renderInstantPower(style)}
-            {this.renderTotalConsumption(style)}
-          </View>
-          <View style={style.rowContainer}>
-            {this.renderElapsedTime(style)}
-            {this.renderInactivity(style)}
-          </View>
-          <View style={style.rowContainer}>
-            {this.renderBatteryLevel(style)}
-            {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
-          </View>
-        </ScrollView>
+        {connector?.status !== ChargePointStatus.AVAILABLE && (
+          <ScrollView
+            contentContainerStyle={style.scrollViewContainer}
+            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
+            <View style={style.rowContainer}>
+              {this.renderConnectorStatus(style)}
+              {this.renderUserInfo(style)}
+            </View>
+            <View style={style.rowContainer}>
+              {this.renderInstantPower(style)}
+              {this.renderTotalConsumption(style)}
+            </View>
+            <View style={style.rowContainer}>
+              {this.renderElapsedTime(style)}
+              {this.renderInactivity(style)}
+            </View>
+            <View style={style.rowContainer}>
+              {this.renderBatteryLevel(style)}
+              {isPricingActive ? this.renderPrice(style) : <View style={style.columnContainer} />}
+            </View>
+          </ScrollView>
+        )}
       </Container>
     );
+  }
+
+  private async getSelectedUserDefaultCarAndTag(): Promise<UserDefaultTagCar> {
+    try {
+      const currentUserId = this.currentUser?.id;
+      if (currentUserId) {
+        return await this.centralServerProvider?.getUserDefaultTagCar(this.currentUser?.id);
+      }
+      return null;
+    } catch (error) {
+      await Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'invoices.invoiceUnexpectedError',
+        this.props.navigation,
+        this.refresh.bind(this)
+      );
+    }
+    return null;
+  }
+
+  private async getErrorCodes(): Promise<string[]> {
+    const userDefaultTagCar: UserDefaultTagCar = await this.getSelectedUserDefaultCarAndTag();
+    return userDefaultTagCar?.errorCodes;
+  }
+
+  private renderErrorMessages(style: any) {
+    const { errorCodes } = this.state;
+    const errorCode: StartTransactionErrorCode = errorCodes?.[0] as StartTransactionErrorCode;
+    let errorMessage: string;
+    switch (errorCode) {
+      case StartTransactionErrorCode.BILLING_NO_PAYMENT_METHOD:
+        errorMessage = I18n.t('transactions.noPaymentMethodError');
+        break;
+      default:
+        errorMessage = I18n.t('transactions.startTransactionDisabled');
+        break;
+    }
+    return <Text style={style.errorMessage}>{errorMessage}</Text>;
   }
 }
