@@ -717,7 +717,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         ) : (
           <View style={style.noButtonStopTransaction} />
         )}
-        {/* Error message*/}
+        {/* Error message */}
         {!Utils.isEmptyArray(errorCodes) && this.renderErrorMessages(style)}
         {/* Details */}
         {connector?.status !== ChargePointStatus.AVAILABLE && (
