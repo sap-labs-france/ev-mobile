@@ -5,7 +5,8 @@ import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
 import I18n from 'i18n-js';
 import jwtDecode from 'jwt-decode';
-import { ReactNativeBlobUtil } from 'react-native-blob-util';
+import { Platform } from 'react-native';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 import SafeUrlAssembler from 'safe-url-assembler';
 
 import Configuration from '../config/Configuration';
@@ -892,20 +893,27 @@ export default class CentralServerProvider {
         fileCache: true,
         addAndroidDownloads: {
           path: downloadedFilePath,
-          useDownloadManager: true, // <-- this is the only thing required
+          useDownloadManager: true,
           mime: 'application/pdf',
           notification: true,
-          // Title of download notification
           title: fileName,
-          // Make the file scannable  by media scanner
           mediaScannable: true,
-          // File description (not notification description)
           description: `${I18n.t('invoices.invoiceFileDescription')} ${invoice.number}`
         }
       };
     }
     if (config) {
-      await ReactNativeBlobUtil.config(config).fetch('GET', url, this.buildSecuredHeaders());
+      await ReactNativeBlobUtil.config(config)
+        .fetch('GET', url, this.buildSecuredHeaders())
+        .then(async (res) => {
+          // Open the  downloaded invoice
+          if (Platform.OS === PLATFORM.IOS) {
+            ReactNativeBlobUtil.ios.openDocument(res.path());
+          } else {
+            await ReactNativeBlobUtil.android.actionViewIntent(res.path(), 'application/pdf');
+          }
+        });
+
     }
   }
 

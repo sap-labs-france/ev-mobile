@@ -4,6 +4,7 @@ import User from './User';
 
 export default interface Tag extends ListItem {
   description?: string;
+  visualID?: string;
   issuer: boolean;
   active: boolean;
   userID?: string;

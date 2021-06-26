@@ -9,6 +9,7 @@ import SimpleSearchComponent from '../../../components/search/simple/SimpleSearc
 import TransactionHistoryComponent from '../../../components/transaction/history/TransactionHistoryComponent';
 import I18nManager from '../../../I18n/I18nManager';
 import ProviderFactory from '../../../provider/ProviderFactory';
+import BaseScreen from '../../../screens/base-screen/BaseScreen';
 import BaseProps from '../../../types/BaseProps';
 import { TransactionDataResult } from '../../../types/DataResult';
 import { GlobalFilters } from '../../../types/Filter';
@@ -17,7 +18,6 @@ import Transaction from '../../../types/Transaction';
 import Constants from '../../../utils/Constants';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
-import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../TransactionsStyles';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from './TransactionsHistoryFilters';
 
@@ -36,7 +36,7 @@ interface State {
   filters?: TransactionsHistoryFiltersDef;
 }
 
-export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, State> {
+export default class TransactionsHistory extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
@@ -56,14 +56,13 @@ export default class TransactionsHistory extends BaseAutoRefreshScreen<Props, St
       initialFilters: {},
       filters: {}
     };
-    // Set refresh period
-    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   public async componentDidMount() {
     // Get initial filters
     await this.loadInitialFilters();
     await super.componentDidMount();
+    await this.refresh();
   }
 
   public setState = (

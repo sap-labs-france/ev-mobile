@@ -5,9 +5,6 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../utils/Utils';
 
-/**
- *
- */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -23,7 +20,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     avatarContainer: {
-      backgroundColor: commonColor.listBorderColor,
+      backgroundColor: commonColor.containerBgColor,
+      borderWidth: '2@s',
+      borderColor: commonColor.textColor,
       height: '100%',
       width: '100%'
     },

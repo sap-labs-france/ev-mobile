@@ -60,7 +60,7 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
 
   public async getTags(searchText: string, skip: number, limit: number): Promise<DataResult<Tag>> {
     try {
-      const tags = await this.centralServerProvider.getTags({ Search: searchText }, { skip, limit });
+      const tags = await this.centralServerProvider.getTags({ Search: searchText, WithUser: true }, { skip, limit });
       if (tags.count === -1) {
         // Request nbr of records
         const tagsNbrRecordsOnly = await this.centralServerProvider.getTags({ Search: searchText }, Constants.ONLY_RECORD_COUNT);

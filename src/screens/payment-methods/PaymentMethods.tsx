@@ -3,6 +3,8 @@ import I18n from 'i18n-js';
 import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
 import { ActivityIndicator, Alert, TouchableOpacity, View } from 'react-native';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { scale } from 'react-native-size-matters';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
@@ -13,12 +15,10 @@ import { BillingPaymentMethod } from '../../types/Billing';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
+import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './PaymentMethodsStyle';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
-import Message from '../../utils/Message';
-import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {}
 
@@ -142,9 +142,11 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
           }}
           rightActionIcon={'menu'}
         />
-        <TouchableOpacity onPress={() => navigation.navigate('StripePaymentMethodCreationForm')} style={style.addPMContainer}>
-          <Icon type={'MaterialIcons'} name={'add'} style={style.icon} />
-        </TouchableOpacity>
+        <View style={style.toolBar}>
+          <TouchableOpacity onPress={() => navigation.navigate('StripePaymentMethodCreationForm')} style={style.addPaymentMethodButton}>
+            <Icon type={'MaterialIcons'} name={'add'} style={style.icon} />
+          </TouchableOpacity>
+        </View>
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (
