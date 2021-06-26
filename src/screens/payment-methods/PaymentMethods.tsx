@@ -10,6 +10,7 @@ import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
 import PaymentMethodComponent from '../../components/payment-method/PaymentMethodComponent';
 import I18nManager from '../../I18n/I18nManager';
+import BaseScreen from '../../screens/base-screen/BaseScreen';
 import BaseProps from '../../types/BaseProps';
 import { BillingPaymentMethod } from '../../types/Billing';
 import { DataResult } from '../../types/DataResult';
@@ -17,7 +18,6 @@ import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
 import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
-import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './PaymentMethodsStyle';
 
 export interface Props extends BaseProps {}
@@ -32,7 +32,7 @@ interface State {
   deleteOperationsStates?: Record<string, boolean>;
 }
 
-export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> {
+export default class PaymentMethods extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
 
@@ -47,7 +47,6 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
       loading: true,
       deleteOperationsStates: {}
     };
-    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   public setState = (
@@ -56,6 +55,11 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
   ) => {
     super.setState(state, callback);
   };
+
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+    await this.refresh();
+  }
 
   public async getPaymentMethods(skip: number, limit: number): Promise<DataResult<BillingPaymentMethod>> {
     try {
