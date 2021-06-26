@@ -98,10 +98,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '100%'
     },
     transactionDetailsContainer1: {
-      paddingTop: '5@s',
+      paddingTop: '5@s'
     },
     transactionDetailsContainer2: {
-      paddingBottom: '5@s',
+      paddingBottom: '5@s'
     },
     transactionDetailContainer: {
       margin: '3@s',

@@ -913,7 +913,6 @@ export default class CentralServerProvider {
             await ReactNativeBlobUtil.android.actionViewIntent(res.path(), 'application/pdf');
           }
         });
-
     }
   }
 

@@ -60,7 +60,7 @@ export default class TagComponent extends React.Component<Props, State> {
               )}
               <View style={style.tagVisualIDContainer}>
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagVisualID]}>
-                {I18n.t('tags.visualID')}: {tag?.visualID}
+                  {I18n.t('tags.visualID')}: {tag?.visualID}
                 </Text>
               </View>
             </View>

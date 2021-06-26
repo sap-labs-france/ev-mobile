@@ -58,7 +58,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     userContainer: {
       flex: 1,
       flexDirection: 'column',
-      justifyContent: 'center',
+      justifyContent: 'center'
     },
     userFullnameStatusContainer: {
       flexDirection: 'row',

@@ -819,9 +819,8 @@ export default class Utils {
     // No Connector available
     if (connectorStats.availableConnectors === 0) {
       return style.statusNotAvailable;
-    // Connector Suspended or Finishing
-    } else if (connectorStats.finishingConnectors > 0 ||
-        connectorStats.suspendedConnectors > 0) {
+      // Connector Suspended or Finishing
+    } else if (connectorStats.finishingConnectors > 0 || connectorStats.suspendedConnectors > 0) {
       return style.statusAvailableSoon;
     }
     // Okay

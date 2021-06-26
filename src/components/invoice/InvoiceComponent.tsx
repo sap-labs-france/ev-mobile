@@ -72,7 +72,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
                   )}
                 </View>
               </View>
-              {user &&
+              {user && (
                 <View style={style.userContainer}>
                   <Text numberOfLines={1} style={[style.text, style.userName]}>
                     {Utils.buildUserName(user)}
@@ -81,7 +81,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
                     {user?.email}
                   </Text>
                 </View>
-              }
+              )}
             </View>
             <View style={style.rightContainer}>
               <View style={style.invoiceStatusContainer}>
@@ -159,10 +159,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
     Alert.alert(
       I18n.t('invoices.downloadInvoiceTitle'),
       I18n.t('invoices.downloadInvoiceSubtitle', { user: Utils.buildUserName(user), invoiceDate }),
-        [
-          { text: I18n.t('general.yes'), onPress: async () => this.downloadInvoice() },
-          { text: I18n.t('general.cancel') }
-        ]
+      [{ text: I18n.t('general.yes'), onPress: async () => this.downloadInvoice() }, { text: I18n.t('general.cancel') }]
     );
   }
 

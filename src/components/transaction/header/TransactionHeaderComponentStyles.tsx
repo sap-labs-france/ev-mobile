@@ -10,7 +10,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonStyles = ScaledSheet.create({
     container: {
       width: '100%',
-      flexDirection: 'column',
+      flexDirection: 'column'
     },
     transactionTimestamp: {
       color: commonColor.headerTextColor,
@@ -19,14 +19,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     subHeaderName: {
       paddingTop: '2@s',
-      color: commonColor.headerTextColor,
+      color: commonColor.headerTextColor
     },
     chargingStationName: {
-      fontSize: '18@s',
+      fontSize: '18@s'
     },
     userFullName: {
-      fontSize: '13@s',
-    },
+      fontSize: '13@s'
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

@@ -44,9 +44,7 @@ export default class TransactionHeaderComponent extends BaseScreen<Props, State>
     };
     return (
       <View style={style.container}>
-        <Text style={style.transactionTimestamp}>
-          {I18nManager.formatDateTime(transaction.timestamp)}
-        </Text>
+        <Text style={style.transactionTimestamp}>{I18nManager.formatDateTime(transaction.timestamp)}</Text>
         <Text numberOfLines={1} style={[style.subHeaderName, style.chargingStationName]}>
           {transaction.chargeBoxID} - {Utils.getConnectorLetterFromConnectorID(transaction.connectorId)}
         </Text>
@@ -55,7 +53,7 @@ export default class TransactionHeaderComponent extends BaseScreen<Props, State>
             {Utils.buildUserName(transaction.user)} ({transaction.user.email})
           </Text>
         )}
-    </View>
+      </View>
     );
   }
 }

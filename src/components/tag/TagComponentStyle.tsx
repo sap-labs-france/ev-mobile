@@ -84,7 +84,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     tagDescription: {
       fontSize: '15@s',
-      fontWeight: 'bold',
+      fontWeight: 'bold'
     },
     tagVisualID: {
       fontSize: '11@s',
