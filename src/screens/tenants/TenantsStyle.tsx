@@ -5,9 +5,6 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
-/**
- *
- */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -24,6 +21,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderRadius: 1,
       height: '40@s',
       padding: '5@s'
+    },
+    createTenantButton: {
+      width: '100%',
+      justifyContent: 'flex-start',
+      flexDirection: 'row'
     },
     tenantContainer: {
       height: '50@s'

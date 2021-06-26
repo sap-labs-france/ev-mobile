@@ -31,7 +31,7 @@ export default class Constants {
   public static readonly KEYCHAIN_SERVICE = 'eMobilityKeyChain';
 
   // Paging
-  public static readonly PAGING_SIZE = 50;
+  public static readonly PAGING_SIZE = 25;
   public static readonly DEFAULT_PAGING: PagingParams = {
     limit: Constants.PAGING_SIZE,
     skip: 0

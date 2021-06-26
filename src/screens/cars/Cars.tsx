@@ -9,13 +9,13 @@ import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import I18nManager from '../../I18n/I18nManager';
+import BaseScreen from '../../screens/base-screen/BaseScreen';
 import BaseProps from '../../types/BaseProps';
 import Car from '../../types/Car';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
-import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../transactions/TransactionsStyles';
 
 interface State {
@@ -29,7 +29,7 @@ interface State {
 
 export interface Props extends BaseProps {}
 
-export default class Cars extends BaseAutoRefreshScreen<Props, State> {
+export default class Cars extends BaseScreen<Props, State> {
   public props: Props;
   public state: State;
   private searchText: string;
@@ -44,7 +44,6 @@ export default class Cars extends BaseAutoRefreshScreen<Props, State> {
       refreshing: false,
       loading: true
     };
-    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   public setState = (
@@ -56,6 +55,7 @@ export default class Cars extends BaseAutoRefreshScreen<Props, State> {
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
+    await this.refresh();
   }
 
   public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {

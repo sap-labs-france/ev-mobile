@@ -1,5 +1,6 @@
-import { Text, View } from 'native-base';
+import { Card, CardItem, Text, View } from 'native-base';
 import React from 'react';
+import { ViewStyle } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import User, { UserStatus } from '../../types/User';
@@ -41,30 +42,45 @@ export default class UserComponent extends React.Component<Props, State> {
     const userStatus = user ? user.status : '';
     const statusStyle = this.computeStatusStyle(userStatus, chipStyle);
     return (
-      <View style={style.container}>
-        <View style={style.avatarContainer}>
-          <UserAvatar user={user} selected={selected} navigation={navigation} />
-        </View>
-        <View style={selected ? [style.userContainer, style.selected] : style.userContainer}>
-          <View style={style.userFullnameStatusContainer}>
-            <View style={style.fullNameContainer}>
-              <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.fullName}>
-                {userFullName}
+      <Card style={style.container}>
+        <CardItem style={style.userContent}>
+          <View style={[this.buildStatusIndicatorStyle(user.status, style), style.statusIndicator]} />
+          <View style={style.avatarContainer}>
+            <UserAvatar user={user} selected={selected} navigation={navigation} />
+          </View>
+          <View style={selected ? [style.userContainer, style.selected] : style.userContainer}>
+            <View style={style.userFullnameStatusContainer}>
+              <View style={style.fullNameContainer}>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.fullName}>
+                  {userFullName}
+                </Text>
+              </View>
+              <Chip statusStyle={statusStyle} text={Utils.translateUserStatus(userStatus)} navigation={navigation} />
+            </View>
+            <View style={style.emailRoleContainer}>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.email}>
+                {user.email}
+              </Text>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.role}>
+                {Utils.translateUserRole(userRole)}
               </Text>
             </View>
-            <Chip statusStyle={statusStyle} text={Utils.translateUserStatus(userStatus)} navigation={navigation} />
           </View>
-          <View style={style.emailRoleContainer}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.email}>
-              {user.email}
-            </Text>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.role}>
-              {Utils.translateUserRole(userRole)}
-            </Text>
-          </View>
-        </View>
-      </View>
+        </CardItem>
+      </Card>
     );
+  }
+
+  private buildStatusIndicatorStyle(userStatus: UserStatus, style: any): ViewStyle {
+    switch (userStatus) {
+      case UserStatus.ACTIVE:
+        return style.statusActive;
+      case UserStatus.BLOCKED:
+      case UserStatus.INACTIVE:
+      case UserStatus.LOCKED:
+      case UserStatus.PENDING:
+        return style.statusInactive;
+    }
   }
 
   private computeStatusStyle(status: string, style: any) {

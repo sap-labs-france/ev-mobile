@@ -23,12 +23,14 @@ export default class BaseAutoRefreshScreen<P, S> extends BaseScreen<Props, State
     this.refreshPeriodMillis = Constants.AUTO_REFRESH_MEDIUM_PERIOD_MILLIS;
   }
 
-  public async componentDidMount() {
+  public async componentDidMount(triggerRefresh = true) {
     await super.componentDidMount();
     // Refresh
     if (this.props.navigation.isFocused() && this.canRefresh()) {
       // Refresh
-      await this.refresh();
+      if (triggerRefresh) {
+        await this.refresh();
+      }
       this.lastRefreshDate = new Date();
     }
     // Start the timer

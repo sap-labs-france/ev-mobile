@@ -5,20 +5,48 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
-/**
- *
- */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
+      width: '97%',
+      height: '80@s',
+      alignSelf: 'center',
+      borderColor: 'transparent',
+      backgroundColor: commonColor.listHeaderBgColor,
+      shadowColor: commonColor.cardShadowColor,
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 3.62,
+      elevation: 11,
+      marginBottom: '8@s'
+    },
+    userContent: {
+      width: '100%',
+      height: '100%',
+      justifyContent: 'space-between',
+      backgroundColor: commonColor.listHeaderBgColor,
       flexDirection: 'row',
-      justifyContent: 'flex-start',
-      borderBottomWidth: 1,
-      alignItems: 'center',
-      borderBottomColor: commonColor.listBorderColor,
-      padding: '5@s'
+      margin: 0,
+      flex: 1,
+      paddingLeft: 0,
+      paddingTop: 0,
+      paddingBottom: 0,
+      paddingRight: 0
+    },
+    statusIndicator: {
+      height: '100%',
+      width: '5@s'
+    },
+    statusInactive: {
+      backgroundColor: commonColor.brandDanger
+    },
+    statusActive: {
+      backgroundColor: commonColor.brandSuccess
     },
     avatarContainer: {
       paddingLeft: '10@s',
@@ -31,11 +59,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       flexDirection: 'column',
       justifyContent: 'center',
-      height: '65@s'
     },
     userFullnameStatusContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
+      paddingRight: '10@s',
       alignItems: 'center'
     },
     fullNameContainer: {
