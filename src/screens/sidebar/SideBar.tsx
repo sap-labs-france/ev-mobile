@@ -213,9 +213,9 @@ export default class SideBar extends BaseScreen<Props, State> {
                 </TouchableOpacity>
               </View>
               <View style={style.columnThumbnail}>
-                <TouchableOpacity style={style.buttonThumbnail} onPress={() => navigation.navigate('Profile')}>
+                <View style={style.buttonThumbnail}>
                   <UserAvatar user={user} navigation={this.props.navigation} />
-                </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>

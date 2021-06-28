@@ -60,11 +60,15 @@ export default class Tags extends BaseScreen<Props, State> {
 
   public async getTags(searchText: string, skip: number, limit: number): Promise<DataResult<Tag>> {
     try {
-      const tags = await this.centralServerProvider.getTags({ Search: searchText, WithUser: true }, { skip, limit });
-      if (tags.count === -1) {
-        // Request nbr of records
-        const tagsNbrRecordsOnly = await this.centralServerProvider.getTags({ Search: searchText }, Constants.ONLY_RECORD_COUNT);
-        // Set
+      const params = {
+        Search: searchText,
+        WithUser: true
+      };
+      // Get the Tags
+      const tags = await this.centralServerProvider.getTags(params, { skip, limit }, ['-createdOn']);
+      // Get total number of records
+      if ((tags.count === -1) && Utils.isEmptyArray(this.state.tags)) {
+        const tagsNbrRecordsOnly = await this.centralServerProvider.getTags(params, Constants.ONLY_RECORD_COUNT);
         tags.count = tagsNbrRecordsOnly.count;
       }
       return tags;

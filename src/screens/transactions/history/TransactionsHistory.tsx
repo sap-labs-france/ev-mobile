@@ -96,39 +96,21 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     });
   }
 
-  public async getTransactions(
-    searchText: string,
-    skip: number,
-    limit: number,
-    startDateTime: Date,
-    endDateTime: Date
-  ): Promise<TransactionDataResult> {
+  public async getTransactions(searchText: string, skip: number, limit: number,
+      startDateTime: Date, endDateTime: Date): Promise<TransactionDataResult> {
     try {
+      const params = {
+        Statistics: 'history',
+        UserID: this.state.filters.userID,
+        StartDateTime: startDateTime ? startDateTime.toISOString() : null,
+        EndDateTime: endDateTime ? endDateTime.toISOString() : null,
+        Search: searchText
+      };
       // Get active transaction
-      const transactions = await this.centralServerProvider.getTransactions(
-        {
-          Statistics: 'history',
-          UserID: this.state.filters.userID,
-          StartDateTime: startDateTime ? startDateTime.toISOString() : null,
-          EndDateTime: endDateTime ? endDateTime.toISOString() : null,
-          Search: searchText
-        },
-        { skip, limit }
-      );
-      // Check
-      if (transactions.count === -1) {
-        // Request nbr of records
-        const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactions(
-          {
-            Statistics: 'history',
-            UserID: this.state.filters.userID,
-            StartDateTime: startDateTime ? startDateTime.toISOString() : null,
-            EndDateTime: endDateTime ? endDateTime.toISOString() : null,
-            Search: searchText
-          },
-          Constants.ONLY_RECORD_COUNT
-        );
-        // Set
+      const transactions = await this.centralServerProvider.getTransactions(params, { skip, limit }, ['-timestamp']);
+      // Get total number of records
+      if ((transactions.count === -1) && Utils.isEmptyArray(this.state.transactions)) {
+        const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactions(params, Constants.ONLY_RECORD_COUNT);
         transactions.count = transactionsNbrRecordsOnly.count;
         transactions.stats = transactionsNbrRecordsOnly.stats;
       }
@@ -162,11 +144,9 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
       const { skip, limit, filters } = this.state;
       // Refresh All
       const transactions = await this.getTransactions(this.searchText, 0, skip + limit, filters.startDateTime, filters.endDateTime);
-      // Retrieve all the transactions for the current userID
-      const allTransactions = await this.getTransactions(this.searchText, 0, skip + limit, null, null);
-      const allTransactionsStats = allTransactions.stats;
-      const minTransactionDate = allTransactionsStats.firstTimestamp ? new Date(allTransactions.stats.firstTimestamp) : new Date();
-      const maxTransactionDate = allTransactionsStats.lastTimestamp ? new Date(allTransactions.stats.lastTimestamp) : new Date();
+      const allTransactionsStats = transactions.stats;
+      const minTransactionDate = allTransactionsStats.firstTimestamp ? new Date(transactions.stats.firstTimestamp) : new Date();
+      const maxTransactionDate = allTransactionsStats.lastTimestamp ? new Date(transactions.stats.lastTimestamp) : new Date();
       // Set
       this.setState({
         loading: false,
