@@ -61,6 +61,10 @@ export default class PaymentMethods extends BaseScreen<Props, State> {
     await this.refresh();
   }
 
+  public async componentDidFocus() {
+    await this.refresh();
+  }
+
   public async getPaymentMethods(skip: number, limit: number): Promise<DataResult<BillingPaymentMethod>> {
     try {
       const currentUserID = this.centralServerProvider?.getUserInfo()?.id;
