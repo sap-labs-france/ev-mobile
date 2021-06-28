@@ -501,13 +501,10 @@ export default class CentralServerProvider {
   public async saveUserMobileToken(params: { id: string; mobileToken: string; mobileOS: string }): Promise<ActionResponse> {
     this.debugMethod('saveUserMobileToken');
     // Call
-    const result = await this.axiosInstance.put(
-      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.USER_UPDATE_MOBILE_TOKEN}`,
-      params,
-      {
-        headers: this.buildSecuredHeaders()
-      }
-    );
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_USER_UPDATE_MOBILE_TOKEN, { id: params.id });
+    const result = await this.axiosInstance.put(url, params, {
+      headers: this.buildSecuredHeaders()
+    });
     return result.data;
   }
 
@@ -711,7 +708,7 @@ export default class CentralServerProvider {
     // Build Sorting
     this.buildSorting(sorting, params);
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.USERS}`, {
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_USERS), {
       headers: this.buildSecuredHeaders(),
       params
     });
@@ -794,7 +791,8 @@ export default class CentralServerProvider {
   public async getUserImage(id: string): Promise<string> {
     this.debugMethod('getUserImage');
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.USER_IMAGE}`, {
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_USER_IMAGE, { id });
+    const result = await this.axiosInstance.get(url, {
       headers: this.buildSecuredHeaders(),
       params: { ID: id }
     });
