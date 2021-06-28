@@ -37,11 +37,6 @@ export default class TransactionHeaderComponent extends BaseScreen<Props, State>
   public render() {
     const style = computeStyleSheet();
     const { transaction, isAdmin, isSiteAdmin } = this.props;
-    transaction.user = {
-      name: 'FABIANO',
-      firstName: 'Serge',
-      email: 'serge.fabiano@sap.com'
-    };
     return (
       <View style={style.container}>
         <Text style={style.transactionTimestamp}>
