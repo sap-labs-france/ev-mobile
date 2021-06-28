@@ -228,7 +228,10 @@
   "invoiceStatus": {
     "paid": "Payée",
     "draft": "Brouillon",
-    "unpaid": "Impayée"
+    "unpaid": "Impayée",
+    "deleted": "Supprimée",
+    "uncollectible": "Non recouvrable",
+    "void": "Annulée"
   },
   "transactions": {
     "transaction": "Session",

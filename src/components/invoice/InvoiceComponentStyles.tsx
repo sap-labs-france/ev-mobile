@@ -49,13 +49,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '100%',
       width: '5@s'
     },
-    statusUnpaid: {
-      backgroundColor: commonColor.brandWarning
+    statusOpenOrUncollectible: {
+      backgroundColor: commonColor.brandDanger
     },
     statusPaid: {
       backgroundColor: commonColor.brandSuccess
     },
-    statusDraft: {
+    statusDeletedOrVoid: {
+      backgroundColor: commonColor.brandWarning
+    },
+    statusDefault: {
       backgroundColor: commonColor.brandDisabledDark
     },
     leftContainer: {
