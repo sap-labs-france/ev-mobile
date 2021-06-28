@@ -45,7 +45,7 @@ export default class TransactionHeaderComponent extends BaseScreen<Props, State>
         <Text numberOfLines={1} style={[style.subHeaderName, style.chargingStationName]}>
           {transaction.chargeBoxID} - {Utils.getConnectorLetterFromConnectorID(transaction.connectorId)}
         </Text>
-        {(isAdmin || isSiteAdmin) && (
+        {(isAdmin || isSiteAdmin) && transaction.user && (
           <Text numberOfLines={1} style={[style.subHeaderName, style.userFullName]}>
             {Utils.buildUserName(transaction.user)} ({transaction.user.email})
           </Text>

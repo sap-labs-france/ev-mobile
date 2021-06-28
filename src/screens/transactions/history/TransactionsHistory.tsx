@@ -111,7 +111,8 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
           UserID: this.state.filters.userID,
           StartDateTime: startDateTime ? startDateTime.toISOString() : null,
           EndDateTime: endDateTime ? endDateTime.toISOString() : null,
-          Search: searchText
+          Search: searchText,
+          SortFields: '-timestamp'
         },
         { skip, limit }
       );
@@ -124,7 +125,8 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
             UserID: this.state.filters.userID,
             StartDateTime: startDateTime ? startDateTime.toISOString() : null,
             EndDateTime: endDateTime ? endDateTime.toISOString() : null,
-            Search: searchText
+            Search: searchText,
+            SortFields: '-timestamp'
           },
           Constants.ONLY_RECORD_COUNT
         );

@@ -86,7 +86,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
       const transactions = await this.centralServerProvider.getTransactionsActive(
         {
           UserID: this.state.filters.userID,
-          Search: searchText
+          Search: searchText,
+          SortFields: '-timestamp'
         },
         { skip, limit }
       );
@@ -96,7 +97,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
         const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactionsActive(
           {
             UserID: this.state.filters.userID,
-            Search: searchText
+            Search: searchText,
+            SortFields: '-timestamp'
           },
           Constants.ONLY_RECORD_COUNT
         );
