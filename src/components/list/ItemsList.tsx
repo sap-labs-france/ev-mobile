@@ -49,13 +49,13 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
   };
 
   public render() {
-    const { data, skip, count, limit, navigation, manualRefresh, refreshing, onEndReached, emptyTitle } = this.props;
+    const { data, skip, count, limit, navigation, manualRefresh, refreshing, onEndReached, emptyTitle, select } = this.props;
     const { selectedIds } = this.state;
     return (
       <FlatList
         data={data}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => this.onSelectItem(item)}>
+          <TouchableOpacity disabled={select === ItemsListTypes.NONE} onPress={() => this.onSelectItem(item)}>
             {this.props.renderItem(item, selectedIds.has(item.id as string))}
           </TouchableOpacity>
         )}

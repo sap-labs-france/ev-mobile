@@ -14,8 +14,6 @@ import BaseProps from '../../types/BaseProps';
 import { BillingPaymentMethod, BillingPaymentMethodStatus, StripePaymentMethodBrands } from '../../types/Billing';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from './PaymentMethodComponentStyle';
-import CentralServerProvider from '../../provider/CentralServerProvider';
-import ProviderFactory from '../../provider/ProviderFactory';
 
 export interface Props extends BaseProps {
   paymentMethod: BillingPaymentMethod;

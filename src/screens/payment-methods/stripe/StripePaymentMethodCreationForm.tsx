@@ -3,7 +3,7 @@ import { CardField, CardFieldInput, initStripe, useConfirmSetupIntent } from '@s
 import I18n from 'i18n-js';
 import { Button, CheckBox, Spinner, View } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { Text } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import { scale } from 'react-native-size-matters';
 
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -129,10 +129,10 @@ export default function StripePaymentMethodCreationForm(props: Props) {
       />
       <View style={style.eulaContainer}>
         <Text style={[style.text, style.eulaText]}>{I18n.t('paymentMethods.paymentMethodCreationRules')}</Text>
-        <View style={style.checkboxContainer}>
-          <CheckBox style={style.checkbox} checked={eulaChecked} onPress={() => setEulaChecked(!eulaChecked)} />
+        <TouchableOpacity onPress={() => setEulaChecked(!eulaChecked)} style={style.checkboxContainer}>
+          <CheckBox disabled={true} style={style.checkbox} checked={eulaChecked} />
           <Text style={[style.text, style.checkboxText]}>{I18n.t('paymentMethods.paymentMethodsCreationCheckboxText')}</Text>
-        </View>
+        </TouchableOpacity>
       </View>
       <View style={style.buttonContainer}>
         {loading ? (

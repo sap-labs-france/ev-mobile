@@ -58,9 +58,9 @@ export default class UserAvatar extends React.Component<Props, State> {
           <Avatar
             size={size ? scale(size) : style.avatar.fontSize}
             rounded={true}
-            source={userImageURI}
+            source={{ uri: userImageURI }}
             titleStyle={style.avatarTitle}
-            overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
+            overlayContainerStyle={style.avatarContainer}>
             {selected && <Avatar.Accessory name={'done'} size={style.accessory.fontSize} color={style.accessory.color} />}
           </Avatar>
         ) : (
@@ -69,7 +69,7 @@ export default class UserAvatar extends React.Component<Props, State> {
             rounded={true}
             title={userInitials}
             titleStyle={style.avatarTitle}
-            overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
+            overlayContainerStyle={[style.avatarContainer, style.titleAvatarContainer]}>
             {selected && <Avatar.Accessory name={'done'} size={style.accessory.fontSize} color={style.accessory.color} />}
           </Avatar>
         )}
