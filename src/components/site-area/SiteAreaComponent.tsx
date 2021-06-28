@@ -51,7 +51,7 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
               if (siteArea.connectorStats.totalConnectors > 0) {
                 navigation.navigate('ChargingStations', {
                   params: {
-                    siteAreaID: siteArea.id
+                    siteArea
                   },
                   key: `${Utils.randomNumber()}`
                 });

@@ -28,6 +28,7 @@ import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import ChargingStationsFilters, { ChargingStationsFiltersDef } from './ChargingStationsFilters';
 import computeStyleSheet from './ChargingStationsStyles';
+import SiteArea from '../../../types/SiteArea';
 
 export interface Props extends BaseProps {}
 
@@ -50,7 +51,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public state: State;
   public props: Props;
   private searchText: string;
-  private siteAreaID: string;
+  private siteArea: SiteArea;
   private currentLocation: Location;
   private locationEnabled: boolean;
   private currentRegion: Region;
@@ -78,7 +79,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public async componentDidMount() {
     // Get initial filters
     await this.loadInitialFilters();
-    this.siteAreaID = Utils.getParamFromNavigation(this.props.route, 'siteAreaID', null) as string;
+    this.siteArea = Utils.getParamFromNavigation(this.props.route, 'siteArea', null) as unknown as SiteArea;
     await super.componentDidMount();
   }
 
@@ -130,7 +131,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       chargingStations = await this.centralServerProvider.getChargingStations(
         {
           Search: searchText,
-          SiteAreaID: this.siteAreaID,
+          SiteAreaID: this.siteArea?.id,
           Issuer: true,
           ConnectorStatus: filters.connectorStatus,
           ConnectorType: filters.connectorType,
@@ -146,7 +147,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         const chargingStationsNbrRecordsOnly = await this.centralServerProvider.getChargingStations(
           {
             Search: searchText,
-            SiteAreaID: this.siteAreaID,
+            SiteAreaID: this.siteArea?.id,
             Issuer: true,
             ConnectorStatus: this.state.filters.connectorStatus
           },
@@ -356,7 +357,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         <HeaderComponent
           ref={(headerComponent: HeaderComponent) => this.setHeaderComponent(headerComponent)}
           navigation={navigation}
-          title={I18n.t('chargers.title')}
+          title={this.siteArea?.name ?? I18n.t('chargers.title')}
           subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('chargers.chargers')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}

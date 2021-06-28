@@ -18,7 +18,6 @@ interface State {}
 export default class SiteComponent extends React.Component<Props, State> {
   public state: State;
   public props: Props;
-  private counter = 0;
 
   // eslint-disable-next-line no-useless-constructor
   public constructor(props: Props) {
@@ -48,7 +47,7 @@ export default class SiteComponent extends React.Component<Props, State> {
               }
               navigation.navigate('SiteAreas', {
                 params: {
-                  siteID: site.id
+                  site
                 },
                 key: `${Utils.randomNumber()}`
               });
