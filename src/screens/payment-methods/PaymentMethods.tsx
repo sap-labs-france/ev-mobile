@@ -217,9 +217,12 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
     const userID = this.centralServerProvider?.getUserInfo()?.id;
     this.setState({ deleteOperationsStates: { ...this.state.deleteOperationsStates, [paymentMethodID]: true } });
     try {
-      // TODO check res data success (waiting for server change)
-      await this.centralServerProvider.deletePaymentMethod(userID, paymentMethodID);
-      Message.showSuccess(I18n.t('paymentMethods.deletePaymentMethodSuccess'));
+      const res = await this.centralServerProvider.deletePaymentMethod(userID, paymentMethodID);
+      if (res?.succeeded) {
+        Message.showSuccess(I18n.t('paymentMethods.deletePaymentMethodSuccess'));
+      } else {
+        Message.showError(I18n.t('paymentMethods.paymentMethodUnexpectedError'));
+      }
     } catch (error) {
       // Check if HTTP?
       Utils.handleHttpUnexpectedError(

@@ -252,7 +252,9 @@
     "transactionStartUnexpectedError": "Cannot start the session",
     "carNotConnectedError": "Your car is not connected to the charging station",
     "connectorNotAvailable": "This charging station's connector is not available",
-    "transactionStopUnexpectedError": "Cannot stop the session"
+    "transactionStopUnexpectedError": "Cannot stop the session",
+    "noPaymentMethodError": "Service unavailable, no payment method has been provided.",
+    "startTransactionDisabled": "Service temporarily unavailable, please contact the support."
   },
   "home": {
     "browseSites": "Sites",

@@ -57,7 +57,7 @@ export default class Invoices extends BaseAutoRefreshScreen<Props, State> {
 
   public async getInvoices(skip: number, limit: number): Promise<DataResult<BillingInvoice>> {
     try {
-      const invoices = await this.centralServerProvider.getInvoices({}, { skip, limit });
+      const invoices = await this.centralServerProvider.getInvoices({}, { skip, limit }, [{ field: '-createdOn' }]);
       if (invoices.count === -1) {
         // Request nbr of records
         const invoicesNbrRecordsOnly = await this.centralServerProvider.getInvoices({}, Constants.ONLY_RECORD_COUNT);

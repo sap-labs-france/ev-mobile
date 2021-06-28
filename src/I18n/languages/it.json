@@ -252,7 +252,9 @@
     "transactionStartUnexpectedError": "Non posso avviare la sessione",
     "carNotConnectedError": "La tua auto non è collegata alla stazione di ricarica",
     "connectorNotAvailable": "La presa di questa stazione di ricarica non è disponibile",
-    "transactionStopUnexpectedError": "Non posso fermare la sessione"
+    "transactionStopUnexpectedError": "Non posso fermare la sessione",
+    "noPaymentMethodError": "Service unavailable, no payment method has been provided.",
+    "startTransactionDisabled": "Service temporarily unavailable, please contact the support."
   },
   "home": {
     "browseSites": "Siti",

@@ -1,21 +1,25 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Buffer } from 'buffer';
 
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
+import I18n from 'i18n-js';
 import jwtDecode from 'jwt-decode';
+import { ReactNativeBlobUtil } from 'react-native-blob-util';
 import SafeUrlAssembler from 'safe-url-assembler';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import NotificationManager from '../notification/NotificationManager';
-import { ActionResponse, BillingOperationResponse } from '../types/ActionResponse';
+import { PLATFORM } from '../theme/variables/commonColor';
+import { ActionResponse, BillingOperationResult } from '../types/ActionResponse';
 import { BillingInvoice, BillingPaymentMethod } from '../types/Billing';
 import Car from '../types/Car';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
 import Eula, { EulaAccepted } from '../types/Eula';
 import { KeyValue } from '../types/Global';
-import PagingParams from '../types/PagingParams';
+import QueryParams, { PagingParams, SortingParam } from '../types/QueryParams';
 import { ServerAction, ServerRoute } from '../types/Server';
 import { BillingSettings } from '../types/Setting';
 import Site from '../types/Site';
@@ -23,17 +27,13 @@ import SiteArea from '../types/SiteArea';
 import Tag from '../types/Tag';
 import { TenantConnection } from '../types/Tenant';
 import Transaction from '../types/Transaction';
-import User from '../types/User';
+import User, { UserDefaultTagCar } from '../types/User';
 import UserToken from '../types/UserToken';
 import AxiosFactory from '../utils/AxiosFactory';
 import Constants from '../utils/Constants';
 import SecuredStorage from '../utils/SecuredStorage';
 import Utils from '../utils/Utils';
 import SecurityProvider from './SecurityProvider';
-import ReactNativeBlobUtil, { FetchBlobResponse } from 'react-native-blob-util';
-import { Platform } from 'react-native';
-import { PLATFORM } from '../theme/variables/commonColor';
-import I18n from 'i18n-js';
 
 export default class CentralServerProvider {
   private axiosInstance: AxiosInstance;
@@ -348,7 +348,7 @@ export default class CentralServerProvider {
       console.log('Error saving Mobile Token:', error);
     }
     // Check on hold notification
-    this.notificationManager.checkOnHoldNotification();
+    await this.notificationManager.checkOnHoldNotification();
   }
 
   public async getEndUserLicenseAgreement(tenantSubDomain: string, params: { Language: string }): Promise<Eula> {
@@ -699,6 +699,16 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  public async getUserDefaultTagCar(userID: string): Promise<UserDefaultTagCar> {
+    this.debugMethod('getUserDefaultTagCar');
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_USER_DEFAULT_TAG_CAR, { id: userID });
+    const res = await this.axiosInstance.get(url, {
+      headers: this.buildSecuredHeaders(),
+      params: { UserID: userID }
+    });
+    return res.data as UserDefaultTagCar;
+  }
+
   public async getTags(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Tag>> {
     this.debugMethod('getTags');
     // Build Paging
@@ -713,10 +723,16 @@ export default class CentralServerProvider {
     return result.data as DataResult<Tag>;
   }
 
-  public async getInvoices(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<BillingInvoice>> {
+  public async getInvoices(
+    params = {},
+    paging: PagingParams = Constants.DEFAULT_PAGING,
+    sorting: SortingParam[] = []
+  ): Promise<DataResult<BillingInvoice>> {
     this.debugMethod('getInvoices');
     // Build Paging
     this.buildPaging(paging, params);
+    // Build Sorting
+    this.buildSorting(sorting, params);
     // Call
     const result = await this.axiosInstance.get(`${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_INVOICES}`, {
       headers: this.buildSecuredHeaders(),
@@ -817,26 +833,25 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async setUpPaymentMethod(params: { userID: string }): Promise<BillingOperationResponse> {
+  public async setUpPaymentMethod(params: { userID: string }): Promise<BillingOperationResult> {
     const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHOD_SETUP, { userID: params.userID });
     const result = await this.axiosInstance.post(url, { userID: params.userID }, { headers: this.buildSecuredHeaders() });
-    return result.data as BillingOperationResponse;
+    return result.data as BillingOperationResult;
   }
 
-  public async attachPaymentMethod(params: { userID: string; paymentMethodId: string }): Promise<BillingOperationResponse> {
+  public async attachPaymentMethod(params: { userID: string; paymentMethodId: string }): Promise<BillingOperationResult> {
     const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHOD_ATTACH, {
       userID: params.userID,
       paymentMethodID: params.paymentMethodId
     });
     const result = await this.axiosInstance.post(url, { params }, { headers: this.buildSecuredHeaders() });
-    return result.data as BillingOperationResponse;
+    return result.data as BillingOperationResult;
   }
 
-  public async deletePaymentMethod(userID: string, paymentMethodID: string): Promise<any> {
-    const url = `${this.buildRestServerURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD}`
-      .replace(':userID', userID)
-      .replace(':paymentMethodID', paymentMethodID);
-    await this.axiosInstance.delete(url, { headers: this.buildSecuredHeaders() });
+  public async deletePaymentMethod(userID: string, paymentMethodID: string): Promise<BillingOperationResult> {
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_BILLING_PAYMENT_METHOD, { userID, paymentMethodID });
+    const res = await this.axiosInstance.delete(url, { headers: this.buildSecuredHeaders() });
+    return res?.data as BillingOperationResult;
   }
 
   public async getPaymentMethods(
@@ -898,20 +913,27 @@ export default class CentralServerProvider {
     return this.securityProvider;
   }
 
-  private buildPaging(paging: PagingParams, queryString: any) {
+  private buildPaging(paging: PagingParams, queryParams: QueryParams): void {
     if (paging) {
       // Limit
       if (paging.limit) {
-        queryString.Limit = paging.limit;
+        queryParams.Limit = paging.limit;
       }
       // Skip
       if (paging.skip) {
-        queryString.Skip = paging.skip;
+        queryParams.Skip = paging.skip;
       }
       // Record count
       if (paging.onlyRecordCount) {
-        queryString.OnlyRecordCount = paging.onlyRecordCount;
+        queryParams.OnlyRecordCount = paging.onlyRecordCount;
       }
+    }
+  }
+
+  private buildSorting(sortingParams: SortingParam[], queryParams: QueryParams): void {
+    const sortFields = sortingParams.flatMap((sortingParam) => (sortingParam.field ? [sortingParam.field] : []));
+    if (!Utils.isEmptyArray(sortFields)) {
+      queryParams.SortFields = sortFields;
     }
   }
 

@@ -252,7 +252,9 @@
     "transactionStartUnexpectedError": "Ladevorgang konnte nicht gstartet werden",
     "carNotConnectedError": "Ihr Fahzeug ist mit keiner Ladestation verbunden",
     "connectorNotAvailable": "Der Anschluss der Ladestation ist nicht verfügbar",
-    "transactionStopUnexpectedError": "Ladevorgang konnte nicht beendet werden"
+    "transactionStopUnexpectedError": "Ladevorgang konnte nicht beendet werden",
+    "noPaymentMethodError": "Service unavailable, no payment method has been provided.",
+    "startTransactionDisabled": "Service temporarily unavailable, please contact the support."
   },
   "home": {
     "browseSites": "Standorte",

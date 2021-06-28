@@ -252,7 +252,9 @@
     "transactionStartUnexpectedError": "Impossible de démarrer la session",
     "carNotConnectedError": "Votre voiture n'est pas connctée à la borne",
     "connectorNotAvailable": "Le connecteur de cette borne n'est pas disponible",
-    "transactionStopUnexpectedError": "Impossible de stopper la session"
+    "transactionStopUnexpectedError": "Impossible de stopper la session",
+    "noPaymentMethodError": "Service indisponible, aucune méthode de paiment n'a été enregistrée.",
+    "startTransactionDisabled": "Service temporairement indisponible, veuillez contacter le support."
   },
   "home": {
     "browseSites": "Sites",
