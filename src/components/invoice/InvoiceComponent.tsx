@@ -126,29 +126,43 @@ export default class InvoiceComponent extends React.Component<Props, State> {
         return I18n.t('invoiceStatus.unpaid');
       case BillingInvoiceStatus.PAID:
         return I18n.t('invoiceStatus.paid');
+      case BillingInvoiceStatus.VOID:
+        return I18n.t('invoiceStatus.void');
+      case BillingInvoiceStatus.DELETED:
+        return I18n.t('invoiceStatus.deleted');
+      case BillingInvoiceStatus.UNCOLLECTIBLE:
+        return I18n.t('invoiceStatus.uncollectible');
     }
   }
 
   private buildStatusStyle(invoiceStatus: BillingInvoiceStatus): ViewStyle {
     const chipStyle = computeChipStyleSheet();
     switch (invoiceStatus) {
-      case BillingInvoiceStatus.DRAFT:
-        return chipStyle.default;
       case BillingInvoiceStatus.OPEN:
+      case BillingInvoiceStatus.UNCOLLECTIBLE:
         return chipStyle.danger;
+      case BillingInvoiceStatus.DELETED:
+      case BillingInvoiceStatus.VOID:
+        return chipStyle.warning;
       case BillingInvoiceStatus.PAID:
         return chipStyle.success;
+      default:
+        return chipStyle.default;
     }
   }
 
   private buildStatusIndicatorStyle(invoiceStatus: BillingInvoiceStatus, style: any): ViewStyle {
     switch (invoiceStatus) {
-      case BillingInvoiceStatus.DRAFT:
-        return style.statusDraft;
       case BillingInvoiceStatus.OPEN:
-        return style.statusUnpaid;
+      case BillingInvoiceStatus.UNCOLLECTIBLE:
+        return style.statusOpenOrUncollectible;
+      case BillingInvoiceStatus.DELETED:
+      case BillingInvoiceStatus.VOID:
+        return style.statusDeletedOrVoid;
       case BillingInvoiceStatus.PAID:
         return style.statusPaid;
+      default:
+        return style.statusDefault;
     }
   }
 
