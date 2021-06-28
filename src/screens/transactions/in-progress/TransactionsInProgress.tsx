@@ -130,9 +130,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
-      // Refresh All
+      // Get transactions
       const transactions = await this.getTransactionsInProgress(this.searchText, 0, skip + limit);
-      // Refresh Admin
       // Set
       this.setState({
         loading: false,

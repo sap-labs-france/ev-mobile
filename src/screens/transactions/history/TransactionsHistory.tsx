@@ -96,13 +96,8 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     });
   }
 
-  public async getTransactions(
-    searchText: string,
-    skip: number,
-    limit: number,
-    startDateTime: Date,
-    endDateTime: Date
-  ): Promise<TransactionDataResult> {
+  public async getTransactions(searchText: string, skip: number, limit: number,
+      startDateTime: Date, endDateTime: Date): Promise<TransactionDataResult> {
     try {
       // Get active transaction
       const transactions = await this.centralServerProvider.getTransactions(
@@ -164,11 +159,9 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
       const { skip, limit, filters } = this.state;
       // Refresh All
       const transactions = await this.getTransactions(this.searchText, 0, skip + limit, filters.startDateTime, filters.endDateTime);
-      // Retrieve all the transactions for the current userID
-      const allTransactions = await this.getTransactions(this.searchText, 0, skip + limit, null, null);
-      const allTransactionsStats = allTransactions.stats;
-      const minTransactionDate = allTransactionsStats.firstTimestamp ? new Date(allTransactions.stats.firstTimestamp) : new Date();
-      const maxTransactionDate = allTransactionsStats.lastTimestamp ? new Date(allTransactions.stats.lastTimestamp) : new Date();
+      const allTransactionsStats = transactions.stats;
+      const minTransactionDate = allTransactionsStats.firstTimestamp ? new Date(transactions.stats.firstTimestamp) : new Date();
+      const maxTransactionDate = allTransactionsStats.lastTimestamp ? new Date(transactions.stats.lastTimestamp) : new Date();
       // Set
       this.setState({
         loading: false,
