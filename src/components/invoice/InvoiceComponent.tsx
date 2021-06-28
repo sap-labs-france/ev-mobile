@@ -72,7 +72,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
                   )}
                 </View>
               </View>
-              {user &&
+              {user && (
                 <View style={style.userContainer}>
                   <Text numberOfLines={1} style={[style.text, style.userName]}>
                     {Utils.buildUserName(user)}
@@ -81,7 +81,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
                     {user?.email}
                   </Text>
                 </View>
-              }
+              )}
             </View>
             <View style={style.rightContainer}>
               <View style={style.invoiceStatusContainer}>
