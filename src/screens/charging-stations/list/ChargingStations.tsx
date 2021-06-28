@@ -125,35 +125,24 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     let chargingStations: DataResult<ChargingStation>;
     const { filters } = this.state;
     try {
+      const params = {
+        Search: searchText,
+        SiteAreaID: this.siteArea?.id,
+        Issuer: true,
+        ConnectorStatus: filters.connectorStatus,
+        ConnectorType: filters.connectorType,
+        LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
+        LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
+        LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
+      };
       // Get current location
       this.currentLocation = await this.getCurrentLocation();
       // Get with the Site Area
-      chargingStations = await this.centralServerProvider.getChargingStations(
-        {
-          Search: searchText,
-          SiteAreaID: this.siteArea?.id,
-          Issuer: true,
-          ConnectorStatus: filters.connectorStatus,
-          ConnectorType: filters.connectorType,
-          LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
-          LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
-          LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
-        },
-        { skip, limit }
-      );
-      // Check
-      if (chargingStations?.count === -1) {
-        // Request nbr of records
-        const chargingStationsNbrRecordsOnly = await this.centralServerProvider.getChargingStations(
-          {
-            Search: searchText,
-            SiteAreaID: this.siteArea?.id,
-            Issuer: true,
-            ConnectorStatus: this.state.filters.connectorStatus
-          },
-          Constants.ONLY_RECORD_COUNT
-        );
-        // Set
+      chargingStations = await this.centralServerProvider.getChargingStations(params, { skip, limit }, ['id']);
+      // Get total number of records
+      if ((chargingStations.count === -1) && Utils.isEmptyArray(this.state.chargingStations)) {
+        const chargingStationsNbrRecordsOnly =
+          await this.centralServerProvider.getChargingStations(params, Constants.ONLY_RECORD_COUNT);
         chargingStations.count = chargingStationsNbrRecordsOnly.count;
       }
     } catch (error) {

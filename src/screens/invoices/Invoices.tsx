@@ -58,11 +58,11 @@ export default class Invoices extends BaseScreen<Props, State> {
 
   public async getInvoices(skip: number, limit: number): Promise<DataResult<BillingInvoice>> {
     try {
-      const invoices = await this.centralServerProvider.getInvoices({}, { skip, limit }, [{ field: '-createdOn' }]);
-      if (invoices.count === -1) {
-        // Request nbr of records
+      // Get the invoices
+      const invoices = await this.centralServerProvider.getInvoices({}, { skip, limit }, ['-createdOn']);
+      // Get total number of records
+      if (invoices.count === -1 && Utils.isEmptyArray(this.state.invoices)) {
         const invoicesNbrRecordsOnly = await this.centralServerProvider.getInvoices({}, Constants.ONLY_RECORD_COUNT);
-        // Set
         invoices.count = invoicesNbrRecordsOnly.count;
       }
       return invoices;

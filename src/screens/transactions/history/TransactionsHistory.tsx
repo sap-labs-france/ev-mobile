@@ -99,33 +99,18 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
   public async getTransactions(searchText: string, skip: number, limit: number,
       startDateTime: Date, endDateTime: Date): Promise<TransactionDataResult> {
     try {
+      const params = {
+        Statistics: 'history',
+        UserID: this.state.filters.userID,
+        StartDateTime: startDateTime ? startDateTime.toISOString() : null,
+        EndDateTime: endDateTime ? endDateTime.toISOString() : null,
+        Search: searchText
+      };
       // Get active transaction
-      const transactions = await this.centralServerProvider.getTransactions(
-        {
-          Statistics: 'history',
-          UserID: this.state.filters.userID,
-          StartDateTime: startDateTime ? startDateTime.toISOString() : null,
-          EndDateTime: endDateTime ? endDateTime.toISOString() : null,
-          Search: searchText,
-          SortFields: '-timestamp'
-        },
-        { skip, limit }
-      );
-      // Check
-      if (transactions.count === -1) {
-        // Request nbr of records
-        const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactions(
-          {
-            Statistics: 'history',
-            UserID: this.state.filters.userID,
-            StartDateTime: startDateTime ? startDateTime.toISOString() : null,
-            EndDateTime: endDateTime ? endDateTime.toISOString() : null,
-            Search: searchText,
-            SortFields: '-timestamp'
-          },
-          Constants.ONLY_RECORD_COUNT
-        );
-        // Set
+      const transactions = await this.centralServerProvider.getTransactions(params, { skip, limit }, ['-timestamp']);
+      // Get total number of records
+      if ((transactions.count === -1) && Utils.isEmptyArray(this.state.transactions)) {
+        const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactions(params, Constants.ONLY_RECORD_COUNT);
         transactions.count = transactionsNbrRecordsOnly.count;
         transactions.stats = transactionsNbrRecordsOnly.stats;
       }
