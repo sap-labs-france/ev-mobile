@@ -127,11 +127,10 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
       };
       // Get the Site Areas
-      const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit });
-      if (siteAreas.count === -1) {
-        // Request nbr of records
+      const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit }, ['name']);
+      // Get total number of records
+      if ((siteAreas.count === -1) && Utils.isEmptyArray(this.state.siteAreas)) {
         const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
-        // Set
         siteAreas.count = sitesAreasNbrRecordsOnly.count;
       }
       return siteAreas;

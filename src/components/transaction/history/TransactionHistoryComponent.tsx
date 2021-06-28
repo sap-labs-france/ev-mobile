@@ -44,7 +44,7 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
     const { transaction, isAdmin, isSiteAdmin, isPricingActive } = this.props;
     const consumption = Math.round(transaction.stop.totalConsumptionWh / 10) / 100;
     const duration = Utils.formatDurationHHMMSS(transaction.stop.totalDurationSecs, false);
-    const inactivity = Utils.formatDurationHHMMSS(transaction.stop.totalInactivitySecs, false);
+    const inactivity = Utils.formatDurationHHMMSS(transaction.stop.totalInactivitySecs + transaction.stop.extraInactivitySecs, false);
     const inactivityStyle = Utils.computeInactivityStyle(transaction.stop.inactivityStatus);
     return (
       <Card style={style.container}>

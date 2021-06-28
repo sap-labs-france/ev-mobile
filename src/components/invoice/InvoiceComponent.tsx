@@ -9,7 +9,6 @@ import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { BillingInvoice, BillingInvoiceStatus } from '../../types/Billing';
-import { DataResult } from '../../types/DataResult';
 import User from '../../types/User';
 import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
@@ -22,7 +21,6 @@ export interface Props extends BaseProps {
 }
 
 interface State {
-  user: User;
   downloading: boolean;
 }
 
@@ -33,13 +31,13 @@ export default class InvoiceComponent extends React.Component<Props, State> {
 
   public constructor(props: Props) {
     super(props);
-    this.state = { user: null, downloading: false };
+    this.state = {
+      downloading: false
+    };
   }
 
   public async componentDidMount() {
     this.centralServerProvider = await ProviderFactory.getProvider();
-    const user = await this.getUser();
-    this.setState({ user });
   }
 
   public render() {
@@ -47,7 +45,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     const { invoice, navigation } = this.props;
     const invoiceAmount = invoice.amount && invoice.amount / 100;
-    const { user, downloading } = this.state;
+    const { downloading } = this.state;
     return (
       <Card style={style.container}>
         <CardItem style={style.invoiceContent}>
@@ -72,13 +70,13 @@ export default class InvoiceComponent extends React.Component<Props, State> {
                   )}
                 </View>
               </View>
-              {user && (
+              {invoice.user && (
                 <View style={style.userContainer}>
                   <Text numberOfLines={1} style={[style.text, style.userName]}>
-                    {Utils.buildUserName(user)}
+                    {Utils.buildUserName(invoice.user)}
                   </Text>
                   <Text numberOfLines={1} style={style.text}>
-                    {user?.email}
+                    {invoice.user.email}
                   </Text>
                 </View>
               )}
@@ -110,12 +108,6 @@ export default class InvoiceComponent extends React.Component<Props, State> {
         </CardItem>
       </Card>
     );
-  }
-
-  private async getUser(): Promise<User> {
-    const { invoice } = this.props;
-    const result: DataResult<User> = await this.centralServerProvider.getUsers({ UserID: invoice.userID });
-    return result?.result?.[0];
   }
 
   private buildStatus(invoiceStatus: BillingInvoiceStatus): string {
@@ -173,10 +165,10 @@ export default class InvoiceComponent extends React.Component<Props, State> {
     Alert.alert(
       I18n.t('invoices.downloadInvoiceTitle'),
       I18n.t('invoices.downloadInvoiceSubtitle', { user: Utils.buildUserName(user), invoiceDate }),
-        [
-          { text: I18n.t('general.yes'), onPress: async () => this.downloadInvoice() },
-          { text: I18n.t('general.cancel') }
-        ]
+      [
+        { text: I18n.t('general.yes'), onPress: async () => this.downloadInvoice() },
+        { text: I18n.t('general.cancel') }
+      ]
     );
   }
 
