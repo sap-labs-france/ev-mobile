@@ -29,6 +29,7 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SiteAreasFilters, { SiteAreasFiltersDef } from './SiteAreasFilters';
 import computeStyleSheet from './SiteAreasStyles';
+import Site from '../../types/Site';
 
 export interface Props extends BaseProps {}
 
@@ -50,7 +51,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
-  private siteID: string;
+  private site: Site;
   private currentLocation: Location;
   private locationEnabled: boolean;
   private currentRegion: Region;
@@ -83,7 +84,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     // Get initial filters
     await this.loadInitialFilters();
     // Get initial filters
-    this.siteID = Utils.getParamFromNavigation(this.props.route, 'siteID', null) as string;
+    this.site = Utils.getParamFromNavigation(this.props.route, 'site', null) as unknown as Site;
     await super.componentDidMount();
   }
 
@@ -119,7 +120,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       this.currentLocation = await this.getCurrentLocation();
       const params = {
         Search: searchText,
-        SiteID: this.siteID,
+        SiteID: this.site?.id,
         Issuer: true,
         WithAvailableChargers: true,
         LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
@@ -144,6 +145,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         this.refresh.bind(this)
       );
     }
+    return null;
   };
 
   public onBack = () => {
@@ -276,7 +278,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       <Container style={style.container}>
         <HeaderComponent
           navigation={navigation}
-          title={I18n.t('siteAreas.title')}
+          title={this.site?.name}
           subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('siteAreas.siteAreas')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
