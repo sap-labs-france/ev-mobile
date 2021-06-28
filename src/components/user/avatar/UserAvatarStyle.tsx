@@ -21,10 +21,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     avatarContainer: {
       backgroundColor: commonColor.containerBgColor,
-      borderWidth: '2@s',
-      borderColor: commonColor.textColor,
       height: '100%',
       width: '100%'
+    },
+    borderedAvatarContainer: {
+      borderWidth: '1@s',
+      borderColor: commonColor.textColor,
     },
     avatar: {
       fontSize: '50@s'

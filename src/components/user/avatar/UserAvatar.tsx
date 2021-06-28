@@ -45,9 +45,9 @@ export default class UserAvatar extends React.Component<Props, State> {
   public async componentDidUpdate() {
     const { user } = this.props;
     if (user) {
-      user.image = await this.getUserImage(user.id as string);
-      if (JSON.stringify(this.state.user) !== JSON.stringify(user)) {
-        this.setState({ user });
+      const image = await this.getUserImage(user.id as string);
+      if (this.state.user?.image !== image) {
+        this.setState({ user: { ...user, image } });
       }
     }
   }
@@ -64,17 +64,16 @@ export default class UserAvatar extends React.Component<Props, State> {
     const { user } = this.state;
     const style = computeStyleSheet();
     const userInitials = Utils.buildUserInitials(user);
-    const userName = Utils.buildUserName(user);
-    const userImageURI = user ? user.image : null;
+    const userImageURI = user?.image ?? null;
     return (
       <View>
         {userImageURI ? (
           <Avatar
             size={size ? scale(size) : style.avatar.fontSize}
             rounded={true}
-            source={userImageURI}
+            source={{ uri: userImageURI }}
             titleStyle={style.avatarTitle}
-            overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
+            overlayContainerStyle={style.avatarContainer}>
             {selected && <Avatar.Accessory name={'done'} size={style.accessory.fontSize} color={style.accessory.color} />}
           </Avatar>
         ) : (
@@ -83,7 +82,7 @@ export default class UserAvatar extends React.Component<Props, State> {
             rounded={true}
             title={userInitials}
             titleStyle={style.avatarTitle}
-            overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
+            overlayContainerStyle={[style.avatarContainer, style.borderedAvatarContainer]}>
             {selected && <Avatar.Accessory name={'done'} size={style.accessory.fontSize} color={style.accessory.color} />}
           </Avatar>
         )}
