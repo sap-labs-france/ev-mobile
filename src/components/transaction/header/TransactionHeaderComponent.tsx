@@ -37,18 +37,13 @@ export default class TransactionHeaderComponent extends BaseScreen<Props, State>
   public render() {
     const style = computeStyleSheet();
     const { transaction, isAdmin, isSiteAdmin } = this.props;
-    transaction.user = {
-      name: 'FABIANO',
-      firstName: 'Serge',
-      email: 'serge.fabiano@sap.com'
-    };
     return (
       <View style={style.container}>
         <Text style={style.transactionTimestamp}>{I18nManager.formatDateTime(transaction.timestamp)}</Text>
         <Text numberOfLines={1} style={[style.subHeaderName, style.chargingStationName]}>
           {transaction.chargeBoxID} - {Utils.getConnectorLetterFromConnectorID(transaction.connectorId)}
         </Text>
-        {(isAdmin || isSiteAdmin) && (
+        {(isAdmin || isSiteAdmin) && transaction.user && (
           <Text numberOfLines={1} style={[style.subHeaderName, style.userFullName]}>
             {Utils.buildUserName(transaction.user)} ({transaction.user.email})
           </Text>

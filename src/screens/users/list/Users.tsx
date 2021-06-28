@@ -61,12 +61,10 @@ export default class Users extends BaseScreen<Props, State> {
         UserID: this.userIDs?.join('|'),
         carName: this.title
       };
-      const users = await this.centralServerProvider.getUsers(params, { skip, limit });
-      // Check
-      if (users.count === -1) {
-        // Request nbr of records
+      const users = await this.centralServerProvider.getUsers(params, { skip, limit }, ['name']);
+      // Get total number of records
+      if (users.count === -1 && Utils.isEmptyArray(this.state.users)) {
         const usersNbrRecordsOnly = await this.centralServerProvider.getUsers(params, Constants.ONLY_RECORD_COUNT);
-        // Set
         users.count = usersNbrRecordsOnly.count;
       }
       return users;

@@ -220,7 +220,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     // Get Default Car/Tag
     const userDefaultTagCar = await this.getUserDefaultTagAndCar();
     // Check to enable the buttons after a certain period of time
-    const startStopTransactionButtonStatus = await this.getStartStopTransactionButtonStatus(connector, userDefaultTagCar);
+    const startStopTransactionButtonStatus = this.getStartStopTransactionButtonStatus(connector, userDefaultTagCar);
     // // Compute Duration
     const durationInfos = this.getDurationInfos(transaction, connector);
     // Set
@@ -366,10 +366,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
   };
 
-  public async getStartStopTransactionButtonStatus(
+  public getStartStopTransactionButtonStatus(
     connector: Connector,
     userDefaultTagCar: UserDefaultTagCar
-  ): Promise<{ buttonDisabled?: boolean; startTransactionNbTrial?: number; errorCodes?: string[] }> {
+  ): { buttonDisabled?: boolean; startTransactionNbTrial?: number } {
     const { startTransactionNbTrial } = this.state;
     // Check if error codes
     if (!Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {

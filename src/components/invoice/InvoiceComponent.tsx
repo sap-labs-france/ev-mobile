@@ -9,7 +9,6 @@ import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { BillingInvoice, BillingInvoiceStatus } from '../../types/Billing';
-import { DataResult } from '../../types/DataResult';
 import User from '../../types/User';
 import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
@@ -22,7 +21,6 @@ export interface Props extends BaseProps {
 }
 
 interface State {
-  user: User;
   downloading: boolean;
 }
 
@@ -33,13 +31,13 @@ export default class InvoiceComponent extends React.Component<Props, State> {
 
   public constructor(props: Props) {
     super(props);
-    this.state = { user: null, downloading: false };
+    this.state = {
+      downloading: false
+    };
   }
 
   public async componentDidMount() {
     this.centralServerProvider = await ProviderFactory.getProvider();
-    const user = await this.getUser();
-    this.setState({ user });
   }
 
   public render() {
@@ -47,7 +45,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     const { invoice, navigation } = this.props;
     const invoiceAmount = invoice.amount && invoice.amount / 100;
-    const { user, downloading } = this.state;
+    const { downloading } = this.state;
     return (
       <Card style={style.container}>
         <CardItem style={style.invoiceContent}>
@@ -72,13 +70,13 @@ export default class InvoiceComponent extends React.Component<Props, State> {
                   )}
                 </View>
               </View>
-              {user && (
+              {invoice.user && (
                 <View style={style.userContainer}>
                   <Text numberOfLines={1} style={[style.text, style.userName]}>
-                    {Utils.buildUserName(user)}
+                    {Utils.buildUserName(invoice.user)}
                   </Text>
                   <Text numberOfLines={1} style={style.text}>
-                    {user?.email}
+                    {invoice.user.email}
                   </Text>
                 </View>
               )}
@@ -112,12 +110,6 @@ export default class InvoiceComponent extends React.Component<Props, State> {
     );
   }
 
-  private async getUser(): Promise<User> {
-    const { invoice } = this.props;
-    const result: DataResult<User> = await this.centralServerProvider.getUsers({ UserID: invoice.userID });
-    return result?.result?.[0];
-  }
-
   private buildStatus(invoiceStatus: BillingInvoiceStatus): string {
     switch (invoiceStatus) {
       case BillingInvoiceStatus.DRAFT:
@@ -126,29 +118,43 @@ export default class InvoiceComponent extends React.Component<Props, State> {
         return I18n.t('invoiceStatus.unpaid');
       case BillingInvoiceStatus.PAID:
         return I18n.t('invoiceStatus.paid');
+      case BillingInvoiceStatus.VOID:
+        return I18n.t('invoiceStatus.void');
+      case BillingInvoiceStatus.DELETED:
+        return I18n.t('invoiceStatus.deleted');
+      case BillingInvoiceStatus.UNCOLLECTIBLE:
+        return I18n.t('invoiceStatus.uncollectible');
     }
   }
 
   private buildStatusStyle(invoiceStatus: BillingInvoiceStatus): ViewStyle {
     const chipStyle = computeChipStyleSheet();
     switch (invoiceStatus) {
-      case BillingInvoiceStatus.DRAFT:
-        return chipStyle.default;
       case BillingInvoiceStatus.OPEN:
+      case BillingInvoiceStatus.UNCOLLECTIBLE:
         return chipStyle.danger;
+      case BillingInvoiceStatus.DELETED:
+      case BillingInvoiceStatus.VOID:
+        return chipStyle.warning;
       case BillingInvoiceStatus.PAID:
         return chipStyle.success;
+      default:
+        return chipStyle.default;
     }
   }
 
   private buildStatusIndicatorStyle(invoiceStatus: BillingInvoiceStatus, style: any): ViewStyle {
     switch (invoiceStatus) {
-      case BillingInvoiceStatus.DRAFT:
-        return style.statusDraft;
       case BillingInvoiceStatus.OPEN:
-        return style.statusUnpaid;
+      case BillingInvoiceStatus.UNCOLLECTIBLE:
+        return style.statusOpenOrUncollectible;
+      case BillingInvoiceStatus.DELETED:
+      case BillingInvoiceStatus.VOID:
+        return style.statusDeletedOrVoid;
       case BillingInvoiceStatus.PAID:
         return style.statusPaid;
+      default:
+        return style.statusDefault;
     }
   }
 

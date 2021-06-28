@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import _ from 'lodash';
 import moment from 'moment';
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules, Platform, ViewStyle } from 'react-native';
 import { showLocation } from 'react-native-map-link';
 import validate from 'validate.js';
 
@@ -818,10 +818,12 @@ export default class Utils {
   public static getOrganizationConnectorStatusesStyle(connectorStats: ConnectorStats, style: any): ViewStyle {
     // No Connector available
     if (connectorStats.availableConnectors === 0) {
-      return style.statusNotAvailable;
-      // Connector Suspended or Finishing
-    } else if (connectorStats.finishingConnectors > 0 || connectorStats.suspendedConnectors > 0) {
-      return style.statusAvailableSoon;
+      // Some connectors will be soon available
+      if (connectorStats.finishingConnectors > 0 || connectorStats.suspendedConnectors > 0) {
+        return style.statusAvailableSoon;
+      } else {
+        return style.statusNotAvailable;
+      }
     }
     // Okay
     return style.statusAvailable;

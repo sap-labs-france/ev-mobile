@@ -228,7 +228,10 @@
   "invoiceStatus": {
     "paid": "Paid",
     "draft": "Draft",
-    "unpaid": "Unpaid"
+    "unpaid": "Unpaid",
+    "deleted": "Deleted",
+    "uncollectible": "Uncollectible",
+    "void": "Cancelled"
   },
   "transactions": {
     "transaction": "Ladevorgang",
