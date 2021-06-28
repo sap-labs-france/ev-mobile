@@ -11,7 +11,6 @@ import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UserAvatarStyle';
 
 interface State {
-  user?: User;
 }
 
 export interface Props extends BaseProps {
@@ -35,21 +34,9 @@ export default class UserAvatar extends React.Component<Props, State> {
 
   public async componentDidMount(): Promise<void> {
     this.centralServerProvider = await ProviderFactory.getProvider();
-    const { user } = this.props;
-    if (user) {
-      user.image = await this.getUserImage(user.id as string);
-      this.setState({ user });
-    }
   }
 
   public async componentDidUpdate() {
-    const { user } = this.props;
-    if (user) {
-      user.image = await this.getUserImage(user.id as string);
-      if (JSON.stringify(this.state.user) !== JSON.stringify(user)) {
-        this.setState({ user });
-      }
-    }
   }
 
   public setState = (
@@ -60,12 +47,11 @@ export default class UserAvatar extends React.Component<Props, State> {
   };
 
   public render() {
-    const { selected, size } = this.props;
-    const { user } = this.state;
+    const { selected, size, user } = this.props;
     const style = computeStyleSheet();
     const userInitials = Utils.buildUserInitials(user);
-    const userName = Utils.buildUserName(user);
-    const userImageURI = user ? user.image : null;
+    // const userImageURI = user ? user.image : null;
+    const userImageURI = null; // Keep the nbr of requests low (only load visible images)
     return (
       <View>
         {userImageURI ? (

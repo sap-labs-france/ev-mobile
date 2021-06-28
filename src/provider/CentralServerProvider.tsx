@@ -483,10 +483,13 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getChargingStations(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<ChargingStation>> {
+  public async getChargingStations(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
+      sorting: string[] = []): Promise<DataResult<ChargingStation>> {
     this.debugMethod('getChargingStations');
     // Build Paging
     this.buildPaging(paging, params);
+    // Build Sorting
+    this.buildSorting(sorting, params);
     // Call
     const result = await this.axiosInstance.get(`${this.buildRestServerURL()}/${ServerRoute.REST_CHARGING_STATIONS}`, {
       headers: this.buildSecuredHeaders(),
@@ -531,10 +534,13 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getSites(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Site>> {
+  public async getSites(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
+      sorting: string[] = []): Promise<DataResult<Site>> {
     this.debugMethod('getSites');
     // Build Paging
     this.buildPaging(paging, params);
+    // Build Sorting
+    this.buildSorting(sorting, params);
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.SITES}`, {
       headers: this.buildSecuredHeaders(),
@@ -543,10 +549,13 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getSiteAreas(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<SiteArea>> {
+  public async getSiteAreas(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
+      sorting: string[] = []): Promise<DataResult<SiteArea>> {
     this.debugMethod('getSiteAreas');
     // Build Paging
     this.buildPaging(paging, params);
+    // Build Sorting
+    this.buildSorting(sorting, params);
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.SITE_AREAS}`, {
       headers: this.buildSecuredHeaders(),
@@ -661,10 +670,13 @@ export default class CentralServerProvider {
     return null;
   }
 
-  public async getTransactions(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<TransactionDataResult> {
+  public async getTransactions(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
+      sorting: string[] = []): Promise<TransactionDataResult> {
     this.debugMethod('getTransactions');
     // Build Paging
     this.buildPaging(paging, params);
+    // Build Sorting
+    this.buildSorting(sorting, params);
     // Call
     const result = await this.axiosInstance.get(
       `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTIONS_COMPLETED}`,
@@ -676,10 +688,13 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getCars(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Car>> {
+  public async getCars(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
+      sorting: string[] = []): Promise<DataResult<Car>> {
     this.debugMethod('getCars');
     // Build Paging
     this.buildPaging(paging, params);
+    // Build Sorting
+    this.buildSorting(sorting, params);
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.CARS}`, {
       headers: this.buildSecuredHeaders(),
@@ -688,10 +703,13 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getUsers(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<User>> {
+  public async getUsers(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
+      sorting: string[] = []): Promise<DataResult<User>> {
     this.debugMethod('getUsers');
     // Build Paging
     this.buildPaging(paging, params);
+    // Build Sorting
+    this.buildSorting(sorting, params);
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.USERS}`, {
       headers: this.buildSecuredHeaders(),
@@ -710,10 +728,13 @@ export default class CentralServerProvider {
     return res.data as UserDefaultTagCar;
   }
 
-  public async getTags(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Tag>> {
+  public async getTags(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
+      sorting: string[] = []): Promise<DataResult<Tag>> {
     this.debugMethod('getTags');
     // Build Paging
     this.buildPaging(paging, params);
+    // Build Sorting
+    this.buildSorting(sorting, params);
     // Force only local tags
     params.Issuer = true;
     // Call
@@ -724,11 +745,8 @@ export default class CentralServerProvider {
     return result.data as DataResult<Tag>;
   }
 
-  public async getInvoices(
-    params = {},
-    paging: PagingParams = Constants.DEFAULT_PAGING,
-    sorting: SortingParam[] = []
-  ): Promise<DataResult<BillingInvoice>> {
+  public async getInvoices(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
+      sorting: string[] = []): Promise<DataResult<BillingInvoice>> {
     this.debugMethod('getInvoices');
     // Build Paging
     this.buildPaging(paging, params);
@@ -758,10 +776,13 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getTransactionsActive(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Transaction>> {
+  public async getTransactionsActive(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
+      sorting: string[] = []): Promise<DataResult<Transaction>> {
     this.debugMethod('getTransactionsActive');
     // Build Paging
     this.buildPaging(paging, params);
+    // Build Sorting
+    this.buildSorting(sorting, params);
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTIONS_ACTIVE}`, {
       headers: this.buildSecuredHeaders(),
@@ -770,14 +791,24 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getUserImage(params = {}): Promise<string> {
+  public async getUserImage(id: string): Promise<string> {
     this.debugMethod('getUserImage');
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.USER_IMAGE}`, {
       headers: this.buildSecuredHeaders(),
-      params
+      params: { ID: id }
     });
     return result.data.image;
+  }
+
+  public async getUser(id: string): Promise<User> {
+    this.debugMethod('getUser');
+    // Call
+    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.USER}`, {
+      headers: this.buildSecuredHeaders(),
+      params: { ID: id }
+    });
+    return result.data;
   }
 
   public async getSiteImage(id: string): Promise<string> {
@@ -938,8 +969,8 @@ export default class CentralServerProvider {
     }
   }
 
-  private buildSorting(sortingParams: SortingParam[], queryParams: QueryParams): void {
-    const sortFields = sortingParams.flatMap((sortingParam) => (sortingParam.field ? [sortingParam.field] : []));
+  private buildSorting(sortingParams: string[], queryParams: QueryParams): void {
+    const sortFields = sortingParams.join(',');
     if (!Utils.isEmptyArray(sortFields)) {
       queryParams.SortFields = sortFields;
     }

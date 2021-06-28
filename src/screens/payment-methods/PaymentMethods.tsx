@@ -58,7 +58,6 @@ export default class PaymentMethods extends BaseScreen<Props, State> {
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
-    await this.refresh();
   }
 
   public async componentDidFocus() {
@@ -67,15 +66,14 @@ export default class PaymentMethods extends BaseScreen<Props, State> {
 
   public async getPaymentMethods(skip: number, limit: number): Promise<DataResult<BillingPaymentMethod>> {
     try {
-      const currentUserID = this.centralServerProvider?.getUserInfo()?.id;
-      const paymentMethods = await this.centralServerProvider.getPaymentMethods({ currentUserID }, { skip, limit });
-      if (paymentMethods.count === -1) {
-        // Request nbr of records
-        const paymentMethodsNbrRecordsOnly = await this.centralServerProvider.getPaymentMethods(
-          { currentUserID },
-          Constants.ONLY_RECORD_COUNT
-        );
-        // Set
+      // TODO: Remove the ID, the new auth will take care of returning the payments the user is allowed to see
+      const params = {
+        currentUserID: this.centralServerProvider?.getUserInfo()?.id
+      };
+      const paymentMethods = await this.centralServerProvider.getPaymentMethods(params, { skip, limit });
+      // Get total number of records
+      if ((paymentMethods.count === -1) && Utils.isEmptyArray(this.state.paymentMethods)) {
+        const paymentMethodsNbrRecordsOnly = await this.centralServerProvider.getPaymentMethods(params, Constants.ONLY_RECORD_COUNT);
         paymentMethods.count = paymentMethodsNbrRecordsOnly.count;
       }
       return paymentMethods;
