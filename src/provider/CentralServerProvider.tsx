@@ -5,7 +5,8 @@ import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
 import I18n from 'i18n-js';
 import jwtDecode from 'jwt-decode';
-import { ReactNativeBlobUtil } from 'react-native-blob-util';
+import { Platform } from 'react-native';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 import SafeUrlAssembler from 'safe-url-assembler';
 
 import Configuration from '../config/Configuration';
@@ -27,7 +28,7 @@ import SiteArea from '../types/SiteArea';
 import Tag from '../types/Tag';
 import { TenantConnection } from '../types/Tenant';
 import Transaction from '../types/Transaction';
-import User from '../types/User';
+import User, { UserDefaultTagCar } from '../types/User';
 import UserToken from '../types/UserToken';
 import AxiosFactory from '../utils/AxiosFactory';
 import Constants from '../utils/Constants';
@@ -696,6 +697,16 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  public async getUserDefaultTagCar(userID: string): Promise<UserDefaultTagCar> {
+    this.debugMethod('getUserDefaultTagCar');
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_USER_DEFAULT_TAG_CAR, { id: userID });
+    const res = await this.axiosInstance.get(url, {
+      headers: this.buildSecuredHeaders(),
+      params: { UserID: userID }
+    });
+    return res.data as UserDefaultTagCar;
+  }
+
   public async getTags(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<Tag>> {
     this.debugMethod('getTags');
     // Build Paging
@@ -879,20 +890,27 @@ export default class CentralServerProvider {
         fileCache: true,
         addAndroidDownloads: {
           path: downloadedFilePath,
-          useDownloadManager: true, // <-- this is the only thing required
+          useDownloadManager: true,
           mime: 'application/pdf',
           notification: true,
-          // Title of download notification
           title: fileName,
-          // Make the file scannable  by media scanner
           mediaScannable: true,
-          // File description (not notification description)
           description: `${I18n.t('invoices.invoiceFileDescription')} ${invoice.number}`
         }
       };
     }
     if (config) {
-      await ReactNativeBlobUtil.config(config).fetch('GET', url, this.buildSecuredHeaders());
+      await ReactNativeBlobUtil.config(config)
+        .fetch('GET', url, this.buildSecuredHeaders())
+        .then(async (res) => {
+          // Open the  downloaded invoice
+          if (Platform.OS === PLATFORM.IOS) {
+            ReactNativeBlobUtil.ios.openDocument(res.path());
+          } else {
+            await ReactNativeBlobUtil.android.actionViewIntent(res.path(), 'application/pdf');
+          }
+        });
+
     }
   }
 

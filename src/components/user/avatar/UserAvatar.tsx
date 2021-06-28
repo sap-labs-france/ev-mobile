@@ -3,12 +3,10 @@ import React from 'react';
 import { Avatar } from 'react-native-elements';
 import { scale } from 'react-native-size-matters';
 
-import noPhoto from '../../../../assets/no-photo.png';
 import CentralServerProvider from '../../../provider/CentralServerProvider';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import User from '../../../types/User';
-import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UserAvatarStyle';
 
@@ -67,15 +65,14 @@ export default class UserAvatar extends React.Component<Props, State> {
     const style = computeStyleSheet();
     const userInitials = Utils.buildUserInitials(user);
     const userName = Utils.buildUserName(user);
-    const isNameHyphen = userName === Constants.HYPHEN;
-    const userImageURI = user ? (isNameHyphen ? noPhoto : user.image) : noPhoto;
+    const userImageURI = user ? user.image : null;
     return (
       <View>
         {userImageURI ? (
           <Avatar
             size={size ? scale(size) : style.avatar.fontSize}
             rounded={true}
-            source={userImageURI === noPhoto ? noPhoto : { uri: userImageURI }}
+            source={userImageURI}
             titleStyle={style.avatarTitle}
             overlayContainerStyle={[style.avatarContainer, selected ? style.avatarSelected : null]}>
             {selected && <Avatar.Accessory name={'done'} size={style.accessory.fontSize} color={style.accessory.color} />}
