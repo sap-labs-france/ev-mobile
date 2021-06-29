@@ -3,10 +3,16 @@ import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import _ from 'lodash';
 import moment from 'moment';
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules, Platform, ViewStyle } from 'react-native';
 import { showLocation } from 'react-native-map-link';
 import validate from 'validate.js';
 
+import statusMarkerAvailable from '../../assets/icon/charging_station_available.png';
+import statusMarkerChargingOrOccupied from '../../assets/icon/charging_station_charging.png';
+import statusMarkerFaulted from '../../assets/icon/charging_station_faulted.png';
+import statusMarkerPreparingOrFinishing from '../../assets/icon/charging_station_finishing.png';
+import statusMarkerSuspended from '../../assets/icon/charging_station_suspended.png';
+import statusMarkerUnavailable from '../../assets/icon/charging_station_unavailable.png';
 import Configuration from '../config/Configuration';
 import { buildCommonColor } from '../custom-theme/customCommonColor';
 import ThemeManager from '../custom-theme/ThemeManager';
@@ -16,6 +22,7 @@ import Address from '../types/Address';
 import { BillingPaymentMethod, BillingPaymentMethodStatus } from '../types/Billing';
 import Car, { CarCatalog } from '../types/Car';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType, Voltage } from '../types/ChargingStation';
+import ConnectorStats from '../types/ConnectorStats';
 import { KeyValue } from '../types/Global';
 import { RequestError } from '../types/RequestError';
 import { EndpointCloud } from '../types/Tenant';
@@ -23,13 +30,6 @@ import { InactivityStatus } from '../types/Transaction';
 import User, { UserRole, UserStatus } from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
-import statusMarkerAvailable from '../../assets/icon/charging_station_available.png';
-import statusMarkerChargingOrOccupied from '../../assets/icon/charging_station_charging.png';
-import statusMarkerFaulted from '../../assets/icon/charging_station_faulted.png';
-import statusMarkerPreparingOrFinishing from '../../assets/icon/charging_station_finishing.png';
-import statusMarkerSuspended from '../../assets/icon/charging_station_suspended.png';
-import statusMarkerUnavailable from '../../assets/icon/charging_station_unavailable.png';
-import ConnectorStats from "../types/ConnectorStats";
 
 export default class Utils {
   public static getEndpointCloud(): EndpointCloud[] {
@@ -62,10 +62,21 @@ export default class Utils {
 
   public static formatAddress(address: Address): string {
     const addresses: string[] = [];
-    if (address?.address1 && address?.address1.length > 0) {
+    if (address?.address1) {
       addresses.push(address.address1);
     }
-    if (address?.city && address?.city.length > 0) {
+    if (address?.address2) {
+      addresses.push(address.address2);
+    }
+    return addresses.join(', ');
+  }
+
+  public static formatAddress2(address: Address): string {
+    const addresses: string[] = [];
+    if (address?.postalCode) {
+      addresses.push(address.postalCode);
+    }
+    if (address?.city) {
       addresses.push(address.city);
     }
     return addresses.join(', ');
@@ -804,6 +815,33 @@ export default class Utils {
     }
   };
 
+  public static getOrganizationConnectorStatusesStyle(connectorStats: ConnectorStats, style: any): ViewStyle {
+    // No Connector available
+    if (connectorStats.availableConnectors === 0) {
+      // Some connectors will be soon available
+      if (connectorStats.finishingConnectors > 0 ||
+          connectorStats.suspendedConnectors > 0) {
+        return style.statusAvailableSoon;
+      } else {
+        return style.statusNotAvailable;
+      }
+    }
+    // Okay
+    return style.statusAvailable;
+  }
+
+  public static getTransactionInactivityStatusStyle(inactivityStatus: InactivityStatus, style: any): ViewStyle {
+    // No Connector available
+    switch (inactivityStatus) {
+      case InactivityStatus.ERROR:
+        return style.inactivityHigh;
+      case InactivityStatus.WARNING:
+        return style.inactivityMedium;
+      case InactivityStatus.INFO:
+        return style.inactivityLow;
+    }
+  }
+
   public static translateConnectorType = (type: string): string => {
     switch (type) {
       case ConnectorType.TYPE_2:
@@ -888,25 +926,7 @@ export default class Utils {
     return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}`;
   };
 
-  private static formatTimer = (value: number): string => {
-    // Put 0 next to the digit if lower than 10
-    const valueStr = value.toString();
-    if (valueStr.length < 2) {
-      return '0' + valueStr;
-    }
-    // Return new digit
-    return valueStr;
-  };
-
-  private static getDeviceLocale(): string {
-    return Platform.OS === 'ios' ? NativeModules.SettingsManager.settings.AppleLocale : NativeModules.I18nManager.localeIdentifier;
-  }
-
-  private static getDeviceLanguage(): string {
-    return Utils.getLanguageFromLocale(Utils.getDeviceLocale());
-  }
-
-  public static buildChargingStationStatusMarker(connectors: Connector[], inactive: boolean) {
+  public static buildChargingStationStatusMarker(connectors: Connector[], inactive: boolean): any {
     if (inactive) {
       return statusMarkerUnavailable;
     } else if (connectors.find((connector) => connector.status === ChargePointStatus.AVAILABLE)) {
@@ -931,7 +951,7 @@ export default class Utils {
     }
   }
 
-  public static buildSiteStatusMarker(connectorStats: ConnectorStats) {
+  public static buildSiteStatusMarker(connectorStats: ConnectorStats): any {
     if (connectorStats.availableConnectors > 0) {
       return statusMarkerAvailable;
     } else if (connectorStats.chargingConnectors > 0) {
@@ -941,5 +961,23 @@ export default class Utils {
     } else {
       return statusMarkerUnavailable;
     }
+  }
+
+  private static formatTimer = (value: number): string => {
+    // Put 0 next to the digit if lower than 10
+    const valueStr = value.toString();
+    if (valueStr.length < 2) {
+      return '0' + valueStr;
+    }
+    // Return new digit
+    return valueStr;
+  };
+
+  private static getDeviceLocale(): string {
+    return Platform.OS === 'ios' ? NativeModules.SettingsManager.settings.AppleLocale : NativeModules.I18nManager.localeIdentifier;
+  }
+
+  private static getDeviceLanguage(): string {
+    return Utils.getLanguageFromLocale(Utils.getDeviceLocale());
   }
 }

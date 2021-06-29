@@ -42,7 +42,10 @@ export interface BillingInvoice extends ListItem {
 export enum BillingInvoiceStatus {
   PAID = 'paid',
   OPEN = 'open',
-  DRAFT = 'draft'
+  DRAFT = 'draft',
+  UNCOLLECTIBLE = 'uncollectible',
+  DELETED = 'deleted',
+  VOID = 'void'
 }
 
 export interface BillingSessionData {

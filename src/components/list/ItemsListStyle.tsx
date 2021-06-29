@@ -13,10 +13,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       width: '100%'
     },
-    checkbox: {
-      padding: 0,
-      marginRight: 0
-    },
     rowSeparator: {
       borderBottomColor: commonColor.listBorderColor,
       borderBottomWidth: 1

@@ -2,21 +2,18 @@ import React from 'react';
 import { Avatar } from 'react-native-elements';
 import { scale } from 'react-native-size-matters';
 
-import noPhoto from '../../../../assets/no-photo.png';
 import CentralServerProvider from '../../../provider/CentralServerProvider';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import User from '../../../types/User';
-import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UserAvatarStyle';
 
 interface State {
-  user?: User;
 }
 
 export interface Props extends BaseProps {
-  user: User;
+  user?: User;
   accessoryIcon?: string;
   size?: number;
   icon?: string;
@@ -35,21 +32,9 @@ export default class UserAvatar extends React.Component<Props, State> {
 
   public async componentDidMount(): Promise<void> {
     this.centralServerProvider = await ProviderFactory.getProvider();
-    const { user } = this.props;
-    if (user) {
-      user.image = await this.getUserImage(user.id as string);
-      this.setState({ user });
-    }
   }
 
   public async componentDidUpdate() {
-    const { user } = this.props;
-    if (user) {
-      user.image = await this.getUserImage(user.id as string);
-      if (JSON.stringify(this.state.user) !== JSON.stringify(user)) {
-        this.setState({ user });
-      }
-    }
   }
 
   public setState = (
@@ -70,24 +55,23 @@ export default class UserAvatar extends React.Component<Props, State> {
           rounded={true}
           size={scale(size)}
           icon={{ name: icon, size: iconSize, color: this.commonColors.textColor }}
-          overlayContainerStyle={[style.avatarContainer, accessoryIcon ? style.avatarWithAccessory : null]}>
+          overlayContainerStyle={[style.titleAvatarContainer, accessoryIcon ? style.avatarWithAccessory : null]}>
           {this.renderAvatarAccessory()}
         </Avatar>
       );
       // When no icon is provided
     } else {
-      const { user } = this.state;
+      const { user } = this.props;
       const userInitials = Utils.buildUserInitials(user);
-      const userName = Utils.buildUserName(user);
-      const isNameHyphen = userName === Constants.HYPHEN;
-      const userImageURI = user ? (isNameHyphen ? noPhoto : user.image) : noPhoto;
+      // const userImageURI = user ? user.image : null;
+      const userImageURI = null; // Keep the nbr of requests low (only load visible images)
       // Display the user's photo if available
       if (userImageURI) {
         return (
           <Avatar
             size={scale(size)}
             rounded={true}
-            source={userImageURI === noPhoto ? noPhoto : { uri: userImageURI }}
+            source={{ uri: userImageURI }}
             overlayContainerStyle={[style.avatarContainer, accessoryIcon ? style.avatarWithAccessory : null]}>
             {this.renderAvatarAccessory()}
           </Avatar>
@@ -100,7 +84,7 @@ export default class UserAvatar extends React.Component<Props, State> {
           size={scale(size)}
           title={userInitials}
           titleStyle={style.avatarTitle}
-          overlayContainerStyle={[style.avatarContainer, accessoryIcon ? style.avatarWithAccessory : null]}>
+          overlayContainerStyle={[style.titleAvatarContainer, accessoryIcon ? style.avatarWithAccessory : null]}>
           {this.renderAvatarAccessory()}
         </Avatar>
       );

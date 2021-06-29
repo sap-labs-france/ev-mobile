@@ -7,6 +7,7 @@ import computeCardStyleSheet from '../../CardStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import I18nManager from '../../I18n/I18nManager';
 import ProviderFactory from '../../provider/ProviderFactory';
+import BaseScreen from '../../screens/base-screen/BaseScreen';
 import TransactionsHistoryFilters, { TransactionsHistoryFiltersDef } from '../../screens/transactions/history/TransactionsHistoryFilters';
 import BaseProps from '../../types/BaseProps';
 import { TransactionDataResult } from '../../types/DataResult';
@@ -15,7 +16,6 @@ import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
 import SecuredStorage from '../../utils/SecuredStorage';
 import Utils from '../../utils/Utils';
-import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './StatisticsStyles';
 
 export interface Props extends BaseProps {}
@@ -34,7 +34,7 @@ interface State {
   filters?: TransactionsHistoryFiltersDef;
 }
 
-export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
+export default class Statistics extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
 
@@ -53,13 +53,13 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
       initialFilters: {},
       filters: {}
     };
-    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   public async componentDidMount() {
     // Get initial filters
     await this.loadInitialFilters();
     await super.componentDidMount();
+    await this.refresh();
   }
 
   public setState = (
@@ -111,6 +111,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
       totalInactivitySecs: transactionsStats.stats.totalInactivitySecs,
       totalPrice: transactionsStats.stats.totalPrice,
       isPricingActive: this.securityProvider?.isComponentPricingActive(),
+      priceCurrency: transactionsStats.stats.currency,
       loading: false
     });
   };
@@ -162,6 +163,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
       filters,
       totalDurationSecs,
       totalInactivitySecs,
+      priceCurrency,
       totalPrice,
       isPricingActive
     } = this.state;
@@ -264,7 +266,7 @@ export default class Statistics extends BaseAutoRefreshScreen<Props, State> {
                       <Icon style={cardStyle.cardIcon} type="FontAwesome" name="money" />
                       <Body>
                         <Text style={cardStyle.cardText}>
-                          {I18n.t('home.totalPrice', { totalPrice: I18nManager.formatCurrency(totalPrice) })}
+                          {I18n.t('home.totalPrice', { totalPrice: I18nManager.formatCurrency(totalPrice, priceCurrency) })}
                         </Text>
                         <Text note style={cardStyle.cardNote}>
                           {I18n.t('home.totalPriceNote')}

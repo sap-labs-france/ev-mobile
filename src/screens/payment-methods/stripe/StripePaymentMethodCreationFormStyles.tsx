@@ -38,6 +38,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderRadius: '20@s',
       backgroundColor: commonColor.buttonBg
     },
+    spinner: {
+      color: commonColor.brandDisabledDark,
+      paddingTop: '15@s',
+    },
     buttonDisabled: {
       opacity: 0.4
     },
@@ -81,9 +85,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '12@s',
       opacity: 1
     },
-    spinner: {
-      color: commonColor.brandDisabledDark
-    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

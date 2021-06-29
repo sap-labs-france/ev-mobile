@@ -79,6 +79,8 @@ export interface Connector {
   currentTransactionID: number;
   currentTransactionDate: Date;
   currentTagID: string;
+  currentUserID?: string;
+  user?: User;
   status: ChargePointStatus;
   errorCode?: string;
   info?: string;
@@ -87,8 +89,6 @@ export interface Connector {
   type: ConnectorType;
   voltage?: Voltage;
   amperage?: number;
-  userID?: string;
-  user?: User;
   amperageLimit?: number;
   statusLastChangedOn?: Date;
   numberOfConnectedPhase?: number;

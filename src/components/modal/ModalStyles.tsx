@@ -41,8 +41,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       paddingBottom: '20@s',
       borderTopColor: commonColor.listBorderColor,
-      borderTopWidth: 1,
-      elevation: 5
+      borderTopWidth: 1
     },
     button: {
       marginTop: '15@s',

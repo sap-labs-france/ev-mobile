@@ -74,7 +74,7 @@ export default class Tenants extends BaseScreen<Props, State> {
   public render() {
     const navigation = this.props.navigation;
     const { tenants, createTenantVisible, createQrCodeTenantVisible } = this.state;
-    const tenantStyle = computeTenantStyleSheet();
+    const style = computeTenantStyleSheet();
     return (
       <View style={{ flex: 1 }}>
         {createQrCodeTenantVisible ? (
@@ -87,7 +87,7 @@ export default class Tenants extends BaseScreen<Props, State> {
             }}
           />
         ) : (
-          <View style={tenantStyle.container}>
+          <View style={style.container}>
             <HeaderComponent
               navigation={this.props.navigation}
               title={I18n.t('authentication.tenant')}
@@ -101,9 +101,9 @@ export default class Tenants extends BaseScreen<Props, State> {
               }}
             />
             <View>
-              <View style={tenantStyle.toolBar}>
-                <TouchableOpacity style={tenantStyle.createTenantButton} onPress={() => this.createTenant()}>
-                  <Icon style={tenantStyle.icon} type={'MaterialIcons'} name="add" />
+              <View style={style.toolBar}>
+                <TouchableOpacity style={style.createTenantButton} onPress={() => this.createTenant()}>
+                  <Icon style={style.icon} type={'MaterialIcons'} name="add" />
                 </TouchableOpacity>
                 {createTenantVisible && (
                   <CreateTenantDialog
@@ -122,15 +122,15 @@ export default class Tenants extends BaseScreen<Props, State> {
                   <Swipeable
                     overshootRight={false}
                     overshootLeft={false}
-                    containerStyle={tenantStyle.tenantContainer}
-                    childrenContainerStyle={tenantStyle.tenantNameContainer}
+                    containerStyle={style.tenantContainer}
+                    childrenContainerStyle={style.tenantNameContainer}
                     renderRightActions={() => (
                       <TouchableOpacity
-                        style={tenantStyle.trashIconButton}
+                        style={style.trashIconButton}
                         onPress={() => {
                           this.deleteTenant(index, item.subdomain);
                         }}>
-                        <Icon style={tenantStyle.trashIcon} name="trash" />
+                        <Icon style={style.trashIcon} name="trash" />
                       </TouchableOpacity>
                     )}>
                     <TouchableOpacity
@@ -145,7 +145,7 @@ export default class Tenants extends BaseScreen<Props, State> {
                           })
                         );
                       }}>
-                      <Text style={tenantStyle.tenantNameText}>{item.name}</Text>
+                      <Text style={style.tenantNameText}>{item.name}</Text>
                     </TouchableOpacity>
                   </Swipeable>
                 )}
