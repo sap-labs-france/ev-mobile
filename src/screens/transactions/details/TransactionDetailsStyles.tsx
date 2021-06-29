@@ -5,9 +5,6 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../../utils/Utils';
 
-/**
- *
- */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -100,7 +97,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     labelUser: {
-      fontSize: '10@s',
+      fontSize: '11@s',
+      paddingTop: '5@s',
       color: commonColor.textColor
     },
     subLabel: {

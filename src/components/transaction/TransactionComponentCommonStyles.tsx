@@ -5,28 +5,73 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
-/**
- *
- */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
-      flexDirection: 'column'
+      width: '97%',
+      alignSelf: 'center',
+      borderColor: 'transparent',
+      backgroundColor: commonColor.listHeaderBgColor,
+      shadowColor: commonColor.cardShadowColor,
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 3.62,
+      elevation: 11,
+      marginBottom: '8@s'
     },
     transactionContent: {
-      flex: 1,
+      width: '100%',
+      height: '100%',
+      justifyContent: 'space-between',
+      backgroundColor: commonColor.listHeaderBgColor,
       flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      paddingLeft: '5@s',
-      paddingRight: '5@s',
-      height: '80@s',
-      width: '100%'
+      margin: 0,
+      flex: 1,
+      paddingLeft: 0,
+      paddingTop: 0,
+      paddingBottom: 0,
+      paddingRight: 0
     },
-    transactionContentTop: {
-      borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor
+    transactionContainer: {
+      flexDirection: 'row',
+      flex: 1,
+      justifyContent: 'space-between',
+      padding: '5@s',
+      alignItems: 'center',
+      height: '100%'
+    },
+    leftContainer: {
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      height: '100%',
+      margin: '5@s',
+      flex: 1
+    },
+    rightContainer: {
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+      justifyContent: 'center',
+      width: '20@s',
+      height: '100%'
+    },
+    statusIndicator: {
+      height: '100%',
+      width: '5@s'
+    },
+    inactivityHigh: {
+      backgroundColor: commonColor.brandDanger
+    },
+    inactivityMedium: {
+      backgroundColor: commonColor.brandWarning
+    },
+    inactivityLow: {
+      backgroundColor: commonColor.brandSuccess
     },
     label: {
       color: commonColor.textColor,
@@ -45,16 +90,25 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     danger: {
       color: commonColor.brandDanger
     },
-    columnContainer: {
+    transactionDetailsContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      width: '100%',
+      justifyContent: 'space-between',
+      height: '100%'
+    },
+    transactionDetailsContainer1: {
+      paddingTop: '5@s',
+    },
+    transactionDetailsContainer2: {
+      paddingBottom: '5@s',
+    },
+    transactionDetailContainer: {
+      margin: '3@s',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
       width: '60@s'
-    },
-    rowContainer: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center'
     },
     icon: {
       color: commonColor.textColor,

@@ -8,13 +8,13 @@ import HeaderComponent from '../../components/header/HeaderComponent';
 import InvoiceComponent from '../../components/invoice/InvoiceComponent';
 import ItemsList, { ItemsSeparatorType } from '../../components/list/ItemsList';
 import I18nManager from '../../I18n/I18nManager';
+import BaseScreen from '../../screens/base-screen/BaseScreen';
 import BaseProps from '../../types/BaseProps';
 import { BillingInvoice } from '../../types/Billing';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
-import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../transactions/TransactionsStyles';
 
 export interface Props extends BaseProps {}
@@ -28,7 +28,7 @@ interface State {
   count?: number;
 }
 
-export default class Invoices extends BaseAutoRefreshScreen<Props, State> {
+export default class Invoices extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
 
@@ -46,6 +46,7 @@ export default class Invoices extends BaseAutoRefreshScreen<Props, State> {
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
+    await this.refresh();
   }
 
   public setState = (
@@ -57,11 +58,11 @@ export default class Invoices extends BaseAutoRefreshScreen<Props, State> {
 
   public async getInvoices(skip: number, limit: number): Promise<DataResult<BillingInvoice>> {
     try {
-      const invoices = await this.centralServerProvider.getInvoices({}, { skip, limit }, [{ field: '-createdOn' }]);
-      if (invoices.count === -1) {
-        // Request nbr of records
+      // Get the invoices
+      const invoices = await this.centralServerProvider.getInvoices({}, { skip, limit }, ['-createdOn']);
+      // Get total number of records
+      if (invoices.count === -1 && Utils.isEmptyArray(this.state.invoices)) {
         const invoicesNbrRecordsOnly = await this.centralServerProvider.getInvoices({}, Constants.ONLY_RECORD_COUNT);
-        // Set
         invoices.count = invoicesNbrRecordsOnly.count;
       }
       return invoices;

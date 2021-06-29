@@ -189,7 +189,7 @@
     "deletePaymentMethodSuccess": "Payment method removed successfully",
     "deletePaymentMethodTitle": "Delete payment method",
     "deletePaymentMethodSubtitle": "Do you really want to delete the {{cardBrand}} card ending with {{cardLast4}}",
-    "addPaymentMethod": "Add new payment method",
+    "addPaymentMethod": "Add Payment Method",
     "paymentMethodCreationRules": "For security reasons, we do not store nor process your bank and card details directly. The collected information is sent via a secure channel to our STRIPE partner which provides the billing and payment infrastructure.",
     "paymentMethodsCreationCheckboxText": " I have read the End-user License Agreement and agree that my bank details will be used for paying future EV Charging Sessions."
   },
@@ -234,7 +234,10 @@
   "invoiceStatus": {
     "paid": "Paid",
     "draft": "Draft",
-    "unpaid": "Unpaid"
+    "unpaid": "Unpaid",
+    "deleted": "Deleted",
+    "uncollectible": "Uncollectible",
+    "void": "Cancelled"
   },
   "transactions": {
     "transaction": "Sessões",
@@ -320,7 +323,7 @@
     "chargerClearCacheUnexpectedError": "Não posso limpar a cache da estação de carregamento",
     "chargerUnlockUnexpectedError": "Não posso desbloquear o conector",
     "heartBeatOkMessage": "'{{chargeBoxID}}' está a trabalhar corretamente e efetuou um reporte do seu estado a um minuto atrazo",
-    "heartBeatKoMessage": "'{{chargeBoxID}}' não está a trabalhar corretamente e não reportou o seu estado desde {{lastSeen}}",
+    "heartBeatKoMessage": "'{{chargeBoxID}}' is not working since {{lastSeen}}",
     "resetHard": "Reboot",
     "resetHardMessage": "Você quer mesmo fazer o reboot '{{chargeBoxID}}'?",
     "resetSoft": "Reset",
@@ -357,6 +360,7 @@
     "domestic": "Domestico"
   },
   "tags": {
+    "visualID": "Visual ID",
     "noTags": "No badges",
     "tags": "Badge(s)",
     "active": "Active",

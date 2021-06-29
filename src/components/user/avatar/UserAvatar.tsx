@@ -3,17 +3,14 @@ import React from 'react';
 import { Avatar } from 'react-native-elements';
 import { scale } from 'react-native-size-matters';
 
-import noPhoto from '../../../../assets/no-photo.png';
 import CentralServerProvider from '../../../provider/CentralServerProvider';
 import ProviderFactory from '../../../provider/ProviderFactory';
 import BaseProps from '../../../types/BaseProps';
 import User from '../../../types/User';
-import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UserAvatarStyle';
 
 interface State {
-  user?: User;
 }
 
 export interface Props extends BaseProps {
@@ -35,21 +32,9 @@ export default class UserAvatar extends React.Component<Props, State> {
 
   public async componentDidMount(): Promise<void> {
     this.centralServerProvider = await ProviderFactory.getProvider();
-    const { user } = this.props;
-    if (user) {
-      user.image = await this.getUserImage(user.id as string);
-      this.setState({ user });
-    }
   }
 
   public async componentDidUpdate() {
-    const { user } = this.props;
-    if (user) {
-      user.image = await this.getUserImage(user.id as string);
-      if (JSON.stringify(this.state.user) !== JSON.stringify(user)) {
-        this.setState({ user });
-      }
-    }
   }
 
   public setState = (
@@ -60,22 +45,20 @@ export default class UserAvatar extends React.Component<Props, State> {
   };
 
   public render() {
-    const { accessoryIcon, size } = this.props;
-    const { user } = this.state;
+    const { selected, size, accessoryIcon, user } = this.props;
     const style = computeStyleSheet();
     const userInitials = Utils.buildUserInitials(user);
-    const userName = Utils.buildUserName(user);
-    const isNameHyphen = userName === Constants.HYPHEN;
-    const userImageURI = user ? (isNameHyphen ? noPhoto : user.image) : noPhoto;
+    // const userImageURI = user ? user.image : null;
+    const userImageURI = null; // Keep the nbr of requests low (only load visible images)
     return (
       <View>
         {userImageURI ? (
           <Avatar
             size={size ? scale(size) : style.avatar.fontSize}
             rounded={true}
-            source={userImageURI === noPhoto ? noPhoto : { uri: userImageURI }}
+            source={{ uri: userImageURI }}
             titleStyle={style.avatarTitle}
-            overlayContainerStyle={[style.avatarContainer, accessoryIcon ? style.avatarSelected : null]}>
+            overlayContainerStyle={style.avatarContainer}>
             {accessoryIcon && <Avatar.Accessory name={accessoryIcon} size={style.accessory.fontSize} color={style.accessory.color} />}
           </Avatar>
         ) : (
@@ -84,7 +67,7 @@ export default class UserAvatar extends React.Component<Props, State> {
             rounded={true}
             title={userInitials}
             titleStyle={style.avatarTitle}
-            overlayContainerStyle={[style.avatarContainer, accessoryIcon ? style.avatarSelected : null]}>
+            overlayContainerStyle={[style.avatarContainer, style.titleAvatarContainer]}>
             {accessoryIcon && <Avatar.Accessory name={accessoryIcon} size={style.accessory.fontSize} color={style.accessory.color} />}
           </Avatar>
         )}

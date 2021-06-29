@@ -34,6 +34,10 @@ export default class Users extends SelectableList<User> {
     isModal: false
   };
 
+  public static defaultProps = {
+    selectionMode: ItemSelectionMode.NONE,
+    isModal: false
+  };
   public state: State;
   public props: Props;
   private searchText: string;
@@ -55,11 +59,11 @@ export default class Users extends SelectableList<User> {
       totalUsersCount: undefined,
       selectedItems: []
     };
-    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
+    await this.refresh();
   }
 
   public async getUsers(searchText: string, skip: number, limit: number, onlyCount: boolean = false): Promise<DataResult<User>> {
@@ -69,12 +73,10 @@ export default class Users extends SelectableList<User> {
         UserID: this.userIDs?.join('|'),
         carName: this.title
       };
-      const users = await this.centralServerProvider.getUsers(params, onlyCount ? Constants.ONLY_RECORD_COUNT : { skip, limit });
-      // Check
-      if (users.count === -1) {
-        // Request nbr of records
+      const users = await this.centralServerProvider.getUsers(params, { skip, limit }, ['name']);
+      // Get total number of records
+      if ((users.count === -1) && Utils.isEmptyArray(this.state.users)) {
         const usersNbrRecordsOnly = await this.centralServerProvider.getUsers(params, Constants.ONLY_RECORD_COUNT);
-        // Set
         users.count = usersNbrRecordsOnly.count;
       }
       return users;
@@ -177,7 +179,6 @@ export default class Users extends SelectableList<User> {
               limit={limit}
               skip={skip}
               renderItem={(item: User) => <UserComponent user={item} navigation={this.props.navigation} />}
-              itemsSeparator={ItemsSeparatorType.DEFAULT}
               refreshing={refreshing}
               manualRefresh={isModal ? null : this.manualRefresh}
               onEndReached={this.onEndScroll}

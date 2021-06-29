@@ -156,7 +156,6 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         <Text numberOfLines={1} style={[style.label, style.labelUser, style.info]}>
           {Utils.buildUserName(user)}
         </Text>
-        {(isAdmin || isSiteAdmin) && <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text>}
       </View>
     ) : (
       <View style={style.columnContainer}>
@@ -172,7 +171,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       <View style={style.columnContainer}>
         <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>
-          {transaction ? I18nManager.formatCurrency(transaction.stop.price) : '-'}
+          {transaction ? I18nManager.formatCurrency(transaction.stop.price, transaction.stop.priceUnit) : '-'}
         </Text>
         <Text style={[style.subLabel, style.info]}>({transaction ? transaction.stop.priceUnit : '-'})</Text>
       </View>
