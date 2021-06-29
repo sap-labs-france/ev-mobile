@@ -9,7 +9,6 @@ import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { BillingInvoice, BillingInvoiceStatus } from '../../types/Billing';
-import User from '../../types/User';
 import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import Chip from '../chip/Chip';
