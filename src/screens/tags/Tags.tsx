@@ -159,6 +159,7 @@ export default class Tags extends SelectableList<Tag> {
             <ItemsList<Tag>
               data={tags}
               navigation={navigation}
+              onSelect={this.onItemsSelected.bind(this)}
               selectionMode={selectionMode}
               count={count}
               limit={limit}
