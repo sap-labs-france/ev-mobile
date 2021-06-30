@@ -70,19 +70,17 @@ export default class ChargingStationsFilters extends ScreenFilters {
           ref={(filterVisibleContainerComponent: FilterVisibleContainerComponent) =>
             this.setFilterVisibleContainerComponent(filterVisibleContainerComponent)
           }>
+          <OnlyAvailableChargingStationSwitchFilterControlComponent
+            filterID={'connectorStatus'}
+            internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS}
+            initialValue={filters.hasOwnProperty('connectorStatus') ? filters.connectorStatus : initialFilters.connectorStatus}
+            label={I18n.t('general.onlyAvailableChargers')}
+            onFilterChanged={async (id: string, value: ChargePointStatus) => this.getFilterVisibleContainerComponent().setFilter(id, value)}
+            ref={async (
+              onlyAvailableChargingStationSwitchFilterControlComponent: OnlyAvailableChargingStationSwitchFilterControlComponent
+            ) => this.addVisibleFilter(onlyAvailableChargingStationSwitchFilterControlComponent)}
+          />
           <Animatable.View style={style.filtersHidden} ref={this.setExpandableView}>
-            <OnlyAvailableChargingStationSwitchFilterControlComponent
-              filterID={'connectorStatus'}
-              internalFilterID={GlobalFilters.ONLY_AVAILABLE_CHARGING_STATIONS}
-              initialValue={filters.hasOwnProperty('connectorStatus') ? filters.connectorStatus : initialFilters.connectorStatus}
-              label={I18n.t('general.onlyAvailableChargers')}
-              onFilterChanged={async (id: string, value: ChargePointStatus) =>
-                this.getFilterVisibleContainerComponent().setFilter(id, value)
-              }
-              ref={async (
-                onlyAvailableChargingStationSwitchFilterControlComponent: OnlyAvailableChargingStationSwitchFilterControlComponent
-              ) => this.addVisibleFilter(onlyAvailableChargingStationSwitchFilterControlComponent)}
-            />
             {locationEnabled && (
               <LocationSwitchFilterControlComponent
                 filterID={'location'}

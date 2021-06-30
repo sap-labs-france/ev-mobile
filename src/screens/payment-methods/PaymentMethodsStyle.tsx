@@ -5,9 +5,6 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
-/**
- *
- */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -24,16 +21,24 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flex: 1,
       backgroundColor: commonColor.containerBgColor
     },
-    addPMContainer: {
+    addPaymentMethodButton: {
       width: '100%',
       justifyContent: 'flex-start',
-      flexDirection: 'row',
-      paddingHorizontal: '5@s',
-      paddingTop: '5@s'
+      flexDirection: 'row'
     },
     icon: {
       color: commonColor.textColor,
       fontSize: '25@s'
+    },
+    toolBar: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      borderBottomWidth: 1,
+      borderColor: commonColor.textColor,
+      borderRadius: 1,
+      height: '40@s',
+      padding: '5@s'
     },
     trashIconButton: {
       height: '100%',

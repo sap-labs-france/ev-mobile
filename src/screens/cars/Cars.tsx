@@ -47,7 +47,6 @@ export default class Cars extends SelectableList<Car> {
       loading: true,
       selectedItems: []
     };
-    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   public setState = (
@@ -59,28 +58,20 @@ export default class Cars extends SelectableList<Car> {
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
+    await this.refresh();
   }
 
   public async getCars(searchText: string, skip: number, limit: number): Promise<DataResult<Car>> {
     try {
-      const cars = await this.centralServerProvider.getCars(
-        {
-          Search: searchText,
-          WithUsers: true,
-          UserID: this.props.userIDs?.join('|')
-        },
-        { skip, limit }
-      );
-      if (cars.count === -1) {
-        // Request nbr of records
-        const carsNbrRecordsOnly = await this.centralServerProvider.getCars(
-          {
-            Search: searchText,
-            WithUsers: true
-          },
-          Constants.ONLY_RECORD_COUNT
-        );
-        // Set
+      const params = {
+        Search: searchText,
+        WithUsers: true,
+        UserID: this.props.userIDs?.join('|')
+      };
+      const cars = await this.centralServerProvider.getCars(params, { skip, limit });
+      // Get total number of records
+      if ((cars.count === -1) && Utils.isEmptyArray(this.state.cars)) {
+        const carsNbrRecordsOnly = await this.centralServerProvider.getCars(params, Constants.ONLY_RECORD_COUNT);
         cars.count = carsNbrRecordsOnly.count;
       }
       return cars;

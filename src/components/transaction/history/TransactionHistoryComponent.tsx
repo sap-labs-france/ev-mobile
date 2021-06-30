@@ -1,12 +1,10 @@
-import { Icon, Text, View } from 'native-base';
+import { Card, CardItem, Icon, Text, View } from 'native-base';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import Transaction from '../../../types/Transaction';
-import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import TransactionHeaderComponent from '../header/TransactionHeaderComponent';
 import computeStyleSheet from '../TransactionComponentCommonStyles';
@@ -45,51 +43,56 @@ export default class TransactionHistoryComponent extends React.Component<Props, 
     const { navigation } = this.props;
     const { transaction, isAdmin, isSiteAdmin, isPricingActive } = this.props;
     const consumption = Math.round(transaction.stop.totalConsumptionWh / 10) / 100;
-    const price = transaction.stop.price ? Utils.roundTo(transaction.stop.price, 2) : 0;
     const duration = Utils.formatDurationHHMMSS(transaction.stop.totalDurationSecs, false);
-    const inactivity = Utils.formatDurationHHMMSS(transaction.stop.totalInactivitySecs, false);
+    const inactivity = Utils.formatDurationHHMMSS(transaction.stop.totalInactivitySecs + transaction.stop.extraInactivitySecs, false);
     const inactivityStyle = Utils.computeInactivityStyle(transaction.stop.inactivityStatus);
     return (
-      <Animatable.View
-        animation={this.counter++ % 2 === 0 ? 'flipInX' : 'flipInX'}
-        iterationCount={1}
-        duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('TransactionDetailsTabs', {
-              params: { transactionID: transaction.id },
-              key: `${Utils.randomNumber()}`
-            });
-          }}>
-          <View style={style.container}>
-            <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} />
-            <View style={style.transactionContent}>
-              <View style={style.columnContainer}>
-                <Icon type="MaterialIcons" name="ev-station" style={[style.icon, style.info]} />
-                <Text style={[style.labelValue, style.info]}>{I18nManager.formatNumber(consumption)}</Text>
-                <Text style={[style.subLabelValue, style.info]}>(kW.h)</Text>
-              </View>
-              <View style={style.columnContainer}>
-                <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
-                <Text style={[style.labelValue, style.info]}>{duration}</Text>
-                <Text style={[style.subLabelValue, style.info]}>(hh:mm)</Text>
-              </View>
-              <View style={style.columnContainer}>
-                <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
-                <Text style={[style.labelValue, inactivityStyle]}>{inactivity}</Text>
-                <Text style={[style.subLabelValue, inactivityStyle]}>(hh:mm)</Text>
-              </View>
-              {isPricingActive && (
-                <View style={style.columnContainer}>
-                  <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
-                  <Text style={[style.labelValue, style.info]}>{I18nManager.formatCurrency(price)}</Text>
-                  <Text style={[style.subLabelValue, style.info]}>({transaction.priceUnit})</Text>
+      <Card style={style.container}>
+        <CardItem style={[style.transactionContent]}>
+          <View style={[Utils.getTransactionInactivityStatusStyle(transaction.stop.inactivityStatus, style), style.statusIndicator]} />
+          <TouchableOpacity
+            style={style.transactionContainer}
+            onPress={() => {
+              navigation.navigate('TransactionDetailsTabs', {
+                params: { transactionID: transaction.id },
+                key: `${Utils.randomNumber()}`
+              });
+            }}>
+            <View style={style.leftContainer}>
+              <TransactionHeaderComponent navigation={navigation} transaction={transaction} isAdmin={isAdmin} isSiteAdmin={isSiteAdmin} />
+              <View style={style.transactionDetailsContainer}>
+                <View style={style.transactionDetailContainer}>
+                  <Icon type="MaterialIcons" name="ev-station" style={[style.icon, style.info]} />
+                  <Text style={[style.labelValue, style.info]}>{I18nManager.formatNumber(consumption)}</Text>
+                  <Text style={[style.subLabelValue, style.info]}>(kW.h)</Text>
                 </View>
-              )}
+                <View style={style.transactionDetailContainer}>
+                  <Icon type="MaterialIcons" name="timer" style={[style.icon, style.info]} />
+                  <Text style={[style.labelValue, style.info]}>{duration}</Text>
+                  <Text style={[style.subLabelValue, style.info]}>(hh:mm)</Text>
+                </View>
+                <View style={style.transactionDetailContainer}>
+                  <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
+                  <Text style={[style.labelValue, inactivityStyle]}>{inactivity}</Text>
+                  <Text style={[style.subLabelValue, inactivityStyle]}>(hh:mm)</Text>
+                </View>
+                {isPricingActive && (
+                  <View style={style.transactionDetailContainer}>
+                    <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
+                    <Text style={[style.labelValue, style.info]}>
+                      {I18nManager.formatCurrency(transaction.stop.roundedPrice, transaction.stop.priceUnit)}
+                    </Text>
+                    <Text style={[style.subLabelValue, style.info]}>({transaction.stop.priceUnit})</Text>
+                  </View>
+                )}
+              </View>
             </View>
-          </View>
-        </TouchableOpacity>
-      </Animatable.View>
+            <View style={style.rightContainer}>
+              <Icon style={[style.icon, style.arrowIcon]} type="MaterialIcons" name="navigate-next" />
+            </View>
+          </TouchableOpacity>
+        </CardItem>
+      </Card>
     );
   }
 }

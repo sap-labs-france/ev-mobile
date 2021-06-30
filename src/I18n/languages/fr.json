@@ -81,7 +81,7 @@
     "badges": "Badges",
     "cars": "Voitures",
     "invoices": "Factures",
-    "paymentMethods": "Méthodes de paiement"
+    "paymentMethods": "Moyens de paiement"
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",
@@ -182,14 +182,14 @@
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "Une erreur est survenue",
-    "noPaymentMethod": "Aucune méthode de paiement",
-    "paymentMethods": "Méthode(s) de paiement",
-    "addPaymentMethodError": "Impossible d'ajouter la méthode de paiement",
-    "addPaymentMethodSuccess" : "Nouvelle méthode de paiement ajoutée",
-    "deletePaymentMethodSuccess": "Méthode de paiement supprimée",
-    "deletePaymentMethodTitle": "Supprimer une méthode de paiement",
+    "noPaymentMethod": "Aucun moyen de paiement",
+    "paymentMethods": "Moyen(s) de paiement",
+    "addPaymentMethodError": "Impossible d'ajouter le moyen de paiement",
+    "addPaymentMethodSuccess" : "Nouveau moyen de paiement ajoutée",
+    "deletePaymentMethodSuccess": "Moyen de paiement supprimé",
+    "deletePaymentMethodTitle": "Supprimer un moyen de paiement",
     "deletePaymentMethodSubtitle": "Voulez-vous vraiment supprimer la carte {{cardBrand}} finissant par {{cardLast4}}",
-    "addPaymentMethod": "Ajouter une méthode de paiment",
+    "addPaymentMethod": "Ajouter un Moyen de Paiement",
     "paymentMethodCreationRules": "Pour des raisons de sécurité, nous ne stockons ni ne traitons vos informations de moyen de paiement. Les informations collectées sont envoyées de manière sécurisée à notre partenaire STRIPE qui fournit l'infrastructure de facturation et de paiement.",
     "paymentMethodsCreationCheckboxText": "J'ai lu les conditions générales d'utilisation et j'accepte que mes informations de paiement soient utilisées pour payer mes futures sessions de recharge."
   },
@@ -236,7 +236,10 @@
   "invoiceStatus": {
     "paid": "Payée",
     "draft": "Brouillon",
-    "unpaid": "Impayée"
+    "unpaid": "Impayée",
+    "deleted": "Supprimée",
+    "uncollectible": "Non recouvrable",
+    "void": "Annulée"
   },
   "transactions": {
     "transaction": "Session",
@@ -254,7 +257,9 @@
     "transactionStartUnexpectedError": "Impossible de démarrer la session",
     "carNotConnectedError": "Votre voiture n'est pas connctée à la borne",
     "connectorNotAvailable": "Le connecteur de cette borne n'est pas disponible",
-    "transactionStopUnexpectedError": "Impossible de stopper la session"
+    "transactionStopUnexpectedError": "Impossible de stopper la session",
+    "noPaymentMethodError": "Service indisponible, aucun moyen de paiment n'a été enregistrée.",
+    "startTransactionDisabled": "Service temporairement indisponible, veuillez contacter le support."
   },
   "home": {
     "browseSites": "Sites",
@@ -286,8 +291,8 @@
     "totalInactivityNote": "Durée totale d'inactivité",
     "totalPrice": "{{totalPrice}}",
     "totalPriceNote": "Cout total",
-    "paymentMethods": "Méthodes de paiement",
-    "paymentMethodsNote" : "Consulter et créer des méthodes de paiement",
+    "paymentMethods": "Moyens de paiement",
+    "paymentMethodsNote" : "Consulter et créer des moyens de paiement",
     "invoices": "Factures",
     "invoicesNote": "Consulter et télécharger des factures"
   },
@@ -320,7 +325,7 @@
     "chargerClearCacheUnexpectedError": "Impossible d'effacer le cache de la borne",
     "chargerUnlockUnexpectedError": "Impossible de dévérouiller le connecteur",
     "heartBeatOkMessage": "'{{chargeBoxID}}' fonctionne correctement et a reporté son statut il y a moins d'une minute",
-    "heartBeatKoMessage": "'{{chargeBoxID}}' ne fonctionne pas correctement et n'a pas reporté son statut depuis {{lastSeen}}",
+    "heartBeatKoMessage": "'{{chargeBoxID}}' ne fonctionne plus depuis {{lastSeen}}",
     "resetHard": "Redémarrer",
     "resetHardMessage": "Voulez-vous vraiment redémarrer '{{chargeBoxID}}'?",
     "resetSoft": "Réinitialiser",
@@ -357,6 +362,7 @@
     "domestic": "Domestique"
   },
   "tags": {
+    "visualID": "ID Visuel",
     "noTags": "Aucun badge",
     "tags": "Badge(s)",
     "active": "Actif",

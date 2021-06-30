@@ -189,7 +189,7 @@
     "deletePaymentMethodSuccess": "Payment method removed successfully",
     "deletePaymentMethodTitle": "Delete payment method",
     "deletePaymentMethodSubtitle": "Do you really want to delete the {{cardBrand}} card ending with {{cardLast4}}",
-    "addPaymentMethod": "Add new payment method",
+    "addPaymentMethod": "Add Payment Method",
     "paymentMethodCreationRules": "For security reasons, we do not store nor process your bank and card details directly. The collected information is sent via a secure channel to our STRIPE partner which provides the billing and payment infrastructure.",
     "paymentMethodsCreationCheckboxText": " I have read the End-user License Agreement and agree that my bank details will be used for paying future EV Charging Sessions."
   },
@@ -236,7 +236,10 @@
   "invoiceStatus": {
     "paid": "Paid",
     "draft": "Draft",
-    "unpaid": "Unpaid"
+    "unpaid": "Unpaid",
+    "deleted": "Deleted",
+    "uncollectible": "Uncollectible",
+    "void": "Cancelled"
   },
   "transactions": {
     "transaction": "Session",
@@ -254,7 +257,9 @@
     "transactionStartUnexpectedError": "Cannot start the session",
     "carNotConnectedError": "Your car is not connected to the charging station",
     "connectorNotAvailable": "This charging station's connector is not available",
-    "transactionStopUnexpectedError": "Cannot stop the session"
+    "transactionStopUnexpectedError": "Cannot stop the session",
+    "noPaymentMethodError": "Service unavailable, no payment method has been provided.",
+    "startTransactionDisabled": "Service temporarily unavailable, please contact the support."
   },
   "home": {
     "browseSites": "Sites",
@@ -320,7 +325,7 @@
     "chargerClearCacheUnexpectedError": "Cannot clear the cache of the charging station",
     "chargerUnlockUnexpectedError": "Cannot unlock the connector",
     "heartBeatOkMessage": "'{{chargeBoxID}}' is working properly and reported its status a minute ago",
-    "heartBeatKoMessage": "'{{chargeBoxID}}' is not working properly and hasn't reported its status since {{lastSeen}}",
+    "heartBeatKoMessage": "'{{chargeBoxID}}' is not working since {{lastSeen}}",
     "resetHard": "Reboot",
     "resetHardMessage": "Do you really want to reboot '{{chargeBoxID}}'?",
     "resetSoft": "Reset",
@@ -357,6 +362,7 @@
     "domestic": "Domestic"
   },
   "tags": {
+    "visualID": "Visual ID",
     "noTags": "No badges",
     "tags": "Badge(s)",
     "active": "Active",

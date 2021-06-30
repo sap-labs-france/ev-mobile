@@ -8,10 +8,9 @@ import Utils from '../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
-    invoiceContainer: {
+    container: {
       flex: 1,
       width: '97%',
-      height: '130@s',
       alignSelf: 'center',
       borderColor: 'transparent',
       backgroundColor: commonColor.listHeaderBgColor,
@@ -38,26 +37,29 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingBottom: 0,
       paddingRight: 0
     },
-    statusIndicator: {
-      height: '100%',
-      width: '5@s'
-    },
-    statusUnpaid: {
-      backgroundColor: commonColor.brandDanger
-    },
-    statusPaid: {
-      backgroundColor: commonColor.brandSuccess
-    },
-    statusDraft: {
-      backgroundColor: commonColor.brandDisabledDark
-    },
-    invoiceInfosContainer: {
+    invoiceContainer: {
       flexDirection: 'row',
       flex: 1,
       justifyContent: 'space-between',
       padding: '5@s',
       alignItems: 'center',
       height: '100%'
+    },
+    statusIndicator: {
+      height: '100%',
+      width: '5@s'
+    },
+    statusOpenOrUncollectible: {
+      backgroundColor: commonColor.brandDanger
+    },
+    statusPaid: {
+      backgroundColor: commonColor.brandSuccess
+    },
+    statusDeletedOrVoid: {
+      backgroundColor: commonColor.brandWarning
+    },
+    statusDefault: {
+      backgroundColor: commonColor.brandDisabledDark
     },
     leftContainer: {
       flexDirection: 'column',
@@ -66,15 +68,26 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '100%',
       flex: 1
     },
-    userInfosContainer: {
-      marginBottom: '10@s',
+    rightContainer: {
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+      justifyContent: 'space-between',
+      width: '100@s',
+      height: '100%'
+    },
+    userContainer: {
+      marginTop: '10@s',
       width: '100%'
     },
     text: {
-      color: commonColor.textColor,
-      fontSize: '13@s'
+      fontSize: '13@s',
+      color: commonColor.textColor
     },
     userName: {
+      fontSize: '15@s',
+      fontWeight: 'bold'
+    },
+    invoiceCreatedOn: {
       fontSize: '15@s',
       fontWeight: 'bold'
     },
@@ -86,13 +99,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     sessionsCount: {
       paddingRight: '3@s'
-    },
-    rightContainer: {
-      flexDirection: 'column',
-      alignItems: 'flex-end',
-      justifyContent: 'space-between',
-      width: '100@s',
-      height: '100%'
     },
     invoiceStatusContainer: {
       justifyContent: 'flex-start',

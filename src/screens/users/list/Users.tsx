@@ -32,15 +32,17 @@ export default class Users extends SelectableList<User> {
     isModal: false
   };
 
+  public static defaultProps = {
+    selectionMode: ItemSelectionMode.NONE,
+    isModal: false
+  };
   public state: State;
   public props: Props;
   private searchText: string;
   private userIDs: string[];
-  private cancelTokenSource: CancelTokenSource;
 
   public constructor(props: Props) {
     super(props);
-    this.cancelTokenSource = axios.CancelToken.source();
     this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string[];
     this.title = (Utils.getParamFromNavigation(this.props.route, 'title', null) as string) ?? I18n.t('users.users');
     this.selectMultipleTitle = 'users.selectUsers';
@@ -54,46 +56,28 @@ export default class Users extends SelectableList<User> {
       loading: true,
       selectedItems: []
     };
-    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
+    await this.refresh();
   }
 
-  public componentWillUnmount(): void {
-    this.cancelTokenSource.cancel(Constants.AXIOS_CANCEL_REQUEST_MESSAGE);
-  }
-
-  public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
+  public async getUsers(searchText: string, skip: number, limit: number, onlyCount: boolean = false): Promise<DataResult<User>> {
     try {
       const params = {
         Search: searchText,
         UserID: this.userIDs?.join('|'),
         carName: this.title
       };
-      const users = await this.centralServerProvider.getUsers(
-        params,
-        { skip, limit },
-        this.cancelTokenSource?.token
-      );
-      // Check
-      if (users.count === -1) {
-        // Request nbr of records
-        const usersNbrRecordsOnly = await this.centralServerProvider.getUsers(
-          params,
-          Constants.ONLY_RECORD_COUNT,
-          this.cancelTokenSource?.token
-        );
-        // Set
+      const users = await this.centralServerProvider.getUsers(params, { skip, limit }, ['name']);
+      // Get total number of records
+      if ((users.count === -1) && Utils.isEmptyArray(this.state.users)) {
+        const usersNbrRecordsOnly = await this.centralServerProvider.getUsers(params, Constants.ONLY_RECORD_COUNT);
         users.count = usersNbrRecordsOnly.count;
       }
       return users;
     } catch (error) {
-      if (axios.isCancel(error)) {
-        console.log(`${Constants.UNMOUNTING_COMPONENT} Users - getUsers ${Constants.AXIOS_CANCEL_REQUEST_MESSAGE}`);
-        return null;
-      }
       // Check if HTTP?
       if (!error.request) {
         await Utils.handleHttpUnexpectedError(
@@ -122,13 +106,11 @@ export default class Users extends SelectableList<User> {
       // No: get next sites
       const users = await this.getUsers(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
-      if (users) {
-        this.setState((prevState) => ({
-          users: users ? [...prevState.users, ...users.result] : prevState.users,
-          skip: prevState.skip + Constants.PAGING_SIZE,
-          refreshing: false
-        }));
-      }
+      this.setState((prevState) => ({
+        users: users ? [...prevState.users, ...users.result] : prevState.users,
+        skip: prevState.skip + Constants.PAGING_SIZE,
+        refreshing: false
+      }));
     }
   };
 
@@ -147,14 +129,12 @@ export default class Users extends SelectableList<User> {
       const users = await this.getUsers(this.searchText, 0, skip + limit);
       const usersResult = users ? users.result : [];
       // Set
-      if (users) {
-        this.setState({
-          loading: false,
-          refreshing: false,
-          users: usersResult,
-          count: users.count
-        });
-      }
+      this.setState({
+        loading: false,
+        refreshing: false,
+        users: usersResult,
+        count: users.count
+      });
     }
   }
 
@@ -194,7 +174,6 @@ export default class Users extends SelectableList<User> {
               limit={limit}
               skip={skip}
               renderItem={(item: User) => <UserComponent user={item} navigation={this.props.navigation} />}
-              itemsSeparator={ItemsSeparatorType.DEFAULT}
               refreshing={refreshing}
               manualRefresh={isModal ? null : this.manualRefresh}
               onEndReached={this.onEndScroll}

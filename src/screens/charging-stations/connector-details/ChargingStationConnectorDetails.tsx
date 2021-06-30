@@ -13,7 +13,7 @@ import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
-import Transaction from '../../../types/Transaction';
+import Transaction, { StartTransactionErrorCode } from '../../../types/Transaction';
 import User, { UserDefaultTagCar } from '../../../types/User';
 import UserToken from '../../../types/UserToken';
 import Constants from '../../../utils/Constants';
@@ -21,8 +21,8 @@ import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
-import Users from '../../users/list/Users';
 import ModalSelect from '../../../components/modal/ModalSelect';
+import Users from '../../users/list/Users';
 import Car from '../../../types/Car';
 import Cars from '../../cars/Cars';
 
@@ -48,6 +48,7 @@ interface State {
   isPricingActive?: boolean;
   buttonDisabled?: boolean;
   refreshing?: boolean;
+  userDefaultTagCar?: UserDefaultTagCar;
   selectedUser?: User;
   selectedCar?: Car;
   carLoading?: boolean;
@@ -63,9 +64,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     this.state = {
       loading: true,
       chargingStation: null,
+      userDefaultTagCar: null,
       connector: null,
       transaction: null,
       isAdmin: false,
+      buttonDisabled: true,
       isSiteAdmin: false,
       canStartTransaction: false,
       canStopTransaction: false,
@@ -76,7 +79,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       inactivityFormatted: '-',
       startTransactionNbTrial: 0,
       isPricingActive: false,
-      buttonDisabled: true,
       refreshing: false,
       selectedUser: null,
       selectedCar: null,
@@ -92,23 +94,21 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public async componentDidMount() {
-    await super.componentDidMount();
-    this.currentUser = this.centralServerProvider.getUserInfo();
+    await super.componentDidMount(false);
     const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null, true) as boolean;
     if (startTransaction) {
       this.startTransactionConfirm();
     }
+    this.currentUser = this.centralServerProvider.getUserInfo();
+    await this.refresh();
     if (this.currentUser) {
-      this.setState(
-        {
-          selectedUser: {
-            id: this.currentUser.id,
-            firstName: this.currentUser.firstName,
-            name: this.currentUser.name
-          }
-        },
-        this.loadSelectedUserDefaultTagAndCar.bind(this)
-      );
+      this.setState({
+        selectedUser: {
+          id: this.currentUser.id,
+          firstName: this.currentUser.firstName,
+          name: this.currentUser.name
+        }
+      });
     }
   }
 
@@ -225,7 +225,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     let siteImage = null;
     let transaction = null;
     const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
-    const connectorID: number = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
+    const connectorID = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
     // Get Charger
     const chargingStation = await this.getChargingStation(chargingStationID);
     const connector = chargingStation ? Utils.getConnectorFromID(chargingStation, connectorID) : null;
@@ -237,22 +237,25 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     if (connector && connector.currentTransactionID) {
       transaction = await this.getTransaction(connector.currentTransactionID);
     }
+    // Get Default Car/Tag
+    const userDefaultTagCar = await this.getUserDefaultTagAndCar();
     // Check to enable the buttons after a certain period of time
-    const startStopTransactionButtonStatus = this.getStartStopTransactionButtonStatus(connector);
-    // Compute Duration
+    const startStopTransactionButtonStatus = this.getStartStopTransactionButtonStatus(connector, userDefaultTagCar);
+    // // Compute Duration
     const durationInfos = this.getDurationInfos(transaction, connector);
     // Set
     this.setState({
       chargingStation,
       connector: chargingStation ? Utils.getConnectorFromID(chargingStation, connectorID) : null,
       transaction,
-      siteImage: siteImage ? siteImage : this.state.siteImage,
+      userDefaultTagCar,
+      siteImage: siteImage ?? this.state.siteImage,
       isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
       isSiteAdmin:
         this.securityProvider && chargingStation && chargingStation.siteArea
           ? this.securityProvider.isSiteAdmin(chargingStation.siteArea.siteID)
           : false,
-      canDisplayTransaction: chargingStation ? this.canDisplayTransaction(chargingStation, connector) : false,
+      canDisplayTransaction: chargingStation ? this.securityProvider?.canReadTransaction() : false,
       canStartTransaction: chargingStation ? this.canStartTransaction(chargingStation, connector) : false,
       canStopTransaction: chargingStation ? this.canStopTransaction(chargingStation, connector) : false,
       isPricingActive: this.securityProvider?.isComponentPricingActive(),
@@ -271,23 +274,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return false;
   };
 
-  public canStartTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
+  public canStartTransaction(chargingStation: ChargingStation, connector: Connector): boolean {
     // Transaction?
     if (connector && connector.currentTransactionID === 0) {
       // Check Auth
       return this.securityProvider?.canStartTransaction(chargingStation.siteArea);
     }
     return false;
-  };
-
-  public canDisplayTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
-    // Transaction?
-    if (connector && connector.currentTransactionID !== 0) {
-      // Check Auth
-      return this.securityProvider?.canReadTransaction(chargingStation.siteArea, connector.currentTagID);
-    }
-    return false;
-  };
+  }
 
   public manualRefresh = async () => {
     // Display spinner
@@ -323,7 +317,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       // Disable the button
       this.setState({ buttonDisabled: true });
       // Start the Transaction
-      const status = await this.centralServerProvider.startTransaction(chargingStation.id, connector.connectorId, userInfo.tagIDs[0]);
+      const status = await this.centralServerProvider.startTransaction(
+        chargingStation.id as string,
+        connector.connectorId,
+        userInfo.tagIDs[0]
+      );
       // Check
       if (status && status.status === 'Accepted') {
         // Show message
@@ -369,7 +367,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       // Disable button
       this.setState({ buttonDisabled: true });
       // Stop the Transaction
-      const status = await this.centralServerProvider.stopTransaction(chargingStation.id, connector.currentTransactionID);
+      const status = await this.centralServerProvider.stopTransaction(chargingStation.id as string, connector.currentTransactionID);
       // Check
       if (status && status.status === 'Accepted') {
         Message.showSuccess(I18n.t('details.accepted'));
@@ -388,14 +386,17 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
   };
 
-  public getStartStopTransactionButtonStatus(connector: Connector): { buttonDisabled?: boolean; startTransactionNbTrial?: number } {
+  public getStartStopTransactionButtonStatus(connector: Connector, userDefaultTagCar: UserDefaultTagCar): { buttonDisabled?: boolean; startTransactionNbTrial?: number } {
     const { startTransactionNbTrial } = this.state;
+    // Check if error codes
+    if (!Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
+      return {
+        buttonDisabled: true
+      };
+    }
     // Check if the Start/Stop Button should stay disabled
-    if (
-      connector &&
-      ((connector.status === ChargePointStatus.AVAILABLE && startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
-        (connector.status === ChargePointStatus.PREPARING && startTransactionNbTrial === 0))
-    ) {
+    if ((connector?.status === ChargePointStatus.AVAILABLE && (startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2)) ||
+        (connector?.status === ChargePointStatus.PREPARING && startTransactionNbTrial === 0)) {
       // Button are set to available after the nbr of trials
       return {
         buttonDisabled: false
@@ -488,14 +489,13 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public renderUserInfo = (style: any) => {
-    const { transaction, isAdmin, isSiteAdmin } = this.state;
+    const { transaction } = this.state;
     return transaction ? (
       <View style={style.columnContainer}>
-        <UserAvatar size={44} user={transaction.user} navigation={this.props.navigation} />
+        <UserAvatar size={45} user={transaction.user} navigation={this.props.navigation} />
         <Text numberOfLines={1} style={[style.label, style.labelUser, style.info]}>
           {Utils.buildUserName(transaction.user)}
         </Text>
-        {(isAdmin || isSiteAdmin) && <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text>}
       </View>
     ) : (
       <View style={style.columnContainer}>
@@ -724,13 +724,15 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         {/* Report Error */}
         {this.renderReportErrorButton(style)}
         {/* Start/Stop Transaction */}
-        {canStartTransaction && connector && connector.currentTransactionID === 0 ? (
+        {canStartTransaction && connector?.currentTransactionID === 0 ? (
           <View style={style.transactionContainer}>{this.renderStartTransactionButton(style)}</View>
-        ) : canStopTransaction && connector && connector.currentTransactionID > 0 ? (
+        ) : canStopTransaction && connector?.currentTransactionID > 0 ? (
           <View style={style.transactionContainer}>{this.renderStopTransactionButton(style)}</View>
         ) : (
           <View style={style.noButtonStopTransaction} />
         )}
+        {/* Error message */}
+        {this.renderErrorMessages(style)}
         {/* Details */}
         {connector?.status === ChargePointStatus.AVAILABLE ? (
           <ScrollView
@@ -764,6 +766,45 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         )}
       </Container>
     );
+  }
+
+  private async getUserDefaultTagAndCar(): Promise<UserDefaultTagCar> {
+    try {
+      const currentUserId = this.currentUser?.id;
+      if (currentUserId) {
+        return this.centralServerProvider?.getUserDefaultTagCar(this.currentUser?.id);
+      }
+      return null;
+    } catch (error) {
+      await Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'invoices.chargerUnexpectedError',
+        this.props.navigation,
+        this.refresh.bind(this)
+      );
+    }
+    return null;
+  }
+
+  private renderErrorMessages(style: any) {
+    const { userDefaultTagCar } = this.state;
+    // No error
+    if (Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
+      return null;
+    }
+    // Check the error code
+    const errorCode = userDefaultTagCar.errorCodes[0];
+    let errorMessage: string;
+    switch (errorCode) {
+      case StartTransactionErrorCode.BILLING_NO_PAYMENT_METHOD:
+        errorMessage = I18n.t('transactions.noPaymentMethodError');
+        break;
+      default:
+        errorMessage = I18n.t('transactions.startTransactionDisabled');
+        break;
+    }
+    return <Text style={style.errorMessage}>{errorMessage}</Text>;
   }
 
   private renderUserSelection(style: any) {

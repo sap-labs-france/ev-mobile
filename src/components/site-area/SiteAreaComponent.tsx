@@ -1,12 +1,10 @@
 import I18n from 'i18n-js';
-import { Icon, Text, View } from 'native-base';
+import { Card, CardItem, Icon, Text, View } from 'native-base';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 
 import BaseProps from '../../types/BaseProps';
 import SiteArea from '../../types/SiteArea';
-import Constants from '../../utils/Constants';
 import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import ConnectorStatusesContainerComponent from '../connector-status/ConnectorStatusesContainerComponent';
@@ -40,31 +38,28 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
     const style = computeStyleSheet();
     const { siteArea, navigation, onNavigate } = this.props;
     const validGPSCoordinates = Utils.containsAddressGPSCoordinates(siteArea.address);
-    // New backend?
     return (
-      <TouchableOpacity
-        style={style.outerContainer}
-        onPress={() => {
-          if (onNavigate) {
-            onNavigate();
-          }
-          if (siteArea.connectorStats.totalConnectors > 0) {
-            navigation.navigate('ChargingStations', {
-              params: {
-                siteAreaID: siteArea.id
-              },
-              key: `${Utils.randomNumber()}`
-            });
-          } else {
-            Message.showError(I18n.t('siteAreas.noChargers'));
-          }
-        }}>
-        <Animatable.View
-          animation={this.counter++ % 2 === 0 ? 'flipInX' : 'flipInX'}
-          iterationCount={1}
-          duration={Constants.ANIMATION_SHOW_HIDE_MILLIS}>
-          <View style={style.container}>
-            <View style={style.headerContent}>
+      <Card style={style.container}>
+        <CardItem style={[style.siteAreaContent]}>
+          <View style={[Utils.getOrganizationConnectorStatusesStyle(siteArea.connectorStats, style), style.statusIndicator]} />
+          <TouchableOpacity
+            style={style.siteAreaContainer}
+            onPress={() => {
+              if (onNavigate) {
+                onNavigate();
+              }
+              if (siteArea.connectorStats.totalConnectors > 0) {
+                navigation.navigate('ChargingStations', {
+                  params: {
+                    siteArea
+                  },
+                  key: `${Utils.randomNumber()}`
+                });
+              } else {
+                Message.showError(I18n.t('siteAreas.noChargers'));
+              }
+            }}>
+            <View style={style.leftContainer}>
               <View style={style.titleContainer}>
                 <TouchableOpacity
                   disabled={!validGPSCoordinates}
@@ -79,24 +74,31 @@ export default class SiteAreaComponent extends React.Component<Props, State> {
                   {siteArea.name}
                 </Text>
               </View>
+              <View style={style.subTitleContainer}>
+                <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1}>
+                  {Utils.formatAddress(siteArea.address)}
+                </Text>
+                {siteArea.distanceMeters > 0 && <Text>{Utils.formatDistance(siteArea.distanceMeters)}</Text>}
+              </View>
+              <View style={style.subTitleContainer}>
+                <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1}>
+                  {Utils.formatAddress2(siteArea.address)}
+                </Text>
+              </View>
+              <View style={style.connectorContent}>
+                <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={siteArea.connectorStats} />
+              </View>
+            </View>
+            <View style={style.rightContainer}>
               <Icon
                 style={siteArea.connectorStats.totalConnectors > 0 ? [style.icon, style.arrowIcon] : style.iconHidden}
                 type="MaterialIcons"
                 name="navigate-next"
               />
             </View>
-            <View style={style.subHeaderContent}>
-              <Text style={style.address} ellipsizeMode={'tail'} numberOfLines={1}>
-                {Utils.formatAddress(siteArea.address)}
-              </Text>
-              {siteArea.distanceMeters > 0 && <Text>{Utils.formatDistance(siteArea.distanceMeters)}</Text>}
-            </View>
-            <View style={style.connectorContent}>
-              <ConnectorStatusesContainerComponent navigation={navigation} connectorStats={siteArea.connectorStats} />
-            </View>
-          </View>
-        </Animatable.View>
-      </TouchableOpacity>
+          </TouchableOpacity>
+        </CardItem>
+      </Card>
     );
   }
 }

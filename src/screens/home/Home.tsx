@@ -298,7 +298,7 @@ export default class Home extends BaseScreen<Props, State> {
                     button={true}
                     onPress={() => navigation.navigate('PaymentMethodsNavigator', { key: `${Utils.randomNumber()}` })}>
                     <Left>
-                      <Icon style={cardStyle.cardIcon} type="FontAwesome5" name="credit-card" />
+                      <Icon style={cardStyle.cardIcon} type="MaterialIcons" name="payment" />
                       <Body>
                         <Text style={cardStyle.cardText}>{I18n.t('home.paymentMethods')}</Text>
                         <Text note={true} style={cardStyle.cardNote}>
@@ -316,7 +316,7 @@ export default class Home extends BaseScreen<Props, State> {
                     button={true}
                     onPress={() => navigation.navigate('InvoicesNavigator', { key: `${Utils.randomNumber()}` })}>
                     <Left>
-                      <Icon style={cardStyle.cardIcon} type="FontAwesome5" name="file-invoice" />
+                      <Icon style={cardStyle.cardIcon} type="MaterialIcons" name="receipt" />
                       <Body>
                         <Text style={cardStyle.cardText}>{I18n.t('home.invoices')}</Text>
                         <Text note={true} style={cardStyle.cardNote}>

@@ -3,22 +3,22 @@ import I18n from 'i18n-js';
 import { Container, Icon, Spinner } from 'native-base';
 import React from 'react';
 import { ActivityIndicator, Alert, TouchableOpacity, View } from 'react-native';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { scale } from 'react-native-size-matters';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
 import PaymentMethodComponent from '../../components/payment-method/PaymentMethodComponent';
 import I18nManager from '../../I18n/I18nManager';
+import BaseScreen from '../../screens/base-screen/BaseScreen';
 import BaseProps from '../../types/BaseProps';
 import { BillingPaymentMethod } from '../../types/Billing';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
 import Constants from '../../utils/Constants';
-import Utils from '../../utils/Utils';
-import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
-import computeStyleSheet from './PaymentMethodsStyle';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Message from '../../utils/Message';
-import { scale } from 'react-native-size-matters';
+import Utils from '../../utils/Utils';
+import computeStyleSheet from './PaymentMethodsStyle';
 
 export interface Props extends BaseProps {}
 
@@ -32,7 +32,7 @@ interface State {
   deleteOperationsStates?: Record<string, boolean>;
 }
 
-export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> {
+export default class PaymentMethods extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
 
@@ -47,7 +47,6 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
       loading: true,
       deleteOperationsStates: {}
     };
-    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   public setState = (
@@ -57,17 +56,24 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
     super.setState(state, callback);
   };
 
+  public async componentDidMount(): Promise<void> {
+    await super.componentDidMount();
+  }
+
+  public async componentDidFocus() {
+    await this.refresh();
+  }
+
   public async getPaymentMethods(skip: number, limit: number): Promise<DataResult<BillingPaymentMethod>> {
     try {
-      const currentUserID = this.centralServerProvider?.getUserInfo()?.id;
-      const paymentMethods = await this.centralServerProvider.getPaymentMethods({ currentUserID }, { skip, limit });
-      if (paymentMethods.count === -1) {
-        // Request nbr of records
-        const paymentMethodsNbrRecordsOnly = await this.centralServerProvider.getPaymentMethods(
-          { currentUserID },
-          Constants.ONLY_RECORD_COUNT
-        );
-        // Set
+      // TODO: Remove the ID, the new auth will take care of returning the payments the user is allowed to see
+      const params = {
+        currentUserID: this.centralServerProvider?.getUserInfo()?.id
+      };
+      const paymentMethods = await this.centralServerProvider.getPaymentMethods(params, { skip, limit });
+      // Get total number of records
+      if ((paymentMethods.count === -1) && Utils.isEmptyArray(this.state.paymentMethods)) {
+        const paymentMethodsNbrRecordsOnly = await this.centralServerProvider.getPaymentMethods(params, Constants.ONLY_RECORD_COUNT);
         paymentMethods.count = paymentMethodsNbrRecordsOnly.count;
       }
       return paymentMethods;
@@ -142,9 +148,11 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
           }}
           rightActionIcon={'menu'}
         />
-        <TouchableOpacity onPress={() => navigation.navigate('StripePaymentMethodCreationForm')} style={style.addPMContainer}>
-          <Icon type={'MaterialIcons'} name={'add'} style={style.icon} />
-        </TouchableOpacity>
+        <View style={style.toolBar}>
+          <TouchableOpacity onPress={() => navigation.navigate('StripePaymentMethodCreationForm')} style={style.addPaymentMethodButton}>
+            <Icon type={'MaterialIcons'} name={'add'} style={style.icon} />
+          </TouchableOpacity>
+        </View>
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (
@@ -217,9 +225,12 @@ export default class PaymentMethods extends BaseAutoRefreshScreen<Props, State> 
     const userID = this.centralServerProvider?.getUserInfo()?.id;
     this.setState({ deleteOperationsStates: { ...this.state.deleteOperationsStates, [paymentMethodID]: true } });
     try {
-      // TODO check res data success (waiting for server change)
-      await this.centralServerProvider.deletePaymentMethod(userID, paymentMethodID);
-      Message.showSuccess(I18n.t('paymentMethods.deletePaymentMethodSuccess'));
+      const res = await this.centralServerProvider.deletePaymentMethod(userID, paymentMethodID);
+      if (res?.succeeded) {
+        Message.showSuccess(I18n.t('paymentMethods.deletePaymentMethodSuccess'));
+      } else {
+        Message.showError(I18n.t('paymentMethods.paymentMethodUnexpectedError'));
+      }
     } catch (error) {
       // Check if HTTP?
       Utils.handleHttpUnexpectedError(

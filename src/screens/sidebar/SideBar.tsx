@@ -7,13 +7,13 @@ import { Image, ImageStyle, TouchableOpacity } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 import defaultTenantLogo from '../../../assets/logo-low.png';
+import UserAvatar from '../../components/user/avatar/UserAvatar';
 import BaseProps from '../../types/BaseProps';
+import User from '../../types/User';
+import UserToken from '../../types/UserToken';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './SideBarStyles';
-import UserAvatar from '../../components/user/avatar/UserAvatar';
-import UserToken from '../../types/UserToken';
-import User from '../../types/User';
 
 export interface Props extends BaseProps {}
 
@@ -100,16 +100,16 @@ export default class SideBar extends BaseScreen<Props, State> {
     const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
       <Container style={style.container}>
+        <Header style={style.header}>
+          <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logo as ImageStyle} />
+          <Text numberOfLines={1} style={style.tenantName}>
+            {tenantName}
+          </Text>
+          {/* <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`} (Beta)</Text> */}
+          <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
+          {!Utils.isNullOrEmptyString(updateDate) && <Text style={style.versionDate}>{updateDate}</Text>}
+        </Header>
         <Content style={style.drawerContent}>
-          <Header style={style.header}>
-            <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logo as ImageStyle} />
-            <Text numberOfLines={1} style={style.tenantName}>
-              {tenantName}
-            </Text>
-            {/* <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`} (Beta)</Text> */}
-            <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
-            {!Utils.isNullOrEmptyString(updateDate) && <Text style={style.versionDate}>{updateDate}</Text>}
-          </Header>
           <View style={style.linkContainer}>
             <ListItem style={style.links} button iconLeft onPress={() => this.navigateTo('HomeNavigator', 'Home')}>
               <Icon style={style.linkIcon} type="MaterialIcons" name="home" />
@@ -169,7 +169,7 @@ export default class SideBar extends BaseScreen<Props, State> {
                 button={true}
                 iconLeft={true}
                 onPress={() => this.navigateTo('PaymentMethodsNavigator', 'PaymentMethods')}>
-                <Icon style={style.linkIcon} type="FontAwesome5" name="credit-card" />
+                <Icon style={style.linkIcon} type="MaterialIcons" name="payment" />
                 <Text style={style.linkText}>{I18n.t('sidebar.paymentMethods')}</Text>
               </ListItem>
             )}
@@ -179,7 +179,7 @@ export default class SideBar extends BaseScreen<Props, State> {
                 button={true}
                 iconLeft={true}
                 onPress={() => this.navigateTo('InvoicesNavigator', 'Invoices')}>
-                <Icon style={style.linkIcon} type="FontAwesome5" name="file-invoice" />
+                <Icon style={style.linkIcon} type="MaterialIcons" name="receipt" />
                 <Text style={style.linkText}>{I18n.t('sidebar.invoices')}</Text>
               </ListItem>
             )}
@@ -213,9 +213,9 @@ export default class SideBar extends BaseScreen<Props, State> {
                 </TouchableOpacity>
               </View>
               <View style={style.columnThumbnail}>
-                <TouchableOpacity style={style.buttonThumbnail} onPress={() => navigation.navigate('Profile')}>
+                <View style={style.buttonThumbnail}>
                   <UserAvatar user={user} navigation={this.props.navigation} />
-                </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>

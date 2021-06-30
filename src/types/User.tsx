@@ -3,6 +3,7 @@ import CreatedUpdatedProps from './CreatedUpdatedProps';
 import ListItem from './ListItem';
 import Car from './Car';
 import Tag from './Tag';
+import { StartTransactionErrorCode } from './Transaction';
 
 export default interface User extends CreatedUpdatedProps, ListItem {
   email: string;
@@ -70,6 +71,7 @@ export enum UserRole {
 }
 
 export interface UserDefaultTagCar {
-  car?: Car;
-  tag?: Tag;
+  car: Car;
+  tag: Tag;
+  errorCodes?: StartTransactionErrorCode[];
 }
