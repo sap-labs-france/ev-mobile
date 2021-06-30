@@ -18,11 +18,31 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginBottom: '10@s',
       backgroundColor: commonColor.buttonBg
     },
-    buttonText: {
+    buttonDisabled: {
+      opacity: 0.4
+    },
+    buttonEnabled: {
+      opacity: 1
+    },
+    selectionContainer: {
+      flexDirection: 'row',
       width: '100%',
-      textAlign: 'center',
+      alignItems: 'center'
+    },
+    iconContainer: {
+      borderRightWidth: 0.5,
+      borderRightColor: commonColor.textColor,
+      paddingHorizontal: '5@s'
+    },
+    inputIcon: {
+      fontSize: '25@s'
+    },
+    buttonText: {
+      textAlign: 'left',
       fontSize: '15@s',
-      color: commonColor.textColor
+      color: commonColor.textColor,
+      flex: 1,
+      paddingLeft: '5@s'
     },
     modal: {
       backgroundColor: commonColor.containerBgColor,
@@ -64,12 +84,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignSelf: 'center',
       width: '40%',
       backgroundColor: commonColor.buttonBg
-    },
-    buttonDisabled: {
-      opacity: 0.4
-    },
-    buttonEnabled: {
-      opacity: 1
     }
   });
   const portraitStyles = {};

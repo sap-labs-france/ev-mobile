@@ -15,6 +15,7 @@ export interface Props<T> extends BaseProps {
   selectionMode: ItemSelectionMode;
   onItemsSelected: (selectedItems: T[]) => void;
   defaultItemLoading?: boolean;
+  renderIcon?: (style: any) => React.ReactElement;
 }
 interface State<T> {
   isVisible: boolean;
@@ -41,7 +42,7 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
   public render() {
     const style = computeStyleSheet();
     const commonColors = Utils.getCurrentCommonColor();
-    const { buildItemName, selectionMode, defaultItemLoading, defaultItem } = this.props;
+    const { buildItemName, selectionMode, defaultItemLoading, defaultItem, renderIcon } = this.props;
     const { isVisible, selectedItemsCount, selectedItems } = this.state;
     const itemsList = React.Children.only(this.props.children);
     return (
@@ -54,10 +55,13 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
           {defaultItemLoading ? (
             <Spinner color={commonColors.textColor} />
           ) : (
-            <Text style={style.buttonText} uppercase={false}>
-              {buildItemName(Utils.isEmptyArray(selectedItems) ? defaultItem : selectedItems[0])}{' '}
-              {selectedItems.length > 1 && `(+${selectedItems.length - 1})`}
-            </Text>
+            <View style={style.selectionContainer}>
+              {renderIcon && <View style={style.iconContainer}>{renderIcon(style.inputIcon)}</View>}
+              <Text ellipsizeMode={'tail'} style={style.buttonText} uppercase={false}>
+                {buildItemName(Utils.isEmptyArray(selectedItems) ? defaultItem : selectedItems[0])}{' '}
+                {selectedItems.length > 1 && `(+${selectedItems.length - 1})`}
+              </Text>
+            </View>
           )}
         </Button>
         <Modal

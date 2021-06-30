@@ -819,6 +819,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return (
       <View style={style.rowContainer}>
         <ModalSelect<User>
+          renderIcon={(iconStyle: any) => <Icon name={'person'} type={'MaterialIcons'} style={iconStyle} />}
           defaultItem={selectedUser}
           onItemsSelected={this.onUserSelected.bind(this)}
           buildItemName={Utils.buildUserName.bind(this)}
@@ -836,6 +837,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return (
       <View style={style.rowContainer}>
         <ModalSelect<Car>
+          renderIcon={(iconStyle: any) => <Icon name={'car-electric'} type={'MaterialCommunityIcons'} style={iconStyle} />}
           defaultItem={userDefaultTagCar?.car}
           defaultItemLoading={tagCarLoading}
           onItemsSelected={(selectedCars: Car[]) => this.setState({ selectedCar: selectedCars?.[0] })}
@@ -854,6 +856,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return (
       <View style={style.rowContainer}>
         <ModalSelect<Tag>
+          renderIcon={(iconStyle: any) => <Icon name={'credit-card'} type={'MaterialCommunityIcons'} style={iconStyle} />}
           defaultItem={userDefaultTagCar?.tag}
           defaultItemLoading={tagCarLoading}
           onItemsSelected={(selectedTags: Tag[]) => this.setState({ selectedTag: selectedTags?.[0] })}
