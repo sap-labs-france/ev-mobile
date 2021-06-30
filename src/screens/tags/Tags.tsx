@@ -8,21 +8,19 @@ import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import TagComponent from '../../components/tag/TagComponent';
-import I18nManager from '../../I18n/I18nManager';
-import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
 import Tag from '../../types/Tag';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from '../transactions/TransactionsStyles';
-import SelectableList from '../base-screen/SelectableList';
+import SelectableList, { SelectableProps, SelectableState } from '../base-screen/SelectableList';
 
-export interface Props extends BaseProps {
+export interface Props extends SelectableProps<Tag> {
   userIDs?: string[];
 }
 
-interface State {
+interface State extends SelectableState<Tag>{
   tags?: Tag[];
   skip?: number;
   limit?: number;
@@ -38,7 +36,7 @@ export default class Tags extends SelectableList<Tag> {
 
   public constructor(props: Props) {
     super(props);
-    this.title = (Utils.getParamFromNavigation(this.props.route, 'title', null) as string) ?? I18n.t('tags.tags');
+    this.title = I18n.t('tags.tags');
     this.selectMultipleTitle = 'tags.selectTags';
     this.selectSingleTitle = 'tags.selectTag';
     this.state = {
@@ -47,7 +45,8 @@ export default class Tags extends SelectableList<Tag> {
       limit: Constants.PAGING_SIZE,
       count: 0,
       refreshing: false,
-      loading: true
+      loading: true,
+      selectedItems: []
     };
   }
 
@@ -137,20 +136,18 @@ export default class Tags extends SelectableList<Tag> {
   public render = () => {
     const style = computeStyleSheet();
     const { tags, count, skip, limit, refreshing, loading } = this.state;
-    const { navigation } = this.props;
+    const { navigation, isModal, selectionMode } = this.props;
     return (
       <Container style={style.container}>
         <HeaderComponent
-          title={i18n.t('sidebar.badges')}
-          subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${i18n.t('tags.tags')}` : null}
+          title={this.buildHeaderTitle()}
+          subTitle={this.buildHeaderSubtitle()}
           navigation={this.props.navigation}
-          leftAction={this.onBack}
-          leftActionIcon={'navigate-before'}
-          rightAction={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-            return true;
-          }}
-          rightActionIcon={'menu'}
+          leftAction={isModal ? null : this.onBack}
+          displayTenantLogo={false}
+          leftActionIcon={isModal ? null : 'navigate-before'}
+          rightAction={isModal ? null : () => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
+          rightActionIcon={isModal ? null : 'menu'}
         />
         <View style={style.searchBar}>
           <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
@@ -162,6 +159,7 @@ export default class Tags extends SelectableList<Tag> {
             <ItemsList<Tag>
               data={tags}
               navigation={navigation}
+              selectionMode={selectionMode}
               count={count}
               limit={limit}
               skip={skip}

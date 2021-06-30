@@ -55,7 +55,8 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
             <Spinner color={commonColors.textColor} />
           ) : (
             <Text style={style.buttonText} uppercase={false}>
-              {buildItemName(Utils.isEmptyArray(selectedItems) ? defaultItem : selectedItems[0])} {selectedItems.length > 1 && `(+${selectedItems.length - 1})`}
+              {buildItemName(Utils.isEmptyArray(selectedItems) ? defaultItem : selectedItems[0])}{' '}
+              {selectedItems.length > 1 && `(+${selectedItems.length - 1})`}
             </Text>
           )}
         </Button>

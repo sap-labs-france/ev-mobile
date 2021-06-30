@@ -54,8 +54,7 @@ interface State {
   selectedUser?: User;
   selectedCar?: Car;
   selectedTag?: Tag;
-  carLoading?: boolean;
-  tagLoading?: boolean;
+  tagCarLoading?: boolean;
 }
 
 export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
@@ -87,8 +86,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       selectedUser: null,
       selectedCar: null,
       selectedTag: null,
-      carLoading: false,
-      tagLoading: false
+      tagCarLoading: false
     };
   }
 
@@ -106,8 +104,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       this.startTransactionConfirm();
     }
     this.currentUser = this.centralServerProvider.getUserInfo();
-    await this.loadSelectedUserDefaultTagAndCar();
     await this.refresh();
+    await this.loadSelectedUserDefaultTagAndCar();
     if (this.currentUser) {
       this.setState({
         selectedUser: {
@@ -834,16 +832,16 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private renderCarSelection(style: any) {
     const { navigation } = this.props;
-    const { userDefaultTagCar, carLoading, selectedUser } = this.state;
+    const { userDefaultTagCar, tagCarLoading, selectedUser } = this.state;
     return (
       <View style={style.rowContainer}>
         <ModalSelect<Car>
           defaultItem={userDefaultTagCar?.car}
-          defaultItemLoading={carLoading}
+          defaultItemLoading={tagCarLoading}
           onItemsSelected={(selectedCars: Car[]) => this.setState({ selectedCar: selectedCars?.[0] })}
           buildItemName={(car: Car) => Utils.buildCarCatalogName(car?.carCatalog)}
           navigation={navigation}
-          selectionMode={ItemSelectionMode.MULTI}>
+          selectionMode={ItemSelectionMode.SINGLE}>
           <Cars userIDs={[selectedUser?.id as string]} navigation={navigation} />
         </ModalSelect>
       </View>
@@ -852,16 +850,16 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private renderTagSelection(style: any) {
     const { navigation } = this.props;
-    const { userDefaultTagCar, tagLoading, selectedUser } = this.state;
+    const { userDefaultTagCar, tagCarLoading, selectedUser } = this.state;
     return (
       <View style={style.rowContainer}>
         <ModalSelect<Tag>
           defaultItem={userDefaultTagCar?.tag}
-          defaultItemLoading={tagLoading}
+          defaultItemLoading={tagCarLoading}
           onItemsSelected={(selectedTags: Tag[]) => this.setState({ selectedTag: selectedTags?.[0] })}
-          buildItemName={(tag: Tag) => tag?.description}
+          buildItemName={(tag: Tag) => tag?.description ?? '-'}
           navigation={navigation}
-          selectionMode={ItemSelectionMode.MULTI}>
+          selectionMode={ItemSelectionMode.SINGLE}>
           <Tags userIDs={[selectedUser?.id as string]} navigation={navigation} />
         </ModalSelect>
       </View>
@@ -876,8 +874,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   }
 
   private async loadSelectedUserDefaultTagAndCar(): Promise<void> {
-    this.setState({ carLoading: true });
+    this.setState({ tagCarLoading: true });
     const userDefaultTagCar = await this.getUserDefaultTagAndCar();
-    this.setState({ userDefaultTagCar, selectedCar: userDefaultTagCar?.car, selectedTag: userDefaultTagCar?.tag, carLoading: false });
+    this.setState({ userDefaultTagCar, selectedCar: userDefaultTagCar?.car, selectedTag: userDefaultTagCar?.tag, tagCarLoading: false });
   }
 }

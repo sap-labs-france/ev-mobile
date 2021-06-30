@@ -366,7 +366,9 @@
     "noTags": "No badges",
     "tags": "Badge(s)",
     "active": "Active",
-    "inactive": "Inactive"
+    "inactive": "Inactive",
+    "selectTag": "Select Tag",
+    "selectTags": "Select Tags"
   },
   "details": {
     "connector": "Connector",
