@@ -52,17 +52,17 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
           block={true}
           style={[style.button, !defaultItem ? style.buttonDisabled : style.buttonEnabled]}
           onPress={() => this.setState({ isVisible: true })}>
-          {defaultItemLoading ? (
-            <Spinner color={commonColors.textColor} />
-          ) : (
-            <View style={style.selectionContainer}>
-              {renderIcon && <View style={style.iconContainer}>{renderIcon(style.inputIcon)}</View>}
+          <View style={style.selectionContainer}>
+            {renderIcon && <View style={style.iconContainer}>{renderIcon(style.inputIcon)}</View>}
+            {defaultItemLoading ? (
+              <Spinner style={style.spinner} color={commonColors.textColor} />
+            ) : (
               <Text ellipsizeMode={'tail'} style={style.buttonText} uppercase={false}>
                 {buildItemName(Utils.isEmptyArray(selectedItems) ? defaultItem : selectedItems[0])}{' '}
                 {selectedItems.length > 1 && `(+${selectedItems.length - 1})`}
               </Text>
-            </View>
-          )}
+            )}
+          </View>
         </Button>
         <Modal
           propagateSwipe={true}
@@ -126,12 +126,12 @@ export default class ModalSelect<T extends ListItem> extends React.Component<Pro
   }
 
   private onItemSelected(selectedItems: T[]): void {
-  const { selectionMode, onItemsSelected } = this.props;
+    const { selectionMode, onItemsSelected } = this.props;
     if (selectionMode === ItemSelectionMode.MULTI) {
       // We only need the items count to handle the activation of the 'validate' button
       this.setState({ selectedItemsCount: selectedItems.length });
     } else if (selectionMode === ItemSelectionMode.SINGLE && !Utils.isEmptyArray(selectedItems)) {
       this.setState({ selectedItems, isVisible: false }, () => onItemsSelected(selectedItems));
     }
-}
+  }
 }

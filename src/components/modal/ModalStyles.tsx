@@ -37,6 +37,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     inputIcon: {
       fontSize: '25@s'
     },
+    spinner: {
+      alignSelf: 'flex-start',
+      paddingLeft: '7@s'
+    },
     buttonText: {
       textAlign: 'left',
       fontSize: '15@s',
