@@ -1,15 +1,14 @@
 import { DrawerActions } from '@react-navigation/native';
-import i18n from 'i18n-js';
+import i18n, { default as I18n } from 'i18n-js';
 import { Container, Spinner } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ItemsList, { ItemsSeparatorType } from '../../components/list/ItemsList';
+import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import TagComponent from '../../components/tag/TagComponent';
 import I18nManager from '../../I18n/I18nManager';
-import BaseScreen from '../../screens/base-screen/BaseScreen';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
@@ -17,8 +16,11 @@ import Tag from '../../types/Tag';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
 import computeStyleSheet from '../transactions/TransactionsStyles';
+import SelectableList from '../base-screen/SelectableList';
 
-export interface Props extends BaseProps {}
+export interface Props extends BaseProps {
+  userIDs?: string[];
+}
 
 interface State {
   tags?: Tag[];
@@ -29,13 +31,16 @@ interface State {
   loading?: boolean;
 }
 
-export default class Tags extends BaseScreen<Props, State> {
+export default class Tags extends SelectableList<Tag> {
   public state: State;
   public props: Props;
   private searchText: string;
 
   public constructor(props: Props) {
     super(props);
+    this.title = (Utils.getParamFromNavigation(this.props.route, 'title', null) as string) ?? I18n.t('tags.tags');
+    this.selectMultipleTitle = 'tags.selectTags';
+    this.selectSingleTitle = 'tags.selectTag';
     this.state = {
       tags: [],
       skip: 0,
@@ -62,7 +67,8 @@ export default class Tags extends BaseScreen<Props, State> {
     try {
       const params = {
         Search: searchText,
-        WithUser: true
+        WithUser: true,
+        UserID: this.props.userIDs?.join('|')
       };
       // Get the Tags
       const tags = await this.centralServerProvider.getTags(params, { skip, limit }, ['-createdOn']);

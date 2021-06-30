@@ -25,6 +25,8 @@ import ModalSelect from '../../../components/modal/ModalSelect';
 import Users from '../../users/list/Users';
 import Car from '../../../types/Car';
 import Cars from '../../cars/Cars';
+import Tags from '../../tags/Tags';
+import Tag from '../../../types/Tag';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -50,7 +52,10 @@ interface State {
   refreshing?: boolean;
   userDefaultTagCar?: UserDefaultTagCar;
   selectedUser?: User;
+  selectedCar?: Car;
+  selectedTag?: Tag;
   carLoading?: boolean;
+  tagLoading?: boolean;
 }
 
 export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
@@ -80,7 +85,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       isPricingActive: false,
       refreshing: false,
       selectedUser: null,
-      carLoading: false
+      selectedCar: null,
+      selectedTag: null,
+      carLoading: false,
+      tagLoading: false
     };
   }
 
@@ -98,6 +106,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       this.startTransactionConfirm();
     }
     this.currentUser = this.centralServerProvider.getUserInfo();
+    await this.loadSelectedUserDefaultTagAndCar();
     await this.refresh();
     if (this.currentUser) {
       this.setState({
@@ -739,6 +748,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             <View style={style.rowContainer}>{this.renderConnectorStatus(style)}</View>
             {isAdmin && this.renderUserSelection(style)}
             {this.renderCarSelection(style)}
+            {this.renderTagSelection(style)}
           </ScrollView>
         ) : (
           <ScrollView
@@ -840,13 +850,34 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     );
   }
 
+  private renderTagSelection(style: any) {
+    const { navigation } = this.props;
+    const { userDefaultTagCar, tagLoading, selectedUser } = this.state;
+    return (
+      <View style={style.rowContainer}>
+        <ModalSelect<Tag>
+          defaultItem={userDefaultTagCar?.tag}
+          defaultItemLoading={tagLoading}
+          onItemsSelected={(selectedTags: Tag[]) => this.setState({ selectedTag: selectedTags?.[0] })}
+          buildItemName={(tag: Tag) => tag?.description}
+          navigation={navigation}
+          selectionMode={ItemSelectionMode.MULTI}>
+          <Tags userIDs={[selectedUser?.id as string]} navigation={navigation} />
+        </ModalSelect>
+      </View>
+    );
+  }
+
   private onUserSelected(selectedUsers: User[]): void {
-    this.setState({ selectedUser: selectedUsers?.[0] }, this.loadSelectedUserDefaultTagAndCar.bind(this));
+    const selectedUser = selectedUsers?.[0];
+    if (selectedUser.id !== this.state.selectedUser?.id) {
+      this.setState({ selectedUser }, this.loadSelectedUserDefaultTagAndCar.bind(this));
+    }
   }
 
   private async loadSelectedUserDefaultTagAndCar(): Promise<void> {
     this.setState({ carLoading: true });
     const userDefaultTagCar = await this.getUserDefaultTagAndCar();
-    this.setState({ userDefaultTagCar, carLoading: false });
+    this.setState({ userDefaultTagCar, selectedCar: userDefaultTagCar?.car, selectedTag: userDefaultTagCar?.tag, carLoading: false });
   }
 }

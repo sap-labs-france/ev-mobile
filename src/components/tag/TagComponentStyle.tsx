@@ -24,6 +24,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       elevation: 11,
       marginBottom: '8@s'
     },
+    selected: {
+      backgroundColor: commonColor.listItemSelected
+    },
+    unselected: {
+      backgroundColor: commonColor.listHeaderBgColor
+    },
     tagContent: {
       width: '100%',
       height: '100%',
