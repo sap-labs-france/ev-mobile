@@ -817,7 +817,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { navigation } = this.props;
     const { selectedUser } = this.state;
     return (
-      <View style={style.rowContainer}>
+      <View style={style.inputContainer}>
         <ModalSelect<User>
           renderIcon={(iconStyle: any) => <Icon name={'person'} type={'MaterialIcons'} style={iconStyle} />}
           defaultItem={selectedUser}
@@ -835,7 +835,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { navigation } = this.props;
     const { userDefaultTagCar, tagCarLoading, selectedUser } = this.state;
     return (
-      <View style={style.rowContainer}>
+      <View style={style.inputContainer}>
         <ModalSelect<Car>
           renderIcon={(iconStyle: any) => <Icon name={'car-electric'} type={'MaterialCommunityIcons'} style={iconStyle} />}
           defaultItem={userDefaultTagCar?.car}
@@ -854,7 +854,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { navigation } = this.props;
     const { userDefaultTagCar, tagCarLoading, selectedUser } = this.state;
     return (
-      <View style={style.rowContainer}>
+      <View style={style.inputContainer}>
         <ModalSelect<Tag>
           renderIcon={(iconStyle: any) => <Icon name={'credit-card'} type={'MaterialCommunityIcons'} style={iconStyle} />}
           defaultItem={userDefaultTagCar?.tag}

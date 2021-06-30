@@ -208,6 +208,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     errorMessage: {
       color: commonColor.brandDanger,
       textAlign: 'center'
+    },
+    inputContainer: {
+      marginBottom: '7@s'
     }
   });
   const portraitStyles = {};
