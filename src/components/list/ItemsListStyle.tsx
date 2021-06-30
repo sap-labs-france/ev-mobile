@@ -9,23 +9,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
-      width: '100%'
+      elevation: 11
     },
     rowContainer: {
       flexDirection: 'row',
       alignItems: 'center',
       width: '100%'
     },
-    checkbox: {
-      padding: 0,
-      marginRight: 0
-    },
     rowSeparator: {
       borderBottomColor: commonColor.listBorderColor,
       borderBottomWidth: 1
-    },
-    itemContainer: {
-      flex: 1
     }
   });
   const portraitStyles = {};

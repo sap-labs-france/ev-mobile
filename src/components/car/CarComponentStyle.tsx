@@ -14,7 +14,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '97%',
       alignSelf: 'center',
       borderColor: 'transparent',
-      backgroundColor: commonColor.listHeaderBgColor,
       shadowColor: commonColor.cardShadowColor,
       shadowOffset: {
         width: 0,
@@ -29,7 +28,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '100%',
       height: '100%',
       justifyContent: 'space-between',
-      backgroundColor: commonColor.listHeaderBgColor,
       flexDirection: 'column',
       margin: 0,
       flex: 1,
@@ -38,11 +36,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingBottom: 0,
       paddingRight: 0
     },
+    selected: {
+      backgroundColor: commonColor.listItemSelected
+    },
+    unselected: {
+      backgroundColor: commonColor.listHeaderBgColor
+    },
     header: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      backgroundColor: commonColor.listHeaderBgColor,
       padding: '5@s'
     },
     carNameContainer: {
@@ -113,7 +116,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'space-between',
-      width: '33%'
+      width: '33%',
+      paddingHorizontal: '2@s'
     },
     columnContainerBorderRight: {
       borderRightWidth: 0.3,
@@ -121,6 +125,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     iconContainer: {
       flexDirection: 'row',
+      width: '100%',
       justifyContent: 'center',
       alignItems: 'center'
     },

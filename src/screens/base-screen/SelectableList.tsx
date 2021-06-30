@@ -1,8 +1,8 @@
 import React from 'react';
 import BaseProps from '../../types/BaseProps';
-import BaseAutoRefreshScreen from './BaseAutoRefreshScreen';
 import ItemsList, { ItemSelectionMode } from '../../components/list/ItemsList';
 import ListItem from '../../types/ListItem';
+import BaseScreen from './BaseScreen';
 import { default as I18n } from 'i18n-js';
 import I18nManager from '../../I18n/I18nManager';
 
@@ -17,7 +17,7 @@ export interface SelectableState<T> {
   count: number;
 }
 
-export default class SelectableList<T extends ListItem> extends BaseAutoRefreshScreen<SelectableProps<T>, SelectableState<T>> {
+export default class SelectableList<T extends ListItem> extends BaseScreen<SelectableProps<T>, SelectableState<T>> {
   public static defaultProps = {
     selectionMode: ItemSelectionMode.NONE,
     isModal: false

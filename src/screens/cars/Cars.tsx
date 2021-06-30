@@ -148,7 +148,9 @@ export default class Cars extends SelectableList<Car> {
           rightAction={isModal ? null : () => { navigation.dispatch(DrawerActions.openDrawer()); return true; }}
           rightActionIcon={isModal ? null : 'menu'}
         />
-        <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+        <View style={style.searchBar}>
+          <SimpleSearchComponent onChange={async (searchText) => this.search(searchText)} navigation={navigation} />
+        </View>
         {loading ? (
           <Spinner style={style.spinner} color="grey" />
         ) : (

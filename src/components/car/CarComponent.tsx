@@ -38,7 +38,7 @@ export default class CarComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { car, navigation, navigateToUsers } = this.props;
+    const { car, navigation, navigateToUsers, selected } = this.props;
     const carUsers = car?.carUsers ?? [];
     const defaultCarUser = carUsers.find((carUser) => carUser.default);
     const defaultCarUserName = Utils.buildUserName(defaultCarUser?.user);
@@ -47,7 +47,7 @@ export default class CarComponent extends React.Component<Props, State> {
     const userIDs = carUsers.map((userCar: UserCar) => userCar?.user?.id).filter((userID) => userID);
     return (
       <Card style={style.container}>
-        <CardItem style={style.carContent}>
+        <CardItem style={[style.carContent, selected ? style.selected : style.unselected]}>
           <View style={style.header}>
             <View style={style.carNameContainer}>
               <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.headerText, style.carName]}>
@@ -90,7 +90,7 @@ export default class CarComponent extends React.Component<Props, State> {
               <View style={style.powerDetailsContainer}>
                 <View style={[style.columnContainer, style.columnContainerBorderRight]}>
                   <Icon type="MaterialIcons" name="battery-full" style={style.icon} />
-                  <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>
+                  <Text adjustsFontSizeToFit={true} numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>
                     {car.carCatalog?.batteryCapacityFull} kWh
                   </Text>
                 </View>
@@ -100,7 +100,7 @@ export default class CarComponent extends React.Component<Props, State> {
                     <Icon style={style.currentTypeIcon} type="MaterialIcons" name="power-input" />
                   </View>
                   {car?.carCatalog?.fastChargePowerMax ? (
-                    <Text numberOfLines={1} style={style.text}>
+                    <Text adjustsFontSizeToFit={true} numberOfLines={1} style={style.text}>
                       {car?.carCatalog?.fastChargePowerMax} kW
                     </Text>
                   ) : (
@@ -112,7 +112,7 @@ export default class CarComponent extends React.Component<Props, State> {
                     <Icon style={style.icon} type="MaterialIcons" name="bolt" />
                     <Icon style={style.currentTypeIcon} type="MaterialCommunityIcons" name="sine-wave" />
                   </View>
-                  <Text numberOfLines={1} style={style.text}>
+                  <Text adjustsFontSizeToFit={true} numberOfLines={1} style={style.text}>
                     {car?.converter?.powerWatts} kW ({car?.converter?.numberOfPhases})
                   </Text>
                 </View>
