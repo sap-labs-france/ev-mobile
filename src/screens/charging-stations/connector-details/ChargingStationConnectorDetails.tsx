@@ -810,7 +810,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           onItemsSelected={(selectedUsers: User[]) => this.setState({ selectedUser: selectedUsers?.[0] })}
           buildItemName={Utils.buildUserName}
           navigation={navigation}
-          selectionMode={ItemSelectionMode.MULTI}>
+          selectionMode={ItemSelectionMode.SINGLE}>
           <Users navigation={navigation} />
         </ModalSelect>
       </View>
