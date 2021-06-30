@@ -62,7 +62,7 @@ export default class Users extends SelectableList<User> {
     await this.refresh();
   }
 
-  public async getUsers(searchText: string, skip: number, limit: number, onlyCount: boolean = false): Promise<DataResult<User>> {
+  public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
     try {
       const params = {
         Search: searchText,
