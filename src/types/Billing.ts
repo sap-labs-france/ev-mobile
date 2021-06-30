@@ -1,4 +1,5 @@
 import ListItem from './ListItem';
+import User from './User';
 
 export interface BillingPaymentMethod extends ListItem {
   brand: string;
@@ -30,6 +31,7 @@ export interface BillingInvoice extends ListItem {
   createdOn?: Date;
   invoiceID: string;
   userID?: string;
+  user?: User;
   // eslint-disable-next-line id-blacklist
   number: string;
   status: BillingInvoiceStatus;
