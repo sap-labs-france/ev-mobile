@@ -10,7 +10,7 @@ export default {
   disabled: palette.disabled,
   backgroundHeader: palette.light,
   listBackgroundHeader: palette.disabled,
-  listItemSelected: '#a9a9a9',
+  listItemSelected: '#BFBFBF',
   background: palette.light,
   borderColor: palette.dark,
   textColor: palette.primaryDark,

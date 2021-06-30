@@ -11,6 +11,7 @@ export default {
   backgroundHeader: palette.dark,
   listBackgroundHeader: palette.darkLight,
   listItemSelected: '#1E1E1E',
+  cardShadowColor: '#5c3074',
   background: palette.dark,
   borderColor: palette.light,
   textColor: palette.light,
