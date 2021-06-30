@@ -42,7 +42,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '15@s',
       color: commonColor.textColor,
       flex: 1,
-      paddingLeft: '5@s'
+      paddingLeft: '7@s'
     },
     modal: {
       backgroundColor: commonColor.containerBgColor,
