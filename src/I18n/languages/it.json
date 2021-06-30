@@ -367,8 +367,8 @@
     "tags": "Badge(s)",
     "active": "Active",
     "inactive": "Inactive",
-    "selectTag": "Select Tag",
-    "selectTags": "Select Tags"
+    "selectTag": "Select Badge",
+    "selectTags": "Select Badges"
   },
   "details": {
     "connector": "Presa",
