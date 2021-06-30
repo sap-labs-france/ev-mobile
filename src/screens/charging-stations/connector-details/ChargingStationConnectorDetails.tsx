@@ -50,7 +50,6 @@ interface State {
   refreshing?: boolean;
   userDefaultTagCar?: UserDefaultTagCar;
   selectedUser?: User;
-  selectedCar?: Car;
   carLoading?: boolean;
 }
 
@@ -81,7 +80,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       isPricingActive: false,
       refreshing: false,
       selectedUser: null,
-      selectedCar: null,
       carLoading: false
     };
   }
@@ -770,9 +768,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private async getUserDefaultTagAndCar(): Promise<UserDefaultTagCar> {
     try {
-      const currentUserId = this.currentUser?.id;
-      if (currentUserId) {
-        return this.centralServerProvider?.getUserDefaultTagCar(this.currentUser?.id);
+      const { selectedUser } = this.state;
+      if (selectedUser) {
+        return this.centralServerProvider?.getUserDefaultTagCar(selectedUser?.id as string);
       }
       return null;
     } catch (error) {
@@ -826,36 +824,20 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private renderCarSelection(style: any) {
     const { navigation } = this.props;
-    const { selectedCar, carLoading, selectedUser } = this.state;
+    const { userDefaultTagCar, carLoading, selectedUser } = this.state;
     return (
       <View style={style.rowContainer}>
         <ModalSelect<Car>
-          defaultItem={selectedCar}
+          defaultItem={userDefaultTagCar?.car}
           defaultItemLoading={carLoading}
           onItemsSelected={(selectedCars: Car[]) => this.setState({ selectedCar: selectedCars?.[0] })}
           buildItemName={(car: Car) => Utils.buildCarCatalogName(car?.carCatalog)}
           navigation={navigation}
-          selectionMode={ItemSelectionMode.SINGLE}>
+          selectionMode={ItemSelectionMode.MULTI}>
           <Cars userIDs={[selectedUser?.id as string]} navigation={navigation} />
         </ModalSelect>
       </View>
     );
-  }
-
-  private async getSelectedUserDefaultCarAndTag(): Promise<UserDefaultTagCar> {
-    try {
-      const { selectedUser } = this.state;
-      return await this.centralServerProvider?.getUserDefaultTagCar(selectedUser?.id as string);
-    } catch (error) {
-      await Utils.handleHttpUnexpectedError(
-        this.centralServerProvider,
-        error,
-        'invoices.invoiceUnexpectedError',
-        this.props.navigation,
-        this.refresh.bind(this)
-      );
-    }
-    return null;
   }
 
   private onUserSelected(selectedUsers: User[]): void {
@@ -864,7 +846,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private async loadSelectedUserDefaultTagAndCar(): Promise<void> {
     this.setState({ carLoading: true });
-    const selectedUserDefaultTagAndCar = await this.getSelectedUserDefaultCarAndTag();
-    this.setState({ selectedCar: selectedUserDefaultTagAndCar?.car, carLoading: false });
+    const userDefaultTagCar = await this.getUserDefaultTagAndCar();
+    this.setState({ userDefaultTagCar, carLoading: false });
   }
 }

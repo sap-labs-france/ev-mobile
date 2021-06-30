@@ -6,7 +6,7 @@ import { View } from 'react-native';
 
 import CarComponent from '../../components/car/CarComponent';
 import HeaderComponent from '../../components/header/HeaderComponent';
-import ItemsList, { ItemsSeparatorType } from '../../components/list/ItemsList';
+import ItemsList, { ItemSelectionMode } from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import Car from '../../types/Car';
 import { DataResult } from '../../types/DataResult';
@@ -161,8 +161,14 @@ export default class Cars extends SelectableList<Car> {
               skip={skip}
               onSelect={this.onItemsSelected.bind(this)}
               selectionMode={selectionMode}
-              itemsSeparator={ItemsSeparatorType.DEFAULT}
-              renderItem={(item: Car) => <CarComponent navigation={navigation} navigateToUsers={!isModal} car={item} />}
+              renderItem={(item: Car, selected: boolean) => (
+                <CarComponent
+                  navigateToUsers={!isModal && selectionMode === ItemSelectionMode.NONE}
+                  navigation={navigation}
+                  selected={selected}
+                  car={item}
+                />
+              )}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}
               onEndReached={this.onEndScroll}

@@ -10,17 +10,40 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   let commonStyles: any;
   commonStyles = ScaledSheet.create({
     container: {
+      flex: 1,
+      width: '97%',
+      alignSelf: 'center',
+      borderColor: 'transparent',
+      backgroundColor: commonColor.listHeaderBgColor,
+      shadowColor: commonColor.cardShadowColor,
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 3.62,
+      elevation: 11,
+      marginBottom: '8@s'
+    },
+    carContent: {
       width: '100%',
-      flexDirection: 'column'
+      height: '100%',
+      justifyContent: 'space-between',
+      backgroundColor: commonColor.listHeaderBgColor,
+      flexDirection: 'column',
+      margin: 0,
+      flex: 1,
+      paddingLeft: 0,
+      paddingTop: 0,
+      paddingBottom: 0,
+      paddingRight: 0
     },
     header: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
       backgroundColor: commonColor.listHeaderBgColor,
-      borderBottomColor: commonColor.listBorderColor,
-      padding: '5@s',
-      borderBottomWidth: 1
+      padding: '5@s'
     },
     carNameContainer: {
       width: '72%'
@@ -36,7 +59,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignSelf: 'flex-end'
     },
     carName: {
-      alignSelf: 'flex-start'
+      alignSelf: 'flex-start',
+      fontWeight: 'bold'
     },
     carContainer: {
       flexDirection: 'row',
@@ -90,6 +114,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       justifyContent: 'space-between',
       width: '33%'
+    },
+    columnContainerBorderRight: {
+      borderRightWidth: 0.3,
+      borderColor: commonColor.textColor
     },
     iconContainer: {
       flexDirection: 'row',
