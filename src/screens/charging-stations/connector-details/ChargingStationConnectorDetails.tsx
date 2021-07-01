@@ -105,15 +105,17 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
     this.currentUser = this.centralServerProvider.getUserInfo();
     await this.refresh();
-    await this.loadSelectedUserDefaultTagAndCar();
     if (this.currentUser) {
-      this.setState({
-        selectedUser: {
-          id: this.currentUser.id,
-          firstName: this.currentUser.firstName,
-          name: this.currentUser.name
-        }
-      });
+      this.setState(
+        {
+          selectedUser: {
+            id: this.currentUser.id,
+            firstName: this.currentUser.firstName,
+            name: this.currentUser.name
+          }
+        },
+        async () => this.loadSelectedUserDefaultTagAndCar()
+      );
     }
   }
 
@@ -293,6 +295,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     this.setState({ refreshing: true });
     // Refresh
     await this.refresh();
+    await this.loadSelectedUserDefaultTagAndCar();
     // Hide spinner
     this.setState({ refreshing: false });
   };
@@ -322,11 +325,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       // Disable the button
       this.setState({ buttonDisabled: true });
       // Start the Transaction
-      const status = await this.centralServerProvider.startTransaction(
-        chargingStation.id as string,
-        connector.connectorId,
-        userInfo.tagIDs[0]
-      );
+      const status = await this.centralServerProvider.startTransaction(chargingStation.id, connector.connectorId, userInfo.tagIDs[0]);
       // Check
       if (status && status.status === 'Accepted') {
         // Show message
@@ -372,7 +371,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       // Disable button
       this.setState({ buttonDisabled: true });
       // Stop the Transaction
-      const status = await this.centralServerProvider.stopTransaction(chargingStation.id as string, connector.currentTransactionID);
+      const status = await this.centralServerProvider.stopTransaction(chargingStation.id, connector.currentTransactionID);
       // Check
       if (status && status.status === 'Accepted') {
         Message.showSuccess(I18n.t('details.accepted'));
@@ -391,7 +390,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
   };
 
-  public getStartStopTransactionButtonStatus(connector: Connector, userDefaultTagCar: UserDefaultTagCar): { buttonDisabled?: boolean; startTransactionNbTrial?: number } {
+  public getStartStopTransactionButtonStatus(
+    connector: Connector,
+    userDefaultTagCar: UserDefaultTagCar
+  ): { buttonDisabled?: boolean; startTransactionNbTrial?: number } {
     const { startTransactionNbTrial } = this.state;
     // Check if error codes
     if (!Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
@@ -400,8 +402,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       };
     }
     // Check if the Start/Stop Button should stay disabled
-    if ((connector?.status === ChargePointStatus.AVAILABLE && (startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2)) ||
-        (connector?.status === ChargePointStatus.PREPARING && startTransactionNbTrial === 0)) {
+    if (
+      (connector?.status === ChargePointStatus.AVAILABLE && startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
+      (connector?.status === ChargePointStatus.PREPARING && startTransactionNbTrial === 0)
+    ) {
       // Button are set to available after the nbr of trials
       return {
         buttonDisabled: false
@@ -833,12 +837,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private renderCarSelection(style: any) {
     const { navigation } = this.props;
-    const { userDefaultTagCar, tagCarLoading, selectedUser } = this.state;
+    const { tagCarLoading, selectedUser, selectedCar } = this.state;
     return (
       <View style={style.inputContainer}>
         <ModalSelect<Car>
           renderIcon={(iconStyle: any) => <Icon name={'car-electric'} type={'MaterialCommunityIcons'} style={iconStyle} />}
-          defaultItem={userDefaultTagCar?.car}
+          defaultItem={selectedCar}
           defaultItemLoading={tagCarLoading}
           onItemsSelected={(selectedCars: Car[]) => this.setState({ selectedCar: selectedCars?.[0] })}
           buildItemName={(car: Car) => Utils.buildCarCatalogName(car?.carCatalog)}
@@ -852,12 +856,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private renderTagSelection(style: any) {
     const { navigation } = this.props;
-    const { userDefaultTagCar, tagCarLoading, selectedUser } = this.state;
+    const { tagCarLoading, selectedUser, selectedTag } = this.state;
     return (
       <View style={style.inputContainer}>
         <ModalSelect<Tag>
           renderIcon={(iconStyle: any) => <Icon name={'credit-card'} type={'MaterialCommunityIcons'} style={iconStyle} />}
-          defaultItem={userDefaultTagCar?.tag}
+          defaultItem={selectedTag}
           defaultItemLoading={tagCarLoading}
           onItemsSelected={(selectedTags: Tag[]) => this.setState({ selectedTag: selectedTags?.[0] })}
           buildItemName={(tag: Tag) => tag?.description ?? '-'}
@@ -879,6 +883,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   private async loadSelectedUserDefaultTagAndCar(): Promise<void> {
     this.setState({ tagCarLoading: true });
     const userDefaultTagCar = await this.getUserDefaultTagAndCar();
-    this.setState({ userDefaultTagCar, selectedCar: userDefaultTagCar?.car, selectedTag: userDefaultTagCar?.tag, tagCarLoading: false });
+    this.setState({ selectedCar: userDefaultTagCar?.car, selectedTag: userDefaultTagCar?.tag, tagCarLoading: false });
   }
 }

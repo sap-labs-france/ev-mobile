@@ -30,8 +30,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center'
     },
     iconContainer: {
-      borderRightWidth: 0.5,
-      borderRightColor: commonColor.textColor,
       paddingHorizontal: '5@s'
     },
     inputIcon: {
