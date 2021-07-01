@@ -273,8 +273,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public startTransactionConfirm = () => {
-    const { chargingStation } = this.state;
-    Alert.alert(I18n.t('details.startTransaction'), I18n.t('details.startTransactionMessage', { chargeBoxID: chargingStation.id }), [
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
+    Alert.alert(I18n.t('details.startTransaction'), I18n.t('details.startTransactionMessage', { chargeBoxID: chargingStationID }), [
       { text: I18n.t('general.yes'), onPress: async () => this.startTransaction() },
       { text: I18n.t('general.no') }
     ]);
