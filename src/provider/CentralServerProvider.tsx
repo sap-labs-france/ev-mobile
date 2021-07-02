@@ -969,7 +969,7 @@ export default class CentralServerProvider {
 
   private buildSorting(sortingParams: string[], queryParams: QueryParams): void {
     const sortFields = sortingParams.join(',');
-    if (!Utils.isEmptyArray(sortFields)) {
+    if (sortFields !== '') {
       queryParams.SortFields = sortFields;
     }
   }
