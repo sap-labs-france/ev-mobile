@@ -61,7 +61,7 @@ export default class Invoices extends BaseScreen<Props, State> {
       // Get the invoices
       const invoices = await this.centralServerProvider.getInvoices({}, { skip, limit }, ['-createdOn']);
       // Get total number of records
-      if (invoices.count === -1 && Utils.isEmptyArray(this.state.invoices)) {
+      if (invoices.count === -1) {
         const invoicesNbrRecordsOnly = await this.centralServerProvider.getInvoices({}, Constants.ONLY_RECORD_COUNT);
         invoices.count = invoicesNbrRecordsOnly.count;
       }

@@ -130,7 +130,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
       // Get the Sites
       const sites = await this.centralServerProvider.getSites(params, { skip, limit }, ['name']);
       // Get total number of records
-      if ((sites.count === -1)) {
+      if (sites.count === -1) {
         const sitesNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
         sites.count = sitesNbrRecordsOnly.count;
       }
