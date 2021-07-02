@@ -138,9 +138,9 @@ export default class HeaderComponent extends React.Component<Props, State> {
           )}
           {displayMap && (
             <Icon
-              type="MaterialCommunityIcons"
-              name={mapIsDisplayed ? 'format-list-text' : 'earth'}
-              style={style.iconRightHeader}
+              type="FontAwesome5"
+              name={mapIsDisplayed ? 'list' : 'map-marked-alt'}
+              style={style.mapListIcon}
               onPress={displayMapAction}
             />
           )}

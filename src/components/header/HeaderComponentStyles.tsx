@@ -54,6 +54,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor,
       width: '35@s'
     },
+    mapListIcon: {
+      fontSize: '25@s',
+      color: commonColor.textColor,
+      width: '35@s'
+    },
     iconRightHeader: {
       fontSize: '30@s',
       color: commonColor.textColor,

@@ -22,13 +22,13 @@ import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { DataResult } from '../../../types/DataResult';
 import { GlobalFilters } from '../../../types/Filter';
+import SiteArea from '../../../types/SiteArea';
 import Constants from '../../../utils/Constants';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import ChargingStationsFilters, { ChargingStationsFiltersDef } from './ChargingStationsFilters';
 import computeStyleSheet from './ChargingStationsStyles';
-import SiteArea from '../../../types/SiteArea';
 
 export interface Props extends BaseProps {}
 
@@ -140,7 +140,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       // Get with the Site Area
       chargingStations = await this.centralServerProvider.getChargingStations(params, { skip, limit }, ['id']);
       // Get total number of records
-      if ((chargingStations.count === -1) && Utils.isEmptyArray(this.state.chargingStations)) {
+      if (chargingStations.count === -1) {
         const chargingStationsNbrRecordsOnly =
           await this.centralServerProvider.getChargingStations(params, Constants.ONLY_RECORD_COUNT);
         chargingStations.count = chargingStationsNbrRecordsOnly.count;

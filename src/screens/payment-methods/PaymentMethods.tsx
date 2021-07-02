@@ -72,7 +72,7 @@ export default class PaymentMethods extends BaseScreen<Props, State> {
       };
       const paymentMethods = await this.centralServerProvider.getPaymentMethods(params, { skip, limit });
       // Get total number of records
-      if ((paymentMethods.count === -1) && Utils.isEmptyArray(this.state.paymentMethods)) {
+      if (paymentMethods.count === -1) {
         const paymentMethodsNbrRecordsOnly = await this.centralServerProvider.getPaymentMethods(params, Constants.ONLY_RECORD_COUNT);
         paymentMethods.count = paymentMethodsNbrRecordsOnly.count;
       }

@@ -66,7 +66,7 @@ export default class Cars extends BaseScreen<Props, State> {
       };
       const cars = await this.centralServerProvider.getCars(params, { skip, limit });
       // Get total number of records
-      if ((cars.count === -1) && Utils.isEmptyArray(this.state.cars)) {
+      if (cars.count === -1) {
         const carsNbrRecordsOnly = await this.centralServerProvider.getCars(params, Constants.ONLY_RECORD_COUNT);
         cars.count = carsNbrRecordsOnly.count;
       }
