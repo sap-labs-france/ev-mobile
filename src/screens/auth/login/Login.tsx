@@ -375,6 +375,7 @@ export default class Login extends BaseScreen<Props, State> {
                 <Icon active name="email" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType="next"
+                  selectionColor={commonColor.textColor}
                   placeholder={I18n.t('authentication.email')}
                   placeholderTextColor={commonColor.placeholderTextColor}
                   onSubmitEditing={() => this.passwordInput.focus()}
@@ -398,6 +399,7 @@ export default class Login extends BaseScreen<Props, State> {
                 <Icon active name="lock" type="MaterialCommunityIcons" style={formStyle.inputIcon} />
                 <TextInput
                   returnKeyType="go"
+                  selectionColor={commonColor.textColor}
                   ref={(ref: TextInput) => (this.passwordInput = ref)}
                   onSubmitEditing={() => Keyboard.dismiss()}
                   placeholder={I18n.t('authentication.password')}
