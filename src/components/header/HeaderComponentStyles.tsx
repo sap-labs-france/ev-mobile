@@ -31,10 +31,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center'
     },
     titleHeader: {
+      width: '90%',
       color: commonColor.textColor,
       fontSize: '19@s'
     },
     titleHeaderWithSubTitle: {
+      width: '90%',
       fontSize: '16@s'
     },
     subTitleHeader: {
