@@ -2,7 +2,7 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Text } from 'native-base';
 import React from 'react';
-import { Alert, BackHandler } from 'react-native';
+import { Alert, BackHandler, ScrollView } from 'react-native';
 
 import computeCardStyleSheet from '../../CardStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -154,7 +154,7 @@ export default class Home extends BaseScreen<Props, State> {
               rightActionIcon={'menu'}
               tenantLogo={this.centralServerProvider?.getCurrentTenantLogo()}
             />
-            <Content style={cardStyle.cards}>
+            <ScrollView contentContainerStyle={cardStyle.cards}>
               {isComponentOrganizationActive && (
                 <Card style={cardStyle.card}>
                   <CardItem
@@ -343,7 +343,7 @@ export default class Home extends BaseScreen<Props, State> {
                   </Left>
                 </CardItem>
               </Card>
-            </Content>
+            </ScrollView>
           </Container>
         )}
       </Container>

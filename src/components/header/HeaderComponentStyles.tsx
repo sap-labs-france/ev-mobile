@@ -31,10 +31,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center'
     },
     titleHeader: {
+      width: '90%',
       color: commonColor.textColor,
       fontSize: '19@s'
     },
     titleHeaderWithSubTitle: {
+      width: '90%',
       fontSize: '16@s'
     },
     subTitleHeader: {
@@ -51,6 +53,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     iconLeftHeader: {
       fontSize: '30@s',
+      color: commonColor.textColor,
+      width: '35@s'
+    },
+    mapListIcon: {
+      fontSize: '25@s',
       color: commonColor.textColor,
       width: '35@s'
     },

@@ -114,7 +114,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
       // Get active transaction
       const transactions = await this.centralServerProvider.getTransactions(params, { skip, limit }, ['-timestamp']);
       // Get total number of records
-      if (transactions.count === -1 && Utils.isEmptyArray(this.state.transactions)) {
+      if (transactions.count === -1) {
         const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactions(params, Constants.ONLY_RECORD_COUNT);
         transactions.count = transactionsNbrRecordsOnly.count;
         transactions.stats = transactionsNbrRecordsOnly.stats;

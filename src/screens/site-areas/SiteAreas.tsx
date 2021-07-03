@@ -130,7 +130,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       // Get the Site Areas
       const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit }, ['name']);
       // Get total number of records
-      if (siteAreas.count === -1 && Utils.isEmptyArray(this.state.siteAreas)) {
+      if (siteAreas.count === -1) {
         const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
         siteAreas.count = sitesAreasNbrRecordsOnly.count;
       }

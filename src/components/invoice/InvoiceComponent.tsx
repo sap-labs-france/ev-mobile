@@ -9,7 +9,6 @@ import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { BillingInvoice, BillingInvoiceStatus } from '../../types/Billing';
-import User from '../../types/User';
 import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import Chip from '../chip/Chip';
@@ -160,11 +159,10 @@ export default class InvoiceComponent extends React.Component<Props, State> {
 
   private downloadInvoiceConfirm() {
     const { invoice } = this.props;
-    const { user } = this.state;
     const invoiceDate = I18nManager.formatDateTime(invoice.createdOn);
     Alert.alert(
       I18n.t('invoices.downloadInvoiceTitle'),
-      I18n.t('invoices.downloadInvoiceSubtitle', { user: Utils.buildUserName(user), invoiceDate }),
+      I18n.t('invoices.downloadInvoiceSubtitle', { user: Utils.buildUserName(invoice.user), invoiceDate }),
       [{ text: I18n.t('general.yes'), onPress: async () => this.downloadInvoice() }, { text: I18n.t('general.cancel') }]
     );
   }

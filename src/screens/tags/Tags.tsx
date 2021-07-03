@@ -67,7 +67,7 @@ export default class Tags extends BaseScreen<Props, State> {
       // Get the Tags
       const tags = await this.centralServerProvider.getTags(params, { skip, limit }, ['-createdOn']);
       // Get total number of records
-      if (tags.count === -1 && Utils.isEmptyArray(this.state.tags)) {
+      if (tags.count === -1) {
         const tagsNbrRecordsOnly = await this.centralServerProvider.getTags(params, Constants.ONLY_RECORD_COUNT);
         tags.count = tagsNbrRecordsOnly.count;
       }

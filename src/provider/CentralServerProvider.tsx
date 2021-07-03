@@ -388,7 +388,7 @@ export default class CentralServerProvider {
     firstName: string,
     email: string,
     locale: string,
-    passwords: { password: string; repeatPassword: string },
+    password: string,
     acceptEula: boolean,
     captcha: string
   ): Promise<any> {
@@ -405,7 +405,7 @@ export default class CentralServerProvider {
         firstName,
         name,
         locale,
-        passwords,
+        password,
         tenant: tenantSubDomain
       },
       {
@@ -417,12 +417,12 @@ export default class CentralServerProvider {
     // Save
     await SecuredStorage.saveUserCredentials(tenantSubDomain, {
       email,
-      password: passwords.password,
+      password,
       tenantSubDomain
     });
     // Keep them
     this.email = email;
-    this.password = passwords.password;
+    this.password = password;
     this.token = null;
     this.decodedToken = null;
     this.tenant = tenant;
@@ -448,7 +448,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async resetPassword(tenantSubDomain: string, hash: string, passwords: { password: string; repeatPassword: string }): Promise<any> {
+  public async resetPassword(tenantSubDomain: string, hash: string, password: string): Promise<any> {
     this.debugMethod('resetPassword');
     // Get the Tenant
     const tenant = await this.getTenant(tenantSubDomain);
@@ -458,7 +458,7 @@ export default class CentralServerProvider {
       {
         tenant: tenantSubDomain,
         hash,
-        passwords
+        password
       },
       {
         headers: this.buildHeaders()
@@ -979,7 +979,7 @@ export default class CentralServerProvider {
 
   private buildSorting(sortingParams: string[], queryParams: QueryParams): void {
     const sortFields = sortingParams.join(',');
-    if (!Utils.isEmptyArray(sortFields)) {
+    if (sortFields) {
       queryParams.SortFields = sortFields;
     }
   }

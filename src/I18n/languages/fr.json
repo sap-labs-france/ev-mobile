@@ -91,7 +91,7 @@
     "mandatoryFirstName": "Le Prénom est obligatoire",
     "mandatoryEmail": "L'Email est obligatoire",
     "invalidEmail": "L'Email est invalide",
-    "invalidMobile": "The mobile is invalid",
+    "invalidMobile": "Le mobile est invalide",
     "mandatoryPassword": "Le Mot de Passe est obligatoire",
     "logOut": "Se déconnecter",
     "mustSelectTenant": "Selectionnez une Organisation",
