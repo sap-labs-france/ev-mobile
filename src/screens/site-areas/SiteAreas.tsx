@@ -3,8 +3,9 @@ import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl, ScrollView } from 'react-native';
+import { ClusterMap } from 'react-native-cluster-map';
 import { Location } from 'react-native-location';
-import MapView, { Marker, Region } from 'react-native-maps';
+import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
@@ -13,6 +14,7 @@ import ListEmptyTextComponent from '../../components/list/empty-text/ListEmptyTe
 import ListFooterComponent from '../../components/list/footer/ListFooterComponent';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteAreaComponent from '../../components/site-area/SiteAreaComponent';
+import ThemeManager from '../../custom-theme/ThemeManager';
 import I18nManager from '../../I18n/I18nManager';
 import LocationManager from '../../location/LocationManager';
 import computeModalStyle from '../../ModalStyles';
@@ -20,6 +22,7 @@ import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
 import { GlobalFilters } from '../../types/Filter';
+import Site from '../../types/Site';
 import SiteArea from '../../types/SiteArea';
 import Constants from '../../utils/Constants';
 import SecuredStorage from '../../utils/SecuredStorage';
@@ -48,10 +51,11 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
-  private siteID: string;
+  private site: Site;
   private currentLocation: Location;
   private locationEnabled: boolean;
   private currentRegion: Region;
+  private darkMapTheme = require('../../utils/map/google-maps-night-style.json');
 
   public constructor(props: Props) {
     super(props);
@@ -80,7 +84,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     // Get initial filters
     await this.loadInitialFilters();
     // Get initial filters
-    this.siteID = Utils.getParamFromNavigation(this.props.route, 'siteID', null) as string;
+    this.site = Utils.getParamFromNavigation(this.props.route, 'site', null) as unknown as Site;
     await super.componentDidMount();
   }
 
@@ -116,7 +120,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       this.currentLocation = await this.getCurrentLocation();
       const params = {
         Search: searchText,
-        SiteID: this.siteID,
+        SiteID: this.site?.id,
         Issuer: true,
         WithAvailableChargers: true,
         LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
@@ -124,29 +128,33 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
       };
       // Get the Site Areas
-      const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit });
+      const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit }, ['name']);
+      // Get total number of records
       if (siteAreas.count === -1) {
-        // Request nbr of records
         const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
-        // Set
         siteAreas.count = sitesAreasNbrRecordsOnly.count;
       }
       return siteAreas;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
+      await Utils.handleHttpUnexpectedError(
         this.centralServerProvider,
         error,
         'siteAreas.siteAreaUnexpectedError',
         this.props.navigation,
-        this.refresh
+        this.refresh.bind(this)
       );
     }
+    return null;
   };
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.goBack();
+    if (this.state.showMap && !Utils.isEmptyArray(this.state.siteAreas)) {
+      this.setState({ showMap: false });
+    } else {
+      this.props.navigation.goBack();
+    }
     // Do not bubble up
     return true;
   };
@@ -262,13 +270,15 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyle();
     const { navigation } = this.props;
-    const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected } = this.state;
+    const { loading, skip, count, limit, initialFilters, showMap, siteAreaSelected, siteAreas } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.siteAreas);
+    const siteAreasWithGPSCoordinates = siteAreas.filter((siteArea) => Utils.containsAddressGPSCoordinates(siteArea.address));
+    const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
     return (
       <Container style={style.container}>
         <HeaderComponent
           navigation={navigation}
-          title={I18n.t('siteAreas.title')}
+          title={this.site?.name}
           subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('siteAreas.siteAreas')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}
@@ -294,21 +304,24 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
             />
             {mapIsDisplayed ? (
               <View style={style.map}>
-                <MapView style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
-                  {this.state.siteAreas.map((siteArea: SiteArea) => {
-                    if (Utils.containsAddressGPSCoordinates(siteArea.address)) {
-                      return (
-                        <Marker
-                          key={siteArea.id}
-                          coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
-                          title={siteArea.name}
-                          onPress={() => this.showMapSiteDetail(siteArea)}
-                        />
-                      );
-                    }
-                    return undefined;
-                  })}
-                </MapView>
+                {this.currentRegion && (
+                  <ClusterMap
+                    provider={'google'}
+                    customMapStyle={isDarkModeEnabled && this.darkMapTheme}
+                    style={style.map}
+                    region={this.currentRegion}
+                    onRegionChange={this.onMapRegionChange}>
+                    {siteAreasWithGPSCoordinates.map((siteArea: SiteArea) => (
+                      <Marker
+                        image={Utils.buildSiteStatusMarker(siteArea.connectorStats)}
+                        key={siteArea.id}
+                        coordinate={{ longitude: siteArea.address.coordinates[0], latitude: siteArea.address.coordinates[1] }}
+                        title={siteArea.name}
+                        onPress={() => this.showMapSiteDetail(siteArea)}
+                      />
+                    ))}
+                  </ClusterMap>
+                )}
                 {siteAreaSelected && this.buildModal(navigation, siteAreaSelected, modalStyle)}
               </View>
             ) : (

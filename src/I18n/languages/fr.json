@@ -61,7 +61,9 @@
     "mobile": "Mobile",
     "errorTitle": "Titre de l'erreur",
     "errorDescription": "Description",
-    "scanQrCodeSuccess": "Le QR code a bien été scanné"
+    "scanQrCodeSuccess": "Le QR code a bien été scanné",
+    "default": "Par défaut",
+    "save": "Sauvegarder"
   },
   "sidebar": {
     "home": "Home",
@@ -73,7 +75,9 @@
     "reportError": "Signaler Erreur",
     "users": "Utilisateurs",
     "badges": "Badges",
-    "cars": "Voitures"
+    "cars": "Voitures",
+    "invoices": "Factures",
+    "paymentMethods": "Moyens de paiement"
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",
@@ -87,7 +91,7 @@
     "mandatoryFirstName": "Le Prénom est obligatoire",
     "mandatoryEmail": "L'Email est obligatoire",
     "invalidEmail": "L'Email est invalide",
-    "invalidMobile": "The mobile is invalid",
+    "invalidMobile": "Le mobile est invalide",
     "mandatoryPassword": "Le Mot de Passe est obligatoire",
     "logOut": "Se déconnecter",
     "mustSelectTenant": "Selectionnez une Organisation",
@@ -149,7 +153,7 @@
   "qrCode": {
     "qrCode": "QR Code",
     "browseScan&Charge": "Scan & Charge",
-    "browseScan&ChargeNote": "Scan the Charging Station's QR Code",
+    "browseScan&ChargeNote": "Scanner un QR Code",
     "wrongOrganizationTitle": "Changement d'Organisation",
     "wrongOrganizationMessage": "La borne que vous essayez d'atteindre n'est pas dans votre organisation, voulez-vous changer pour '{{tenantName}}'?",
     "invalidQRCode": "QR Code invalide",
@@ -170,6 +174,27 @@
     "noUsers": "Aucun utilisateur",
     "users": "Utilisateur(s)"
   },
+  "paymentMethods": {
+    "paymentMethodUnexpectedError": "Une erreur est survenue",
+    "noPaymentMethod": "Aucun moyen de paiement",
+    "paymentMethods": "Moyen(s) de paiement",
+    "addPaymentMethodError": "Impossible d'ajouter le moyen de paiement",
+    "addPaymentMethodSuccess" : "Nouveau moyen de paiement ajoutée",
+    "deletePaymentMethodSuccess": "Moyen de paiement supprimé",
+    "deletePaymentMethodTitle": "Supprimer un moyen de paiement",
+    "deletePaymentMethodSubtitle": "Voulez-vous vraiment supprimer la carte {{cardBrand}} finissant par {{cardLast4}}",
+    "addPaymentMethod": "Ajouter un Moyen de Paiement",
+    "paymentMethodCreationRules": "Pour des raisons de sécurité, nous ne stockons ni ne traitons vos informations de moyen de paiement. Les informations collectées sont envoyées de manière sécurisée à notre partenaire STRIPE qui fournit l'infrastructure de facturation et de paiement.",
+    "paymentMethodsCreationCheckboxText": "J'ai lu les conditions générales d'utilisation et j'accepte que mes informations de paiement soient utilisées pour payer mes futures sessions de recharge."
+  },
+  "paymentMethodStatus": {
+    "valid": "Valide",
+    "expired": "Expirée",
+    "expiringSoon": "Expire bientôt"
+  },
+  "paymentMethodType": {
+    "card": "Carte"
+  },
   "userRoles": {
     "admin": "Admin",
     "basic": "Basique",
@@ -181,7 +206,7 @@
     "active": "Actif",
     "inactive": "Inactif",
     "locked": "Vérouillé",
-    "blocked": "Suspendu",
+    "suspended": "Suspendu",
     "pending": "En Attente",
     "unknown": "Inconnu"
   },
@@ -189,6 +214,24 @@
     "noCars": "Aucune voiture",
     "carUnexpectedError": "Une erreur est survenue",
     "cars": "Voiture(s)"
+  },
+  "invoices": {
+    "noInvoices": "Aucune facture",
+    "invoiceUnexpectedError": "Une erreur est survenue",
+    "invoices": "Facture(s)",
+    "invoice": "Facture",
+    "downloadedSuccessfully": "Facture téléchargée",
+    "invoiceFileDescription": "Facture de recharge e-Mobility",
+    "downloadInvoiceTitle": "Télécharger une facture",
+    "downloadInvoiceSubtitle": "Télécharger la facture de {{user}} du {{invoiceDate}}?"
+  },
+  "invoiceStatus": {
+    "paid": "Payée",
+    "draft": "Brouillon",
+    "unpaid": "Impayée",
+    "deleted": "Supprimée",
+    "uncollectible": "Non recouvrable",
+    "void": "Annulée"
   },
   "transactions": {
     "transaction": "Session",
@@ -206,7 +249,9 @@
     "transactionStartUnexpectedError": "Impossible de démarrer la session",
     "carNotConnectedError": "Votre voiture n'est pas connctée à la borne",
     "connectorNotAvailable": "Le connecteur de cette borne n'est pas disponible",
-    "transactionStopUnexpectedError": "Impossible de stopper la session"
+    "transactionStopUnexpectedError": "Impossible de stopper la session",
+    "noPaymentMethodError": "Service indisponible, aucun moyen de paiment n'a été enregistrée.",
+    "startTransactionDisabled": "Service temporairement indisponible, veuillez contacter le support."
   },
   "home": {
     "browseSites": "Sites",
@@ -237,7 +282,11 @@
     "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
     "totalInactivityNote": "Durée totale d'inactivité",
     "totalPrice": "{{totalPrice}}",
-    "totalPriceNote": "Cout total"
+    "totalPriceNote": "Cout total",
+    "paymentMethods": "Moyens de paiement",
+    "paymentMethodsNote" : "Consulter et créer des moyens de paiement",
+    "invoices": "Factures",
+    "invoicesNote": "Consulter et télécharger des factures"
   },
   "sites": {
     "freeChargers": "Chargeurs disponibles",
@@ -268,7 +317,7 @@
     "chargerClearCacheUnexpectedError": "Impossible d'effacer le cache de la borne",
     "chargerUnlockUnexpectedError": "Impossible de dévérouiller le connecteur",
     "heartBeatOkMessage": "'{{chargeBoxID}}' fonctionne correctement et a reporté son statut il y a moins d'une minute",
-    "heartBeatKoMessage": "'{{chargeBoxID}}' ne fonctionne pas correctement et n'a pas reporté son statut depuis {{lastSeen}}",
+    "heartBeatKoMessage": "'{{chargeBoxID}}' ne fonctionne plus depuis {{lastSeen}}",
     "resetHard": "Redémarrer",
     "resetHardMessage": "Voulez-vous vraiment redémarrer '{{chargeBoxID}}'?",
     "resetSoft": "Réinitialiser",
@@ -305,6 +354,7 @@
     "domestic": "Domestique"
   },
   "tags": {
+    "visualID": "ID Visuel",
     "noTags": "Aucun badge",
     "tags": "Badge(s)",
     "active": "Actif",

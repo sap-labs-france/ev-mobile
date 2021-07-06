@@ -1,6 +1,6 @@
 import { Body, Header, Icon, Left, Right, Subtitle, Title } from 'native-base';
 import React from 'react';
-import { BackHandler, Image, ImageStyle } from 'react-native';
+import { BackHandler, Image, ImageStyle, TouchableOpacity } from 'react-native';
 
 import defaultTenantLogo from '../../../assets/logo-low.png';
 import FilterModalContainerComponent from '../../components/search/filter/containers/FilterModalContainerComponent';
@@ -36,7 +36,6 @@ export default class HeaderComponent extends React.Component<Props, State> {
   };
   public state: State;
   public props: Props;
-  private searchIsVisible: boolean;
   private filterModalContainerComponent: FilterModalContainerComponent;
 
   public constructor(props: Props) {
@@ -44,8 +43,6 @@ export default class HeaderComponent extends React.Component<Props, State> {
     this.state = {
       hasFilter: false
     };
-    // Default values
-    this.searchIsVisible = false;
   }
 
   public setState = (
@@ -121,28 +118,29 @@ export default class HeaderComponent extends React.Component<Props, State> {
         </Body>
         <Right style={style.rightHeader}>
           {hasFilter && (
-            <Icon
-              type={'MaterialCommunityIcons'}
-              name={
-                this.filterModalContainerComponent && this.filterModalContainerComponent.getNumberOfFilters() > 0
-                  ? 'filter'
-                  : 'filter-outline'
-              }
+            <TouchableOpacity
               onPress={() => {
-                this.searchIsVisible = !this.searchIsVisible;
                 // Show Filter Search
                 if (this.filterModalContainerComponent) {
-                  this.filterModalContainerComponent.setVisible(this.searchIsVisible);
+                  this.filterModalContainerComponent.setVisible(true);
                 }
-              }}
-              style={style.iconRightHeader}
-            />
+              }}>
+              <Icon
+                type={'MaterialCommunityIcons'}
+                name={
+                  this.filterModalContainerComponent && this.filterModalContainerComponent.getNumberOfFilters() > 0
+                    ? 'filter'
+                    : 'filter-outline'
+                }
+                style={style.iconRightHeader}
+              />
+            </TouchableOpacity>
           )}
           {displayMap && (
             <Icon
-              type="MaterialCommunityIcons"
-              name={mapIsDisplayed ? 'format-list-text' : 'earth'}
-              style={style.iconRightHeader}
+              type="FontAwesome5"
+              name={mapIsDisplayed ? 'list' : 'map-marked-alt'}
+              style={style.mapListIcon}
               onPress={displayMapAction}
             />
           )}

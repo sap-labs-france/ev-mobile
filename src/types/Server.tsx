@@ -5,6 +5,8 @@ export enum ServerAction {
   PING = 'Ping',
   CHECK_CONNECTION = 'CheckConnection',
 
+  OBJECT_CLONE = 'ObjectClone',
+
   CHARGING_STATION_CLIENT_INITIALIZATION = 'ChargingStationClientInitialization',
   CHARGING_STATION_RESET = 'ChargingStationReset',
   CHARGING_STATION_REQUEST_OCPP_PARAMETERS = 'ChargingStationRequestOcppParameters',
@@ -104,6 +106,7 @@ export enum ServerAction {
   INTEGRATION_CONNECTION = 'IntegrationConnection',
   INTEGRATION_CONNECTION_DELETE = 'IntegrationConnectionDelete',
 
+  ROAMING = 'Roaming',
   OCPI_SETTINGS = 'OcpiSettings',
   OCPI_CLIENT_INITIALIZATION = 'OcpiClientInitialization',
   OCPI_ENDPOINT_CREATE = 'OcpiEndpointCreate',
@@ -206,6 +209,7 @@ export enum ServerAction {
   SOCKET_IO = 'SocketIO',
 
   // OCPP server commands
+  BOOT_NOTIFICATION = 'BootNotification',
   AUTHORIZE = 'Authorize',
   HEARTBEAT = 'Heartbeat',
   DIAGNOSTICS_STATUS_NOTIFICATION = 'DiagnosticsStatusNotification',
@@ -213,7 +217,7 @@ export enum ServerAction {
   STATUS_NOTIFICATION = 'StatusNotification',
   START_TRANSACTION = 'StartTransaction',
   STOP_TRANSACTION = 'StopTransaction',
-  METERVALUES = 'MeterValues',
+  METER_VALUES = 'MeterValues',
   DATA_TRANSFER = 'DataTransfer',
 
   EXTRA_INACTIVITY = 'ExtraInactivity',
@@ -242,10 +246,6 @@ export enum ServerAction {
   WS_REST_CLIENT_CONNECTION_CLOSED = 'WSRestClientConnectionClosed',
   WS_REST_CLIENT_CONNECTION_OPENED = 'WSRestClientConnectionOpened',
   WS_REST_CLIENT_CONNECTION_ERROR = 'WSRestClientConnectionError',
-
-  BOOT_NOTIFICATION = 'BootNotification',
-
-  METER_VALUES = 'MeterValues',
 
   NOTIFICATION = 'Notification',
   CHARGING_STATION_STATUS_ERROR = 'ChargingStationStatusError',
@@ -394,6 +394,7 @@ export enum ServerAction {
   TAG_DELETE = 'TagDelete',
   TAGS_DELETE = 'TagsDelete',
   TAGS_IMPORT = 'TagsImport',
+  TAGS_EXPORT = 'TagsExport',
   USER = 'User',
   USERS_EXPORT = 'UsersExport',
   USERS_IMPORT = 'UsersImport',
@@ -411,18 +412,22 @@ export enum ServerAction {
   BILLING_FORCE_SYNCHRONIZE_USER = 'BillingForceSynchronizeUser',
   CHECK_BILLING_CONNECTION = 'CheckBillingConnection',
   BILLING_TAXES = 'BillingTaxes',
-  BILLING_INVOICES = 'BillingUserInvoices',
-  BILLING_USER_INVOICE = 'BillingUserInvoice',
+  BILLING_INVOICES = 'BillingInvoices',
+  BILLING_INVOICE = 'BillingInvoice',
   BILLING_SYNCHRONIZE_INVOICES = 'BillingSynchronizeInvoices',
+  BILLING_PERFORM_OPERATIONS = 'BillingPeriodicOperations',
   BILLING_FORCE_SYNCHRONIZE_USER_INVOICES = 'BillingForceSynchronizeUserInvoices',
   BILLING_DOWNLOAD_INVOICE = 'BillingDownloadInvoice',
   BILLING_CREATE_TRANSACTION_INVOICE = 'BillingCreateTransactionInvoice',
   BILLING_NEW_INVOICE = 'BillingNewInvoice',
+  BILLING_NEW_INVOICE_PAID = 'BillingNewInvoicePaid',
+  BILLING_NEW_INVOICE_OPEN = 'BillingNewInvoiceOpen',
   BILLING_SETUP_PAYMENT_METHOD = 'BillingSetupPaymentMethod',
   BILLING_PAYMENT_METHODS = 'BillingPaymentMethods',
   BILLING_DELETE_PAYMENT_METHOD = 'BillingDeletePaymentMethod',
   BILLING_CHARGE_INVOICE = 'BillingChargeInvoice',
   BILLING_WEB_HOOK = 'BillingWebHook',
+  BILLING_TEST_DATA_CLEANUP = 'BillingTestDataCleanup',
 
   MONGO_DB = 'MongoDB',
 
@@ -476,6 +481,8 @@ export enum ServerRoute {
   REST_CHARGING_STATIONS_TRANSACTIONS = 'charging-stations/:id/transactions',
   REST_CHARGING_STATIONS_IN_ERROR = 'charging-stations/status/in-error',
   REST_CHARGING_STATIONS_EXPORT = 'charging-stations/action/export',
+  REST_CHARGING_STATIONS_BOOT_NOTIFICATIONS = 'charging-stations/notifications/boot',
+  REST_CHARGING_STATIONS_STATUS_NOTIFICATIONS = 'charging-stations/notifications/status',
 
   REST_CHARGING_STATION_CHECK_SMART_CHARGING_CONNECTION = 'charging-stations/smartcharging/connection/check',
   REST_CHARGING_STATION_TRIGGER_SMART_CHARGING = 'charging-stations/smartcharging/trigger',
@@ -489,11 +496,52 @@ export enum ServerRoute {
 
   REST_USERS = 'users',
   REST_USER = 'users/:id',
+  REST_USER_DEFAULT_TAG_CAR = 'users/:id/default-car-tag',
+  REST_USER_SITES = 'users/:id/sites',
+  REST_USER_UPDATE_MOBILE_TOKEN = 'users/:id/mobile-token',
+  REST_USER_IMAGE = 'users/:id/image',
+  REST_USERS_IN_ERROR = 'users/status/in-error',
+  REST_USERS_IMPORT = 'users/action/import',
+  REST_USERS_EXPORT = 'users/action/export',
 
   REST_TAGS = 'tags',
   REST_TAG = 'tags/:id',
 
+  REST_ASSET_CONSUMPTION = 'assets/:assetID/consumption',
+
   REST_PING = 'ping',
 
-  REST_TENANTS = 'tenants'
+  REST_TENANTS = 'tenants',
+
+  // BILLING URLs for CRUD operations on PAYMENT METHODS
+  REST_BILLING_PAYMENT_METHODS = 'users/:userID/payment-methods',
+  REST_BILLING_PAYMENT_METHOD = 'users/:userID/payment-methods/:paymentMethodID',
+
+  // BILLING URLs for Non-CRUD Operations on PAYMENT METHODS
+  REST_BILLING_PAYMENT_METHOD_SETUP = 'users/:userID/payment-methods/setup',
+  REST_BILLING_PAYMENT_METHOD_ATTACH = 'users/:userID/payment-methods/:paymentMethodID/attach',
+  REST_BILLING_PAYMENT_METHOD_DETACH = 'users/:userID/payment-methods/:paymentMethodID/detach',
+
+  REST_BILLING_SETTING = 'billing-setting', // GET and PUT
+  REST_BILLING_CHECK = 'billing/check',
+  REST_BILLING_CLEAR_TEST_DATA = 'billing/clearTestData',
+
+  // BILLING URLs for CRUD operations on INVOICES
+  REST_BILLING_INVOICES = 'invoices',
+  REST_BILLING_INVOICE = 'invoices/:invoiceID',
+
+  // BILLING URLs for Non-CRUD operations on INVOICES
+  REST_BILLING_DOWNLOAD_INVOICE = 'invoices/:invoiceID/download'
+}
+
+export enum ServerProtocol {
+  HTTP = 'http',
+  HTTPS = 'https',
+  WS = 'ws',
+  WSS = 'wss'
+}
+
+export enum WSServerProtocol {
+  OCPP16 = 'ocpp1.6',
+  REST = 'rest'
 }

@@ -61,6 +61,10 @@ export default class SecurityProvider {
     return this.isComponentActive(TenantComponents.CAR);
   }
 
+  public isComponentBillingActive(): boolean {
+    return this.isComponentActive(TenantComponents.BILLING);
+  }
+
   public isComponentActive(componentName: string): boolean {
     if (this.loggedUser && this.loggedUser.activeComponents) {
       return this.loggedUser.activeComponents.includes(componentName);
@@ -98,17 +102,8 @@ export default class SecurityProvider {
     return false;
   }
 
-  public canReadTransaction(siteArea: SiteArea, badgeID: string): boolean {
-    if (this.canAccess(Entity.TRANSACTION, Action.READ)) {
-      if (this.loggedUser.tagIDs.includes(badgeID)) {
-        return true;
-      }
-      if (this.isComponentActive(TenantComponents.ORGANIZATION) && siteArea) {
-        return this.isSiteAdmin(siteArea.siteID) || (this.isDemo() && this.isSiteUser(siteArea.siteID));
-      }
-      return this.isAdmin() || this.isDemo();
-    }
-    return false;
+  public canReadTransaction(): boolean {
+    return this.canAccess(Entity.TRANSACTION, Action.READ);
   }
 
   public canAccess(resource: string, action: string): boolean {
@@ -125,5 +120,13 @@ export default class SecurityProvider {
 
   public canListCars(): boolean {
     return this.canAccess(Entity.CARS, Action.LIST);
+  }
+
+  public canListInvoices(): boolean {
+    return this.canAccess(Entity.INVOICES, Action.LIST);
+  }
+
+  public canListPaymentMethods(): boolean {
+    return this.canAccess(Entity.PAYMENT_METHODS, Action.LIST);
   }
 }

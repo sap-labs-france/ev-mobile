@@ -2,7 +2,7 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Body, Card, CardItem, Container, Content, Icon, Left, Text } from 'native-base';
 import React from 'react';
-import { Alert, BackHandler } from 'react-native';
+import { Alert, BackHandler, ScrollView } from 'react-native';
 
 import computeCardStyleSheet from '../../CardStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
@@ -116,7 +116,12 @@ export default class Home extends BaseScreen<Props, State> {
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'transactions.transactionUnexpectedError', this.props.navigation);
+      await Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'transactions.transactionUnexpectedError',
+        this.props.navigation
+      );
     }
   };
 
@@ -149,7 +154,7 @@ export default class Home extends BaseScreen<Props, State> {
               rightActionIcon={'menu'}
               tenantLogo={this.centralServerProvider?.getCurrentTenantLogo()}
             />
-            <Content style={cardStyle.cards}>
+            <ScrollView contentContainerStyle={cardStyle.cards}>
               {isComponentOrganizationActive && (
                 <Card style={cardStyle.card}>
                   <CardItem
@@ -286,6 +291,42 @@ export default class Home extends BaseScreen<Props, State> {
                   </CardItem>
                 </Card>
               )}
+              {this.securityProvider?.canListPaymentMethods() && this.securityProvider?.isComponentBillingActive() && (
+                <Card style={cardStyle.card}>
+                  <CardItem
+                    style={cardStyle.cardItem}
+                    button={true}
+                    onPress={() => navigation.navigate('PaymentMethodsNavigator', { key: `${Utils.randomNumber()}` })}>
+                    <Left>
+                      <Icon style={cardStyle.cardIcon} type="MaterialIcons" name="payment" />
+                      <Body>
+                        <Text style={cardStyle.cardText}>{I18n.t('home.paymentMethods')}</Text>
+                        <Text note={true} style={cardStyle.cardNote}>
+                          {I18n.t('home.paymentMethodsNote')}
+                        </Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                </Card>
+              )}
+              {this.securityProvider?.canListInvoices() && this.securityProvider?.isComponentBillingActive() && (
+                <Card style={cardStyle.card}>
+                  <CardItem
+                    style={cardStyle.cardItem}
+                    button={true}
+                    onPress={() => navigation.navigate('InvoicesNavigator', { key: `${Utils.randomNumber()}` })}>
+                    <Left>
+                      <Icon style={cardStyle.cardIcon} type="MaterialIcons" name="receipt" />
+                      <Body>
+                        <Text style={cardStyle.cardText}>{I18n.t('home.invoices')}</Text>
+                        <Text note={true} style={cardStyle.cardNote}>
+                          {I18n.t('home.invoicesNote')}
+                        </Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                </Card>
+              )}
               <Card style={cardStyle.card}>
                 <CardItem
                   style={cardStyle.cardItem}
@@ -302,7 +343,7 @@ export default class Home extends BaseScreen<Props, State> {
                   </Left>
                 </CardItem>
               </Card>
-            </Content>
+            </ScrollView>
           </Container>
         )}
       </Container>

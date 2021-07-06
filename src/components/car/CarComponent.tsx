@@ -71,7 +71,7 @@ export default class CarComponent extends React.Component<Props, State> {
               }}>
               <View style={style.userContainer}>
                 <View style={[style.avatarContainer]}>
-                  <UserAvatar small={true} user={defaultCarUser?.user} navigation={navigation} />
+                  <UserAvatar size={35} user={defaultCarUser?.user} navigation={navigation} />
                 </View>
                 <View style={[style.userNameContainer]}>
                   <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.userName]}>

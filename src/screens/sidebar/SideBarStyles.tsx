@@ -5,9 +5,6 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
-/**
- *
- */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -31,6 +28,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderBottomWidth: 1,
       height: Platform.OS === 'ios' ? '120@s' : '150@s',
       marginTop: Platform.OS === 'ios' ? '-5@s' : '5@s'
+    },
+    linkContainer: {
+      paddingTop: '10@s'
     },
     logo: {
       resizeMode: 'contain',
@@ -63,13 +63,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginTop: '-5@s',
       marginBottom: '2@s'
     },
-    linkContainer: {
-      paddingTop: '10@s'
-    },
     links: {
       borderBottomWidth: 0,
-      borderBottomColor: 'transparent',
-      height: Platform.OS === 'ios' ? undefined : '40@s',
       paddingTop: '10@s',
       paddingBottom: '10@s'
     },

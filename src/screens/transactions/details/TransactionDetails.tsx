@@ -1,19 +1,17 @@
 import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import moment from 'moment';
-import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
+import { Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, ScrollView } from 'react-native';
 
-import noPhotoActive from '../../../../assets/no-photo-active.png';
-import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
 import HeaderComponent from '../../../components/header/HeaderComponent';
+import UserAvatar from '../../../components/user/avatar/UserAvatar';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import { HTTPError } from '../../../types/HTTPError';
 import Transaction from '../../../types/Transaction';
-import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
@@ -25,7 +23,6 @@ export interface Props extends BaseProps {}
 interface State {
   loading?: boolean;
   transaction?: Transaction;
-  userImage?: string;
   siteImage?: string;
   elapsedTimeFormatted?: string;
   totalInactivitySecs?: number;
@@ -46,7 +43,6 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     super(props);
     this.state = {
       loading: true,
-      userImage: null,
       siteImage: null,
       isAdmin: false,
       isSiteAdmin: false,
@@ -70,7 +66,6 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   public async componentDidMount() {
     await super.componentDidMount();
     let siteImage = null;
-    let userImage = null;
     // Get IDs
     const transactionID = Utils.getParamFromNavigation(this.props.route, 'transactionID', null) as number;
     // Get Transaction
@@ -79,10 +74,6 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
     if (transaction && transaction.siteID && this.isMounted()) {
       siteImage = await this.getSiteImage(transaction.siteID);
     }
-    // Get the User Image
-    if (transaction && transaction.user && this.isMounted()) {
-      userImage = await this.getUserImage(transaction.user);
-    }
     // Compute Duration
     this.computeDurationInfos(transaction);
     // Set
@@ -90,7 +81,6 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       transaction,
       loading: false,
       siteImage,
-      userImage,
       isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
       isSiteAdmin:
         this.securityProvider && transaction && transaction.siteID ? this.securityProvider.isSiteAdmin(transaction.siteID) : false,
@@ -109,7 +99,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
           Message.showError(I18n.t('transactions.transactionDoesNotExist'));
           break;
         default:
-          Utils.handleHttpUnexpectedError(
+          await Utils.handleHttpUnexpectedError(
             this.centralServerProvider,
             error,
             'transactions.transactionUnexpectedError',
@@ -125,17 +115,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       const siteImage = await this.centralServerProvider.getSiteImage(siteID);
       return siteImage;
     } catch (error) {
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'sites.siteUnexpectedError', this.props.navigation);
-    }
-    return null;
-  };
-
-  public getUserImage = async (user: User): Promise<string> => {
-    try {
-      const userImage = await this.centralServerProvider.getUserImage({ ID: user.id });
-      return userImage;
-    } catch (error) {
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'users.userUnexpectedError', this.props.navigation);
+      await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'sites.siteUnexpectedError', this.props.navigation);
     }
     return null;
   };
@@ -169,18 +149,17 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
 
   public renderUserInfo = (style: any) => {
     const { transaction, isAdmin, isSiteAdmin } = this.state;
-    const { userImage } = this.state;
+    const user = transaction.user;
     return transaction ? (
       <View style={style.columnContainer}>
-        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhotoActive} />
+        <UserAvatar size={44} user={user} navigation={this.props.navigation} />
         <Text numberOfLines={1} style={[style.label, style.labelUser, style.info]}>
-          {Utils.buildUserName(transaction.user)}
+          {Utils.buildUserName(user)}
         </Text>
-        {(isAdmin || isSiteAdmin) && <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text>}
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
+        <UserAvatar user={user} navigation={this.props.navigation} />
         <Text style={[style.label, style.disabled]}>-</Text>
       </View>
     );
@@ -192,7 +171,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       <View style={style.columnContainer}>
         <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>
-          {transaction ? I18nManager.formatCurrency(transaction.stop.price) : '-'}
+          {transaction ? I18nManager.formatCurrency(transaction.stop.price, transaction.stop.priceUnit) : '-'}
         </Text>
         <Text style={[style.subLabel, style.info]}>({transaction ? transaction.stop.priceUnit : '-'})</Text>
       </View>

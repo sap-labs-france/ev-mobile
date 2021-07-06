@@ -1,8 +1,9 @@
 import { Text, View } from 'native-base';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
+import Constants from '../../../../../utils/Constants';
 import FilterControlComponent, { FilterControlComponentProps, FilterControlComponentState } from '../FilterControlComponent';
 import computeStyleSheet from '../FilterControlComponentStyles';
 
@@ -46,26 +47,33 @@ export default class DateFilterControlComponent extends FilterControlComponent<D
   public render = () => {
     const internalStyle = computeStyleSheet();
     const { label, style, minimumDate, maximumDate, locale } = this.props;
+    const value = this.getValue() as Date;
     return (
       <View style={StyleSheet.compose(internalStyle.rowFilterContainer, style)}>
         <Text style={internalStyle.textFilter}>{label}</Text>
-        <Text style={internalStyle.textFilter} onPress={() => this.openDatePicker(true)}>
-          {this.getValue()?.toDateString()}
-        </Text>
-        <DateTimePickerModal
-          isVisible={this.state.openDatePicker}
-          date={this.getValue()}
-          mode={'date'}
-          maximumDate={maximumDate}
-          minimumDate={minimumDate}
-          locale={locale}
-          onCancel={() => {
-            this.openDatePicker(false);
-          }}
-          onConfirm={(date) => {
-            this.onConfirm(date);
-          }}
-        />
+        {value ? (
+          <View>
+            <TouchableOpacity onPress={() => this.openDatePicker(true)}>
+              <Text style={internalStyle.textFilter}>{value.toDateString()}</Text>
+            </TouchableOpacity>
+            <DateTimePickerModal
+              isVisible={this.state.openDatePicker}
+              date={this.getValue()}
+              mode={'date'}
+              maximumDate={maximumDate}
+              minimumDate={minimumDate}
+              locale={locale}
+              onCancel={() => {
+                this.openDatePicker(false);
+              }}
+              onConfirm={(date) => {
+                this.onConfirm(date);
+              }}
+            />
+          </View>
+        ) : (
+          <Text>{Constants.HYPHEN}</Text>
+        )}
       </View>
     );
   };

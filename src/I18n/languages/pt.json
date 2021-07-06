@@ -61,7 +61,9 @@
     "mobile": "Número de telemóvel",
     "errorTitle": "Título do erro",
     "errorDescription": "Descrição",
-    "scanQrCodeSuccess": "The QR code has been scanned successfully"
+    "scanQrCodeSuccess": "The QR code has been scanned successfully",
+    "default": "Default",
+    "save": "Save"
   },
   "sidebar": {
     "home": "Home",
@@ -73,12 +75,9 @@
     "reportError": "Comunicar erro",
     "users": "Users",
     "badges": "Badges",
-    "cars": "Cars"
-  },
-  "cars": {
-    "noCars": "No cars",
-    "carUnexpectedError": "An error occurred",
-    "cars": "Car(s)"
+    "cars": "Cars",
+    "invoices": "Invoices",
+    "paymentMethods": "Payment Methods"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -175,6 +174,27 @@
     "noUsers": "No users",
     "users": "Users(s)"
   },
+  "paymentMethods": {
+    "paymentMethodUnexpectedError": "An error occurred",
+    "noPaymentMethod": "No payment method",
+    "paymentMethods": "Payment method(s)",
+    "addPaymentMethodError": "Failed to add payment method",
+    "addPaymentMethodSuccess" : "New payment method added successfully",
+    "deletePaymentMethodSuccess": "Payment method removed successfully",
+    "deletePaymentMethodTitle": "Delete payment method",
+    "deletePaymentMethodSubtitle": "Do you really want to delete the {{cardBrand}} card ending with {{cardLast4}}",
+    "addPaymentMethod": "Add Payment Method",
+    "paymentMethodCreationRules": "For security reasons, we do not store nor process your bank and card details directly. The collected information is sent via a secure channel to our STRIPE partner which provides the billing and payment infrastructure.",
+    "paymentMethodsCreationCheckboxText": " I have read the End-user License Agreement and agree that my bank details will be used for paying future EV Charging Sessions."
+  },
+  "paymentMethodStatus": {
+    "valid": "Valid",
+    "expired": "Expired",
+    "expiringSoon": "Expiring soon"
+  },
+  "paymentMethodType": {
+    "card": "Card"
+  },
   "userRoles": {
     "admin": "Admin",
     "basic": "Basic",
@@ -186,9 +206,32 @@
     "active": "Active",
     "inactive": "Inactive",
     "locked": "Locked",
-    "blocked": "Blocked",
+    "suspended": "Suspended",
     "pending": "Pending",
     "unknown": "Unknown"
+  },
+  "cars": {
+    "noCars": "No cars",
+    "carUnexpectedError": "An error occurred",
+    "cars": "Car(s)"
+  },
+  "invoices": {
+    "noInvoices": "Aucune facture",
+    "invoiceUnexpectedError": "Une erreur est survenue",
+    "invoices": "Facture(s)",
+    "invoice": "Invoice",
+    "downloadedSuccessfully": "Invoice downloaded successfully",
+    "invoiceFileDescription": "e-Mobility charging session invoice",
+    "downloadInvoiceTitle": "Download invoice",
+    "downloadInvoiceSubtitle": "Download the invoice of {{user}} from {{invoiceDate}}"
+  },
+  "invoiceStatus": {
+    "paid": "Paid",
+    "draft": "Draft",
+    "unpaid": "Unpaid",
+    "deleted": "Deleted",
+    "uncollectible": "Uncollectible",
+    "void": "Cancelled"
   },
   "transactions": {
     "transaction": "Sessões",
@@ -206,7 +249,9 @@
     "transactionStartUnexpectedError": "Não posso iniciar sessão",
     "carNotConnectedError": "Your car is not connected to the charging station",
     "connectorNotAvailable": "This charging station's connector is not available",
-    "transactionStopUnexpectedError": "Não posso parar a sessão"
+    "transactionStopUnexpectedError": "Não posso parar a sessão",
+    "noPaymentMethodError": "Service unavailable, no payment method has been provided.",
+    "startTransactionDisabled": "Service temporarily unavailable, please contact the support."
   },
   "home": {
     "browseSites": "Sites",
@@ -237,7 +282,11 @@
     "totalInactivity": "{{totalInactivity}} ({{totalInactivityPercent}})",
     "totalInactivityNote": "Duração total de invatividade",
     "totalPrice": "{{totalPrice}}",
-    "totalPriceNote": "Custo Total"
+    "totalPriceNote": "Custo Total",
+    "paymentMethods": "Payment Methods",
+    "paymentMethodsNote" : "Browse and create payment methods",
+    "invoices": "Invoices",
+    "invoicesNote": "Browse and download invoices"
   },
   "sites": {
     "freeChargers": "Carregamentos Gratis",
@@ -268,7 +317,7 @@
     "chargerClearCacheUnexpectedError": "Não posso limpar a cache da estação de carregamento",
     "chargerUnlockUnexpectedError": "Não posso desbloquear o conector",
     "heartBeatOkMessage": "'{{chargeBoxID}}' está a trabalhar corretamente e efetuou um reporte do seu estado a um minuto atrazo",
-    "heartBeatKoMessage": "'{{chargeBoxID}}' não está a trabalhar corretamente e não reportou o seu estado desde {{lastSeen}}",
+    "heartBeatKoMessage": "'{{chargeBoxID}}' is not working since {{lastSeen}}",
     "resetHard": "Reboot",
     "resetHardMessage": "Você quer mesmo fazer o reboot '{{chargeBoxID}}'?",
     "resetSoft": "Reset",
@@ -305,6 +354,7 @@
     "domestic": "Domestico"
   },
   "tags": {
+    "visualID": "Visual ID",
     "noTags": "No badges",
     "tags": "Badge(s)",
     "active": "Active",

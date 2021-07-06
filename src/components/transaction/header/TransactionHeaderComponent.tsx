@@ -1,4 +1,4 @@
-import { Icon, Text, View } from 'native-base';
+import { Text, View } from 'native-base';
 import React from 'react';
 
 import I18nManager from '../../../I18n/I18nManager';
@@ -12,7 +12,6 @@ export interface Props extends BaseProps {
   transaction: Transaction;
   isAdmin: boolean;
   isSiteAdmin: boolean;
-  displayNavigationIcon?: boolean;
   visible?: boolean;
 }
 
@@ -23,7 +22,6 @@ export default class TransactionHeaderComponent extends BaseScreen<Props, State>
 
   public constructor(props: Props) {
     super(props);
-    props.displayNavigationIcon = true;
     this.state = {
       isVisible: this.props.visible
     };
@@ -38,25 +36,18 @@ export default class TransactionHeaderComponent extends BaseScreen<Props, State>
 
   public render() {
     const style = computeStyleSheet();
-    const { transaction, isAdmin, isSiteAdmin, displayNavigationIcon } = this.props;
+    const { transaction, isAdmin, isSiteAdmin } = this.props;
     return (
       <View style={style.container}>
-        <View style={style.headerContent}>
-          <View style={style.rowContainer}>
-            <Text style={style.headerName}>{I18nManager.formatDateTime(transaction.timestamp)}</Text>
-          </View>
-          {displayNavigationIcon && <Icon style={style.icon} type="MaterialIcons" name="navigate-next" />}
-        </View>
-        <View style={style.subHeader}>
-          <Text numberOfLines={1} style={[style.subHeaderName, style.subHeaderNameLeft]}>
-            {transaction.chargeBoxID} - {Utils.getConnectorLetterFromConnectorID(transaction.connectorId)}
+        <Text style={style.transactionTimestamp}>{I18nManager.formatDateTime(transaction.timestamp)}</Text>
+        <Text numberOfLines={1} style={[style.subHeaderName, style.chargingStationName]}>
+          {transaction.chargeBoxID} - {Utils.getConnectorLetterFromConnectorID(transaction.connectorId)}
+        </Text>
+        {(isAdmin || isSiteAdmin) && transaction.user && (
+          <Text numberOfLines={1} style={[style.subHeaderName, style.userFullName]}>
+            {Utils.buildUserName(transaction.user)} ({transaction.user.email})
           </Text>
-          {(isAdmin || isSiteAdmin) && (
-            <Text numberOfLines={1} style={[style.subHeaderName, style.subHeaderNameRight]}>
-              {Utils.buildUserName(transaction.user)}
-            </Text>
-          )}
-        </View>
+        )}
       </View>
     );
   }

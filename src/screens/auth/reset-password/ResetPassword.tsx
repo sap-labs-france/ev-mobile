@@ -100,12 +100,12 @@ export default class ResetPassword extends BaseScreen<Props, State> {
     // Check field
     const formIsValid = Utils.validateInput(this, this.formValidationDef);
     if (formIsValid) {
-      const { tenantSubDomain, password, repeatPassword, hash } = this.state;
+      const { tenantSubDomain, password, hash } = this.state;
       try {
         // Loading
         this.setState({ loading: true });
         // Register
-        await this.centralServerProvider.resetPassword(tenantSubDomain, hash, { password, repeatPassword });
+        await this.centralServerProvider.resetPassword(tenantSubDomain, hash, password);
         // Clear user's credentials
         await this.centralServerProvider.clearUserPassword();
         // Reset
@@ -139,7 +139,7 @@ export default class ResetPassword extends BaseScreen<Props, State> {
               break;
             default:
               // Other common Error
-              Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.resetPasswordUnexpectedError');
+              await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.resetPasswordUnexpectedError');
           }
         } else {
           Message.showError(I18n.t('authentication.resetPasswordUnexpectedError'));

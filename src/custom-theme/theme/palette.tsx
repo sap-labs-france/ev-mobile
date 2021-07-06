@@ -35,9 +35,9 @@ export default {
   disabledLight: color(colorDisabled).lighten(darkLightRatio).hex(),
   disabledDark: color(colorDisabled).darken(darkLightRatio).hex(),
 
-  dark: '#000',
-  darkLight: '#333',
+  dark: '#000000',
+  darkLight: '#333333',
 
-  light: '#FFF',
-  lightDark: '#CCC'
+  light: '#FFFFFF',
+  lightDark: '#CCCCCC'
 };

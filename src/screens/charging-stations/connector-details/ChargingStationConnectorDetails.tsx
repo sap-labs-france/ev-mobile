@@ -1,20 +1,20 @@
 import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Icon, Spinner, Text, Thumbnail, View } from 'native-base';
+import { Container, Icon, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { Alert, Image, ImageStyle, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 
-import noPhotoActive from '../../../../assets/no-photo-active.png';
-import noPhoto from '../../../../assets/no-photo.png';
 import noSite from '../../../../assets/no-site.png';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
+import UserAvatar from '../../../components/user/avatar/UserAvatar';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
-import Transaction from '../../../types/Transaction';
-import User from '../../../types/User';
+import Transaction, { StartTransactionErrorCode } from '../../../types/Transaction';
+import { UserDefaultTagCar } from '../../../types/User';
+import UserToken from '../../../types/UserToken';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
@@ -35,7 +35,6 @@ interface State {
   canStartTransaction?: boolean;
   canStopTransaction?: boolean;
   canDisplayTransaction?: boolean;
-  userImage?: string;
   siteImage?: string;
   elapsedTimeFormatted?: string;
   totalInactivitySecs?: number;
@@ -44,32 +43,34 @@ interface State {
   isPricingActive?: boolean;
   buttonDisabled?: boolean;
   refreshing?: boolean;
+  userDefaultTagCar?: UserDefaultTagCar;
 }
 
 export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
+  private currentUser: UserToken;
 
   public constructor(props: Props) {
     super(props);
     this.state = {
       loading: true,
       chargingStation: null,
+      userDefaultTagCar: null,
       connector: null,
       transaction: null,
       isAdmin: false,
+      buttonDisabled: true,
       isSiteAdmin: false,
       canStartTransaction: false,
       canStopTransaction: false,
       canDisplayTransaction: false,
-      userImage: null,
       siteImage: null,
       elapsedTimeFormatted: '-',
       totalInactivitySecs: 0,
       inactivityFormatted: '-',
       startTransactionNbTrial: 0,
       isPricingActive: false,
-      buttonDisabled: true,
       refreshing: false
     };
   }
@@ -82,11 +83,13 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public async componentDidMount() {
-    await super.componentDidMount();
+    await super.componentDidMount(false);
     const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null, true) as boolean;
     if (startTransaction) {
       this.startTransactionConfirm();
     }
+    this.currentUser = this.centralServerProvider.getUserInfo();
+    await this.refresh();
   }
 
   public getSiteImage = async (siteID: string): Promise<string> => {
@@ -96,7 +99,13 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return siteImage;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'sites.siteUnexpectedError', this.props.navigation, this.refresh);
+      await Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'sites.siteUnexpectedError',
+        this.props.navigation,
+        this.refresh.bind(this)
+      );
     }
     return null;
   };
@@ -108,12 +117,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       return chargingStation;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
+      await Utils.handleHttpUnexpectedError(
         this.centralServerProvider,
         error,
         'chargers.chargerUnexpectedError',
         this.props.navigation,
-        this.refresh
+        this.refresh.bind(this)
       );
     }
     return null;
@@ -127,12 +136,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-        Utils.handleHttpUnexpectedError(
+        await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
           'transactions.transactionUnexpectedError',
           this.props.navigation,
-          this.refresh
+          this.refresh.bind(this)
         );
       }
     }
@@ -147,27 +156,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-        Utils.handleHttpUnexpectedError(
+        await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
           'transactions.transactionUnexpectedError',
           this.props.navigation,
-          this.refresh
+          this.refresh.bind(this)
         );
       }
-    }
-    return null;
-  };
-
-  public getUserImage = async (user: User): Promise<string> => {
-    try {
-      // User provided?
-      if (user) {
-        return await this.centralServerProvider.getUserImage({ ID: user.id });
-      }
-    } catch (error) {
-      // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'users.userUnexpectedError', this.props.navigation, this.refresh);
     }
     return null;
   };
@@ -207,10 +203,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   // eslint-disable-next-line complexity
   public refresh = async () => {
     let siteImage = null;
-    let userImage = null;
     let transaction = null;
     const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
-    const connectorID: number = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
+    const connectorID = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
     // Get Charger
     const chargingStation = await this.getChargingStation(chargingStationID);
     const connector = chargingStation ? Utils.getConnectorFromID(chargingStation, connectorID) : null;
@@ -221,30 +216,26 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     // Get Current Transaction
     if (connector && connector.currentTransactionID) {
       transaction = await this.getTransaction(connector.currentTransactionID);
-      if (transaction) {
-        // Get User Picture
-        if (!this.state.transaction || (transaction && transaction.id !== this.state.transaction.id)) {
-          userImage = await this.getUserImage(transaction.user);
-        }
-      }
     }
+    // Get Default Car/Tag
+    const userDefaultTagCar = await this.getUserDefaultTagAndCar();
     // Check to enable the buttons after a certain period of time
-    const startStopTransactionButtonStatus = this.getStartStopTransactionButtonStatus(connector);
-    // Compute Duration
+    const startStopTransactionButtonStatus = this.getStartStopTransactionButtonStatus(connector, userDefaultTagCar);
+    // // Compute Duration
     const durationInfos = this.getDurationInfos(transaction, connector);
     // Set
     this.setState({
       chargingStation,
       connector: chargingStation ? Utils.getConnectorFromID(chargingStation, connectorID) : null,
       transaction,
-      siteImage: siteImage ? siteImage : this.state.siteImage,
-      userImage: userImage ? userImage : transaction ? this.state.userImage : null,
+      userDefaultTagCar,
+      siteImage: siteImage ?? this.state.siteImage,
       isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
       isSiteAdmin:
         this.securityProvider && chargingStation && chargingStation.siteArea
           ? this.securityProvider.isSiteAdmin(chargingStation.siteArea.siteID)
           : false,
-      canDisplayTransaction: chargingStation ? this.canDisplayTransaction(chargingStation, connector) : false,
+      canDisplayTransaction: chargingStation ? this.securityProvider?.canReadTransaction() : false,
       canStartTransaction: chargingStation ? this.canStartTransaction(chargingStation, connector) : false,
       canStopTransaction: chargingStation ? this.canStopTransaction(chargingStation, connector) : false,
       isPricingActive: this.securityProvider?.isComponentPricingActive(),
@@ -263,23 +254,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     return false;
   };
 
-  public canStartTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
+  public canStartTransaction(chargingStation: ChargingStation, connector: Connector): boolean {
     // Transaction?
     if (connector && connector.currentTransactionID === 0) {
       // Check Auth
       return this.securityProvider?.canStartTransaction(chargingStation.siteArea);
     }
     return false;
-  };
-
-  public canDisplayTransaction = (chargingStation: ChargingStation, connector: Connector): boolean => {
-    // Transaction?
-    if (connector && connector.currentTransactionID !== 0) {
-      // Check Auth
-      return this.securityProvider?.canReadTransaction(chargingStation.siteArea, connector.currentTagID);
-    }
-    return false;
-  };
+  }
 
   public manualRefresh = async () => {
     // Display spinner
@@ -291,8 +273,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public startTransactionConfirm = () => {
-    const { chargingStation } = this.state;
-    Alert.alert(I18n.t('details.startTransaction'), I18n.t('details.startTransactionMessage', { chargeBoxID: chargingStation.id }), [
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
+    Alert.alert(I18n.t('details.startTransaction'), I18n.t('details.startTransactionMessage', { chargeBoxID: chargingStationID }), [
       { text: I18n.t('general.yes'), onPress: async () => this.startTransaction() },
       { text: I18n.t('general.no') }
     ]);
@@ -340,12 +322,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       // Enable the button
       this.setState({ buttonDisabled: false });
       // Other common Error
-      Utils.handleHttpUnexpectedError(
+      await Utils.handleHttpUnexpectedError(
         this.centralServerProvider,
         error,
         'transactions.transactionStartUnexpectedError',
         this.props.navigation,
-        this.refresh
+        this.refresh.bind(this)
       );
     }
   };
@@ -374,23 +356,31 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       }
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
+      await Utils.handleHttpUnexpectedError(
         this.centralServerProvider,
         error,
         'transactions.transactionStopUnexpectedError',
         this.props.navigation,
-        this.refresh
+        this.refresh.bind(this)
       );
     }
   };
 
-  public getStartStopTransactionButtonStatus(connector: Connector): { buttonDisabled?: boolean; startTransactionNbTrial?: number } {
+  public getStartStopTransactionButtonStatus(
+    connector: Connector,
+    userDefaultTagCar: UserDefaultTagCar
+  ): { buttonDisabled?: boolean; startTransactionNbTrial?: number } {
     const { startTransactionNbTrial } = this.state;
+    // Check if error codes
+    if (!Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
+      return {
+        buttonDisabled: true
+      };
+    }
     // Check if the Start/Stop Button should stay disabled
     if (
-      connector &&
-      ((connector.status === ChargePointStatus.AVAILABLE && startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
-        (connector.status === ChargePointStatus.PREPARING && startTransactionNbTrial === 0))
+      (connector?.status === ChargePointStatus.AVAILABLE && startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
+      (connector?.status === ChargePointStatus.PREPARING && startTransactionNbTrial === 0)
     ) {
       // Button are set to available after the nbr of trials
       return {
@@ -484,18 +474,17 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public renderUserInfo = (style: any) => {
-    const { userImage, transaction, isAdmin, isSiteAdmin } = this.state;
+    const { transaction } = this.state;
     return transaction ? (
       <View style={style.columnContainer}>
-        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhotoActive} />
+        <UserAvatar size={45} user={transaction.user} navigation={this.props.navigation} />
         <Text numberOfLines={1} style={[style.label, style.labelUser, style.info]}>
           {Utils.buildUserName(transaction.user)}
         </Text>
-        {(isAdmin || isSiteAdmin) && <Text style={[style.subLabel, style.subLabelUser, style.info]}>({transaction.tagID})</Text>}
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <Thumbnail style={[style.userImage]} source={userImage ? { uri: userImage } : noPhoto} />
+        <UserAvatar size={44} navigation={this.props.navigation} />
         <Text style={[style.label, style.disabled]}>-</Text>
       </View>
     );
@@ -719,13 +708,15 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         {/* Report Error */}
         {this.renderReportErrorButton(style)}
         {/* Start/Stop Transaction */}
-        {canStartTransaction && connector && connector.currentTransactionID === 0 ? (
+        {canStartTransaction && connector?.currentTransactionID === 0 ? (
           <View style={style.transactionContainer}>{this.renderStartTransactionButton(style)}</View>
-        ) : canStopTransaction && connector && connector.currentTransactionID > 0 ? (
+        ) : canStopTransaction && connector?.currentTransactionID > 0 ? (
           <View style={style.transactionContainer}>{this.renderStopTransactionButton(style)}</View>
         ) : (
           <View style={style.noButtonStopTransaction} />
         )}
+        {/* Error message */}
+        {this.renderErrorMessages(style)}
         {/* Details */}
         <ScrollView
           contentContainerStyle={style.scrollViewContainer}
@@ -749,5 +740,44 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         </ScrollView>
       </Container>
     );
+  }
+
+  private async getUserDefaultTagAndCar(): Promise<UserDefaultTagCar> {
+    try {
+      const currentUserId = this.currentUser?.id;
+      if (currentUserId) {
+        return this.centralServerProvider?.getUserDefaultTagCar(this.currentUser?.id);
+      }
+      return null;
+    } catch (error) {
+      await Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'invoices.chargerUnexpectedError',
+        this.props.navigation,
+        this.refresh.bind(this)
+      );
+    }
+    return null;
+  }
+
+  private renderErrorMessages(style: any) {
+    const { userDefaultTagCar } = this.state;
+    // No error
+    if (Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
+      return null;
+    }
+    // Check the error code
+    const errorCode = userDefaultTagCar.errorCodes[0];
+    let errorMessage: string;
+    switch (errorCode) {
+      case StartTransactionErrorCode.BILLING_NO_PAYMENT_METHOD:
+        errorMessage = I18n.t('transactions.noPaymentMethodError');
+        break;
+      default:
+        errorMessage = I18n.t('transactions.startTransactionDisabled');
+        break;
+    }
+    return <Text style={style.errorMessage}>{errorMessage}</Text>;
   }
 }

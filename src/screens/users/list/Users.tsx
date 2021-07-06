@@ -9,12 +9,12 @@ import ItemsList from '../../../components/list/ItemsList';
 import SimpleSearchComponent from '../../../components/search/simple/SimpleSearchComponent';
 import UserComponent from '../../../components/user/UserComponent';
 import I18nManager from '../../../I18n/I18nManager';
+import BaseScreen from '../../../screens/base-screen/BaseScreen';
 import BaseProps from '../../../types/BaseProps';
 import { DataResult } from '../../../types/DataResult';
 import User from '../../../types/User';
 import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
-import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './UsersStyle';
 
 export interface Props extends BaseProps {}
@@ -28,7 +28,7 @@ export interface State {
   loading?: boolean;
 }
 
-export default class Users extends BaseAutoRefreshScreen<Props, State> {
+export default class Users extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
@@ -45,13 +45,13 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
       refreshing: false,
       loading: true
     };
-    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   public async componentDidMount(): Promise<void> {
     this.userIDs = Utils.getParamFromNavigation(this.props.route, 'userIDs', null) as string[];
     this.title = Utils.getParamFromNavigation(this.props.route, 'title', null) as string;
     await super.componentDidMount();
+    await this.refresh();
   }
 
   public async getUsers(searchText: string, skip: number, limit: number): Promise<DataResult<User>> {
@@ -61,19 +61,17 @@ export default class Users extends BaseAutoRefreshScreen<Props, State> {
         UserID: this.userIDs?.join('|'),
         carName: this.title
       };
-      const users = await this.centralServerProvider.getUsers(params, { skip, limit });
-      // Check
+      const users = await this.centralServerProvider.getUsers(params, { skip, limit }, ['name']);
+      // Get total number of records
       if (users.count === -1) {
-        // Request nbr of records
         const usersNbrRecordsOnly = await this.centralServerProvider.getUsers(params, Constants.ONLY_RECORD_COUNT);
-        // Set
         users.count = usersNbrRecordsOnly.count;
       }
       return users;
     } catch (error) {
       // Check if HTTP?
       if (!error.request) {
-        Utils.handleHttpUnexpectedError(
+        await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
           'transactions.transactionUnexpectedError',

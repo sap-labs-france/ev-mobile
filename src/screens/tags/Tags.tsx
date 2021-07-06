@@ -9,13 +9,13 @@ import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import TagComponent from '../../components/tag/TagComponent';
 import I18nManager from '../../I18n/I18nManager';
+import BaseScreen from '../../screens/base-screen/BaseScreen';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
 import { HTTPAuthError } from '../../types/HTTPError';
 import Tag from '../../types/Tag';
 import Constants from '../../utils/Constants';
 import Utils from '../../utils/Utils';
-import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from '../transactions/TransactionsStyles';
 
 export interface Props extends BaseProps {}
@@ -29,7 +29,7 @@ interface State {
   loading?: boolean;
 }
 
-export default class Tags extends BaseAutoRefreshScreen<Props, State> {
+export default class Tags extends BaseScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
@@ -44,11 +44,11 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
       refreshing: false,
       loading: true
     };
-    this.setRefreshPeriodMillis(Constants.AUTO_REFRESH_LONG_PERIOD_MILLIS);
   }
 
   public async componentDidMount(): Promise<void> {
     await super.componentDidMount();
+    await this.refresh();
   }
 
   public setState = (
@@ -60,18 +60,22 @@ export default class Tags extends BaseAutoRefreshScreen<Props, State> {
 
   public async getTags(searchText: string, skip: number, limit: number): Promise<DataResult<Tag>> {
     try {
-      const tags = await this.centralServerProvider.getTags({ Search: searchText }, { skip, limit });
+      const params = {
+        Search: searchText,
+        WithUser: true
+      };
+      // Get the Tags
+      const tags = await this.centralServerProvider.getTags(params, { skip, limit }, ['-createdOn']);
+      // Get total number of records
       if (tags.count === -1) {
-        // Request nbr of records
-        const tagsNbrRecordsOnly = await this.centralServerProvider.getTags({ Search: searchText }, Constants.ONLY_RECORD_COUNT);
-        // Set
+        const tagsNbrRecordsOnly = await this.centralServerProvider.getTags(params, Constants.ONLY_RECORD_COUNT);
         tags.count = tagsNbrRecordsOnly.count;
       }
       return tags;
     } catch (error) {
       // Check if HTTP?
       if (!error.request || error.request.status !== HTTPAuthError.FORBIDDEN) {
-        Utils.handleHttpUnexpectedError(
+        await Utils.handleHttpUnexpectedError(
           this.centralServerProvider,
           error,
           'transactions.transactionUnexpectedError',

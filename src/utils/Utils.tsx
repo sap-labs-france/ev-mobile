@@ -2,18 +2,27 @@ import { NavigationContainerRef } from '@react-navigation/native';
 import { StatusCodes } from 'http-status-codes';
 import I18n from 'i18n-js';
 import _ from 'lodash';
-import { NativeModules, Platform } from 'react-native';
+import moment from 'moment';
+import { NativeModules, Platform, ViewStyle } from 'react-native';
 import { showLocation } from 'react-native-map-link';
-import Car, { CarCatalog } from 'types/Car';
 import validate from 'validate.js';
 
+import statusMarkerAvailable from '../../assets/icon/charging_station_available.png';
+import statusMarkerChargingOrOccupied from '../../assets/icon/charging_station_charging.png';
+import statusMarkerFaulted from '../../assets/icon/charging_station_faulted.png';
+import statusMarkerPreparingOrFinishing from '../../assets/icon/charging_station_finishing.png';
+import statusMarkerSuspended from '../../assets/icon/charging_station_suspended.png';
+import statusMarkerUnavailable from '../../assets/icon/charging_station_unavailable.png';
 import Configuration from '../config/Configuration';
 import { buildCommonColor } from '../custom-theme/customCommonColor';
 import ThemeManager from '../custom-theme/ThemeManager';
 import I18nManager from '../I18n/I18nManager';
 import CentralServerProvider from '../provider/CentralServerProvider';
 import Address from '../types/Address';
+import { BillingPaymentMethod, BillingPaymentMethodStatus } from '../types/Billing';
+import Car, { CarCatalog } from '../types/Car';
 import ChargingStation, { ChargePoint, ChargePointStatus, Connector, ConnectorType, CurrentType, Voltage } from '../types/ChargingStation';
+import ConnectorStats from '../types/ConnectorStats';
 import { KeyValue } from '../types/Global';
 import { RequestError } from '../types/RequestError';
 import { EndpointCloud } from '../types/Tenant';
@@ -53,10 +62,21 @@ export default class Utils {
 
   public static formatAddress(address: Address): string {
     const addresses: string[] = [];
-    if (address?.address1 && address?.address1.length > 0) {
+    if (address?.address1) {
       addresses.push(address.address1);
     }
-    if (address?.city && address?.city.length > 0) {
+    if (address?.address2) {
+      addresses.push(address.address2);
+    }
+    return addresses.join(', ');
+  }
+
+  public static formatAddress2(address: Address): string {
+    const addresses: string[] = [];
+    if (address?.postalCode) {
+      addresses.push(address.postalCode);
+    }
+    if (address?.city) {
       addresses.push(address.city);
     }
     return addresses.join(', ');
@@ -123,7 +143,7 @@ export default class Utils {
     return values;
   }
 
-  public static isEmptyArray(array: any[]): boolean {
+  public static isEmptyArray(array: any): boolean {
     if (!array) {
       return true;
     }
@@ -795,6 +815,32 @@ export default class Utils {
     }
   };
 
+  public static getOrganizationConnectorStatusesStyle(connectorStats: ConnectorStats, style: any): ViewStyle {
+    // No Connector available
+    if (connectorStats.availableConnectors === 0) {
+      // Some connectors will be soon available
+      if (connectorStats.finishingConnectors > 0 || connectorStats.suspendedConnectors > 0) {
+        return style.statusAvailableSoon;
+      } else {
+        return style.statusNotAvailable;
+      }
+    }
+    // Okay
+    return style.statusAvailable;
+  }
+
+  public static getTransactionInactivityStatusStyle(inactivityStatus: InactivityStatus, style: any): ViewStyle {
+    // No Connector available
+    switch (inactivityStatus) {
+      case InactivityStatus.ERROR:
+        return style.inactivityHigh;
+      case InactivityStatus.WARNING:
+        return style.inactivityMedium;
+      case InactivityStatus.INFO:
+        return style.inactivityLow;
+    }
+  }
+
   public static translateConnectorType = (type: string): string => {
     switch (type) {
       case ConnectorType.TYPE_2:
@@ -821,7 +867,7 @@ export default class Utils {
       case UserStatus.LOCKED:
         return I18n.t('userStatuses.locked');
       case UserStatus.BLOCKED:
-        return I18n.t('userStatuses.blocked');
+        return I18n.t('userStatuses.suspended');
       default:
         return I18n.t('userStatuses.unknown');
     }
@@ -840,6 +886,20 @@ export default class Utils {
       default:
         return I18n.t('userRoles.unknown');
     }
+  }
+
+  public static buildPaymentMethodStatus(paymentMethod: BillingPaymentMethod): BillingPaymentMethodStatus {
+    const expirationDate = moment(paymentMethod.expiringOn);
+    if (expirationDate) {
+      if (expirationDate.isBefore(moment())) {
+        return BillingPaymentMethodStatus.EXPIRED;
+      }
+      if (expirationDate.isBefore(moment().add(2, 'months'))) {
+        return BillingPaymentMethodStatus.EXPIRING_SOON;
+      }
+      return BillingPaymentMethodStatus.VALID;
+    }
+    return null;
   }
 
   public static formatDurationHHMMSS = (durationSecs: number, withSecs: boolean = true): string => {
@@ -864,7 +924,44 @@ export default class Utils {
     // Format
     return `${Utils.formatTimer(hours)}:${Utils.formatTimer(minutes)}`;
   };
-  
+
+  public static buildChargingStationStatusMarker(connectors: Connector[], inactive: boolean): any {
+    if (inactive) {
+      return statusMarkerUnavailable;
+    } else if (connectors.find((connector) => connector.status === ChargePointStatus.AVAILABLE)) {
+      return statusMarkerAvailable;
+    } else if (
+      connectors.find((connector) => connector.status === ChargePointStatus.FINISHING) ||
+      connectors.find((connector) => connector.status === ChargePointStatus.PREPARING)
+    ) {
+      return statusMarkerPreparingOrFinishing;
+    } else if (
+      connectors.find((connector) => connector.status === ChargePointStatus.CHARGING) ||
+      connectors.find((connector) => connector.status === ChargePointStatus.OCCUPIED)
+    ) {
+      return statusMarkerChargingOrOccupied;
+    } else if (
+      connectors.find((connector) => connector.status === ChargePointStatus.SUSPENDED_EVSE) ||
+      connectors.find((connector) => connector.status === ChargePointStatus.SUSPENDED_EV)
+    ) {
+      return statusMarkerSuspended;
+    } else if (connectors.find((connector) => connector.status === ChargePointStatus.FAULTED)) {
+      return statusMarkerFaulted;
+    }
+  }
+
+  public static buildSiteStatusMarker(connectorStats: ConnectorStats): any {
+    if (connectorStats.availableConnectors > 0) {
+      return statusMarkerAvailable;
+    } else if (connectorStats.chargingConnectors > 0) {
+      return statusMarkerChargingOrOccupied;
+    } else if (connectorStats.unavailableConnectors > 0) {
+      return statusMarkerUnavailable;
+    } else {
+      return statusMarkerUnavailable;
+    }
+  }
+
   private static formatTimer = (value: number): string => {
     // Put 0 next to the digit if lower than 10
     const valueStr = value.toString();

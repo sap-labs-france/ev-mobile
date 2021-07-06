@@ -3,9 +3,10 @@ import I18n from 'i18n-js';
 import { Container, Spinner, View } from 'native-base';
 import React from 'react';
 import { Platform } from 'react-native';
+import { ClusterMap } from 'react-native-cluster-map';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Location } from 'react-native-location';
-import MapView, { Marker, Region } from 'react-native-maps';
+import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
@@ -13,6 +14,7 @@ import HeaderComponent from '../../components/header/HeaderComponent';
 import ItemsList from '../../components/list/ItemsList';
 import SimpleSearchComponent from '../../components/search/simple/SimpleSearchComponent';
 import SiteComponent from '../../components/site/SiteComponent';
+import ThemeManager from '../../custom-theme/ThemeManager';
 import I18nManager from '../../I18n/I18nManager';
 import LocationManager from '../../location/LocationManager';
 import computeModalStyle from '../../ModalStyles';
@@ -51,6 +53,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   private currentLocation: Location;
   private locationEnabled: boolean;
   private currentRegion: Region;
+  private darkMapTheme = require('../../utils/map/google-maps-night-style.json');
 
   public constructor(props: Props) {
     super(props);
@@ -125,23 +128,33 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
       };
       // Get the Sites
-      const sites = await this.centralServerProvider.getSites(params, { skip, limit });
+      const sites = await this.centralServerProvider.getSites(params, { skip, limit }, ['name']);
+      // Get total number of records
       if (sites.count === -1) {
-        // Request nbr of records
         const sitesNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
-        // Set
         sites.count = sitesNbrRecordsOnly.count;
       }
       return sites;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'sites.siteUnexpectedError', this.props.navigation, this.refresh);
+      await Utils.handleHttpUnexpectedError(
+        this.centralServerProvider,
+        error,
+        'sites.siteUnexpectedError',
+        this.props.navigation,
+        this.refresh.bind(this)
+      );
     }
+    return null;
   };
 
   public onBack = () => {
     // Back mobile button: Force navigation
-    this.props.navigation.navigate('HomeNavigator');
+    if (this.state.showMap && !Utils.isEmptyArray(this.state.sites)) {
+      this.setState({ showMap: false });
+    } else {
+      this.props.navigation.goBack();
+    }
     // Do not bubble up
     return true;
   };
@@ -260,6 +273,8 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     const { navigation } = this.props;
     const { loading, skip, count, limit, initialFilters, showMap, siteSelected, refreshing, sites } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.sites);
+    const sitesWithGPSCoordinates = sites.filter((site) => Utils.containsAddressGPSCoordinates(site.address));
+    const isDarkModeEnabled = ThemeManager.getInstance()?.isThemeTypeIsDark();
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -290,21 +305,19 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
             />
             {mapIsDisplayed ? (
               <View style={style.map}>
-                <MapView style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
-                  {this.state.sites.map((site: Site) => {
-                    if (Utils.containsAddressGPSCoordinates(site.address)) {
-                      return (
-                        <Marker
-                          key={site.id}
-                          coordinate={{ longitude: site.address.coordinates[0], latitude: site.address.coordinates[1] }}
-                          title={site.name}
-                          onPress={() => this.showMapSiteDetail(site)}
-                        />
-                      );
-                    }
-                    return undefined;
-                  })}
-                </MapView>
+                {this.currentRegion && (
+                  <ClusterMap provider={'google'} style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
+                    {sitesWithGPSCoordinates.map((site: Site) => (
+                      <Marker
+                        image={Utils.buildSiteStatusMarker(site.connectorStats)}
+                        key={site.id}
+                        coordinate={{ longitude: site.address.coordinates[0], latitude: site.address.coordinates[1] }}
+                        title={site.name}
+                        onPress={() => this.showMapSiteDetail(site)}
+                      />
+                    ))}
+                  </ClusterMap>
+                )}
                 {siteSelected && this.buildModal(navigation, siteSelected, modalStyle)}
               </View>
             ) : (

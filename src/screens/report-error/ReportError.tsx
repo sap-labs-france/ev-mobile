@@ -109,7 +109,7 @@ export default class ReportError extends BaseScreen<Props, State> {
       return chargingStation;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
+      await Utils.handleHttpUnexpectedError(
         this.centralServerProvider,
         error,
         'chargingStations.chargingStationUnexpectedError',
@@ -142,7 +142,7 @@ export default class ReportError extends BaseScreen<Props, State> {
         // Check request?
         if (error.request) {
           // Other common Error
-          Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.reportErrorFailed');
+          await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.reportErrorFailed');
         } else {
           Message.showError(I18n.t('authentication.reportErrorFailed'));
         }

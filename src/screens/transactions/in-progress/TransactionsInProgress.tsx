@@ -82,36 +82,26 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
 
   public getTransactionsInProgress = async (searchText: string, skip: number, limit: number): Promise<DataResult<Transaction>> => {
     try {
+      const params = {
+        UserID: this.state.filters.userID,
+        Search: searchText
+      };
       // Get the Transactions
-      const transactions = await this.centralServerProvider.getTransactionsActive(
-        {
-          UserID: this.state.filters.userID,
-          Search: searchText
-        },
-        { skip, limit }
-      );
-      // Check
+      const transactions = await this.centralServerProvider.getTransactionsActive(params, { skip, limit }, ['-timestamp']);
+      // Get total number of records
       if (transactions.count === -1) {
-        // Request nbr of records
-        const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactionsActive(
-          {
-            UserID: this.state.filters.userID,
-            Search: searchText
-          },
-          Constants.ONLY_RECORD_COUNT
-        );
-        // Set
+        const transactionsNbrRecordsOnly = await this.centralServerProvider.getTransactionsActive(params, Constants.ONLY_RECORD_COUNT);
         transactions.count = transactionsNbrRecordsOnly.count;
       }
       return transactions;
     } catch (error) {
       // Other common Error
-      Utils.handleHttpUnexpectedError(
+      await Utils.handleHttpUnexpectedError(
         this.centralServerProvider,
         error,
         'transactions.transactionUnexpectedError',
         this.props.navigation,
-        this.refresh
+        this.refresh.bind(this)
       );
     }
     return null;
@@ -128,9 +118,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
     // Component Mounted?
     if (this.isMounted()) {
       const { skip, limit } = this.state;
-      // Refresh All
+      // Get transactions
       const transactions = await this.getTransactionsInProgress(this.searchText, 0, skip + limit);
-      // Refresh Admin
       // Set
       this.setState({
         loading: false,
@@ -166,19 +155,8 @@ export default class TransactionsInProgress extends BaseAutoRefreshScreen<Props,
   public render = () => {
     const style = computeStyleSheet();
     const { navigation } = this.props;
-    const {
-      loading,
-      isAdmin,
-      hasSiteAdmin,
-      transactions,
-      isPricingActive,
-      skip,
-      count,
-      limit,
-      initialFilters,
-      filters,
-      refreshing
-    } = this.state;
+    const { loading, isAdmin, hasSiteAdmin, transactions, isPricingActive, skip, count, limit, initialFilters, filters, refreshing } =
+      this.state;
     return (
       <Container style={style.container}>
         <HeaderComponent

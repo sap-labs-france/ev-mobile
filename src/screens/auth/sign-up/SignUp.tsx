@@ -154,7 +154,7 @@ export default class SignUp extends BaseScreen<Props, State> {
     // Check field
     const formIsValid = Utils.validateInput(this, this.formValidationDef);
     if (formIsValid) {
-      const { tenantSubDomain, name, firstName, email, password, repeatPassword, eula, captcha } = this.state;
+      const { tenantSubDomain, name, firstName, email, password, eula, captcha } = this.state;
       try {
         // Loading
         this.setState({ loading: true });
@@ -165,7 +165,7 @@ export default class SignUp extends BaseScreen<Props, State> {
           firstName,
           email,
           Utils.getDeviceDefaultSupportedLocale(),
-          { password, repeatPassword },
+          password,
           eula,
           captcha
         );
@@ -205,7 +205,7 @@ export default class SignUp extends BaseScreen<Props, State> {
               break;
             default:
               // Other common Error
-              Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.registerUnexpectedError');
+              await Utils.handleHttpUnexpectedError(this.centralServerProvider, error, 'authentication.registerUnexpectedError');
           }
         } else {
           Message.showError(I18n.t('authentication.registerUnexpectedError'));
