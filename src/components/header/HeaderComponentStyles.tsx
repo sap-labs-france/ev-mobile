@@ -33,12 +33,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     titleHeader: {
       width: '90%',
       color: commonColor.textColor,
-      fontSize: '19@s'
+      fontSize: '19@s',
+      textAlign: 'center'
     },
     titleHeaderWithSubTitle: {
-      width: '90%',
-      fontSize: '16@s',
-      textAlign: 'center'
+      fontSize: '16@s'
     },
     subTitleHeader: {
       color: commonColor.textColor,
