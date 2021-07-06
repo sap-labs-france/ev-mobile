@@ -21,7 +21,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       },
       shadowOpacity: 0.23,
       shadowRadius: 3.62,
-      elevation: 11,
+      elevation: 11
     },
     siteContent: {
       width: '100%',
@@ -100,7 +100,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'center',
       paddingTop: '12@s',
-      paddingBottom: '12@s',
+      paddingBottom: '12@s'
     },
     icon: {
       color: commonColor.headerTextColor

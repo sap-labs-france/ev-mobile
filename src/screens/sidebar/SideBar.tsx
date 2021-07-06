@@ -174,11 +174,7 @@ export default class SideBar extends BaseScreen<Props, State> {
               </ListItem>
             )}
             {this.securityProvider?.canListInvoices() && this.securityProvider?.isComponentBillingActive() && (
-              <ListItem
-                style={style.links}
-                button={true}
-                iconLeft={true}
-                onPress={() => this.navigateTo('InvoicesNavigator', 'Invoices')}>
+              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('InvoicesNavigator', 'Invoices')}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="receipt" />
                 <Text style={style.linkText}>{I18n.t('sidebar.invoices')}</Text>
               </ListItem>

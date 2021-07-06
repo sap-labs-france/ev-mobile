@@ -96,8 +96,13 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
     });
   }
 
-  public async getTransactions(searchText: string, skip: number, limit: number,
-      startDateTime: Date, endDateTime: Date): Promise<TransactionDataResult> {
+  public async getTransactions(
+    searchText: string,
+    skip: number,
+    limit: number,
+    startDateTime: Date,
+    endDateTime: Date
+  ): Promise<TransactionDataResult> {
     try {
       const params = {
         Statistics: 'history',

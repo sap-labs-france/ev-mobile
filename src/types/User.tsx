@@ -1,7 +1,7 @@
 import Address from './Address';
+import Car from './Car';
 import CreatedUpdatedProps from './CreatedUpdatedProps';
 import ListItem from './ListItem';
-import Car from './Car';
 import Tag from './Tag';
 import { StartTransactionErrorCode } from './Transaction';
 

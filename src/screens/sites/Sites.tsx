@@ -306,11 +306,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
             {mapIsDisplayed ? (
               <View style={style.map}>
                 {this.currentRegion && (
-                  <ClusterMap
-                    provider={'google'}
-                    style={style.map}
-                    region={this.currentRegion}
-                    onRegionChange={this.onMapRegionChange}>
+                  <ClusterMap provider={'google'} style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
                     {sitesWithGPSCoordinates.map((site: Site) => (
                       <Marker
                         image={Utils.buildSiteStatusMarker(site.connectorStats)}

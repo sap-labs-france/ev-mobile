@@ -40,7 +40,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     spinner: {
       color: commonColor.brandDisabledDark,
-      paddingTop: '15@s',
+      paddingTop: '15@s'
     },
     buttonDisabled: {
       opacity: 0.4
@@ -84,7 +84,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       padding: '5@s',
       fontSize: '12@s',
       opacity: 1
-    },
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};

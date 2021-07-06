@@ -141,8 +141,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       chargingStations = await this.centralServerProvider.getChargingStations(params, { skip, limit }, ['id']);
       // Get total number of records
       if (chargingStations.count === -1) {
-        const chargingStationsNbrRecordsOnly =
-          await this.centralServerProvider.getChargingStations(params, Constants.ONLY_RECORD_COUNT);
+        const chargingStationsNbrRecordsOnly = await this.centralServerProvider.getChargingStations(params, Constants.ONLY_RECORD_COUNT);
         chargingStations.count = chargingStationsNbrRecordsOnly.count;
       }
     } catch (error) {

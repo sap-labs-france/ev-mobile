@@ -10,8 +10,7 @@ import User from '../../../types/User';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UserAvatarStyle';
 
-interface State {
-}
+interface State {}
 
 export interface Props extends BaseProps {
   user?: User;
@@ -36,8 +35,7 @@ export default class UserAvatar extends React.Component<Props, State> {
     this.centralServerProvider = await ProviderFactory.getProvider();
   }
 
-  public async componentDidUpdate() {
-  }
+  public async componentDidUpdate() {}
 
   public setState = (
     state: State | ((prevState: Readonly<State>, props: Readonly<Props>) => State | Pick<State, never>) | Pick<State, never>,

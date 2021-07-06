@@ -366,7 +366,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
   };
 
-  public getStartStopTransactionButtonStatus(connector: Connector, userDefaultTagCar: UserDefaultTagCar): { buttonDisabled?: boolean; startTransactionNbTrial?: number } {
+  public getStartStopTransactionButtonStatus(
+    connector: Connector,
+    userDefaultTagCar: UserDefaultTagCar
+  ): { buttonDisabled?: boolean; startTransactionNbTrial?: number } {
     const { startTransactionNbTrial } = this.state;
     // Check if error codes
     if (!Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
@@ -375,8 +378,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       };
     }
     // Check if the Start/Stop Button should stay disabled
-    if ((connector?.status === ChargePointStatus.AVAILABLE && (startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2)) ||
-        (connector?.status === ChargePointStatus.PREPARING && startTransactionNbTrial === 0)) {
+    if (
+      (connector?.status === ChargePointStatus.AVAILABLE && startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
+      (connector?.status === ChargePointStatus.PREPARING && startTransactionNbTrial === 0)
+    ) {
       // Button are set to available after the nbr of trials
       return {
         buttonDisabled: false
