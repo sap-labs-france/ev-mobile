@@ -131,6 +131,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         Issuer: true,
         ConnectorStatus: filters.connectorStatus,
         ConnectorType: filters.connectorType,
+        WithSiteArea: true,
         LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
         LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
         LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
