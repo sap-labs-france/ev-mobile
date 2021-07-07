@@ -106,16 +106,8 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         connector,
         isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false,
         isSiteAdmin:
-          this.securityProvider && chargingStation && chargingStation.siteArea
-            ? this.securityProvider?.isSiteAdmin(chargingStation.siteArea.siteID)
-            : false,
-        canDisplayTransaction: chargingStation
-          ? this.canDisplayTransaction(
-              transactionWithConsumptions ? transactionWithConsumptions.transaction : null,
-            chargingStation,
-            connector
-          )
-          : false,
+          this.securityProvider && chargingStation?.siteArea ? this.securityProvider?.isSiteAdmin(chargingStation.siteArea.siteID) : false,
+        canDisplayTransaction: chargingStation ? this.securityProvider?.canReadTransaction() : false,
         ...transactionWithConsumptions
       });
     }
@@ -212,15 +204,6 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       consumptionValues: null,
       stateOfChargeValues: null
     };
-  };
-
-  public canDisplayTransaction = (transaction: Transaction, chargingStation: ChargingStation, connector: Connector): boolean => {
-    // Transaction?
-    if (chargingStation) {
-      // Check Auth
-      return this.securityProvider?.canReadTransaction(chargingStation.siteArea, transaction ? transaction.tagID : connector.currentTagID);
-    }
-    return false;
   };
 
   public createChart(consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[]) {

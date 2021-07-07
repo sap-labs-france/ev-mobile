@@ -22,6 +22,7 @@ import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
 import { GlobalFilters } from '../../types/Filter';
+import Site from '../../types/Site';
 import SiteArea from '../../types/SiteArea';
 import Constants from '../../utils/Constants';
 import SecuredStorage from '../../utils/SecuredStorage';
@@ -50,7 +51,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   public state: State;
   public props: Props;
   private searchText: string;
-  private siteID: string;
+  private site: Site;
   private currentLocation: Location;
   private locationEnabled: boolean;
   private currentRegion: Region;
@@ -83,7 +84,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
     // Get initial filters
     await this.loadInitialFilters();
     // Get initial filters
-    this.siteID = Utils.getParamFromNavigation(this.props.route, 'siteID', null) as string;
+    this.site = Utils.getParamFromNavigation(this.props.route, 'site', null) as unknown as Site;
     await super.componentDidMount();
   }
 
@@ -119,7 +120,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       this.currentLocation = await this.getCurrentLocation();
       const params = {
         Search: searchText,
-        SiteID: this.siteID,
+        SiteID: this.site?.id,
         Issuer: true,
         WithAvailableChargers: true,
         LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
@@ -127,11 +128,10 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
       };
       // Get the Site Areas
-      const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit });
+      const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit }, ['name']);
+      // Get total number of records
       if (siteAreas.count === -1) {
-        // Request nbr of records
         const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
-        // Set
         siteAreas.count = sitesAreasNbrRecordsOnly.count;
       }
       return siteAreas;
@@ -145,6 +145,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
         this.refresh.bind(this)
       );
     }
+    return null;
   };
 
   public onBack = () => {
@@ -277,7 +278,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       <Container style={style.container}>
         <HeaderComponent
           navigation={navigation}
-          title={I18n.t('siteAreas.title')}
+          title={this.site?.name}
           subTitle={count > 0 ? `${I18nManager.formatNumber(count)} ${I18n.t('siteAreas.siteAreas')}` : null}
           leftAction={this.onBack}
           leftActionIcon={'navigate-before'}

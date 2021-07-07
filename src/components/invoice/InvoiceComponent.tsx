@@ -1,28 +1,25 @@
 import I18n from 'i18n-js';
-import { Card, CardItem, Icon, Spinner } from 'native-base';
+import { Card, CardItem, Icon } from 'native-base';
 import React from 'react';
 import { ActivityIndicator, Alert, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { scale } from 'react-native-size-matters';
 
 import I18nManager from '../../I18n/I18nManager';
 import CentralServerProvider from '../../provider/CentralServerProvider';
 import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { BillingInvoice, BillingInvoiceStatus } from '../../types/Billing';
-import { DataResult } from '../../types/DataResult';
-import User from '../../types/User';
+import Message from '../../utils/Message';
 import Utils from '../../utils/Utils';
 import Chip from '../chip/Chip';
 import computeChipStyleSheet from '../chip/ChipStyle';
 import computeStyleSheet from './InvoiceComponentStyles';
-import Message from '../../utils/Message';
-import { scale } from 'react-native-size-matters';
 
 export interface Props extends BaseProps {
   invoice: BillingInvoice;
 }
 
 interface State {
-  user: User;
   downloading: boolean;
 }
 
@@ -33,13 +30,13 @@ export default class InvoiceComponent extends React.Component<Props, State> {
 
   public constructor(props: Props) {
     super(props);
-    this.state = { user: null, downloading: false };
+    this.state = {
+      downloading: false
+    };
   }
 
   public async componentDidMount() {
     this.centralServerProvider = await ProviderFactory.getProvider();
-    const user = await this.getUser();
-    this.setState({ user });
   }
 
   public render() {
@@ -47,22 +44,20 @@ export default class InvoiceComponent extends React.Component<Props, State> {
     const commonColor = Utils.getCurrentCommonColor();
     const { invoice, navigation } = this.props;
     const invoiceAmount = invoice.amount && invoice.amount / 100;
-    const { user, downloading } = this.state;
+    const { downloading } = this.state;
     return (
-      <Card style={style.invoiceContainer}>
+      <Card style={style.container}>
         <CardItem style={style.invoiceContent}>
-          <View style={[this.buildStatusIndicatorStyle(invoice.status), style.statusIndicator]} />
-          <View style={style.invoiceInfosContainer}>
+          <View style={[this.buildStatusIndicatorStyle(invoice.status, style), style.statusIndicator]} />
+          <View style={style.invoiceContainer}>
             <View style={style.leftContainer}>
-              <View style={style.userInfosContainer}>
-                <Text numberOfLines={1} style={[style.text, style.userName]}>
-                  {Utils.buildUserName(user)}
+              <View style={style.invoiceDetailsContainer}>
+                <Text numberOfLines={1} style={[style.text, style.invoiceCreatedOn]}>
+                  {I18nManager.formatDateTime(invoice.createdOn)}
                 </Text>
                 <Text numberOfLines={1} style={style.text}>
-                  {user?.email}
+                  {invoice.number}
                 </Text>
-              </View>
-              <View style={style.invoiceDetailsContainer}>
                 <View style={style.transactionContainer}>
                   <Text numberOfLines={1} style={[style.text, style.sessionsCount]}>
                     {invoice.sessions?.length}
@@ -73,13 +68,17 @@ export default class InvoiceComponent extends React.Component<Props, State> {
                     </Text>
                   )}
                 </View>
-                <Text numberOfLines={1} style={style.text}>
-                  {invoice.number}
-                </Text>
-                <Text numberOfLines={1} style={style.text}>
-                  {I18nManager.formatDateTime(invoice.createdOn)}
-                </Text>
               </View>
+              {invoice.user && (
+                <View style={style.userContainer}>
+                  <Text numberOfLines={1} style={[style.text, style.userName]}>
+                    {Utils.buildUserName(invoice.user)}
+                  </Text>
+                  <Text numberOfLines={1} style={style.text}>
+                    {invoice.user.email}
+                  </Text>
+                </View>
+              )}
             </View>
             <View style={style.rightContainer}>
               <View style={style.invoiceStatusContainer}>
@@ -110,12 +109,6 @@ export default class InvoiceComponent extends React.Component<Props, State> {
     );
   }
 
-  private async getUser(): Promise<User> {
-    const { invoice } = this.props;
-    const result: DataResult<User> = await this.centralServerProvider.getUsers({ UserID: invoice.userID });
-    return result?.result?.[0];
-  }
-
   private buildStatus(invoiceStatus: BillingInvoiceStatus): string {
     switch (invoiceStatus) {
       case BillingInvoiceStatus.DRAFT:
@@ -124,44 +117,53 @@ export default class InvoiceComponent extends React.Component<Props, State> {
         return I18n.t('invoiceStatus.unpaid');
       case BillingInvoiceStatus.PAID:
         return I18n.t('invoiceStatus.paid');
+      case BillingInvoiceStatus.VOID:
+        return I18n.t('invoiceStatus.void');
+      case BillingInvoiceStatus.DELETED:
+        return I18n.t('invoiceStatus.deleted');
+      case BillingInvoiceStatus.UNCOLLECTIBLE:
+        return I18n.t('invoiceStatus.uncollectible');
     }
   }
 
   private buildStatusStyle(invoiceStatus: BillingInvoiceStatus): ViewStyle {
     const chipStyle = computeChipStyleSheet();
     switch (invoiceStatus) {
-      case BillingInvoiceStatus.DRAFT:
-        return chipStyle.default;
       case BillingInvoiceStatus.OPEN:
+      case BillingInvoiceStatus.UNCOLLECTIBLE:
         return chipStyle.danger;
+      case BillingInvoiceStatus.DELETED:
+      case BillingInvoiceStatus.VOID:
+        return chipStyle.warning;
       case BillingInvoiceStatus.PAID:
         return chipStyle.success;
+      default:
+        return chipStyle.default;
     }
   }
 
-  private buildStatusIndicatorStyle(invoiceStatus: BillingInvoiceStatus): ViewStyle {
-    const style = computeStyleSheet();
+  private buildStatusIndicatorStyle(invoiceStatus: BillingInvoiceStatus, style: any): ViewStyle {
     switch (invoiceStatus) {
-      case BillingInvoiceStatus.DRAFT:
-        return style.statusDraft;
       case BillingInvoiceStatus.OPEN:
-        return style.statusUnpaid;
+      case BillingInvoiceStatus.UNCOLLECTIBLE:
+        return style.statusOpenOrUncollectible;
+      case BillingInvoiceStatus.DELETED:
+      case BillingInvoiceStatus.VOID:
+        return style.statusDeletedOrVoid;
       case BillingInvoiceStatus.PAID:
         return style.statusPaid;
+      default:
+        return style.statusDefault;
     }
   }
 
   private downloadInvoiceConfirm() {
     const { invoice } = this.props;
-    const { user } = this.state;
     const invoiceDate = I18nManager.formatDateTime(invoice.createdOn);
     Alert.alert(
       I18n.t('invoices.downloadInvoiceTitle'),
-      I18n.t('invoices.downloadInvoiceSubtitle',
-        { user: Utils.buildUserName(user), invoiceDate }),
-        [
-          { text: I18n.t('general.yes'),onPress: async () => this.downloadInvoice() },
-          { text: I18n.t('general.cancel') }]
+      I18n.t('invoices.downloadInvoiceSubtitle', { user: Utils.buildUserName(invoice.user), invoiceDate }),
+      [{ text: I18n.t('general.yes'), onPress: async () => this.downloadInvoice() }, { text: I18n.t('general.cancel') }]
     );
   }
 
@@ -171,14 +173,15 @@ export default class InvoiceComponent extends React.Component<Props, State> {
     try {
       await this.centralServerProvider.downloadInvoice(invoice);
       Message.showSuccess(`${I18n.t('invoices.downloadedSuccessfully')}!`);
-      this.setState({ downloading: false });
     } catch (error) {
-      Utils.handleHttpUnexpectedError(
+      await Utils.handleHttpUnexpectedError(
         this.centralServerProvider,
         error,
         'paymentMethods.paymentMethodUnexpectedError',
         this.props.navigation
       );
+    } finally {
+      this.setState({ downloading: false });
     }
   }
 }

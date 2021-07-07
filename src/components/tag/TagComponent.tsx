@@ -1,6 +1,7 @@
 import I18n from 'i18n-js';
+import { Card, CardItem } from 'native-base';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, ViewStyle } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import Tag from '../../types/Tag';
@@ -40,32 +41,46 @@ export default class TagComponent extends React.Component<Props, State> {
     const userFullName = Utils.buildUserName(tag?.user);
     const statusStyle = tag?.active ? chipStyle.success : chipStyle.danger;
     return (
-      <View style={selected ? [style.container, style.selected] : [style.container]}>
-        <View style={style.header}>
-          <View style={style.tagIdConstainer}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagId]}>
-              {tag?.id}
-            </Text>
-          </View>
-          {isAdmin && tag.user && (
-            <View style={style.userConstainer}>
-              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.fullName]}>
-                {userFullName}
-              </Text>
+      <Card style={selected ? [style.container, style.selected] : [style.container]}>
+        <CardItem style={[style.tagContent]}>
+          <View style={[this.buildStatusIndicatorStyle(tag.active, style), style.statusIndicator]} />
+          <View style={style.tagContainer}>
+            <View style={style.leftContainer}>
+              <View style={style.tagDescriptionContainer}>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagDescription]}>
+                  {tag?.description}
+                </Text>
+              </View>
+              {isAdmin && (
+                <View style={style.userConstainer}>
+                  <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.fullName]}>
+                    {userFullName}
+                  </Text>
+                </View>
+              )}
+              <View style={style.tagVisualIDContainer}>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.tagVisualID]}>
+                  {I18n.t('tags.visualID')}: {tag?.visualID}
+                </Text>
+              </View>
             </View>
-          )}
-        </View>
-        <View style={style.tagContainer}>
-          <View style={style.labelContainer}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.description]}>
-              {tag?.description}
-            </Text>
+            <View style={style.rightContainer}>
+              <View style={style.tagContainer}>
+                <View style={style.statusContainer}>
+                  <Chip statusStyle={statusStyle} text={I18n.t(tag?.active ? 'tags.active' : 'tags.inactive')} navigation={navigation} />
+                </View>
+              </View>
+            </View>
           </View>
-          <View style={style.statusContainer}>
-            <Chip statusStyle={statusStyle} text={I18n.t(tag?.active ? 'tags.active' : 'tags.inactive')} navigation={navigation} />
-          </View>
-        </View>
-      </View>
+        </CardItem>
+      </Card>
     );
+  }
+
+  private buildStatusIndicatorStyle(tagIsActive: boolean, style: any): ViewStyle {
+    if (tagIsActive) {
+      return style.statusActive;
+    }
+    return style.statusInactive;
   }
 }

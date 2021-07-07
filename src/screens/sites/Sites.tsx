@@ -128,11 +128,10 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
       };
       // Get the Sites
-      const sites = await this.centralServerProvider.getSites(params, { skip, limit });
+      const sites = await this.centralServerProvider.getSites(params, { skip, limit }, ['name']);
+      // Get total number of records
       if (sites.count === -1) {
-        // Request nbr of records
         const sitesNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
-        // Set
         sites.count = sitesNbrRecordsOnly.count;
       }
       return sites;
@@ -146,6 +145,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
         this.refresh.bind(this)
       );
     }
+    return null;
   };
 
   public onBack = () => {
@@ -306,12 +306,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
             {mapIsDisplayed ? (
               <View style={style.map}>
                 {this.currentRegion && (
-                  <ClusterMap
-                    provider={'google'}
-                    customMapStyle={isDarkModeEnabled && this.darkMapTheme}
-                    style={style.map}
-                    region={this.currentRegion}
-                    onRegionChange={this.onMapRegionChange}>
+                  <ClusterMap provider={'google'} style={style.map} region={this.currentRegion} onRegionChange={this.onMapRegionChange}>
                     {sitesWithGPSCoordinates.map((site: Site) => (
                       <Marker
                         image={Utils.buildSiteStatusMarker(site.connectorStats)}

@@ -5,49 +5,95 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
-/**
- *
- */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
     container: {
       flex: 1,
-      flexDirection: 'column',
-      borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor
+      width: '97%',
+      alignSelf: 'center',
+      borderColor: 'transparent',
+      backgroundColor: commonColor.listHeaderBgColor,
+      shadowColor: commonColor.cardShadowColor,
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 3.62,
+      elevation: 11,
+      marginBottom: '8@s'
     },
-    headerContent: {
-      flexDirection: 'row',
+    siteAreaContent: {
+      width: '100%',
+      height: '100%',
       justifyContent: 'space-between',
+      backgroundColor: commonColor.listHeaderBgColor,
+      flexDirection: 'row',
+      margin: 0,
+      flex: 1,
+      paddingLeft: 0,
+      paddingTop: 0,
+      paddingBottom: 0,
+      paddingRight: 0
+    },
+    siteAreaContainer: {
+      flexDirection: 'row',
+      flex: 1,
+      justifyContent: 'space-between',
+      padding: '5@s',
       alignItems: 'center',
-      height: '40@s',
-      borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor,
-      backgroundColor: commonColor.listHeaderBgColor
+      height: '100%'
+    },
+    leftContainer: {
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      height: '100%',
+      flex: 1
+    },
+    rightContainer: {
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+      justifyContent: 'center',
+      width: '20@s',
+      height: '100%'
+    },
+    statusIndicator: {
+      height: '100%',
+      width: '5@s'
+    },
+    statusNotAvailable: {
+      backgroundColor: commonColor.brandDanger
+    },
+    statusAvailableSoon: {
+      backgroundColor: commonColor.brandWarning
+    },
+    statusAvailable: {
+      backgroundColor: commonColor.brandSuccess
     },
     titleContainer: {
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      width: '80%'
+      width: '100%'
     },
-    subHeaderContent: {
+    subTitleContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      height: '25@s',
+      width: '100%',
       paddingRight: '5@s',
-      paddingLeft: '5@s',
-      borderBottomWidth: 1,
-      borderBottomColor: commonColor.listBorderColor
+      paddingLeft: '5@s'
     },
     address: {
       color: commonColor.headerTextColor,
-      fontSize: '12@s'
+      width: '80%',
+      fontSize: '13@s'
     },
     headerName: {
       marginLeft: '5@s',
+      width: '90%',
       fontSize: '20@s',
       fontWeight: 'bold',
       color: commonColor.headerTextColor
@@ -56,9 +102,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'center',
       paddingTop: '12@s',
-      paddingBottom: '12@s',
-      borderBottomWidth: 1,
-      borderBottomColor: commonColor.brandPrimaryDark
+      paddingBottom: '12@s'
     },
     icon: {
       fontSize: '30@s',
@@ -68,7 +112,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '30@s'
     },
     iconLeft: {
-      marginLeft: '10@s',
       fontSize: '30@s'
     },
     iconRight: {

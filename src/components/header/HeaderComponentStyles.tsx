@@ -5,9 +5,6 @@ import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
 
-/**
- *
- */
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
@@ -34,8 +31,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center'
     },
     titleHeader: {
+      width: '90%',
       color: commonColor.textColor,
-      fontSize: '19@s'
+      fontSize: '19@s',
+      textAlign: 'center'
     },
     titleHeaderWithSubTitle: {
       fontSize: '16@s'
@@ -54,6 +53,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     iconLeftHeader: {
       fontSize: '30@s',
+      color: commonColor.textColor,
+      width: '35@s'
+    },
+    mapListIcon: {
+      fontSize: '25@s',
       color: commonColor.textColor,
       width: '35@s'
     },
