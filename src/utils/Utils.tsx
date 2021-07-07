@@ -962,6 +962,10 @@ export default class Utils {
     }
   }
 
+  public static concatenateStrings(...args: string[]): string {
+    return args.join('');
+  }
+
   private static formatTimer = (value: number): string => {
     // Put 0 next to the digit if lower than 10
     const valueStr = value.toString();
