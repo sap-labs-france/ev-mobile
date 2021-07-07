@@ -124,6 +124,8 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public getChargingStations = async (searchText: string, skip: number, limit: number): Promise<DataResult<ChargingStation>> => {
     let chargingStations: DataResult<ChargingStation>;
     const { filters } = this.state;
+    // Get current location
+    this.currentLocation = await this.getCurrentLocation();
     try {
       const params = {
         Search: searchText,
@@ -136,8 +138,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
         LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
         LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
       };
-      // Get current location
-      this.currentLocation = await this.getCurrentLocation();
       // Get with the Site Area
       chargingStations = await this.centralServerProvider.getChargingStations(params, { skip, limit }, ['id']);
       // Get total number of records
@@ -203,6 +203,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
+      this.setState({ refreshing: true });
       const { skip, limit } = this.state;
       // Refresh All
       const chargingStations = await this.getChargingStations(this.searchText, 0, skip + limit);
@@ -213,6 +214,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       // Add ChargingStations
       this.setState(() => ({
         loading: false,
+        refreshing: false,
         chargingStations: chargingStations ? chargingStations.result : [],
         count: chargingStations ? chargingStations.count : 0,
         isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false

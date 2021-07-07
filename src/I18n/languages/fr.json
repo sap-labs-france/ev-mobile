@@ -329,7 +329,7 @@
     "clearCache": "Effacer le Cache",
     "clearCacheMessage": "Voulez-vous vraiment le cache de '{{chargeBoxID}}'?",
     "noChargers": "Aucune Borne trouvée",
-    "properties": "Propriétées",
+    "properties": "Propriétés",
     "ocpp": "OCPP",
     "actions": "Actions",
     "noSession": "Aucune Session",
