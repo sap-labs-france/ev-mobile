@@ -70,6 +70,7 @@ android/app/*.keystore
 
 # VisualStudioCode
 .vscode/*
+!.vscode/settings-template.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
