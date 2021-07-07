@@ -813,9 +813,9 @@ export default class CentralServerProvider {
   public async getUser(id: string): Promise<User> {
     this.debugMethod('getUser');
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.USER}`, {
-      headers: this.buildSecuredHeaders(),
-      params: { ID: id }
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_USER, { id });
+    const result = await this.axiosInstance.get(url, {
+      headers: this.buildSecuredHeaders()
     });
     return result.data;
   }
