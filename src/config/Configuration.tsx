@@ -1,4 +1,3 @@
-import ConfigurationData from '../../assets/config.json';
 import { EndpointCloud } from '../types/Tenant';
 
 export default class Configuration {
@@ -18,8 +17,21 @@ export default class Configuration {
 
   public static isServerLocalePreferred = true;
 
+  public static DEV_ENDPOINT_CLOUDS = [
+    {
+      id: '127.0.0.1:8020',
+      name: '127.0.0.1:8020',
+      endpoint: 'http://127.0.0.1:8020'
+    },
+    {
+      id: '10.0.2.2:8020',
+      name: 'android-local:8020',
+      endpoint: 'http://10.0.2.2:8020'
+    }
+  ];
+
   public static readonly DEVELOPMENT_ENDPOINT_CLOUDS: EndpointCloud[] = [
     ...Configuration.ENDPOINT_CLOUDS,
-    ...(ConfigurationData?.developmentEndpointClouds ?? [])
+    ...Configuration.DEV_ENDPOINT_CLOUDS
   ];
 }
