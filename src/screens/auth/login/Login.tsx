@@ -101,7 +101,6 @@ export default class Login extends BaseScreen<Props, State> {
     let email = (this.state.email = '');
     let password = (this.state.password = '');
     let tenant: TenantConnection;
-    let tenantLogo: string;
     // Get tenants
     this.tenants = await this.centralServerProvider.getTenants();
     if (Utils.isEmptyArray(this.tenants)) {
@@ -137,9 +136,7 @@ export default class Login extends BaseScreen<Props, State> {
       }
     }
     // Get logo
-    if (tenant) {
-      tenantLogo = await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
-    }
+    const tenantLogo = await this.getTenantLogo(tenant);
     // Set
     this.setState(
       {
@@ -153,6 +150,17 @@ export default class Login extends BaseScreen<Props, State> {
       async () => this.checkAutoLogin(tenant, email, password)
     );
   }
+
+  public getTenantLogo = async (tenant: TenantConnection): Promise<string> => {
+    try {
+      if (tenant) {
+        return await this.centralServerProvider.getTenantLogoBySubdomain(tenant);
+      }
+    } catch (error) {
+      // Tenant has no logo
+    }
+    return null;
+  };
 
   public async componentDidFocus() {
     super.componentDidFocus();
