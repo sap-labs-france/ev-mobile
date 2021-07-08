@@ -340,7 +340,7 @@
     "charging": "In Carica",
     "available": "Disponibile",
     "unavailable": "Non Disponibile",
-    "notCharging": "Inattiva",
+    "notCharging": "Not charging",
     "suspendedEV": "EV Sospeso",
     "suspendedEVSE": "EVSE Sospeso",
     "faulted": "Difettosa",
