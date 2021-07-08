@@ -340,7 +340,7 @@
     "charging": "Lädt",
     "available": "Verfügbar",
     "unavailable": "Unverfügbar",
-    "notCharging": "Inaktiv",
+    "notCharging": "Not charging",
     "suspendedEV": "EV angehalten",
     "suspendedEVSE": "EVSE angehalten",
     "faulted": "Fehlerhaft",

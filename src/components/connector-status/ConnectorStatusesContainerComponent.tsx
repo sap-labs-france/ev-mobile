@@ -40,13 +40,13 @@ export default class ConnectorStatusesContainerComponent extends React.Component
           value={connectorStats.unavailableConnectors + connectorStats.faultedConnectors}
           status={ChargePointStatus.UNAVAILABLE}
         />
+        <ConnectorStatusComponent navigation={navigation} value={connectorStats.chargingConnectors} status={ChargePointStatus.CHARGING} />
         <ConnectorStatusComponent
           navigation={navigation}
           value={connectorStats.suspendedConnectors + connectorStats.finishingConnectors + connectorStats.preparingConnectors}
           text={'connector.notCharging'}
           status={ChargePointStatus.SUSPENDED_EVSE}
         />
-        <ConnectorStatusComponent navigation={navigation} value={connectorStats.chargingConnectors} status={ChargePointStatus.CHARGING} />
       </View>
     );
   }
