@@ -80,19 +80,19 @@ export default class ChargingStationsFilters extends ScreenFilters {
               onlyAvailableChargingStationSwitchFilterControlComponent: OnlyAvailableChargingStationSwitchFilterControlComponent
             ) => this.addVisibleFilter(onlyAvailableChargingStationSwitchFilterControlComponent)}
           />
-          {locationEnabled && (
-            <LocationSwitchFilterControlComponent
-              filterID={'location'}
-              internalFilterID={GlobalFilters.LOCATION}
-              initialValue={filters.hasOwnProperty('location') ? filters.location : initialFilters.location}
-              label={I18n.t('general.location')}
-              onFilterChanged={async (id: string, value: boolean) => this.getFilterVisibleContainerComponent().setFilter(id, value)}
-              ref={async (locationSwitchFilterControlComponent: LocationSwitchFilterControlComponent) =>
-                this.addVisibleFilter(locationSwitchFilterControlComponent)
-              }
-            />
-          )}
           <Animatable.View style={style.filtersHidden} ref={this.setExpandableView}>
+            {locationEnabled && (
+              <LocationSwitchFilterControlComponent
+                filterID={'location'}
+                internalFilterID={GlobalFilters.LOCATION}
+                initialValue={filters.hasOwnProperty('location') ? filters.location : initialFilters.location}
+                label={I18n.t('general.location')}
+                onFilterChanged={async (id: string, value: boolean) => this.getFilterVisibleContainerComponent().setFilter(id, value)}
+                ref={async (locationSwitchFilterControlComponent: LocationSwitchFilterControlComponent) =>
+                  this.addVisibleFilter(locationSwitchFilterControlComponent)
+                }
+              />
+            )}
             <ConnectorTypeFilterControlComponent
               filterID={'connectorType'}
               internalFilterID={GlobalFilters.CONNECTOR_TYPES}

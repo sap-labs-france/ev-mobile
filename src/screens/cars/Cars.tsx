@@ -62,7 +62,7 @@ export default class Cars extends BaseScreen<Props, State> {
     try {
       const params = {
         Search: searchText,
-        WithUsers: true
+        WithUser: true
       };
       const cars = await this.centralServerProvider.getCars(params, { skip, limit });
       // Get total number of records
