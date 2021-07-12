@@ -1,7 +1,7 @@
 import I18n from 'i18n-js';
-import { Card, CardItem } from 'native-base';
+import { Card, CardItem, Icon } from 'native-base';
 import React from 'react';
-import { Text, View, ViewStyle } from 'react-native';
+import { Text, View } from 'react-native';
 
 import BaseProps from '../../types/BaseProps';
 import Tag from '../../types/Tag';
@@ -43,7 +43,16 @@ export default class TagComponent extends React.Component<Props, State> {
     return (
       <Card style={selected ? [style.container, style.selected] : [style.container]}>
         <CardItem style={[style.tagContent]}>
-          <View style={[this.buildStatusIndicatorStyle(tag.active, style), style.statusIndicator]} />
+          <View style={style.test}>
+            <View style={style.iconContainer}>
+              <Icon style={style.icon} type={'FontAwesome'} name={'plug'}></Icon>
+            </View>
+            {tag.default && (
+              <View style={style.defaultContainer}>
+                <Text style={style.badgeText}>{I18n.t('general.default')}</Text>
+              </View>
+            )}
+          </View>
           <View style={style.tagContainer}>
             <View style={style.leftContainer}>
               <View style={style.tagDescriptionContainer}>
@@ -51,8 +60,8 @@ export default class TagComponent extends React.Component<Props, State> {
                   {tag?.description}
                 </Text>
               </View>
-              {isAdmin && (
-                <View style={style.userConstainer}>
+              {isAdmin && tag.user && (
+                <View style={style.userContainer}>
                   <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.fullName]}>
                     {userFullName}
                   </Text>
@@ -65,22 +74,13 @@ export default class TagComponent extends React.Component<Props, State> {
               </View>
             </View>
             <View style={style.rightContainer}>
-              <View style={style.tagContainer}>
-                <View style={style.statusContainer}>
-                  <Chip statusStyle={statusStyle} text={I18n.t(tag?.active ? 'tags.active' : 'tags.inactive')} navigation={navigation} />
-                </View>
+              <View style={style.statusContainer}>
+                <Chip statusStyle={statusStyle} text={I18n.t(tag?.active ? 'tags.active' : 'tags.inactive')} navigation={navigation} />
               </View>
             </View>
           </View>
         </CardItem>
       </Card>
     );
-  }
-
-  private buildStatusIndicatorStyle(tagIsActive: boolean, style: any): ViewStyle {
-    if (tagIsActive) {
-      return style.statusActive;
-    }
-    return style.statusInactive;
   }
 }
