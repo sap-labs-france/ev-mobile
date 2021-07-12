@@ -26,6 +26,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       elevation: 11,
       marginBottom: '8@s'
     },
+    selected: {
+      opacity: 0.5
+    },
     tagContent: {
       width: '100%',
       height: '100%',
@@ -39,31 +42,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingBottom: 0,
       paddingRight: 0
     },
-    tagContainer: {
-      flexDirection: 'row',
-      flex: 1,
-      padding: '5@s',
-      height: '100%',
-      justifyContent: 'space-between',
-      alignItems: 'center'
-    },
     leftContainer: {
       flexDirection: 'column',
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-      height: '100%',
-      flex: 1
-    },
-    rightContainer: {
-      flexDirection: 'column',
-      alignItems: 'flex-end',
-      justifyContent: 'flex-start',
-      width: '80@s',
-      height: '100%'
-    },
-    statusIndicator: {
-      height: '100%',
-      width: '5@s'
+      alignItems: 'center',
+      justifyContent: 'center'
     },
     // Card ratio 1.585
     iconContainer: {
@@ -79,10 +61,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center',
       justifyContent: 'center'
     },
-    test: {
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center'
+    icon: {
+      color: commonColor.textColor,
+      fontSize: '30@s'
     },
     defaultContainer: {
       backgroundColor: commonColor.brandDisabledDark,
@@ -97,25 +78,17 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingVertical: '1@s',
       paddingHorizontal: '3@s'
     },
-    icon: {
-      color: commonColor.textColor,
-      fontSize: '30@s'
+    middleContainer: {
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+      height: '100%',
+      paddingVertical: '5@s',
+      marginLeft: '5@s',
+      flex: 1
     },
-    statusInactive: {
-      backgroundColor: commonColor.brandDanger
-    },
-    statusActive: {
-      backgroundColor: commonColor.brandSuccess
-    },
-    selected: {
-      opacity: 0.5
-    },
-    userContainer: {
-      marginTop: '3@s'
-    },
-    tagVisualIDContainer: {
-      marginTop: '3@s',
-      width: '100%'
+    tagDescriptionContainer: {
+      flexDirection: 'row'
     },
     text: {
       fontSize: '13@s',
@@ -126,21 +99,40 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontWeight: 'bold',
       width: '100%'
     },
-    tagVisualID: {
-      fontSize: '11@s',
-      alignSelf: 'flex-start',
-      width: '100%'
+    userContainer: {
+      marginTop: '3@s'
     },
     fullName: {
       fontSize: '12@s',
       alignSelf: 'flex-end'
     },
-    tagDescriptionContainer: {
-      flexDirection: 'row'
+    tagVisualIDContainer: {
+      marginTop: '3@s',
+      width: '100%'
+    },
+    tagVisualID: {
+      fontSize: '11@s',
+      alignSelf: 'flex-start',
+      width: '100%'
+    },
+    rightContainer: {
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+      justifyContent: 'flex-start',
+      width: '80@s',
+      paddingVertical: '5@s',
+      paddingRight: '5@s',
+      height: '100%'
     },
     statusContainer: {
       marginBottom: '2@s'
-    }
+    },
+    statusInactive: {
+      backgroundColor: commonColor.brandDanger
+    },
+    statusActive: {
+      backgroundColor: commonColor.brandSuccess
+    },
   });
   const portraitStyles = {};
   const landscapeStyles = {};
