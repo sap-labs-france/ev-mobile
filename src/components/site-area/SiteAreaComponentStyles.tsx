@@ -88,7 +88,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     address: {
       color: commonColor.headerTextColor,
-      width: '80%',
+      width: '100%',
       fontSize: '13@s'
     },
     headerName: {

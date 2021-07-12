@@ -63,13 +63,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '5@s'
     },
     statusNotAvailable: {
-      backgroundColor: commonColor.brandDanger
+      backgroundColor: commonColor.danger
     },
     statusAvailableSoon: {
-      backgroundColor: commonColor.brandWarning
+      backgroundColor: commonColor.warning
     },
     statusAvailable: {
-      backgroundColor: commonColor.brandSuccess
+      backgroundColor: commonColor.success
     },
     titleContainer: {
       flexDirection: 'row',
@@ -87,7 +87,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     address: {
       color: commonColor.headerTextColor,
-      width: '80%',
+      width: '100%',
       fontSize: '13@s'
     },
     headerName: {

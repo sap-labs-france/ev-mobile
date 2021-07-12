@@ -41,7 +41,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       right: '2@s'
     },
     pending: {
-      backgroundColor: commonColor.brandWarningLight
+      backgroundColor: commonColor.warningLight
     },
     inactive: {
       backgroundColor: commonColor.danger

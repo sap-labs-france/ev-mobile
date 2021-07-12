@@ -50,16 +50,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '5@s'
     },
     statusOpenOrUncollectible: {
-      backgroundColor: commonColor.brandDanger
+      backgroundColor: commonColor.danger
     },
     statusPaid: {
-      backgroundColor: commonColor.brandSuccess
+      backgroundColor: commonColor.success
     },
     statusDeletedOrVoid: {
-      backgroundColor: commonColor.brandWarning
+      backgroundColor: commonColor.warning
     },
     statusDefault: {
-      backgroundColor: commonColor.brandDisabledDark
+      backgroundColor: commonColor.disabledDark
     },
     leftContainer: {
       flexDirection: 'column',

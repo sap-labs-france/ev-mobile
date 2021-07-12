@@ -102,7 +102,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
     return {
       backgroundColor: commonColors.buttonBg,
       textColor: commonColors.textColor,
-      placeholderColor: commonColors.brandDisabledDark,
+      placeholderColor: commonColors.disabledDark,
       cursorColor: commonColors.textColor,
       fontSize: Math.round(scale(15))
     };
@@ -137,7 +137,7 @@ export default function StripePaymentMethodCreationForm(props: Props) {
       <View style={style.buttonContainer}>
         {loading ? (
           <View style={style.spinner}>
-            <Spinner color={commonColors.brandDisabledDark} />
+            <Spinner color={commonColors.disabledDark} />
           </View>
         ) : (
           <Button
