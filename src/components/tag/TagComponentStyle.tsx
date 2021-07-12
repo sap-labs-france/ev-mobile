@@ -11,6 +11,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     container: {
       flex: 1,
       width: '97%',
+      height: '80@s',
       alignSelf: 'center',
       borderColor: 'transparent',
       backgroundColor: commonColor.listHeaderBgColor,
@@ -23,6 +24,9 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       shadowRadius: 3.62,
       elevation: 11,
       marginBottom: '8@s'
+    },
+    selected: {
+      opacity: 0.5
     },
     tagContent: {
       width: '100%',
@@ -37,69 +41,90 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingBottom: 0,
       paddingRight: 0
     },
-    tagContainer: {
-      flexDirection: 'row',
-      flex: 1,
-      justifyContent: 'space-between',
-      padding: '10@s',
-      alignItems: 'center',
-      height: '100%'
-    },
     leftContainer: {
       flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    // Card ratio 1.585
+    iconContainer: {
+      borderColor: commonColor.containerBgColor,
+      backgroundColor: commonColor.containerBgColor,
+      marginHorizontal: '1@s',
+      borderWidth: 1,
+      paddingVertical: '4@s',
+      flexDirection: 'column',
+      borderRadius: '5@s',
+      width: '70@s',
+      height: '45@s',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    icon: {
+      color: commonColor.textColor,
+      fontSize: '30@s'
+    },
+    defaultContainer: {
+      backgroundColor: commonColor.brandDisabledDark,
+      borderRadius: '2@s',
+      width: '70@s',
+      marginTop: '4@s'
+    },
+    badgeText: {
+      fontSize: '10@s',
+      textAlign: 'center',
+      color: commonColor.brandLight,
+      paddingVertical: '1@s',
+      paddingHorizontal: '3@s'
+    },
+    middleContainer: {
+      flexDirection: 'column',
       alignItems: 'flex-start',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
       height: '100%',
+      paddingVertical: '5@s',
+      marginLeft: '5@s',
       flex: 1
     },
-    rightContainer: {
-      flexDirection: 'column',
-      alignItems: 'flex-end',
-      justifyContent: 'space-between',
-      width: '90@s',
-      height: '100%'
-    },
-    statusIndicator: {
-      height: '100%',
-      width: '5@s'
-    },
-    statusInactive: {
-      backgroundColor: commonColor.brandDanger
-    },
-    statusActive: {
-      backgroundColor: commonColor.brandSuccess
-    },
-    selected: {
-      opacity: 0.5
-    },
-    userConstainer: {
-      marginTop: '3@s'
-    },
-    tagVisualIDContainer: {
-      marginTop: '3@s'
+    tagDescriptionContainer: {
+      flexDirection: 'row'
     },
     text: {
       fontSize: '13@s',
       color: commonColor.textColor
     },
     tagDescription: {
-      fontSize: '15@s',
-      fontWeight: 'bold'
+      fontSize: '12@s',
+      fontWeight: 'bold',
+      width: '100%'
+    },
+    userContainer: {
+      marginTop: '3@s'
+    },
+    fullName: {
+      fontSize: '12@s',
+      alignSelf: 'flex-end'
+    },
+    tagVisualIDContainer: {
+      marginTop: '3@s',
+      width: '100%'
     },
     tagVisualID: {
       fontSize: '11@s',
-      alignSelf: 'flex-start'
-    },
-    fullName: {
-      fontSize: '15@s',
-      alignSelf: 'flex-end'
-    },
-    tagDescriptionContainer: {
+      alignSelf: 'flex-start',
       width: '100%'
     },
+    rightContainer: {
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+      justifyContent: 'flex-start',
+      width: '80@s',
+      paddingVertical: '5@s',
+      paddingRight: '5@s',
+      height: '100%'
+    },
     statusContainer: {
-      alignSelf: 'flex-start',
-      height: '22@s'
+      marginBottom: '2@s'
     }
   });
   const portraitStyles = {};
