@@ -21,7 +21,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
         height: 2
       },
       shadowOpacity: 0.23,
-      opacity: 82,
       shadowRadius: 3.62,
       elevation: 11,
       marginBottom: '8@s'
@@ -126,13 +125,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     statusContainer: {
       marginBottom: '2@s'
-    },
-    statusInactive: {
-      backgroundColor: commonColor.brandDanger
-    },
-    statusActive: {
-      backgroundColor: commonColor.brandSuccess
-    },
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};
