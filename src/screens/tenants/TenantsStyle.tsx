@@ -48,7 +48,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     trashIconButton: {
       height: '100%',
       width: '50@s',
-      backgroundColor: commonColor.brandDanger,
+      backgroundColor: commonColor.danger,
       justifyContent: 'center',
       alignItems: 'center'
     },

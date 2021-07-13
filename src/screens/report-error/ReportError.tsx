@@ -197,7 +197,7 @@ export default class ReportError extends BaseScreen<Props, State> {
           }}
           rightActionIcon={'menu'}
         />
-        <ScrollView style={style.container}>
+        <View style={style.container}>
           <View style={style.iconContainer}>
             <Icon style={style.reportErrorIcon} type="MaterialIcons" name="error-outline" />
           </View>
@@ -270,12 +270,12 @@ export default class ReportError extends BaseScreen<Props, State> {
                 </Text>
               ))}
             <View style={style.buttonContainer}>
-              <Button style={style.sendButton} block onPress={async () => this.sendErrorReport()} danger>
+              <Button style={style.sendButton} block onPress={async () => this.sendErrorReport()}>
                 <Text style={style.sendTextButton}>{I18n.t('general.send')}</Text>
               </Button>
             </View>
           </Form>
-        </ScrollView>
+        </View>
       </Animatable.View>
     );
   }

@@ -42,6 +42,12 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     actionButtonText: {
       fontSize: '18@s'
+    },
+    resetButton: {
+      backgroundColor: commonColor.danger
+    },
+    warningButton: {
+      backgroundColor: commonColor.warning
     }
   });
   const portraitStyles = {};

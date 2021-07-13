@@ -15,9 +15,17 @@ export default interface ThemeDefinition {
   buttonBg: string;
   success: string;
   warning: string;
+  warningLight: string;
+  warningDark: string;
   danger: string;
+  dangerLight: string;
   info: string;
   primary: string;
+  light: string;
+  primaryDark: string;
+  primaryLight: string;
   disabled: string;
+  disabledLight: string;
+  disabledDark: string;
   touchableBackgroundColor: string;
 }

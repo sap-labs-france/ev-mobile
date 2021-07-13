@@ -1,12 +1,21 @@
 import palette from './palette';
 
-// Dark theme
+// Light theme
 export default {
+  infoLight: palette.infoLight,
+  primaryLight: palette.primaryLight,
+  dangerLight: palette.dangerLight,
+  disabledLight: palette.disabledLight,
+  disabledDark: palette.disabledDark,
   success: palette.success,
   warning: palette.warning,
+  warningLight: palette.warningLight,
+  warningDark: palette.warningDark,
   danger: palette.danger,
   info: palette.info,
+  light: palette.light,
   primary: palette.primary,
+  primaryDark: palette.primaryDark,
   disabled: palette.disabled,
   backgroundHeader: palette.light,
   listBackgroundHeader: palette.disabled,

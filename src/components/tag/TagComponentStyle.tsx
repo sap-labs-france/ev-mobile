@@ -65,7 +65,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       fontSize: '30@s'
     },
     defaultContainer: {
-      backgroundColor: commonColor.brandDisabledDark,
+      backgroundColor: commonColor.disabledDark,
       borderRadius: '2@s',
       width: '70@s',
       marginTop: '4@s'
@@ -73,7 +73,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     badgeText: {
       fontSize: '10@s',
       textAlign: 'center',
-      color: commonColor.brandLight,
+      color: commonColor.light,
       paddingVertical: '1@s',
       paddingHorizontal: '3@s'
     },

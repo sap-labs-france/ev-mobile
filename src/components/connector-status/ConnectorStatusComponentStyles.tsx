@@ -3,21 +3,10 @@ import { StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
-import ThemeManager from '../../custom-theme/ThemeManager';
 import Utils from '../../utils/Utils';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
-  const darkTheme = ThemeManager.getInstance().isThemeTypeIsDark();
-  const connectorSuccessColor = darkTheme ? commonColor.brandSuccessLight : commonColor.brandSuccess;
-  const connectorWarningColor = darkTheme ? commonColor.brandWarningLight : commonColor.brandWarning;
-  const connectorWarningBorderColor = darkTheme ? commonColor.brandWarning : commonColor.brandWarningDark;
-  const connectorDangerColor = darkTheme ? commonColor.brandDangerLight : commonColor.brandDanger;
-  const connectorDangerBorderColor = darkTheme ? commonColor.brandDanger : commonColor.brandDangerDark;
-  const connectorDisabledColor = darkTheme ? commonColor.brandDisabledLight : commonColor.brandDisabledDark;
-  const connectorDisabledBorderColor = darkTheme ? commonColor.brandDisabled : commonColor.brandDisabledDark;
-  const connectorPrimaryColor = darkTheme ? commonColor.brandPrimaryLight : commonColor.brandPrimary;
-  const connectorPrimaryBorderColor = darkTheme ? commonColor.brandPrimary : commonColor.brandPrimaryDark;
   const commonStyles = ScaledSheet.create({
     containerWithDescription: {
       height: '60@s',
@@ -56,82 +45,82 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     faultedConnector: {
-      backgroundColor: connectorDangerColor,
-      borderColor: connectorDangerBorderColor
+      backgroundColor: commonColor.dangerLight,
+      borderColor: commonColor.danger
     },
     faultedConnectorValue: {},
     faultedConnectorDescription: {
-      color: connectorDangerColor
+      color: commonColor.dangerLight
     },
     availableConnector: {
-      borderColor: connectorSuccessColor
+      borderColor: commonColor.success
     },
     availableConnectorValue: {
-      color: connectorSuccessColor
+      color: commonColor.success
     },
     availableConnectorDescription: {
-      color: connectorSuccessColor
+      color: commonColor.success
     },
     suspendedConnector: {
-      backgroundColor: connectorPrimaryColor,
-      borderColor: connectorPrimaryBorderColor
+      backgroundColor: commonColor.primary,
+      borderColor: commonColor.primaryDark
     },
     suspendedConnectorValue: {
-      color: commonColor.brandLight
+      color: commonColor.light
     },
     suspendedConnectorDescription: {
-      color: connectorPrimaryColor
+      color: commonColor.primary
     },
     preparingConnector: {
-      backgroundColor: connectorWarningColor,
-      borderColor: connectorWarningBorderColor
+      backgroundColor: commonColor.warning,
+      borderColor: commonColor.warningDark
     },
     preparingConnectorValue: {
-      color: commonColor.brandLight
+      color: commonColor.light
     },
     preparingConnectorDescription: {
-      color: connectorWarningColor
+      color: commonColor.warning
     },
     finishingConnector: {
-      backgroundColor: connectorWarningColor,
-      borderColor: connectorWarningBorderColor
+      backgroundColor: commonColor.warning,
+      borderColor: commonColor.warningDark
     },
     finishingConnectorValue: {
-      color: commonColor.brandLight
+      color: commonColor.light
     },
     finishingConnectorDescription: {
-      color: connectorWarningColor
+      color: commonColor.warning
     },
     unavailableConnector: {
-      borderColor: connectorDisabledBorderColor
+      borderColor: commonColor.disabledDark
     },
     unavailableConnectorValue: {
-      color: connectorDisabledColor
+      color: commonColor.disabledDark
     },
     unavailableConnectorDescription: {
-      color: connectorDisabledColor
+      color: commonColor.disabledDark
     },
     reservedConnector: {
-      backgroundColor: connectorDisabledColor,
-      borderColor: connectorDisabledBorderColor
+      backgroundColor: commonColor.disabled,
+      borderColor: commonColor.disabledDark
     },
     reservedConnectorValue: {
-      color: commonColor.brandLight
+      color: commonColor.disabledDark
     },
     reservedConnectorDescription: {
-      color: connectorDisabledColor
+      color: commonColor.disabledDark
     },
     chargingConnector: {
-      backgroundColor: commonColor.brandPrimary,
-      borderColor: commonColor.brandInfoLight,
-      borderTopColor: commonColor.brandPrimary,
-      borderBottomColor: commonColor.brandPrimary
+      backgroundColor: commonColor.primary,
+      borderColor: commonColor.primary,
+      borderTopColor: commonColor.primaryLight,
+      borderBottomColor: commonColor.primaryLight
     },
     chargingConnectorValue: {
-      color: commonColor.brandLight
+      color: commonColor.light
     },
     chargingConnectorDescription: {
-      color: connectorPrimaryColor
+      color: commonColor.primary
     }
   });
   const portraitStyles = {};
