@@ -86,6 +86,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     modalPickerField: {
+      marginTop: Platform.OS === 'ios' ? -4 : 0,
       fontSize: '14@s',
       color: commonColor.textColor
     },
