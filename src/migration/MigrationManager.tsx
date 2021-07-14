@@ -8,7 +8,7 @@ import Utils from '../utils/Utils';
 
 export default class MigrationManager {
   private static instance: MigrationManager;
-  private currentMigrationVersion = '1.3';
+  private currentMigrationVersion = '1.31';
   private centralServerProvider: CentralServerProvider;
 
   // eslint-disable-next-line no-useless-constructor
@@ -54,11 +54,10 @@ export default class MigrationManager {
           tenants.splice(i, 1);
           continue;
         }
-        // TODO: Uncomment these lines + Increase the migration version when Proviridis will have switched to AWS
         // Proviridis: Switch cloud
-        // if (tenant.subdomain === 'proviridis') {
-        //   tenant.endpoint = Configuration.AWS_REST_ENDPOINT_PROD;
-        // }
+        if (tenant.subdomain === 'proviridis') {
+          tenant.endpoint = Configuration.AWS_REST_ENDPOINT_PROD;
+        }
       }
     }
     // Save
