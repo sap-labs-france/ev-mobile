@@ -179,7 +179,10 @@ export default class Login extends BaseScreen<Props, State> {
           password: null
         });
       } else {
+        // Get logo
+        const tenantLogo = await this.getTenantLogo(tenant);
         this.setState({
+          tenantLogo,
           tenantSubDomain,
           tenantName: tenant.name
         });

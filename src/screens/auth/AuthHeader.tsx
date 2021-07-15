@@ -38,8 +38,10 @@ export default class AuthHeader extends BaseScreen<Props, State> {
     return (
       <View style={style.header}>
         <Image style={style.logo as ImageStyle} source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} />
-        <Text style={style.appText}>e-Mobility</Text>
-        <Text style={style.appVersionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
+        <View>
+          <Text style={style.appText}>Open e-Mobility</Text>
+          <Text style={style.appVersionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
+        </View>
         {tenantName ? (
           <View>
             <Text style={style.appTenant}>{I18n.t('authentication.tenantTitle')}</Text>

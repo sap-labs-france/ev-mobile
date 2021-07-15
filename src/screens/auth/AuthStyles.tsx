@@ -25,7 +25,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     header: {
       flex: 1,
       flexDirection: 'column',
-      justifyContent: 'center',
+      justifyContent: 'space-evenly',
       alignItems: 'center'
     },
     logo: {
@@ -36,12 +36,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     appText: {
       color: commonColor.textColor,
-      fontSize: '40@s',
+      fontSize: '35@s',
       fontWeight: 'bold',
-      paddingTop: '5@s'
+      marginTop: '15@s'
     },
     appVersionText: {
       color: commonColor.textColor,
+      alignSelf: 'center',
       fontSize: '15@s'
     },
     appTenant: {
