@@ -107,6 +107,7 @@ export default class TransactionsHistory extends BaseScreen<Props, State> {
       const params = {
         Statistics: 'history',
         UserID: this.state.filters.userID,
+        WithUser: true,
         StartDateTime: startDateTime ? startDateTime.toISOString() : null,
         EndDateTime: endDateTime ? endDateTime.toISOString() : null,
         Search: searchText

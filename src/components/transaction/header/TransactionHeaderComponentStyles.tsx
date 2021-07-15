@@ -22,7 +22,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.headerTextColor
     },
     chargingStationName: {
-      fontSize: '18@s'
+      fontSize: '16@s'
     },
     userFullName: {
       fontSize: '13@s'

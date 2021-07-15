@@ -659,6 +659,7 @@ export default class CentralServerProvider {
     params.ConnectorId = connectorId.toString();
     params.Limit = '1';
     params.Skip = '0';
+    params.Status = 'completed';
     params.SortFields = '-timestamp';
     const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_TRANSACTIONS, { id: chargingStationID });
     // Call

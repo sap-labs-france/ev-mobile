@@ -124,9 +124,9 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public getChargingStations = async (searchText: string, skip: number, limit: number): Promise<DataResult<ChargingStation>> => {
     let chargingStations: DataResult<ChargingStation>;
     const { filters } = this.state;
-    // Get current location
-    this.currentLocation = await this.getCurrentLocation();
     try {
+      // Get current location
+      this.currentLocation = await this.getCurrentLocation();
       const params = {
         Search: searchText,
         SiteAreaID: this.siteArea?.id,
@@ -203,7 +203,6 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   public refresh = async () => {
     // Component Mounted?
     if (this.isMounted()) {
-      this.setState({ refreshing: true });
       const { skip, limit } = this.state;
       // Refresh All
       const chargingStations = await this.getChargingStations(this.searchText, 0, skip + limit);
