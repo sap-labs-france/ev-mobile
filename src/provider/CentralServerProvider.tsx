@@ -658,10 +658,10 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getLastTransaction(chargingStationID: string, connectorId: number): Promise<Transaction> {
+  public async getLastTransaction(chargingStationID: string, connectorID: number): Promise<Transaction> {
     this.debugMethod('getLastTransaction');
     const params: { [param: string]: string } = {};
-    params.ConnectorId = connectorId.toString();
+    params.ConnectorID = connectorID.toString();
     params.Limit = '1';
     params.Skip = '0';
     params.Status = 'completed';
