@@ -598,8 +598,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public renderShowLastTransactionButton = (style: any) => {
-    const { isAdmin, isSiteAdmin, connector, canStartTransaction } = this.state;
-    if ((isAdmin || isSiteAdmin) && canStartTransaction && connector && connector.currentTransactionID === 0) {
+    const { isAdmin, isSiteAdmin, connector } = this.state;
+    if ((isAdmin || isSiteAdmin) && connector) {
       return (
         <TouchableOpacity style={style.lastTransactionContainer} onPress={async () => this.showLastTransaction()}>
           <View style={style.buttonLastTransaction}>
@@ -612,8 +612,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public renderReportErrorButton = (style: any) => {
-    const { connector, canStartTransaction } = this.state;
-    if (canStartTransaction && connector && connector.currentTransactionID === 0) {
+    const { connector } = this.state;
+    if (connector) {
       return (
         <TouchableOpacity style={[style.reportErrorContainer]} onPress={async () => this.showReportError()}>
           <View style={style.reportErrorButton}>
