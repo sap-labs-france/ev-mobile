@@ -43,34 +43,22 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     leftContainer: {
       flexDirection: 'column',
+      justifyContent: 'center',
       alignItems: 'center',
-      justifyContent: 'center'
-    },
-    // Card ratio 1.585
-    iconContainer: {
-      borderColor: commonColor.containerBgColor,
-      backgroundColor: commonColor.containerBgColor,
-      marginHorizontal: '1@s',
-      borderWidth: 1,
-      paddingVertical: '4@s',
-      flexDirection: 'column',
-      borderRadius: '5@s',
-      width: '70@s',
-      height: '45@s',
-      alignItems: 'center',
-      justifyContent: 'center'
+      width: '55@s'
     },
     icon: {
+      width: '100%',
       color: commonColor.textColor,
-      fontSize: '30@s'
+      textAlign: 'center',
+      fontSize: '55@s'
     },
-    defaultContainer: {
+    badgeDefaultContainer: {
+      width: '85%',
       backgroundColor: commonColor.disabledDark,
-      borderRadius: '2@s',
-      width: '70@s',
-      marginTop: '4@s'
+      borderRadius: '2@s'
     },
-    badgeText: {
+    badgeDefaultText: {
       fontSize: '10@s',
       textAlign: 'center',
       color: commonColor.light,
@@ -94,7 +82,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     tagDescription: {
-      fontSize: '12@s',
       fontWeight: 'bold',
       width: '100%'
     },
@@ -103,7 +90,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     fullName: {
       fontSize: '12@s',
-      alignSelf: 'flex-end'
+      alignSelf: 'flex-start'
     },
     tagVisualIDContainer: {
       marginTop: '3@s',

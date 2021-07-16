@@ -44,12 +44,10 @@ export default class TagComponent extends React.Component<Props, State> {
       <Card style={[style.container, selected ? style.selected : null]}>
         <CardItem style={[style.tagContent]}>
           <View style={style.leftContainer}>
-            <View style={style.iconContainer}>
-              <Icon style={style.icon} type={'FontAwesome'} name={'plug'}></Icon>
-            </View>
+            <Icon style={style.icon} type={'MaterialCommunityIcons'} name={'credit-card'}></Icon>
             {tag.default && (
-              <View style={style.defaultContainer}>
-                <Text style={style.badgeText}>{I18n.t('general.default')}</Text>
+              <View style={style.badgeDefaultContainer}>
+                <Text style={style.badgeDefaultText}>{I18n.t('general.default')}</Text>
               </View>
             )}
           </View>
@@ -63,6 +61,9 @@ export default class TagComponent extends React.Component<Props, State> {
               <View style={style.userContainer}>
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.fullName]}>
                   {userFullName}
+                </Text>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.fullName]}>
+                  ({tag.user.email})
                 </Text>
               </View>
             )}
