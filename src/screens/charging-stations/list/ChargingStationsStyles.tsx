@@ -24,7 +24,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     filtersExpanded: {
       opacity: 1,
-      height: '100@s'
+      height: '140@s'
     },
     filtersHidden: {
       opacity: 0,
