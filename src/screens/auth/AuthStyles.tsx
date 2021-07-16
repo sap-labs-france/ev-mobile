@@ -29,16 +29,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center'
     },
     logo: {
-      width: '75%',
+      width: '90%',
       height: '100@s',
-      marginTop: '10@s',
       resizeMode: 'contain'
     },
     appText: {
       color: commonColor.textColor,
-      fontSize: '35@s',
-      fontWeight: 'bold',
-      marginTop: '15@s'
+      fontSize: '30@s',
+      fontWeight: 'bold'
     },
     appVersionText: {
       color: commonColor.textColor,

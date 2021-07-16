@@ -148,18 +148,17 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   };
 
   public renderUserInfo = (style: any) => {
-    const { transaction, isAdmin, isSiteAdmin } = this.state;
-    const user = transaction.user;
-    return transaction ? (
+    const { transaction } = this.state;
+    return transaction?.user ? (
       <View style={style.columnContainer}>
-        <UserAvatar size={44} user={user} navigation={this.props.navigation} />
+        <UserAvatar size={44} user={transaction.user} navigation={this.props.navigation} />
         <Text numberOfLines={1} style={[style.label, style.labelUser, style.info]}>
-          {Utils.buildUserName(user)}
+          {Utils.buildUserName(transaction.user)}
         </Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <UserAvatar user={user} navigation={this.props.navigation} />
+        <UserAvatar user={null} navigation={this.props.navigation} />
         <Text style={[style.label, style.disabled]}>-</Text>
       </View>
     );

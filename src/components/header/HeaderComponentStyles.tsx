@@ -46,7 +46,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginTop: Platform.OS === 'ios' ? 0 : '-3@s'
     },
     logoHeader: {
-      width: '45@s',
+      width: '60@s',
       height: '45@s',
       marginLeft: '5@s',
       resizeMode: 'contain'

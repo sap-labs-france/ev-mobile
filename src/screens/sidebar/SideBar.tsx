@@ -6,7 +6,6 @@ import React from 'react';
 import { Image, ImageStyle, TouchableOpacity } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
-import defaultTenantLogo from '../../../assets/logo-low.png';
 import UserAvatar from '../../components/user/avatar/UserAvatar';
 import BaseProps from '../../types/BaseProps';
 import User from '../../types/User';
@@ -73,6 +72,7 @@ export default class SideBar extends BaseScreen<Props, State> {
   };
 
   public async logoff() {
+    const userTenant = this.centralServerProvider.getUserTenant();
     // Logoff
     this.centralServerProvider.setAutoLoginDisabled(true);
     await this.centralServerProvider.logoff();
@@ -80,7 +80,10 @@ export default class SideBar extends BaseScreen<Props, State> {
     this.props.navigation.dispatch(
       StackActions.replace('AuthNavigator', {
         name: 'Login',
-        key: `${Utils.randomNumber()}`
+        key: `${Utils.randomNumber()}`,
+        params: {
+          tenantSubDomain: userTenant.subdomain
+        }
       })
     );
   }
@@ -101,7 +104,7 @@ export default class SideBar extends BaseScreen<Props, State> {
     return (
       <Container style={style.container}>
         <Header style={style.header}>
-          <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logo as ImageStyle} />
+          {tenantLogo && <Image source={{ uri: tenantLogo }} style={style.logo as ImageStyle} />}
           <Text numberOfLines={1} style={style.tenantName}>
             {tenantName}
           </Text>

@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Buffer } from 'buffer';
 
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
 import I18n from 'i18n-js';
@@ -20,7 +20,7 @@ import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
 import Eula, { EulaAccepted } from '../types/Eula';
 import { KeyValue } from '../types/Global';
-import QueryParams, { PagingParams, SortingParam } from '../types/QueryParams';
+import QueryParams, { PagingParams } from '../types/QueryParams';
 import { ServerAction, ServerRoute } from '../types/Server';
 import { BillingSettings } from '../types/Setting';
 import Site from '../types/Site';
@@ -50,7 +50,8 @@ export default class CentralServerProvider {
   private locale: string = null;
   private tenant: TenantConnection = null;
   private currency: string = null;
-  private siteImages: Map<string, string> = new Map<string, string>();
+  private siteImagesCache: Map<string, string> = new Map<string, string>();
+  private tenantLogosCache: Map<string, string> = new Map<string, string>();
   private tenantLogo: string;
   private autoLoginDisabled = false;
   private notificationManager: NotificationManager;
@@ -148,19 +149,22 @@ export default class CentralServerProvider {
 
   public async getTenantLogoBySubdomain(tenant: TenantConnection): Promise<string> {
     this.debugMethod('getTenantLogoBySubdomain');
-    let tenantLogo: string;
-    // Call backend
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceUtilURL(tenant)}/${ServerAction.TENANT_LOGO}`, {
-      headers: this.buildHeaders(),
-      responseType: 'arraybuffer',
-      params: {
-        Subdomain: tenant.subdomain
-      }
-    });
-    if (result.data) {
-      const base64Image = Buffer.from(result.data).toString('base64');
-      if (base64Image) {
-        tenantLogo = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
+    let tenantLogo = this.tenantLogosCache.get(tenant.subdomain);
+    if (!tenantLogo) {
+      // Call backend
+      const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceUtilURL(tenant)}/${ServerAction.TENANT_LOGO}`, {
+        headers: this.buildHeaders(),
+        responseType: 'arraybuffer',
+        params: {
+          Subdomain: tenant.subdomain
+        }
+      });
+      if (result.data) {
+        const base64Image = Buffer.from(result.data).toString('base64');
+        if (base64Image) {
+          tenantLogo = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
+          this.tenantLogosCache.set(tenant.subdomain, tenantLogo);
+        }
       }
     }
     this.tenantLogo = tenantLogo;
@@ -824,7 +828,7 @@ export default class CentralServerProvider {
   public async getSiteImage(id: string): Promise<string> {
     this.debugMethod('getSiteImage');
     // Check cache
-    let foundSiteImage = this.siteImages.get(id);
+    let foundSiteImage = this.siteImagesCache.get(id);
     if (!foundSiteImage) {
       // Call backend
       const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceUtilURL(this.tenant)}/${ServerAction.SITE_IMAGE}`, {
@@ -839,7 +843,7 @@ export default class CentralServerProvider {
         const base64Image = Buffer.from(result.data).toString('base64');
         if (base64Image) {
           foundSiteImage = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
-          this.siteImages.set(id, foundSiteImage);
+          this.siteImagesCache.set(id, foundSiteImage);
         }
       }
     }

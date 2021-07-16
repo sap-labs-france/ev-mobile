@@ -34,7 +34,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     logo: {
       resizeMode: 'contain',
-      width: '100@s',
+      width: '90%',
       height: '50@s',
       alignSelf: 'center',
       margin: '5@s',
