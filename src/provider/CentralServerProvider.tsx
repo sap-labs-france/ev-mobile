@@ -651,7 +651,8 @@ export default class CentralServerProvider {
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTION}`, {
       headers: this.buildSecuredHeaders(),
       params: {
-        ID: id
+        ID: id,
+        WithUser: true,
       }
     });
     return result.data;
@@ -786,16 +787,13 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getTransactionsActive(
-    params = {},
-    paging: PagingParams = Constants.DEFAULT_PAGING,
-    sorting: string[] = []
-  ): Promise<DataResult<Transaction>> {
+  public async getTransactionsActive(params: any = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<Transaction>> {
     this.debugMethod('getTransactionsActive');
     // Build Paging
     this.buildPaging(paging, params);
     // Build Sorting
     this.buildSorting(sorting, params);
+    params['WithUser'] = 'true';
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTIONS_ACTIVE}`, {
       headers: this.buildSecuredHeaders(),
