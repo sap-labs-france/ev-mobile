@@ -47,7 +47,7 @@ export default class TagComponent extends React.Component<Props, State> {
             <Icon style={style.icon} type={'MaterialCommunityIcons'} name={'credit-card'}></Icon>
             {tag.default && (
               <View style={style.badgeDefaultContainer}>
-                <Text style={style.badgeDefaultText}>{I18n.t('general.default')}</Text>
+                <Text numberOfLines={1} adjustsFontSizeToFit={true} style={style.badgeDefaultText}>{I18n.t('general.default')}</Text>
               </View>
             )}
           </View>
