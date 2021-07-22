@@ -26,7 +26,7 @@ export default class Configuration {
     {
       id: '10.0.2.2:8020',
       name: 'android-local:8020',
-      endpoint: 'http://10.0.2.2:8020'
+      endpoint: 'http://10.0.2.2:8080'
     }
   ];
 

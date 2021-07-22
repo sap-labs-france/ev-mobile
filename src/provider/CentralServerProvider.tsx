@@ -607,11 +607,11 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async softStopstopTransaction(transactionID: number): Promise<ActionResponse> {
-    this.debugMethod('softStopstopTransaction');
+  public async softStopTransaction(transactionID: number): Promise<ActionResponse> {
+    this.debugMethod('softStopTransaction');
     const result = await this.axiosInstance.put(
-      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTION_SOFT_STOP}`,
-      { ID: transactionID },
+      this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTION_SOFT_STOP, { id: transactionID }),
+      {},
       {
         headers: this.buildSecuredHeaders()
       }
@@ -660,11 +660,10 @@ export default class CentralServerProvider {
   public async getTransaction(id: number): Promise<Transaction> {
     this.debugMethod('getTransaction');
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTION}`, {
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTION, { id }), {
       headers: this.buildSecuredHeaders(),
       params: {
-        ID: id,
-        WithUser: true,
+        WithUser: true
       }
     });
     return result.data;
@@ -691,7 +690,7 @@ export default class CentralServerProvider {
   }
 
   public async getTransactions(
-    params = {},
+    params: any = {},
     paging: PagingParams = Constants.DEFAULT_PAGING,
     sorting: string[] = []
   ): Promise<TransactionDataResult> {
@@ -700,14 +699,12 @@ export default class CentralServerProvider {
     this.buildPaging(paging, params);
     // Build Sorting
     this.buildSorting(sorting, params);
+    params.Status = 'completed';
     // Call
-    const result = await this.axiosInstance.get(
-      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTIONS_COMPLETED}`,
-      {
-        headers: this.buildSecuredHeaders(),
-        params
-      }
-    );
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTIONS), {
+      headers: this.buildSecuredHeaders(),
+      params
+    });
     return result.data;
   }
 
@@ -799,15 +796,20 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getTransactionsActive(params: any = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<Transaction>> {
+  public async getTransactionsActive(
+    params: any = {},
+    paging: PagingParams = Constants.DEFAULT_PAGING,
+    sorting: string[] = []
+  ): Promise<DataResult<Transaction>> {
     this.debugMethod('getTransactionsActive');
     // Build Paging
     this.buildPaging(paging, params);
     // Build Sorting
     this.buildSorting(sorting, params);
-    params['WithUser'] = 'true';
+    params.Status = 'active';
+    params.WithUser = 'true';
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTIONS_ACTIVE}`, {
+    const result = await this.axiosInstance.get(this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTIONS), {
       headers: this.buildSecuredHeaders(),
       params
     });
@@ -864,10 +866,9 @@ export default class CentralServerProvider {
     this.debugMethod('getChargingStationConsumption');
     // Call
     const result = await this.axiosInstance.get(
-      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTION_CONSUMPTION}`,
+      this.buildRestEndpointUrl(ServerRoute.REST_TRANSACTION_CONSUMPTION, { id: transactionId }),
       {
-        headers: this.buildSecuredHeaders(),
-        params: { TransactionId: transactionId }
+        headers: this.buildSecuredHeaders()
       }
     );
     return result.data;
