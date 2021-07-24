@@ -206,13 +206,13 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     };
   };
 
-  public createChart(consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[]) {
+  public createChart(consumptionValues: ChartPoint[], stateOfChargeValues: ChartPoint[], values: Consumption[]) {
     const commonColor = Utils.getCurrentCommonColor();
     const chartDefinition = {} as LineChartProps;
     // Add Data
     chartDefinition.data = { dataSets: [] };
     // Check Consumptions
-    if (consumptionValues && consumptionValues.length > 1) {
+    if (!Utils.isEmptyArray(consumptionValues)) {
       chartDefinition.data.dataSets.push({
         values: consumptionValues,
         label: I18n.t('details.instantPowerChartLabel'),
@@ -231,7 +231,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       });
     }
     // Check SoC
-    if (stateOfChargeValues && stateOfChargeValues.length > 1) {
+    if (!Utils.isEmptyArray(stateOfChargeValues)) {
       chartDefinition.data.dataSets.push({
         values: stateOfChargeValues,
         label: I18n.t('details.batteryChartLabel'),
@@ -249,6 +249,29 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
           valueTextSize: scale(8)
         }
       });
+    }
+    // Check isAdmin
+    if (this.state?.isAdmin) {
+      const gridLimitationValues = this.getDataSetFunctionOfTime(values, 'limitWatts', (y) => y / 1000);
+      // Check grid limitation
+      if (!Utils.isEmptyArray(gridLimitationValues)) {
+        chartDefinition.data.dataSets.push({
+          values: gridLimitationValues,
+          label: I18n.t('details.gridLimitChartLabel'),
+          config: {
+            mode: 'LINEAR',
+            drawValues: false,
+            lineWidth: 2,
+            drawCircles: false,
+            highlightColor: processColor('white'),
+            color: processColor(commonColor.danger),
+            drawFilled: true,
+            fillAlpha: 65,
+            fillColor: processColor(commonColor.danger),
+            valueTextSize: scale(8)
+          }
+        });
+      }
     }
     // X Axis
     chartDefinition.xAxis = {
@@ -320,9 +343,10 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       connector,
       consumptionValues,
       stateOfChargeValues,
+      values,
       canDisplayTransaction
     } = this.state;
-    const chartDefinition = this.createChart(consumptionValues, stateOfChargeValues);
+    const chartDefinition = this.createChart(consumptionValues, stateOfChargeValues, values);
     const connectorLetter = Utils.getConnectorLetterFromConnectorID(connector ? connector.connectorId : null);
     return loading ? (
       <Spinner style={style.spinner} color="grey" />
@@ -397,5 +421,11 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
         )}
       </View>
     );
+  }
+
+  private getDataSetFunctionOfTime(values: { [key: string]: any }[], dataSet: string, transformValuesCallback?: (y: number) => number) {
+    return values
+      ?.filter((c) => c[dataSet] && c.startedAt)
+      ?.map((c) => ({ x: new Date(c.startedAt).getTime(), y: Utils.roundTo(transformValuesCallback(c[dataSet]), 2) }));
   }
 }
