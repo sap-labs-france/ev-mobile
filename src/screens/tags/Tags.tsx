@@ -22,6 +22,7 @@ export interface Props extends BaseProps {}
 
 interface State {
   tags?: Tag[];
+  projectedFields?: string[];
   skip?: number;
   limit?: number;
   count?: number;
@@ -37,6 +38,7 @@ export default class Tags extends BaseScreen<Props, State> {
   public constructor(props: Props) {
     super(props);
     this.state = {
+      projectedFields: [],
       tags: [],
       skip: 0,
       limit: Constants.PAGING_SIZE,
@@ -102,6 +104,7 @@ export default class Tags extends BaseScreen<Props, State> {
       const tags = await this.getTags(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState) => ({
+        projectedFields: tags ? tags.projectedFields : [],
         tags: tags ? [...prevState.tags, ...tags.result] : prevState.tags,
         skip: prevState.skip + Constants.PAGING_SIZE,
         refreshing: false
@@ -118,6 +121,7 @@ export default class Tags extends BaseScreen<Props, State> {
       this.setState({
         loading: false,
         tags: tags ? tags.result : [],
+        projectedFields: tags ? tags.projectedFields : [],
         count: tags ? tags.count : 0
       });
     }
@@ -130,7 +134,7 @@ export default class Tags extends BaseScreen<Props, State> {
 
   public render = () => {
     const style = computeStyleSheet();
-    const { tags, count, skip, limit, refreshing, loading } = this.state;
+    const { tags, count, skip, limit, refreshing, loading, projectedFields } = this.state;
     const { navigation } = this.props;
     return (
       <Container style={style.container}>
@@ -158,7 +162,12 @@ export default class Tags extends BaseScreen<Props, State> {
               limit={limit}
               skip={skip}
               renderItem={(item: Tag, selected: boolean) => (
-                <TagComponent tag={item} isAdmin={this.securityProvider?.isAdmin()} selected={selected} navigation={navigation} />
+                <TagComponent
+                  tag={item}
+                  canReadUser={projectedFields.includes('user.name') && projectedFields.includes('user.firstName')}
+                  selected={selected}
+                  navigation={navigation}
+                />
               )}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}
