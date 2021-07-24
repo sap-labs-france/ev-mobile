@@ -212,7 +212,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     // Add Data
     chartDefinition.data = { dataSets: [] };
     // Check Consumptions
-    if (consumptionValues && consumptionValues.length > 1) {
+    if (!Utils.isEmptyArray(consumptionValues)) {
       chartDefinition.data.dataSets.push({
         values: consumptionValues,
         label: I18n.t('details.instantPowerChartLabel'),
@@ -231,7 +231,7 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
       });
     }
     // Check SoC
-    if (stateOfChargeValues && stateOfChargeValues.length > 1) {
+    if (!Utils.isEmptyArray(stateOfChargeValues)) {
       chartDefinition.data.dataSets.push({
         values: stateOfChargeValues,
         label: I18n.t('details.batteryChartLabel'),
@@ -252,11 +252,11 @@ export default class TransactionChart extends BaseAutoRefreshScreen<Props, State
     }
     // Check isAdmin
     if (this.state?.isAdmin) {
-      const gridLimitation = this.getDataSetFunctionOfTime(values, 'limitWatts', (y) => y / 1000);
+      const gridLimitationValues = this.getDataSetFunctionOfTime(values, 'limitWatts', (y) => y / 1000);
       // Check grid limitation
-      if (this.state?.isAdmin && gridLimitation && gridLimitation.length > 1) {
+      if (!Utils.isEmptyArray(gridLimitationValues)) {
         chartDefinition.data.dataSets.push({
-          values: gridLimitation,
+          values: gridLimitationValues,
           label: I18n.t('details.gridLimitChartLabel'),
           config: {
             mode: 'LINEAR',
