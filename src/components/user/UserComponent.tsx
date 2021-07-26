@@ -46,7 +46,7 @@ export default class UserComponent extends React.Component<Props, State> {
         <CardItem style={[style.userContent, selected ? style.selected : style.unselected]}>
           <View style={[this.buildStatusIndicatorStyle(user.status, style), style.statusIndicator]} />
           <View style={style.avatarContainer}>
-            {selected ? <UserAvatar icon={'check'} navigation={navigation} /> : <UserAvatar user={user} navigation={navigation} />}
+            {selected ? <UserAvatar isSelected={true} navigation={navigation} /> : <UserAvatar user={user} navigation={navigation} />}
           </View>
           <View style={style.userContainer}>
             <View style={style.userFullnameStatusContainer}>

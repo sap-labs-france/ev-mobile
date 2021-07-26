@@ -9,18 +9,17 @@ import User from '../../../types/User';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UserAvatarStyle';
 
-interface State {
-}
+interface State {}
 
 export interface Props extends BaseProps {
   user?: User;
   accessoryIcon?: string;
   size?: number;
-  icon?: string;
+  isSelected?: boolean;
 }
 
 export default class UserAvatar extends React.Component<Props, State> {
-  public static defaultProps: { size: number };
+  public static defaultProps: { size: number; isSelected: false };
   private centralServerProvider: CentralServerProvider;
   private commonColors = Utils.getCurrentCommonColor();
   public constructor(props: Props) {
@@ -45,16 +44,16 @@ export default class UserAvatar extends React.Component<Props, State> {
   };
 
   public render() {
-    const { accessoryIcon, size, icon } = this.props;
+    const { accessoryIcon, size, isSelected } = this.props;
     const style = computeStyleSheet();
     // If the icon is provided, we display it instead of the user
-    if (icon) {
+    if (isSelected) {
       const iconSize: number = (scale(size) * 3) / 5;
       return (
         <Avatar
           rounded={true}
           size={scale(size)}
-          icon={{ name: icon, size: iconSize, color: this.commonColors.textColor }}
+          icon={{ name: 'check', size: iconSize, color: this.commonColors.textColor }}
           overlayContainerStyle={[style.titleAvatarContainer, accessoryIcon ? style.avatarWithAccessory : null]}>
           {this.renderAvatarAccessory()}
         </Avatar>
