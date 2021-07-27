@@ -246,7 +246,7 @@ export default class SideBar extends BaseScreen<Props, State> {
   private async checkForUpdates() {
     this.setState({ checkingUpdates: true });
     const appVersion = await checkVersion();
-    if (appVersion.needsUpdate) {
+    if (appVersion?.needsUpdate) {
       this.setState({ checkingUpdates: false, showAppUpdateDialog: appVersion?.needsUpdate });
     } else {
       this.setState({ checkingUpdates: false }, () => Message.showInfo(I18n.t('appUpdate.noUpdateAvailable')));
