@@ -1,4 +1,3 @@
-import { View } from 'native-base';
 import React from 'react';
 import { Avatar } from 'react-native-elements';
 import { scale } from 'react-native-size-matters';
@@ -10,19 +9,19 @@ import User from '../../../types/User';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UserAvatarStyle';
 
-interface State {
-}
+interface State {}
 
 export interface Props extends BaseProps {
   user?: User;
   accessoryIcon?: string;
-  selected?: boolean;
   size?: number;
+  isSelected?: boolean;
 }
 
 export default class UserAvatar extends React.Component<Props, State> {
+  public static defaultProps: { size: number; isSelected: false };
   private centralServerProvider: CentralServerProvider;
-
+  private commonColors = Utils.getCurrentCommonColor();
   public constructor(props: Props) {
     super(props);
     this.state = {
@@ -45,34 +44,56 @@ export default class UserAvatar extends React.Component<Props, State> {
   };
 
   public render() {
-    const { selected, size, accessoryIcon, user } = this.props;
+    const { accessoryIcon, size, isSelected } = this.props;
     const style = computeStyleSheet();
-    const userInitials = Utils.buildUserInitials(user);
-    // const userImageURI = user ? user.image : null;
-    const userImageURI = null; // Keep the nbr of requests low (only load visible images)
-    return (
-      <View>
-        {userImageURI ? (
+    // If the icon is provided, we display it instead of the user
+    if (isSelected) {
+      const iconSize: number = (scale(size) * 3) / 5;
+      return (
+        <Avatar
+          rounded={true}
+          size={scale(size)}
+          icon={{ name: 'check', size: iconSize, color: this.commonColors.textColor }}
+          overlayContainerStyle={[style.titleAvatarContainer, accessoryIcon ? style.avatarWithAccessory : null]}>
+          {this.renderAvatarAccessory()}
+        </Avatar>
+      );
+      // When no icon is provided
+    } else {
+      const { user } = this.props;
+      const userInitials = Utils.buildUserInitials(user);
+      // const userImageURI = user ? user.image : null;
+      const userImageURI = null; // Keep the nbr of requests low (only load visible images)
+      // Display the user's photo if available
+      if (userImageURI) {
+        return (
           <Avatar
-            size={size ? scale(size) : style.avatar.fontSize}
+            size={scale(size)}
             rounded={true}
             source={{ uri: userImageURI }}
-            titleStyle={style.avatarTitle}
-            overlayContainerStyle={style.avatarContainer}>
-            {accessoryIcon && <Avatar.Accessory name={accessoryIcon} size={style.accessory.fontSize} color={style.accessory.color} />}
+            overlayContainerStyle={[style.avatarContainer, accessoryIcon ? style.avatarWithAccessory : null]}>
+            {this.renderAvatarAccessory()}
           </Avatar>
-        ) : (
-          <Avatar
-            size={size ? scale(size) : style.avatar.fontSize}
-            rounded={true}
-            title={userInitials}
-            titleStyle={style.avatarTitle}
-            overlayContainerStyle={[style.avatarContainer, style.titleAvatarContainer]}>
-            {accessoryIcon && <Avatar.Accessory name={accessoryIcon} size={style.accessory.fontSize} color={style.accessory.color} />}
-          </Avatar>
-        )}
-      </View>
-    );
+        );
+      }
+      // Display the user's initials
+      return (
+        <Avatar
+          rounded={true}
+          size={scale(size)}
+          title={userInitials}
+          titleStyle={style.avatarTitle}
+          overlayContainerStyle={[style.titleAvatarContainer, accessoryIcon ? style.avatarWithAccessory : null]}>
+          {this.renderAvatarAccessory()}
+        </Avatar>
+      );
+    }
+  }
+
+  private renderAvatarAccessory() {
+    const { accessoryIcon, size } = this.props;
+    const accessorySize: number = (scale(size) * 3) / 5;
+    return accessoryIcon && <Avatar.Accessory name={accessoryIcon} size={accessorySize} color={this.commonColors.textColor} />;
   }
 
   private async getUserImage(id: string) {
@@ -87,3 +108,6 @@ export default class UserAvatar extends React.Component<Props, State> {
     return null;
   }
 }
+UserAvatar.defaultProps = {
+  size: 50
+};
