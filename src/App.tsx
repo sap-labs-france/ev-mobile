@@ -525,7 +525,7 @@ export default class App extends React.Component<Props, State> {
     migrationManager.setCentralServerProvider(this.centralServerProvider);
     await migrationManager.migrate();
     // Check for app updates
-    const appVersion = await checkVersion({ currentVersion: '2.0.2' });
+    const appVersion = await checkVersion();
     if (appVersion?.needsUpdate) {
       this.setState({ showAppUpdateDialog: true });
     }

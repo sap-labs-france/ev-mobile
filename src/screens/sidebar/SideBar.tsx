@@ -16,6 +16,7 @@ import computeStyleSheet from './SideBarStyles';
 import * as Animatable from 'react-native-animatable';
 import { checkVersion } from 'react-native-check-version';
 import AppUpdateModal from '../../components/modal/app-update/AppUpdateModal';
+import Message from '../../utils/Message';
 
 export interface Props extends BaseProps {}
 
@@ -244,7 +245,11 @@ export default class SideBar extends BaseScreen<Props, State> {
 
   private async checkForUpdates() {
     this.setState({ checkingUpdates: true });
-    const appVersion = await checkVersion({ currentVersion: '2.0.2' });
-    this.setState({ checkingUpdates: false, showAppUpdateDialog: appVersion?.needsUpdate });
+    const appVersion = await checkVersion();
+    if (appVersion.needsUpdate) {
+      this.setState({ checkingUpdates: false, showAppUpdateDialog: appVersion?.needsUpdate });
+    } else {
+      this.setState({ checkingUpdates: false }, () => Message.showInfo('No update available'));
+    }
   }
 }
