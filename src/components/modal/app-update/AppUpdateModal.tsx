@@ -26,10 +26,10 @@ export default class AppUpdateModal extends React.Component<Props, State> {
       <DialogModal
         close={() => close?.()}
         withCloseButton={true}
-        description={I18n.t('general.appUpdateDialogDescription')}
+        description={I18n.t('appUpdate.appUpdateDialogDescription')}
         renderIcon={(iconStyle) => <Icon style={iconStyle} name={'update'} type={'MaterialIcons'} />}
         withCancel={true}
-        title={I18n.t('general.appUpdateDialogTitle')}
+        title={I18n.t('appUpdate.appUpdateDialogTitle')}
         buttons={[
           {
             text: I18n.t('general.update'),

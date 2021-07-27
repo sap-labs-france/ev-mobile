@@ -64,8 +64,6 @@
     "scanQrCodeSuccess": "The QR code has been scanned successfully",
     "default": "Default",
     "save": "Save",
-    "appUpdateDialogTitle": "Newer version available!",
-    "appUpdateDialogDescription": "Would you like to upgrade your application to the latest available version?",
     "update": "Update"
   },
   "sidebar": {
@@ -446,5 +444,10 @@
       "subMessage": "Unknown User",
       "longMessage": "An unknown user has just badged on '{{chargeBoxID}}'."
     }
+  },
+  "appUpdate": {
+    "appUpdateDialogTitle": "Newer version available!",
+    "appUpdateDialogDescription": "Would you like to upgrade your application to the latest available version?",
+    "noUpdateAvailable": "You have the latest version"
   }
 }

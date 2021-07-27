@@ -249,7 +249,7 @@ export default class SideBar extends BaseScreen<Props, State> {
     if (appVersion.needsUpdate) {
       this.setState({ checkingUpdates: false, showAppUpdateDialog: appVersion?.needsUpdate });
     } else {
-      this.setState({ checkingUpdates: false }, () => Message.showInfo('No update available'));
+      this.setState({ checkingUpdates: false }, () => Message.showInfo(I18n.t('appUpdate.noUpdateAvailable')));
     }
   }
 }
