@@ -13,6 +13,9 @@ import UserToken from '../../types/UserToken';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './SideBarStyles';
+import * as Animatable from 'react-native-animatable';
+import { checkVersion } from 'react-native-check-version';
+import AppUpdateModal from '../../components/modal/app-update/AppUpdateModal';
 
 export interface Props extends BaseProps {}
 
@@ -21,6 +24,8 @@ interface State {
   tenantName?: string;
   isComponentOrganizationActive?: boolean;
   updateDate?: string;
+  checkingUpdates?: boolean;
+  showAppUpdateDialog?: boolean;
 }
 
 export default class SideBar extends BaseScreen<Props, State> {
@@ -33,7 +38,9 @@ export default class SideBar extends BaseScreen<Props, State> {
       userToken: null,
       tenantName: '',
       isComponentOrganizationActive: false,
-      updateDate: ''
+      updateDate: '',
+      checkingUpdates: false,
+      showAppUpdateDialog: false
     };
   }
 
@@ -96,8 +103,7 @@ export default class SideBar extends BaseScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { navigation } = this.props;
-    const { userToken, tenantName, isComponentOrganizationActive, updateDate } = this.state;
+    const { userToken, tenantName, isComponentOrganizationActive, updateDate, checkingUpdates, showAppUpdateDialog } = this.state;
     const user = { firstName: userToken?.firstName, name: userToken?.name, id: userToken?.id } as User;
     // Get logo
     const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
@@ -109,8 +115,21 @@ export default class SideBar extends BaseScreen<Props, State> {
             {tenantName}
           </Text>
           {/* <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`} (Beta)</Text> */}
-          <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
-          {!Utils.isNullOrEmptyString(updateDate) && <Text style={style.versionDate}>{updateDate}</Text>}
+          <View style={style.versionContainer}>
+            <View style={style.versionDetailsContainer}>
+              <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
+              {!Utils.isNullOrEmptyString(updateDate) && <Text style={style.versionDate}>{updateDate}</Text>}
+            </View>
+            <Animatable.Text
+              animation={checkingUpdates ? 'rotate' : null}
+              iterationCount="infinite"
+              direction="normal">
+              <TouchableOpacity onPress={async () => this.checkForUpdates()}>
+                <Icon style={style.checkUpdateIcon} color={commonColor.textColor} type={'MaterialIcons'} name={'refresh'} />
+              </TouchableOpacity>
+            </Animatable.Text>
+          </View>
+          {showAppUpdateDialog && <AppUpdateModal close={() => this.setState({ showAppUpdateDialog: false })} />}
         </Header>
         <Content style={style.drawerContent}>
           <View style={style.linkContainer}>
@@ -221,5 +240,11 @@ export default class SideBar extends BaseScreen<Props, State> {
         </View>
       </Container>
     );
+  }
+
+  private async checkForUpdates() {
+    this.setState({ checkingUpdates: true });
+    const appVersion = await checkVersion({ currentVersion: '2.0.2' });
+    this.setState({ checkingUpdates: false, showAppUpdateDialog: appVersion?.needsUpdate });
   }
 }

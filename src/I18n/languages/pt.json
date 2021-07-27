@@ -63,7 +63,10 @@
     "errorDescription": "Descrição",
     "scanQrCodeSuccess": "The QR code has been scanned successfully",
     "default": "Default",
-    "save": "Save"
+    "save": "Save",
+    "appUpdateDialogTitle": "Newer version available!",
+    "appUpdateDialogDescription": "Would you like to upgrade your application to the latest available version?",
+    "update": "Update"
   },
   "sidebar": {
     "home": "Home",

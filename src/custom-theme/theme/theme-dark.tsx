@@ -21,6 +21,7 @@ const infoLight = color(palette.infoLight).desaturate(0.2).hex();
 const disabled = color(palette.disabled).desaturate(0.2).hex();
 const disabledLight = color(palette.disabledLight).desaturate(0.2).hex();
 const disabledDark = color(palette.disabledDark).desaturate(0.2).hex();
+const lightDark = color(palette.lightDark).desaturate(0.2).hex();
 
 export default {
   success,
@@ -38,6 +39,8 @@ export default {
   disabled,
   disabledLight,
   disabledDark,
+  darkLight,
+  lightDark,
   backgroundHeader: dark,
   listBackgroundHeader: '#383838',
   background: dark,

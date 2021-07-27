@@ -48,6 +48,20 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       textAlign: 'center',
       width: '90%'
     },
+    versionContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    versionDetailsContainer: {
+      borderRightWidth: 0.5,
+      borderRightColor: commonColor.textColor,
+      paddingRight: '4@s',
+      marginRight: '4@s'
+    },
+    checkUpdateIcon: {
+      fontSize: '24@s'
+    },
     versionText: {
       color: commonColor.textColor,
       fontSize: '14@s',

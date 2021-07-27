@@ -24,6 +24,7 @@ export default interface ThemeDefinition {
   light: string;
   primaryDark: string;
   primaryLight: string;
+  lightDark: string;
   disabled: string;
   disabledLight: string;
   disabledDark: string;
