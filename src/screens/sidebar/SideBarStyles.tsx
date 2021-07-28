@@ -4,6 +4,7 @@ import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
+import { PLATFORM } from '../../theme/variables/commonColor';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
@@ -56,13 +57,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingHorizontal: '4@s',
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: commonColor.success
+      backgroundColor: commonColor.success,
+      marginBottom: Platform.OS === PLATFORM.IOS ? '10@s' : 0
     },
     newVersionText: {
-      fontSize: '11@s'
+      fontSize: '11@s',
+      color: commonColor.light
     },
     newVersionIcon: {
-      fontSize: '15@s'
+      fontSize: '15@s',
+      color: commonColor.light
     },
     versionText: {
       color: commonColor.textColor,
