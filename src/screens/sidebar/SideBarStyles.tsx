@@ -54,10 +54,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignItems: 'center'
     },
     newVersionContainer: {
-      paddingHorizontal: '4@s',
+      padding: '4@s',
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: commonColor.success,
+      backgroundColor: commonColor.primary,
       marginBottom: Platform.OS === PLATFORM.IOS ? '10@s' : 0
     },
     newVersionText: {
