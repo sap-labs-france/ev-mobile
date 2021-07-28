@@ -14,7 +14,6 @@ import Constants from '../../../utils/Constants';
 import Utils from '../../../utils/Utils';
 import computeStyleSheet from './UsersStyle';
 import SelectableList, { SelectableProps, SelectableState } from '../../base-screen/SelectableList';
-import axios, { CancelTokenSource } from 'axios';
 
 export interface Props extends SelectableProps<User> {}
 
