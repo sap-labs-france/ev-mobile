@@ -49,18 +49,20 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '90%'
     },
     versionContainer: {
-      flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center'
     },
-    versionDetailsContainer: {
-      borderRightWidth: 0.5,
-      borderRightColor: commonColor.textColor,
-      paddingRight: '4@s',
-      marginRight: '4@s'
+    newVersionContainer: {
+      paddingHorizontal: '4@s',
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: commonColor.success
     },
-    checkUpdateIcon: {
-      fontSize: '24@s'
+    newVersionText: {
+      fontSize: '11@s'
+    },
+    newVersionIcon: {
+      fontSize: '15@s'
     },
     versionText: {
       color: commonColor.textColor,
@@ -68,7 +70,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       margin: '2@s',
       alignSelf: 'center',
       fontWeight: 'bold',
-      marginBottom: '10@s'
     },
     versionDate: {
       color: commonColor.textColor,
