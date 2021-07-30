@@ -14,8 +14,8 @@ import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
 import Transaction, { StartTransactionErrorCode } from '../../../types/Transaction';
-import UserToken from '../../../types/UserToken';
 import User, { UserDefaultTagCar } from '../../../types/User';
+import UserToken from '../../../types/UserToken';
 import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
@@ -23,6 +23,8 @@ import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
 import ModalSelect from '../../../components/modal/ModalSelect';
 import Users from '../../users/list/Users';
+import Car from '../../../types/Car';
+import Cars from '../../cars/Cars';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -48,6 +50,7 @@ interface State {
   refreshing?: boolean;
   userDefaultTagCar?: UserDefaultTagCar;
   selectedUser?: User;
+  carLoading?: boolean;
 }
 
 export default class ChargingStationConnectorDetails extends BaseAutoRefreshScreen<Props, State> {
@@ -76,7 +79,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       startTransactionNbTrial: 0,
       isPricingActive: false,
       refreshing: false,
-      selectedUser: null
+      selectedUser: null,
+      carLoading: false
     };
   }
 
@@ -733,7 +737,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             contentContainerStyle={style.scrollViewContainer}
             refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
             <View style={style.rowContainer}>{this.renderConnectorStatus(style)}</View>
-            {this.renderUserSelection(style)}
+            {isAdmin && this.renderUserSelection(style)}
+            {this.renderCarSelection(style)}
           </ScrollView>
         ) : (
           <ScrollView
@@ -763,9 +768,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   private async getUserDefaultTagAndCar(): Promise<UserDefaultTagCar> {
     try {
-      const currentUserId = this.currentUser?.id;
-      if (currentUserId) {
-        return this.centralServerProvider?.getUserDefaultTagCar(this.currentUser?.id);
+      const { selectedUser } = this.state;
+      if (selectedUser) {
+        return this.centralServerProvider?.getUserDefaultTagCar(selectedUser?.id as string);
       }
       return null;
     } catch (error) {
@@ -807,13 +812,41 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       <View style={style.rowContainer}>
         <ModalSelect<User>
           defaultItem={selectedUser}
-          onItemsSelected={(selectedUsers: User[]) => this.setState({ selectedUser: selectedUsers?.[0] })}
-          buildItemName={Utils.buildUserName}
+          onItemsSelected={this.onUserSelected.bind(this)}
+          buildItemName={Utils.buildUserName.bind(this)}
           navigation={navigation}
           selectionMode={ItemSelectionMode.SINGLE}>
           <Users navigation={navigation} />
         </ModalSelect>
       </View>
     );
+  }
+
+  private renderCarSelection(style: any) {
+    const { navigation } = this.props;
+    const { userDefaultTagCar, carLoading, selectedUser } = this.state;
+    return (
+      <View style={style.rowContainer}>
+        <ModalSelect<Car>
+          defaultItem={userDefaultTagCar?.car}
+          defaultItemLoading={carLoading}
+          onItemsSelected={(selectedCars: Car[]) => this.setState({ selectedCar: selectedCars?.[0] })}
+          buildItemName={(car: Car) => Utils.buildCarCatalogName(car?.carCatalog)}
+          navigation={navigation}
+          selectionMode={ItemSelectionMode.SINGLE}>
+          <Cars userIDs={[selectedUser?.id as string]} navigation={navigation} />
+        </ModalSelect>
+      </View>
+    );
+  }
+
+  private onUserSelected(selectedUsers: User[]): void {
+    this.setState({ selectedUser: selectedUsers?.[0] }, this.loadSelectedUserDefaultTagAndCar.bind(this));
+  }
+
+  private async loadSelectedUserDefaultTagAndCar(): Promise<void> {
+    this.setState({ carLoading: true });
+    const userDefaultTagCar = await this.getUserDefaultTagAndCar();
+    this.setState({ userDefaultTagCar, carLoading: false });
   }
 }

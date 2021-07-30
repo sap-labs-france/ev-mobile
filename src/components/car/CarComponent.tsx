@@ -1,6 +1,6 @@
-import { Icon } from 'native-base';
+import { Card, CardItem, Icon } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageStyle, Text, View } from 'react-native';
 
 import I18nManager from '../../I18n/I18nManager';
 import BaseProps from '../../types/BaseProps';
@@ -13,7 +13,7 @@ interface State {}
 
 export interface Props extends BaseProps {
   car: Car;
-  selected: boolean;
+  selected?: boolean;
 }
 
 export default class CarComponent extends React.Component<Props, State> {
@@ -34,7 +34,7 @@ export default class CarComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { car, selected, navigation } = this.props;
+    const { car, navigation, selected } = this.props;
     const carUsers = car?.carUsers ?? [];
     const defaultCarUser = carUsers.find((carUser) => carUser.default);
     const defaultCarUserName = Utils.buildUserName(defaultCarUser?.user);
@@ -42,33 +42,24 @@ export default class CarComponent extends React.Component<Props, State> {
     const carFullName = Utils.buildCarCatalogName(car?.carCatalog);
     const userIDs = carUsers.map((userCar: UserCar) => userCar?.user?.id).filter((userID) => userID);
     return (
-      <View style={selected ? [style.container, style.selected] : style.container}>
-        <View style={style.header}>
-          <View style={style.carNameContainer}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.headerText, style.carName]}>
-              {carFullName}
-            </Text>
+      <Card style={style.container}>
+        <CardItem style={[style.carContent, selected ? style.selected : style.unselected]}>
+          <View style={style.header}>
+            <View style={style.carNameContainer}>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.headerText, style.carName]}>
+                {carFullName}
+              </Text>
+            </View>
+            <View style={style.licensePlateContainer}>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.headerText, style.licensePlate]}>
+                {car.licensePlate}
+              </Text>
+            </View>
           </View>
-          <View style={style.licensePlateContainer}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.headerText, style.licensePlate]}>
-              {car.licensePlate}
-            </Text>
-          </View>
-        </View>
-        <View />
-        <View style={style.carContainer}>
-          <View style={style.carInfos}>
-            <TouchableOpacity
-              disabled={!defaultCarUser?.user}
-              onPress={() => {
-                navigation.navigate('UsersNavigator', {
-                  params: {
-                    userIDs,
-                    title: carFullName
-                  },
-                  key: `${Utils.randomNumber()}`
-                });
-              }}>
+          <View />
+          <View style={style.carContainer}>
+            <Image style={style.imageStyle as ImageStyle} source={{ uri: car?.carCatalog?.image }} />
+            <View style={style.carInfos}>
               <View style={style.userContainer}>
                 <View style={[style.avatarContainer]}>
                   <UserAvatar size={35} user={defaultCarUser?.user} navigation={navigation} />
@@ -80,41 +71,40 @@ export default class CarComponent extends React.Component<Props, State> {
                   {otherUserCount > 0 && <Text style={style.text}>(+{I18nManager.formatNumber(otherUserCount)})</Text>}
                 </View>
               </View>
-            </TouchableOpacity>
-            <View style={style.powerDetailsContainer}>
-              <View style={style.columnContainer}>
-                <Icon type="MaterialIcons" name="battery-full" style={style.icon} />
-                <Text numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>
-                  {car.carCatalog?.batteryCapacityFull} kWh
-                </Text>
-              </View>
-              <View style={style.columnContainer}>
-                <View style={style.iconContainer}>
-                  <Icon style={style.icon} type="MaterialIcons" name="bolt" />
-                  <Icon style={style.currentTypeIcon} type="MaterialIcons" name="power-input" />
-                </View>
-                {car?.carCatalog?.fastChargePowerMax ? (
-                  <Text numberOfLines={1} style={style.text}>
-                    {car?.carCatalog?.fastChargePowerMax} kW
+              <View style={style.powerDetailsContainer}>
+                <View style={[style.columnContainer, style.columnContainerBorderRight]}>
+                  <Icon type="MaterialIcons" name="battery-full" style={style.icon} />
+                  <Text adjustsFontSizeToFit={true} numberOfLines={1} ellipsizeMode={'tail'} style={style.text}>
+                    {car.carCatalog?.batteryCapacityFull} kWh
                   </Text>
-                ) : (
-                  <Text style={style.text}>-</Text>
-                )}
-              </View>
-              <View style={style.columnContainer}>
-                <View style={style.iconContainer}>
-                  <Icon style={style.icon} type="MaterialIcons" name="bolt" />
-                  <Icon style={style.currentTypeIcon} type="MaterialCommunityIcons" name="sine-wave" />
                 </View>
-                <Text numberOfLines={1} style={style.text}>
-                  {car?.converter?.powerWatts} kW ({car?.converter?.numberOfPhases})
-                </Text>
+                <View style={[style.columnContainer, style.columnContainerBorderRight]}>
+                  <View style={style.iconContainer}>
+                    <Icon style={style.icon} type="MaterialIcons" name="bolt" />
+                    <Icon style={style.currentTypeIcon} type="MaterialIcons" name="power-input" />
+                  </View>
+                  {car?.carCatalog?.fastChargePowerMax ? (
+                    <Text adjustsFontSizeToFit={true} numberOfLines={1} style={style.text}>
+                      {car?.carCatalog?.fastChargePowerMax} kW
+                    </Text>
+                  ) : (
+                    <Text style={style.text}>-</Text>
+                  )}
+                </View>
+                <View style={style.columnContainer}>
+                  <View style={style.iconContainer}>
+                    <Icon style={style.icon} type="MaterialIcons" name="bolt" />
+                    <Icon style={style.currentTypeIcon} type="MaterialCommunityIcons" name="sine-wave" />
+                  </View>
+                  <Text adjustsFontSizeToFit={true} numberOfLines={1} style={style.text}>
+                    {car?.converter?.powerWatts} kW ({car?.converter?.numberOfPhases})
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
-          <Image style={style.imageStyle as ImageStyle} source={{ uri: car?.carCatalog?.image }} />
-        </View>
-      </View>
+        </CardItem>
+      </Card>
     );
   }
 }

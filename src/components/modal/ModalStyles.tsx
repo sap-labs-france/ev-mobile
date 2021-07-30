@@ -8,6 +8,22 @@ import Utils from '../../utils/Utils';
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
   const commonStyles = ScaledSheet.create({
+    container: {
+      width: '100%'
+    },
+    button: {
+      width: '90%',
+      alignSelf: 'center',
+      height: '40@s',
+      marginBottom: '10@s',
+      backgroundColor: commonColor.buttonBg
+    },
+    buttonText: {
+      width: '100%',
+      textAlign: 'center',
+      fontSize: '15@s',
+      color: commonColor.textColor
+    },
     modal: {
       backgroundColor: commonColor.containerBgColor,
       margin: 0,
@@ -43,7 +59,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderTopColor: commonColor.listBorderColor,
       borderTopWidth: 1
     },
-    button: {
+    modalButton: {
       marginTop: '15@s',
       alignSelf: 'center',
       width: '40%',
@@ -54,10 +70,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     buttonEnabled: {
       opacity: 1
-    },
-    buttonText: {
-      fontSize: '15@s',
-      color: commonColor.textColor
     }
   });
   const portraitStyles = {};

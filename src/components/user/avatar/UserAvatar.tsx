@@ -19,7 +19,9 @@ export interface Props extends BaseProps {
 }
 
 export default class UserAvatar extends React.Component<Props, State> {
-  public static defaultProps: { size: number; isSelected: false };
+  public static defaultProps: { size: number; isSelected: boolean };
+  public state: State;
+  public props: Props;
   private centralServerProvider: CentralServerProvider;
   private commonColors = Utils.getCurrentCommonColor();
   public constructor(props: Props) {
@@ -109,5 +111,6 @@ export default class UserAvatar extends React.Component<Props, State> {
   }
 }
 UserAvatar.defaultProps = {
-  size: 50
+  size: 50,
+  isSelected: false
 };

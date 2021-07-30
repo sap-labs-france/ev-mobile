@@ -219,7 +219,9 @@
   "cars": {
     "noCars": "Aucune voiture",
     "carUnexpectedError": "Une erreur est survenue",
-    "cars": "Voiture(s)"
+    "cars": "Voiture(s)",
+    "selectCar": "Sélectionnez une voiture",
+    "selectCars": "Sélectionnez des voitures"
   },
   "invoices": {
     "noInvoices": "Aucune facture",

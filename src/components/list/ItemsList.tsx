@@ -3,7 +3,6 @@ import {
   FlatList,
   Platform,
   RefreshControl,
-  TouchableHighlight,
   TouchableOpacity,
   View
 } from 'react-native';
@@ -85,6 +84,7 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
             {this.renderItemsSeparator(itemsSeparator, style)}
           </View>
         )}
+        removeClippedSubviews={true}
         keyExtractor={(item, index) => item.id.toString() + index.toString()}
         onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
         refreshControl={<RefreshControl onRefresh={manualRefresh} refreshing={refreshing} />}

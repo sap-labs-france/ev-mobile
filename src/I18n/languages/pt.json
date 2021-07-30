@@ -219,7 +219,9 @@
   "cars": {
     "noCars": "No cars",
     "carUnexpectedError": "An error occurred",
-    "cars": "Car(s)"
+    "cars": "Car(s)",
+    "selectCar": "Select a car",
+    "selectCars": "Select cars"
   },
   "invoices": {
     "noInvoices": "Aucune facture",
