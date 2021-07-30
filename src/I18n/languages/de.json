@@ -395,6 +395,7 @@
     "instantPowerChartLabel": "Momentane Leistung (kW)",
     "cumulatedChartLabel": "Kumuliert (kW.h)",
     "batteryChartLabel": "Batterieladestand (%)",
+    "gridLimitChartLabel": "Grid Limit (kW)",
     "connectorMax": "Max. Leistung Anschluss (kW)",
     "noData": "Nicht Daten",
     "noSessionInProgress": "Kein laufender Ladvorgang",

@@ -395,6 +395,7 @@
     "instantPowerChartLabel": "Potencia instantánea (kW)",
     "cumulatedChartLabel": "Acumulado (kW.h)",
     "batteryChartLabel": "Nivel de batería (%)",
+    "gridLimitChartLabel": "Grid Limit (kW)",
     "connectorMax": "Conector de potencia máxima (kW)",
     "noData": "Sin datos",
     "noSessionInProgress": "Ninguna sesión en progreso",
