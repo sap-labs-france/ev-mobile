@@ -4,6 +4,8 @@ import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
+import color from 'color';
+import Color from 'color';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
@@ -21,7 +23,27 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     content: {
       backgroundColor: commonColor.headerBgColor
     },
-    tabHeader: {}
+    boxContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'stretch',
+      paddingLeft: '10@s'
+    },
+    inactivity: {
+      backgroundColor: color(commonColor.danger).saturate(0.1).mix(Color('white'), 0.5).hex()
+    },
+    cost: {
+      backgroundColor: color(commonColor.success).saturate(0.1).mix(Color('white'), 0.5).hex()
+    },
+    energy: {
+      backgroundColor: color(commonColor.yellow).saturate(0.1).mix(Color('white'), 0.4).hex()
+    },
+    duration: {
+      backgroundColor: color(commonColor.purple).saturate(0.1).mix(Color('white'), 0.5).hex()
+    },
+    sessions: {
+      backgroundColor: color(commonColor.primary).saturate(0.1).mix(Color('white'), 0.5).hex()
+    }
   });
   const portraitStyles = {};
   const landscapeStyles = {};
