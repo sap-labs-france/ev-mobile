@@ -3,8 +3,8 @@ import { Platform, StyleSheet } from 'react-native';
 import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
-import Utils from '../../utils/Utils';
 import { PLATFORM } from '../../theme/variables/commonColor';
+import Utils from '../../utils/Utils';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
@@ -27,7 +27,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       backgroundColor: commonColor.containerBgColor,
       borderColor: commonColor.listBorderColor,
       borderBottomWidth: 1,
-      height: Platform.OS === 'ios' ? '120@s' : '150@s',
+      height: '150@s',
       marginTop: Platform.OS === 'ios' ? '-5@s' : '5@s'
     },
     linkContainer: {
@@ -51,21 +51,27 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     versionContainer: {
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
     },
     newVersionContainer: {
-      padding: '4@s',
+      height: '25@s',
+      padding: '5@s',
+      paddingLeft: '10@s',
+      paddingRight: '10@s',
+      margin: '5@s',
       flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: commonColor.primary,
-      marginBottom: Platform.OS === PLATFORM.IOS ? '10@s' : 0
+      marginBottom: Platform.OS === PLATFORM.IOS ? '10@s' : 0,
+      borderRadius: '3@s',
     },
     newVersionText: {
-      fontSize: '11@s',
+      fontSize: '12@s',
       color: commonColor.light
     },
     newVersionIcon: {
       fontSize: '15@s',
+      paddingRight: '5@s',
       color: commonColor.light
     },
     versionText: {

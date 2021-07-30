@@ -4,8 +4,10 @@ import moment from 'moment';
 import { Container, Content, Header, Icon, ListItem, Text, View } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, TouchableOpacity } from 'react-native';
+import { CheckVersionResponse, checkVersion } from 'react-native-check-version';
 import DeviceInfo from 'react-native-device-info';
 
+import AppUpdateModal from '../../components/modal/app-update/AppUpdateModal';
 import UserAvatar from '../../components/user/avatar/UserAvatar';
 import BaseProps from '../../types/BaseProps';
 import User from '../../types/User';
@@ -13,8 +15,6 @@ import UserToken from '../../types/UserToken';
 import Utils from '../../utils/Utils';
 import BaseScreen from '../base-screen/BaseScreen';
 import computeStyleSheet from './SideBarStyles';
-import { checkVersion, CheckVersionResponse } from 'react-native-check-version';
-import AppUpdateModal from '../../components/modal/app-update/AppUpdateModal';
 
 export interface Props extends BaseProps {}
 
@@ -115,7 +115,6 @@ export default class SideBar extends BaseScreen<Props, State> {
           <Text numberOfLines={1} style={style.tenantName}>
             {tenantName}
           </Text>
-          {/* <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`} (Beta)</Text> */}
           <TouchableOpacity
             disabled={!appVersion?.needsUpdate}
             onPress={() => this.setState({ showAppUpdateDialog: true })}
@@ -123,8 +122,8 @@ export default class SideBar extends BaseScreen<Props, State> {
             <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
             {appVersion?.needsUpdate && (
               <View style={style.newVersionContainer}>
+                <Icon style={style.newVersionIcon} type={'MaterialIcons'} name={'update'} />
                 <Text style={style.newVersionText}>{I18n.t('appUpdate.appUpdateDialogTitle')}</Text>
-                <Icon style={style.newVersionIcon} type={'MaterialCommunityIcons'} name={'party-popper'} />
               </View>
             )}
           </TouchableOpacity>

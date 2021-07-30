@@ -447,8 +447,8 @@
     }
   },
   "appUpdate": {
-    "appUpdateDialogTitle": "Newer version available!",
-    "appUpdateDialogDescription": "Would you like to upgrade your application to the latest available version?",
+    "appUpdateDialogTitle": "New version available",
+    "appUpdateDialogDescription": "Would you like to update your application to the latest available version?",
     "noUpdateAvailable": "You have the latest version"
   }
 }
