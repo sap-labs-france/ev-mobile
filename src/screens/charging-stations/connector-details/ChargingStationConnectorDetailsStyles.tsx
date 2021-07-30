@@ -118,6 +118,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.buttonDisabledBg,
       backgroundColor: 'transparent'
     },
+    selectUserCarBadgeContainer: {
+      marginTop: '10@s',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+    },
     scrollViewContainer: {
       flexDirection: 'column',
       justifyContent: 'flex-start',
@@ -127,6 +132,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       flexDirection: 'row',
       justifyContent: 'space-between',
       height: '100@s'
+    },
+    rowUserCarBadgeContainer: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    rowUserCarBadgeIconContainer: {
+    },
+    userCarBadgeIcon: {
+      fontSize: '75@s',
     },
     columnContainer: {
       flexDirection: 'column',

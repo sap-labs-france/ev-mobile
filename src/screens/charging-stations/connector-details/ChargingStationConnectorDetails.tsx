@@ -8,9 +8,11 @@ import noSite from '../../../../assets/no-site.png';
 import ConnectorStatusComponent from '../../../components/connector-status/ConnectorStatusComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import { ItemSelectionMode } from '../../../components/list/ItemsList';
+import ModalSelect from '../../../components/modal/ModalSelect';
 import UserAvatar from '../../../components/user/avatar/UserAvatar';
 import I18nManager from '../../../I18n/I18nManager';
 import BaseProps from '../../../types/BaseProps';
+import Car from '../../../types/Car';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { HTTPAuthError } from '../../../types/HTTPError';
 import Transaction, { StartTransactionErrorCode } from '../../../types/Transaction';
@@ -20,11 +22,9 @@ import Constants from '../../../utils/Constants';
 import Message from '../../../utils/Message';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
-import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
-import ModalSelect from '../../../components/modal/ModalSelect';
-import Users from '../../users/list/Users';
-import Car from '../../../types/Car';
 import Cars from '../../cars/Cars';
+import Users from '../../users/list/Users';
+import computeStyleSheet from './ChargingStationConnectorDetailsStyles';
 
 const START_TRANSACTION_NB_TRIAL = 4;
 
@@ -80,7 +80,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       isPricingActive: false,
       refreshing: false,
       selectedUser: null,
-      carLoading: false
     };
   }
 
@@ -98,7 +97,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       this.startTransactionConfirm();
     }
     this.currentUser = this.centralServerProvider.getUserInfo();
-    await this.refresh();
     if (this.currentUser) {
       this.setState({
         selectedUser: {
@@ -106,7 +104,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
           firstName: this.currentUser.firstName,
           name: this.currentUser.name
         }
-      });
+      }, this.refresh.bind(this));
     }
   }
 
@@ -259,7 +257,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       isPricingActive: this.securityProvider?.isComponentPricingActive(),
       ...startStopTransactionButtonStatus,
       ...durationInfos,
-      loading: false
+      loading: false,
     });
   };
 
@@ -734,10 +732,11 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
         {/* Details */}
         {connector?.status === ChargePointStatus.AVAILABLE ? (
           <ScrollView
-            contentContainerStyle={style.scrollViewContainer}
+            contentContainerStyle={style.selectUserCarBadgeContainer}
             refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.manualRefresh} />}>
-            <View style={style.rowContainer}>{this.renderConnectorStatus(style)}</View>
+            {/* User */}
             {isAdmin && this.renderUserSelection(style)}
+            {/* Car */}
             {this.renderCarSelection(style)}
           </ScrollView>
         ) : (
@@ -809,7 +808,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { navigation } = this.props;
     const { selectedUser } = this.state;
     return (
-      <View style={style.rowContainer}>
+      <View style={style.rowUserCarBadgeContainer}>
+        <View style={style.rowUserCarBadgeIconContainer}>
+          <Icon type="MaterialIcons" name="people" style={[style.icon, style.userCarBadgeIcon]} />
+        </View>
         <ModalSelect<User>
           defaultItem={selectedUser}
           onItemsSelected={this.onUserSelected.bind(this)}
@@ -826,7 +828,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { navigation } = this.props;
     const { userDefaultTagCar, carLoading, selectedUser } = this.state;
     return (
-      <View style={style.rowContainer}>
+      <View style={style.rowUserCarBadgeContainer}>
+        <View style={style.rowUserCarBadgeIconContainer}>
+          <Icon type="MaterialIcons" name="directions-car" style={[style.icon, style.userCarBadgeIcon]} />
+        </View>
         <ModalSelect<Car>
           defaultItem={userDefaultTagCar?.car}
           defaultItemLoading={carLoading}
