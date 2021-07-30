@@ -21,7 +21,7 @@ export default class MigrationManager {
     return MigrationManager.instance;
   }
 
-  public setCentralServerProvider(centralServerProvider: CentralServerProvider) {
+  public setCentralServerProvider(centralServerProvider: CentralServerProvider): void {
     this.centralServerProvider = centralServerProvider;
   }
 
