@@ -59,7 +59,7 @@ export default class SideBar extends BaseScreen<Props, State> {
 
   public refresh = async () => {
     await this.getUserInfo();
-    const appVersion = await checkVersion({currentVersion:  '1.9'});
+    const appVersion = await checkVersion();
     this.setState({ appVersion });
   };
 
