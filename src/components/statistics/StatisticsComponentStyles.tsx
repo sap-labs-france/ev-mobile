@@ -4,7 +4,6 @@ import ResponsiveStylesSheet from 'react-native-responsive-stylesheet';
 import { ScaledSheet } from 'react-native-size-matters';
 
 import Utils from '../../utils/Utils';
-import color from 'color';
 
 export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
   const commonColor = Utils.getCurrentCommonColor();
@@ -35,7 +34,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: 'white'
     },
     valueText: {
-      color: commonColor.light,
       fontSize: '23@s',
       fontWeight: 'bold'
     },

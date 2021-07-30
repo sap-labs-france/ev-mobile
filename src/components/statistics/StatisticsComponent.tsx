@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import computeStyleSheet from './StatisticsComponentStyles';
-import color from 'color';
 
 interface State {}
 

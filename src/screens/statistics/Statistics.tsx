@@ -1,9 +1,8 @@
 import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Body, Card, CardItem, Container, Content, Icon, Left, Spinner, Text } from 'native-base';
+import { Container, Content, Icon, Spinner } from 'native-base';
 import React from 'react';
 
-import computeCardStyleSheet from '../../CardStyles';
 import HeaderComponent from '../../components/header/HeaderComponent';
 import I18nManager, { NumberFormatCompactStyleEnum, NumberFormatNotationEnum, NumberFormatStyleEnum } from '../../I18n/I18nManager';
 import ProviderFactory from '../../provider/ProviderFactory';
