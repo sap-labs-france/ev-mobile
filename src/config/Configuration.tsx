@@ -19,14 +19,14 @@ export default class Configuration {
 
   public static DEV_ENDPOINT_CLOUDS = [
     {
-      id: '127.0.0.1:8020',
-      name: '127.0.0.1:8020',
-      endpoint: 'http://127.0.0.1:8020'
+      id: '127.0.0.1:8080',
+      name: '127.0.0.1:8080',
+      endpoint: 'http://127.0.0.1:8080'
     },
     {
-      id: '10.0.2.2:8020',
-      name: 'android-local:8020',
-      endpoint: 'http://10.0.2.2:8020'
+      id: '10.0.2.2:8080',
+      name: 'android-local:8080',
+      endpoint: 'http://10.0.2.2:8080'
     }
   ];
 

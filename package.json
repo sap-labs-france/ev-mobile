@@ -104,6 +104,7 @@
     "react-native-camera": "^3.43.9",
     "react-native-carousel-view": "^0.5.1",
     "react-native-charts-wrapper": "^0.5.7",
+    "react-native-check-version": "^1.0.9",
     "react-native-cluster-map": "^1.0.9",
     "react-native-deep-linking": "^2.2.0",
     "react-native-device-info": "^7.4.0",

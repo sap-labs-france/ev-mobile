@@ -63,7 +63,8 @@
     "errorDescription": "Descripción del error",
     "scanQrCodeSuccess": "El código QR se ha escaneado correctamente",
     "default": "Default",
-    "save": "Save"
+    "save": "Save",
+    "update": "Update"
   },
   "sidebar": {
     "home": "Menú principal",
@@ -444,5 +445,10 @@
       "subMessage": "Usuario desconocido",
       "longMessage": "Un usuario desconocido se ha conectado a '{{chargeBoxID}}'."
     }
+  },
+  "appUpdate": {
+    "appUpdateDialogTitle": "New version available",
+    "appUpdateDialogDescription": "Would you like to update your application to the latest available version?",
+    "noUpdateAvailable": "You have the latest version"
   }
 }

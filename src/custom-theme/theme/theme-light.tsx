@@ -16,6 +16,7 @@ export default {
   light: palette.light,
   primary: palette.primary,
   primaryDark: palette.primaryDark,
+  darkLight: palette.darkLight,
   disabled: palette.disabled,
   backgroundHeader: palette.light,
   listBackgroundHeader: palette.disabled,

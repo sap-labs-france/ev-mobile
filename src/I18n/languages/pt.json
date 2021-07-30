@@ -63,7 +63,8 @@
     "errorDescription": "Descrição",
     "scanQrCodeSuccess": "The QR code has been scanned successfully",
     "default": "Default",
-    "save": "Save"
+    "save": "Save",
+    "update": "Update"
   },
   "sidebar": {
     "home": "Home",
@@ -444,5 +445,10 @@
       "subMessage": "Utilizador Desconhecido",
       "longMessage": "Um utilizador desconhecido acabou de utilizar o badge em '{{chargeBoxID}}'."
     }
+  },
+  "appUpdate": {
+    "appUpdateDialogTitle": "New version available",
+    "appUpdateDialogDescription": "Would you like to update your application to the latest available version?",
+    "noUpdateAvailable": "You have the latest version"
   }
 }
