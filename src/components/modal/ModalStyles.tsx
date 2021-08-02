@@ -39,8 +39,11 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       alignSelf: 'flex-start',
       paddingLeft: '7@s'
     },
+    selectText: {
+      textAlign: 'left'
+    },
     buttonText: {
-      textAlign: 'left',
+      textAlign: 'center',
       fontSize: '15@s',
       color: commonColor.textColor,
       flex: 1,

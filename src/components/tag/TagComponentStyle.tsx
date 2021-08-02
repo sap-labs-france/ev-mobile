@@ -75,9 +75,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     statusActive: {
       backgroundColor: commonColor.brandSuccess
     },
-    selected: {
-      opacity: 0.5
-    },
     userConstainer: {
       marginTop: '3@s'
     },
