@@ -1,6 +1,6 @@
 import { Card, CardItem, Icon } from 'native-base';
 import React from 'react';
-import { Image, ImageStyle, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageStyle, Text, View } from 'react-native';
 
 import I18nManager from '../../I18n/I18nManager';
 import BaseProps from '../../types/BaseProps';
@@ -13,14 +13,10 @@ interface State {}
 
 export interface Props extends BaseProps {
   car: Car;
-  navigateToUsers?: boolean;
   selected?: boolean;
 }
 
 export default class CarComponent extends React.Component<Props, State> {
-  public static defaultProps = {
-    navigateToUsers: true
-  };
   public props: Props;
   public state: State;
 
@@ -38,7 +34,7 @@ export default class CarComponent extends React.Component<Props, State> {
 
   public render() {
     const style = computeStyleSheet();
-    const { car, navigation, navigateToUsers, selected } = this.props;
+    const { car, navigation, selected } = this.props;
     const carUsers = car?.carUsers ?? [];
     const defaultCarUser = carUsers.find((carUser) => carUser.default);
     const defaultCarUserName = Utils.buildUserName(defaultCarUser?.user);
@@ -64,29 +60,17 @@ export default class CarComponent extends React.Component<Props, State> {
           <View style={style.carContainer}>
             <Image style={style.imageStyle as ImageStyle} source={{ uri: car?.carCatalog?.image }} />
             <View style={style.carInfos}>
-              <TouchableOpacity
-                disabled={!defaultCarUser?.user || !navigateToUsers}
-                onPress={() => {
-                  navigation.navigate('UsersNavigator', {
-                    params: {
-                      userIDs,
-                      title: carFullName
-                    },
-                    key: `${Utils.randomNumber()}`
-                  });
-                }}>
-                <View style={style.userContainer}>
-                  <View style={[style.avatarContainer]}>
-                    <UserAvatar size={35} user={defaultCarUser?.user} navigation={navigation} />
-                  </View>
-                  <View style={[style.userNameContainer]}>
-                    <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.userName]}>
-                      {defaultCarUserName}
-                    </Text>
-                    {otherUserCount > 0 && <Text style={style.text}>(+{I18nManager.formatNumber(otherUserCount)})</Text>}
-                  </View>
+              <View style={style.userContainer}>
+                <View style={[style.avatarContainer]}>
+                  <UserAvatar size={35} user={defaultCarUser?.user} navigation={navigation} />
                 </View>
-              </TouchableOpacity>
+                <View style={[style.userNameContainer]}>
+                  <Text numberOfLines={1} ellipsizeMode={'tail'} style={[style.text, style.userName]}>
+                    {defaultCarUserName}
+                  </Text>
+                  {otherUserCount > 0 && <Text style={style.text}>(+{I18nManager.formatNumber(otherUserCount)})</Text>}
+                </View>
+              </View>
               <View style={style.powerDetailsContainer}>
                 <View style={[style.columnContainer, style.columnContainerBorderRight]}>
                   <Icon type="MaterialIcons" name="battery-full" style={style.icon} />

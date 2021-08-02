@@ -62,7 +62,7 @@ export default class SelectableList<T extends ListItem> extends BaseScreen<Selec
       case ItemSelectionMode.SINGLE:
         return `${I18n.t('general.selected')}: ${I18nManager.formatNumber(selectedItems.length)} - ${I18n.t('general.results')}: ${I18nManager.formatNumber(count)}`;
       default:
-        return count > 0 && `${I18nManager.formatNumber(count)} ${I18n.t('users.users')}`;
+        return count > 0 && `${I18nManager.formatNumber(count)} ${this.title}`;
     }
   }
 
