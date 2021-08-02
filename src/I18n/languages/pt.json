@@ -177,8 +177,8 @@
     "userUnexpectedError": "Não posso ler os utilizadores",
     "noUsers": "No users",
     "users": "Users(s)",
-    "selectTag": "Select Badge",
-    "selectTags": "Select Badges"
+    "selectTag": "Select User",
+    "selectTags": "Select Users"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "An error occurred",
@@ -367,8 +367,8 @@
     "tags": "Badge(s)",
     "active": "Active",
     "inactive": "Inactive",
-    "selectTag": "Select Tag",
-    "selectTags": "Select Tags"
+    "selectTag": "Select Badge",
+    "selectTags": "Select Badges"
   },
   "details": {
     "connector": "Connector",
