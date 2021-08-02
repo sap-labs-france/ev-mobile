@@ -177,8 +177,8 @@
     "userUnexpectedError": "Não posso ler os utilizadores",
     "noUsers": "No users",
     "users": "Users(s)",
-    "selectTag": "Select User",
-    "selectTags": "Select Users"
+    "selectUser": "Select User",
+    "selectUsers": "Select Users"
   },
   "paymentMethods": {
     "paymentMethodUnexpectedError": "An error occurred",
