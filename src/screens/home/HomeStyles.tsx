@@ -11,7 +11,6 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     container: {
       flex: 1,
       justifyContent: 'center',
-      height: '100%',
       backgroundColor: commonColor.containerBgColor
     },
 

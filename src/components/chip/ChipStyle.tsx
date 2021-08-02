@@ -20,20 +20,20 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       paddingHorizontal: '10@s'
     },
     success: {
-      borderColor: commonColor.brandSuccess,
-      color: commonColor.brandSuccess
+      borderColor: commonColor.success,
+      color: commonColor.success
     },
     danger: {
-      color: commonColor.brandDanger,
-      borderColor: commonColor.brandDanger
+      color: commonColor.danger,
+      borderColor: commonColor.danger
     },
     warning: {
-      color: commonColor.brandWarning,
-      borderColor: commonColor.brandWarning
+      color: commonColor.warning,
+      borderColor: commonColor.warning
     },
     default: {
-      color: commonColor.brandDisabledDark,
-      borderColor: commonColor.brandDisabledDark
+      color: commonColor.disabledDark,
+      borderColor: commonColor.disabledDark
     }
   });
   const portraitStyles = {};

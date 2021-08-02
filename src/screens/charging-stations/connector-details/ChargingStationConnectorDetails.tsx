@@ -289,8 +289,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public startTransactionConfirm = () => {
-    const { chargingStation } = this.state;
-    Alert.alert(I18n.t('details.startTransaction'), I18n.t('details.startTransactionMessage', { chargeBoxID: chargingStation.id }), [
+    const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
+    Alert.alert(I18n.t('details.startTransaction'), I18n.t('details.startTransactionMessage', { chargeBoxID: chargingStationID }), [
       { text: I18n.t('general.yes'), onPress: async () => this.startTransaction() },
       { text: I18n.t('general.no') }
     ]);
@@ -313,17 +313,17 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       // Disable the button
       this.setState({ buttonDisabled: true });
       // Start the Transaction
-      const status = await this.centralServerProvider.startTransaction(
+      const response = await this.centralServerProvider.startTransaction(
         chargingStation.id as string,
         connector.connectorId,
         userInfo.tagIDs[0]
       );
-      // Check
-      if (status && status.status === 'Accepted') {
+      if (response?.status === 'Accepted') {
         // Show message
         Message.showSuccess(I18n.t('details.accepted'));
         // Nb trials the button stays disabled
         this.setState({ startTransactionNbTrial: START_TRANSACTION_NB_TRIAL });
+        await this.refresh();
       } else {
         // Enable the button
         this.setState({ buttonDisabled: false });
@@ -362,13 +362,24 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     try {
       // Disable button
       this.setState({ buttonDisabled: true });
-      // Stop the Transaction
-      const status = await this.centralServerProvider.stopTransaction(chargingStation.id as string, connector.currentTransactionID);
-      // Check
-      if (status && status.status === 'Accepted') {
-        Message.showSuccess(I18n.t('details.accepted'));
+      // Remote Stop the Transaction
+      if (connector.status !== ChargePointStatus.AVAILABLE) {
+        const response = await this.centralServerProvider.stopTransaction(chargingStation.id as string, connector.currentTransactionID);
+        if (response?.status === 'Accepted') {
+          Message.showSuccess(I18n.t('details.accepted'));
+          await this.refresh();
+        } else {
+          Message.showError(I18n.t('details.denied'));
+        }
+      // Soft Stop Transaction
       } else {
-        Message.showError(I18n.t('details.denied'));
+        const response = await this.centralServerProvider.softStopstopTransaction(connector.currentTransactionID);
+        if (response?.status === 'Invalid') {
+          Message.showError(I18n.t('details.denied'));
+        } else {
+          Message.showSuccess(I18n.t('details.accepted'));
+          await this.refresh();
+        }
       }
     } catch (error) {
       // Other common Error
@@ -382,7 +393,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     }
   };
 
-  public getStartStopTransactionButtonStatus(connector: Connector, userDefaultTagCar: UserDefaultTagCar): { buttonDisabled?: boolean; startTransactionNbTrial?: number } {
+  public getStartStopTransactionButtonStatus(
+    connector: Connector,
+    userDefaultTagCar: UserDefaultTagCar
+  ): { buttonDisabled?: boolean; startTransactionNbTrial?: number } {
     const { startTransactionNbTrial } = this.state;
     // Check if error codes
     if (!Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
@@ -391,8 +405,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       };
     }
     // Check if the Start/Stop Button should stay disabled
-    if ((connector?.status === ChargePointStatus.AVAILABLE && (startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2)) ||
-        (connector?.status === ChargePointStatus.PREPARING && startTransactionNbTrial === 0)) {
+    if (
+      (connector?.status === ChargePointStatus.AVAILABLE && startTransactionNbTrial <= START_TRANSACTION_NB_TRIAL - 2) ||
+      (connector?.status === ChargePointStatus.PREPARING && startTransactionNbTrial === 0)
+    ) {
       // Button are set to available after the nbr of trials
       return {
         buttonDisabled: false
@@ -609,8 +625,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public renderShowLastTransactionButton = (style: any) => {
-    const { isAdmin, isSiteAdmin, connector, canStartTransaction } = this.state;
-    if ((isAdmin || isSiteAdmin) && canStartTransaction && connector && connector.currentTransactionID === 0) {
+    const { isAdmin, isSiteAdmin, connector } = this.state;
+    if ((isAdmin || isSiteAdmin) && connector) {
       return (
         <TouchableOpacity style={style.lastTransactionContainer} onPress={async () => this.showLastTransaction()}>
           <View style={style.buttonLastTransaction}>
@@ -623,8 +639,8 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public renderReportErrorButton = (style: any) => {
-    const { connector, canStartTransaction } = this.state;
-    if (canStartTransaction && connector && connector.currentTransactionID === 0) {
+    const { connector } = this.state;
+    if (connector) {
       return (
         <TouchableOpacity style={[style.reportErrorContainer]} onPress={async () => this.showReportError()}>
           <View style={style.reportErrorButton}>

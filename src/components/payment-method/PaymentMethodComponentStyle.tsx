@@ -37,7 +37,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     badgeText: {
       fontSize: '10@s',
-      color: commonColor.brandLight,
+      color: commonColor.light,
       paddingVertical: '1@s',
       paddingHorizontal: '3@s'
     },
@@ -64,16 +64,16 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginRight: '3@s'
     },
     paymentMethodExpired: {
-      backgroundColor: commonColor.brandDanger
+      backgroundColor: commonColor.danger
     },
     paymentMethodExpiringSoon: {
-      backgroundColor: commonColor.brandWarning
+      backgroundColor: commonColor.warning
     },
     paymentMethodValid: {
-      backgroundColor: commonColor.brandSuccess
+      backgroundColor: commonColor.success
     },
     defaultContainer: {
-      backgroundColor: commonColor.brandDisabledDark,
+      backgroundColor: commonColor.disabledDark,
       marginLeft: '5@s',
       borderRadius: '2@s'
     }

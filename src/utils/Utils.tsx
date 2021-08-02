@@ -531,10 +531,7 @@ export default class Utils {
   }
 
   public static getParamFromNavigation(
-    route: any,
-    name: string,
-    defaultValue: string | boolean,
-    removeValue = false
+    route: any, name: string, defaultValue: string | boolean, removeValue = false
   ): string | number | boolean | Record<string, unknown> | [] {
     const params: any = route?.params?.params ?? route?.params;
     // Has param object?
@@ -819,8 +816,7 @@ export default class Utils {
     // No Connector available
     if (connectorStats.availableConnectors === 0) {
       // Some connectors will be soon available
-      if (connectorStats.finishingConnectors > 0 ||
-          connectorStats.suspendedConnectors > 0) {
+      if (connectorStats.finishingConnectors > 0 || connectorStats.suspendedConnectors > 0) {
         return style.statusAvailableSoon;
       } else {
         return style.statusNotAvailable;
@@ -961,6 +957,10 @@ export default class Utils {
     } else {
       return statusMarkerUnavailable;
     }
+  }
+
+  public static concatenateStrings(...args: string[]): string {
+    return args.join('');
   }
 
   private static formatTimer = (value: number): string => {

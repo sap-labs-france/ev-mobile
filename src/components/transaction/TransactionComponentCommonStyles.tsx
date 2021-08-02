@@ -65,13 +65,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '5@s'
     },
     inactivityHigh: {
-      backgroundColor: commonColor.brandDanger
+      backgroundColor: commonColor.danger
     },
     inactivityMedium: {
-      backgroundColor: commonColor.brandWarning
+      backgroundColor: commonColor.warning
     },
     inactivityLow: {
-      backgroundColor: commonColor.brandSuccess
+      backgroundColor: commonColor.success
     },
     label: {
       color: commonColor.textColor,
@@ -82,13 +82,13 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     success: {
-      color: commonColor.brandSuccess
+      color: commonColor.success
     },
     warning: {
-      color: commonColor.brandWarning
+      color: commonColor.warning
     },
     danger: {
-      color: commonColor.brandDanger
+      color: commonColor.danger
     },
     transactionDetailsContainer: {
       flex: 1,
@@ -98,10 +98,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       height: '100%'
     },
     transactionDetailsContainer1: {
-      paddingTop: '5@s',
+      paddingTop: '5@s'
     },
     transactionDetailsContainer2: {
-      paddingBottom: '5@s',
+      paddingBottom: '5@s'
     },
     transactionDetailContainer: {
       margin: '3@s',

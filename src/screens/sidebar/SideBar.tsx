@@ -4,9 +4,10 @@ import moment from 'moment';
 import { Container, Content, Header, Icon, ListItem, Text, View } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, TouchableOpacity } from 'react-native';
+import { CheckVersionResponse, checkVersion } from 'react-native-check-version';
 import DeviceInfo from 'react-native-device-info';
 
-import defaultTenantLogo from '../../../assets/logo-low.png';
+import AppUpdateModal from '../../components/modal/app-update/AppUpdateModal';
 import UserAvatar from '../../components/user/avatar/UserAvatar';
 import BaseProps from '../../types/BaseProps';
 import User from '../../types/User';
@@ -22,6 +23,8 @@ interface State {
   tenantName?: string;
   isComponentOrganizationActive?: boolean;
   updateDate?: string;
+  showAppUpdateDialog?: boolean;
+  appVersion?: CheckVersionResponse;
 }
 
 export default class SideBar extends BaseScreen<Props, State> {
@@ -34,7 +37,9 @@ export default class SideBar extends BaseScreen<Props, State> {
       userToken: null,
       tenantName: '',
       isComponentOrganizationActive: false,
-      updateDate: ''
+      updateDate: '',
+      showAppUpdateDialog: false,
+      appVersion: null
     };
   }
 
@@ -54,6 +59,8 @@ export default class SideBar extends BaseScreen<Props, State> {
 
   public refresh = async () => {
     await this.getUserInfo();
+    const appVersion = await checkVersion();
+    this.setState({ appVersion });
   };
 
   public async getUpdateDate() {
@@ -73,6 +80,7 @@ export default class SideBar extends BaseScreen<Props, State> {
   };
 
   public async logoff() {
+    const userTenant = this.centralServerProvider.getUserTenant();
     // Logoff
     this.centralServerProvider.setAutoLoginDisabled(true);
     await this.centralServerProvider.logoff();
@@ -80,7 +88,10 @@ export default class SideBar extends BaseScreen<Props, State> {
     this.props.navigation.dispatch(
       StackActions.replace('AuthNavigator', {
         name: 'Login',
-        key: `${Utils.randomNumber()}`
+        key: `${Utils.randomNumber()}`,
+        params: {
+          tenantSubDomain: userTenant.subdomain
+        }
       })
     );
   }
@@ -93,21 +104,30 @@ export default class SideBar extends BaseScreen<Props, State> {
   public render() {
     const style = computeStyleSheet();
     const commonColor = Utils.getCurrentCommonColor();
-    const { navigation } = this.props;
-    const { userToken, tenantName, isComponentOrganizationActive, updateDate } = this.state;
+    const { userToken, tenantName, isComponentOrganizationActive, showAppUpdateDialog, appVersion } = this.state;
     const user = { firstName: userToken?.firstName, name: userToken?.name, id: userToken?.id } as User;
     // Get logo
     const tenantLogo = this.centralServerProvider?.getCurrentTenantLogo();
     return (
       <Container style={style.container}>
         <Header style={style.header}>
-          <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logo as ImageStyle} />
+          {tenantLogo && <Image source={{ uri: tenantLogo }} style={style.logo as ImageStyle} />}
           <Text numberOfLines={1} style={style.tenantName}>
             {tenantName}
           </Text>
-          {/* <Text style={style.versionText}>{`${I18n.t("general.version")} ${DeviceInfo.getVersion()}`} (Beta)</Text> */}
-          <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
-          {!Utils.isNullOrEmptyString(updateDate) && <Text style={style.versionDate}>{updateDate}</Text>}
+          <TouchableOpacity
+            disabled={!appVersion?.needsUpdate}
+            onPress={() => this.setState({ showAppUpdateDialog: true })}
+            style={style.versionContainer}>
+            <Text style={style.versionText}>{`${I18n.t('general.version')} ${DeviceInfo.getVersion()}`}</Text>
+            {appVersion?.needsUpdate && (
+              <View style={style.newVersionContainer}>
+                <Icon style={style.newVersionIcon} type={'MaterialIcons'} name={'update'} />
+                <Text style={style.newVersionText}>{I18n.t('appUpdate.appUpdateDialogTitle')}</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+          {showAppUpdateDialog && <AppUpdateModal appVersion={appVersion} close={() => this.setState({ showAppUpdateDialog: false })} />}
         </Header>
         <Content style={style.drawerContent}>
           <View style={style.linkContainer}>
@@ -174,11 +194,7 @@ export default class SideBar extends BaseScreen<Props, State> {
               </ListItem>
             )}
             {this.securityProvider?.canListInvoices() && this.securityProvider?.isComponentBillingActive() && (
-              <ListItem
-                style={style.links}
-                button={true}
-                iconLeft={true}
-                onPress={() => this.navigateTo('InvoicesNavigator', 'Invoices')}>
+              <ListItem style={style.links} button={true} iconLeft={true} onPress={() => this.navigateTo('InvoicesNavigator', 'Invoices')}>
                 <Icon style={style.linkIcon} type="MaterialIcons" name="receipt" />
                 <Text style={style.linkText}>{I18n.t('sidebar.invoices')}</Text>
               </ListItem>
@@ -188,8 +204,8 @@ export default class SideBar extends BaseScreen<Props, State> {
               button={true}
               iconLeft={true}
               onPress={() => this.navigateTo('ReportErrorNavigator', 'ReportError')}>
-              <Icon style={[style.linkIcon, { color: commonColor.brandDanger }]} type="MaterialIcons" name="error-outline" />
-              <Text style={[style.linkText, { color: commonColor.brandDanger }]}>{I18n.t('sidebar.reportError')}</Text>
+              <Icon style={[style.linkIcon, { color: commonColor.danger }]} type="MaterialIcons" name="error-outline" />
+              <Text style={[style.linkText, { color: commonColor.danger }]}>{I18n.t('sidebar.reportError')}</Text>
             </ListItem>
             {/* <ListItem button onPress={() => navigation.navigate('Settings')} iconLeft style={style.links}>
               <Icon name="ios-settings-outline" />

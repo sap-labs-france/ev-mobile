@@ -510,12 +510,12 @@ PODS:
     - React
   - RNVectorIcons (7.1.0):
     - React
-  - Stripe (21.5.1):
-    - Stripe/Stripe3DS2 (= 21.5.1)
-  - stripe-react-native (0.1.2):
+  - Stripe (21.6.0):
+    - Stripe/Stripe3DS2 (= 21.6.0)
+  - stripe-react-native (0.1.4):
     - React
-    - Stripe (~> 21.5.1)
-  - Stripe/Stripe3DS2 (21.5.1)
+    - Stripe (~> 21.6.0)
+  - Stripe/Stripe3DS2 (21.6.0)
   - SwiftyJSON (5.0.0)
   - toolbar-android (0.1.0-rc.2):
     - React
@@ -837,13 +837,13 @@ SPEC CHECKSUMS:
   RNSecureStorage: 8b2b07278d80c48b3a881c56e604ab147372f243
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
-  Stripe: 515db5536fd659b5d79a0898ce1b882b61ab597e
-  stripe-react-native: fe58cb90711b9428e40e4e37f124646e6b135464
+  Stripe: 6cc7bb348f4b1fad111129f6ee40eb6682deaefb
+  stripe-react-native: dbb9117864014d4c621e9152c25999264a63c9fb
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   toolbar-android: 404f4450b203597e7b417f714ff417bed562a1be
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 3517aca9332c9f8f51f9770975180f2bf6906ab1
+PODFILE CHECKSUM: b8dc8cd1a42309e725520e15610740f459384595
 
 COCOAPODS: 1.10.1

@@ -6,7 +6,7 @@ export default interface Car extends CreatedUpdatedProps, ListItem {
   vin: string;
   licensePlate: string;
   carCatalog?: CarCatalog;
-  carUsers?: UserCar[];
+  user?: User;
   type?: CarType;
   converter?: CarConverter;
 }
@@ -32,14 +32,6 @@ export enum CarType {
   PRIVATE = 'P',
   COMPANY = 'C',
   POOL_CAR = 'PC'
-}
-
-export interface UserCar {
-  id?: string;
-  user: User;
-  carID: string;
-  default?: boolean;
-  owner?: boolean;
 }
 
 export enum CarConverterType {

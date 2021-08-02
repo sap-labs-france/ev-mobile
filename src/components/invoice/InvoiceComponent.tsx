@@ -163,10 +163,7 @@ export default class InvoiceComponent extends React.Component<Props, State> {
     Alert.alert(
       I18n.t('invoices.downloadInvoiceTitle'),
       I18n.t('invoices.downloadInvoiceSubtitle', { user: Utils.buildUserName(invoice.user), invoiceDate }),
-      [
-        { text: I18n.t('general.yes'), onPress: async () => this.downloadInvoice() },
-        { text: I18n.t('general.cancel') }
-      ]
+      [{ text: I18n.t('general.yes'), onPress: async () => this.downloadInvoice() }, { text: I18n.t('general.cancel') }]
     );
   }
 

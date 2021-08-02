@@ -3,7 +3,7 @@ import { PagingParams } from '../types/QueryParams';
 export default class Constants {
   public static readonly REST_RESPONSE_SUCCESS = 'Success';
 
-  public static readonly SUPPORTED_LOCALES = ['en_US', 'fr_FR', 'de_DE', 'es_MX', 'pt_PT', 'it_IT'];
+  public static readonly SUPPORTED_LOCALES = ['en_US', 'fr_FR', 'de_DE', 'es_ES', 'pt_PT', 'it_IT'];
   public static readonly SUPPORTED_LANGUAGES = ['en', 'fr', 'de', 'es', 'pt', 'it'];
   public static readonly DEFAULT_LOCALE = 'en_US';
   public static readonly DEFAULT_LANGUAGE = 'en';

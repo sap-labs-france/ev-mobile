@@ -23,13 +23,13 @@ import BaseProps from '../../../types/BaseProps';
 import ChargingStation, { ChargePointStatus, Connector } from '../../../types/ChargingStation';
 import { DataResult } from '../../../types/DataResult';
 import { GlobalFilters } from '../../../types/Filter';
+import SiteArea from '../../../types/SiteArea';
 import Constants from '../../../utils/Constants';
 import SecuredStorage from '../../../utils/SecuredStorage';
 import Utils from '../../../utils/Utils';
 import BaseAutoRefreshScreen from '../../base-screen/BaseAutoRefreshScreen';
 import ChargingStationsFilters, { ChargingStationsFiltersDef } from './ChargingStationsFilters';
 import computeStyleSheet from './ChargingStationsStyles';
-import SiteArea from '../../../types/SiteArea';
 
 export interface Props extends BaseProps {}
 
@@ -126,24 +126,24 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     let chargingStations: DataResult<ChargingStation>;
     const { filters } = this.state;
     try {
+      // Get current location
+      this.currentLocation = await this.getCurrentLocation();
       const params = {
         Search: searchText,
         SiteAreaID: this.siteArea?.id,
         Issuer: true,
         ConnectorStatus: filters.connectorStatus,
         ConnectorType: filters.connectorType,
+        WithSiteArea: true,
         LocLatitude: this.currentLocation ? this.currentLocation.latitude : null,
         LocLongitude: this.currentLocation ? this.currentLocation.longitude : null,
         LocMaxDistanceMeters: this.currentLocation ? Constants.MAX_DISTANCE_METERS : null
       };
-      // Get current location
-      this.currentLocation = await this.getCurrentLocation();
       // Get with the Site Area
       chargingStations = await this.centralServerProvider.getChargingStations(params, { skip, limit }, ['id']);
       // Get total number of records
-      if ((chargingStations.count === -1) && Utils.isEmptyArray(this.state.chargingStations)) {
-        const chargingStationsNbrRecordsOnly =
-          await this.centralServerProvider.getChargingStations(params, Constants.ONLY_RECORD_COUNT);
+      if (chargingStations.count === -1) {
+        const chargingStationsNbrRecordsOnly = await this.centralServerProvider.getChargingStations(params, Constants.ONLY_RECORD_COUNT);
         chargingStations.count = chargingStationsNbrRecordsOnly.count;
       }
     } catch (error) {
@@ -214,6 +214,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
       // Add ChargingStations
       this.setState(() => ({
         loading: false,
+        refreshing: false,
         chargingStations: chargingStations ? chargingStations.result : [],
         count: chargingStations ? chargingStations.count : 0,
         isAdmin: this.securityProvider ? this.securityProvider.isAdmin() : false

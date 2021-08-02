@@ -10,6 +10,7 @@ import BaseProps from '../../types/BaseProps';
 import ListItem from '../../types/ListItem';
 import ListEmptyTextComponent from './empty-text/ListEmptyTextComponent';
 import ListFooterComponent from './footer/ListFooterComponent';
+import Utils from '../../utils/Utils';
 import computeStyleSheet from './ItemsListStyle';
 
 export interface Props<T extends ListItem> extends BaseProps {
@@ -84,8 +85,8 @@ export default class ItemsList<T extends ListItem> extends React.Component<Props
             {this.renderItemsSeparator(itemsSeparator, style)}
           </View>
         )}
+        keyExtractor={(item, index) => Utils.concatenateStrings(item?.id?.toString(), index?.toString())}
         removeClippedSubviews={true}
-        keyExtractor={(item, index) => item.id.toString() + index.toString()}
         onEndReachedThreshold={Platform.OS === 'android' ? 1 : 0.1}
         refreshControl={<RefreshControl onRefresh={manualRefresh} refreshing={refreshing} />}
         ListFooterComponent={() => <ListFooterComponent navigation={navigation} skip={skip} count={count} limit={limit} />}

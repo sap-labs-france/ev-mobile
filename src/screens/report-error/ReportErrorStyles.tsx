@@ -25,7 +25,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     reportErrorIcon: {
       fontSize: '100@s',
-      color: commonColor.brandDanger
+      color: commonColor.danger
     },
     formContainer: {
       flex: 3,
@@ -63,7 +63,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       color: commonColor.textColor
     },
     sendButton: {
-      marginTop: '15@s'
+      marginTop: '15@s',
+      backgroundColor: commonColor.danger
     },
     sendTextButton: {
       color: 'white',
@@ -73,19 +74,19 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     errorMobileText: {
       fontSize: '12@s',
       marginLeft: '20@s',
-      color: commonColor.brandDanger,
+      color: commonColor.danger,
       alignSelf: 'flex-start'
     },
     errorSubjectText: {
       fontSize: '12@s',
       marginLeft: '20@s',
-      color: commonColor.brandDanger,
+      color: commonColor.danger,
       alignSelf: 'flex-start'
     },
     errorDescriptionText: {
       fontSize: '12@s',
       marginLeft: '20@s',
-      color: commonColor.brandDanger,
+      color: commonColor.danger,
       alignSelf: 'flex-start'
     }
   });
