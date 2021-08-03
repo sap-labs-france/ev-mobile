@@ -219,7 +219,7 @@
   "invoices": {
     "noInvoices": "No Invoices",
     "invoiceUnexpectedError": "An error occurred",
-    "invoices": "Facturas",
+    "invoices": "Factura(s)",
     "invoice": "Factura",
     "downloadedSuccessfully": "Invoice downloaded successfully",
     "invoiceFileDescription": "e-Mobility charging session invoice",
