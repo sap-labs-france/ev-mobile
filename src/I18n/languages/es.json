@@ -77,8 +77,8 @@
     "users": "Users",
     "badges": "Badges",
     "cars": "Cars",
-    "invoices": "Invoices",
-    "paymentMethods": "Payment Methods"
+    "invoices": "Facturas",
+    "paymentMethods": "Métodos de pago"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -178,7 +178,7 @@
   "paymentMethods": {
     "paymentMethodUnexpectedError": "An error occurred",
     "noPaymentMethod": "No payment method",
-    "paymentMethods": "Payment method(s)",
+    "paymentMethods": "Métodos de pago",
     "addPaymentMethodError": "Failed to add payment method",
     "addPaymentMethodSuccess" : "New payment method added successfully",
     "deletePaymentMethodSuccess": "Payment method removed successfully",
@@ -219,8 +219,8 @@
   "invoices": {
     "noInvoices": "No Invoices",
     "invoiceUnexpectedError": "An error occurred",
-    "invoices": "Invoice(s)",
-    "invoice": "Invoice",
+    "invoices": "Factura(s)",
+    "invoice": "Factura",
     "downloadedSuccessfully": "Invoice downloaded successfully",
     "invoiceFileDescription": "e-Mobility charging session invoice",
     "downloadInvoiceTitle": "Download invoice",
@@ -284,9 +284,9 @@
     "totalInactivityNote": "Duración total de inactividad",
     "totalPrice": "{{totalPrice}}",
     "totalPriceNote": "Precio total",
-    "paymentMethods": "Payment Methods",
+    "paymentMethods": "Métodos de pago",
     "paymentMethodsNote" : "Browse and create payment methods",
-    "invoices": "Invoices",
+    "invoices": "Facturas",
     "invoicesNote": "Browse and download invoices"
   },
   "sites": {
