@@ -6,7 +6,7 @@ import { View } from 'react-native';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import InvoiceComponent from '../../components/invoice/InvoiceComponent';
-import ItemsList, { ItemsSeparatorType } from '../../components/list/ItemsList';
+import ItemsList from '../../components/list/ItemsList';
 import I18nManager from '../../I18n/I18nManager';
 import BaseScreen from '../../screens/base-screen/BaseScreen';
 import BaseProps from '../../types/BaseProps';
