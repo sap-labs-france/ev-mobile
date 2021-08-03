@@ -2,9 +2,8 @@ import { Card, CardItem, Icon } from 'native-base';
 import React from 'react';
 import { Image, ImageStyle, Text, View } from 'react-native';
 
-import I18nManager from '../../I18n/I18nManager';
 import BaseProps from '../../types/BaseProps';
-import Car, { UserCar } from '../../types/Car';
+import Car from '../../types/Car';
 import Utils from '../../utils/Utils';
 import UserAvatar from '../user/avatar/UserAvatar';
 import computeStyleSheet from './CarComponentStyle';

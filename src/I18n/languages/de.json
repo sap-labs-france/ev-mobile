@@ -65,6 +65,7 @@
     "validate": "Validate",
     "default": "Default",
     "save": "Save",
+    "update": "Update",
     "reset": "Reset",
     "selected": "Selected",
     "results": "Result(s)"
@@ -348,7 +349,7 @@
     "charging": "Lädt",
     "available": "Verfügbar",
     "unavailable": "Unverfügbar",
-    "notCharging": "Inaktiv",
+    "notCharging": "Not charging",
     "suspendedEV": "EV angehalten",
     "suspendedEVSE": "EVSE angehalten",
     "faulted": "Fehlerhaft",
@@ -404,6 +405,7 @@
     "instantPowerChartLabel": "Momentane Leistung (kW)",
     "cumulatedChartLabel": "Kumuliert (kW.h)",
     "batteryChartLabel": "Batterieladestand (%)",
+    "gridLimitChartLabel": "Grid Limit (kW)",
     "connectorMax": "Max. Leistung Anschluss (kW)",
     "noData": "Nicht Daten",
     "noSessionInProgress": "Kein laufender Ladvorgang",
@@ -453,5 +455,10 @@
       "subMessage": "Unbekannter Benutzer",
       "longMessage": "Ein unbekanner Benutzer hat auf '{{chargeBoxID}}' gebadgt."
     }
+  },
+  "appUpdate": {
+    "appUpdateDialogTitle": "New version available",
+    "appUpdateDialogDescription": "Would you like to update your application to the latest available version?",
+    "noUpdateAvailable": "You have the latest version"
   }
 }

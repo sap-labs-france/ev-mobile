@@ -6,7 +6,7 @@ import { View } from 'react-native';
 
 import HeaderComponent from '../../components/header/HeaderComponent';
 import InvoiceComponent from '../../components/invoice/InvoiceComponent';
-import ItemsList, { ItemsSeparatorType } from '../../components/list/ItemsList';
+import ItemsList from '../../components/list/ItemsList';
 import I18nManager from '../../I18n/I18nManager';
 import BaseScreen from '../../screens/base-screen/BaseScreen';
 import BaseProps from '../../types/BaseProps';
@@ -61,7 +61,7 @@ export default class Invoices extends BaseScreen<Props, State> {
       // Get the invoices
       const invoices = await this.centralServerProvider.getInvoices({}, { skip, limit }, ['-createdOn']);
       // Get total number of records
-      if (invoices.count === -1 && Utils.isEmptyArray(this.state.invoices)) {
+      if (invoices.count === -1) {
         const invoicesNbrRecordsOnly = await this.centralServerProvider.getInvoices({}, Constants.ONLY_RECORD_COUNT);
         invoices.count = invoicesNbrRecordsOnly.count;
       }

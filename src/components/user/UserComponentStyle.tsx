@@ -46,10 +46,10 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       width: '5@s'
     },
     statusInactive: {
-      backgroundColor: commonColor.brandDanger
+      backgroundColor: commonColor.danger
     },
     statusActive: {
-      backgroundColor: commonColor.brandSuccess
+      backgroundColor: commonColor.success
     },
     avatarContainer: {
       paddingLeft: '10@s',

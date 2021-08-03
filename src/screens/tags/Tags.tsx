@@ -22,6 +22,7 @@ export interface Props extends SelectableProps<Tag> {
 
 interface State extends SelectableState<Tag>{
   tags?: Tag[];
+  projectedFields?: string[];
   skip?: number;
   limit?: number;
   count?: number;
@@ -40,6 +41,7 @@ export default class Tags extends SelectableList<Tag> {
     this.selectMultipleTitle = 'tags.selectTags';
     this.selectSingleTitle = 'tags.selectTag';
     this.state = {
+      projectedFields: [],
       tags: [],
       skip: 0,
       limit: Constants.PAGING_SIZE,
@@ -72,7 +74,7 @@ export default class Tags extends SelectableList<Tag> {
       // Get the Tags
       const tags = await this.centralServerProvider.getTags(params, { skip, limit }, ['-createdOn']);
       // Get total number of records
-      if ((tags.count === -1) && Utils.isEmptyArray(this.state.tags)) {
+      if (tags.count === -1) {
         const tagsNbrRecordsOnly = await this.centralServerProvider.getTags(params, Constants.ONLY_RECORD_COUNT);
         tags.count = tagsNbrRecordsOnly.count;
       }
@@ -107,6 +109,7 @@ export default class Tags extends SelectableList<Tag> {
       const tags = await this.getTags(this.searchText, skip + Constants.PAGING_SIZE, limit);
       // Add sites
       this.setState((prevState) => ({
+        projectedFields: tags ? tags.projectedFields : [],
         tags: tags ? [...prevState.tags, ...tags.result] : prevState.tags,
         skip: prevState.skip + Constants.PAGING_SIZE,
         refreshing: false
@@ -123,6 +126,7 @@ export default class Tags extends SelectableList<Tag> {
       this.setState({
         loading: false,
         tags: tags ? tags.result : [],
+        projectedFields: tags ? tags.projectedFields : [],
         count: tags ? tags.count : 0
       });
     }
@@ -135,7 +139,7 @@ export default class Tags extends SelectableList<Tag> {
 
   public render = () => {
     const style = computeStyleSheet();
-    const { tags, count, skip, limit, refreshing, loading } = this.state;
+    const { tags, count, skip, limit, refreshing, loading, projectedFields } = this.state;
     const { navigation, isModal, selectionMode } = this.props;
     return (
       <Container style={style.container}>
@@ -165,7 +169,12 @@ export default class Tags extends SelectableList<Tag> {
               limit={limit}
               skip={skip}
               renderItem={(item: Tag, selected: boolean) => (
-                <TagComponent tag={item} isAdmin={this.securityProvider?.isAdmin()} selected={selected} navigation={navigation} />
+                <TagComponent
+                  tag={item}
+                  canReadUser={projectedFields.includes('user.name') && projectedFields.includes('user.firstName')}
+                  selected={selected}
+                  navigation={navigation}
+                />
               )}
               refreshing={refreshing}
               manualRefresh={this.manualRefresh}

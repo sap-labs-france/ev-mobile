@@ -59,7 +59,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderRadius: '25@s',
       borderStyle: 'solid',
       borderWidth: '4@s',
-      borderColor: commonColor.brandDanger,
+      borderColor: commonColor.danger,
       backgroundColor: commonColor.containerBgColor,
       justifyContent: 'center',
       alignItems: 'center'
@@ -103,7 +103,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     reportErrorIcon: {
       fontSize: '25@s',
-      color: commonColor.brandDanger
+      color: commonColor.danger
     },
     startTransactionIcon: {
       color: commonColor.success
@@ -223,20 +223,20 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       borderColor: commonColor.textColor
     },
     success: {
-      color: commonColor.brandSuccess
+      color: commonColor.success
     },
     warning: {
-      color: commonColor.brandWarning
+      color: commonColor.warning
     },
     danger: {
-      color: commonColor.brandDanger
+      color: commonColor.danger
     },
     disabled: {
       color: commonColor.buttonDisabledBg,
       borderColor: commonColor.buttonDisabledBg
     },
     errorMessage: {
-      color: commonColor.brandDanger,
+      color: commonColor.danger,
       textAlign: 'center'
     },
     inputContainer: {

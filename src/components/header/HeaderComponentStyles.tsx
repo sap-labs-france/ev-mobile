@@ -31,6 +31,7 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       justifyContent: 'center'
     },
     titleHeader: {
+      width: '90%',
       color: commonColor.textColor,
       fontSize: '19@s',
       textAlign: 'center'
@@ -45,13 +46,18 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
       marginTop: Platform.OS === 'ios' ? 0 : '-3@s'
     },
     logoHeader: {
-      width: '45@s',
+      width: '60@s',
       height: '45@s',
       marginLeft: '5@s',
       resizeMode: 'contain'
     },
     iconLeftHeader: {
       fontSize: '30@s',
+      color: commonColor.textColor,
+      width: '35@s'
+    },
+    mapListIcon: {
+      fontSize: '25@s',
       color: commonColor.textColor,
       width: '35@s'
     },

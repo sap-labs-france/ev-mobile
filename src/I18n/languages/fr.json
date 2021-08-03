@@ -65,6 +65,7 @@
     "validate": "Valider",
     "default": "Par défaut",
     "save": "Sauvegarder",
+    "update": "Mettre à jour",
     "reset": "Réinitialiser",
     "selected": "Sélectionné(s)",
     "results": "Résultat(s)"
@@ -95,7 +96,7 @@
     "mandatoryFirstName": "Le Prénom est obligatoire",
     "mandatoryEmail": "L'Email est obligatoire",
     "invalidEmail": "L'Email est invalide",
-    "invalidMobile": "The mobile is invalid",
+    "invalidMobile": "Le mobile est invalide",
     "mandatoryPassword": "Le Mot de Passe est obligatoire",
     "logOut": "Se déconnecter",
     "mustSelectTenant": "Selectionnez une Organisation",
@@ -337,7 +338,7 @@
     "clearCache": "Effacer le Cache",
     "clearCacheMessage": "Voulez-vous vraiment le cache de '{{chargeBoxID}}'?",
     "noChargers": "Aucune Borne trouvée",
-    "properties": "Propriétées",
+    "properties": "Propriétés",
     "ocpp": "OCPP",
     "actions": "Actions",
     "noSession": "Aucune Session",
@@ -348,7 +349,7 @@
     "charging": "En charge",
     "available": "Disponible",
     "unavailable": "Indisponible",
-    "notCharging": "Inactif",
+    "notCharging": "Charge arrêtée",
     "suspendedEV": "EV Suspendu",
     "suspendedEVSE": "EVSE Suspendu",
     "faulted": "Erreur",
@@ -404,7 +405,8 @@
     "instantPowerChartLabel": "Puissance Instantanée (kW)",
     "cumulatedChartLabel": "Cumulé (kW.h)",
     "batteryChartLabel": "Niveau Batterie (%)",
-    "connectorMax": "Connecteur Max Power (kW)",
+    "gridLimitChartLabel": "Limitation Réseau (kW)",
+    "connectorMax": "Puissance max connecteur (kW)",
     "noData": "Pas de données",
     "noSessionInProgress": "Pas de session en cours",
     "noConsumptionData": "No consumption data",
@@ -453,5 +455,10 @@
       "subMessage": "Utilisateur Inconnu",
       "longMessage": "Un utilisateur inconnu vient juste de badger sur '{{chargeBoxID}}'."
     }
+  },
+  "appUpdate": {
+    "appUpdateDialogTitle": "Nouvelle version disponible",
+    "appUpdateDialogDescription": "Voulez-vous mettre à jour votre application avec la dernière version disponible?",
+    "noUpdateAvailable": "Vous avez la dernière version"
   }
 }

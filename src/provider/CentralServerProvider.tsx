@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Buffer } from 'buffer';
 
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
 import jwtDecode from 'jwt-decode';
@@ -50,7 +50,8 @@ export default class CentralServerProvider {
   private locale: string = null;
   private tenant: TenantConnection = null;
   private currency: string = null;
-  private siteImages: Map<string, string> = new Map<string, string>();
+  private siteImagesCache: Map<string, string> = new Map<string, string>();
+  private tenantLogosCache: Map<string, string> = new Map<string, string>();
   private tenantLogo: string;
   private autoLoginDisabled = false;
   private notificationManager: NotificationManager;
@@ -148,19 +149,22 @@ export default class CentralServerProvider {
 
   public async getTenantLogoBySubdomain(tenant: TenantConnection): Promise<string> {
     this.debugMethod('getTenantLogoBySubdomain');
-    let tenantLogo: string;
-    // Call backend
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceUtilURL(tenant)}/${ServerAction.TENANT_LOGO}`, {
-      headers: this.buildHeaders(),
-      responseType: 'arraybuffer',
-      params: {
-        Subdomain: tenant.subdomain
-      }
-    });
-    if (result.data) {
-      const base64Image = Buffer.from(result.data).toString('base64');
-      if (base64Image) {
-        tenantLogo = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
+    let tenantLogo = this.tenantLogosCache.get(tenant.subdomain);
+    if (!tenantLogo) {
+      // Call backend
+      const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceUtilURL(tenant)}/${ServerAction.TENANT_LOGO}`, {
+        headers: this.buildHeaders(),
+        responseType: 'arraybuffer',
+        params: {
+          Subdomain: tenant.subdomain
+        }
+      });
+      if (result.data) {
+        const base64Image = Buffer.from(result.data).toString('base64');
+        if (base64Image) {
+          tenantLogo = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
+          this.tenantLogosCache.set(tenant.subdomain, tenantLogo);
+        }
       }
     }
     this.tenantLogo = tenantLogo;
@@ -483,8 +487,11 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getChargingStations(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
-      sorting: string[] = []): Promise<DataResult<ChargingStation>> {
+  public async getChargingStations(
+    params = {},
+    paging: PagingParams = Constants.DEFAULT_PAGING,
+    sorting: string[] = []
+  ): Promise<DataResult<ChargingStation>> {
     this.debugMethod('getChargingStations');
     // Build Paging
     this.buildPaging(paging, params);
@@ -531,8 +538,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getSites(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
-      sorting: string[] = []): Promise<DataResult<Site>> {
+  public async getSites(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<Site>> {
     this.debugMethod('getSites');
     // Build Paging
     this.buildPaging(paging, params);
@@ -546,8 +552,11 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getSiteAreas(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
-      sorting: string[] = []): Promise<DataResult<SiteArea>> {
+  public async getSiteAreas(
+    params = {},
+    paging: PagingParams = Constants.DEFAULT_PAGING,
+    sorting: string[] = []
+  ): Promise<DataResult<SiteArea>> {
     this.debugMethod('getSiteAreas');
     // Build Paging
     this.buildPaging(paging, params);
@@ -591,6 +600,18 @@ export default class CentralServerProvider {
           transactionId
         }
       },
+      {
+        headers: this.buildSecuredHeaders()
+      }
+    );
+    return result.data;
+  }
+
+  public async softStopstopTransaction(transactionID: number): Promise<ActionResponse> {
+    this.debugMethod('softStopstopTransaction');
+    const result = await this.axiosInstance.put(
+      `${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTION_SOFT_STOP}`,
+      { ID: transactionID },
       {
         headers: this.buildSecuredHeaders()
       }
@@ -642,18 +663,20 @@ export default class CentralServerProvider {
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTION}`, {
       headers: this.buildSecuredHeaders(),
       params: {
-        ID: id
+        ID: id,
+        WithUser: true,
       }
     });
     return result.data;
   }
 
-  public async getLastTransaction(chargingStationID: string, connectorId: number): Promise<Transaction> {
+  public async getLastTransaction(chargingStationID: string, connectorID: number): Promise<Transaction> {
     this.debugMethod('getLastTransaction');
     const params: { [param: string]: string } = {};
-    params.ConnectorId = connectorId.toString();
+    params.ConnectorID = connectorID.toString();
     params.Limit = '1';
     params.Skip = '0';
+    params.Status = 'completed';
     params.SortFields = '-timestamp';
     const url = this.buildRestEndpointUrl(ServerRoute.REST_CHARGING_STATIONS_TRANSACTIONS, { id: chargingStationID });
     // Call
@@ -667,8 +690,11 @@ export default class CentralServerProvider {
     return null;
   }
 
-  public async getTransactions(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
-      sorting: string[] = []): Promise<TransactionDataResult> {
+  public async getTransactions(
+    params = {},
+    paging: PagingParams = Constants.DEFAULT_PAGING,
+    sorting: string[] = []
+  ): Promise<TransactionDataResult> {
     this.debugMethod('getTransactions');
     // Build Paging
     this.buildPaging(paging, params);
@@ -685,8 +711,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getCars(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
-      sorting: string[] = []): Promise<DataResult<Car>> {
+  public async getCars(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<Car>> {
     this.debugMethod('getCars');
     // Build Paging
     this.buildPaging(paging, params);
@@ -700,8 +725,7 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getUsers(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
-      sorting: string[] = []): Promise<DataResult<User>> {
+  public async getUsers(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<User>> {
     this.debugMethod('getUsers');
     // Build Paging
     this.buildPaging(paging, params);
@@ -725,8 +749,7 @@ export default class CentralServerProvider {
     return res.data as UserDefaultTagCar;
   }
 
-  public async getTags(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
-      sorting: string[] = []): Promise<DataResult<Tag>> {
+  public async getTags(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<Tag>> {
     this.debugMethod('getTags');
     // Build Paging
     this.buildPaging(paging, params);
@@ -742,8 +765,11 @@ export default class CentralServerProvider {
     return result.data as DataResult<Tag>;
   }
 
-  public async getInvoices(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
-      sorting: string[] = []): Promise<DataResult<BillingInvoice>> {
+  public async getInvoices(
+    params = {},
+    paging: PagingParams = Constants.DEFAULT_PAGING,
+    sorting: string[] = []
+  ): Promise<DataResult<BillingInvoice>> {
     this.debugMethod('getInvoices');
     // Build Paging
     this.buildPaging(paging, params);
@@ -773,13 +799,13 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async getTransactionsActive(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING,
-      sorting: string[] = []): Promise<DataResult<Transaction>> {
+  public async getTransactionsActive(params: any = {}, paging: PagingParams = Constants.DEFAULT_PAGING, sorting: string[] = []): Promise<DataResult<Transaction>> {
     this.debugMethod('getTransactionsActive');
     // Build Paging
     this.buildPaging(paging, params);
     // Build Sorting
     this.buildSorting(sorting, params);
+    params['WithUser'] = 'true';
     // Call
     const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.TRANSACTIONS_ACTIVE}`, {
       headers: this.buildSecuredHeaders(),
@@ -802,9 +828,9 @@ export default class CentralServerProvider {
   public async getUser(id: string): Promise<User> {
     this.debugMethod('getUser');
     // Call
-    const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceSecuredURL()}/${ServerAction.USER}`, {
-      headers: this.buildSecuredHeaders(),
-      params: { ID: id }
+    const url = this.buildRestEndpointUrl(ServerRoute.REST_USER, { id });
+    const result = await this.axiosInstance.get(url, {
+      headers: this.buildSecuredHeaders()
     });
     return result.data;
   }
@@ -812,7 +838,7 @@ export default class CentralServerProvider {
   public async getSiteImage(id: string): Promise<string> {
     this.debugMethod('getSiteImage');
     // Check cache
-    let foundSiteImage = this.siteImages.get(id);
+    let foundSiteImage = this.siteImagesCache.get(id);
     if (!foundSiteImage) {
       // Call backend
       const result = await this.axiosInstance.get(`${this.buildCentralRestServerServiceUtilURL(this.tenant)}/${ServerAction.SITE_IMAGE}`, {
@@ -827,7 +853,7 @@ export default class CentralServerProvider {
         const base64Image = Buffer.from(result.data).toString('base64');
         if (base64Image) {
           foundSiteImage = 'data:' + result.headers['content-type'] + ';base64,' + base64Image;
-          this.siteImages.set(id, foundSiteImage);
+          this.siteImagesCache.set(id, foundSiteImage);
         }
       }
     }
@@ -942,7 +968,6 @@ export default class CentralServerProvider {
             await ReactNativeBlobUtil.android.actionViewIntent(res.path(), 'application/pdf');
           }
         });
-
     }
   }
 
@@ -969,7 +994,7 @@ export default class CentralServerProvider {
 
   private buildSorting(sortingParams: string[], queryParams: QueryParams): void {
     const sortFields = sortingParams.join(',');
-    if (!Utils.isEmptyArray(sortFields)) {
+    if (sortFields) {
       queryParams.SortFields = sortFields;
     }
   }

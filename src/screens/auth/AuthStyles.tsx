@@ -25,23 +25,22 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     header: {
       flex: 1,
       flexDirection: 'column',
-      justifyContent: 'center',
+      justifyContent: 'space-evenly',
       alignItems: 'center'
     },
     logo: {
-      width: '75%',
+      width: '90%',
       height: '100@s',
-      marginTop: '10@s',
       resizeMode: 'contain'
     },
     appText: {
       color: commonColor.textColor,
-      fontSize: '40@s',
-      fontWeight: 'bold',
-      paddingTop: '5@s'
+      fontSize: '30@s',
+      fontWeight: 'bold'
     },
     appVersionText: {
       color: commonColor.textColor,
+      alignSelf: 'center',
       fontSize: '15@s'
     },
     appTenant: {

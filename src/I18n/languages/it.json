@@ -67,7 +67,8 @@
     "save": "Save",
     "reset": "Reset",
     "selected": "Selected",
-    "results": "Result(s)"
+    "results": "Result(s)",
+    "update": "Update"
   },
   "sidebar": {
     "home": "Home",
@@ -348,7 +349,7 @@
     "charging": "In Carica",
     "available": "Disponibile",
     "unavailable": "Non Disponibile",
-    "notCharging": "Inattiva",
+    "notCharging": "Not charging",
     "suspendedEV": "EV Sospeso",
     "suspendedEVSE": "EVSE Sospeso",
     "faulted": "Difettosa",
@@ -404,6 +405,7 @@
     "instantPowerChartLabel": "Potenza Istantanea (kW)",
     "cumulatedChartLabel": "Cumulata (kW.h)",
     "batteryChartLabel": "Livello Batteria (%)",
+    "gridLimitChartLabel": "Grid Limit (kW)",
     "connectorMax": "Potenza Massima Presa (kW)",
     "noData": "Nessun Dato",
     "noSessionInProgress": "Nessuna Sessione in corso",
@@ -453,5 +455,10 @@
       "subMessage": "Utente Sconosciuto",
       "longMessage": "Un utente sconosciuto si è appena registrato su '{{chargeBoxID}}'."
     }
+  },
+  "appUpdate": {
+    "appUpdateDialogTitle": "New version available",
+    "appUpdateDialogDescription": "Would you like to update your application to the latest available version?",
+    "noUpdateAvailable": "You have the latest version"
   }
 }

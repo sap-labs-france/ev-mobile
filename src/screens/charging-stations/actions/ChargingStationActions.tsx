@@ -262,9 +262,8 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
               <Button
                 disabled={chargingStationIsDisabled}
                 block
-                danger={!chargingStationIsDisabled}
                 iconLeft
-                style={style.actionButton}
+                style={[style.actionButton, chargingStationIsDisabled ? null : style.resetButton]}
                 onPress={() => this.resetHardConfirm()}>
                 {spinnerResetHard ? <Spinner color="grey" /> : <Icon style={style.actionButtonIcon} type="MaterialIcons" name="repeat" />}
                 <Text uppercase={false} style={style.actionButtonText}>
@@ -298,8 +297,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
                 disabled={chargingStationIsDisabled}
                 block
                 iconLeft
-                warning={!chargingStationIsDisabled}
-                style={style.actionButton}
+                style={[style.actionButton, chargingStationIsDisabled ? null : style.warningButton]}
                 onPress={() => this.resetSoftConfirm()}>
                 {spinnerResetSoft ? (
                   <Spinner color="grey" />
@@ -316,8 +314,7 @@ export default class ChargingStationActions extends BaseAutoRefreshScreen<Props,
                 disabled={chargingStationIsDisabled}
                 block
                 iconLeft
-                warning={!chargingStationIsDisabled}
-                style={style.actionButton}
+                style={[style.actionButton, chargingStationIsDisabled ? null : style.warningButton]}
                 onPress={() => this.clearCacheConfirm()}>
                 {spinnerClearCache ? <Spinner color="grey" /> : <Icon style={style.actionButtonIcon} type="MaterialIcons" name="refresh" />}
                 <Text uppercase={false} style={style.actionButtonText}>

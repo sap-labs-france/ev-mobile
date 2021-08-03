@@ -121,7 +121,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   };
 
   public computeDurationInfos = (transaction: Transaction) => {
-    if (transaction) {
+    if (transaction?.stop) {
       // Compute duration
       const elapsedTimeFormatted = Utils.formatDurationHHMMSS(
         (new Date(transaction.stop.timestamp).getTime() - new Date(transaction.timestamp).getTime()) / 1000,
@@ -148,18 +148,17 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   };
 
   public renderUserInfo = (style: any) => {
-    const { transaction, isAdmin, isSiteAdmin } = this.state;
-    const user = transaction.user;
-    return transaction ? (
+    const { transaction } = this.state;
+    return transaction?.user ? (
       <View style={style.columnContainer}>
-        <UserAvatar size={44} user={user} navigation={this.props.navigation} />
+        <UserAvatar size={44} user={transaction.user} navigation={this.props.navigation} />
         <Text numberOfLines={1} style={[style.label, style.labelUser, style.info]}>
-          {Utils.buildUserName(user)}
+          {Utils.buildUserName(transaction.user)}
         </Text>
       </View>
     ) : (
       <View style={style.columnContainer}>
-        <UserAvatar user={user} navigation={this.props.navigation} />
+        <UserAvatar user={null} navigation={this.props.navigation} />
         <Text style={[style.label, style.disabled]}>-</Text>
       </View>
     );
@@ -171,9 +170,9 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       <View style={style.columnContainer}>
         <Icon type="FontAwesome" name="money" style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>
-          {transaction ? I18nManager.formatCurrency(transaction.stop.price, transaction.stop.priceUnit) : '-'}
+          {transaction?.stop ? I18nManager.formatCurrency(transaction.stop.price, transaction.stop.priceUnit) : '-'}
         </Text>
-        <Text style={[style.subLabel, style.info]}>({transaction ? transaction.stop.priceUnit : '-'})</Text>
+        <Text style={[style.subLabel, style.info]}>({transaction?.stop ? transaction.stop.priceUnit : '-'})</Text>
       </View>
     );
   };
@@ -192,7 +191,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
   public renderInactivity = (style: any) => {
     const { transaction } = this.state;
     const { inactivityFormatted } = this.state;
-    const inactivityStyle = Utils.computeInactivityStyle(transaction ? transaction.stop.inactivityStatus : null);
+    const inactivityStyle = Utils.computeInactivityStyle(transaction?.stop ? transaction.stop.inactivityStatus : null);
     return (
       <View style={style.columnContainer}>
         <Icon type="MaterialIcons" name="timer-off" style={[style.icon, inactivityStyle]} />
@@ -208,7 +207,7 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
       <View style={style.columnContainer}>
         <Icon style={[style.icon, style.info]} type="MaterialIcons" name="ev-station" />
         <Text style={[style.label, style.labelValue, style.info]}>
-          {transaction ? I18nManager.formatNumber(Math.round(transaction.stop.totalConsumptionWh / 10) / 100) : '-'}
+          {transaction?.stop ? I18nManager.formatNumber(Math.round(transaction.stop.totalConsumptionWh / 10) / 100) : '-'}
         </Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.total')} (kW.h)</Text>
       </View>
@@ -267,10 +266,10 @@ export default class TransactionDetails extends BaseScreen<Props, State> {
         <View style={style.headerContent}>
           <View style={style.headerRowContainer}>
             <Text style={style.headerName}>{transaction ? moment(new Date(transaction.timestamp)).format('LLL') : ''}</Text>
-            <Text style={style.subHeaderName}>({transaction ? moment(new Date(transaction?.stop.timestamp)).format('LLL') : ''})</Text>
-            {transaction?.userID !== transaction?.stop.userID && (
+            <Text style={style.subHeaderName}>({transaction?.stop ? moment(new Date(transaction.stop.timestamp)).format('LLL') : ''})</Text>
+            {transaction?.userID !== transaction?.stop?.userID && (
               <Text style={style.subSubHeaderName}>
-                ({I18n.t('details.stoppedBy')} {Utils.buildUserName(transaction?.stop.user)})
+                ({I18n.t('details.stoppedBy')} {Utils.buildUserName(transaction?.stop?.user)})
               </Text>
             )}
           </View>

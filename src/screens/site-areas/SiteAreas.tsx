@@ -21,6 +21,7 @@ import ProviderFactory from '../../provider/ProviderFactory';
 import BaseProps from '../../types/BaseProps';
 import { DataResult } from '../../types/DataResult';
 import { GlobalFilters } from '../../types/Filter';
+import Site from '../../types/Site';
 import SiteArea from '../../types/SiteArea';
 import Constants from '../../utils/Constants';
 import SecuredStorage from '../../utils/SecuredStorage';
@@ -28,7 +29,6 @@ import Utils from '../../utils/Utils';
 import BaseAutoRefreshScreen from '../base-screen/BaseAutoRefreshScreen';
 import SiteAreasFilters, { SiteAreasFiltersDef } from './SiteAreasFilters';
 import computeStyleSheet from './SiteAreasStyles';
-import Site from '../../types/Site';
 
 export interface Props extends BaseProps {}
 
@@ -129,7 +129,7 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
       // Get the Site Areas
       const siteAreas = await this.centralServerProvider.getSiteAreas(params, { skip, limit }, ['name']);
       // Get total number of records
-      if ((siteAreas.count === -1) && Utils.isEmptyArray(this.state.siteAreas)) {
+      if (siteAreas.count === -1) {
         const sitesAreasNbrRecordsOnly = await this.centralServerProvider.getSites(params, Constants.ONLY_RECORD_COUNT);
         siteAreas.count = sitesAreasNbrRecordsOnly.count;
       }
