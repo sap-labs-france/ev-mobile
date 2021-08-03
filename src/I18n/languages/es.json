@@ -286,7 +286,7 @@
     "totalPriceNote": "Precio total",
     "paymentMethods": "Métodos de pago",
     "paymentMethodsNote" : "Browse and create payment methods",
-    "invoices": "Invoices",
+    "invoices": "Facturas",
     "invoicesNote": "Browse and download invoices"
   },
   "sites": {
