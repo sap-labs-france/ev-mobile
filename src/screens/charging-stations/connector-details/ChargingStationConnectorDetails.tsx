@@ -84,11 +84,6 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   public async componentDidMount() {
     await super.componentDidMount(false);
-    const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null, true) as boolean;
-    if (startTransaction) {
-      this.startTransactionConfirm();
-    }
-    this.currentUser = this.centralServerProvider.getUserInfo();
     await this.refresh();
   }
 
@@ -202,10 +197,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
 
   // eslint-disable-next-line complexity
   public refresh = async () => {
+    this.currentUser = this.centralServerProvider.getUserInfo();
     let siteImage = null;
     let transaction = null;
     const chargingStationID = Utils.getParamFromNavigation(this.props.route, 'chargingStationID', null) as string;
     const connectorID = Utils.convertToInt(Utils.getParamFromNavigation(this.props.route, 'connectorID', null) as string);
+    const startTransaction = Utils.getParamFromNavigation(this.props.route, 'startTransaction', null) as boolean;
     // Get Charger
     const chargingStation = await this.getChargingStation(chargingStationID);
     const connector = chargingStation ? Utils.getConnectorFromID(chargingStation, connectorID) : null;
@@ -224,6 +221,10 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     // // Compute Duration
     const durationInfos = this.getDurationInfos(transaction, connector);
     // Set
+    if (startTransaction && userDefaultTagCar && !startStopTransactionButtonStatus.buttonDisabled) {
+      this.props.navigation.setParams({ startTransaction: null });
+      this.startTransactionConfirm();
+    }
     this.setState({
       chargingStation,
       connector: chargingStation ? Utils.getConnectorFromID(chargingStation, connectorID) : null,
@@ -297,11 +298,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       // Disable the button
       this.setState({ buttonDisabled: true });
       // Start the Transaction
-      const response = await this.centralServerProvider.startTransaction(
-        chargingStation.id as string,
-        connector.connectorId,
-        userInfo.tagIDs[0]
-      );
+      const response = await this.centralServerProvider.startTransaction(chargingStation.id, connector.connectorId, userInfo.tagIDs[0]);
       if (response?.status === 'Accepted') {
         // Show message
         Message.showSuccess(I18n.t('details.accepted'));
@@ -348,14 +345,14 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
       this.setState({ buttonDisabled: true });
       // Remote Stop the Transaction
       if (connector.status !== ChargePointStatus.AVAILABLE) {
-        const response = await this.centralServerProvider.stopTransaction(chargingStation.id as string, connector.currentTransactionID);
+        const response = await this.centralServerProvider.stopTransaction(chargingStation.id, connector.currentTransactionID);
         if (response?.status === 'Accepted') {
           Message.showSuccess(I18n.t('details.accepted'));
           await this.refresh();
         } else {
           Message.showError(I18n.t('details.denied'));
         }
-      // Soft Stop Transaction
+        // Soft Stop Transaction
       } else {
         const response = await this.centralServerProvider.softStopstopTransaction(connector.currentTransactionID);
         if (response?.status === 'Invalid') {
@@ -383,7 +380,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   ): { buttonDisabled?: boolean; startTransactionNbTrial?: number } {
     const { startTransactionNbTrial } = this.state;
     // Check if error codes
-    if (!Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
+    if (!userDefaultTagCar || !Utils.isEmptyArray(userDefaultTagCar?.errorCodes)) {
       return {
         buttonDisabled: true
       };
